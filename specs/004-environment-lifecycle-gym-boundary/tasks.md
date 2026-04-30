@@ -27,7 +27,20 @@
 
 - [X] T006 [US1] Implement configured slot-horizon truncation in `src/environment/gym_adapter.py::step()` and propagate the truncation flag through the returned tuple and `info`
 - [X] T007 [US1] Add deterministic same-slot presentation ordering in `src/environment/gym_adapter.py` so multiple arrivals in one slot are queued and exposed one active task at a time without losing pending tasks
-- [X] T008 [P] [US1] Update `specs/004-environment-lifecycle-gym-boundary/plan.md`, `specs/004-environment-lifecycle-gym-boundary/research.md`, `specs/004-environment-lifecycle-gym-boundary/contracts/environment-boundary.md`, and any relevant comments in `src/environment/gym_adapter.py` or `src/environment/slot_engine.py` to state the final orchestration decision: `HoodieGymEnvironment` owns episode orchestration; `SlotEngine` provides helper methods only. Do not move lifecycle ownership into `SlotEngine` in this feature.
+- [X] T008 [P] [US1] Update `specs/004-environment-lifecycle-gym-boundary/plan.md`, `specs/004-environment-lifecycle-gym-boundary/research.md`, `specs/004-environment-lifecycle-gym-boundary/contracts/environment-boundary.md`, and relevant comments in `src/environment/gym_adapter.py` and `src/environment/slot_engine.py` to enforce the final orchestration model:
+
+  * `HoodieGymEnvironment` owns all episode and slot lifecycle orchestration.
+  * `SlotEngine` provides helper methods only and does not own lifecycle control.
+
+  This is a documentation and alignment task only.
+
+  Do NOT:
+
+  * move lifecycle ownership into `SlotEngine`
+  * refactor `SlotEngine` into a controller
+  * change execution flow across modules
+
+  This decision is fixed for this feature and must not be revisited in implementation.
 - [ ] T009 [US1] Extend or adjust `tests/unit/test_gym_environment.py` to verify `reset(seed)` determinism, `terminated` versus `truncated`, and that the same seed plus same baseline policy produces the same trace
 
 ## Phase 4: User Story 2 - Shared Lifecycle Semantics
@@ -88,7 +101,7 @@
 ### User Story 1
 
 - `T006` can run in parallel with `T007` once the expected truncation and same-slot contract are agreed.
-- `T008` can run alongside `T009` because documentation/orchestration clarification and test coverage are mostly independent.
+- `T008` can run alongside `T009` because documentation/alignment updates and test coverage are independent.
 
 ### User Story 2
 
