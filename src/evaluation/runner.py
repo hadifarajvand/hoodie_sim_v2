@@ -3,7 +3,8 @@ from __future__ import annotations
 from dataclasses import dataclass
 from typing import Protocol, runtime_checkable
 
-from src.environment.environment import apply_policy_action, finalize_task_runtime_state_with_parameters
+from src.environment.gym_adapter import HoodieGymEnvironment
+from src.environment.runtime_model import SharedRuntimeParameters
 from src.environment.slot_engine import SlotEngine
 from src.environment.task import Task
 from src.environment.topology import TopologyGraph
@@ -28,42 +29,52 @@ class EvaluationRunner:
     policy: PolicyProtocol
     config: EvaluationConfig
     topology: TopologyGraph | None = None
+    runtime_parameters: SharedRuntimeParameters | None = None
 
     def _trace_for_episode(self, episode_index: int) -> EvaluationTrace:
         trace_id = f"{self.config.trace_id}-{episode_index}"
         return build_deterministic_trace(trace_id, self.config.seed + episode_index, self.config.episode_length)
 
     def _evaluate_episode(self, trace: EvaluationTrace) -> TraceMetrics:
-        engine = SlotEngine(current_slot=0, trace_metadata=trace.metadata)
+        env = HoodieGymEnvironment(
+            episode_length=self.config.episode_length,
+            topology=self.topology,
+            runtime_parameters=self.runtime_parameters or SharedRuntimeParameters(),
+            policy_name=self.config.policy_name,
+        )
+        observation, _info = env.reset(seed=trace.seed)
         records: list[TaskEvaluationRecord] = []
-        for blueprint in trace.tasks:
-            task = blueprint.build()
-            legal_action_mask = self._legal_action_mask(task)
-            observation = self._build_observation(task, legal_action_mask)
-            context = PolicyContext(
-                observation=observation,
-                legal_action_mask=legal_action_mask,
-                trace_history=(trace.trace_id,),
-            )
-            action = self.policy.choose_action(context)
-            apply_policy_action(task, context, action, resolved_destination=self._resolved_destination(task, action))
-            self._advance_task_through_slot_path(engine, task)
-            finalize_task_runtime_state_with_parameters(task, task.completion_slot or task.arrival_slot, engine.runtime_parameters)
-            records.append(
-                TaskEvaluationRecord(
-                    task_id=task.task_id,
-                    arrival_slot=task.arrival_slot,
-                    completion_slot=task.completion_slot,
-                    terminal_outcome=task.terminal_outcome,
-                    selected_action=task.selected_action,
-                    resolved_destination=task.resolved_destination,
-                    delay=(
-                        task.completion_slot - task.arrival_slot
-                        if task.terminal_outcome == "completed" and task.completion_slot is not None
-                        else None
-                    ),
+        while True:
+            current_task = env.current_task
+            if current_task is None:
+                action = None
+            else:
+                legal_action_mask = observation.get("legal_action_mask", {})
+                context = PolicyContext(
+                    observation=observation,
+                    legal_action_mask=legal_action_mask,
+                    trace_history=(trace.trace_id,),
                 )
-            )
+                action = self.policy.choose_action(context)
+            observation, reward, terminated, truncated, info = env.step(action)
+            for finalized in info.get("finalized_tasks", []):
+                records.append(
+                    TaskEvaluationRecord(
+                        task_id=int(finalized["task_id"]),
+                        arrival_slot=int(finalized["arrival_slot"]),
+                        completion_slot=int(finalized["completion_slot"]) if finalized.get("completion_slot") is not None else None,
+                        terminal_outcome=finalized.get("terminal_outcome"),
+                        selected_action=finalized.get("selected_action"),
+                        resolved_destination=finalized.get("resolved_destination"),
+                        delay=(
+                            int(finalized["completion_slot"]) - int(finalized["arrival_slot"])
+                            if finalized.get("terminal_outcome") == "completed" and finalized.get("completion_slot") is not None
+                            else None
+                        ),
+                    )
+                )
+            if terminated or truncated:
+                break
         return evaluate_trace(
             trace_id=trace.trace_id,
             policy_name=self.config.policy_name,

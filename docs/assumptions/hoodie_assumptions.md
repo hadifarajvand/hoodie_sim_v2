@@ -199,3 +199,17 @@
 - Justification: The implementation must support a learner-backed packaging path now without lying about PyTorch availability or changing the default validation behavior.
 - Expected impact: Training runs can produce learner_state-backed checkpoints in the current environment, while fallback non-learner runs remain unchanged.
 - Validation plan: Replace or supersede this fallback once an actual TorchRL-backed training environment is available and verified.
+
+## A-017: Gymnasium-style environment boundary
+
+- Missing detail: The HOODIE paper defines the simulator semantics, but it does not define a
+  Gymnasium-style `reset`/`step` wrapper for the codebase.
+- Chosen value or rule: Expose a local Gymnasium-style adapter around the slot simulator so
+  policies and tests can interact with the environment through a clean boundary without adding a
+  new dependency.
+- Justification: The wrapper is an engineering interface, not a scientific claim, and it preserves
+  the paper-backed slot mechanics.
+- Expected impact: Baselines and HOODIE can be exercised through the same environment contract,
+  while the simulator core remains the source of truth.
+- Validation plan: Keep the wrapper behavior covered by reset/step and lifecycle tests and do not
+  let it diverge from the shared runtime model.

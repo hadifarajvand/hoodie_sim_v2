@@ -6,6 +6,7 @@ from src.agents.hoodie_agent import HoodieAgent
 from src.config.training_config import TrainingConfig
 from src.environment.environment import apply_policy_action, finalize_task_runtime_state_with_parameters
 from src.environment.slot_engine import SlotEngine
+from src.environment.runtime_model import SharedRuntimeParameters
 from src.environment.topology import TopologyGraph
 from src.evaluation.runner import EvaluationRunner
 from src.evaluation.trace_protocol import EvaluationTrace
@@ -28,6 +29,7 @@ class TrainingLoop:
     policy: HoodieAgent
     config: TrainingConfig
     topology: TopologyGraph | None = None
+    runtime_parameters: SharedRuntimeParameters | None = None
     logger: TrainingLogger = field(default_factory=TrainingLogger)
     delayed_reward: DelayedRewardTraining = field(default_factory=DelayedRewardTraining)
 
@@ -39,6 +41,7 @@ class TrainingLoop:
             policy=self.policy,
             config=self.config.to_evaluation_config(),
             topology=self.topology,
+            runtime_parameters=self.runtime_parameters,
         )
 
     def _trace_for_episode(self, episode_index: int) -> EvaluationTrace:

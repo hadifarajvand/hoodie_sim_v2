@@ -7,6 +7,7 @@ from src.evaluation.config import EvaluationConfig
 from src.evaluation.fairness_checks import assert_fair_evaluation
 from src.evaluation.runner import EvaluationRunner, PolicyProtocol
 from src.evaluation.trace_protocol import EvaluationTrace, build_deterministic_trace
+from src.environment.runtime_model import SharedRuntimeParameters
 from src.environment.topology import TopologyGraph
 
 
@@ -30,6 +31,7 @@ class ValidationRunner:
     policies: dict[str, PolicyProtocol]
     config: EvaluationConfig
     topology: TopologyGraph | None = None
+    runtime_parameters: SharedRuntimeParameters | None = None
     config_freeze: FrozenConfig | None = None
 
     def __post_init__(self) -> None:
@@ -48,7 +50,12 @@ class ValidationRunner:
         policy_order: tuple[str, ...] = tuple(self.policies.keys())
         for policy_name, policy in self.policies.items():
             policy_config = replace(self.config, policy_name=policy_name)
-            runner = EvaluationRunner(policy=policy, config=policy_config, topology=self.topology)
+            runner = EvaluationRunner(
+                policy=policy,
+                config=policy_config,
+                topology=self.topology,
+                runtime_parameters=self.runtime_parameters,
+            )
             for episode_index in range(self.config.episode_count):
                 trace = self._trace_for_policy(policy_name, episode_index)
                 if policy_name != baseline_policy_name:

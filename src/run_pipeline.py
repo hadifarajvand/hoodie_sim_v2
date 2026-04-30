@@ -19,6 +19,7 @@ from src.config.config_freeze import FrozenConfig
 from src.config.config_loader import ConfigLoader, UnifiedConfig
 from src.evaluation.validation_artifacts import ValidationArtifacts, build_validation_artifacts
 from src.evaluation.validation_runner import ValidationRunner
+from src.environment.runtime_model import SharedRuntimeParameters
 from src.repro.output_packager import OutputPackager
 from src.repro.repro_guard import ReproGuard
 from src.training.training_loop import TrainingLoop
@@ -48,6 +49,7 @@ def _build_validation_runner(config: UnifiedConfig, policy: HoodieAgent) -> Vali
         policies=policies,
         config=config.evaluation,
         topology=config.validation_topology,
+        runtime_parameters=SharedRuntimeParameters(**config.runtime),
     )
 
 
@@ -125,7 +127,12 @@ def run_pipeline(
     training_summaries: list[dict[str, Any]] = []
     hoodie_state: dict[str, Any] | None = None
     if run_training:
-        training_loop = TrainingLoop(policy=hoodie, config=config.training, topology=config.validation_topology)
+        training_loop = TrainingLoop(
+            policy=hoodie,
+            config=config.training,
+            topology=config.validation_topology,
+            runtime_parameters=SharedRuntimeParameters(**config.runtime),
+        )
         training_summaries = [asdict(summary) for summary in training_loop.run()]
         hoodie_state = hoodie.export_state()
     elif config.validation_hoodie_state_path is not None:
