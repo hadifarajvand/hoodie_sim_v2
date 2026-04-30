@@ -16,6 +16,8 @@ from .task import Task
 
 @dataclass(slots=True)
 class SlotEngine:
+    """Provides helper methods for slot-phase progression; episode ownership remains external."""
+
     current_slot: int = 0
     trace_metadata: dict[str, str] | None = None
     runtime_parameters: SharedRuntimeParameters = field(default_factory=SharedRuntimeParameters)

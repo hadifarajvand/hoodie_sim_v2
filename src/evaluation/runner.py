@@ -49,6 +49,7 @@ class EvaluationRunner:
             if current_task is None:
                 action = None
             else:
+                observation = env.observe_flat(current_task)
                 legal_action_mask = observation.get("legal_action_mask", {})
                 context = PolicyContext(
                     observation=observation,
@@ -57,6 +58,8 @@ class EvaluationRunner:
                 )
                 action = self.policy.choose_action(context)
             observation, reward, terminated, truncated, info = env.step(action)
+            if env.current_task is not None:
+                observation = env.observe_flat()
             for finalized in info.get("finalized_tasks", []):
                 records.append(
                     TaskEvaluationRecord(

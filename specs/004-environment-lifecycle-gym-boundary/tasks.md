@@ -25,9 +25,9 @@
 
 **Independent Test Criteria**: resetting with the same seed and running the same baseline twice yields the same trace, reward sequence, and terminal outcomes.
 
-- [ ] T006 [US1] Implement configured slot-horizon truncation in `src/environment/gym_adapter.py::step()` and propagate the truncation flag through the returned tuple and `info`
-- [ ] T007 [US1] Add deterministic same-slot presentation ordering in `src/environment/gym_adapter.py` so multiple arrivals in one slot are queued and exposed one active task at a time without losing pending tasks
-- [ ] T008 [P] [US1] Align `src/environment/gym_adapter.py`, `src/environment/environment.py`, and `src/environment/slot_engine.py` on a single source of truth for episode orchestration so the implementation either moves lifecycle ownership into `SlotEngine` or updates the docs/contracts to state that `HoodieGymEnvironment` owns orchestration while `SlotEngine` provides helpers only
+- [X] T006 [US1] Implement configured slot-horizon truncation in `src/environment/gym_adapter.py::step()` and propagate the truncation flag through the returned tuple and `info`
+- [X] T007 [US1] Add deterministic same-slot presentation ordering in `src/environment/gym_adapter.py` so multiple arrivals in one slot are queued and exposed one active task at a time without losing pending tasks
+- [X] T008 [P] [US1] Update `specs/004-environment-lifecycle-gym-boundary/plan.md`, `specs/004-environment-lifecycle-gym-boundary/research.md`, `specs/004-environment-lifecycle-gym-boundary/contracts/environment-boundary.md`, and any relevant comments in `src/environment/gym_adapter.py` or `src/environment/slot_engine.py` to state the final orchestration decision: `HoodieGymEnvironment` owns episode orchestration; `SlotEngine` provides helper methods only. Do not move lifecycle ownership into `SlotEngine` in this feature.
 - [ ] T009 [US1] Extend or adjust `tests/unit/test_gym_environment.py` to verify `reset(seed)` determinism, `terminated` versus `truncated`, and that the same seed plus same baseline policy produces the same trace
 
 ## Phase 4: User Story 2 - Shared Lifecycle Semantics
@@ -36,9 +36,9 @@
 
 **Independent Test Criteria**: one full episode through the adapter exercises local execution, horizontal offload, vertical offload, delayed reward timing, and shared metric updates.
 
-- [ ] T010 [US2] Implement or wire the queue/admission progression in `src/environment/gym_adapter.py` and `src/environment/slot_engine.py` so local execution, horizontal offload, vertical offload, and public-queue admission after offload all flow through the same lifecycle state
-- [ ] T011 [US2] Ensure delayed reward emission stays terminal-only in `src/environment/reward_timing.py`, `src/environment/gym_adapter.py`, and `src/environment/environment.py`, and that reward is emitted only after completion/drop timing
-- [ ] T012 [P] [US2] Update `src/evaluation/metrics.py`, `src/evaluation/evaluation_module.py`, and any adapter info assembly in `src/environment/gym_adapter.py` so per-slot finalized task records feed the shared evaluation path without changing metric formulas
+- [X] T010 [US2] Implement or wire the queue/admission progression in `src/environment/gym_adapter.py` and `src/environment/slot_engine.py` so local execution, horizontal offload, vertical offload, and public-queue admission after offload all flow through the same lifecycle state
+- [X] T011 [US2] Ensure delayed reward emission stays terminal-only in `src/environment/reward_timing.py`, `src/environment/gym_adapter.py`, and `src/environment/environment.py`, and that reward is emitted only after completion/drop timing
+- [X] T012 [P] [US2] Update `src/evaluation/metrics.py`, `src/evaluation/evaluation_module.py`, and any adapter info assembly in `src/environment/gym_adapter.py` so per-slot finalized task records feed the shared evaluation path without changing metric formulas
 - [ ] T013 [US2] Add or update `tests/unit/test_delayed_reward.py`, `tests/unit/test_offload_next_slot.py`, `tests/unit/test_public_queue_routing.py`, and `tests/unit/test_task_lifecycle.py` to cover local admission, horizontal offload, vertical cloud offload, public queue admission after offload, and delayed reward timing
 
 ## Phase 5: User Story 3 - Topology-Constrained Action Selection
@@ -47,10 +47,10 @@
 
 **Independent Test Criteria**: the action mask reflects topology, illegal actions are rejected, and the observation shape is usable by the existing baseline policies.
 
-- [ ] T014 [US3] Update `src/environment/gym_adapter.py::observe()` to return the contract shape: a slot-scoped mapping keyed by edge-agent ID with per-agent task fields, legal-action masks, and lifecycle/debug metadata
-- [ ] T015 [US3] Add a compatibility or migration layer in `src/environment/gym_adapter.py` or `src/policies/policy_interface.py` so existing callers that expect a flat observation are either preserved through a wrapper or explicitly migrated in code comments and docs
+- [X] T014 [US3] Update `src/environment/gym_adapter.py::observe()` to return the contract shape: a slot-scoped mapping keyed by edge-agent ID with per-agent task fields, legal-action masks, and lifecycle/debug metadata
+- [X] T015 [US3] Add a compatibility or migration layer in `src/environment/gym_adapter.py` or `src/policies/policy_interface.py` so existing callers that expect a flat observation are either preserved through a wrapper or explicitly migrated in code comments and docs
 - [ ] T016 [P] [US3] Verify `src/policies/action_masking.py`, `src/policies/policy_interface.py`, and `src/environment/topology.py` continue to reject illegal actions and expose the same shared legality semantics to all baselines
-- [ ] T017 [US3] Add or update `tests/unit/test_topology_legality.py`, `tests/unit/test_gym_environment.py`, and `tests/integration/test_policy_interface_flow.py` to cover illegal action rejection and the slot-scoped observation contract
+- [X] T017 [US3] Add or update `tests/unit/test_topology_legality.py`, `tests/unit/test_gym_environment.py`, and `tests/integration/test_policy_interface_flow.py` to cover illegal action rejection and the slot-scoped observation contract
 
 ## Phase 6: User Story 4 - Gymnasium-Style Adapter Boundary
 
@@ -58,9 +58,9 @@
 
 **Independent Test Criteria**: a baseline can run through the adapter externally, with no internal policy execution requirement.
 
-- [ ] T018 [US4] Make the adapter/baseline ownership explicit in `src/environment/gym_adapter.py`, `src/environment/environment.py`, and `specs/004-environment-lifecycle-gym-boundary/contracts/environment-boundary.md` so the adapter stays policy-agnostic and any convenience episode runner remains a thin wrapper only
-- [ ] T019 [P] [US4] Update `src/evaluation/runner.py`, `src/evaluation/validation_runner.py`, and any baseline entry points that call the environment so they continue to drive `reset()` and `step()` externally
-- [ ] T020 [US4] Add or update `tests/integration/test_evaluation_runner.py` and `tests/integration/test_flc_episode.py` so at least one baseline completes a full episode through the adapter boundary
+- [X] T018 [US4] Make the adapter/baseline ownership explicit in `src/environment/gym_adapter.py`, `src/environment/environment.py`, and `specs/004-environment-lifecycle-gym-boundary/contracts/environment-boundary.md` so the adapter stays policy-agnostic and any convenience episode runner remains a thin wrapper only
+- [X] T019 [P] [US4] Update `src/evaluation/runner.py`, `src/evaluation/validation_runner.py`, and any baseline entry points that call the environment so they continue to drive `reset()` and `step()` externally
+- [X] T020 [US4] Add or update `tests/integration/test_evaluation_runner.py` and `tests/integration/test_flc_episode.py` so at least one baseline completes a full episode through the adapter boundary
 
 ## Phase 7: Polish & Cross-Cutting
 
@@ -88,7 +88,7 @@
 ### User Story 1
 
 - `T006` can run in parallel with `T007` once the expected truncation and same-slot contract are agreed.
-- `T008` can run alongside `T009` because orchestration ownership and test coverage are mostly independent.
+- `T008` can run alongside `T009` because documentation/orchestration clarification and test coverage are mostly independent.
 
 ### User Story 2
 
