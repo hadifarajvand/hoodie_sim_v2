@@ -1,0 +1,7 @@
+from __future__ import annotations
+
+from .metrics import TraceMetrics, evaluate_run
+
+
+def compute_aggregate_metrics(trace_metrics: list[TraceMetrics]) -> dict[str, float | int]:
+    return evaluate_run(trace_metrics)
