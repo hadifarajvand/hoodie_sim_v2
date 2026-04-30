@@ -11,6 +11,7 @@
 - **Decision**: `HoodieGymEnvironment` owns all episode and slot lifecycle orchestration; `SlotEngine` is helper-only.
 - **Rationale**: This keeps ownership fixed at the environment boundary and avoids a risky controller refactor.
 - **Alternatives considered**: Move lifecycle ownership into `SlotEngine` or make `SlotEngine` the controller. Both would blur architecture boundaries and create unnecessary churn.
+- **Implementation guardrail**: `SlotEngine.run_slot()` is architectural drift and must be removed or reduced so it cannot advance a slot or sequence lifecycle phases.
 
 ## Decision 3: Same-slot multi-arrival handling
 

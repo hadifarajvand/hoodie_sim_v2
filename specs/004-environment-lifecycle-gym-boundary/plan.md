@@ -5,14 +5,14 @@
 
 ## Summary
 
-This plan only enforces the final orchestration model for the environment boundary. `HoodieGymEnvironment` owns the episode and slot lifecycle orchestration. `SlotEngine` remains a helper module only. No lifecycle ownership moves into `SlotEngine`, and no execution-flow refactor is permitted for this task.
+This plan hardens the environment boundary against architectural drift. `HoodieGymEnvironment` must remain the only lifecycle orchestrator. `SlotEngine` must be helper-only, and any controller-shaped lifecycle API such as `run_slot()` must be removed or reduced so it cannot advance a slot or sequence the lifecycle.
 
 ## Technical Context
 
 **Language/Version**: Python 3.14.3 in the workspace; repository code is Python and uses modern dataclass/typing features  
 **Primary Dependencies**: Standard library only for this feature; no new dependencies, no Gymnasium requirement  
 **Storage**: File-backed specs and reference docs only; no database  
-**Testing**: Existing unittest-based tests plus plan/spec verification updates  
+**Testing**: Existing unittest-based tests plus lifecycle regression checks for helper-only enforcement  
 **Target Platform**: Local development and evaluation on the approved workstation / Linux-compatible Python runtime  
 **Project Type**: Research reproduction simulator / library-style package with evaluation and baseline runners  
 **Performance Goals**: None beyond preserving the existing environment behavior and avoiding new asymptotic work  
@@ -40,7 +40,7 @@ This plan only enforces the final orchestration model for the environment bounda
 - [x] Paper-to-code mapping impact checked
 - [x] Definition-of-done impact checked
 
-No constitution violations are required. This task is documentation/alignment only.
+No constitution violations are required. This task is documentation/alignment only, but it explicitly hardens the helper-only boundary and rejects a controller-shaped `SlotEngine`.
 
 ## Project Structure
 
@@ -52,8 +52,8 @@ specs/004-environment-lifecycle-gym-boundary/
 ├── research.md
 ├── data-model.md
 ├── quickstart.md
-└── contracts/
-    └── environment-boundary.md
+├── contracts/
+└── tasks.md
 ```
 
 ### Source Code (repository root)
@@ -74,59 +74,50 @@ src/
 │   ├── deadline_rules.py
 │   └── task.py
 ├── policies/
-│   ├── action_masking.py
-│   ├── policy_interface.py
-│   ├── flc.py
-│   ├── ho.py
-│   ├── vo.py
-│   ├── ro.py
-│   ├── bco.py
-│   └── mleo.py
 └── evaluation/
-    ├── metrics.py
-    ├── evaluation_module.py
-    ├── runner.py
-    └── validation_runner.py
 
 tests/
 ├── unit/
 └── integration/
 ```
 
-**Structure Decision**: Keep the adapter and lifecycle docs aligned to `src/environment/`, keep policy legality in `src/policies/`, and keep shared metrics/evaluation in `src/evaluation/`. No new source tree is introduced.
+**Structure Decision**: Keep orchestration in `src/environment/gym_adapter.py` and keep `src/environment/slot_engine.py` helper-only. The plan does not introduce a new source tree or a new lifecycle runner.
 
 ## Current-State Audit
 
 ### Already implemented
 
-- `src/environment/gym_adapter.py`: existing boundary implementation and compatibility helper.
-- `src/environment/slot_engine.py`: slot-phase helper methods.
-- `src/environment/environment.py`: state snapshots and task finalization helpers.
-- `src/environment/reward_timing.py`: terminal reward emission.
-- `src/environment/runtime_model.py`: shared runtime progression and terminal-state resolution.
-- `src/policies/action_masking.py` and `src/policies/policy_interface.py`: legality enforcement and policy contract.
-- `src/evaluation/metrics.py` and `src/evaluation/evaluation_module.py`: shared metric formulas and aggregation.
+- `src/environment/gym_adapter.py`: owns the adapter boundary and already contains lifecycle logic.
+- `src/environment/slot_engine.py`: currently exposes helper methods and a controller-shaped `run_slot()` API.
+- `src/environment/environment.py`: contains state snapshots and finalization helpers.
+- `src/environment/reward_timing.py`: contains terminal reward emission.
+- `src/environment/runtime_model.py`: contains shared runtime progression helpers.
 
-### Gap to document
+### Gap to close
 
-- The source comments and plan/contract language must consistently say that `HoodieGymEnvironment` owns orchestration and `SlotEngine` only provides helper methods.
+- `SlotEngine.run_slot()` exists and sequences lifecycle phases, which is architectural drift against the fixed ownership model.
+- The docs need to say that `HoodieGymEnvironment` is the only lifecycle orchestrator and that `SlotEngine` must not expose controller-shaped lifecycle control.
 
 ## Research
 
-`research.md` already resolves the architectural decision: keep `HoodieGymEnvironment` as the episode orchestrator and keep `SlotEngine` as helper-only.
+`research.md` should reflect the fixed architectural decision:
+
+- `HoodieGymEnvironment` owns all episode and slot lifecycle orchestration.
+- `SlotEngine` is helper-only.
+- `SlotEngine.run_slot()` is drift and must be removed or replaced by a helper-only API that cannot advance a slot or sequence lifecycle phases.
 
 ## Architecture Decision
 
-- **Adapter location**: `src/environment/gym_adapter.py`.
-- **Episode state owner**: `HoodieGymEnvironment`.
-- **Helper module**: `SlotEngine` only.
-- **Rule**: no lifecycle control moves into `SlotEngine`; no execution-flow refactor is part of this task.
+- **Adapter location**: `src/environment/gym_adapter.py`
+- **Episode state owner**: `HoodieGymEnvironment`
+- **Helper module**: `SlotEngine`
+- **Enforcement rule**: `SlotEngine` must not own lifecycle control, must not sequence lifecycle phases, and must not provide a controller-shaped API that can advance a slot.
 
-## Contract / Docs Alignment Plan
+## Documentation / Contract Alignment Plan
 
-1. Update `specs/004-environment-lifecycle-gym-boundary/research.md` to state the fixed orchestration model.
-2. Update `specs/004-environment-lifecycle-gym-boundary/contracts/environment-boundary.md` so baseline integration and ownership language match the fixed model.
-3. Update relevant comments in `src/environment/gym_adapter.py` and `src/environment/slot_engine.py` to say the same thing.
+1. Update `research.md` to explicitly state that `SlotEngine.run_slot()` is architectural drift.
+2. Update `contracts/environment-boundary.md` to say the adapter owns orchestration and `SlotEngine` is helper-only.
+3. Update comments/docstrings in `src/environment/gym_adapter.py` and `src/environment/slot_engine.py` so they do not imply controller ownership.
 4. Keep the rest of the feature docs unchanged.
 
 ## Constitution Gate
@@ -135,20 +126,20 @@ tests/
 - **Environment impact**: None.
 - **Assumption impact**: None.
 - **Fidelity impact**: None.
-- **Test impact**: None.
+- **Test impact**: Regression tests are required in the implementation phase, but this plan itself remains documentation-only.
 - **Reproducibility impact**: None.
 - **Config/schema impact**: None.
-- **Public interface impact**: None.
+- **Public interface impact**: The helper-only boundary wording is aligned.
 - **Artifact impact**: None.
 - **Security/secret impact**: None.
 - **Performance budget impact**: None.
 - **Baseline fairness impact**: None.
-- **Paper-to-code mapping impact**: Keep mapping intact; only alignment wording changes.
-- **Definition-of-done impact**: The task is complete when the plan, research, contract, and source comments all state the same ownership model.
+- **Paper-to-code mapping impact**: Keep mapping intact.
+- **Definition-of-done impact**: The task is complete only when the docs and code both prevent `SlotEngine` from acting as a lifecycle controller.
 
 ## Migration Plan
 
-- No runtime migration is expected.
-- No tests need to change for this documentation-only task.
+- No runtime migration is expected from this planning pass.
 - No dependency files should change.
+- Implementation should add regression tests later so `SlotEngine` cannot regain lifecycle orchestration.
 

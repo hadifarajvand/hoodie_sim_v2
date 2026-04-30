@@ -16,7 +16,7 @@ from .task import Task
 
 @dataclass(slots=True)
 class SlotEngine:
-    """Provides helper methods only; episode and slot lifecycle control remains external."""
+    """SlotEngine is helper-only. HoodieGymEnvironment owns episode and slot lifecycle orchestration."""
 
     current_slot: int = 0
     trace_metadata: dict[str, str] | None = None
