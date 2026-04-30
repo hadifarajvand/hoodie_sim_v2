@@ -47,6 +47,6 @@ Define the stable adapter contract for the HOODIE simulator boundary.
 
 - `HoodieGymEnvironment` owns the episode and slot lifecycle orchestration.
 - `SlotEngine` provides helper methods only and does not own lifecycle control.
-- `SlotEngine` must not expose a controller-shaped lifecycle API that can advance a slot or sequence lifecycle phases.
+- `SlotEngine` must not expose `run_slot()`, `slot_flow`, `slot_flow_names()`, or any controller-shaped lifecycle API that can advance a slot or sequence lifecycle phases.
 - Baselines call `reset()` and `step()` externally.
 - Any helper episode runner must be a thin wrapper, not a separate contract.

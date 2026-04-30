@@ -5,7 +5,6 @@ from typing import Protocol, runtime_checkable
 
 from src.environment.gym_adapter import HoodieGymEnvironment
 from src.environment.runtime_model import SharedRuntimeParameters
-from src.environment.slot_engine import SlotEngine
 from src.environment.task import Task
 from src.environment.topology import TopologyGraph
 from src.policies.policy_interface import PolicyContext
@@ -142,9 +141,6 @@ class EvaluationRunner:
         if action in {"horizontal", "offload_horizontal", "vertical", "offload_vertical"}:
             raise ValueError("Topology-backed destination required for offload actions")
         raise ValueError(f"Unsupported action for destination resolution: {action}")
-
-    def _advance_task_through_slot_path(self, engine: SlotEngine, task: Task) -> None:
-        engine.run_slot([task])
 
     def run(self) -> dict[str, object]:
         trace_metrics = []

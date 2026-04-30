@@ -4,20 +4,20 @@
 
 **Goal**: confirm the feature scope, contract, and existing adapter entry points before touching behavior.
 
-**Independent Test Criteria**: The existing plan, contract, and quickstart describe the same adapter boundary and same-slot handling rules.
+**Independent Test Criteria**: the existing plan, contract, and quickstart describe the same adapter boundary, same-slot handling rules, and helper-only `SlotEngine` boundary.
 
-- [ ] T001 Review `specs/004-environment-lifecycle-gym-boundary/plan.md`, `specs/004-environment-lifecycle-gym-boundary/contracts/environment-boundary.md`, and `src/environment/gym_adapter.py` to confirm the documented single-active-task contract matches the current adapter shape and note any remaining implementation mismatches in `specs/004-environment-lifecycle-gym-boundary/research.md`
-- [ ] T002 [P] Update paper-to-code mapping in `docs/paper_notes/paper_to_code_mapping.md` for the adapter boundary, one-slot step contract, delayed reward timing, and same-slot deterministic presentation order
+- [ ] T001 Review `specs/004-environment-lifecycle-gym-boundary/plan.md`, `specs/004-environment-lifecycle-gym-boundary/contracts/environment-boundary.md`, `specs/004-environment-lifecycle-gym-boundary/research.md`, and `src/environment/gym_adapter.py` to confirm the documented single-active-task contract and helper-only `SlotEngine` boundary match the current code, then record any remaining implementation mismatches in `specs/004-environment-lifecycle-gym-boundary/research.md`
+- [ ] T002 [P] Update `docs/paper_notes/paper_to_code_mapping.md` for the adapter boundary, one-slot step contract, delayed reward timing, same-slot deterministic presentation order, and the new `SlotEngine` helper-only boundary
 
 ## Phase 2: Foundational
 
 **Goal**: make the environment contract explicit before story-specific implementation work begins.
 
-**Independent Test Criteria**: the adapter contract, observation shape, and truncation semantics are documented and traceable before code changes land.
+**Independent Test Criteria**: the adapter contract, observation shape, truncation semantics, and lifecycle ownership rules are documented and traceable before code changes land.
 
-- [ ] T003 [P] Add or refine the environment contract section in `specs/004-environment-lifecycle-gym-boundary/contracts/environment-boundary.md` so it explicitly states slot-horizon truncation, single-active-task presentation, and the external baseline control model
-- [ ] T004 [P] Update `specs/004-environment-lifecycle-gym-boundary/data-model.md` to reflect the slot-scoped observation mapping, active-task lifecycle, and pending-arrival ordering used by the adapter
-- [ ] T005 [P] Update `specs/004-environment-lifecycle-gym-boundary/quickstart.md` so it describes the external baseline loop and the no-dependency adapter usage clearly enough for implementers and testers
+- [ ] T003 [P] Add or refine the environment contract section in `specs/004-environment-lifecycle-gym-boundary/contracts/environment-boundary.md` so it explicitly states slot-horizon truncation, single-active-task presentation, external baseline control, and the fact that `SlotEngine` cannot expose a slot runner
+- [ ] T004 [P] Update `specs/004-environment-lifecycle-gym-boundary/data-model.md` to reflect the slot-scoped observation mapping, active-task lifecycle, pending-arrival ordering, and helper-only `SlotEngine` boundary used by the adapter
+- [ ] T005 [P] Update `specs/004-environment-lifecycle-gym-boundary/quickstart.md` so it describes the external baseline loop, the no-dependency adapter usage, and the helper-only `SlotEngine` boundary clearly enough for implementers and testers
 
 ## Phase 3: User Story 1 - Deterministic Environment Boundary
 
@@ -27,20 +27,15 @@
 
 - [X] T006 [US1] Implement configured slot-horizon truncation in `src/environment/gym_adapter.py::step()` and propagate the truncation flag through the returned tuple and `info`
 - [X] T007 [US1] Add deterministic same-slot presentation ordering in `src/environment/gym_adapter.py` so multiple arrivals in one slot are queued and exposed one active task at a time without losing pending tasks
-- [X] T008 [P] [US1] Update `specs/004-environment-lifecycle-gym-boundary/plan.md`, `specs/004-environment-lifecycle-gym-boundary/research.md`, `specs/004-environment-lifecycle-gym-boundary/contracts/environment-boundary.md`, and relevant comments in `src/environment/gym_adapter.py` and `src/environment/slot_engine.py` to enforce the final orchestration model:
-
-  * `HoodieGymEnvironment` owns all episode and slot lifecycle orchestration.
-  * `SlotEngine` provides helper methods only and does not own lifecycle control.
-
-  This is a documentation and alignment task only.
-
-  Do NOT:
-
-  * move lifecycle ownership into `SlotEngine`
-  * refactor `SlotEngine` into a controller
-  * change execution flow across modules
-
-  This decision is fixed for this feature and must not be revisited in implementation.
+- [X] T008A [US1] Remove `SlotEngine.run_slot()` from `src/environment/slot_engine.py` so no code path can execute a full slot lifecycle through `SlotEngine`
+- [X] T008B [US1] Remove `SlotEngine.slot_flow` and `SlotEngine.slot_flow_names()` from `src/environment/slot_engine.py` so the class no longer exposes controller-shaped phase-flow metadata
+- [X] T008C [US1] Remove the no-op lifecycle phase methods from `src/environment/slot_engine.py` (`arrival_loading_or_generation`, `task_creation`, `observation_construction`, `legal_action_masking`, `policy_action_selection`, `queue_admission`, `offloading_progression`, `public_queue_admission_after_offload`, `execution_progression`, `completion_drop_handling`, `delayed_reward_emission`, `metric_updates`) so `SlotEngine` cannot sequence lifecycle phases
+- [X] T008D [US1] Keep only narrow helper methods in `src/environment/slot_engine.py` that are directly invoked by `src/environment/gym_adapter.py`, and update the surrounding comments/docstrings to preserve the helper-only boundary
+- [X] T008E [US1] Update imports in `src/environment/slot_engine.py` and `src/environment/gym_adapter.py` after removing controller-shaped `SlotEngine` APIs so the module still imports cleanly
+- [X] T008F [US1] Add regression coverage in `tests/unit/test_slot_engine.py` or `tests/unit/test_gym_environment.py` proving `hasattr(SlotEngine(), "run_slot")` is false, `SlotEngine` does not expose `slot_flow`, and `HoodieGymEnvironment.step()` is the only public slot-advancement boundary
+- [X] T008G [US1] Update `specs/004-environment-lifecycle-gym-boundary/contracts/environment-boundary.md` to state that `SlotEngine` cannot expose a slot runner or any controller-shaped lifecycle API
+- [X] T008H [US1] Update `specs/004-environment-lifecycle-gym-boundary/research.md` with the resolved architectural decision that `SlotEngine` is helper-only and no executable lifecycle phase sequencing is allowed
+- [X] T008I [US1] Update `specs/004-environment-lifecycle-gym-boundary/tasks.md` checkbox status only after the code and regression tests for T008A through T008H pass
 - [ ] T009 [US1] Extend or adjust `tests/unit/test_gym_environment.py` to verify `reset(seed)` determinism, `terminated` versus `truncated`, and that the same seed plus same baseline policy produces the same trace
 
 ## Phase 4: User Story 2 - Shared Lifecycle Semantics
@@ -81,7 +76,7 @@
 
 **Independent Test Criteria**: the feature docs, tests, and mapping files agree on the final adapter contract and no dependency changes were introduced.
 
-- [ ] T021 [P] Update `docs/paper_notes/paper_to_code_mapping.md` with the final environment boundary, same-slot arrival handling, and delayed reward lifecycle notes after implementation lands
+- [ ] T021 [P] Update `docs/paper_notes/paper_to_code_mapping.md` with the final environment boundary, same-slot arrival handling, helper-only `SlotEngine` boundary, and delayed reward lifecycle notes after implementation lands
 - [ ] T022 [P] Update `docs/assumptions/hoodie_assumptions.md` only if the implementation introduces any new assumption beyond the documented single-active-task contract for same-slot arrivals
 - [ ] T023 [P] Add a no-dependency-change verification note in `specs/004-environment-lifecycle-gym-boundary/quickstart.md` or a short test note in `tests/unit/test_gym_environment.py` that confirms the feature did not alter dependency files
 - [ ] T024 Remove any now-unused imports only in the files already touched by this feature, and only if those imports are in the direct edit path for the lifecycle changes
@@ -100,8 +95,8 @@
 
 ### User Story 1
 
-- `T006` can run in parallel with `T007` once the expected truncation and same-slot contract are agreed.
-- `T008` can run alongside `T009` because documentation/alignment updates and test coverage are independent.
+- `T008A`, `T008B`, and `T008C` can run in parallel if they touch disjoint parts of `src/environment/slot_engine.py` and the implementation is careful not to reintroduce controller behavior.
+- `T008F` can run alongside `T009` because architecture regression coverage and determinism coverage are independent.
 
 ### User Story 2
 
@@ -123,7 +118,7 @@
 ### MVP first
 
 1. Land Phase 2 contract/data-model updates.
-2. Implement Phase 3 deterministic reset/step behavior, including truncation and same-slot ordering.
+2. Remove the controller-shaped `SlotEngine` APIs and add the architecture regression test.
 3. Run the baseline flow through the adapter with the existing external policy loop.
 
 ### Incremental delivery
