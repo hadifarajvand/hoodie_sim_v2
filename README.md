@@ -3,6 +3,8 @@
 ## Tracking Policy
 
 - Keep source, configs, specs, docs, and approved reference artifacts in git.
+- `resources/` is intentionally tracked because it contains paper artifacts and
+  vendored reference material that the project depends on.
 - Do not commit generated outputs, cache directories, editor junk, or local
   virtual environments.
 - Vendored reference code under `resources/references/` must not include nested
