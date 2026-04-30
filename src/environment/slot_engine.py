@@ -16,7 +16,7 @@ from .task import Task
 
 @dataclass(slots=True)
 class SlotEngine:
-    """Provides helper methods for slot-phase progression; episode ownership remains external."""
+    """Provides helper methods only; episode and slot lifecycle control remains external."""
 
     current_slot: int = 0
     trace_metadata: dict[str, str] | None = None

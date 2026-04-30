@@ -34,7 +34,7 @@ class StepTraceRecord:
 
 @dataclass(slots=True)
 class HoodieGymEnvironment:
-    """Owns episode orchestration for the Gym-style boundary."""
+    """Owns all episode and slot lifecycle orchestration for the Gym-style boundary."""
 
     episode_length: int
     topology: TopologyGraph | None = None

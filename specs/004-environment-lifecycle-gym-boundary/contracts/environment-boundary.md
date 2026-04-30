@@ -45,6 +45,7 @@ Define the stable adapter contract for the HOODIE simulator boundary.
 
 ## Baseline integration
 
+- `HoodieGymEnvironment` owns the episode and slot lifecycle orchestration.
+- `SlotEngine` provides helper methods only and does not own lifecycle control.
 - Baselines call `reset()` and `step()` externally.
 - Any helper episode runner must be a thin wrapper, not a separate contract.
-

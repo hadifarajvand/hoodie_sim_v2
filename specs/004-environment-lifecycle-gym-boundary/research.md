@@ -8,9 +8,9 @@
 
 ## Decision 2: Episode state ownership
 
-- **Decision**: `HoodieGymEnvironment` owns episode state; `SlotEngine` remains the lifecycle orchestrator invoked by the adapter.
-- **Rationale**: This preserves the environment/policy/evaluation separation already used in the repository.
-- **Alternatives considered**: Move episode state into `SlotEngine` or move policy logic into the adapter. Both would blur architecture boundaries.
+- **Decision**: `HoodieGymEnvironment` owns all episode and slot lifecycle orchestration; `SlotEngine` is helper-only.
+- **Rationale**: This keeps ownership fixed at the environment boundary and avoids a risky controller refactor.
+- **Alternatives considered**: Move lifecycle ownership into `SlotEngine` or make `SlotEngine` the controller. Both would blur architecture boundaries and create unnecessary churn.
 
 ## Decision 3: Same-slot multi-arrival handling
 
@@ -35,4 +35,3 @@
 - **Decision**: Baselines drive the adapter externally through `reset()` / `step()`; any episode runner must be a thin wrapper.
 - **Rationale**: This keeps the environment boundary clean and preserves baseline fairness.
 - **Alternatives considered**: Internal policy execution inside the adapter. That would mix environment and policy responsibilities.
-
