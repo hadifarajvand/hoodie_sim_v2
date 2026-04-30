@@ -31,9 +31,25 @@
 
 *GATE: Must pass before Phase 0 research. Re-check after Phase 1 design.*
 
-[Gates determined based on constitution file]
-User approval is required before edits, refactors, or other repository actions when the constitution or
-current session guidance requires it.
+### Constitution Gate
+
+- [ ] Dependency impact checked
+- [ ] Environment impact checked
+- [ ] Assumption impact checked
+- [ ] Fidelity impact checked
+- [ ] Test impact checked
+- [ ] Reproducibility impact checked
+- [ ] Config/schema impact checked
+- [ ] Public interface impact checked
+- [ ] Artifact impact checked
+- [ ] Security/secret impact checked
+- [ ] Performance budget impact checked
+- [ ] Baseline fairness impact checked
+- [ ] Paper-to-code mapping impact checked
+- [ ] Definition-of-done impact checked
+
+User approval is required before edits, refactors, or other repository actions when the constitution
+or current session guidance requires it.
 
 ## Project Structure
 

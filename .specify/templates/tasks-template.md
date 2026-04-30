@@ -51,6 +51,15 @@ description: "Task list template for feature implementation"
 Before any file-changing task begins, confirm the current user-approved scope when the session
 requires explicit approval for edits or other repository actions.
 
+### Quality Gate
+
+- [ ] Tests for touched area identified
+- [ ] Config validation tasks identified
+- [ ] Documentation / paper mapping tasks identified
+- [ ] Artifact handling tasks identified
+- [ ] Review gate tasks identified
+- [ ] Definition-of-done checks identified
+
 - [ ] T001 Create project structure per implementation plan
 - [ ] T002 Initialize [language] project with [framework] dependencies
 - [ ] T003 [P] Configure linting and formatting tools

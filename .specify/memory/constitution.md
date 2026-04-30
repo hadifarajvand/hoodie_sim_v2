@@ -21,6 +21,17 @@ Modified principles:
 - 18. Failure Transparency Rule
 - 19. Baseline Fairness Rule
 - 20. Resource Management Rule
+Added principles:
+- 21. CI Quality Gate Rule
+- 22. Public Interface Stability Rule
+- 23. Config Schema Validation Rule
+- 24. Structured Logging and Observability Rule
+- 25. Security and Secret Hygiene Rule
+- 26. Packaging and Execution Rule
+- 27. Artifact Lifecycle Rule
+- 28. Performance Budget Rule
+- 29. Review and Merge Gate Rule
+- 30. Definition of Done Rule
 Added sections: none
 Removed sections: none
 Templates requiring updates:
@@ -195,6 +206,105 @@ level and provenance. Generated outputs, caches, and local virtual environments 
 unless explicitly approved.
 
 Rationale: the repository must preserve provenance without becoming landfill.
+
+### 21. CI Quality Gate Rule
+
+Every change intended for merge MUST pass the approved automated quality gate. The minimum gate
+includes unit tests, integration tests relevant to the touched area, smoke validation when
+environment, evaluation, or training behavior changes, and lint or formatting checks and type
+checks when configured. If a check is unavailable because tooling is not configured, the gap MUST
+be documented. Failing checks MUST not be bypassed without explicit user approval and a documented
+rationale.
+
+Rationale: automated checks are the only scalable way to enforce the constitution.
+
+### 22. Public Interface Stability Rule
+
+Stable interfaces MUST not be changed casually. Protected interfaces include environment reset/step
+behavior, the policy interface, the task model, the topology interface, the runtime model
+interface, the evaluation metric interface, the config schema, and the artifact schema. Any
+breaking interface change MUST document affected callers, migration path, updated tests, and the
+reason the break is necessary. Backward-compatible adapters are preferred when practical.
+
+Rationale: the project is split into separate layers, and casual breakage destroys that separation.
+
+### 23. Config Schema Validation Rule
+
+Runtime, experiment, smoke, training, and validation configs MUST be validated before use. Config
+validation MUST fail fast on missing required fields, unknown unsupported fields, invalid value
+types, invalid ranges, and incompatible option combinations. Config schemas MUST be versioned or
+otherwise traceable. Any new config field MUST document its purpose, default behavior, source, and
+validation rule.
+
+Rationale: bad configs silently corrupt experiments and make results meaningless.
+
+### 24. Structured Logging and Observability Rule
+
+Runs MUST use structured logging or structured event records where practical. Logs or trace records
+MUST include run ID, config ID or path, seed, phase, policy or agent name, key metrics, and failure
+reason when applicable. Environment debug traces MUST remain reconstructable at task lifecycle
+level. Normal runs may reduce verbosity, but they MUST preserve the link between summary metrics and
+run metadata.
+
+Rationale: production-grade research systems need observability, not print-debugging.
+
+### 25. Security and Secret Hygiene Rule
+
+Secrets, tokens, credentials, private keys, API keys, and personal access tokens MUST not be
+committed. Config files MUST not contain secrets. Runtime scripts MUST not download or execute
+remote code unless explicitly approved. External tools, datasets, and references MUST be documented
+before use. Dependency additions MUST consider supply-chain risk as well as reproducibility.
+
+Rationale: even research code can leak credentials or execute unsafe external code if unchecked.
+
+### 26. Packaging and Execution Rule
+
+The project MUST define a clear execution model with CLI entry points, scripts, or documented
+module commands, the expected working directory, required config inputs, and output location rules.
+If the project becomes installable, packaging metadata MUST be declared in a tracked file such as
+`pyproject.toml`. Ad-hoc scripts MUST not become the only way to run important workflows. All
+official commands MUST respect the approved virtual environment and dependency rules.
+
+Rationale: a production-grade project must be runnable by someone other than the original author.
+
+### 27. Artifact Lifecycle Rule
+
+Generated artifacts MUST have a defined location, naming convention, and metadata. Artifacts
+include raw metrics, plots, reports, checkpoints, debug traces, and validation summaries. Result
+artifacts MUST reference config, seed, commit or version, timestamp or run ID, and producing
+command. Generated outputs MUST not be committed unless explicitly classified as approved reference
+artifacts. Frozen artifacts used for claims MUST not be overwritten in place.
+
+Rationale: unmanaged artifacts make results impossible to audit.
+
+### 28. Performance Budget Rule
+
+Test and experiment stages MUST have explicit runtime expectations when practical. Heavy workloads
+MUST be separated from smoke tests. Smoke tests MUST remain fast enough for frequent execution.
+Environment changes MUST consider algorithmic complexity and memory growth. Any intentionally
+expensive run MUST be documented before execution.
+
+Rationale: slow feedback loops cause broken code to survive longer and waste compute.
+
+### 29. Review and Merge Gate Rule
+
+No major change should be merged without a review checklist. Review MUST check constitution
+compliance, scope control, tests, config and schema impact, paper-to-code mapping impact,
+reproducibility impact, and baseline fairness impact when relevant. Any known deviation MUST be
+documented before merge. "Works on my machine" is not an acceptable merge argument.
+
+Rationale: governance must be enforced at review time, not only after failures.
+
+### 30. Definition of Done Rule
+
+A feature or phase is done only when implementation matches the approved spec and plan, tests pass,
+assumptions are documented, configs are validated or updated, paper-to-code mapping is updated when
+relevant, metrics are produced by shared evaluation code when relevant, artifacts are stored
+according to artifact lifecycle rules when relevant, no dependency or environment changes occurred
+without approval, deviations and limitations are documented, and the final summary lists files
+changed, commands run, tests run, and unresolved risks.
+
+Rationale: a production-grade workflow needs a hard finish line.
 
 ## Additional Constraints
 

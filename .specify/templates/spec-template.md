@@ -125,6 +125,55 @@
 Any assumption that materially changes code, workflow, or repository state MUST be recorded and
 presented for user approval before implementation depends on it.
 
+## Production Constraints
+
+- [ ] Performance budgets identified
+- [ ] Artifact handling rules identified
+- [ ] Security and secret-hygiene constraints identified
+- [ ] CI quality gate impact identified
+
+## Public Interfaces Affected
+
+- [ ] Environment reset/step
+- [ ] Policy interface
+- [ ] Task model
+- [ ] Topology interface
+- [ ] Runtime model interface
+- [ ] Evaluation metric interface
+- [ ] Config schema
+- [ ] Artifact schema
+
+## Config / Schema Impact
+
+- [ ] Required config fields identified
+- [ ] Validation rules identified
+- [ ] Backward-compatibility impact identified
+
+## Artifact Impact
+
+- [ ] Raw metrics
+- [ ] Plots
+- [ ] Reports
+- [ ] Checkpoints
+- [ ] Debug traces
+- [ ] Validation summaries
+
+## Security Considerations
+
+- [ ] Secrets / tokens / credentials reviewed
+- [ ] Remote code execution reviewed
+- [ ] External references documented
+
+## Definition of Done
+
+- [ ] Spec matched by plan
+- [ ] Tests identified
+- [ ] Assumptions documented
+- [ ] Configs validated or updated
+- [ ] Paper-to-code mapping updated
+- [ ] Artifacts handled per lifecycle rules
+- [ ] Review and merge gate satisfied
+
 - [Assumption about target users, e.g., "Users have stable internet connectivity"]
 - [Assumption about scope boundaries, e.g., "Mobile support is out of scope for v1"]
 - [Assumption about data/environment, e.g., "Existing authentication system will be reused"]
