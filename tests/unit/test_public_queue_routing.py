@@ -38,6 +38,17 @@ class PublicQueueRoutingTests(unittest.TestCase):
         self.assertEqual(task_from_ea1.metadata["queue_entered_at"], 1)
         self.assertEqual(task_from_ea3.metadata["queue_entered_at"], 2)
 
+    def test_public_queue_admission_after_offload_retains_offload_identity(self) -> None:
+        queue = PublicQueue(host_node_id="cloud", source_agent_id="ea1")
+        task = Task(3, 1, 0, 12, 2, 4, 4)
+
+        queue.enqueue(task, slot=5)
+
+        self.assertEqual(task.queue_state, "public_queue")
+        self.assertEqual(task.metadata["queue_entered_at"], 5)
+        self.assertEqual(queue.identity, ("cloud", "ea1"))
+        self.assertEqual(queue.dequeue(), task)
+
 
 if __name__ == "__main__":
     unittest.main()

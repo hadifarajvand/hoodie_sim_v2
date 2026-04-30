@@ -6,8 +6,8 @@
 
 **Independent Test Criteria**: the existing plan, contract, quickstart, and adapter code describe the same boundary: deterministic `reset(seed)`, one-slot `step(action)`, slot-scoped observations keyed by agent ID, deterministic same-slot serialization, terminal-only delayed reward, and helper-only `SlotEngine`.
 
-- [ ] T001 Review `specs/004-environment-lifecycle-gym-boundary/plan.md`, `specs/004-environment-lifecycle-gym-boundary/contracts/environment-boundary.md`, `specs/004-environment-lifecycle-gym-boundary/research.md`, and `src/environment/gym_adapter.py` to confirm they all describe the same adapter boundary, then record any remaining implementation mismatches in `specs/004-environment-lifecycle-gym-boundary/research.md`
-- [ ] T002 [P] Update `docs/paper_notes/paper_to_code_mapping.md` for the final environment boundary, one-slot step semantics, same-slot deterministic ordering, delayed reward timing, and helper-only `SlotEngine`
+- [X] T001 Review `specs/004-environment-lifecycle-gym-boundary/plan.md`, `specs/004-environment-lifecycle-gym-boundary/contracts/environment-boundary.md`, `specs/004-environment-lifecycle-gym-boundary/research.md`, and `src/environment/gym_adapter.py` to confirm they all describe the same adapter boundary, then record any remaining implementation mismatches in `specs/004-environment-lifecycle-gym-boundary/research.md`
+- [X] T002 [P] Update `docs/paper_notes/paper_to_code_mapping.md` for the final environment boundary, one-slot step semantics, same-slot deterministic ordering, delayed reward timing, and helper-only `SlotEngine`
 
 ## Phase 2: Foundational
 
@@ -15,9 +15,9 @@
 
 **Independent Test Criteria**: the adapter contract, observation shape, truncation semantics, lifecycle ownership rules, and baseline loop notes are documented and traceable before code changes land.
 
-- [ ] T003 [P] Add or refine the environment contract section in `specs/004-environment-lifecycle-gym-boundary/contracts/environment-boundary.md` so it explicitly states slot-horizon truncation, terminated-versus-truncated semantics, one active task per step, slot-scoped observation mapping, external baseline control, and the fact that `SlotEngine` cannot expose a slot runner or controller API
-- [ ] T004 [P] Update `specs/004-environment-lifecycle-gym-boundary/data-model.md` to reflect the per-agent observation mapping, active-task lifecycle, pending arrivals by slot, deterministic ordering key, finalized task records, and helper-only `SlotEngine`
-- [ ] T005 [P] Update `specs/004-environment-lifecycle-gym-boundary/quickstart.md` so it describes the no-Gymnasium dependency boundary, `reset(seed)` / `step(action)` usage, the external baseline loop, `observe_flat()` compatibility for migrated callers, and the no-dependency-change expectation clearly enough for implementers and testers
+- [X] T003 [P] Add or refine the environment contract section in `specs/004-environment-lifecycle-gym-boundary/contracts/environment-boundary.md` so it explicitly states slot-horizon truncation, terminated-versus-truncated semantics, one active task per step, slot-scoped observation mapping, external baseline control, and the fact that `SlotEngine` cannot expose a slot runner or controller API
+- [X] T004 [P] Update `specs/004-environment-lifecycle-gym-boundary/data-model.md` to reflect the per-agent observation mapping, active-task lifecycle, pending arrivals by slot, deterministic ordering key, finalized task records, and helper-only `SlotEngine`
+- [X] T005 [P] Update `specs/004-environment-lifecycle-gym-boundary/quickstart.md` so it describes the no-Gymnasium dependency boundary, `reset(seed)` / `step(action)` usage, the external baseline loop, `observe_flat()` compatibility for migrated callers, and the no-dependency-change expectation clearly enough for implementers and testers
 
 ## Phase 3: User Story 1 - Deterministic Environment Boundary
 
@@ -36,7 +36,7 @@
 - [X] T008G [US1] Update `specs/004-environment-lifecycle-gym-boundary/contracts/environment-boundary.md` to state that `SlotEngine` cannot expose a slot runner or any controller-shaped lifecycle API
 - [X] T008H [US1] Update `specs/004-environment-lifecycle-gym-boundary/research.md` with the resolved architectural decision that `SlotEngine` is helper-only and no executable lifecycle phase sequencing is allowed
 - [X] T008I [US1] Update `specs/004-environment-lifecycle-gym-boundary/tasks.md` checkbox status only after the code and regression tests for T008A through T008H pass
-- [ ] T009 [US1] Extend or adjust `tests/unit/test_gym_environment.py` to verify `reset(seed)` determinism, same seed plus same baseline policy producing the same trace/reward/outcome sequence, and correct `terminated=True` versus `truncated=True` behavior without conflation
+- [X] T009 [US1] Extend or adjust `tests/unit/test_gym_environment.py` to verify `reset(seed)` determinism, same seed plus same baseline policy producing the same trace/reward/outcome sequence, and correct `terminated=True` versus `truncated=True` behavior without conflation
 
 ## Phase 4: User Story 2 - Shared Lifecycle Semantics
 
@@ -47,7 +47,7 @@
 - [X] T010 [US2] Implement or wire the queue/admission progression in `src/environment/gym_adapter.py` and `src/environment/slot_engine.py` so local execution, horizontal offload, vertical offload, and public-queue admission after offload all flow through the same lifecycle state
 - [X] T011 [US2] Ensure delayed reward emission stays terminal-only in `src/environment/reward_timing.py`, `src/environment/gym_adapter.py`, and `src/environment/environment.py`, and that reward is emitted only after completion/drop timing
 - [X] T012 [P] [US2] Update `src/evaluation/metrics.py`, `src/evaluation/evaluation_module.py`, and any adapter info assembly in `src/environment/gym_adapter.py` so per-slot finalized task records feed the shared evaluation path without changing metric formulas
-- [ ] T013 [US2] Add or update `tests/unit/test_delayed_reward.py`, `tests/unit/test_offload_next_slot.py`, `tests/unit/test_public_queue_routing.py`, and `tests/unit/test_task_lifecycle.py` to cover local admission, horizontal offload, vertical cloud offload, public queue admission after offload, reward emitted only on completion/drop, and no reward at decision or admission time
+- [X] T013 [US2] Add or update `tests/unit/test_delayed_reward.py`, `tests/unit/test_offload_next_slot.py`, `tests/unit/test_public_queue_routing.py`, and `tests/unit/test_task_lifecycle.py` to cover local admission, horizontal offload, vertical cloud offload, public queue admission after offload, reward emitted only on completion/drop, and no reward at decision or admission time
 
 ## Phase 5: User Story 3 - Topology-Constrained Action Selection
 
@@ -57,7 +57,7 @@
 
 - [X] T014 [US3] Update `src/environment/gym_adapter.py::observe()` to return the contract shape: a slot-scoped mapping keyed by edge-agent ID with per-agent task fields, legal-action masks, and lifecycle/debug metadata
 - [X] T015 [US3] Add a compatibility or migration layer in `src/environment/gym_adapter.py` or `src/policies/policy_interface.py` so existing callers that expect a flat observation are either preserved through a wrapper or explicitly migrated in code comments and docs
-- [ ] T016 [P] [US3] Verify `src/policies/action_masking.py`, `src/policies/policy_interface.py`, `src/environment/topology.py`, and `src/environment/gym_adapter.py` continue to reject illegal actions, expose the same shared legality semantics to all baselines, and do not silently remap illegal actions
+- [X] T016 [P] [US3] Verify `src/policies/action_masking.py`, `src/policies/policy_interface.py`, `src/environment/topology.py`, and `src/environment/gym_adapter.py` continue to reject illegal actions, expose the same shared legality semantics to all baselines, and do not silently remap illegal actions
 - [X] T017 [US3] Add or update `tests/unit/test_topology_legality.py`, `tests/unit/test_gym_environment.py`, and `tests/integration/test_policy_interface_flow.py` to cover illegal action rejection and the slot-scoped observation contract
 
 ## Phase 6: User Story 4 - Gymnasium-Style Adapter Boundary
@@ -76,10 +76,10 @@
 
 **Independent Test Criteria**: the feature docs, tests, and mapping files agree on the final adapter contract and no dependency changes were introduced.
 
-- [ ] T021 [P] Update `docs/paper_notes/paper_to_code_mapping.md` with the final environment boundary, one-slot step semantics, same-slot arrival handling, delayed reward timing, and helper-only `SlotEngine`
-- [ ] T022 [P] Update `docs/assumptions/hoodie_assumptions.md` only if new assumptions were introduced; otherwise add a short note that no new assumption beyond the documented single-active-task same-slot contract was added
-- [ ] T023 [P] Add a no-dependency-change verification note in `specs/004-environment-lifecycle-gym-boundary/quickstart.md` or a short test note in `tests/unit/test_gym_environment.py` that states no dependency files were changed for this feature
-- [ ] T024 Remove only the directly unused imports in touched files, specifically `Random` and `resolve_destination_kind` from `src/environment/gym_adapter.py`, and do not perform any broader cleanup
+- [X] T021 [P] Update `docs/paper_notes/paper_to_code_mapping.md` with the final environment boundary, one-slot step semantics, same-slot arrival handling, delayed reward timing, and helper-only `SlotEngine`
+- [X] T022 [P] Update `docs/assumptions/hoodie_assumptions.md` only if new assumptions were introduced; otherwise add a short note that no new assumption beyond the documented single-active-task same-slot contract was added
+- [X] T023 [P] Add a no-dependency-change verification note in `specs/004-environment-lifecycle-gym-boundary/quickstart.md` or a short test note in `tests/unit/test_gym_environment.py` that states no dependency files were changed for this feature
+- [X] T024 Remove only the directly unused imports in touched files, specifically `Random` and `resolve_destination_kind` from `src/environment/gym_adapter.py`, and do not perform any broader cleanup
 
 ## Dependencies
 
@@ -129,8 +129,8 @@
 
 ## Validation Checklist
 
-- [ ] All tasks use the required checklist format with IDs and file paths
-- [ ] Every user story has at least one implementation task and one test task
-- [ ] The known mismatches from the current codebase are each covered by at least one task
-- [ ] No TorchRL, neural-network, ns-3-gym, or dependency-change tasks were added
-- [ ] The task list is ordered so the environment boundary is stabilized before baseline and evaluation wiring
+- [X] All tasks use the required checklist format with IDs and file paths
+- [X] Every user story has at least one implementation task and one test task
+- [X] The known mismatches from the current codebase are each covered by at least one task
+- [X] No TorchRL, neural-network, ns-3-gym, or dependency-change tasks were added
+- [X] The task list is ordered so the environment boundary is stabilized before baseline and evaluation wiring

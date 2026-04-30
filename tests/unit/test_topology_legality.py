@@ -24,7 +24,15 @@ class TopologyLegalityTests(unittest.TestCase):
 
         self.assertFalse(topology.is_legal_destination("missing", "cloud"))
 
+    def test_topology_rejects_missing_horizontal_or_vertical_edges(self) -> None:
+        horizontal_only = TopologyGraph(node_ids=("ea1", "ea2"), legal_adjacency={"ea1": ("ea2",)})
+        vertical_only = TopologyGraph(node_ids=("ea1", "cloud"), legal_adjacency={"ea1": ("cloud",)})
+
+        self.assertTrue(horizontal_only.is_legal_destination("ea1", "ea2"))
+        self.assertFalse(horizontal_only.is_legal_destination("ea1", "cloud"))
+        self.assertTrue(vertical_only.is_legal_destination("ea1", "cloud"))
+        self.assertFalse(vertical_only.is_legal_destination("ea1", "ea2"))
+
 
 if __name__ == "__main__":
     unittest.main()
-

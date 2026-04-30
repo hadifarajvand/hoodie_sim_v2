@@ -7,7 +7,7 @@
 
 ## Summary
 
-Enforce a hard architecture boundary for the environment lifecycle. `HoodieGymEnvironment` remains the only lifecycle orchestrator, while `SlotEngine` is reduced to helper-only scope and must not expose any controller-shaped API capable of running or sequencing a full slot lifecycle.
+Enforce a hard architecture boundary for the environment lifecycle. `HoodieGymEnvironment` remains the only lifecycle orchestrator, `step(action)` advances exactly one simulator slot, observations are slot-scoped mappings keyed by edge-agent ID, and `SlotEngine` is helper-only with no controller-shaped slot runner API.
 
 ## Technical Context
 
@@ -24,7 +24,7 @@ Enforce a hard architecture boundary for the environment lifecycle. `HoodieGymEn
 **Target Platform**: Local development and evaluation on the approved workstation / Linux-compatible Python runtime
 **Project Type**: Research reproduction simulator / library-style package with evaluation and baseline runners  
 **Performance Goals**: None beyond preserving the existing environment behavior and avoiding new asymptotic work  
-**Constraints**: No dependency changes, no TorchRL or neural-network changes, no ns-3-gym, no broad refactors, no controller-shaped `SlotEngine` API  
+**Constraints**: No dependency changes, no TorchRL or neural-network changes, no ns-3-gym, no broad refactors, no controller-shaped `SlotEngine` API, `observe_flat()` remains compatibility-only for migrated callers  
 **Scale/Scope**: Single repository, one environment boundary feature, no new external services
 
 ## Constitution Check
@@ -88,7 +88,7 @@ tests/
 └── integration/
 ```
 
-**Structure Decision**: Keep orchestration in `src/environment/gym_adapter.py` and keep `src/environment/slot_engine.py` helper-only. The plan does not introduce a new source tree or a new lifecycle runner.
+**Structure Decision**: Keep orchestration in `src/environment/gym_adapter.py` and keep `src/environment/slot_engine.py` helper-only. The plan does not introduce a new source tree, a new lifecycle runner, or a new dependency boundary.
 
 ## Complexity Tracking
 

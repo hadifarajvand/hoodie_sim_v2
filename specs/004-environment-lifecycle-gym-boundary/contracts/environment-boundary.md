@@ -26,12 +26,14 @@ Define the stable adapter contract for the HOODIE simulator boundary.
 - Observation is a slot-scoped mapping keyed by edge-agent ID.
 - Each value contains task features, legal-action mask, queue/load context, and lifecycle/debug metadata.
 - Only one active task is exposed to `step()` at a time.
+- `observe_flat()` may exist only as a compatibility path for migrated callers; it does not replace the slot-scoped mapping contract.
 
 ## Same-slot arrival contract
 
 - If multiple tasks arrive in the same slot, the adapter uses deterministic presentation order.
 - Only one task is active at a time.
 - Remaining arrivals stay pending for later presentation.
+- Same-slot arrivals are serialized deterministically, not batched into a multi-action surface.
 
 ## Illegal action behavior
 
@@ -50,3 +52,4 @@ Define the stable adapter contract for the HOODIE simulator boundary.
 - `SlotEngine` must not expose `run_slot()`, `slot_flow`, `slot_flow_names()`, or any controller-shaped lifecycle API that can advance a slot or sequence lifecycle phases.
 - Baselines call `reset()` and `step()` externally.
 - Any helper episode runner must be a thin wrapper, not a separate contract.
+- No new dependency or simulator package is required for this boundary.

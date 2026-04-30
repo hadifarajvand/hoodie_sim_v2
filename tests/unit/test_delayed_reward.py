@@ -23,7 +23,13 @@ class DelayedRewardTests(unittest.TestCase):
 
         self.assertTrue(task.reward_emitted)
 
+    def test_reward_is_not_emitted_at_decision_time(self) -> None:
+        task = Task(1, 1, 0, 10, 1, 3, 5)
+
+        emit_reward_if_terminal(task)
+
+        self.assertFalse(task.reward_emitted)
+
 
 if __name__ == "__main__":
     unittest.main()
-

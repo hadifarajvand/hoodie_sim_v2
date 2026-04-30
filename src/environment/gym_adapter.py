@@ -3,7 +3,6 @@ from __future__ import annotations
 from collections import defaultdict
 from dataclasses import dataclass, field
 from typing import Any
-from random import Random
 
 from src.evaluation.trace_protocol import EvaluationTrace, TraceTaskBlueprint, build_deterministic_trace
 from src.policies.action_masking import select_legal_action
@@ -14,7 +13,7 @@ from .offloading_queue import OffloadingQueue
 from .private_queue import PrivateQueue
 from .public_queue import PublicQueue
 from .reward_timing import emit_delayed_reward, reward_for_terminal_task
-from .runtime_model import SharedRuntimeParameters, advance_shared_runtime, compute_service_delay, resolve_destination_kind
+from .runtime_model import SharedRuntimeParameters, advance_shared_runtime, compute_service_delay
 from .slot_engine import SlotEngine
 from .task import Task
 from .topology import TopologyGraph

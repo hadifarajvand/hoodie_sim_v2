@@ -213,3 +213,11 @@
   while the simulator core remains the source of truth.
 - Validation plan: Keep the wrapper behavior covered by reset/step and lifecycle tests and do not
   let it diverge from the shared runtime model.
+
+## A-018: No new assumption for the environment-boundary cleanup
+
+- Missing detail: None introduced by the remaining environment-boundary cleanup tasks.
+- Chosen value or rule: No new assumption was added beyond the documented single-active-task same-slot contract.
+- Justification: The remaining tasks only align docs, tests, and helper-only boundary semantics with the already-accepted environment model.
+- Expected impact: The assumption log does not gain speculative behavior for the cleanup pass.
+- Validation plan: Keep this note stable unless a future implementation introduces a genuinely new assumption that needs to be documented.

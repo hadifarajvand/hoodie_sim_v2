@@ -1,5 +1,10 @@
 # Research: 004-environment-lifecycle-gym-boundary
 
+## Current mismatch audit
+
+- The adapter boundary, helper-only `SlotEngine` boundary, same-slot serialization, delayed reward timing, and external baseline loop are now aligned in the docs and implementation.
+- The remaining work in this feature is test closure, traceability updates, and the no-dependency cleanup note.
+
 ## Decision 1: Adapter boundary
 
 - **Decision**: Use the existing `src/environment/gym_adapter.py` boundary as the official `reset(seed)` / `step(action)` entry point.
@@ -36,3 +41,9 @@
 - **Decision**: Baselines drive the adapter externally through `reset()` / `step()`; any episode runner must be a thin wrapper.
 - **Rationale**: This keeps the environment boundary clean and preserves baseline fairness.
 - **Alternatives considered**: Internal policy execution inside the adapter. That would mix environment and policy responsibilities.
+
+## Decision 7: No new dependency boundary
+
+- **Decision**: Keep the environment boundary dependency-free beyond the repository's existing approved Python stack; do not add Gymnasium, ns-3, or ns-3-gym.
+- **Rationale**: The feature is an interface cleanup around the existing simulator, not a simulator replacement or dependency expansion.
+- **Alternatives considered**: Introducing Gymnasium or a new simulator package. Both would expand the boundary and violate the feature constraints.

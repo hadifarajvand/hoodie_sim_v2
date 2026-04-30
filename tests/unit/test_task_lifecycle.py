@@ -67,6 +67,25 @@ class TaskLifecycleTests(unittest.TestCase):
         self.assertGreaterEqual(task.absolute_deadline_slot, task.arrival_slot)
         self.assertGreater(task.timeout_length, 0)
 
+    def test_task_can_record_lifecycle_metadata_without_extra_logic(self) -> None:
+        task = Task(
+            task_id=12,
+            source_agent_id=6,
+            arrival_slot=3,
+            size=64,
+            processing_density=2,
+            timeout_length=4,
+            absolute_deadline_slot=7,
+        )
+
+        task.metadata["queue_entered_at"] = 4
+        task.metadata["public_queue_admitted_at"] = 5
+        task.metadata["finalized_at"] = 6
+
+        self.assertEqual(task.metadata["queue_entered_at"], 4)
+        self.assertEqual(task.metadata["public_queue_admitted_at"], 5)
+        self.assertEqual(task.metadata["finalized_at"], 6)
+
 
 if __name__ == "__main__":
     unittest.main()
