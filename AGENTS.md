@@ -1,7 +1,6 @@
 <!-- SPECKIT START -->
 For additional context about technologies to be used, project structure,
-shell commands, and other important information, read
-/Users/hadi/Documents/GitHub/hoodie_sim_v2/specs/003-torchrl-hoodie-training/plan.md
+shell commands, and other important information, read the current plan
 <!-- SPECKIT END -->
 
 ## External Reference Usage

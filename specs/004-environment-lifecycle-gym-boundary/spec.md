@@ -101,6 +101,18 @@ Acceptance criteria:
 
 ## User Scenarios & Testing *(mandatory)*
 
+## Clarifications
+
+### Session 2026-04-30
+
+- Q: What exactly is one environment step? → A: One step equals one slot.
+- Q: What is the observation structure? → A: Observation is a slot-level mapping keyed by edge-agent ID.
+- Q: What does action represent? → A: One action for the current task presented by a single edge agent in the current slot.
+- Q: What happens in slots with no task arrivals? → A: The adapter advances the slot and returns a no-op agent update with empty task fields, while preserving queue progression, delayed reward collection, and traceability metadata.
+- Q: How are delayed rewards returned through step()? → A: step() returns a scalar reward equal to the sum of terminal rewards collected during that slot, while task-level reward provenance remains in info for traceability.
+- Q: When is terminated vs truncated? → A: terminated is true when all generated tasks are fully resolved before the configured horizon; truncated is true when the configured slot horizon ends the episode.
+- Q: How does adapter handle baseline policies? → A: Baselines drive the adapter externally through reset() and step(); if a convenience episode runner exists, it must be a thin wrapper and not part of the core environment contract.
+
 ### User Story 1 - Deterministic Environment Boundary (Priority: P1)
 
 As a reproduction maintainer, I want to reset and step the HOODIE environment through a clean
@@ -179,6 +191,23 @@ mutation.
 2. **Given** no approved Gymnasium dependency, **When** the adapter is used, **Then** the project
    still runs using a local compatibility boundary.
 
+### Environment Boundary Notes
+
+- Observation is a slot-level mapping keyed by edge-agent ID.
+- Each value contains the agent's local observation for the current slot, including task features
+  when a task arrives, the legal-action mask, queue/load context, and lifecycle/debug metadata for
+  traceability.
+- Action is one decision for the current task presented by a single edge agent in the current slot.
+- If no task arrives for that agent in that slot, the adapter advances the slot and returns a
+  no-op agent update with empty task fields, while preserving queue progression, delayed reward
+  collection, and traceability metadata.
+- step() returns a scalar reward equal to the sum of terminal rewards collected during that slot,
+  while task-level reward provenance remains in info for traceability.
+- terminated is true when all generated tasks are fully resolved before the configured horizon.
+- truncated is true when the configured slot horizon ends the episode.
+- Baselines drive the adapter externally through reset() and step(); any convenience episode runner
+  must be a thin wrapper and not part of the core environment contract.
+
 ### Edge Cases
 
 - What happens when there are no tasks available for a slot?
@@ -194,7 +223,7 @@ mutation.
 - **FR-001**: The environment MUST support deterministic reset and replay when seeded.
 - **FR-002**: The same seed and same policy MUST produce the same episode trace.
 - **FR-003**: The environment MUST expose a clean reset/step boundary around the existing slot
-  simulator.
+  simulator, with one step corresponding to one slot.
 - **FR-004**: The environment MUST preserve delayed reward semantics so rewards are emitted only
   on completion or drop.
 - **FR-005**: The environment MUST preserve topology-based legal action masking.
@@ -245,4 +274,3 @@ mutation.
   terminal event.
 - No new paper-backed reward formula is introduced; the feature preserves the existing reward
   semantics.
-
