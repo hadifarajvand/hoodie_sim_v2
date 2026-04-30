@@ -11,8 +11,8 @@ from src.policies.flc import FullLocalComputingPolicy
 from src.policies.ho import HorizontalOffloadingPolicy
 from src.policies.policy_interface import PolicyContext
 from src.evaluation.trace_protocol import build_deterministic_trace
+from src.environment.runtime_model import SharedRuntimeParameters
 from src.environment.topology import TopologyGraph
-from src.environment.slot_engine import SlotEngine
 from src.environment import gym_adapter as gym_adapter_module
 
 
@@ -105,7 +105,14 @@ class EvaluationRunnerTests(unittest.TestCase):
             self.assertEqual(throughput.call_count, 1)
 
     def test_runner_uses_shared_topology_derived_policy_inputs(self) -> None:
-        topology = TopologyGraph(node_ids=("1", "cloud"), legal_adjacency={"1": ("cloud",)})
+        topology = TopologyGraph(
+            node_ids=("1", "2", "3", "cloud"),
+            legal_adjacency={
+                "1": ("cloud",),
+                "2": ("cloud",),
+                "3": ("cloud",),
+            },
+        )
         runner = EvaluationRunner(
             policy=FixedActionPolicy("mask_aware"),
             config=EvaluationConfig(
@@ -113,9 +120,10 @@ class EvaluationRunnerTests(unittest.TestCase):
                 seed=5,
                 trace_id="topology-trace",
                 episode_count=1,
-                episode_length=1,
+                episode_length=3,
             ),
             topology=topology,
+            runtime_parameters=SharedRuntimeParameters(runtime_variant="constant_service"),
         )
 
         result = runner.run()
@@ -151,18 +159,11 @@ class EvaluationRunnerTests(unittest.TestCase):
     def test_runner_does_not_force_reward_or_terminal_state_when_runtime_has_set_it(self) -> None:
         runner = EvaluationRunner(
             policy=FixedActionPolicy("local"),
-            config=EvaluationConfig(policy_name="FLC", seed=9, trace_id="runtime-trace", episode_count=1, episode_length=1),
+            config=EvaluationConfig(policy_name="FLC", seed=9, trace_id="runtime-trace", episode_count=1, episode_length=3),
+            runtime_parameters=SharedRuntimeParameters(runtime_variant="constant_service"),
         )
 
-        def fake_run_slot(self, tasks):
-            task = tasks[0]
-            task.completion_slot = task.arrival_slot + 1
-            task.terminal_outcome = "completed"
-            task.reward_emitted = True
-            return tasks
-
-        with patch.object(SlotEngine, "run_slot", fake_run_slot):
-            result = runner.run()
+        result = runner.run()
         record = result["per_trace"][0]["raw_records"][0]
 
         self.assertIn(record["terminal_outcome"], {"completed", "dropped"})
@@ -183,11 +184,19 @@ class EvaluationRunnerTests(unittest.TestCase):
             runner.run()
 
     def test_runner_uses_shared_runtime_timing_path(self) -> None:
-        topology = TopologyGraph(node_ids=("1", "cloud"), legal_adjacency={"1": ("cloud",)})
+        topology = TopologyGraph(
+            node_ids=("1", "2", "3", "cloud"),
+            legal_adjacency={
+                "1": ("cloud",),
+                "2": ("cloud",),
+                "3": ("cloud",),
+            },
+        )
         runner = EvaluationRunner(
             policy=FixedActionPolicy("vertical"),
-            config=EvaluationConfig(policy_name="VO", seed=19, trace_id="runtime-path", episode_count=1, episode_length=1),
+            config=EvaluationConfig(policy_name="VO", seed=19, trace_id="runtime-path", episode_count=1, episode_length=3),
             topology=topology,
+            runtime_parameters=SharedRuntimeParameters(runtime_variant="constant_service"),
         )
 
         with patch.object(gym_adapter_module, "advance_shared_runtime", wraps=gym_adapter_module.advance_shared_runtime) as shared_progress:

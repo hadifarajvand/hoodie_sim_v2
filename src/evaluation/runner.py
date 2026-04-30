@@ -5,7 +5,6 @@ from typing import Protocol, runtime_checkable
 
 from src.environment.gym_adapter import HoodieGymEnvironment
 from src.environment.runtime_model import SharedRuntimeParameters
-from src.environment.slot_engine import SlotEngine
 from src.environment.task import Task
 from src.environment.topology import TopologyGraph
 from src.policies.policy_interface import PolicyContext
@@ -49,6 +48,7 @@ class EvaluationRunner:
             if current_task is None:
                 action = None
             else:
+                observation = env.observe_flat(current_task)
                 legal_action_mask = observation.get("legal_action_mask", {})
                 context = PolicyContext(
                     observation=observation,
@@ -57,6 +57,8 @@ class EvaluationRunner:
                 )
                 action = self.policy.choose_action(context)
             observation, reward, terminated, truncated, info = env.step(action)
+            if env.current_task is not None:
+                observation = env.observe_flat()
             for finalized in info.get("finalized_tasks", []):
                 records.append(
                     TaskEvaluationRecord(
@@ -139,9 +141,6 @@ class EvaluationRunner:
         if action in {"horizontal", "offload_horizontal", "vertical", "offload_vertical"}:
             raise ValueError("Topology-backed destination required for offload actions")
         raise ValueError(f"Unsupported action for destination resolution: {action}")
-
-    def _advance_task_through_slot_path(self, engine: SlotEngine, task: Task) -> None:
-        engine.run_slot([task])
 
     def run(self) -> dict[str, object]:
         trace_metrics = []

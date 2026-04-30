@@ -8,7 +8,6 @@ from src.environment.runtime_model import (
     advance_shared_runtime,
     resolve_runtime_terminal_state,
 )
-from src.environment.slot_engine import SlotEngine
 from src.environment.task import Task
 
 
@@ -140,15 +139,6 @@ class SharedRuntimeModelTests(unittest.TestCase):
         self.assertEqual(density.offload_slots, constant.offload_slots)
         self.assertEqual(density.terminal_slot is not None, discrete.terminal_slot is not None)
         self.assertEqual(density.terminal_slot is not None, constant.terminal_slot is not None)
-
-    def test_runtime_variants_leave_slot_flow_structure_unchanged(self) -> None:
-        default_engine = SlotEngine()
-        discrete_engine = SlotEngine(runtime_parameters=SharedRuntimeParameters(runtime_variant="discrete_slot_service"))
-        constant_engine = SlotEngine(runtime_parameters=SharedRuntimeParameters(runtime_variant="constant_service"))
-
-        self.assertEqual(default_engine.slot_flow_names(), discrete_engine.slot_flow_names())
-        self.assertEqual(default_engine.slot_flow_names(), constant_engine.slot_flow_names())
-
 
 if __name__ == "__main__":
     unittest.main()

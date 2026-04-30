@@ -4,19 +4,16 @@ import unittest
 
 from src.environment.gym_adapter import HoodieGymEnvironment
 from src.environment.runtime_model import SharedRuntimeParameters
-from src.environment.task import Task
 from src.environment.topology import TopologyGraph
 from src.evaluation.trace_protocol import EvaluationTrace, TraceTaskBlueprint
 from src.policies.flc import FullLocalComputingPolicy
-from src.policies.ho import HorizontalOffloadingPolicy
 from src.policies.policy_interface import PolicyContext
-from src.policies.vo import VerticalOffloadingPolicy
 
 
 class GymEnvironmentTests(unittest.TestCase):
     def _env(self, *, topology: TopologyGraph | None = None, runtime_parameters: SharedRuntimeParameters | None = None) -> HoodieGymEnvironment:
         return HoodieGymEnvironment(
-            episode_length=2,
+            episode_length=5,
             topology=topology,
             runtime_parameters=runtime_parameters or SharedRuntimeParameters(),
             policy_name="FLC",
@@ -41,6 +38,27 @@ class GymEnvironmentTests(unittest.TestCase):
             metadata={"mode": "deterministic_seed", "trace_id": f"single-task-{task_id}", "seed": str(task_id)},
         )
 
+    def _run_policy_episode(self, env: HoodieGymEnvironment, policy: object, seed: int) -> list[tuple]:
+        observation, _info = env.reset(seed=seed)
+        sequence: list[tuple] = []
+        while True:
+            current_task = env.current_task
+            if current_task is None:
+                action = None
+            else:
+                action = policy.choose_action(
+                    PolicyContext(
+                        observation=observation if current_task is None else env.observe_flat(current_task),
+                        legal_action_mask=env.legal_action_mask(current_task),
+                        trace_history=(env.trace.trace_id if env.trace is not None else "",),
+                    )
+                )
+            observation, reward, terminated, truncated, info = env.step(action)
+            finalized = tuple((task["task_id"], task["terminal_outcome"]) for task in info["finalized_tasks"])
+            sequence.append((reward, terminated, truncated, finalized, info["slot"]))
+            if terminated or truncated:
+                return sequence
+
     def test_reset_seed_is_deterministic(self) -> None:
         env_a = self._env()
         env_b = self._env()
@@ -52,11 +70,23 @@ class GymEnvironmentTests(unittest.TestCase):
         self.assertEqual(info_a["trace_id"], info_b["trace_id"])
         self.assertEqual(env_a.trace.tasks[0], env_b.trace.tasks[0])
 
+    def test_same_seed_same_policy_produces_same_trace_reward_and_outcome_sequence(self) -> None:
+        env_a = self._env(runtime_parameters=SharedRuntimeParameters(runtime_variant="constant_service"))
+        env_b = self._env(runtime_parameters=SharedRuntimeParameters(runtime_variant="constant_service"))
+        policy_a = FullLocalComputingPolicy()
+        policy_b = FullLocalComputingPolicy()
+
+        sequence_a = self._run_policy_episode(env_a, policy_a, seed=23)
+        sequence_b = self._run_policy_episode(env_b, policy_b, seed=23)
+
+        self.assertEqual(sequence_a, sequence_b)
+
     def test_single_slot_step_returns_rl_tuple(self) -> None:
         env = self._env(runtime_parameters=SharedRuntimeParameters(runtime_variant="constant_service"))
         observation, info = env.reset(seed=7)
 
-        self.assertIn("legal_action_mask", observation)
+        self.assertEqual(list(observation.keys()), ["1"])
+        self.assertIn("legal_action_mask", observation["1"])
         next_obs, reward, terminated, truncated, step_info = env.step("local")
 
         self.assertIsInstance(next_obs, dict)
@@ -65,17 +95,65 @@ class GymEnvironmentTests(unittest.TestCase):
         self.assertIsInstance(terminated, bool)
         self.assertIn("metrics", step_info)
         self.assertIn("queue_load", step_info)
+        self.assertIn("truncated", step_info)
         self.assertGreaterEqual(step_info["slot"], 0)
         self.assertGreaterEqual(len(step_info["finalized_tasks"]), 0)
+        self.assertEqual(env.observe_flat()["legal_action_mask"]["local"], True)
+
+    def test_truncation_at_slot_horizon(self) -> None:
+        env = HoodieGymEnvironment(
+            episode_length=1,
+            topology=None,
+            runtime_parameters=SharedRuntimeParameters(runtime_variant="constant_service"),
+            policy_name="FLC",
+        )
+        env.reset(seed=3)
+        _obs, _reward, terminated, truncated, info = env.step("local")
+
+        self.assertFalse(terminated)
+        self.assertTrue(truncated)
+        self.assertTrue(info["truncated"])
+        self.assertFalse(info["terminated"])
+
+    def test_semantic_completion_sets_terminated_and_not_truncated(self) -> None:
+        env = self._env(runtime_parameters=SharedRuntimeParameters(runtime_variant="constant_service"))
+        env.trace = self._single_task_trace(task_id=17, timeout_length=5, absolute_deadline_slot=5)
+        env._pending_arrivals = {0: [env.trace.tasks[0]]}  # type: ignore[assignment]
+        env.current_slot = 0
+        env._current_task = env._load_current_task()
+        _obs, _reward0, terminated0, truncated0, _info0 = env.step("local")
+        _obs, _reward1, terminated1, truncated1, info1 = env.step(None)
+
+        self.assertFalse(terminated0)
+        self.assertFalse(truncated0)
+        self.assertTrue(terminated1)
+        self.assertFalse(truncated1)
+        self.assertFalse(info1["truncated"])
+        self.assertTrue(info1["terminated"])
 
     def test_action_legality_under_topology(self) -> None:
         topology = TopologyGraph(node_ids=("1", "2", "cloud"), legal_adjacency={"1": ("2", "cloud")})
         env = self._env(topology=topology)
         obs, _info = env.reset(seed=4)
 
-        self.assertTrue(obs["legal_action_mask"]["local"])
-        self.assertTrue(obs["legal_action_mask"]["horizontal"])
-        self.assertTrue(obs["legal_action_mask"]["vertical"])
+        self.assertIn("1", obs)
+        self.assertTrue(obs["1"]["legal_action_mask"]["local"])
+        self.assertTrue(obs["1"]["legal_action_mask"]["horizontal"])
+        self.assertTrue(obs["1"]["legal_action_mask"]["vertical"])
+
+    def test_illegal_actions_are_rejected_without_remapping(self) -> None:
+        horizontal_only = TopologyGraph(node_ids=("1", "2"), legal_adjacency={"1": ("2",)})
+        vertical_only = TopologyGraph(node_ids=("1", "cloud"), legal_adjacency={"1": ("cloud",)})
+
+        env_horizontal = self._env(topology=horizontal_only)
+        env_horizontal.reset(seed=8)
+        with self.assertRaises(ValueError):
+            env_horizontal.step("vertical")
+
+        env_vertical = self._env(topology=vertical_only)
+        env_vertical.reset(seed=9)
+        with self.assertRaises(ValueError):
+            env_vertical.step("horizontal")
 
     def test_local_queue_admission(self) -> None:
         env = self._env(runtime_parameters=SharedRuntimeParameters(runtime_variant="constant_service"))
@@ -120,6 +198,27 @@ class GymEnvironmentTests(unittest.TestCase):
         self.assertEqual(len(env._public_queues[("2", "1")].tasks), 1)
         self.assertEqual(env._public_queues[("2", "1")].tasks[0].queue_state, "public_queue")
 
+    def test_same_slot_arrivals_are_not_stranded(self) -> None:
+        env = self._env(runtime_parameters=SharedRuntimeParameters(runtime_variant="constant_service"))
+        trace = EvaluationTrace(
+            trace_id="multi-arrival",
+            seed=99,
+            tasks=(
+                TraceTaskBlueprint(task_id=1, source_agent_id=1, arrival_slot=0, size=16, processing_density=1, timeout_length=4, absolute_deadline_slot=4),
+                TraceTaskBlueprint(task_id=2, source_agent_id=1, arrival_slot=0, size=20, processing_density=1, timeout_length=4, absolute_deadline_slot=4),
+            ),
+            metadata={"mode": "deterministic_seed", "trace_id": "multi-arrival", "seed": "99"},
+        )
+        env.trace = trace
+        env._pending_arrivals = {0: [trace.tasks[0], trace.tasks[1]]}  # type: ignore[assignment]
+        env.current_slot = 0
+        env._current_task = env._load_current_task()
+
+        self.assertEqual(env.current_task.task_id, 1)
+        env.step("local")
+        self.assertIsNotNone(env.current_task)
+        self.assertEqual(env.current_task.task_id, 2)
+
     def test_delayed_reward_after_completion(self) -> None:
         env = self._env(runtime_parameters=SharedRuntimeParameters(runtime_variant="constant_service"))
         env.trace = self._single_task_trace(task_id=17, timeout_length=5, absolute_deadline_slot=5)
@@ -155,7 +254,7 @@ class GymEnvironmentTests(unittest.TestCase):
         env._pending_arrivals = {0: [env.trace.tasks[0]]}  # type: ignore[assignment]
         env.current_slot = 0
         env._current_task = env._load_current_task()
-        observation = env.observe()
+        observation = env.observe_flat()
         terminated = False
         steps = 0
         while not terminated and steps < 20:
@@ -171,6 +270,8 @@ class GymEnvironmentTests(unittest.TestCase):
                     )
                 )
             observation, _reward, terminated, _truncated, _info = env.step(action)
+            if env.current_task is not None:
+                observation = env.observe_flat()
             steps += 1
 
         self.assertTrue(terminated)

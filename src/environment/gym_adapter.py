@@ -3,7 +3,6 @@ from __future__ import annotations
 from collections import defaultdict
 from dataclasses import dataclass, field
 from typing import Any
-from random import Random
 
 from src.evaluation.trace_protocol import EvaluationTrace, TraceTaskBlueprint, build_deterministic_trace
 from src.policies.action_masking import select_legal_action
@@ -14,7 +13,7 @@ from .offloading_queue import OffloadingQueue
 from .private_queue import PrivateQueue
 from .public_queue import PublicQueue
 from .reward_timing import emit_delayed_reward, reward_for_terminal_task
-from .runtime_model import SharedRuntimeParameters, advance_shared_runtime, compute_service_delay, resolve_destination_kind
+from .runtime_model import SharedRuntimeParameters, advance_shared_runtime, compute_service_delay
 from .slot_engine import SlotEngine
 from .task import Task
 from .topology import TopologyGraph
@@ -34,6 +33,8 @@ class StepTraceRecord:
 
 @dataclass(slots=True)
 class HoodieGymEnvironment:
+    """Owns all episode and slot lifecycle orchestration for the Gym-style boundary."""
+
     episode_length: int
     topology: TopologyGraph | None = None
     runtime_parameters: SharedRuntimeParameters = field(default_factory=SharedRuntimeParameters)
@@ -76,8 +77,10 @@ class HoodieGymEnvironment:
                 self.trace = build_deterministic_trace(trace_id, 0, self.episode_length)
         else:
             self.trace = build_deterministic_trace(trace_id, seed or 0, self.episode_length)
-        for blueprint in self.trace.tasks:
+        for blueprint in sorted(self.trace.tasks, key=self._trace_sort_key):
             self._pending_arrivals[blueprint.arrival_slot].append(blueprint)
+        for blueprints in self._pending_arrivals.values():
+            blueprints.sort(key=self._trace_sort_key)
         self._current_task = self._load_current_task()
         observation = self.observe()
         info = self._build_info()
@@ -88,35 +91,49 @@ class HoodieGymEnvironment:
         return self._current_task
 
     def observe(self) -> dict[str, Any]:
-        task = self._current_task
+        current_task = self._current_task
+        if current_task is None:
+            return {}
+        agent_id = str(current_task.source_agent_id)
+        return {
+            agent_id: self._agent_observation(current_task),
+        }
+
+    def observe_flat(self, task: Task | None = None) -> dict[str, Any]:
+        current_task = task or self._current_task
         observation: dict[str, Any] = {
             "slot": self.current_slot,
             "queue_load": float(self.queue_load),
             "load_hint": float(self.queue_load),
             "history_length": len(self._history),
         }
-        if task is None:
+        if current_task is None:
             observation["fallback_hints"] = {}
             observation["legal_action_mask"] = {}
             return observation
-        legal_action_mask = self.legal_action_mask(task)
-        observation.update(
-            {
-                "task_id": task.task_id,
-                "source_agent_id": task.source_agent_id,
-                "arrival_slot": task.arrival_slot,
-                "size": task.size,
-                "processing_density": task.processing_density,
-                "timeout_length": task.timeout_length,
-                "absolute_deadline_slot": task.absolute_deadline_slot,
-                "topology": self.topology.legal_adjacency.get(str(task.source_agent_id), ()) if self.topology is not None else (),
-                "legal_action_mask": legal_action_mask,
-                "fallback_hints": self._fallback_hints(task, legal_action_mask),
-                "latency_estimates": self._latency_estimates(task, legal_action_mask),
-                "balance_hint": self._balance_hints(task, legal_action_mask),
-            }
-        )
+        observation.update(self._agent_observation(current_task))
         return observation
+
+    def _agent_observation(self, task: Task) -> dict[str, Any]:
+        legal_action_mask = self.legal_action_mask(task)
+        return {
+            "slot": self.current_slot,
+            "queue_load": float(self.queue_load),
+            "load_hint": float(self.queue_load),
+            "history_length": len(self._history),
+            "task_id": task.task_id,
+            "source_agent_id": task.source_agent_id,
+            "arrival_slot": task.arrival_slot,
+            "size": task.size,
+            "processing_density": task.processing_density,
+            "timeout_length": task.timeout_length,
+            "absolute_deadline_slot": task.absolute_deadline_slot,
+            "topology": self.topology.legal_adjacency.get(str(task.source_agent_id), ()) if self.topology is not None else (),
+            "legal_action_mask": legal_action_mask,
+            "fallback_hints": self._fallback_hints(task, legal_action_mask),
+            "latency_estimates": self._latency_estimates(task, legal_action_mask),
+            "balance_hint": self._balance_hints(task, legal_action_mask),
+        }
 
     def legal_action_mask(self, task: Task | None = None) -> dict[str, bool]:
         if task is None and self._current_task is None:
@@ -154,7 +171,7 @@ class HoodieGymEnvironment:
                 raise ValueError("An action is required while a task is pending")
             legal_action_mask = self.legal_action_mask(current_task)
             context = PolicyContext(
-                observation=self.observe(),
+                observation=self.observe_flat(current_task),
                 legal_action_mask=legal_action_mask,
                 trace_history=(self.trace.trace_id,),
             )
@@ -176,10 +193,10 @@ class HoodieGymEnvironment:
         self.engine.current_slot = self.current_slot
         self.current_slot += 1
         self._current_task = self._load_current_task()
-        terminated = self._is_terminated()
-        truncated = False
+        truncated = self.current_slot >= self.episode_length
+        terminated = self._is_terminated() and not truncated
         observation = self.observe()
-        info = self._build_info(finalized_tasks=finalized_tasks, reward=reward)
+        info = self._build_info(finalized_tasks=finalized_tasks, reward=reward, terminated=terminated, truncated=truncated)
         return observation, reward, terminated, truncated, info
 
     @property
@@ -189,14 +206,16 @@ class HoodieGymEnvironment:
         ) + sum(len(queue.tasks) for queue in self._public_queues.values())
 
     def _load_current_task(self) -> Task | None:
-        blueprints = self._pending_arrivals.get(self.current_slot, [])
-        if not blueprints:
+        eligible_slots = sorted(slot for slot, blueprints in self._pending_arrivals.items() if blueprints and slot <= self.current_slot)
+        if not eligible_slots:
             if self._current_task is None and self.queue_load > 0:
                 self._drain_mode = True
             return None
+        arrival_slot = eligible_slots[0]
+        blueprints = self._pending_arrivals[arrival_slot]
         blueprint = blueprints.pop(0)
         if not blueprints:
-            self._pending_arrivals.pop(self.current_slot, None)
+            self._pending_arrivals.pop(arrival_slot, None)
         task = blueprint.build()
         self._active_tasks[task.task_id] = task
         return task
@@ -330,11 +349,15 @@ class HoodieGymEnvironment:
         self,
         finalized_tasks: list[Task] | None = None,
         reward: float = 0.0,
+        terminated: bool = False,
+        truncated: bool = False,
     ) -> dict[str, Any]:
         return {
             "trace_id": self.trace.trace_id if self.trace is not None else "",
             "slot": self.current_slot,
             "reward": reward,
+            "terminated": terminated,
+            "truncated": truncated,
             "metrics": dict(self._metrics),
             "queue_load": self.queue_load,
             "finalized_tasks": [
@@ -369,3 +392,7 @@ class HoodieGymEnvironment:
                 )
             )
         return EvaluationTrace(trace_id=trace_id, seed=self.seed or 0, tasks=tuple(blueprints), metadata={"mode": "trace_bank", "trace_id": trace_id})
+
+    @staticmethod
+    def _trace_sort_key(blueprint: TraceTaskBlueprint) -> tuple[int, int, int]:
+        return (blueprint.arrival_slot, blueprint.source_agent_id, blueprint.task_id)
