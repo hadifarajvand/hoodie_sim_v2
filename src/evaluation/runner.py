@@ -4,6 +4,7 @@ from dataclasses import dataclass
 from typing import Protocol, runtime_checkable
 
 from src.environment.gym_adapter import HoodieGymEnvironment
+from src.environment.compute_config import ComputeConfig
 from src.environment.runtime_model import SharedRuntimeParameters
 from src.environment.task import Task
 from src.environment.topology import TopologyGraph
@@ -39,6 +40,11 @@ class EvaluationRunner:
             episode_length=self.config.episode_length,
             topology=self.topology,
             runtime_parameters=self.runtime_parameters or SharedRuntimeParameters(),
+            compute_config=ComputeConfig(
+                cpu_capacity_per_slot_agent=128.0,
+                cpu_capacity_per_slot_edge=256.0,
+                cpu_capacity_per_slot_cloud=512.0,
+            ),
             policy_name=self.config.policy_name,
         )
         observation, _info = env.reset(seed=trace.seed)

@@ -266,6 +266,8 @@ class GymEnvironmentTests(unittest.TestCase):
         trace = TrafficGenerator.generate(config, seed=1)
         self.assertEqual(trace.records[0].size, 2.1)
         self.assertEqual(trace.records[0].processing_density, 0.297)
+        self.assertAlmostEqual(trace.records[0].cycles_required, 2.1 * 0.297)
+        self.assertAlmostEqual(trace.records[0].cycles_remaining, 2.1 * 0.297)
 
         env = HoodieGymEnvironment(
             episode_length=config.episode_length,
@@ -280,6 +282,8 @@ class GymEnvironmentTests(unittest.TestCase):
 
         self.assertEqual(env.current_task.size, 2.1)
         self.assertEqual(env.current_task.processing_density, 0.297)
+        self.assertAlmostEqual(env.current_task.cycles_required, 2.1 * 0.297)
+        self.assertAlmostEqual(env.current_task.cycles_remaining, 2.1 * 0.297)
 
     def test_full_episode_with_flc_policy(self) -> None:
         env = self._env(runtime_parameters=SharedRuntimeParameters(runtime_variant="constant_service"))

@@ -45,6 +45,8 @@ class TrafficGeneratorTests(unittest.TestCase):
         for blueprint in trace.records:
             self.assertIsInstance(blueprint.size, float)
             self.assertIsInstance(blueprint.processing_density, float)
+            self.assertIsInstance(blueprint.cycles_required, float)
+            self.assertIsInstance(blueprint.cycles_remaining, float)
             self.assertGreaterEqual(blueprint.arrival_slot, 0)
             self.assertLess(blueprint.arrival_slot, config.episode_length)
             self.assertGreaterEqual(blueprint.source_agent_id, 1)
@@ -52,6 +54,8 @@ class TrafficGeneratorTests(unittest.TestCase):
             self.assertIn(blueprint.size, config.task_size_values)
             self.assertEqual(blueprint.timeout_length, config.timeout_slots)
             self.assertEqual(blueprint.absolute_deadline_slot, blueprint.arrival_slot + config.timeout_slots)
+            self.assertAlmostEqual(blueprint.cycles_required, blueprint.size * blueprint.processing_density)
+            self.assertAlmostEqual(blueprint.cycles_remaining, blueprint.cycles_required)
 
     def test_no_more_than_one_task_per_agent_per_slot_is_generated(self) -> None:
         config = self._config()
@@ -85,6 +89,8 @@ class TrafficGeneratorTests(unittest.TestCase):
         self.assertEqual(trace.records[0].arrival_slot, 0)
         self.assertEqual(trace.records[0].size, 2.1)
         self.assertEqual(trace.records[0].processing_density, 0.297)
+        self.assertAlmostEqual(trace.records[0].cycles_required, 2.1 * 0.297)
+        self.assertAlmostEqual(trace.records[0].cycles_remaining, 2.1 * 0.297)
 
     def test_generate_traffic_evaluation_trace_returns_evaluation_trace(self) -> None:
         config = self._config()

@@ -1,7 +1,7 @@
 <!-- SPECKIT START -->
 For additional context about technologies to be used, project structure,
 shell commands, and other important information, read
-`specs/005-dynamic-traffic-generation-simulation-adaptability/plan.md`
+`specs/006-task-execution-time-compute-model/plan.md`
 <!-- SPECKIT END -->
 
 ## External Reference Usage

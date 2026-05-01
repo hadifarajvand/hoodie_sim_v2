@@ -9,11 +9,13 @@ from src.policies.action_masking import select_legal_action
 from src.policies.policy_interface import PolicyContext
 
 from .environment import apply_policy_action, finalize_task_runtime_state_with_parameters
+from .compute_config import ComputeConfig
+from .execution_helper import step_execution
 from .offloading_queue import OffloadingQueue
 from .private_queue import PrivateQueue
 from .public_queue import PublicQueue
 from .reward_timing import emit_delayed_reward, reward_for_terminal_task
-from .runtime_model import SharedRuntimeParameters, advance_shared_runtime, compute_service_delay
+from .runtime_model import SharedRuntimeParameters, advance_shared_runtime
 from .slot_engine import SlotEngine
 from .task import Task
 from .topology import TopologyGraph
@@ -38,6 +40,7 @@ class HoodieGymEnvironment:
     episode_length: int
     topology: TopologyGraph | None = None
     runtime_parameters: SharedRuntimeParameters = field(default_factory=SharedRuntimeParameters)
+    compute_config: ComputeConfig = field(default_factory=ComputeConfig)
     trace_source: TraceSource | None = None
     policy_name: str = "HOODIE"
     engine: SlotEngine = field(default_factory=SlotEngine)
@@ -126,6 +129,8 @@ class HoodieGymEnvironment:
             "arrival_slot": task.arrival_slot,
             "size": task.size,
             "processing_density": task.processing_density,
+            "cycles_required": task.cycles_required,
+            "cycles_remaining": task.cycles_remaining,
             "timeout_length": task.timeout_length,
             "absolute_deadline_slot": task.absolute_deadline_slot,
             "topology": self.topology.legal_adjacency.get(str(task.source_agent_id), ()) if self.topology is not None else (),
@@ -249,20 +254,24 @@ class HoodieGymEnvironment:
         for queue in list(self._private_queues.values()):
             finalized.extend(self._maybe_finalize_head(queue, "local"))
         for queue in list(self._public_queues.values()):
-            finalized.extend(self._maybe_finalize_head(queue, "public"))
+            destination_kind = "cloud" if queue.host_node_id == "cloud" else "public"
+            finalized.extend(self._maybe_finalize_head(queue, destination_kind))
         return finalized
 
     def _maybe_finalize_head(self, queue: PrivateQueue | PublicQueue, destination_kind: str) -> list[Task]:
         if not queue.tasks:
             return []
         task = queue.tasks[0]
-        progress = advance_shared_runtime(task, destination_kind, self.current_slot, self.runtime_parameters)
-        queue_entered_at = int(task.metadata.get("queue_entered_at", task.start_slot if task.start_slot is not None else self.current_slot))
-        terminal_slot = queue_entered_at + compute_service_delay(task, destination_kind, self.runtime_parameters)
-        if self.current_slot < terminal_slot:
+        advance_shared_runtime(task, destination_kind, self.current_slot, self.runtime_parameters)
+        execution_progress = step_execution(
+            task,
+            self.compute_config.capacity_for(destination_kind),
+            slot=self.current_slot,
+            destination_kind=destination_kind,
+        )
+        if not execution_progress.completed:
             return []
         finalized = queue.dequeue()
-        finalized.completion_slot = terminal_slot
         return [finalized]
 
     def _public_queue_for(self, source_id: str, destination: str) -> PublicQueue:
@@ -390,6 +399,8 @@ class HoodieGymEnvironment:
                     processing_density=float(item.get("processing_density", 1)),
                     timeout_length=int(item.get("timeout_length", 1)),
                     absolute_deadline_slot=int(item.get("absolute_deadline_slot", int(item.get("arrival_slot", index)) + int(item.get("timeout_length", 1)))),
+                    cycles_required=float(item.get("cycles_required", 0.0)),
+                    cycles_remaining=float(item.get("cycles_remaining", 0.0)),
                 )
             )
         metadata.update({"mode": "trace_bank", "trace_id": trace_id})

@@ -58,6 +58,8 @@ class TrafficTrace:
                     "processing_density": blueprint.processing_density,
                     "timeout_length": blueprint.timeout_length,
                     "absolute_deadline_slot": blueprint.absolute_deadline_slot,
+                    "cycles_required": blueprint.cycles_required,
+                    "cycles_remaining": blueprint.cycles_remaining,
                 }
                 for blueprint in self.records
             ],

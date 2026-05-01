@@ -123,6 +123,8 @@ class DynamicTrafficEnvironmentFlowTests(unittest.TestCase):
             payload = payload_path.read_text(encoding="utf-8")
             self.assertIn('"size": 2.1', payload)
             self.assertIn('"processing_density": 0.297', payload)
+            self.assertIn('"cycles_required"', payload)
+            self.assertIn('"cycles_remaining"', payload)
 
             env = HoodieGymEnvironment(
                 episode_length=config.episode_length,
@@ -137,6 +139,8 @@ class DynamicTrafficEnvironmentFlowTests(unittest.TestCase):
             self.assertEqual(list(observation.keys()), ["1"])
             self.assertEqual(env.current_task.size, 2.1)
             self.assertEqual(env.current_task.processing_density, 0.297)
+            self.assertAlmostEqual(env.current_task.cycles_required, 2.1 * 0.297)
+            self.assertAlmostEqual(env.current_task.cycles_remaining, 2.1 * 0.297)
 
 
 if __name__ == "__main__":

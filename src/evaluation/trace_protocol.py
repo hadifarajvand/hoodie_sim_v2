@@ -15,6 +15,16 @@ class TraceTaskBlueprint:
     processing_density: float
     timeout_length: int
     absolute_deadline_slot: int
+    cycles_required: float = 0.0
+    cycles_remaining: float = 0.0
+
+    def __post_init__(self) -> None:
+        self.size = float(self.size)
+        self.processing_density = float(self.processing_density)
+        self.cycles_required = float(self.cycles_required or self.size * self.processing_density)
+        self.cycles_remaining = float(self.cycles_remaining or self.cycles_required)
+        if self.cycles_remaining > self.cycles_required:
+            self.cycles_remaining = float(self.cycles_required)
 
     def build(self) -> Task:
         return Task(
@@ -25,6 +35,8 @@ class TraceTaskBlueprint:
             processing_density=self.processing_density,
             timeout_length=self.timeout_length,
             absolute_deadline_slot=self.absolute_deadline_slot,
+            cycles_required=self.cycles_required,
+            cycles_remaining=self.cycles_remaining,
         )
 
 

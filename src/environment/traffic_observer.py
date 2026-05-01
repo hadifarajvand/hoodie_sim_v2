@@ -17,6 +17,9 @@ class TrafficSummary:
     arrivals_per_slot: tuple[int, ...]
     arrivals_per_agent: dict[str, int]
     task_size_mbits_range: tuple[float, float]
+    total_cycles_required: float
+    average_cycles_required: float
+    max_cycles_required: float
 
 
 def _window_bounds(trace: EvaluationTrace, window_slots: int | None, config: TrafficConfig) -> tuple[int, int]:
@@ -43,6 +46,8 @@ def summarize_traffic(
         agent_key = str(task.source_agent_id)
         agent_counts[agent_key] = agent_counts.get(agent_key, 0) + 1
     window_width = max(1, end_slot - start_slot)
+    cycles_required = [float(task.cycles_required or (task.size * task.processing_density)) for task in relevant_tasks]
+    total_cycles_required = float(sum(cycles_required))
     return TrafficSummary(
         scenario_name=config.scenario_name,
         seed=seed,
@@ -52,6 +57,9 @@ def summarize_traffic(
         arrivals_per_slot=tuple(slot_counts),
         arrivals_per_agent=dict(sorted(agent_counts.items(), key=lambda item: int(item[0]))),
         task_size_mbits_range=(config.task_size_mbits_min, config.task_size_mbits_max),
+        total_cycles_required=total_cycles_required,
+        average_cycles_required=(total_cycles_required / len(cycles_required)) if cycles_required else 0.0,
+        max_cycles_required=max(cycles_required) if cycles_required else 0.0,
     )
 
 
