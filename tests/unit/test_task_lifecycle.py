@@ -11,8 +11,8 @@ class TaskLifecycleTests(unittest.TestCase):
             task_id=1,
             source_agent_id=2,
             arrival_slot=3,
-            size=100,
-            processing_density=4,
+            size=100.0,
+            processing_density=4.0,
             timeout_length=5,
             absolute_deadline_slot=8,
         )
@@ -31,8 +31,8 @@ class TaskLifecycleTests(unittest.TestCase):
             task_id=7,
             source_agent_id=11,
             arrival_slot=1,
-            size=256,
-            processing_density=9,
+            size=256.0,
+            processing_density=9.0,
             timeout_length=4,
             absolute_deadline_slot=5,
         )
@@ -58,8 +58,8 @@ class TaskLifecycleTests(unittest.TestCase):
             task_id=9,
             source_agent_id=4,
             arrival_slot=2,
-            size=128,
-            processing_density=3,
+            size=128.0,
+            processing_density=3.0,
             timeout_length=6,
             absolute_deadline_slot=8,
         )
@@ -72,8 +72,8 @@ class TaskLifecycleTests(unittest.TestCase):
             task_id=12,
             source_agent_id=6,
             arrival_slot=3,
-            size=64,
-            processing_density=2,
+            size=64.0,
+            processing_density=2.0,
             timeout_length=4,
             absolute_deadline_slot=7,
         )

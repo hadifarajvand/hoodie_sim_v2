@@ -17,8 +17,8 @@ class SharedRuntimeModelTests(unittest.TestCase):
             task_id=1,
             source_agent_id=1,
             arrival_slot=0,
-            size=8,
-            processing_density=4,
+            size=8.0,
+            processing_density=4.0,
             timeout_length=3,
             absolute_deadline_slot=4,
         )

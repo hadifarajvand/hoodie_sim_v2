@@ -291,35 +291,35 @@ class HoodieGymEnvironment:
             raise ValueError("Topology-backed destination required for offload actions")
         raise ValueError(f"Unsupported action: {action}")
 
-    def _fallback_hints(self, task: Task, legal_action_mask: dict[str, bool]) -> dict[str, int]:
-        hints: dict[str, int] = {}
+    def _fallback_hints(self, task: Task, legal_action_mask: dict[str, bool]) -> dict[str, float]:
+        hints: dict[str, float] = {}
         if legal_action_mask.get("local", False):
-            hints["local"] = 1
+            hints["local"] = 1.0
         if legal_action_mask.get("horizontal", False):
-            hints["horizontal"] = 2
+            hints["horizontal"] = 2.0
         if legal_action_mask.get("vertical", False):
-            hints["vertical"] = 3
+            hints["vertical"] = 3.0
         hints["task_size"] = task.size
         return hints
 
-    def _latency_estimates(self, task: Task, legal_action_mask: dict[str, bool]) -> dict[str, int]:
-        estimates: dict[str, int] = {}
+    def _latency_estimates(self, task: Task, legal_action_mask: dict[str, bool]) -> dict[str, float]:
+        estimates: dict[str, float] = {}
         if legal_action_mask.get("local", False):
             estimates["local"] = task.processing_density
         if legal_action_mask.get("horizontal", False):
-            estimates["horizontal"] = max(1, task.processing_density - 1)
+            estimates["horizontal"] = float(max(1, task.processing_density - 1))
         if legal_action_mask.get("vertical", False):
-            estimates["vertical"] = max(1, task.processing_density - 2)
+            estimates["vertical"] = float(max(1, task.processing_density - 2))
         return estimates
 
-    def _balance_hints(self, task: Task, legal_action_mask: dict[str, bool]) -> dict[str, int]:
-        hints: dict[str, int] = {}
+    def _balance_hints(self, task: Task, legal_action_mask: dict[str, bool]) -> dict[str, float]:
+        hints: dict[str, float] = {}
         if legal_action_mask.get("local", False):
-            hints["local"] = max(1, task.size // 4)
+            hints["local"] = float(max(1, task.size // 4))
         if legal_action_mask.get("horizontal", False):
-            hints["horizontal"] = max(1, task.size // 3)
+            hints["horizontal"] = float(max(1, task.size // 3))
         if legal_action_mask.get("vertical", False):
-            hints["vertical"] = max(1, task.size // 2)
+            hints["vertical"] = float(max(1, task.size // 2))
         return hints
 
     def _record_outcome(self, task: Task, reward: float) -> None:
@@ -377,6 +377,7 @@ class HoodieGymEnvironment:
     def _trace_from_loaded_payload(self, trace_id: str, payload: dict[str, Any]) -> EvaluationTrace:
         tasks_raw = payload.get("tasks", [])
         blueprints: list[TraceTaskBlueprint] = []
+        metadata = dict(payload.get("metadata", {})) if isinstance(payload.get("metadata", {}), dict) else {}
         for index, item in enumerate(tasks_raw):
             if not isinstance(item, dict):
                 continue
@@ -385,13 +386,15 @@ class HoodieGymEnvironment:
                     task_id=int(item.get("task_id", index + 1)),
                     source_agent_id=int(item.get("source_agent_id", 1)),
                     arrival_slot=int(item.get("arrival_slot", index)),
-                    size=int(item.get("size", 1)),
-                    processing_density=int(item.get("processing_density", 1)),
+                    size=float(item.get("size", 1)),
+                    processing_density=float(item.get("processing_density", 1)),
                     timeout_length=int(item.get("timeout_length", 1)),
                     absolute_deadline_slot=int(item.get("absolute_deadline_slot", int(item.get("arrival_slot", index)) + int(item.get("timeout_length", 1)))),
                 )
             )
-        return EvaluationTrace(trace_id=trace_id, seed=self.seed or 0, tasks=tuple(blueprints), metadata={"mode": "trace_bank", "trace_id": trace_id})
+        metadata.update({"mode": "trace_bank", "trace_id": trace_id})
+        seed = int(payload.get("seed", self.seed or 0))
+        return EvaluationTrace(trace_id=trace_id, seed=seed, tasks=tuple(blueprints), metadata=metadata)
 
     @staticmethod
     def _trace_sort_key(blueprint: TraceTaskBlueprint) -> tuple[int, int, int]:

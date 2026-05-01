@@ -9,8 +9,8 @@ class Task:
     task_id: int
     source_agent_id: int
     arrival_slot: int
-    size: int
-    processing_density: int
+    size: float
+    processing_density: float
     timeout_length: int
     absolute_deadline_slot: int
     selected_action: Optional[str] = None
@@ -22,4 +22,3 @@ class Task:
     reward_emitted: bool = False
     drop_flag: bool = False
     metadata: dict[str, object] = field(default_factory=dict)
-

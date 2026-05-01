@@ -221,3 +221,19 @@
 - Justification: The remaining tasks only align docs, tests, and helper-only boundary semantics with the already-accepted environment model.
 - Expected impact: The assumption log does not gain speculative behavior for the cleanup pass.
 - Validation plan: Keep this note stable unless a future implementation introduces a genuinely new assumption that needs to be documented.
+
+## A-019: Deterministic task-size selection over the paper-backed discrete size set
+
+- Missing detail: The OCR recovers the allowed discrete task-size set, but it does not recover a paper-backed stochastic rule for selecting one size from that set during traffic generation.
+- Chosen value or rule: Select task sizes deterministically from the discrete set using the seed and task identifier, rather than introducing a uniform or random size distribution.
+- Justification: The feature must avoid inventing a traffic distribution while still producing reproducible traffic traces from the recovered paper-backed size set.
+- Expected impact: Traffic traces remain deterministic by seed and paper-aligned on the size values, while not claiming a probability model that the paper does not recover.
+- Validation plan: Replace this deterministic selection rule only if the paper source later yields an explicit size-sampling distribution.
+
+## A-020: Runtime delay remains assumption-backed until paper unit conversion is fully recovered
+
+- Missing detail: The OCR-backed material recovers the discrete task-size set and processing-density value, but it does not fully recover the paper’s capacity-to-delay unit conversion required for a paper-exact runtime delay model.
+- Chosen value or rule: Keep the current runtime delay mapping as assumption-backed and document it explicitly until the unit/capacity conversion is fully recovered from the paper.
+- Justification: The simulator must preserve fractional paper values without pretending the delay equation is fully paper-exact when the recovered text still leaves that gap open.
+- Expected impact: Fractional traffic values remain exact, while runtime delay stays auditable as an assumption rather than a claimed paper derivation.
+- Validation plan: Replace the runtime-delay assumption only after the paper’s unit/capacity mapping is recovered and confirmed.

@@ -92,13 +92,13 @@ class EvaluationRunner:
         }
         if self.topology is not None:
             observation["topology"] = self.topology.legal_adjacency.get(str(task.source_agent_id), ())
-        fallback_hints: dict[str, int] = {}
+        fallback_hints: dict[str, float] = {}
         if legal_action_mask.get("local", False):
-            fallback_hints["local"] = 1
+            fallback_hints["local"] = 1.0
         if legal_action_mask.get("horizontal", False):
-            fallback_hints["horizontal"] = 2
+            fallback_hints["horizontal"] = 2.0
         if legal_action_mask.get("vertical", False):
-            fallback_hints["vertical"] = 3
+            fallback_hints["vertical"] = 3.0
         observation["fallback_hints"] = fallback_hints
         return observation
 
