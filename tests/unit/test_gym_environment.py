@@ -29,8 +29,8 @@ class GymEnvironmentTests(unittest.TestCase):
                     task_id=task_id,
                     source_agent_id=1,
                     arrival_slot=0,
-                    size=32,
-                    processing_density=1,
+                    size=32.0,
+                    processing_density=1.0,
                     timeout_length=timeout_length,
                     absolute_deadline_slot=deadline,
                 ),
@@ -204,8 +204,8 @@ class GymEnvironmentTests(unittest.TestCase):
             trace_id="multi-arrival",
             seed=99,
             tasks=(
-                TraceTaskBlueprint(task_id=1, source_agent_id=1, arrival_slot=0, size=16, processing_density=1, timeout_length=4, absolute_deadline_slot=4),
-                TraceTaskBlueprint(task_id=2, source_agent_id=1, arrival_slot=0, size=20, processing_density=1, timeout_length=4, absolute_deadline_slot=4),
+                TraceTaskBlueprint(task_id=1, source_agent_id=1, arrival_slot=0, size=16.0, processing_density=1.0, timeout_length=4, absolute_deadline_slot=4),
+                TraceTaskBlueprint(task_id=2, source_agent_id=1, arrival_slot=0, size=20.0, processing_density=1.0, timeout_length=4, absolute_deadline_slot=4),
             ),
             metadata={"mode": "deterministic_seed", "trace_id": "multi-arrival", "seed": "99"},
         )
@@ -246,6 +246,40 @@ class GymEnvironmentTests(unittest.TestCase):
         self.assertEqual(reward0, 0.0)
         self.assertLess(reward1, 0.0)
         self.assertTrue(any(task["terminal_outcome"] == "dropped" for task in info1["finalized_tasks"]))
+
+    def test_fractional_paper_values_survive_runtime_observation(self) -> None:
+        from src.environment.traffic_config import TrafficConfig
+        from src.environment.traffic_generator import TrafficGenerator
+
+        config = TrafficConfig(
+            scenario_name="paper_default",
+            number_of_agents=1,
+            episode_length=1,
+            arrival_probability=1.0,
+            slot_duration_seconds=0.1,
+            timeout_slots=20,
+            task_size_mbits_min=2.0,
+            task_size_mbits_max=2.1,
+            task_size_mbits_step=0.1,
+            processing_density_gcycles_per_mbit=0.297,
+        )
+        trace = TrafficGenerator.generate(config, seed=1)
+        self.assertEqual(trace.records[0].size, 2.1)
+        self.assertEqual(trace.records[0].processing_density, 0.297)
+
+        env = HoodieGymEnvironment(
+            episode_length=config.episode_length,
+            runtime_parameters=SharedRuntimeParameters(runtime_variant="constant_service"),
+            trace_source=None,
+            policy_name="FLC",
+        )
+        env.trace = trace.evaluation_trace
+        env._pending_arrivals = {0: [trace.records[0]]}  # type: ignore[assignment]
+        env.current_slot = 0
+        env._current_task = env._load_current_task()
+
+        self.assertEqual(env.current_task.size, 2.1)
+        self.assertEqual(env.current_task.processing_density, 0.297)
 
     def test_full_episode_with_flc_policy(self) -> None:
         env = self._env(runtime_parameters=SharedRuntimeParameters(runtime_variant="constant_service"))

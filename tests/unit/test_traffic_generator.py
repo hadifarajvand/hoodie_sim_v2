@@ -43,6 +43,8 @@ class TrafficGeneratorTests(unittest.TestCase):
             sorted((blueprint.arrival_slot, blueprint.source_agent_id, blueprint.task_id) for blueprint in trace.records),
         )
         for blueprint in trace.records:
+            self.assertIsInstance(blueprint.size, float)
+            self.assertIsInstance(blueprint.processing_density, float)
             self.assertGreaterEqual(blueprint.arrival_slot, 0)
             self.assertLess(blueprint.arrival_slot, config.episode_length)
             self.assertGreaterEqual(blueprint.source_agent_id, 1)
@@ -81,6 +83,8 @@ class TrafficGeneratorTests(unittest.TestCase):
         self.assertEqual(len(trace.records), 1)
         self.assertEqual(trace.records[0].source_agent_id, 1)
         self.assertEqual(trace.records[0].arrival_slot, 0)
+        self.assertEqual(trace.records[0].size, 2.1)
+        self.assertEqual(trace.records[0].processing_density, 0.297)
 
     def test_generate_traffic_evaluation_trace_returns_evaluation_trace(self) -> None:
         config = self._config()

@@ -101,6 +101,43 @@ class DynamicTrafficEnvironmentFlowTests(unittest.TestCase):
 
             self.assertEqual(presented_agent_ids, [1, 2, 3])
 
+    def test_fractional_paper_values_survive_json_trace_and_env_reset(self) -> None:
+        config = TrafficConfig(
+            scenario_name="paper_default",
+            number_of_agents=1,
+            episode_length=1,
+            arrival_probability=1.0,
+            slot_duration_seconds=0.1,
+            timeout_slots=20,
+            task_size_mbits_min=2.0,
+            task_size_mbits_max=2.1,
+            task_size_mbits_step=0.1,
+            processing_density_gcycles_per_mbit=0.297,
+        )
+        traffic_trace = TrafficGenerator.generate(config, seed=1)
+
+        with tempfile.TemporaryDirectory() as tmpdir:
+            trace_root = Path(tmpdir)
+            payload_path = trace_root / f"{traffic_trace.trace_id}.json"
+            traffic_trace.write_json(payload_path)
+            payload = payload_path.read_text(encoding="utf-8")
+            self.assertIn('"size": 2.1', payload)
+            self.assertIn('"processing_density": 0.297', payload)
+
+            env = HoodieGymEnvironment(
+                episode_length=config.episode_length,
+                runtime_parameters=SharedRuntimeParameters(runtime_variant="constant_service"),
+                trace_source=TraceSource.from_trace_bank(traffic_trace.trace_id, root_path=trace_root),
+                policy_name="FLC",
+            )
+
+            observation, info = env.reset(seed=None)
+
+            self.assertEqual(info["trace_id"], traffic_trace.trace_id)
+            self.assertEqual(list(observation.keys()), ["1"])
+            self.assertEqual(env.current_task.size, 2.1)
+            self.assertEqual(env.current_task.processing_density, 0.297)
+
 
 if __name__ == "__main__":
     unittest.main()

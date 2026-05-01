@@ -23,6 +23,7 @@
 - **Alternatives considered**:
   - Converting everything into tenths or hundredths of a unit behind the scenes. Rejected because that creates an undocumented internal convention.
   - Converting sizes into a separate integer-only representation without recording the mapping. Rejected for the same reason.
+  - Pretending the runtime delay equation is paper-exact when the unit/capacity conversion is still incomplete. Rejected because delay remains assumption-backed until the mapping is fully recovered.
 
 ## Decision 4: Use a deterministic mapping over the paper-backed discrete task-size set
 

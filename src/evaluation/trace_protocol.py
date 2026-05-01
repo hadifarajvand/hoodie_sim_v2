@@ -11,8 +11,8 @@ class TraceTaskBlueprint:
     task_id: int
     source_agent_id: int
     arrival_slot: int
-    size: int
-    processing_density: int
+    size: float
+    processing_density: float
     timeout_length: int
     absolute_deadline_slot: int
 

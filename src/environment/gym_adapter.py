@@ -291,35 +291,35 @@ class HoodieGymEnvironment:
             raise ValueError("Topology-backed destination required for offload actions")
         raise ValueError(f"Unsupported action: {action}")
 
-    def _fallback_hints(self, task: Task, legal_action_mask: dict[str, bool]) -> dict[str, int]:
-        hints: dict[str, int] = {}
+    def _fallback_hints(self, task: Task, legal_action_mask: dict[str, bool]) -> dict[str, float]:
+        hints: dict[str, float] = {}
         if legal_action_mask.get("local", False):
-            hints["local"] = 1
+            hints["local"] = 1.0
         if legal_action_mask.get("horizontal", False):
-            hints["horizontal"] = 2
+            hints["horizontal"] = 2.0
         if legal_action_mask.get("vertical", False):
-            hints["vertical"] = 3
+            hints["vertical"] = 3.0
         hints["task_size"] = task.size
         return hints
 
-    def _latency_estimates(self, task: Task, legal_action_mask: dict[str, bool]) -> dict[str, int]:
-        estimates: dict[str, int] = {}
+    def _latency_estimates(self, task: Task, legal_action_mask: dict[str, bool]) -> dict[str, float]:
+        estimates: dict[str, float] = {}
         if legal_action_mask.get("local", False):
             estimates["local"] = task.processing_density
         if legal_action_mask.get("horizontal", False):
-            estimates["horizontal"] = max(1, task.processing_density - 1)
+            estimates["horizontal"] = float(max(1, task.processing_density - 1))
         if legal_action_mask.get("vertical", False):
-            estimates["vertical"] = max(1, task.processing_density - 2)
+            estimates["vertical"] = float(max(1, task.processing_density - 2))
         return estimates
 
-    def _balance_hints(self, task: Task, legal_action_mask: dict[str, bool]) -> dict[str, int]:
-        hints: dict[str, int] = {}
+    def _balance_hints(self, task: Task, legal_action_mask: dict[str, bool]) -> dict[str, float]:
+        hints: dict[str, float] = {}
         if legal_action_mask.get("local", False):
-            hints["local"] = max(1, task.size // 4)
+            hints["local"] = float(max(1, task.size // 4))
         if legal_action_mask.get("horizontal", False):
-            hints["horizontal"] = max(1, task.size // 3)
+            hints["horizontal"] = float(max(1, task.size // 3))
         if legal_action_mask.get("vertical", False):
-            hints["vertical"] = max(1, task.size // 2)
+            hints["vertical"] = float(max(1, task.size // 2))
         return hints
 
     def _record_outcome(self, task: Task, reward: float) -> None:

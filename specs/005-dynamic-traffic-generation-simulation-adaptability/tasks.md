@@ -84,6 +84,20 @@
 
 **Checkpoint**: Traffic generation is verified, traceable, and still dependency-clean.
 
+## Phase 8: Fractional Paper Value Compatibility
+
+**Purpose**: Preserve the paper-backed fractional task-size and processing-density values end-to-end without changing the traffic model or runtime semantics.
+
+**Independent Test**: Generate a trace containing a fractional paper-backed size such as `2.1` and density `0.297`, serialize it, load it through the existing trace path, and verify the same values are visible on `env.current_task`.
+
+- [X] T025 [P] Update `src/evaluation/trace_protocol.py` and `src/environment/task.py` so `TraceTaskBlueprint.size`, `TraceTaskBlueprint.processing_density`, `Task.size`, and `Task.processing_density` are typed as `float` while keeping existing field names and payload shape unchanged.
+- [X] T026 [P] Update `src/environment/traffic_generator.py`, `src/environment/traffic_observer.py`, and `src/environment/gym_adapter.py` only as needed to preserve fractional paper-backed size and density values through JSON trace payloads and environment reset/load.
+- [X] T027 [P] Audit and update `tests/unit/test_traffic_generator.py`, `tests/unit/test_gym_environment.py`, `tests/unit/test_task_lifecycle.py`, and `tests/unit/test_runtime_model.py` to stop assuming integer size/density and to assert fractional values propagate correctly.
+- [X] T028 [P] Add a focused end-to-end regression in `tests/integration/test_dynamic_traffic_environment_flow.py` proving `size=2.1` and `processing_density=0.297` survive `TrafficGenerator -> JSON trace payload -> TraceSource -> HoodieGymEnvironment.reset() -> env.current_task`.
+- [X] T029 Update `docs/assumptions/hoodie_assumptions.md` and `specs/005-dynamic-traffic-generation-simulation-adaptability/research.md` to explicitly state that runtime delay remains assumption-backed until paper capacity/unit conversion is fully recovered, and no additional traffic assumptions are introduced.
+
+**Checkpoint**: Fractional paper-backed traffic values are preserved end-to-end and documented without widening scope.
+
 ## Dependencies & Execution Order
 
 ### Phase Dependencies
@@ -95,12 +109,14 @@
 - **Phase 5**: Depends on Phase 3 and Phase 4 completion.
 - **Phase 6**: Depends on Phases 3 through 5 being stable.
 - **Phase 7**: Depends on all implementation, documentation, and compatibility work being complete.
+- **Phase 8**: Depends on the traffic generator, trace compatibility, and validation work from Phases 2 through 7 being stable.
 
 ### User Story Dependencies
 
 - **User Story 1 (P1)**: Can start after Phase 2. No dependency on observability or environment compatibility.
 - **User Story 2 (P2)**: Depends on the generated trace shape from User Story 1.
 - **User Story 3 (P2)**: Depends on User Story 1 and User Story 2 so it can validate generated traces through the stable environment boundary.
+- **Fractional Paper Value Compatibility**: Depends on the generated trace and environment compatibility surfaces so fractional values can be verified end-to-end without changing the traffic model.
 
 ### Within Each Story
 
