@@ -1,7 +1,7 @@
 <!-- SPECKIT START -->
 For additional context about technologies to be used, project structure,
 shell commands, and other important information, read
-`specs/004-environment-lifecycle-gym-boundary/plan.md`
+`specs/005-dynamic-traffic-generation-simulation-adaptability/plan.md`
 <!-- SPECKIT END -->
 
 ## External Reference Usage

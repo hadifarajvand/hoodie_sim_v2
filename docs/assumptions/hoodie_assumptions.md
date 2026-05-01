@@ -221,3 +221,11 @@
 - Justification: The remaining tasks only align docs, tests, and helper-only boundary semantics with the already-accepted environment model.
 - Expected impact: The assumption log does not gain speculative behavior for the cleanup pass.
 - Validation plan: Keep this note stable unless a future implementation introduces a genuinely new assumption that needs to be documented.
+
+## A-019: Deterministic task-size selection over the paper-backed discrete size set
+
+- Missing detail: The OCR recovers the allowed discrete task-size set, but it does not recover a paper-backed stochastic rule for selecting one size from that set during traffic generation.
+- Chosen value or rule: Select task sizes deterministically from the discrete set using the seed and task identifier, rather than introducing a uniform or random size distribution.
+- Justification: The feature must avoid inventing a traffic distribution while still producing reproducible traffic traces from the recovered paper-backed size set.
+- Expected impact: Traffic traces remain deterministic by seed and paper-aligned on the size values, while not claiming a probability model that the paper does not recover.
+- Validation plan: Replace this deterministic selection rule only if the paper source later yields an explicit size-sampling distribution.

@@ -377,6 +377,7 @@ class HoodieGymEnvironment:
     def _trace_from_loaded_payload(self, trace_id: str, payload: dict[str, Any]) -> EvaluationTrace:
         tasks_raw = payload.get("tasks", [])
         blueprints: list[TraceTaskBlueprint] = []
+        metadata = dict(payload.get("metadata", {})) if isinstance(payload.get("metadata", {}), dict) else {}
         for index, item in enumerate(tasks_raw):
             if not isinstance(item, dict):
                 continue
@@ -385,13 +386,15 @@ class HoodieGymEnvironment:
                     task_id=int(item.get("task_id", index + 1)),
                     source_agent_id=int(item.get("source_agent_id", 1)),
                     arrival_slot=int(item.get("arrival_slot", index)),
-                    size=int(item.get("size", 1)),
-                    processing_density=int(item.get("processing_density", 1)),
+                    size=float(item.get("size", 1)),
+                    processing_density=float(item.get("processing_density", 1)),
                     timeout_length=int(item.get("timeout_length", 1)),
                     absolute_deadline_slot=int(item.get("absolute_deadline_slot", int(item.get("arrival_slot", index)) + int(item.get("timeout_length", 1)))),
                 )
             )
-        return EvaluationTrace(trace_id=trace_id, seed=self.seed or 0, tasks=tuple(blueprints), metadata={"mode": "trace_bank", "trace_id": trace_id})
+        metadata.update({"mode": "trace_bank", "trace_id": trace_id})
+        seed = int(payload.get("seed", self.seed or 0))
+        return EvaluationTrace(trace_id=trace_id, seed=seed, tasks=tuple(blueprints), metadata=metadata)
 
     @staticmethod
     def _trace_sort_key(blueprint: TraceTaskBlueprint) -> tuple[int, int, int]:
