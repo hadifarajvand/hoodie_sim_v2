@@ -34,3 +34,12 @@
 - Approved scenario lookup -> `src/evaluation/scenario_registry.py`
 - Serial matrix orchestration -> `src/evaluation/matrix_runner.py`
 - Matrix run records and aggregate summaries -> `src/evaluation/matrix_runner.py`, `src/evaluation/metrics.py`
+
+## Reproducibility bundle
+
+- Reproducibility bundle configuration and builder -> `src/analysis/reproducibility_bundle.py`
+- Bundle manifest generation -> `src/analysis/reproducibility_bundle.py`
+- Bundle run configuration snapshot -> `src/analysis/reproducibility_bundle.py`
+- Bundle artifact index -> `src/analysis/reproducibility_bundle.py`
+- Bundle validation summary -> `src/analysis/reproducibility_bundle.py`
+- Bundle README generation -> `src/analysis/reproducibility_bundle.py`
