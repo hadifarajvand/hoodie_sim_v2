@@ -43,3 +43,11 @@
 - Bundle artifact index -> `src/analysis/reproducibility_bundle.py`
 - Bundle validation summary -> `src/analysis/reproducibility_bundle.py`
 - Bundle README generation -> `src/analysis/reproducibility_bundle.py`
+
+## Baseline reproduction campaign
+
+- Campaign configuration -> `src/evaluation/campaign_config.py`
+- Campaign orchestration over the matrix runner -> `src/evaluation/campaign_runner.py`, `src/evaluation/matrix_runner.py`
+- Campaign aggregate summaries -> `src/evaluation/campaign_runner.py`
+- Campaign determinism check -> `src/evaluation/campaign_runner.py`
+- Campaign-to-bundle reference -> `src/evaluation/campaign_runner.py`, `src/analysis/reproducibility_bundle.py`
