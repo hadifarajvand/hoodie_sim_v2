@@ -19,3 +19,10 @@
 
 - Trace compatibility -> `src/evaluation/trace_protocol.py`, `src/environment/trace_source.py`
 - Paper-backed metrics and evaluation summaries -> `src/evaluation/metrics.py`, `src/evaluation/runner.py`
+
+## Adaptive policy and offloading decisions
+
+- Adaptive decision inputs -> `src/policies/adaptive_context.py`
+- Conservative adaptive baseline -> `src/policies/adaptive_offloading.py`
+- Observed traffic summary input -> `src/environment/traffic_observer.py`
+- Compute / execution estimates from feature 006 -> `src/environment/task.py`, `src/evaluation/trace_protocol.py`, `src/environment/gym_adapter.py`
