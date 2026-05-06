@@ -1,7 +1,7 @@
 <!-- SPECKIT START -->
 For additional context about technologies to be used, project structure,
 shell commands, and other important information, read
-`specs/006-task-execution-time-compute-model/plan.md`
+`specs/009-paper-backed-evaluation-matrix/plan.md`
 <!-- SPECKIT END -->
 
 ## External Reference Usage
