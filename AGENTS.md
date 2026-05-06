@@ -1,7 +1,7 @@
 <!-- SPECKIT START -->
 For additional context about technologies to be used, project structure,
 shell commands, and other important information, read
-`specs/010-paper-result-reporting-and-reproducibility-artifacts/plan.md`
+`specs/012-paper-baseline-reproduction-campaign/plan.md`
 <!-- SPECKIT END -->
 
 ## External Reference Usage
