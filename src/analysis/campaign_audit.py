@@ -224,6 +224,27 @@ class CampaignAudit:
             )
         return counts
 
+    def _trace_signature_by_seed(self) -> dict[int, dict[str, Any]]:
+        signatures: dict[int, dict[str, Any]] = {}
+        for trace_path in self._trace_files():
+            payload = self._read_json(trace_path)
+            seed = int(payload.get("seed", 0))
+            scenario_name = str(payload.get("metadata", {}).get("scenario_name", ""))
+            tasks = list(payload.get("tasks", []))
+            arrival_distribution: dict[int, int] = {}
+            for task in tasks:
+                arrival_slot = int(task.get("arrival_slot", 0))
+                arrival_distribution[arrival_slot] = arrival_distribution.get(arrival_slot, 0) + 1
+            signatures[seed] = {
+                "trace_id": payload.get("trace_id", trace_path.stem),
+                "scenario_name": scenario_name,
+                "seed": seed,
+                "task_count": len(tasks),
+                "arrival_distribution": arrival_distribution,
+                "arrival_counts": [{"arrival_slot": slot, "count": arrival_distribution[slot]} for slot in sorted(arrival_distribution)],
+            }
+        return signatures
+
     def _policy_outcome_signatures(self) -> dict[str, dict[str, Any]]:
         signatures: dict[str, dict[str, Any]] = {}
         for result in self._read_matrix_results():
@@ -305,6 +326,38 @@ class CampaignAudit:
                 item["task_count"],
             ]
         return signatures
+
+    def _trace_comparison(self) -> list[dict[str, object]]:
+        comparisons: list[dict[str, object]] = []
+        paper_default = {item["seed"]: item for item in self._trace_arrival_counts() if item["scenario_name"] == "paper_default"}
+        moderate = {item["seed"]: item for item in self._trace_arrival_counts() if item["scenario_name"] == "moderate"}
+        shared_seeds = sorted(set(paper_default) & set(moderate))
+        for seed in shared_seeds:
+            paper_item = paper_default[seed]
+            moderate_item = moderate[seed]
+            paper_arrivals = paper_item["arrival_counts"]
+            moderate_arrivals = moderate_item["arrival_counts"]
+            identical = paper_item["task_count"] == moderate_item["task_count"] and paper_arrivals == moderate_arrivals
+            same_count = paper_item["task_count"] == moderate_item["task_count"]
+            comparisons.append(
+                {
+                    "seed": seed,
+                    "paper_default_trace_id": paper_item["trace_id"],
+                    "moderate_trace_id": moderate_item["trace_id"],
+                    "paper_default_task_count": paper_item["task_count"],
+                    "moderate_task_count": moderate_item["task_count"],
+                    "paper_default_arrival_counts": paper_arrivals,
+                    "moderate_arrival_counts": moderate_arrivals,
+                    "comparison": (
+                        "identical"
+                        if identical
+                        else "same_count_but_different_slots"
+                        if same_count
+                        else "different_count"
+                    ),
+                }
+            )
+        return comparisons
 
     def _scenario_differentiation(self, scenario_summary: list[dict[str, Any]]) -> list[dict[str, object]]:
         if not scenario_summary:
@@ -431,21 +484,24 @@ class CampaignAudit:
                         )
                     )
 
-        scenario_signatures = self._scenario_outcome_signatures()
-        if "paper_default" in scenario_signatures and "moderate" in scenario_signatures:
-            paper_default_signature = json.dumps(scenario_signatures["paper_default"]["signature"], sort_keys=True)
-            moderate_signature = json.dumps(scenario_signatures["moderate"]["signature"], sort_keys=True)
-            findings.append(
-                AuditFinding(
-                    category="moderate_vs_paper_default_trace_comparison",
-                    severity="informational",
-                    description=(
-                        "Moderate and paper_default traces were compared for action and outcome signatures: "
-                        + ("different" if paper_default_signature != moderate_signature else "identical")
-                    ),
-                    evidence=["matrix/traces/paper_default-*.json", "matrix/traces/moderate-*.json"],
+        trace_comparisons = self._trace_comparison()
+        if trace_comparisons:
+            for comparison in trace_comparisons:
+                findings.append(
+                    AuditFinding(
+                        category="moderate_vs_paper_default_trace_comparison",
+                        severity="informational",
+                        description=(
+                            f"Seed {comparison['seed']} comparison is {comparison['comparison']}."
+                        ),
+                        evidence=[
+                            f"paper_default:{comparison['paper_default_trace_id']}",
+                            f"moderate:{comparison['moderate_trace_id']}",
+                        ],
+                    )
                 )
-            )
+
+        scenario_signatures = self._scenario_outcome_signatures()
 
         if determinism_check:
             if not determinism_check.get("passed", False):

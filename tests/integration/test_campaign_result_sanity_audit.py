@@ -23,7 +23,11 @@ class CampaignResultSanityAuditIntegrationTests(unittest.TestCase):
         self.assertGreater(len(report.artifact_inventory.found_files), 0)
         self.assertGreater(len(report.trace_arrival_counts), 0)
         self.assertGreater(len(report.policy_action_distribution), 0)
-        self.assertTrue(any(finding.category == "moderate_vs_paper_default_trace_comparison" for finding in report.findings))
+        trace_findings = [finding for finding in report.findings if finding.category == "moderate_vs_paper_default_trace_comparison"]
+        self.assertGreater(len(trace_findings), 0)
+        self.assertTrue(all("paper_default:" in evidence or "moderate:" in evidence for finding in trace_findings for evidence in finding.evidence))
+        self.assertTrue(any(item["scenario_name"] == "paper_default" for item in report.trace_arrival_counts))
+        self.assertTrue(any(item["scenario_name"] == "moderate" for item in report.trace_arrival_counts))
 
         with tempfile.TemporaryDirectory() as tmpdir:
             outputs = audit.write_outputs(Path(tmpdir), report)
@@ -32,6 +36,7 @@ class CampaignResultSanityAuditIntegrationTests(unittest.TestCase):
             self.assertIn("artifact_inventory", payload)
             self.assertIn("trace_arrival_counts", payload)
             self.assertIn("policy_action_distribution", payload)
+            self.assertTrue(any("Seed" in finding["description"] for finding in payload["findings"]))
 
     def test_missing_finalization_or_reconciliation_mismatches_are_surface_explicitly(self) -> None:
         with tempfile.TemporaryDirectory() as tmpdir:

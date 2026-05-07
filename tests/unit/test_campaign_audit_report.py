@@ -92,6 +92,9 @@ class CampaignAuditReportTests(unittest.TestCase):
             self.assertTrue(report.passed)
             self.assertEqual(len(report.trace_arrival_counts), 2)
             self.assertEqual(len(report.policy_action_distribution), 2)
+            trace_comparisons = [finding for finding in report.findings if finding.category == "moderate_vs_paper_default_trace_comparison"]
+            self.assertTrue(any("same_count_but_different_slots" in finding.description or "identical" in finding.description for finding in trace_comparisons))
+            self.assertEqual({item["scenario_name"] for item in report.trace_arrival_counts}, {"paper_default", "moderate"})
 
     def test_rendered_text_contains_machine_and_human_readable_sections(self) -> None:
         with tempfile.TemporaryDirectory() as tmpdir:
@@ -132,6 +135,7 @@ class CampaignAuditReportTests(unittest.TestCase):
             self.assertIn("Passed: true", text)
             self.assertIn("## Trace Arrival Counts", text)
             self.assertIn("## Policy Action Distribution", text)
+            self.assertIn("## Trace Arrival Counts", text)
 
 
 if __name__ == "__main__":
