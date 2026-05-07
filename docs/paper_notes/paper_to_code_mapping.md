@@ -51,3 +51,11 @@
 - Campaign aggregate summaries -> `src/evaluation/campaign_runner.py`
 - Campaign determinism check -> `src/evaluation/campaign_runner.py`
 - Campaign-to-bundle reference -> `src/evaluation/campaign_runner.py`, `src/analysis/reproducibility_bundle.py`
+
+## Campaign result sanity audit
+
+- Campaign artifact inventory and read-only inspection -> `src/analysis/campaign_audit.py`
+- Campaign anomaly reporting -> `src/analysis/campaign_audit.py`
+- Policy differentiation analysis -> `src/analysis/campaign_audit.py`
+- Scenario differentiation analysis -> `src/analysis/campaign_audit.py`
+- Finalized-task accounting consistency checks -> `src/analysis/campaign_audit.py`
