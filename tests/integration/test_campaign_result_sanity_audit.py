@@ -10,29 +10,36 @@ from src.analysis.campaign_audit import CampaignAudit
 
 class CampaignResultSanityAuditIntegrationTests(unittest.TestCase):
     def _campaign_dir(self) -> Path:
-        return Path("artifacts/campaigns/baseline-sanity")
+        return Path("artifacts/campaigns/paper-baseline-reproduction")
 
     def test_complete_audit_against_existing_campaign_artifacts(self) -> None:
         audit = CampaignAudit(self._campaign_dir())
         report = audit.run()
 
-        self.assertEqual(report.accounting_consistency.expected_runs, 28)
-        self.assertEqual(report.accounting_consistency.discovered_runs, 28)
+        self.assertEqual(report.accounting_consistency.expected_runs, 140)
+        self.assertEqual(report.accounting_consistency.discovered_runs, 140)
         self.assertTrue(report.accounting_consistency.passed)
         self.assertTrue(report.passed)
         self.assertGreater(len(report.artifact_inventory.found_files), 0)
+        self.assertGreater(len(report.trace_arrival_counts), 0)
+        self.assertGreater(len(report.policy_action_distribution), 0)
+        self.assertTrue(any(finding.category == "moderate_vs_paper_default_trace_comparison" for finding in report.findings))
 
         with tempfile.TemporaryDirectory() as tmpdir:
             outputs = audit.write_outputs(Path(tmpdir), report)
             payload = json.loads(outputs["audit-report.json"].read_text(encoding="utf-8"))
             self.assertTrue(payload["passed"])
             self.assertIn("artifact_inventory", payload)
+            self.assertIn("trace_arrival_counts", payload)
+            self.assertIn("policy_action_distribution", payload)
 
     def test_missing_finalization_or_reconciliation_mismatches_are_surface_explicitly(self) -> None:
         with tempfile.TemporaryDirectory() as tmpdir:
-            campaign_dir = Path(tmpdir) / "campaign"
-            matrix_dir = campaign_dir / "matrix"
-            bundle_dir = campaign_dir / "bundle"
+            campaign_root = Path(tmpdir) / "campaign-root"
+            campaign_dir = campaign_root / "campaign"
+            matrix_dir = campaign_root / "matrix"
+            bundle_dir = campaign_root / "bundle"
+            campaign_dir.mkdir(parents=True, exist_ok=True)
             matrix_dir.mkdir(parents=True, exist_ok=True)
             bundle_dir.mkdir(parents=True, exist_ok=True)
             campaign_dir.joinpath("campaign-summary.json").write_text(
@@ -53,17 +60,26 @@ class CampaignResultSanityAuditIntegrationTests(unittest.TestCase):
                 encoding="utf-8",
             )
             matrix_dir.joinpath("FLC-paper_default-1.json").write_text(
-                "{\"final_metrics\": {\"total_tasks\": 5}}",
+                "{\"policy_name\": \"FLC\", \"scenario_name\": \"paper_default\", \"final_metrics\": {\"total_tasks\": 5, \"raw_records\": [{\"selected_action\": \"local\", \"terminal_outcome\": \"completed\"}]}}",
                 encoding="utf-8",
             )
 
-            report = CampaignAudit(campaign_dir).run()
+            report = CampaignAudit(campaign_root).run()
 
             self.assertFalse(report.accounting_consistency.passed)
             self.assertTrue(report.accounting_consistency.missing_finalization_detected)
             self.assertTrue(any(finding.category == "accounting_inconsistency" for finding in report.findings))
 
+    def test_missing_required_files_fail_the_audit(self) -> None:
+        with tempfile.TemporaryDirectory() as tmpdir:
+            campaign_root = Path(tmpdir) / "campaign-root"
+            (campaign_root / "bundle").mkdir(parents=True, exist_ok=True)
+            (campaign_root / "matrix").mkdir(parents=True, exist_ok=True)
+            report = CampaignAudit(campaign_root).run()
+
+            self.assertFalse(report.passed)
+            self.assertTrue(any(finding.category == "missing_required_files" for finding in report.findings))
+
 
 if __name__ == "__main__":
     unittest.main()
-

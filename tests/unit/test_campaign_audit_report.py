@@ -13,10 +13,12 @@ class CampaignAuditReportTests(unittest.TestCase):
 
     def test_inventory_output_and_stable_ordering(self) -> None:
         with tempfile.TemporaryDirectory() as tmpdir:
-            campaign_dir = Path(tmpdir) / "campaign"
-            matrix_dir = campaign_dir / "matrix"
-            bundle_dir = campaign_dir / "bundle"
+            campaign_root = Path(tmpdir) / "campaign-root"
+            campaign_dir = campaign_root / "campaign"
+            matrix_dir = campaign_root / "matrix"
+            bundle_dir = campaign_root / "bundle"
             trace_dir = matrix_dir / "traces"
+            campaign_dir.mkdir(parents=True, exist_ok=True)
             trace_dir.mkdir(parents=True, exist_ok=True)
             bundle_dir.mkdir(parents=True, exist_ok=True)
             (matrix_dir / "matrix-summary.csv").write_text("policy_name,scenario_name,seed,trace_id\n", encoding="utf-8")
@@ -26,18 +28,22 @@ class CampaignAuditReportTests(unittest.TestCase):
             (bundle_dir / "validation-summary.json").write_text("{}", encoding="utf-8")
             (matrix_dir / "b.json").write_text("{}", encoding="utf-8")
             (matrix_dir / "a.json").write_text("{}", encoding="utf-8")
+            (trace_dir / "paper_default-1.json").write_text("{\"trace_id\": \"paper_default-1\", \"metadata\": {\"scenario_name\": \"paper_default\"}, \"seed\": 1, \"tasks\": []}", encoding="utf-8")
 
-            report = self._audit(campaign_dir).run()
+            report = self._audit(campaign_root).run()
 
             self.assertEqual(report.artifact_inventory.found_files, sorted(report.artifact_inventory.found_files))
             self.assertIn("matrix/matrix-summary.csv", report.artifact_inventory.found_files)
             self.assertIn("bundle/manifest.json", report.artifact_inventory.found_files)
+            self.assertIn("matrix/traces/paper_default-1.json", report.artifact_inventory.found_files)
 
     def test_anomaly_categorization_is_deterministic(self) -> None:
         with tempfile.TemporaryDirectory() as tmpdir:
-            campaign_dir = Path(tmpdir) / "campaign"
-            matrix_dir = campaign_dir / "matrix"
-            bundle_dir = campaign_dir / "bundle"
+            campaign_root = Path(tmpdir) / "campaign-root"
+            campaign_dir = campaign_root / "campaign"
+            matrix_dir = campaign_root / "matrix"
+            bundle_dir = campaign_root / "bundle"
+            campaign_dir.mkdir(parents=True, exist_ok=True)
             matrix_dir.mkdir(parents=True, exist_ok=True)
             bundle_dir.mkdir(parents=True, exist_ok=True)
 
@@ -56,27 +62,44 @@ class CampaignAuditReportTests(unittest.TestCase):
             campaign_dir.joinpath("determinism-check.json").write_text("{\"passed\": true}", encoding="utf-8")
             matrix_dir.joinpath("matrix-summary.csv").write_text("policy_name,scenario_name,seed,trace_id,total_tasks\nFLC,paper_default,1,t1,5\nVO,moderate,1,t2,5\n", encoding="utf-8")
             matrix_dir.joinpath("FLC-paper_default-1.json").write_text(
-                "{\"final_metrics\": {\"total_tasks\": 5}}",
+                "{\"policy_name\": \"FLC\", \"scenario_name\": \"paper_default\", \"final_metrics\": {\"total_tasks\": 5, \"raw_records\": [{\"selected_action\": \"local\", \"terminal_outcome\": \"completed\"}]}}",
                 encoding="utf-8",
             )
             matrix_dir.joinpath("VO-moderate-1.json").write_text(
-                "{\"final_metrics\": {\"total_tasks\": 5}}",
+                "{\"policy_name\": \"VO\", \"scenario_name\": \"moderate\", \"final_metrics\": {\"total_tasks\": 5, \"raw_records\": [{\"selected_action\": \"local\", \"terminal_outcome\": \"completed\"}]}}",
                 encoding="utf-8",
             )
+            (matrix_dir / "traces").mkdir(exist_ok=True)
+            (matrix_dir / "traces" / "paper_default-1.json").write_text(
+                "{\"trace_id\": \"paper_default-1\", \"seed\": 1, \"metadata\": {\"scenario_name\": \"paper_default\"}, \"tasks\": [{\"arrival_slot\": 0}, {\"arrival_slot\": 1}]}",
+                encoding="utf-8",
+            )
+            (matrix_dir / "traces" / "moderate-1.json").write_text(
+                "{\"trace_id\": \"moderate-1\", \"seed\": 1, \"metadata\": {\"scenario_name\": \"moderate\"}, \"tasks\": [{\"arrival_slot\": 0}, {\"arrival_slot\": 0}]}",
+                encoding="utf-8",
+            )
+            (bundle_dir / "manifest.json").write_text("{}", encoding="utf-8")
+            (bundle_dir / "validation-summary.json").write_text("{}", encoding="utf-8")
 
-            report = self._audit(campaign_dir).run()
+            report = self._audit(campaign_root).run()
 
             categories = [finding.category for finding in report.findings]
             self.assertIn("high_drop_ratio", categories)
             self.assertIn("weak_policy_differentiation", categories)
             self.assertIn("weak_scenario_differentiation", categories)
+            self.assertIn("identical_policy_signature", categories)
+            self.assertIn("moderate_vs_paper_default_trace_comparison", categories)
             self.assertTrue(report.passed)
+            self.assertEqual(len(report.trace_arrival_counts), 2)
+            self.assertEqual(len(report.policy_action_distribution), 2)
 
     def test_rendered_text_contains_machine_and_human_readable_sections(self) -> None:
         with tempfile.TemporaryDirectory() as tmpdir:
-            campaign_dir = Path(tmpdir) / "campaign"
-            matrix_dir = campaign_dir / "matrix"
-            bundle_dir = campaign_dir / "bundle"
+            campaign_root = Path(tmpdir) / "campaign-root"
+            campaign_dir = campaign_root / "campaign"
+            matrix_dir = campaign_root / "matrix"
+            bundle_dir = campaign_root / "bundle"
+            campaign_dir.mkdir(parents=True, exist_ok=True)
             matrix_dir.mkdir(parents=True, exist_ok=True)
             bundle_dir.mkdir(parents=True, exist_ok=True)
             campaign_dir.joinpath("campaign-summary.json").write_text(
@@ -94,17 +117,21 @@ class CampaignAuditReportTests(unittest.TestCase):
             campaign_dir.joinpath("determinism-check.json").write_text("{\"passed\": true}", encoding="utf-8")
             matrix_dir.joinpath("matrix-summary.csv").write_text("policy_name,scenario_name,seed,trace_id,total_tasks\nFLC,paper_default,1,t1,5\n", encoding="utf-8")
             matrix_dir.joinpath("FLC-paper_default-1.json").write_text(
-                "{\"final_metrics\": {\"total_tasks\": 5}}",
+                "{\"policy_name\": \"FLC\", \"scenario_name\": \"paper_default\", \"final_metrics\": {\"total_tasks\": 5, \"raw_records\": [{\"selected_action\": \"local\", \"terminal_outcome\": \"completed\"}]}}",
                 encoding="utf-8",
             )
+            (bundle_dir / "manifest.json").write_text("{}", encoding="utf-8")
+            (bundle_dir / "validation-summary.json").write_text("{}", encoding="utf-8")
 
-            audit = self._audit(campaign_dir)
+            audit = self._audit(campaign_root)
             report = audit.run()
             text = audit.render_text(report)
 
             self.assertIn("# Campaign Result Sanity Audit", text)
             self.assertIn("## Accounting Consistency", text)
             self.assertIn("Passed: true", text)
+            self.assertIn("## Trace Arrival Counts", text)
+            self.assertIn("## Policy Action Distribution", text)
 
 
 if __name__ == "__main__":
