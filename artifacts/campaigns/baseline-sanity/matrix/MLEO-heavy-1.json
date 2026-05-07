@@ -1,0 +1,213 @@
+{
+  "policy_name": "MLEO",
+  "scenario_name": "heavy",
+  "seed": 1,
+  "trace_id": "heavy-1",
+  "config_snapshot": {
+    "policy_names": [
+      "ADAPTIVE",
+      "BCO",
+      "FLC",
+      "HO",
+      "MLEO",
+      "RO",
+      "VO"
+    ],
+    "scenario_names": [
+      "extreme",
+      "heavy",
+      "moderate",
+      "paper_default"
+    ],
+    "seeds": [
+      1
+    ],
+    "episode_length": 10,
+    "output_dir": "artifacts/campaigns/baseline-sanity/matrix",
+    "dependency_change_note": "No dependency files changed."
+  },
+  "final_metrics": {
+    "trace_id": "heavy-1",
+    "policy_name": "MLEO",
+    "seed": 1,
+    "device": "cpu",
+    "average_delay": 5.0,
+    "drop_ratio": 0.0,
+    "throughput": 9,
+    "completed_tasks": 9,
+    "dropped_tasks": 0,
+    "total_tasks": 9,
+    "raw_records": [
+      {
+        "task_id": 1,
+        "arrival_slot": 0,
+        "completion_slot": 1,
+        "terminal_outcome": "completed",
+        "selected_action": "local",
+        "resolved_destination": "self",
+        "delay": 1
+      },
+      {
+        "task_id": 2,
+        "arrival_slot": 0,
+        "completion_slot": 2,
+        "terminal_outcome": "completed",
+        "selected_action": "local",
+        "resolved_destination": "self",
+        "delay": 2
+      },
+      {
+        "task_id": 3,
+        "arrival_slot": 0,
+        "completion_slot": 3,
+        "terminal_outcome": "completed",
+        "selected_action": "local",
+        "resolved_destination": "self",
+        "delay": 3
+      },
+      {
+        "task_id": 4,
+        "arrival_slot": 0,
+        "completion_slot": 4,
+        "terminal_outcome": "completed",
+        "selected_action": "local",
+        "resolved_destination": "self",
+        "delay": 4
+      },
+      {
+        "task_id": 5,
+        "arrival_slot": 0,
+        "completion_slot": 5,
+        "terminal_outcome": "completed",
+        "selected_action": "local",
+        "resolved_destination": "self",
+        "delay": 5
+      },
+      {
+        "task_id": 6,
+        "arrival_slot": 0,
+        "completion_slot": 6,
+        "terminal_outcome": "completed",
+        "selected_action": "local",
+        "resolved_destination": "self",
+        "delay": 6
+      },
+      {
+        "task_id": 7,
+        "arrival_slot": 0,
+        "completion_slot": 7,
+        "terminal_outcome": "completed",
+        "selected_action": "local",
+        "resolved_destination": "self",
+        "delay": 7
+      },
+      {
+        "task_id": 8,
+        "arrival_slot": 0,
+        "completion_slot": 8,
+        "terminal_outcome": "completed",
+        "selected_action": "local",
+        "resolved_destination": "self",
+        "delay": 8
+      },
+      {
+        "task_id": 9,
+        "arrival_slot": 0,
+        "completion_slot": 9,
+        "terminal_outcome": "completed",
+        "selected_action": "local",
+        "resolved_destination": "self",
+        "delay": 9
+      }
+    ],
+    "metadata": {
+      "trace_id": "heavy-1",
+      "seed": 1,
+      "device": "cpu",
+      "policy_name": "MLEO"
+    }
+  },
+  "runtime_metadata": {
+    "policy_name": "MLEO",
+    "trace_id": "heavy-1",
+    "seed": 1,
+    "device": "cpu",
+    "trace_mode": "matrix",
+    "scenario_name": "heavy",
+    "dependency_change_note": "No dependency files changed."
+  },
+  "finalized_tasks": [
+    {
+      "task_id": 1,
+      "arrival_slot": 0,
+      "completion_slot": 1,
+      "terminal_outcome": "completed",
+      "selected_action": "local",
+      "resolved_destination": "self"
+    },
+    {
+      "task_id": 2,
+      "arrival_slot": 0,
+      "completion_slot": 2,
+      "terminal_outcome": "completed",
+      "selected_action": "local",
+      "resolved_destination": "self"
+    },
+    {
+      "task_id": 3,
+      "arrival_slot": 0,
+      "completion_slot": 3,
+      "terminal_outcome": "completed",
+      "selected_action": "local",
+      "resolved_destination": "self"
+    },
+    {
+      "task_id": 4,
+      "arrival_slot": 0,
+      "completion_slot": 4,
+      "terminal_outcome": "completed",
+      "selected_action": "local",
+      "resolved_destination": "self"
+    },
+    {
+      "task_id": 5,
+      "arrival_slot": 0,
+      "completion_slot": 5,
+      "terminal_outcome": "completed",
+      "selected_action": "local",
+      "resolved_destination": "self"
+    },
+    {
+      "task_id": 6,
+      "arrival_slot": 0,
+      "completion_slot": 6,
+      "terminal_outcome": "completed",
+      "selected_action": "local",
+      "resolved_destination": "self"
+    },
+    {
+      "task_id": 7,
+      "arrival_slot": 0,
+      "completion_slot": 7,
+      "terminal_outcome": "completed",
+      "selected_action": "local",
+      "resolved_destination": "self"
+    },
+    {
+      "task_id": 8,
+      "arrival_slot": 0,
+      "completion_slot": 8,
+      "terminal_outcome": "completed",
+      "selected_action": "local",
+      "resolved_destination": "self"
+    },
+    {
+      "task_id": 9,
+      "arrival_slot": 0,
+      "completion_slot": 9,
+      "terminal_outcome": "completed",
+      "selected_action": "local",
+      "resolved_destination": "self"
+    }
+  ]
+}

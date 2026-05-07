@@ -1,0 +1,231 @@
+{
+  "artifact_files": [
+    {
+      "kind": "run_json",
+      "relative_path": "ADAPTIVE-extreme-1.json",
+      "sha256": "9ec7ab41aeee9f9e16cc56dbfb21567d3663d53e1f4a297e26596bb3eafcec23",
+      "size_bytes": 4680
+    },
+    {
+      "kind": "run_json",
+      "relative_path": "ADAPTIVE-heavy-1.json",
+      "sha256": "0b411ce106b474da2c0a989e94abaac20bd6c3ff9bd11ece6a11cfc5634129d9",
+      "size_bytes": 4668
+    },
+    {
+      "kind": "run_json",
+      "relative_path": "ADAPTIVE-moderate-1.json",
+      "sha256": "d23f1405023ad18967d262b09a186f13fa1f6f62898784603ef2b0d1bf66edbb",
+      "size_bytes": 4686
+    },
+    {
+      "kind": "run_json",
+      "relative_path": "ADAPTIVE-paper_default-1.json",
+      "sha256": "804c379fb234ac4f0b771f6ad15af632c74d190d0c3f2dc92b7145428cb5a5d1",
+      "size_bytes": 4716
+    },
+    {
+      "kind": "run_json",
+      "relative_path": "BCO-extreme-1.json",
+      "sha256": "c4f058ec94eefbd6a5ea6b599a941a795da05dcd902e7a0688732ff54a546570",
+      "size_bytes": 5058
+    },
+    {
+      "kind": "run_json",
+      "relative_path": "BCO-heavy-1.json",
+      "sha256": "6ab8cf24becbc5fdf116c9dfcc5f740fb9480f44d5d403d1dfa17dbcd899c435",
+      "size_bytes": 5046
+    },
+    {
+      "kind": "run_json",
+      "relative_path": "BCO-moderate-1.json",
+      "sha256": "cd0c16d9a3452dc01efdeea58e5d0a87c2f1832d0e1282bd774be54642dc0471",
+      "size_bytes": 5064
+    },
+    {
+      "kind": "run_json",
+      "relative_path": "BCO-paper_default-1.json",
+      "sha256": "5c29e23e9f07991021d0b6faffbe5f8ee091a25732a11f1fe4efbda6e8431cbb",
+      "size_bytes": 5094
+    },
+    {
+      "kind": "run_json",
+      "relative_path": "FLC-extreme-1.json",
+      "sha256": "aaa0faf06db9607c23b34ec2d9fc12dab151d3599ad725bd4dd2057daebad4f1",
+      "size_bytes": 5058
+    },
+    {
+      "kind": "run_json",
+      "relative_path": "FLC-heavy-1.json",
+      "sha256": "ad549ec3957d2199099bf45ce0c84aaa96a36419ce6b81140881e1dec1cf23ca",
+      "size_bytes": 5046
+    },
+    {
+      "kind": "run_json",
+      "relative_path": "FLC-moderate-1.json",
+      "sha256": "ebb384daf7cdb68092957be6c66c1c1dce51a690ec3fe22d8eb9615ddfc4ab9b",
+      "size_bytes": 5064
+    },
+    {
+      "kind": "run_json",
+      "relative_path": "FLC-paper_default-1.json",
+      "sha256": "e175879039a549e1c8fb8278be5f6fd156aea58205a24bc6fc9d1a0adeb9b1af",
+      "size_bytes": 5094
+    },
+    {
+      "kind": "run_json",
+      "relative_path": "HO-extreme-1.json",
+      "sha256": "c75c075a37d5c018fafada689517daeb4187fa8d2b5b36baedbbcfd5e4a390b0",
+      "size_bytes": 4658
+    },
+    {
+      "kind": "run_json",
+      "relative_path": "HO-heavy-1.json",
+      "sha256": "60007e93b968dffb0f16d7406332e1fb5f2dda418efcec53616050255a0779a3",
+      "size_bytes": 4646
+    },
+    {
+      "kind": "run_json",
+      "relative_path": "HO-moderate-1.json",
+      "sha256": "34f77d3c632b44dbe9ed610914a6fd650fb27313883ef0f9791f58fc7d455dca",
+      "size_bytes": 4664
+    },
+    {
+      "kind": "run_json",
+      "relative_path": "HO-paper_default-1.json",
+      "sha256": "f92d91146b40865b0a1a710b08b6b42a0784fc07cab98456c84e482ea121b696",
+      "size_bytes": 4694
+    },
+    {
+      "kind": "run_json",
+      "relative_path": "MLEO-extreme-1.json",
+      "sha256": "29f63e4eed0abc1c01d33c65f5fbe478f7769203f88bf4a81b9ee55bd3e84f3a",
+      "size_bytes": 5062
+    },
+    {
+      "kind": "run_json",
+      "relative_path": "MLEO-heavy-1.json",
+      "sha256": "55217114aa25b5d61caaadbfba1822f4a189ad06012ab55d86370ee626987283",
+      "size_bytes": 5050
+    },
+    {
+      "kind": "run_json",
+      "relative_path": "MLEO-moderate-1.json",
+      "sha256": "076304248a9c3f4b28f5048f886b1665021bea2b5f16fe3c10807d2a64574983",
+      "size_bytes": 5068
+    },
+    {
+      "kind": "run_json",
+      "relative_path": "MLEO-paper_default-1.json",
+      "sha256": "0eea439b1c3ca11b7479476fd5c5015d3b59892643ceb16901dbd171bc589aab",
+      "size_bytes": 5098
+    },
+    {
+      "kind": "run_json",
+      "relative_path": "RO-extreme-1.json",
+      "sha256": "5839df36edd1031530929658577227a13d0deeefd35eb3c6c25fe38bee70a24c",
+      "size_bytes": 4724
+    },
+    {
+      "kind": "run_json",
+      "relative_path": "RO-heavy-1.json",
+      "sha256": "913b5314b1297283ad26723560a018012d9a88f79633c0bcf095470d6156300c",
+      "size_bytes": 4712
+    },
+    {
+      "kind": "run_json",
+      "relative_path": "RO-moderate-1.json",
+      "sha256": "0f793fe071243df08be1fa1d8c904e824c3b6a68427f1f47d1fcc8cb31071d1d",
+      "size_bytes": 4730
+    },
+    {
+      "kind": "run_json",
+      "relative_path": "RO-paper_default-1.json",
+      "sha256": "27585fdb8abf900a77c56991d25b524bf294f852b9199345d29cbf6bb0775571",
+      "size_bytes": 4760
+    },
+    {
+      "kind": "run_json",
+      "relative_path": "VO-extreme-1.json",
+      "sha256": "0c7e3ae4bc77aedb880b1725ffc79d21c28bfc01ac5fb48f6efa70ce9351e2a6",
+      "size_bytes": 4690
+    },
+    {
+      "kind": "run_json",
+      "relative_path": "VO-heavy-1.json",
+      "sha256": "2a6cc03e0808cc029f2d23f6cd6679e9e91e69e525ac7acb86dd72cce9031aaa",
+      "size_bytes": 4678
+    },
+    {
+      "kind": "run_json",
+      "relative_path": "VO-moderate-1.json",
+      "sha256": "52b27e4186d04c45e82f19f65d17422b1eaf529dff4c4863be2e3531567da93c",
+      "size_bytes": 4696
+    },
+    {
+      "kind": "run_json",
+      "relative_path": "VO-paper_default-1.json",
+      "sha256": "1d26a53bc1e3f76354020e47a5fd2de40f51f354d991c3472abeab36cd9bace9",
+      "size_bytes": 4726
+    },
+    {
+      "kind": "summary_csv",
+      "relative_path": "matrix-summary.csv",
+      "sha256": "00588861b7a96aed5510b1ee4df6e8651e27186a9992be80d49ce996987de772",
+      "size_bytes": 1365
+    },
+    {
+      "kind": "trace",
+      "relative_path": "traces/extreme-1.json",
+      "sha256": "10e6037d573d927a9ba66ee7ca71249f5df5f9d6a86ecebdb924c1e8696bdb6b",
+      "size_bytes": 52737
+    },
+    {
+      "kind": "trace",
+      "relative_path": "traces/heavy-1.json",
+      "sha256": "c6f4a0f4ed14a3c6c54d741e62be1daa05581b9c6c96adf18a5fd5637baa89a7",
+      "size_bytes": 40237
+    },
+    {
+      "kind": "trace",
+      "relative_path": "traces/moderate-1.json",
+      "sha256": "047869a3d64c856c464d716988016ee9746837ab9efd2e3d1bd16cb00cc5986a",
+      "size_bytes": 28552
+    },
+    {
+      "kind": "trace",
+      "relative_path": "traces/paper_default-1.json",
+      "sha256": "2eeb2b1f237235ff262bebdb7bf28f327157d5396b7160617e2593650a4ad188",
+      "size_bytes": 28752
+    }
+  ],
+  "created_at": "2026-05-06T00:00:00+00:00",
+  "dependency_change_note": "No dependency files changed.",
+  "feature_name": "010-paper-result-reporting-and-reproducibility-artifacts",
+  "lifecycle_guardrail_note": "HoodieGymEnvironment remains lifecycle owner; artifact packaging is reporting-only.",
+  "policy_names": [
+    "ADAPTIVE",
+    "BCO",
+    "FLC",
+    "HO",
+    "MLEO",
+    "RO",
+    "VO"
+  ],
+  "scenario_names": [
+    "extreme",
+    "heavy",
+    "moderate",
+    "paper_default"
+  ],
+  "seeds": [
+    1
+  ],
+  "validation_summary": {
+    "discovered_run_json_files": 28,
+    "expected_runs": 28,
+    "matrix_summary_exists": true,
+    "missing_artifacts": [],
+    "passed": true
+  }
+}

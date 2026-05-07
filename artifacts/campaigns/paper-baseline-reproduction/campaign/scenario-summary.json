@@ -1,0 +1,42 @@
+[
+  {
+    "mean_average_delay": 11.085306122448978,
+    "mean_drop_ratio": 0.8118537935051696,
+    "result_count": 35,
+    "scenario_name": "extreme",
+    "total_completed_tasks": 715,
+    "total_dropped_tasks": 3085,
+    "total_tasks": 3800,
+    "total_throughput": 715
+  },
+  {
+    "mean_average_delay": 10.879591836734694,
+    "mean_drop_ratio": 0.8118537935051696,
+    "result_count": 35,
+    "scenario_name": "heavy",
+    "total_completed_tasks": 715,
+    "total_dropped_tasks": 3085,
+    "total_tasks": 3800,
+    "total_throughput": 715
+  },
+  {
+    "mean_average_delay": 10.951440940012368,
+    "mean_drop_ratio": 0.8044852191641182,
+    "result_count": 35,
+    "scenario_name": "moderate",
+    "total_completed_tasks": 743,
+    "total_dropped_tasks": 3057,
+    "total_tasks": 3800,
+    "total_throughput": 743
+  },
+  {
+    "mean_average_delay": 10.951440940012368,
+    "mean_drop_ratio": 0.8044852191641182,
+    "result_count": 35,
+    "scenario_name": "paper_default",
+    "total_completed_tasks": 743,
+    "total_dropped_tasks": 3057,
+    "total_tasks": 3800,
+    "total_throughput": 743
+  }
+]

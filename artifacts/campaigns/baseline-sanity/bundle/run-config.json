@@ -1,0 +1,25 @@
+{
+  "created_at_override": "2026-05-06T00:00:00+00:00",
+  "dependency_change_note": "No dependency files changed.",
+  "feature_name": "010-paper-result-reporting-and-reproducibility-artifacts",
+  "lifecycle_guardrail_note": "HoodieGymEnvironment remains lifecycle owner; artifact packaging is reporting-only.",
+  "matrix_output_dir": "artifacts/campaigns/baseline-sanity/matrix",
+  "policy_names": [
+    "ADAPTIVE",
+    "BCO",
+    "FLC",
+    "HO",
+    "MLEO",
+    "RO",
+    "VO"
+  ],
+  "scenario_names": [
+    "extreme",
+    "heavy",
+    "moderate",
+    "paper_default"
+  ],
+  "seeds": [
+    1
+  ]
+}

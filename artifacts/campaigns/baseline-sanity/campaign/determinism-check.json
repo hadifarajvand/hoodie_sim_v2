@@ -1,0 +1,15 @@
+{
+  "artifact_names": [
+    "README.md",
+    "campaign-manifest.json",
+    "campaign-summary.json",
+    "determinism-check.json",
+    "policy-summary.json",
+    "scenario-summary.json"
+  ],
+  "campaign_name": "baseline-sanity-campaign",
+  "deterministic_timestamp_used": true,
+  "discovered_runs": 28,
+  "expected_runs": 28,
+  "passed": true
+}
