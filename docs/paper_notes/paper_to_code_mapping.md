@@ -59,3 +59,10 @@
 - Policy differentiation analysis -> `src/analysis/campaign_audit.py`
 - Scenario differentiation analysis -> `src/analysis/campaign_audit.py`
 - Finalized-task accounting consistency checks -> `src/analysis/campaign_audit.py`
+
+## Baseline sensitivity analysis
+
+- Read-only sensitivity report generation -> `src/analysis/baseline_sensitivity.py`
+- Trace collapse analysis across scenarios and seeds -> `src/analysis/baseline_sensitivity.py`
+- Policy action and terminal outcome signature comparison -> `src/analysis/baseline_sensitivity.py`
+- Scenario sensitivity, saturation diagnosis, and accounting reconciliation -> `src/analysis/baseline_sensitivity.py`

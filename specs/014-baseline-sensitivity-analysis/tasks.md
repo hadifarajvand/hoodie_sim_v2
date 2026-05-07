@@ -7,8 +7,8 @@
 
 **Purpose**: Establish the read-only analysis skeleton and keep scope limited to committed artifact inspection.
 
-- [ ] T001 Create `src/analysis/baseline_sensitivity.py` with deterministic analyzer entry points and report data structures described in the plan
-- [ ] T002 Create `tests/unit/test_baseline_sensitivity.py` covering read-only artifact loading, deterministic ordering, and missing-artifact handling for sensitivity inputs
+- [X] T001 Create `src/analysis/baseline_sensitivity.py` with deterministic analyzer entry points and report data structures described in the plan
+- [X] T002 Create `tests/unit/test_baseline_sensitivity.py` covering read-only artifact loading, deterministic ordering, and missing-artifact handling for sensitivity inputs
 
 **Checkpoint**: The analyzer has a defined source file and a focused unit test surface.
 
@@ -16,10 +16,10 @@
 
 **Purpose**: Add the shared artifact loading and signature helpers that all sensitivity stories depend on.
 
-- [ ] T003 Implement artifact loading in `src/analysis/baseline_sensitivity.py` for campaign summaries, matrix per-run JSON, matrix-summary.csv, trace JSON, and optional audit-report.json inputs
-- [ ] T004 Implement deterministic artifact ordering and stable path normalization in `src/analysis/baseline_sensitivity.py`
-- [ ] T005 Implement helper routines in `src/analysis/baseline_sensitivity.py` for trace grouping by scenario and seed
-- [ ] T006 Implement helper routines in `src/analysis/baseline_sensitivity.py` for policy grouping and scenario grouping
+- [X] T003 Implement artifact loading in `src/analysis/baseline_sensitivity.py` for campaign summaries, matrix per-run JSON, matrix-summary.csv, trace JSON, and optional audit-report.json inputs
+- [X] T004 Implement deterministic artifact ordering and stable path normalization in `src/analysis/baseline_sensitivity.py`
+- [X] T005 Implement helper routines in `src/analysis/baseline_sensitivity.py` for trace grouping by scenario and seed
+- [X] T006 Implement helper routines in `src/analysis/baseline_sensitivity.py` for policy grouping and scenario grouping
 
 **Checkpoint**: The analyzer can load existing artifacts and derive stable grouped views without mutating inputs.
 
@@ -29,10 +29,10 @@
 
 **Independent Test**: Given the committed campaign artifacts, the analyzer reports trace identity, task-count differences, arrival-slot distribution differences, and task-size differences without rerunning the campaign.
 
-- [ ] T007 [US1] Implement trace comparison across scenario pairs and seeds in `src/analysis/baseline_sensitivity.py`
-- [ ] T008 [P] [US1] Add `tests/unit/test_baseline_sensitivity.py` coverage for identical trace detection and different trace detection
-- [ ] T009 [US1] Implement moderate vs paper_default trace comparison reporting in `src/analysis/baseline_sensitivity.py`
-- [ ] T010 [US1] Implement trace-level report classification in `src/analysis/baseline_sensitivity.py` for `trace_input_collapsed` and `insufficient_evidence`
+- [X] T007 [US1] Implement trace comparison across scenario pairs and seeds in `src/analysis/baseline_sensitivity.py`
+- [X] T008 [P] [US1] Add `tests/unit/test_baseline_sensitivity.py` coverage for identical trace detection and different trace detection
+- [X] T009 [US1] Implement moderate vs paper_default trace comparison reporting in `src/analysis/baseline_sensitivity.py`
+- [X] T010 [US1] Implement trace-level report classification in `src/analysis/baseline_sensitivity.py` for `trace_input_collapsed` and `insufficient_evidence`
 
 **Checkpoint**: The analyzer can prove whether trace inputs are collapsed or distinguishable.
 
@@ -42,11 +42,11 @@
 
 **Independent Test**: Given the committed campaign artifacts, the analyzer reports policy signatures and identifies identical or near-identical behavior without relying on simulator reruns.
 
-- [ ] T011 [US2] Implement policy action distribution analysis in `src/analysis/baseline_sensitivity.py`
-- [ ] T012 [US2] Implement terminal outcome distribution analysis in `src/analysis/baseline_sensitivity.py`
-- [ ] T013 [US2] Implement policy signature comparison in `src/analysis/baseline_sensitivity.py`
-- [ ] T014 [P] [US2] Extend `tests/unit/test_baseline_sensitivity.py` coverage for identical policy signature detection and near-identical outcome detection
-- [ ] T015 [US2] Implement policy-level report classification in `src/analysis/baseline_sensitivity.py` for `policy_behavior_collapsed`
+- [X] T011 [US2] Implement policy action distribution analysis in `src/analysis/baseline_sensitivity.py`
+- [X] T012 [US2] Implement terminal outcome distribution analysis in `src/analysis/baseline_sensitivity.py`
+- [X] T013 [US2] Implement policy signature comparison in `src/analysis/baseline_sensitivity.py`
+- [X] T014 [P] [US2] Extend `tests/unit/test_baseline_sensitivity.py` coverage for identical policy signature detection and near-identical outcome detection
+- [X] T015 [US2] Implement policy-level report classification in `src/analysis/baseline_sensitivity.py` for `policy_behavior_collapsed`
 
 **Checkpoint**: The analyzer can tell whether BCO/FLC/MLEO behave equivalently or only appear similar through aggregation.
 
@@ -56,11 +56,11 @@
 
 **Independent Test**: Given the committed campaign artifacts, the analyzer reports saturation signals, scenario output collapse, and accounting status deterministically.
 
-- [ ] T016 [US3] Implement scenario sensitivity comparison in `src/analysis/baseline_sensitivity.py` for throughput, drop ratio, average delay, and completed/dropped totals
-- [ ] T017 [US3] Implement saturation diagnosis in `src/analysis/baseline_sensitivity.py` using completed/dropped/total counts and delay patterns
-- [ ] T018 [P] [US3] Add `tests/integration/test_baseline_sensitivity_flow.py` covering a complete analysis against `artifacts/campaigns/paper-baseline-reproduction`
-- [ ] T019 [US3] Extend `tests/integration/test_baseline_sensitivity_flow.py` to verify accounting remains clean and existing artifacts are not modified
-- [ ] T020 [US3] Implement report classification in `src/analysis/baseline_sensitivity.py` for `scenario_output_collapsed`, `saturation_dominant`, and `accounting_clean`
+- [X] T016 [US3] Implement scenario sensitivity comparison in `src/analysis/baseline_sensitivity.py` for throughput, drop ratio, average delay, and completed/dropped totals
+- [X] T017 [US3] Implement saturation diagnosis in `src/analysis/baseline_sensitivity.py` using completed/dropped/total counts and delay patterns
+- [X] T018 [P] [US3] Add `tests/integration/test_baseline_sensitivity_flow.py` covering a complete analysis against `artifacts/campaigns/paper-baseline-reproduction`
+- [X] T019 [US3] Extend `tests/integration/test_baseline_sensitivity_flow.py` to verify accounting remains clean and existing artifacts are not modified
+- [X] T020 [US3] Implement report classification in `src/analysis/baseline_sensitivity.py` for `scenario_output_collapsed`, `saturation_dominant`, and `accounting_clean`
 
 **Checkpoint**: The analyzer can explain whether saturation or masking is dominating the observed collapse.
 
@@ -68,10 +68,12 @@
 
 **Purpose**: Keep the analyzer deterministic, documented, and aligned with the paper-to-code mapping.
 
-- [ ] T021 Update `docs/paper_notes/paper_to_code_mapping.md` with the sensitivity-analysis-to-artifact-inspection mapping
-- [ ] T022 Update `docs/assumptions/hoodie_assumptions.md` only if the analysis introduces a new assumption about sensitivity thresholds or diagnostic interpretation
-- [ ] T023 Verify `src/analysis/baseline_sensitivity.py` does not mutate input artifacts and preserves deterministic output ordering
-- [ ] T024 Run unit and integration validation for the baseline sensitivity analysis feature
+- [X] T021 Update `docs/paper_notes/paper_to_code_mapping.md` with the sensitivity-analysis-to-artifact-inspection mapping
+- [X] T022 Update `docs/assumptions/hoodie_assumptions.md` only if the analysis introduces a new assumption about sensitivity thresholds or diagnostic interpretation (no new assumption introduced; no edit needed)
+- [X] T023 Verify `src/analysis/baseline_sensitivity.py` does not mutate input artifacts and preserves deterministic output ordering
+- [X] T024 Verify no forbidden paths were changed: `src/environment/*`, `src/policies/*`, `src/evaluation/metrics.py`, `src/training/*`, `src/agents/*`, and dependency/packaging files
+- [X] T025 Verify sensitivity report outputs are written only to a caller-provided analysis output directory and do not mutate existing campaign artifacts
+- [X] T026 Run unit and integration validation for the baseline sensitivity analysis feature
 
 **Checkpoint**: Analysis reporting is complete, reproducible, and documented.
 
@@ -119,4 +121,3 @@
 2. One developer handles trace comparison and unit coverage
 3. One developer handles policy/saturation diagnostics and integration coverage
 4. One developer handles documentation and validation checks
-
