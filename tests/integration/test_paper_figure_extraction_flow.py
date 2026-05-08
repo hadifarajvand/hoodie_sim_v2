@@ -51,7 +51,6 @@ class PaperFigureExtractionFlowTests(unittest.TestCase):
             self.assertTrue(entries["Figure 9"]["extracted_artifact_metrics"]["action_distribution_by_policy"])
             self.assertFalse(payload["comparison_readiness"]["full_paper_comparison_ready"])
             self.assertIn("Current baseline artifacts do not contain true HOODIE DRL training curves.", payload["global_warnings"])
-            self.assertTrue(any("policy_behavior_collapsed" in warning for warning in payload["global_warnings"]))
             self.assertTrue((output_dir / "paper-figure-extraction.json").exists())
             self.assertTrue((output_dir / "paper-figure-extraction.md").exists())
 

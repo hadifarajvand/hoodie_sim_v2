@@ -67,6 +67,10 @@ class PaperFigureExtractionTests(unittest.TestCase):
             figure_ids = [entry["figure_id"] for entry in report["figure_entries"]]
             self.assertEqual(figure_ids, ["Figure 7", "Figure 8", "Figure 9", "Figure 10", "Figure 11"])
             self.assertTrue(all(entry["paper_ocr_evidence"] for entry in report["figure_entries"]))
+            figure7 = next(entry for entry in report["figure_entries"] if entry["figure_id"] == "Figure 7")
+            self.assertIn("observed_trace_file_count", figure7["extracted_artifact_metrics"])
+            self.assertIn("Trace file count does not validate EA topology size.", figure7["caveats"])
+            self.assertNotIn("observed_trace_count", figure7["extracted_artifact_metrics"])
 
     def test_unsupported_training_and_lstm_figures_when_artifacts_absent(self) -> None:
         with tempfile.TemporaryDirectory() as tmpdir:

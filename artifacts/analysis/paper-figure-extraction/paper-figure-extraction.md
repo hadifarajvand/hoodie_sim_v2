@@ -27,11 +27,6 @@
 - Do not claim paper reproduction validity from this scaffold.
 - high_drop_ratio
 - identical_policy_signature
-- near_identical_outcome_behavior
-- policy_behavior_collapsed
-- saturation_dominant
-- scenario_output_collapsed
-- trace_comparison_status:different_count,same_count_but_different_slots
 - weak_scenario_differentiation
 
 ## Unsupported Requirements
@@ -61,11 +56,12 @@
       "trace_metadata_available": true
     },
     "caveats": [
-      "EA count is supported by OCR metadata, but no committed artifact explicitly encodes graph edges."
+      "EA count is supported by OCR metadata, but no committed artifact explicitly encodes graph edges.",
+      "Trace file count does not validate EA topology size."
     ],
     "comparison_ready": false,
     "extracted_artifact_metrics": {
-      "observed_trace_count": 20
+      "observed_trace_file_count": 20
     },
     "figure_id": "Figure 7",
     "missing_artifacts": [

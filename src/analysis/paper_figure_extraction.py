@@ -372,9 +372,12 @@ class PaperFigureExtractor:
                 paper_caption_supported_metadata={"ea_count": 20, "matrix_name": "G"},
                 paper_numeric_target_data={"available": False, "missing": ["topology_adjacency_edges"]},
                 artifact_backed_reproduction_data={"trace_metadata_available": bool(trace_meta)},
-                extracted_artifact_metrics={"observed_trace_count": len(trace_meta)},
+                extracted_artifact_metrics={"observed_trace_file_count": len(trace_meta)},
                 missing_artifacts=["topology_adjacency_edges"],
-                caveats=["EA count is supported by OCR metadata, but no committed artifact explicitly encodes graph edges."],
+                caveats=[
+                    "EA count is supported by OCR metadata, but no committed artifact explicitly encodes graph edges.",
+                    "Trace file count does not validate EA topology size.",
+                ],
                 source_artifacts=ea_counts[:10],
             )
         if figure_id == "Figure 8":
@@ -558,4 +561,3 @@ class PaperFigureExtractor:
         json_path.write_text(_json_dump(report.to_dict()), encoding="utf-8")
         md_path.write_text(self.render_markdown(report), encoding="utf-8")
         return {"paper-figure-extraction.json": json_path, "paper-figure-extraction.md": md_path}
-
