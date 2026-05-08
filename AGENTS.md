@@ -1,7 +1,7 @@
 <!-- SPECKIT START -->
 For additional context about technologies to be used, project structure,
 shell commands, and other important information, read
-`specs/013-campaign-result-sanity-audit/plan.md`
+`specs/014-baseline-sensitivity-analysis/plan.md`
 <!-- SPECKIT END -->
 
 ## External Reference Usage
