@@ -66,3 +66,11 @@
 - Trace collapse analysis across scenarios and seeds -> `src/analysis/baseline_sensitivity.py`
 - Policy action and terminal outcome signature comparison -> `src/analysis/baseline_sensitivity.py`
 - Scenario sensitivity, saturation diagnosis, and accounting reconciliation -> `src/analysis/baseline_sensitivity.py`
+
+## Paper figure artifact extraction
+
+- Paper OCR figure evidence extraction -> `src/analysis/paper_figure_extraction.py`
+- Figure 7-11 artifact support classification -> `src/analysis/paper_figure_extraction.py`
+- Figure 9 action distribution extraction from matrix records -> `src/analysis/paper_figure_extraction.py`
+- Figure 10 delay and drop-ratio baseline metric extraction -> `src/analysis/paper_figure_extraction.py`
+- Unsupported training, sweep, topology, and LSTM artifact gap reporting -> `src/analysis/paper_figure_extraction.py`
