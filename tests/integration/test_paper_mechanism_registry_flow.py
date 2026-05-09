@@ -50,11 +50,18 @@ class PaperMechanismRegistryFlowTests(unittest.TestCase):
             self.assertEqual(len(report1.mechanism_entries), 25)
             self.assertEqual(len(report2.mechanism_entries), 25)
             self.assertEqual([entry.category for entry in report1.mechanism_entries], [entry.category for entry in report2.mechanism_entries])
+            self.assertNotEqual(report1.implementation_gap_summary["implemented"], 23)
+            self.assertEqual(report1.implementation_gap_summary["paper_validated"], 0)
+            self.assertGreater(report1.implementation_gap_summary["mapped_but_unvalidated"], 0)
+            self.assertGreater(report1.implementation_gap_summary["partially_implemented"], 0)
 
             payload = json1.read_text(encoding="utf-8")
             self.assertIn('"registry_version": "016"', payload)
             self.assertIn('"read_only": true', payload)
             self.assertIn('"behavior_changes": false', payload)
+            self.assertIn('"mapped_in_project"', payload)
+            self.assertIn('"mapped_but_unvalidated"', payload)
+            self.assertIn('"paper_validated"', payload)
             self.assertIn('"system_topology"', payload)
             self.assertIn('"reward_definition"', payload)
             self.assertIn('"timeout_and_drop"', payload)
@@ -78,8 +85,22 @@ class PaperMechanismRegistryFlowTests(unittest.TestCase):
             self.assertEqual(reward.assumption_risk, "blocking")
             self.assertEqual(timeout.assumption_risk, "blocking")
             self.assertIn(training.implementation_status, {"unknown", "partially_implemented"})
+            for category in (
+                "system_topology",
+                "horizontal_offloading",
+                "link_data_rates",
+                "transmission_delay",
+                "computation_delay",
+                "timeout_and_drop",
+                "reward_definition",
+                "state_representation",
+                "load_forecasting_or_lstm_input",
+                "dqn_double_dueling_lstm_training",
+                "training_episode_protocol",
+                "validation_episode_protocol",
+            ):
+                self.assertNotEqual(next(entry for entry in report.mechanism_entries if entry.category == category).implementation_status, "implemented")
 
 
 if __name__ == "__main__":  # pragma: no cover
     unittest.main()
-

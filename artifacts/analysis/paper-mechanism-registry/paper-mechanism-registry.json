@@ -56,15 +56,18 @@
   ],
   "implementation_gap_summary": {
     "ambiguous": 0,
-    "assumption_backed": 0,
+    "assumption_backed": 4,
     "documented": 22,
-    "implemented": 23,
+    "implemented": 13,
+    "mapped_but_unvalidated": 25,
+    "mapped_in_project": 25,
     "missing": 0,
     "not_implemented": 0,
+    "paper_validated": 0,
     "partially_documented": 3,
-    "partially_implemented": 0,
+    "partially_implemented": 7,
     "total_entries": 25,
-    "unknown": 2
+    "unknown": 1
   },
   "input_sources": {
     "paper_ocr": "/Users/hadi/Documents/GitHub/hoodie_sim_v2/resources/papers/hoodie/ocr/merged.tex",
@@ -96,7 +99,7 @@
         "Structured adjacency artifact is absent from the repository.",
         "Topology evidence is conceptual rather than encoded as a reusable registry artifact."
       ],
-      "implementation_status": "implemented",
+      "implementation_status": "partially_implemented",
       "mechanism_id": "M001",
       "mechanism_name": "System Topology",
       "missing_details": [
@@ -249,7 +252,7 @@
       "implementation_gaps": [
         "Need adjacency-backed validation before horizontal routing can be treated as fully proven."
       ],
-      "implementation_status": "implemented",
+      "implementation_status": "partially_implemented",
       "mechanism_id": "M005",
       "mechanism_name": "Horizontal Offloading",
       "missing_details": [
@@ -552,7 +555,7 @@
       "implementation_gaps": [
         "Need adjacency-backed validation to connect data rates to specific link pairs."
       ],
-      "implementation_status": "implemented",
+      "implementation_status": "partially_implemented",
       "mechanism_id": "M013",
       "mechanism_name": "Link Data Rates",
       "missing_details": [
@@ -590,7 +593,7 @@
       "implementation_gaps": [
         "Need explicit formula recovery before a strict paper-faithful check can be made."
       ],
-      "implementation_status": "implemented",
+      "implementation_status": "assumption_backed",
       "mechanism_id": "M014",
       "mechanism_name": "Transmission Delay",
       "missing_details": [
@@ -629,7 +632,7 @@
       "implementation_gaps": [
         "Need formula-level tracing before asserting exact paper-faithful delay math."
       ],
-      "implementation_status": "implemented",
+      "implementation_status": "assumption_backed",
       "mechanism_id": "M015",
       "mechanism_name": "Computation Delay",
       "missing_details": [
@@ -668,7 +671,7 @@
       "implementation_gaps": [
         "Need careful validation against traces because timeout/drop strongly affects audit findings and fairness."
       ],
-      "implementation_status": "implemented",
+      "implementation_status": "partially_implemented",
       "mechanism_id": "M016",
       "mechanism_name": "Timeout and Drop",
       "missing_details": [
@@ -706,7 +709,7 @@
       "implementation_gaps": [
         "Reward formula validation should be tied back to the OCR equations before any repair work is attempted."
       ],
-      "implementation_status": "implemented",
+      "implementation_status": "assumption_backed",
       "mechanism_id": "M017",
       "mechanism_name": "Reward Definition",
       "missing_details": [
@@ -744,7 +747,7 @@
       "implementation_gaps": [
         "Need a reference kernel to check that the state layout matches the paper semantics."
       ],
-      "implementation_status": "implemented",
+      "implementation_status": "partially_implemented",
       "mechanism_id": "M018",
       "mechanism_name": "State Representation",
       "missing_details": [
@@ -782,7 +785,7 @@
       "implementation_gaps": [
         "No committed proof here that the forecast pipeline matches the paper's intended input shape."
       ],
-      "implementation_status": "unknown",
+      "implementation_status": "assumption_backed",
       "mechanism_id": "M019",
       "mechanism_name": "Load Forecasting or LSTM Input",
       "missing_details": [
@@ -861,7 +864,7 @@
       "implementation_gaps": [
         "Need validation against training logs if episode protocol fidelity becomes relevant."
       ],
-      "implementation_status": "implemented",
+      "implementation_status": "partially_implemented",
       "mechanism_id": "M021",
       "mechanism_name": "Training Episode Protocol",
       "missing_details": [
@@ -899,7 +902,7 @@
       "implementation_gaps": [
         "Validation protocol should be checked against audit and sensitivity outputs if needed."
       ],
-      "implementation_status": "implemented",
+      "implementation_status": "partially_implemented",
       "mechanism_id": "M022",
       "mechanism_name": "Validation Episode Protocol",
       "missing_details": [

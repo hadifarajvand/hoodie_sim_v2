@@ -27,7 +27,7 @@ Read-only warning: this registry is analysis-only and does not change simulator 
 ### M001 - System Topology
 - Category: `system_topology`
 - Paper Status: `partially_documented`
-- Implementation Status: `implemented`
+- Implementation Status: `partially_implemented`
 - Assumption Risk: `blocking`
 - Next Action: `requires_reference_kernel`
 - Expected Behavior: A multi-server edge topology is defined with an adjacency matrix G over edge agents and cloud connectivity.
@@ -75,7 +75,7 @@ Read-only warning: this registry is analysis-only and does not change simulator 
 ### M005 - Horizontal Offloading
 - Category: `horizontal_offloading`
 - Paper Status: `documented`
-- Implementation Status: `implemented`
+- Implementation Status: `partially_implemented`
 - Assumption Risk: `high`
 - Next Action: `requires_reference_kernel`
 - Expected Behavior: Tasks can be offloaded from one EA to a neighboring EA through the horizontal link and processed via a public queue.
@@ -171,7 +171,7 @@ Read-only warning: this registry is analysis-only and does not change simulator 
 ### M013 - Link Data Rates
 - Category: `link_data_rates`
 - Paper Status: `documented`
-- Implementation Status: `implemented`
+- Implementation Status: `partially_implemented`
 - Assumption Risk: `high`
 - Next Action: `requires_reference_kernel`
 - Expected Behavior: Horizontal and vertical links use distinct data rates that influence offloading delay.
@@ -183,7 +183,7 @@ Read-only warning: this registry is analysis-only and does not change simulator 
 ### M014 - Transmission Delay
 - Category: `transmission_delay`
 - Paper Status: `partially_documented`
-- Implementation Status: `implemented`
+- Implementation Status: `assumption_backed`
 - Assumption Risk: `medium`
 - Next Action: `recover_from_paper`
 - Expected Behavior: Transmission delay arises from moving tasks across horizontal or vertical links and should depend on task size and link rate.
@@ -195,7 +195,7 @@ Read-only warning: this registry is analysis-only and does not change simulator 
 ### M015 - Computation Delay
 - Category: `computation_delay`
 - Paper Status: `partially_documented`
-- Implementation Status: `implemented`
+- Implementation Status: `assumption_backed`
 - Assumption Risk: `medium`
 - Next Action: `recover_from_paper`
 - Expected Behavior: Computation delay reflects processing time for local, public, and cloud execution paths.
@@ -207,7 +207,7 @@ Read-only warning: this registry is analysis-only and does not change simulator 
 ### M016 - Timeout and Drop
 - Category: `timeout_and_drop`
 - Paper Status: `documented`
-- Implementation Status: `implemented`
+- Implementation Status: `partially_implemented`
 - Assumption Risk: `blocking`
 - Next Action: `requires_reference_kernel`
 - Expected Behavior: Tasks that miss their deadlines are dropped, and timeout values constrain how long they may remain in the system.
@@ -219,7 +219,7 @@ Read-only warning: this registry is analysis-only and does not change simulator 
 ### M017 - Reward Definition
 - Category: `reward_definition`
 - Paper Status: `documented`
-- Implementation Status: `implemented`
+- Implementation Status: `assumption_backed`
 - Assumption Risk: `blocking`
 - Next Action: `requires_reference_kernel`
 - Expected Behavior: Reward combines delayed-task completion value and drop penalties, and is only emitted on terminal outcomes.
@@ -231,7 +231,7 @@ Read-only warning: this registry is analysis-only and does not change simulator 
 ### M018 - State Representation
 - Category: `state_representation`
 - Paper Status: `documented`
-- Implementation Status: `implemented`
+- Implementation Status: `partially_implemented`
 - Assumption Risk: `medium`
 - Next Action: `inspect_source`
 - Expected Behavior: The state combines local task features with load-history and forecast information from the CEC environment.
@@ -243,7 +243,7 @@ Read-only warning: this registry is analysis-only and does not change simulator 
 ### M019 - Load Forecasting or LSTM Input
 - Category: `load_forecasting_or_lstm_input`
 - Paper Status: `documented`
-- Implementation Status: `unknown`
+- Implementation Status: `assumption_backed`
 - Assumption Risk: `high`
 - Next Action: `requires_reference_kernel`
 - Expected Behavior: The DRL agents consume load-history information and LSTM-based forecasts to anticipate upcoming demand.
@@ -267,7 +267,7 @@ Read-only warning: this registry is analysis-only and does not change simulator 
 ### M021 - Training Episode Protocol
 - Category: `training_episode_protocol`
 - Paper Status: `documented`
-- Implementation Status: `implemented`
+- Implementation Status: `partially_implemented`
 - Assumption Risk: `medium`
 - Next Action: `keep`
 - Expected Behavior: Training runs over 5000 episodes with a fixed episode horizon and queue-emptying tail slots.
@@ -279,7 +279,7 @@ Read-only warning: this registry is analysis-only and does not change simulator 
 ### M022 - Validation Episode Protocol
 - Category: `validation_episode_protocol`
 - Paper Status: `documented`
-- Implementation Status: `implemented`
+- Implementation Status: `partially_implemented`
 - Assumption Risk: `medium`
 - Next Action: `keep`
 - Expected Behavior: Validation uses trained Q-models over 200 episodes with exploitative actions.
@@ -330,11 +330,14 @@ Read-only warning: this registry is analysis-only and does not change simulator 
 - partially_documented: 3
 - ambiguous: 0
 - missing: 0
-- implemented: 23
-- partially_implemented: 0
-- assumption_backed: 0
-- unknown: 2
+- implemented: 13
+- partially_implemented: 7
+- assumption_backed: 4
+- unknown: 1
 - not_implemented: 0
+- mapped_in_project: 25
+- mapped_but_unvalidated: 25
+- paper_validated: 0
 - total_entries: 25
 
 Recommended next feature: `reference_task_lifecycle_kernel`

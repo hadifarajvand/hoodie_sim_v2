@@ -239,7 +239,7 @@ class PaperMechanismRegistryBuilder:
                 mechanism_name="System Topology",
                 category="system_topology",
                 paper_status="partially_documented",
-                implementation_status="implemented",
+                implementation_status="partially_implemented",
                 assumption_risk="blocking",
                 patterns=[
                     r"multi-server topology graph",
@@ -310,7 +310,7 @@ class PaperMechanismRegistryBuilder:
                 mechanism_name="Horizontal Offloading",
                 category="horizontal_offloading",
                 paper_status="documented",
-                implementation_status="implemented",
+                implementation_status="partially_implemented",
                 assumption_risk="high",
                 patterns=[r"horizontal offloading", r"offload to another edge node", r"horizontal data rate", r"public queue"],
                 expected_mechanism_behavior="Tasks can be offloaded from one EA to a neighboring EA through the horizontal link and processed via a public queue.",
@@ -431,7 +431,7 @@ class PaperMechanismRegistryBuilder:
                 mechanism_name="Link Data Rates",
                 category="link_data_rates",
                 paper_status="documented",
-                implementation_status="implemented",
+                implementation_status="partially_implemented",
                 assumption_risk="high",
                 patterns=[r"Horizontal Data Rate", r"Vertical Data Rate", r"Data rate between EA n and node k", r"Mbps"],
                 expected_mechanism_behavior="Horizontal and vertical links use distinct data rates that influence offloading delay.",
@@ -446,7 +446,7 @@ class PaperMechanismRegistryBuilder:
                 mechanism_name="Transmission Delay",
                 category="transmission_delay",
                 paper_status="partially_documented",
-                implementation_status="implemented",
+                implementation_status="assumption_backed",
                 assumption_risk="medium",
                 patterns=[r"offloading delay", r"data rate between EA n and node k", r"vertical offloading", r"horizontal offloading"],
                 expected_mechanism_behavior="Transmission delay arises from moving tasks across horizontal or vertical links and should depend on task size and link rate.",
@@ -461,7 +461,7 @@ class PaperMechanismRegistryBuilder:
                 mechanism_name="Computation Delay",
                 category="computation_delay",
                 paper_status="partially_documented",
-                implementation_status="implemented",
+                implementation_status="assumption_backed",
                 assumption_risk="medium",
                 patterns=[r"average task processing delays", r"task completion delay", r"completion time slot", r"processing density"],
                 expected_mechanism_behavior="Computation delay reflects processing time for local, public, and cloud execution paths.",
@@ -476,7 +476,7 @@ class PaperMechanismRegistryBuilder:
                 mechanism_name="Timeout and Drop",
                 category="timeout_and_drop",
                 paper_status="documented",
-                implementation_status="implemented",
+                implementation_status="partially_implemented",
                 assumption_risk="blocking",
                 patterns=[r"task timeout", r"dropped entirely when deadlines are missed", r"drop ratio", r"deadline violations"],
                 expected_mechanism_behavior="Tasks that miss their deadlines are dropped, and timeout values constrain how long they may remain in the system.",
@@ -491,7 +491,7 @@ class PaperMechanismRegistryBuilder:
                 mechanism_name="Reward Definition",
                 category="reward_definition",
                 paper_status="documented",
-                implementation_status="implemented",
+                implementation_status="assumption_backed",
                 assumption_risk="blocking",
                 patterns=[r"cumulative reward, as defined in \(20\) and \(24\)", r"task delay is considered a negative metric", r"Task Drop Penalty", r"reward curves are negative"],
                 expected_mechanism_behavior="Reward combines delayed-task completion value and drop penalties, and is only emitted on terminal outcomes.",
@@ -507,7 +507,7 @@ class PaperMechanismRegistryBuilder:
                 mechanism_name="State Representation",
                 category="state_representation",
                 paper_status="documented",
-                implementation_status="implemented",
+                implementation_status="partially_implemented",
                 assumption_risk="medium",
                 patterns=[r"local task features and forecasts about the upcoming load", r"Historical load matrix", r"Public queues length", r"state input"],
                 expected_mechanism_behavior="The state combines local task features with load-history and forecast information from the CEC environment.",
@@ -522,7 +522,7 @@ class PaperMechanismRegistryBuilder:
                 mechanism_name="Load Forecasting or LSTM Input",
                 category="load_forecasting_or_lstm_input",
                 paper_status="documented",
-                implementation_status="unknown",
+                implementation_status="assumption_backed",
                 assumption_risk="high",
                 patterns=[r"forecasts about the upcoming load", r"Historical load matrix", r"LSTM lookback window", r"load history"],
                 expected_mechanism_behavior="The DRL agents consume load-history information and LSTM-based forecasts to anticipate upcoming demand.",
@@ -553,7 +553,7 @@ class PaperMechanismRegistryBuilder:
                 mechanism_name="Training Episode Protocol",
                 category="training_episode_protocol",
                 paper_status="documented",
-                implementation_status="implemented",
+                implementation_status="partially_implemented",
                 assumption_risk="medium",
                 patterns=[r"5000 episodes", r"number of time slots per episode", r"first 100 slots", r"last 10 slots", r"training phase"],
                 expected_mechanism_behavior="Training runs over 5000 episodes with a fixed episode horizon and queue-emptying tail slots.",
@@ -568,7 +568,7 @@ class PaperMechanismRegistryBuilder:
                 mechanism_name="Validation Episode Protocol",
                 category="validation_episode_protocol",
                 paper_status="documented",
-                implementation_status="implemented",
+                implementation_status="partially_implemented",
                 assumption_risk="medium",
                 patterns=[r"200 validation episodes", r"exploitative actions", r"validation episodes"],
                 expected_mechanism_behavior="Validation uses trained Q-models over 200 episodes with exploitative actions.",
@@ -683,6 +683,9 @@ class PaperMechanismRegistryBuilder:
         return assumptions
 
     def _gap_summary(self, entries: list[MechanismEntry]) -> dict[str, object]:
+        mapped_in_project = sum(1 for entry in entries if entry.current_project_mapping.get("module_paths"))
+        paper_validated = 0
+        mapped_but_unvalidated = mapped_in_project - paper_validated
         return {
             "documented": sum(1 for entry in entries if entry.paper_status == "documented"),
             "partially_documented": sum(1 for entry in entries if entry.paper_status == "partially_documented"),
@@ -693,6 +696,9 @@ class PaperMechanismRegistryBuilder:
             "assumption_backed": sum(1 for entry in entries if entry.implementation_status == "assumption_backed"),
             "unknown": sum(1 for entry in entries if entry.implementation_status == "unknown"),
             "not_implemented": sum(1 for entry in entries if entry.implementation_status == "not_implemented"),
+            "mapped_in_project": mapped_in_project,
+            "mapped_but_unvalidated": mapped_but_unvalidated,
+            "paper_validated": paper_validated,
             "total_entries": len(entries),
         }
 

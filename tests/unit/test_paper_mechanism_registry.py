@@ -25,6 +25,10 @@ class PaperMechanismRegistryTests(unittest.TestCase):
             self.assertTrue(report.read_only)
             self.assertFalse(report.behavior_changes)
             self.assertEqual(report.registry_version, "016")
+            self.assertNotEqual(report.implementation_gap_summary["implemented"], 23)
+            self.assertEqual(report.implementation_gap_summary["paper_validated"], 0)
+            self.assertGreater(report.implementation_gap_summary["mapped_but_unvalidated"], 0)
+            self.assertGreater(report.implementation_gap_summary["partially_implemented"], 0)
 
     def test_missing_evidence_is_marked_missing_not_invented(self) -> None:
         with tempfile.TemporaryDirectory() as tmp:
@@ -72,6 +76,21 @@ class PaperMechanismRegistryTests(unittest.TestCase):
             timeout = next(entry for entry in report.mechanism_entries if entry.category == "timeout_and_drop")
             self.assertEqual(reward.assumption_risk, "blocking")
             self.assertEqual(timeout.assumption_risk, "blocking")
+            for category in (
+                "system_topology",
+                "horizontal_offloading",
+                "link_data_rates",
+                "transmission_delay",
+                "computation_delay",
+                "timeout_and_drop",
+                "reward_definition",
+                "state_representation",
+                "load_forecasting_or_lstm_input",
+                "dqn_double_dueling_lstm_training",
+                "training_episode_protocol",
+                "validation_episode_protocol",
+            ):
+                self.assertNotEqual(next(entry for entry in report.mechanism_entries if entry.category == category).implementation_status, "implemented")
 
     def test_output_ordering_is_deterministic(self) -> None:
         with tempfile.TemporaryDirectory() as tmp:
@@ -98,4 +117,3 @@ class PaperMechanismRegistryTests(unittest.TestCase):
 
 if __name__ == "__main__":  # pragma: no cover
     unittest.main()
-
