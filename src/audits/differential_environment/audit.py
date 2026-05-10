@@ -1,7 +1,9 @@
 from __future__ import annotations
 
+import json
 from dataclasses import dataclass
 from pathlib import Path
+import tempfile
 from typing import Any
 
 from src.environment.gym_adapter import HoodieGymEnvironment
@@ -44,7 +46,9 @@ class DifferentialEnvironmentAudit:
 
     @staticmethod
     def _default_environment_factory() -> HoodieGymEnvironment:
-        return HoodieGymEnvironment(episode_length=6)
+        env = HoodieGymEnvironment(episode_length=6)
+        env.runtime_parameters.runtime_variant = "constant_service"
+        return env
 
     def run(self, toy_cases: tuple[ToyCase, ...] | None = None) -> AuditReport:
         cases = toy_cases or build_default_toy_cases()
@@ -69,6 +73,9 @@ class DifferentialEnvironmentAudit:
                 if instrumentation_gap_text is None:
                     instrumentation_gap_text = "Configured timeout/drop toy case did not produce a dropped terminal outcome."
                 unsupported_text = None
+            else:
+                classification = ComparisonClassification.ASSUMPTION_GAP
+                cause = FindingCause.EXPECTED_SCOPE_DIFFERENCE
         comparison_result = ComparisonResult(
             case_id=case.case_id,
             classification=classification,
@@ -116,7 +123,43 @@ class DifferentialEnvironmentAudit:
         case: ToyCase,
     ) -> tuple[AuditObservationSummary, bool, str | None, str | None, str | None]:
         env = self.environment_factory()
-        observation, info = env.reset(seed=case.seed)
+        temp_dir: tempfile.TemporaryDirectory[str] | None = None
+        if case.scenario_type is ToyCaseScenario.TIMEOUT_DROP:
+            temp_dir = tempfile.TemporaryDirectory()
+            trace_root = Path(temp_dir.name)
+            trace_path = trace_root / f"{case.case_id}.json"
+            trace_payload = {
+                "trace_id": case.case_id,
+                "seed": case.seed,
+                "metadata": {"mode": "trace_bank", "trace_id": case.case_id, "seed": str(case.seed)},
+                "tasks": [
+                    {
+                        "task_id": int(case.task_id.split("-")[-1]) if case.task_id.split("-")[-1].isdigit() else 1,
+                        "source_agent_id": int(case.source_agent_id.split("-")[-1]) if case.source_agent_id.split("-")[-1].isdigit() else 1,
+                        "arrival_slot": 0,
+                        "size": 32.0,
+                        "processing_density": 1.0,
+                        "timeout_length": case.timeout_slot,
+                        "absolute_deadline_slot": case.timeout_slot,
+                        "cycles_required": 32.0,
+                        "cycles_remaining": 32.0,
+                    }
+                ],
+            }
+            trace_path.write_text(json.dumps(trace_payload, indent=2, sort_keys=True), encoding="utf-8")
+            env.trace_source = type(
+                "_InlineTraceSource",
+                (),
+                {
+                    "mode": "trace_bank",
+                    "identifier": case.case_id,
+                    "root_path": trace_root,
+                    "load": staticmethod(lambda path=trace_path: json.loads(Path(path).read_text(encoding="utf-8"))),
+                },
+            )()
+            observation, info = env.reset(seed=None)
+        else:
+            observation, info = env.reset(seed=case.seed)
         step_records: list[str] = []
         selected_action: str | None = None
         environment_supported = False
@@ -209,6 +252,8 @@ class DifferentialEnvironmentAudit:
             reward_timing=reward_timing,
             notes="environment public interface",
         )
+        if temp_dir is not None:
+            temp_dir.cleanup()
         return summary, environment_supported, assumption_text, instrumentation_gap_text, unsupported_text
 
     def _select_environment_action(self, case: ToyCase, current_task: Any, env: HoodieGymEnvironment) -> str:

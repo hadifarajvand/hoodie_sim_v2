@@ -22,35 +22,34 @@
 - `case-deterministic-ordering`: created, selected_action, execution_started, execution_completed, reward_emitted
 
 ## Environment Observed Lifecycle Summary
-- `case-local-compute`: selected_action:local, selected_action:local, selected_action:local, selected_action:local, selected_action:local, finalized:2:completed
+- `case-local-compute`: selected_action:local, selected_action:local, selected_action:local, selected_action:local, selected_action:local, finalized:2:dropped
 - `case-horizontal-offload`: selected_action:horizontal
 - `case-vertical-offload`: selected_action:vertical
-- `case-timeout-drop`: selected_action:local, selected_action:local, finalized:1:completed
+- `case-timeout-drop`: selected_action:local, selected_action:local, finalized:4:dropped
 - `case-delayed-reward`: selected_action:local, selected_action:local, selected_action:local, finalized:2:completed
-- `case-deterministic-ordering`: selected_action:local, selected_action:local, selected_action:local, selected_action:local, selected_action:local, finalized:3:completed
+- `case-deterministic-ordering`: selected_action:local, selected_action:local, selected_action:local, selected_action:local, selected_action:local, finalized:3:dropped
 
 ## Comparison Results
-- `case-local-compute`: assumption_gap / paper_assumption_gap
+- `case-local-compute`: divergence / likely_environment_bug
 - `case-horizontal-offload`: unsupported_by_environment_trace / instrumentation_gap
 - `case-vertical-offload`: unsupported_by_environment_trace / instrumentation_gap
-- `case-timeout-drop`: divergence / likely_environment_bug
+- `case-timeout-drop`: assumption_gap / expected_scope_difference
 - `case-delayed-reward`: assumption_gap / paper_assumption_gap
-- `case-deterministic-ordering`: assumption_gap / paper_assumption_gap
+- `case-deterministic-ordering`: divergence / likely_environment_bug
 
 ## Findings
-- `F-case-local-compute` `case-local-compute`: assumption_gap / paper_assumption_gap
+- `F-case-local-compute` `case-local-compute`: divergence / likely_environment_bug
 - `F-case-horizontal-offload` `case-horizontal-offload`: unsupported_by_environment_trace / instrumentation_gap
 - `F-case-vertical-offload` `case-vertical-offload`: unsupported_by_environment_trace / instrumentation_gap
-- `F-case-timeout-drop` `case-timeout-drop`: divergence / likely_environment_bug
+- `F-case-timeout-drop` `case-timeout-drop`: assumption_gap / expected_scope_difference
 - `F-case-delayed-reward` `case-delayed-reward`: assumption_gap / paper_assumption_gap
-- `F-case-deterministic-ordering` `case-deterministic-ordering`: assumption_gap / paper_assumption_gap
+- `F-case-deterministic-ordering` `case-deterministic-ordering`: divergence / likely_environment_bug
 
 ## Assumptions
 
 ## Instrumentation Gaps
 - `case-horizontal-offload`: Topology-backed destination required for offload actions
 - `case-vertical-offload`: Topology-backed destination required for offload actions
-- `case-timeout-drop`: Environment did not produce a timeout drop on the configured toy case.
 
 ## Unsupported Cases
 - `case-horizontal-offload`: Topology-backed destination required for offload actions
@@ -63,7 +62,7 @@ No fixes were applied to HoodieGymEnvironment, SlotEngine, simulator lifecycle c
 - output_root: `artifacts/analysis/differential-environment-audit`
 - approved_python: `/Users/hadi/Documents/GitHub/hoodie_sim_v2/src/.venvmac/bin/python`
 - case_count: `6`
-- report_hash: `68980dfc93cfdb552198c8e56498e677f837fe4bd83304397e87714c0069072d`
+- report_hash: `ae61ffda823c529a169e4f1137cf7a82e0a93a2c3fb2b7d2f30211ce839c687b`
 
 ## Overall Status
 

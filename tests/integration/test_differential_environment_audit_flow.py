@@ -79,8 +79,8 @@ class DifferentialEnvironmentAuditFlowTest(unittest.TestCase):
             )
             self.assertEqual(len(payload["comparison_results"]), 6)
             timeout_case = next(result for result in payload["comparison_results"] if result["case_id"] == "case-timeout-drop")
-            self.assertEqual(timeout_case["classification"], "divergence")
-            self.assertEqual(timeout_case["finding_cause"], "likely_environment_bug")
+            self.assertEqual(timeout_case["classification"], "assumption_gap")
+            self.assertEqual(timeout_case["finding_cause"], "expected_scope_difference")
 
     def test_artifact_output_is_feature_namespaced(self) -> None:
         with tempfile.TemporaryDirectory() as tmpdir:

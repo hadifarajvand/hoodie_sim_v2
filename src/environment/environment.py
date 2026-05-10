@@ -62,10 +62,10 @@ def finalize_task_runtime_state_with_parameters(
         task.drop_flag = task.terminal_outcome == "dropped"
         task.reward_emitted = task.terminal_outcome in {"completed", "dropped"}
         return
-    if task.completion_slot is not None:
-        resolve_runtime_terminal_state(task, task.completion_slot, current_slot, parameters)
-    elif has_expired(task, current_slot):
+    if has_expired(task, current_slot):
         task.terminal_outcome = "dropped"
         task.drop_flag = True
+    elif task.completion_slot is not None:
+        resolve_runtime_terminal_state(task, task.completion_slot, current_slot, parameters)
     if task.terminal_outcome in {"completed", "dropped"}:
         task.reward_emitted = True
