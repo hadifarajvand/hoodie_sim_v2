@@ -5,6 +5,11 @@
 - Reference terminal: `dropped_timeout`
 - Environment terminal: `dropped`
 - Reward timing: `terminal`
+- Environment files changed: `src/environment/deadline_rules.py`, `src/environment/environment.py`
+- HoodieGymEnvironment wrapper/source directly edited: `no`
+- SlotEngine edited: `no`
+- Lifecycle behavior changed only for timeout/drop terminal accounting: `yes`
+- Forbidden path categories changed: `metrics`, `policies`, `baselines`, `campaigns`, `training`, `dependencies`, `lockfiles` all `no`
 
 ## Regression Tests
 - `tests.unit.test_mechanism_repair_timeout_drop.MechanismRepairTimeoutDropUnitTest`

@@ -20,6 +20,8 @@
 - [ ] T003 [US1] Add the delayed-reward regression in `tests/unit/test_mechanism_repair_timeout_drop.py` that asserts reward is emitted only at terminal drop/finalization, never at decision time
 - [ ] T004 [US1] Add the local-compute non-regression test in `tests/unit/test_mechanism_repair_timeout_drop.py` that confirms the existing completion path still works unchanged
 - [ ] T005 [US1] Add the scope-guard test in `tests/integration/test_mechanism_repair_scope_guard.py` that rejects changes to metrics, policies, baselines, campaigns, training, dependencies, or lockfiles
+- [ ] T006 [US1] Add constitution-required non-repair integration coverage in `tests/integration/test_mechanism_repair_timeout_drop.py` that runs one existing baseline policy path and one test-local learned-policy placeholder/stub through the current environment interface without changing policy, baseline, metric, training, or campaign code and without expanding repair scope beyond `case-timeout-drop`
+- [ ] T006A [US1] Add constitution-required integration coverage in `tests/integration/test_mechanism_repair_timeout_drop.py` that exercises one existing baseline policy path and one test-local learned-policy placeholder/stub through the current environment interface without changing policy, baseline, metric, training, or campaign code and without broadening the repair scope beyond `case-timeout-drop`
 
 **Checkpoint**: Regression coverage exists before the environment patch is written.
 
@@ -33,13 +35,13 @@
 
 ### Implementation for User Story 1
 
-- [ ] T006 [US1] Implement the smallest timeout/drop terminal accounting patch in `src/environment/gym_adapter.py`
+- [ ] T007 [US1] Implement the smallest timeout/drop terminal accounting patch in `src/environment/deadline_rules.py` and `src/environment/environment.py`
 
 ### Validation for User Story 1
 
-- [ ] T007 [US1] Rerun the Feature 017 reference tests in `tests/unit/test_reference_task_lifecycle_kernel.py` and `tests/integration/test_reference_task_lifecycle_kernel_flow.py`
-- [ ] T008 [US1] Rerun the Feature 018 differential audit tests in `tests/unit/test_differential_environment_audit.py` and `tests/integration/test_differential_environment_audit_flow.py`
-- [ ] T009 [US1] Regenerate the Feature 018 differential audit artifacts in `artifacts/analysis/differential-environment-audit/differential-audit.json` and `artifacts/analysis/differential-environment-audit/differential-audit.md`
+- [ ] T008 [US1] Rerun the Feature 017 reference tests in `tests/unit/test_reference_task_lifecycle_kernel.py` and `tests/integration/test_reference_task_lifecycle_kernel_flow.py`
+- [ ] T009 [US1] Rerun the Feature 018 differential audit tests in `tests/unit/test_differential_environment_audit.py` and `tests/integration/test_differential_environment_audit_flow.py`
+- [ ] T010 [US1] Regenerate the Feature 018 differential audit artifacts in `artifacts/analysis/differential-environment-audit/differential-audit.json` and `artifacts/analysis/differential-environment-audit/differential-audit.md`
 
 **Checkpoint**: The confirmed divergence is repaired and the audit evidence is refreshed.
 
@@ -49,8 +51,8 @@
 
 **Purpose**: Preserve traceability for the repair and validate the final diff surface.
 
-- [ ] T010 Add the optional repair summary artifact in `artifacts/analysis/mechanism-repair/repair-summary.json` and `artifacts/analysis/mechanism-repair/repair-summary.md`
-- [ ] T011 Add the final diff audit in `tests/integration/test_mechanism_repair_final_diff.py` to verify the repair only touches the allowed environment path and leaves forbidden paths unchanged
+- [ ] T011 Add the optional repair summary artifact in `artifacts/analysis/mechanism-repair/repair-summary.json` and `artifacts/analysis/mechanism-repair/repair-summary.md`
+- [ ] T012 Add the final diff audit in `tests/integration/test_mechanism_repair_final_diff.py` to verify the repair only touches the allowed environment path and leaves forbidden paths unchanged
 
 ---
 
@@ -66,9 +68,9 @@
 ### Task Dependencies
 
 - `T001` must complete before any implementation work begins.
-- `T002`, `T003`, `T004`, and `T005` must be written before `T006`.
-- `T006` must complete before `T007`, `T008`, `T009`, `T010`, and `T011`.
-- `T009` must complete before the optional repair summary and final diff report are considered done.
+- `T002`, `T003`, `T004`, `T005`, `T006`, and `T006A` must be written before `T007`.
+- `T007` must complete before `T008`, `T009`, `T010`, `T011`, and `T012`.
+- `T010` must complete before the optional repair summary and final diff report are considered done.
 
 ### Within the User Story
 
@@ -103,3 +105,12 @@
 - `case-timeout-drop` is the only confirmed repair target.
 - Metrics, policies, baselines, campaigns, training, dependencies, and lockfiles are out of scope.
 - Offload instrumentation gaps remain unrepaired unless separately proven by a new audit artifact.
+
+## Acceptance Mapping
+
+- `CHK016` is satisfied by `T001` because it locks the repair gate from the committed Feature 018 audit.
+- `CHK017` is satisfied by `T007` and `T012` because they keep the repair surgical and validate the final diff surface.
+- `CHK018` is satisfied by `T005` because it keeps metrics read-only and forbids metric changes.
+- `CHK019` is satisfied by `T002`, `T003`, `T004`, `T006`, and `T006A` because they provide regression coverage and constitution-required non-repair integration coverage before any patch is applied.
+- `CHK020` is satisfied by `T001` and the notes section because they keep confirmed repair scope separate from unrepaired findings.
+- `T006A` is explicitly non-repair integration coverage only; it does not authorize policy, baseline, training, metric, or campaign changes.

@@ -42,4 +42,21 @@
   "repaired_case_id": "case-timeout-drop",
   "repaired_cause": "expected_scope_difference",
   "repaired_classification": "assumption_gap"
+  ,
+  "changed_environment_files": [
+    "src/environment/deadline_rules.py",
+    "src/environment/environment.py"
+  ],
+  "environment_wrapper_edited": false,
+  "slot_engine_edited": false,
+  "scope_statement": "Environment lifecycle behavior changed only for timeout/drop terminal accounting.",
+  "forbidden_paths_changed": [
+    "metrics",
+    "policies",
+    "baselines",
+    "campaigns",
+    "training",
+    "dependencies",
+    "lockfiles"
+  ]
 }
