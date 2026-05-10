@@ -1,7 +1,7 @@
 <!-- SPECKIT START -->
 For additional context about technologies to be used, project structure,
 shell commands, and other important information, read
-`specs/016-paper-mechanism-registry/plan.md`
+`specs/017-reference-task-lifecycle-kernel/plan.md`
 <!-- SPECKIT END -->
 
 ## External Reference Usage
