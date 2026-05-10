@@ -21,7 +21,6 @@
 - [ ] T004 [US1] Add the local-compute non-regression test in `tests/unit/test_mechanism_repair_timeout_drop.py` that confirms the existing completion path still works unchanged
 - [ ] T005 [US1] Add the scope-guard test in `tests/integration/test_mechanism_repair_scope_guard.py` that rejects changes to metrics, policies, baselines, campaigns, training, dependencies, or lockfiles
 - [ ] T006 [US1] Add constitution-required non-repair integration coverage in `tests/integration/test_mechanism_repair_timeout_drop.py` that runs one existing baseline policy path and one test-local learned-policy placeholder/stub through the current environment interface without changing policy, baseline, metric, training, or campaign code and without expanding repair scope beyond `case-timeout-drop`
-- [ ] T006A [US1] Add constitution-required integration coverage in `tests/integration/test_mechanism_repair_timeout_drop.py` that exercises one existing baseline policy path and one test-local learned-policy placeholder/stub through the current environment interface without changing policy, baseline, metric, training, or campaign code and without broadening the repair scope beyond `case-timeout-drop`
 
 **Checkpoint**: Regression coverage exists before the environment patch is written.
 
@@ -68,7 +67,7 @@
 ### Task Dependencies
 
 - `T001` must complete before any implementation work begins.
-- `T002`, `T003`, `T004`, `T005`, `T006`, and `T006A` must be written before `T007`.
+- `T002`, `T003`, `T004`, `T005`, and `T006` must be written before `T007`.
 - `T007` must complete before `T008`, `T009`, `T010`, `T011`, and `T012`.
 - `T010` must complete before the optional repair summary and final diff report are considered done.
 
@@ -88,9 +87,10 @@
 
 1. Complete `T001` to lock the gate.
 2. Complete `T002`-`T005` so the defect is reproducible and bounded.
-3. Complete `T006` to fix only timeout/drop terminal accounting.
-4. Complete `T007`-`T009` to prove the repair and refresh the Feature 018 audit.
-5. Complete `T010`-`T011` for traceability and final scope verification.
+3. Complete `T006` to satisfy constitution-required non-repair integration coverage.
+4. Complete `T007` to fix only timeout/drop terminal accounting.
+5. Complete `T008`-`T010` to prove the repair and refresh the Feature 018 audit.
+6. Complete `T011`-`T012` for traceability and final scope verification.
 
 ### Incremental Delivery
 
@@ -111,6 +111,6 @@
 - `CHK016` is satisfied by `T001` because it locks the repair gate from the committed Feature 018 audit.
 - `CHK017` is satisfied by `T007` and `T012` because they keep the repair surgical and validate the final diff surface.
 - `CHK018` is satisfied by `T005` because it keeps metrics read-only and forbids metric changes.
-- `CHK019` is satisfied by `T002`, `T003`, `T004`, `T006`, and `T006A` because they provide regression coverage and constitution-required non-repair integration coverage before any patch is applied.
+- `CHK019` is satisfied by `T002`, `T003`, `T004`, and `T006` because they provide regression coverage and constitution-required non-repair integration coverage before any patch is applied.
 - `CHK020` is satisfied by `T001` and the notes section because they keep confirmed repair scope separate from unrepaired findings.
-- `T006A` is explicitly non-repair integration coverage only; it does not authorize policy, baseline, training, metric, or campaign changes.
+- `T006` is explicitly non-repair integration coverage only; it does not authorize policy, baseline, training, metric, or campaign changes.
