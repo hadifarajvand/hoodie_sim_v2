@@ -1,0 +1,509 @@
+{
+  "assumptions": [],
+  "comparison_results": [
+    {
+      "case_id": "case-local-compute",
+      "classification": "assumption_gap",
+      "environment_summary": {
+        "case_id": "case-local-compute",
+        "event_sequence": [
+          "selected_action:local",
+          "selected_action:local",
+          "selected_action:local",
+          "selected_action:local",
+          "selected_action:local",
+          "finalized:2:completed"
+        ],
+        "notes": "environment public interface",
+        "reward_timing": "terminal",
+        "terminal_status": "completed"
+      },
+      "finding_cause": "paper_assumption_gap",
+      "notes": "local_compute: assumption_gap / paper_assumption_gap",
+      "reference_summary": {
+        "case_id": "case-local-compute",
+        "event_sequence": [
+          "created",
+          "selected_action",
+          "execution_started",
+          "execution_completed",
+          "reward_emitted"
+        ],
+        "notes": "reference kernel",
+        "reward_timing": "terminal",
+        "terminal_status": "completed"
+      }
+    },
+    {
+      "case_id": "case-horizontal-offload",
+      "classification": "unsupported_by_environment_trace",
+      "environment_summary": {
+        "case_id": "case-horizontal-offload",
+        "event_sequence": [
+          "selected_action:horizontal"
+        ],
+        "notes": "environment public interface",
+        "reward_timing": null,
+        "terminal_status": null
+      },
+      "finding_cause": "instrumentation_gap",
+      "notes": "horizontal_offload: unsupported_by_environment_trace / instrumentation_gap",
+      "reference_summary": {
+        "case_id": "case-horizontal-offload",
+        "event_sequence": [
+          "created",
+          "selected_action",
+          "queued_public",
+          "transmission_started",
+          "transmission_completed",
+          "execution_started",
+          "execution_completed",
+          "reward_emitted"
+        ],
+        "notes": "reference kernel",
+        "reward_timing": "terminal",
+        "terminal_status": "completed"
+      }
+    },
+    {
+      "case_id": "case-vertical-offload",
+      "classification": "unsupported_by_environment_trace",
+      "environment_summary": {
+        "case_id": "case-vertical-offload",
+        "event_sequence": [
+          "selected_action:vertical"
+        ],
+        "notes": "environment public interface",
+        "reward_timing": null,
+        "terminal_status": null
+      },
+      "finding_cause": "instrumentation_gap",
+      "notes": "vertical_offload: unsupported_by_environment_trace / instrumentation_gap",
+      "reference_summary": {
+        "case_id": "case-vertical-offload",
+        "event_sequence": [
+          "created",
+          "selected_action",
+          "offloaded_cloud",
+          "transmission_started",
+          "transmission_completed",
+          "execution_started",
+          "execution_completed",
+          "reward_emitted"
+        ],
+        "notes": "reference kernel",
+        "reward_timing": "terminal",
+        "terminal_status": "completed"
+      }
+    },
+    {
+      "case_id": "case-timeout-drop",
+      "classification": "divergence",
+      "environment_summary": {
+        "case_id": "case-timeout-drop",
+        "event_sequence": [
+          "selected_action:local",
+          "selected_action:local",
+          "finalized:1:completed"
+        ],
+        "notes": "environment public interface",
+        "reward_timing": "terminal",
+        "terminal_status": "completed"
+      },
+      "finding_cause": "likely_environment_bug",
+      "notes": "timeout_drop: divergence / likely_environment_bug",
+      "reference_summary": {
+        "case_id": "case-timeout-drop",
+        "event_sequence": [
+          "created",
+          "selected_action",
+          "dropped_timeout",
+          "reward_emitted"
+        ],
+        "notes": "reference kernel",
+        "reward_timing": "terminal",
+        "terminal_status": "dropped_timeout"
+      }
+    },
+    {
+      "case_id": "case-delayed-reward",
+      "classification": "assumption_gap",
+      "environment_summary": {
+        "case_id": "case-delayed-reward",
+        "event_sequence": [
+          "selected_action:local",
+          "selected_action:local",
+          "selected_action:local",
+          "finalized:2:completed"
+        ],
+        "notes": "environment public interface",
+        "reward_timing": "terminal",
+        "terminal_status": "completed"
+      },
+      "finding_cause": "paper_assumption_gap",
+      "notes": "delayed_reward: assumption_gap / paper_assumption_gap",
+      "reference_summary": {
+        "case_id": "case-delayed-reward",
+        "event_sequence": [
+          "created",
+          "selected_action",
+          "execution_started",
+          "execution_completed",
+          "reward_emitted"
+        ],
+        "notes": "reference kernel",
+        "reward_timing": "terminal",
+        "terminal_status": "completed"
+      }
+    },
+    {
+      "case_id": "case-deterministic-ordering",
+      "classification": "assumption_gap",
+      "environment_summary": {
+        "case_id": "case-deterministic-ordering",
+        "event_sequence": [
+          "selected_action:local",
+          "selected_action:local",
+          "selected_action:local",
+          "selected_action:local",
+          "selected_action:local",
+          "finalized:3:completed"
+        ],
+        "notes": "environment public interface",
+        "reward_timing": "terminal",
+        "terminal_status": "completed"
+      },
+      "finding_cause": "paper_assumption_gap",
+      "notes": "deterministic_ordering: assumption_gap / paper_assumption_gap",
+      "reference_summary": {
+        "case_id": "case-deterministic-ordering",
+        "event_sequence": [
+          "created",
+          "selected_action",
+          "execution_started",
+          "execution_completed",
+          "reward_emitted"
+        ],
+        "notes": "reference kernel",
+        "reward_timing": "terminal",
+        "terminal_status": "completed"
+      }
+    }
+  ],
+  "environment_summary": [
+    {
+      "case_id": "case-local-compute",
+      "event_sequence": [
+        "selected_action:local",
+        "selected_action:local",
+        "selected_action:local",
+        "selected_action:local",
+        "selected_action:local",
+        "finalized:2:completed"
+      ],
+      "notes": "environment public interface",
+      "reward_timing": "terminal",
+      "terminal_status": "completed"
+    },
+    {
+      "case_id": "case-horizontal-offload",
+      "event_sequence": [
+        "selected_action:horizontal"
+      ],
+      "notes": "environment public interface",
+      "reward_timing": null,
+      "terminal_status": null
+    },
+    {
+      "case_id": "case-vertical-offload",
+      "event_sequence": [
+        "selected_action:vertical"
+      ],
+      "notes": "environment public interface",
+      "reward_timing": null,
+      "terminal_status": null
+    },
+    {
+      "case_id": "case-timeout-drop",
+      "event_sequence": [
+        "selected_action:local",
+        "selected_action:local",
+        "finalized:1:completed"
+      ],
+      "notes": "environment public interface",
+      "reward_timing": "terminal",
+      "terminal_status": "completed"
+    },
+    {
+      "case_id": "case-delayed-reward",
+      "event_sequence": [
+        "selected_action:local",
+        "selected_action:local",
+        "selected_action:local",
+        "finalized:2:completed"
+      ],
+      "notes": "environment public interface",
+      "reward_timing": "terminal",
+      "terminal_status": "completed"
+    },
+    {
+      "case_id": "case-deterministic-ordering",
+      "event_sequence": [
+        "selected_action:local",
+        "selected_action:local",
+        "selected_action:local",
+        "selected_action:local",
+        "selected_action:local",
+        "finalized:3:completed"
+      ],
+      "notes": "environment public interface",
+      "reward_timing": "terminal",
+      "terminal_status": "completed"
+    }
+  ],
+  "findings": [
+    {
+      "case_id": "case-local-compute",
+      "cause": "paper_assumption_gap",
+      "classification": "assumption_gap",
+      "evidence": "case-local-compute: assumption_gap / paper_assumption_gap (environment supported)",
+      "finding_id": "F-case-local-compute",
+      "notes": ""
+    },
+    {
+      "case_id": "case-horizontal-offload",
+      "cause": "instrumentation_gap",
+      "classification": "unsupported_by_environment_trace",
+      "evidence": "case-horizontal-offload: unsupported_by_environment_trace / instrumentation_gap (environment trace unsupported)",
+      "finding_id": "F-case-horizontal-offload",
+      "notes": ""
+    },
+    {
+      "case_id": "case-vertical-offload",
+      "cause": "instrumentation_gap",
+      "classification": "unsupported_by_environment_trace",
+      "evidence": "case-vertical-offload: unsupported_by_environment_trace / instrumentation_gap (environment trace unsupported)",
+      "finding_id": "F-case-vertical-offload",
+      "notes": ""
+    },
+    {
+      "case_id": "case-timeout-drop",
+      "cause": "likely_environment_bug",
+      "classification": "divergence",
+      "evidence": "case-timeout-drop: divergence / likely_environment_bug (environment supported)",
+      "finding_id": "F-case-timeout-drop",
+      "notes": ""
+    },
+    {
+      "case_id": "case-delayed-reward",
+      "cause": "paper_assumption_gap",
+      "classification": "assumption_gap",
+      "evidence": "case-delayed-reward: assumption_gap / paper_assumption_gap (environment supported)",
+      "finding_id": "F-case-delayed-reward",
+      "notes": ""
+    },
+    {
+      "case_id": "case-deterministic-ordering",
+      "cause": "paper_assumption_gap",
+      "classification": "assumption_gap",
+      "evidence": "case-deterministic-ordering: assumption_gap / paper_assumption_gap (environment supported)",
+      "finding_id": "F-case-deterministic-ordering",
+      "notes": ""
+    }
+  ],
+  "instrumentation_gaps": [
+    {
+      "case_id": "case-horizontal-offload",
+      "text": "Topology-backed destination required for offload actions"
+    },
+    {
+      "case_id": "case-vertical-offload",
+      "text": "Topology-backed destination required for offload actions"
+    },
+    {
+      "case_id": "case-timeout-drop",
+      "text": "Environment did not produce a timeout drop on the configured toy case."
+    }
+  ],
+  "metadata": {
+    "deterministic": true,
+    "feature_id": "018",
+    "generated_by": "DifferentialEnvironmentAudit",
+    "source_refs": [
+      "specs/018-differential-environment-audit/spec.md",
+      "src/reference_model",
+      "src/environment/gym_adapter.py"
+    ]
+  },
+  "no_fix_disclaimer": "No fixes were applied to HoodieGymEnvironment, SlotEngine, simulator lifecycle code, policies, baselines, metric formulas, campaign orchestration, or dependencies.",
+  "overall_status": "diagnostic",
+  "reference_summary": [
+    {
+      "case_id": "case-local-compute",
+      "event_sequence": [
+        "created",
+        "selected_action",
+        "execution_started",
+        "execution_completed",
+        "reward_emitted"
+      ],
+      "notes": "reference kernel",
+      "reward_timing": "terminal",
+      "terminal_status": "completed"
+    },
+    {
+      "case_id": "case-horizontal-offload",
+      "event_sequence": [
+        "created",
+        "selected_action",
+        "queued_public",
+        "transmission_started",
+        "transmission_completed",
+        "execution_started",
+        "execution_completed",
+        "reward_emitted"
+      ],
+      "notes": "reference kernel",
+      "reward_timing": "terminal",
+      "terminal_status": "completed"
+    },
+    {
+      "case_id": "case-vertical-offload",
+      "event_sequence": [
+        "created",
+        "selected_action",
+        "offloaded_cloud",
+        "transmission_started",
+        "transmission_completed",
+        "execution_started",
+        "execution_completed",
+        "reward_emitted"
+      ],
+      "notes": "reference kernel",
+      "reward_timing": "terminal",
+      "terminal_status": "completed"
+    },
+    {
+      "case_id": "case-timeout-drop",
+      "event_sequence": [
+        "created",
+        "selected_action",
+        "dropped_timeout",
+        "reward_emitted"
+      ],
+      "notes": "reference kernel",
+      "reward_timing": "terminal",
+      "terminal_status": "dropped_timeout"
+    },
+    {
+      "case_id": "case-delayed-reward",
+      "event_sequence": [
+        "created",
+        "selected_action",
+        "execution_started",
+        "execution_completed",
+        "reward_emitted"
+      ],
+      "notes": "reference kernel",
+      "reward_timing": "terminal",
+      "terminal_status": "completed"
+    },
+    {
+      "case_id": "case-deterministic-ordering",
+      "event_sequence": [
+        "created",
+        "selected_action",
+        "execution_started",
+        "execution_completed",
+        "reward_emitted"
+      ],
+      "notes": "reference kernel",
+      "reward_timing": "terminal",
+      "terminal_status": "completed"
+    }
+  ],
+  "reproducibility": {
+    "approved_python": "/Users/hadi/Documents/GitHub/hoodie_sim_v2/src/.venvmac/bin/python",
+    "case_count": 6,
+    "output_root": "artifacts/analysis/differential-environment-audit",
+    "report_hash": "68980dfc93cfdb552198c8e56498e677f837fe4bd83304397e87714c0069072d"
+  },
+  "toy_cases": [
+    {
+      "action": "local",
+      "case_id": "case-local-compute",
+      "destination_target": "ea-1",
+      "expected_comparison_context": "",
+      "scenario_type": "local_compute",
+      "seed": 101,
+      "source_agent_id": "ea-1",
+      "task_id": "task-1",
+      "timeout_slot": 5
+    },
+    {
+      "action": "horizontal",
+      "case_id": "case-horizontal-offload",
+      "destination_target": "ea-2",
+      "expected_comparison_context": "",
+      "scenario_type": "horizontal_offload",
+      "seed": 102,
+      "source_agent_id": "ea-1",
+      "task_id": "task-2",
+      "timeout_slot": 5
+    },
+    {
+      "action": "vertical",
+      "case_id": "case-vertical-offload",
+      "destination_target": "cloud",
+      "expected_comparison_context": "",
+      "scenario_type": "vertical_offload",
+      "seed": 103,
+      "source_agent_id": "ea-1",
+      "task_id": "task-3",
+      "timeout_slot": 5
+    },
+    {
+      "action": "local",
+      "case_id": "case-timeout-drop",
+      "destination_target": "ea-1",
+      "expected_comparison_context": "",
+      "scenario_type": "timeout_drop",
+      "seed": 104,
+      "source_agent_id": "ea-1",
+      "task_id": "task-4",
+      "timeout_slot": 1
+    },
+    {
+      "action": "local",
+      "case_id": "case-delayed-reward",
+      "destination_target": "ea-1",
+      "expected_comparison_context": "",
+      "scenario_type": "delayed_reward",
+      "seed": 105,
+      "source_agent_id": "ea-1",
+      "task_id": "task-5",
+      "timeout_slot": 5
+    },
+    {
+      "action": "local",
+      "case_id": "case-deterministic-ordering",
+      "destination_target": "ea-1",
+      "expected_comparison_context": "",
+      "scenario_type": "deterministic_ordering",
+      "seed": 106,
+      "source_agent_id": "ea-1",
+      "task_id": "task-6",
+      "timeout_slot": 5
+    }
+  ],
+  "unsupported_cases": [
+    {
+      "case_id": "case-horizontal-offload",
+      "text": "Topology-backed destination required for offload actions"
+    },
+    {
+      "case_id": "case-vertical-offload",
+      "text": "Topology-backed destination required for offload actions"
+    }
+  ]
+}
