@@ -1,7 +1,7 @@
 <!-- SPECKIT START -->
 For additional context about technologies to be used, project structure,
 shell commands, and other important information, read
-`specs/020-controlled-mechanistic-sweeps/plan.md`
+`specs/021-baseline-fairness-rebuild/plan.md`
 <!-- SPECKIT END -->
 
 ## External Reference Usage
