@@ -1,7 +1,7 @@
 <!-- SPECKIT START -->
 For additional context about technologies to be used, project structure,
 shell commands, and other important information, read
-`specs/018-differential-environment-audit/plan.md`
+`specs/019-mechanism-repair/plan.md`
 <!-- SPECKIT END -->
 
 ## External Reference Usage
