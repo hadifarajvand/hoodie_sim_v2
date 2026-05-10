@@ -3,23 +3,22 @@
   "comparison_results": [
     {
       "case_id": "case-local-compute",
-      "classification": "divergence",
+      "classification": "match",
       "environment_summary": {
         "case_id": "case-local-compute",
         "event_sequence": [
-          "selected_action:local",
-          "selected_action:local",
-          "selected_action:local",
-          "selected_action:local",
-          "selected_action:local",
-          "finalized:2:dropped"
+          "created",
+          "selected_action",
+          "execution_started",
+          "execution_completed",
+          "reward_emitted"
         ],
         "notes": "environment public interface",
         "reward_timing": "terminal",
-        "terminal_status": "dropped"
+        "terminal_status": "completed"
       },
-      "finding_cause": "likely_environment_bug",
-      "notes": "local_compute: divergence / likely_environment_bug",
+      "finding_cause": "expected_scope_difference",
+      "notes": "local_compute: match / expected_scope_difference",
       "reference_summary": {
         "case_id": "case-local-compute",
         "event_sequence": [
@@ -102,9 +101,10 @@
       "environment_summary": {
         "case_id": "case-timeout-drop",
         "event_sequence": [
-          "selected_action:local",
-          "selected_action:local",
-          "finalized:4:dropped"
+          "created",
+          "selected_action",
+          "dropped_timeout",
+          "reward_emitted"
         ],
         "notes": "environment public interface",
         "reward_timing": "terminal",
@@ -131,10 +131,11 @@
       "environment_summary": {
         "case_id": "case-delayed-reward",
         "event_sequence": [
-          "selected_action:local",
-          "selected_action:local",
-          "selected_action:local",
-          "finalized:2:completed"
+          "created",
+          "selected_action",
+          "execution_started",
+          "execution_completed",
+          "reward_emitted"
         ],
         "notes": "environment public interface",
         "reward_timing": "terminal",
@@ -158,23 +159,22 @@
     },
     {
       "case_id": "case-deterministic-ordering",
-      "classification": "divergence",
+      "classification": "match",
       "environment_summary": {
         "case_id": "case-deterministic-ordering",
         "event_sequence": [
-          "selected_action:local",
-          "selected_action:local",
-          "selected_action:local",
-          "selected_action:local",
-          "selected_action:local",
-          "finalized:3:dropped"
+          "created",
+          "selected_action",
+          "execution_started",
+          "execution_completed",
+          "reward_emitted"
         ],
         "notes": "environment public interface",
         "reward_timing": "terminal",
-        "terminal_status": "dropped"
+        "terminal_status": "completed"
       },
-      "finding_cause": "likely_environment_bug",
-      "notes": "deterministic_ordering: divergence / likely_environment_bug",
+      "finding_cause": "expected_scope_difference",
+      "notes": "deterministic_ordering: match / expected_scope_difference",
       "reference_summary": {
         "case_id": "case-deterministic-ordering",
         "event_sequence": [
@@ -194,16 +194,15 @@
     {
       "case_id": "case-local-compute",
       "event_sequence": [
-        "selected_action:local",
-        "selected_action:local",
-        "selected_action:local",
-        "selected_action:local",
-        "selected_action:local",
-        "finalized:2:dropped"
+        "created",
+        "selected_action",
+        "execution_started",
+        "execution_completed",
+        "reward_emitted"
       ],
       "notes": "environment public interface",
       "reward_timing": "terminal",
-      "terminal_status": "dropped"
+      "terminal_status": "completed"
     },
     {
       "case_id": "case-horizontal-offload",
@@ -226,9 +225,10 @@
     {
       "case_id": "case-timeout-drop",
       "event_sequence": [
-        "selected_action:local",
-        "selected_action:local",
-        "finalized:4:dropped"
+        "created",
+        "selected_action",
+        "dropped_timeout",
+        "reward_emitted"
       ],
       "notes": "environment public interface",
       "reward_timing": "terminal",
@@ -237,10 +237,11 @@
     {
       "case_id": "case-delayed-reward",
       "event_sequence": [
-        "selected_action:local",
-        "selected_action:local",
-        "selected_action:local",
-        "finalized:2:completed"
+        "created",
+        "selected_action",
+        "execution_started",
+        "execution_completed",
+        "reward_emitted"
       ],
       "notes": "environment public interface",
       "reward_timing": "terminal",
@@ -249,24 +250,23 @@
     {
       "case_id": "case-deterministic-ordering",
       "event_sequence": [
-        "selected_action:local",
-        "selected_action:local",
-        "selected_action:local",
-        "selected_action:local",
-        "selected_action:local",
-        "finalized:3:dropped"
+        "created",
+        "selected_action",
+        "execution_started",
+        "execution_completed",
+        "reward_emitted"
       ],
       "notes": "environment public interface",
       "reward_timing": "terminal",
-      "terminal_status": "dropped"
+      "terminal_status": "completed"
     }
   ],
   "findings": [
     {
       "case_id": "case-local-compute",
-      "cause": "likely_environment_bug",
-      "classification": "divergence",
-      "evidence": "case-local-compute: divergence / likely_environment_bug (environment supported)",
+      "cause": "expected_scope_difference",
+      "classification": "match",
+      "evidence": "case-local-compute: match / expected_scope_difference (environment supported)",
       "finding_id": "F-case-local-compute",
       "notes": ""
     },
@@ -304,9 +304,9 @@
     },
     {
       "case_id": "case-deterministic-ordering",
-      "cause": "likely_environment_bug",
-      "classification": "divergence",
-      "evidence": "case-deterministic-ordering: divergence / likely_environment_bug (environment supported)",
+      "cause": "expected_scope_difference",
+      "classification": "match",
+      "evidence": "case-deterministic-ordering: match / expected_scope_difference (environment supported)",
       "finding_id": "F-case-deterministic-ordering",
       "notes": ""
     }
@@ -422,7 +422,7 @@
     "approved_python": "/Users/hadi/Documents/GitHub/hoodie_sim_v2/src/.venvmac/bin/python",
     "case_count": 6,
     "output_root": "artifacts/analysis/differential-environment-audit",
-    "report_hash": "ae61ffda823c529a169e4f1137cf7a82e0a93a2c3fb2b7d2f30211ce839c687b"
+    "report_hash": "44c246d12db56c3e9bea518f76d690b0627baabf22ff856ac0ec5309f1670ff2"
   },
   "toy_cases": [
     {

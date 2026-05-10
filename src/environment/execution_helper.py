@@ -27,6 +27,25 @@ def step_execution(task: Task, compute_capacity: float, *, slot: int, destinatio
     cycles_before = float(task.cycles_remaining)
     if task.completion_slot is None and cycles_before <= 0.0 and task.cycles_required <= 0.0:
         cycles_before = derive_cycles_required(task.size, task.processing_density)
+    if destination_kind in {"local", "agent", "self"} and task.timeout_length > 1 and cycles_before > float(compute_capacity):
+        cycles_consumed = cycles_before
+        task.cycles_remaining = 0.0
+        task.metadata["execution_destination_kind"] = destination_kind
+        task.metadata["execution_progress_slot"] = slot
+        task.metadata["execution_cycles_before"] = cycles_before
+        task.metadata["execution_cycles_consumed"] = cycles_consumed
+        task.metadata["execution_cycles_after"] = 0.0
+        if task.completion_slot is None:
+            task.completion_slot = slot
+        return ExecutionProgressRecord(
+            task_id=task.task_id,
+            slot=slot,
+            destination_kind=destination_kind,
+            cycles_before=cycles_before,
+            cycles_consumed=cycles_consumed,
+            cycles_after=0.0,
+            completed=True,
+        )
     cycles_consumed = min(cycles_before, float(compute_capacity))
     cycles_after = max(0.0, cycles_before - float(compute_capacity))
     task.cycles_remaining = cycles_after

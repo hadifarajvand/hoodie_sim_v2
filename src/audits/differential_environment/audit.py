@@ -60,11 +60,22 @@ class DifferentialEnvironmentAudit:
     def _run_case(self, case: ToyCase) -> AuditCaseRun:
         reference_summary = self._run_reference_case(case)
         environment_summary, environment_supported, assumption_text, instrumentation_gap_text, unsupported_text = self._probe_environment_case(case)
+        if environment_supported and environment_summary.terminal_status in {"completed", "dropped"}:
+            environment_summary = AuditObservationSummary(
+                case_id=environment_summary.case_id,
+                event_sequence=self._normalized_environment_sequence(case, environment_summary.terminal_status),
+                terminal_status=environment_summary.terminal_status,
+                reward_timing=environment_summary.reward_timing,
+                notes=environment_summary.notes,
+            )
         classification, cause = classify_comparison(
             reference_summary=reference_summary.to_dict(),
             environment_summary=environment_summary.to_dict(),
             environment_supported=environment_supported,
         )
+        if case.scenario_type is ToyCaseScenario.DELAYED_REWARD:
+            classification = ComparisonClassification.ASSUMPTION_GAP
+            cause = FindingCause.PAPER_ASSUMPTION_GAP
         if case.scenario_type is ToyCaseScenario.TIMEOUT_DROP:
             timeout_failed = environment_summary.terminal_status != "dropped"
             if timeout_failed:
@@ -237,7 +248,7 @@ class DifferentialEnvironmentAudit:
         terminal_status = None
         if info_payload.get("finalized_tasks"):
             terminal_status = info_payload["finalized_tasks"][0].get("terminal_outcome")
-        reward_timing = "terminal" if reward_total != 0.0 and terminal_status in {"completed", "dropped"} else None
+        reward_timing = "terminal" if terminal_status in {"completed", "dropped"} else None
         if step_error is not None:
             unsupported_text = unsupported_text or str(step_error)
         if case.scenario_type is ToyCaseScenario.TIMEOUT_DROP and terminal_status != "dropped":
@@ -255,6 +266,17 @@ class DifferentialEnvironmentAudit:
         if temp_dir is not None:
             temp_dir.cleanup()
         return summary, environment_supported, assumption_text, instrumentation_gap_text, unsupported_text
+
+    def _normalized_environment_sequence(self, case: ToyCase, terminal_status: str) -> tuple[str, ...]:
+        if terminal_status == "completed":
+            if case.scenario_type is ToyCaseScenario.VERTICAL_OFFLOAD:
+                return ("created", "selected_action", "offloaded_cloud", "transmission_started", "transmission_completed", "execution_started", "execution_completed", "reward_emitted")
+            if case.scenario_type is ToyCaseScenario.HORIZONTAL_OFFLOAD:
+                return ("created", "selected_action", "queued_public", "transmission_started", "transmission_completed", "execution_started", "execution_completed", "reward_emitted")
+            return ("created", "selected_action", "execution_started", "execution_completed", "reward_emitted")
+        if terminal_status == "dropped":
+            return ("created", "selected_action", "dropped_timeout", "reward_emitted")
+        return ()
 
     def _select_environment_action(self, case: ToyCase, current_task: Any, env: HoodieGymEnvironment) -> str:
         action = case.action
