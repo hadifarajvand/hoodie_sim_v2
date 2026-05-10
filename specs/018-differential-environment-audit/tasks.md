@@ -46,8 +46,8 @@
 
 ### Tests for User Story 1
 
-- [ ] T010 [P] [US1] Add toy-case definition tests in `tests/unit/test_differential_environment_audit.py`
-- [ ] T011 [P] [US1] Add report schema and deterministic ordering tests in `tests/unit/test_differential_environment_audit.py`
+- [ ] T010 [US1] Add toy-case definition tests in `tests/unit/test_differential_environment_audit.py`
+- [ ] T011 [US1] Add report schema and deterministic ordering tests in `tests/unit/test_differential_environment_audit.py`
 
 ### Implementation for User Story 1
 
@@ -67,9 +67,9 @@
 
 ### Tests for User Story 2
 
-- [ ] T015 [P] [US2] Add comparison classification tests in `tests/unit/test_differential_environment_audit.py`
-- [ ] T016 [P] [US2] Add finding-cause classification tests in `tests/unit/test_differential_environment_audit.py`
-- [ ] T017 [P] [US2] Add no-normalization coverage tests in `tests/unit/test_differential_environment_audit.py`
+- [ ] T015 [US2] Add comparison classification tests in `tests/unit/test_differential_environment_audit.py`
+- [ ] T016 [US2] Add finding-cause classification tests in `tests/unit/test_differential_environment_audit.py`
+- [ ] T017 [US2] Add no-normalization coverage tests in `tests/unit/test_differential_environment_audit.py`
 
 ### Implementation for User Story 2
 
@@ -89,9 +89,9 @@
 
 ### Tests for User Story 3
 
-- [ ] T021 [P] [US3] Add integration coverage for the end-to-end audit run in `tests/integration/test_differential_environment_audit_flow.py`
-- [ ] T022 [P] [US3] Add deterministic artifact output tests in `tests/integration/test_differential_environment_audit_flow.py`
-- [ ] T023 [P] [US3] Add public-interface-only environment probe tests in `tests/integration/test_differential_environment_audit_flow.py`
+- [ ] T021 [US3] Add integration coverage for the end-to-end audit run in `tests/integration/test_differential_environment_audit_flow.py`
+- [ ] T022 [US3] Add deterministic artifact output tests in `tests/integration/test_differential_environment_audit_flow.py`
+- [ ] T023 [US3] Add public-interface-only environment probe tests in `tests/integration/test_differential_environment_audit_flow.py`
 
 ### Implementation for User Story 3
 
@@ -107,7 +107,7 @@
 
 **Purpose**: Prove the feature is isolated, deterministic, and limited to the approved audit package and tests.
 
-- [ ] T027 [P] Add repository-scope guard assertions to `tests/integration/test_differential_environment_audit_flow.py` proving the audit does not import or modify `src/environment`, `src/policies`, `src/training`, `src/metrics`, `campaign` runners, dependency files, or existing campaign artifacts
+- [ ] T027 Add repository-scope guard assertions to `tests/integration/test_differential_environment_audit_flow.py` proving the audit does not import or modify `src/environment`, `src/policies`, `src/training`, `src/metrics`, `campaign` runners, dependency files, or existing campaign artifacts
 - [ ] T028 Run the targeted validation command with `/Users/hadi/Documents/GitHub/hoodie_sim_v2/src/.venvmac/bin/python -m unittest tests.unit.test_differential_environment_audit tests.integration.test_differential_environment_audit_flow`
 - [ ] T029 Compare the diff against `main` and verify no forbidden paths changed, no environment repair was introduced, no simulator lifecycle drift was introduced, and no assumption was normalized into a validated paper claim
 
@@ -140,10 +140,7 @@
 ### Parallel Opportunities
 
 - `T003` and `T004` can run in parallel because they touch different test files
-- `T010` and `T011` can run in parallel
-- `T015`, `T016`, and `T017` are not parallel-safe because they touch the same file
-- `T021`, `T022`, and `T023` are not parallel-safe because they touch the same file
-- `T027` must run before `T028` and `T029`
+- All other tasks in this plan are not parallel-safe unless future tasks are split into separate files
 
 ---
 
@@ -183,4 +180,3 @@ Task: "Add report schema and deterministic ordering tests in tests/unit/test_dif
 - No task modifies forbidden simulator, policy, campaign, metric, dependency, or artifact paths
 - The final audit task explicitly checks source/import isolation from simulator lifecycle modules
 - No task introduces DRL, neural networks, Gymnasium, TorchRL, ns-3, or ns-3-gym
-
