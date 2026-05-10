@@ -1,0 +1,243 @@
+{
+  "blockers": [
+    "No training loop or policy controller exists to prove legal-action handling",
+    "No training/evaluation episode protocol exists in the repository",
+    "No replay buffer or training-log artifact contract is present",
+    "No training/evaluation split or training runner exists yet",
+    "No training/evaluation seeds or run logs exist for future DRL training",
+    "The project is still missing training foundation work and explicit training contracts"
+  ],
+  "disclaimers": [
+    "No DRL training, neural-network code, or trainer implementation was added.",
+    "No policy redesign, metric change, or simulator behavior change was introduced.",
+    "This is not a paper-validity or paper-completeness claim."
+  ],
+  "included_source_artifacts": [
+    "resources/papers/hoodie/ocr/merged.tex",
+    "artifacts/analysis/paper-mechanism-registry/paper-mechanism-registry.json",
+    "artifacts/analysis/differential-environment-audit/differential-audit.json",
+    "artifacts/analysis/mechanism-repair/repair-summary.json",
+    "artifacts/analysis/controlled-mechanistic-sweeps/controlled-mechanistic-sweeps.json",
+    "artifacts/analysis/baseline-fairness-rebuild/baseline-fairness-rebuild.json",
+    "artifacts/analysis/baseline-rebuild-sensitivity-audit/baseline-rebuild-sensitivity-audit.json"
+  ],
+  "limitations": [
+    "Diagnostic only.",
+    "This audit does not implement training, DRL, or neural-network code.",
+    "Partial OCR evidence is preserved as evidence, not promoted to readiness."
+  ],
+  "mechanism_gaps": [
+    {
+      "evidence": [
+        "Supported only as OCR evidence, not as executable training infrastructure"
+      ],
+      "family": "DQN",
+      "gap_type": "paper_mechanism_ready",
+      "severity": "informational"
+    },
+    {
+      "evidence": [
+        "Supported only as OCR evidence, not as executable training infrastructure"
+      ],
+      "family": "Double-DQN",
+      "gap_type": "paper_mechanism_ready",
+      "severity": "informational"
+    },
+    {
+      "evidence": [
+        "Supported only as OCR evidence, not as executable training infrastructure"
+      ],
+      "family": "Dueling-DQN",
+      "gap_type": "paper_mechanism_ready",
+      "severity": "informational"
+    },
+    {
+      "evidence": [
+        "Supported only as OCR evidence, not as executable training infrastructure"
+      ],
+      "family": "LSTM",
+      "gap_type": "paper_mechanism_ready",
+      "severity": "informational"
+    }
+  ],
+  "metadata": {
+    "deterministic": true,
+    "feature_id": "023-training-foundation-readiness-audit",
+    "generated_by": "hoodie_training_foundation_readiness_audit",
+    "source_refs": [
+      "specs/023-training-foundation-readiness-audit/spec.md",
+      "specs/023-training-foundation-readiness-audit/plan.md",
+      "specs/023-training-foundation-readiness-audit/research.md",
+      "specs/023-training-foundation-readiness-audit/data-model.md",
+      "specs/023-training-foundation-readiness-audit/quickstart.md",
+      "resources/papers/hoodie/ocr/merged.tex",
+      "artifacts/analysis/paper-mechanism-registry/paper-mechanism-registry.json",
+      "artifacts/analysis/differential-environment-audit/differential-audit.json",
+      "artifacts/analysis/mechanism-repair/repair-summary.json",
+      "artifacts/analysis/controlled-mechanistic-sweeps/controlled-mechanistic-sweeps.json",
+      "artifacts/analysis/baseline-fairness-rebuild/baseline-fairness-rebuild.json",
+      "artifacts/analysis/baseline-rebuild-sensitivity-audit/baseline-rebuild-sensitivity-audit.json"
+    ]
+  },
+  "readiness_dimensions": [
+    {
+      "blocker_notes": [],
+      "evidence_source": "paper_ocr",
+      "name": "state_representation",
+      "supported": true
+    },
+    {
+      "blocker_notes": [
+        "No training loop or policy controller exists to prove legal-action handling"
+      ],
+      "evidence_source": "no training artifact",
+      "name": "action_space_legality",
+      "supported": false
+    },
+    {
+      "blocker_notes": [],
+      "evidence_source": "paper_ocr",
+      "name": "delayed_reward_timing",
+      "supported": true
+    },
+    {
+      "blocker_notes": [
+        "No training/evaluation episode protocol exists in the repository"
+      ],
+      "evidence_source": "no training artifact",
+      "name": "episode_protocol",
+      "supported": false
+    },
+    {
+      "blocker_notes": [
+        "No replay buffer or training-log artifact contract is present"
+      ],
+      "evidence_source": "artifact inventory",
+      "name": "replay_log_artifacts",
+      "supported": false
+    },
+    {
+      "blocker_notes": [],
+      "evidence_source": "paper_ocr",
+      "name": "dqn_mechanism_gap",
+      "supported": true
+    },
+    {
+      "blocker_notes": [],
+      "evidence_source": "paper_ocr",
+      "name": "double_dqn_mechanism_gap",
+      "supported": true
+    },
+    {
+      "blocker_notes": [],
+      "evidence_source": "paper_ocr",
+      "name": "dueling_dqn_mechanism_gap",
+      "supported": true
+    },
+    {
+      "blocker_notes": [],
+      "evidence_source": "paper_ocr",
+      "name": "lstm_mechanism_gap",
+      "supported": true
+    },
+    {
+      "blocker_notes": [
+        "No training/evaluation split or training runner exists yet"
+      ],
+      "evidence_source": "repository audit",
+      "name": "training_evaluation_separation",
+      "supported": false
+    },
+    {
+      "blocker_notes": [
+        "No training/evaluation seeds or run logs exist for future DRL training"
+      ],
+      "evidence_source": "artifact inventory",
+      "name": "reproducibility",
+      "supported": false
+    },
+    {
+      "blocker_notes": [
+        "The project is still missing training foundation work and explicit training contracts"
+      ],
+      "evidence_source": "all diagnostics",
+      "name": "pre_training_blockers",
+      "supported": false
+    }
+  ],
+  "reproducibility_details": {
+    "approved_interpreter": "/Users/hadi/Documents/GitHub/hoodie_sim_v2/src/.venvmac/bin/python",
+    "csv_optional": true,
+    "deterministic_ordering": "gates -> readiness dimensions -> mechanism gaps -> verdict -> report",
+    "output_dir": "artifacts/analysis/hoodie-training-foundation-readiness-audit"
+  },
+  "source_gate_status": {
+    "checks": [
+      {
+        "artifact": "paper_ocr",
+        "details": [
+          "valid"
+        ],
+        "path": "resources/papers/hoodie/ocr/merged.tex",
+        "present": true,
+        "valid": true
+      },
+      {
+        "artifact": "mechanism_registry",
+        "details": [
+          "valid"
+        ],
+        "path": "artifacts/analysis/paper-mechanism-registry/paper-mechanism-registry.json",
+        "present": true,
+        "valid": true
+      },
+      {
+        "artifact": "differential_audit",
+        "details": [
+          "valid"
+        ],
+        "path": "artifacts/analysis/differential-environment-audit/differential-audit.json",
+        "present": true,
+        "valid": true
+      },
+      {
+        "artifact": "mechanism_repair_summary",
+        "details": [
+          "valid"
+        ],
+        "path": "artifacts/analysis/mechanism-repair/repair-summary.json",
+        "present": true,
+        "valid": true
+      },
+      {
+        "artifact": "controlled_sweeps",
+        "details": [
+          "valid"
+        ],
+        "path": "artifacts/analysis/controlled-mechanistic-sweeps/controlled-mechanistic-sweeps.json",
+        "present": true,
+        "valid": true
+      },
+      {
+        "artifact": "baseline_fairness_rebuild",
+        "details": [
+          "valid"
+        ],
+        "path": "artifacts/analysis/baseline-fairness-rebuild/baseline-fairness-rebuild.json",
+        "present": true,
+        "valid": true
+      },
+      {
+        "artifact": "baseline_rebuild_sensitivity_audit",
+        "details": [
+          "valid"
+        ],
+        "path": "artifacts/analysis/baseline-rebuild-sensitivity-audit/baseline-rebuild-sensitivity-audit.json",
+        "present": true,
+        "valid": true
+      }
+    ],
+    "passed": true
+  },
+  "verdict": "blocked_readiness"
+}

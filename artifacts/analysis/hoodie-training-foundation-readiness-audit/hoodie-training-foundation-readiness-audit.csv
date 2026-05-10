@@ -1,0 +1,13 @@
+name,supported,evidence_source
+state_representation,True,paper_ocr
+action_space_legality,False,no training artifact
+delayed_reward_timing,True,paper_ocr
+episode_protocol,False,no training artifact
+replay_log_artifacts,False,artifact inventory
+dqn_mechanism_gap,True,paper_ocr
+double_dqn_mechanism_gap,True,paper_ocr
+dueling_dqn_mechanism_gap,True,paper_ocr
+lstm_mechanism_gap,True,paper_ocr
+training_evaluation_separation,False,repository audit
+reproducibility,False,artifact inventory
+pre_training_blockers,False,all diagnostics
