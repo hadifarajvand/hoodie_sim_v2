@@ -38,3 +38,9 @@
 - The prior credibility artifacts are available in the repository and can be read directly.
 - If the rebuild still shows collapse, that is evidence for more mechanism investigation or policy-definition audit rather than an automatic bug.
 - The report is diagnostic only and does not claim paper-validity or baseline superiority.
+
+## Report Framing
+
+- The rebuild report must stay conservative: persistent collapse is reported as a valid outcome, not as proof that the rebuild failed.
+- The report must not imply that policy redesign or training is required unless a separate analysis explicitly proves that case.
+- The report must not present the rebuild as paper-level completeness or baseline superiority evidence.
