@@ -1,7 +1,7 @@
 <!-- SPECKIT START -->
 For additional context about technologies to be used, project structure,
 shell commands, and other important information, read
-`specs/019-mechanism-repair/plan.md`
+`specs/020-controlled-mechanistic-sweeps/plan.md`
 <!-- SPECKIT END -->
 
 ## External Reference Usage
