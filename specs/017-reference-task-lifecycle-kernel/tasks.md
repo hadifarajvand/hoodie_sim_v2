@@ -13,10 +13,10 @@
 
 ### Quality Gate
 
-- [ ] T001 Confirm 017 scope guards and repository hygiene against `main` and document the result in `specs/017-reference-task-lifecycle-kernel/quickstart.md`
-- [ ] T002 Create the isolated package skeleton `src/reference_model/__init__.py`, `src/reference_model/lifecycle.py`, `src/reference_model/ledger.py`, and `src/reference_model/models.py`
-- [ ] T003 [P] Add the unit test module shell `tests/unit/test_reference_task_lifecycle_kernel.py`
-- [ ] T004 [P] Add the integration test module shell `tests/integration/test_reference_task_lifecycle_kernel_flow.py`
+- [X] T001 Confirm 017 scope guards and repository hygiene against `main` and document the result in `specs/017-reference-task-lifecycle-kernel/quickstart.md`
+- [X] T002 Create the isolated package skeleton `src/reference_model/__init__.py`, `src/reference_model/lifecycle.py`, `src/reference_model/ledger.py`, and `src/reference_model/models.py`
+- [X] T003 [P] Add the unit test module shell `tests/unit/test_reference_task_lifecycle_kernel.py`
+- [X] T004 [P] Add the integration test module shell `tests/integration/test_reference_task_lifecycle_kernel_flow.py`
 
 **Checkpoint**: Isolated package and test targets exist, and no simulator, policy, training, metric, or campaign files are touched.
 
@@ -28,11 +28,11 @@
 
 **⚠️ CRITICAL**: No user story work begins until the foundational reference types exist.
 
-- [ ] T005 Implement immutable task identity and workload dataclasses in `src/reference_model/models.py`
-- [ ] T006 [P] Implement immutable action and terminal-status dataclasses in `src/reference_model/models.py`
-- [ ] T007 Implement deterministic ledger event and task ledger dataclasses in `src/reference_model/ledger.py`
-- [ ] T008 Implement the reference lifecycle transition API shell in `src/reference_model/lifecycle.py`
-- [ ] T009 Implement deterministic ordering helpers for same-slot or tie conditions in `src/reference_model/ledger.py`
+- [X] T005 Implement immutable task identity and workload dataclasses in `src/reference_model/models.py`
+- [X] T006 Implement immutable action and terminal-status dataclasses in `src/reference_model/models.py`
+- [X] T007 Implement deterministic ledger event and task ledger dataclasses in `src/reference_model/ledger.py`
+- [X] T008 Implement the reference lifecycle transition API shell in `src/reference_model/lifecycle.py`
+- [X] T009 Implement deterministic ordering helpers for same-slot or tie conditions in `src/reference_model/ledger.py`
 
 **Checkpoint**: Core reference data structures and deterministic ordering primitives are ready for test-driven lifecycle behavior.
 
@@ -46,14 +46,14 @@
 
 ### Tests for User Story 1
 
-- [ ] T010 [P] [US1] Add local-compute ledger test coverage in `tests/unit/test_reference_task_lifecycle_kernel.py`
-- [ ] T011 [P] [US1] Add repeated-run determinism test coverage in `tests/unit/test_reference_task_lifecycle_kernel.py`
+- [X] T010 [US1] Add local-compute ledger test coverage in `tests/unit/test_reference_task_lifecycle_kernel.py`
+- [X] T011 [US1] Add repeated-run determinism test coverage in `tests/unit/test_reference_task_lifecycle_kernel.py`
 
 ### Implementation for User Story 1
 
-- [ ] T012 [US1] Implement local-compute lifecycle emission in `src/reference_model/lifecycle.py`
-- [ ] T013 [US1] Implement local-compute ledger assembly in `src/reference_model/ledger.py`
-- [ ] T014 [US1] Expose local-compute transition entry point from `src/reference_model/__init__.py`
+- [X] T012 [US1] Implement local-compute lifecycle emission in `src/reference_model/lifecycle.py`
+- [X] T013 [US1] Implement local-compute ledger assembly in `src/reference_model/ledger.py`
+- [X] T014 [US1] Expose local-compute transition entry point from `src/reference_model/__init__.py`
 
 **Checkpoint**: Local compute reference behavior is fully testable and isolated from simulator code.
 
@@ -67,15 +67,15 @@
 
 ### Tests for User Story 2
 
-- [ ] T015 [P] [US2] Add horizontal-offload ledger test coverage in `tests/unit/test_reference_task_lifecycle_kernel.py`
-- [ ] T016 [P] [US2] Add vertical-offload ledger test coverage in `tests/unit/test_reference_task_lifecycle_kernel.py`
-- [ ] T017 [P] [US2] Add same-slot tie ordering test coverage for offload completions in `tests/unit/test_reference_task_lifecycle_kernel.py`
+- [X] T015 [US2] Add horizontal-offload ledger test coverage in `tests/unit/test_reference_task_lifecycle_kernel.py`
+- [X] T016 [US2] Add vertical-offload ledger test coverage in `tests/unit/test_reference_task_lifecycle_kernel.py`
+- [X] T017 [US2] Add same-slot tie ordering test coverage for offload completions in `tests/unit/test_reference_task_lifecycle_kernel.py`
 
 ### Implementation for User Story 2
 
-- [ ] T018 [US2] Implement horizontal-offload lifecycle emission in `src/reference_model/lifecycle.py`
-- [ ] T019 [US2] Implement vertical-offload lifecycle emission in `src/reference_model/lifecycle.py`
-- [ ] T020 [US2] Extend deterministic ledger assembly for offload paths in `src/reference_model/ledger.py`
+- [X] T018 [US2] Implement horizontal-offload lifecycle emission in `src/reference_model/lifecycle.py`
+- [X] T019 [US2] Implement vertical-offload lifecycle emission in `src/reference_model/lifecycle.py`
+- [X] T020 [US2] Extend deterministic ledger assembly for offload paths in `src/reference_model/ledger.py`
 
 **Checkpoint**: Offload reference behavior is testable independently of any policy logic.
 
@@ -89,14 +89,14 @@
 
 ### Tests for User Story 3
 
-- [ ] T021 [P] [US3] Add timeout/drop ledger test coverage in `tests/unit/test_reference_task_lifecycle_kernel.py`
-- [ ] T022 [P] [US3] Add delayed-reward timing test coverage in `tests/unit/test_reference_task_lifecycle_kernel.py`
+- [X] T021 [US3] Add timeout/drop ledger test coverage in `tests/unit/test_reference_task_lifecycle_kernel.py`
+- [X] T022 [US3] Add delayed-reward timing test coverage in `tests/unit/test_reference_task_lifecycle_kernel.py`
 
 ### Implementation for User Story 3
 
-- [ ] T023 [US3] Implement timeout boundary handling in `src/reference_model/lifecycle.py`
-- [ ] T024 [US3] Implement terminal-only reward emission in `src/reference_model/lifecycle.py`
-- [ ] T025 [US3] Extend integration flow coverage for timeout/drop and delayed reward in `tests/integration/test_reference_task_lifecycle_kernel_flow.py`
+- [X] T023 [US3] Implement timeout boundary handling in `src/reference_model/lifecycle.py`
+- [X] T024 [US3] Implement terminal-only reward emission in `src/reference_model/lifecycle.py`
+- [X] T025 [US3] Extend integration flow coverage for timeout/drop and delayed reward in `tests/integration/test_reference_task_lifecycle_kernel_flow.py`
 
 **Checkpoint**: Timeout and reward timing are reference-fixed and test-covered.
 
@@ -106,9 +106,9 @@
 
 **Purpose**: Prove the feature is isolated, deterministic, and limited to the approved package and tests.
 
-- [ ] T026 [P] Add repository-scope guard assertions to `tests/integration/test_reference_task_lifecycle_kernel_flow.py`
-- [ ] T027 Run the targeted validation command with `/Users/hadi/Documents/GitHub/hoodie_sim_v2/src/.venvmac/bin/python -m unittest tests.unit.test_reference_task_lifecycle_kernel tests.integration.test_reference_task_lifecycle_kernel_flow`
-- [ ] T028 Compare the diff against `main` and verify no files outside `src/reference_model/`, `tests/unit/test_reference_task_lifecycle_kernel.py`, `tests/integration/test_reference_task_lifecycle_kernel_flow.py`, and the 017 spec docs were modified
+- [X] T026 Add static source/import isolation guard assertions to `tests/integration/test_reference_task_lifecycle_kernel_flow.py` proving `src/reference_model` does not import, depend on, or reference `HoodieGymEnvironment`, `SlotEngine`, `src/environment`, `src/policies`, `src/training`, `src/metrics`, `campaign` modules, or existing simulator lifecycle modules
+- [X] T027 Run the targeted validation command with `/Users/hadi/Documents/GitHub/hoodie_sim_v2/src/.venvmac/bin/python -m unittest tests.unit.test_reference_task_lifecycle_kernel tests.integration.test_reference_task_lifecycle_kernel_flow`
+- [X] T028 Compare the diff against `main` and verify no forbidden paths changed, no forbidden imports or references exist inside `src/reference_model`, no dependency files changed, no existing campaign artifacts changed, and no simulator lifecycle drift was introduced
 
 **Checkpoint**: Scope, determinism, and repository hygiene are verified before merge.
 
@@ -139,11 +139,10 @@
 ### Parallel Opportunities
 
 - `T003` and `T004` can run in parallel because they touch different test files
-- `T006` can run in parallel with `T005` because they touch different files
 - `T010` and `T011` can run in parallel
-- `T015`, `T016`, and `T017` can run in parallel
-- `T021` and `T022` can run in parallel
-- `T026` can run alongside `T027` and `T028` because it only adds integration assertions
+- `T015`, `T016`, and `T017` are not parallel-safe because they touch the same file
+- `T021` and `T022` are not parallel-safe because they touch the same file
+- `T026` must run before `T027` and `T028`
 
 ---
 
@@ -181,5 +180,5 @@ Task: "Add repeated-run determinism test coverage in tests/unit/test_reference_t
 - Every task is atomic and file-specific
 - Tests precede implementation for each story
 - No task modifies forbidden simulator, policy, campaign, metric, dependency, or artifact paths
+- The final audit task explicitly checks source/import isolation from simulator lifecycle modules
 - No task introduces DRL, neural networks, Gymnasium, TorchRL, ns-3, or ns-3-gym
-

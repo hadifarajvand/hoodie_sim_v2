@@ -22,10 +22,9 @@ Run the planned test suite with the approved environment:
 - The timeout/drop test emits `dropped_timeout` followed by terminal-slot `reward_emitted`.
 - The delayed-reward test confirms no reward at `selected_action`.
 - The deterministic-ordering test reproduces the same ledger across repeated runs.
-- The repository-scope guard confirms no simulator, campaign, artifact, or dependency files are mutated.
+- The repository-scope guard confirms `src/reference_model` has no forbidden imports or references to simulator lifecycle modules, and no simulator, campaign, artifact, or dependency files are mutated.
 
 ## Notes
 
 - The feature is intentionally isolated under `src/reference_model/`.
 - No external service, policy, training loop, or metric logic is part of this feature.
-

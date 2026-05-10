@@ -76,9 +76,12 @@ tests/
 
 **Structure Decision**: Use a new isolated `src/reference_model/` package so the kernel remains clearly separate from `src/environment`, `src/policies`, `src/training`, and the existing artifact pipeline. This is the cleanest way to keep the reference kernel auditable without perturbing the simulator.
 
+## Boundary Isolation Guard
+
+Feature 017 is not merely architecturally isolated; it must be source/import isolated. The `src/reference_model` package must not import or reference `HoodieGymEnvironment`, `SlotEngine`, `src/environment`, `src/policies`, `src/training`, `src/metrics`, campaign runners, or existing campaign artifacts. This is enforced by an integration guard test before implementation is accepted. Any violation fails the feature, even if lifecycle tests pass.
+
 ## Complexity Tracking
 
 > **Fill ONLY if Constitution Check has violations that must be justified**
 
 No complexity exceptions are required.
-
