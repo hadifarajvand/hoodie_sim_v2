@@ -32,6 +32,11 @@
 - **Rationale**: The committed audit does not authorize them as repair targets.
 - **Alternatives considered**: Fix adjacent findings while in the environment code. Rejected as scope creep.
 
+### 7. Repaired Audit Outcome
+- **Decision**: Re-run Feature 018 differential audit with the repaired timeout/drop trace and record `case-timeout-drop` as a non-divergent assumption gap.
+- **Rationale**: The repair fixed the dropped-terminal accounting path, but the audit still observes a project-equivalent representation gap between the reference kernel and environment evidence. That is not a simulator bug.
+- **Alternatives considered**: Keep the old divergence classification. Rejected because it would ignore the repaired behavior and misstate the committed evidence.
+
 ## Rationale Summary
 
 The repair should be local, test-first, and audit-driven. The only justified code path change is the timeout/drop terminal accounting that caused the confirmed divergence. Everything else stays frozen unless a separate concrete bug is proven.

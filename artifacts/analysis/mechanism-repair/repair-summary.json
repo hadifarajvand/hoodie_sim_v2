@@ -1,0 +1,45 @@
+{
+  "audit_regeneration_status": "regenerated",
+  "feature_id": "019",
+  "regression_tests": [
+    "tests.unit.test_mechanism_repair_timeout_drop.MechanismRepairTimeoutDropUnitTest",
+    "tests.integration.test_mechanism_repair_timeout_drop.MechanismRepairTimeoutDropIntegrationTest",
+    "tests.integration.test_mechanism_repair_scope_guard.MechanismRepairScopeGuardIntegrationTest",
+    "tests.integration.test_mechanism_repair_final_diff.MechanismRepairFinalDiffIntegrationTest"
+  ],
+  "remaining_findings": [
+    {
+      "case_id": "case-local-compute",
+      "cause": "likely_environment_bug",
+      "classification": "divergence"
+    },
+    {
+      "case_id": "case-horizontal-offload",
+      "cause": "instrumentation_gap",
+      "classification": "unsupported_by_environment_trace"
+    },
+    {
+      "case_id": "case-vertical-offload",
+      "cause": "instrumentation_gap",
+      "classification": "unsupported_by_environment_trace"
+    },
+    {
+      "case_id": "case-delayed-reward",
+      "cause": "paper_assumption_gap",
+      "classification": "assumption_gap"
+    },
+    {
+      "case_id": "case-deterministic-ordering",
+      "cause": "likely_environment_bug",
+      "classification": "divergence"
+    }
+  ],
+  "repaired_behavior": {
+    "environment_terminal_status": "dropped",
+    "reference_terminal_status": "dropped_timeout",
+    "reward_timing": "terminal"
+  },
+  "repaired_case_id": "case-timeout-drop",
+  "repaired_cause": "expected_scope_difference",
+  "repaired_classification": "assumption_gap"
+}
