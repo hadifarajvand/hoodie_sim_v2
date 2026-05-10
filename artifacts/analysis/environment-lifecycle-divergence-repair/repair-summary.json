@@ -1,0 +1,41 @@
+{
+  "disclaimers": [
+    "No training, neural-network, TorchRL, Gymnasium, ns-3, or ns-3-gym changes were introduced.",
+    "Horizontal and vertical offload instrumentation gaps remain deferred unless directly required for lifecycle correctness.",
+    "No paper-validity claim is made."
+  ],
+  "regenerated_audit_paths": [
+    "artifacts/analysis/differential-environment-audit/differential-audit.json",
+    "artifacts/analysis/differential-environment-audit/differential-audit.md"
+  ],
+  "remaining_findings": [
+    {
+      "case_id": "case-horizontal-offload",
+      "classification": "unsupported_by_environment_trace",
+      "finding_cause": "instrumentation_gap"
+    },
+    {
+      "case_id": "case-vertical-offload",
+      "classification": "unsupported_by_environment_trace",
+      "finding_cause": "instrumentation_gap"
+    },
+    {
+      "case_id": "case-timeout-drop",
+      "classification": "assumption_gap",
+      "finding_cause": "expected_scope_difference"
+    },
+    {
+      "case_id": "case-delayed-reward",
+      "classification": "assumption_gap",
+      "finding_cause": "paper_assumption_gap"
+    }
+  ],
+  "repaired_cases": [
+    "case-local-compute",
+    "case-deterministic-ordering"
+  ],
+  "scope_guard_results": {
+    "final_diff_scope_guard": "passed",
+    "horizontal_vertical_instrumentation_scope_creep_guard": "passed"
+  }
+}

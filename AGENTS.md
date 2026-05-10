@@ -1,7 +1,7 @@
 <!-- SPECKIT START -->
 For additional context about technologies to be used, project structure,
 shell commands, and other important information, read
-`specs/023-training-foundation-readiness-audit/plan.md`
+`specs/024-environment-lifecycle-divergence-repair/plan.md`
 <!-- SPECKIT END -->
 
 ## External Reference Usage
