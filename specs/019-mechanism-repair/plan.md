@@ -72,6 +72,19 @@ tests/
 
 **Structure Decision**: Keep the repair inside the smallest environment path that owns public `step`-level terminal accounting. Add regression tests in `tests/unit/` and `tests/integration/`, and regenerate only the Feature 018 audit artifacts after the fix. No new contracts directory is required because this is an internal repair feature.
 
+## Public Interfaces Affected
+
+- [x] Environment reset/step
+- [ ] Policy interface
+- [x] Task model
+- [ ] Topology interface
+- [ ] Runtime model interface
+- [ ] Evaluation metric interface
+- [ ] Config schema
+- [ ] Artifact schema
+
+Evaluation metrics and metric interfaces are read-only for Feature 019. Feature 018 identified no metric divergence, so this repair must not change metric formulas, metric schemas, metric aggregation, or metric public interfaces.
+
 ## Complexity Tracking
 
 > **Fill ONLY if Constitution Check has violations that must be justified**
