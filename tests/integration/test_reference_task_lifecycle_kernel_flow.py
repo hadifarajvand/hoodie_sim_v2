@@ -36,7 +36,25 @@ FORBIDDEN_IMPORT_PREFIXES = (
 )
 
 
+def _is_forbidden_module(module_name: str) -> bool:
+    return any(
+        module_name == forbidden or module_name.startswith(f"{forbidden}.")
+        for forbidden in FORBIDDEN_IMPORT_PREFIXES
+    )
+
+
 class ReferenceTaskLifecycleKernelFlowTest(unittest.TestCase):
+    def test_forbidden_module_helper(self) -> None:
+        self.assertTrue(_is_forbidden_module("src.environment"))
+        self.assertTrue(_is_forbidden_module("src.environment.slot_engine"))
+        self.assertTrue(_is_forbidden_module("src.policies"))
+        self.assertTrue(_is_forbidden_module("src.training.loop"))
+        self.assertTrue(_is_forbidden_module("src.metrics.report"))
+        self.assertTrue(_is_forbidden_module("environment"))
+        self.assertFalse(_is_forbidden_module("src.reference_model"))
+        self.assertFalse(_is_forbidden_module("dataclasses"))
+        self.assertFalse(_is_forbidden_module("enum"))
+
     def test_repository_scope_guard(self) -> None:
         source_dir = Path("src/reference_model")
         source_files = sorted(source_dir.glob("*.py"))
@@ -49,12 +67,16 @@ class ReferenceTaskLifecycleKernelFlowTest(unittest.TestCase):
             for node in ast.walk(tree):
                 if isinstance(node, ast.Import):
                     for alias in node.names:
-                        root = alias.name.split(".")[0]
-                        self.assertNotIn(root, FORBIDDEN_IMPORT_PREFIXES, f"forbidden import in {path}: {alias.name}")
+                        self.assertFalse(
+                            _is_forbidden_module(alias.name),
+                            f"forbidden import in {path}: {alias.name}",
+                        )
                 elif isinstance(node, ast.ImportFrom):
                     module = node.module or ""
-                    root = module.split(".")[0]
-                    self.assertNotIn(root, FORBIDDEN_IMPORT_PREFIXES, f"forbidden from-import in {path}: {module}")
+                    self.assertFalse(
+                        _is_forbidden_module(module),
+                        f"forbidden from-import in {path}: {module}",
+                    )
         kernel = ReferenceLifecycleKernel()
         self.assertIsNotNone(kernel)
 
