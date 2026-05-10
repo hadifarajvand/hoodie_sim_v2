@@ -1,0 +1,54 @@
+{
+  "adjacency_matrix": null,
+  "adjacency_matrix_status": "unrecoverable",
+  "edge_cloud_connectivity": {
+    "recovery_status": "unrecoverable",
+    "source_evidence": [],
+    "unrecoverable_reason": "Paper/OCR evidence does not recover explicit edge/cloud connectivity facts without inventing topology.",
+    "value": null
+  },
+  "legal_horizontal_destinations": null,
+  "no_fabrication_disclaimer": true,
+  "node_count": 20,
+  "node_ids": null,
+  "paper_claim_type": "topology_caption",
+  "paper_figure_id": "Figure 7",
+  "recovery_confidence": "low",
+  "recovery_status": "unrecoverable",
+  "schema_version": "1.0",
+  "source_evidence": [
+    {
+      "char_offset": 137321,
+      "equation_or_table_reference": null,
+      "figure_reference": "Figure 7",
+      "ocr_snippet": "Drop Penalty</td><td>\\$C\\$</td><td>40</td></tr><tr><td>Batch size</td><td>\\$N\\_\\{B\\}\\$</td><td>64 samples</td></tr></tbody></table></body></html> 1234567891011121314151617181920 FIGURE 7. Edge layer topology graph of matrix G with 20 EAs. VOLUME , 17 ===== page\\_018\\_0\\_res.txt ===== is the cumulative reward, as defined in (20) and (24), that was collected in a series of 5000 episodes, and averaged across all the distributed HOODIE agents. Note that, since the task delay is considered a negative metric, the ideal value is zero, which explains why",
+      "section_or_context": "Figure 7 / topology",
+      "snippet_index": 0,
+      "source_path": "/Users/hadi/Documents/GitHub/hoodie_sim_v2/resources/papers/hoodie/ocr/merged.tex"
+    },
+    {
+      "char_offset": 51671,
+      "equation_or_table_reference": null,
+      "figure_reference": "Figure 7",
+      "ocr_snippet": "\\textbackslash\\{\\}mathrm\\{l i n k\\}\\textasciicircum{}\\{6\\}\\$ . Since it is not always possible to assume all-to-all connectivity across EAs in practice, we can let the symmetrical matrix G denote the adjacent graph of the Edge layer topology,with each element \\$G(i,j)=G(j,i)=1\\$ when \\$\\textbackslash\\{\\}mathrm\\{E A\\}\\textbackslash\\{\\}textit\\{i\\}\\$ can establish direct bidirectional connection with EA j,whereas \\$G(i,j)=0\\$ otherwise. When all-to-all connectivity is assumed, all elements of matrix G are",
+      "section_or_context": "Figure 7 / topology",
+      "snippet_index": 1,
+      "source_path": "/Users/hadi/Documents/GitHub/hoodie_sim_v2/resources/papers/hoodie/ocr/merged.tex"
+    },
+    {
+      "char_offset": 137374,
+      "equation_or_table_reference": null,
+      "figure_reference": "Figure 7",
+      "ocr_snippet": "d>Batch size</td><td>\\$N\\_\\{B\\}\\$</td><td>64 samples</td></tr></tbody></table></body></html> 1234567891011121314151617181920 FIGURE 7. Edge layer topology graph of matrix G with 20 EAs. VOLUME , 17 ===== page\\_018\\_0\\_res.txt ===== is the cumulative reward, as defined in (20) and (24), that was collected in a series of 5000 episodes, and averaged across all the distributed HOODIE agents. Note that, since the task delay is considered a negative metric, the ideal value is zero, which explains why",
+      "section_or_context": "Figure 7 / topology",
+      "snippet_index": 2,
+      "source_path": "/Users/hadi/Documents/GitHub/hoodie_sim_v2/resources/papers/hoodie/ocr/merged.tex"
+    }
+  ],
+  "unrecoverable_items": [
+    "topology_adjacency_edges",
+    "adjacency_matrix",
+    "legal_horizontal_destinations",
+    "edge_cloud_connectivity"
+  ]
+}

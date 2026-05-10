@@ -1,0 +1,95 @@
+{
+  "input_sources": {
+    "input_paper_ocr_path": "/Users/hadi/Documents/GitHub/hoodie_sim_v2/resources/papers/hoodie/ocr/merged.tex",
+    "paper_ocr_char_count": 181887,
+    "paper_ocr_exists": true,
+    "supporting_inputs": [
+      "resources/papers/hoodie/ocr/merged.md",
+      "resources/papers/hoodie/ocr/merged.txt",
+      "resources/papers/hoodie/ocr/merged.json",
+      "resources/papers/hoodie/HOODIE_paper.pdf",
+      "artifacts/analysis/paper-mechanism-registry/paper-mechanism-registry.json",
+      "artifacts/analysis/paper-figure-extraction/paper-figure-extraction.json"
+    ]
+  },
+  "no_fabrication_disclaimer": true,
+  "parameter_summary": {
+    "recovered_fields": [
+      "task_arrival_parameters",
+      "task_size_parameters",
+      "processing_density",
+      "horizontal_data_rate",
+      "vertical_data_rate",
+      "learning_parameters",
+      "scenario_parameters.N",
+      "scenario_parameters.edge_layer_density"
+    ],
+    "recovery_status": "partially_recovered",
+    "unrecoverable_items": [
+      "EA_private_cpu_capacities",
+      "EA_public_cpu_capacities",
+      "cloud_cpu_capacities",
+      "adjacency_matrix",
+      "legal_horizontal_destinations",
+      "edge_cloud_connectivity",
+      "cloud_data_rate"
+    ]
+  },
+  "partially_recovered_items": [
+    {
+      "item": "paper_parameter_registry",
+      "reason": "CPU capacities and exact topology adjacency remain unrecoverable.",
+      "status": "partially_recovered"
+    }
+  ],
+  "recovered_items": [
+    {
+      "evidence_count": 1,
+      "item": "N",
+      "status": "recovered"
+    },
+    {
+      "evidence_count": 1,
+      "item": "horizontal_data_rate",
+      "status": "recovered"
+    },
+    {
+      "evidence_count": 1,
+      "item": "vertical_data_rate",
+      "status": "recovered"
+    },
+    {
+      "evidence_count": 1,
+      "item": "task_arrival_probability",
+      "status": "recovered"
+    },
+    {
+      "evidence_count": 1,
+      "item": "task_size",
+      "status": "recovered"
+    },
+    {
+      "evidence_count": 1,
+      "item": "processing_density",
+      "status": "recovered"
+    }
+  ],
+  "recovery_confidence": "low",
+  "schema_version": "1.0",
+  "topology_summary": {
+    "adjacency_matrix_status": "unrecoverable",
+    "node_count": 20,
+    "recovery_status": "unrecoverable",
+    "unrecoverable_items": [
+      "topology_adjacency_edges",
+      "adjacency_matrix",
+      "legal_horizontal_destinations",
+      "edge_cloud_connectivity"
+    ]
+  },
+  "unrecoverable_items": [
+    "Figure 7 adjacency edges",
+    "Figure 7 legal horizontal destinations",
+    "EA private/public/cloud CPU capacities"
+  ]
+}
