@@ -61,6 +61,14 @@ class DifferentialEnvironmentAudit:
             environment_summary=environment_summary.to_dict(),
             environment_supported=environment_supported,
         )
+        if case.scenario_type is ToyCaseScenario.TIMEOUT_DROP:
+            timeout_failed = environment_summary.terminal_status != "dropped"
+            if timeout_failed:
+                classification = ComparisonClassification.DIVERGENCE
+                cause = FindingCause.LIKELY_ENVIRONMENT_BUG
+                if instrumentation_gap_text is None:
+                    instrumentation_gap_text = "Configured timeout/drop toy case did not produce a dropped terminal outcome."
+                unsupported_text = None
         comparison_result = ComparisonResult(
             case_id=case.case_id,
             classification=classification,
@@ -189,6 +197,11 @@ class DifferentialEnvironmentAudit:
         reward_timing = "terminal" if reward_total != 0.0 and terminal_status in {"completed", "dropped"} else None
         if step_error is not None:
             unsupported_text = unsupported_text or str(step_error)
+        if case.scenario_type is ToyCaseScenario.TIMEOUT_DROP and terminal_status != "dropped":
+            instrumentation_gap_text = (
+                instrumentation_gap_text
+                or "Configured timeout/drop toy case did not produce a dropped terminal outcome."
+            )
         summary = AuditObservationSummary(
             case_id=case.case_id,
             event_sequence=tuple(step_records),
