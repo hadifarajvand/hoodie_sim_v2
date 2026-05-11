@@ -60,3 +60,48 @@ def attach_one_task_trace_bank(env: HoodieGymEnvironment, *, action: str) -> Hoo
         },
     )()
     return env
+
+
+class RichLifecycleAuditFixtureEnv:
+    def __init__(self, *, path: str) -> None:
+        self.path = path
+        self.current_task = object()
+
+    def reset(self, seed=None):
+        self.current_task = object()
+        return {"observation": True}, {}
+
+    def legal_action_mask(self, current_task):
+        return {"local": True, "horizontal": True, "vertical": True}
+
+    def step(self, action):
+        self.current_task = None
+        if self.path == "horizontal":
+            events = [
+                "selected_action",
+                "queued_public",
+                "transmission_started",
+                "transmission_completed",
+                "execution_started",
+                "execution_completed",
+                "reward_emitted",
+            ]
+        else:
+            events = [
+                "selected_action",
+                "offloaded_cloud",
+                "transmission_started",
+                "transmission_completed",
+                "execution_started",
+                "execution_completed",
+                "reward_emitted",
+            ]
+        return {"observation": True}, -1.0, True, False, {
+            "finalized_tasks": [
+                {
+                    "task_id": "case-audit-fixture-task",
+                    "terminal_outcome": "completed",
+                    "offload_lifecycle_events": events,
+                }
+            ]
+        }
