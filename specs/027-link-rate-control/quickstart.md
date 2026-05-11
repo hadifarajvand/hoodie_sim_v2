@@ -49,3 +49,27 @@ Inspect `artifacts/analysis/link-rate-transmission-delay-contract/link-rate-cont
 - unsupported controls are labeled honestly
 - monotonicity results are deterministic
 - no paper-topology fabrication claim is made
+
+## Report Schema
+
+The report JSON must use these exact top-level keys:
+
+- `schema_version`
+- `feature_id`
+- `source_gates`
+- `paper_backed_defaults`
+- `link_rate_controls`
+- `transmission_delay_contract`
+- `unit_conversions`
+- `monotonicity_checks`
+- `unsupported_controls`
+- `remaining_blockers`
+- `topology_boundaries`
+- `no_curve_fitting`
+- `no_topology_fabrication`
+- `no_policy_or_metric_redesign`
+- `no_training_or_dependency_drift`
+- `generated_artifacts`
+- `validation_summary`
+
+The report must clearly state that `src/analysis/link_rate_transmission_delay_contract/` is the only report helper package for this feature.

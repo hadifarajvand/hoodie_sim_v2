@@ -41,6 +41,7 @@ Deliver a public, config-backed link-rate control contract for horizontal and ve
 - [x] Definition-of-done impact checked
 
 This feature is only valid if it preserves the hard boundary between paper-backed horizontal/vertical defaults and unsupported per-edge/offload requests. It may not infer cloud rate or adjacency from simulator behavior.
+The only supported report helper package for this feature is `src/analysis/link_rate_transmission_delay_contract/`.
 
 ## Project Structure
 

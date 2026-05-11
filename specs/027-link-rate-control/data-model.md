@@ -39,6 +39,63 @@ Fields:
 
 Represents the deterministic validation output proving controlled rate changes affect delay.
 
+Top-level JSON schema keys for `artifacts/analysis/link-rate-transmission-delay-contract/link-rate-contract-report.json`:
+
+- `schema_version`
+- `feature_id`
+- `source_gates`
+- `paper_backed_defaults`
+- `link_rate_controls`
+- `transmission_delay_contract`
+- `unit_conversions`
+- `monotonicity_checks`
+- `unsupported_controls`
+- `remaining_blockers`
+- `topology_boundaries`
+- `no_curve_fitting`
+- `no_topology_fabrication`
+- `no_policy_or_metric_redesign`
+- `no_training_or_dependency_drift`
+- `generated_artifacts`
+- `validation_summary`
+
+Required nested fields:
+
+- `paper_backed_defaults.horizontal_data_rate_mbps`
+- `paper_backed_defaults.vertical_data_rate_mbps`
+- `paper_backed_defaults.cloud_data_rate_status`
+- `paper_backed_defaults.source_registry_path`
+- `link_rate_controls.horizontal_control_status`
+- `link_rate_controls.vertical_control_status`
+- `link_rate_controls.per_edge_control_status`
+- `link_rate_controls.cloud_control_status`
+- `link_rate_controls.public_config_entrypoint`
+- `transmission_delay_contract.formula`
+- `transmission_delay_contract.payload_unit`
+- `transmission_delay_contract.rate_unit`
+- `transmission_delay_contract.output_seconds`
+- `transmission_delay_contract.output_slots`
+- `transmission_delay_contract.slot_duration_seconds`
+- `transmission_delay_contract.slot_rounding_policy`
+- `transmission_delay_contract.invalid_rate_policy`
+- `transmission_delay_contract.zero_payload_policy`
+- `unit_conversions.bits_per_mbit`
+- `unit_conversions.bps_per_mbps`
+- `unit_conversions.seconds_to_slots_policy`
+- `unit_conversions.slots_to_seconds_policy`
+- `monotonicity_checks.horizontal`
+- `monotonicity_checks.vertical`
+- `monotonicity_checks.per_edge_if_supported`
+- `unsupported_controls.control_name`
+- `unsupported_controls.reason`
+- `unsupported_controls.evidence_source`
+- `remaining_blockers.blocker_id`
+- `remaining_blockers.blocker_type`
+- `remaining_blockers.reason`
+- `topology_boundaries.figure_7_adjacency_status`
+- `topology_boundaries.legal_horizontal_destinations_status`
+- `topology_boundaries.paper_topology_injected`
+
 Fields:
 - `schema_supported_events`
 - `observed_default_audit_events`
