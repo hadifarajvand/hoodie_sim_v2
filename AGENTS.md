@@ -1,7 +1,7 @@
 <!-- SPECKIT START -->
 For additional context about technologies to be used, project structure,
 shell commands, and other important information, read
-`specs/028-computation-delay-unit-validation/plan.md`
+`specs/029-reward-equation-terminal-reward-contract/plan.md`
 <!-- SPECKIT END -->
 
 ## External Reference Usage

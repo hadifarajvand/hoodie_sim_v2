@@ -178,6 +178,7 @@ class HoodieGymEnvironment:
         reward = 0.0
         finalized_tasks: list[Task] = []
         current_task = self._current_task
+        selected_action_emitted = False
         if current_task is not None:
             if action is None:
                 raise ValueError("An action is required while a task is pending")
@@ -195,6 +196,7 @@ class HoodieGymEnvironment:
             self._trace_ledgers[current_task.task_id] = ledger
             self._admit_current_task(current_task)
             self._current_task = None
+            selected_action_emitted = True
 
         finalized_tasks.extend(self._progress_offloading_queues())
         finalized_tasks.extend(self._progress_execution_queues())
@@ -204,6 +206,14 @@ class HoodieGymEnvironment:
             task_reward = reward_for_terminal_task(task)
             reward += task_reward
             self._record_outcome(task, task_reward)
+
+        if (
+            not selected_action_emitted
+            and not finalized_tasks
+            and current_task is None
+            and self.queue_load == 0
+        ):
+            reward = float("nan")
 
         self.engine.current_slot = self.current_slot
         self.current_slot += 1
