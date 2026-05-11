@@ -31,16 +31,16 @@
 
 ## Comparison Results
 - `case-local-compute`: match / expected_scope_difference
-- `case-horizontal-offload`: unsupported_by_environment_trace / instrumentation_gap
-- `case-vertical-offload`: unsupported_by_environment_trace / instrumentation_gap
+- `case-horizontal-offload`: blocked_by_runtime_topology_or_destination_fixture / expected_scope_difference
+- `case-vertical-offload`: blocked_by_runtime_topology_or_destination_fixture / expected_scope_difference
 - `case-timeout-drop`: assumption_gap / expected_scope_difference
 - `case-delayed-reward`: assumption_gap / paper_assumption_gap
 - `case-deterministic-ordering`: match / expected_scope_difference
 
 ## Findings
 - `F-case-local-compute` `case-local-compute`: match / expected_scope_difference
-- `F-case-horizontal-offload` `case-horizontal-offload`: unsupported_by_environment_trace / instrumentation_gap
-- `F-case-vertical-offload` `case-vertical-offload`: unsupported_by_environment_trace / instrumentation_gap
+- `F-case-horizontal-offload` `case-horizontal-offload`: blocked_by_runtime_topology_or_destination_fixture / expected_scope_difference
+- `F-case-vertical-offload` `case-vertical-offload`: blocked_by_runtime_topology_or_destination_fixture / expected_scope_difference
 - `F-case-timeout-drop` `case-timeout-drop`: assumption_gap / expected_scope_difference
 - `F-case-delayed-reward` `case-delayed-reward`: assumption_gap / paper_assumption_gap
 - `F-case-deterministic-ordering` `case-deterministic-ordering`: match / expected_scope_difference
@@ -62,7 +62,7 @@ No fixes were applied to HoodieGymEnvironment, SlotEngine, simulator lifecycle c
 - output_root: `artifacts/analysis/differential-environment-audit`
 - approved_python: `/Users/hadi/Documents/GitHub/hoodie_sim_v2/src/.venvmac/bin/python`
 - case_count: `6`
-- report_hash: `44c246d12db56c3e9bea518f76d690b0627baabf22ff856ac0ec5309f1670ff2`
+- report_hash: `a11bb36a8889bf25933f97b3b1553063e01b256f805c2358ab39d9d6357951eb`
 
 ## Overall Status
 

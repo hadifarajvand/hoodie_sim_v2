@@ -11,7 +11,9 @@ from src.policies.policy_interface import PolicyContext
 from .environment import apply_policy_action, finalize_task_runtime_state_with_parameters
 from .compute_config import ComputeConfig
 from .execution_helper import step_execution
+from .offload_trace_ledger import OffloadTraceLedger
 from .offloading_queue import OffloadingQueue
+from .offload_trace_schema import OFFLOAD_LIFECYCLE_EVENTS
 from .private_queue import PrivateQueue
 from .public_queue import PublicQueue
 from .reward_timing import emit_delayed_reward, reward_for_terminal_task
@@ -54,6 +56,7 @@ class HoodieGymEnvironment:
     _public_queues: dict[tuple[str, str], PublicQueue] = field(default_factory=dict)
     _active_tasks: dict[int, Task] = field(default_factory=dict)
     _history: list[StepTraceRecord] = field(default_factory=list)
+    _trace_ledgers: dict[int, OffloadTraceLedger] = field(default_factory=dict)
     _metrics: dict[str, float] = field(default_factory=lambda: {"completed": 0.0, "dropped": 0.0, "reward": 0.0})
     _drain_mode: bool = False
 
@@ -67,6 +70,7 @@ class HoodieGymEnvironment:
         self._public_queues.clear()
         self._active_tasks.clear()
         self._history.clear()
+        self._trace_ledgers.clear()
         self._metrics = {"completed": 0.0, "dropped": 0.0, "reward": 0.0}
         self._drain_mode = False
         self.engine.current_slot = 0
@@ -183,6 +187,9 @@ class HoodieGymEnvironment:
             selected_action = select_legal_action(context, action)
             resolved_destination = self._resolve_destination(current_task, selected_action)
             apply_policy_action(current_task, context, selected_action, resolved_destination=resolved_destination)
+            ledger = OffloadTraceLedger()
+            ledger.emit("selected_action")
+            self._trace_ledgers[current_task.task_id] = ledger
             self._admit_current_task(current_task)
             self._current_task = None
 
@@ -231,6 +238,7 @@ class HoodieGymEnvironment:
             queue = self._private_queues.setdefault(source_id, PrivateQueue(owner_node_id=source_id))
             queue.enqueue(task, slot=self.current_slot)
             task.start_slot = self.current_slot
+            self._trace_ledgers.setdefault(task.task_id, OffloadTraceLedger()).emit("execution_started")
             return
         destination = self._resolve_destination(task, task.selected_action or "")
         queue = self._offloading_queues.setdefault(
@@ -239,6 +247,13 @@ class HoodieGymEnvironment:
         )
         queue.enqueue(task, slot=self.current_slot)
         task.start_slot = self.current_slot
+        ledger = self._trace_ledgers.setdefault(task.task_id, OffloadTraceLedger())
+        if task.selected_action in {"horizontal", "offload_horizontal"}:
+            ledger.emit("queued_public")
+            ledger.emit("transmission_started")
+        elif task.selected_action in {"vertical", "offload_vertical"}:
+            ledger.emit("offloaded_cloud")
+            ledger.emit("transmission_started")
 
     def _progress_offloading_queues(self) -> list[Task]:
         finalized: list[Task] = []
@@ -247,6 +262,7 @@ class HoodieGymEnvironment:
             if admitted:
                 task = self._public_queue_for(source_id, destination).tasks[-1]
                 task.metadata["public_queue_admitted_at"] = self.current_slot
+                self._trace_ledgers.setdefault(task.task_id, OffloadTraceLedger()).emit("transmission_completed")
         return finalized
 
     def _progress_execution_queues(self) -> list[Task]:
@@ -262,6 +278,9 @@ class HoodieGymEnvironment:
         if not queue.tasks:
             return []
         task = queue.tasks[0]
+        ledger = self._trace_ledgers.setdefault(task.task_id, OffloadTraceLedger())
+        if "execution_started" not in ledger.snapshot():
+            ledger.emit("execution_started")
         advance_shared_runtime(task, destination_kind, self.current_slot, self.runtime_parameters)
         execution_progress = step_execution(
             task,
@@ -272,6 +291,7 @@ class HoodieGymEnvironment:
         if not execution_progress.completed:
             return []
         finalized = queue.dequeue()
+        ledger.emit("execution_completed")
         return [finalized]
 
     def _public_queue_for(self, source_id: str, destination: str) -> PublicQueue:
@@ -332,6 +352,11 @@ class HoodieGymEnvironment:
         return hints
 
     def _record_outcome(self, task: Task, reward: float) -> None:
+        ledger = self._trace_ledgers.setdefault(task.task_id, OffloadTraceLedger())
+        if task.terminal_outcome == "dropped":
+            ledger.emit("dropped_timeout")
+        ledger.emit("reward_emitted")
+        task.metadata["offload_lifecycle_events"] = ledger.snapshot()
         self._history.append(
             StepTraceRecord(
                 task_id=task.task_id,
@@ -377,10 +402,16 @@ class HoodieGymEnvironment:
                     "terminal_outcome": task.terminal_outcome,
                     "selected_action": task.selected_action,
                     "resolved_destination": task.resolved_destination,
+                    "offload_lifecycle_events": list(task.metadata.get("offload_lifecycle_events", ())),
                 }
                 for task in (finalized_tasks or [])
             ],
             "history_length": len(self._history),
+            "offload_lifecycle_events": list(
+                finalized_tasks[0].metadata.get("offload_lifecycle_events", ())
+            )
+            if finalized_tasks
+            else [],
         }
 
     def _trace_from_loaded_payload(self, trace_id: str, payload: dict[str, Any]) -> EvaluationTrace:

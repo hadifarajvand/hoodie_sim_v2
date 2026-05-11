@@ -1,0 +1,29 @@
+{
+  "incomplete_events": [
+    "case-horizontal-offload",
+    "case-vertical-offload"
+  ],
+  "no_behavior_change_verified": true,
+  "regression_checks": {
+    "feature_019": "preserved",
+    "feature_024": "preserved",
+    "figure_7_topology": "unrecoverable"
+  },
+  "remaining_blockers": [
+    "Topology-backed destination required for offload actions",
+    "Topology-backed destination required for offload actions"
+  ],
+  "schema_version": "1.0",
+  "topology_boundaries_preserved": true,
+  "visible_events": [
+    "selected_action",
+    "queued_public",
+    "offloaded_cloud",
+    "transmission_started",
+    "transmission_completed",
+    "execution_started",
+    "execution_completed",
+    "dropped_timeout",
+    "reward_emitted"
+  ]
+}

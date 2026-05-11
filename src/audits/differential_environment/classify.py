@@ -8,6 +8,7 @@ class ComparisonClassification(str, Enum):
     DIVERGENCE = "divergence"
     ASSUMPTION_GAP = "assumption_gap"
     UNSUPPORTED_BY_ENVIRONMENT_TRACE = "unsupported_by_environment_trace"
+    BLOCKED_BY_RUNTIME_TOPOLOGY_OR_DESTINATION_FIXTURE = "blocked_by_runtime_topology_or_destination_fixture"
     UNSUPPORTED_BY_REFERENCE_KERNEL = "unsupported_by_reference_kernel"
     INCONCLUSIVE = "inconclusive"
 
@@ -27,10 +28,16 @@ def classify_comparison(
     environment_summary: dict[str, object],
     environment_supported: bool,
     reference_supported: bool = True,
+    environment_blocked_reason: str | None = None,
 ) -> tuple[ComparisonClassification, FindingCause]:
     if not reference_supported:
         return ComparisonClassification.UNSUPPORTED_BY_REFERENCE_KERNEL, FindingCause.LIKELY_REFERENCE_GAP
     if not environment_supported:
+        if environment_blocked_reason == "runtime_topology_or_destination_fixture":
+            return (
+                ComparisonClassification.BLOCKED_BY_RUNTIME_TOPOLOGY_OR_DESTINATION_FIXTURE,
+                FindingCause.EXPECTED_SCOPE_DIFFERENCE,
+            )
         return ComparisonClassification.UNSUPPORTED_BY_ENVIRONMENT_TRACE, FindingCause.INSTRUMENTATION_GAP
 
     reference_events = tuple(reference_summary.get("event_sequence", ()))

@@ -59,7 +59,14 @@ class DifferentialEnvironmentAudit:
 
     def _run_case(self, case: ToyCase) -> AuditCaseRun:
         reference_summary = self._run_reference_case(case)
-        environment_summary, environment_supported, assumption_text, instrumentation_gap_text, unsupported_text = self._probe_environment_case(case)
+        (
+            environment_summary,
+            environment_supported,
+            assumption_text,
+            instrumentation_gap_text,
+            unsupported_text,
+            blocked_reason,
+        ) = self._probe_environment_case(case)
         if environment_supported and environment_summary.terminal_status in {"completed", "dropped"}:
             environment_summary = AuditObservationSummary(
                 case_id=environment_summary.case_id,
@@ -72,6 +79,7 @@ class DifferentialEnvironmentAudit:
             reference_summary=reference_summary.to_dict(),
             environment_summary=environment_summary.to_dict(),
             environment_supported=environment_supported,
+            environment_blocked_reason=blocked_reason,
         )
         if case.scenario_type is ToyCaseScenario.DELAYED_REWARD:
             classification = ComparisonClassification.ASSUMPTION_GAP
@@ -132,7 +140,7 @@ class DifferentialEnvironmentAudit:
     def _probe_environment_case(
         self,
         case: ToyCase,
-    ) -> tuple[AuditObservationSummary, bool, str | None, str | None, str | None]:
+    ) -> tuple[AuditObservationSummary, bool, str | None, str | None, str | None, str | None]:
         env = self.environment_factory()
         temp_dir: tempfile.TemporaryDirectory[str] | None = None
         if case.scenario_type is ToyCaseScenario.TIMEOUT_DROP:
@@ -177,6 +185,7 @@ class DifferentialEnvironmentAudit:
         assumption_text = None
         instrumentation_gap_text = None
         unsupported_text = None
+        blocked_reason = None
 
         if not isinstance(observation, dict):
             instrumentation_gap_text = "Environment reset did not return an observation dictionary."
@@ -186,6 +195,7 @@ class DifferentialEnvironmentAudit:
                 assumption_text,
                 instrumentation_gap_text,
                 unsupported_text,
+                None,
             )
 
         current_task = getattr(env, "current_task", None)
@@ -197,18 +207,21 @@ class DifferentialEnvironmentAudit:
                 assumption_text,
                 instrumentation_gap_text,
                 unsupported_text,
+                None,
             )
 
         try:
             selected_action = self._select_environment_action(case, current_task, env)
         except ValueError as exc:
             unsupported_text = str(exc)
+            blocked_reason = "runtime_topology_or_destination_fixture" if "Topology-backed destination required" in unsupported_text else None
             return (
                 AuditObservationSummary(case.case_id, tuple(), None, None, notes="action unavailable"),
                 False,
                 assumption_text,
                 instrumentation_gap_text,
                 unsupported_text,
+                blocked_reason,
             )
 
         max_steps = max(3, case.timeout_slot + 3)
@@ -217,16 +230,23 @@ class DifferentialEnvironmentAudit:
         info_payload = info
         step_error: ValueError | None = None
         for _ in range(max_steps):
-            step_records.append(f"selected_action:{selected_action}")
+            action_to_step = selected_action if getattr(env, "current_task", None) is not None else None
+            if action_to_step is not None:
+                step_records.append(f"selected_action:{action_to_step}")
             try:
-                observation, reward, terminated, truncated, info_payload = env.step(selected_action)
+                observation, reward, terminated, truncated, info_payload = env.step(action_to_step)
             except ValueError as exc:
                 step_error = exc
                 instrumentation_gap_text = str(exc)
+                if "Topology-backed destination required" in instrumentation_gap_text:
+                    blocked_reason = "runtime_topology_or_destination_fixture"
                 break
             reward_total += float(reward)
             finalized = info_payload.get("finalized_tasks", [])
             if finalized:
+                lifecycle_events = finalized[0].get("offload_lifecycle_events", [])
+                if lifecycle_events:
+                    step_records.extend(str(event) for event in lifecycle_events if event != "selected_action")
                 step_records.extend(
                     f"finalized:{task['task_id']}:{task.get('terminal_outcome')}" for task in finalized
                 )
@@ -244,6 +264,12 @@ class DifferentialEnvironmentAudit:
                 instrumentation_gap_text
                 or "Environment public interface did not expose enough trace evidence for full lifecycle comparison."
             )
+            if unsupported_text and "Topology-backed destination required" in unsupported_text:
+                blocked_reason = "runtime_topology_or_destination_fixture"
+            else:
+                blocked_reason = None
+        else:
+            blocked_reason = None
 
         terminal_status = None
         if info_payload.get("finalized_tasks"):
@@ -251,6 +277,8 @@ class DifferentialEnvironmentAudit:
         reward_timing = "terminal" if terminal_status in {"completed", "dropped"} else None
         if step_error is not None:
             unsupported_text = unsupported_text or str(step_error)
+            if "Topology-backed destination required" in unsupported_text:
+                blocked_reason = "runtime_topology_or_destination_fixture"
         if case.scenario_type is ToyCaseScenario.TIMEOUT_DROP and terminal_status != "dropped":
             instrumentation_gap_text = (
                 instrumentation_gap_text
@@ -265,7 +293,7 @@ class DifferentialEnvironmentAudit:
         )
         if temp_dir is not None:
             temp_dir.cleanup()
-        return summary, environment_supported, assumption_text, instrumentation_gap_text, unsupported_text
+        return summary, environment_supported, assumption_text, instrumentation_gap_text, unsupported_text, blocked_reason
 
     def _normalized_environment_sequence(self, case: ToyCase, terminal_status: str) -> tuple[str, ...]:
         if terminal_status == "completed":
