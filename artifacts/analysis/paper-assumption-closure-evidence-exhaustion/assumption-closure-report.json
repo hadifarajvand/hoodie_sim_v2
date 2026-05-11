@@ -1,0 +1,1443 @@
+{
+  "assumption_backed_items": [
+    {
+      "confidence": "medium",
+      "description": "Paper topology adjacency graph",
+      "domain": "topology",
+      "evidence_exhaustion_rationale": "",
+      "item_id": "Figure_7_adjacency",
+      "manual_visual_recovery": null,
+      "normalized_finding": "Figure 7 adjacency",
+      "runtime_approval_required": true,
+      "source_evidence": [
+        {
+          "confidence": "medium",
+          "normalized_finding": "Figure 7 adjacency",
+          "raw_evidence": "\\documentclass{article}\n\\usepackage[margin=1in]{geometry}\n\\begin{document}\n===== page\\_001\\_0\\_res.txt =====\n\n\ncurrent version 9 November, 2024.\n\nHOODIE: Hybrid Computation  Offloading g via Distributed Deep  Reinforcement Learning gin  Delay-aware Cloud-Edge Continuum\n\nANASTASIOS INNOOULOS1 (emb,E), IAS RALIAS2, SOTIRIOS SPANTIDEAS1,ANDPANAGIOTIS TRAKADAS1\n\n1DarrtndilniitofciC.2RcotoIiC\n\nCORRESPONDING AUTHOR:ANASTASIOS GIANNOPOULOS (e-mail: angianno@Ua.gr.\n\nUnion'sHORIONresearchandinnovationpro",
+          "source_reference": "/Users/hadi/Documents/GitHub/hoodie_sim_v2/resources/papers/hoodie/ocr/merged.tex",
+          "source_type": "cross_artifact_consistency_check"
+        },
+        {
+          "confidence": "medium",
+          "normalized_finding": "Figure 7 adjacency",
+          "raw_evidence": "<!-- page_001_0.md -->\n\n\n---\n\ncurrent version 9 November, 2024.\n\n\n\n# HOODIE: Hybrid Computation  Offloading g via Distributed Deep  Reinforcement Learning gin  Delay-aware Cloud-Edge Continuum \n\nANASTASIOS INNOOULOS1 (emb,E), IAS RALIAS2, SOTIRIOS SPANTIDEAS1,ANDPANAGIOTIS TRAKADAS1\n\n1DarrtndilniitofciC.2RcotoIiC \n\nCORRESPONDING AUTHOR:ANASTASIOS GIANNOPOULOS (e-mail: angianno@Ua.gr.\n\nUnion'sHORIONresearchandinnovationprogrammeundergrantagreementNo101070177.\n\n\n\n## ABSTRACT\n Cloud-Edge Computing ",
+          "source_reference": "/Users/hadi/Documents/GitHub/hoodie_sim_v2/resources/papers/hoodie/ocr/merged.md",
+          "source_type": "cross_artifact_consistency_check"
+        },
+        {
+          "confidence": "medium",
+          "normalized_finding": "Figure 7 adjacency",
+          "raw_evidence": "===== page_001_0_res.txt =====\n\n\ncurrent version 9 November, 2024.\n\nHOODIE: Hybrid Computation  Offloading g via Distributed Deep  Reinforcement Learning gin  Delay-aware Cloud-Edge Continuum\n\nANASTASIOS INNOOULOS1 (emb,E), IAS RALIAS2, SOTIRIOS SPANTIDEAS1,ANDPANAGIOTIS TRAKADAS1\n\n1DarrtndilniitofciC.2RcotoIiC\n\nCORRESPONDING AUTHOR:ANASTASIOS GIANNOPOULOS (e-mail: angianno@Ua.gr.\n\nUnion'sHORIONresearchandinnovationprogrammeundergrantagreementNo101070177.\n\nABSTRACT Cloud-Edge Computing Continuum",
+          "source_reference": "/Users/hadi/Documents/GitHub/hoodie_sim_v2/resources/papers/hoodie/ocr/merged.txt",
+          "source_type": "cross_artifact_consistency_check"
+        },
+        {
+          "confidence": "medium",
+          "normalized_finding": "Figure 7 adjacency",
+          "raw_evidence": "{'items': [{'file': 'page_001_0_res.json', 'res': {'input_path': '/mnt/output/split_pages/page_001.pdf', 'page_index': 0, 'page_count': 1, 'width': 1224, 'height': 1584, 'model_settings': {'use_doc_preprocessor': True, 'use_seal_recognition': True, 'use_table_recognition': True, 'use_formula_recognition': True, 'use_chart_recognition': True, 'use_region_detection': True, 'format_block_content': False, 'markdown_ignore_labels': ['number', 'footnote', 'header', 'header_image', 'footer', 'footer_im",
+          "source_reference": "/Users/hadi/Documents/GitHub/hoodie_sim_v2/resources/papers/hoodie/ocr/merged.json",
+          "source_type": "cross_artifact_consistency_check"
+        },
+        {
+          "confidence": "medium",
+          "normalized_finding": "Figure 7 adjacency",
+          "raw_evidence": "{'adjacency_matrix': None, 'adjacency_matrix_status': 'unrecoverable', 'edge_cloud_connectivity': {'recovery_status': 'unrecoverable', 'source_evidence': [], 'unrecoverable_reason': 'Paper/OCR evidence does not recover explicit edge/cloud connectivity facts without inventing topology.', 'value': None}, 'legal_horizontal_destinations': None, 'no_fabrication_disclaimer': True, 'node_count': 20, 'node_ids': None, 'paper_claim_type': 'topology_caption', 'paper_figure_id': 'Figure 7', 'recovery_confi",
+          "source_reference": "/Users/hadi/Documents/GitHub/hoodie_sim_v2/resources/papers/hoodie/recovered/topology-g.json",
+          "source_type": "cross_artifact_consistency_check"
+        },
+        {
+          "confidence": "medium",
+          "normalized_finding": "Figure 7 adjacency",
+          "raw_evidence": "{'cloud_data_rate': {'recovery_status': 'unrecoverable', 'source_evidence': [], 'unrecoverable_reason': 'The paper OCR does not provide a distinct cloud-facing data-rate constant beyond vertical offload rate.', 'value': None}, 'cpu_capacities': {'EA_private': {'recovery_status': 'unrecoverable', 'source_evidence': [], 'value': None}, 'EA_public': {'recovery_status': 'unrecoverable', 'source_evidence': [], 'value': None}, 'cloud': {'recovery_status': 'unrecoverable', 'source_evidence': [], 'value",
+          "source_reference": "/Users/hadi/Documents/GitHub/hoodie_sim_v2/resources/papers/hoodie/recovered/paper-parameter-registry.json",
+          "source_type": "cross_artifact_consistency_check"
+        },
+        {
+          "confidence": "medium",
+          "normalized_finding": "Figure 7 adjacency",
+          "raw_evidence": "{'behavior_changes': False, 'blocking_gaps': [{'category': 'system_topology', 'description': 'Topology adjacency is not present as a structured artifact.', 'severity': 'blocking'}, {'category': 'timeout_and_drop', 'description': 'Timeout and Drop requires paper-faithful validation before any repair feature.', 'severity': 'high'}, {'category': 'reward_definition', 'description': 'Reward Definition requires paper-faithful validation before any repair feature.', 'severity': 'high'}], 'high_risk_ass",
+          "source_reference": "/Users/hadi/Documents/GitHub/hoodie_sim_v2/artifacts/analysis/paper-mechanism-registry/paper-mechanism-registry.json",
+          "source_type": "cross_artifact_consistency_check"
+        },
+        {
+          "confidence": "medium",
+          "normalized_finding": "Figure 7 adjacency",
+          "raw_evidence": "{'input_sources': {'input_paper_ocr_path': '/Users/hadi/Documents/GitHub/hoodie_sim_v2/resources/papers/hoodie/ocr/merged.tex', 'paper_ocr_char_count': 181887, 'paper_ocr_exists': True, 'supporting_inputs': ['resources/papers/hoodie/ocr/merged.md', 'resources/papers/hoodie/ocr/merged.txt', 'resources/papers/hoodie/ocr/merged.json', 'resources/papers/hoodie/HOODIE_paper.pdf', 'artifacts/analysis/paper-mechanism-registry/paper-mechanism-registry.json', 'artifacts/analysis/paper-figure-extraction/p",
+          "source_reference": "/Users/hadi/Documents/GitHub/hoodie_sim_v2/artifacts/analysis/structured-paper-topology-linkrate-registry/topology-recovery-report.json",
+          "source_type": "cross_artifact_consistency_check"
+        },
+        {
+          "confidence": "medium",
+          "normalized_finding": "Figure 7 adjacency",
+          "raw_evidence": "{'aggregation_contract': {'average_across_distributed_agents': 'artifact_backed', 'exact_reduction_order': 'assumption_backed', 'per_agent': 'paper_backed', 'reported_cumulative_reward': 'artifact_backed'}, 'assumption_backed_items': [{'item': 'multi_agent_aggregation_reduction_order', 'status': 'assumption_backed'}], 'delay_cost_contract': {'delay_cost_formula': 'Phi_n(t) selected by private/local or public/offloaded delay cost', 'phi_n_priv': 'psi_n^priv(t) - t + 1', 'phi_n_pub': \"normalized O",
+          "source_reference": "/Users/hadi/Documents/GitHub/hoodie_sim_v2/artifacts/analysis/reward-equation-terminal-reward-contract/reward-contract-report.json",
+          "source_type": "cross_artifact_consistency_check"
+        }
+      ],
+      "source_methods": [
+        "cross_artifact_consistency_check"
+      ],
+      "status": "assumption_backed_requires_user_approval",
+      "title": "Figure 7 adjacency"
+    },
+    {
+      "confidence": "medium",
+      "description": "Edge agent private CPU capacity",
+      "domain": "compute capacity",
+      "evidence_exhaustion_rationale": "",
+      "item_id": "EA_private_cpu_capacity",
+      "manual_visual_recovery": null,
+      "normalized_finding": "EA private CPU capacity",
+      "runtime_approval_required": true,
+      "source_evidence": [
+        {
+          "confidence": "medium",
+          "normalized_finding": "EA private CPU capacity",
+          "raw_evidence": "\\documentclass{article}\n\\usepackage[margin=1in]{geometry}\n\\begin{document}\n===== page\\_001\\_0\\_res.txt =====\n\n\ncurrent version 9 November, 2024.\n\nHOODIE: Hybrid Computation  Offloading g via Distributed Deep  Reinforcement Learning gin  Delay-aware Cloud-Edge Continuum\n\nANASTASIOS INNOOULOS1 (emb,E), IAS RALIAS2, SOTIRIOS SPANTIDEAS1,ANDPANAGIOTIS TRAKADAS1\n\n1DarrtndilniitofciC.2RcotoIiC\n\nCORRESPONDING AUTHOR:ANASTASIOS GIANNOPOULOS (e-mail: angianno@Ua.gr.\n\nUnion'sHORIONresearchandinnovationpro",
+          "source_reference": "/Users/hadi/Documents/GitHub/hoodie_sim_v2/resources/papers/hoodie/ocr/merged.tex",
+          "source_type": "cross_artifact_consistency_check"
+        },
+        {
+          "confidence": "medium",
+          "normalized_finding": "EA private CPU capacity",
+          "raw_evidence": "<!-- page_001_0.md -->\n\n\n---\n\ncurrent version 9 November, 2024.\n\n\n\n# HOODIE: Hybrid Computation  Offloading g via Distributed Deep  Reinforcement Learning gin  Delay-aware Cloud-Edge Continuum \n\nANASTASIOS INNOOULOS1 (emb,E), IAS RALIAS2, SOTIRIOS SPANTIDEAS1,ANDPANAGIOTIS TRAKADAS1\n\n1DarrtndilniitofciC.2RcotoIiC \n\nCORRESPONDING AUTHOR:ANASTASIOS GIANNOPOULOS (e-mail: angianno@Ua.gr.\n\nUnion'sHORIONresearchandinnovationprogrammeundergrantagreementNo101070177.\n\n\n\n## ABSTRACT\n Cloud-Edge Computing ",
+          "source_reference": "/Users/hadi/Documents/GitHub/hoodie_sim_v2/resources/papers/hoodie/ocr/merged.md",
+          "source_type": "cross_artifact_consistency_check"
+        },
+        {
+          "confidence": "medium",
+          "normalized_finding": "EA private CPU capacity",
+          "raw_evidence": "===== page_001_0_res.txt =====\n\n\ncurrent version 9 November, 2024.\n\nHOODIE: Hybrid Computation  Offloading g via Distributed Deep  Reinforcement Learning gin  Delay-aware Cloud-Edge Continuum\n\nANASTASIOS INNOOULOS1 (emb,E), IAS RALIAS2, SOTIRIOS SPANTIDEAS1,ANDPANAGIOTIS TRAKADAS1\n\n1DarrtndilniitofciC.2RcotoIiC\n\nCORRESPONDING AUTHOR:ANASTASIOS GIANNOPOULOS (e-mail: angianno@Ua.gr.\n\nUnion'sHORIONresearchandinnovationprogrammeundergrantagreementNo101070177.\n\nABSTRACT Cloud-Edge Computing Continuum",
+          "source_reference": "/Users/hadi/Documents/GitHub/hoodie_sim_v2/resources/papers/hoodie/ocr/merged.txt",
+          "source_type": "cross_artifact_consistency_check"
+        },
+        {
+          "confidence": "medium",
+          "normalized_finding": "EA private CPU capacity",
+          "raw_evidence": "{'items': [{'file': 'page_001_0_res.json', 'res': {'input_path': '/mnt/output/split_pages/page_001.pdf', 'page_index': 0, 'page_count': 1, 'width': 1224, 'height': 1584, 'model_settings': {'use_doc_preprocessor': True, 'use_seal_recognition': True, 'use_table_recognition': True, 'use_formula_recognition': True, 'use_chart_recognition': True, 'use_region_detection': True, 'format_block_content': False, 'markdown_ignore_labels': ['number', 'footnote', 'header', 'header_image', 'footer', 'footer_im",
+          "source_reference": "/Users/hadi/Documents/GitHub/hoodie_sim_v2/resources/papers/hoodie/ocr/merged.json",
+          "source_type": "cross_artifact_consistency_check"
+        },
+        {
+          "confidence": "medium",
+          "normalized_finding": "EA private CPU capacity",
+          "raw_evidence": "{'adjacency_matrix': None, 'adjacency_matrix_status': 'unrecoverable', 'edge_cloud_connectivity': {'recovery_status': 'unrecoverable', 'source_evidence': [], 'unrecoverable_reason': 'Paper/OCR evidence does not recover explicit edge/cloud connectivity facts without inventing topology.', 'value': None}, 'legal_horizontal_destinations': None, 'no_fabrication_disclaimer': True, 'node_count': 20, 'node_ids': None, 'paper_claim_type': 'topology_caption', 'paper_figure_id': 'Figure 7', 'recovery_confi",
+          "source_reference": "/Users/hadi/Documents/GitHub/hoodie_sim_v2/resources/papers/hoodie/recovered/topology-g.json",
+          "source_type": "cross_artifact_consistency_check"
+        },
+        {
+          "confidence": "medium",
+          "normalized_finding": "EA private CPU capacity",
+          "raw_evidence": "{'cloud_data_rate': {'recovery_status': 'unrecoverable', 'source_evidence': [], 'unrecoverable_reason': 'The paper OCR does not provide a distinct cloud-facing data-rate constant beyond vertical offload rate.', 'value': None}, 'cpu_capacities': {'EA_private': {'recovery_status': 'unrecoverable', 'source_evidence': [], 'value': None}, 'EA_public': {'recovery_status': 'unrecoverable', 'source_evidence': [], 'value': None}, 'cloud': {'recovery_status': 'unrecoverable', 'source_evidence': [], 'value",
+          "source_reference": "/Users/hadi/Documents/GitHub/hoodie_sim_v2/resources/papers/hoodie/recovered/paper-parameter-registry.json",
+          "source_type": "cross_artifact_consistency_check"
+        },
+        {
+          "confidence": "medium",
+          "normalized_finding": "EA private CPU capacity",
+          "raw_evidence": "{'behavior_changes': False, 'blocking_gaps': [{'category': 'system_topology', 'description': 'Topology adjacency is not present as a structured artifact.', 'severity': 'blocking'}, {'category': 'timeout_and_drop', 'description': 'Timeout and Drop requires paper-faithful validation before any repair feature.', 'severity': 'high'}, {'category': 'reward_definition', 'description': 'Reward Definition requires paper-faithful validation before any repair feature.', 'severity': 'high'}], 'high_risk_ass",
+          "source_reference": "/Users/hadi/Documents/GitHub/hoodie_sim_v2/artifacts/analysis/paper-mechanism-registry/paper-mechanism-registry.json",
+          "source_type": "cross_artifact_consistency_check"
+        },
+        {
+          "confidence": "medium",
+          "normalized_finding": "EA private CPU capacity",
+          "raw_evidence": "{'input_sources': {'input_paper_ocr_path': '/Users/hadi/Documents/GitHub/hoodie_sim_v2/resources/papers/hoodie/ocr/merged.tex', 'paper_ocr_char_count': 181887, 'paper_ocr_exists': True, 'supporting_inputs': ['resources/papers/hoodie/ocr/merged.md', 'resources/papers/hoodie/ocr/merged.txt', 'resources/papers/hoodie/ocr/merged.json', 'resources/papers/hoodie/HOODIE_paper.pdf', 'artifacts/analysis/paper-mechanism-registry/paper-mechanism-registry.json', 'artifacts/analysis/paper-figure-extraction/p",
+          "source_reference": "/Users/hadi/Documents/GitHub/hoodie_sim_v2/artifacts/analysis/structured-paper-topology-linkrate-registry/topology-recovery-report.json",
+          "source_type": "cross_artifact_consistency_check"
+        },
+        {
+          "confidence": "medium",
+          "normalized_finding": "EA private CPU capacity",
+          "raw_evidence": "{'completion_slot_contract': {'completion_slot': 11, 'cpu_capacity_per_slot': 32.0, 'current_slot': 10, 'cycles_required': 0.6237, 'delay_slots': 1, 'formula': 'completion_slot = current_slot + delay_slots; delay_slots = ceil(cycles_required / cpu_capacity_per_slot)', 'zero_delay_policy': 'explicit_zero_delay'}, 'computation_delay_contract': {'cycles_required_example': {'cpu_capacity_per_slot': 32.0, 'cycles_required': 0.6237, 'delay_slots': 1, 'processing_density_gcycles_per_mbit': 0.297, 'task",
+          "source_reference": "/Users/hadi/Documents/GitHub/hoodie_sim_v2/artifacts/analysis/computation-delay-cpu-unit-validation/unit-validation-report.json",
+          "source_type": "cross_artifact_consistency_check"
+        },
+        {
+          "confidence": "medium",
+          "normalized_finding": "EA private CPU capacity",
+          "raw_evidence": "{'aggregation_contract': {'average_across_distributed_agents': 'artifact_backed', 'exact_reduction_order': 'assumption_backed', 'per_agent': 'paper_backed', 'reported_cumulative_reward': 'artifact_backed'}, 'assumption_backed_items': [{'item': 'multi_agent_aggregation_reduction_order', 'status': 'assumption_backed'}], 'delay_cost_contract': {'delay_cost_formula': 'Phi_n(t) selected by private/local or public/offloaded delay cost', 'phi_n_priv': 'psi_n^priv(t) - t + 1', 'phi_n_pub': \"normalized O",
+          "source_reference": "/Users/hadi/Documents/GitHub/hoodie_sim_v2/artifacts/analysis/reward-equation-terminal-reward-contract/reward-contract-report.json",
+          "source_type": "cross_artifact_consistency_check"
+        }
+      ],
+      "source_methods": [
+        "cross_artifact_consistency_check"
+      ],
+      "status": "assumption_backed_requires_user_approval",
+      "title": "EA private CPU capacity"
+    },
+    {
+      "confidence": "medium",
+      "description": "Edge agent public CPU capacity",
+      "domain": "compute capacity",
+      "evidence_exhaustion_rationale": "",
+      "item_id": "EA_public_cpu_capacity",
+      "manual_visual_recovery": null,
+      "normalized_finding": "EA public CPU capacity",
+      "runtime_approval_required": true,
+      "source_evidence": [
+        {
+          "confidence": "medium",
+          "normalized_finding": "EA public CPU capacity",
+          "raw_evidence": "\\documentclass{article}\n\\usepackage[margin=1in]{geometry}\n\\begin{document}\n===== page\\_001\\_0\\_res.txt =====\n\n\ncurrent version 9 November, 2024.\n\nHOODIE: Hybrid Computation  Offloading g via Distributed Deep  Reinforcement Learning gin  Delay-aware Cloud-Edge Continuum\n\nANASTASIOS INNOOULOS1 (emb,E), IAS RALIAS2, SOTIRIOS SPANTIDEAS1,ANDPANAGIOTIS TRAKADAS1\n\n1DarrtndilniitofciC.2RcotoIiC\n\nCORRESPONDING AUTHOR:ANASTASIOS GIANNOPOULOS (e-mail: angianno@Ua.gr.\n\nUnion'sHORIONresearchandinnovationpro",
+          "source_reference": "/Users/hadi/Documents/GitHub/hoodie_sim_v2/resources/papers/hoodie/ocr/merged.tex",
+          "source_type": "cross_artifact_consistency_check"
+        },
+        {
+          "confidence": "medium",
+          "normalized_finding": "EA public CPU capacity",
+          "raw_evidence": "<!-- page_001_0.md -->\n\n\n---\n\ncurrent version 9 November, 2024.\n\n\n\n# HOODIE: Hybrid Computation  Offloading g via Distributed Deep  Reinforcement Learning gin  Delay-aware Cloud-Edge Continuum \n\nANASTASIOS INNOOULOS1 (emb,E), IAS RALIAS2, SOTIRIOS SPANTIDEAS1,ANDPANAGIOTIS TRAKADAS1\n\n1DarrtndilniitofciC.2RcotoIiC \n\nCORRESPONDING AUTHOR:ANASTASIOS GIANNOPOULOS (e-mail: angianno@Ua.gr.\n\nUnion'sHORIONresearchandinnovationprogrammeundergrantagreementNo101070177.\n\n\n\n## ABSTRACT\n Cloud-Edge Computing ",
+          "source_reference": "/Users/hadi/Documents/GitHub/hoodie_sim_v2/resources/papers/hoodie/ocr/merged.md",
+          "source_type": "cross_artifact_consistency_check"
+        },
+        {
+          "confidence": "medium",
+          "normalized_finding": "EA public CPU capacity",
+          "raw_evidence": "===== page_001_0_res.txt =====\n\n\ncurrent version 9 November, 2024.\n\nHOODIE: Hybrid Computation  Offloading g via Distributed Deep  Reinforcement Learning gin  Delay-aware Cloud-Edge Continuum\n\nANASTASIOS INNOOULOS1 (emb,E), IAS RALIAS2, SOTIRIOS SPANTIDEAS1,ANDPANAGIOTIS TRAKADAS1\n\n1DarrtndilniitofciC.2RcotoIiC\n\nCORRESPONDING AUTHOR:ANASTASIOS GIANNOPOULOS (e-mail: angianno@Ua.gr.\n\nUnion'sHORIONresearchandinnovationprogrammeundergrantagreementNo101070177.\n\nABSTRACT Cloud-Edge Computing Continuum",
+          "source_reference": "/Users/hadi/Documents/GitHub/hoodie_sim_v2/resources/papers/hoodie/ocr/merged.txt",
+          "source_type": "cross_artifact_consistency_check"
+        },
+        {
+          "confidence": "medium",
+          "normalized_finding": "EA public CPU capacity",
+          "raw_evidence": "{'items': [{'file': 'page_001_0_res.json', 'res': {'input_path': '/mnt/output/split_pages/page_001.pdf', 'page_index': 0, 'page_count': 1, 'width': 1224, 'height': 1584, 'model_settings': {'use_doc_preprocessor': True, 'use_seal_recognition': True, 'use_table_recognition': True, 'use_formula_recognition': True, 'use_chart_recognition': True, 'use_region_detection': True, 'format_block_content': False, 'markdown_ignore_labels': ['number', 'footnote', 'header', 'header_image', 'footer', 'footer_im",
+          "source_reference": "/Users/hadi/Documents/GitHub/hoodie_sim_v2/resources/papers/hoodie/ocr/merged.json",
+          "source_type": "cross_artifact_consistency_check"
+        },
+        {
+          "confidence": "medium",
+          "normalized_finding": "EA public CPU capacity",
+          "raw_evidence": "{'adjacency_matrix': None, 'adjacency_matrix_status': 'unrecoverable', 'edge_cloud_connectivity': {'recovery_status': 'unrecoverable', 'source_evidence': [], 'unrecoverable_reason': 'Paper/OCR evidence does not recover explicit edge/cloud connectivity facts without inventing topology.', 'value': None}, 'legal_horizontal_destinations': None, 'no_fabrication_disclaimer': True, 'node_count': 20, 'node_ids': None, 'paper_claim_type': 'topology_caption', 'paper_figure_id': 'Figure 7', 'recovery_confi",
+          "source_reference": "/Users/hadi/Documents/GitHub/hoodie_sim_v2/resources/papers/hoodie/recovered/topology-g.json",
+          "source_type": "cross_artifact_consistency_check"
+        },
+        {
+          "confidence": "medium",
+          "normalized_finding": "EA public CPU capacity",
+          "raw_evidence": "{'cloud_data_rate': {'recovery_status': 'unrecoverable', 'source_evidence': [], 'unrecoverable_reason': 'The paper OCR does not provide a distinct cloud-facing data-rate constant beyond vertical offload rate.', 'value': None}, 'cpu_capacities': {'EA_private': {'recovery_status': 'unrecoverable', 'source_evidence': [], 'value': None}, 'EA_public': {'recovery_status': 'unrecoverable', 'source_evidence': [], 'value': None}, 'cloud': {'recovery_status': 'unrecoverable', 'source_evidence': [], 'value",
+          "source_reference": "/Users/hadi/Documents/GitHub/hoodie_sim_v2/resources/papers/hoodie/recovered/paper-parameter-registry.json",
+          "source_type": "cross_artifact_consistency_check"
+        },
+        {
+          "confidence": "medium",
+          "normalized_finding": "EA public CPU capacity",
+          "raw_evidence": "{'behavior_changes': False, 'blocking_gaps': [{'category': 'system_topology', 'description': 'Topology adjacency is not present as a structured artifact.', 'severity': 'blocking'}, {'category': 'timeout_and_drop', 'description': 'Timeout and Drop requires paper-faithful validation before any repair feature.', 'severity': 'high'}, {'category': 'reward_definition', 'description': 'Reward Definition requires paper-faithful validation before any repair feature.', 'severity': 'high'}], 'high_risk_ass",
+          "source_reference": "/Users/hadi/Documents/GitHub/hoodie_sim_v2/artifacts/analysis/paper-mechanism-registry/paper-mechanism-registry.json",
+          "source_type": "cross_artifact_consistency_check"
+        },
+        {
+          "confidence": "medium",
+          "normalized_finding": "EA public CPU capacity",
+          "raw_evidence": "{'input_sources': {'input_paper_ocr_path': '/Users/hadi/Documents/GitHub/hoodie_sim_v2/resources/papers/hoodie/ocr/merged.tex', 'paper_ocr_char_count': 181887, 'paper_ocr_exists': True, 'supporting_inputs': ['resources/papers/hoodie/ocr/merged.md', 'resources/papers/hoodie/ocr/merged.txt', 'resources/papers/hoodie/ocr/merged.json', 'resources/papers/hoodie/HOODIE_paper.pdf', 'artifacts/analysis/paper-mechanism-registry/paper-mechanism-registry.json', 'artifacts/analysis/paper-figure-extraction/p",
+          "source_reference": "/Users/hadi/Documents/GitHub/hoodie_sim_v2/artifacts/analysis/structured-paper-topology-linkrate-registry/topology-recovery-report.json",
+          "source_type": "cross_artifact_consistency_check"
+        },
+        {
+          "confidence": "medium",
+          "normalized_finding": "EA public CPU capacity",
+          "raw_evidence": "{'completion_slot_contract': {'completion_slot': 11, 'cpu_capacity_per_slot': 32.0, 'current_slot': 10, 'cycles_required': 0.6237, 'delay_slots': 1, 'formula': 'completion_slot = current_slot + delay_slots; delay_slots = ceil(cycles_required / cpu_capacity_per_slot)', 'zero_delay_policy': 'explicit_zero_delay'}, 'computation_delay_contract': {'cycles_required_example': {'cpu_capacity_per_slot': 32.0, 'cycles_required': 0.6237, 'delay_slots': 1, 'processing_density_gcycles_per_mbit': 0.297, 'task",
+          "source_reference": "/Users/hadi/Documents/GitHub/hoodie_sim_v2/artifacts/analysis/computation-delay-cpu-unit-validation/unit-validation-report.json",
+          "source_type": "cross_artifact_consistency_check"
+        },
+        {
+          "confidence": "medium",
+          "normalized_finding": "EA public CPU capacity",
+          "raw_evidence": "{'aggregation_contract': {'average_across_distributed_agents': 'artifact_backed', 'exact_reduction_order': 'assumption_backed', 'per_agent': 'paper_backed', 'reported_cumulative_reward': 'artifact_backed'}, 'assumption_backed_items': [{'item': 'multi_agent_aggregation_reduction_order', 'status': 'assumption_backed'}], 'delay_cost_contract': {'delay_cost_formula': 'Phi_n(t) selected by private/local or public/offloaded delay cost', 'phi_n_priv': 'psi_n^priv(t) - t + 1', 'phi_n_pub': \"normalized O",
+          "source_reference": "/Users/hadi/Documents/GitHub/hoodie_sim_v2/artifacts/analysis/reward-equation-terminal-reward-contract/reward-contract-report.json",
+          "source_type": "cross_artifact_consistency_check"
+        }
+      ],
+      "source_methods": [
+        "cross_artifact_consistency_check"
+      ],
+      "status": "assumption_backed_requires_user_approval",
+      "title": "EA public CPU capacity"
+    },
+    {
+      "confidence": "medium",
+      "description": "Cloud CPU capacity",
+      "domain": "compute capacity",
+      "evidence_exhaustion_rationale": "",
+      "item_id": "cloud_cpu_capacity",
+      "manual_visual_recovery": null,
+      "normalized_finding": "Cloud CPU capacity",
+      "runtime_approval_required": true,
+      "source_evidence": [
+        {
+          "confidence": "medium",
+          "normalized_finding": "Cloud CPU capacity",
+          "raw_evidence": "\\documentclass{article}\n\\usepackage[margin=1in]{geometry}\n\\begin{document}\n===== page\\_001\\_0\\_res.txt =====\n\n\ncurrent version 9 November, 2024.\n\nHOODIE: Hybrid Computation  Offloading g via Distributed Deep  Reinforcement Learning gin  Delay-aware Cloud-Edge Continuum\n\nANASTASIOS INNOOULOS1 (emb,E), IAS RALIAS2, SOTIRIOS SPANTIDEAS1,ANDPANAGIOTIS TRAKADAS1\n\n1DarrtndilniitofciC.2RcotoIiC\n\nCORRESPONDING AUTHOR:ANASTASIOS GIANNOPOULOS (e-mail: angianno@Ua.gr.\n\nUnion'sHORIONresearchandinnovationpro",
+          "source_reference": "/Users/hadi/Documents/GitHub/hoodie_sim_v2/resources/papers/hoodie/ocr/merged.tex",
+          "source_type": "cross_artifact_consistency_check"
+        },
+        {
+          "confidence": "medium",
+          "normalized_finding": "Cloud CPU capacity",
+          "raw_evidence": "<!-- page_001_0.md -->\n\n\n---\n\ncurrent version 9 November, 2024.\n\n\n\n# HOODIE: Hybrid Computation  Offloading g via Distributed Deep  Reinforcement Learning gin  Delay-aware Cloud-Edge Continuum \n\nANASTASIOS INNOOULOS1 (emb,E), IAS RALIAS2, SOTIRIOS SPANTIDEAS1,ANDPANAGIOTIS TRAKADAS1\n\n1DarrtndilniitofciC.2RcotoIiC \n\nCORRESPONDING AUTHOR:ANASTASIOS GIANNOPOULOS (e-mail: angianno@Ua.gr.\n\nUnion'sHORIONresearchandinnovationprogrammeundergrantagreementNo101070177.\n\n\n\n## ABSTRACT\n Cloud-Edge Computing ",
+          "source_reference": "/Users/hadi/Documents/GitHub/hoodie_sim_v2/resources/papers/hoodie/ocr/merged.md",
+          "source_type": "cross_artifact_consistency_check"
+        },
+        {
+          "confidence": "medium",
+          "normalized_finding": "Cloud CPU capacity",
+          "raw_evidence": "===== page_001_0_res.txt =====\n\n\ncurrent version 9 November, 2024.\n\nHOODIE: Hybrid Computation  Offloading g via Distributed Deep  Reinforcement Learning gin  Delay-aware Cloud-Edge Continuum\n\nANASTASIOS INNOOULOS1 (emb,E), IAS RALIAS2, SOTIRIOS SPANTIDEAS1,ANDPANAGIOTIS TRAKADAS1\n\n1DarrtndilniitofciC.2RcotoIiC\n\nCORRESPONDING AUTHOR:ANASTASIOS GIANNOPOULOS (e-mail: angianno@Ua.gr.\n\nUnion'sHORIONresearchandinnovationprogrammeundergrantagreementNo101070177.\n\nABSTRACT Cloud-Edge Computing Continuum",
+          "source_reference": "/Users/hadi/Documents/GitHub/hoodie_sim_v2/resources/papers/hoodie/ocr/merged.txt",
+          "source_type": "cross_artifact_consistency_check"
+        },
+        {
+          "confidence": "medium",
+          "normalized_finding": "Cloud CPU capacity",
+          "raw_evidence": "{'items': [{'file': 'page_001_0_res.json', 'res': {'input_path': '/mnt/output/split_pages/page_001.pdf', 'page_index': 0, 'page_count': 1, 'width': 1224, 'height': 1584, 'model_settings': {'use_doc_preprocessor': True, 'use_seal_recognition': True, 'use_table_recognition': True, 'use_formula_recognition': True, 'use_chart_recognition': True, 'use_region_detection': True, 'format_block_content': False, 'markdown_ignore_labels': ['number', 'footnote', 'header', 'header_image', 'footer', 'footer_im",
+          "source_reference": "/Users/hadi/Documents/GitHub/hoodie_sim_v2/resources/papers/hoodie/ocr/merged.json",
+          "source_type": "cross_artifact_consistency_check"
+        },
+        {
+          "confidence": "medium",
+          "normalized_finding": "Cloud CPU capacity",
+          "raw_evidence": "{'cloud_data_rate': {'recovery_status': 'unrecoverable', 'source_evidence': [], 'unrecoverable_reason': 'The paper OCR does not provide a distinct cloud-facing data-rate constant beyond vertical offload rate.', 'value': None}, 'cpu_capacities': {'EA_private': {'recovery_status': 'unrecoverable', 'source_evidence': [], 'value': None}, 'EA_public': {'recovery_status': 'unrecoverable', 'source_evidence': [], 'value': None}, 'cloud': {'recovery_status': 'unrecoverable', 'source_evidence': [], 'value",
+          "source_reference": "/Users/hadi/Documents/GitHub/hoodie_sim_v2/resources/papers/hoodie/recovered/paper-parameter-registry.json",
+          "source_type": "cross_artifact_consistency_check"
+        },
+        {
+          "confidence": "medium",
+          "normalized_finding": "Cloud CPU capacity",
+          "raw_evidence": "{'behavior_changes': False, 'blocking_gaps': [{'category': 'system_topology', 'description': 'Topology adjacency is not present as a structured artifact.', 'severity': 'blocking'}, {'category': 'timeout_and_drop', 'description': 'Timeout and Drop requires paper-faithful validation before any repair feature.', 'severity': 'high'}, {'category': 'reward_definition', 'description': 'Reward Definition requires paper-faithful validation before any repair feature.', 'severity': 'high'}], 'high_risk_ass",
+          "source_reference": "/Users/hadi/Documents/GitHub/hoodie_sim_v2/artifacts/analysis/paper-mechanism-registry/paper-mechanism-registry.json",
+          "source_type": "cross_artifact_consistency_check"
+        },
+        {
+          "confidence": "medium",
+          "normalized_finding": "Cloud CPU capacity",
+          "raw_evidence": "{'input_sources': {'input_paper_ocr_path': '/Users/hadi/Documents/GitHub/hoodie_sim_v2/resources/papers/hoodie/ocr/merged.tex', 'paper_ocr_char_count': 181887, 'paper_ocr_exists': True, 'supporting_inputs': ['resources/papers/hoodie/ocr/merged.md', 'resources/papers/hoodie/ocr/merged.txt', 'resources/papers/hoodie/ocr/merged.json', 'resources/papers/hoodie/HOODIE_paper.pdf', 'artifacts/analysis/paper-mechanism-registry/paper-mechanism-registry.json', 'artifacts/analysis/paper-figure-extraction/p",
+          "source_reference": "/Users/hadi/Documents/GitHub/hoodie_sim_v2/artifacts/analysis/structured-paper-topology-linkrate-registry/topology-recovery-report.json",
+          "source_type": "cross_artifact_consistency_check"
+        },
+        {
+          "confidence": "medium",
+          "normalized_finding": "Cloud CPU capacity",
+          "raw_evidence": "{'completion_slot_contract': {'completion_slot': 11, 'cpu_capacity_per_slot': 32.0, 'current_slot': 10, 'cycles_required': 0.6237, 'delay_slots': 1, 'formula': 'completion_slot = current_slot + delay_slots; delay_slots = ceil(cycles_required / cpu_capacity_per_slot)', 'zero_delay_policy': 'explicit_zero_delay'}, 'computation_delay_contract': {'cycles_required_example': {'cpu_capacity_per_slot': 32.0, 'cycles_required': 0.6237, 'delay_slots': 1, 'processing_density_gcycles_per_mbit': 0.297, 'task",
+          "source_reference": "/Users/hadi/Documents/GitHub/hoodie_sim_v2/artifacts/analysis/computation-delay-cpu-unit-validation/unit-validation-report.json",
+          "source_type": "cross_artifact_consistency_check"
+        },
+        {
+          "confidence": "medium",
+          "normalized_finding": "Cloud CPU capacity",
+          "raw_evidence": "{'aggregation_contract': {'average_across_distributed_agents': 'artifact_backed', 'exact_reduction_order': 'assumption_backed', 'per_agent': 'paper_backed', 'reported_cumulative_reward': 'artifact_backed'}, 'assumption_backed_items': [{'item': 'multi_agent_aggregation_reduction_order', 'status': 'assumption_backed'}], 'delay_cost_contract': {'delay_cost_formula': 'Phi_n(t) selected by private/local or public/offloaded delay cost', 'phi_n_priv': 'psi_n^priv(t) - t + 1', 'phi_n_pub': \"normalized O",
+          "source_reference": "/Users/hadi/Documents/GitHub/hoodie_sim_v2/artifacts/analysis/reward-equation-terminal-reward-contract/reward-contract-report.json",
+          "source_type": "cross_artifact_consistency_check"
+        }
+      ],
+      "source_methods": [
+        "cross_artifact_consistency_check"
+      ],
+      "status": "assumption_backed_requires_user_approval",
+      "title": "Cloud CPU capacity"
+    },
+    {
+      "confidence": "medium",
+      "description": "Cloud data rate constant beyond vertical rate",
+      "domain": "link/data rate",
+      "evidence_exhaustion_rationale": "",
+      "item_id": "cloud_data_rate",
+      "manual_visual_recovery": null,
+      "normalized_finding": "Cloud data rate",
+      "runtime_approval_required": true,
+      "source_evidence": [
+        {
+          "confidence": "medium",
+          "normalized_finding": "Cloud data rate",
+          "raw_evidence": "\\documentclass{article}\n\\usepackage[margin=1in]{geometry}\n\\begin{document}\n===== page\\_001\\_0\\_res.txt =====\n\n\ncurrent version 9 November, 2024.\n\nHOODIE: Hybrid Computation  Offloading g via Distributed Deep  Reinforcement Learning gin  Delay-aware Cloud-Edge Continuum\n\nANASTASIOS INNOOULOS1 (emb,E), IAS RALIAS2, SOTIRIOS SPANTIDEAS1,ANDPANAGIOTIS TRAKADAS1\n\n1DarrtndilniitofciC.2RcotoIiC\n\nCORRESPONDING AUTHOR:ANASTASIOS GIANNOPOULOS (e-mail: angianno@Ua.gr.\n\nUnion'sHORIONresearchandinnovationpro",
+          "source_reference": "/Users/hadi/Documents/GitHub/hoodie_sim_v2/resources/papers/hoodie/ocr/merged.tex",
+          "source_type": "cross_artifact_consistency_check"
+        },
+        {
+          "confidence": "medium",
+          "normalized_finding": "Cloud data rate",
+          "raw_evidence": "<!-- page_001_0.md -->\n\n\n---\n\ncurrent version 9 November, 2024.\n\n\n\n# HOODIE: Hybrid Computation  Offloading g via Distributed Deep  Reinforcement Learning gin  Delay-aware Cloud-Edge Continuum \n\nANASTASIOS INNOOULOS1 (emb,E), IAS RALIAS2, SOTIRIOS SPANTIDEAS1,ANDPANAGIOTIS TRAKADAS1\n\n1DarrtndilniitofciC.2RcotoIiC \n\nCORRESPONDING AUTHOR:ANASTASIOS GIANNOPOULOS (e-mail: angianno@Ua.gr.\n\nUnion'sHORIONresearchandinnovationprogrammeundergrantagreementNo101070177.\n\n\n\n## ABSTRACT\n Cloud-Edge Computing ",
+          "source_reference": "/Users/hadi/Documents/GitHub/hoodie_sim_v2/resources/papers/hoodie/ocr/merged.md",
+          "source_type": "cross_artifact_consistency_check"
+        },
+        {
+          "confidence": "medium",
+          "normalized_finding": "Cloud data rate",
+          "raw_evidence": "===== page_001_0_res.txt =====\n\n\ncurrent version 9 November, 2024.\n\nHOODIE: Hybrid Computation  Offloading g via Distributed Deep  Reinforcement Learning gin  Delay-aware Cloud-Edge Continuum\n\nANASTASIOS INNOOULOS1 (emb,E), IAS RALIAS2, SOTIRIOS SPANTIDEAS1,ANDPANAGIOTIS TRAKADAS1\n\n1DarrtndilniitofciC.2RcotoIiC\n\nCORRESPONDING AUTHOR:ANASTASIOS GIANNOPOULOS (e-mail: angianno@Ua.gr.\n\nUnion'sHORIONresearchandinnovationprogrammeundergrantagreementNo101070177.\n\nABSTRACT Cloud-Edge Computing Continuum",
+          "source_reference": "/Users/hadi/Documents/GitHub/hoodie_sim_v2/resources/papers/hoodie/ocr/merged.txt",
+          "source_type": "cross_artifact_consistency_check"
+        },
+        {
+          "confidence": "medium",
+          "normalized_finding": "Cloud data rate",
+          "raw_evidence": "{'items': [{'file': 'page_001_0_res.json', 'res': {'input_path': '/mnt/output/split_pages/page_001.pdf', 'page_index': 0, 'page_count': 1, 'width': 1224, 'height': 1584, 'model_settings': {'use_doc_preprocessor': True, 'use_seal_recognition': True, 'use_table_recognition': True, 'use_formula_recognition': True, 'use_chart_recognition': True, 'use_region_detection': True, 'format_block_content': False, 'markdown_ignore_labels': ['number', 'footnote', 'header', 'header_image', 'footer', 'footer_im",
+          "source_reference": "/Users/hadi/Documents/GitHub/hoodie_sim_v2/resources/papers/hoodie/ocr/merged.json",
+          "source_type": "cross_artifact_consistency_check"
+        },
+        {
+          "confidence": "medium",
+          "normalized_finding": "Cloud data rate",
+          "raw_evidence": "{'cloud_data_rate': {'recovery_status': 'unrecoverable', 'source_evidence': [], 'unrecoverable_reason': 'The paper OCR does not provide a distinct cloud-facing data-rate constant beyond vertical offload rate.', 'value': None}, 'cpu_capacities': {'EA_private': {'recovery_status': 'unrecoverable', 'source_evidence': [], 'value': None}, 'EA_public': {'recovery_status': 'unrecoverable', 'source_evidence': [], 'value': None}, 'cloud': {'recovery_status': 'unrecoverable', 'source_evidence': [], 'value",
+          "source_reference": "/Users/hadi/Documents/GitHub/hoodie_sim_v2/resources/papers/hoodie/recovered/paper-parameter-registry.json",
+          "source_type": "cross_artifact_consistency_check"
+        },
+        {
+          "confidence": "medium",
+          "normalized_finding": "Cloud data rate",
+          "raw_evidence": "{'behavior_changes': False, 'blocking_gaps': [{'category': 'system_topology', 'description': 'Topology adjacency is not present as a structured artifact.', 'severity': 'blocking'}, {'category': 'timeout_and_drop', 'description': 'Timeout and Drop requires paper-faithful validation before any repair feature.', 'severity': 'high'}, {'category': 'reward_definition', 'description': 'Reward Definition requires paper-faithful validation before any repair feature.', 'severity': 'high'}], 'high_risk_ass",
+          "source_reference": "/Users/hadi/Documents/GitHub/hoodie_sim_v2/artifacts/analysis/paper-mechanism-registry/paper-mechanism-registry.json",
+          "source_type": "cross_artifact_consistency_check"
+        }
+      ],
+      "source_methods": [
+        "cross_artifact_consistency_check"
+      ],
+      "status": "assumption_backed_requires_user_approval",
+      "title": "Cloud data rate"
+    },
+    {
+      "confidence": "medium",
+      "description": "Numeric timeout or deadline value",
+      "domain": "timeout/deadline",
+      "evidence_exhaustion_rationale": "",
+      "item_id": "timeout_value",
+      "manual_visual_recovery": null,
+      "normalized_finding": "Timeout value",
+      "runtime_approval_required": true,
+      "source_evidence": [
+        {
+          "confidence": "medium",
+          "normalized_finding": "Timeout value",
+          "raw_evidence": "\\documentclass{article}\n\\usepackage[margin=1in]{geometry}\n\\begin{document}\n===== page\\_001\\_0\\_res.txt =====\n\n\ncurrent version 9 November, 2024.\n\nHOODIE: Hybrid Computation  Offloading g via Distributed Deep  Reinforcement Learning gin  Delay-aware Cloud-Edge Continuum\n\nANASTASIOS INNOOULOS1 (emb,E), IAS RALIAS2, SOTIRIOS SPANTIDEAS1,ANDPANAGIOTIS TRAKADAS1\n\n1DarrtndilniitofciC.2RcotoIiC\n\nCORRESPONDING AUTHOR:ANASTASIOS GIANNOPOULOS (e-mail: angianno@Ua.gr.\n\nUnion'sHORIONresearchandinnovationpro",
+          "source_reference": "/Users/hadi/Documents/GitHub/hoodie_sim_v2/resources/papers/hoodie/ocr/merged.tex",
+          "source_type": "cross_artifact_consistency_check"
+        },
+        {
+          "confidence": "medium",
+          "normalized_finding": "Timeout value",
+          "raw_evidence": "<!-- page_001_0.md -->\n\n\n---\n\ncurrent version 9 November, 2024.\n\n\n\n# HOODIE: Hybrid Computation  Offloading g via Distributed Deep  Reinforcement Learning gin  Delay-aware Cloud-Edge Continuum \n\nANASTASIOS INNOOULOS1 (emb,E), IAS RALIAS2, SOTIRIOS SPANTIDEAS1,ANDPANAGIOTIS TRAKADAS1\n\n1DarrtndilniitofciC.2RcotoIiC \n\nCORRESPONDING AUTHOR:ANASTASIOS GIANNOPOULOS (e-mail: angianno@Ua.gr.\n\nUnion'sHORIONresearchandinnovationprogrammeundergrantagreementNo101070177.\n\n\n\n## ABSTRACT\n Cloud-Edge Computing ",
+          "source_reference": "/Users/hadi/Documents/GitHub/hoodie_sim_v2/resources/papers/hoodie/ocr/merged.md",
+          "source_type": "cross_artifact_consistency_check"
+        },
+        {
+          "confidence": "medium",
+          "normalized_finding": "Timeout value",
+          "raw_evidence": "===== page_001_0_res.txt =====\n\n\ncurrent version 9 November, 2024.\n\nHOODIE: Hybrid Computation  Offloading g via Distributed Deep  Reinforcement Learning gin  Delay-aware Cloud-Edge Continuum\n\nANASTASIOS INNOOULOS1 (emb,E), IAS RALIAS2, SOTIRIOS SPANTIDEAS1,ANDPANAGIOTIS TRAKADAS1\n\n1DarrtndilniitofciC.2RcotoIiC\n\nCORRESPONDING AUTHOR:ANASTASIOS GIANNOPOULOS (e-mail: angianno@Ua.gr.\n\nUnion'sHORIONresearchandinnovationprogrammeundergrantagreementNo101070177.\n\nABSTRACT Cloud-Edge Computing Continuum",
+          "source_reference": "/Users/hadi/Documents/GitHub/hoodie_sim_v2/resources/papers/hoodie/ocr/merged.txt",
+          "source_type": "cross_artifact_consistency_check"
+        },
+        {
+          "confidence": "medium",
+          "normalized_finding": "Timeout value",
+          "raw_evidence": "{'items': [{'file': 'page_001_0_res.json', 'res': {'input_path': '/mnt/output/split_pages/page_001.pdf', 'page_index': 0, 'page_count': 1, 'width': 1224, 'height': 1584, 'model_settings': {'use_doc_preprocessor': True, 'use_seal_recognition': True, 'use_table_recognition': True, 'use_formula_recognition': True, 'use_chart_recognition': True, 'use_region_detection': True, 'format_block_content': False, 'markdown_ignore_labels': ['number', 'footnote', 'header', 'header_image', 'footer', 'footer_im",
+          "source_reference": "/Users/hadi/Documents/GitHub/hoodie_sim_v2/resources/papers/hoodie/ocr/merged.json",
+          "source_type": "cross_artifact_consistency_check"
+        },
+        {
+          "confidence": "medium",
+          "normalized_finding": "Timeout value",
+          "raw_evidence": "{'cloud_data_rate': {'recovery_status': 'unrecoverable', 'source_evidence': [], 'unrecoverable_reason': 'The paper OCR does not provide a distinct cloud-facing data-rate constant beyond vertical offload rate.', 'value': None}, 'cpu_capacities': {'EA_private': {'recovery_status': 'unrecoverable', 'source_evidence': [], 'value': None}, 'EA_public': {'recovery_status': 'unrecoverable', 'source_evidence': [], 'value': None}, 'cloud': {'recovery_status': 'unrecoverable', 'source_evidence': [], 'value",
+          "source_reference": "/Users/hadi/Documents/GitHub/hoodie_sim_v2/resources/papers/hoodie/recovered/paper-parameter-registry.json",
+          "source_type": "cross_artifact_consistency_check"
+        },
+        {
+          "confidence": "medium",
+          "normalized_finding": "Timeout value",
+          "raw_evidence": "{'behavior_changes': False, 'blocking_gaps': [{'category': 'system_topology', 'description': 'Topology adjacency is not present as a structured artifact.', 'severity': 'blocking'}, {'category': 'timeout_and_drop', 'description': 'Timeout and Drop requires paper-faithful validation before any repair feature.', 'severity': 'high'}, {'category': 'reward_definition', 'description': 'Reward Definition requires paper-faithful validation before any repair feature.', 'severity': 'high'}], 'high_risk_ass",
+          "source_reference": "/Users/hadi/Documents/GitHub/hoodie_sim_v2/artifacts/analysis/paper-mechanism-registry/paper-mechanism-registry.json",
+          "source_type": "cross_artifact_consistency_check"
+        },
+        {
+          "confidence": "medium",
+          "normalized_finding": "Timeout value",
+          "raw_evidence": "{'completion_slot_contract': {'completion_slot': 11, 'cpu_capacity_per_slot': 32.0, 'current_slot': 10, 'cycles_required': 0.6237, 'delay_slots': 1, 'formula': 'completion_slot = current_slot + delay_slots; delay_slots = ceil(cycles_required / cpu_capacity_per_slot)', 'zero_delay_policy': 'explicit_zero_delay'}, 'computation_delay_contract': {'cycles_required_example': {'cpu_capacity_per_slot': 32.0, 'cycles_required': 0.6237, 'delay_slots': 1, 'processing_density_gcycles_per_mbit': 0.297, 'task",
+          "source_reference": "/Users/hadi/Documents/GitHub/hoodie_sim_v2/artifacts/analysis/computation-delay-cpu-unit-validation/unit-validation-report.json",
+          "source_type": "cross_artifact_consistency_check"
+        },
+        {
+          "confidence": "medium",
+          "normalized_finding": "Timeout value",
+          "raw_evidence": "{'aggregation_contract': {'average_across_distributed_agents': 'artifact_backed', 'exact_reduction_order': 'assumption_backed', 'per_agent': 'paper_backed', 'reported_cumulative_reward': 'artifact_backed'}, 'assumption_backed_items': [{'item': 'multi_agent_aggregation_reduction_order', 'status': 'assumption_backed'}], 'delay_cost_contract': {'delay_cost_formula': 'Phi_n(t) selected by private/local or public/offloaded delay cost', 'phi_n_priv': 'psi_n^priv(t) - t + 1', 'phi_n_pub': \"normalized O",
+          "source_reference": "/Users/hadi/Documents/GitHub/hoodie_sim_v2/artifacts/analysis/reward-equation-terminal-reward-contract/reward-contract-report.json",
+          "source_type": "cross_artifact_consistency_check"
+        }
+      ],
+      "source_methods": [
+        "cross_artifact_consistency_check"
+      ],
+      "status": "assumption_backed_requires_user_approval",
+      "title": "Timeout value"
+    },
+    {
+      "confidence": "medium",
+      "description": "Exact multi-agent reward reduction order",
+      "domain": "reward aggregation",
+      "evidence_exhaustion_rationale": "",
+      "item_id": "multi_agent_aggregation_reduction_order",
+      "manual_visual_recovery": null,
+      "normalized_finding": "Multi-agent aggregation reduction order",
+      "runtime_approval_required": true,
+      "source_evidence": [
+        {
+          "confidence": "medium",
+          "normalized_finding": "Multi-agent aggregation reduction order",
+          "raw_evidence": "\\documentclass{article}\n\\usepackage[margin=1in]{geometry}\n\\begin{document}\n===== page\\_001\\_0\\_res.txt =====\n\n\ncurrent version 9 November, 2024.\n\nHOODIE: Hybrid Computation  Offloading g via Distributed Deep  Reinforcement Learning gin  Delay-aware Cloud-Edge Continuum\n\nANASTASIOS INNOOULOS1 (emb,E), IAS RALIAS2, SOTIRIOS SPANTIDEAS1,ANDPANAGIOTIS TRAKADAS1\n\n1DarrtndilniitofciC.2RcotoIiC\n\nCORRESPONDING AUTHOR:ANASTASIOS GIANNOPOULOS (e-mail: angianno@Ua.gr.\n\nUnion'sHORIONresearchandinnovationpro",
+          "source_reference": "/Users/hadi/Documents/GitHub/hoodie_sim_v2/resources/papers/hoodie/ocr/merged.tex",
+          "source_type": "cross_artifact_consistency_check"
+        },
+        {
+          "confidence": "medium",
+          "normalized_finding": "Multi-agent aggregation reduction order",
+          "raw_evidence": "<!-- page_001_0.md -->\n\n\n---\n\ncurrent version 9 November, 2024.\n\n\n\n# HOODIE: Hybrid Computation  Offloading g via Distributed Deep  Reinforcement Learning gin  Delay-aware Cloud-Edge Continuum \n\nANASTASIOS INNOOULOS1 (emb,E), IAS RALIAS2, SOTIRIOS SPANTIDEAS1,ANDPANAGIOTIS TRAKADAS1\n\n1DarrtndilniitofciC.2RcotoIiC \n\nCORRESPONDING AUTHOR:ANASTASIOS GIANNOPOULOS (e-mail: angianno@Ua.gr.\n\nUnion'sHORIONresearchandinnovationprogrammeundergrantagreementNo101070177.\n\n\n\n## ABSTRACT\n Cloud-Edge Computing ",
+          "source_reference": "/Users/hadi/Documents/GitHub/hoodie_sim_v2/resources/papers/hoodie/ocr/merged.md",
+          "source_type": "cross_artifact_consistency_check"
+        },
+        {
+          "confidence": "medium",
+          "normalized_finding": "Multi-agent aggregation reduction order",
+          "raw_evidence": "===== page_001_0_res.txt =====\n\n\ncurrent version 9 November, 2024.\n\nHOODIE: Hybrid Computation  Offloading g via Distributed Deep  Reinforcement Learning gin  Delay-aware Cloud-Edge Continuum\n\nANASTASIOS INNOOULOS1 (emb,E), IAS RALIAS2, SOTIRIOS SPANTIDEAS1,ANDPANAGIOTIS TRAKADAS1\n\n1DarrtndilniitofciC.2RcotoIiC\n\nCORRESPONDING AUTHOR:ANASTASIOS GIANNOPOULOS (e-mail: angianno@Ua.gr.\n\nUnion'sHORIONresearchandinnovationprogrammeundergrantagreementNo101070177.\n\nABSTRACT Cloud-Edge Computing Continuum",
+          "source_reference": "/Users/hadi/Documents/GitHub/hoodie_sim_v2/resources/papers/hoodie/ocr/merged.txt",
+          "source_type": "cross_artifact_consistency_check"
+        },
+        {
+          "confidence": "medium",
+          "normalized_finding": "Multi-agent aggregation reduction order",
+          "raw_evidence": "{'items': [{'file': 'page_001_0_res.json', 'res': {'input_path': '/mnt/output/split_pages/page_001.pdf', 'page_index': 0, 'page_count': 1, 'width': 1224, 'height': 1584, 'model_settings': {'use_doc_preprocessor': True, 'use_seal_recognition': True, 'use_table_recognition': True, 'use_formula_recognition': True, 'use_chart_recognition': True, 'use_region_detection': True, 'format_block_content': False, 'markdown_ignore_labels': ['number', 'footnote', 'header', 'header_image', 'footer', 'footer_im",
+          "source_reference": "/Users/hadi/Documents/GitHub/hoodie_sim_v2/resources/papers/hoodie/ocr/merged.json",
+          "source_type": "cross_artifact_consistency_check"
+        },
+        {
+          "confidence": "medium",
+          "normalized_finding": "Multi-agent aggregation reduction order",
+          "raw_evidence": "{'adjacency_matrix': None, 'adjacency_matrix_status': 'unrecoverable', 'edge_cloud_connectivity': {'recovery_status': 'unrecoverable', 'source_evidence': [], 'unrecoverable_reason': 'Paper/OCR evidence does not recover explicit edge/cloud connectivity facts without inventing topology.', 'value': None}, 'legal_horizontal_destinations': None, 'no_fabrication_disclaimer': True, 'node_count': 20, 'node_ids': None, 'paper_claim_type': 'topology_caption', 'paper_figure_id': 'Figure 7', 'recovery_confi",
+          "source_reference": "/Users/hadi/Documents/GitHub/hoodie_sim_v2/resources/papers/hoodie/recovered/topology-g.json",
+          "source_type": "cross_artifact_consistency_check"
+        },
+        {
+          "confidence": "medium",
+          "normalized_finding": "Multi-agent aggregation reduction order",
+          "raw_evidence": "{'cloud_data_rate': {'recovery_status': 'unrecoverable', 'source_evidence': [], 'unrecoverable_reason': 'The paper OCR does not provide a distinct cloud-facing data-rate constant beyond vertical offload rate.', 'value': None}, 'cpu_capacities': {'EA_private': {'recovery_status': 'unrecoverable', 'source_evidence': [], 'value': None}, 'EA_public': {'recovery_status': 'unrecoverable', 'source_evidence': [], 'value': None}, 'cloud': {'recovery_status': 'unrecoverable', 'source_evidence': [], 'value",
+          "source_reference": "/Users/hadi/Documents/GitHub/hoodie_sim_v2/resources/papers/hoodie/recovered/paper-parameter-registry.json",
+          "source_type": "cross_artifact_consistency_check"
+        },
+        {
+          "confidence": "medium",
+          "normalized_finding": "Multi-agent aggregation reduction order",
+          "raw_evidence": "{'behavior_changes': False, 'blocking_gaps': [{'category': 'system_topology', 'description': 'Topology adjacency is not present as a structured artifact.', 'severity': 'blocking'}, {'category': 'timeout_and_drop', 'description': 'Timeout and Drop requires paper-faithful validation before any repair feature.', 'severity': 'high'}, {'category': 'reward_definition', 'description': 'Reward Definition requires paper-faithful validation before any repair feature.', 'severity': 'high'}], 'high_risk_ass",
+          "source_reference": "/Users/hadi/Documents/GitHub/hoodie_sim_v2/artifacts/analysis/paper-mechanism-registry/paper-mechanism-registry.json",
+          "source_type": "cross_artifact_consistency_check"
+        },
+        {
+          "confidence": "medium",
+          "normalized_finding": "Multi-agent aggregation reduction order",
+          "raw_evidence": "{'completion_slot_contract': {'completion_slot': 11, 'cpu_capacity_per_slot': 32.0, 'current_slot': 10, 'cycles_required': 0.6237, 'delay_slots': 1, 'formula': 'completion_slot = current_slot + delay_slots; delay_slots = ceil(cycles_required / cpu_capacity_per_slot)', 'zero_delay_policy': 'explicit_zero_delay'}, 'computation_delay_contract': {'cycles_required_example': {'cpu_capacity_per_slot': 32.0, 'cycles_required': 0.6237, 'delay_slots': 1, 'processing_density_gcycles_per_mbit': 0.297, 'task",
+          "source_reference": "/Users/hadi/Documents/GitHub/hoodie_sim_v2/artifacts/analysis/computation-delay-cpu-unit-validation/unit-validation-report.json",
+          "source_type": "cross_artifact_consistency_check"
+        },
+        {
+          "confidence": "medium",
+          "normalized_finding": "Multi-agent aggregation reduction order",
+          "raw_evidence": "{'aggregation_contract': {'average_across_distributed_agents': 'artifact_backed', 'exact_reduction_order': 'assumption_backed', 'per_agent': 'paper_backed', 'reported_cumulative_reward': 'artifact_backed'}, 'assumption_backed_items': [{'item': 'multi_agent_aggregation_reduction_order', 'status': 'assumption_backed'}], 'delay_cost_contract': {'delay_cost_formula': 'Phi_n(t) selected by private/local or public/offloaded delay cost', 'phi_n_priv': 'psi_n^priv(t) - t + 1', 'phi_n_pub': \"normalized O",
+          "source_reference": "/Users/hadi/Documents/GitHub/hoodie_sim_v2/artifacts/analysis/reward-equation-terminal-reward-contract/reward-contract-report.json",
+          "source_type": "cross_artifact_consistency_check"
+        }
+      ],
+      "source_methods": [
+        "cross_artifact_consistency_check"
+      ],
+      "status": "assumption_backed_requires_user_approval",
+      "title": "Multi-agent aggregation reduction order"
+    }
+  ],
+  "contradicted_items": [],
+  "feature_id": "030-paper-assumption-closure-evidence-exhaustion-pipeline",
+  "final_verdict": "blocked_by_unrecoverable_core_evidence",
+  "inventory_summary": {
+    "approval_required_count": 9,
+    "by_confidence": {
+      "high": 0,
+      "invalid": 0,
+      "low": 2,
+      "medium": 8
+    },
+    "by_status": {
+      "assumption_backed_requires_user_approval": 7,
+      "contradicted": 0,
+      "out_of_scope": 0,
+      "partially_recovered": 1,
+      "recovered": 0,
+      "unrecoverable_after_evidence_exhaustion": 2
+    },
+    "manual_review_count": 0,
+    "total_items": 10,
+    "unrecoverable_count": 2
+  },
+  "items": [
+    {
+      "confidence": "medium",
+      "description": "Paper topology adjacency graph",
+      "domain": "topology",
+      "evidence_exhaustion_rationale": "",
+      "item_id": "Figure_7_adjacency",
+      "manual_visual_recovery": null,
+      "normalized_finding": "Figure 7 adjacency",
+      "runtime_approval_required": true,
+      "source_evidence": [
+        {
+          "confidence": "medium",
+          "contradiction_notes": null,
+          "normalized_finding": "Figure 7 adjacency",
+          "raw_evidence": "\\documentclass{article}\n\\usepackage[margin=1in]{geometry}\n\\begin{document}\n===== page\\_001\\_0\\_res.txt =====\n\n\ncurrent version 9 November, 2024.\n\nHOODIE: Hybrid Computation  Offloading g via Distributed Deep  Reinforcement Learning gin  Delay-aware Cloud-Edge Continuum\n\nANASTASIOS INNOOULOS1 (emb,E), IAS RALIAS2, SOTIRIOS SPANTIDEAS1,ANDPANAGIOTIS TRAKADAS1\n\n1DarrtndilniitofciC.2RcotoIiC\n\nCORRESPONDING AUTHOR:ANASTASIOS GIANNOPOULOS (e-mail: angianno@Ua.gr.\n\nUnion'sHORIONresearchandinnovationpro",
+          "source_reference": "/Users/hadi/Documents/GitHub/hoodie_sim_v2/resources/papers/hoodie/ocr/merged.tex",
+          "source_type": "cross_artifact_consistency_check"
+        },
+        {
+          "confidence": "medium",
+          "contradiction_notes": null,
+          "normalized_finding": "Figure 7 adjacency",
+          "raw_evidence": "<!-- page_001_0.md -->\n\n\n---\n\ncurrent version 9 November, 2024.\n\n\n\n# HOODIE: Hybrid Computation  Offloading g via Distributed Deep  Reinforcement Learning gin  Delay-aware Cloud-Edge Continuum \n\nANASTASIOS INNOOULOS1 (emb,E), IAS RALIAS2, SOTIRIOS SPANTIDEAS1,ANDPANAGIOTIS TRAKADAS1\n\n1DarrtndilniitofciC.2RcotoIiC \n\nCORRESPONDING AUTHOR:ANASTASIOS GIANNOPOULOS (e-mail: angianno@Ua.gr.\n\nUnion'sHORIONresearchandinnovationprogrammeundergrantagreementNo101070177.\n\n\n\n## ABSTRACT\n Cloud-Edge Computing ",
+          "source_reference": "/Users/hadi/Documents/GitHub/hoodie_sim_v2/resources/papers/hoodie/ocr/merged.md",
+          "source_type": "cross_artifact_consistency_check"
+        },
+        {
+          "confidence": "medium",
+          "contradiction_notes": null,
+          "normalized_finding": "Figure 7 adjacency",
+          "raw_evidence": "===== page_001_0_res.txt =====\n\n\ncurrent version 9 November, 2024.\n\nHOODIE: Hybrid Computation  Offloading g via Distributed Deep  Reinforcement Learning gin  Delay-aware Cloud-Edge Continuum\n\nANASTASIOS INNOOULOS1 (emb,E), IAS RALIAS2, SOTIRIOS SPANTIDEAS1,ANDPANAGIOTIS TRAKADAS1\n\n1DarrtndilniitofciC.2RcotoIiC\n\nCORRESPONDING AUTHOR:ANASTASIOS GIANNOPOULOS (e-mail: angianno@Ua.gr.\n\nUnion'sHORIONresearchandinnovationprogrammeundergrantagreementNo101070177.\n\nABSTRACT Cloud-Edge Computing Continuum",
+          "source_reference": "/Users/hadi/Documents/GitHub/hoodie_sim_v2/resources/papers/hoodie/ocr/merged.txt",
+          "source_type": "cross_artifact_consistency_check"
+        },
+        {
+          "confidence": "medium",
+          "contradiction_notes": null,
+          "normalized_finding": "Figure 7 adjacency",
+          "raw_evidence": "{'items': [{'file': 'page_001_0_res.json', 'res': {'input_path': '/mnt/output/split_pages/page_001.pdf', 'page_index': 0, 'page_count': 1, 'width': 1224, 'height': 1584, 'model_settings': {'use_doc_preprocessor': True, 'use_seal_recognition': True, 'use_table_recognition': True, 'use_formula_recognition': True, 'use_chart_recognition': True, 'use_region_detection': True, 'format_block_content': False, 'markdown_ignore_labels': ['number', 'footnote', 'header', 'header_image', 'footer', 'footer_im",
+          "source_reference": "/Users/hadi/Documents/GitHub/hoodie_sim_v2/resources/papers/hoodie/ocr/merged.json",
+          "source_type": "cross_artifact_consistency_check"
+        },
+        {
+          "confidence": "medium",
+          "contradiction_notes": null,
+          "normalized_finding": "Figure 7 adjacency",
+          "raw_evidence": "{'adjacency_matrix': None, 'adjacency_matrix_status': 'unrecoverable', 'edge_cloud_connectivity': {'recovery_status': 'unrecoverable', 'source_evidence': [], 'unrecoverable_reason': 'Paper/OCR evidence does not recover explicit edge/cloud connectivity facts without inventing topology.', 'value': None}, 'legal_horizontal_destinations': None, 'no_fabrication_disclaimer': True, 'node_count': 20, 'node_ids': None, 'paper_claim_type': 'topology_caption', 'paper_figure_id': 'Figure 7', 'recovery_confi",
+          "source_reference": "/Users/hadi/Documents/GitHub/hoodie_sim_v2/resources/papers/hoodie/recovered/topology-g.json",
+          "source_type": "cross_artifact_consistency_check"
+        },
+        {
+          "confidence": "medium",
+          "contradiction_notes": null,
+          "normalized_finding": "Figure 7 adjacency",
+          "raw_evidence": "{'cloud_data_rate': {'recovery_status': 'unrecoverable', 'source_evidence': [], 'unrecoverable_reason': 'The paper OCR does not provide a distinct cloud-facing data-rate constant beyond vertical offload rate.', 'value': None}, 'cpu_capacities': {'EA_private': {'recovery_status': 'unrecoverable', 'source_evidence': [], 'value': None}, 'EA_public': {'recovery_status': 'unrecoverable', 'source_evidence': [], 'value': None}, 'cloud': {'recovery_status': 'unrecoverable', 'source_evidence': [], 'value",
+          "source_reference": "/Users/hadi/Documents/GitHub/hoodie_sim_v2/resources/papers/hoodie/recovered/paper-parameter-registry.json",
+          "source_type": "cross_artifact_consistency_check"
+        },
+        {
+          "confidence": "medium",
+          "contradiction_notes": null,
+          "normalized_finding": "Figure 7 adjacency",
+          "raw_evidence": "{'behavior_changes': False, 'blocking_gaps': [{'category': 'system_topology', 'description': 'Topology adjacency is not present as a structured artifact.', 'severity': 'blocking'}, {'category': 'timeout_and_drop', 'description': 'Timeout and Drop requires paper-faithful validation before any repair feature.', 'severity': 'high'}, {'category': 'reward_definition', 'description': 'Reward Definition requires paper-faithful validation before any repair feature.', 'severity': 'high'}], 'high_risk_ass",
+          "source_reference": "/Users/hadi/Documents/GitHub/hoodie_sim_v2/artifacts/analysis/paper-mechanism-registry/paper-mechanism-registry.json",
+          "source_type": "cross_artifact_consistency_check"
+        },
+        {
+          "confidence": "medium",
+          "contradiction_notes": null,
+          "normalized_finding": "Figure 7 adjacency",
+          "raw_evidence": "{'input_sources': {'input_paper_ocr_path': '/Users/hadi/Documents/GitHub/hoodie_sim_v2/resources/papers/hoodie/ocr/merged.tex', 'paper_ocr_char_count': 181887, 'paper_ocr_exists': True, 'supporting_inputs': ['resources/papers/hoodie/ocr/merged.md', 'resources/papers/hoodie/ocr/merged.txt', 'resources/papers/hoodie/ocr/merged.json', 'resources/papers/hoodie/HOODIE_paper.pdf', 'artifacts/analysis/paper-mechanism-registry/paper-mechanism-registry.json', 'artifacts/analysis/paper-figure-extraction/p",
+          "source_reference": "/Users/hadi/Documents/GitHub/hoodie_sim_v2/artifacts/analysis/structured-paper-topology-linkrate-registry/topology-recovery-report.json",
+          "source_type": "cross_artifact_consistency_check"
+        },
+        {
+          "confidence": "medium",
+          "contradiction_notes": null,
+          "normalized_finding": "Figure 7 adjacency",
+          "raw_evidence": "{'aggregation_contract': {'average_across_distributed_agents': 'artifact_backed', 'exact_reduction_order': 'assumption_backed', 'per_agent': 'paper_backed', 'reported_cumulative_reward': 'artifact_backed'}, 'assumption_backed_items': [{'item': 'multi_agent_aggregation_reduction_order', 'status': 'assumption_backed'}], 'delay_cost_contract': {'delay_cost_formula': 'Phi_n(t) selected by private/local or public/offloaded delay cost', 'phi_n_priv': 'psi_n^priv(t) - t + 1', 'phi_n_pub': \"normalized O",
+          "source_reference": "/Users/hadi/Documents/GitHub/hoodie_sim_v2/artifacts/analysis/reward-equation-terminal-reward-contract/reward-contract-report.json",
+          "source_type": "cross_artifact_consistency_check"
+        }
+      ],
+      "source_methods": [
+        "cross_artifact_consistency_check"
+      ],
+      "status": "assumption_backed_requires_user_approval",
+      "title": "Figure 7 adjacency"
+    },
+    {
+      "confidence": "low",
+      "description": "Allowed horizontal destinations",
+      "domain": "topology",
+      "evidence_exhaustion_rationale": "No evidence found after exhausting approved sources for legal_horizontal_destinations.",
+      "item_id": "legal_horizontal_destinations",
+      "manual_visual_recovery": null,
+      "normalized_finding": "Legal horizontal destinations",
+      "runtime_approval_required": true,
+      "source_evidence": [],
+      "source_methods": [],
+      "status": "unrecoverable_after_evidence_exhaustion",
+      "title": "Legal horizontal destinations"
+    },
+    {
+      "confidence": "medium",
+      "description": "Edge agent private CPU capacity",
+      "domain": "compute capacity",
+      "evidence_exhaustion_rationale": "",
+      "item_id": "EA_private_cpu_capacity",
+      "manual_visual_recovery": null,
+      "normalized_finding": "EA private CPU capacity",
+      "runtime_approval_required": true,
+      "source_evidence": [
+        {
+          "confidence": "medium",
+          "contradiction_notes": null,
+          "normalized_finding": "EA private CPU capacity",
+          "raw_evidence": "\\documentclass{article}\n\\usepackage[margin=1in]{geometry}\n\\begin{document}\n===== page\\_001\\_0\\_res.txt =====\n\n\ncurrent version 9 November, 2024.\n\nHOODIE: Hybrid Computation  Offloading g via Distributed Deep  Reinforcement Learning gin  Delay-aware Cloud-Edge Continuum\n\nANASTASIOS INNOOULOS1 (emb,E), IAS RALIAS2, SOTIRIOS SPANTIDEAS1,ANDPANAGIOTIS TRAKADAS1\n\n1DarrtndilniitofciC.2RcotoIiC\n\nCORRESPONDING AUTHOR:ANASTASIOS GIANNOPOULOS (e-mail: angianno@Ua.gr.\n\nUnion'sHORIONresearchandinnovationpro",
+          "source_reference": "/Users/hadi/Documents/GitHub/hoodie_sim_v2/resources/papers/hoodie/ocr/merged.tex",
+          "source_type": "cross_artifact_consistency_check"
+        },
+        {
+          "confidence": "medium",
+          "contradiction_notes": null,
+          "normalized_finding": "EA private CPU capacity",
+          "raw_evidence": "<!-- page_001_0.md -->\n\n\n---\n\ncurrent version 9 November, 2024.\n\n\n\n# HOODIE: Hybrid Computation  Offloading g via Distributed Deep  Reinforcement Learning gin  Delay-aware Cloud-Edge Continuum \n\nANASTASIOS INNOOULOS1 (emb,E), IAS RALIAS2, SOTIRIOS SPANTIDEAS1,ANDPANAGIOTIS TRAKADAS1\n\n1DarrtndilniitofciC.2RcotoIiC \n\nCORRESPONDING AUTHOR:ANASTASIOS GIANNOPOULOS (e-mail: angianno@Ua.gr.\n\nUnion'sHORIONresearchandinnovationprogrammeundergrantagreementNo101070177.\n\n\n\n## ABSTRACT\n Cloud-Edge Computing ",
+          "source_reference": "/Users/hadi/Documents/GitHub/hoodie_sim_v2/resources/papers/hoodie/ocr/merged.md",
+          "source_type": "cross_artifact_consistency_check"
+        },
+        {
+          "confidence": "medium",
+          "contradiction_notes": null,
+          "normalized_finding": "EA private CPU capacity",
+          "raw_evidence": "===== page_001_0_res.txt =====\n\n\ncurrent version 9 November, 2024.\n\nHOODIE: Hybrid Computation  Offloading g via Distributed Deep  Reinforcement Learning gin  Delay-aware Cloud-Edge Continuum\n\nANASTASIOS INNOOULOS1 (emb,E), IAS RALIAS2, SOTIRIOS SPANTIDEAS1,ANDPANAGIOTIS TRAKADAS1\n\n1DarrtndilniitofciC.2RcotoIiC\n\nCORRESPONDING AUTHOR:ANASTASIOS GIANNOPOULOS (e-mail: angianno@Ua.gr.\n\nUnion'sHORIONresearchandinnovationprogrammeundergrantagreementNo101070177.\n\nABSTRACT Cloud-Edge Computing Continuum",
+          "source_reference": "/Users/hadi/Documents/GitHub/hoodie_sim_v2/resources/papers/hoodie/ocr/merged.txt",
+          "source_type": "cross_artifact_consistency_check"
+        },
+        {
+          "confidence": "medium",
+          "contradiction_notes": null,
+          "normalized_finding": "EA private CPU capacity",
+          "raw_evidence": "{'items': [{'file': 'page_001_0_res.json', 'res': {'input_path': '/mnt/output/split_pages/page_001.pdf', 'page_index': 0, 'page_count': 1, 'width': 1224, 'height': 1584, 'model_settings': {'use_doc_preprocessor': True, 'use_seal_recognition': True, 'use_table_recognition': True, 'use_formula_recognition': True, 'use_chart_recognition': True, 'use_region_detection': True, 'format_block_content': False, 'markdown_ignore_labels': ['number', 'footnote', 'header', 'header_image', 'footer', 'footer_im",
+          "source_reference": "/Users/hadi/Documents/GitHub/hoodie_sim_v2/resources/papers/hoodie/ocr/merged.json",
+          "source_type": "cross_artifact_consistency_check"
+        },
+        {
+          "confidence": "medium",
+          "contradiction_notes": null,
+          "normalized_finding": "EA private CPU capacity",
+          "raw_evidence": "{'adjacency_matrix': None, 'adjacency_matrix_status': 'unrecoverable', 'edge_cloud_connectivity': {'recovery_status': 'unrecoverable', 'source_evidence': [], 'unrecoverable_reason': 'Paper/OCR evidence does not recover explicit edge/cloud connectivity facts without inventing topology.', 'value': None}, 'legal_horizontal_destinations': None, 'no_fabrication_disclaimer': True, 'node_count': 20, 'node_ids': None, 'paper_claim_type': 'topology_caption', 'paper_figure_id': 'Figure 7', 'recovery_confi",
+          "source_reference": "/Users/hadi/Documents/GitHub/hoodie_sim_v2/resources/papers/hoodie/recovered/topology-g.json",
+          "source_type": "cross_artifact_consistency_check"
+        },
+        {
+          "confidence": "medium",
+          "contradiction_notes": null,
+          "normalized_finding": "EA private CPU capacity",
+          "raw_evidence": "{'cloud_data_rate': {'recovery_status': 'unrecoverable', 'source_evidence': [], 'unrecoverable_reason': 'The paper OCR does not provide a distinct cloud-facing data-rate constant beyond vertical offload rate.', 'value': None}, 'cpu_capacities': {'EA_private': {'recovery_status': 'unrecoverable', 'source_evidence': [], 'value': None}, 'EA_public': {'recovery_status': 'unrecoverable', 'source_evidence': [], 'value': None}, 'cloud': {'recovery_status': 'unrecoverable', 'source_evidence': [], 'value",
+          "source_reference": "/Users/hadi/Documents/GitHub/hoodie_sim_v2/resources/papers/hoodie/recovered/paper-parameter-registry.json",
+          "source_type": "cross_artifact_consistency_check"
+        },
+        {
+          "confidence": "medium",
+          "contradiction_notes": null,
+          "normalized_finding": "EA private CPU capacity",
+          "raw_evidence": "{'behavior_changes': False, 'blocking_gaps': [{'category': 'system_topology', 'description': 'Topology adjacency is not present as a structured artifact.', 'severity': 'blocking'}, {'category': 'timeout_and_drop', 'description': 'Timeout and Drop requires paper-faithful validation before any repair feature.', 'severity': 'high'}, {'category': 'reward_definition', 'description': 'Reward Definition requires paper-faithful validation before any repair feature.', 'severity': 'high'}], 'high_risk_ass",
+          "source_reference": "/Users/hadi/Documents/GitHub/hoodie_sim_v2/artifacts/analysis/paper-mechanism-registry/paper-mechanism-registry.json",
+          "source_type": "cross_artifact_consistency_check"
+        },
+        {
+          "confidence": "medium",
+          "contradiction_notes": null,
+          "normalized_finding": "EA private CPU capacity",
+          "raw_evidence": "{'input_sources': {'input_paper_ocr_path': '/Users/hadi/Documents/GitHub/hoodie_sim_v2/resources/papers/hoodie/ocr/merged.tex', 'paper_ocr_char_count': 181887, 'paper_ocr_exists': True, 'supporting_inputs': ['resources/papers/hoodie/ocr/merged.md', 'resources/papers/hoodie/ocr/merged.txt', 'resources/papers/hoodie/ocr/merged.json', 'resources/papers/hoodie/HOODIE_paper.pdf', 'artifacts/analysis/paper-mechanism-registry/paper-mechanism-registry.json', 'artifacts/analysis/paper-figure-extraction/p",
+          "source_reference": "/Users/hadi/Documents/GitHub/hoodie_sim_v2/artifacts/analysis/structured-paper-topology-linkrate-registry/topology-recovery-report.json",
+          "source_type": "cross_artifact_consistency_check"
+        },
+        {
+          "confidence": "medium",
+          "contradiction_notes": null,
+          "normalized_finding": "EA private CPU capacity",
+          "raw_evidence": "{'completion_slot_contract': {'completion_slot': 11, 'cpu_capacity_per_slot': 32.0, 'current_slot': 10, 'cycles_required': 0.6237, 'delay_slots': 1, 'formula': 'completion_slot = current_slot + delay_slots; delay_slots = ceil(cycles_required / cpu_capacity_per_slot)', 'zero_delay_policy': 'explicit_zero_delay'}, 'computation_delay_contract': {'cycles_required_example': {'cpu_capacity_per_slot': 32.0, 'cycles_required': 0.6237, 'delay_slots': 1, 'processing_density_gcycles_per_mbit': 0.297, 'task",
+          "source_reference": "/Users/hadi/Documents/GitHub/hoodie_sim_v2/artifacts/analysis/computation-delay-cpu-unit-validation/unit-validation-report.json",
+          "source_type": "cross_artifact_consistency_check"
+        },
+        {
+          "confidence": "medium",
+          "contradiction_notes": null,
+          "normalized_finding": "EA private CPU capacity",
+          "raw_evidence": "{'aggregation_contract': {'average_across_distributed_agents': 'artifact_backed', 'exact_reduction_order': 'assumption_backed', 'per_agent': 'paper_backed', 'reported_cumulative_reward': 'artifact_backed'}, 'assumption_backed_items': [{'item': 'multi_agent_aggregation_reduction_order', 'status': 'assumption_backed'}], 'delay_cost_contract': {'delay_cost_formula': 'Phi_n(t) selected by private/local or public/offloaded delay cost', 'phi_n_priv': 'psi_n^priv(t) - t + 1', 'phi_n_pub': \"normalized O",
+          "source_reference": "/Users/hadi/Documents/GitHub/hoodie_sim_v2/artifacts/analysis/reward-equation-terminal-reward-contract/reward-contract-report.json",
+          "source_type": "cross_artifact_consistency_check"
+        }
+      ],
+      "source_methods": [
+        "cross_artifact_consistency_check"
+      ],
+      "status": "assumption_backed_requires_user_approval",
+      "title": "EA private CPU capacity"
+    },
+    {
+      "confidence": "medium",
+      "description": "Edge agent public CPU capacity",
+      "domain": "compute capacity",
+      "evidence_exhaustion_rationale": "",
+      "item_id": "EA_public_cpu_capacity",
+      "manual_visual_recovery": null,
+      "normalized_finding": "EA public CPU capacity",
+      "runtime_approval_required": true,
+      "source_evidence": [
+        {
+          "confidence": "medium",
+          "contradiction_notes": null,
+          "normalized_finding": "EA public CPU capacity",
+          "raw_evidence": "\\documentclass{article}\n\\usepackage[margin=1in]{geometry}\n\\begin{document}\n===== page\\_001\\_0\\_res.txt =====\n\n\ncurrent version 9 November, 2024.\n\nHOODIE: Hybrid Computation  Offloading g via Distributed Deep  Reinforcement Learning gin  Delay-aware Cloud-Edge Continuum\n\nANASTASIOS INNOOULOS1 (emb,E), IAS RALIAS2, SOTIRIOS SPANTIDEAS1,ANDPANAGIOTIS TRAKADAS1\n\n1DarrtndilniitofciC.2RcotoIiC\n\nCORRESPONDING AUTHOR:ANASTASIOS GIANNOPOULOS (e-mail: angianno@Ua.gr.\n\nUnion'sHORIONresearchandinnovationpro",
+          "source_reference": "/Users/hadi/Documents/GitHub/hoodie_sim_v2/resources/papers/hoodie/ocr/merged.tex",
+          "source_type": "cross_artifact_consistency_check"
+        },
+        {
+          "confidence": "medium",
+          "contradiction_notes": null,
+          "normalized_finding": "EA public CPU capacity",
+          "raw_evidence": "<!-- page_001_0.md -->\n\n\n---\n\ncurrent version 9 November, 2024.\n\n\n\n# HOODIE: Hybrid Computation  Offloading g via Distributed Deep  Reinforcement Learning gin  Delay-aware Cloud-Edge Continuum \n\nANASTASIOS INNOOULOS1 (emb,E), IAS RALIAS2, SOTIRIOS SPANTIDEAS1,ANDPANAGIOTIS TRAKADAS1\n\n1DarrtndilniitofciC.2RcotoIiC \n\nCORRESPONDING AUTHOR:ANASTASIOS GIANNOPOULOS (e-mail: angianno@Ua.gr.\n\nUnion'sHORIONresearchandinnovationprogrammeundergrantagreementNo101070177.\n\n\n\n## ABSTRACT\n Cloud-Edge Computing ",
+          "source_reference": "/Users/hadi/Documents/GitHub/hoodie_sim_v2/resources/papers/hoodie/ocr/merged.md",
+          "source_type": "cross_artifact_consistency_check"
+        },
+        {
+          "confidence": "medium",
+          "contradiction_notes": null,
+          "normalized_finding": "EA public CPU capacity",
+          "raw_evidence": "===== page_001_0_res.txt =====\n\n\ncurrent version 9 November, 2024.\n\nHOODIE: Hybrid Computation  Offloading g via Distributed Deep  Reinforcement Learning gin  Delay-aware Cloud-Edge Continuum\n\nANASTASIOS INNOOULOS1 (emb,E), IAS RALIAS2, SOTIRIOS SPANTIDEAS1,ANDPANAGIOTIS TRAKADAS1\n\n1DarrtndilniitofciC.2RcotoIiC\n\nCORRESPONDING AUTHOR:ANASTASIOS GIANNOPOULOS (e-mail: angianno@Ua.gr.\n\nUnion'sHORIONresearchandinnovationprogrammeundergrantagreementNo101070177.\n\nABSTRACT Cloud-Edge Computing Continuum",
+          "source_reference": "/Users/hadi/Documents/GitHub/hoodie_sim_v2/resources/papers/hoodie/ocr/merged.txt",
+          "source_type": "cross_artifact_consistency_check"
+        },
+        {
+          "confidence": "medium",
+          "contradiction_notes": null,
+          "normalized_finding": "EA public CPU capacity",
+          "raw_evidence": "{'items': [{'file': 'page_001_0_res.json', 'res': {'input_path': '/mnt/output/split_pages/page_001.pdf', 'page_index': 0, 'page_count': 1, 'width': 1224, 'height': 1584, 'model_settings': {'use_doc_preprocessor': True, 'use_seal_recognition': True, 'use_table_recognition': True, 'use_formula_recognition': True, 'use_chart_recognition': True, 'use_region_detection': True, 'format_block_content': False, 'markdown_ignore_labels': ['number', 'footnote', 'header', 'header_image', 'footer', 'footer_im",
+          "source_reference": "/Users/hadi/Documents/GitHub/hoodie_sim_v2/resources/papers/hoodie/ocr/merged.json",
+          "source_type": "cross_artifact_consistency_check"
+        },
+        {
+          "confidence": "medium",
+          "contradiction_notes": null,
+          "normalized_finding": "EA public CPU capacity",
+          "raw_evidence": "{'adjacency_matrix': None, 'adjacency_matrix_status': 'unrecoverable', 'edge_cloud_connectivity': {'recovery_status': 'unrecoverable', 'source_evidence': [], 'unrecoverable_reason': 'Paper/OCR evidence does not recover explicit edge/cloud connectivity facts without inventing topology.', 'value': None}, 'legal_horizontal_destinations': None, 'no_fabrication_disclaimer': True, 'node_count': 20, 'node_ids': None, 'paper_claim_type': 'topology_caption', 'paper_figure_id': 'Figure 7', 'recovery_confi",
+          "source_reference": "/Users/hadi/Documents/GitHub/hoodie_sim_v2/resources/papers/hoodie/recovered/topology-g.json",
+          "source_type": "cross_artifact_consistency_check"
+        },
+        {
+          "confidence": "medium",
+          "contradiction_notes": null,
+          "normalized_finding": "EA public CPU capacity",
+          "raw_evidence": "{'cloud_data_rate': {'recovery_status': 'unrecoverable', 'source_evidence': [], 'unrecoverable_reason': 'The paper OCR does not provide a distinct cloud-facing data-rate constant beyond vertical offload rate.', 'value': None}, 'cpu_capacities': {'EA_private': {'recovery_status': 'unrecoverable', 'source_evidence': [], 'value': None}, 'EA_public': {'recovery_status': 'unrecoverable', 'source_evidence': [], 'value': None}, 'cloud': {'recovery_status': 'unrecoverable', 'source_evidence': [], 'value",
+          "source_reference": "/Users/hadi/Documents/GitHub/hoodie_sim_v2/resources/papers/hoodie/recovered/paper-parameter-registry.json",
+          "source_type": "cross_artifact_consistency_check"
+        },
+        {
+          "confidence": "medium",
+          "contradiction_notes": null,
+          "normalized_finding": "EA public CPU capacity",
+          "raw_evidence": "{'behavior_changes': False, 'blocking_gaps': [{'category': 'system_topology', 'description': 'Topology adjacency is not present as a structured artifact.', 'severity': 'blocking'}, {'category': 'timeout_and_drop', 'description': 'Timeout and Drop requires paper-faithful validation before any repair feature.', 'severity': 'high'}, {'category': 'reward_definition', 'description': 'Reward Definition requires paper-faithful validation before any repair feature.', 'severity': 'high'}], 'high_risk_ass",
+          "source_reference": "/Users/hadi/Documents/GitHub/hoodie_sim_v2/artifacts/analysis/paper-mechanism-registry/paper-mechanism-registry.json",
+          "source_type": "cross_artifact_consistency_check"
+        },
+        {
+          "confidence": "medium",
+          "contradiction_notes": null,
+          "normalized_finding": "EA public CPU capacity",
+          "raw_evidence": "{'input_sources': {'input_paper_ocr_path': '/Users/hadi/Documents/GitHub/hoodie_sim_v2/resources/papers/hoodie/ocr/merged.tex', 'paper_ocr_char_count': 181887, 'paper_ocr_exists': True, 'supporting_inputs': ['resources/papers/hoodie/ocr/merged.md', 'resources/papers/hoodie/ocr/merged.txt', 'resources/papers/hoodie/ocr/merged.json', 'resources/papers/hoodie/HOODIE_paper.pdf', 'artifacts/analysis/paper-mechanism-registry/paper-mechanism-registry.json', 'artifacts/analysis/paper-figure-extraction/p",
+          "source_reference": "/Users/hadi/Documents/GitHub/hoodie_sim_v2/artifacts/analysis/structured-paper-topology-linkrate-registry/topology-recovery-report.json",
+          "source_type": "cross_artifact_consistency_check"
+        },
+        {
+          "confidence": "medium",
+          "contradiction_notes": null,
+          "normalized_finding": "EA public CPU capacity",
+          "raw_evidence": "{'completion_slot_contract': {'completion_slot': 11, 'cpu_capacity_per_slot': 32.0, 'current_slot': 10, 'cycles_required': 0.6237, 'delay_slots': 1, 'formula': 'completion_slot = current_slot + delay_slots; delay_slots = ceil(cycles_required / cpu_capacity_per_slot)', 'zero_delay_policy': 'explicit_zero_delay'}, 'computation_delay_contract': {'cycles_required_example': {'cpu_capacity_per_slot': 32.0, 'cycles_required': 0.6237, 'delay_slots': 1, 'processing_density_gcycles_per_mbit': 0.297, 'task",
+          "source_reference": "/Users/hadi/Documents/GitHub/hoodie_sim_v2/artifacts/analysis/computation-delay-cpu-unit-validation/unit-validation-report.json",
+          "source_type": "cross_artifact_consistency_check"
+        },
+        {
+          "confidence": "medium",
+          "contradiction_notes": null,
+          "normalized_finding": "EA public CPU capacity",
+          "raw_evidence": "{'aggregation_contract': {'average_across_distributed_agents': 'artifact_backed', 'exact_reduction_order': 'assumption_backed', 'per_agent': 'paper_backed', 'reported_cumulative_reward': 'artifact_backed'}, 'assumption_backed_items': [{'item': 'multi_agent_aggregation_reduction_order', 'status': 'assumption_backed'}], 'delay_cost_contract': {'delay_cost_formula': 'Phi_n(t) selected by private/local or public/offloaded delay cost', 'phi_n_priv': 'psi_n^priv(t) - t + 1', 'phi_n_pub': \"normalized O",
+          "source_reference": "/Users/hadi/Documents/GitHub/hoodie_sim_v2/artifacts/analysis/reward-equation-terminal-reward-contract/reward-contract-report.json",
+          "source_type": "cross_artifact_consistency_check"
+        }
+      ],
+      "source_methods": [
+        "cross_artifact_consistency_check"
+      ],
+      "status": "assumption_backed_requires_user_approval",
+      "title": "EA public CPU capacity"
+    },
+    {
+      "confidence": "medium",
+      "description": "Cloud CPU capacity",
+      "domain": "compute capacity",
+      "evidence_exhaustion_rationale": "",
+      "item_id": "cloud_cpu_capacity",
+      "manual_visual_recovery": null,
+      "normalized_finding": "Cloud CPU capacity",
+      "runtime_approval_required": true,
+      "source_evidence": [
+        {
+          "confidence": "medium",
+          "contradiction_notes": null,
+          "normalized_finding": "Cloud CPU capacity",
+          "raw_evidence": "\\documentclass{article}\n\\usepackage[margin=1in]{geometry}\n\\begin{document}\n===== page\\_001\\_0\\_res.txt =====\n\n\ncurrent version 9 November, 2024.\n\nHOODIE: Hybrid Computation  Offloading g via Distributed Deep  Reinforcement Learning gin  Delay-aware Cloud-Edge Continuum\n\nANASTASIOS INNOOULOS1 (emb,E), IAS RALIAS2, SOTIRIOS SPANTIDEAS1,ANDPANAGIOTIS TRAKADAS1\n\n1DarrtndilniitofciC.2RcotoIiC\n\nCORRESPONDING AUTHOR:ANASTASIOS GIANNOPOULOS (e-mail: angianno@Ua.gr.\n\nUnion'sHORIONresearchandinnovationpro",
+          "source_reference": "/Users/hadi/Documents/GitHub/hoodie_sim_v2/resources/papers/hoodie/ocr/merged.tex",
+          "source_type": "cross_artifact_consistency_check"
+        },
+        {
+          "confidence": "medium",
+          "contradiction_notes": null,
+          "normalized_finding": "Cloud CPU capacity",
+          "raw_evidence": "<!-- page_001_0.md -->\n\n\n---\n\ncurrent version 9 November, 2024.\n\n\n\n# HOODIE: Hybrid Computation  Offloading g via Distributed Deep  Reinforcement Learning gin  Delay-aware Cloud-Edge Continuum \n\nANASTASIOS INNOOULOS1 (emb,E), IAS RALIAS2, SOTIRIOS SPANTIDEAS1,ANDPANAGIOTIS TRAKADAS1\n\n1DarrtndilniitofciC.2RcotoIiC \n\nCORRESPONDING AUTHOR:ANASTASIOS GIANNOPOULOS (e-mail: angianno@Ua.gr.\n\nUnion'sHORIONresearchandinnovationprogrammeundergrantagreementNo101070177.\n\n\n\n## ABSTRACT\n Cloud-Edge Computing ",
+          "source_reference": "/Users/hadi/Documents/GitHub/hoodie_sim_v2/resources/papers/hoodie/ocr/merged.md",
+          "source_type": "cross_artifact_consistency_check"
+        },
+        {
+          "confidence": "medium",
+          "contradiction_notes": null,
+          "normalized_finding": "Cloud CPU capacity",
+          "raw_evidence": "===== page_001_0_res.txt =====\n\n\ncurrent version 9 November, 2024.\n\nHOODIE: Hybrid Computation  Offloading g via Distributed Deep  Reinforcement Learning gin  Delay-aware Cloud-Edge Continuum\n\nANASTASIOS INNOOULOS1 (emb,E), IAS RALIAS2, SOTIRIOS SPANTIDEAS1,ANDPANAGIOTIS TRAKADAS1\n\n1DarrtndilniitofciC.2RcotoIiC\n\nCORRESPONDING AUTHOR:ANASTASIOS GIANNOPOULOS (e-mail: angianno@Ua.gr.\n\nUnion'sHORIONresearchandinnovationprogrammeundergrantagreementNo101070177.\n\nABSTRACT Cloud-Edge Computing Continuum",
+          "source_reference": "/Users/hadi/Documents/GitHub/hoodie_sim_v2/resources/papers/hoodie/ocr/merged.txt",
+          "source_type": "cross_artifact_consistency_check"
+        },
+        {
+          "confidence": "medium",
+          "contradiction_notes": null,
+          "normalized_finding": "Cloud CPU capacity",
+          "raw_evidence": "{'items': [{'file': 'page_001_0_res.json', 'res': {'input_path': '/mnt/output/split_pages/page_001.pdf', 'page_index': 0, 'page_count': 1, 'width': 1224, 'height': 1584, 'model_settings': {'use_doc_preprocessor': True, 'use_seal_recognition': True, 'use_table_recognition': True, 'use_formula_recognition': True, 'use_chart_recognition': True, 'use_region_detection': True, 'format_block_content': False, 'markdown_ignore_labels': ['number', 'footnote', 'header', 'header_image', 'footer', 'footer_im",
+          "source_reference": "/Users/hadi/Documents/GitHub/hoodie_sim_v2/resources/papers/hoodie/ocr/merged.json",
+          "source_type": "cross_artifact_consistency_check"
+        },
+        {
+          "confidence": "medium",
+          "contradiction_notes": null,
+          "normalized_finding": "Cloud CPU capacity",
+          "raw_evidence": "{'cloud_data_rate': {'recovery_status': 'unrecoverable', 'source_evidence': [], 'unrecoverable_reason': 'The paper OCR does not provide a distinct cloud-facing data-rate constant beyond vertical offload rate.', 'value': None}, 'cpu_capacities': {'EA_private': {'recovery_status': 'unrecoverable', 'source_evidence': [], 'value': None}, 'EA_public': {'recovery_status': 'unrecoverable', 'source_evidence': [], 'value': None}, 'cloud': {'recovery_status': 'unrecoverable', 'source_evidence': [], 'value",
+          "source_reference": "/Users/hadi/Documents/GitHub/hoodie_sim_v2/resources/papers/hoodie/recovered/paper-parameter-registry.json",
+          "source_type": "cross_artifact_consistency_check"
+        },
+        {
+          "confidence": "medium",
+          "contradiction_notes": null,
+          "normalized_finding": "Cloud CPU capacity",
+          "raw_evidence": "{'behavior_changes': False, 'blocking_gaps': [{'category': 'system_topology', 'description': 'Topology adjacency is not present as a structured artifact.', 'severity': 'blocking'}, {'category': 'timeout_and_drop', 'description': 'Timeout and Drop requires paper-faithful validation before any repair feature.', 'severity': 'high'}, {'category': 'reward_definition', 'description': 'Reward Definition requires paper-faithful validation before any repair feature.', 'severity': 'high'}], 'high_risk_ass",
+          "source_reference": "/Users/hadi/Documents/GitHub/hoodie_sim_v2/artifacts/analysis/paper-mechanism-registry/paper-mechanism-registry.json",
+          "source_type": "cross_artifact_consistency_check"
+        },
+        {
+          "confidence": "medium",
+          "contradiction_notes": null,
+          "normalized_finding": "Cloud CPU capacity",
+          "raw_evidence": "{'input_sources': {'input_paper_ocr_path': '/Users/hadi/Documents/GitHub/hoodie_sim_v2/resources/papers/hoodie/ocr/merged.tex', 'paper_ocr_char_count': 181887, 'paper_ocr_exists': True, 'supporting_inputs': ['resources/papers/hoodie/ocr/merged.md', 'resources/papers/hoodie/ocr/merged.txt', 'resources/papers/hoodie/ocr/merged.json', 'resources/papers/hoodie/HOODIE_paper.pdf', 'artifacts/analysis/paper-mechanism-registry/paper-mechanism-registry.json', 'artifacts/analysis/paper-figure-extraction/p",
+          "source_reference": "/Users/hadi/Documents/GitHub/hoodie_sim_v2/artifacts/analysis/structured-paper-topology-linkrate-registry/topology-recovery-report.json",
+          "source_type": "cross_artifact_consistency_check"
+        },
+        {
+          "confidence": "medium",
+          "contradiction_notes": null,
+          "normalized_finding": "Cloud CPU capacity",
+          "raw_evidence": "{'completion_slot_contract': {'completion_slot': 11, 'cpu_capacity_per_slot': 32.0, 'current_slot': 10, 'cycles_required': 0.6237, 'delay_slots': 1, 'formula': 'completion_slot = current_slot + delay_slots; delay_slots = ceil(cycles_required / cpu_capacity_per_slot)', 'zero_delay_policy': 'explicit_zero_delay'}, 'computation_delay_contract': {'cycles_required_example': {'cpu_capacity_per_slot': 32.0, 'cycles_required': 0.6237, 'delay_slots': 1, 'processing_density_gcycles_per_mbit': 0.297, 'task",
+          "source_reference": "/Users/hadi/Documents/GitHub/hoodie_sim_v2/artifacts/analysis/computation-delay-cpu-unit-validation/unit-validation-report.json",
+          "source_type": "cross_artifact_consistency_check"
+        },
+        {
+          "confidence": "medium",
+          "contradiction_notes": null,
+          "normalized_finding": "Cloud CPU capacity",
+          "raw_evidence": "{'aggregation_contract': {'average_across_distributed_agents': 'artifact_backed', 'exact_reduction_order': 'assumption_backed', 'per_agent': 'paper_backed', 'reported_cumulative_reward': 'artifact_backed'}, 'assumption_backed_items': [{'item': 'multi_agent_aggregation_reduction_order', 'status': 'assumption_backed'}], 'delay_cost_contract': {'delay_cost_formula': 'Phi_n(t) selected by private/local or public/offloaded delay cost', 'phi_n_priv': 'psi_n^priv(t) - t + 1', 'phi_n_pub': \"normalized O",
+          "source_reference": "/Users/hadi/Documents/GitHub/hoodie_sim_v2/artifacts/analysis/reward-equation-terminal-reward-contract/reward-contract-report.json",
+          "source_type": "cross_artifact_consistency_check"
+        }
+      ],
+      "source_methods": [
+        "cross_artifact_consistency_check"
+      ],
+      "status": "assumption_backed_requires_user_approval",
+      "title": "Cloud CPU capacity"
+    },
+    {
+      "confidence": "medium",
+      "description": "Cloud data rate constant beyond vertical rate",
+      "domain": "link/data rate",
+      "evidence_exhaustion_rationale": "",
+      "item_id": "cloud_data_rate",
+      "manual_visual_recovery": null,
+      "normalized_finding": "Cloud data rate",
+      "runtime_approval_required": true,
+      "source_evidence": [
+        {
+          "confidence": "medium",
+          "contradiction_notes": null,
+          "normalized_finding": "Cloud data rate",
+          "raw_evidence": "\\documentclass{article}\n\\usepackage[margin=1in]{geometry}\n\\begin{document}\n===== page\\_001\\_0\\_res.txt =====\n\n\ncurrent version 9 November, 2024.\n\nHOODIE: Hybrid Computation  Offloading g via Distributed Deep  Reinforcement Learning gin  Delay-aware Cloud-Edge Continuum\n\nANASTASIOS INNOOULOS1 (emb,E), IAS RALIAS2, SOTIRIOS SPANTIDEAS1,ANDPANAGIOTIS TRAKADAS1\n\n1DarrtndilniitofciC.2RcotoIiC\n\nCORRESPONDING AUTHOR:ANASTASIOS GIANNOPOULOS (e-mail: angianno@Ua.gr.\n\nUnion'sHORIONresearchandinnovationpro",
+          "source_reference": "/Users/hadi/Documents/GitHub/hoodie_sim_v2/resources/papers/hoodie/ocr/merged.tex",
+          "source_type": "cross_artifact_consistency_check"
+        },
+        {
+          "confidence": "medium",
+          "contradiction_notes": null,
+          "normalized_finding": "Cloud data rate",
+          "raw_evidence": "<!-- page_001_0.md -->\n\n\n---\n\ncurrent version 9 November, 2024.\n\n\n\n# HOODIE: Hybrid Computation  Offloading g via Distributed Deep  Reinforcement Learning gin  Delay-aware Cloud-Edge Continuum \n\nANASTASIOS INNOOULOS1 (emb,E), IAS RALIAS2, SOTIRIOS SPANTIDEAS1,ANDPANAGIOTIS TRAKADAS1\n\n1DarrtndilniitofciC.2RcotoIiC \n\nCORRESPONDING AUTHOR:ANASTASIOS GIANNOPOULOS (e-mail: angianno@Ua.gr.\n\nUnion'sHORIONresearchandinnovationprogrammeundergrantagreementNo101070177.\n\n\n\n## ABSTRACT\n Cloud-Edge Computing ",
+          "source_reference": "/Users/hadi/Documents/GitHub/hoodie_sim_v2/resources/papers/hoodie/ocr/merged.md",
+          "source_type": "cross_artifact_consistency_check"
+        },
+        {
+          "confidence": "medium",
+          "contradiction_notes": null,
+          "normalized_finding": "Cloud data rate",
+          "raw_evidence": "===== page_001_0_res.txt =====\n\n\ncurrent version 9 November, 2024.\n\nHOODIE: Hybrid Computation  Offloading g via Distributed Deep  Reinforcement Learning gin  Delay-aware Cloud-Edge Continuum\n\nANASTASIOS INNOOULOS1 (emb,E), IAS RALIAS2, SOTIRIOS SPANTIDEAS1,ANDPANAGIOTIS TRAKADAS1\n\n1DarrtndilniitofciC.2RcotoIiC\n\nCORRESPONDING AUTHOR:ANASTASIOS GIANNOPOULOS (e-mail: angianno@Ua.gr.\n\nUnion'sHORIONresearchandinnovationprogrammeundergrantagreementNo101070177.\n\nABSTRACT Cloud-Edge Computing Continuum",
+          "source_reference": "/Users/hadi/Documents/GitHub/hoodie_sim_v2/resources/papers/hoodie/ocr/merged.txt",
+          "source_type": "cross_artifact_consistency_check"
+        },
+        {
+          "confidence": "medium",
+          "contradiction_notes": null,
+          "normalized_finding": "Cloud data rate",
+          "raw_evidence": "{'items': [{'file': 'page_001_0_res.json', 'res': {'input_path': '/mnt/output/split_pages/page_001.pdf', 'page_index': 0, 'page_count': 1, 'width': 1224, 'height': 1584, 'model_settings': {'use_doc_preprocessor': True, 'use_seal_recognition': True, 'use_table_recognition': True, 'use_formula_recognition': True, 'use_chart_recognition': True, 'use_region_detection': True, 'format_block_content': False, 'markdown_ignore_labels': ['number', 'footnote', 'header', 'header_image', 'footer', 'footer_im",
+          "source_reference": "/Users/hadi/Documents/GitHub/hoodie_sim_v2/resources/papers/hoodie/ocr/merged.json",
+          "source_type": "cross_artifact_consistency_check"
+        },
+        {
+          "confidence": "medium",
+          "contradiction_notes": null,
+          "normalized_finding": "Cloud data rate",
+          "raw_evidence": "{'cloud_data_rate': {'recovery_status': 'unrecoverable', 'source_evidence': [], 'unrecoverable_reason': 'The paper OCR does not provide a distinct cloud-facing data-rate constant beyond vertical offload rate.', 'value': None}, 'cpu_capacities': {'EA_private': {'recovery_status': 'unrecoverable', 'source_evidence': [], 'value': None}, 'EA_public': {'recovery_status': 'unrecoverable', 'source_evidence': [], 'value': None}, 'cloud': {'recovery_status': 'unrecoverable', 'source_evidence': [], 'value",
+          "source_reference": "/Users/hadi/Documents/GitHub/hoodie_sim_v2/resources/papers/hoodie/recovered/paper-parameter-registry.json",
+          "source_type": "cross_artifact_consistency_check"
+        },
+        {
+          "confidence": "medium",
+          "contradiction_notes": null,
+          "normalized_finding": "Cloud data rate",
+          "raw_evidence": "{'behavior_changes': False, 'blocking_gaps': [{'category': 'system_topology', 'description': 'Topology adjacency is not present as a structured artifact.', 'severity': 'blocking'}, {'category': 'timeout_and_drop', 'description': 'Timeout and Drop requires paper-faithful validation before any repair feature.', 'severity': 'high'}, {'category': 'reward_definition', 'description': 'Reward Definition requires paper-faithful validation before any repair feature.', 'severity': 'high'}], 'high_risk_ass",
+          "source_reference": "/Users/hadi/Documents/GitHub/hoodie_sim_v2/artifacts/analysis/paper-mechanism-registry/paper-mechanism-registry.json",
+          "source_type": "cross_artifact_consistency_check"
+        }
+      ],
+      "source_methods": [
+        "cross_artifact_consistency_check"
+      ],
+      "status": "assumption_backed_requires_user_approval",
+      "title": "Cloud data rate"
+    },
+    {
+      "confidence": "medium",
+      "description": "Numeric timeout or deadline value",
+      "domain": "timeout/deadline",
+      "evidence_exhaustion_rationale": "",
+      "item_id": "timeout_value",
+      "manual_visual_recovery": null,
+      "normalized_finding": "Timeout value",
+      "runtime_approval_required": true,
+      "source_evidence": [
+        {
+          "confidence": "medium",
+          "contradiction_notes": null,
+          "normalized_finding": "Timeout value",
+          "raw_evidence": "\\documentclass{article}\n\\usepackage[margin=1in]{geometry}\n\\begin{document}\n===== page\\_001\\_0\\_res.txt =====\n\n\ncurrent version 9 November, 2024.\n\nHOODIE: Hybrid Computation  Offloading g via Distributed Deep  Reinforcement Learning gin  Delay-aware Cloud-Edge Continuum\n\nANASTASIOS INNOOULOS1 (emb,E), IAS RALIAS2, SOTIRIOS SPANTIDEAS1,ANDPANAGIOTIS TRAKADAS1\n\n1DarrtndilniitofciC.2RcotoIiC\n\nCORRESPONDING AUTHOR:ANASTASIOS GIANNOPOULOS (e-mail: angianno@Ua.gr.\n\nUnion'sHORIONresearchandinnovationpro",
+          "source_reference": "/Users/hadi/Documents/GitHub/hoodie_sim_v2/resources/papers/hoodie/ocr/merged.tex",
+          "source_type": "cross_artifact_consistency_check"
+        },
+        {
+          "confidence": "medium",
+          "contradiction_notes": null,
+          "normalized_finding": "Timeout value",
+          "raw_evidence": "<!-- page_001_0.md -->\n\n\n---\n\ncurrent version 9 November, 2024.\n\n\n\n# HOODIE: Hybrid Computation  Offloading g via Distributed Deep  Reinforcement Learning gin  Delay-aware Cloud-Edge Continuum \n\nANASTASIOS INNOOULOS1 (emb,E), IAS RALIAS2, SOTIRIOS SPANTIDEAS1,ANDPANAGIOTIS TRAKADAS1\n\n1DarrtndilniitofciC.2RcotoIiC \n\nCORRESPONDING AUTHOR:ANASTASIOS GIANNOPOULOS (e-mail: angianno@Ua.gr.\n\nUnion'sHORIONresearchandinnovationprogrammeundergrantagreementNo101070177.\n\n\n\n## ABSTRACT\n Cloud-Edge Computing ",
+          "source_reference": "/Users/hadi/Documents/GitHub/hoodie_sim_v2/resources/papers/hoodie/ocr/merged.md",
+          "source_type": "cross_artifact_consistency_check"
+        },
+        {
+          "confidence": "medium",
+          "contradiction_notes": null,
+          "normalized_finding": "Timeout value",
+          "raw_evidence": "===== page_001_0_res.txt =====\n\n\ncurrent version 9 November, 2024.\n\nHOODIE: Hybrid Computation  Offloading g via Distributed Deep  Reinforcement Learning gin  Delay-aware Cloud-Edge Continuum\n\nANASTASIOS INNOOULOS1 (emb,E), IAS RALIAS2, SOTIRIOS SPANTIDEAS1,ANDPANAGIOTIS TRAKADAS1\n\n1DarrtndilniitofciC.2RcotoIiC\n\nCORRESPONDING AUTHOR:ANASTASIOS GIANNOPOULOS (e-mail: angianno@Ua.gr.\n\nUnion'sHORIONresearchandinnovationprogrammeundergrantagreementNo101070177.\n\nABSTRACT Cloud-Edge Computing Continuum",
+          "source_reference": "/Users/hadi/Documents/GitHub/hoodie_sim_v2/resources/papers/hoodie/ocr/merged.txt",
+          "source_type": "cross_artifact_consistency_check"
+        },
+        {
+          "confidence": "medium",
+          "contradiction_notes": null,
+          "normalized_finding": "Timeout value",
+          "raw_evidence": "{'items': [{'file': 'page_001_0_res.json', 'res': {'input_path': '/mnt/output/split_pages/page_001.pdf', 'page_index': 0, 'page_count': 1, 'width': 1224, 'height': 1584, 'model_settings': {'use_doc_preprocessor': True, 'use_seal_recognition': True, 'use_table_recognition': True, 'use_formula_recognition': True, 'use_chart_recognition': True, 'use_region_detection': True, 'format_block_content': False, 'markdown_ignore_labels': ['number', 'footnote', 'header', 'header_image', 'footer', 'footer_im",
+          "source_reference": "/Users/hadi/Documents/GitHub/hoodie_sim_v2/resources/papers/hoodie/ocr/merged.json",
+          "source_type": "cross_artifact_consistency_check"
+        },
+        {
+          "confidence": "medium",
+          "contradiction_notes": null,
+          "normalized_finding": "Timeout value",
+          "raw_evidence": "{'cloud_data_rate': {'recovery_status': 'unrecoverable', 'source_evidence': [], 'unrecoverable_reason': 'The paper OCR does not provide a distinct cloud-facing data-rate constant beyond vertical offload rate.', 'value': None}, 'cpu_capacities': {'EA_private': {'recovery_status': 'unrecoverable', 'source_evidence': [], 'value': None}, 'EA_public': {'recovery_status': 'unrecoverable', 'source_evidence': [], 'value': None}, 'cloud': {'recovery_status': 'unrecoverable', 'source_evidence': [], 'value",
+          "source_reference": "/Users/hadi/Documents/GitHub/hoodie_sim_v2/resources/papers/hoodie/recovered/paper-parameter-registry.json",
+          "source_type": "cross_artifact_consistency_check"
+        },
+        {
+          "confidence": "medium",
+          "contradiction_notes": null,
+          "normalized_finding": "Timeout value",
+          "raw_evidence": "{'behavior_changes': False, 'blocking_gaps': [{'category': 'system_topology', 'description': 'Topology adjacency is not present as a structured artifact.', 'severity': 'blocking'}, {'category': 'timeout_and_drop', 'description': 'Timeout and Drop requires paper-faithful validation before any repair feature.', 'severity': 'high'}, {'category': 'reward_definition', 'description': 'Reward Definition requires paper-faithful validation before any repair feature.', 'severity': 'high'}], 'high_risk_ass",
+          "source_reference": "/Users/hadi/Documents/GitHub/hoodie_sim_v2/artifacts/analysis/paper-mechanism-registry/paper-mechanism-registry.json",
+          "source_type": "cross_artifact_consistency_check"
+        },
+        {
+          "confidence": "medium",
+          "contradiction_notes": null,
+          "normalized_finding": "Timeout value",
+          "raw_evidence": "{'completion_slot_contract': {'completion_slot': 11, 'cpu_capacity_per_slot': 32.0, 'current_slot': 10, 'cycles_required': 0.6237, 'delay_slots': 1, 'formula': 'completion_slot = current_slot + delay_slots; delay_slots = ceil(cycles_required / cpu_capacity_per_slot)', 'zero_delay_policy': 'explicit_zero_delay'}, 'computation_delay_contract': {'cycles_required_example': {'cpu_capacity_per_slot': 32.0, 'cycles_required': 0.6237, 'delay_slots': 1, 'processing_density_gcycles_per_mbit': 0.297, 'task",
+          "source_reference": "/Users/hadi/Documents/GitHub/hoodie_sim_v2/artifacts/analysis/computation-delay-cpu-unit-validation/unit-validation-report.json",
+          "source_type": "cross_artifact_consistency_check"
+        },
+        {
+          "confidence": "medium",
+          "contradiction_notes": null,
+          "normalized_finding": "Timeout value",
+          "raw_evidence": "{'aggregation_contract': {'average_across_distributed_agents': 'artifact_backed', 'exact_reduction_order': 'assumption_backed', 'per_agent': 'paper_backed', 'reported_cumulative_reward': 'artifact_backed'}, 'assumption_backed_items': [{'item': 'multi_agent_aggregation_reduction_order', 'status': 'assumption_backed'}], 'delay_cost_contract': {'delay_cost_formula': 'Phi_n(t) selected by private/local or public/offloaded delay cost', 'phi_n_priv': 'psi_n^priv(t) - t + 1', 'phi_n_pub': \"normalized O",
+          "source_reference": "/Users/hadi/Documents/GitHub/hoodie_sim_v2/artifacts/analysis/reward-equation-terminal-reward-contract/reward-contract-report.json",
+          "source_type": "cross_artifact_consistency_check"
+        }
+      ],
+      "source_methods": [
+        "cross_artifact_consistency_check"
+      ],
+      "status": "assumption_backed_requires_user_approval",
+      "title": "Timeout value"
+    },
+    {
+      "confidence": "medium",
+      "description": "Exact multi-agent reward reduction order",
+      "domain": "reward aggregation",
+      "evidence_exhaustion_rationale": "",
+      "item_id": "multi_agent_aggregation_reduction_order",
+      "manual_visual_recovery": null,
+      "normalized_finding": "Multi-agent aggregation reduction order",
+      "runtime_approval_required": true,
+      "source_evidence": [
+        {
+          "confidence": "medium",
+          "contradiction_notes": null,
+          "normalized_finding": "Multi-agent aggregation reduction order",
+          "raw_evidence": "\\documentclass{article}\n\\usepackage[margin=1in]{geometry}\n\\begin{document}\n===== page\\_001\\_0\\_res.txt =====\n\n\ncurrent version 9 November, 2024.\n\nHOODIE: Hybrid Computation  Offloading g via Distributed Deep  Reinforcement Learning gin  Delay-aware Cloud-Edge Continuum\n\nANASTASIOS INNOOULOS1 (emb,E), IAS RALIAS2, SOTIRIOS SPANTIDEAS1,ANDPANAGIOTIS TRAKADAS1\n\n1DarrtndilniitofciC.2RcotoIiC\n\nCORRESPONDING AUTHOR:ANASTASIOS GIANNOPOULOS (e-mail: angianno@Ua.gr.\n\nUnion'sHORIONresearchandinnovationpro",
+          "source_reference": "/Users/hadi/Documents/GitHub/hoodie_sim_v2/resources/papers/hoodie/ocr/merged.tex",
+          "source_type": "cross_artifact_consistency_check"
+        },
+        {
+          "confidence": "medium",
+          "contradiction_notes": null,
+          "normalized_finding": "Multi-agent aggregation reduction order",
+          "raw_evidence": "<!-- page_001_0.md -->\n\n\n---\n\ncurrent version 9 November, 2024.\n\n\n\n# HOODIE: Hybrid Computation  Offloading g via Distributed Deep  Reinforcement Learning gin  Delay-aware Cloud-Edge Continuum \n\nANASTASIOS INNOOULOS1 (emb,E), IAS RALIAS2, SOTIRIOS SPANTIDEAS1,ANDPANAGIOTIS TRAKADAS1\n\n1DarrtndilniitofciC.2RcotoIiC \n\nCORRESPONDING AUTHOR:ANASTASIOS GIANNOPOULOS (e-mail: angianno@Ua.gr.\n\nUnion'sHORIONresearchandinnovationprogrammeundergrantagreementNo101070177.\n\n\n\n## ABSTRACT\n Cloud-Edge Computing ",
+          "source_reference": "/Users/hadi/Documents/GitHub/hoodie_sim_v2/resources/papers/hoodie/ocr/merged.md",
+          "source_type": "cross_artifact_consistency_check"
+        },
+        {
+          "confidence": "medium",
+          "contradiction_notes": null,
+          "normalized_finding": "Multi-agent aggregation reduction order",
+          "raw_evidence": "===== page_001_0_res.txt =====\n\n\ncurrent version 9 November, 2024.\n\nHOODIE: Hybrid Computation  Offloading g via Distributed Deep  Reinforcement Learning gin  Delay-aware Cloud-Edge Continuum\n\nANASTASIOS INNOOULOS1 (emb,E), IAS RALIAS2, SOTIRIOS SPANTIDEAS1,ANDPANAGIOTIS TRAKADAS1\n\n1DarrtndilniitofciC.2RcotoIiC\n\nCORRESPONDING AUTHOR:ANASTASIOS GIANNOPOULOS (e-mail: angianno@Ua.gr.\n\nUnion'sHORIONresearchandinnovationprogrammeundergrantagreementNo101070177.\n\nABSTRACT Cloud-Edge Computing Continuum",
+          "source_reference": "/Users/hadi/Documents/GitHub/hoodie_sim_v2/resources/papers/hoodie/ocr/merged.txt",
+          "source_type": "cross_artifact_consistency_check"
+        },
+        {
+          "confidence": "medium",
+          "contradiction_notes": null,
+          "normalized_finding": "Multi-agent aggregation reduction order",
+          "raw_evidence": "{'items': [{'file': 'page_001_0_res.json', 'res': {'input_path': '/mnt/output/split_pages/page_001.pdf', 'page_index': 0, 'page_count': 1, 'width': 1224, 'height': 1584, 'model_settings': {'use_doc_preprocessor': True, 'use_seal_recognition': True, 'use_table_recognition': True, 'use_formula_recognition': True, 'use_chart_recognition': True, 'use_region_detection': True, 'format_block_content': False, 'markdown_ignore_labels': ['number', 'footnote', 'header', 'header_image', 'footer', 'footer_im",
+          "source_reference": "/Users/hadi/Documents/GitHub/hoodie_sim_v2/resources/papers/hoodie/ocr/merged.json",
+          "source_type": "cross_artifact_consistency_check"
+        },
+        {
+          "confidence": "medium",
+          "contradiction_notes": null,
+          "normalized_finding": "Multi-agent aggregation reduction order",
+          "raw_evidence": "{'adjacency_matrix': None, 'adjacency_matrix_status': 'unrecoverable', 'edge_cloud_connectivity': {'recovery_status': 'unrecoverable', 'source_evidence': [], 'unrecoverable_reason': 'Paper/OCR evidence does not recover explicit edge/cloud connectivity facts without inventing topology.', 'value': None}, 'legal_horizontal_destinations': None, 'no_fabrication_disclaimer': True, 'node_count': 20, 'node_ids': None, 'paper_claim_type': 'topology_caption', 'paper_figure_id': 'Figure 7', 'recovery_confi",
+          "source_reference": "/Users/hadi/Documents/GitHub/hoodie_sim_v2/resources/papers/hoodie/recovered/topology-g.json",
+          "source_type": "cross_artifact_consistency_check"
+        },
+        {
+          "confidence": "medium",
+          "contradiction_notes": null,
+          "normalized_finding": "Multi-agent aggregation reduction order",
+          "raw_evidence": "{'cloud_data_rate': {'recovery_status': 'unrecoverable', 'source_evidence': [], 'unrecoverable_reason': 'The paper OCR does not provide a distinct cloud-facing data-rate constant beyond vertical offload rate.', 'value': None}, 'cpu_capacities': {'EA_private': {'recovery_status': 'unrecoverable', 'source_evidence': [], 'value': None}, 'EA_public': {'recovery_status': 'unrecoverable', 'source_evidence': [], 'value': None}, 'cloud': {'recovery_status': 'unrecoverable', 'source_evidence': [], 'value",
+          "source_reference": "/Users/hadi/Documents/GitHub/hoodie_sim_v2/resources/papers/hoodie/recovered/paper-parameter-registry.json",
+          "source_type": "cross_artifact_consistency_check"
+        },
+        {
+          "confidence": "medium",
+          "contradiction_notes": null,
+          "normalized_finding": "Multi-agent aggregation reduction order",
+          "raw_evidence": "{'behavior_changes': False, 'blocking_gaps': [{'category': 'system_topology', 'description': 'Topology adjacency is not present as a structured artifact.', 'severity': 'blocking'}, {'category': 'timeout_and_drop', 'description': 'Timeout and Drop requires paper-faithful validation before any repair feature.', 'severity': 'high'}, {'category': 'reward_definition', 'description': 'Reward Definition requires paper-faithful validation before any repair feature.', 'severity': 'high'}], 'high_risk_ass",
+          "source_reference": "/Users/hadi/Documents/GitHub/hoodie_sim_v2/artifacts/analysis/paper-mechanism-registry/paper-mechanism-registry.json",
+          "source_type": "cross_artifact_consistency_check"
+        },
+        {
+          "confidence": "medium",
+          "contradiction_notes": null,
+          "normalized_finding": "Multi-agent aggregation reduction order",
+          "raw_evidence": "{'completion_slot_contract': {'completion_slot': 11, 'cpu_capacity_per_slot': 32.0, 'current_slot': 10, 'cycles_required': 0.6237, 'delay_slots': 1, 'formula': 'completion_slot = current_slot + delay_slots; delay_slots = ceil(cycles_required / cpu_capacity_per_slot)', 'zero_delay_policy': 'explicit_zero_delay'}, 'computation_delay_contract': {'cycles_required_example': {'cpu_capacity_per_slot': 32.0, 'cycles_required': 0.6237, 'delay_slots': 1, 'processing_density_gcycles_per_mbit': 0.297, 'task",
+          "source_reference": "/Users/hadi/Documents/GitHub/hoodie_sim_v2/artifacts/analysis/computation-delay-cpu-unit-validation/unit-validation-report.json",
+          "source_type": "cross_artifact_consistency_check"
+        },
+        {
+          "confidence": "medium",
+          "contradiction_notes": null,
+          "normalized_finding": "Multi-agent aggregation reduction order",
+          "raw_evidence": "{'aggregation_contract': {'average_across_distributed_agents': 'artifact_backed', 'exact_reduction_order': 'assumption_backed', 'per_agent': 'paper_backed', 'reported_cumulative_reward': 'artifact_backed'}, 'assumption_backed_items': [{'item': 'multi_agent_aggregation_reduction_order', 'status': 'assumption_backed'}], 'delay_cost_contract': {'delay_cost_formula': 'Phi_n(t) selected by private/local or public/offloaded delay cost', 'phi_n_priv': 'psi_n^priv(t) - t + 1', 'phi_n_pub': \"normalized O",
+          "source_reference": "/Users/hadi/Documents/GitHub/hoodie_sim_v2/artifacts/analysis/reward-equation-terminal-reward-contract/reward-contract-report.json",
+          "source_type": "cross_artifact_consistency_check"
+        }
+      ],
+      "source_methods": [
+        "cross_artifact_consistency_check"
+      ],
+      "status": "assumption_backed_requires_user_approval",
+      "title": "Multi-agent aggregation reduction order"
+    },
+    {
+      "confidence": "medium",
+      "description": "Noisy Phi_n^pub equation formatting",
+      "domain": "equation formatting",
+      "evidence_exhaustion_rationale": "",
+      "item_id": "Phi_n_pub_exact_formatting",
+      "manual_visual_recovery": null,
+      "normalized_finding": "Phi_n^pub exact formatting",
+      "runtime_approval_required": false,
+      "source_evidence": [
+        {
+          "confidence": "medium",
+          "contradiction_notes": null,
+          "normalized_finding": "Phi_n^pub exact formatting",
+          "raw_evidence": "\\documentclass{article}\n\\usepackage[margin=1in]{geometry}\n\\begin{document}\n===== page\\_001\\_0\\_res.txt =====\n\n\ncurrent version 9 November, 2024.\n\nHOODIE: Hybrid Computation  Offloading g via Distributed Deep  Reinforcement Learning gin  Delay-aware Cloud-Edge Continuum\n\nANASTASIOS INNOOULOS1 (emb,E), IAS RALIAS2, SOTIRIOS SPANTIDEAS1,ANDPANAGIOTIS TRAKADAS1\n\n1DarrtndilniitofciC.2RcotoIiC\n\nCORRESPONDING AUTHOR:ANASTASIOS GIANNOPOULOS (e-mail: angianno@Ua.gr.\n\nUnion'sHORIONresearchandinnovationpro",
+          "source_reference": "/Users/hadi/Documents/GitHub/hoodie_sim_v2/resources/papers/hoodie/ocr/merged.tex",
+          "source_type": "cross_artifact_consistency_check"
+        },
+        {
+          "confidence": "medium",
+          "contradiction_notes": null,
+          "normalized_finding": "Phi_n^pub exact formatting",
+          "raw_evidence": "<!-- page_001_0.md -->\n\n\n---\n\ncurrent version 9 November, 2024.\n\n\n\n# HOODIE: Hybrid Computation  Offloading g via Distributed Deep  Reinforcement Learning gin  Delay-aware Cloud-Edge Continuum \n\nANASTASIOS INNOOULOS1 (emb,E), IAS RALIAS2, SOTIRIOS SPANTIDEAS1,ANDPANAGIOTIS TRAKADAS1\n\n1DarrtndilniitofciC.2RcotoIiC \n\nCORRESPONDING AUTHOR:ANASTASIOS GIANNOPOULOS (e-mail: angianno@Ua.gr.\n\nUnion'sHORIONresearchandinnovationprogrammeundergrantagreementNo101070177.\n\n\n\n## ABSTRACT\n Cloud-Edge Computing ",
+          "source_reference": "/Users/hadi/Documents/GitHub/hoodie_sim_v2/resources/papers/hoodie/ocr/merged.md",
+          "source_type": "cross_artifact_consistency_check"
+        },
+        {
+          "confidence": "medium",
+          "contradiction_notes": null,
+          "normalized_finding": "Phi_n^pub exact formatting",
+          "raw_evidence": "===== page_001_0_res.txt =====\n\n\ncurrent version 9 November, 2024.\n\nHOODIE: Hybrid Computation  Offloading g via Distributed Deep  Reinforcement Learning gin  Delay-aware Cloud-Edge Continuum\n\nANASTASIOS INNOOULOS1 (emb,E), IAS RALIAS2, SOTIRIOS SPANTIDEAS1,ANDPANAGIOTIS TRAKADAS1\n\n1DarrtndilniitofciC.2RcotoIiC\n\nCORRESPONDING AUTHOR:ANASTASIOS GIANNOPOULOS (e-mail: angianno@Ua.gr.\n\nUnion'sHORIONresearchandinnovationprogrammeundergrantagreementNo101070177.\n\nABSTRACT Cloud-Edge Computing Continuum",
+          "source_reference": "/Users/hadi/Documents/GitHub/hoodie_sim_v2/resources/papers/hoodie/ocr/merged.txt",
+          "source_type": "cross_artifact_consistency_check"
+        },
+        {
+          "confidence": "medium",
+          "contradiction_notes": null,
+          "normalized_finding": "Phi_n^pub exact formatting",
+          "raw_evidence": "{'items': [{'file': 'page_001_0_res.json', 'res': {'input_path': '/mnt/output/split_pages/page_001.pdf', 'page_index': 0, 'page_count': 1, 'width': 1224, 'height': 1584, 'model_settings': {'use_doc_preprocessor': True, 'use_seal_recognition': True, 'use_table_recognition': True, 'use_formula_recognition': True, 'use_chart_recognition': True, 'use_region_detection': True, 'format_block_content': False, 'markdown_ignore_labels': ['number', 'footnote', 'header', 'header_image', 'footer', 'footer_im",
+          "source_reference": "/Users/hadi/Documents/GitHub/hoodie_sim_v2/resources/papers/hoodie/ocr/merged.json",
+          "source_type": "cross_artifact_consistency_check"
+        },
+        {
+          "confidence": "medium",
+          "contradiction_notes": null,
+          "normalized_finding": "Phi_n^pub exact formatting",
+          "raw_evidence": "{'adjacency_matrix': None, 'adjacency_matrix_status': 'unrecoverable', 'edge_cloud_connectivity': {'recovery_status': 'unrecoverable', 'source_evidence': [], 'unrecoverable_reason': 'Paper/OCR evidence does not recover explicit edge/cloud connectivity facts without inventing topology.', 'value': None}, 'legal_horizontal_destinations': None, 'no_fabrication_disclaimer': True, 'node_count': 20, 'node_ids': None, 'paper_claim_type': 'topology_caption', 'paper_figure_id': 'Figure 7', 'recovery_confi",
+          "source_reference": "/Users/hadi/Documents/GitHub/hoodie_sim_v2/resources/papers/hoodie/recovered/topology-g.json",
+          "source_type": "cross_artifact_consistency_check"
+        },
+        {
+          "confidence": "medium",
+          "contradiction_notes": null,
+          "normalized_finding": "Phi_n^pub exact formatting",
+          "raw_evidence": "{'cloud_data_rate': {'recovery_status': 'unrecoverable', 'source_evidence': [], 'unrecoverable_reason': 'The paper OCR does not provide a distinct cloud-facing data-rate constant beyond vertical offload rate.', 'value': None}, 'cpu_capacities': {'EA_private': {'recovery_status': 'unrecoverable', 'source_evidence': [], 'value': None}, 'EA_public': {'recovery_status': 'unrecoverable', 'source_evidence': [], 'value': None}, 'cloud': {'recovery_status': 'unrecoverable', 'source_evidence': [], 'value",
+          "source_reference": "/Users/hadi/Documents/GitHub/hoodie_sim_v2/resources/papers/hoodie/recovered/paper-parameter-registry.json",
+          "source_type": "cross_artifact_consistency_check"
+        },
+        {
+          "confidence": "medium",
+          "contradiction_notes": null,
+          "normalized_finding": "Phi_n^pub exact formatting",
+          "raw_evidence": "{'behavior_changes': False, 'blocking_gaps': [{'category': 'system_topology', 'description': 'Topology adjacency is not present as a structured artifact.', 'severity': 'blocking'}, {'category': 'timeout_and_drop', 'description': 'Timeout and Drop requires paper-faithful validation before any repair feature.', 'severity': 'high'}, {'category': 'reward_definition', 'description': 'Reward Definition requires paper-faithful validation before any repair feature.', 'severity': 'high'}], 'high_risk_ass",
+          "source_reference": "/Users/hadi/Documents/GitHub/hoodie_sim_v2/artifacts/analysis/paper-mechanism-registry/paper-mechanism-registry.json",
+          "source_type": "cross_artifact_consistency_check"
+        },
+        {
+          "confidence": "medium",
+          "contradiction_notes": null,
+          "normalized_finding": "Phi_n^pub exact formatting",
+          "raw_evidence": "{'aggregation_contract': {'average_across_distributed_agents': 'artifact_backed', 'exact_reduction_order': 'assumption_backed', 'per_agent': 'paper_backed', 'reported_cumulative_reward': 'artifact_backed'}, 'assumption_backed_items': [{'item': 'multi_agent_aggregation_reduction_order', 'status': 'assumption_backed'}], 'delay_cost_contract': {'delay_cost_formula': 'Phi_n(t) selected by private/local or public/offloaded delay cost', 'phi_n_priv': 'psi_n^priv(t) - t + 1', 'phi_n_pub': \"normalized O",
+          "source_reference": "/Users/hadi/Documents/GitHub/hoodie_sim_v2/artifacts/analysis/reward-equation-terminal-reward-contract/reward-contract-report.json",
+          "source_type": "cross_artifact_consistency_check"
+        }
+      ],
+      "source_methods": [
+        "cross_artifact_consistency_check"
+      ],
+      "status": "partially_recovered",
+      "title": "Phi_n^pub exact formatting"
+    },
+    {
+      "confidence": "low",
+      "description": "unknown item",
+      "domain": "other",
+      "evidence_exhaustion_rationale": "No evidence found after exhausting approved sources for unknown item.",
+      "item_id": "unknown item",
+      "manual_visual_recovery": null,
+      "normalized_finding": "unknown item",
+      "runtime_approval_required": true,
+      "source_evidence": [],
+      "source_methods": [],
+      "status": "unrecoverable_after_evidence_exhaustion",
+      "title": "unknown item"
+    }
+  ],
+  "manual_review_required_items": [],
+  "no_dependency_drift": true,
+  "no_training_or_policy_drift": true,
+  "out_of_scope_items": [],
+  "partially_recovered_items": [
+    {
+      "confidence": "medium",
+      "description": "Noisy Phi_n^pub equation formatting",
+      "domain": "equation formatting",
+      "evidence_exhaustion_rationale": "",
+      "item_id": "Phi_n_pub_exact_formatting",
+      "manual_visual_recovery": null,
+      "normalized_finding": "Phi_n^pub exact formatting",
+      "runtime_approval_required": false,
+      "source_evidence": [
+        {
+          "confidence": "medium",
+          "normalized_finding": "Phi_n^pub exact formatting",
+          "raw_evidence": "\\documentclass{article}\n\\usepackage[margin=1in]{geometry}\n\\begin{document}\n===== page\\_001\\_0\\_res.txt =====\n\n\ncurrent version 9 November, 2024.\n\nHOODIE: Hybrid Computation  Offloading g via Distributed Deep  Reinforcement Learning gin  Delay-aware Cloud-Edge Continuum\n\nANASTASIOS INNOOULOS1 (emb,E), IAS RALIAS2, SOTIRIOS SPANTIDEAS1,ANDPANAGIOTIS TRAKADAS1\n\n1DarrtndilniitofciC.2RcotoIiC\n\nCORRESPONDING AUTHOR:ANASTASIOS GIANNOPOULOS (e-mail: angianno@Ua.gr.\n\nUnion'sHORIONresearchandinnovationpro",
+          "source_reference": "/Users/hadi/Documents/GitHub/hoodie_sim_v2/resources/papers/hoodie/ocr/merged.tex",
+          "source_type": "cross_artifact_consistency_check"
+        },
+        {
+          "confidence": "medium",
+          "normalized_finding": "Phi_n^pub exact formatting",
+          "raw_evidence": "<!-- page_001_0.md -->\n\n\n---\n\ncurrent version 9 November, 2024.\n\n\n\n# HOODIE: Hybrid Computation  Offloading g via Distributed Deep  Reinforcement Learning gin  Delay-aware Cloud-Edge Continuum \n\nANASTASIOS INNOOULOS1 (emb,E), IAS RALIAS2, SOTIRIOS SPANTIDEAS1,ANDPANAGIOTIS TRAKADAS1\n\n1DarrtndilniitofciC.2RcotoIiC \n\nCORRESPONDING AUTHOR:ANASTASIOS GIANNOPOULOS (e-mail: angianno@Ua.gr.\n\nUnion'sHORIONresearchandinnovationprogrammeundergrantagreementNo101070177.\n\n\n\n## ABSTRACT\n Cloud-Edge Computing ",
+          "source_reference": "/Users/hadi/Documents/GitHub/hoodie_sim_v2/resources/papers/hoodie/ocr/merged.md",
+          "source_type": "cross_artifact_consistency_check"
+        },
+        {
+          "confidence": "medium",
+          "normalized_finding": "Phi_n^pub exact formatting",
+          "raw_evidence": "===== page_001_0_res.txt =====\n\n\ncurrent version 9 November, 2024.\n\nHOODIE: Hybrid Computation  Offloading g via Distributed Deep  Reinforcement Learning gin  Delay-aware Cloud-Edge Continuum\n\nANASTASIOS INNOOULOS1 (emb,E), IAS RALIAS2, SOTIRIOS SPANTIDEAS1,ANDPANAGIOTIS TRAKADAS1\n\n1DarrtndilniitofciC.2RcotoIiC\n\nCORRESPONDING AUTHOR:ANASTASIOS GIANNOPOULOS (e-mail: angianno@Ua.gr.\n\nUnion'sHORIONresearchandinnovationprogrammeundergrantagreementNo101070177.\n\nABSTRACT Cloud-Edge Computing Continuum",
+          "source_reference": "/Users/hadi/Documents/GitHub/hoodie_sim_v2/resources/papers/hoodie/ocr/merged.txt",
+          "source_type": "cross_artifact_consistency_check"
+        },
+        {
+          "confidence": "medium",
+          "normalized_finding": "Phi_n^pub exact formatting",
+          "raw_evidence": "{'items': [{'file': 'page_001_0_res.json', 'res': {'input_path': '/mnt/output/split_pages/page_001.pdf', 'page_index': 0, 'page_count': 1, 'width': 1224, 'height': 1584, 'model_settings': {'use_doc_preprocessor': True, 'use_seal_recognition': True, 'use_table_recognition': True, 'use_formula_recognition': True, 'use_chart_recognition': True, 'use_region_detection': True, 'format_block_content': False, 'markdown_ignore_labels': ['number', 'footnote', 'header', 'header_image', 'footer', 'footer_im",
+          "source_reference": "/Users/hadi/Documents/GitHub/hoodie_sim_v2/resources/papers/hoodie/ocr/merged.json",
+          "source_type": "cross_artifact_consistency_check"
+        },
+        {
+          "confidence": "medium",
+          "normalized_finding": "Phi_n^pub exact formatting",
+          "raw_evidence": "{'adjacency_matrix': None, 'adjacency_matrix_status': 'unrecoverable', 'edge_cloud_connectivity': {'recovery_status': 'unrecoverable', 'source_evidence': [], 'unrecoverable_reason': 'Paper/OCR evidence does not recover explicit edge/cloud connectivity facts without inventing topology.', 'value': None}, 'legal_horizontal_destinations': None, 'no_fabrication_disclaimer': True, 'node_count': 20, 'node_ids': None, 'paper_claim_type': 'topology_caption', 'paper_figure_id': 'Figure 7', 'recovery_confi",
+          "source_reference": "/Users/hadi/Documents/GitHub/hoodie_sim_v2/resources/papers/hoodie/recovered/topology-g.json",
+          "source_type": "cross_artifact_consistency_check"
+        },
+        {
+          "confidence": "medium",
+          "normalized_finding": "Phi_n^pub exact formatting",
+          "raw_evidence": "{'cloud_data_rate': {'recovery_status': 'unrecoverable', 'source_evidence': [], 'unrecoverable_reason': 'The paper OCR does not provide a distinct cloud-facing data-rate constant beyond vertical offload rate.', 'value': None}, 'cpu_capacities': {'EA_private': {'recovery_status': 'unrecoverable', 'source_evidence': [], 'value': None}, 'EA_public': {'recovery_status': 'unrecoverable', 'source_evidence': [], 'value': None}, 'cloud': {'recovery_status': 'unrecoverable', 'source_evidence': [], 'value",
+          "source_reference": "/Users/hadi/Documents/GitHub/hoodie_sim_v2/resources/papers/hoodie/recovered/paper-parameter-registry.json",
+          "source_type": "cross_artifact_consistency_check"
+        },
+        {
+          "confidence": "medium",
+          "normalized_finding": "Phi_n^pub exact formatting",
+          "raw_evidence": "{'behavior_changes': False, 'blocking_gaps': [{'category': 'system_topology', 'description': 'Topology adjacency is not present as a structured artifact.', 'severity': 'blocking'}, {'category': 'timeout_and_drop', 'description': 'Timeout and Drop requires paper-faithful validation before any repair feature.', 'severity': 'high'}, {'category': 'reward_definition', 'description': 'Reward Definition requires paper-faithful validation before any repair feature.', 'severity': 'high'}], 'high_risk_ass",
+          "source_reference": "/Users/hadi/Documents/GitHub/hoodie_sim_v2/artifacts/analysis/paper-mechanism-registry/paper-mechanism-registry.json",
+          "source_type": "cross_artifact_consistency_check"
+        },
+        {
+          "confidence": "medium",
+          "normalized_finding": "Phi_n^pub exact formatting",
+          "raw_evidence": "{'aggregation_contract': {'average_across_distributed_agents': 'artifact_backed', 'exact_reduction_order': 'assumption_backed', 'per_agent': 'paper_backed', 'reported_cumulative_reward': 'artifact_backed'}, 'assumption_backed_items': [{'item': 'multi_agent_aggregation_reduction_order', 'status': 'assumption_backed'}], 'delay_cost_contract': {'delay_cost_formula': 'Phi_n(t) selected by private/local or public/offloaded delay cost', 'phi_n_priv': 'psi_n^priv(t) - t + 1', 'phi_n_pub': \"normalized O",
+          "source_reference": "/Users/hadi/Documents/GitHub/hoodie_sim_v2/artifacts/analysis/reward-equation-terminal-reward-contract/reward-contract-report.json",
+          "source_type": "cross_artifact_consistency_check"
+        }
+      ],
+      "source_methods": [
+        "cross_artifact_consistency_check"
+      ],
+      "status": "partially_recovered",
+      "title": "Phi_n^pub exact formatting"
+    }
+  ],
+  "recovered_items": [],
+  "runtime_dependency_decisions": {
+    "invalid_guess_policy": "rejected",
+    "low_confidence_runtime_use": "blocked_until_approval",
+    "manual_figure_7_policy": "ambiguous_edges_unrecoverable",
+    "runtime_behavior_changes": "out_of_scope"
+  },
+  "schema_version": "1.0.0",
+  "source_gates": [
+    {
+      "path": "/Users/hadi/Documents/GitHub/hoodie_sim_v2/resources/papers/hoodie/ocr/merged.tex"
+    },
+    {
+      "path": "/Users/hadi/Documents/GitHub/hoodie_sim_v2/resources/papers/hoodie/ocr/merged.md"
+    },
+    {
+      "path": "/Users/hadi/Documents/GitHub/hoodie_sim_v2/resources/papers/hoodie/ocr/merged.txt"
+    },
+    {
+      "path": "/Users/hadi/Documents/GitHub/hoodie_sim_v2/resources/papers/hoodie/ocr/merged.json"
+    },
+    {
+      "path": "/Users/hadi/Documents/GitHub/hoodie_sim_v2/resources/papers/hoodie/HOODIE_paper.pdf"
+    },
+    {
+      "path": "/Users/hadi/Documents/GitHub/hoodie_sim_v2/resources/papers/hoodie/recovered/topology-g.json"
+    },
+    {
+      "path": "/Users/hadi/Documents/GitHub/hoodie_sim_v2/resources/papers/hoodie/recovered/paper-parameter-registry.json"
+    },
+    {
+      "path": "/Users/hadi/Documents/GitHub/hoodie_sim_v2/artifacts/analysis/paper-mechanism-registry/paper-mechanism-registry.json"
+    },
+    {
+      "path": "/Users/hadi/Documents/GitHub/hoodie_sim_v2/artifacts/analysis/structured-paper-topology-linkrate-registry/topology-recovery-report.json"
+    },
+    {
+      "path": "/Users/hadi/Documents/GitHub/hoodie_sim_v2/artifacts/analysis/computation-delay-cpu-unit-validation/unit-validation-report.json"
+    },
+    {
+      "path": "/Users/hadi/Documents/GitHub/hoodie_sim_v2/artifacts/analysis/reward-equation-terminal-reward-contract/reward-contract-report.json"
+    }
+  ],
+  "unrecoverable_after_evidence_exhaustion_items": [
+    {
+      "confidence": "low",
+      "description": "Allowed horizontal destinations",
+      "domain": "topology",
+      "evidence_exhaustion_rationale": "No evidence found after exhausting approved sources for legal_horizontal_destinations.",
+      "item_id": "legal_horizontal_destinations",
+      "manual_visual_recovery": null,
+      "normalized_finding": "Legal horizontal destinations",
+      "runtime_approval_required": true,
+      "source_evidence": [],
+      "source_methods": [],
+      "status": "unrecoverable_after_evidence_exhaustion",
+      "title": "Legal horizontal destinations"
+    },
+    {
+      "confidence": "low",
+      "description": "unknown item",
+      "domain": "other",
+      "evidence_exhaustion_rationale": "No evidence found after exhausting approved sources for unknown item.",
+      "item_id": "unknown item",
+      "manual_visual_recovery": null,
+      "normalized_finding": "unknown item",
+      "runtime_approval_required": true,
+      "source_evidence": [],
+      "source_methods": [],
+      "status": "unrecoverable_after_evidence_exhaustion",
+      "title": "unknown item"
+    }
+  ]
+}
