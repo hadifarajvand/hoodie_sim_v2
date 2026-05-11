@@ -15,5 +15,7 @@ class OffloadInstrumentationSummaryTest(unittest.TestCase):
         json_path, md_path = summary.write(out_dir)
         self.assertTrue(json_path.exists())
         self.assertTrue(md_path.exists())
-        self.assertIn("queued_public", json_path.read_text())
-
+        payload = json_path.read_text()
+        self.assertIn("schema_supported_events", payload)
+        self.assertIn("observed_default_audit_events", payload)
+        self.assertIn("observed_synthetic_fixture_events", payload)

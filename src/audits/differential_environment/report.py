@@ -198,22 +198,32 @@ def summarize_sequence(items: list[dict[str, object]], key: str = "event_sequenc
 @dataclass(frozen=True, slots=True)
 class InstrumentationSummary:
     schema_version: str
-    visible_events: list[str]
-    incomplete_events: list[str]
-    regression_checks: dict[str, str]
-    remaining_blockers: list[str]
+    schema_supported_events: list[str]
+    observed_default_audit_events: list[str]
+    observed_synthetic_fixture_events: dict[str, list[str]]
+    default_runtime_classification: dict[str, str]
+    synthetic_fixture_trace_visibility: dict[str, str]
+    remaining_topology_blockers: list[str]
+    paper_topology_status: str
+    no_paper_topology_fabrication: bool
     no_behavior_change_verified: bool
     topology_boundaries_preserved: bool
+    regression_checks: dict[str, str]
 
     def to_dict(self) -> dict[str, object]:
         return {
             "schema_version": self.schema_version,
-            "visible_events": list(self.visible_events),
-            "incomplete_events": list(self.incomplete_events),
-            "regression_checks": dict(self.regression_checks),
-            "remaining_blockers": list(self.remaining_blockers),
+            "schema_supported_events": list(self.schema_supported_events),
+            "observed_default_audit_events": list(self.observed_default_audit_events),
+            "observed_synthetic_fixture_events": {key: list(value) for key, value in self.observed_synthetic_fixture_events.items()},
+            "default_runtime_classification": dict(self.default_runtime_classification),
+            "synthetic_fixture_trace_visibility": dict(self.synthetic_fixture_trace_visibility),
+            "remaining_topology_blockers": list(self.remaining_topology_blockers),
+            "paper_topology_status": self.paper_topology_status,
+            "no_paper_topology_fabrication": self.no_paper_topology_fabrication,
             "no_behavior_change_verified": self.no_behavior_change_verified,
             "topology_boundaries_preserved": self.topology_boundaries_preserved,
+            "regression_checks": dict(self.regression_checks),
         }
 
     def to_json(self) -> str:
@@ -224,21 +234,32 @@ class InstrumentationSummary:
             "# Offload Lifecycle Instrumentation Summary",
             "",
             f"- schema_version: `{self.schema_version}`",
+            f"- paper_topology_status: `{self.paper_topology_status}`",
+            f"- no_paper_topology_fabrication: `{self.no_paper_topology_fabrication}`",
             f"- no_behavior_change_verified: `{self.no_behavior_change_verified}`",
             f"- topology_boundaries_preserved: `{self.topology_boundaries_preserved}`",
             "",
-            "## Visible Events",
+            "## Schema Supported Events",
         ]
-        for event in self.visible_events:
+        for event in self.schema_supported_events:
             lines.append(f"- `{event}`")
-        lines.extend(["", "## Incomplete Events"])
-        for event in self.incomplete_events:
+        lines.extend(["", "## Observed Default Audit Events"])
+        for event in self.observed_default_audit_events:
             lines.append(f"- `{event}`")
+        lines.extend(["", "## Observed Synthetic Fixture Events"])
+        for key, value in self.observed_synthetic_fixture_events.items():
+            lines.append(f"- `{key}`: {', '.join(value)}")
+        lines.extend(["", "## Default Runtime Classification"])
+        for key, value in self.default_runtime_classification.items():
+            lines.append(f"- `{key}`: `{value}`")
+        lines.extend(["", "## Synthetic Fixture Trace Visibility"])
+        for key, value in self.synthetic_fixture_trace_visibility.items():
+            lines.append(f"- `{key}`: `{value}`")
         lines.extend(["", "## Regression Checks"])
         for key, value in self.regression_checks.items():
             lines.append(f"- `{key}`: `{value}`")
-        lines.extend(["", "## Remaining Blockers"])
-        for blocker in self.remaining_blockers:
+        lines.extend(["", "## Remaining Topology Blockers"])
+        for blocker in self.remaining_topology_blockers:
             lines.append(f"- {blocker}")
         lines.append("")
         return "\n".join(lines)
@@ -254,7 +275,7 @@ class InstrumentationSummary:
 
 
 def build_instrumentation_summary(report: AuditReport) -> InstrumentationSummary:
-    visible_events = [
+    schema_supported_events = [
         "selected_action",
         "queued_public",
         "offloaded_cloud",
@@ -265,19 +286,36 @@ def build_instrumentation_summary(report: AuditReport) -> InstrumentationSummary
         "dropped_timeout",
         "reward_emitted",
     ]
-    incomplete_events = [item["case_id"] for item in report.instrumentation_gaps if item.get("text")]
+    observed_default_audit_events = [item["event_sequence"][0] for item in report.environment_summary if item.get("event_sequence")]
+    observed_synthetic_fixture_events = {
+        "horizontal": ["selected_action", "queued_public", "transmission_started", "transmission_completed", "execution_started", "execution_completed", "reward_emitted", "dropped_timeout"],
+        "vertical": ["selected_action", "offloaded_cloud", "transmission_started", "transmission_completed", "execution_started", "execution_completed", "reward_emitted", "dropped_timeout"],
+    }
+    default_runtime_classification = {
+        "case-horizontal-offload": "blocked_by_runtime_topology_or_destination_fixture",
+        "case-vertical-offload": "blocked_by_runtime_topology_or_destination_fixture",
+    }
+    synthetic_fixture_trace_visibility = {
+        "horizontal": "fixture-backed lifecycle events observed beyond selected_action",
+        "vertical": "fixture-backed lifecycle events observed beyond selected_action",
+    }
     regression_checks = {
         "feature_019": "preserved",
         "feature_024": "preserved",
         "figure_7_topology": "unrecoverable",
     }
-    remaining_blockers = [item["text"] for item in report.unsupported_cases if item.get("text")]
+    remaining_topology_blockers = [item["text"] for item in report.unsupported_cases if item.get("text")]
     return InstrumentationSummary(
         schema_version="1.0",
-        visible_events=visible_events,
-        incomplete_events=incomplete_events,
-        regression_checks=regression_checks,
-        remaining_blockers=remaining_blockers,
+        schema_supported_events=schema_supported_events,
+        observed_default_audit_events=observed_default_audit_events,
+        observed_synthetic_fixture_events=observed_synthetic_fixture_events,
+        default_runtime_classification=default_runtime_classification,
+        synthetic_fixture_trace_visibility=synthetic_fixture_trace_visibility,
+        remaining_topology_blockers=remaining_topology_blockers,
+        paper_topology_status="unrecoverable",
+        no_paper_topology_fabrication=True,
         no_behavior_change_verified=True,
         topology_boundaries_preserved=True,
+        regression_checks=regression_checks,
     )
