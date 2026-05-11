@@ -14,6 +14,7 @@ from .execution_helper import step_execution
 from .offload_trace_ledger import OffloadTraceLedger
 from .offloading_queue import OffloadingQueue
 from .offload_trace_schema import OFFLOAD_LIFECYCLE_EVENTS
+from .link_rate_config import LinkRateConfig
 from .private_queue import PrivateQueue
 from .public_queue import PublicQueue
 from .reward_timing import emit_delayed_reward, reward_for_terminal_task
@@ -44,6 +45,7 @@ class HoodieGymEnvironment:
     runtime_parameters: SharedRuntimeParameters = field(default_factory=SharedRuntimeParameters)
     compute_config: ComputeConfig = field(default_factory=ComputeConfig)
     trace_source: TraceSource | None = None
+    link_rate_config: LinkRateConfig = field(default_factory=LinkRateConfig)
     policy_name: str = "HOODIE"
     engine: SlotEngine = field(default_factory=SlotEngine)
     current_slot: int = 0
@@ -74,6 +76,7 @@ class HoodieGymEnvironment:
         self._metrics = {"completed": 0.0, "dropped": 0.0, "reward": 0.0}
         self._drain_mode = False
         self.engine.current_slot = 0
+        self.link_rate_config.__post_init__()
 
         trace_id = self.trace_source.identifier if self.trace_source is not None else f"{self.policy_name.lower()}-{seed if seed is not None else 0}"
         if seed is None and self.trace_source is not None and self.trace_source.mode == "trace_bank":
@@ -394,6 +397,7 @@ class HoodieGymEnvironment:
             "truncated": truncated,
             "metrics": dict(self._metrics),
             "queue_load": self.queue_load,
+            "link_rate_config": self.link_rate_config.to_dict(),
             "finalized_tasks": [
                 {
                     "task_id": task.task_id,
