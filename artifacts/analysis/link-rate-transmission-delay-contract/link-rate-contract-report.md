@@ -19,7 +19,7 @@
 ## Transmission Delay Contract
 - formula: `delay_seconds = payload_bits / data_rate_bps`
 - output_seconds: `{'horizontal_default': 0.26666666666666666, 'vertical_default': 0.8}`
-- output_slots: `{'horizontal_default': 1, 'vertical_default': 1}`
+- output_slots: `{'horizontal_default': 3, 'vertical_default': 8}`
 - slot_rounding_policy: `ceil`
 
 ## Unit Conversions
