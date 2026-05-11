@@ -1,7 +1,7 @@
 <!-- SPECKIT START -->
 For additional context about technologies to be used, project structure,
 shell commands, and other important information, read
-`specs/025-structured-paper-topology-linkrate-registry/plan.md`
+`specs/026-horizontal-vertical-offload-lifecycle-instrumentation/plan.md`
 <!-- SPECKIT END -->
 
 ## External Reference Usage

@@ -98,10 +98,51 @@ class DifferentialEnvironmentAuditUnitTest(unittest.TestCase):
         vertical = cases[2]
         horizontal_run = audit._run_case(horizontal)
         vertical_run = audit._run_case(vertical)
-        self.assertEqual(horizontal_run.comparison_result.classification, ComparisonClassification.UNSUPPORTED_BY_ENVIRONMENT_TRACE)
+        self.assertEqual(
+            horizontal_run.comparison_result.classification,
+            ComparisonClassification.UNSUPPORTED_BY_ENVIRONMENT_TRACE,
+        )
         self.assertEqual(horizontal_run.comparison_result.finding_cause, FindingCause.INSTRUMENTATION_GAP)
-        self.assertEqual(vertical_run.comparison_result.classification, ComparisonClassification.UNSUPPORTED_BY_ENVIRONMENT_TRACE)
+        self.assertEqual(
+            vertical_run.comparison_result.classification,
+            ComparisonClassification.UNSUPPORTED_BY_ENVIRONMENT_TRACE,
+        )
         self.assertEqual(vertical_run.comparison_result.finding_cause, FindingCause.INSTRUMENTATION_GAP)
+
+    def test_audit_consumes_richer_lifecycle_events_when_runtime_emits_them(self) -> None:
+        class _RichTraceEnv:
+            def reset(self, seed=None):
+                self.current_task = object()
+                return {"observation": True}, {}
+
+            def legal_action_mask(self, current_task):
+                return {"local": True, "horizontal": True, "vertical": True}
+
+            def step(self, action):
+                self.current_task = None
+                return {"observation": True}, -1.0, True, False, {
+                    "finalized_tasks": [
+                        {
+                            "task_id": "case-horizontal-offload-task",
+                            "terminal_outcome": "completed",
+                            "offload_lifecycle_events": [
+                                "selected_action",
+                                "queued_public",
+                                "transmission_started",
+                                "transmission_completed",
+                                "execution_started",
+                                "execution_completed",
+                                "reward_emitted",
+                            ],
+                        }
+                    ]
+                }
+
+        audit = DifferentialEnvironmentAudit(environment_factory=_RichTraceEnv)
+        run = audit._run_case(build_default_toy_cases()[1])
+        self.assertNotEqual(run.comparison_result.classification, ComparisonClassification.UNSUPPORTED_BY_ENVIRONMENT_TRACE)
+        self.assertIn("queued_public", run.environment_summary.event_sequence)
+        self.assertIn("transmission_completed", run.environment_summary.event_sequence)
 
 
 if __name__ == "__main__":

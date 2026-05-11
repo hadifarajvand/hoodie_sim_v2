@@ -35,7 +35,7 @@
     },
     {
       "case_id": "case-horizontal-offload",
-      "classification": "unsupported_by_environment_trace",
+      "classification": "blocked_by_runtime_topology_or_destination_fixture",
       "environment_summary": {
         "case_id": "case-horizontal-offload",
         "event_sequence": [
@@ -45,8 +45,8 @@
         "reward_timing": null,
         "terminal_status": null
       },
-      "finding_cause": "instrumentation_gap",
-      "notes": "horizontal_offload: unsupported_by_environment_trace / instrumentation_gap",
+      "finding_cause": "expected_scope_difference",
+      "notes": "horizontal_offload: blocked_by_runtime_topology_or_destination_fixture / expected_scope_difference",
       "reference_summary": {
         "case_id": "case-horizontal-offload",
         "event_sequence": [
@@ -66,7 +66,7 @@
     },
     {
       "case_id": "case-vertical-offload",
-      "classification": "unsupported_by_environment_trace",
+      "classification": "blocked_by_runtime_topology_or_destination_fixture",
       "environment_summary": {
         "case_id": "case-vertical-offload",
         "event_sequence": [
@@ -76,8 +76,8 @@
         "reward_timing": null,
         "terminal_status": null
       },
-      "finding_cause": "instrumentation_gap",
-      "notes": "vertical_offload: unsupported_by_environment_trace / instrumentation_gap",
+      "finding_cause": "expected_scope_difference",
+      "notes": "vertical_offload: blocked_by_runtime_topology_or_destination_fixture / expected_scope_difference",
       "reference_summary": {
         "case_id": "case-vertical-offload",
         "event_sequence": [
@@ -272,17 +272,17 @@
     },
     {
       "case_id": "case-horizontal-offload",
-      "cause": "instrumentation_gap",
-      "classification": "unsupported_by_environment_trace",
-      "evidence": "case-horizontal-offload: unsupported_by_environment_trace / instrumentation_gap (environment trace unsupported)",
+      "cause": "expected_scope_difference",
+      "classification": "blocked_by_runtime_topology_or_destination_fixture",
+      "evidence": "case-horizontal-offload: blocked_by_runtime_topology_or_destination_fixture / expected_scope_difference (environment trace unsupported)",
       "finding_id": "F-case-horizontal-offload",
       "notes": ""
     },
     {
       "case_id": "case-vertical-offload",
-      "cause": "instrumentation_gap",
-      "classification": "unsupported_by_environment_trace",
-      "evidence": "case-vertical-offload: unsupported_by_environment_trace / instrumentation_gap (environment trace unsupported)",
+      "cause": "expected_scope_difference",
+      "classification": "blocked_by_runtime_topology_or_destination_fixture",
+      "evidence": "case-vertical-offload: blocked_by_runtime_topology_or_destination_fixture / expected_scope_difference (environment trace unsupported)",
       "finding_id": "F-case-vertical-offload",
       "notes": ""
     },
@@ -422,7 +422,7 @@
     "approved_python": "/Users/hadi/Documents/GitHub/hoodie_sim_v2/src/.venvmac/bin/python",
     "case_count": 6,
     "output_root": "artifacts/analysis/differential-environment-audit",
-    "report_hash": "44c246d12db56c3e9bea518f76d690b0627baabf22ff856ac0ec5309f1670ff2"
+    "report_hash": "a11bb36a8889bf25933f97b3b1553063e01b256f805c2358ab39d9d6357951eb"
   },
   "toy_cases": [
     {

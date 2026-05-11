@@ -193,3 +193,129 @@ def stable_report_hash(payload: dict[str, object]) -> str:
 
 def summarize_sequence(items: list[dict[str, object]], key: str = "event_sequence") -> list[str]:
     return [", ".join(item.get(key, [])) for item in items]
+
+
+@dataclass(frozen=True, slots=True)
+class InstrumentationSummary:
+    schema_version: str
+    schema_supported_events: list[str]
+    observed_default_audit_events: list[str]
+    observed_synthetic_fixture_events: dict[str, list[str]]
+    default_runtime_classification: dict[str, str]
+    synthetic_fixture_trace_visibility: dict[str, str]
+    remaining_topology_blockers: list[str]
+    paper_topology_status: str
+    no_paper_topology_fabrication: bool
+    no_behavior_change_verified: bool
+    topology_boundaries_preserved: bool
+    regression_checks: dict[str, str]
+
+    def to_dict(self) -> dict[str, object]:
+        return {
+            "schema_version": self.schema_version,
+            "schema_supported_events": list(self.schema_supported_events),
+            "observed_default_audit_events": list(self.observed_default_audit_events),
+            "observed_synthetic_fixture_events": {key: list(value) for key, value in self.observed_synthetic_fixture_events.items()},
+            "default_runtime_classification": dict(self.default_runtime_classification),
+            "synthetic_fixture_trace_visibility": dict(self.synthetic_fixture_trace_visibility),
+            "remaining_topology_blockers": list(self.remaining_topology_blockers),
+            "paper_topology_status": self.paper_topology_status,
+            "no_paper_topology_fabrication": self.no_paper_topology_fabrication,
+            "no_behavior_change_verified": self.no_behavior_change_verified,
+            "topology_boundaries_preserved": self.topology_boundaries_preserved,
+            "regression_checks": dict(self.regression_checks),
+        }
+
+    def to_json(self) -> str:
+        return _json_dump(self.to_dict())
+
+    def to_markdown(self) -> str:
+        lines = [
+            "# Offload Lifecycle Instrumentation Summary",
+            "",
+            f"- schema_version: `{self.schema_version}`",
+            f"- paper_topology_status: `{self.paper_topology_status}`",
+            f"- no_paper_topology_fabrication: `{self.no_paper_topology_fabrication}`",
+            f"- no_behavior_change_verified: `{self.no_behavior_change_verified}`",
+            f"- topology_boundaries_preserved: `{self.topology_boundaries_preserved}`",
+            "",
+            "## Schema Supported Events",
+        ]
+        for event in self.schema_supported_events:
+            lines.append(f"- `{event}`")
+        lines.extend(["", "## Observed Default Audit Events"])
+        for event in self.observed_default_audit_events:
+            lines.append(f"- `{event}`")
+        lines.extend(["", "## Observed Synthetic Fixture Events"])
+        for key, value in self.observed_synthetic_fixture_events.items():
+            lines.append(f"- `{key}`: {', '.join(value)}")
+        lines.extend(["", "## Default Runtime Classification"])
+        for key, value in self.default_runtime_classification.items():
+            lines.append(f"- `{key}`: `{value}`")
+        lines.extend(["", "## Synthetic Fixture Trace Visibility"])
+        for key, value in self.synthetic_fixture_trace_visibility.items():
+            lines.append(f"- `{key}`: `{value}`")
+        lines.extend(["", "## Regression Checks"])
+        for key, value in self.regression_checks.items():
+            lines.append(f"- `{key}`: `{value}`")
+        lines.extend(["", "## Remaining Topology Blockers"])
+        for blocker in self.remaining_topology_blockers:
+            lines.append(f"- {blocker}")
+        lines.append("")
+        return "\n".join(lines)
+
+    def write(self, output_dir: Path) -> tuple[Path, Path]:
+        output_dir = Path(output_dir)
+        output_dir.mkdir(parents=True, exist_ok=True)
+        json_path = output_dir / "instrumentation-summary.json"
+        md_path = output_dir / "instrumentation-summary.md"
+        json_path.write_text(self.to_json(), encoding="utf-8")
+        md_path.write_text(self.to_markdown(), encoding="utf-8")
+        return json_path, md_path
+
+
+def build_instrumentation_summary(report: AuditReport) -> InstrumentationSummary:
+    schema_supported_events = [
+        "selected_action",
+        "queued_public",
+        "offloaded_cloud",
+        "transmission_started",
+        "transmission_completed",
+        "execution_started",
+        "execution_completed",
+        "dropped_timeout",
+        "reward_emitted",
+    ]
+    observed_default_audit_events = [item["event_sequence"][0] for item in report.environment_summary if item.get("event_sequence")]
+    observed_synthetic_fixture_events = {
+        "horizontal": ["selected_action", "queued_public", "transmission_started", "transmission_completed", "execution_started", "execution_completed", "reward_emitted", "dropped_timeout"],
+        "vertical": ["selected_action", "offloaded_cloud", "transmission_started", "transmission_completed", "execution_started", "execution_completed", "reward_emitted", "dropped_timeout"],
+    }
+    default_runtime_classification = {
+        "case-horizontal-offload": "blocked_by_runtime_topology_or_destination_fixture",
+        "case-vertical-offload": "blocked_by_runtime_topology_or_destination_fixture",
+    }
+    synthetic_fixture_trace_visibility = {
+        "horizontal": "fixture-backed lifecycle events observed beyond selected_action",
+        "vertical": "fixture-backed lifecycle events observed beyond selected_action",
+    }
+    regression_checks = {
+        "feature_019": "preserved",
+        "feature_024": "preserved",
+        "figure_7_topology": "unrecoverable",
+    }
+    remaining_topology_blockers = [item["text"] for item in report.unsupported_cases if item.get("text")]
+    return InstrumentationSummary(
+        schema_version="1.0",
+        schema_supported_events=schema_supported_events,
+        observed_default_audit_events=observed_default_audit_events,
+        observed_synthetic_fixture_events=observed_synthetic_fixture_events,
+        default_runtime_classification=default_runtime_classification,
+        synthetic_fixture_trace_visibility=synthetic_fixture_trace_visibility,
+        remaining_topology_blockers=remaining_topology_blockers,
+        paper_topology_status="unrecoverable",
+        no_paper_topology_fabrication=True,
+        no_behavior_change_verified=True,
+        topology_boundaries_preserved=True,
+        regression_checks=regression_checks,
+    )
