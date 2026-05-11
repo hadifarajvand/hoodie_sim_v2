@@ -1,7 +1,7 @@
 <!-- SPECKIT START -->
 For additional context about technologies to be used, project structure,
 shell commands, and other important information, read
-`specs/026-horizontal-vertical-offload-lifecycle-instrumentation/plan.md`
+`specs/027-link-rate-control/plan.md`
 <!-- SPECKIT END -->
 
 ## External Reference Usage
