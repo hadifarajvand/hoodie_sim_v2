@@ -20,6 +20,7 @@
 - Include both paper and runtime Δ values when they differ.
 - State whether the runtime correction was narrowly applied or blocked.
 - Preserve Feature 027 visibility if the Δ correction affects link-rate report regeneration.
+- Bind the runtime audit to `src/environment/compute_config.py`, `src/environment/traffic_config.py`, `src/environment/link_rate_config.py`, and the Feature 027 report so the analysis cannot accidentally audit only a proxy layer.
 
 ## Test Expectations
 - Unit conversion tests must cover bits/Mbits, bps/Mbps, seconds/slots, and slots/seconds.

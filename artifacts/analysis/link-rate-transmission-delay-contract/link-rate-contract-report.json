@@ -61,12 +61,12 @@
       "vertical_default": 0.8
     },
     "output_slots": {
-      "horizontal_default": 1,
-      "vertical_default": 1
+      "horizontal_default": 3,
+      "vertical_default": 8
     },
     "payload_unit": "bits",
     "rate_unit": "bps",
-    "slot_duration_seconds": 1.0,
+    "slot_duration_seconds": 0.1,
     "slot_rounding_policy": "ceil",
     "zero_payload_policy": "explicit_zero_delay"
   },
