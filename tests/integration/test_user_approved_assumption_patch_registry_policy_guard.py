@@ -14,6 +14,8 @@ class UserApprovedAssumptionPatchRegistryPolicyGuardTest(unittest.TestCase):
         self.assertTrue(entries["legal_horizontal_destinations"].runtime_use_allowed)
         self.assertEqual(entries["EA_private_cpu_capacity"].assumption_status, "approved")
         self.assertTrue(entries["EA_private_cpu_capacity"].runtime_use_allowed)
+        self.assertEqual(entries["EA_public_cpu_capacity"].assumption_status, "approved")
+        self.assertTrue(entries["EA_public_cpu_capacity"].runtime_use_allowed)
         self.assertEqual(entries["timeout_value"].assumption_status, "blocked_no_assumption")
         figure = entries["Figure_7_adjacency"].to_dict()["proposed_value"]
         self.assertEqual(figure["node_count"], 20)
@@ -35,12 +37,19 @@ class UserApprovedAssumptionPatchRegistryPolicyGuardTest(unittest.TestCase):
         self.assertEqual(private["previous_runtime_default_gcycles_per_slot"], 32.0)
         self.assertEqual(private["previous_runtime_default_ratio_to_approved"], 64.0)
         self.assertFalse(private["runtime_patch_applied"])
+        public = entries["EA_public_cpu_capacity"].to_dict()["proposed_value"]
+        self.assertEqual(public["source"], "user_supplied_table4_ocr_extraction")
+        self.assertEqual(public["frequency_ghz"], 5.0)
+        self.assertEqual(public["slot_duration_seconds"], 0.1)
+        self.assertEqual(public["derived_capacity_gcycles_per_slot"], 0.5)
+        self.assertEqual(public["previous_runtime_default_gcycles_per_slot"], 64.0)
+        self.assertEqual(public["previous_runtime_default_ratio_to_approved"], 128.0)
+        self.assertFalse(public["runtime_patch_applied"])
         self.assertEqual(entries["timeout_value"].proposed_value, "")
 
     def test_proposed_values_remain_report_only(self) -> None:
         entries = {entry.item_id: entry for entry in build_registry_entries()}
         for item_id in [
-            "EA_public_cpu_capacity",
             "cloud_cpu_capacity",
             "cloud_data_rate",
             "multi_agent_aggregation_reduction_order",

@@ -786,22 +786,36 @@
     {
       "affected_runtime_components": [
         "edge compute delay",
+        "public queue execution timing",
+        "horizontal offload completion timing",
         "slot completion logic",
-        "capacity normalization"
+        "capacity normalization",
+        "future runtime config patch"
       ],
-      "approval_required": true,
-      "approval_source": "current_runtime_default",
-      "assumption_status": "proposed",
+      "approval_required": false,
+      "approval_source": "user_supplied_table4_ocr_extraction",
+      "assumption_status": "approved",
       "item_id": "EA_public_cpu_capacity",
       "no_paper_recovery_claim": true,
       "paper_confidence": "invalid",
       "paper_status": "unrecoverable_after_evidence_exhaustion",
-      "proposed_value": "cpu_capacity_per_slot_edge = 64.0",
-      "rationale": "The public/edge capacity is a runtime default only; it is not paper-recovered evidence.",
-      "runtime_use_allowed": false,
-      "scientific_risk": "An incorrect edge capacity would change completion timing and resource contention behavior.",
-      "validation_plan": "Verify downstream use only after an explicit approval review and a regression comparison against reference traces.",
-      "value_type": "numeric"
+      "proposed_value": {
+        "conversion_formula": "derived_capacity_gcycles_per_slot = frequency_ghz * slot_duration_seconds",
+        "derived_capacity_gcycles_per_slot": 0.5,
+        "frequency_ghz": 5.0,
+        "paper_recovery_claim": false,
+        "previous_runtime_default_gcycles_per_slot": 64.0,
+        "previous_runtime_default_ratio_to_approved": 128.0,
+        "runtime_patch_applied": false,
+        "slot_duration_seconds": 0.1,
+        "source": "user_supplied_table4_ocr_extraction",
+        "symbol": "f_n^{EA,pub}"
+      },
+      "rationale": "User supplied Table 4 OCR extraction for public EA CPU frequency f_n^{EA,pub}=5 GHz. With Δ=0.1 sec, the approved assumption derives EA public capacity as 0.5 gigacycles/slot. This replaces the earlier proposed runtime default 64.0 for assumption-governance purposes only; no runtime config is changed in this feature.",
+      "runtime_use_allowed": true,
+      "scientific_risk": "Using the old 64.0 gcycles/slot runtime default would understate public/edge computation delay by a factor of 128 relative to the user-supplied Table 4-derived capacity. This approved value must still be treated as an assumption-registry value until a later paper-registry/runtime-config correction feature applies it.",
+      "validation_plan": "Validate that frequency_ghz=5.0, slot_duration_seconds=0.1, derived_capacity_gcycles_per_slot=0.5, previous_runtime_default_gcycles_per_slot=64.0, and previous_runtime_default_ratio_to_approved=128.0. Confirm no runtime config is changed and no paper-recovery claim is introduced.",
+      "value_type": "numeric_derived_capacity"
     },
     {
       "affected_runtime_components": [
@@ -892,26 +906,6 @@
   "no_runtime_behavior_change": true,
   "no_training_or_policy_drift": true,
   "proposed_items": [
-    {
-      "affected_runtime_components": [
-        "edge compute delay",
-        "slot completion logic",
-        "capacity normalization"
-      ],
-      "approval_required": true,
-      "approval_source": "current_runtime_default",
-      "assumption_status": "proposed",
-      "item_id": "EA_public_cpu_capacity",
-      "no_paper_recovery_claim": true,
-      "paper_confidence": "invalid",
-      "paper_status": "unrecoverable_after_evidence_exhaustion",
-      "proposed_value": "cpu_capacity_per_slot_edge = 64.0",
-      "rationale": "The public/edge capacity is a runtime default only; it is not paper-recovered evidence.",
-      "runtime_use_allowed": false,
-      "scientific_risk": "An incorrect edge capacity would change completion timing and resource contention behavior.",
-      "validation_plan": "Verify downstream use only after an explicit approval review and a regression comparison against reference traces.",
-      "value_type": "numeric"
-    },
     {
       "affected_runtime_components": [
         "cloud compute delay",
@@ -1736,6 +1730,40 @@
       "scientific_risk": "Using the old 32.0 gcycles/slot runtime default would understate local/private computation delay by a factor of 64 relative to the user-supplied Table 4-derived capacity. This approved value must still be treated as an assumption-registry value until a later paper-registry/runtime-config correction feature applies it.",
       "validation_plan": "Validate that frequency_ghz=5.0, slot_duration_seconds=0.1, derived_capacity_gcycles_per_slot=0.5, previous_runtime_default_gcycles_per_slot=32.0, and previous_runtime_default_ratio_to_approved=64.0. Confirm no runtime config is changed and no paper-recovery claim is introduced.",
       "value_type": "numeric_derived_capacity"
+    },
+    {
+      "affected_runtime_components": [
+        "edge compute delay",
+        "public queue execution timing",
+        "horizontal offload completion timing",
+        "slot completion logic",
+        "capacity normalization",
+        "future runtime config patch"
+      ],
+      "approval_required": false,
+      "approval_source": "user_supplied_table4_ocr_extraction",
+      "assumption_status": "approved",
+      "item_id": "EA_public_cpu_capacity",
+      "no_paper_recovery_claim": true,
+      "paper_confidence": "invalid",
+      "paper_status": "unrecoverable_after_evidence_exhaustion",
+      "proposed_value": {
+        "conversion_formula": "derived_capacity_gcycles_per_slot = frequency_ghz * slot_duration_seconds",
+        "derived_capacity_gcycles_per_slot": 0.5,
+        "frequency_ghz": 5.0,
+        "paper_recovery_claim": false,
+        "previous_runtime_default_gcycles_per_slot": 64.0,
+        "previous_runtime_default_ratio_to_approved": 128.0,
+        "runtime_patch_applied": false,
+        "slot_duration_seconds": 0.1,
+        "source": "user_supplied_table4_ocr_extraction",
+        "symbol": "f_n^{EA,pub}"
+      },
+      "rationale": "User supplied Table 4 OCR extraction for public EA CPU frequency f_n^{EA,pub}=5 GHz. With Δ=0.1 sec, the approved assumption derives EA public capacity as 0.5 gigacycles/slot. This replaces the earlier proposed runtime default 64.0 for assumption-governance purposes only; no runtime config is changed in this feature.",
+      "runtime_use_allowed": true,
+      "scientific_risk": "Using the old 64.0 gcycles/slot runtime default would understate public/edge computation delay by a factor of 128 relative to the user-supplied Table 4-derived capacity. This approved value must still be treated as an assumption-registry value until a later paper-registry/runtime-config correction feature applies it.",
+      "validation_plan": "Validate that frequency_ghz=5.0, slot_duration_seconds=0.1, derived_capacity_gcycles_per_slot=0.5, previous_runtime_default_gcycles_per_slot=64.0, and previous_runtime_default_ratio_to_approved=128.0. Confirm no runtime config is changed and no paper-recovery claim is introduced.",
+      "value_type": "numeric_derived_capacity"
     }
   ],
   "schema_version": "1.0.0",
@@ -1752,9 +1780,9 @@
     }
   ],
   "status_counts": {
-    "approved": 3,
+    "approved": 4,
     "blocked_no_assumption": 1,
-    "proposed": 4,
+    "proposed": 3,
     "rejected": 0
   }
 }
