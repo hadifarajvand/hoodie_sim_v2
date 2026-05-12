@@ -107,6 +107,10 @@ class LinkRateConfig:
             "metadata": dict(self.metadata),
         }
 
+    @property
+    def cloud_facing_vertical_rate_mbps(self) -> float:
+        return self.vertical_data_rate_mbps
+
 
 @dataclass(slots=True)
 class TransmissionDelayResult:

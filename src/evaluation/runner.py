@@ -41,9 +41,9 @@ class EvaluationRunner:
             topology=self.topology,
             runtime_parameters=self.runtime_parameters or SharedRuntimeParameters(),
             compute_config=ComputeConfig(
-                cpu_capacity_per_slot_agent=128.0,
-                cpu_capacity_per_slot_edge=256.0,
-                cpu_capacity_per_slot_cloud=512.0,
+                cpu_capacity_per_slot_agent=0.5,
+                cpu_capacity_per_slot_edge=0.5,
+                cpu_capacity_per_slot_cloud=3.0,
             ),
             policy_name=self.config.policy_name,
         )

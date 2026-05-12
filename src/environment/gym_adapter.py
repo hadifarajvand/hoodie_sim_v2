@@ -165,10 +165,10 @@ class HoodieGymEnvironment:
             legal["vertical"] = True
             legal["offload_vertical"] = True
             return legal
-        allowed = self.topology.legal_adjacency.get(source_id, ())
-        legal["horizontal"] = any(destination != "cloud" for destination in allowed)
+        allowed = self.topology.legal_horizontal_destinations(source_id)
+        legal["horizontal"] = bool(allowed)
         legal["offload_horizontal"] = legal["horizontal"]
-        legal["vertical"] = "cloud" in allowed
+        legal["vertical"] = "cloud" in self.topology.legal_adjacency.get(source_id, ())
         legal["offload_vertical"] = legal["vertical"]
         return legal
 
@@ -321,9 +321,9 @@ class HoodieGymEnvironment:
         if self.topology is not None:
             allowed = self.topology.legal_adjacency.get(str(task.source_agent_id), ())
             if action in {"horizontal", "offload_horizontal"}:
-                for destination in allowed:
-                    if destination != "cloud":
-                        return destination
+                allowed_horizontal = self.topology.legal_horizontal_destinations(str(task.source_agent_id))
+                if allowed_horizontal:
+                    return allowed_horizontal[0]
                 raise ValueError("No topology-backed horizontal destination available")
             if action in {"vertical", "offload_vertical"}:
                 if "cloud" in allowed:

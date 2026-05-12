@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 from dataclasses import dataclass, field, asdict
+from math import isnan
 from typing import Iterable
 
 from .metric_formulas import average_delay, drop_ratio, throughput
@@ -85,3 +86,21 @@ def evaluate_run(trace_metrics: list[TraceMetrics]) -> dict[str, float | int]:
         "drop_ratio": drop_ratio_value,
         "throughput": throughput_value,
     }
+
+
+def aggregate_terminal_rewards(per_agent_episode_rewards: Iterable[Iterable[float | int | None]]) -> float:
+    agent_totals: list[float] = []
+    for rewards in per_agent_episode_rewards:
+        reward_values: list[float] = []
+        for reward in rewards:
+            if reward is None:
+                continue
+            reward_value = float(reward)
+            if isnan(reward_value):
+                continue
+            reward_values.append(reward_value)
+        if reward_values:
+            agent_totals.append(sum(reward_values))
+    if not agent_totals:
+        return 0.0
+    return float(sum(agent_totals) / len(agent_totals))

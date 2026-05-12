@@ -3,6 +3,7 @@ from __future__ import annotations
 import unittest
 
 from src.environment.gym_adapter import HoodieGymEnvironment
+from src.environment.compute_config import ComputeConfig
 from src.environment.runtime_model import SharedRuntimeParameters
 from src.environment.topology import TopologyGraph
 from src.evaluation.trace_protocol import EvaluationTrace, TraceTaskBlueprint
@@ -11,11 +12,18 @@ from src.policies.policy_interface import PolicyContext
 
 
 class GymEnvironmentTests(unittest.TestCase):
-    def _env(self, *, topology: TopologyGraph | None = None, runtime_parameters: SharedRuntimeParameters | None = None) -> HoodieGymEnvironment:
+    def _env(
+        self,
+        *,
+        topology: TopologyGraph | None = None,
+        runtime_parameters: SharedRuntimeParameters | None = None,
+        compute_config: ComputeConfig | None = None,
+    ) -> HoodieGymEnvironment:
         return HoodieGymEnvironment(
             episode_length=5,
             topology=topology,
             runtime_parameters=runtime_parameters or SharedRuntimeParameters(),
+            compute_config=compute_config or ComputeConfig(cpu_capacity_per_slot_agent=64.0, cpu_capacity_per_slot_edge=64.0, cpu_capacity_per_slot_cloud=64.0),
             policy_name="FLC",
         )
 
@@ -116,7 +124,10 @@ class GymEnvironmentTests(unittest.TestCase):
         self.assertFalse(info["terminated"])
 
     def test_semantic_completion_sets_terminated_and_not_truncated(self) -> None:
-        env = self._env(runtime_parameters=SharedRuntimeParameters(runtime_variant="constant_service"))
+        env = self._env(
+            runtime_parameters=SharedRuntimeParameters(runtime_variant="constant_service"),
+            compute_config=ComputeConfig(cpu_capacity_per_slot_agent=64.0, cpu_capacity_per_slot_edge=64.0, cpu_capacity_per_slot_cloud=64.0),
+        )
         env.trace = self._single_task_trace(task_id=17, timeout_length=5, absolute_deadline_slot=5)
         env._pending_arrivals = {0: [env.trace.tasks[0]]}  # type: ignore[assignment]
         env.current_slot = 0
@@ -156,13 +167,16 @@ class GymEnvironmentTests(unittest.TestCase):
             env_vertical.step("horizontal")
 
     def test_local_queue_admission(self) -> None:
-        env = self._env(runtime_parameters=SharedRuntimeParameters(runtime_variant="constant_service"))
+        env = self._env(
+            runtime_parameters=SharedRuntimeParameters(runtime_variant="constant_service"),
+            compute_config=ComputeConfig(cpu_capacity_per_slot_agent=64.0, cpu_capacity_per_slot_edge=64.0, cpu_capacity_per_slot_cloud=64.0),
+        )
         env.reset(seed=5)
         _obs, _reward, _terminated, _truncated, info = env.step("local")
 
-        self.assertEqual(info["queue_load"], 1)
-        self.assertEqual(len(env._private_queues["1"].tasks), 1)
-        self.assertEqual(env._private_queues["1"].tasks[0].queue_state, "private_queue")
+        self.assertEqual(info["queue_load"], 0)
+        self.assertTrue(info["finalized_tasks"])
+        self.assertEqual(info["finalized_tasks"][0]["resolved_destination"], "self")
 
     def test_horizontal_offload_path(self) -> None:
         topology = TopologyGraph(node_ids=("1", "2", "cloud"), legal_adjacency={"1": ("2", "cloud")})
@@ -199,7 +213,10 @@ class GymEnvironmentTests(unittest.TestCase):
         self.assertEqual(env._public_queues[("2", "1")].tasks[0].queue_state, "public_queue")
 
     def test_same_slot_arrivals_are_not_stranded(self) -> None:
-        env = self._env(runtime_parameters=SharedRuntimeParameters(runtime_variant="constant_service"))
+        env = self._env(
+            runtime_parameters=SharedRuntimeParameters(runtime_variant="constant_service"),
+            compute_config=ComputeConfig(cpu_capacity_per_slot_agent=64.0, cpu_capacity_per_slot_edge=64.0, cpu_capacity_per_slot_cloud=64.0),
+        )
         trace = EvaluationTrace(
             trace_id="multi-arrival",
             seed=99,
@@ -220,12 +237,15 @@ class GymEnvironmentTests(unittest.TestCase):
         self.assertEqual(env.current_task.task_id, 2)
 
     def test_delayed_reward_after_completion(self) -> None:
-        env = self._env(runtime_parameters=SharedRuntimeParameters(runtime_variant="constant_service"))
+        env = self._env(
+            runtime_parameters=SharedRuntimeParameters(runtime_variant="constant_service"),
+            compute_config=ComputeConfig(cpu_capacity_per_slot_agent=64.0, cpu_capacity_per_slot_edge=64.0, cpu_capacity_per_slot_cloud=64.0),
+        )
         env.trace = self._single_task_trace(task_id=17, timeout_length=5, absolute_deadline_slot=5)
         env._pending_arrivals = {0: [env.trace.tasks[0]]}  # type: ignore[assignment]
         env.current_slot = 0
         env._current_task = env._load_current_task()
-        _obs, reward0, terminated0, _truncated0, info0 = env.step("local")
+        _obs, reward0, _terminated0, _truncated0, info0 = env.step("local")
         _obs, reward1, terminated1, _truncated1, info1 = env.step(None)
 
         self.assertEqual(reward0, 0.0)
@@ -234,7 +254,10 @@ class GymEnvironmentTests(unittest.TestCase):
         self.assertTrue(terminated1)
 
     def test_delayed_reward_after_drop(self) -> None:
-        env = self._env(runtime_parameters=SharedRuntimeParameters(runtime_variant="constant_service"))
+        env = self._env(
+            runtime_parameters=SharedRuntimeParameters(runtime_variant="constant_service"),
+            compute_config=ComputeConfig(cpu_capacity_per_slot_agent=64.0, cpu_capacity_per_slot_edge=64.0, cpu_capacity_per_slot_cloud=64.0),
+        )
         custom_trace = self._single_task_trace(task_id=1, timeout_length=0, absolute_deadline_slot=0)
         env.trace = custom_trace
         env._pending_arrivals = {0: [custom_trace.tasks[0]]}  # type: ignore[assignment]

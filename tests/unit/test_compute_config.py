@@ -9,12 +9,19 @@ class ComputeConfigTests(unittest.TestCase):
     def test_default_compute_capacities_are_deterministic(self) -> None:
         config = ComputeConfig()
 
-        self.assertEqual(config.cpu_capacity_per_slot_agent, 32.0)
-        self.assertEqual(config.cpu_capacity_per_slot_edge, 64.0)
-        self.assertEqual(config.cpu_capacity_per_slot_cloud, 128.0)
-        self.assertEqual(config.capacity_for("local"), 32.0)
-        self.assertEqual(config.capacity_for("public"), 64.0)
-        self.assertEqual(config.capacity_for("cloud"), 128.0)
+        self.assertEqual(config.cpu_capacity_per_slot_agent, 0.5)
+        self.assertEqual(config.cpu_capacity_per_slot_edge, 0.5)
+        self.assertEqual(config.cpu_capacity_per_slot_cloud, 3.0)
+        self.assertEqual(config.capacity_for("local"), 0.5)
+        self.assertEqual(config.capacity_for("public"), 0.5)
+        self.assertEqual(config.capacity_for("cloud"), 3.0)
+
+    def test_stale_runtime_defaults_are_not_used(self) -> None:
+        config = ComputeConfig()
+
+        self.assertNotEqual(config.cpu_capacity_per_slot_agent, 32.0)
+        self.assertNotEqual(config.cpu_capacity_per_slot_edge, 64.0)
+        self.assertNotEqual(config.cpu_capacity_per_slot_cloud, 128.0)
 
     def test_invalid_capacity_values_are_rejected(self) -> None:
         with self.assertRaises(ValueError):

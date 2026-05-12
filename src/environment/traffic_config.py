@@ -73,6 +73,10 @@ class TrafficScenarioPreset:
         )
 
     @staticmethod
+    def timeout_seconds(config: TrafficConfig) -> float:
+        return float(config.timeout_slots) * float(config.slot_duration_seconds)
+
+    @staticmethod
     def moderate() -> TrafficConfig:
         return TrafficConfig(
             scenario_name="moderate",

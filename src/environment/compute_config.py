@@ -5,9 +5,9 @@ from dataclasses import dataclass
 
 @dataclass(slots=True)
 class ComputeConfig:
-    cpu_capacity_per_slot_agent: float = 32.0
-    cpu_capacity_per_slot_edge: float = 64.0
-    cpu_capacity_per_slot_cloud: float = 128.0
+    cpu_capacity_per_slot_agent: float = 0.5
+    cpu_capacity_per_slot_edge: float = 0.5
+    cpu_capacity_per_slot_cloud: float = 3.0
 
     def __post_init__(self) -> None:
         if self.cpu_capacity_per_slot_agent <= 0:

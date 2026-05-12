@@ -1,7 +1,7 @@
 <!-- SPECKIT START -->
 For additional context about technologies to be used, project structure,
 shell commands, and other important information, read
-`specs/031-user-approved-assumption-patch-registry/plan.md`
+`specs/032-runtime-adoption-approved-assumption-registry/plan.md`
 <!-- SPECKIT END -->
 
 ## External Reference Usage
