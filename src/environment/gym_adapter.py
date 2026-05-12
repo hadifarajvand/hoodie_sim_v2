@@ -14,7 +14,7 @@ from .execution_helper import step_execution
 from .offload_trace_ledger import OffloadTraceLedger
 from .offloading_queue import OffloadingQueue
 from .offload_trace_schema import OFFLOAD_LIFECYCLE_EVENTS
-from .link_rate_config import LinkRateConfig
+from .link_rate_config import LinkRateConfig, compute_transmission_delay, mbits_to_bits
 from .private_queue import PrivateQueue
 from .public_queue import PublicQueue
 from .reward_timing import emit_delayed_reward, reward_for_terminal_task
@@ -258,6 +258,26 @@ class HoodieGymEnvironment:
             (source_id, destination),
             OffloadingQueue(owner_node_id=source_id, resolved_destination=destination),
         )
+        transmission_rate_source = "horizontal_R_H" if task.selected_action in {"horizontal", "offload_horizontal"} else "vertical_R_V"
+        data_rate_bps = (
+            self.link_rate_config.horizontal_data_rate_bps
+            if transmission_rate_source == "horizontal_R_H"
+            else self.link_rate_config.vertical_data_rate_bps
+        )
+        payload_bits = mbits_to_bits(task.size)
+        transmission_delay = compute_transmission_delay(
+            payload_bits,
+            data_rate_bps,
+            slot_duration_seconds=self.link_rate_config.slot_duration_seconds,
+            rounding_policy=self.link_rate_config.rounding_policy,
+        )
+        task.metadata["transmission_started_at"] = self.current_slot
+        task.metadata["transmission_delay_slots"] = transmission_delay.delay_slots
+        task.metadata["transmission_delay_seconds"] = transmission_delay.delay_seconds
+        task.metadata["transmission_payload_bits"] = payload_bits
+        task.metadata["transmission_data_rate_bps"] = data_rate_bps
+        task.metadata["transmission_rate_source"] = transmission_rate_source
+        task.metadata["transmission_rounding_policy"] = transmission_delay.slot_rounding_policy
         queue.enqueue(task, slot=self.current_slot)
         task.start_slot = self.current_slot
         ledger = self._trace_ledgers.setdefault(task.task_id, OffloadTraceLedger())
@@ -272,8 +292,9 @@ class HoodieGymEnvironment:
         finalized: list[Task] = []
         for (source_id, destination), queue in list(self._offloading_queues.items()):
             admitted = self.engine.admit_offload_completion(queue, self._public_queue_for(source_id, destination), self.current_slot)
-            if admitted:
-                task = self._public_queue_for(source_id, destination).tasks[-1]
+            if admitted is not None:
+                task = admitted
+                task.metadata["transmission_completed_at"] = self.current_slot
                 task.metadata["public_queue_admitted_at"] = self.current_slot
                 self._trace_ledgers.setdefault(task.task_id, OffloadTraceLedger()).emit("transmission_completed")
         return finalized

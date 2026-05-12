@@ -1,7 +1,7 @@
 <!-- SPECKIT START -->
 For additional context about technologies to be used, project structure,
 shell commands, and other important information, read
-`specs/033-execution-time-contract-repair/plan.md`
+`specs/034-transmission-delay-runtime-wiring/plan.md`
 <!-- SPECKIT END -->
 
 ## External Reference Usage

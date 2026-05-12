@@ -21,12 +21,20 @@ class SlotEngine:
         offloading_queue: OffloadingQueue,
         public_queue: PublicQueue,
         completion_slot: int,
-    ) -> bool:
+    ) -> Task | None:
         if offloading_queue.current_head_entered_at is None:
-            return False
-        if completion_slot <= offloading_queue.current_head_entered_at:
-            return False
+            return None
+        if not offloading_queue.tasks:
+            return None
+
+        task = offloading_queue.tasks[0]
+        transmission_started_at = task.metadata.get("transmission_started_at")
+        transmission_delay_slots = task.metadata.get("transmission_delay_slots")
+        if transmission_started_at is None or transmission_delay_slots is None:
+            return None
+        if completion_slot < int(transmission_started_at) + int(transmission_delay_slots):
+            return None
 
         task = offloading_queue.dequeue()
         public_queue.enqueue(task, slot=completion_slot)
-        return True
+        return task
