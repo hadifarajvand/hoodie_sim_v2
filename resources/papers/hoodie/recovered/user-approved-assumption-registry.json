@@ -731,22 +731,35 @@
     {
       "affected_runtime_components": [
         "agent compute delay",
+        "local/private execution timing",
         "slot completion logic",
-        "capacity normalization"
+        "capacity normalization",
+        "future runtime config patch"
       ],
-      "approval_required": true,
-      "approval_source": "current_runtime_default",
-      "assumption_status": "proposed",
+      "approval_required": false,
+      "approval_source": "user_supplied_table4_ocr_extraction",
+      "assumption_status": "approved",
       "item_id": "EA_private_cpu_capacity",
       "no_paper_recovery_claim": true,
       "paper_confidence": "invalid",
       "paper_status": "unrecoverable_after_evidence_exhaustion",
-      "proposed_value": "cpu_capacity_per_slot_agent = 32.0",
-      "rationale": "Current runtime defaults can be surfaced as an explicit assumption, but the paper did not recover the capacity value.",
-      "runtime_use_allowed": false,
-      "scientific_risk": "A wrong private capacity would distort computation-delay estimates and scheduling feasibility.",
-      "validation_plan": "Compare simulated delay behavior against any future approved capacity source before enabling runtime use.",
-      "value_type": "numeric"
+      "proposed_value": {
+        "conversion_formula": "derived_capacity_gcycles_per_slot = frequency_ghz * slot_duration_seconds",
+        "derived_capacity_gcycles_per_slot": 0.5,
+        "frequency_ghz": 5.0,
+        "paper_recovery_claim": false,
+        "previous_runtime_default_gcycles_per_slot": 32.0,
+        "previous_runtime_default_ratio_to_approved": 64.0,
+        "runtime_patch_applied": false,
+        "slot_duration_seconds": 0.1,
+        "source": "user_supplied_table4_ocr_extraction",
+        "symbol": "f_n^{EA,priv}"
+      },
+      "rationale": "User supplied Table 4 OCR extraction for private EA CPU frequency f_n^{EA,priv}=5 GHz. With Δ=0.1 sec, the approved assumption derives EA private capacity as 0.5 gigacycles/slot. This replaces the earlier proposed runtime default 32.0 for assumption-governance purposes only; no runtime config is changed in this feature.",
+      "runtime_use_allowed": true,
+      "scientific_risk": "Using the old 32.0 gcycles/slot runtime default would understate local/private computation delay by a factor of 64 relative to the user-supplied Table 4-derived capacity. This approved value must still be treated as an assumption-registry value until a later paper-registry/runtime-config correction feature applies it.",
+      "validation_plan": "Validate that frequency_ghz=5.0, slot_duration_seconds=0.1, derived_capacity_gcycles_per_slot=0.5, previous_runtime_default_gcycles_per_slot=32.0, and previous_runtime_default_ratio_to_approved=64.0. Confirm no runtime config is changed and no paper-recovery claim is introduced.",
+      "value_type": "numeric_derived_capacity"
     },
     {
       "affected_runtime_components": [
