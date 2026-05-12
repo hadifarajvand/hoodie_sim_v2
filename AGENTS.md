@@ -1,7 +1,7 @@
 <!-- SPECKIT START -->
 For additional context about technologies to be used, project structure,
 shell commands, and other important information, read
-`specs/030-paper-assumption-closure-evidence-exhaustion-pipeline/plan.md`
+`specs/028-computation-delay-unit-validation/plan.md`
 <!-- SPECKIT END -->
 
 ## External Reference Usage
