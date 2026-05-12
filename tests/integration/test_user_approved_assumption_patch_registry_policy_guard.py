@@ -16,6 +16,8 @@ class UserApprovedAssumptionPatchRegistryPolicyGuardTest(unittest.TestCase):
         self.assertTrue(entries["EA_private_cpu_capacity"].runtime_use_allowed)
         self.assertEqual(entries["EA_public_cpu_capacity"].assumption_status, "approved")
         self.assertTrue(entries["EA_public_cpu_capacity"].runtime_use_allowed)
+        self.assertEqual(entries["cloud_cpu_capacity"].assumption_status, "approved")
+        self.assertTrue(entries["cloud_cpu_capacity"].runtime_use_allowed)
         self.assertEqual(entries["timeout_value"].assumption_status, "blocked_no_assumption")
         figure = entries["Figure_7_adjacency"].to_dict()["proposed_value"]
         self.assertEqual(figure["node_count"], 20)
@@ -45,12 +47,19 @@ class UserApprovedAssumptionPatchRegistryPolicyGuardTest(unittest.TestCase):
         self.assertEqual(public["previous_runtime_default_gcycles_per_slot"], 64.0)
         self.assertEqual(public["previous_runtime_default_ratio_to_approved"], 128.0)
         self.assertFalse(public["runtime_patch_applied"])
+        cloud = entries["cloud_cpu_capacity"].to_dict()["proposed_value"]
+        self.assertEqual(cloud["source"], "user_supplied_table4_ocr_extraction")
+        self.assertEqual(cloud["frequency_ghz"], 30.0)
+        self.assertEqual(cloud["slot_duration_seconds"], 0.1)
+        self.assertEqual(cloud["derived_capacity_gcycles_per_slot"], 3.0)
+        self.assertEqual(cloud["previous_runtime_default_gcycles_per_slot"], 128.0)
+        self.assertAlmostEqual(cloud["previous_runtime_default_ratio_to_approved"], 42.6666666667)
+        self.assertFalse(cloud["runtime_patch_applied"])
         self.assertEqual(entries["timeout_value"].proposed_value, "")
 
     def test_proposed_values_remain_report_only(self) -> None:
         entries = {entry.item_id: entry for entry in build_registry_entries()}
         for item_id in [
-            "cloud_cpu_capacity",
             "cloud_data_rate",
             "multi_agent_aggregation_reduction_order",
         ]:

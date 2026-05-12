@@ -90,7 +90,6 @@ class UserApprovedAssumptionPatchRegistryRegistryTest(unittest.TestCase):
         self.assertFalse(private_payload["paper_recovery_claim"])
 
         for item_id in [
-            "cloud_cpu_capacity",
             "cloud_data_rate",
             "multi_agent_aggregation_reduction_order",
         ]:
@@ -119,11 +118,32 @@ class UserApprovedAssumptionPatchRegistryRegistryTest(unittest.TestCase):
         self.assertFalse(public_payload["runtime_patch_applied"])
         self.assertFalse(public_payload["paper_recovery_claim"])
 
+        cloud = entries["cloud_cpu_capacity"]
+        self.assertEqual(cloud.assumption_status, "approved")
+        self.assertTrue(cloud.runtime_use_allowed)
+        self.assertFalse(cloud.approval_required)
+        self.assertEqual(cloud.approval_source, "user_supplied_table4_ocr_extraction")
+        self.assertEqual(cloud.value_type, "numeric_derived_capacity")
+        self.assertTrue(cloud.no_paper_recovery_claim)
+        self.assertEqual(cloud.paper_status, "unrecoverable_after_evidence_exhaustion")
+        self.assertEqual(cloud.paper_confidence, "invalid")
+        cloud_payload = cloud.to_dict()["proposed_value"]
+        self.assertEqual(cloud_payload["source"], "user_supplied_table4_ocr_extraction")
+        self.assertEqual(cloud_payload["symbol"], "f^{Cloud}")
+        self.assertEqual(cloud_payload["frequency_ghz"], 30.0)
+        self.assertEqual(cloud_payload["slot_duration_seconds"], 0.1)
+        self.assertEqual(cloud_payload["derived_capacity_gcycles_per_slot"], 3.0)
+        self.assertEqual(cloud_payload["conversion_formula"], "derived_capacity_gcycles_per_slot = frequency_ghz * slot_duration_seconds")
+        self.assertEqual(cloud_payload["previous_runtime_default_gcycles_per_slot"], 128.0)
+        self.assertAlmostEqual(cloud_payload["previous_runtime_default_ratio_to_approved"], 42.6666666667)
+        self.assertFalse(cloud_payload["runtime_patch_applied"])
+        self.assertFalse(cloud_payload["paper_recovery_claim"])
+
     def test_runtime_use_requires_approved_status(self) -> None:
         entries = build_registry_entries()
-        self.assertEqual(sum(1 for entry in entries if entry.runtime_use_allowed), 4)
+        self.assertEqual(sum(1 for entry in entries if entry.runtime_use_allowed), 5)
         approved_ids = [entry.item_id for entry in entries if entry.assumption_status == "approved"]
-        self.assertEqual(approved_ids, ["Figure_7_adjacency", "legal_horizontal_destinations", "EA_private_cpu_capacity", "EA_public_cpu_capacity"])
+        self.assertEqual(approved_ids, ["Figure_7_adjacency", "legal_horizontal_destinations", "EA_private_cpu_capacity", "EA_public_cpu_capacity", "cloud_cpu_capacity"])
         self.assertTrue(all(entry.assumption_status == "approved" or not entry.runtime_use_allowed for entry in entries))
 
     def test_semantic_fields_reject_empty_values(self) -> None:

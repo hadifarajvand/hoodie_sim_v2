@@ -45,12 +45,12 @@ class UserApprovedAssumptionPatchRegistryReportIntegrationTest(unittest.TestCase
             }
             self.assertTrue(required.issubset(payload.keys()))
             self.assertEqual(payload["item_count"], 8)
-            self.assertEqual(payload["status_counts"]["approved"], 4)
-            self.assertEqual(payload["status_counts"]["proposed"], 3)
+            self.assertEqual(payload["status_counts"]["approved"], 5)
+            self.assertEqual(payload["status_counts"]["proposed"], 2)
             self.assertEqual(payload["status_counts"]["blocked_no_assumption"], 1)
             self.assertEqual(len(payload["entries"]), 8)
             self.assertTrue(payload["no_paper_recovery_claims"])
-            self.assertEqual([item["item_id"] for item in payload["runtime_usable_items"]], ["Figure_7_adjacency", "legal_horizontal_destinations", "EA_private_cpu_capacity", "EA_public_cpu_capacity"])
+            self.assertEqual([item["item_id"] for item in payload["runtime_usable_items"]], ["Figure_7_adjacency", "legal_horizontal_destinations", "EA_private_cpu_capacity", "EA_public_cpu_capacity", "cloud_cpu_capacity"])
             self.assertEqual(payload["registry_path"], "resources/papers/hoodie/recovered/user-approved-assumption-registry.json")
             figure = next(item for item in payload["entries"] if item["item_id"] == "Figure_7_adjacency")
             self.assertEqual(figure["assumption_status"], "approved")
@@ -120,6 +120,23 @@ class UserApprovedAssumptionPatchRegistryReportIntegrationTest(unittest.TestCase
             self.assertEqual(public_payload["previous_runtime_default_ratio_to_approved"], 128.0)
             self.assertFalse(public_payload["runtime_patch_applied"])
             self.assertFalse(public_payload["paper_recovery_claim"])
+            cloud = next(item for item in payload["entries"] if item["item_id"] == "cloud_cpu_capacity")
+            self.assertEqual(cloud["assumption_status"], "approved")
+            self.assertTrue(cloud["runtime_use_allowed"])
+            self.assertFalse(cloud["approval_required"])
+            self.assertEqual(cloud["approval_source"], "user_supplied_table4_ocr_extraction")
+            self.assertEqual(cloud["value_type"], "numeric_derived_capacity")
+            self.assertTrue(cloud["no_paper_recovery_claim"])
+            cloud_payload = cloud["proposed_value"]
+            self.assertEqual(cloud_payload["source"], "user_supplied_table4_ocr_extraction")
+            self.assertEqual(cloud_payload["symbol"], "f^{Cloud}")
+            self.assertEqual(cloud_payload["frequency_ghz"], 30.0)
+            self.assertEqual(cloud_payload["slot_duration_seconds"], 0.1)
+            self.assertEqual(cloud_payload["derived_capacity_gcycles_per_slot"], 3.0)
+            self.assertEqual(cloud_payload["previous_runtime_default_gcycles_per_slot"], 128.0)
+            self.assertAlmostEqual(cloud_payload["previous_runtime_default_ratio_to_approved"], 42.6666666667)
+            self.assertFalse(cloud_payload["runtime_patch_applied"])
+            self.assertFalse(cloud_payload["paper_recovery_claim"])
 
     def test_registry_json_parse_and_keys(self) -> None:
         payload = build_user_approved_assumption_registry()
@@ -155,6 +172,11 @@ class UserApprovedAssumptionPatchRegistryReportIntegrationTest(unittest.TestCase
         self.assertTrue(public["runtime_use_allowed"])
         self.assertFalse(public["approval_required"])
         self.assertEqual(public["approval_source"], "user_supplied_table4_ocr_extraction")
+        cloud = next(item for item in payload["entries"] if item["item_id"] == "cloud_cpu_capacity")
+        self.assertEqual(cloud["assumption_status"], "approved")
+        self.assertTrue(cloud["runtime_use_allowed"])
+        self.assertFalse(cloud["approval_required"])
+        self.assertEqual(cloud["approval_source"], "user_supplied_table4_ocr_extraction")
 
 
 if __name__ == "__main__":
