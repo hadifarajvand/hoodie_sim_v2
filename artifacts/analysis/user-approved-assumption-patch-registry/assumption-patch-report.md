@@ -4,16 +4,15 @@
 - schema_version: `1.0.0`
 - registry_path: `resources/papers/hoodie/recovered/user-approved-assumption-registry.json`
 - item_count: `8`
-- final_verdict: `registry_created_no_runtime_approved_assumptions`
+- final_verdict: `registry_created_with_runtime_approved_assumptions`
 
 ## Status Counts
-- approved: `0`
-- blocked_no_assumption: `3`
+- approved: `1`
+- blocked_no_assumption: `2`
 - proposed: `5`
 - rejected: `0`
 
 ## Blocked Items
-- `Figure_7_adjacency` | `blocked_no_assumption` | runtime_use_allowed=False
 - `legal_horizontal_destinations` | `blocked_no_assumption` | runtime_use_allowed=False
 - `timeout_value` | `blocked_no_assumption` | runtime_use_allowed=False
 
@@ -25,7 +24,7 @@
 - `multi_agent_aggregation_reduction_order` | `sum rewards per agent per episode, then arithmetic mean across agents` | runtime_use_allowed=False
 
 ## Runtime-Usable Items
-- none
+- `Figure_7_adjacency`
 
 ## Final Verdict
-registry_created_no_runtime_approved_assumptions
+registry_created_with_runtime_approved_assumptions

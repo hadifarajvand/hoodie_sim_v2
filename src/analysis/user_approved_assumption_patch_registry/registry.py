@@ -18,16 +18,56 @@ _CANDIDATES: tuple[dict[str, Any], ...] = (
         "item_id": "Figure_7_adjacency",
         "domain": "topology",
         "paper_status_required": "unrecoverable_after_evidence_exhaustion",
-        "assumption_status": "blocked_no_assumption",
-        "proposed_value": "",
-        "value_type": "structural",
-        "runtime_use_allowed": False,
-        "approval_required": True,
-        "approval_source": "manual_user_value_required",
-        "rationale": "Topology cannot be generated automatically; user-supplied adjacency is required before runtime use.",
-        "scientific_risk": "Fabricated adjacency would invalidate legal action constraints and offloading legality.",
-        "affected_runtime_components": ["topology legality", "action mask generation", "offloading policy"],
-        "validation_plan": "Confirm user-provided edges match the paper or approved assumptions before any runtime consumer reads them.",
+        "assumption_status": "approved",
+        "proposed_value": {
+            "node_count": 20,
+            "node_order": "1_to_20",
+            "graph_type": "undirected_unweighted",
+            "edge_count": 30,
+            "degree_regular": 3,
+            "symmetric_required": True,
+            "zero_diagonal_required": True,
+            "source": "user_supplied_manual_extraction",
+            "paper_recovery_claim": False,
+            "edge_list": [
+                [1, 6], [2, 7], [3, 8], [4, 9], [5, 10],
+                [1, 11], [2, 12], [3, 13], [4, 14], [5, 15],
+                [6, 16], [7, 17], [8, 18], [9, 19], [10, 20],
+                [11, 16], [12, 17], [13, 18], [14, 19], [15, 20],
+                [1, 16], [2, 17], [3, 18], [4, 19], [5, 20],
+                [6, 11], [7, 12], [8, 13], [9, 14], [10, 15],
+            ],
+            "adjacency_matrix": [
+                [0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0],
+                [0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0],
+                [0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0],
+                [0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0],
+                [0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1],
+                [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0],
+                [0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0],
+                [0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0],
+                [0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0],
+                [0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1],
+                [1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0],
+                [0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0],
+                [0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0],
+                [0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0],
+                [0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
+                [1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+                [0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0],
+                [0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0],
+                [0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0],
+                [0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0],
+            ],
+        },
+        "value_type": "adjacency_matrix",
+        "runtime_use_allowed": True,
+        "approval_required": False,
+        "approval_source": "user_supplied_manual_extraction",
+        "rationale": "User supplied a manually extracted undirected, unweighted Figure 7 adjacency matrix. It is approved for runtime assumption use but remains non-paper-recovered.",
+        "scientific_risk": "Manual extraction may differ from the original paper figure; using it as paper evidence would be invalid. Downstream work must label it as a user-approved assumption.",
+        "affected_runtime_components": ["topology legality", "action mask generation", "horizontal offloading", "offloading policy"],
+        "validation_plan": "Validate matrix shape 20x20, zero diagonal, symmetry, degree 3 for every node, 30 undirected edges, and edge-list/matrix consistency before any runtime consumer uses this assumption.",
     },
     {
         "item_id": "legal_horizontal_destinations",
@@ -147,7 +187,7 @@ class RegistryEntry:
     paper_status: str
     paper_confidence: str
     assumption_status: str
-    proposed_value: str
+    proposed_value: Any
     value_type: str
     runtime_use_allowed: bool
     approval_required: bool
@@ -209,7 +249,7 @@ def _candidate_entry(candidate: dict[str, Any], closure_item: dict[str, Any]) ->
         paper_status=str(closure_item.get("status", "")),
         paper_confidence=str(closure_item.get("confidence", "")),
         assumption_status=str(candidate["assumption_status"]),
-        proposed_value=str(candidate.get("proposed_value", "")),
+        proposed_value=candidate.get("proposed_value", ""),
         value_type=str(candidate["value_type"]),
         runtime_use_allowed=bool(candidate["runtime_use_allowed"]),
         approval_required=bool(candidate["approval_required"]),
@@ -273,4 +313,3 @@ def write_user_approved_assumption_registry(repo_root: Path | None = None) -> Pa
     output.parent.mkdir(parents=True, exist_ok=True)
     output.write_text(_json_dump(payload), encoding="utf-8")
     return output
-

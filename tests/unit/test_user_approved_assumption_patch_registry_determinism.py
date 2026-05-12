@@ -16,11 +16,11 @@ class UserApprovedAssumptionPatchRegistryDeterminismTest(unittest.TestCase):
         report_two = build_assumption_patch_report().to_dict()
         self.assertEqual(report_one, report_two)
 
-    def test_no_approved_items_and_report_only_proposals(self) -> None:
+    def test_runtime_approved_item_is_confined_to_figure_7(self) -> None:
         report = build_assumption_patch_report().to_dict()
-        self.assertEqual(report["runtime_usable_items"], [])
-        self.assertEqual(report["status_counts"]["approved"], 0)
-        self.assertEqual(report["final_verdict"], "registry_created_no_runtime_approved_assumptions")
+        self.assertEqual([item["item_id"] for item in report["runtime_usable_items"]], ["Figure_7_adjacency"])
+        self.assertEqual(report["status_counts"]["approved"], 1)
+        self.assertEqual(report["final_verdict"], "registry_created_with_runtime_approved_assumptions")
 
 
 if __name__ == "__main__":

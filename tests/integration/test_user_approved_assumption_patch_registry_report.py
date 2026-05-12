@@ -17,7 +17,7 @@ class UserApprovedAssumptionPatchRegistryReportIntegrationTest(unittest.TestCase
             report = build_assumption_patch_report()
             json_path, md_path = write_assumption_patch_report(report, tmp_path / "artifacts/analysis/user-approved-assumption-patch-registry")
 
-            self.assertEqual(report.final_verdict, "registry_created_no_runtime_approved_assumptions")
+            self.assertEqual(report.final_verdict, "registry_created_with_runtime_approved_assumptions")
             self.assertTrue(json_path.exists())
             self.assertTrue(md_path.exists())
             registry = build_user_approved_assumption_registry()
@@ -45,13 +45,33 @@ class UserApprovedAssumptionPatchRegistryReportIntegrationTest(unittest.TestCase
             }
             self.assertTrue(required.issubset(payload.keys()))
             self.assertEqual(payload["item_count"], 8)
-            self.assertEqual(payload["status_counts"]["approved"], 0)
+            self.assertEqual(payload["status_counts"]["approved"], 1)
             self.assertEqual(payload["status_counts"]["proposed"], 5)
-            self.assertEqual(payload["status_counts"]["blocked_no_assumption"], 3)
+            self.assertEqual(payload["status_counts"]["blocked_no_assumption"], 2)
             self.assertEqual(len(payload["entries"]), 8)
             self.assertTrue(payload["no_paper_recovery_claims"])
-            self.assertFalse(payload["runtime_usable_items"])
+            self.assertEqual([item["item_id"] for item in payload["runtime_usable_items"]], ["Figure_7_adjacency"])
             self.assertEqual(payload["registry_path"], "resources/papers/hoodie/recovered/user-approved-assumption-registry.json")
+            figure = next(item for item in payload["entries"] if item["item_id"] == "Figure_7_adjacency")
+            self.assertEqual(figure["assumption_status"], "approved")
+            self.assertTrue(figure["runtime_use_allowed"])
+            self.assertFalse(figure["approval_required"])
+            self.assertEqual(figure["approval_source"], "user_supplied_manual_extraction")
+            self.assertEqual(figure["value_type"], "adjacency_matrix")
+            self.assertTrue(figure["no_paper_recovery_claim"])
+            payload_value = figure["proposed_value"]
+            self.assertEqual(payload_value["node_count"], 20)
+            self.assertEqual(payload_value["edge_count"], 30)
+            self.assertEqual(payload_value["graph_type"], "undirected_unweighted")
+            self.assertEqual(payload_value["source"], "user_supplied_manual_extraction")
+            self.assertFalse(payload_value["paper_recovery_claim"])
+            matrix = payload_value["adjacency_matrix"]
+            self.assertEqual(len(matrix), 20)
+            self.assertTrue(all(len(row) == 20 for row in matrix))
+            self.assertTrue(all(matrix[i][i] == 0 for i in range(20)))
+            self.assertTrue(all(matrix[i][j] == matrix[j][i] for i in range(20) for j in range(20)))
+            self.assertTrue(all(sum(row) == 3 for row in matrix))
+            self.assertEqual(sum(sum(row) for row in matrix) // 2, 30)
 
     def test_registry_json_parse_and_keys(self) -> None:
         payload = build_user_approved_assumption_registry()
@@ -67,6 +87,11 @@ class UserApprovedAssumptionPatchRegistryReportIntegrationTest(unittest.TestCase
             self.assertTrue(entry["validation_plan"])
             self.assertIsInstance(entry["affected_runtime_components"], list)
             self.assertGreater(len(entry["affected_runtime_components"]), 0)
+        figure = next(item for item in payload["entries"] if item["item_id"] == "Figure_7_adjacency")
+        self.assertEqual(figure["assumption_status"], "approved")
+        self.assertTrue(figure["runtime_use_allowed"])
+        self.assertFalse(figure["approval_required"])
+        self.assertEqual(figure["approval_source"], "user_supplied_manual_extraction")
 
 
 if __name__ == "__main__":
