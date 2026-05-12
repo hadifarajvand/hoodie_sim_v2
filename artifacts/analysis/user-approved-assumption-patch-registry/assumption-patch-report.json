@@ -852,23 +852,34 @@
     },
     {
       "affected_runtime_components": [
-        "transmission delay",
+        "vertical transmission delay",
+        "cloud offload latency",
         "network latency model",
-        "offloading policy"
+        "offloading policy",
+        "future runtime config patch"
       ],
-      "approval_required": true,
-      "approval_source": "vertical_data_rate_assumption",
-      "assumption_status": "proposed",
+      "approval_required": false,
+      "approval_source": "user_supplied_table4_ocr_extraction",
+      "assumption_status": "approved",
       "item_id": "cloud_data_rate",
       "no_paper_recovery_claim": true,
       "paper_confidence": "invalid",
       "paper_status": "unrecoverable_after_evidence_exhaustion",
-      "proposed_value": "vertical data-rate assumption = 10 Mbps",
-      "rationale": "The cloud-facing rate may reuse the vertical data-rate assumption as an explicit proposal, but it is not paper-backed.",
-      "runtime_use_allowed": false,
-      "scientific_risk": "A wrong transfer rate would distort transmission delay and offload selection behavior.",
-      "validation_plan": "Compare offload latency traces against the approved rate before runtime use is enabled.",
-      "value_type": "numeric"
+      "proposed_value": {
+        "interpretation": "cloud-facing vertical offload data rate",
+        "paper_recovery_claim": false,
+        "rate_bps": 10000000.0,
+        "rate_mbps": 10.0,
+        "runtime_patch_applied": false,
+        "separate_cloud_specific_rate_claim": false,
+        "source": "user_supplied_table4_ocr_extraction",
+        "symbol": "R_V"
+      },
+      "rationale": "User supplied Table 4 OCR extraction for vertical data rate R_V=10 Mbps. Because cloud offloading is vertical offloading in the HOODIE model, the approved assumption uses R_V as the cloud-facing transmission rate. This does not introduce a separate cloud-specific data-rate constant and does not change runtime config in this feature.",
+      "runtime_use_allowed": true,
+      "scientific_risk": "If cloud offload is assigned a rate different from R_V without evidence, vertical transmission delay and offload selection behavior would be distorted. This approved value must remain labeled as user-approved assumption-registry data until a later paper-registry/runtime-config correction feature applies it.",
+      "validation_plan": "Validate that rate_mbps=10.0, rate_bps=10000000.0, interpretation is cloud-facing vertical offload data rate, separate_cloud_specific_rate_claim=false, runtime_patch_applied=false, and no paper-recovery claim is introduced. Confirm link-rate runtime config is not changed.",
+      "value_type": "numeric_data_rate"
     },
     {
       "affected_runtime_components": [
@@ -919,26 +930,6 @@
   "no_runtime_behavior_change": true,
   "no_training_or_policy_drift": true,
   "proposed_items": [
-    {
-      "affected_runtime_components": [
-        "transmission delay",
-        "network latency model",
-        "offloading policy"
-      ],
-      "approval_required": true,
-      "approval_source": "vertical_data_rate_assumption",
-      "assumption_status": "proposed",
-      "item_id": "cloud_data_rate",
-      "no_paper_recovery_claim": true,
-      "paper_confidence": "invalid",
-      "paper_status": "unrecoverable_after_evidence_exhaustion",
-      "proposed_value": "vertical data-rate assumption = 10 Mbps",
-      "rationale": "The cloud-facing rate may reuse the vertical data-rate assumption as an explicit proposal, but it is not paper-backed.",
-      "runtime_use_allowed": false,
-      "scientific_risk": "A wrong transfer rate would distort transmission delay and offload selection behavior.",
-      "validation_plan": "Compare offload latency traces against the approved rate before runtime use is enabled.",
-      "value_type": "numeric"
-    },
     {
       "affected_runtime_components": [
         "reward aggregation",
@@ -1790,6 +1781,37 @@
       "scientific_risk": "Using the old 128.0 gcycles/slot runtime default would understate cloud computation delay by approximately 42.67x relative to the user-supplied Table 4-derived capacity. This approved value must still be treated as an assumption-registry value until a later paper-registry/runtime-config correction feature applies it.",
       "validation_plan": "Validate that frequency_ghz=30.0, slot_duration_seconds=0.1, derived_capacity_gcycles_per_slot=3.0, previous_runtime_default_gcycles_per_slot=128.0, and previous_runtime_default_ratio_to_approved is approximately 42.6666666667. Confirm no runtime config is changed and no paper-recovery claim is introduced.",
       "value_type": "numeric_derived_capacity"
+    },
+    {
+      "affected_runtime_components": [
+        "vertical transmission delay",
+        "cloud offload latency",
+        "network latency model",
+        "offloading policy",
+        "future runtime config patch"
+      ],
+      "approval_required": false,
+      "approval_source": "user_supplied_table4_ocr_extraction",
+      "assumption_status": "approved",
+      "item_id": "cloud_data_rate",
+      "no_paper_recovery_claim": true,
+      "paper_confidence": "invalid",
+      "paper_status": "unrecoverable_after_evidence_exhaustion",
+      "proposed_value": {
+        "interpretation": "cloud-facing vertical offload data rate",
+        "paper_recovery_claim": false,
+        "rate_bps": 10000000.0,
+        "rate_mbps": 10.0,
+        "runtime_patch_applied": false,
+        "separate_cloud_specific_rate_claim": false,
+        "source": "user_supplied_table4_ocr_extraction",
+        "symbol": "R_V"
+      },
+      "rationale": "User supplied Table 4 OCR extraction for vertical data rate R_V=10 Mbps. Because cloud offloading is vertical offloading in the HOODIE model, the approved assumption uses R_V as the cloud-facing transmission rate. This does not introduce a separate cloud-specific data-rate constant and does not change runtime config in this feature.",
+      "runtime_use_allowed": true,
+      "scientific_risk": "If cloud offload is assigned a rate different from R_V without evidence, vertical transmission delay and offload selection behavior would be distorted. This approved value must remain labeled as user-approved assumption-registry data until a later paper-registry/runtime-config correction feature applies it.",
+      "validation_plan": "Validate that rate_mbps=10.0, rate_bps=10000000.0, interpretation is cloud-facing vertical offload data rate, separate_cloud_specific_rate_claim=false, runtime_patch_applied=false, and no paper-recovery claim is introduced. Confirm link-rate runtime config is not changed.",
+      "value_type": "numeric_data_rate"
     }
   ],
   "schema_version": "1.0.0",
@@ -1806,9 +1828,9 @@
     }
   ],
   "status_counts": {
-    "approved": 5,
+    "approved": 6,
     "blocked_no_assumption": 1,
-    "proposed": 2,
+    "proposed": 1,
     "rejected": 0
   }
 }

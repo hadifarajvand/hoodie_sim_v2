@@ -90,7 +90,6 @@ class UserApprovedAssumptionPatchRegistryRegistryTest(unittest.TestCase):
         self.assertFalse(private_payload["paper_recovery_claim"])
 
         for item_id in [
-            "cloud_data_rate",
             "multi_agent_aggregation_reduction_order",
         ]:
             self.assertEqual(entries[item_id].assumption_status, "proposed")
@@ -139,11 +138,30 @@ class UserApprovedAssumptionPatchRegistryRegistryTest(unittest.TestCase):
         self.assertFalse(cloud_payload["runtime_patch_applied"])
         self.assertFalse(cloud_payload["paper_recovery_claim"])
 
+        data_rate = entries["cloud_data_rate"]
+        self.assertEqual(data_rate.assumption_status, "approved")
+        self.assertTrue(data_rate.runtime_use_allowed)
+        self.assertFalse(data_rate.approval_required)
+        self.assertEqual(data_rate.approval_source, "user_supplied_table4_ocr_extraction")
+        self.assertEqual(data_rate.value_type, "numeric_data_rate")
+        self.assertTrue(data_rate.no_paper_recovery_claim)
+        self.assertEqual(data_rate.paper_status, "unrecoverable_after_evidence_exhaustion")
+        self.assertEqual(data_rate.paper_confidence, "invalid")
+        data_payload = data_rate.to_dict()["proposed_value"]
+        self.assertEqual(data_payload["source"], "user_supplied_table4_ocr_extraction")
+        self.assertEqual(data_payload["symbol"], "R_V")
+        self.assertEqual(data_payload["rate_mbps"], 10.0)
+        self.assertEqual(data_payload["rate_bps"], 10000000.0)
+        self.assertEqual(data_payload["interpretation"], "cloud-facing vertical offload data rate")
+        self.assertFalse(data_payload["separate_cloud_specific_rate_claim"])
+        self.assertFalse(data_payload["runtime_patch_applied"])
+        self.assertFalse(data_payload["paper_recovery_claim"])
+
     def test_runtime_use_requires_approved_status(self) -> None:
         entries = build_registry_entries()
-        self.assertEqual(sum(1 for entry in entries if entry.runtime_use_allowed), 5)
+        self.assertEqual(sum(1 for entry in entries if entry.runtime_use_allowed), 6)
         approved_ids = [entry.item_id for entry in entries if entry.assumption_status == "approved"]
-        self.assertEqual(approved_ids, ["Figure_7_adjacency", "legal_horizontal_destinations", "EA_private_cpu_capacity", "EA_public_cpu_capacity", "cloud_cpu_capacity"])
+        self.assertEqual(approved_ids, ["Figure_7_adjacency", "legal_horizontal_destinations", "EA_private_cpu_capacity", "EA_public_cpu_capacity", "cloud_cpu_capacity", "cloud_data_rate"])
         self.assertTrue(all(entry.assumption_status == "approved" or not entry.runtime_use_allowed for entry in entries))
 
     def test_semantic_fields_reject_empty_values(self) -> None:

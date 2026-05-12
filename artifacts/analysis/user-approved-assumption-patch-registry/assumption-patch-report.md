@@ -7,16 +7,15 @@
 - final_verdict: `registry_created_with_runtime_approved_assumptions`
 
 ## Status Counts
-- approved: `5`
+- approved: `6`
 - blocked_no_assumption: `1`
-- proposed: `2`
+- proposed: `1`
 - rejected: `0`
 
 ## Blocked Items
 - `timeout_value` | `blocked_no_assumption` | runtime_use_allowed=False
 
 ## Proposed Items
-- `cloud_data_rate` | `vertical data-rate assumption = 10 Mbps` | runtime_use_allowed=False
 - `multi_agent_aggregation_reduction_order` | `sum rewards per agent per episode, then arithmetic mean across agents` | runtime_use_allowed=False
 
 ## Runtime-Usable Items
@@ -25,6 +24,7 @@
 - `EA_private_cpu_capacity`
 - `EA_public_cpu_capacity`
 - `cloud_cpu_capacity`
+- `cloud_data_rate`
 
 ## Final Verdict
 registry_created_with_runtime_approved_assumptions

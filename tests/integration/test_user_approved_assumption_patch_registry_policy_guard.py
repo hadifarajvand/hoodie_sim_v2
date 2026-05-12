@@ -18,6 +18,8 @@ class UserApprovedAssumptionPatchRegistryPolicyGuardTest(unittest.TestCase):
         self.assertTrue(entries["EA_public_cpu_capacity"].runtime_use_allowed)
         self.assertEqual(entries["cloud_cpu_capacity"].assumption_status, "approved")
         self.assertTrue(entries["cloud_cpu_capacity"].runtime_use_allowed)
+        self.assertEqual(entries["cloud_data_rate"].assumption_status, "approved")
+        self.assertTrue(entries["cloud_data_rate"].runtime_use_allowed)
         self.assertEqual(entries["timeout_value"].assumption_status, "blocked_no_assumption")
         figure = entries["Figure_7_adjacency"].to_dict()["proposed_value"]
         self.assertEqual(figure["node_count"], 20)
@@ -55,12 +57,19 @@ class UserApprovedAssumptionPatchRegistryPolicyGuardTest(unittest.TestCase):
         self.assertEqual(cloud["previous_runtime_default_gcycles_per_slot"], 128.0)
         self.assertAlmostEqual(cloud["previous_runtime_default_ratio_to_approved"], 42.6666666667)
         self.assertFalse(cloud["runtime_patch_applied"])
+        data_rate = entries["cloud_data_rate"].to_dict()["proposed_value"]
+        self.assertEqual(data_rate["source"], "user_supplied_table4_ocr_extraction")
+        self.assertEqual(data_rate["symbol"], "R_V")
+        self.assertEqual(data_rate["rate_mbps"], 10.0)
+        self.assertEqual(data_rate["rate_bps"], 10000000.0)
+        self.assertEqual(data_rate["interpretation"], "cloud-facing vertical offload data rate")
+        self.assertFalse(data_rate["separate_cloud_specific_rate_claim"])
+        self.assertFalse(data_rate["runtime_patch_applied"])
         self.assertEqual(entries["timeout_value"].proposed_value, "")
 
     def test_proposed_values_remain_report_only(self) -> None:
         entries = {entry.item_id: entry for entry in build_registry_entries()}
         for item_id in [
-            "cloud_data_rate",
             "multi_agent_aggregation_reduction_order",
         ]:
             self.assertEqual(entries[item_id].assumption_status, "proposed")
