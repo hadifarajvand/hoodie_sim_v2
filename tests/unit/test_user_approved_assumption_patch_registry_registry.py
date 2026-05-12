@@ -69,7 +69,23 @@ class UserApprovedAssumptionPatchRegistryRegistryTest(unittest.TestCase):
         self.assertTrue(all(len(destinations[str(node)]) == 3 for node in range(1, 21)))
         self.assertTrue(all(str(node) not in {str(dest) for dest in destinations[str(node)]} for node in range(1, 21)))
 
-        self.assertEqual(entries["timeout_value"].assumption_status, "blocked_no_assumption")
+        timeout = entries["timeout_value"]
+        self.assertEqual(timeout.assumption_status, "approved")
+        self.assertTrue(timeout.runtime_use_allowed)
+        self.assertFalse(timeout.approval_required)
+        self.assertEqual(timeout.approval_source, "user_supplied_table4_ocr_extraction")
+        self.assertEqual(timeout.value_type, "rule")
+        self.assertTrue(timeout.no_paper_recovery_claim)
+        timeout_payload = timeout.to_dict()["proposed_value"]
+        self.assertEqual(timeout_payload["source"], "user_supplied_table4_ocr_extraction")
+        self.assertEqual(timeout_payload["symbol"], "φ_n")
+        self.assertEqual(timeout_payload["timeout_slots"], 20)
+        self.assertEqual(timeout_payload["slot_duration_seconds"], 0.1)
+        self.assertEqual(timeout_payload["timeout_seconds"], 2.0)
+        self.assertEqual(timeout_payload["conversion_formula"], "timeout_seconds = timeout_slots * slot_duration_seconds")
+        self.assertEqual(timeout_payload["interpretation"], "task timeout/drop deadline threshold")
+        self.assertFalse(timeout_payload["runtime_patch_applied"])
+        self.assertFalse(timeout_payload["paper_recovery_claim"])
         private = entries["EA_private_cpu_capacity"]
         self.assertEqual(private.assumption_status, "approved")
         self.assertTrue(private.runtime_use_allowed)
@@ -159,9 +175,9 @@ class UserApprovedAssumptionPatchRegistryRegistryTest(unittest.TestCase):
 
     def test_runtime_use_requires_approved_status(self) -> None:
         entries = build_registry_entries()
-        self.assertEqual(sum(1 for entry in entries if entry.runtime_use_allowed), 6)
+        self.assertEqual(sum(1 for entry in entries if entry.runtime_use_allowed), 7)
         approved_ids = [entry.item_id for entry in entries if entry.assumption_status == "approved"]
-        self.assertEqual(approved_ids, ["Figure_7_adjacency", "legal_horizontal_destinations", "EA_private_cpu_capacity", "EA_public_cpu_capacity", "cloud_cpu_capacity", "cloud_data_rate"])
+        self.assertEqual(approved_ids, ["Figure_7_adjacency", "legal_horizontal_destinations", "EA_private_cpu_capacity", "EA_public_cpu_capacity", "cloud_cpu_capacity", "cloud_data_rate", "timeout_value"])
         self.assertTrue(all(entry.assumption_status == "approved" or not entry.runtime_use_allowed for entry in entries))
 
     def test_semantic_fields_reject_empty_values(self) -> None:

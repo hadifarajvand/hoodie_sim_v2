@@ -20,7 +20,8 @@ class UserApprovedAssumptionPatchRegistryPolicyGuardTest(unittest.TestCase):
         self.assertTrue(entries["cloud_cpu_capacity"].runtime_use_allowed)
         self.assertEqual(entries["cloud_data_rate"].assumption_status, "approved")
         self.assertTrue(entries["cloud_data_rate"].runtime_use_allowed)
-        self.assertEqual(entries["timeout_value"].assumption_status, "blocked_no_assumption")
+        self.assertEqual(entries["timeout_value"].assumption_status, "approved")
+        self.assertTrue(entries["timeout_value"].runtime_use_allowed)
         figure = entries["Figure_7_adjacency"].to_dict()["proposed_value"]
         self.assertEqual(figure["node_count"], 20)
         self.assertEqual(figure["edge_count"], 30)
@@ -65,7 +66,15 @@ class UserApprovedAssumptionPatchRegistryPolicyGuardTest(unittest.TestCase):
         self.assertEqual(data_rate["interpretation"], "cloud-facing vertical offload data rate")
         self.assertFalse(data_rate["separate_cloud_specific_rate_claim"])
         self.assertFalse(data_rate["runtime_patch_applied"])
-        self.assertEqual(entries["timeout_value"].proposed_value, "")
+        timeout = entries["timeout_value"].to_dict()["proposed_value"]
+        self.assertEqual(timeout["source"], "user_supplied_table4_ocr_extraction")
+        self.assertEqual(timeout["symbol"], "φ_n")
+        self.assertEqual(timeout["timeout_slots"], 20)
+        self.assertEqual(timeout["slot_duration_seconds"], 0.1)
+        self.assertEqual(timeout["timeout_seconds"], 2.0)
+        self.assertEqual(timeout["conversion_formula"], "timeout_seconds = timeout_slots * slot_duration_seconds")
+        self.assertEqual(timeout["interpretation"], "task timeout/drop deadline threshold")
+        self.assertFalse(timeout["runtime_patch_applied"])
 
     def test_proposed_values_remain_report_only(self) -> None:
         entries = {entry.item_id: entry for entry in build_registry_entries()}

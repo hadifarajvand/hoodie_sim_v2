@@ -45,12 +45,13 @@ class UserApprovedAssumptionPatchRegistryReportIntegrationTest(unittest.TestCase
             }
             self.assertTrue(required.issubset(payload.keys()))
             self.assertEqual(payload["item_count"], 8)
-            self.assertEqual(payload["status_counts"]["approved"], 6)
+            self.assertEqual(payload["status_counts"]["approved"], 7)
             self.assertEqual(payload["status_counts"]["proposed"], 1)
-            self.assertEqual(payload["status_counts"]["blocked_no_assumption"], 1)
+            self.assertEqual(payload["status_counts"]["blocked_no_assumption"], 0)
             self.assertEqual(len(payload["entries"]), 8)
             self.assertTrue(payload["no_paper_recovery_claims"])
-            self.assertEqual([item["item_id"] for item in payload["runtime_usable_items"]], ["Figure_7_adjacency", "legal_horizontal_destinations", "EA_private_cpu_capacity", "EA_public_cpu_capacity", "cloud_cpu_capacity", "cloud_data_rate"])
+            self.assertEqual([item["item_id"] for item in payload["runtime_usable_items"]], ["Figure_7_adjacency", "legal_horizontal_destinations", "EA_private_cpu_capacity", "EA_public_cpu_capacity", "cloud_cpu_capacity", "cloud_data_rate", "timeout_value"])
+            self.assertEqual(payload["blocked_items"], [])
             self.assertEqual(payload["registry_path"], "resources/papers/hoodie/recovered/user-approved-assumption-registry.json")
             figure = next(item for item in payload["entries"] if item["item_id"] == "Figure_7_adjacency")
             self.assertEqual(figure["assumption_status"], "approved")
@@ -153,6 +154,23 @@ class UserApprovedAssumptionPatchRegistryReportIntegrationTest(unittest.TestCase
             self.assertFalse(data_payload["separate_cloud_specific_rate_claim"])
             self.assertFalse(data_payload["runtime_patch_applied"])
             self.assertFalse(data_payload["paper_recovery_claim"])
+            timeout = next(item for item in payload["entries"] if item["item_id"] == "timeout_value")
+            self.assertEqual(timeout["assumption_status"], "approved")
+            self.assertTrue(timeout["runtime_use_allowed"])
+            self.assertFalse(timeout["approval_required"])
+            self.assertEqual(timeout["approval_source"], "user_supplied_table4_ocr_extraction")
+            self.assertEqual(timeout["value_type"], "rule")
+            self.assertTrue(timeout["no_paper_recovery_claim"])
+            timeout_payload = timeout["proposed_value"]
+            self.assertEqual(timeout_payload["source"], "user_supplied_table4_ocr_extraction")
+            self.assertEqual(timeout_payload["symbol"], "φ_n")
+            self.assertEqual(timeout_payload["timeout_slots"], 20)
+            self.assertEqual(timeout_payload["slot_duration_seconds"], 0.1)
+            self.assertEqual(timeout_payload["timeout_seconds"], 2.0)
+            self.assertEqual(timeout_payload["conversion_formula"], "timeout_seconds = timeout_slots * slot_duration_seconds")
+            self.assertEqual(timeout_payload["interpretation"], "task timeout/drop deadline threshold")
+            self.assertFalse(timeout_payload["runtime_patch_applied"])
+            self.assertFalse(timeout_payload["paper_recovery_claim"])
 
     def test_registry_json_parse_and_keys(self) -> None:
         payload = build_user_approved_assumption_registry()
@@ -198,6 +216,11 @@ class UserApprovedAssumptionPatchRegistryReportIntegrationTest(unittest.TestCase
         self.assertTrue(data_rate["runtime_use_allowed"])
         self.assertFalse(data_rate["approval_required"])
         self.assertEqual(data_rate["approval_source"], "user_supplied_table4_ocr_extraction")
+        timeout = next(item for item in payload["entries"] if item["item_id"] == "timeout_value")
+        self.assertEqual(timeout["assumption_status"], "approved")
+        self.assertTrue(timeout["runtime_use_allowed"])
+        self.assertFalse(timeout["approval_required"])
+        self.assertEqual(timeout["approval_source"], "user_supplied_table4_ocr_extraction")
 
 
 if __name__ == "__main__":

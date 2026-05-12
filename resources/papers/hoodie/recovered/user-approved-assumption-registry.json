@@ -862,21 +862,33 @@
     {
       "affected_runtime_components": [
         "deadline enforcement",
-        "drop logic",
-        "reward timing"
+        "timeout/drop logic",
+        "reward timing",
+        "task lifecycle",
+        "future runtime config patch"
       ],
-      "approval_required": true,
-      "approval_source": "manual_timeout_value_required",
-      "assumption_status": "blocked_no_assumption",
+      "approval_required": false,
+      "approval_source": "user_supplied_table4_ocr_extraction",
+      "assumption_status": "approved",
       "item_id": "timeout_value",
       "no_paper_recovery_claim": true,
       "paper_confidence": "invalid",
       "paper_status": "unrecoverable_after_evidence_exhaustion",
-      "proposed_value": "",
-      "rationale": "Timeout must be explicitly supplied; inventing a deadline would fabricate a key control parameter.",
-      "runtime_use_allowed": false,
-      "scientific_risk": "An invented timeout would change drop behavior, reward timing, and deadline enforcement.",
-      "validation_plan": "Validate a manually supplied timeout against paper notes or approved assumptions before runtime use.",
+      "proposed_value": {
+        "conversion_formula": "timeout_seconds = timeout_slots * slot_duration_seconds",
+        "interpretation": "task timeout/drop deadline threshold",
+        "paper_recovery_claim": false,
+        "runtime_patch_applied": false,
+        "slot_duration_seconds": 0.1,
+        "source": "user_supplied_table4_ocr_extraction",
+        "symbol": "φ_n",
+        "timeout_seconds": 2.0,
+        "timeout_slots": 20
+      },
+      "rationale": "User supplied Table 4 OCR extraction for task timeout φ_n=20 time slots. With Δ=0.1 sec, the approved assumption derives timeout_seconds=2.0. This resolves the previous blocked timeout assumption for assumption-governance purposes only; no runtime timeout logic or config is changed in this feature.",
+      "runtime_use_allowed": true,
+      "scientific_risk": "Timeout directly controls drop behavior, reward timing, and deadline enforcement. A wrong timeout would change the task drop rate and learned objective. This value must remain labeled as user-approved assumption-registry data until a later paper-registry/runtime-config correction feature applies or verifies it.",
+      "validation_plan": "Validate that timeout_slots=20, slot_duration_seconds=0.1, timeout_seconds=2.0, conversion_formula is correct, runtime_patch_applied=false, and no paper-recovery claim is introduced. Confirm timeout/drop runtime code and traffic/runtime config are not changed.",
       "value_type": "rule"
     },
     {
