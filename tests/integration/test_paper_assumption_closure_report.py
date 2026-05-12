@@ -46,6 +46,10 @@ class PaperAssumptionClosureReportTests(unittest.TestCase):
                 self.assertIn("search_method", search)
                 self.assertIn("match_count", search)
                 self.assertIn("relevant_match_count", search)
+            for evidence in item["negative_evidence"]:
+                self.assertNotIn("/ocr/merged", evidence["source_reference"])
+                self.assertFalse(evidence["source_reference"].endswith("HOODIE_paper.pdf"))
+                self.assertIn("prior_registry_or_report_statement", evidence["source_type"])
 
     def test_search_failures_stay_out_of_negative_evidence(self) -> None:
         report = build_assumption_closure_report()

@@ -35,6 +35,8 @@ class PaperAssumptionClosureEvidenceSearchTests(unittest.TestCase):
             for evidence in item.negative_evidence:
                 self.assertNotIn("Searched for", evidence.raw_evidence)
                 self.assertNotIn("item-specific value not recovered", evidence.raw_evidence)
+                self.assertNotIn("/ocr/merged", evidence.source_reference)
+                self.assertFalse(evidence.source_reference.endswith("HOODIE_paper.pdf"))
             if item.status == "unrecoverable_after_evidence_exhaustion":
                 self.assertTrue(item.searched_sources)
                 self.assertLessEqual(len(item.negative_evidence), len(item.searched_sources))
@@ -42,3 +44,10 @@ class PaperAssumptionClosureEvidenceSearchTests(unittest.TestCase):
                     self.assertIn("match_count", search)
                     self.assertIn("relevant_match_count", search)
                     self.assertIsInstance(search["search_terms"], list)
+
+    def test_negative_evidence_is_structured_only(self) -> None:
+        report = build_assumption_closure_report()
+        for item in report.items:
+            for evidence in item.negative_evidence:
+                self.assertNotIn("caption", evidence.raw_evidence.lower())
+                self.assertIn("prior_registry_or_report_statement", evidence.source_type)

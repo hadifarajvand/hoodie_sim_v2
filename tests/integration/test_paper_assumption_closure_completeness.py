@@ -28,6 +28,10 @@ class PaperAssumptionClosureCompletenessTests(unittest.TestCase):
         self.assertEqual(figure7.status, "unrecoverable_after_evidence_exhaustion")
         self.assertTrue(figure7.evidence_exhaustion_rationale)
         self.assertFalse(figure7.runtime_approval_required)
+        self.assertTrue(figure7.searched_sources)
+        for evidence in figure7.negative_evidence:
+            self.assertNotIn("/ocr/merged", evidence.source_reference)
+            self.assertFalse(evidence.source_reference.endswith("HOODIE_paper.pdf"))
 
     def test_runtime_affecting_items_without_proposed_rules_are_unrecoverable(self) -> None:
         report = build_assumption_closure_report()
@@ -44,3 +48,6 @@ class PaperAssumptionClosureCompletenessTests(unittest.TestCase):
                 self.assertEqual(item.status, "unrecoverable_after_evidence_exhaustion")
                 self.assertTrue(item.evidence_exhaustion_rationale)
                 self.assertTrue(item.searched_sources)
+                for evidence in item.negative_evidence:
+                    self.assertNotIn("/ocr/merged", evidence.source_reference)
+                    self.assertFalse(evidence.source_reference.endswith("HOODIE_paper.pdf"))

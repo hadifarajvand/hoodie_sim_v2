@@ -36,39 +36,7 @@
           "confidence": "invalid",
           "contradiction_notes": null,
           "normalized_finding": "Figure_7_adjacency",
-          "raw_evidence": "><td>64 samples</td></tr></tbody></table></body></html>  1234567891011121314151617181920  FIGURE 7. Edge layer topology graph of matrix G with 20 EAs.  VOLUME ,  17  ===== page\\_018\\_0\\_re",
-          "source_reference": "/Users/hadi/Documents/GitHub/hoodie_sim_v2/resources/papers/hoodie/ocr/merged.tex",
-          "source_type": "prior_registry_or_report_statement"
-        },
-        {
-          "confidence": "invalid",
-          "contradiction_notes": null,
-          "normalized_finding": "Figure_7_adjacency",
-          "raw_evidence": "75_864_1128_1128.jpg\" alt=\"Image\" width=\"37%\" /></div>   <div style=\"text-align: center;\">FIGURE 7. Edge layer topology graph of matrix G with 20 EAs.</div>   influence on how intensely th",
-          "source_reference": "/Users/hadi/Documents/GitHub/hoodie_sim_v2/resources/papers/hoodie/ocr/merged.md",
-          "source_type": "prior_registry_or_report_statement"
-        },
-        {
-          "confidence": "invalid",
-          "contradiction_notes": null,
-          "normalized_finding": "Figure_7_adjacency",
-          "raw_evidence": "><td>64 samples</td></tr></tbody></table></body></html>  1234567891011121314151617181920  FIGURE 7. Edge layer topology graph of matrix G with 20 EAs.  VOLUME ,  17  ===== page_018_0_res.t",
-          "source_reference": "/Users/hadi/Documents/GitHub/hoodie_sim_v2/resources/papers/hoodie/ocr/merged.txt",
-          "source_type": "prior_registry_or_report_statement"
-        },
-        {
-          "confidence": "invalid",
-          "contradiction_notes": null,
-          "normalized_finding": "Figure_7_adjacency",
-          "raw_evidence": ", 'block_id': 10, 'block_order': None}, {'block_label': 'figure_title', 'block_content': 'FIGURE 7. Edge layer topology graph of matrix G with 20 EAs.', 'block_bbox': [633, 1163, 1088, 118",
-          "source_reference": "/Users/hadi/Documents/GitHub/hoodie_sim_v2/resources/papers/hoodie/ocr/merged.json",
-          "source_type": "prior_registry_or_report_statement"
-        },
-        {
-          "confidence": "invalid",
-          "contradiction_notes": null,
-          "normalized_finding": "Figure_7_adjacency",
-          "raw_evidence": "count': 20, 'node_ids': None, 'paper_claim_type': 'topology_caption', 'paper_figure_id': 'Figure 7', 'recovery_confidence': 'low', 'recovery_status': 'unrecoverable', 'schema_version': '1.",
+          "raw_evidence": "{\"adjacency_matrix_status\":\"unrecoverable\",\"edge_cloud_connectivity_status\":\"unrecoverable\",\"edge_cloud_connectivity_value\":null,\"unrecoverable_items\":[\"topology_adjacency_edges\",\"adjacency_matrix\",\"legal_horizontal_destinations\",\"edge_cloud_connectivity\"]}",
           "source_reference": "/Users/hadi/Documents/GitHub/hoodie_sim_v2/resources/papers/hoodie/recovered/topology-g.json",
           "source_type": "prior_registry_or_report_statement"
         },
@@ -76,15 +44,7 @@
           "confidence": "invalid",
           "contradiction_notes": null,
           "normalized_finding": "Figure_7_adjacency",
-          "raw_evidence": "table_reference': None, 'figure_reference': 'Figure 8', 'ocr_snippet': '21314151617181920 FIGURE 7. Edge layer topology graph of matrix G with 20 EAs. VOLUME , 17 ===== page\\\\_018\\\\_0\\\\_re",
-          "source_reference": "/Users/hadi/Documents/GitHub/hoodie_sim_v2/resources/papers/hoodie/recovered/paper-parameter-registry.json",
-          "source_type": "prior_registry_or_report_statement"
-        },
-        {
-          "confidence": "invalid",
-          "contradiction_notes": null,
-          "normalized_finding": "Figure_7_adjacency",
-          "raw_evidence": "': [{'char_offset': 16871, 'equation_or_table_reference': 'Table 4', 'figure_reference': 'Figure 7', 'ocr_snippet': 'learning. C. PROPOSED SCHEME AND CONTRIBUTIONS In this paper, we propos",
+          "raw_evidence": "{\"blocking_gap_count\":3,\"high_risk_assumption_count\":7,\"implementation_gap_summary_missing\":0}",
           "source_reference": "/Users/hadi/Documents/GitHub/hoodie_sim_v2/artifacts/analysis/paper-mechanism-registry/paper-mechanism-registry.json",
           "source_type": "prior_registry_or_report_statement"
         },
@@ -92,24 +52,8 @@
           "confidence": "invalid",
           "contradiction_notes": null,
           "normalized_finding": "Figure_7_adjacency",
-          "raw_evidence": "', 'legal_horizontal_destinations', 'edge_cloud_connectivity']}, 'unrecoverable_items': ['Figure 7 adjacency edges', 'Figure 7 legal horizontal destinations', 'EA private/public/cloud CPU capacities']}",
+          "raw_evidence": "{\"topology_summary_status\":\"unrecoverable\",\"topology_summary_unrecoverable_items\":[\"topology_adjacency_edges\",\"adjacency_matrix\",\"legal_horizontal_destinations\",\"edge_cloud_connectivity\"],\"unrecoverable_items\":[\"Figure 7 adjacency edges\",\"Figure 7 legal horizontal destinations\",\"EA private/public/cloud CPU capacities\"]}",
           "source_reference": "/Users/hadi/Documents/GitHub/hoodie_sim_v2/artifacts/analysis/structured-paper-topology-linkrate-registry/topology-recovery-report.json",
-          "source_type": "prior_registry_or_report_statement"
-        },
-        {
-          "confidence": "invalid",
-          "contradiction_notes": null,
-          "normalized_finding": "Figure_7_adjacency",
-          "raw_evidence": ", 'source': 'resources/papers/hoodie/recovered/paper-parameter-registry.json', 'status': 'unrecoverable', 'value': None}, 'EA_public': {'name': 'EA_public', 'notes': 'Paper evidence does not re",
-          "source_reference": "/Users/hadi/Documents/GitHub/hoodie_sim_v2/artifacts/analysis/computation-delay-cpu-unit-validation/unit-validation-report.json",
-          "source_type": "prior_registry_or_report_statement"
-        },
-        {
-          "confidence": "invalid",
-          "contradiction_notes": null,
-          "normalized_finding": "Figure_7_adjacency",
-          "raw_evidence": "ion_has_reward': False, 'trace_linked': True}, 'unrecoverable_items': [{'item': 'Figure_7_adjacency', 'status': 'unrecoverable'}]}",
-          "source_reference": "/Users/hadi/Documents/GitHub/hoodie_sim_v2/artifacts/analysis/reward-equation-terminal-reward-contract/reward-contract-report.json",
           "source_type": "prior_registry_or_report_statement"
         }
       ],
@@ -265,7 +209,7 @@
           "confidence": "invalid",
           "contradiction_notes": null,
           "normalized_finding": "legal_horizontal_destinations",
-          "raw_evidence": "{'adjacency_matrix': None, 'adjacency_matrix_status': 'unrecoverable', 'edge_cloud_connectivity': {'recovery_status': 'unrecoverable', 'source_evidence': [],",
+          "raw_evidence": "{\"adjacency_matrix_status\":\"unrecoverable\",\"legal_horizontal_destinations\":null,\"unrecoverable_items\":[\"topology_adjacency_edges\",\"adjacency_matrix\",\"legal_horizontal_destinations\",\"edge_cloud_connectivity\"]}",
           "source_reference": "/Users/hadi/Documents/GitHub/hoodie_sim_v2/resources/papers/hoodie/recovered/topology-g.json",
           "source_type": "prior_registry_or_report_statement"
         },
@@ -273,32 +217,16 @@
           "confidence": "invalid",
           "contradiction_notes": null,
           "normalized_finding": "legal_horizontal_destinations",
-          "raw_evidence": "{'cloud_data_rate': {'recovery_status': 'unrecoverable', 'source_evidence': [], 'unrecoverable_reason': 'The paper OCR does not provide a distin",
-          "source_reference": "/Users/hadi/Documents/GitHub/hoodie_sim_v2/resources/papers/hoodie/recovered/paper-parameter-registry.json",
+          "raw_evidence": "{\"blocking_gap_count\":3,\"high_risk_assumption_count\":7,\"implementation_gap_summary_missing\":0}",
+          "source_reference": "/Users/hadi/Documents/GitHub/hoodie_sim_v2/artifacts/analysis/paper-mechanism-registry/paper-mechanism-registry.json",
           "source_type": "prior_registry_or_report_statement"
         },
         {
           "confidence": "invalid",
           "contradiction_notes": null,
           "normalized_finding": "legal_horizontal_destinations",
-          "raw_evidence": "tions', 'edge_cloud_connectivity']}, 'unrecoverable_items': ['Figure 7 adjacency edges', 'Figure 7 legal horizontal destinations', 'EA private/public/cloud CPU capacities']}",
+          "raw_evidence": "{\"topology_summary_status\":\"unrecoverable\",\"topology_summary_unrecoverable_items\":[\"topology_adjacency_edges\",\"adjacency_matrix\",\"legal_horizontal_destinations\",\"edge_cloud_connectivity\"],\"unrecoverable_items\":[\"Figure 7 adjacency edges\",\"Figure 7 legal horizontal destinations\",\"EA private/public/cloud CPU capacities\"]}",
           "source_reference": "/Users/hadi/Documents/GitHub/hoodie_sim_v2/artifacts/analysis/structured-paper-topology-linkrate-registry/topology-recovery-report.json",
-          "source_type": "prior_registry_or_report_statement"
-        },
-        {
-          "confidence": "invalid",
-          "contradiction_notes": null,
-          "normalized_finding": "legal_horizontal_destinations",
-          "raw_evidence": ", 'source': 'resources/papers/hoodie/recovered/paper-parameter-registry.json', 'status': 'unrecoverable', 'value': None}, 'EA_public': {'name': 'EA_public', 'notes': 'Paper evidence does not re",
-          "source_reference": "/Users/hadi/Documents/GitHub/hoodie_sim_v2/artifacts/analysis/computation-delay-cpu-unit-validation/unit-validation-report.json",
-          "source_type": "prior_registry_or_report_statement"
-        },
-        {
-          "confidence": "invalid",
-          "contradiction_notes": null,
-          "normalized_finding": "legal_horizontal_destinations",
-          "raw_evidence": "s_on_terminal_events': True, 'selected_action_has_reward': False, 'trace_linked': True}, 'unrecoverable_items': [{'item': 'Figure_7_adjacency', 'status': 'unrecoverable'}]}",
-          "source_reference": "/Users/hadi/Documents/GitHub/hoodie_sim_v2/artifacts/analysis/reward-equation-terminal-reward-contract/reward-contract-report.json",
           "source_type": "prior_registry_or_report_statement"
         }
       ],
@@ -443,47 +371,7 @@
           "confidence": "invalid",
           "contradiction_notes": null,
           "normalized_finding": "EA_private_cpu_capacity",
-          "raw_evidence": "scheme, which relies solely on local computation,maintains a consistent delay across all CPU capacities, as it directly benefits from the increased local resources. However,it does not outperfo",
-          "source_reference": "/Users/hadi/Documents/GitHub/hoodie_sim_v2/resources/papers/hoodie/ocr/merged.tex",
-          "source_type": "prior_registry_or_report_statement"
-        },
-        {
-          "confidence": "invalid",
-          "contradiction_notes": null,
-          "normalized_finding": "EA_private_cpu_capacity",
-          "raw_evidence": "scheme, which relies solely on local computation,maintains a consistent delay across all CPU capacities, as it directly benefits from the increased local resources. However,it does not outperfo",
-          "source_reference": "/Users/hadi/Documents/GitHub/hoodie_sim_v2/resources/papers/hoodie/ocr/merged.md",
-          "source_type": "prior_registry_or_report_statement"
-        },
-        {
-          "confidence": "invalid",
-          "contradiction_notes": null,
-          "normalized_finding": "EA_private_cpu_capacity",
-          "raw_evidence": "scheme, which relies solely on local computation,maintains a consistent delay across all CPU capacities, as it directly benefits from the increased local resources. However,it does not outperfo",
-          "source_reference": "/Users/hadi/Documents/GitHub/hoodie_sim_v2/resources/papers/hoodie/ocr/merged.txt",
-          "source_type": "prior_registry_or_report_statement"
-        },
-        {
-          "confidence": "invalid",
-          "contradiction_notes": null,
-          "normalized_finding": "EA_private_cpu_capacity",
-          "raw_evidence": "scheme, which relies solely on local computation,maintains a consistent delay across all CPU capacities, as it directly benefits from the increased local resources. However,it does not outperfo",
-          "source_reference": "/Users/hadi/Documents/GitHub/hoodie_sim_v2/resources/papers/hoodie/ocr/merged.json",
-          "source_type": "prior_registry_or_report_statement"
-        },
-        {
-          "confidence": "invalid",
-          "contradiction_notes": null,
-          "normalized_finding": "EA_private_cpu_capacity",
-          "raw_evidence": "{'adjacency_matrix': None, 'adjacency_matrix_status': 'unrecoverable', 'edge_cloud_connectivity': {'recovery_status': 'unrecoverable', 'source_evidence': [],",
-          "source_reference": "/Users/hadi/Documents/GitHub/hoodie_sim_v2/resources/papers/hoodie/recovered/topology-g.json",
-          "source_type": "prior_registry_or_report_statement"
-        },
-        {
-          "confidence": "invalid",
-          "contradiction_notes": null,
-          "normalized_finding": "EA_private_cpu_capacity",
-          "raw_evidence": "{'cloud_data_rate': {'recovery_status': 'unrecoverable', 'source_evidence': [], 'unrecoverable_reason': 'The paper OCR does not provide a distin",
+          "raw_evidence": "{\"cpu_capacity_status\":\"unrecoverable\",\"cpu_capacity_value\":null,\"unrecoverable_items\":[\"EA_private_cpu_capacities\",\"EA_public_cpu_capacities\",\"cloud_cpu_capacities\",\"adjacency_matrix\",\"legal_horizontal_destinations\",\"edge_cloud_connectivity\",\"cloud_data_rate\"]}",
           "source_reference": "/Users/hadi/Documents/GitHub/hoodie_sim_v2/resources/papers/hoodie/recovered/paper-parameter-registry.json",
           "source_type": "prior_registry_or_report_statement"
         },
@@ -491,7 +379,15 @@
           "confidence": "invalid",
           "contradiction_notes": null,
           "normalized_finding": "EA_private_cpu_capacity",
-          "raw_evidence": "coverable_items': ['Figure 7 adjacency edges', 'Figure 7 legal horizontal destinations', 'EA private/public/cloud CPU capacities']}",
+          "raw_evidence": "{\"blocking_gap_count\":3,\"high_risk_assumption_count\":7,\"implementation_gap_summary_missing\":0}",
+          "source_reference": "/Users/hadi/Documents/GitHub/hoodie_sim_v2/artifacts/analysis/paper-mechanism-registry/paper-mechanism-registry.json",
+          "source_type": "prior_registry_or_report_statement"
+        },
+        {
+          "confidence": "invalid",
+          "contradiction_notes": null,
+          "normalized_finding": "EA_private_cpu_capacity",
+          "raw_evidence": "{\"topology_summary_status\":\"unrecoverable\",\"topology_summary_unrecoverable_items\":[\"topology_adjacency_edges\",\"adjacency_matrix\",\"legal_horizontal_destinations\",\"edge_cloud_connectivity\"],\"unrecoverable_items\":[\"Figure 7 adjacency edges\",\"Figure 7 legal horizontal destinations\",\"EA private/public/cloud CPU capacities\"]}",
           "source_reference": "/Users/hadi/Documents/GitHub/hoodie_sim_v2/artifacts/analysis/structured-paper-topology-linkrate-registry/topology-recovery-report.json",
           "source_type": "prior_registry_or_report_statement"
         },
@@ -499,16 +395,8 @@
           "confidence": "invalid",
           "contradiction_notes": null,
           "normalized_finding": "EA_private_cpu_capacity",
-          "raw_evidence": "recoverable'}], 'validation_summary': 'Task size and processing density are paper-backed; CPU capacities remain unrecoverable; paper \u0394=0.1 sec, runtime \u0394=0.1 sec, Feature 027 reported \u0394=0.1 sec;",
+          "raw_evidence": "{\"cpu_capacity_contract_status\":{\"cpu_capacity_per_slot_agent\":32.0,\"cpu_capacity_per_slot_cloud\":128.0,\"cpu_capacity_per_slot_edge\":64.0},\"cpu_capacity_contract_values\":{\"EA_private\":{\"name\":\"EA_private\",\"notes\":\"Paper evidence does not recover an EA private CPU capacity.\",\"source\":\"resources/papers/hoodie/recovered/paper-parameter-registry.json\",\"status\":\"unrecoverable\",\"v...",
           "source_reference": "/Users/hadi/Documents/GitHub/hoodie_sim_v2/artifacts/analysis/computation-delay-cpu-unit-validation/unit-validation-report.json",
-          "source_type": "prior_registry_or_report_statement"
-        },
-        {
-          "confidence": "invalid",
-          "contradiction_notes": null,
-          "normalized_finding": "EA_private_cpu_capacity",
-          "raw_evidence": "s_on_terminal_events': True, 'selected_action_has_reward': False, 'trace_linked': True}, 'unrecoverable_items': [{'item': 'Figure_7_adjacency', 'status': 'unrecoverable'}]}",
-          "source_reference": "/Users/hadi/Documents/GitHub/hoodie_sim_v2/artifacts/analysis/reward-equation-terminal-reward-contract/reward-contract-report.json",
           "source_type": "prior_registry_or_report_statement"
         }
       ],
@@ -653,47 +541,7 @@
           "confidence": "invalid",
           "contradiction_notes": null,
           "normalized_finding": "EA_public_cpu_capacity",
-          "raw_evidence": "scheme, which relies solely on local computation,maintains a consistent delay across all CPU capacities, as it directly benefits from the increased local resources. However,it does not outperfo",
-          "source_reference": "/Users/hadi/Documents/GitHub/hoodie_sim_v2/resources/papers/hoodie/ocr/merged.tex",
-          "source_type": "prior_registry_or_report_statement"
-        },
-        {
-          "confidence": "invalid",
-          "contradiction_notes": null,
-          "normalized_finding": "EA_public_cpu_capacity",
-          "raw_evidence": "scheme, which relies solely on local computation,maintains a consistent delay across all CPU capacities, as it directly benefits from the increased local resources. However,it does not outperfo",
-          "source_reference": "/Users/hadi/Documents/GitHub/hoodie_sim_v2/resources/papers/hoodie/ocr/merged.md",
-          "source_type": "prior_registry_or_report_statement"
-        },
-        {
-          "confidence": "invalid",
-          "contradiction_notes": null,
-          "normalized_finding": "EA_public_cpu_capacity",
-          "raw_evidence": "scheme, which relies solely on local computation,maintains a consistent delay across all CPU capacities, as it directly benefits from the increased local resources. However,it does not outperfo",
-          "source_reference": "/Users/hadi/Documents/GitHub/hoodie_sim_v2/resources/papers/hoodie/ocr/merged.txt",
-          "source_type": "prior_registry_or_report_statement"
-        },
-        {
-          "confidence": "invalid",
-          "contradiction_notes": null,
-          "normalized_finding": "EA_public_cpu_capacity",
-          "raw_evidence": "scheme, which relies solely on local computation,maintains a consistent delay across all CPU capacities, as it directly benefits from the increased local resources. However,it does not outperfo",
-          "source_reference": "/Users/hadi/Documents/GitHub/hoodie_sim_v2/resources/papers/hoodie/ocr/merged.json",
-          "source_type": "prior_registry_or_report_statement"
-        },
-        {
-          "confidence": "invalid",
-          "contradiction_notes": null,
-          "normalized_finding": "EA_public_cpu_capacity",
-          "raw_evidence": "{'adjacency_matrix': None, 'adjacency_matrix_status': 'unrecoverable', 'edge_cloud_connectivity': {'recovery_status': 'unrecoverable', 'source_evidence': [],",
-          "source_reference": "/Users/hadi/Documents/GitHub/hoodie_sim_v2/resources/papers/hoodie/recovered/topology-g.json",
-          "source_type": "prior_registry_or_report_statement"
-        },
-        {
-          "confidence": "invalid",
-          "contradiction_notes": null,
-          "normalized_finding": "EA_public_cpu_capacity",
-          "raw_evidence": "{'cloud_data_rate': {'recovery_status': 'unrecoverable', 'source_evidence': [], 'unrecoverable_reason': 'The paper OCR does not provide a distin",
+          "raw_evidence": "{\"cpu_capacity_status\":\"unrecoverable\",\"cpu_capacity_value\":null,\"unrecoverable_items\":[\"EA_private_cpu_capacities\",\"EA_public_cpu_capacities\",\"cloud_cpu_capacities\",\"adjacency_matrix\",\"legal_horizontal_destinations\",\"edge_cloud_connectivity\",\"cloud_data_rate\"]}",
           "source_reference": "/Users/hadi/Documents/GitHub/hoodie_sim_v2/resources/papers/hoodie/recovered/paper-parameter-registry.json",
           "source_type": "prior_registry_or_report_statement"
         },
@@ -701,7 +549,15 @@
           "confidence": "invalid",
           "contradiction_notes": null,
           "normalized_finding": "EA_public_cpu_capacity",
-          "raw_evidence": "coverable_items': ['Figure 7 adjacency edges', 'Figure 7 legal horizontal destinations', 'EA private/public/cloud CPU capacities']}",
+          "raw_evidence": "{\"blocking_gap_count\":3,\"high_risk_assumption_count\":7,\"implementation_gap_summary_missing\":0}",
+          "source_reference": "/Users/hadi/Documents/GitHub/hoodie_sim_v2/artifacts/analysis/paper-mechanism-registry/paper-mechanism-registry.json",
+          "source_type": "prior_registry_or_report_statement"
+        },
+        {
+          "confidence": "invalid",
+          "contradiction_notes": null,
+          "normalized_finding": "EA_public_cpu_capacity",
+          "raw_evidence": "{\"topology_summary_status\":\"unrecoverable\",\"topology_summary_unrecoverable_items\":[\"topology_adjacency_edges\",\"adjacency_matrix\",\"legal_horizontal_destinations\",\"edge_cloud_connectivity\"],\"unrecoverable_items\":[\"Figure 7 adjacency edges\",\"Figure 7 legal horizontal destinations\",\"EA private/public/cloud CPU capacities\"]}",
           "source_reference": "/Users/hadi/Documents/GitHub/hoodie_sim_v2/artifacts/analysis/structured-paper-topology-linkrate-registry/topology-recovery-report.json",
           "source_type": "prior_registry_or_report_statement"
         },
@@ -709,16 +565,8 @@
           "confidence": "invalid",
           "contradiction_notes": null,
           "normalized_finding": "EA_public_cpu_capacity",
-          "raw_evidence": "recoverable'}], 'validation_summary': 'Task size and processing density are paper-backed; CPU capacities remain unrecoverable; paper \u0394=0.1 sec, runtime \u0394=0.1 sec, Feature 027 reported \u0394=0.1 sec;",
+          "raw_evidence": "{\"cpu_capacity_contract_status\":{\"cpu_capacity_per_slot_agent\":32.0,\"cpu_capacity_per_slot_cloud\":128.0,\"cpu_capacity_per_slot_edge\":64.0},\"cpu_capacity_contract_values\":{\"EA_private\":{\"name\":\"EA_private\",\"notes\":\"Paper evidence does not recover an EA private CPU capacity.\",\"source\":\"resources/papers/hoodie/recovered/paper-parameter-registry.json\",\"status\":\"unrecoverable\",\"v...",
           "source_reference": "/Users/hadi/Documents/GitHub/hoodie_sim_v2/artifacts/analysis/computation-delay-cpu-unit-validation/unit-validation-report.json",
-          "source_type": "prior_registry_or_report_statement"
-        },
-        {
-          "confidence": "invalid",
-          "contradiction_notes": null,
-          "normalized_finding": "EA_public_cpu_capacity",
-          "raw_evidence": "s_on_terminal_events': True, 'selected_action_has_reward': False, 'trace_linked': True}, 'unrecoverable_items': [{'item': 'Figure_7_adjacency', 'status': 'unrecoverable'}]}",
-          "source_reference": "/Users/hadi/Documents/GitHub/hoodie_sim_v2/artifacts/analysis/reward-equation-terminal-reward-contract/reward-contract-report.json",
           "source_type": "prior_registry_or_report_statement"
         }
       ],
@@ -863,47 +711,7 @@
           "confidence": "invalid",
           "contradiction_notes": null,
           "normalized_finding": "cloud_cpu_capacity",
-          "raw_evidence": "scheme, which relies solely on local computation,maintains a consistent delay across all CPU capacities, as it directly benefits from the increased local resources. However,it does not outperfo",
-          "source_reference": "/Users/hadi/Documents/GitHub/hoodie_sim_v2/resources/papers/hoodie/ocr/merged.tex",
-          "source_type": "prior_registry_or_report_statement"
-        },
-        {
-          "confidence": "invalid",
-          "contradiction_notes": null,
-          "normalized_finding": "cloud_cpu_capacity",
-          "raw_evidence": "scheme, which relies solely on local computation,maintains a consistent delay across all CPU capacities, as it directly benefits from the increased local resources. However,it does not outperfo",
-          "source_reference": "/Users/hadi/Documents/GitHub/hoodie_sim_v2/resources/papers/hoodie/ocr/merged.md",
-          "source_type": "prior_registry_or_report_statement"
-        },
-        {
-          "confidence": "invalid",
-          "contradiction_notes": null,
-          "normalized_finding": "cloud_cpu_capacity",
-          "raw_evidence": "scheme, which relies solely on local computation,maintains a consistent delay across all CPU capacities, as it directly benefits from the increased local resources. However,it does not outperfo",
-          "source_reference": "/Users/hadi/Documents/GitHub/hoodie_sim_v2/resources/papers/hoodie/ocr/merged.txt",
-          "source_type": "prior_registry_or_report_statement"
-        },
-        {
-          "confidence": "invalid",
-          "contradiction_notes": null,
-          "normalized_finding": "cloud_cpu_capacity",
-          "raw_evidence": "scheme, which relies solely on local computation,maintains a consistent delay across all CPU capacities, as it directly benefits from the increased local resources. However,it does not outperfo",
-          "source_reference": "/Users/hadi/Documents/GitHub/hoodie_sim_v2/resources/papers/hoodie/ocr/merged.json",
-          "source_type": "prior_registry_or_report_statement"
-        },
-        {
-          "confidence": "invalid",
-          "contradiction_notes": null,
-          "normalized_finding": "cloud_cpu_capacity",
-          "raw_evidence": "{'adjacency_matrix': None, 'adjacency_matrix_status': 'unrecoverable', 'edge_cloud_connectivity': {'recovery_status': 'unrecoverable', 'source_evidence': [],",
-          "source_reference": "/Users/hadi/Documents/GitHub/hoodie_sim_v2/resources/papers/hoodie/recovered/topology-g.json",
-          "source_type": "prior_registry_or_report_statement"
-        },
-        {
-          "confidence": "invalid",
-          "contradiction_notes": null,
-          "normalized_finding": "cloud_cpu_capacity",
-          "raw_evidence": "{'cloud_data_rate': {'recovery_status': 'unrecoverable', 'source_evidence': [], 'unrecoverable_reason': 'The paper OCR does not provide a distin",
+          "raw_evidence": "{\"cpu_capacity_status\":\"unrecoverable\",\"cpu_capacity_value\":null,\"unrecoverable_items\":[\"EA_private_cpu_capacities\",\"EA_public_cpu_capacities\",\"cloud_cpu_capacities\",\"adjacency_matrix\",\"legal_horizontal_destinations\",\"edge_cloud_connectivity\",\"cloud_data_rate\"]}",
           "source_reference": "/Users/hadi/Documents/GitHub/hoodie_sim_v2/resources/papers/hoodie/recovered/paper-parameter-registry.json",
           "source_type": "prior_registry_or_report_statement"
         },
@@ -911,7 +719,15 @@
           "confidence": "invalid",
           "contradiction_notes": null,
           "normalized_finding": "cloud_cpu_capacity",
-          "raw_evidence": "coverable_items': ['Figure 7 adjacency edges', 'Figure 7 legal horizontal destinations', 'EA private/public/cloud CPU capacities']}",
+          "raw_evidence": "{\"blocking_gap_count\":3,\"high_risk_assumption_count\":7,\"implementation_gap_summary_missing\":0}",
+          "source_reference": "/Users/hadi/Documents/GitHub/hoodie_sim_v2/artifacts/analysis/paper-mechanism-registry/paper-mechanism-registry.json",
+          "source_type": "prior_registry_or_report_statement"
+        },
+        {
+          "confidence": "invalid",
+          "contradiction_notes": null,
+          "normalized_finding": "cloud_cpu_capacity",
+          "raw_evidence": "{\"topology_summary_status\":\"unrecoverable\",\"topology_summary_unrecoverable_items\":[\"topology_adjacency_edges\",\"adjacency_matrix\",\"legal_horizontal_destinations\",\"edge_cloud_connectivity\"],\"unrecoverable_items\":[\"Figure 7 adjacency edges\",\"Figure 7 legal horizontal destinations\",\"EA private/public/cloud CPU capacities\"]}",
           "source_reference": "/Users/hadi/Documents/GitHub/hoodie_sim_v2/artifacts/analysis/structured-paper-topology-linkrate-registry/topology-recovery-report.json",
           "source_type": "prior_registry_or_report_statement"
         },
@@ -919,16 +735,8 @@
           "confidence": "invalid",
           "contradiction_notes": null,
           "normalized_finding": "cloud_cpu_capacity",
-          "raw_evidence": "recoverable'}], 'validation_summary': 'Task size and processing density are paper-backed; CPU capacities remain unrecoverable; paper \u0394=0.1 sec, runtime \u0394=0.1 sec, Feature 027 reported \u0394=0.1 sec;",
+          "raw_evidence": "{\"cpu_capacity_contract_status\":{\"cpu_capacity_per_slot_agent\":32.0,\"cpu_capacity_per_slot_cloud\":128.0,\"cpu_capacity_per_slot_edge\":64.0},\"cpu_capacity_contract_values\":{\"EA_private\":{\"name\":\"EA_private\",\"notes\":\"Paper evidence does not recover an EA private CPU capacity.\",\"source\":\"resources/papers/hoodie/recovered/paper-parameter-registry.json\",\"status\":\"unrecoverable\",\"v...",
           "source_reference": "/Users/hadi/Documents/GitHub/hoodie_sim_v2/artifacts/analysis/computation-delay-cpu-unit-validation/unit-validation-report.json",
-          "source_type": "prior_registry_or_report_statement"
-        },
-        {
-          "confidence": "invalid",
-          "contradiction_notes": null,
-          "normalized_finding": "cloud_cpu_capacity",
-          "raw_evidence": "s_on_terminal_events': True, 'selected_action_has_reward': False, 'trace_linked': True}, 'unrecoverable_items': [{'item': 'Figure_7_adjacency', 'status': 'unrecoverable'}]}",
-          "source_reference": "/Users/hadi/Documents/GitHub/hoodie_sim_v2/artifacts/analysis/reward-equation-terminal-reward-contract/reward-contract-report.json",
           "source_type": "prior_registry_or_report_statement"
         }
       ],
@@ -1062,15 +870,7 @@
           "confidence": "invalid",
           "contradiction_notes": null,
           "normalized_finding": "cloud_data_rate",
-          "raw_evidence": "{'adjacency_matrix': None, 'adjacency_matrix_status': 'unrecoverable', 'edge_cloud_connectivity': {'recovery_status': 'unrecoverable', 'source_evidence': [],",
-          "source_reference": "/Users/hadi/Documents/GitHub/hoodie_sim_v2/resources/papers/hoodie/recovered/topology-g.json",
-          "source_type": "prior_registry_or_report_statement"
-        },
-        {
-          "confidence": "invalid",
-          "contradiction_notes": null,
-          "normalized_finding": "cloud_data_rate",
-          "raw_evidence": "{'cloud_data_rate': {'recovery_status': 'unrecoverable', 'source_evidence': [], 'unrecoverable_reason': 'The paper OCR does not provide a distin",
+          "raw_evidence": "{\"cloud_data_rate_status\":\"unrecoverable\",\"cloud_data_rate_value\":null,\"unrecoverable_items\":[\"EA_private_cpu_capacities\",\"EA_public_cpu_capacities\",\"cloud_cpu_capacities\",\"adjacency_matrix\",\"legal_horizontal_destinations\",\"edge_cloud_connectivity\",\"cloud_data_rate\"]}",
           "source_reference": "/Users/hadi/Documents/GitHub/hoodie_sim_v2/resources/papers/hoodie/recovered/paper-parameter-registry.json",
           "source_type": "prior_registry_or_report_statement"
         },
@@ -1078,24 +878,16 @@
           "confidence": "invalid",
           "contradiction_notes": null,
           "normalized_finding": "cloud_data_rate",
-          "raw_evidence": "N', 'scenario_parameters.edge_layer_density'], 'recovery_status': 'partially_recovered', 'unrecoverable_items': ['EA_private_cpu_capacities', 'EA_public_cpu_capacities', 'cloud_cpu_capacities',",
+          "raw_evidence": "{\"blocking_gap_count\":3,\"high_risk_assumption_count\":7,\"implementation_gap_summary_missing\":0}",
+          "source_reference": "/Users/hadi/Documents/GitHub/hoodie_sim_v2/artifacts/analysis/paper-mechanism-registry/paper-mechanism-registry.json",
+          "source_type": "prior_registry_or_report_statement"
+        },
+        {
+          "confidence": "invalid",
+          "contradiction_notes": null,
+          "normalized_finding": "cloud_data_rate",
+          "raw_evidence": "{\"topology_summary_status\":\"unrecoverable\",\"topology_summary_unrecoverable_items\":[\"topology_adjacency_edges\",\"adjacency_matrix\",\"legal_horizontal_destinations\",\"edge_cloud_connectivity\"],\"unrecoverable_items\":[\"Figure 7 adjacency edges\",\"Figure 7 legal horizontal destinations\",\"EA private/public/cloud CPU capacities\"]}",
           "source_reference": "/Users/hadi/Documents/GitHub/hoodie_sim_v2/artifacts/analysis/structured-paper-topology-linkrate-registry/topology-recovery-report.json",
-          "source_type": "prior_registry_or_report_statement"
-        },
-        {
-          "confidence": "invalid",
-          "contradiction_notes": null,
-          "normalized_finding": "cloud_data_rate",
-          "raw_evidence": ", 'source': 'resources/papers/hoodie/recovered/paper-parameter-registry.json', 'status': 'unrecoverable', 'value': None}, 'EA_public': {'name': 'EA_public', 'notes': 'Paper evidence does not re",
-          "source_reference": "/Users/hadi/Documents/GitHub/hoodie_sim_v2/artifacts/analysis/computation-delay-cpu-unit-validation/unit-validation-report.json",
-          "source_type": "prior_registry_or_report_statement"
-        },
-        {
-          "confidence": "invalid",
-          "contradiction_notes": null,
-          "normalized_finding": "cloud_data_rate",
-          "raw_evidence": "s_on_terminal_events': True, 'selected_action_has_reward': False, 'trace_linked': True}, 'unrecoverable_items': [{'item': 'Figure_7_adjacency', 'status': 'unrecoverable'}]}",
-          "source_reference": "/Users/hadi/Documents/GitHub/hoodie_sim_v2/artifacts/analysis/reward-equation-terminal-reward-contract/reward-contract-report.json",
           "source_type": "prior_registry_or_report_statement"
         }
       ],
@@ -1240,47 +1032,7 @@
           "confidence": "invalid",
           "contradiction_notes": null,
           "normalized_finding": "timeout_value",
-          "raw_evidence": "he decisions made by other agents. The optimization problem is formulated with known task timeouts and other task features under stochastic traffic at each agent. To solve this problem, H",
-          "source_reference": "/Users/hadi/Documents/GitHub/hoodie_sim_v2/resources/papers/hoodie/ocr/merged.tex",
-          "source_type": "prior_registry_or_report_statement"
-        },
-        {
-          "confidence": "invalid",
-          "contradiction_notes": null,
-          "normalized_finding": "timeout_value",
-          "raw_evidence": "he decisions made by other agents. The optimization problem is formulated with known task timeouts and other task features under stochastic traffic at each agent. To solve this problem, H",
-          "source_reference": "/Users/hadi/Documents/GitHub/hoodie_sim_v2/resources/papers/hoodie/ocr/merged.md",
-          "source_type": "prior_registry_or_report_statement"
-        },
-        {
-          "confidence": "invalid",
-          "contradiction_notes": null,
-          "normalized_finding": "timeout_value",
-          "raw_evidence": "he decisions made by other agents. The optimization problem is formulated with known task timeouts and other task features under stochastic traffic at each agent. To solve this problem, H",
-          "source_reference": "/Users/hadi/Documents/GitHub/hoodie_sim_v2/resources/papers/hoodie/ocr/merged.txt",
-          "source_type": "prior_registry_or_report_statement"
-        },
-        {
-          "confidence": "invalid",
-          "contradiction_notes": null,
-          "normalized_finding": "timeout_value",
-          "raw_evidence": "he decisions made by other agents. The optimization problem is formulated with known task timeouts and other task features under stochastic traffic at each agent. To solve this problem, H",
-          "source_reference": "/Users/hadi/Documents/GitHub/hoodie_sim_v2/resources/papers/hoodie/ocr/merged.json",
-          "source_type": "prior_registry_or_report_statement"
-        },
-        {
-          "confidence": "invalid",
-          "contradiction_notes": null,
-          "normalized_finding": "timeout_value",
-          "raw_evidence": "{'adjacency_matrix': None, 'adjacency_matrix_status': 'unrecoverable', 'edge_cloud_connectivity': {'recovery_status': 'unrecoverable', 'source_evidence': [],",
-          "source_reference": "/Users/hadi/Documents/GitHub/hoodie_sim_v2/resources/papers/hoodie/recovered/topology-g.json",
-          "source_type": "prior_registry_or_report_statement"
-        },
-        {
-          "confidence": "invalid",
-          "contradiction_notes": null,
-          "normalized_finding": "timeout_value",
-          "raw_evidence": "oodie_sim_v2/resources/papers/hoodie/ocr/merged.tex'}], 'value': '[2,2.1,...,5] Mbits'}, 'timeout_values': {'recovery_status': 'unrecoverable', 'source_evidence': [{'char_offset': 26551,",
+          "raw_evidence": "{\"timeout_value_status\":\"unrecoverable\",\"timeout_value_value\":null,\"unrecoverable_items\":[\"EA_private_cpu_capacities\",\"EA_public_cpu_capacities\",\"cloud_cpu_capacities\",\"adjacency_matrix\",\"legal_horizontal_destinations\",\"edge_cloud_connectivity\",\"cloud_data_rate\"]}",
           "source_reference": "/Users/hadi/Documents/GitHub/hoodie_sim_v2/resources/papers/hoodie/recovered/paper-parameter-registry.json",
           "source_type": "prior_registry_or_report_statement"
         },
@@ -1288,7 +1040,7 @@
           "confidence": "invalid",
           "contradiction_notes": null,
           "normalized_finding": "timeout_value",
-          "raw_evidence": "jacency is not present as a structured artifact.', 'severity': 'blocking'}, {'category': 'timeout_and_drop', 'description': 'Timeout and Drop requires paper-faithful validation before any",
+          "raw_evidence": "{\"blocking_gap_count\":3,\"high_risk_assumption_count\":7,\"implementation_gap_summary_missing\":0}",
           "source_reference": "/Users/hadi/Documents/GitHub/hoodie_sim_v2/artifacts/analysis/paper-mechanism-registry/paper-mechanism-registry.json",
           "source_type": "prior_registry_or_report_statement"
         },
@@ -1296,7 +1048,7 @@
           "confidence": "invalid",
           "contradiction_notes": null,
           "normalized_finding": "timeout_value",
-          "raw_evidence": "N', 'scenario_parameters.edge_layer_density'], 'recovery_status': 'partially_recovered', 'unrecoverable_items': ['EA_private_cpu_capacities', 'EA_public_cpu_capacities', 'cloud_cpu_capacities',",
+          "raw_evidence": "{\"topology_summary_status\":\"unrecoverable\",\"topology_summary_unrecoverable_items\":[\"topology_adjacency_edges\",\"adjacency_matrix\",\"legal_horizontal_destinations\",\"edge_cloud_connectivity\"],\"unrecoverable_items\":[\"Figure 7 adjacency edges\",\"Figure 7 legal horizontal destinations\",\"EA private/public/cloud CPU capacities\"]}",
           "source_reference": "/Users/hadi/Documents/GitHub/hoodie_sim_v2/artifacts/analysis/structured-paper-topology-linkrate-registry/topology-recovery-report.json",
           "source_type": "prior_registry_or_report_statement"
         },
@@ -1304,16 +1056,8 @@
           "confidence": "invalid",
           "contradiction_notes": null,
           "normalized_finding": "timeout_value",
-          "raw_evidence": "d', 'unit': 'Mbits', 'value': '[2,2.1,...,5] Mbits'}}, 'regression_checks': {'feature_019_timeout_drop': 'covered', 'feature_024_local_compute_and_deterministic_ordering': 'covered', 'fea",
+          "raw_evidence": "{\"runtime_timeout_slots\":20,\"runtime_timeout_source\":\"paper-backed\",\"unrecoverable_items\":[{\"item\":\"EA_private_cpu_capacity\",\"status\":\"unrecoverable\"},{\"item\":\"EA_public_cpu_capacity\",\"status\":\"unrecoverable\"},{\"item\":\"cloud_cpu_capacity\",\"status\":\"unrecoverable\"}]}",
           "source_reference": "/Users/hadi/Documents/GitHub/hoodie_sim_v2/artifacts/analysis/computation-delay-cpu-unit-validation/unit-validation-report.json",
-          "source_type": "prior_registry_or_report_statement"
-        },
-        {
-          "confidence": "invalid",
-          "contradiction_notes": null,
-          "normalized_finding": "timeout_value",
-          "raw_evidence": "mula': 'r_n(t+1) = NaN if x_n(t)=0; r_n(t+1) = -Phi_n(t) if successfully processed before timeout; r_n(t+1) = -C otherwise (task thrown)', 'raw_ocr_text': \"r_n(t+1)=begin{cases}{NaN,} if",
-          "source_reference": "/Users/hadi/Documents/GitHub/hoodie_sim_v2/artifacts/analysis/reward-equation-terminal-reward-contract/reward-contract-report.json",
           "source_type": "prior_registry_or_report_statement"
         }
       ],
@@ -1458,55 +1202,7 @@
           "confidence": "invalid",
           "contradiction_notes": null,
           "normalized_finding": "multi_agent_aggregation_reduction_order",
-          "raw_evidence": "r the ease of exposure, here we assumed wired connections between EAs and EAs-Cloud. This assumption can be easily modified without loss of generality. 7Under dynamic Edge layer topologies,",
-          "source_reference": "/Users/hadi/Documents/GitHub/hoodie_sim_v2/resources/papers/hoodie/ocr/merged.tex",
-          "source_type": "prior_registry_or_report_statement"
-        },
-        {
-          "confidence": "invalid",
-          "contradiction_notes": null,
-          "normalized_finding": "multi_agent_aggregation_reduction_order",
-          "raw_evidence": "formalistic convergence of such high-dimensional DQN models can be only proven under mild assumptions [35] and, consequently,remains an open theoretical problem [36], in which DQN convergenc",
-          "source_reference": "/Users/hadi/Documents/GitHub/hoodie_sim_v2/resources/papers/hoodie/ocr/merged.md",
-          "source_type": "prior_registry_or_report_statement"
-        },
-        {
-          "confidence": "invalid",
-          "contradiction_notes": null,
-          "normalized_finding": "multi_agent_aggregation_reduction_order",
-          "raw_evidence": "r the ease of exposure, here we assumed wired connections between EAs and EAs-Cloud. This assumption can be easily modified without loss of generality. 7Under dynamic Edge layer topologies,",
-          "source_reference": "/Users/hadi/Documents/GitHub/hoodie_sim_v2/resources/papers/hoodie/ocr/merged.txt",
-          "source_type": "prior_registry_or_report_statement"
-        },
-        {
-          "confidence": "invalid",
-          "contradiction_notes": null,
-          "normalized_finding": "multi_agent_aggregation_reduction_order",
-          "raw_evidence": "r the ease of exposure, here we assumed wired connections between EAs and EAs-Cloud. This assumption can be easily modified without loss of generality.\\n7Under dynamic Edge layer topologies,",
-          "source_reference": "/Users/hadi/Documents/GitHub/hoodie_sim_v2/resources/papers/hoodie/ocr/merged.json",
-          "source_type": "prior_registry_or_report_statement"
-        },
-        {
-          "confidence": "invalid",
-          "contradiction_notes": null,
-          "normalized_finding": "multi_agent_aggregation_reduction_order",
-          "raw_evidence": "matrix G with 20 EAs. VOLUME , 17 ===== page\\\\_018\\\\_0\\\\_res.txt ===== is the cumulative reward, as defined in (20) and (24), that was collected in a series of 5000 episodes, and averag",
-          "source_reference": "/Users/hadi/Documents/GitHub/hoodie_sim_v2/resources/papers/hoodie/recovered/topology-g.json",
-          "source_type": "prior_registry_or_report_statement"
-        },
-        {
-          "confidence": "invalid",
-          "contradiction_notes": null,
-          "normalized_finding": "multi_agent_aggregation_reduction_order",
-          "raw_evidence": ": None, 'figure_reference': 'Figure 8', 'ocr_snippet': 'e is zero, which explains why the reward curves are negative and increasing. In Fig. 8b, the impact of the discount factor \u03b3 is al",
-          "source_reference": "/Users/hadi/Documents/GitHub/hoodie_sim_v2/resources/papers/hoodie/recovered/paper-parameter-registry.json",
-          "source_type": "prior_registry_or_report_statement"
-        },
-        {
-          "confidence": "invalid",
-          "contradiction_notes": null,
-          "normalized_finding": "multi_agent_aggregation_reduction_order",
-          "raw_evidence": "s paper-faithful validation before any repair feature.', 'severity': 'high'}], 'high_risk_assumptions': [{'assumption_risk': 'high', 'category': 'cpu_capacity', 'description': 'Evaluation sw",
+          "raw_evidence": "{\"blocking_gap_count\":3,\"high_risk_assumption_count\":7,\"implementation_gap_summary_missing\":0}",
           "source_reference": "/Users/hadi/Documents/GitHub/hoodie_sim_v2/artifacts/analysis/paper-mechanism-registry/paper-mechanism-registry.json",
           "source_type": "prior_registry_or_report_statement"
         },
@@ -1514,15 +1210,15 @@
           "confidence": "invalid",
           "contradiction_notes": null,
           "normalized_finding": "multi_agent_aggregation_reduction_order",
-          "raw_evidence": "nment/link_rate_config.py', 'runtime_contract_classification': 'paper-backed-runtime-with-assumption-backed-cpu-capacity-fields', 'runtime_cpu_capacity_fields': {'cpu_capacity_per_slot_agent",
-          "source_reference": "/Users/hadi/Documents/GitHub/hoodie_sim_v2/artifacts/analysis/computation-delay-cpu-unit-validation/unit-validation-report.json",
+          "raw_evidence": "{\"topology_summary_status\":\"unrecoverable\",\"topology_summary_unrecoverable_items\":[\"topology_adjacency_edges\",\"adjacency_matrix\",\"legal_horizontal_destinations\",\"edge_cloud_connectivity\"],\"unrecoverable_items\":[\"Figure 7 adjacency edges\",\"Figure 7 legal horizontal destinations\",\"EA private/public/cloud CPU capacities\"]}",
+          "source_reference": "/Users/hadi/Documents/GitHub/hoodie_sim_v2/artifacts/analysis/structured-paper-topology-linkrate-registry/topology-recovery-report.json",
           "source_type": "prior_registry_or_report_statement"
         },
         {
           "confidence": "invalid",
           "contradiction_notes": null,
           "normalized_finding": "multi_agent_aggregation_reduction_order",
-          "raw_evidence": "ract': {'average_across_distributed_agents': 'artifact_backed', 'exact_reduction_order': 'assumption_backed', 'per_agent': 'paper_backed', 'reported_cumulative_reward': 'artifact_backed'}, '",
+          "raw_evidence": "{\"aggregation_contract_average_across\":\"artifact_backed\",\"aggregation_contract_exact_reduction_order\":\"assumption_backed\",\"assumption_backed_items\":[{\"item\":\"multi_agent_aggregation_reduction_order\",\"status\":\"assumption_backed\"}],\"unrecoverable_items\":[{\"item\":\"Figure_7_adjacency\",\"status\":\"unrecoverable\"}]}",
           "source_reference": "/Users/hadi/Documents/GitHub/hoodie_sim_v2/artifacts/analysis/reward-equation-terminal-reward-contract/reward-contract-report.json",
           "source_type": "prior_registry_or_report_statement"
         }
@@ -1679,55 +1375,7 @@
           "confidence": "invalid",
           "contradiction_notes": null,
           "normalized_finding": "Phi_n_pub_exact_formatting",
-          "raw_evidence": "acement time slot t has a unique identifier. The task ID assignment rule follows the next equation:  Gianno:idop  (8)  (9)  (10)  6For the ease of exposure, here we assumed wired connectio",
-          "source_reference": "/Users/hadi/Documents/GitHub/hoodie_sim_v2/resources/papers/hoodie/ocr/merged.tex",
-          "source_type": "prior_registry_or_report_statement"
-        },
-        {
-          "confidence": "invalid",
-          "contradiction_notes": null,
-          "normalized_finding": "Phi_n_pub_exact_formatting",
-          "raw_evidence": "acement time slot t has a unique identifier. The task ID assignment rule follows the next equation:  ---  <!-- page_009_0.md -->   ---  $$u_{n,k}^{\\mathrm{pub}}(t)=\\begin{cases}u_{n}(t^{\\p",
-          "source_reference": "/Users/hadi/Documents/GitHub/hoodie_sim_v2/resources/papers/hoodie/ocr/merged.md",
-          "source_type": "prior_registry_or_report_statement"
-        },
-        {
-          "confidence": "invalid",
-          "contradiction_notes": null,
-          "normalized_finding": "Phi_n_pub_exact_formatting",
-          "raw_evidence": "acement time slot t has a unique identifier. The task ID assignment rule follows the next equation:  Gianno:idop  (8)  (9)  (10)  6For the ease of exposure, here we assumed wired connectio",
-          "source_reference": "/Users/hadi/Documents/GitHub/hoodie_sim_v2/resources/papers/hoodie/ocr/merged.txt",
-          "source_type": "prior_registry_or_report_statement"
-        },
-        {
-          "confidence": "invalid",
-          "contradiction_notes": null,
-          "normalized_finding": "Phi_n_pub_exact_formatting",
-          "raw_evidence": "acement time slot t has a unique identifier. The task ID assignment rule follows the next equation:\", 'block_bbox': [623, 1019, 1156, 1421], 'block_id': 12, 'block_order': 12}, {'block_lab",
-          "source_reference": "/Users/hadi/Documents/GitHub/hoodie_sim_v2/resources/papers/hoodie/ocr/merged.json",
-          "source_type": "prior_registry_or_report_statement"
-        },
-        {
-          "confidence": "invalid",
-          "contradiction_notes": null,
-          "normalized_finding": "Phi_n_pub_exact_formatting",
-          "raw_evidence": "': 'unrecoverable', 'schema_version': '1.0', 'source_evidence': [{'char_offset': 137321, 'equation_or_table_reference': None, 'figure_reference': 'Figure 7', 'ocr_snippet': 'Drop Penalty</",
-          "source_reference": "/Users/hadi/Documents/GitHub/hoodie_sim_v2/resources/papers/hoodie/recovered/topology-g.json",
-          "source_type": "prior_registry_or_report_statement"
-        },
-        {
-          "confidence": "invalid",
-          "contradiction_notes": null,
-          "normalized_finding": "Phi_n_pub_exact_formatting",
-          "raw_evidence": "_data_rate': {'recovery_status': 'recovered', 'source_evidence': [{'char_offset': 24781, 'equation_or_table_reference': 'Table 4', 'figure_reference': None, 'ocr_snippet': '', 'section_or_",
-          "source_reference": "/Users/hadi/Documents/GitHub/hoodie_sim_v2/resources/papers/hoodie/recovered/paper-parameter-registry.json",
-          "source_type": "prior_registry_or_report_statement"
-        },
-        {
-          "confidence": "invalid",
-          "contradiction_notes": null,
-          "normalized_finding": "Phi_n_pub_exact_formatting",
-          "raw_evidence": "category': 'transmission_delay', 'description': 'The exact closed-form transmission-delay equation is not recovered here.'}, {'assumption_risk': 'medium', 'category': 'computation_delay',",
+          "raw_evidence": "{\"blocking_gap_count\":3,\"high_risk_assumption_count\":7,\"implementation_gap_summary_missing\":0}",
           "source_reference": "/Users/hadi/Documents/GitHub/hoodie_sim_v2/artifacts/analysis/paper-mechanism-registry/paper-mechanism-registry.json",
           "source_type": "prior_registry_or_report_statement"
         },
@@ -1735,8 +1383,8 @@
           "confidence": "invalid",
           "contradiction_notes": null,
           "normalized_finding": "Phi_n_pub_exact_formatting",
-          "raw_evidence": "ation_id': '21', 'normalized_formula': 'Phi_n(t) = Phi_n^priv(t) if d_n^(1)=1; Phi_n(t) = Phi_n^pub(t) if d_n^(1)=0', 'raw_ocr_text': 'Phi_n(t)=begin{cases}{Phi_n^priv(t),} if d_n^(1)=1 (lo",
-          "source_reference": "/Users/hadi/Documents/GitHub/hoodie_sim_v2/artifacts/analysis/reward-equation-terminal-reward-contract/reward-contract-report.json",
+          "raw_evidence": "{\"topology_summary_status\":\"unrecoverable\",\"topology_summary_unrecoverable_items\":[\"topology_adjacency_edges\",\"adjacency_matrix\",\"legal_horizontal_destinations\",\"edge_cloud_connectivity\"],\"unrecoverable_items\":[\"Figure 7 adjacency edges\",\"Figure 7 legal horizontal destinations\",\"EA private/public/cloud CPU capacities\"]}",
+          "source_reference": "/Users/hadi/Documents/GitHub/hoodie_sim_v2/artifacts/analysis/structured-paper-topology-linkrate-registry/topology-recovery-report.json",
           "source_type": "prior_registry_or_report_statement"
         }
       ],
@@ -1960,7 +1608,24 @@
       "evidence_exhaustion_rationale": "Searched OCR, recovered registries, and prior analysis reports for mapper_defect__users_hadi_documents_github_hoodie_sim_v2_artifacts_analysis_structured-paper-topology-linkrate-registry_topology-recovery-report_json#partially_recovered_items[0] but found no item-specific value; only negative evidence remains.",
       "item_id": "mapper_defect__users_hadi_documents_github_hoodie_sim_v2_artifacts_analysis_structured-paper-topology-linkrate-registry_topology-recovery-report_json#partially_recovered_items[0]",
       "manual_visual_recovery": null,
-      "negative_evidence": [],
+      "negative_evidence": [
+        {
+          "confidence": "invalid",
+          "contradiction_notes": null,
+          "normalized_finding": "mapper_defect__users_hadi_documents_github_hoodie_sim_v2_artifacts_analysis_structured-paper-topology-linkrate-registry_topology-recovery-report_json#partially_recovered_items[0]",
+          "raw_evidence": "{\"blocking_gap_count\":3,\"high_risk_assumption_count\":7,\"implementation_gap_summary_missing\":0}",
+          "source_reference": "/Users/hadi/Documents/GitHub/hoodie_sim_v2/artifacts/analysis/paper-mechanism-registry/paper-mechanism-registry.json",
+          "source_type": "prior_registry_or_report_statement"
+        },
+        {
+          "confidence": "invalid",
+          "contradiction_notes": null,
+          "normalized_finding": "mapper_defect__users_hadi_documents_github_hoodie_sim_v2_artifacts_analysis_structured-paper-topology-linkrate-registry_topology-recovery-report_json#partially_recovered_items[0]",
+          "raw_evidence": "{\"topology_summary_status\":\"unrecoverable\",\"topology_summary_unrecoverable_items\":[\"topology_adjacency_edges\",\"adjacency_matrix\",\"legal_horizontal_destinations\",\"edge_cloud_connectivity\"],\"unrecoverable_items\":[\"Figure 7 adjacency edges\",\"Figure 7 legal horizontal destinations\",\"EA private/public/cloud CPU capacities\"]}",
+          "source_reference": "/Users/hadi/Documents/GitHub/hoodie_sim_v2/artifacts/analysis/structured-paper-topology-linkrate-registry/topology-recovery-report.json",
+          "source_type": "prior_registry_or_report_statement"
+        }
+      ],
       "normalized_finding": "Unmapped item from /Users/hadi/Documents/GitHub/hoodie_sim_v2/artifacts/analysis/structured-paper-topology-linkrate-registry/topology-recovery-report.json#partially_recovered_items[0]",
       "positive_evidence": [],
       "runtime_approval_required": false,
@@ -2063,57 +1728,15 @@
         {
           "confidence": "invalid",
           "normalized_finding": "Phi_n_pub_exact_formatting",
-          "raw_evidence": "acement time slot t has a unique identifier. The task ID assignment rule follows the next equation:  Gianno:idop  (8)  (9)  (10)  6For the ease of exposure, here we assumed wired connectio",
-          "source_reference": "/Users/hadi/Documents/GitHub/hoodie_sim_v2/resources/papers/hoodie/ocr/merged.tex",
-          "source_type": "prior_registry_or_report_statement"
-        },
-        {
-          "confidence": "invalid",
-          "normalized_finding": "Phi_n_pub_exact_formatting",
-          "raw_evidence": "acement time slot t has a unique identifier. The task ID assignment rule follows the next equation:  ---  <!-- page_009_0.md -->   ---  $$u_{n,k}^{\\mathrm{pub}}(t)=\\begin{cases}u_{n}(t^{\\p",
-          "source_reference": "/Users/hadi/Documents/GitHub/hoodie_sim_v2/resources/papers/hoodie/ocr/merged.md",
-          "source_type": "prior_registry_or_report_statement"
-        },
-        {
-          "confidence": "invalid",
-          "normalized_finding": "Phi_n_pub_exact_formatting",
-          "raw_evidence": "acement time slot t has a unique identifier. The task ID assignment rule follows the next equation:  Gianno:idop  (8)  (9)  (10)  6For the ease of exposure, here we assumed wired connectio",
-          "source_reference": "/Users/hadi/Documents/GitHub/hoodie_sim_v2/resources/papers/hoodie/ocr/merged.txt",
-          "source_type": "prior_registry_or_report_statement"
-        },
-        {
-          "confidence": "invalid",
-          "normalized_finding": "Phi_n_pub_exact_formatting",
-          "raw_evidence": "acement time slot t has a unique identifier. The task ID assignment rule follows the next equation:\", 'block_bbox': [623, 1019, 1156, 1421], 'block_id': 12, 'block_order': 12}, {'block_lab",
-          "source_reference": "/Users/hadi/Documents/GitHub/hoodie_sim_v2/resources/papers/hoodie/ocr/merged.json",
-          "source_type": "prior_registry_or_report_statement"
-        },
-        {
-          "confidence": "invalid",
-          "normalized_finding": "Phi_n_pub_exact_formatting",
-          "raw_evidence": "': 'unrecoverable', 'schema_version': '1.0', 'source_evidence': [{'char_offset': 137321, 'equation_or_table_reference': None, 'figure_reference': 'Figure 7', 'ocr_snippet': 'Drop Penalty</",
-          "source_reference": "/Users/hadi/Documents/GitHub/hoodie_sim_v2/resources/papers/hoodie/recovered/topology-g.json",
-          "source_type": "prior_registry_or_report_statement"
-        },
-        {
-          "confidence": "invalid",
-          "normalized_finding": "Phi_n_pub_exact_formatting",
-          "raw_evidence": "_data_rate': {'recovery_status': 'recovered', 'source_evidence': [{'char_offset': 24781, 'equation_or_table_reference': 'Table 4', 'figure_reference': None, 'ocr_snippet': '', 'section_or_",
-          "source_reference": "/Users/hadi/Documents/GitHub/hoodie_sim_v2/resources/papers/hoodie/recovered/paper-parameter-registry.json",
-          "source_type": "prior_registry_or_report_statement"
-        },
-        {
-          "confidence": "invalid",
-          "normalized_finding": "Phi_n_pub_exact_formatting",
-          "raw_evidence": "category': 'transmission_delay', 'description': 'The exact closed-form transmission-delay equation is not recovered here.'}, {'assumption_risk': 'medium', 'category': 'computation_delay',",
+          "raw_evidence": "{\"blocking_gap_count\":3,\"high_risk_assumption_count\":7,\"implementation_gap_summary_missing\":0}",
           "source_reference": "/Users/hadi/Documents/GitHub/hoodie_sim_v2/artifacts/analysis/paper-mechanism-registry/paper-mechanism-registry.json",
           "source_type": "prior_registry_or_report_statement"
         },
         {
           "confidence": "invalid",
           "normalized_finding": "Phi_n_pub_exact_formatting",
-          "raw_evidence": "ation_id': '21', 'normalized_formula': 'Phi_n(t) = Phi_n^priv(t) if d_n^(1)=1; Phi_n(t) = Phi_n^pub(t) if d_n^(1)=0', 'raw_ocr_text': 'Phi_n(t)=begin{cases}{Phi_n^priv(t),} if d_n^(1)=1 (lo",
-          "source_reference": "/Users/hadi/Documents/GitHub/hoodie_sim_v2/artifacts/analysis/reward-equation-terminal-reward-contract/reward-contract-report.json",
+          "raw_evidence": "{\"topology_summary_status\":\"unrecoverable\",\"topology_summary_unrecoverable_items\":[\"topology_adjacency_edges\",\"adjacency_matrix\",\"legal_horizontal_destinations\",\"edge_cloud_connectivity\"],\"unrecoverable_items\":[\"Figure 7 adjacency edges\",\"Figure 7 legal horizontal destinations\",\"EA private/public/cloud CPU capacities\"]}",
+          "source_reference": "/Users/hadi/Documents/GitHub/hoodie_sim_v2/artifacts/analysis/structured-paper-topology-linkrate-registry/topology-recovery-report.json",
           "source_type": "prior_registry_or_report_statement"
         }
       ],
@@ -2380,71 +2003,22 @@
         {
           "confidence": "invalid",
           "normalized_finding": "Figure_7_adjacency",
-          "raw_evidence": "><td>64 samples</td></tr></tbody></table></body></html>  1234567891011121314151617181920  FIGURE 7. Edge layer topology graph of matrix G with 20 EAs.  VOLUME ,  17  ===== page\\_018\\_0\\_re",
-          "source_reference": "/Users/hadi/Documents/GitHub/hoodie_sim_v2/resources/papers/hoodie/ocr/merged.tex",
-          "source_type": "prior_registry_or_report_statement"
-        },
-        {
-          "confidence": "invalid",
-          "normalized_finding": "Figure_7_adjacency",
-          "raw_evidence": "75_864_1128_1128.jpg\" alt=\"Image\" width=\"37%\" /></div>   <div style=\"text-align: center;\">FIGURE 7. Edge layer topology graph of matrix G with 20 EAs.</div>   influence on how intensely th",
-          "source_reference": "/Users/hadi/Documents/GitHub/hoodie_sim_v2/resources/papers/hoodie/ocr/merged.md",
-          "source_type": "prior_registry_or_report_statement"
-        },
-        {
-          "confidence": "invalid",
-          "normalized_finding": "Figure_7_adjacency",
-          "raw_evidence": "><td>64 samples</td></tr></tbody></table></body></html>  1234567891011121314151617181920  FIGURE 7. Edge layer topology graph of matrix G with 20 EAs.  VOLUME ,  17  ===== page_018_0_res.t",
-          "source_reference": "/Users/hadi/Documents/GitHub/hoodie_sim_v2/resources/papers/hoodie/ocr/merged.txt",
-          "source_type": "prior_registry_or_report_statement"
-        },
-        {
-          "confidence": "invalid",
-          "normalized_finding": "Figure_7_adjacency",
-          "raw_evidence": ", 'block_id': 10, 'block_order': None}, {'block_label': 'figure_title', 'block_content': 'FIGURE 7. Edge layer topology graph of matrix G with 20 EAs.', 'block_bbox': [633, 1163, 1088, 118",
-          "source_reference": "/Users/hadi/Documents/GitHub/hoodie_sim_v2/resources/papers/hoodie/ocr/merged.json",
-          "source_type": "prior_registry_or_report_statement"
-        },
-        {
-          "confidence": "invalid",
-          "normalized_finding": "Figure_7_adjacency",
-          "raw_evidence": "count': 20, 'node_ids': None, 'paper_claim_type': 'topology_caption', 'paper_figure_id': 'Figure 7', 'recovery_confidence': 'low', 'recovery_status': 'unrecoverable', 'schema_version': '1.",
+          "raw_evidence": "{\"adjacency_matrix_status\":\"unrecoverable\",\"edge_cloud_connectivity_status\":\"unrecoverable\",\"edge_cloud_connectivity_value\":null,\"unrecoverable_items\":[\"topology_adjacency_edges\",\"adjacency_matrix\",\"legal_horizontal_destinations\",\"edge_cloud_connectivity\"]}",
           "source_reference": "/Users/hadi/Documents/GitHub/hoodie_sim_v2/resources/papers/hoodie/recovered/topology-g.json",
           "source_type": "prior_registry_or_report_statement"
         },
         {
           "confidence": "invalid",
           "normalized_finding": "Figure_7_adjacency",
-          "raw_evidence": "table_reference': None, 'figure_reference': 'Figure 8', 'ocr_snippet': '21314151617181920 FIGURE 7. Edge layer topology graph of matrix G with 20 EAs. VOLUME , 17 ===== page\\\\_018\\\\_0\\\\_re",
-          "source_reference": "/Users/hadi/Documents/GitHub/hoodie_sim_v2/resources/papers/hoodie/recovered/paper-parameter-registry.json",
-          "source_type": "prior_registry_or_report_statement"
-        },
-        {
-          "confidence": "invalid",
-          "normalized_finding": "Figure_7_adjacency",
-          "raw_evidence": "': [{'char_offset': 16871, 'equation_or_table_reference': 'Table 4', 'figure_reference': 'Figure 7', 'ocr_snippet': 'learning. C. PROPOSED SCHEME AND CONTRIBUTIONS In this paper, we propos",
+          "raw_evidence": "{\"blocking_gap_count\":3,\"high_risk_assumption_count\":7,\"implementation_gap_summary_missing\":0}",
           "source_reference": "/Users/hadi/Documents/GitHub/hoodie_sim_v2/artifacts/analysis/paper-mechanism-registry/paper-mechanism-registry.json",
           "source_type": "prior_registry_or_report_statement"
         },
         {
           "confidence": "invalid",
           "normalized_finding": "Figure_7_adjacency",
-          "raw_evidence": "', 'legal_horizontal_destinations', 'edge_cloud_connectivity']}, 'unrecoverable_items': ['Figure 7 adjacency edges', 'Figure 7 legal horizontal destinations', 'EA private/public/cloud CPU capacities']}",
+          "raw_evidence": "{\"topology_summary_status\":\"unrecoverable\",\"topology_summary_unrecoverable_items\":[\"topology_adjacency_edges\",\"adjacency_matrix\",\"legal_horizontal_destinations\",\"edge_cloud_connectivity\"],\"unrecoverable_items\":[\"Figure 7 adjacency edges\",\"Figure 7 legal horizontal destinations\",\"EA private/public/cloud CPU capacities\"]}",
           "source_reference": "/Users/hadi/Documents/GitHub/hoodie_sim_v2/artifacts/analysis/structured-paper-topology-linkrate-registry/topology-recovery-report.json",
-          "source_type": "prior_registry_or_report_statement"
-        },
-        {
-          "confidence": "invalid",
-          "normalized_finding": "Figure_7_adjacency",
-          "raw_evidence": ", 'source': 'resources/papers/hoodie/recovered/paper-parameter-registry.json', 'status': 'unrecoverable', 'value': None}, 'EA_public': {'name': 'EA_public', 'notes': 'Paper evidence does not re",
-          "source_reference": "/Users/hadi/Documents/GitHub/hoodie_sim_v2/artifacts/analysis/computation-delay-cpu-unit-validation/unit-validation-report.json",
-          "source_type": "prior_registry_or_report_statement"
-        },
-        {
-          "confidence": "invalid",
-          "normalized_finding": "Figure_7_adjacency",
-          "raw_evidence": "ion_has_reward': False, 'trace_linked': True}, 'unrecoverable_items': [{'item': 'Figure_7_adjacency', 'status': 'unrecoverable'}]}",
-          "source_reference": "/Users/hadi/Documents/GitHub/hoodie_sim_v2/artifacts/analysis/reward-equation-terminal-reward-contract/reward-contract-report.json",
           "source_type": "prior_registry_or_report_statement"
         }
       ],
@@ -2602,36 +2176,22 @@
         {
           "confidence": "invalid",
           "normalized_finding": "legal_horizontal_destinations",
-          "raw_evidence": "{'adjacency_matrix': None, 'adjacency_matrix_status': 'unrecoverable', 'edge_cloud_connectivity': {'recovery_status': 'unrecoverable', 'source_evidence': [],",
+          "raw_evidence": "{\"adjacency_matrix_status\":\"unrecoverable\",\"legal_horizontal_destinations\":null,\"unrecoverable_items\":[\"topology_adjacency_edges\",\"adjacency_matrix\",\"legal_horizontal_destinations\",\"edge_cloud_connectivity\"]}",
           "source_reference": "/Users/hadi/Documents/GitHub/hoodie_sim_v2/resources/papers/hoodie/recovered/topology-g.json",
           "source_type": "prior_registry_or_report_statement"
         },
         {
           "confidence": "invalid",
           "normalized_finding": "legal_horizontal_destinations",
-          "raw_evidence": "{'cloud_data_rate': {'recovery_status': 'unrecoverable', 'source_evidence': [], 'unrecoverable_reason': 'The paper OCR does not provide a distin",
-          "source_reference": "/Users/hadi/Documents/GitHub/hoodie_sim_v2/resources/papers/hoodie/recovered/paper-parameter-registry.json",
+          "raw_evidence": "{\"blocking_gap_count\":3,\"high_risk_assumption_count\":7,\"implementation_gap_summary_missing\":0}",
+          "source_reference": "/Users/hadi/Documents/GitHub/hoodie_sim_v2/artifacts/analysis/paper-mechanism-registry/paper-mechanism-registry.json",
           "source_type": "prior_registry_or_report_statement"
         },
         {
           "confidence": "invalid",
           "normalized_finding": "legal_horizontal_destinations",
-          "raw_evidence": "tions', 'edge_cloud_connectivity']}, 'unrecoverable_items': ['Figure 7 adjacency edges', 'Figure 7 legal horizontal destinations', 'EA private/public/cloud CPU capacities']}",
+          "raw_evidence": "{\"topology_summary_status\":\"unrecoverable\",\"topology_summary_unrecoverable_items\":[\"topology_adjacency_edges\",\"adjacency_matrix\",\"legal_horizontal_destinations\",\"edge_cloud_connectivity\"],\"unrecoverable_items\":[\"Figure 7 adjacency edges\",\"Figure 7 legal horizontal destinations\",\"EA private/public/cloud CPU capacities\"]}",
           "source_reference": "/Users/hadi/Documents/GitHub/hoodie_sim_v2/artifacts/analysis/structured-paper-topology-linkrate-registry/topology-recovery-report.json",
-          "source_type": "prior_registry_or_report_statement"
-        },
-        {
-          "confidence": "invalid",
-          "normalized_finding": "legal_horizontal_destinations",
-          "raw_evidence": ", 'source': 'resources/papers/hoodie/recovered/paper-parameter-registry.json', 'status': 'unrecoverable', 'value': None}, 'EA_public': {'name': 'EA_public', 'notes': 'Paper evidence does not re",
-          "source_reference": "/Users/hadi/Documents/GitHub/hoodie_sim_v2/artifacts/analysis/computation-delay-cpu-unit-validation/unit-validation-report.json",
-          "source_type": "prior_registry_or_report_statement"
-        },
-        {
-          "confidence": "invalid",
-          "normalized_finding": "legal_horizontal_destinations",
-          "raw_evidence": "s_on_terminal_events': True, 'selected_action_has_reward': False, 'trace_linked': True}, 'unrecoverable_items': [{'item': 'Figure_7_adjacency', 'status': 'unrecoverable'}]}",
-          "source_reference": "/Users/hadi/Documents/GitHub/hoodie_sim_v2/artifacts/analysis/reward-equation-terminal-reward-contract/reward-contract-report.json",
           "source_type": "prior_registry_or_report_statement"
         }
       ],
@@ -2778,64 +2338,29 @@
         {
           "confidence": "invalid",
           "normalized_finding": "EA_private_cpu_capacity",
-          "raw_evidence": "scheme, which relies solely on local computation,maintains a consistent delay across all CPU capacities, as it directly benefits from the increased local resources. However,it does not outperfo",
-          "source_reference": "/Users/hadi/Documents/GitHub/hoodie_sim_v2/resources/papers/hoodie/ocr/merged.tex",
-          "source_type": "prior_registry_or_report_statement"
-        },
-        {
-          "confidence": "invalid",
-          "normalized_finding": "EA_private_cpu_capacity",
-          "raw_evidence": "scheme, which relies solely on local computation,maintains a consistent delay across all CPU capacities, as it directly benefits from the increased local resources. However,it does not outperfo",
-          "source_reference": "/Users/hadi/Documents/GitHub/hoodie_sim_v2/resources/papers/hoodie/ocr/merged.md",
-          "source_type": "prior_registry_or_report_statement"
-        },
-        {
-          "confidence": "invalid",
-          "normalized_finding": "EA_private_cpu_capacity",
-          "raw_evidence": "scheme, which relies solely on local computation,maintains a consistent delay across all CPU capacities, as it directly benefits from the increased local resources. However,it does not outperfo",
-          "source_reference": "/Users/hadi/Documents/GitHub/hoodie_sim_v2/resources/papers/hoodie/ocr/merged.txt",
-          "source_type": "prior_registry_or_report_statement"
-        },
-        {
-          "confidence": "invalid",
-          "normalized_finding": "EA_private_cpu_capacity",
-          "raw_evidence": "scheme, which relies solely on local computation,maintains a consistent delay across all CPU capacities, as it directly benefits from the increased local resources. However,it does not outperfo",
-          "source_reference": "/Users/hadi/Documents/GitHub/hoodie_sim_v2/resources/papers/hoodie/ocr/merged.json",
-          "source_type": "prior_registry_or_report_statement"
-        },
-        {
-          "confidence": "invalid",
-          "normalized_finding": "EA_private_cpu_capacity",
-          "raw_evidence": "{'adjacency_matrix': None, 'adjacency_matrix_status': 'unrecoverable', 'edge_cloud_connectivity': {'recovery_status': 'unrecoverable', 'source_evidence': [],",
-          "source_reference": "/Users/hadi/Documents/GitHub/hoodie_sim_v2/resources/papers/hoodie/recovered/topology-g.json",
-          "source_type": "prior_registry_or_report_statement"
-        },
-        {
-          "confidence": "invalid",
-          "normalized_finding": "EA_private_cpu_capacity",
-          "raw_evidence": "{'cloud_data_rate': {'recovery_status': 'unrecoverable', 'source_evidence': [], 'unrecoverable_reason': 'The paper OCR does not provide a distin",
+          "raw_evidence": "{\"cpu_capacity_status\":\"unrecoverable\",\"cpu_capacity_value\":null,\"unrecoverable_items\":[\"EA_private_cpu_capacities\",\"EA_public_cpu_capacities\",\"cloud_cpu_capacities\",\"adjacency_matrix\",\"legal_horizontal_destinations\",\"edge_cloud_connectivity\",\"cloud_data_rate\"]}",
           "source_reference": "/Users/hadi/Documents/GitHub/hoodie_sim_v2/resources/papers/hoodie/recovered/paper-parameter-registry.json",
           "source_type": "prior_registry_or_report_statement"
         },
         {
           "confidence": "invalid",
           "normalized_finding": "EA_private_cpu_capacity",
-          "raw_evidence": "coverable_items': ['Figure 7 adjacency edges', 'Figure 7 legal horizontal destinations', 'EA private/public/cloud CPU capacities']}",
+          "raw_evidence": "{\"blocking_gap_count\":3,\"high_risk_assumption_count\":7,\"implementation_gap_summary_missing\":0}",
+          "source_reference": "/Users/hadi/Documents/GitHub/hoodie_sim_v2/artifacts/analysis/paper-mechanism-registry/paper-mechanism-registry.json",
+          "source_type": "prior_registry_or_report_statement"
+        },
+        {
+          "confidence": "invalid",
+          "normalized_finding": "EA_private_cpu_capacity",
+          "raw_evidence": "{\"topology_summary_status\":\"unrecoverable\",\"topology_summary_unrecoverable_items\":[\"topology_adjacency_edges\",\"adjacency_matrix\",\"legal_horizontal_destinations\",\"edge_cloud_connectivity\"],\"unrecoverable_items\":[\"Figure 7 adjacency edges\",\"Figure 7 legal horizontal destinations\",\"EA private/public/cloud CPU capacities\"]}",
           "source_reference": "/Users/hadi/Documents/GitHub/hoodie_sim_v2/artifacts/analysis/structured-paper-topology-linkrate-registry/topology-recovery-report.json",
           "source_type": "prior_registry_or_report_statement"
         },
         {
           "confidence": "invalid",
           "normalized_finding": "EA_private_cpu_capacity",
-          "raw_evidence": "recoverable'}], 'validation_summary': 'Task size and processing density are paper-backed; CPU capacities remain unrecoverable; paper \u0394=0.1 sec, runtime \u0394=0.1 sec, Feature 027 reported \u0394=0.1 sec;",
+          "raw_evidence": "{\"cpu_capacity_contract_status\":{\"cpu_capacity_per_slot_agent\":32.0,\"cpu_capacity_per_slot_cloud\":128.0,\"cpu_capacity_per_slot_edge\":64.0},\"cpu_capacity_contract_values\":{\"EA_private\":{\"name\":\"EA_private\",\"notes\":\"Paper evidence does not recover an EA private CPU capacity.\",\"source\":\"resources/papers/hoodie/recovered/paper-parameter-registry.json\",\"status\":\"unrecoverable\",\"v...",
           "source_reference": "/Users/hadi/Documents/GitHub/hoodie_sim_v2/artifacts/analysis/computation-delay-cpu-unit-validation/unit-validation-report.json",
-          "source_type": "prior_registry_or_report_statement"
-        },
-        {
-          "confidence": "invalid",
-          "normalized_finding": "EA_private_cpu_capacity",
-          "raw_evidence": "s_on_terminal_events': True, 'selected_action_has_reward': False, 'trace_linked': True}, 'unrecoverable_items': [{'item': 'Figure_7_adjacency', 'status': 'unrecoverable'}]}",
-          "source_reference": "/Users/hadi/Documents/GitHub/hoodie_sim_v2/artifacts/analysis/reward-equation-terminal-reward-contract/reward-contract-report.json",
           "source_type": "prior_registry_or_report_statement"
         }
       ],
@@ -2982,64 +2507,29 @@
         {
           "confidence": "invalid",
           "normalized_finding": "EA_public_cpu_capacity",
-          "raw_evidence": "scheme, which relies solely on local computation,maintains a consistent delay across all CPU capacities, as it directly benefits from the increased local resources. However,it does not outperfo",
-          "source_reference": "/Users/hadi/Documents/GitHub/hoodie_sim_v2/resources/papers/hoodie/ocr/merged.tex",
-          "source_type": "prior_registry_or_report_statement"
-        },
-        {
-          "confidence": "invalid",
-          "normalized_finding": "EA_public_cpu_capacity",
-          "raw_evidence": "scheme, which relies solely on local computation,maintains a consistent delay across all CPU capacities, as it directly benefits from the increased local resources. However,it does not outperfo",
-          "source_reference": "/Users/hadi/Documents/GitHub/hoodie_sim_v2/resources/papers/hoodie/ocr/merged.md",
-          "source_type": "prior_registry_or_report_statement"
-        },
-        {
-          "confidence": "invalid",
-          "normalized_finding": "EA_public_cpu_capacity",
-          "raw_evidence": "scheme, which relies solely on local computation,maintains a consistent delay across all CPU capacities, as it directly benefits from the increased local resources. However,it does not outperfo",
-          "source_reference": "/Users/hadi/Documents/GitHub/hoodie_sim_v2/resources/papers/hoodie/ocr/merged.txt",
-          "source_type": "prior_registry_or_report_statement"
-        },
-        {
-          "confidence": "invalid",
-          "normalized_finding": "EA_public_cpu_capacity",
-          "raw_evidence": "scheme, which relies solely on local computation,maintains a consistent delay across all CPU capacities, as it directly benefits from the increased local resources. However,it does not outperfo",
-          "source_reference": "/Users/hadi/Documents/GitHub/hoodie_sim_v2/resources/papers/hoodie/ocr/merged.json",
-          "source_type": "prior_registry_or_report_statement"
-        },
-        {
-          "confidence": "invalid",
-          "normalized_finding": "EA_public_cpu_capacity",
-          "raw_evidence": "{'adjacency_matrix': None, 'adjacency_matrix_status': 'unrecoverable', 'edge_cloud_connectivity': {'recovery_status': 'unrecoverable', 'source_evidence': [],",
-          "source_reference": "/Users/hadi/Documents/GitHub/hoodie_sim_v2/resources/papers/hoodie/recovered/topology-g.json",
-          "source_type": "prior_registry_or_report_statement"
-        },
-        {
-          "confidence": "invalid",
-          "normalized_finding": "EA_public_cpu_capacity",
-          "raw_evidence": "{'cloud_data_rate': {'recovery_status': 'unrecoverable', 'source_evidence': [], 'unrecoverable_reason': 'The paper OCR does not provide a distin",
+          "raw_evidence": "{\"cpu_capacity_status\":\"unrecoverable\",\"cpu_capacity_value\":null,\"unrecoverable_items\":[\"EA_private_cpu_capacities\",\"EA_public_cpu_capacities\",\"cloud_cpu_capacities\",\"adjacency_matrix\",\"legal_horizontal_destinations\",\"edge_cloud_connectivity\",\"cloud_data_rate\"]}",
           "source_reference": "/Users/hadi/Documents/GitHub/hoodie_sim_v2/resources/papers/hoodie/recovered/paper-parameter-registry.json",
           "source_type": "prior_registry_or_report_statement"
         },
         {
           "confidence": "invalid",
           "normalized_finding": "EA_public_cpu_capacity",
-          "raw_evidence": "coverable_items': ['Figure 7 adjacency edges', 'Figure 7 legal horizontal destinations', 'EA private/public/cloud CPU capacities']}",
+          "raw_evidence": "{\"blocking_gap_count\":3,\"high_risk_assumption_count\":7,\"implementation_gap_summary_missing\":0}",
+          "source_reference": "/Users/hadi/Documents/GitHub/hoodie_sim_v2/artifacts/analysis/paper-mechanism-registry/paper-mechanism-registry.json",
+          "source_type": "prior_registry_or_report_statement"
+        },
+        {
+          "confidence": "invalid",
+          "normalized_finding": "EA_public_cpu_capacity",
+          "raw_evidence": "{\"topology_summary_status\":\"unrecoverable\",\"topology_summary_unrecoverable_items\":[\"topology_adjacency_edges\",\"adjacency_matrix\",\"legal_horizontal_destinations\",\"edge_cloud_connectivity\"],\"unrecoverable_items\":[\"Figure 7 adjacency edges\",\"Figure 7 legal horizontal destinations\",\"EA private/public/cloud CPU capacities\"]}",
           "source_reference": "/Users/hadi/Documents/GitHub/hoodie_sim_v2/artifacts/analysis/structured-paper-topology-linkrate-registry/topology-recovery-report.json",
           "source_type": "prior_registry_or_report_statement"
         },
         {
           "confidence": "invalid",
           "normalized_finding": "EA_public_cpu_capacity",
-          "raw_evidence": "recoverable'}], 'validation_summary': 'Task size and processing density are paper-backed; CPU capacities remain unrecoverable; paper \u0394=0.1 sec, runtime \u0394=0.1 sec, Feature 027 reported \u0394=0.1 sec;",
+          "raw_evidence": "{\"cpu_capacity_contract_status\":{\"cpu_capacity_per_slot_agent\":32.0,\"cpu_capacity_per_slot_cloud\":128.0,\"cpu_capacity_per_slot_edge\":64.0},\"cpu_capacity_contract_values\":{\"EA_private\":{\"name\":\"EA_private\",\"notes\":\"Paper evidence does not recover an EA private CPU capacity.\",\"source\":\"resources/papers/hoodie/recovered/paper-parameter-registry.json\",\"status\":\"unrecoverable\",\"v...",
           "source_reference": "/Users/hadi/Documents/GitHub/hoodie_sim_v2/artifacts/analysis/computation-delay-cpu-unit-validation/unit-validation-report.json",
-          "source_type": "prior_registry_or_report_statement"
-        },
-        {
-          "confidence": "invalid",
-          "normalized_finding": "EA_public_cpu_capacity",
-          "raw_evidence": "s_on_terminal_events': True, 'selected_action_has_reward': False, 'trace_linked': True}, 'unrecoverable_items': [{'item': 'Figure_7_adjacency', 'status': 'unrecoverable'}]}",
-          "source_reference": "/Users/hadi/Documents/GitHub/hoodie_sim_v2/artifacts/analysis/reward-equation-terminal-reward-contract/reward-contract-report.json",
           "source_type": "prior_registry_or_report_statement"
         }
       ],
@@ -3186,64 +2676,29 @@
         {
           "confidence": "invalid",
           "normalized_finding": "cloud_cpu_capacity",
-          "raw_evidence": "scheme, which relies solely on local computation,maintains a consistent delay across all CPU capacities, as it directly benefits from the increased local resources. However,it does not outperfo",
-          "source_reference": "/Users/hadi/Documents/GitHub/hoodie_sim_v2/resources/papers/hoodie/ocr/merged.tex",
-          "source_type": "prior_registry_or_report_statement"
-        },
-        {
-          "confidence": "invalid",
-          "normalized_finding": "cloud_cpu_capacity",
-          "raw_evidence": "scheme, which relies solely on local computation,maintains a consistent delay across all CPU capacities, as it directly benefits from the increased local resources. However,it does not outperfo",
-          "source_reference": "/Users/hadi/Documents/GitHub/hoodie_sim_v2/resources/papers/hoodie/ocr/merged.md",
-          "source_type": "prior_registry_or_report_statement"
-        },
-        {
-          "confidence": "invalid",
-          "normalized_finding": "cloud_cpu_capacity",
-          "raw_evidence": "scheme, which relies solely on local computation,maintains a consistent delay across all CPU capacities, as it directly benefits from the increased local resources. However,it does not outperfo",
-          "source_reference": "/Users/hadi/Documents/GitHub/hoodie_sim_v2/resources/papers/hoodie/ocr/merged.txt",
-          "source_type": "prior_registry_or_report_statement"
-        },
-        {
-          "confidence": "invalid",
-          "normalized_finding": "cloud_cpu_capacity",
-          "raw_evidence": "scheme, which relies solely on local computation,maintains a consistent delay across all CPU capacities, as it directly benefits from the increased local resources. However,it does not outperfo",
-          "source_reference": "/Users/hadi/Documents/GitHub/hoodie_sim_v2/resources/papers/hoodie/ocr/merged.json",
-          "source_type": "prior_registry_or_report_statement"
-        },
-        {
-          "confidence": "invalid",
-          "normalized_finding": "cloud_cpu_capacity",
-          "raw_evidence": "{'adjacency_matrix': None, 'adjacency_matrix_status': 'unrecoverable', 'edge_cloud_connectivity': {'recovery_status': 'unrecoverable', 'source_evidence': [],",
-          "source_reference": "/Users/hadi/Documents/GitHub/hoodie_sim_v2/resources/papers/hoodie/recovered/topology-g.json",
-          "source_type": "prior_registry_or_report_statement"
-        },
-        {
-          "confidence": "invalid",
-          "normalized_finding": "cloud_cpu_capacity",
-          "raw_evidence": "{'cloud_data_rate': {'recovery_status': 'unrecoverable', 'source_evidence': [], 'unrecoverable_reason': 'The paper OCR does not provide a distin",
+          "raw_evidence": "{\"cpu_capacity_status\":\"unrecoverable\",\"cpu_capacity_value\":null,\"unrecoverable_items\":[\"EA_private_cpu_capacities\",\"EA_public_cpu_capacities\",\"cloud_cpu_capacities\",\"adjacency_matrix\",\"legal_horizontal_destinations\",\"edge_cloud_connectivity\",\"cloud_data_rate\"]}",
           "source_reference": "/Users/hadi/Documents/GitHub/hoodie_sim_v2/resources/papers/hoodie/recovered/paper-parameter-registry.json",
           "source_type": "prior_registry_or_report_statement"
         },
         {
           "confidence": "invalid",
           "normalized_finding": "cloud_cpu_capacity",
-          "raw_evidence": "coverable_items': ['Figure 7 adjacency edges', 'Figure 7 legal horizontal destinations', 'EA private/public/cloud CPU capacities']}",
+          "raw_evidence": "{\"blocking_gap_count\":3,\"high_risk_assumption_count\":7,\"implementation_gap_summary_missing\":0}",
+          "source_reference": "/Users/hadi/Documents/GitHub/hoodie_sim_v2/artifacts/analysis/paper-mechanism-registry/paper-mechanism-registry.json",
+          "source_type": "prior_registry_or_report_statement"
+        },
+        {
+          "confidence": "invalid",
+          "normalized_finding": "cloud_cpu_capacity",
+          "raw_evidence": "{\"topology_summary_status\":\"unrecoverable\",\"topology_summary_unrecoverable_items\":[\"topology_adjacency_edges\",\"adjacency_matrix\",\"legal_horizontal_destinations\",\"edge_cloud_connectivity\"],\"unrecoverable_items\":[\"Figure 7 adjacency edges\",\"Figure 7 legal horizontal destinations\",\"EA private/public/cloud CPU capacities\"]}",
           "source_reference": "/Users/hadi/Documents/GitHub/hoodie_sim_v2/artifacts/analysis/structured-paper-topology-linkrate-registry/topology-recovery-report.json",
           "source_type": "prior_registry_or_report_statement"
         },
         {
           "confidence": "invalid",
           "normalized_finding": "cloud_cpu_capacity",
-          "raw_evidence": "recoverable'}], 'validation_summary': 'Task size and processing density are paper-backed; CPU capacities remain unrecoverable; paper \u0394=0.1 sec, runtime \u0394=0.1 sec, Feature 027 reported \u0394=0.1 sec;",
+          "raw_evidence": "{\"cpu_capacity_contract_status\":{\"cpu_capacity_per_slot_agent\":32.0,\"cpu_capacity_per_slot_cloud\":128.0,\"cpu_capacity_per_slot_edge\":64.0},\"cpu_capacity_contract_values\":{\"EA_private\":{\"name\":\"EA_private\",\"notes\":\"Paper evidence does not recover an EA private CPU capacity.\",\"source\":\"resources/papers/hoodie/recovered/paper-parameter-registry.json\",\"status\":\"unrecoverable\",\"v...",
           "source_reference": "/Users/hadi/Documents/GitHub/hoodie_sim_v2/artifacts/analysis/computation-delay-cpu-unit-validation/unit-validation-report.json",
-          "source_type": "prior_registry_or_report_statement"
-        },
-        {
-          "confidence": "invalid",
-          "normalized_finding": "cloud_cpu_capacity",
-          "raw_evidence": "s_on_terminal_events': True, 'selected_action_has_reward': False, 'trace_linked': True}, 'unrecoverable_items': [{'item': 'Figure_7_adjacency', 'status': 'unrecoverable'}]}",
-          "source_reference": "/Users/hadi/Documents/GitHub/hoodie_sim_v2/artifacts/analysis/reward-equation-terminal-reward-contract/reward-contract-report.json",
           "source_type": "prior_registry_or_report_statement"
         }
       ],
@@ -3379,36 +2834,22 @@
         {
           "confidence": "invalid",
           "normalized_finding": "cloud_data_rate",
-          "raw_evidence": "{'adjacency_matrix': None, 'adjacency_matrix_status': 'unrecoverable', 'edge_cloud_connectivity': {'recovery_status': 'unrecoverable', 'source_evidence': [],",
-          "source_reference": "/Users/hadi/Documents/GitHub/hoodie_sim_v2/resources/papers/hoodie/recovered/topology-g.json",
-          "source_type": "prior_registry_or_report_statement"
-        },
-        {
-          "confidence": "invalid",
-          "normalized_finding": "cloud_data_rate",
-          "raw_evidence": "{'cloud_data_rate': {'recovery_status': 'unrecoverable', 'source_evidence': [], 'unrecoverable_reason': 'The paper OCR does not provide a distin",
+          "raw_evidence": "{\"cloud_data_rate_status\":\"unrecoverable\",\"cloud_data_rate_value\":null,\"unrecoverable_items\":[\"EA_private_cpu_capacities\",\"EA_public_cpu_capacities\",\"cloud_cpu_capacities\",\"adjacency_matrix\",\"legal_horizontal_destinations\",\"edge_cloud_connectivity\",\"cloud_data_rate\"]}",
           "source_reference": "/Users/hadi/Documents/GitHub/hoodie_sim_v2/resources/papers/hoodie/recovered/paper-parameter-registry.json",
           "source_type": "prior_registry_or_report_statement"
         },
         {
           "confidence": "invalid",
           "normalized_finding": "cloud_data_rate",
-          "raw_evidence": "N', 'scenario_parameters.edge_layer_density'], 'recovery_status': 'partially_recovered', 'unrecoverable_items': ['EA_private_cpu_capacities', 'EA_public_cpu_capacities', 'cloud_cpu_capacities',",
+          "raw_evidence": "{\"blocking_gap_count\":3,\"high_risk_assumption_count\":7,\"implementation_gap_summary_missing\":0}",
+          "source_reference": "/Users/hadi/Documents/GitHub/hoodie_sim_v2/artifacts/analysis/paper-mechanism-registry/paper-mechanism-registry.json",
+          "source_type": "prior_registry_or_report_statement"
+        },
+        {
+          "confidence": "invalid",
+          "normalized_finding": "cloud_data_rate",
+          "raw_evidence": "{\"topology_summary_status\":\"unrecoverable\",\"topology_summary_unrecoverable_items\":[\"topology_adjacency_edges\",\"adjacency_matrix\",\"legal_horizontal_destinations\",\"edge_cloud_connectivity\"],\"unrecoverable_items\":[\"Figure 7 adjacency edges\",\"Figure 7 legal horizontal destinations\",\"EA private/public/cloud CPU capacities\"]}",
           "source_reference": "/Users/hadi/Documents/GitHub/hoodie_sim_v2/artifacts/analysis/structured-paper-topology-linkrate-registry/topology-recovery-report.json",
-          "source_type": "prior_registry_or_report_statement"
-        },
-        {
-          "confidence": "invalid",
-          "normalized_finding": "cloud_data_rate",
-          "raw_evidence": ", 'source': 'resources/papers/hoodie/recovered/paper-parameter-registry.json', 'status': 'unrecoverable', 'value': None}, 'EA_public': {'name': 'EA_public', 'notes': 'Paper evidence does not re",
-          "source_reference": "/Users/hadi/Documents/GitHub/hoodie_sim_v2/artifacts/analysis/computation-delay-cpu-unit-validation/unit-validation-report.json",
-          "source_type": "prior_registry_or_report_statement"
-        },
-        {
-          "confidence": "invalid",
-          "normalized_finding": "cloud_data_rate",
-          "raw_evidence": "s_on_terminal_events': True, 'selected_action_has_reward': False, 'trace_linked': True}, 'unrecoverable_items': [{'item': 'Figure_7_adjacency', 'status': 'unrecoverable'}]}",
-          "source_reference": "/Users/hadi/Documents/GitHub/hoodie_sim_v2/artifacts/analysis/reward-equation-terminal-reward-contract/reward-contract-report.json",
           "source_type": "prior_registry_or_report_statement"
         }
       ],
@@ -3555,71 +2996,29 @@
         {
           "confidence": "invalid",
           "normalized_finding": "timeout_value",
-          "raw_evidence": "he decisions made by other agents. The optimization problem is formulated with known task timeouts and other task features under stochastic traffic at each agent. To solve this problem, H",
-          "source_reference": "/Users/hadi/Documents/GitHub/hoodie_sim_v2/resources/papers/hoodie/ocr/merged.tex",
-          "source_type": "prior_registry_or_report_statement"
-        },
-        {
-          "confidence": "invalid",
-          "normalized_finding": "timeout_value",
-          "raw_evidence": "he decisions made by other agents. The optimization problem is formulated with known task timeouts and other task features under stochastic traffic at each agent. To solve this problem, H",
-          "source_reference": "/Users/hadi/Documents/GitHub/hoodie_sim_v2/resources/papers/hoodie/ocr/merged.md",
-          "source_type": "prior_registry_or_report_statement"
-        },
-        {
-          "confidence": "invalid",
-          "normalized_finding": "timeout_value",
-          "raw_evidence": "he decisions made by other agents. The optimization problem is formulated with known task timeouts and other task features under stochastic traffic at each agent. To solve this problem, H",
-          "source_reference": "/Users/hadi/Documents/GitHub/hoodie_sim_v2/resources/papers/hoodie/ocr/merged.txt",
-          "source_type": "prior_registry_or_report_statement"
-        },
-        {
-          "confidence": "invalid",
-          "normalized_finding": "timeout_value",
-          "raw_evidence": "he decisions made by other agents. The optimization problem is formulated with known task timeouts and other task features under stochastic traffic at each agent. To solve this problem, H",
-          "source_reference": "/Users/hadi/Documents/GitHub/hoodie_sim_v2/resources/papers/hoodie/ocr/merged.json",
-          "source_type": "prior_registry_or_report_statement"
-        },
-        {
-          "confidence": "invalid",
-          "normalized_finding": "timeout_value",
-          "raw_evidence": "{'adjacency_matrix': None, 'adjacency_matrix_status': 'unrecoverable', 'edge_cloud_connectivity': {'recovery_status': 'unrecoverable', 'source_evidence': [],",
-          "source_reference": "/Users/hadi/Documents/GitHub/hoodie_sim_v2/resources/papers/hoodie/recovered/topology-g.json",
-          "source_type": "prior_registry_or_report_statement"
-        },
-        {
-          "confidence": "invalid",
-          "normalized_finding": "timeout_value",
-          "raw_evidence": "oodie_sim_v2/resources/papers/hoodie/ocr/merged.tex'}], 'value': '[2,2.1,...,5] Mbits'}, 'timeout_values': {'recovery_status': 'unrecoverable', 'source_evidence': [{'char_offset': 26551,",
+          "raw_evidence": "{\"timeout_value_status\":\"unrecoverable\",\"timeout_value_value\":null,\"unrecoverable_items\":[\"EA_private_cpu_capacities\",\"EA_public_cpu_capacities\",\"cloud_cpu_capacities\",\"adjacency_matrix\",\"legal_horizontal_destinations\",\"edge_cloud_connectivity\",\"cloud_data_rate\"]}",
           "source_reference": "/Users/hadi/Documents/GitHub/hoodie_sim_v2/resources/papers/hoodie/recovered/paper-parameter-registry.json",
           "source_type": "prior_registry_or_report_statement"
         },
         {
           "confidence": "invalid",
           "normalized_finding": "timeout_value",
-          "raw_evidence": "jacency is not present as a structured artifact.', 'severity': 'blocking'}, {'category': 'timeout_and_drop', 'description': 'Timeout and Drop requires paper-faithful validation before any",
+          "raw_evidence": "{\"blocking_gap_count\":3,\"high_risk_assumption_count\":7,\"implementation_gap_summary_missing\":0}",
           "source_reference": "/Users/hadi/Documents/GitHub/hoodie_sim_v2/artifacts/analysis/paper-mechanism-registry/paper-mechanism-registry.json",
           "source_type": "prior_registry_or_report_statement"
         },
         {
           "confidence": "invalid",
           "normalized_finding": "timeout_value",
-          "raw_evidence": "N', 'scenario_parameters.edge_layer_density'], 'recovery_status': 'partially_recovered', 'unrecoverable_items': ['EA_private_cpu_capacities', 'EA_public_cpu_capacities', 'cloud_cpu_capacities',",
+          "raw_evidence": "{\"topology_summary_status\":\"unrecoverable\",\"topology_summary_unrecoverable_items\":[\"topology_adjacency_edges\",\"adjacency_matrix\",\"legal_horizontal_destinations\",\"edge_cloud_connectivity\"],\"unrecoverable_items\":[\"Figure 7 adjacency edges\",\"Figure 7 legal horizontal destinations\",\"EA private/public/cloud CPU capacities\"]}",
           "source_reference": "/Users/hadi/Documents/GitHub/hoodie_sim_v2/artifacts/analysis/structured-paper-topology-linkrate-registry/topology-recovery-report.json",
           "source_type": "prior_registry_or_report_statement"
         },
         {
           "confidence": "invalid",
           "normalized_finding": "timeout_value",
-          "raw_evidence": "d', 'unit': 'Mbits', 'value': '[2,2.1,...,5] Mbits'}}, 'regression_checks': {'feature_019_timeout_drop': 'covered', 'feature_024_local_compute_and_deterministic_ordering': 'covered', 'fea",
+          "raw_evidence": "{\"runtime_timeout_slots\":20,\"runtime_timeout_source\":\"paper-backed\",\"unrecoverable_items\":[{\"item\":\"EA_private_cpu_capacity\",\"status\":\"unrecoverable\"},{\"item\":\"EA_public_cpu_capacity\",\"status\":\"unrecoverable\"},{\"item\":\"cloud_cpu_capacity\",\"status\":\"unrecoverable\"}]}",
           "source_reference": "/Users/hadi/Documents/GitHub/hoodie_sim_v2/artifacts/analysis/computation-delay-cpu-unit-validation/unit-validation-report.json",
-          "source_type": "prior_registry_or_report_statement"
-        },
-        {
-          "confidence": "invalid",
-          "normalized_finding": "timeout_value",
-          "raw_evidence": "mula': 'r_n(t+1) = NaN if x_n(t)=0; r_n(t+1) = -Phi_n(t) if successfully processed before timeout; r_n(t+1) = -C otherwise (task thrown)', 'raw_ocr_text': \"r_n(t+1)=begin{cases}{NaN,} if",
-          "source_reference": "/Users/hadi/Documents/GitHub/hoodie_sim_v2/artifacts/analysis/reward-equation-terminal-reward-contract/reward-contract-report.json",
           "source_type": "prior_registry_or_report_statement"
         }
       ],
@@ -3766,63 +3165,21 @@
         {
           "confidence": "invalid",
           "normalized_finding": "multi_agent_aggregation_reduction_order",
-          "raw_evidence": "r the ease of exposure, here we assumed wired connections between EAs and EAs-Cloud. This assumption can be easily modified without loss of generality. 7Under dynamic Edge layer topologies,",
-          "source_reference": "/Users/hadi/Documents/GitHub/hoodie_sim_v2/resources/papers/hoodie/ocr/merged.tex",
-          "source_type": "prior_registry_or_report_statement"
-        },
-        {
-          "confidence": "invalid",
-          "normalized_finding": "multi_agent_aggregation_reduction_order",
-          "raw_evidence": "formalistic convergence of such high-dimensional DQN models can be only proven under mild assumptions [35] and, consequently,remains an open theoretical problem [36], in which DQN convergenc",
-          "source_reference": "/Users/hadi/Documents/GitHub/hoodie_sim_v2/resources/papers/hoodie/ocr/merged.md",
-          "source_type": "prior_registry_or_report_statement"
-        },
-        {
-          "confidence": "invalid",
-          "normalized_finding": "multi_agent_aggregation_reduction_order",
-          "raw_evidence": "r the ease of exposure, here we assumed wired connections between EAs and EAs-Cloud. This assumption can be easily modified without loss of generality. 7Under dynamic Edge layer topologies,",
-          "source_reference": "/Users/hadi/Documents/GitHub/hoodie_sim_v2/resources/papers/hoodie/ocr/merged.txt",
-          "source_type": "prior_registry_or_report_statement"
-        },
-        {
-          "confidence": "invalid",
-          "normalized_finding": "multi_agent_aggregation_reduction_order",
-          "raw_evidence": "r the ease of exposure, here we assumed wired connections between EAs and EAs-Cloud. This assumption can be easily modified without loss of generality.\\n7Under dynamic Edge layer topologies,",
-          "source_reference": "/Users/hadi/Documents/GitHub/hoodie_sim_v2/resources/papers/hoodie/ocr/merged.json",
-          "source_type": "prior_registry_or_report_statement"
-        },
-        {
-          "confidence": "invalid",
-          "normalized_finding": "multi_agent_aggregation_reduction_order",
-          "raw_evidence": "matrix G with 20 EAs. VOLUME , 17 ===== page\\\\_018\\\\_0\\\\_res.txt ===== is the cumulative reward, as defined in (20) and (24), that was collected in a series of 5000 episodes, and averag",
-          "source_reference": "/Users/hadi/Documents/GitHub/hoodie_sim_v2/resources/papers/hoodie/recovered/topology-g.json",
-          "source_type": "prior_registry_or_report_statement"
-        },
-        {
-          "confidence": "invalid",
-          "normalized_finding": "multi_agent_aggregation_reduction_order",
-          "raw_evidence": ": None, 'figure_reference': 'Figure 8', 'ocr_snippet': 'e is zero, which explains why the reward curves are negative and increasing. In Fig. 8b, the impact of the discount factor \u03b3 is al",
-          "source_reference": "/Users/hadi/Documents/GitHub/hoodie_sim_v2/resources/papers/hoodie/recovered/paper-parameter-registry.json",
-          "source_type": "prior_registry_or_report_statement"
-        },
-        {
-          "confidence": "invalid",
-          "normalized_finding": "multi_agent_aggregation_reduction_order",
-          "raw_evidence": "s paper-faithful validation before any repair feature.', 'severity': 'high'}], 'high_risk_assumptions': [{'assumption_risk': 'high', 'category': 'cpu_capacity', 'description': 'Evaluation sw",
+          "raw_evidence": "{\"blocking_gap_count\":3,\"high_risk_assumption_count\":7,\"implementation_gap_summary_missing\":0}",
           "source_reference": "/Users/hadi/Documents/GitHub/hoodie_sim_v2/artifacts/analysis/paper-mechanism-registry/paper-mechanism-registry.json",
           "source_type": "prior_registry_or_report_statement"
         },
         {
           "confidence": "invalid",
           "normalized_finding": "multi_agent_aggregation_reduction_order",
-          "raw_evidence": "nment/link_rate_config.py', 'runtime_contract_classification': 'paper-backed-runtime-with-assumption-backed-cpu-capacity-fields', 'runtime_cpu_capacity_fields': {'cpu_capacity_per_slot_agent",
-          "source_reference": "/Users/hadi/Documents/GitHub/hoodie_sim_v2/artifacts/analysis/computation-delay-cpu-unit-validation/unit-validation-report.json",
+          "raw_evidence": "{\"topology_summary_status\":\"unrecoverable\",\"topology_summary_unrecoverable_items\":[\"topology_adjacency_edges\",\"adjacency_matrix\",\"legal_horizontal_destinations\",\"edge_cloud_connectivity\"],\"unrecoverable_items\":[\"Figure 7 adjacency edges\",\"Figure 7 legal horizontal destinations\",\"EA private/public/cloud CPU capacities\"]}",
+          "source_reference": "/Users/hadi/Documents/GitHub/hoodie_sim_v2/artifacts/analysis/structured-paper-topology-linkrate-registry/topology-recovery-report.json",
           "source_type": "prior_registry_or_report_statement"
         },
         {
           "confidence": "invalid",
           "normalized_finding": "multi_agent_aggregation_reduction_order",
-          "raw_evidence": "ract': {'average_across_distributed_agents': 'artifact_backed', 'exact_reduction_order': 'assumption_backed', 'per_agent': 'paper_backed', 'reported_cumulative_reward': 'artifact_backed'}, '",
+          "raw_evidence": "{\"aggregation_contract_average_across\":\"artifact_backed\",\"aggregation_contract_exact_reduction_order\":\"assumption_backed\",\"assumption_backed_items\":[{\"item\":\"multi_agent_aggregation_reduction_order\",\"status\":\"assumption_backed\"}],\"unrecoverable_items\":[{\"item\":\"Figure_7_adjacency\",\"status\":\"unrecoverable\"}]}",
           "source_reference": "/Users/hadi/Documents/GitHub/hoodie_sim_v2/artifacts/analysis/reward-equation-terminal-reward-contract/reward-contract-report.json",
           "source_type": "prior_registry_or_report_statement"
         }
@@ -3977,7 +3334,22 @@
       "evidence_exhaustion_rationale": "Searched OCR, recovered registries, and prior analysis reports for mapper_defect__users_hadi_documents_github_hoodie_sim_v2_artifacts_analysis_structured-paper-topology-linkrate-registry_topology-recovery-report_json#partially_recovered_items[0] but found no item-specific value; only negative evidence remains.",
       "item_id": "mapper_defect__users_hadi_documents_github_hoodie_sim_v2_artifacts_analysis_structured-paper-topology-linkrate-registry_topology-recovery-report_json#partially_recovered_items[0]",
       "manual_visual_recovery": null,
-      "negative_evidence": [],
+      "negative_evidence": [
+        {
+          "confidence": "invalid",
+          "normalized_finding": "mapper_defect__users_hadi_documents_github_hoodie_sim_v2_artifacts_analysis_structured-paper-topology-linkrate-registry_topology-recovery-report_json#partially_recovered_items[0]",
+          "raw_evidence": "{\"blocking_gap_count\":3,\"high_risk_assumption_count\":7,\"implementation_gap_summary_missing\":0}",
+          "source_reference": "/Users/hadi/Documents/GitHub/hoodie_sim_v2/artifacts/analysis/paper-mechanism-registry/paper-mechanism-registry.json",
+          "source_type": "prior_registry_or_report_statement"
+        },
+        {
+          "confidence": "invalid",
+          "normalized_finding": "mapper_defect__users_hadi_documents_github_hoodie_sim_v2_artifacts_analysis_structured-paper-topology-linkrate-registry_topology-recovery-report_json#partially_recovered_items[0]",
+          "raw_evidence": "{\"topology_summary_status\":\"unrecoverable\",\"topology_summary_unrecoverable_items\":[\"topology_adjacency_edges\",\"adjacency_matrix\",\"legal_horizontal_destinations\",\"edge_cloud_connectivity\"],\"unrecoverable_items\":[\"Figure 7 adjacency edges\",\"Figure 7 legal horizontal destinations\",\"EA private/public/cloud CPU capacities\"]}",
+          "source_reference": "/Users/hadi/Documents/GitHub/hoodie_sim_v2/artifacts/analysis/structured-paper-topology-linkrate-registry/topology-recovery-report.json",
+          "source_type": "prior_registry_or_report_statement"
+        }
+      ],
       "normalized_finding": "Unmapped item from /Users/hadi/Documents/GitHub/hoodie_sim_v2/artifacts/analysis/structured-paper-topology-linkrate-registry/topology-recovery-report.json#partially_recovered_items[0]",
       "positive_evidence": [],
       "runtime_approval_required": false,
@@ -4060,7 +3432,9 @@
           "source_reference": "/Users/hadi/Documents/GitHub/hoodie_sim_v2/artifacts/analysis/reward-equation-terminal-reward-contract/reward-contract-report.json"
         }
       ],
-      "source_methods": [],
+      "source_methods": [
+        "prior_registry_or_report_statement"
+      ],
       "status": "unrecoverable_after_evidence_exhaustion",
       "title": "Unmapped item from /Users/hadi/Documents/GitHub/hoodie_sim_v2/artifacts/analysis/structured-paper-topology-linkrate-registry/topology-recovery-report.json#partially_recovered_items[0]"
     }
