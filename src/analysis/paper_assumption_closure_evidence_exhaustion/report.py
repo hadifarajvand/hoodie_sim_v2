@@ -63,8 +63,7 @@ def build_assumption_closure_report() -> ReportArtifact:
         status=item["status"],
         confidence=item["confidence"],
         runtime_approval_required=bool(item.get("runtime_approval_required", False)),
-        source_methods=item.get("source_methods", []),
-        source_evidence=[
+        positive_evidence=[
             EvidenceRecord(
                 source_type=record.get("source_type", "manual_review"),
                 source_reference=record.get("source_reference", ""),
@@ -73,8 +72,20 @@ def build_assumption_closure_report() -> ReportArtifact:
                 confidence=record.get("confidence", "low"),
                 contradiction_notes=record.get("contradiction_notes"),
             )
-            for record in item.get("source_evidence", [])
+            for record in item.get("positive_evidence", [])
         ],
+        negative_evidence=[
+            EvidenceRecord(
+                source_type=record.get("source_type", "manual_review"),
+                source_reference=record.get("source_reference", ""),
+                raw_evidence=record.get("raw_evidence", ""),
+                normalized_finding=record.get("normalized_finding", ""),
+                confidence=record.get("confidence", "invalid"),
+                contradiction_notes=record.get("contradiction_notes"),
+            )
+            for record in item.get("negative_evidence", [])
+        ],
+        searched_sources=list(item.get("searched_sources", [])),
         normalized_finding=item.get("normalized_finding", ""),
         evidence_exhaustion_rationale=item.get("evidence_exhaustion_rationale", ""),
         manual_visual_recovery=item.get("manual_visual_recovery"),

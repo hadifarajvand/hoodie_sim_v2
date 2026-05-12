@@ -12,14 +12,29 @@ class PaperAssumptionClosureCompletenessTests(unittest.TestCase):
         assumption_items = [item for item in report.items if item.status == "assumption_backed_requires_user_approval"]
         for item in unrecoverable:
             self.assertTrue(item.evidence_exhaustion_rationale)
-        for item in unrecoverable:
-            self.assertTrue(item.source_evidence or item.evidence_exhaustion_rationale)
         for item in assumption_items:
             self.assertTrue(item.runtime_approval_required)
-            self.assertTrue(item.evidence_exhaustion_rationale or item.source_evidence or item.item_id)
+            self.assertTrue(item.evidence_exhaustion_rationale)
+            self.assertTrue(getattr(item, "proposed_assumption_rule", "") or getattr(item, "proposed_value", ""))
 
     def test_figure7_is_unrecoverable_without_edge_evidence(self) -> None:
         report = build_assumption_closure_report()
         figure7 = next(item for item in report.items if item.item_id == "Figure_7_adjacency")
         self.assertEqual(figure7.status, "unrecoverable_after_evidence_exhaustion")
         self.assertTrue(figure7.evidence_exhaustion_rationale)
+        self.assertFalse(figure7.runtime_approval_required)
+
+    def test_runtime_affecting_items_without_proposed_rules_are_unrecoverable(self) -> None:
+        report = build_assumption_closure_report()
+        targets = {
+            "legal_horizontal_destinations",
+            "EA_private_cpu_capacity",
+            "EA_public_cpu_capacity",
+            "cloud_cpu_capacity",
+            "cloud_data_rate",
+            "timeout_value",
+        }
+        for item in report.items:
+            if item.item_id in targets:
+                self.assertEqual(item.status, "unrecoverable_after_evidence_exhaustion")
+                self.assertTrue(item.evidence_exhaustion_rationale)

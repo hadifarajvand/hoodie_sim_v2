@@ -26,15 +26,17 @@ class EvidenceItem:
     status: str
     confidence: str
     runtime_approval_required: bool
-    source_methods: list[str] = field(default_factory=list)
-    source_evidence: list[EvidenceRecord] = field(default_factory=list)
+    positive_evidence: list[EvidenceRecord] = field(default_factory=list)
+    negative_evidence: list[EvidenceRecord] = field(default_factory=list)
+    searched_sources: list[dict[str, Any]] = field(default_factory=list)
     normalized_finding: str = ""
     evidence_exhaustion_rationale: str = ""
     manual_visual_recovery: dict[str, Any] | None = None
 
     def to_dict(self) -> dict[str, Any]:
         data = asdict(self)
-        data["source_evidence"] = [record.to_dict() for record in self.source_evidence]
+        data["positive_evidence"] = [record.to_dict() for record in self.positive_evidence]
+        data["negative_evidence"] = [record.to_dict() for record in self.negative_evidence]
         return data
 
 

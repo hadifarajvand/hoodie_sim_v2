@@ -35,25 +35,43 @@ def _snippet(text: str, term: str, window: int = 180) -> str:
     return text[start:end].replace("\n", " ").strip()
 
 
-def search_evidence(item: dict[str, Any], sources: dict[Any, Any]) -> list[dict[str, Any]]:
-    title = str(item.get("title", "")).lower()
-    description = str(item.get("description", "")).lower()
-    haystack = f"{title} {description}"
-    matches: list[dict[str, Any]] = []
-    terms = ITEM_SEARCH_TERMS.get(str(item.get("item_id", "")), ())
+def search_evidence(item: dict[str, Any], sources: dict[Any, Any]) -> dict[str, list[dict[str, Any]]]:
+    item_id = str(item.get("item_id", ""))
+    matched_terms = ITEM_SEARCH_TERMS.get(item_id, ())
+    positive: list[dict[str, Any]] = []
+    negative: list[dict[str, Any]] = []
+    searched: list[dict[str, Any]] = []
     for source_path, loaded in sources.items():
         text = loaded.payload if isinstance(loaded.payload, str) else str(loaded.payload)
         text_lower = text.lower()
-        matched_terms = [term for term in terms if term in text_lower or term in haystack]
-        if matched_terms:
-            term = matched_terms[0]
-            matches.append(
-                {
-                    "source_reference": str(source_path),
-                    "raw_evidence": _snippet(text, term),
-                    "normalized_finding": item.get("title", ""),
-                    "confidence": "medium" if item.get("item_id") != "Figure_7_adjacency" else "low",
-                    "source_type": "cross_artifact_consistency_check",
-                }
-            )
-    return matches
+        searched.append(
+            {
+                "source_reference": str(source_path),
+                "search_terms": list(matched_terms),
+                "search_method": "item_specific_term_match",
+            }
+        )
+        for term in matched_terms:
+            if term in text_lower and item_id == "Phi_n_pub_exact_formatting":
+                snippet = _snippet(text, term)
+                if snippet:
+                    positive.append(
+                        {
+                            "source_reference": str(source_path),
+                            "raw_evidence": snippet,
+                            "normalized_finding": item.get("title", ""),
+                            "confidence": "medium",
+                            "source_type": "cross_artifact_consistency_check",
+                        }
+                    )
+            else:
+                negative.append(
+                    {
+                        "source_reference": str(source_path),
+                        "raw_evidence": f"Searched for {term}; item-specific value not recovered.",
+                        "normalized_finding": item.get("title", ""),
+                        "confidence": "invalid",
+                        "source_type": "cross_artifact_consistency_check",
+                    }
+                )
+    return {"positive": positive, "negative": negative, "searched": searched}

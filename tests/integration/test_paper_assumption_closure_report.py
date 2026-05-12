@@ -34,3 +34,12 @@ class PaperAssumptionClosureReportTests(unittest.TestCase):
         for item in payload["items"]:
             self.assertNotIn("unknown", item["item_id"].lower())
             self.assertTrue(item["item_id"])
+            self.assertIn("positive_evidence", item)
+            self.assertIn("negative_evidence", item)
+            self.assertIn("searched_sources", item)
+            for evidence in item["positive_evidence"] + item["negative_evidence"]:
+                self.assertTrue(evidence["raw_evidence"].strip())
+                self.assertLessEqual(len(evidence["raw_evidence"]), 400)
+            for search in item["searched_sources"]:
+                self.assertIn("search_terms", search)
+                self.assertIn("search_method", search)
