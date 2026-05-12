@@ -895,21 +895,34 @@
       "affected_runtime_components": [
         "reward aggregation",
         "episode reporting",
-        "multi-agent evaluation"
+        "multi-agent evaluation",
+        "validation reporting",
+        "future campaign reporting"
       ],
-      "approval_required": true,
-      "approval_source": "safe_runtime_reporting_rule",
-      "assumption_status": "proposed",
+      "approval_required": false,
+      "approval_source": "user_approved_safe_reporting_rule",
+      "assumption_status": "approved",
       "item_id": "multi_agent_aggregation_reduction_order",
       "no_paper_recovery_claim": true,
       "paper_confidence": "invalid",
       "paper_status": "unrecoverable_after_evidence_exhaustion",
-      "proposed_value": "sum rewards per agent per episode, then arithmetic mean across agents",
-      "rationale": "A transparent reduction rule can be proposed for approval without claiming paper recovery.",
-      "runtime_use_allowed": false,
-      "scientific_risk": "A wrong aggregation order would alter reported rewards and cross-agent comparability.",
-      "validation_plan": "Confirm the reduction order against downstream reporting artifacts before runtime use is enabled.",
-      "value_type": "rule"
+      "proposed_value": {
+        "agent_level_reduction": "sum terminal task rewards per agent per episode",
+        "cross_agent_reduction": "arithmetic_mean",
+        "nan_policy": "exclude_from_numeric_aggregation",
+        "no_task_slots": "excluded_or_omitted_not_zero",
+        "paper_recovery_claim": false,
+        "rule": "per_agent_episode_sum_then_arithmetic_mean_across_agents",
+        "runtime_patch_applied": false,
+        "seed_or_run_level_aggregation_in_scope": false,
+        "slot_level_direct_average": false,
+        "source": "user_approved_safe_reporting_rule"
+      },
+      "rationale": "The paper states rewards are collected cumulatively over episodes and averaged across distributed HOODIE agents, but Feature 030 did not recover the exact reduction order. The approved assumption uses a transparent rule: sum terminal task rewards per agent per episode, then take the arithmetic mean across agents, while excluding no-task/NaN/omitted slots from numeric aggregation.",
+      "runtime_use_allowed": true,
+      "scientific_risk": "A different reduction order could change reported reward curves and cross-agent comparability. Treating no-task slots as zero would bias rewards. This approved rule must remain labeled as user-approved assumption-registry data until a later evaluation/campaign reporting feature consumes it explicitly.",
+      "validation_plan": "Validate that the rule performs per-agent episode summation before cross-agent arithmetic mean, excludes no-task/NaN/omitted slots, does not perform direct slot-level averaging, does not apply seed/run aggregation in this registry, and introduces no runtime reward-emission change.",
+      "value_type": "aggregation_rule"
     }
   ],
   "feature_id": "031-user-approved-assumption-patch-registry",

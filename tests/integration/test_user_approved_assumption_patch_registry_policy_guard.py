@@ -22,6 +22,8 @@ class UserApprovedAssumptionPatchRegistryPolicyGuardTest(unittest.TestCase):
         self.assertTrue(entries["cloud_data_rate"].runtime_use_allowed)
         self.assertEqual(entries["timeout_value"].assumption_status, "approved")
         self.assertTrue(entries["timeout_value"].runtime_use_allowed)
+        self.assertEqual(entries["multi_agent_aggregation_reduction_order"].assumption_status, "approved")
+        self.assertTrue(entries["multi_agent_aggregation_reduction_order"].runtime_use_allowed)
         figure = entries["Figure_7_adjacency"].to_dict()["proposed_value"]
         self.assertEqual(figure["node_count"], 20)
         self.assertEqual(figure["edge_count"], 30)
@@ -75,14 +77,21 @@ class UserApprovedAssumptionPatchRegistryPolicyGuardTest(unittest.TestCase):
         self.assertEqual(timeout["conversion_formula"], "timeout_seconds = timeout_slots * slot_duration_seconds")
         self.assertEqual(timeout["interpretation"], "task timeout/drop deadline threshold")
         self.assertFalse(timeout["runtime_patch_applied"])
+        aggregation = entries["multi_agent_aggregation_reduction_order"].to_dict()["proposed_value"]
+        self.assertEqual(aggregation["source"], "user_approved_safe_reporting_rule")
+        self.assertEqual(aggregation["rule"], "per_agent_episode_sum_then_arithmetic_mean_across_agents")
+        self.assertEqual(aggregation["agent_level_reduction"], "sum terminal task rewards per agent per episode")
+        self.assertEqual(aggregation["cross_agent_reduction"], "arithmetic_mean")
+        self.assertEqual(aggregation["no_task_slots"], "excluded_or_omitted_not_zero")
+        self.assertEqual(aggregation["nan_policy"], "exclude_from_numeric_aggregation")
+        self.assertFalse(aggregation["slot_level_direct_average"])
+        self.assertFalse(aggregation["seed_or_run_level_aggregation_in_scope"])
+        self.assertFalse(aggregation["runtime_patch_applied"])
 
     def test_proposed_values_remain_report_only(self) -> None:
         entries = {entry.item_id: entry for entry in build_registry_entries()}
-        for item_id in [
-            "multi_agent_aggregation_reduction_order",
-        ]:
-            self.assertEqual(entries[item_id].assumption_status, "proposed")
-            self.assertFalse(entries[item_id].runtime_use_allowed)
+        self.assertEqual(entries["multi_agent_aggregation_reduction_order"].assumption_status, "approved")
+        self.assertTrue(entries["multi_agent_aggregation_reduction_order"].runtime_use_allowed)
 
 
 if __name__ == "__main__":

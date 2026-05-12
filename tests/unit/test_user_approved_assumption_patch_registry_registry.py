@@ -105,12 +105,24 @@ class UserApprovedAssumptionPatchRegistryRegistryTest(unittest.TestCase):
         self.assertFalse(private_payload["runtime_patch_applied"])
         self.assertFalse(private_payload["paper_recovery_claim"])
 
-        for item_id in [
-            "multi_agent_aggregation_reduction_order",
-        ]:
-            self.assertEqual(entries[item_id].assumption_status, "proposed")
-            self.assertFalse(entries[item_id].runtime_use_allowed)
-            self.assertTrue(entries[item_id].approval_required)
+        aggregation = entries["multi_agent_aggregation_reduction_order"]
+        self.assertEqual(aggregation.assumption_status, "approved")
+        self.assertTrue(aggregation.runtime_use_allowed)
+        self.assertFalse(aggregation.approval_required)
+        self.assertEqual(aggregation.approval_source, "user_approved_safe_reporting_rule")
+        self.assertEqual(aggregation.value_type, "aggregation_rule")
+        self.assertTrue(aggregation.no_paper_recovery_claim)
+        aggregation_payload = aggregation.to_dict()["proposed_value"]
+        self.assertEqual(aggregation_payload["source"], "user_approved_safe_reporting_rule")
+        self.assertEqual(aggregation_payload["rule"], "per_agent_episode_sum_then_arithmetic_mean_across_agents")
+        self.assertEqual(aggregation_payload["agent_level_reduction"], "sum terminal task rewards per agent per episode")
+        self.assertEqual(aggregation_payload["cross_agent_reduction"], "arithmetic_mean")
+        self.assertEqual(aggregation_payload["no_task_slots"], "excluded_or_omitted_not_zero")
+        self.assertEqual(aggregation_payload["nan_policy"], "exclude_from_numeric_aggregation")
+        self.assertFalse(aggregation_payload["slot_level_direct_average"])
+        self.assertFalse(aggregation_payload["seed_or_run_level_aggregation_in_scope"])
+        self.assertFalse(aggregation_payload["runtime_patch_applied"])
+        self.assertFalse(aggregation_payload["paper_recovery_claim"])
 
         public = entries["EA_public_cpu_capacity"]
         self.assertEqual(public.assumption_status, "approved")
@@ -175,9 +187,9 @@ class UserApprovedAssumptionPatchRegistryRegistryTest(unittest.TestCase):
 
     def test_runtime_use_requires_approved_status(self) -> None:
         entries = build_registry_entries()
-        self.assertEqual(sum(1 for entry in entries if entry.runtime_use_allowed), 7)
+        self.assertEqual(sum(1 for entry in entries if entry.runtime_use_allowed), 8)
         approved_ids = [entry.item_id for entry in entries if entry.assumption_status == "approved"]
-        self.assertEqual(approved_ids, ["Figure_7_adjacency", "legal_horizontal_destinations", "EA_private_cpu_capacity", "EA_public_cpu_capacity", "cloud_cpu_capacity", "cloud_data_rate", "timeout_value"])
+        self.assertEqual(approved_ids, ["Figure_7_adjacency", "legal_horizontal_destinations", "EA_private_cpu_capacity", "EA_public_cpu_capacity", "cloud_cpu_capacity", "cloud_data_rate", "timeout_value", "multi_agent_aggregation_reduction_order"])
         self.assertTrue(all(entry.assumption_status == "approved" or not entry.runtime_use_allowed for entry in entries))
 
     def test_semantic_fields_reject_empty_values(self) -> None:

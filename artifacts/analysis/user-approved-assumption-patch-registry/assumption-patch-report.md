@@ -7,15 +7,14 @@
 - final_verdict: `registry_created_with_runtime_approved_assumptions`
 
 ## Status Counts
-- approved: `7`
+- approved: `8`
 - blocked_no_assumption: `0`
-- proposed: `1`
+- proposed: `0`
 - rejected: `0`
 
 ## Blocked Items
 
 ## Proposed Items
-- `multi_agent_aggregation_reduction_order` | `sum rewards per agent per episode, then arithmetic mean across agents` | runtime_use_allowed=False
 
 ## Runtime-Usable Items
 - `Figure_7_adjacency`
@@ -25,6 +24,7 @@
 - `cloud_cpu_capacity`
 - `cloud_data_rate`
 - `timeout_value`
+- `multi_agent_aggregation_reduction_order`
 
 ## Final Verdict
 registry_created_with_runtime_approved_assumptions
