@@ -1,24 +1,36 @@
 # Data Model: User-Approved Assumption Patch Registry
 
+## GovernanceDocsChange
+
+- **Purpose**: Represents the narrow governance/docs reconciliation included in Feature 031.
+- **Fields**:
+  - `constitution_version`: The version number shown in both the sync report and footer.
+  - `approved_interpreter_path`: The interpreter path that the governance docs must reference consistently.
+  - `scope`: Must remain limited to patch-level governance cleanup.
+  - `changed_files`: The documentation files intentionally updated by the reconciliation.
+  - `runtime_adoption_allowed`: Must remain `false` for Feature 031.
+
 ## AssumptionRegistryEntry
+
 - **Purpose**: Stores one candidate item and its user-approved assumption state.
 - **Fields**:
-  - `item_id`: Stable identifier for the unresolved paper-gap item.
-  - `paper_status`: Feature 030 paper classification, preserved verbatim.
-  - `paper_confidence`: Paper evidence confidence from Feature 030.
-  - `assumption_status`: `proposed`, `approved`, `rejected`, or `blocked_no_assumption`.
-  - `proposed_value`: Suggested assumption value or rule, or empty when blocked.
-  - `value_type`: Value category such as numeric, categorical, structural, or rule.
-  - `runtime_use_allowed`: Boolean gate for downstream use.
-  - `approval_required`: Boolean indicating whether a user decision is still needed.
-  - `approval_source`: Where the approval or proposal came from.
-  - `rationale`: Why the item is blocked or why the assumption is reasonable.
-  - `scientific_risk`: What could be invalidated if the assumption is wrong.
-  - `affected_runtime_components`: Which runtime areas would consume the assumption if approved.
-  - `validation_plan`: How the assumption would be checked later.
-  - `no_paper_recovery_claim`: Must always be `true`.
+  - `item_id`
+  - `paper_status`
+  - `paper_confidence`
+  - `assumption_status`
+  - `proposed_value`
+  - `value_type`
+  - `runtime_use_allowed`
+  - `approval_required`
+  - `approval_source`
+  - `rationale`
+  - `scientific_risk`
+  - `affected_runtime_components`
+  - `validation_plan`
+  - `no_paper_recovery_claim`
 
 ## AssumptionPatchReport
+
 - **Purpose**: Deterministic audit artifact that summarizes all registry entries.
 - **Fields**:
   - `feature_id`
@@ -39,12 +51,16 @@
   - `final_verdict`
 
 ## Relationships
+
 - One report contains many registry entries.
-- Each entry maps to exactly one Feature 030 item.
-- Approved entries may later be consumed by runtime-config features, but only if a later approved implementation explicitly does so.
+- The governance/docs reconciliation is a separate document-level concern that must not alter the registry data model.
+- Approved entries may later be consumed by runtime-config features, but only if a later approved feature explicitly does so.
 
 ## Validation Rules
+
 - Every in-scope candidate must appear exactly once.
 - `runtime_use_allowed` can be true only when `assumption_status = approved`.
 - `no_paper_recovery_claim` must always be true.
 - The registry must preserve the original `paper_status` unchanged.
+- Governance docs must preserve version consistency between sync report and footer.
+

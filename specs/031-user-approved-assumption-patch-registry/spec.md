@@ -12,6 +12,30 @@
 - Q: What assumption statuses and runtime-use rules should the registry enforce? → A: Use `proposed`, `approved`, `rejected`, and `blocked_no_assumption`; runtime may use only approved assumptions; proposed assumptions are report-only; rejected and blocked assumptions must never be consumed by runtime.
 - Q: How should paper status be preserved? → A: Never rewrite Feature 030 unrecoverable items as recovered; preserve `paper_status` separately from `assumption_status` for every registry entry.
 - Q: Which high-risk items need manual user values versus safe proposed defaults? → A: `Figure_7_adjacency` requires a user-supplied/manual topology; `legal_horizontal_destinations` depends on topology and cannot be patched independently; EA CPU capacities may reuse current runtime assumptions only if explicitly approved; `cloud_data_rate` may reuse the vertical data-rate assumption only if explicitly approved; `timeout_value` requires an explicit user-supplied timeout rule/value; `multi_agent_aggregation_reduction_order` can be safely proposed as per-agent episode cumulative reward followed by arithmetic mean across agents.
+- Q: Should Feature 031 fold in governance/docs reconciliation as a patch or minor update? → A: MINOR update; keep the approved interpreter/runtime guidance reconciliation, set the constitution and sync report/footer to `1.4.0`, and retain the intentionally added governance principles.
+- Q: Is runtime adoption of assumptions part of Feature 031? → A: No; runtime adoption remains out of scope for Feature 031 and must be a later feature if ever approved.
+
+## Governance and Runtime Guidance Reconciliation
+
+Feature 031 intentionally includes governance/runtime-guidance reconciliation because the assumption registry depends on the approved interpreter and reproducibility guidance being internally consistent. This governance work is part of the same feature only to keep the branch diff intentional and to prevent accidental pollution from lingering constitution/docs edits.
+
+The governance correction is a MINOR constitution expansion, not a patch:
+
+- Constitution version: `1.4.0`
+- Sync Impact Report version: `1.4.0`
+- Constitution footer version: `1.4.0`
+- Approved interpreter path: `/Users/hadi/Documents/GitHub/hoodie_sim_v2/src/.venvmac/bin/python`
+
+The MINOR bump is required because principles 21 through 30 were intentionally added. The expanded governance content must remain explicit and internally consistent across the constitution, plan, and supporting docs.
+
+Scope of the governance/docs reconciliation:
+
+1. `.specify/memory/constitution.md` to keep the versioning, version report, and interpreter guidance wording aligned.
+2. `AGENTS.md` only if needed to keep the governance entry point aligned with the current Feature 031 workflow and plan reference.
+3. `docs/reproducibility.md` only if needed to keep runtime guidance aligned with the approved interpreter path.
+4. `.specify/feature.json` only as active Spec Kit metadata pointing to Feature 031, and only for explicit workflow handling before merge.
+
+This reconciliation must not modify runtime behavior, must not change the Feature 031 registry/report outputs, and must not claim any runtime adoption of registry assumptions. Runtime adoption of registry assumptions remains out of scope for Feature 031 and must be handled by a later feature if ever approved.
 
 ## User Scenarios & Testing *(mandatory)*
 
@@ -64,6 +88,8 @@ As an auditor, I want a report that shows which values may be used at runtime an
 - What happens when a user review records no decision yet?
 - What happens when multiple runtime assumptions are possible for the same unresolved item?
 - How should the registry surface a proposed value that is safe for runtime only after a user approval?
+- What happens if the constitution sync report and footer disagree on the version number?
+- How should Feature 031 treat governance/docs cleanup when the approved interpreter path changes but runtime behavior must remain untouched?
 
 ## Requirements *(mandatory)*
 
@@ -87,11 +113,16 @@ As an auditor, I want a report that shows which values may be used at runtime an
 - **FR-016**: The system MUST allow `cloud_data_rate` to reuse the current vertical data-rate assumption only after explicit user approval.
 - **FR-017**: The system MUST require an explicit timeout rule/value for `timeout_value` and MUST NOT invent a timeout.
 - **FR-018**: The system MUST allow `multi_agent_aggregation_reduction_order` to be proposed as per-agent episode cumulative reward followed by arithmetic mean across agents, with runtime use only after approval.
+- **FR-019**: The feature MUST keep the governance/docs reconciliation scoped to the approved interpreter/runtime guidance correction and intentionally retained governance principles 21 through 30.
+- **FR-020**: The feature MUST keep the constitution sync report version, constitution footer version, and reproducibility guidance aligned at `1.4.0`.
+- **FR-021**: The feature MUST record the approved interpreter path `/Users/hadi/Documents/GitHub/hoodie_sim_v2/src/.venvmac/bin/python` consistently in governance/runtime guidance documents that reference the execution environment.
+- **FR-022**: The feature MUST ensure Feature 031 registry/report artifacts remain unchanged by the governance/docs reconciliation.
 
 ### Key Entities *(include if feature involves data)*
 
 - **Assumption Patch Registry Entry**: One item-level decision record containing paper status, assumption status, proposed value, runtime eligibility, approval source, rationale, and validation plan.
 - **Patch Registry Report**: The generated audit report listing the entries, unresolved blocked items, and approval state summary.
+- **Governance Reconciliation Record**: The governance/docs update that aligns constitution versioning, interpreter guidance, and reproducibility notes without changing runtime behavior.
 
 ## Success Criteria *(mandatory)*
 
@@ -104,6 +135,9 @@ As an auditor, I want a report that shows which values may be used at runtime an
 - **SC-005**: Regenerating the report from unchanged inputs produces identical item ordering and identical status counts.
 - **SC-006**: Any item with `runtime_use_allowed = true` must also have `assumption_status = approved`.
 - **SC-007**: Any item with `assumption_status = proposed` must remain report-only and excluded from runtime consumption.
+- **SC-008**: The constitution sync report and footer show the same version number on every review, and that version is `1.4.0`.
+- **SC-009**: Reviewers can verify the approved interpreter path is consistent across the constitution and reproducibility guidance in under 2 minutes.
+- **SC-010**: 0 Feature 031 registry/report artifacts are modified by the governance/docs reconciliation portion of Feature 031.
 
 ## Assumptions
 
@@ -113,6 +147,9 @@ As an auditor, I want a report that shows which values may be used at runtime an
 - Rejected assumptions remain documented for audit history but are not runtime-usable.
 - No runtime behavior changes are implied by this feature unless a later approved implementation feature consumes the registry.
 - `blocked_no_assumption` means the registry could not safely propose a default and requires a manual user value before any runtime use can be considered.
+- Governance/docs reconciliation is a PATCH-level correction only; no new governance principles are introduced by this feature.
+- The approved interpreter/runtime guidance must remain consistent across constitution, reproducibility docs, and feature metadata.
+- The constitution intentionally retains principles 21 through 30 as part of the MINOR governance expansion.
 
 ## Production Constraints
 
@@ -131,6 +168,7 @@ As an auditor, I want a report that shows which values may be used at runtime an
 - [ ] Evaluation metric interface
 - [x] Config schema
 - [x] Artifact schema
+- [x] Governance documentation
 
 ## Config / Schema Impact
 
@@ -146,6 +184,7 @@ As an auditor, I want a report that shows which values may be used at runtime an
 - [ ] Checkpoints
 - [ ] Debug traces
 - [x] Validation summaries
+- [x] Governance docs
 
 ## Security Considerations
 
@@ -162,3 +201,4 @@ As an auditor, I want a report that shows which values may be used at runtime an
 - [x] Paper-to-code mapping updated
 - [x] Artifacts handled per lifecycle rules
 - [x] Review and merge gate satisfied
+- [x] Governance/version consistency gate satisfied

@@ -1,31 +1,26 @@
 # Research: User-Approved Assumption Patch Registry
 
-## Decision 1: Registry scope is analysis-only
-- **Decision**: The feature will generate a registry and report only; it will not mutate simulator runtime behavior.
-- **Rationale**: Feature 030 established that the paper evidence is exhausted. This feature must only record user-approved assumptions, not reclassify paper gaps.
-- **Alternatives considered**: Immediate runtime config patching was rejected because it would conflate registry creation with behavioral change.
+## Decision 1: Governance reconciliation is PATCH-only
 
-## Decision 2: Runtime approval is a hard gate
-- **Decision**: `runtime_use_allowed` can be true only when `assumption_status = approved`.
-- **Rationale**: Proposed assumptions are audit artifacts, not operational inputs.
-- **Alternatives considered**: Allowing proposed assumptions to be used at runtime was rejected because it weakens the approval boundary.
+- Decision: Keep the governance/docs reconciliation scoped to the approved interpreter/runtime guidance correction and matching wording cleanup.
+- Rationale: The spec explicitly prefers PATCH unless broad new principles are intentionally retained, and runtime adoption remains out of scope.
+- Alternatives considered: MINOR governance expansion with new principles; rejected because it is not intentionally approved in the Feature 031 scope.
 
-## Decision 3: Paper status remains immutable
-- **Decision**: Registry entries preserve `paper_status` separately from `assumption_status`.
-- **Rationale**: This prevents any assumption record from being mistaken for recovered paper evidence.
-- **Alternatives considered**: Overwriting paper status with assumption status was rejected as scientifically misleading.
+## Decision 2: Constitution versioning stays at 1.3.1
 
-## Decision 4: Manual values are required where no safe default exists
-- **Decision**: `Figure_7_adjacency`, `legal_horizontal_destinations`, and `timeout_value` remain blocked without explicit user values.
-- **Rationale**: Those items would require topology or deadline invention if auto-filled.
-- **Alternatives considered**: Auto-generating topology or deadlines was rejected because it would fabricate unsupported inputs.
+- Decision: Update the constitution footer/sync report alignment to `1.3.1`.
+- Rationale: The repository already records the interpreter baseline rebase as `1.3.1`, so the plan must align documentation rather than invent a new version.
+- Alternatives considered: Reverting to `1.3.0`; rejected because it would reintroduce the mismatch the feature is intended to fix.
 
-## Decision 5: Safe proposed defaults are allowed for selected runtime assumptions
-- **Decision**: CPU capacity assumptions, cloud data-rate assumption, and reward aggregation order may be proposed with explicit values and risk notes.
-- **Rationale**: The project already has runtime defaults and validation semantics that can be surfaced as assumptions without claiming paper recovery.
-- **Alternatives considered**: Marking all unresolved items blocked was rejected because some values can be responsibly proposed for approval.
+## Decision 3: Approved interpreter path is the `.venvmac` binary
 
-## Decision 6: Feature 030 closure report is the source gate
-- **Decision**: The registry is built only from the Feature 030 closure report and the named in-scope unresolved items.
-- **Rationale**: This keeps the registry tied to evidence exhaustion rather than ad hoc additions.
-- **Alternatives considered**: Allowing arbitrary new candidates was rejected because it would bypass the closure gate.
+- Decision: Use `/Users/hadi/Documents/GitHub/hoodie_sim_v2/src/.venvmac/bin/python` as the approved interpreter path in governance docs.
+- Rationale: This path is already the constitution-approved interpreter boundary and is the source of the guidance correction.
+- Alternatives considered: Reverting to `.venv/bin/python`; rejected because that path is no longer the approved runtime anchor.
+
+## Decision 4: Feature 031 registry/report stays unchanged
+
+- Decision: Preserve the finalized Feature 031 registry/report behavior and treat governance/docs edits as separate intentional documentation changes.
+- Rationale: The registry feature is already complete and should not be re-opened for behavior changes.
+- Alternatives considered: Folding runtime adoption into Feature 031; rejected because runtime adoption is explicitly out of scope.
+

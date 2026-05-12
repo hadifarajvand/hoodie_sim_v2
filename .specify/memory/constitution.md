@@ -1,5 +1,5 @@
 <!-- Sync Impact Report
-Version change: 1.3.0 -> 1.3.1
+Version change: 1.3.0 -> 1.4.0
 Modified principles:
 - 1. Dependency Control Rule
 - 2. Environment Rule
@@ -337,4 +337,4 @@ If the user has instructed that every action be approved before execution, that 
 treated as a governing constraint for the current session and respected before edits, refactors, or
 other repository actions.
 
-**Version**: 1.3.0 | **Ratified**: 2026-04-21 | **Last Amended**: 2026-04-30
+**Version**: 1.4.0 | **Ratified**: 2026-04-21 | **Last Amended**: 2026-05-12

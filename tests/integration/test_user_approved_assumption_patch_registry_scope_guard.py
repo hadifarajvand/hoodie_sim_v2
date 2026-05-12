@@ -23,6 +23,7 @@ class UserApprovedAssumptionPatchRegistryScopeGuardTest(unittest.TestCase):
             "artifacts/analysis/user-approved-assumption-patch-registry/",
             ".specify/memory/constitution.md",
             "docs/reproducibility.md",
+            "specs/031-user-approved-assumption-patch-registry/",
         )
         for path in changed:
             self.assertTrue(path.startswith(allowed_prefixes), path)

@@ -1,11 +1,26 @@
 # Quickstart: User-Approved Assumption Patch Registry
 
-1. Confirm Feature 030 is merged and tagged as `030-paper-assumption-closure-evidence-exhaustion-pipeline-complete`.
-2. Verify the Feature 030 closure report exists at `artifacts/analysis/paper-assumption-closure-evidence-exhaustion/assumption-closure-report.json`.
-3. Generate the assumption registry from the closure report.
-4. Review the registry entries:
-   - blocked items remain blocked,
-   - proposed items remain report-only,
-   - approved items are the only runtime-usable entries.
-5. Inspect the report artifact for deterministic counts and unresolved items.
-6. Do not treat any approved assumption as paper evidence.
+## Purpose
+
+This feature creates the assumption registry and its audit report, while intentionally keeping the governance/runtime guidance cleanup scoped and patch-level only.
+
+## Expected Workflow
+
+1. Confirm the approved interpreter path is consistently documented in the constitution and reproducibility guidance.
+2. Confirm the constitution sync impact report and footer both show `1.3.1`.
+3. Confirm the Feature 031 registry and report remain unchanged in behavior and shape.
+4. Confirm governance/docs changes are intentional and limited to the allowed files.
+
+## Validation Commands
+
+- Verify the branch and feature paths with the project prerequisite command.
+- Run the governance and registry validation checks after planning.
+- Inspect the final diff to ensure only intentional files are modified.
+
+## Success Checks
+
+- Constitution version appears consistently in the sync report and footer.
+- Approved interpreter path is consistent across governance docs.
+- Feature 031 registry/report outputs remain deterministic and unchanged in behavior.
+- No runtime, training, dependency, topology, or runtime adoption files are touched.
+
