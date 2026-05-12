@@ -1,5 +1,5 @@
 <!-- Sync Impact Report
-Version change: 1.2.0 -> 1.3.0
+Version change: 1.3.0 -> 1.3.1
 Modified principles:
 - 1. Dependency Control Rule
 - 2. Environment Rule
@@ -38,7 +38,7 @@ Templates requiring updates:
 - ✅ `.specify/templates/plan-template.md`
 - ✅ `.specify/templates/spec-template.md`
 - ✅ `.specify/templates/tasks-template.md`
-Follow-up TODOs: none
+Follow-up TODOs: Update any runtime guidance still pointing at `.venv` so it matches the re-based interpreter.
 -->
 
 # hoodie_sim_v2 Constitution
@@ -55,10 +55,11 @@ Rationale: hidden installs and undeclared dependencies make the environment non-
 
 ### 2. Environment Rule
 
-Work MUST use the approved virtual environment at `/Users/hadi/Documents/GitHub/hoodie_sim_v2/.venv`
-until the project is explicitly re-baselined. No new virtual environments may be created without
-approval. Commands and scripts MUST run through the approved environment, and every execution must
-record the Python version and environment details when relevant.
+Work MUST use the approved virtual environment at
+`/Users/hadi/Documents/GitHub/hoodie_sim_v2/src/.venvmac/bin/python` until the project is
+explicitly re-baselined. No new virtual environments may be created without approval. Commands and
+scripts MUST run through the approved environment, and every execution must record the Python
+version and environment details when relevant.
 
 Rationale: a stable interpreter boundary prevents drift between development, evaluation, and
 reproduction runs.

@@ -7,20 +7,20 @@
 
 **Purpose**: Establish the feature gate, source gate, and output locations before any registry logic exists.
 
-- [ ] T001 Verify branch `031-user-approved-assumption-patch-registry` and confirm `.specify/feature.json` points to `specs/031-user-approved-assumption-patch-registry`
-- [ ] T002 Verify the branch base is `main` after the `030-paper-assumption-closure-evidence-exhaustion-pipeline-complete` tag and confirm the working tree is clean before analysis in `resources/papers/hoodie/recovered/` and `artifacts/analysis/`
-- [ ] T003 Verify required input artifact exists at `artifacts/analysis/paper-assumption-closure-evidence-exhaustion/assumption-closure-report.json`
-- [ ] T004 Verify no dependency, training, runtime simulator, TorchRL, Gymnasium, ns-3, baseline, policy, or campaign files are touched before implementation in `src/analysis/user_approved_assumption_patch_registry/`, `resources/papers/hoodie/recovered/`, and `artifacts/analysis/user-approved-assumption-patch-registry/`
+- [X] T001 Verify branch `031-user-approved-assumption-patch-registry` and confirm `.specify/feature.json` points to `specs/031-user-approved-assumption-patch-registry`
+- [X] T002 Verify the branch base is `main` after the `030-paper-assumption-closure-evidence-exhaustion-pipeline-complete` tag and confirm the working tree is clean before analysis in `resources/papers/hoodie/recovered/` and `artifacts/analysis/`
+- [X] T003 Verify required input artifact exists at `artifacts/analysis/paper-assumption-closure-evidence-exhaustion/assumption-closure-report.json`
+- [X] T004 Verify no dependency, training, runtime simulator, TorchRL, Gymnasium, ns-3, baseline, policy, or campaign files are touched before implementation in `src/analysis/user_approved_assumption_patch_registry/`, `resources/papers/hoodie/recovered/`, and `artifacts/analysis/user-approved-assumption-patch-registry/`
 
 ## Phase 2: Foundational (Blocking Prerequisites)
 
 **Purpose**: Build the shared registry and report substrate before candidate mapping or artifact generation.
 
-- [ ] T005 Create the analysis package scaffold in `src/analysis/user_approved_assumption_patch_registry/__init__.py` and `src/analysis/user_approved_assumption_patch_registry/runner.py`
-- [ ] T006 [P] Define the registry entry schema in `src/analysis/user_approved_assumption_patch_registry/registry.py` with `item_id`, `paper_status`, `paper_confidence`, `assumption_status`, `proposed_value`, `value_type`, `runtime_use_allowed`, `approval_required`, `approval_source`, `rationale`, `scientific_risk`, `affected_runtime_components`, `validation_plan`, and `no_paper_recovery_claim`
-- [ ] T007 [P] Define the report artifact schema in `src/analysis/user_approved_assumption_patch_registry/report.py` with `feature_id`, `schema_version`, `source_gates`, `registry_path`, `item_count`, `status_counts`, `runtime_usable_items`, `proposed_items`, `blocked_items`, `rejected_items`, `entries`, `no_paper_recovery_claims`, `no_runtime_behavior_change`, `no_training_or_policy_drift`, `no_dependency_drift`, and `final_verdict`
-- [ ] T008 Add deterministic source-loading helpers for the Feature 030 closure report in `src/analysis/user_approved_assumption_patch_registry/registry.py`
-- [ ] T009 Add candidate filtering helpers that reject any item not present in the Feature 030 closure report in `src/analysis/user_approved_assumption_patch_registry/registry.py`
+- [X] T005 Create the analysis package scaffold in `src/analysis/user_approved_assumption_patch_registry/__init__.py` and `src/analysis/user_approved_assumption_patch_registry/runner.py`
+- [X] T006 [P] Define the registry entry schema in `src/analysis/user_approved_assumption_patch_registry/registry.py` with `item_id`, `paper_status`, `paper_confidence`, `assumption_status`, `proposed_value`, `value_type`, `runtime_use_allowed`, `approval_required`, `approval_source`, `rationale`, `scientific_risk`, `affected_runtime_components`, `validation_plan`, and `no_paper_recovery_claim`
+- [X] T007 [P] Define the report artifact schema in `src/analysis/user_approved_assumption_patch_registry/report.py` with `feature_id`, `schema_version`, `source_gates`, `registry_path`, `item_count`, `status_counts`, `runtime_usable_items`, `proposed_items`, `blocked_items`, `rejected_items`, `entries`, `no_paper_recovery_claims`, `no_runtime_behavior_change`, `no_training_or_policy_drift`, `no_dependency_drift`, and `final_verdict`
+- [X] T008 Add deterministic source-loading helpers for the Feature 030 closure report in `src/analysis/user_approved_assumption_patch_registry/registry.py`
+- [X] T009 Add candidate filtering helpers that reject any item not present in the Feature 030 closure report in `src/analysis/user_approved_assumption_patch_registry/registry.py`
 
 ## Phase 3: User Story 1 - Build the Assumption Registry (Priority: P1)
 
@@ -30,17 +30,17 @@
 
 ### Tests for User Story 1
 
-- [ ] T010 [P] [US1] Add source-gate and registry-coverage tests in `tests/unit/test_user_approved_assumption_patch_registry_source_gate.py`
-- [ ] T011 [P] [US1] Add schema and initial-status tests in `tests/unit/test_user_approved_assumption_patch_registry_registry.py`
+- [X] T010 [P] [US1] Add source-gate and registry-coverage tests in `tests/unit/test_user_approved_assumption_patch_registry_source_gate.py`
+- [X] T011 [P] [US1] Add schema and initial-status tests in `tests/unit/test_user_approved_assumption_patch_registry_registry.py`
 
 ### Implementation for User Story 1
 
-- [ ] T012 [US1] Load and validate the Feature 030 closure report in `src/analysis/user_approved_assumption_patch_registry/registry.py`
-- [ ] T013 [US1] Extract only `unrecoverable_after_evidence_exhaustion` and `partially_recovered` items and filter to the in-scope Feature 031 candidates in `src/analysis/user_approved_assumption_patch_registry/registry.py`
-- [ ] T014 [US1] Map `Figure_7_adjacency`, `legal_horizontal_destinations`, and `timeout_value` to `blocked_no_assumption` in `src/analysis/user_approved_assumption_patch_registry/registry.py`
-- [ ] T015 [US1] Map `EA_private_cpu_capacity`, `EA_public_cpu_capacity`, `cloud_cpu_capacity`, `cloud_data_rate`, and `multi_agent_aggregation_reduction_order` to proposed report-only assumptions with `runtime_use_allowed=false` in `src/analysis/user_approved_assumption_patch_registry/registry.py`
-- [ ] T016 [US1] Preserve `paper_status` and `paper_confidence` unchanged while constructing registry entries in `src/analysis/user_approved_assumption_patch_registry/registry.py`
-- [ ] T017 [US1] Populate non-empty `rationale`, `scientific_risk`, `affected_runtime_components`, and `validation_plan` for every registry entry in `src/analysis/user_approved_assumption_patch_registry/registry.py`
+- [X] T012 [US1] Load and validate the Feature 030 closure report in `src/analysis/user_approved_assumption_patch_registry/registry.py`
+- [X] T013 [US1] Extract only `unrecoverable_after_evidence_exhaustion` and `partially_recovered` items and filter to the in-scope Feature 031 candidates in `src/analysis/user_approved_assumption_patch_registry/registry.py`
+- [X] T014 [US1] Map `Figure_7_adjacency`, `legal_horizontal_destinations`, and `timeout_value` to `blocked_no_assumption` in `src/analysis/user_approved_assumption_patch_registry/registry.py`
+- [X] T015 [US1] Map `EA_private_cpu_capacity`, `EA_public_cpu_capacity`, `cloud_cpu_capacity`, `cloud_data_rate`, and `multi_agent_aggregation_reduction_order` to proposed report-only assumptions with `runtime_use_allowed=false` in `src/analysis/user_approved_assumption_patch_registry/registry.py`
+- [X] T016 [US1] Preserve `paper_status` and `paper_confidence` unchanged while constructing registry entries in `src/analysis/user_approved_assumption_patch_registry/registry.py`
+- [X] T017 [US1] Populate non-empty `rationale`, `scientific_risk`, `affected_runtime_components`, and `validation_plan` for every registry entry in `src/analysis/user_approved_assumption_patch_registry/registry.py`
 
 ## Phase 4: User Story 2 - Generate Audit Artifacts (Priority: P2)
 
@@ -50,16 +50,16 @@
 
 ### Tests for User Story 2
 
-- [ ] T018 [P] [US2] Add JSON parse and required-key tests for the registry and report artifacts in `tests/integration/test_user_approved_assumption_patch_registry_report.py`
-- [ ] T019 [P] [US2] Add deterministic output and no-paper-recovery-claim tests in `tests/unit/test_user_approved_assumption_patch_registry_determinism.py`
-- [ ] T020 [US2] Add validation tests that fail if any registry or report entry has empty `rationale`, `scientific_risk`, `affected_runtime_components`, or `validation_plan` in `tests/integration/test_user_approved_assumption_patch_registry_report.py`
+- [X] T018 [P] [US2] Add JSON parse and required-key tests for the registry and report artifacts in `tests/integration/test_user_approved_assumption_patch_registry_report.py`
+- [X] T019 [P] [US2] Add deterministic output and no-paper-recovery-claim tests in `tests/unit/test_user_approved_assumption_patch_registry_determinism.py`
+- [X] T020 [US2] Add validation tests that fail if any registry or report entry has empty `rationale`, `scientific_risk`, `affected_runtime_components`, or `validation_plan` in `tests/integration/test_user_approved_assumption_patch_registry_report.py`
 
 ### Implementation for User Story 2
 
-- [ ] T021 [US2] Generate `resources/papers/hoodie/recovered/user-approved-assumption-registry.json` in `src/analysis/user_approved_assumption_patch_registry/registry.py`
-- [ ] T022 [US2] Generate `artifacts/analysis/user-approved-assumption-patch-registry/assumption-patch-report.json` in `src/analysis/user_approved_assumption_patch_registry/report.py`
-- [ ] T023 [US2] Generate `artifacts/analysis/user-approved-assumption-patch-registry/assumption-patch-report.md` with deterministic ordering and explicit blocked/proposed/runtime-usable sections in `src/analysis/user_approved_assumption_patch_registry/report.py`
-- [ ] T024 [US2] Ensure no registry entry writes `no_paper_recovery_claim=false` and no approved assumption exists without an explicit approval source in `src/analysis/user_approved_assumption_patch_registry/report.py`
+- [X] T021 [US2] Generate `resources/papers/hoodie/recovered/user-approved-assumption-registry.json` in `src/analysis/user_approved_assumption_patch_registry/registry.py`
+- [X] T022 [US2] Generate `artifacts/analysis/user-approved-assumption-patch-registry/assumption-patch-report.json` in `src/analysis/user_approved_assumption_patch_registry/report.py`
+- [X] T023 [US2] Generate `artifacts/analysis/user-approved-assumption-patch-registry/assumption-patch-report.md` with deterministic ordering and explicit blocked/proposed/runtime-usable sections in `src/analysis/user_approved_assumption_patch_registry/report.py`
+- [X] T024 [US2] Ensure no registry entry writes `no_paper_recovery_claim=false` and no approved assumption exists without an explicit approval source in `src/analysis/user_approved_assumption_patch_registry/report.py`
 
 ## Phase 5: User Story 3 - Validate Scope and Drift Guards (Priority: P3)
 
@@ -69,24 +69,24 @@
 
 ### Tests for User Story 3
 
-- [ ] T025 [P] [US3] Add runtime-gate tests that verify `runtime_use_allowed=true` is impossible unless `assumption_status=approved` in `tests/integration/test_user_approved_assumption_patch_registry_runtime_gate.py`
-- [ ] T026 [P] [US3] Add no-topology/no-timeout-invention tests in `tests/integration/test_user_approved_assumption_patch_registry_policy_guard.py`
-- [ ] T027 [P] [US3] Add diff-scope tests that reject runtime simulator, training, policy, baseline, dependency, TorchRL, Gymnasium, ns-3, and campaign-file edits in `tests/integration/test_user_approved_assumption_patch_registry_scope_guard.py`
+- [X] T025 [P] [US3] Add runtime-gate tests that verify `runtime_use_allowed=true` is impossible unless `assumption_status=approved` in `tests/integration/test_user_approved_assumption_patch_registry_runtime_gate.py`
+- [X] T026 [P] [US3] Add no-topology/no-timeout-invention tests in `tests/integration/test_user_approved_assumption_patch_registry_policy_guard.py`
+- [X] T027 [P] [US3] Add diff-scope tests that reject runtime simulator, training, policy, baseline, dependency, TorchRL, Gymnasium, ns-3, and campaign-file edits in `tests/integration/test_user_approved_assumption_patch_registry_scope_guard.py`
 
 ### Implementation for User Story 3
 
-- [ ] T028 [US3] Enforce runtime-use gating, approval-required flags, and blocked/proposed/rejected status separation in `src/analysis/user_approved_assumption_patch_registry/registry.py`
-- [ ] T029 [US3] Mark `Figure_7_adjacency` and `legal_horizontal_destinations` as blocked-no-assumption unless manual topology is supplied in `src/analysis/user_approved_assumption_patch_registry/registry.py`
-- [ ] T030 [US3] Preserve `timeout_value` as blocked-no-assumption and prevent invented timeout values in `src/analysis/user_approved_assumption_patch_registry/registry.py`
-- [ ] T031 [US3] Keep CPU capacity, cloud data-rate, and aggregation-order values report-only unless an explicit approval source is present in `src/analysis/user_approved_assumption_patch_registry/registry.py`
+- [X] T028 [US3] Enforce runtime-use gating, approval-required flags, and blocked/proposed/rejected status separation in `src/analysis/user_approved_assumption_patch_registry/registry.py`
+- [X] T029 [US3] Mark `Figure_7_adjacency` and `legal_horizontal_destinations` as blocked-no-assumption unless manual topology is supplied in `src/analysis/user_approved_assumption_patch_registry/registry.py`
+- [X] T030 [US3] Preserve `timeout_value` as blocked-no-assumption and prevent invented timeout values in `src/analysis/user_approved_assumption_patch_registry/registry.py`
+- [X] T031 [US3] Keep CPU capacity, cloud data-rate, and aggregation-order values report-only unless an explicit approval source is present in `src/analysis/user_approved_assumption_patch_registry/registry.py`
 
 ## Phase 6: Polish & Cross-Cutting Concerns
 
 **Purpose**: Validate the full registry pipeline, ensure deterministic outputs, and prepare the final implementation summary.
 
-- [ ] T032 Run targeted Feature 031 tests, generate the registry and report artifacts, parse the JSON outputs, and inspect the git diff in `src/analysis/user_approved_assumption_patch_registry/runner.py`
-- [ ] T033 Verify `AGENTS.md` and `.specify/feature.json` are updated intentionally for Feature 031 and are not left as accidental pollution in the final diff
-- [ ] T034 Summarize files changed, commands run, tests run, generated artifacts, registry decisions, blocked items, any approved assumptions, final verdict, and next action in the completion note for `specs/031-user-approved-assumption-patch-registry/`
+- [X] T032 Run targeted Feature 031 tests, generate the registry and report artifacts, parse the JSON outputs, and inspect the git diff in `src/analysis/user_approved_assumption_patch_registry/runner.py`
+- [X] T033 Verify `AGENTS.md` and `.specify/feature.json` are updated intentionally for Feature 031 and are not left as accidental pollution in the final diff
+- [X] T034 Summarize files changed, commands run, tests run, generated artifacts, registry decisions, blocked items, any approved assumptions, final verdict, and next action in the completion note for `specs/031-user-approved-assumption-patch-registry/`
 
 ## Dependencies & Execution Order
 

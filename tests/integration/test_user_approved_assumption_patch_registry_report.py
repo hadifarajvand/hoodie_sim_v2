@@ -1,0 +1,73 @@
+from __future__ import annotations
+
+import json
+from pathlib import Path
+import tempfile
+import unittest
+
+from src.analysis.user_approved_assumption_patch_registry.report import build_assumption_patch_report, write_assumption_patch_report
+from src.analysis.user_approved_assumption_patch_registry.registry import build_user_approved_assumption_registry
+
+
+class UserApprovedAssumptionPatchRegistryReportIntegrationTest(unittest.TestCase):
+    def test_report_has_required_schema_and_artifacts(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp:
+            tmp_path = Path(tmp)
+            registry_path = tmp_path / "resources/papers/hoodie/recovered/user-approved-assumption-registry.json"
+            report = build_assumption_patch_report()
+            json_path, md_path = write_assumption_patch_report(report, tmp_path / "artifacts/analysis/user-approved-assumption-patch-registry")
+
+            self.assertEqual(report.final_verdict, "registry_created_no_runtime_approved_assumptions")
+            self.assertTrue(json_path.exists())
+            self.assertTrue(md_path.exists())
+            registry = build_user_approved_assumption_registry()
+            registry_path.parent.mkdir(parents=True, exist_ok=True)
+            registry_path.write_text(json.dumps(registry, indent=2, sort_keys=True) + "\n", encoding="utf-8")
+
+            payload = json.loads(json_path.read_text(encoding="utf-8"))
+            required = {
+                "feature_id",
+                "schema_version",
+                "source_gates",
+                "registry_path",
+                "item_count",
+                "status_counts",
+                "runtime_usable_items",
+                "proposed_items",
+                "blocked_items",
+                "rejected_items",
+                "entries",
+                "no_paper_recovery_claims",
+                "no_runtime_behavior_change",
+                "no_training_or_policy_drift",
+                "no_dependency_drift",
+                "final_verdict",
+            }
+            self.assertTrue(required.issubset(payload.keys()))
+            self.assertEqual(payload["item_count"], 8)
+            self.assertEqual(payload["status_counts"]["approved"], 0)
+            self.assertEqual(payload["status_counts"]["proposed"], 5)
+            self.assertEqual(payload["status_counts"]["blocked_no_assumption"], 3)
+            self.assertEqual(len(payload["entries"]), 8)
+            self.assertTrue(payload["no_paper_recovery_claims"])
+            self.assertFalse(payload["runtime_usable_items"])
+            self.assertEqual(payload["registry_path"], "resources/papers/hoodie/recovered/user-approved-assumption-registry.json")
+
+    def test_registry_json_parse_and_keys(self) -> None:
+        payload = build_user_approved_assumption_registry()
+        self.assertEqual(payload["feature_id"], "031-user-approved-assumption-patch-registry")
+        self.assertEqual(payload["item_count"], 8)
+        self.assertIn("entries", payload)
+        self.assertEqual(len(payload["entries"]), 8)
+        for entry in payload["entries"]:
+            self.assertIn("no_paper_recovery_claim", entry)
+            self.assertTrue(entry["no_paper_recovery_claim"])
+            self.assertTrue(entry["rationale"])
+            self.assertTrue(entry["scientific_risk"])
+            self.assertTrue(entry["validation_plan"])
+            self.assertIsInstance(entry["affected_runtime_components"], list)
+            self.assertGreater(len(entry["affected_runtime_components"]), 0)
+
+
+if __name__ == "__main__":
+    unittest.main()

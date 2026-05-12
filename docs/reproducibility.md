@@ -141,7 +141,7 @@ These are the minimal deterministic smoke configs for exercising the existing CL
 Run them only from the approved virtual environment declared in `.specify/memory/constitution.md`:
 
 ```bash
-source /Users/hadi/Documents/GitHub/hoodie_sim_v2/.venv/bin/activate
+source /Users/hadi/Documents/GitHub/hoodie_sim_v2/src/.venvmac/bin/activate
 ```
 
 Run the first smoke config:
