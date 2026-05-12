@@ -303,9 +303,7 @@ class HoodieGymEnvironment:
         finalized: list[Task] = []
         for queue in list(self._private_queues.values()):
             finalized.extend(self._maybe_finalize_head(queue, "local"))
-        for queue in list(self._public_queues.values()):
-            destination_kind = "cloud" if queue.host_node_id == "cloud" else "public"
-            finalized.extend(self._maybe_finalize_head(queue, destination_kind))
+        finalized.extend(self._progress_shared_execution_queues())
         return finalized
 
     def _maybe_finalize_head(self, queue: PrivateQueue | PublicQueue, destination_kind: str) -> list[Task]:
@@ -327,6 +325,62 @@ class HoodieGymEnvironment:
         finalized = queue.dequeue()
         ledger.emit("execution_completed")
         return [finalized]
+
+    def _progress_shared_execution_queues(self) -> list[Task]:
+        finalized: list[Task] = []
+        grouped_public_queues: dict[str, list[PublicQueue]] = defaultdict(list)
+        for queue in self._public_queues.values():
+            if queue.tasks:
+                grouped_public_queues[queue.host_node_id].append(queue)
+
+        for host_node_id in sorted(grouped_public_queues):
+            queues = sorted(grouped_public_queues[host_node_id], key=self._shared_queue_sort_key)
+            active_heads = [queue.tasks[0] for queue in queues if queue.tasks]
+            if not active_heads:
+                continue
+            capacity_pool = (
+                self.compute_config.cpu_capacity_per_slot_cloud
+                if host_node_id == "cloud"
+                else self.compute_config.cpu_capacity_per_slot_edge
+            )
+            per_head_capacity = capacity_pool / float(len(active_heads))
+            for queue in queues:
+                if not queue.tasks:
+                    continue
+                task = queue.tasks[0]
+                task.metadata["capacity_sharing_host"] = host_node_id
+                task.metadata["capacity_sharing_active_heads"] = len(active_heads)
+                task.metadata["capacity_sharing_capacity_pool"] = capacity_pool
+                task.metadata["capacity_sharing_allocated_capacity"] = per_head_capacity
+                task.metadata["capacity_sharing_policy"] = "deterministic_equal_share_at_slot_start"
+                task.metadata["capacity_sharing_redistribution_policy"] = "no_same_slot_redistribution"
+                destination_kind = "cloud" if host_node_id == "cloud" else "public"
+                ledger = self._trace_ledgers.setdefault(task.task_id, OffloadTraceLedger())
+                if "execution_started" not in ledger.snapshot():
+                    ledger.emit("execution_started")
+                advance_shared_runtime(task, destination_kind, self.current_slot, self.runtime_parameters)
+                execution_progress = step_execution(
+                    task,
+                    per_head_capacity,
+                    slot=self.current_slot,
+                    destination_kind=destination_kind,
+                )
+                if not execution_progress.completed:
+                    continue
+                finalized_task = queue.dequeue()
+                ledger.emit("execution_completed")
+                finalized.append(finalized_task)
+        return finalized
+
+    def _shared_queue_sort_key(self, queue: PublicQueue) -> tuple[int, int, str, str]:
+        head = queue.tasks[0] if queue.tasks else None
+        task_id = head.task_id if head is not None else -1
+        return (
+            int(queue.host_node_id != "cloud"),
+            int(queue.source_agent_id),
+            str(task_id),
+            queue.host_node_id,
+        )
 
     def _public_queue_for(self, source_id: str, destination: str) -> PublicQueue:
         key = (destination, source_id)

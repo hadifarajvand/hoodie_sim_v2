@@ -1,7 +1,12 @@
 <!-- SPECKIT START -->
 For additional context about technologies to be used, project structure,
 shell commands, and other important information, read
-`specs/034-transmission-delay-runtime-wiring/plan.md`
+`specs/035-public-cloud-queue-capacity-sharing-contract/plan.md`
+and `specs/035-public-cloud-queue-capacity-sharing-contract/spec.md`
+
+Feature 035 scope: public/cloud capacity sharing only.
+Do not change execution-helper formulas, transmission-delay wiring,
+training/neural-network/policy/dependency/campaign behavior, or paper-recovery claims.
 <!-- SPECKIT END -->
 
 ## External Reference Usage
