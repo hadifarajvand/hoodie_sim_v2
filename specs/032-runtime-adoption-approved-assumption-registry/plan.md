@@ -5,13 +5,13 @@
 
 ## Summary
 
-Adopt the approved Feature 031 assumptions into runtime configuration, topology legality, link-rate behavior, timeout validation, and aggregation semantics without changing training, policy design, dependency sets, or paper-recovery claims. The runtime adoption path consumes the approved assumption registry and report artifacts as the source of truth, while preserving provenance and audit labels.
+Adopt the approved Feature 031 assumptions into runtime configuration, topology legality, link-rate behavior, timeout validation, and aggregation semantics without changing training, policy design, dependency sets, or paper-recovery claims. This correction explicitly keeps Figure 7 adjacency horizontal-only and makes vertical/cloud legality independent of topology adjacency.
 
 ## Technical Context
 
 **Language/Version**: Python 3.x via `/Users/hadi/Documents/GitHub/hoodie_sim_v2/src/.venvmac/bin/python`  
 **Primary Dependencies**: Standard library plus existing runtime, policy, and evaluation modules in `src/environment/`, `src/policies/`, `src/evaluation/`, and `src/analysis/`  
-**Storage**: Repository files, Feature 031 registry/report artifacts, and new Feature 032 runtime adoption artifacts under `artifacts/analysis/runtime-adoption-approved-assumption-registry/`  
+**Storage**: Repository files, Feature 031 registry/report artifacts, and Feature 032 runtime adoption artifacts under `artifacts/analysis/runtime-adoption-approved-assumption-registry/`  
 **Testing**: `unittest` and targeted integration checks run through the approved interpreter  
 **Target Platform**: Local repository execution on the approved development environment  
 **Project Type**: Runtime adoption / validation pipeline with report generation  
@@ -48,6 +48,8 @@ This feature follows a runtime-adoption design that consumes approved assumption
 - Approved interpreter path: `/Users/hadi/Documents/GitHub/hoodie_sim_v2/src/.venvmac/bin/python`
 - Feature 031 registry/report artifacts are treated as authoritative sources for adoption
 - No paper-recovery claim is allowed
+- Figure 7 adjacency governs horizontal legality only
+- Vertical/cloud legality is independent and resolves to `cloud` without requiring `cloud` in the adjacency map
 
 The constitution gate passes because this feature does not change dependency policy, training policy, or the approved interpreter boundary.
 - Branch hygiene must confirm that the current branch is not `main`, that it was created from updated `main`, and that the `031-user-approved-assumption-patch-registry-complete` tag matches `main` before implementation starts.
@@ -117,6 +119,7 @@ tests/integration/
 - Confirm the runtime adoption report schema and file locations for proof tracking.
 - Confirm no training, policy, dependency, campaign, or reward-timing changes are required.
 - Confirm the runtime adoption feature will not touch unrelated docs outside the files required for runtime/config/contract adoption and report generation.
+- Confirm vertical/cloud legality remains independent of Figure 7 adjacency and that the approved-topology test uses `TopologyGraph.from_approved_assumption_registry()`.
 
 ### Phase 1: Design & Contracts
 
@@ -134,7 +137,8 @@ tests/integration/
 
 - The approved Feature 031 registry/report artifacts must remain the source of truth before any runtime adoption code is written.
 - ComputeConfig adoption depends on the approved capacity values from the Feature 031 registry.
-- Topology legality adoption depends on the approved Figure 7 adjacency and neighbor-only rule.
+- Topology legality adoption depends on the approved Figure 7 adjacency and the horizontal-only rule.
+- Vertical/cloud legality must remain independent of Figure 7 adjacency and resolve to `cloud` directly.
 - Link-rate adoption depends on the approved `R_V = 10 Mbps` and preserved horizontal rate contract.
 - Timeout adoption depends on the approved `timeout_slots = 20`, `slot_duration_seconds = 0.1`, and `timeout_seconds = 2.0`.
 - Aggregation adoption depends on a shared helper/contract used by both runtime and reporting code.
@@ -151,6 +155,7 @@ tests/integration/
 - Confirm aggregation uses per-agent episode terminal-reward sum first, then arithmetic mean across agents, excluding no-task/NaN/omitted slots.
 - Confirm the final report lists consumed assumptions, runtime components, proof tests, and no-paper-recovery status.
 - Confirm no training, policy, dependency, campaign, or reward-timing drift occurs.
+- Confirm the approved-topology vertical/cloud legality test passes using `TopologyGraph.from_approved_assumption_registry()`.
 - Confirm the final diff contains only the runtime-adoption files named in this plan and no polluted changes.
 
 ## Complexity Tracking

@@ -168,8 +168,8 @@ class HoodieGymEnvironment:
         allowed = self.topology.legal_horizontal_destinations(source_id)
         legal["horizontal"] = bool(allowed)
         legal["offload_horizontal"] = legal["horizontal"]
-        legal["vertical"] = "cloud" in self.topology.legal_adjacency.get(source_id, ())
-        legal["offload_vertical"] = legal["vertical"]
+        legal["vertical"] = True
+        legal["offload_vertical"] = True
         return legal
 
     def step(self, action: str | None) -> tuple[dict[str, Any], float, bool, bool, dict[str, Any]]:
@@ -319,16 +319,13 @@ class HoodieGymEnvironment:
         if action in {"local", "compute_local"}:
             return "self"
         if self.topology is not None:
-            allowed = self.topology.legal_adjacency.get(str(task.source_agent_id), ())
             if action in {"horizontal", "offload_horizontal"}:
                 allowed_horizontal = self.topology.legal_horizontal_destinations(str(task.source_agent_id))
                 if allowed_horizontal:
                     return allowed_horizontal[0]
                 raise ValueError("No topology-backed horizontal destination available")
             if action in {"vertical", "offload_vertical"}:
-                if "cloud" in allowed:
-                    return "cloud"
-                raise ValueError("No topology-backed vertical destination available")
+                return "cloud"
         if action in {"horizontal", "offload_horizontal", "vertical", "offload_vertical"}:
             raise ValueError("Topology-backed destination required for offload actions")
         raise ValueError(f"Unsupported action: {action}")

@@ -25,6 +25,7 @@ class RuntimeAdoptionReportIntegrationTests(unittest.TestCase):
         self.assertIn("Figure_7_adjacency", report.consumed_assumption_ids)
         self.assertIn("src/environment/compute_config.py", report.runtime_components_changed)
         self.assertIn("test_timeout_drop_behavior_consumes_runtime_contract", report.tests_added)
+        self.assertIn("test_approved_figure7_topology_keeps_vertical_cloud_offload_legal", report.tests_added)
         self.assertIn("ComputeConfig defaults 32.0/64.0/128.0 replaced with 0.5/0.5/3.0", report.old_stale_values_detected_or_replaced)
 
     def test_report_writes_json_and_markdown(self) -> None:

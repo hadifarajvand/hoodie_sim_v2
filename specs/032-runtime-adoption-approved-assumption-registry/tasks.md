@@ -5,145 +5,96 @@
 
 ## Phase 1: Setup (Shared Infrastructure)
 
-**Purpose**: Establish branch hygiene, provenance inputs, and scope boundaries before any runtime code is changed.
+**Purpose**: Confirm the correction scope and keep the repository on the approved runtime-adoption branch before touching code.
 
 - [ ] T001 Verify current branch is `032-runtime-adoption-approved-assumption-registry` and fail immediately if the branch is `main`
 - [ ] T002 Verify the current branch was created from updated `main` by checking the branch base against `main`
-- [ ] T003 Verify the `031-user-approved-assumption-patch-registry-complete` tag exists
-- [ ] T004 Verify the `031-user-approved-assumption-patch-registry-complete` tag resolves to the same commit as `main`
-- [ ] T005 Verify `resources/papers/hoodie/recovered/user-approved-assumption-registry.json` exists and is readable
-- [ ] T006 Verify `artifacts/analysis/user-approved-assumption-patch-registry/assumption-patch-report.json` exists and is readable
-- [ ] T007 Verify the working tree does not already contain runtime, training, dependency, policy, baseline, campaign, or paper-recovery drift before implementation begins
+- [ ] T003 Verify the `031-user-approved-assumption-patch-registry-complete` tag exists and resolves to the same commit as `main`
+- [ ] T004 Verify `resources/papers/hoodie/recovered/user-approved-assumption-registry.json` and `artifacts/analysis/user-approved-assumption-patch-registry/assumption-patch-report.json` are readable
+- [ ] T005 Verify the working tree does not already contain runtime, training, dependency, policy, baseline, campaign, or paper-recovery drift before the correction starts
 
 ## Phase 2: Foundational (Blocking Prerequisites)
 
-**Purpose**: Establish the provenance helpers and runtime adoption boundaries used by all downstream tasks.
+**Purpose**: Record the vertical/cloud legality correction in the feature artifacts before runtime code is patched.
 
-- [ ] T008 Create a registry ingestion helper in `src/analysis/runtime_adoption_approved_assumption_registry/__init__.py` that loads the Feature 031 registry and report artifacts without rewriting paper-recovery status
-- [ ] T009 Create a provenance loader in `src/analysis/runtime_adoption_approved_assumption_registry/runner.py` that exposes consumed assumption IDs and source paths for runtime adoption
-- [ ] T010 Add a runtime-adoption report schema in `src/analysis/runtime_adoption_approved_assumption_registry/report.py` with consumed assumptions, runtime components changed or validated, tests run, and final verdict
-- [ ] T011 Add a minimal shared helper boundary in `src/evaluation/aggregate_metrics.py` and `src/evaluation/metrics.py` for reward aggregation reuse by runtime and reporting
+- [ ] T006 Update `specs/032-runtime-adoption-approved-assumption-registry/spec.md` so Figure 7 adjacency is horizontal-only and vertical/cloud legality is independent of the adjacency map
+- [ ] T007 Update `specs/032-runtime-adoption-approved-assumption-registry/plan.md` so the validation strategy and dependency order explicitly require `TopologyGraph.from_approved_assumption_registry()` to keep vertical/cloud offload legal without requiring `cloud` in `legal_adjacency`
+- [ ] T008 Update `specs/032-runtime-adoption-approved-assumption-registry/tasks.md` so the correction tasks and report validation mention the approved-topology vertical/cloud legality test by name
+- [ ] T009 Update `specs/032-runtime-adoption-approved-assumption-registry/quickstart.md` if needed so the validation command list includes the approved-topology vertical/cloud legality test
 
-## Phase 3: User Story 1 - Adopt Compute, Link-Rate, and Timeout Contracts (Priority: P1)
+## Phase 3: User Story 1 - Separate Vertical/Cloud Legality From Figure 7 Topology (Priority: P1)
 
-**Goal**: Apply approved CPU capacities, link-rate values, and timeout contract values to runtime-facing configuration without changing training or dependency behavior.
+**Goal**: Make the approved Figure 7 topology govern horizontal offloading only, while keeping vertical/cloud offload legal independently and resolving it to `cloud`.
 
-**Independent Test**: A reviewer can validate ComputeConfig, LinkRateConfig, and TrafficConfig values directly from runtime configuration and confirm the approved values are present.
+**Independent Test**: A reviewer can load `TopologyGraph.from_approved_assumption_registry()` and confirm that horizontal destinations are only approved EA neighbors, `cloud` is absent from horizontal destinations, and vertical/offload_vertical remains legal and resolves to `cloud`.
 
 ### Tests for User Story 1
 
-- [ ] T012 [P] [US1] Add `test_compute_config_uses_approved_assumption_capacities` in `tests/unit/test_compute_config.py` to assert `cpu_capacity_per_slot_agent=0.5`, `cpu_capacity_per_slot_edge=0.5`, and `cpu_capacity_per_slot_cloud=3.0`
-- [ ] T013 [P] [US1] Add a unit test in `tests/unit/test_compute_config.py` that proves the stale defaults `32.0`, `64.0`, and `128.0` are not used by the runtime default ComputeConfig path
-- [ ] T014 [P] [US1] Add `test_cloud_vertical_rate_uses_RV_10mbps_no_fake_cloud_rate` in `tests/unit/test_link_rate_config.py` to assert `vertical_data_rate_mbps=10.0` and no separate cloud-specific rate is introduced
-- [ ] T015 [P] [US1] Add `test_timeout_contract_20_slots_2_seconds` in `tests/unit/test_traffic_config.py` to assert `timeout_slots=20`, `slot_duration_seconds=0.1`, and `timeout_seconds=2.0`
-- [ ] T016 [P] [US1] Add `test_timeout_drop_behavior_consumes_runtime_contract` in `tests/integration/test_gym_environment.py` to prove the runtime drop path uses the approved timeout contract end-to-end
+- [ ] T010 [US1] Add `test_approved_figure7_topology_keeps_vertical_cloud_offload_legal` in `tests/unit/test_runtime_adoption_approved_assumption_registry.py` using `TopologyGraph.from_approved_assumption_registry()` to assert `cloud` is not in `legal_horizontal_destinations(source_id)`, is not injected into `topology.legal_adjacency[source_id]`, `env.legal_action_mask(task)["vertical"]` is `True`, `env.legal_action_mask(task)["offload_vertical"]` is `True`, `env._resolve_destination(task, "vertical") == "cloud"`, `env._resolve_destination(task, "offload_vertical") == "cloud"`, and horizontal resolution returns only an approved EA neighbor
+- [ ] T011 [US1] Add a unit regression in `tests/unit/test_gym_environment.py` that proves approved-topology vertical/cloud legality does not depend on `cloud` being present in the adjacency map
+- [ ] T012 [US1] Add a targeted integration regression in `tests/integration/test_evaluation_runner.py` only if `EvaluationRunner` still contains reachable duplicate legality or destination-resolution logic that could contradict `HoodieGymEnvironment`
+- [ ] T013 [US1] Add `test_runtime_adoption_report_mentions_vertical_cloud_separation_fix` in `tests/integration/test_runtime_adoption_report.py` to require the correction note and the approved-topology vertical/cloud test name in the report
 
 ### Implementation for User Story 1
 
-- [ ] T017 [US1] Update `src/environment/compute_config.py` to set runtime defaults to `0.5`, `0.5`, and `3.0` gcycles/slot and preserve unit validation
-- [ ] T018 [US1] Update `src/environment/link_rate_config.py` to preserve `R_H = 30 Mbps`, set cloud-facing vertical rate to `R_V = 10 Mbps`, and avoid introducing a separate cloud-specific rate
-- [ ] T019 [US1] Update `src/environment/traffic_config.py` to ensure the runtime timeout contract exposes `timeout_slots=20`, `slot_duration_seconds=0.1`, and `timeout_seconds=2.0` consistently
-- [ ] T020 [US1] Update `src/environment/gym_adapter.py` so runtime observations and action masks consume the approved runtime config values without changing reward timing
+- [ ] T014 [US1] Update `src/environment/gym_adapter.py` so `legal_action_mask(task)` derives `horizontal/offload_horizontal` only from approved neighbor-only topology and sets `vertical/offload_vertical` independently of Figure 7 adjacency
+- [ ] T015 [US1] Update `src/environment/gym_adapter.py` so `_resolve_destination(task, "vertical")` and `_resolve_destination(task, "offload_vertical")` return `cloud` independently of Figure 7 adjacency, while horizontal resolution still returns only an approved neighboring EA
+- [ ] T016 [US1] Update `src/evaluation/runner.py` to remove or align any duplicate reachable legality or destination-resolution helper logic so it does not contradict `HoodieGymEnvironment`
+- [ ] T017 [US1] Update `src/analysis/runtime_adoption_approved_assumption_registry/report.py` to include the correction summary, the approved-topology vertical/cloud legality test name, and the unchanged no-paper-recovery/no-drift flags
+- [ ] T018 [US1] Update `artifacts/analysis/runtime-adoption-approved-assumption-registry/runtime-adoption-report.json` and `artifacts/analysis/runtime-adoption-approved-assumption-registry/runtime-adoption-report.md` to reflect the corrected vertical/cloud legality behavior after tests pass
 
-## Phase 4: User Story 2 - Adopt Topology and Horizontal Legality Contracts (Priority: P2)
+## Phase 4: Validation and Scope Guard
 
-**Goal**: Load the approved Figure 7 adjacency directly from the Feature 031 registry snapshot and enforce neighbor-only horizontal legality while keeping vertical/cloud legality separate.
+**Purpose**: Prove the correction is real, regression-safe, and still isolated from training/dependency/policy/campaign drift.
 
-**Independent Test**: A reviewer can validate the topology matrix, action mask, and legality rules from the runtime environment without any campaign rerun or training change.
-
-### Tests for User Story 2
-
-- [ ] T021 [P] [US2] Add `test_topology_figure7_adjacency_invariants` in `tests/unit/test_gym_environment.py` or `tests/unit/test_topology.py` to validate 20 nodes, 20x20 matrix shape, symmetry, zero diagonal, and degree 3 for every node
-- [ ] T022 [P] [US2] Add `test_horizontal_legality_neighbor_only_no_self_no_non_neighbor` in `tests/unit/test_gym_environment.py` to forbid self-offload and non-neighbor horizontal offload
-- [ ] T023 [P] [US2] Add `test_action_mask_rejects_non_neighbor_horizontal_destinations` in `tests/unit/test_gym_environment.py` to prove the horizontal action mask blocks non-neighbor destinations
-- [ ] T024 [P] [US2] Add `test_vertical_cloud_action_not_constrained_by_horizontal_adjacency` in `tests/unit/test_gym_environment.py` to prove vertical/cloud actions stay legal independently of horizontal adjacency
-- [ ] T025 [P] [US2] Add a provenance assertion in `tests/integration/test_runtime_adoption_registry_report.py` that the approved adjacency is consumed directly from the Feature 031 registry snapshot and not from a copied runtime artifact
-
-### Implementation for User Story 2
-
-- [ ] T026 [US2] Update `src/environment/topology.py` and `src/environment/gym_adapter.py` so the approved Figure 7 adjacency is loaded directly from `resources/papers/hoodie/recovered/user-approved-assumption-registry.json`
-- [ ] T027 [US2] Update `src/environment/gym_adapter.py` and `src/policies/action_masking.py` to enforce neighbor-only horizontal legality, forbid self-offload, and forbid non-neighbor horizontal offload
-- [ ] T028 [US2] Update `src/environment/gym_adapter.py` so vertical/cloud legality remains separate from horizontal adjacency legality
-- [ ] T029 [US2] Preserve the existing internal indexing convention in topology handling, including 0-based indices if the runtime internals use them
-
-## Phase 5: User Story 3 - Adopt Aggregation and Produce Runtime Adoption Report (Priority: P3)
-
-**Goal**: Reuse the shared aggregation helper/contract, preserve delayed reward timing, and generate a runtime adoption report that proves provenance without claiming paper recovery.
-
-**Independent Test**: A reviewer can inspect the aggregation helper, the report artifact, and the tests to confirm the approved aggregation semantics and audit boundaries.
-
-### Tests for User Story 3
-
-- [ ] T030 [P] [US3] Add `test_aggregation_per_agent_episode_sum_then_mean` in `tests/unit/test_aggregate_metrics.py` or `tests/unit/test_evaluation_metrics.py` to assert per-agent episode sum first, then arithmetic mean across agents
-- [ ] T031 [P] [US3] Add `test_aggregation_excludes_nan_no_task_omitted_slots` in `tests/unit/test_aggregate_metrics.py` or `tests/unit/test_evaluation_metrics.py` to assert no-task, NaN, and omitted slots are excluded from numeric aggregation
-- [ ] T032 [P] [US3] Add `test_reward_emission_timing_remains_unchanged` in `tests/integration/test_gym_environment.py` to assert reward is still emitted only on task completion or drop
-- [ ] T033 [P] [US3] Add `test_feature_032_scope_guard_no_training_policy_dependency_drift` in `tests/integration/test_runtime_adoption_scope_guard.py` to fail on training, neural-network, dependency, policy, baseline, or campaign drift
-- [ ] T034 [P] [US3] Add `test_runtime_adoption_report_contents` in `tests/integration/test_runtime_adoption_report.py` to assert consumed assumptions, runtime components changed or validated, tests run, and final verdict are present
-
-### Implementation for User Story 3
-
-- [ ] T035 [US3] Update `src/evaluation/aggregate_metrics.py` and `src/evaluation/metrics.py` to expose a shared helper/contract that performs per-agent episode terminal-reward sum followed by arithmetic mean across agents
-- [ ] T036 [US3] Update `src/environment/gym_adapter.py` and `src/evaluation/runner.py` so reward emission timing stays delayed and no-task/NaN/omitted slots are excluded rather than coerced to zero
-- [ ] T037 [US3] Generate `artifacts/analysis/runtime-adoption-approved-assumption-registry/runtime-adoption-report.json` in `src/analysis/runtime_adoption_approved_assumption_registry/report.py`
-- [ ] T038 [US3] Generate `artifacts/analysis/runtime-adoption-approved-assumption-registry/runtime-adoption-report.md` in `src/analysis/runtime_adoption_approved_assumption_registry/report.py`
-- [ ] T039 [US3] Record consumed assumption IDs from `resources/papers/hoodie/recovered/user-approved-assumption-registry.json` and `artifacts/analysis/user-approved-assumption-patch-registry/assumption-patch-report.json` in `src/analysis/runtime_adoption_approved_assumption_registry/report.py`
-
-## Phase 6: Scope Guards and Validation
-
-**Purpose**: Prove only the explicitly scoped runtime/config/evaluation files changed and run the targeted tests with the approved interpreter.
-
-- [ ] T040 Create a git diff scope guard in `tests/integration/test_runtime_adoption_scope_guard.py` that fails if dependency files, training files, neural-network files, policy/baseline/campaign files, or Feature 030 artifacts change
-- [ ] T041 Create a paper-registry guard in `tests/integration/test_runtime_adoption_scope_guard.py` that fails if any paper registry is mutated to claim paper recovery
-- [ ] T042 Run the targeted unit tests from the approved interpreter in `/Users/hadi/Documents/GitHub/hoodie_sim_v2/src/.venvmac/bin/python` and record the exact command in `specs/032-runtime-adoption-approved-assumption-registry/quickstart.md`
-- [ ] T043 Run the targeted integration tests from the approved interpreter in `/Users/hadi/Documents/GitHub/hoodie_sim_v2/src/.venvmac/bin/python` and record the exact command in `specs/032-runtime-adoption-approved-assumption-registry/quickstart.md`
-- [ ] T044 Capture the final changed-file inventory and classify each path as runtime/config/adoption implementation or intentional analysis artifact in `artifacts/analysis/runtime-adoption-approved-assumption-registry/runtime-adoption-report.md`
+- [ ] T019 [US1] Run the approved-interpreter unit test command in `specs/032-runtime-adoption-approved-assumption-registry/quickstart.md` covering `tests.unit.test_runtime_adoption_approved_assumption_registry`, `tests.unit.test_gym_environment`, and `tests.unit.test_compute_config`
+- [ ] T020 [US1] Run the approved-interpreter integration test command in `specs/032-runtime-adoption-approved-assumption-registry/quickstart.md` covering `tests.integration.test_runtime_adoption_report`, `tests.integration.test_evaluation_runner`, `tests.integration.test_execution_time_flow`, and `tests.integration.test_runtime_adoption_scope_guard`
+- [ ] T021 [US1] Run `git status --short` and `git diff --name-only main...HEAD` and confirm the diff is limited to the approved Feature 032 correction files and generated runtime-adoption artifacts
+- [ ] T022 [US1] Confirm the final report verdict remains blocked until `test_approved_figure7_topology_keeps_vertical_cloud_offload_legal` passes against `TopologyGraph.from_approved_assumption_registry()`
 
 ## Dependencies & Execution Order
 
 ### Phase Dependencies
 
-- Phase 1 must complete before any runtime implementation begins.
-- Phase 2 blocks all user-story work.
-- Phase 3 depends on the registry ingestion helpers from Phase 2.
-- Phase 4 depends on the runtime configuration contracts and branch hygiene checks.
-- Phase 5 depends on the runtime config and topology changes being in place.
-- Phase 6 depends on all runtime adoption work being implemented.
+- Phase 1 must complete before any file edits.
+- Phase 2 must complete before runtime code changes.
+- Phase 3 depends on the corrected feature artifact wording being in place.
+- Phase 4 depends on the runtime code, tests, and report updates being implemented.
 
 ### User Story Dependencies
 
-- **US1**: Can start after Phase 2 and is independent of topology and aggregation work.
-- **US2**: Can start after Phase 2 and depends only on the approved topology snapshot.
-- **US3**: Can start after Phase 2 and depends on the shared helper/contract and runtime boundary rules.
+- **US1**: Can start after Phase 2 and is the only story for this correction.
 
 ### Within Each User Story
 
-- Tests must be written before implementation for the corresponding user story.
-- Runtime adoption must preserve assumption labels and provenance at every step.
-- Scope guards must fail fast on any polluted diff.
+- Tests must be written before or alongside the code change they validate.
+- `HoodieGymEnvironment` is the source of truth for legality and destination resolution.
+- `TopologyGraph.from_approved_assumption_registry()` must be the topology fixture used in the approved-topology vertical/cloud test.
+- Report verdict must not claim completion until the approved-topology vertical/cloud legality test passes.
 
 ## Parallel Opportunities
 
-- `T012`, `T013`, `T014`, `T015`, and `T016` can run in parallel because they validate distinct runtime contract surfaces.
-- `T021`, `T022`, `T023`, and `T024` can run in parallel because they exercise separate topology and legality checks.
-- `T030`, `T031`, `T032`, and `T034` can run in parallel because they cover distinct aggregation, reward timing, and report concerns.
+- `T006`, `T007`, `T008`, and `T009` can run sequentially or in a small batch because they only update feature artifacts and should not conflict if edited carefully.
+- `T010` and `T011` can be parallelized only if they touch different test files and do not overlap with each other.
+- `T019` and `T020` can run after implementation but should not be treated as fake parallelism because the integration command depends on the unit-level correction being present.
 
 ## Implementation Strategy
 
 ### MVP First
 
-1. Complete Phases 1-2.
-2. Complete User Story 1 runtime config adoption.
-3. Stop and validate the approved CPU, link-rate, and timeout values before topology or aggregation work.
+1. Complete Phase 2 feature-artifact correction.
+2. Patch `HoodieGymEnvironment` legality and destination resolution.
+3. Prove the approved-topology vertical/cloud legality test passes.
 
 ### Incremental Delivery
 
-1. Adopt compute, link-rate, and timeout contracts first.
-2. Add topology and legality adoption next.
-3. Finish with aggregation, report generation, and scope guards.
+1. Fix topology vertical/cloud separation.
+2. Update the report to name the correction and the approved-topology test.
+3. Run the targeted validation commands and reject any polluted diff.
 
 ### Parallel Team Strategy
 
-1. One contributor handles US1 runtime config adoption.
-2. One contributor handles US2 topology and legality adoption.
-3. One contributor handles US3 aggregation, reporting, and scope guards.
+1. One contributor updates the feature artifacts and quickstart.
+2. One contributor patches `gym_adapter.py`.
+3. One contributor updates the report and tests.
 

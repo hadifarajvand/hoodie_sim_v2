@@ -152,19 +152,22 @@ class GymEnvironmentTests(unittest.TestCase):
         self.assertTrue(obs["1"]["legal_action_mask"]["horizontal"])
         self.assertTrue(obs["1"]["legal_action_mask"]["vertical"])
 
-    def test_illegal_actions_are_rejected_without_remapping(self) -> None:
+    def test_vertical_offload_does_not_require_cloud_in_topology(self) -> None:
         horizontal_only = TopologyGraph(node_ids=("1", "2"), legal_adjacency={"1": ("2",)})
-        vertical_only = TopologyGraph(node_ids=("1", "cloud"), legal_adjacency={"1": ("cloud",)})
 
         env_horizontal = self._env(topology=horizontal_only)
         env_horizontal.reset(seed=8)
-        with self.assertRaises(ValueError):
-            env_horizontal.step("vertical")
+        _obs, _reward, _terminated, _truncated, info = env_horizontal.step("vertical")
+        self.assertEqual(info["queue_load"], 1)
+        self.assertEqual(env_horizontal._offloading_queues[("1", "cloud")].resolved_destination, "cloud")
 
-        env_vertical = self._env(topology=vertical_only)
+        approved_topology = TopologyGraph.from_approved_assumption_registry()
+        env_vertical = self._env(topology=approved_topology)
         env_vertical.reset(seed=9)
-        with self.assertRaises(ValueError):
-            env_vertical.step("horizontal")
+        self.assertTrue(env_vertical.legal_action_mask()["vertical"])
+        self.assertTrue(env_vertical.legal_action_mask()["offload_vertical"])
+        self.assertEqual(env_vertical._resolve_destination(env_vertical.current_task, "vertical"), "cloud")
+        self.assertEqual(env_vertical._resolve_destination(env_vertical.current_task, "offload_vertical"), "cloud")
 
     def test_local_queue_admission(self) -> None:
         env = self._env(

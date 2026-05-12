@@ -6,6 +6,7 @@ import unittest
 from src.analysis.runtime_adoption_approved_assumption_registry import load_runtime_adoption_contracts
 from src.environment.gym_adapter import HoodieGymEnvironment
 from src.environment.link_rate_config import LinkRateConfig
+from src.environment.topology import TopologyGraph
 from src.evaluation.aggregate_metrics import aggregate_terminal_rewards
 
 
@@ -57,18 +58,20 @@ class RuntimeAdoptionApprovedAssumptionRegistryUnitTests(unittest.TestCase):
         self.assertEqual(env._resolve_destination(task, "horizontal"), horizontal_destinations[0])
         self.assertTrue(all(topology.is_legal_destination(source_id, destination) for destination in horizontal_destinations))
 
-    def test_vertical_cloud_action_not_constrained_by_horizontal_adjacency(self) -> None:
-        topology = load_runtime_adoption_contracts().topology
-        cloud_topology = topology.__class__(
-            node_ids=("1", "2", "cloud"),
-            legal_adjacency={"1": ("2", "cloud")},
-        )
-        env = HoodieGymEnvironment(episode_length=1, topology=cloud_topology)
+    def test_approved_figure7_topology_keeps_vertical_cloud_offload_legal(self) -> None:
+        topology = TopologyGraph.from_approved_assumption_registry()
+        env = HoodieGymEnvironment(episode_length=1, topology=topology)
         env.reset(seed=13)
         task = env.current_task
         self.assertIsNotNone(task)
+        source_id = str(task.source_agent_id)
+        self.assertNotIn("cloud", topology.legal_horizontal_destinations(source_id))
+        self.assertNotIn("cloud", topology.legal_adjacency[source_id])
         self.assertTrue(env.legal_action_mask(task)["vertical"])
+        self.assertTrue(env.legal_action_mask(task)["offload_vertical"])
         self.assertEqual(env._resolve_destination(task, "vertical"), "cloud")
+        self.assertEqual(env._resolve_destination(task, "offload_vertical"), "cloud")
+        self.assertIn(env._resolve_destination(task, "horizontal"), topology.legal_horizontal_destinations(source_id))
 
     def test_cloud_vertical_rate_uses_rv_10mbps_no_fake_cloud_rate(self) -> None:
         link_rate_config = LinkRateConfig()

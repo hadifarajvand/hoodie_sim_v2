@@ -118,10 +118,11 @@ class EvaluationRunner:
             "offload_vertical": False,
         }
         if self.topology is not None:
-            allowed = self.topology.legal_adjacency.get(str(task.source_agent_id), ())
-            legal["horizontal"] = any(destination != "cloud" for destination in allowed)
+            source_id = str(task.source_agent_id)
+            allowed_horizontal = self.topology.legal_horizontal_destinations(source_id)
+            legal["horizontal"] = bool(allowed_horizontal)
             legal["offload_horizontal"] = legal["horizontal"]
-            legal["vertical"] = "cloud" in allowed
+            legal["vertical"] = True
             legal["offload_vertical"] = legal["vertical"]
         else:
             legal["horizontal"] = True
@@ -134,16 +135,14 @@ class EvaluationRunner:
         if action in {"local", "compute_local"}:
             return "self"
         if self.topology is not None:
-            allowed = self.topology.legal_adjacency.get(str(task.source_agent_id), ())
+            source_id = str(task.source_agent_id)
             if action in {"horizontal", "offload_horizontal"}:
-                for destination in allowed:
-                    if destination != "cloud":
-                        return destination
+                allowed_horizontal = self.topology.legal_horizontal_destinations(source_id)
+                if allowed_horizontal:
+                    return allowed_horizontal[0]
                 raise ValueError("No topology-backed horizontal destination available")
             if action in {"vertical", "offload_vertical"}:
-                if "cloud" in allowed:
-                    return "cloud"
-                raise ValueError("No topology-backed vertical destination available")
+                return "cloud"
         if action in {"horizontal", "offload_horizontal", "vertical", "offload_vertical"}:
             raise ValueError("Topology-backed destination required for offload actions")
         raise ValueError(f"Unsupported action for destination resolution: {action}")

@@ -12,6 +12,7 @@
 - Q: Should reward aggregation be implemented as a shared helper/contract or runtime-only? → A: Implement aggregation as a shared helper/contract that runtime and reporting can both call.
 - Q: Should runtime topology load Figure 7 adjacency directly or from a copied artifact? → A: Load directly from `resources/papers/hoodie/recovered/user-approved-assumption-registry.json` to preserve provenance and avoid a copied runtime artifact.
 - Q: Should the runtime use 0-based internal indexing or convert everything to 1-based? → A: Use the existing internal indexing convention, including 0-based indices if applicable.
+- Q: Should Figure 7 adjacency control vertical/cloud legality? → A: No. Figure 7 adjacency constrains horizontal offloading only; vertical/cloud offload is independently legal and must resolve to `cloud` without requiring `cloud` in the adjacency map.
 
 ## User Scenarios & Testing *(mandatory)*
 
@@ -39,7 +40,7 @@ As an operator, I want runtime topology legality to use the approved Figure 7 ad
 **Acceptance Scenarios**:
 
 1. **Given** the approved Figure 7 adjacency, **When** topology legality is validated, **Then** the runtime accepts only neighbor-only horizontal offloads and forbids self-offload.
-2. **Given** the approved Figure 7 adjacency, **When** topology legality is validated, **Then** vertical/cloud offload remains separate from horizontal legality.
+2. **Given** the approved Figure 7 adjacency, **When** topology legality is validated, **Then** vertical/cloud offload remains separate from horizontal legality and does not require `cloud` to appear in the adjacency map.
 
 ### User Story 3 - Preserve Audit Boundaries (Priority: P3)
 
@@ -58,6 +59,7 @@ As an auditor, I want the runtime adoption feature to prove it did not rewrite p
 
 - Runtime topology must respect the existing internal indexing convention used by the codebase, including 0-based indices if applicable.
 - The approved Figure 7 adjacency is loaded directly from `resources/papers/hoodie/recovered/user-approved-assumption-registry.json` to preserve provenance and avoid a copied runtime artifact.
+- Figure 7 adjacency constrains horizontal offloading only; vertical/cloud legality is independent and must resolve to `cloud` without requiring `cloud` in the adjacency map.
 - Reward aggregation must be implemented as a shared helper/contract that runtime and reporting can both call, not as a campaign rerun or duplicated reduction logic.
 
 - What happens when a runtime contract references an assumption that is approved but not present in the registry snapshot?
@@ -73,7 +75,7 @@ As an auditor, I want the runtime adoption feature to prove it did not rewrite p
 - **FR-002**: The system MUST apply the approved CPU capacity values for private, public, and cloud runtime configuration.
 - **FR-003**: The system MUST apply the approved Figure 7 adjacency as the source of topology legality for horizontal offloading.
 - **FR-004**: The system MUST enforce neighbor-only horizontal offloading and forbid self-offload and non-neighbor horizontal offload.
-- **FR-005**: The system MUST preserve vertical/cloud offload as a separate legality path from horizontal topology legality.
+- **FR-005**: The system MUST preserve vertical/cloud offload as a separate legality path from horizontal topology legality and MUST resolve vertical/offload_vertical to `cloud` independently of Figure 7 adjacency.
 - **FR-006**: The system MUST apply the approved cloud-facing vertical rate `R_V = 10 Mbps` and preserve the horizontal rate contract without introducing a separate cloud-specific rate.
 - **FR-007**: The system MUST apply the approved timeout contract end-to-end for runtime validation and drop handling using `timeout_slots = 20`, `slot_duration_seconds = 0.1`, and `timeout_seconds = 2.0`.
 - **FR-008**: The system MUST preserve delayed reward emission and only emit reward on task completion or drop.
@@ -98,6 +100,7 @@ As an auditor, I want the runtime adoption feature to prove it did not rewrite p
 - **SC-003**: 0 adopted values are labeled as paper-recovered facts.
 - **SC-004**: Reward emission remains delayed until task completion or drop in 100% of tested scenarios.
 - **SC-005**: Runtime adoption validation can be reproduced from the same registry artifacts with identical results.
+- **SC-006**: The approved-topology vertical/cloud legality test passes using `TopologyGraph.from_approved_assumption_registry()` before the feature can be considered complete.
 
 ## Assumptions
 
