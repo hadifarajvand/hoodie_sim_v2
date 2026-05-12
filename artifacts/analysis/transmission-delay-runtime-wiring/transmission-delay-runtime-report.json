@@ -46,13 +46,13 @@
     "transmission_rounding_policy"
   ],
   "validated_runtime_components": [
+    "src/environment/offloading_queue.py",
     "src/environment/link_rate_config.py",
     "src/environment/runtime_model.py"
   ],
   "vertical_rate_mbps": 10.0,
   "wired_runtime_components": [
     "src/environment/gym_adapter.py",
-    "src/environment/slot_engine.py",
-    "src/environment/offloading_queue.py"
+    "src/environment/slot_engine.py"
   ]
 }

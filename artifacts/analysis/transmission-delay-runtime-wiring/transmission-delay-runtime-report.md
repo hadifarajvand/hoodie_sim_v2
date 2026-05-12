@@ -35,9 +35,9 @@ If transmission starts at slot s and delay_slots is d, the task is admitted when
 ## Wired Runtime Components
 - `src/environment/gym_adapter.py`
 - `src/environment/slot_engine.py`
-- `src/environment/offloading_queue.py`
 
 ## Validated Runtime Components
+- `src/environment/offloading_queue.py`
 - `src/environment/link_rate_config.py`
 - `src/environment/runtime_model.py`
 

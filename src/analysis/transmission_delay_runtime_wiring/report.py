@@ -140,9 +140,9 @@ def build_transmission_delay_runtime_wiring_report() -> TransmissionDelayRuntime
         wired_runtime_components=[
             "src/environment/gym_adapter.py",
             "src/environment/slot_engine.py",
-            "src/environment/offloading_queue.py",
         ],
         validated_runtime_components=[
+            "src/environment/offloading_queue.py",
             "src/environment/link_rate_config.py",
             "src/environment/runtime_model.py",
         ],
@@ -208,4 +208,3 @@ def write_transmission_delay_runtime_wiring_report(
     output_dir: Path | str | None = None,
 ) -> tuple[Path, Path]:
     return report.write(output_dir)
-

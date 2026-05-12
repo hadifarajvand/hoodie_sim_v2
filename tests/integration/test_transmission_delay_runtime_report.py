@@ -24,6 +24,9 @@ class TransmissionDelayRuntimeReportIntegrationTests(unittest.TestCase):
         self.assertTrue(report.no_capacity_sharing_scope_creep)
         self.assertTrue(report.no_campaign_rerun)
         self.assertIn("src/environment/gym_adapter.py", report.wired_runtime_components)
+        self.assertIn("src/environment/slot_engine.py", report.wired_runtime_components)
+        self.assertNotIn("src/environment/offloading_queue.py", report.wired_runtime_components)
+        self.assertIn("src/environment/offloading_queue.py", report.validated_runtime_components)
         self.assertIn("src/environment/link_rate_config.py", report.validated_runtime_components)
         self.assertIn("transmission_rounding_policy", report.transmission_metadata_fields)
         self.assertIn("test_horizontal_transmission_delay_uses_task_size_and_RH", report.tests_added)
@@ -40,6 +43,8 @@ class TransmissionDelayRuntimeReportIntegrationTests(unittest.TestCase):
             self.assertTrue(md_path.exists())
             self.assertEqual(payload["feature_id"], "034-transmission-delay-runtime-wiring")
             self.assertEqual(payload["final_verdict"], "transmission_delay_runtime_wired")
+            self.assertEqual(payload["wired_runtime_components"], ["src/environment/gym_adapter.py", "src/environment/slot_engine.py"])
+            self.assertIn("src/environment/offloading_queue.py", payload["validated_runtime_components"])
             self.assertEqual(payload["rounding_policy"], "ceil")
             self.assertEqual(payload["admission_boundary_contract"], report.admission_boundary_contract)
             self.assertEqual(payload["transmission_metadata_fields"], report.transmission_metadata_fields)
@@ -47,4 +52,3 @@ class TransmissionDelayRuntimeReportIntegrationTests(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
-
