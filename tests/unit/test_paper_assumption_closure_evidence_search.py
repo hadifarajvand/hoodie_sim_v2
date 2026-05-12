@@ -27,3 +27,18 @@ class PaperAssumptionClosureEvidenceSearchTests(unittest.TestCase):
                 self.assertTrue(evidence.raw_evidence.strip())
                 self.assertNotIn("page 1", evidence.raw_evidence.lower())
                 self.assertNotIn("page-1", evidence.raw_evidence.lower())
+                self.assertFalse(evidence.raw_evidence.startswith("Searched for"))
+
+    def test_negative_evidence_is_not_search_failure_landfill(self) -> None:
+        report = build_assumption_closure_report()
+        for item in report.items:
+            for evidence in item.negative_evidence:
+                self.assertNotIn("Searched for", evidence.raw_evidence)
+                self.assertNotIn("item-specific value not recovered", evidence.raw_evidence)
+            if item.status == "unrecoverable_after_evidence_exhaustion":
+                self.assertTrue(item.searched_sources)
+                self.assertLessEqual(len(item.negative_evidence), len(item.searched_sources))
+                for search in item.searched_sources:
+                    self.assertIn("match_count", search)
+                    self.assertIn("relevant_match_count", search)
+                    self.assertIsInstance(search["search_terms"], list)

@@ -24,6 +24,18 @@ ITEM_SEARCH_TERMS = {
     "Phi_n_pub_exact_formatting": ("phi_n^pub", "phi_n,pub", "phi_n pub", "equation"),
 }
 
+NEGATIVE_EVIDENCE_HINTS = {
+    "Figure_7_adjacency": ("Figure 7 adjacency edges", "Figure 7", "adjacency", "unrecoverable"),
+    "legal_horizontal_destinations": ("Figure 7 legal horizontal destinations", "legal horizontal destinations", "unrecoverable"),
+    "EA_private_cpu_capacity": ("EA private/public/cloud CPU capacities", "CPU capacities", "unrecoverable"),
+    "EA_public_cpu_capacity": ("EA private/public/cloud CPU capacities", "CPU capacities", "unrecoverable"),
+    "cloud_cpu_capacity": ("EA private/public/cloud CPU capacities", "CPU capacities", "unrecoverable"),
+    "cloud_data_rate": ("cloud data rate", "vertical rate", "unrecoverable"),
+    "timeout_value": ("timeout", "deadline", "unrecoverable"),
+    "multi_agent_aggregation_reduction_order": ("aggregation reduction order", "assumption", "multi-agent", "reward"),
+    "Phi_n_pub_exact_formatting": ("Phi_n^pub", "Phi_n pub", "equation", "normalized_formula"),
+}
+
 
 def _snippet(text: str, term: str, window: int = 180) -> str:
     lower = text.lower()
@@ -35,6 +47,37 @@ def _snippet(text: str, term: str, window: int = 180) -> str:
     return text[start:end].replace("\n", " ").strip()
 
 
+def _searched_source(source_path: Any, search_terms: tuple[str, ...], match_count: int, relevant_match_count: int) -> dict[str, Any]:
+    return {
+        "source_reference": str(source_path),
+        "search_terms": list(search_terms),
+        "search_method": "item_specific_term_match",
+        "match_count": match_count,
+        "relevant_match_count": relevant_match_count,
+    }
+
+
+def _negative_evidence_snippets(item_id: str, source_path: Any, text: str) -> list[dict[str, Any]]:
+    snippets: list[dict[str, Any]] = []
+    hints = NEGATIVE_EVIDENCE_HINTS.get(item_id, ())
+    lowered = text.lower()
+    for hint in hints:
+        if hint.lower() in lowered:
+            snippet = _snippet(text, hint)
+            if snippet:
+                snippets.append(
+                    {
+                        "source_reference": str(source_path),
+                        "raw_evidence": snippet,
+                        "normalized_finding": item_id,
+                        "confidence": "invalid",
+                        "source_type": "prior_registry_or_report_statement",
+                    }
+                )
+            break
+    return snippets
+
+
 def search_evidence(item: dict[str, Any], sources: dict[Any, Any]) -> dict[str, list[dict[str, Any]]]:
     item_id = str(item.get("item_id", ""))
     matched_terms = ITEM_SEARCH_TERMS.get(item_id, ())
@@ -44,13 +87,8 @@ def search_evidence(item: dict[str, Any], sources: dict[Any, Any]) -> dict[str, 
     for source_path, loaded in sources.items():
         text = loaded.payload if isinstance(loaded.payload, str) else str(loaded.payload)
         text_lower = text.lower()
-        searched.append(
-            {
-                "source_reference": str(source_path),
-                "search_terms": list(matched_terms),
-                "search_method": "item_specific_term_match",
-            }
-        )
+        match_count = sum(1 for term in matched_terms if term.lower() in text_lower)
+        relevant_match_count = 0
         for term in matched_terms:
             if term in text_lower and item_id == "Phi_n_pub_exact_formatting":
                 snippet = _snippet(text, term)
@@ -64,14 +102,7 @@ def search_evidence(item: dict[str, Any], sources: dict[Any, Any]) -> dict[str, 
                             "source_type": "cross_artifact_consistency_check",
                         }
                     )
-            else:
-                negative.append(
-                    {
-                        "source_reference": str(source_path),
-                        "raw_evidence": f"Searched for {term}; item-specific value not recovered.",
-                        "normalized_finding": item.get("title", ""),
-                        "confidence": "invalid",
-                        "source_type": "cross_artifact_consistency_check",
-                    }
-                )
+                    relevant_match_count += 1
+        searched.append(_searched_source(source_path, matched_terms, match_count, relevant_match_count))
+        negative.extend(_negative_evidence_snippets(item_id, source_path, text))
     return {"positive": positive, "negative": negative, "searched": searched}

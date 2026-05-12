@@ -12,6 +12,11 @@ class PaperAssumptionClosureCompletenessTests(unittest.TestCase):
         assumption_items = [item for item in report.items if item.status == "assumption_backed_requires_user_approval"]
         for item in unrecoverable:
             self.assertTrue(item.evidence_exhaustion_rationale)
+            self.assertTrue(item.searched_sources)
+            for search in item.searched_sources:
+                self.assertIn("search_terms", search)
+                self.assertIn("match_count", search)
+                self.assertIn("relevant_match_count", search)
         for item in assumption_items:
             self.assertTrue(item.runtime_approval_required)
             self.assertTrue(item.evidence_exhaustion_rationale)
@@ -38,3 +43,4 @@ class PaperAssumptionClosureCompletenessTests(unittest.TestCase):
             if item.item_id in targets:
                 self.assertEqual(item.status, "unrecoverable_after_evidence_exhaustion")
                 self.assertTrue(item.evidence_exhaustion_rationale)
+                self.assertTrue(item.searched_sources)

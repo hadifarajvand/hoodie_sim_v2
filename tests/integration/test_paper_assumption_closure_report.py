@@ -40,6 +40,16 @@ class PaperAssumptionClosureReportTests(unittest.TestCase):
             for evidence in item["positive_evidence"] + item["negative_evidence"]:
                 self.assertTrue(evidence["raw_evidence"].strip())
                 self.assertLessEqual(len(evidence["raw_evidence"]), 400)
+                self.assertFalse(evidence["raw_evidence"].startswith("Searched for"))
             for search in item["searched_sources"]:
                 self.assertIn("search_terms", search)
                 self.assertIn("search_method", search)
+                self.assertIn("match_count", search)
+                self.assertIn("relevant_match_count", search)
+
+    def test_search_failures_stay_out_of_negative_evidence(self) -> None:
+        report = build_assumption_closure_report()
+        for item in report.items:
+            for evidence in item.negative_evidence:
+                self.assertNotIn("Searched for", evidence.raw_evidence)
+                self.assertNotIn("item-specific value not recovered", evidence.raw_evidence)
