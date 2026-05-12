@@ -27,6 +27,7 @@ class PublicCloudCapacitySharingReportIntegrationTests(unittest.TestCase):
         self.assertIn("public", report.destination_kinds_validated)
         self.assertIn("cloud", report.destination_kinds_validated)
         self.assertIn("test_single_public_queue_gets_full_edge_capacity", report.tests_added)
+        self.assertIn("tests.unit.test_public_cloud_capacity_sharing", report.tests_run)
         self.assertIn("tests.integration.test_public_cloud_capacity_sharing_flow", report.tests_run)
 
     def test_report_writes_json_and_markdown(self) -> None:

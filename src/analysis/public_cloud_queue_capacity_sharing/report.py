@@ -143,6 +143,7 @@ def build_public_cloud_queue_capacity_sharing_report() -> PublicCloudQueueCapaci
             "test_scope_guard_no_training_policy_dependency_campaign_drift",
         ],
         tests_run=[
+            "tests.unit.test_public_cloud_capacity_sharing",
             "tests.integration.test_public_cloud_capacity_sharing_flow",
             "tests.integration.test_public_cloud_capacity_sharing_report",
             "tests.integration.test_public_cloud_capacity_sharing_scope_guard",
@@ -165,4 +166,3 @@ def write_public_cloud_queue_capacity_sharing_report(
     output_dir: Path | str | None = None,
 ) -> tuple[Path, Path]:
     return report.write(output_dir)
-

@@ -48,6 +48,7 @@ Public EA heads are grouped by destination host_node_id and cloud heads are grou
 - `test_scope_guard_no_training_policy_dependency_campaign_drift`
 
 ## Tests Run
+- `tests.unit.test_public_cloud_capacity_sharing`
 - `tests.integration.test_public_cloud_capacity_sharing_flow`
 - `tests.integration.test_public_cloud_capacity_sharing_report`
 - `tests.integration.test_public_cloud_capacity_sharing_scope_guard`
