@@ -10,7 +10,8 @@ class UserApprovedAssumptionPatchRegistryPolicyGuardTest(unittest.TestCase):
         entries = {entry.item_id: entry for entry in build_registry_entries()}
         self.assertEqual(entries["Figure_7_adjacency"].assumption_status, "approved")
         self.assertTrue(entries["Figure_7_adjacency"].runtime_use_allowed)
-        self.assertEqual(entries["legal_horizontal_destinations"].assumption_status, "blocked_no_assumption")
+        self.assertEqual(entries["legal_horizontal_destinations"].assumption_status, "approved")
+        self.assertTrue(entries["legal_horizontal_destinations"].runtime_use_allowed)
         self.assertEqual(entries["timeout_value"].assumption_status, "blocked_no_assumption")
         figure = entries["Figure_7_adjacency"].to_dict()["proposed_value"]
         self.assertEqual(figure["node_count"], 20)
@@ -18,7 +19,12 @@ class UserApprovedAssumptionPatchRegistryPolicyGuardTest(unittest.TestCase):
         self.assertEqual(figure["graph_type"], "undirected_unweighted")
         self.assertEqual(figure["source"], "user_supplied_manual_extraction")
         self.assertFalse(figure["paper_recovery_claim"])
-        self.assertEqual(entries["legal_horizontal_destinations"].proposed_value, "")
+        legal = entries["legal_horizontal_destinations"].to_dict()["proposed_value"]
+        self.assertEqual(legal["rule"], "neighbor_only_horizontal_legality")
+        self.assertEqual(legal["source_item_id"], "Figure_7_adjacency")
+        self.assertEqual(legal["source_assumption_status_required"], "approved")
+        self.assertTrue(legal["no_self_offload"])
+        self.assertFalse(legal["non_neighbor_horizontal_offload_allowed"])
         self.assertEqual(entries["timeout_value"].proposed_value, "")
 
     def test_proposed_values_remain_report_only(self) -> None:

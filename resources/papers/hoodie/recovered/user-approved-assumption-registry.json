@@ -599,21 +599,134 @@
       "affected_runtime_components": [
         "topology legality",
         "destination filtering",
-        "policy action masks"
+        "action mask generation",
+        "horizontal offloading",
+        "offloading policy"
       ],
-      "approval_required": true,
-      "approval_source": "explicit_topology_required",
-      "assumption_status": "blocked_no_assumption",
+      "approval_required": false,
+      "approval_source": "derived_from_user_approved_adjacency_neighbor_rule",
+      "assumption_status": "approved",
       "item_id": "legal_horizontal_destinations",
       "no_paper_recovery_claim": true,
       "paper_confidence": "invalid",
       "paper_status": "unrecoverable_after_evidence_exhaustion",
-      "proposed_value": "",
-      "rationale": "Legal horizontal destinations depend on explicit topology and cannot be inferred safely.",
-      "runtime_use_allowed": false,
-      "scientific_risk": "Guessing destinations would produce invalid routing legality and corrupt offloading decisions.",
-      "validation_plan": "Validate destinations against a manually approved topology file before enabling runtime use.",
-      "value_type": "structural"
+      "proposed_value": {
+        "destinations": {
+          "1": [
+            6,
+            11,
+            16
+          ],
+          "10": [
+            5,
+            15,
+            20
+          ],
+          "11": [
+            1,
+            6,
+            16
+          ],
+          "12": [
+            2,
+            7,
+            17
+          ],
+          "13": [
+            3,
+            8,
+            18
+          ],
+          "14": [
+            4,
+            9,
+            19
+          ],
+          "15": [
+            5,
+            10,
+            20
+          ],
+          "16": [
+            1,
+            6,
+            11
+          ],
+          "17": [
+            2,
+            7,
+            12
+          ],
+          "18": [
+            3,
+            8,
+            13
+          ],
+          "19": [
+            4,
+            9,
+            14
+          ],
+          "2": [
+            7,
+            12,
+            17
+          ],
+          "20": [
+            5,
+            10,
+            15
+          ],
+          "3": [
+            8,
+            13,
+            18
+          ],
+          "4": [
+            9,
+            14,
+            19
+          ],
+          "5": [
+            10,
+            15,
+            20
+          ],
+          "6": [
+            1,
+            11,
+            16
+          ],
+          "7": [
+            2,
+            12,
+            17
+          ],
+          "8": [
+            3,
+            13,
+            18
+          ],
+          "9": [
+            4,
+            14,
+            19
+          ]
+        },
+        "no_self_offload": true,
+        "node_order": "1_to_20",
+        "non_neighbor_horizontal_offload_allowed": false,
+        "paper_recovery_claim": false,
+        "rule": "neighbor_only_horizontal_legality",
+        "source_assumption_status_required": "approved",
+        "source_item_id": "Figure_7_adjacency",
+        "vertical_cloud_offload_separate": true
+      },
+      "rationale": "Legal horizontal destinations are approved as the neighbor set of the user-approved Figure 7 adjacency assumption. This enables horizontal legality without claiming paper recovery.",
+      "runtime_use_allowed": true,
+      "scientific_risk": "If the manually supplied adjacency differs from the original paper figure, this legality map will inherit that error. Downstream results must label horizontal legality as user-approved assumption-backed.",
+      "validation_plan": "Validate that every destination is an adjacent node in the approved Figure_7_adjacency matrix, no node includes itself, no non-neighbor appears, each node has exactly 3 legal horizontal destinations, and vertical/cloud actions remain separate.",
+      "value_type": "horizontal_destination_rule"
     },
     {
       "affected_runtime_components": [

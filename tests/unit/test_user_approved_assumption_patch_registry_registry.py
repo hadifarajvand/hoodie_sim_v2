@@ -47,7 +47,28 @@ class UserApprovedAssumptionPatchRegistryRegistryTest(unittest.TestCase):
         derived_edges = sorted({tuple(sorted((i + 1, j + 1))) for i, row in enumerate(matrix) for j, value in enumerate(row) if value and i < j})
         self.assertEqual(derived_edges, sorted(tuple(sorted(edge)) for edge in edges))
 
-        self.assertEqual(entries["legal_horizontal_destinations"].assumption_status, "blocked_no_assumption")
+        legal = entries["legal_horizontal_destinations"]
+        self.assertEqual(legal.assumption_status, "approved")
+        self.assertTrue(legal.runtime_use_allowed)
+        self.assertFalse(legal.approval_required)
+        self.assertEqual(legal.approval_source, "derived_from_user_approved_adjacency_neighbor_rule")
+        self.assertEqual(legal.value_type, "horizontal_destination_rule")
+        self.assertTrue(legal.no_paper_recovery_claim)
+        legal_payload = legal.to_dict()["proposed_value"]
+        self.assertEqual(legal_payload["rule"], "neighbor_only_horizontal_legality")
+        self.assertEqual(legal_payload["source_item_id"], "Figure_7_adjacency")
+        self.assertEqual(legal_payload["source_assumption_status_required"], "approved")
+        self.assertEqual(legal_payload["node_order"], "1_to_20")
+        self.assertTrue(legal_payload["no_self_offload"])
+        self.assertFalse(legal_payload["non_neighbor_horizontal_offload_allowed"])
+        self.assertTrue(legal_payload["vertical_cloud_offload_separate"])
+        destinations = legal_payload["destinations"]
+        self.assertEqual(len(destinations), 20)
+        self.assertEqual(destinations["1"], [6, 11, 16])
+        self.assertEqual(destinations["20"], [5, 10, 15])
+        self.assertTrue(all(len(destinations[str(node)]) == 3 for node in range(1, 21)))
+        self.assertTrue(all(str(node) not in {str(dest) for dest in destinations[str(node)]} for node in range(1, 21)))
+
         self.assertEqual(entries["timeout_value"].assumption_status, "blocked_no_assumption")
         for item_id in [
             "EA_private_cpu_capacity",
@@ -62,9 +83,10 @@ class UserApprovedAssumptionPatchRegistryRegistryTest(unittest.TestCase):
 
     def test_runtime_use_requires_approved_status(self) -> None:
         entries = build_registry_entries()
-        self.assertEqual(sum(1 for entry in entries if entry.runtime_use_allowed), 1)
+        self.assertEqual(sum(1 for entry in entries if entry.runtime_use_allowed), 2)
+        approved_ids = [entry.item_id for entry in entries if entry.assumption_status == "approved"]
+        self.assertEqual(approved_ids, ["Figure_7_adjacency", "legal_horizontal_destinations"])
         self.assertTrue(all(entry.assumption_status == "approved" or not entry.runtime_use_allowed for entry in entries))
-        self.assertTrue(any(entry.assumption_status == "approved" for entry in entries))
 
     def test_semantic_fields_reject_empty_values(self) -> None:
         from src.analysis.user_approved_assumption_patch_registry.report import _validate_non_empty_fields

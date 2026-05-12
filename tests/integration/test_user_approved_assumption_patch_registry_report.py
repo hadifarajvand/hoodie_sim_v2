@@ -45,12 +45,12 @@ class UserApprovedAssumptionPatchRegistryReportIntegrationTest(unittest.TestCase
             }
             self.assertTrue(required.issubset(payload.keys()))
             self.assertEqual(payload["item_count"], 8)
-            self.assertEqual(payload["status_counts"]["approved"], 1)
+            self.assertEqual(payload["status_counts"]["approved"], 2)
             self.assertEqual(payload["status_counts"]["proposed"], 5)
-            self.assertEqual(payload["status_counts"]["blocked_no_assumption"], 2)
+            self.assertEqual(payload["status_counts"]["blocked_no_assumption"], 1)
             self.assertEqual(len(payload["entries"]), 8)
             self.assertTrue(payload["no_paper_recovery_claims"])
-            self.assertEqual([item["item_id"] for item in payload["runtime_usable_items"]], ["Figure_7_adjacency"])
+            self.assertEqual([item["item_id"] for item in payload["runtime_usable_items"]], ["Figure_7_adjacency", "legal_horizontal_destinations"])
             self.assertEqual(payload["registry_path"], "resources/papers/hoodie/recovered/user-approved-assumption-registry.json")
             figure = next(item for item in payload["entries"] if item["item_id"] == "Figure_7_adjacency")
             self.assertEqual(figure["assumption_status"], "approved")
@@ -72,6 +72,22 @@ class UserApprovedAssumptionPatchRegistryReportIntegrationTest(unittest.TestCase
             self.assertTrue(all(matrix[i][j] == matrix[j][i] for i in range(20) for j in range(20)))
             self.assertTrue(all(sum(row) == 3 for row in matrix))
             self.assertEqual(sum(sum(row) for row in matrix) // 2, 30)
+            legal = next(item for item in payload["entries"] if item["item_id"] == "legal_horizontal_destinations")
+            self.assertEqual(legal["assumption_status"], "approved")
+            self.assertTrue(legal["runtime_use_allowed"])
+            self.assertFalse(legal["approval_required"])
+            self.assertEqual(legal["approval_source"], "derived_from_user_approved_adjacency_neighbor_rule")
+            legal_payload = legal["proposed_value"]
+            self.assertEqual(legal_payload["rule"], "neighbor_only_horizontal_legality")
+            self.assertEqual(legal_payload["source_item_id"], "Figure_7_adjacency")
+            self.assertEqual(legal_payload["source_assumption_status_required"], "approved")
+            self.assertEqual(legal_payload["node_order"], "1_to_20")
+            self.assertTrue(legal_payload["no_self_offload"])
+            self.assertFalse(legal_payload["non_neighbor_horizontal_offload_allowed"])
+            self.assertTrue(legal_payload["vertical_cloud_offload_separate"])
+            self.assertEqual(len(legal_payload["destinations"]), 20)
+            self.assertEqual(legal_payload["destinations"]["1"], [6, 11, 16])
+            self.assertEqual(legal_payload["destinations"]["20"], [5, 10, 15])
 
     def test_registry_json_parse_and_keys(self) -> None:
         payload = build_user_approved_assumption_registry()
@@ -92,6 +108,11 @@ class UserApprovedAssumptionPatchRegistryReportIntegrationTest(unittest.TestCase
         self.assertTrue(figure["runtime_use_allowed"])
         self.assertFalse(figure["approval_required"])
         self.assertEqual(figure["approval_source"], "user_supplied_manual_extraction")
+        legal = next(item for item in payload["entries"] if item["item_id"] == "legal_horizontal_destinations")
+        self.assertEqual(legal["assumption_status"], "approved")
+        self.assertTrue(legal["runtime_use_allowed"])
+        self.assertFalse(legal["approval_required"])
+        self.assertEqual(legal["approval_source"], "derived_from_user_approved_adjacency_neighbor_rule")
 
 
 if __name__ == "__main__":

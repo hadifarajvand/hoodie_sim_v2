@@ -7,13 +7,12 @@
 - final_verdict: `registry_created_with_runtime_approved_assumptions`
 
 ## Status Counts
-- approved: `1`
-- blocked_no_assumption: `2`
+- approved: `2`
+- blocked_no_assumption: `1`
 - proposed: `5`
 - rejected: `0`
 
 ## Blocked Items
-- `legal_horizontal_destinations` | `blocked_no_assumption` | runtime_use_allowed=False
 - `timeout_value` | `blocked_no_assumption` | runtime_use_allowed=False
 
 ## Proposed Items
@@ -25,6 +24,7 @@
 
 ## Runtime-Usable Items
 - `Figure_7_adjacency`
+- `legal_horizontal_destinations`
 
 ## Final Verdict
 registry_created_with_runtime_approved_assumptions
