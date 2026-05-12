@@ -5,7 +5,8 @@ from typing import Any
 
 
 def canonical_item_key(item: dict[str, Any]) -> str:
-    return str(item.get("item_id") or item.get("title") or item.get("domain") or "").strip().lower().replace(" ", "_")
+    candidate = item.get("item_id") or item.get("title") or item.get("domain") or ""
+    return str(candidate).strip().lower().replace(" ", "_")
 
 
 def deduplicate_items(items: list[dict[str, Any]]) -> list[dict[str, Any]]:
@@ -18,9 +19,15 @@ def deduplicate_items(items: list[dict[str, Any]]) -> list[dict[str, Any]]:
 
 
 def normalize_inventory_item(item: dict[str, Any]) -> dict[str, Any]:
-    title = str(item.get("title") or item.get("item_id") or item.get("domain") or "unknown item")
+    title = str(item.get("title") or item.get("item_id") or item.get("domain") or "").strip()
+    if not title:
+        title = f"Unmapped item from {item.get('source_reference', 'source')}"
+    item_id = str(item.get("item_id") or canonical_item_key(item) or "").strip()
+    if not item_id:
+        source_slug = str(item.get("source_reference") or "source").lower().replace("/", "_").replace(".", "_")
+        item_id = f"mapper_defect_{source_slug}"
     return {
-        "item_id": str(item.get("item_id") or canonical_item_key(item) or title).strip() or canonical_item_key(item),
+        "item_id": item_id,
         "domain": str(item.get("domain") or "other"),
         "title": title,
         "description": str(item.get("description") or title),

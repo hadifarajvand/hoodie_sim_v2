@@ -12,22 +12,47 @@ SEARCH_TERMS = {
     "equation formatting": ("phi_n^pub", "phi_n(t)", "equation", "ocr"),
 }
 
+ITEM_SEARCH_TERMS = {
+    "Figure_7_adjacency": ("figure 7", "adjacency", "edge", "topology"),
+    "legal_horizontal_destinations": ("horizontal destinations", "legal horizontal", "destination"),
+    "EA_private_cpu_capacity": ("private cpu", "ea private", "cpu capacity"),
+    "EA_public_cpu_capacity": ("public cpu", "ea public", "cpu capacity"),
+    "cloud_cpu_capacity": ("cloud cpu", "cpu capacity"),
+    "cloud_data_rate": ("cloud data rate", "vertical rate", "data rate"),
+    "timeout_value": ("timeout", "deadline", "slot"),
+    "multi_agent_aggregation_reduction_order": ("cumulative reward", "averaged across", "distributed ho", "multi-agent"),
+    "Phi_n_pub_exact_formatting": ("phi_n^pub", "phi_n,pub", "phi_n pub", "equation"),
+}
+
+
+def _snippet(text: str, term: str, window: int = 180) -> str:
+    lower = text.lower()
+    idx = lower.find(term.lower())
+    if idx < 0:
+        return text[: min(len(text), window)]
+    start = max(0, idx - window // 2)
+    end = min(len(text), idx + len(term) + window // 2)
+    return text[start:end].replace("\n", " ").strip()
+
 
 def search_evidence(item: dict[str, Any], sources: dict[Any, Any]) -> list[dict[str, Any]]:
     title = str(item.get("title", "")).lower()
     description = str(item.get("description", "")).lower()
     haystack = f"{title} {description}"
     matches: list[dict[str, Any]] = []
+    terms = ITEM_SEARCH_TERMS.get(str(item.get("item_id", "")), ())
     for source_path, loaded in sources.items():
         text = loaded.payload if isinstance(loaded.payload, str) else str(loaded.payload)
         text_lower = text.lower()
-        if any(term in text_lower for terms in SEARCH_TERMS.values() for term in terms if term in haystack):
+        matched_terms = [term for term in terms if term in text_lower or term in haystack]
+        if matched_terms:
+            term = matched_terms[0]
             matches.append(
                 {
                     "source_reference": str(source_path),
-                    "raw_evidence": text[:500],
+                    "raw_evidence": _snippet(text, term),
                     "normalized_finding": item.get("title", ""),
-                    "confidence": "medium",
+                    "confidence": "medium" if item.get("item_id") != "Figure_7_adjacency" else "low",
                     "source_type": "cross_artifact_consistency_check",
                 }
             )

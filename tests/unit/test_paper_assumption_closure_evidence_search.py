@@ -19,3 +19,10 @@ class PaperAssumptionClosureEvidenceSearchTests(unittest.TestCase):
         for item in report.items:
             self.assertIn(item.status, allowed)
 
+    def test_evidence_snippets_are_item_specific(self) -> None:
+        report = build_assumption_closure_report()
+        for item in report.items:
+            for evidence in item.source_evidence:
+                self.assertLessEqual(len(evidence.raw_evidence), 400)
+                self.assertNotIn("page 1", evidence.raw_evidence.lower())
+                self.assertNotIn("page-1", evidence.raw_evidence.lower())

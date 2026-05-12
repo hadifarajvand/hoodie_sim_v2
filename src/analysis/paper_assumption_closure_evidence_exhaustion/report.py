@@ -39,9 +39,11 @@ def build_inventory() -> list[dict[str, Any]]:
             for key in ("unrecoverable_items", "assumption_backed_items", "partially_recovered_items"):
                 value = loaded.payload.get(key, [])
                 if isinstance(value, list):
-                    for entry in value:
+                    for index, entry in enumerate(value):
                         if isinstance(entry, dict):
-                            items.append(entry)
+                            enriched = dict(entry)
+                            enriched.setdefault("source_reference", f"{path}#{key}[{index}]")
+                            items.append(enriched)
     return [normalize_inventory_item(item) for item in deduplicate_items(items)]
 
 

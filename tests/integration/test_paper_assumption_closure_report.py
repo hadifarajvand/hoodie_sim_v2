@@ -31,4 +31,6 @@ class PaperAssumptionClosureReportTests(unittest.TestCase):
         ):
             self.assertIn(key, payload)
         self.assertTrue(markdown_path.exists())
-
+        for item in payload["items"]:
+            self.assertNotIn("unknown", item["item_id"].lower())
+            self.assertTrue(item["item_id"])

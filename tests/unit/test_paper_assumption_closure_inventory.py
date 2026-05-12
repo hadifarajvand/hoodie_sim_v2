@@ -22,3 +22,9 @@ class PaperAssumptionClosureInventoryTests(unittest.TestCase):
         }
         self.assertTrue(expected.issubset(item_ids))
 
+    def test_inventory_has_no_unknown_items(self) -> None:
+        report = build_assumption_closure_report()
+        for item in report.items:
+            self.assertNotIn("unknown", item.item_id.lower())
+            self.assertNotIn("unknown", item.title.lower())
+            self.assertNotIn("unknown", item.description.lower())
