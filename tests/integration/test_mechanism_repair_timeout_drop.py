@@ -24,7 +24,7 @@ class MechanismRepairTimeoutDropIntegrationTest(unittest.TestCase):
                     task_id=task_id,
                     source_agent_id=1,
                     arrival_slot=0,
-                    size=32.0,
+                    size=1.0,
                     processing_density=1.0,
                     timeout_length=timeout_slot,
                     absolute_deadline_slot=timeout_slot,

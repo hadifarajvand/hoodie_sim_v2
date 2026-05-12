@@ -22,7 +22,7 @@ class Feature024RegressionTests(unittest.TestCase):
         self.assertLess(second.cycles_after, first.cycles_after)
         self.assertEqual(first.cycles_after, 4.0)
         self.assertEqual(second.cycles_after, 0.0)
-        self.assertEqual(task.completion_slot, 2)
+        self.assertEqual(task.completion_slot, 1)
 
 
 if __name__ == "__main__":

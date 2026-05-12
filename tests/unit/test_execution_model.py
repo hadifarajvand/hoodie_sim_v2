@@ -43,8 +43,8 @@ class ExecutionModelTests(unittest.TestCase):
         self.assertEqual(second.cycles_after, 2.0)
         self.assertFalse(second.completed)
         self.assertEqual(third.cycles_after, 0.0)
-        self.assertFalse(third.completed)
-        self.assertEqual(task.completion_slot, 3)
+        self.assertTrue(third.completed)
+        self.assertEqual(task.completion_slot, 2)
         self.assertTrue(final.completed)
         self.assertEqual(final.cycles_after, 0.0)
 

@@ -1,7 +1,7 @@
 <!-- SPECKIT START -->
 For additional context about technologies to be used, project structure,
 shell commands, and other important information, read
-`specs/032-runtime-adoption-approved-assumption-registry/plan.md`
+`specs/033-execution-time-contract-repair/plan.md`
 <!-- SPECKIT END -->
 
 ## External Reference Usage

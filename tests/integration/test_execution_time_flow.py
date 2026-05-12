@@ -123,6 +123,19 @@ class ExecutionTimeFlowTests(unittest.TestCase):
         self.assertEqual(cloud_record["resolved_destination"], "cloud")
         self.assertIsNotNone(cloud_record["completion_slot"])
 
+    def test_environment_local_execution_requires_multiple_slots_when_cycles_exceed_capacity(self) -> None:
+        compute_config = ComputeConfig(cpu_capacity_per_slot_agent=0.5, cpu_capacity_per_slot_edge=0.5, cpu_capacity_per_slot_cloud=3.0)
+        final_info, _ = self._run_episode(
+            policy=FullLocalComputingPolicy(),
+            topology=None,
+            compute_config=compute_config,
+        )
+
+        local_record = final_info["finalized_tasks"][0]
+        self.assertEqual(local_record["terminal_outcome"], "completed")
+        self.assertEqual(local_record["completion_slot"], 1)
+        self.assertGreater(local_record["completion_slot"], 0)
+
     def test_same_slot_multi_agent_execution_still_serializes_deterministically(self) -> None:
         config = TrafficConfig(
             scenario_name="paper_default",
