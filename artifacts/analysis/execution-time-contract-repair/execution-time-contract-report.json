@@ -15,9 +15,7 @@
   "no_transmission_delay_scope_creep": true,
   "old_invalid_behavior": "Local/private execution previously short-circuited when timeout_length > 1 and cycles_before exceeded capacity, consuming all remaining cycles in one slot.",
   "repaired_runtime_components": [
-    "src/environment/execution_helper.py",
-    "src/environment/gym_adapter.py",
-    "src/environment/runtime_model.py"
+    "src/environment/execution_helper.py"
   ],
   "tests_added": [
     "test_local_execution_no_single_slot_shortcut_when_cycles_exceed_capacity",
@@ -35,6 +33,13 @@
     "python -m unittest tests.unit.test_execution_helper",
     "python -m unittest tests.unit.test_execution_model",
     "python -m unittest tests.integration.test_execution_time_flow",
-    "python -m unittest tests.integration.test_mechanism_repair_timeout_drop"
+    "python -m unittest tests.integration.test_mechanism_repair_timeout_drop",
+    "python -m unittest tests.integration.test_execution_time_contract_report",
+    "python -m unittest tests.integration.test_execution_time_contract_scope_guard",
+    "python -m unittest tests.integration.test_computation_delay_cpu_unit_validation_regression_feature024"
+  ],
+  "validated_runtime_components": [
+    "src/environment/gym_adapter.py",
+    "src/environment/runtime_model.py"
   ]
 }

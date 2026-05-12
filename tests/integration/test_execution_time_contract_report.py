@@ -19,6 +19,10 @@ class ExecutionTimeContractReportIntegrationTests(unittest.TestCase):
         self.assertTrue(report.no_transmission_delay_scope_creep)
         self.assertTrue(report.no_capacity_sharing_scope_creep)
         self.assertIn("src/environment/execution_helper.py", report.repaired_runtime_components)
+        self.assertEqual(
+            report.validated_runtime_components,
+            ["src/environment/gym_adapter.py", "src/environment/runtime_model.py"],
+        )
         self.assertIn("test_local_execution_no_single_slot_shortcut_when_cycles_exceed_capacity", report.tests_added)
 
         with tempfile.TemporaryDirectory() as tmpdir:
@@ -30,6 +34,7 @@ class ExecutionTimeContractReportIntegrationTests(unittest.TestCase):
             self.assertEqual(payload["feature_id"], "033-execution-time-contract-repair")
             self.assertEqual(payload["final_verdict"], "execution_time_contract_repaired")
             self.assertEqual(payload["destination_kinds_validated"], ["local/private/self", "public/edge/horizontal", "cloud/vertical"])
+            self.assertEqual(payload["validated_runtime_components"], ["src/environment/gym_adapter.py", "src/environment/runtime_model.py"])
 
 
 if __name__ == "__main__":

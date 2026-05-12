@@ -24,6 +24,8 @@ Completion is recorded at the end of the slot in which remaining cycles reach ze
 
 ## Repaired Runtime Components
 - `src/environment/execution_helper.py`
+
+## Validated Runtime Components
 - `src/environment/gym_adapter.py`
 - `src/environment/runtime_model.py`
 
@@ -44,3 +46,6 @@ Completion is recorded at the end of the slot in which remaining cycles reach ze
 - `python -m unittest tests.unit.test_execution_model`
 - `python -m unittest tests.integration.test_execution_time_flow`
 - `python -m unittest tests.integration.test_mechanism_repair_timeout_drop`
+- `python -m unittest tests.integration.test_execution_time_contract_report`
+- `python -m unittest tests.integration.test_execution_time_contract_scope_guard`
+- `python -m unittest tests.integration.test_computation_delay_cpu_unit_validation_regression_feature024`

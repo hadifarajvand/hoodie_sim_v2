@@ -24,6 +24,7 @@ def _json_dump(payload: Any) -> str:
 class ExecutionTimeContractReport:
     feature_id: str
     repaired_runtime_components: list[str]
+    validated_runtime_components: list[str]
     old_invalid_behavior: str
     new_execution_contract: str
     completion_slot_contract: str
@@ -41,6 +42,7 @@ class ExecutionTimeContractReport:
         return {
             "feature_id": self.feature_id,
             "repaired_runtime_components": list(self.repaired_runtime_components),
+            "validated_runtime_components": list(self.validated_runtime_components),
             "old_invalid_behavior": self.old_invalid_behavior,
             "new_execution_contract": self.new_execution_contract,
             "completion_slot_contract": self.completion_slot_contract,
@@ -89,6 +91,11 @@ class ExecutionTimeContractReport:
         lines.extend(f"- `{item}`" for item in self.repaired_runtime_components)
         lines.extend([
             "",
+            "## Validated Runtime Components",
+        ])
+        lines.extend(f"- `{item}`" for item in self.validated_runtime_components)
+        lines.extend([
+            "",
             "## Tests Added",
         ])
         lines.extend(f"- `{item}`" for item in self.tests_added)
@@ -131,6 +138,8 @@ def build_execution_time_contract_report() -> ExecutionTimeContractReport:
         feature_id="033-execution-time-contract-repair",
         repaired_runtime_components=[
             "src/environment/execution_helper.py",
+        ],
+        validated_runtime_components=[
             "src/environment/gym_adapter.py",
             "src/environment/runtime_model.py",
         ],
@@ -166,6 +175,9 @@ def build_execution_time_contract_report() -> ExecutionTimeContractReport:
             "python -m unittest tests.unit.test_execution_model",
             "python -m unittest tests.integration.test_execution_time_flow",
             "python -m unittest tests.integration.test_mechanism_repair_timeout_drop",
+            "python -m unittest tests.integration.test_execution_time_contract_report",
+            "python -m unittest tests.integration.test_execution_time_contract_scope_guard",
+            "python -m unittest tests.integration.test_computation_delay_cpu_unit_validation_regression_feature024",
         ],
         no_dependency_drift=True,
         no_training_or_policy_drift=True,
