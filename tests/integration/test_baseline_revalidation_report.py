@@ -67,6 +67,19 @@ class BaselineRevalidationReportIntegrationTests(unittest.TestCase):
             self.assertTrue(summary["legal_action_mask_verified"])
             self.assertTrue(summary["deterministic_reproducibility_verified"])
             self.assertEqual(len(summary["scenario_policy_seed_matrix"]), 21)
+            self.assertEqual(summary["topology_source"], "TopologyGraph.from_approved_assumption_registry()")
+            self.assertTrue(summary["topology_contract_verified"])
+            self.assertEqual(summary["topology_node_count"], 20)
+            self.assertEqual(summary["topology_degree_sequence"], [3] * 20)
+            self.assertEqual(summary["topology_undirected_edge_count"], 30)
+            self.assertTrue(summary["topology_zero_diagonal_verified"])
+            self.assertTrue(summary["topology_symmetric_verified"])
+            self.assertTrue(summary["neighbor_only_horizontal_legality_verified"])
+            self.assertTrue(summary["vertical_cloud_legality_independent_of_figure7_verified"])
+            self.assertGreater(summary["generated_arrivals"], 0)
+            self.assertGreaterEqual(summary["generated_arrivals"], summary["finalized_terminal_tasks"])
+            self.assertGreaterEqual(summary["generated_arrivals"], summary["pending_at_horizon"])
+            self.assertGreaterEqual(summary["total_terminal_tasks"], summary["finalized_terminal_tasks"])
 
     def test_baseline_revalidation_artifacts_are_written(self) -> None:
         with tempfile.TemporaryDirectory() as tmpdir:
@@ -110,6 +123,36 @@ class BaselineRevalidationReportIntegrationTests(unittest.TestCase):
                     self.assertGreaterEqual(float(metric["average_delay"]), 0.0)
                 for key in ("average_delay", "drop_ratio", "throughput"):
                     self.assertTrue(math.isfinite(float(metric[key])))
+
+    def test_revalidation_trace_artifacts_are_non_empty_valid_json(self) -> None:
+        with tempfile.TemporaryDirectory() as tmpdir:
+            tmp = Path(tmpdir)
+            self._run_report(tmp / "analysis", tmp / "evaluation")
+
+            trace_dir = tmp / "evaluation" / "traces"
+            trace_files = sorted(trace_dir.glob("*.json"))
+            self.assertEqual(len(trace_files), 3)
+            for path in trace_files:
+                payload = json.loads(path.read_text(encoding="utf-8"))
+                self.assertIn("trace_id", payload)
+                self.assertIn("tasks", payload)
+                self.assertTrue(payload["tasks"])
+
+    def test_revalidation_reports_generated_finalized_and_pending_task_counts(self) -> None:
+        with tempfile.TemporaryDirectory() as tmpdir:
+            report = self._run_report(Path(tmpdir) / "analysis", Path(tmpdir) / "evaluation")
+            summary = report.baseline_result_summary
+
+            self.assertIn("generated_arrivals", summary)
+            self.assertIn("finalized_terminal_tasks", summary)
+            self.assertIn("completed_tasks", summary)
+            self.assertIn("dropped_tasks", summary)
+            self.assertIn("pending_at_horizon", summary)
+            self.assertIn("total_terminal_tasks", summary)
+            self.assertGreater(summary["generated_arrivals"], 0)
+            self.assertGreaterEqual(summary["generated_arrivals"], summary["finalized_terminal_tasks"])
+            self.assertGreaterEqual(summary["generated_arrivals"], summary["pending_at_horizon"])
+            self.assertEqual(summary["finalized_terminal_tasks"], summary["completed_tasks"] + summary["dropped_tasks"])
 
 
 if __name__ == "__main__":

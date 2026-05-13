@@ -52,8 +52,17 @@ class BaselineRevalidationAfterRuntimeRepairIntegrationTests(unittest.TestCase):
                 self.assertEqual(payload["scenario_name"], "paper_default")
                 self.assertIn(payload["policy_name"], BASELINE_POLICY_NAMES)
                 self.assertIn(payload["seed"], BASELINE_SEEDS)
+                self.assertIn("trace_summary", payload)
+                self.assertIn("action_audit_records", payload)
+                self.assertIn("runtime_metadata", payload)
+                self.assertTrue(payload["action_audit_records"] or payload["trace_summary"]["generated_arrivals"] == 0)
                 for action_record in payload["selected_actions"]:
                     self.assertTrue(action_record["legal_action_mask"].get(action_record["action"], False))
+                for audit_record in payload["action_audit_records"]:
+                    self.assertTrue(audit_record["is_topology_legal"])
+                    if audit_record["selected_action"] in {"horizontal", "offload_horizontal"}:
+                        self.assertTrue(audit_record["horizontal_destination_is_approved_neighbor"])
+                        self.assertTrue(audit_record["is_horizontal_neighbor"])
 
     def test_all_baselines_emit_legal_actions_only(self) -> None:
         with tempfile.TemporaryDirectory() as tmpdir:
@@ -66,6 +75,9 @@ class BaselineRevalidationAfterRuntimeRepairIntegrationTests(unittest.TestCase):
 
             self.assertTrue(report.legal_action_mask_verified)
             self.assertTrue(report.baseline_result_summary["legal_action_mask_verified"])
+            self.assertEqual(report.baseline_result_summary["topology_source"], "TopologyGraph.from_approved_assumption_registry()")
+            self.assertTrue(report.baseline_result_summary["topology_contract_verified"])
+            self.assertEqual(report.baseline_result_summary["topology_node_count"], 20)
 
     def test_random_offloading_is_seed_reproducible(self) -> None:
         with tempfile.TemporaryDirectory() as tmpdir:

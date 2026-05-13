@@ -1,4 +1,2206 @@
 {
+  "action_audit_records": [
+    {
+      "horizontal_destination_is_approved_neighbor": true,
+      "is_horizontal_neighbor": true,
+      "is_topology_legal": true,
+      "legal_action_mask": {
+        "compute_local": true,
+        "horizontal": true,
+        "local": true,
+        "offload_horizontal": true,
+        "offload_vertical": true,
+        "vertical": true
+      },
+      "policy_name": "VO",
+      "resolved_destination": "cloud",
+      "scenario_name": "paper_default",
+      "seed": 2,
+      "selected_action": "vertical",
+      "source_agent_id": 1,
+      "trace_id": "paper_default-2"
+    },
+    {
+      "horizontal_destination_is_approved_neighbor": true,
+      "is_horizontal_neighbor": true,
+      "is_topology_legal": true,
+      "legal_action_mask": {
+        "compute_local": true,
+        "horizontal": true,
+        "local": true,
+        "offload_horizontal": true,
+        "offload_vertical": true,
+        "vertical": true
+      },
+      "policy_name": "VO",
+      "resolved_destination": "cloud",
+      "scenario_name": "paper_default",
+      "seed": 2,
+      "selected_action": "vertical",
+      "source_agent_id": 2,
+      "trace_id": "paper_default-2"
+    },
+    {
+      "horizontal_destination_is_approved_neighbor": true,
+      "is_horizontal_neighbor": true,
+      "is_topology_legal": true,
+      "legal_action_mask": {
+        "compute_local": true,
+        "horizontal": true,
+        "local": true,
+        "offload_horizontal": true,
+        "offload_vertical": true,
+        "vertical": true
+      },
+      "policy_name": "VO",
+      "resolved_destination": "cloud",
+      "scenario_name": "paper_default",
+      "seed": 2,
+      "selected_action": "vertical",
+      "source_agent_id": 3,
+      "trace_id": "paper_default-2"
+    },
+    {
+      "horizontal_destination_is_approved_neighbor": true,
+      "is_horizontal_neighbor": true,
+      "is_topology_legal": true,
+      "legal_action_mask": {
+        "compute_local": true,
+        "horizontal": true,
+        "local": true,
+        "offload_horizontal": true,
+        "offload_vertical": true,
+        "vertical": true
+      },
+      "policy_name": "VO",
+      "resolved_destination": "cloud",
+      "scenario_name": "paper_default",
+      "seed": 2,
+      "selected_action": "vertical",
+      "source_agent_id": 1,
+      "trace_id": "paper_default-2"
+    },
+    {
+      "horizontal_destination_is_approved_neighbor": true,
+      "is_horizontal_neighbor": true,
+      "is_topology_legal": true,
+      "legal_action_mask": {
+        "compute_local": true,
+        "horizontal": true,
+        "local": true,
+        "offload_horizontal": true,
+        "offload_vertical": true,
+        "vertical": true
+      },
+      "policy_name": "VO",
+      "resolved_destination": "cloud",
+      "scenario_name": "paper_default",
+      "seed": 2,
+      "selected_action": "vertical",
+      "source_agent_id": 2,
+      "trace_id": "paper_default-2"
+    },
+    {
+      "horizontal_destination_is_approved_neighbor": true,
+      "is_horizontal_neighbor": true,
+      "is_topology_legal": true,
+      "legal_action_mask": {
+        "compute_local": true,
+        "horizontal": true,
+        "local": true,
+        "offload_horizontal": true,
+        "offload_vertical": true,
+        "vertical": true
+      },
+      "policy_name": "VO",
+      "resolved_destination": "cloud",
+      "scenario_name": "paper_default",
+      "seed": 2,
+      "selected_action": "vertical",
+      "source_agent_id": 3,
+      "trace_id": "paper_default-2"
+    },
+    {
+      "horizontal_destination_is_approved_neighbor": true,
+      "is_horizontal_neighbor": true,
+      "is_topology_legal": true,
+      "legal_action_mask": {
+        "compute_local": true,
+        "horizontal": true,
+        "local": true,
+        "offload_horizontal": true,
+        "offload_vertical": true,
+        "vertical": true
+      },
+      "policy_name": "VO",
+      "resolved_destination": "cloud",
+      "scenario_name": "paper_default",
+      "seed": 2,
+      "selected_action": "vertical",
+      "source_agent_id": 1,
+      "trace_id": "paper_default-2"
+    },
+    {
+      "horizontal_destination_is_approved_neighbor": true,
+      "is_horizontal_neighbor": true,
+      "is_topology_legal": true,
+      "legal_action_mask": {
+        "compute_local": true,
+        "horizontal": true,
+        "local": true,
+        "offload_horizontal": true,
+        "offload_vertical": true,
+        "vertical": true
+      },
+      "policy_name": "VO",
+      "resolved_destination": "cloud",
+      "scenario_name": "paper_default",
+      "seed": 2,
+      "selected_action": "vertical",
+      "source_agent_id": 2,
+      "trace_id": "paper_default-2"
+    },
+    {
+      "horizontal_destination_is_approved_neighbor": true,
+      "is_horizontal_neighbor": true,
+      "is_topology_legal": true,
+      "legal_action_mask": {
+        "compute_local": true,
+        "horizontal": true,
+        "local": true,
+        "offload_horizontal": true,
+        "offload_vertical": true,
+        "vertical": true
+      },
+      "policy_name": "VO",
+      "resolved_destination": "cloud",
+      "scenario_name": "paper_default",
+      "seed": 2,
+      "selected_action": "vertical",
+      "source_agent_id": 3,
+      "trace_id": "paper_default-2"
+    },
+    {
+      "horizontal_destination_is_approved_neighbor": true,
+      "is_horizontal_neighbor": true,
+      "is_topology_legal": true,
+      "legal_action_mask": {
+        "compute_local": true,
+        "horizontal": true,
+        "local": true,
+        "offload_horizontal": true,
+        "offload_vertical": true,
+        "vertical": true
+      },
+      "policy_name": "VO",
+      "resolved_destination": "cloud",
+      "scenario_name": "paper_default",
+      "seed": 2,
+      "selected_action": "vertical",
+      "source_agent_id": 1,
+      "trace_id": "paper_default-2"
+    },
+    {
+      "horizontal_destination_is_approved_neighbor": true,
+      "is_horizontal_neighbor": true,
+      "is_topology_legal": true,
+      "legal_action_mask": {
+        "compute_local": true,
+        "horizontal": true,
+        "local": true,
+        "offload_horizontal": true,
+        "offload_vertical": true,
+        "vertical": true
+      },
+      "policy_name": "VO",
+      "resolved_destination": "cloud",
+      "scenario_name": "paper_default",
+      "seed": 2,
+      "selected_action": "vertical",
+      "source_agent_id": 2,
+      "trace_id": "paper_default-2"
+    },
+    {
+      "horizontal_destination_is_approved_neighbor": true,
+      "is_horizontal_neighbor": true,
+      "is_topology_legal": true,
+      "legal_action_mask": {
+        "compute_local": true,
+        "horizontal": true,
+        "local": true,
+        "offload_horizontal": true,
+        "offload_vertical": true,
+        "vertical": true
+      },
+      "policy_name": "VO",
+      "resolved_destination": "cloud",
+      "scenario_name": "paper_default",
+      "seed": 2,
+      "selected_action": "vertical",
+      "source_agent_id": 3,
+      "trace_id": "paper_default-2"
+    },
+    {
+      "horizontal_destination_is_approved_neighbor": true,
+      "is_horizontal_neighbor": true,
+      "is_topology_legal": true,
+      "legal_action_mask": {
+        "compute_local": true,
+        "horizontal": true,
+        "local": true,
+        "offload_horizontal": true,
+        "offload_vertical": true,
+        "vertical": true
+      },
+      "policy_name": "VO",
+      "resolved_destination": "cloud",
+      "scenario_name": "paper_default",
+      "seed": 2,
+      "selected_action": "vertical",
+      "source_agent_id": 1,
+      "trace_id": "paper_default-2"
+    },
+    {
+      "horizontal_destination_is_approved_neighbor": true,
+      "is_horizontal_neighbor": true,
+      "is_topology_legal": true,
+      "legal_action_mask": {
+        "compute_local": true,
+        "horizontal": true,
+        "local": true,
+        "offload_horizontal": true,
+        "offload_vertical": true,
+        "vertical": true
+      },
+      "policy_name": "VO",
+      "resolved_destination": "cloud",
+      "scenario_name": "paper_default",
+      "seed": 2,
+      "selected_action": "vertical",
+      "source_agent_id": 2,
+      "trace_id": "paper_default-2"
+    },
+    {
+      "horizontal_destination_is_approved_neighbor": true,
+      "is_horizontal_neighbor": true,
+      "is_topology_legal": true,
+      "legal_action_mask": {
+        "compute_local": true,
+        "horizontal": true,
+        "local": true,
+        "offload_horizontal": true,
+        "offload_vertical": true,
+        "vertical": true
+      },
+      "policy_name": "VO",
+      "resolved_destination": "cloud",
+      "scenario_name": "paper_default",
+      "seed": 2,
+      "selected_action": "vertical",
+      "source_agent_id": 3,
+      "trace_id": "paper_default-2"
+    },
+    {
+      "horizontal_destination_is_approved_neighbor": true,
+      "is_horizontal_neighbor": true,
+      "is_topology_legal": true,
+      "legal_action_mask": {
+        "compute_local": true,
+        "horizontal": true,
+        "local": true,
+        "offload_horizontal": true,
+        "offload_vertical": true,
+        "vertical": true
+      },
+      "policy_name": "VO",
+      "resolved_destination": "cloud",
+      "scenario_name": "paper_default",
+      "seed": 2,
+      "selected_action": "vertical",
+      "source_agent_id": 1,
+      "trace_id": "paper_default-2"
+    },
+    {
+      "horizontal_destination_is_approved_neighbor": true,
+      "is_horizontal_neighbor": true,
+      "is_topology_legal": true,
+      "legal_action_mask": {
+        "compute_local": true,
+        "horizontal": true,
+        "local": true,
+        "offload_horizontal": true,
+        "offload_vertical": true,
+        "vertical": true
+      },
+      "policy_name": "VO",
+      "resolved_destination": "cloud",
+      "scenario_name": "paper_default",
+      "seed": 2,
+      "selected_action": "vertical",
+      "source_agent_id": 2,
+      "trace_id": "paper_default-2"
+    },
+    {
+      "horizontal_destination_is_approved_neighbor": true,
+      "is_horizontal_neighbor": true,
+      "is_topology_legal": true,
+      "legal_action_mask": {
+        "compute_local": true,
+        "horizontal": true,
+        "local": true,
+        "offload_horizontal": true,
+        "offload_vertical": true,
+        "vertical": true
+      },
+      "policy_name": "VO",
+      "resolved_destination": "cloud",
+      "scenario_name": "paper_default",
+      "seed": 2,
+      "selected_action": "vertical",
+      "source_agent_id": 3,
+      "trace_id": "paper_default-2"
+    },
+    {
+      "horizontal_destination_is_approved_neighbor": true,
+      "is_horizontal_neighbor": true,
+      "is_topology_legal": true,
+      "legal_action_mask": {
+        "compute_local": true,
+        "horizontal": true,
+        "local": true,
+        "offload_horizontal": true,
+        "offload_vertical": true,
+        "vertical": true
+      },
+      "policy_name": "VO",
+      "resolved_destination": "cloud",
+      "scenario_name": "paper_default",
+      "seed": 2,
+      "selected_action": "vertical",
+      "source_agent_id": 1,
+      "trace_id": "paper_default-2"
+    },
+    {
+      "horizontal_destination_is_approved_neighbor": true,
+      "is_horizontal_neighbor": true,
+      "is_topology_legal": true,
+      "legal_action_mask": {
+        "compute_local": true,
+        "horizontal": true,
+        "local": true,
+        "offload_horizontal": true,
+        "offload_vertical": true,
+        "vertical": true
+      },
+      "policy_name": "VO",
+      "resolved_destination": "cloud",
+      "scenario_name": "paper_default",
+      "seed": 2,
+      "selected_action": "vertical",
+      "source_agent_id": 2,
+      "trace_id": "paper_default-2"
+    },
+    {
+      "horizontal_destination_is_approved_neighbor": true,
+      "is_horizontal_neighbor": true,
+      "is_topology_legal": true,
+      "legal_action_mask": {
+        "compute_local": true,
+        "horizontal": true,
+        "local": true,
+        "offload_horizontal": true,
+        "offload_vertical": true,
+        "vertical": true
+      },
+      "policy_name": "VO",
+      "resolved_destination": "cloud",
+      "scenario_name": "paper_default",
+      "seed": 2,
+      "selected_action": "vertical",
+      "source_agent_id": 3,
+      "trace_id": "paper_default-2"
+    },
+    {
+      "horizontal_destination_is_approved_neighbor": true,
+      "is_horizontal_neighbor": true,
+      "is_topology_legal": true,
+      "legal_action_mask": {
+        "compute_local": true,
+        "horizontal": true,
+        "local": true,
+        "offload_horizontal": true,
+        "offload_vertical": true,
+        "vertical": true
+      },
+      "policy_name": "VO",
+      "resolved_destination": "cloud",
+      "scenario_name": "paper_default",
+      "seed": 2,
+      "selected_action": "vertical",
+      "source_agent_id": 1,
+      "trace_id": "paper_default-2"
+    },
+    {
+      "horizontal_destination_is_approved_neighbor": true,
+      "is_horizontal_neighbor": true,
+      "is_topology_legal": true,
+      "legal_action_mask": {
+        "compute_local": true,
+        "horizontal": true,
+        "local": true,
+        "offload_horizontal": true,
+        "offload_vertical": true,
+        "vertical": true
+      },
+      "policy_name": "VO",
+      "resolved_destination": "cloud",
+      "scenario_name": "paper_default",
+      "seed": 2,
+      "selected_action": "vertical",
+      "source_agent_id": 2,
+      "trace_id": "paper_default-2"
+    },
+    {
+      "horizontal_destination_is_approved_neighbor": true,
+      "is_horizontal_neighbor": true,
+      "is_topology_legal": true,
+      "legal_action_mask": {
+        "compute_local": true,
+        "horizontal": true,
+        "local": true,
+        "offload_horizontal": true,
+        "offload_vertical": true,
+        "vertical": true
+      },
+      "policy_name": "VO",
+      "resolved_destination": "cloud",
+      "scenario_name": "paper_default",
+      "seed": 2,
+      "selected_action": "vertical",
+      "source_agent_id": 3,
+      "trace_id": "paper_default-2"
+    },
+    {
+      "horizontal_destination_is_approved_neighbor": true,
+      "is_horizontal_neighbor": true,
+      "is_topology_legal": true,
+      "legal_action_mask": {
+        "compute_local": true,
+        "horizontal": true,
+        "local": true,
+        "offload_horizontal": true,
+        "offload_vertical": true,
+        "vertical": true
+      },
+      "policy_name": "VO",
+      "resolved_destination": "cloud",
+      "scenario_name": "paper_default",
+      "seed": 2,
+      "selected_action": "vertical",
+      "source_agent_id": 1,
+      "trace_id": "paper_default-2"
+    },
+    {
+      "horizontal_destination_is_approved_neighbor": true,
+      "is_horizontal_neighbor": true,
+      "is_topology_legal": true,
+      "legal_action_mask": {
+        "compute_local": true,
+        "horizontal": true,
+        "local": true,
+        "offload_horizontal": true,
+        "offload_vertical": true,
+        "vertical": true
+      },
+      "policy_name": "VO",
+      "resolved_destination": "cloud",
+      "scenario_name": "paper_default",
+      "seed": 2,
+      "selected_action": "vertical",
+      "source_agent_id": 2,
+      "trace_id": "paper_default-2"
+    },
+    {
+      "horizontal_destination_is_approved_neighbor": true,
+      "is_horizontal_neighbor": true,
+      "is_topology_legal": true,
+      "legal_action_mask": {
+        "compute_local": true,
+        "horizontal": true,
+        "local": true,
+        "offload_horizontal": true,
+        "offload_vertical": true,
+        "vertical": true
+      },
+      "policy_name": "VO",
+      "resolved_destination": "cloud",
+      "scenario_name": "paper_default",
+      "seed": 2,
+      "selected_action": "vertical",
+      "source_agent_id": 3,
+      "trace_id": "paper_default-2"
+    },
+    {
+      "horizontal_destination_is_approved_neighbor": true,
+      "is_horizontal_neighbor": true,
+      "is_topology_legal": true,
+      "legal_action_mask": {
+        "compute_local": true,
+        "horizontal": true,
+        "local": true,
+        "offload_horizontal": true,
+        "offload_vertical": true,
+        "vertical": true
+      },
+      "policy_name": "VO",
+      "resolved_destination": "cloud",
+      "scenario_name": "paper_default",
+      "seed": 2,
+      "selected_action": "vertical",
+      "source_agent_id": 1,
+      "trace_id": "paper_default-2"
+    },
+    {
+      "horizontal_destination_is_approved_neighbor": true,
+      "is_horizontal_neighbor": true,
+      "is_topology_legal": true,
+      "legal_action_mask": {
+        "compute_local": true,
+        "horizontal": true,
+        "local": true,
+        "offload_horizontal": true,
+        "offload_vertical": true,
+        "vertical": true
+      },
+      "policy_name": "VO",
+      "resolved_destination": "cloud",
+      "scenario_name": "paper_default",
+      "seed": 2,
+      "selected_action": "vertical",
+      "source_agent_id": 2,
+      "trace_id": "paper_default-2"
+    },
+    {
+      "horizontal_destination_is_approved_neighbor": true,
+      "is_horizontal_neighbor": true,
+      "is_topology_legal": true,
+      "legal_action_mask": {
+        "compute_local": true,
+        "horizontal": true,
+        "local": true,
+        "offload_horizontal": true,
+        "offload_vertical": true,
+        "vertical": true
+      },
+      "policy_name": "VO",
+      "resolved_destination": "cloud",
+      "scenario_name": "paper_default",
+      "seed": 2,
+      "selected_action": "vertical",
+      "source_agent_id": 3,
+      "trace_id": "paper_default-2"
+    },
+    {
+      "horizontal_destination_is_approved_neighbor": true,
+      "is_horizontal_neighbor": true,
+      "is_topology_legal": true,
+      "legal_action_mask": {
+        "compute_local": true,
+        "horizontal": true,
+        "local": true,
+        "offload_horizontal": true,
+        "offload_vertical": true,
+        "vertical": true
+      },
+      "policy_name": "VO",
+      "resolved_destination": "cloud",
+      "scenario_name": "paper_default",
+      "seed": 2,
+      "selected_action": "vertical",
+      "source_agent_id": 1,
+      "trace_id": "paper_default-2"
+    },
+    {
+      "horizontal_destination_is_approved_neighbor": true,
+      "is_horizontal_neighbor": true,
+      "is_topology_legal": true,
+      "legal_action_mask": {
+        "compute_local": true,
+        "horizontal": true,
+        "local": true,
+        "offload_horizontal": true,
+        "offload_vertical": true,
+        "vertical": true
+      },
+      "policy_name": "VO",
+      "resolved_destination": "cloud",
+      "scenario_name": "paper_default",
+      "seed": 2,
+      "selected_action": "vertical",
+      "source_agent_id": 2,
+      "trace_id": "paper_default-2"
+    },
+    {
+      "horizontal_destination_is_approved_neighbor": true,
+      "is_horizontal_neighbor": true,
+      "is_topology_legal": true,
+      "legal_action_mask": {
+        "compute_local": true,
+        "horizontal": true,
+        "local": true,
+        "offload_horizontal": true,
+        "offload_vertical": true,
+        "vertical": true
+      },
+      "policy_name": "VO",
+      "resolved_destination": "cloud",
+      "scenario_name": "paper_default",
+      "seed": 2,
+      "selected_action": "vertical",
+      "source_agent_id": 3,
+      "trace_id": "paper_default-2"
+    },
+    {
+      "horizontal_destination_is_approved_neighbor": true,
+      "is_horizontal_neighbor": true,
+      "is_topology_legal": true,
+      "legal_action_mask": {
+        "compute_local": true,
+        "horizontal": true,
+        "local": true,
+        "offload_horizontal": true,
+        "offload_vertical": true,
+        "vertical": true
+      },
+      "policy_name": "VO",
+      "resolved_destination": "cloud",
+      "scenario_name": "paper_default",
+      "seed": 2,
+      "selected_action": "vertical",
+      "source_agent_id": 1,
+      "trace_id": "paper_default-2"
+    },
+    {
+      "horizontal_destination_is_approved_neighbor": true,
+      "is_horizontal_neighbor": true,
+      "is_topology_legal": true,
+      "legal_action_mask": {
+        "compute_local": true,
+        "horizontal": true,
+        "local": true,
+        "offload_horizontal": true,
+        "offload_vertical": true,
+        "vertical": true
+      },
+      "policy_name": "VO",
+      "resolved_destination": "cloud",
+      "scenario_name": "paper_default",
+      "seed": 2,
+      "selected_action": "vertical",
+      "source_agent_id": 2,
+      "trace_id": "paper_default-2"
+    },
+    {
+      "horizontal_destination_is_approved_neighbor": true,
+      "is_horizontal_neighbor": true,
+      "is_topology_legal": true,
+      "legal_action_mask": {
+        "compute_local": true,
+        "horizontal": true,
+        "local": true,
+        "offload_horizontal": true,
+        "offload_vertical": true,
+        "vertical": true
+      },
+      "policy_name": "VO",
+      "resolved_destination": "cloud",
+      "scenario_name": "paper_default",
+      "seed": 2,
+      "selected_action": "vertical",
+      "source_agent_id": 3,
+      "trace_id": "paper_default-2"
+    },
+    {
+      "horizontal_destination_is_approved_neighbor": true,
+      "is_horizontal_neighbor": true,
+      "is_topology_legal": true,
+      "legal_action_mask": {
+        "compute_local": true,
+        "horizontal": true,
+        "local": true,
+        "offload_horizontal": true,
+        "offload_vertical": true,
+        "vertical": true
+      },
+      "policy_name": "VO",
+      "resolved_destination": "cloud",
+      "scenario_name": "paper_default",
+      "seed": 2,
+      "selected_action": "vertical",
+      "source_agent_id": 1,
+      "trace_id": "paper_default-2"
+    },
+    {
+      "horizontal_destination_is_approved_neighbor": true,
+      "is_horizontal_neighbor": true,
+      "is_topology_legal": true,
+      "legal_action_mask": {
+        "compute_local": true,
+        "horizontal": true,
+        "local": true,
+        "offload_horizontal": true,
+        "offload_vertical": true,
+        "vertical": true
+      },
+      "policy_name": "VO",
+      "resolved_destination": "cloud",
+      "scenario_name": "paper_default",
+      "seed": 2,
+      "selected_action": "vertical",
+      "source_agent_id": 2,
+      "trace_id": "paper_default-2"
+    },
+    {
+      "horizontal_destination_is_approved_neighbor": true,
+      "is_horizontal_neighbor": true,
+      "is_topology_legal": true,
+      "legal_action_mask": {
+        "compute_local": true,
+        "horizontal": true,
+        "local": true,
+        "offload_horizontal": true,
+        "offload_vertical": true,
+        "vertical": true
+      },
+      "policy_name": "VO",
+      "resolved_destination": "cloud",
+      "scenario_name": "paper_default",
+      "seed": 2,
+      "selected_action": "vertical",
+      "source_agent_id": 3,
+      "trace_id": "paper_default-2"
+    },
+    {
+      "horizontal_destination_is_approved_neighbor": true,
+      "is_horizontal_neighbor": true,
+      "is_topology_legal": true,
+      "legal_action_mask": {
+        "compute_local": true,
+        "horizontal": true,
+        "local": true,
+        "offload_horizontal": true,
+        "offload_vertical": true,
+        "vertical": true
+      },
+      "policy_name": "VO",
+      "resolved_destination": "cloud",
+      "scenario_name": "paper_default",
+      "seed": 2,
+      "selected_action": "vertical",
+      "source_agent_id": 1,
+      "trace_id": "paper_default-2"
+    },
+    {
+      "horizontal_destination_is_approved_neighbor": true,
+      "is_horizontal_neighbor": true,
+      "is_topology_legal": true,
+      "legal_action_mask": {
+        "compute_local": true,
+        "horizontal": true,
+        "local": true,
+        "offload_horizontal": true,
+        "offload_vertical": true,
+        "vertical": true
+      },
+      "policy_name": "VO",
+      "resolved_destination": "cloud",
+      "scenario_name": "paper_default",
+      "seed": 2,
+      "selected_action": "vertical",
+      "source_agent_id": 2,
+      "trace_id": "paper_default-2"
+    },
+    {
+      "horizontal_destination_is_approved_neighbor": true,
+      "is_horizontal_neighbor": true,
+      "is_topology_legal": true,
+      "legal_action_mask": {
+        "compute_local": true,
+        "horizontal": true,
+        "local": true,
+        "offload_horizontal": true,
+        "offload_vertical": true,
+        "vertical": true
+      },
+      "policy_name": "VO",
+      "resolved_destination": "cloud",
+      "scenario_name": "paper_default",
+      "seed": 2,
+      "selected_action": "vertical",
+      "source_agent_id": 3,
+      "trace_id": "paper_default-2"
+    },
+    {
+      "horizontal_destination_is_approved_neighbor": true,
+      "is_horizontal_neighbor": true,
+      "is_topology_legal": true,
+      "legal_action_mask": {
+        "compute_local": true,
+        "horizontal": true,
+        "local": true,
+        "offload_horizontal": true,
+        "offload_vertical": true,
+        "vertical": true
+      },
+      "policy_name": "VO",
+      "resolved_destination": "cloud",
+      "scenario_name": "paper_default",
+      "seed": 2,
+      "selected_action": "vertical",
+      "source_agent_id": 1,
+      "trace_id": "paper_default-2"
+    },
+    {
+      "horizontal_destination_is_approved_neighbor": true,
+      "is_horizontal_neighbor": true,
+      "is_topology_legal": true,
+      "legal_action_mask": {
+        "compute_local": true,
+        "horizontal": true,
+        "local": true,
+        "offload_horizontal": true,
+        "offload_vertical": true,
+        "vertical": true
+      },
+      "policy_name": "VO",
+      "resolved_destination": "cloud",
+      "scenario_name": "paper_default",
+      "seed": 2,
+      "selected_action": "vertical",
+      "source_agent_id": 2,
+      "trace_id": "paper_default-2"
+    },
+    {
+      "horizontal_destination_is_approved_neighbor": true,
+      "is_horizontal_neighbor": true,
+      "is_topology_legal": true,
+      "legal_action_mask": {
+        "compute_local": true,
+        "horizontal": true,
+        "local": true,
+        "offload_horizontal": true,
+        "offload_vertical": true,
+        "vertical": true
+      },
+      "policy_name": "VO",
+      "resolved_destination": "cloud",
+      "scenario_name": "paper_default",
+      "seed": 2,
+      "selected_action": "vertical",
+      "source_agent_id": 3,
+      "trace_id": "paper_default-2"
+    },
+    {
+      "horizontal_destination_is_approved_neighbor": true,
+      "is_horizontal_neighbor": true,
+      "is_topology_legal": true,
+      "legal_action_mask": {
+        "compute_local": true,
+        "horizontal": true,
+        "local": true,
+        "offload_horizontal": true,
+        "offload_vertical": true,
+        "vertical": true
+      },
+      "policy_name": "VO",
+      "resolved_destination": "cloud",
+      "scenario_name": "paper_default",
+      "seed": 2,
+      "selected_action": "vertical",
+      "source_agent_id": 1,
+      "trace_id": "paper_default-2"
+    },
+    {
+      "horizontal_destination_is_approved_neighbor": true,
+      "is_horizontal_neighbor": true,
+      "is_topology_legal": true,
+      "legal_action_mask": {
+        "compute_local": true,
+        "horizontal": true,
+        "local": true,
+        "offload_horizontal": true,
+        "offload_vertical": true,
+        "vertical": true
+      },
+      "policy_name": "VO",
+      "resolved_destination": "cloud",
+      "scenario_name": "paper_default",
+      "seed": 2,
+      "selected_action": "vertical",
+      "source_agent_id": 2,
+      "trace_id": "paper_default-2"
+    },
+    {
+      "horizontal_destination_is_approved_neighbor": true,
+      "is_horizontal_neighbor": true,
+      "is_topology_legal": true,
+      "legal_action_mask": {
+        "compute_local": true,
+        "horizontal": true,
+        "local": true,
+        "offload_horizontal": true,
+        "offload_vertical": true,
+        "vertical": true
+      },
+      "policy_name": "VO",
+      "resolved_destination": "cloud",
+      "scenario_name": "paper_default",
+      "seed": 2,
+      "selected_action": "vertical",
+      "source_agent_id": 3,
+      "trace_id": "paper_default-2"
+    },
+    {
+      "horizontal_destination_is_approved_neighbor": true,
+      "is_horizontal_neighbor": true,
+      "is_topology_legal": true,
+      "legal_action_mask": {
+        "compute_local": true,
+        "horizontal": true,
+        "local": true,
+        "offload_horizontal": true,
+        "offload_vertical": true,
+        "vertical": true
+      },
+      "policy_name": "VO",
+      "resolved_destination": "cloud",
+      "scenario_name": "paper_default",
+      "seed": 2,
+      "selected_action": "vertical",
+      "source_agent_id": 1,
+      "trace_id": "paper_default-2"
+    },
+    {
+      "horizontal_destination_is_approved_neighbor": true,
+      "is_horizontal_neighbor": true,
+      "is_topology_legal": true,
+      "legal_action_mask": {
+        "compute_local": true,
+        "horizontal": true,
+        "local": true,
+        "offload_horizontal": true,
+        "offload_vertical": true,
+        "vertical": true
+      },
+      "policy_name": "VO",
+      "resolved_destination": "cloud",
+      "scenario_name": "paper_default",
+      "seed": 2,
+      "selected_action": "vertical",
+      "source_agent_id": 2,
+      "trace_id": "paper_default-2"
+    },
+    {
+      "horizontal_destination_is_approved_neighbor": true,
+      "is_horizontal_neighbor": true,
+      "is_topology_legal": true,
+      "legal_action_mask": {
+        "compute_local": true,
+        "horizontal": true,
+        "local": true,
+        "offload_horizontal": true,
+        "offload_vertical": true,
+        "vertical": true
+      },
+      "policy_name": "VO",
+      "resolved_destination": "cloud",
+      "scenario_name": "paper_default",
+      "seed": 2,
+      "selected_action": "vertical",
+      "source_agent_id": 3,
+      "trace_id": "paper_default-2"
+    },
+    {
+      "horizontal_destination_is_approved_neighbor": true,
+      "is_horizontal_neighbor": true,
+      "is_topology_legal": true,
+      "legal_action_mask": {
+        "compute_local": true,
+        "horizontal": true,
+        "local": true,
+        "offload_horizontal": true,
+        "offload_vertical": true,
+        "vertical": true
+      },
+      "policy_name": "VO",
+      "resolved_destination": "cloud",
+      "scenario_name": "paper_default",
+      "seed": 2,
+      "selected_action": "vertical",
+      "source_agent_id": 1,
+      "trace_id": "paper_default-2"
+    },
+    {
+      "horizontal_destination_is_approved_neighbor": true,
+      "is_horizontal_neighbor": true,
+      "is_topology_legal": true,
+      "legal_action_mask": {
+        "compute_local": true,
+        "horizontal": true,
+        "local": true,
+        "offload_horizontal": true,
+        "offload_vertical": true,
+        "vertical": true
+      },
+      "policy_name": "VO",
+      "resolved_destination": "cloud",
+      "scenario_name": "paper_default",
+      "seed": 2,
+      "selected_action": "vertical",
+      "source_agent_id": 2,
+      "trace_id": "paper_default-2"
+    },
+    {
+      "horizontal_destination_is_approved_neighbor": true,
+      "is_horizontal_neighbor": true,
+      "is_topology_legal": true,
+      "legal_action_mask": {
+        "compute_local": true,
+        "horizontal": true,
+        "local": true,
+        "offload_horizontal": true,
+        "offload_vertical": true,
+        "vertical": true
+      },
+      "policy_name": "VO",
+      "resolved_destination": "cloud",
+      "scenario_name": "paper_default",
+      "seed": 2,
+      "selected_action": "vertical",
+      "source_agent_id": 3,
+      "trace_id": "paper_default-2"
+    },
+    {
+      "horizontal_destination_is_approved_neighbor": true,
+      "is_horizontal_neighbor": true,
+      "is_topology_legal": true,
+      "legal_action_mask": {
+        "compute_local": true,
+        "horizontal": true,
+        "local": true,
+        "offload_horizontal": true,
+        "offload_vertical": true,
+        "vertical": true
+      },
+      "policy_name": "VO",
+      "resolved_destination": "cloud",
+      "scenario_name": "paper_default",
+      "seed": 2,
+      "selected_action": "vertical",
+      "source_agent_id": 1,
+      "trace_id": "paper_default-2"
+    },
+    {
+      "horizontal_destination_is_approved_neighbor": true,
+      "is_horizontal_neighbor": true,
+      "is_topology_legal": true,
+      "legal_action_mask": {
+        "compute_local": true,
+        "horizontal": true,
+        "local": true,
+        "offload_horizontal": true,
+        "offload_vertical": true,
+        "vertical": true
+      },
+      "policy_name": "VO",
+      "resolved_destination": "cloud",
+      "scenario_name": "paper_default",
+      "seed": 2,
+      "selected_action": "vertical",
+      "source_agent_id": 2,
+      "trace_id": "paper_default-2"
+    },
+    {
+      "horizontal_destination_is_approved_neighbor": true,
+      "is_horizontal_neighbor": true,
+      "is_topology_legal": true,
+      "legal_action_mask": {
+        "compute_local": true,
+        "horizontal": true,
+        "local": true,
+        "offload_horizontal": true,
+        "offload_vertical": true,
+        "vertical": true
+      },
+      "policy_name": "VO",
+      "resolved_destination": "cloud",
+      "scenario_name": "paper_default",
+      "seed": 2,
+      "selected_action": "vertical",
+      "source_agent_id": 3,
+      "trace_id": "paper_default-2"
+    },
+    {
+      "horizontal_destination_is_approved_neighbor": true,
+      "is_horizontal_neighbor": true,
+      "is_topology_legal": true,
+      "legal_action_mask": {
+        "compute_local": true,
+        "horizontal": true,
+        "local": true,
+        "offload_horizontal": true,
+        "offload_vertical": true,
+        "vertical": true
+      },
+      "policy_name": "VO",
+      "resolved_destination": "cloud",
+      "scenario_name": "paper_default",
+      "seed": 2,
+      "selected_action": "vertical",
+      "source_agent_id": 1,
+      "trace_id": "paper_default-2"
+    },
+    {
+      "horizontal_destination_is_approved_neighbor": true,
+      "is_horizontal_neighbor": true,
+      "is_topology_legal": true,
+      "legal_action_mask": {
+        "compute_local": true,
+        "horizontal": true,
+        "local": true,
+        "offload_horizontal": true,
+        "offload_vertical": true,
+        "vertical": true
+      },
+      "policy_name": "VO",
+      "resolved_destination": "cloud",
+      "scenario_name": "paper_default",
+      "seed": 2,
+      "selected_action": "vertical",
+      "source_agent_id": 2,
+      "trace_id": "paper_default-2"
+    },
+    {
+      "horizontal_destination_is_approved_neighbor": true,
+      "is_horizontal_neighbor": true,
+      "is_topology_legal": true,
+      "legal_action_mask": {
+        "compute_local": true,
+        "horizontal": true,
+        "local": true,
+        "offload_horizontal": true,
+        "offload_vertical": true,
+        "vertical": true
+      },
+      "policy_name": "VO",
+      "resolved_destination": "cloud",
+      "scenario_name": "paper_default",
+      "seed": 2,
+      "selected_action": "vertical",
+      "source_agent_id": 3,
+      "trace_id": "paper_default-2"
+    },
+    {
+      "horizontal_destination_is_approved_neighbor": true,
+      "is_horizontal_neighbor": true,
+      "is_topology_legal": true,
+      "legal_action_mask": {
+        "compute_local": true,
+        "horizontal": true,
+        "local": true,
+        "offload_horizontal": true,
+        "offload_vertical": true,
+        "vertical": true
+      },
+      "policy_name": "VO",
+      "resolved_destination": "cloud",
+      "scenario_name": "paper_default",
+      "seed": 2,
+      "selected_action": "vertical",
+      "source_agent_id": 1,
+      "trace_id": "paper_default-2"
+    },
+    {
+      "horizontal_destination_is_approved_neighbor": true,
+      "is_horizontal_neighbor": true,
+      "is_topology_legal": true,
+      "legal_action_mask": {
+        "compute_local": true,
+        "horizontal": true,
+        "local": true,
+        "offload_horizontal": true,
+        "offload_vertical": true,
+        "vertical": true
+      },
+      "policy_name": "VO",
+      "resolved_destination": "cloud",
+      "scenario_name": "paper_default",
+      "seed": 2,
+      "selected_action": "vertical",
+      "source_agent_id": 2,
+      "trace_id": "paper_default-2"
+    },
+    {
+      "horizontal_destination_is_approved_neighbor": true,
+      "is_horizontal_neighbor": true,
+      "is_topology_legal": true,
+      "legal_action_mask": {
+        "compute_local": true,
+        "horizontal": true,
+        "local": true,
+        "offload_horizontal": true,
+        "offload_vertical": true,
+        "vertical": true
+      },
+      "policy_name": "VO",
+      "resolved_destination": "cloud",
+      "scenario_name": "paper_default",
+      "seed": 2,
+      "selected_action": "vertical",
+      "source_agent_id": 3,
+      "trace_id": "paper_default-2"
+    },
+    {
+      "horizontal_destination_is_approved_neighbor": true,
+      "is_horizontal_neighbor": true,
+      "is_topology_legal": true,
+      "legal_action_mask": {
+        "compute_local": true,
+        "horizontal": true,
+        "local": true,
+        "offload_horizontal": true,
+        "offload_vertical": true,
+        "vertical": true
+      },
+      "policy_name": "VO",
+      "resolved_destination": "cloud",
+      "scenario_name": "paper_default",
+      "seed": 2,
+      "selected_action": "vertical",
+      "source_agent_id": 1,
+      "trace_id": "paper_default-2"
+    },
+    {
+      "horizontal_destination_is_approved_neighbor": true,
+      "is_horizontal_neighbor": true,
+      "is_topology_legal": true,
+      "legal_action_mask": {
+        "compute_local": true,
+        "horizontal": true,
+        "local": true,
+        "offload_horizontal": true,
+        "offload_vertical": true,
+        "vertical": true
+      },
+      "policy_name": "VO",
+      "resolved_destination": "cloud",
+      "scenario_name": "paper_default",
+      "seed": 2,
+      "selected_action": "vertical",
+      "source_agent_id": 2,
+      "trace_id": "paper_default-2"
+    },
+    {
+      "horizontal_destination_is_approved_neighbor": true,
+      "is_horizontal_neighbor": true,
+      "is_topology_legal": true,
+      "legal_action_mask": {
+        "compute_local": true,
+        "horizontal": true,
+        "local": true,
+        "offload_horizontal": true,
+        "offload_vertical": true,
+        "vertical": true
+      },
+      "policy_name": "VO",
+      "resolved_destination": "cloud",
+      "scenario_name": "paper_default",
+      "seed": 2,
+      "selected_action": "vertical",
+      "source_agent_id": 3,
+      "trace_id": "paper_default-2"
+    },
+    {
+      "horizontal_destination_is_approved_neighbor": true,
+      "is_horizontal_neighbor": true,
+      "is_topology_legal": true,
+      "legal_action_mask": {
+        "compute_local": true,
+        "horizontal": true,
+        "local": true,
+        "offload_horizontal": true,
+        "offload_vertical": true,
+        "vertical": true
+      },
+      "policy_name": "VO",
+      "resolved_destination": "cloud",
+      "scenario_name": "paper_default",
+      "seed": 2,
+      "selected_action": "vertical",
+      "source_agent_id": 1,
+      "trace_id": "paper_default-2"
+    },
+    {
+      "horizontal_destination_is_approved_neighbor": true,
+      "is_horizontal_neighbor": true,
+      "is_topology_legal": true,
+      "legal_action_mask": {
+        "compute_local": true,
+        "horizontal": true,
+        "local": true,
+        "offload_horizontal": true,
+        "offload_vertical": true,
+        "vertical": true
+      },
+      "policy_name": "VO",
+      "resolved_destination": "cloud",
+      "scenario_name": "paper_default",
+      "seed": 2,
+      "selected_action": "vertical",
+      "source_agent_id": 2,
+      "trace_id": "paper_default-2"
+    },
+    {
+      "horizontal_destination_is_approved_neighbor": true,
+      "is_horizontal_neighbor": true,
+      "is_topology_legal": true,
+      "legal_action_mask": {
+        "compute_local": true,
+        "horizontal": true,
+        "local": true,
+        "offload_horizontal": true,
+        "offload_vertical": true,
+        "vertical": true
+      },
+      "policy_name": "VO",
+      "resolved_destination": "cloud",
+      "scenario_name": "paper_default",
+      "seed": 2,
+      "selected_action": "vertical",
+      "source_agent_id": 3,
+      "trace_id": "paper_default-2"
+    },
+    {
+      "horizontal_destination_is_approved_neighbor": true,
+      "is_horizontal_neighbor": true,
+      "is_topology_legal": true,
+      "legal_action_mask": {
+        "compute_local": true,
+        "horizontal": true,
+        "local": true,
+        "offload_horizontal": true,
+        "offload_vertical": true,
+        "vertical": true
+      },
+      "policy_name": "VO",
+      "resolved_destination": "cloud",
+      "scenario_name": "paper_default",
+      "seed": 2,
+      "selected_action": "vertical",
+      "source_agent_id": 1,
+      "trace_id": "paper_default-2"
+    },
+    {
+      "horizontal_destination_is_approved_neighbor": true,
+      "is_horizontal_neighbor": true,
+      "is_topology_legal": true,
+      "legal_action_mask": {
+        "compute_local": true,
+        "horizontal": true,
+        "local": true,
+        "offload_horizontal": true,
+        "offload_vertical": true,
+        "vertical": true
+      },
+      "policy_name": "VO",
+      "resolved_destination": "cloud",
+      "scenario_name": "paper_default",
+      "seed": 2,
+      "selected_action": "vertical",
+      "source_agent_id": 2,
+      "trace_id": "paper_default-2"
+    },
+    {
+      "horizontal_destination_is_approved_neighbor": true,
+      "is_horizontal_neighbor": true,
+      "is_topology_legal": true,
+      "legal_action_mask": {
+        "compute_local": true,
+        "horizontal": true,
+        "local": true,
+        "offload_horizontal": true,
+        "offload_vertical": true,
+        "vertical": true
+      },
+      "policy_name": "VO",
+      "resolved_destination": "cloud",
+      "scenario_name": "paper_default",
+      "seed": 2,
+      "selected_action": "vertical",
+      "source_agent_id": 3,
+      "trace_id": "paper_default-2"
+    },
+    {
+      "horizontal_destination_is_approved_neighbor": true,
+      "is_horizontal_neighbor": true,
+      "is_topology_legal": true,
+      "legal_action_mask": {
+        "compute_local": true,
+        "horizontal": true,
+        "local": true,
+        "offload_horizontal": true,
+        "offload_vertical": true,
+        "vertical": true
+      },
+      "policy_name": "VO",
+      "resolved_destination": "cloud",
+      "scenario_name": "paper_default",
+      "seed": 2,
+      "selected_action": "vertical",
+      "source_agent_id": 1,
+      "trace_id": "paper_default-2"
+    },
+    {
+      "horizontal_destination_is_approved_neighbor": true,
+      "is_horizontal_neighbor": true,
+      "is_topology_legal": true,
+      "legal_action_mask": {
+        "compute_local": true,
+        "horizontal": true,
+        "local": true,
+        "offload_horizontal": true,
+        "offload_vertical": true,
+        "vertical": true
+      },
+      "policy_name": "VO",
+      "resolved_destination": "cloud",
+      "scenario_name": "paper_default",
+      "seed": 2,
+      "selected_action": "vertical",
+      "source_agent_id": 2,
+      "trace_id": "paper_default-2"
+    },
+    {
+      "horizontal_destination_is_approved_neighbor": true,
+      "is_horizontal_neighbor": true,
+      "is_topology_legal": true,
+      "legal_action_mask": {
+        "compute_local": true,
+        "horizontal": true,
+        "local": true,
+        "offload_horizontal": true,
+        "offload_vertical": true,
+        "vertical": true
+      },
+      "policy_name": "VO",
+      "resolved_destination": "cloud",
+      "scenario_name": "paper_default",
+      "seed": 2,
+      "selected_action": "vertical",
+      "source_agent_id": 3,
+      "trace_id": "paper_default-2"
+    },
+    {
+      "horizontal_destination_is_approved_neighbor": true,
+      "is_horizontal_neighbor": true,
+      "is_topology_legal": true,
+      "legal_action_mask": {
+        "compute_local": true,
+        "horizontal": true,
+        "local": true,
+        "offload_horizontal": true,
+        "offload_vertical": true,
+        "vertical": true
+      },
+      "policy_name": "VO",
+      "resolved_destination": "cloud",
+      "scenario_name": "paper_default",
+      "seed": 2,
+      "selected_action": "vertical",
+      "source_agent_id": 1,
+      "trace_id": "paper_default-2"
+    },
+    {
+      "horizontal_destination_is_approved_neighbor": true,
+      "is_horizontal_neighbor": true,
+      "is_topology_legal": true,
+      "legal_action_mask": {
+        "compute_local": true,
+        "horizontal": true,
+        "local": true,
+        "offload_horizontal": true,
+        "offload_vertical": true,
+        "vertical": true
+      },
+      "policy_name": "VO",
+      "resolved_destination": "cloud",
+      "scenario_name": "paper_default",
+      "seed": 2,
+      "selected_action": "vertical",
+      "source_agent_id": 2,
+      "trace_id": "paper_default-2"
+    },
+    {
+      "horizontal_destination_is_approved_neighbor": true,
+      "is_horizontal_neighbor": true,
+      "is_topology_legal": true,
+      "legal_action_mask": {
+        "compute_local": true,
+        "horizontal": true,
+        "local": true,
+        "offload_horizontal": true,
+        "offload_vertical": true,
+        "vertical": true
+      },
+      "policy_name": "VO",
+      "resolved_destination": "cloud",
+      "scenario_name": "paper_default",
+      "seed": 2,
+      "selected_action": "vertical",
+      "source_agent_id": 3,
+      "trace_id": "paper_default-2"
+    },
+    {
+      "horizontal_destination_is_approved_neighbor": true,
+      "is_horizontal_neighbor": true,
+      "is_topology_legal": true,
+      "legal_action_mask": {
+        "compute_local": true,
+        "horizontal": true,
+        "local": true,
+        "offload_horizontal": true,
+        "offload_vertical": true,
+        "vertical": true
+      },
+      "policy_name": "VO",
+      "resolved_destination": "cloud",
+      "scenario_name": "paper_default",
+      "seed": 2,
+      "selected_action": "vertical",
+      "source_agent_id": 1,
+      "trace_id": "paper_default-2"
+    },
+    {
+      "horizontal_destination_is_approved_neighbor": true,
+      "is_horizontal_neighbor": true,
+      "is_topology_legal": true,
+      "legal_action_mask": {
+        "compute_local": true,
+        "horizontal": true,
+        "local": true,
+        "offload_horizontal": true,
+        "offload_vertical": true,
+        "vertical": true
+      },
+      "policy_name": "VO",
+      "resolved_destination": "cloud",
+      "scenario_name": "paper_default",
+      "seed": 2,
+      "selected_action": "vertical",
+      "source_agent_id": 2,
+      "trace_id": "paper_default-2"
+    },
+    {
+      "horizontal_destination_is_approved_neighbor": true,
+      "is_horizontal_neighbor": true,
+      "is_topology_legal": true,
+      "legal_action_mask": {
+        "compute_local": true,
+        "horizontal": true,
+        "local": true,
+        "offload_horizontal": true,
+        "offload_vertical": true,
+        "vertical": true
+      },
+      "policy_name": "VO",
+      "resolved_destination": "cloud",
+      "scenario_name": "paper_default",
+      "seed": 2,
+      "selected_action": "vertical",
+      "source_agent_id": 3,
+      "trace_id": "paper_default-2"
+    },
+    {
+      "horizontal_destination_is_approved_neighbor": true,
+      "is_horizontal_neighbor": true,
+      "is_topology_legal": true,
+      "legal_action_mask": {
+        "compute_local": true,
+        "horizontal": true,
+        "local": true,
+        "offload_horizontal": true,
+        "offload_vertical": true,
+        "vertical": true
+      },
+      "policy_name": "VO",
+      "resolved_destination": "cloud",
+      "scenario_name": "paper_default",
+      "seed": 2,
+      "selected_action": "vertical",
+      "source_agent_id": 1,
+      "trace_id": "paper_default-2"
+    },
+    {
+      "horizontal_destination_is_approved_neighbor": true,
+      "is_horizontal_neighbor": true,
+      "is_topology_legal": true,
+      "legal_action_mask": {
+        "compute_local": true,
+        "horizontal": true,
+        "local": true,
+        "offload_horizontal": true,
+        "offload_vertical": true,
+        "vertical": true
+      },
+      "policy_name": "VO",
+      "resolved_destination": "cloud",
+      "scenario_name": "paper_default",
+      "seed": 2,
+      "selected_action": "vertical",
+      "source_agent_id": 2,
+      "trace_id": "paper_default-2"
+    },
+    {
+      "horizontal_destination_is_approved_neighbor": true,
+      "is_horizontal_neighbor": true,
+      "is_topology_legal": true,
+      "legal_action_mask": {
+        "compute_local": true,
+        "horizontal": true,
+        "local": true,
+        "offload_horizontal": true,
+        "offload_vertical": true,
+        "vertical": true
+      },
+      "policy_name": "VO",
+      "resolved_destination": "cloud",
+      "scenario_name": "paper_default",
+      "seed": 2,
+      "selected_action": "vertical",
+      "source_agent_id": 3,
+      "trace_id": "paper_default-2"
+    },
+    {
+      "horizontal_destination_is_approved_neighbor": true,
+      "is_horizontal_neighbor": true,
+      "is_topology_legal": true,
+      "legal_action_mask": {
+        "compute_local": true,
+        "horizontal": true,
+        "local": true,
+        "offload_horizontal": true,
+        "offload_vertical": true,
+        "vertical": true
+      },
+      "policy_name": "VO",
+      "resolved_destination": "cloud",
+      "scenario_name": "paper_default",
+      "seed": 2,
+      "selected_action": "vertical",
+      "source_agent_id": 1,
+      "trace_id": "paper_default-2"
+    },
+    {
+      "horizontal_destination_is_approved_neighbor": true,
+      "is_horizontal_neighbor": true,
+      "is_topology_legal": true,
+      "legal_action_mask": {
+        "compute_local": true,
+        "horizontal": true,
+        "local": true,
+        "offload_horizontal": true,
+        "offload_vertical": true,
+        "vertical": true
+      },
+      "policy_name": "VO",
+      "resolved_destination": "cloud",
+      "scenario_name": "paper_default",
+      "seed": 2,
+      "selected_action": "vertical",
+      "source_agent_id": 2,
+      "trace_id": "paper_default-2"
+    },
+    {
+      "horizontal_destination_is_approved_neighbor": true,
+      "is_horizontal_neighbor": true,
+      "is_topology_legal": true,
+      "legal_action_mask": {
+        "compute_local": true,
+        "horizontal": true,
+        "local": true,
+        "offload_horizontal": true,
+        "offload_vertical": true,
+        "vertical": true
+      },
+      "policy_name": "VO",
+      "resolved_destination": "cloud",
+      "scenario_name": "paper_default",
+      "seed": 2,
+      "selected_action": "vertical",
+      "source_agent_id": 3,
+      "trace_id": "paper_default-2"
+    },
+    {
+      "horizontal_destination_is_approved_neighbor": true,
+      "is_horizontal_neighbor": true,
+      "is_topology_legal": true,
+      "legal_action_mask": {
+        "compute_local": true,
+        "horizontal": true,
+        "local": true,
+        "offload_horizontal": true,
+        "offload_vertical": true,
+        "vertical": true
+      },
+      "policy_name": "VO",
+      "resolved_destination": "cloud",
+      "scenario_name": "paper_default",
+      "seed": 2,
+      "selected_action": "vertical",
+      "source_agent_id": 1,
+      "trace_id": "paper_default-2"
+    },
+    {
+      "horizontal_destination_is_approved_neighbor": true,
+      "is_horizontal_neighbor": true,
+      "is_topology_legal": true,
+      "legal_action_mask": {
+        "compute_local": true,
+        "horizontal": true,
+        "local": true,
+        "offload_horizontal": true,
+        "offload_vertical": true,
+        "vertical": true
+      },
+      "policy_name": "VO",
+      "resolved_destination": "cloud",
+      "scenario_name": "paper_default",
+      "seed": 2,
+      "selected_action": "vertical",
+      "source_agent_id": 2,
+      "trace_id": "paper_default-2"
+    },
+    {
+      "horizontal_destination_is_approved_neighbor": true,
+      "is_horizontal_neighbor": true,
+      "is_topology_legal": true,
+      "legal_action_mask": {
+        "compute_local": true,
+        "horizontal": true,
+        "local": true,
+        "offload_horizontal": true,
+        "offload_vertical": true,
+        "vertical": true
+      },
+      "policy_name": "VO",
+      "resolved_destination": "cloud",
+      "scenario_name": "paper_default",
+      "seed": 2,
+      "selected_action": "vertical",
+      "source_agent_id": 3,
+      "trace_id": "paper_default-2"
+    },
+    {
+      "horizontal_destination_is_approved_neighbor": true,
+      "is_horizontal_neighbor": true,
+      "is_topology_legal": true,
+      "legal_action_mask": {
+        "compute_local": true,
+        "horizontal": true,
+        "local": true,
+        "offload_horizontal": true,
+        "offload_vertical": true,
+        "vertical": true
+      },
+      "policy_name": "VO",
+      "resolved_destination": "cloud",
+      "scenario_name": "paper_default",
+      "seed": 2,
+      "selected_action": "vertical",
+      "source_agent_id": 1,
+      "trace_id": "paper_default-2"
+    },
+    {
+      "horizontal_destination_is_approved_neighbor": true,
+      "is_horizontal_neighbor": true,
+      "is_topology_legal": true,
+      "legal_action_mask": {
+        "compute_local": true,
+        "horizontal": true,
+        "local": true,
+        "offload_horizontal": true,
+        "offload_vertical": true,
+        "vertical": true
+      },
+      "policy_name": "VO",
+      "resolved_destination": "cloud",
+      "scenario_name": "paper_default",
+      "seed": 2,
+      "selected_action": "vertical",
+      "source_agent_id": 2,
+      "trace_id": "paper_default-2"
+    },
+    {
+      "horizontal_destination_is_approved_neighbor": true,
+      "is_horizontal_neighbor": true,
+      "is_topology_legal": true,
+      "legal_action_mask": {
+        "compute_local": true,
+        "horizontal": true,
+        "local": true,
+        "offload_horizontal": true,
+        "offload_vertical": true,
+        "vertical": true
+      },
+      "policy_name": "VO",
+      "resolved_destination": "cloud",
+      "scenario_name": "paper_default",
+      "seed": 2,
+      "selected_action": "vertical",
+      "source_agent_id": 3,
+      "trace_id": "paper_default-2"
+    },
+    {
+      "horizontal_destination_is_approved_neighbor": true,
+      "is_horizontal_neighbor": true,
+      "is_topology_legal": true,
+      "legal_action_mask": {
+        "compute_local": true,
+        "horizontal": true,
+        "local": true,
+        "offload_horizontal": true,
+        "offload_vertical": true,
+        "vertical": true
+      },
+      "policy_name": "VO",
+      "resolved_destination": "cloud",
+      "scenario_name": "paper_default",
+      "seed": 2,
+      "selected_action": "vertical",
+      "source_agent_id": 1,
+      "trace_id": "paper_default-2"
+    },
+    {
+      "horizontal_destination_is_approved_neighbor": true,
+      "is_horizontal_neighbor": true,
+      "is_topology_legal": true,
+      "legal_action_mask": {
+        "compute_local": true,
+        "horizontal": true,
+        "local": true,
+        "offload_horizontal": true,
+        "offload_vertical": true,
+        "vertical": true
+      },
+      "policy_name": "VO",
+      "resolved_destination": "cloud",
+      "scenario_name": "paper_default",
+      "seed": 2,
+      "selected_action": "vertical",
+      "source_agent_id": 2,
+      "trace_id": "paper_default-2"
+    },
+    {
+      "horizontal_destination_is_approved_neighbor": true,
+      "is_horizontal_neighbor": true,
+      "is_topology_legal": true,
+      "legal_action_mask": {
+        "compute_local": true,
+        "horizontal": true,
+        "local": true,
+        "offload_horizontal": true,
+        "offload_vertical": true,
+        "vertical": true
+      },
+      "policy_name": "VO",
+      "resolved_destination": "cloud",
+      "scenario_name": "paper_default",
+      "seed": 2,
+      "selected_action": "vertical",
+      "source_agent_id": 3,
+      "trace_id": "paper_default-2"
+    },
+    {
+      "horizontal_destination_is_approved_neighbor": true,
+      "is_horizontal_neighbor": true,
+      "is_topology_legal": true,
+      "legal_action_mask": {
+        "compute_local": true,
+        "horizontal": true,
+        "local": true,
+        "offload_horizontal": true,
+        "offload_vertical": true,
+        "vertical": true
+      },
+      "policy_name": "VO",
+      "resolved_destination": "cloud",
+      "scenario_name": "paper_default",
+      "seed": 2,
+      "selected_action": "vertical",
+      "source_agent_id": 1,
+      "trace_id": "paper_default-2"
+    },
+    {
+      "horizontal_destination_is_approved_neighbor": true,
+      "is_horizontal_neighbor": true,
+      "is_topology_legal": true,
+      "legal_action_mask": {
+        "compute_local": true,
+        "horizontal": true,
+        "local": true,
+        "offload_horizontal": true,
+        "offload_vertical": true,
+        "vertical": true
+      },
+      "policy_name": "VO",
+      "resolved_destination": "cloud",
+      "scenario_name": "paper_default",
+      "seed": 2,
+      "selected_action": "vertical",
+      "source_agent_id": 2,
+      "trace_id": "paper_default-2"
+    },
+    {
+      "horizontal_destination_is_approved_neighbor": true,
+      "is_horizontal_neighbor": true,
+      "is_topology_legal": true,
+      "legal_action_mask": {
+        "compute_local": true,
+        "horizontal": true,
+        "local": true,
+        "offload_horizontal": true,
+        "offload_vertical": true,
+        "vertical": true
+      },
+      "policy_name": "VO",
+      "resolved_destination": "cloud",
+      "scenario_name": "paper_default",
+      "seed": 2,
+      "selected_action": "vertical",
+      "source_agent_id": 3,
+      "trace_id": "paper_default-2"
+    },
+    {
+      "horizontal_destination_is_approved_neighbor": true,
+      "is_horizontal_neighbor": true,
+      "is_topology_legal": true,
+      "legal_action_mask": {
+        "compute_local": true,
+        "horizontal": true,
+        "local": true,
+        "offload_horizontal": true,
+        "offload_vertical": true,
+        "vertical": true
+      },
+      "policy_name": "VO",
+      "resolved_destination": "cloud",
+      "scenario_name": "paper_default",
+      "seed": 2,
+      "selected_action": "vertical",
+      "source_agent_id": 1,
+      "trace_id": "paper_default-2"
+    },
+    {
+      "horizontal_destination_is_approved_neighbor": true,
+      "is_horizontal_neighbor": true,
+      "is_topology_legal": true,
+      "legal_action_mask": {
+        "compute_local": true,
+        "horizontal": true,
+        "local": true,
+        "offload_horizontal": true,
+        "offload_vertical": true,
+        "vertical": true
+      },
+      "policy_name": "VO",
+      "resolved_destination": "cloud",
+      "scenario_name": "paper_default",
+      "seed": 2,
+      "selected_action": "vertical",
+      "source_agent_id": 2,
+      "trace_id": "paper_default-2"
+    },
+    {
+      "horizontal_destination_is_approved_neighbor": true,
+      "is_horizontal_neighbor": true,
+      "is_topology_legal": true,
+      "legal_action_mask": {
+        "compute_local": true,
+        "horizontal": true,
+        "local": true,
+        "offload_horizontal": true,
+        "offload_vertical": true,
+        "vertical": true
+      },
+      "policy_name": "VO",
+      "resolved_destination": "cloud",
+      "scenario_name": "paper_default",
+      "seed": 2,
+      "selected_action": "vertical",
+      "source_agent_id": 3,
+      "trace_id": "paper_default-2"
+    },
+    {
+      "horizontal_destination_is_approved_neighbor": true,
+      "is_horizontal_neighbor": true,
+      "is_topology_legal": true,
+      "legal_action_mask": {
+        "compute_local": true,
+        "horizontal": true,
+        "local": true,
+        "offload_horizontal": true,
+        "offload_vertical": true,
+        "vertical": true
+      },
+      "policy_name": "VO",
+      "resolved_destination": "cloud",
+      "scenario_name": "paper_default",
+      "seed": 2,
+      "selected_action": "vertical",
+      "source_agent_id": 1,
+      "trace_id": "paper_default-2"
+    },
+    {
+      "horizontal_destination_is_approved_neighbor": true,
+      "is_horizontal_neighbor": true,
+      "is_topology_legal": true,
+      "legal_action_mask": {
+        "compute_local": true,
+        "horizontal": true,
+        "local": true,
+        "offload_horizontal": true,
+        "offload_vertical": true,
+        "vertical": true
+      },
+      "policy_name": "VO",
+      "resolved_destination": "cloud",
+      "scenario_name": "paper_default",
+      "seed": 2,
+      "selected_action": "vertical",
+      "source_agent_id": 2,
+      "trace_id": "paper_default-2"
+    },
+    {
+      "horizontal_destination_is_approved_neighbor": true,
+      "is_horizontal_neighbor": true,
+      "is_topology_legal": true,
+      "legal_action_mask": {
+        "compute_local": true,
+        "horizontal": true,
+        "local": true,
+        "offload_horizontal": true,
+        "offload_vertical": true,
+        "vertical": true
+      },
+      "policy_name": "VO",
+      "resolved_destination": "cloud",
+      "scenario_name": "paper_default",
+      "seed": 2,
+      "selected_action": "vertical",
+      "source_agent_id": 3,
+      "trace_id": "paper_default-2"
+    },
+    {
+      "horizontal_destination_is_approved_neighbor": true,
+      "is_horizontal_neighbor": true,
+      "is_topology_legal": true,
+      "legal_action_mask": {
+        "compute_local": true,
+        "horizontal": true,
+        "local": true,
+        "offload_horizontal": true,
+        "offload_vertical": true,
+        "vertical": true
+      },
+      "policy_name": "VO",
+      "resolved_destination": "cloud",
+      "scenario_name": "paper_default",
+      "seed": 2,
+      "selected_action": "vertical",
+      "source_agent_id": 1,
+      "trace_id": "paper_default-2"
+    },
+    {
+      "horizontal_destination_is_approved_neighbor": true,
+      "is_horizontal_neighbor": true,
+      "is_topology_legal": true,
+      "legal_action_mask": {
+        "compute_local": true,
+        "horizontal": true,
+        "local": true,
+        "offload_horizontal": true,
+        "offload_vertical": true,
+        "vertical": true
+      },
+      "policy_name": "VO",
+      "resolved_destination": "cloud",
+      "scenario_name": "paper_default",
+      "seed": 2,
+      "selected_action": "vertical",
+      "source_agent_id": 2,
+      "trace_id": "paper_default-2"
+    },
+    {
+      "horizontal_destination_is_approved_neighbor": true,
+      "is_horizontal_neighbor": true,
+      "is_topology_legal": true,
+      "legal_action_mask": {
+        "compute_local": true,
+        "horizontal": true,
+        "local": true,
+        "offload_horizontal": true,
+        "offload_vertical": true,
+        "vertical": true
+      },
+      "policy_name": "VO",
+      "resolved_destination": "cloud",
+      "scenario_name": "paper_default",
+      "seed": 2,
+      "selected_action": "vertical",
+      "source_agent_id": 3,
+      "trace_id": "paper_default-2"
+    },
+    {
+      "horizontal_destination_is_approved_neighbor": true,
+      "is_horizontal_neighbor": true,
+      "is_topology_legal": true,
+      "legal_action_mask": {
+        "compute_local": true,
+        "horizontal": true,
+        "local": true,
+        "offload_horizontal": true,
+        "offload_vertical": true,
+        "vertical": true
+      },
+      "policy_name": "VO",
+      "resolved_destination": "cloud",
+      "scenario_name": "paper_default",
+      "seed": 2,
+      "selected_action": "vertical",
+      "source_agent_id": 1,
+      "trace_id": "paper_default-2"
+    },
+    {
+      "horizontal_destination_is_approved_neighbor": true,
+      "is_horizontal_neighbor": true,
+      "is_topology_legal": true,
+      "legal_action_mask": {
+        "compute_local": true,
+        "horizontal": true,
+        "local": true,
+        "offload_horizontal": true,
+        "offload_vertical": true,
+        "vertical": true
+      },
+      "policy_name": "VO",
+      "resolved_destination": "cloud",
+      "scenario_name": "paper_default",
+      "seed": 2,
+      "selected_action": "vertical",
+      "source_agent_id": 2,
+      "trace_id": "paper_default-2"
+    }
+  ],
   "final_metrics": {
     "average_delay": 0.0,
     "completed_tasks": 0,
@@ -31,6 +2233,2208 @@
   },
   "policy_name": "VO",
   "runtime_metadata": {
+    "action_audit_records": [
+      {
+        "horizontal_destination_is_approved_neighbor": true,
+        "is_horizontal_neighbor": true,
+        "is_topology_legal": true,
+        "legal_action_mask": {
+          "compute_local": true,
+          "horizontal": true,
+          "local": true,
+          "offload_horizontal": true,
+          "offload_vertical": true,
+          "vertical": true
+        },
+        "policy_name": "VO",
+        "resolved_destination": "cloud",
+        "scenario_name": "paper_default",
+        "seed": 2,
+        "selected_action": "vertical",
+        "source_agent_id": 1,
+        "trace_id": "paper_default-2"
+      },
+      {
+        "horizontal_destination_is_approved_neighbor": true,
+        "is_horizontal_neighbor": true,
+        "is_topology_legal": true,
+        "legal_action_mask": {
+          "compute_local": true,
+          "horizontal": true,
+          "local": true,
+          "offload_horizontal": true,
+          "offload_vertical": true,
+          "vertical": true
+        },
+        "policy_name": "VO",
+        "resolved_destination": "cloud",
+        "scenario_name": "paper_default",
+        "seed": 2,
+        "selected_action": "vertical",
+        "source_agent_id": 2,
+        "trace_id": "paper_default-2"
+      },
+      {
+        "horizontal_destination_is_approved_neighbor": true,
+        "is_horizontal_neighbor": true,
+        "is_topology_legal": true,
+        "legal_action_mask": {
+          "compute_local": true,
+          "horizontal": true,
+          "local": true,
+          "offload_horizontal": true,
+          "offload_vertical": true,
+          "vertical": true
+        },
+        "policy_name": "VO",
+        "resolved_destination": "cloud",
+        "scenario_name": "paper_default",
+        "seed": 2,
+        "selected_action": "vertical",
+        "source_agent_id": 3,
+        "trace_id": "paper_default-2"
+      },
+      {
+        "horizontal_destination_is_approved_neighbor": true,
+        "is_horizontal_neighbor": true,
+        "is_topology_legal": true,
+        "legal_action_mask": {
+          "compute_local": true,
+          "horizontal": true,
+          "local": true,
+          "offload_horizontal": true,
+          "offload_vertical": true,
+          "vertical": true
+        },
+        "policy_name": "VO",
+        "resolved_destination": "cloud",
+        "scenario_name": "paper_default",
+        "seed": 2,
+        "selected_action": "vertical",
+        "source_agent_id": 1,
+        "trace_id": "paper_default-2"
+      },
+      {
+        "horizontal_destination_is_approved_neighbor": true,
+        "is_horizontal_neighbor": true,
+        "is_topology_legal": true,
+        "legal_action_mask": {
+          "compute_local": true,
+          "horizontal": true,
+          "local": true,
+          "offload_horizontal": true,
+          "offload_vertical": true,
+          "vertical": true
+        },
+        "policy_name": "VO",
+        "resolved_destination": "cloud",
+        "scenario_name": "paper_default",
+        "seed": 2,
+        "selected_action": "vertical",
+        "source_agent_id": 2,
+        "trace_id": "paper_default-2"
+      },
+      {
+        "horizontal_destination_is_approved_neighbor": true,
+        "is_horizontal_neighbor": true,
+        "is_topology_legal": true,
+        "legal_action_mask": {
+          "compute_local": true,
+          "horizontal": true,
+          "local": true,
+          "offload_horizontal": true,
+          "offload_vertical": true,
+          "vertical": true
+        },
+        "policy_name": "VO",
+        "resolved_destination": "cloud",
+        "scenario_name": "paper_default",
+        "seed": 2,
+        "selected_action": "vertical",
+        "source_agent_id": 3,
+        "trace_id": "paper_default-2"
+      },
+      {
+        "horizontal_destination_is_approved_neighbor": true,
+        "is_horizontal_neighbor": true,
+        "is_topology_legal": true,
+        "legal_action_mask": {
+          "compute_local": true,
+          "horizontal": true,
+          "local": true,
+          "offload_horizontal": true,
+          "offload_vertical": true,
+          "vertical": true
+        },
+        "policy_name": "VO",
+        "resolved_destination": "cloud",
+        "scenario_name": "paper_default",
+        "seed": 2,
+        "selected_action": "vertical",
+        "source_agent_id": 1,
+        "trace_id": "paper_default-2"
+      },
+      {
+        "horizontal_destination_is_approved_neighbor": true,
+        "is_horizontal_neighbor": true,
+        "is_topology_legal": true,
+        "legal_action_mask": {
+          "compute_local": true,
+          "horizontal": true,
+          "local": true,
+          "offload_horizontal": true,
+          "offload_vertical": true,
+          "vertical": true
+        },
+        "policy_name": "VO",
+        "resolved_destination": "cloud",
+        "scenario_name": "paper_default",
+        "seed": 2,
+        "selected_action": "vertical",
+        "source_agent_id": 2,
+        "trace_id": "paper_default-2"
+      },
+      {
+        "horizontal_destination_is_approved_neighbor": true,
+        "is_horizontal_neighbor": true,
+        "is_topology_legal": true,
+        "legal_action_mask": {
+          "compute_local": true,
+          "horizontal": true,
+          "local": true,
+          "offload_horizontal": true,
+          "offload_vertical": true,
+          "vertical": true
+        },
+        "policy_name": "VO",
+        "resolved_destination": "cloud",
+        "scenario_name": "paper_default",
+        "seed": 2,
+        "selected_action": "vertical",
+        "source_agent_id": 3,
+        "trace_id": "paper_default-2"
+      },
+      {
+        "horizontal_destination_is_approved_neighbor": true,
+        "is_horizontal_neighbor": true,
+        "is_topology_legal": true,
+        "legal_action_mask": {
+          "compute_local": true,
+          "horizontal": true,
+          "local": true,
+          "offload_horizontal": true,
+          "offload_vertical": true,
+          "vertical": true
+        },
+        "policy_name": "VO",
+        "resolved_destination": "cloud",
+        "scenario_name": "paper_default",
+        "seed": 2,
+        "selected_action": "vertical",
+        "source_agent_id": 1,
+        "trace_id": "paper_default-2"
+      },
+      {
+        "horizontal_destination_is_approved_neighbor": true,
+        "is_horizontal_neighbor": true,
+        "is_topology_legal": true,
+        "legal_action_mask": {
+          "compute_local": true,
+          "horizontal": true,
+          "local": true,
+          "offload_horizontal": true,
+          "offload_vertical": true,
+          "vertical": true
+        },
+        "policy_name": "VO",
+        "resolved_destination": "cloud",
+        "scenario_name": "paper_default",
+        "seed": 2,
+        "selected_action": "vertical",
+        "source_agent_id": 2,
+        "trace_id": "paper_default-2"
+      },
+      {
+        "horizontal_destination_is_approved_neighbor": true,
+        "is_horizontal_neighbor": true,
+        "is_topology_legal": true,
+        "legal_action_mask": {
+          "compute_local": true,
+          "horizontal": true,
+          "local": true,
+          "offload_horizontal": true,
+          "offload_vertical": true,
+          "vertical": true
+        },
+        "policy_name": "VO",
+        "resolved_destination": "cloud",
+        "scenario_name": "paper_default",
+        "seed": 2,
+        "selected_action": "vertical",
+        "source_agent_id": 3,
+        "trace_id": "paper_default-2"
+      },
+      {
+        "horizontal_destination_is_approved_neighbor": true,
+        "is_horizontal_neighbor": true,
+        "is_topology_legal": true,
+        "legal_action_mask": {
+          "compute_local": true,
+          "horizontal": true,
+          "local": true,
+          "offload_horizontal": true,
+          "offload_vertical": true,
+          "vertical": true
+        },
+        "policy_name": "VO",
+        "resolved_destination": "cloud",
+        "scenario_name": "paper_default",
+        "seed": 2,
+        "selected_action": "vertical",
+        "source_agent_id": 1,
+        "trace_id": "paper_default-2"
+      },
+      {
+        "horizontal_destination_is_approved_neighbor": true,
+        "is_horizontal_neighbor": true,
+        "is_topology_legal": true,
+        "legal_action_mask": {
+          "compute_local": true,
+          "horizontal": true,
+          "local": true,
+          "offload_horizontal": true,
+          "offload_vertical": true,
+          "vertical": true
+        },
+        "policy_name": "VO",
+        "resolved_destination": "cloud",
+        "scenario_name": "paper_default",
+        "seed": 2,
+        "selected_action": "vertical",
+        "source_agent_id": 2,
+        "trace_id": "paper_default-2"
+      },
+      {
+        "horizontal_destination_is_approved_neighbor": true,
+        "is_horizontal_neighbor": true,
+        "is_topology_legal": true,
+        "legal_action_mask": {
+          "compute_local": true,
+          "horizontal": true,
+          "local": true,
+          "offload_horizontal": true,
+          "offload_vertical": true,
+          "vertical": true
+        },
+        "policy_name": "VO",
+        "resolved_destination": "cloud",
+        "scenario_name": "paper_default",
+        "seed": 2,
+        "selected_action": "vertical",
+        "source_agent_id": 3,
+        "trace_id": "paper_default-2"
+      },
+      {
+        "horizontal_destination_is_approved_neighbor": true,
+        "is_horizontal_neighbor": true,
+        "is_topology_legal": true,
+        "legal_action_mask": {
+          "compute_local": true,
+          "horizontal": true,
+          "local": true,
+          "offload_horizontal": true,
+          "offload_vertical": true,
+          "vertical": true
+        },
+        "policy_name": "VO",
+        "resolved_destination": "cloud",
+        "scenario_name": "paper_default",
+        "seed": 2,
+        "selected_action": "vertical",
+        "source_agent_id": 1,
+        "trace_id": "paper_default-2"
+      },
+      {
+        "horizontal_destination_is_approved_neighbor": true,
+        "is_horizontal_neighbor": true,
+        "is_topology_legal": true,
+        "legal_action_mask": {
+          "compute_local": true,
+          "horizontal": true,
+          "local": true,
+          "offload_horizontal": true,
+          "offload_vertical": true,
+          "vertical": true
+        },
+        "policy_name": "VO",
+        "resolved_destination": "cloud",
+        "scenario_name": "paper_default",
+        "seed": 2,
+        "selected_action": "vertical",
+        "source_agent_id": 2,
+        "trace_id": "paper_default-2"
+      },
+      {
+        "horizontal_destination_is_approved_neighbor": true,
+        "is_horizontal_neighbor": true,
+        "is_topology_legal": true,
+        "legal_action_mask": {
+          "compute_local": true,
+          "horizontal": true,
+          "local": true,
+          "offload_horizontal": true,
+          "offload_vertical": true,
+          "vertical": true
+        },
+        "policy_name": "VO",
+        "resolved_destination": "cloud",
+        "scenario_name": "paper_default",
+        "seed": 2,
+        "selected_action": "vertical",
+        "source_agent_id": 3,
+        "trace_id": "paper_default-2"
+      },
+      {
+        "horizontal_destination_is_approved_neighbor": true,
+        "is_horizontal_neighbor": true,
+        "is_topology_legal": true,
+        "legal_action_mask": {
+          "compute_local": true,
+          "horizontal": true,
+          "local": true,
+          "offload_horizontal": true,
+          "offload_vertical": true,
+          "vertical": true
+        },
+        "policy_name": "VO",
+        "resolved_destination": "cloud",
+        "scenario_name": "paper_default",
+        "seed": 2,
+        "selected_action": "vertical",
+        "source_agent_id": 1,
+        "trace_id": "paper_default-2"
+      },
+      {
+        "horizontal_destination_is_approved_neighbor": true,
+        "is_horizontal_neighbor": true,
+        "is_topology_legal": true,
+        "legal_action_mask": {
+          "compute_local": true,
+          "horizontal": true,
+          "local": true,
+          "offload_horizontal": true,
+          "offload_vertical": true,
+          "vertical": true
+        },
+        "policy_name": "VO",
+        "resolved_destination": "cloud",
+        "scenario_name": "paper_default",
+        "seed": 2,
+        "selected_action": "vertical",
+        "source_agent_id": 2,
+        "trace_id": "paper_default-2"
+      },
+      {
+        "horizontal_destination_is_approved_neighbor": true,
+        "is_horizontal_neighbor": true,
+        "is_topology_legal": true,
+        "legal_action_mask": {
+          "compute_local": true,
+          "horizontal": true,
+          "local": true,
+          "offload_horizontal": true,
+          "offload_vertical": true,
+          "vertical": true
+        },
+        "policy_name": "VO",
+        "resolved_destination": "cloud",
+        "scenario_name": "paper_default",
+        "seed": 2,
+        "selected_action": "vertical",
+        "source_agent_id": 3,
+        "trace_id": "paper_default-2"
+      },
+      {
+        "horizontal_destination_is_approved_neighbor": true,
+        "is_horizontal_neighbor": true,
+        "is_topology_legal": true,
+        "legal_action_mask": {
+          "compute_local": true,
+          "horizontal": true,
+          "local": true,
+          "offload_horizontal": true,
+          "offload_vertical": true,
+          "vertical": true
+        },
+        "policy_name": "VO",
+        "resolved_destination": "cloud",
+        "scenario_name": "paper_default",
+        "seed": 2,
+        "selected_action": "vertical",
+        "source_agent_id": 1,
+        "trace_id": "paper_default-2"
+      },
+      {
+        "horizontal_destination_is_approved_neighbor": true,
+        "is_horizontal_neighbor": true,
+        "is_topology_legal": true,
+        "legal_action_mask": {
+          "compute_local": true,
+          "horizontal": true,
+          "local": true,
+          "offload_horizontal": true,
+          "offload_vertical": true,
+          "vertical": true
+        },
+        "policy_name": "VO",
+        "resolved_destination": "cloud",
+        "scenario_name": "paper_default",
+        "seed": 2,
+        "selected_action": "vertical",
+        "source_agent_id": 2,
+        "trace_id": "paper_default-2"
+      },
+      {
+        "horizontal_destination_is_approved_neighbor": true,
+        "is_horizontal_neighbor": true,
+        "is_topology_legal": true,
+        "legal_action_mask": {
+          "compute_local": true,
+          "horizontal": true,
+          "local": true,
+          "offload_horizontal": true,
+          "offload_vertical": true,
+          "vertical": true
+        },
+        "policy_name": "VO",
+        "resolved_destination": "cloud",
+        "scenario_name": "paper_default",
+        "seed": 2,
+        "selected_action": "vertical",
+        "source_agent_id": 3,
+        "trace_id": "paper_default-2"
+      },
+      {
+        "horizontal_destination_is_approved_neighbor": true,
+        "is_horizontal_neighbor": true,
+        "is_topology_legal": true,
+        "legal_action_mask": {
+          "compute_local": true,
+          "horizontal": true,
+          "local": true,
+          "offload_horizontal": true,
+          "offload_vertical": true,
+          "vertical": true
+        },
+        "policy_name": "VO",
+        "resolved_destination": "cloud",
+        "scenario_name": "paper_default",
+        "seed": 2,
+        "selected_action": "vertical",
+        "source_agent_id": 1,
+        "trace_id": "paper_default-2"
+      },
+      {
+        "horizontal_destination_is_approved_neighbor": true,
+        "is_horizontal_neighbor": true,
+        "is_topology_legal": true,
+        "legal_action_mask": {
+          "compute_local": true,
+          "horizontal": true,
+          "local": true,
+          "offload_horizontal": true,
+          "offload_vertical": true,
+          "vertical": true
+        },
+        "policy_name": "VO",
+        "resolved_destination": "cloud",
+        "scenario_name": "paper_default",
+        "seed": 2,
+        "selected_action": "vertical",
+        "source_agent_id": 2,
+        "trace_id": "paper_default-2"
+      },
+      {
+        "horizontal_destination_is_approved_neighbor": true,
+        "is_horizontal_neighbor": true,
+        "is_topology_legal": true,
+        "legal_action_mask": {
+          "compute_local": true,
+          "horizontal": true,
+          "local": true,
+          "offload_horizontal": true,
+          "offload_vertical": true,
+          "vertical": true
+        },
+        "policy_name": "VO",
+        "resolved_destination": "cloud",
+        "scenario_name": "paper_default",
+        "seed": 2,
+        "selected_action": "vertical",
+        "source_agent_id": 3,
+        "trace_id": "paper_default-2"
+      },
+      {
+        "horizontal_destination_is_approved_neighbor": true,
+        "is_horizontal_neighbor": true,
+        "is_topology_legal": true,
+        "legal_action_mask": {
+          "compute_local": true,
+          "horizontal": true,
+          "local": true,
+          "offload_horizontal": true,
+          "offload_vertical": true,
+          "vertical": true
+        },
+        "policy_name": "VO",
+        "resolved_destination": "cloud",
+        "scenario_name": "paper_default",
+        "seed": 2,
+        "selected_action": "vertical",
+        "source_agent_id": 1,
+        "trace_id": "paper_default-2"
+      },
+      {
+        "horizontal_destination_is_approved_neighbor": true,
+        "is_horizontal_neighbor": true,
+        "is_topology_legal": true,
+        "legal_action_mask": {
+          "compute_local": true,
+          "horizontal": true,
+          "local": true,
+          "offload_horizontal": true,
+          "offload_vertical": true,
+          "vertical": true
+        },
+        "policy_name": "VO",
+        "resolved_destination": "cloud",
+        "scenario_name": "paper_default",
+        "seed": 2,
+        "selected_action": "vertical",
+        "source_agent_id": 2,
+        "trace_id": "paper_default-2"
+      },
+      {
+        "horizontal_destination_is_approved_neighbor": true,
+        "is_horizontal_neighbor": true,
+        "is_topology_legal": true,
+        "legal_action_mask": {
+          "compute_local": true,
+          "horizontal": true,
+          "local": true,
+          "offload_horizontal": true,
+          "offload_vertical": true,
+          "vertical": true
+        },
+        "policy_name": "VO",
+        "resolved_destination": "cloud",
+        "scenario_name": "paper_default",
+        "seed": 2,
+        "selected_action": "vertical",
+        "source_agent_id": 3,
+        "trace_id": "paper_default-2"
+      },
+      {
+        "horizontal_destination_is_approved_neighbor": true,
+        "is_horizontal_neighbor": true,
+        "is_topology_legal": true,
+        "legal_action_mask": {
+          "compute_local": true,
+          "horizontal": true,
+          "local": true,
+          "offload_horizontal": true,
+          "offload_vertical": true,
+          "vertical": true
+        },
+        "policy_name": "VO",
+        "resolved_destination": "cloud",
+        "scenario_name": "paper_default",
+        "seed": 2,
+        "selected_action": "vertical",
+        "source_agent_id": 1,
+        "trace_id": "paper_default-2"
+      },
+      {
+        "horizontal_destination_is_approved_neighbor": true,
+        "is_horizontal_neighbor": true,
+        "is_topology_legal": true,
+        "legal_action_mask": {
+          "compute_local": true,
+          "horizontal": true,
+          "local": true,
+          "offload_horizontal": true,
+          "offload_vertical": true,
+          "vertical": true
+        },
+        "policy_name": "VO",
+        "resolved_destination": "cloud",
+        "scenario_name": "paper_default",
+        "seed": 2,
+        "selected_action": "vertical",
+        "source_agent_id": 2,
+        "trace_id": "paper_default-2"
+      },
+      {
+        "horizontal_destination_is_approved_neighbor": true,
+        "is_horizontal_neighbor": true,
+        "is_topology_legal": true,
+        "legal_action_mask": {
+          "compute_local": true,
+          "horizontal": true,
+          "local": true,
+          "offload_horizontal": true,
+          "offload_vertical": true,
+          "vertical": true
+        },
+        "policy_name": "VO",
+        "resolved_destination": "cloud",
+        "scenario_name": "paper_default",
+        "seed": 2,
+        "selected_action": "vertical",
+        "source_agent_id": 3,
+        "trace_id": "paper_default-2"
+      },
+      {
+        "horizontal_destination_is_approved_neighbor": true,
+        "is_horizontal_neighbor": true,
+        "is_topology_legal": true,
+        "legal_action_mask": {
+          "compute_local": true,
+          "horizontal": true,
+          "local": true,
+          "offload_horizontal": true,
+          "offload_vertical": true,
+          "vertical": true
+        },
+        "policy_name": "VO",
+        "resolved_destination": "cloud",
+        "scenario_name": "paper_default",
+        "seed": 2,
+        "selected_action": "vertical",
+        "source_agent_id": 1,
+        "trace_id": "paper_default-2"
+      },
+      {
+        "horizontal_destination_is_approved_neighbor": true,
+        "is_horizontal_neighbor": true,
+        "is_topology_legal": true,
+        "legal_action_mask": {
+          "compute_local": true,
+          "horizontal": true,
+          "local": true,
+          "offload_horizontal": true,
+          "offload_vertical": true,
+          "vertical": true
+        },
+        "policy_name": "VO",
+        "resolved_destination": "cloud",
+        "scenario_name": "paper_default",
+        "seed": 2,
+        "selected_action": "vertical",
+        "source_agent_id": 2,
+        "trace_id": "paper_default-2"
+      },
+      {
+        "horizontal_destination_is_approved_neighbor": true,
+        "is_horizontal_neighbor": true,
+        "is_topology_legal": true,
+        "legal_action_mask": {
+          "compute_local": true,
+          "horizontal": true,
+          "local": true,
+          "offload_horizontal": true,
+          "offload_vertical": true,
+          "vertical": true
+        },
+        "policy_name": "VO",
+        "resolved_destination": "cloud",
+        "scenario_name": "paper_default",
+        "seed": 2,
+        "selected_action": "vertical",
+        "source_agent_id": 3,
+        "trace_id": "paper_default-2"
+      },
+      {
+        "horizontal_destination_is_approved_neighbor": true,
+        "is_horizontal_neighbor": true,
+        "is_topology_legal": true,
+        "legal_action_mask": {
+          "compute_local": true,
+          "horizontal": true,
+          "local": true,
+          "offload_horizontal": true,
+          "offload_vertical": true,
+          "vertical": true
+        },
+        "policy_name": "VO",
+        "resolved_destination": "cloud",
+        "scenario_name": "paper_default",
+        "seed": 2,
+        "selected_action": "vertical",
+        "source_agent_id": 1,
+        "trace_id": "paper_default-2"
+      },
+      {
+        "horizontal_destination_is_approved_neighbor": true,
+        "is_horizontal_neighbor": true,
+        "is_topology_legal": true,
+        "legal_action_mask": {
+          "compute_local": true,
+          "horizontal": true,
+          "local": true,
+          "offload_horizontal": true,
+          "offload_vertical": true,
+          "vertical": true
+        },
+        "policy_name": "VO",
+        "resolved_destination": "cloud",
+        "scenario_name": "paper_default",
+        "seed": 2,
+        "selected_action": "vertical",
+        "source_agent_id": 2,
+        "trace_id": "paper_default-2"
+      },
+      {
+        "horizontal_destination_is_approved_neighbor": true,
+        "is_horizontal_neighbor": true,
+        "is_topology_legal": true,
+        "legal_action_mask": {
+          "compute_local": true,
+          "horizontal": true,
+          "local": true,
+          "offload_horizontal": true,
+          "offload_vertical": true,
+          "vertical": true
+        },
+        "policy_name": "VO",
+        "resolved_destination": "cloud",
+        "scenario_name": "paper_default",
+        "seed": 2,
+        "selected_action": "vertical",
+        "source_agent_id": 3,
+        "trace_id": "paper_default-2"
+      },
+      {
+        "horizontal_destination_is_approved_neighbor": true,
+        "is_horizontal_neighbor": true,
+        "is_topology_legal": true,
+        "legal_action_mask": {
+          "compute_local": true,
+          "horizontal": true,
+          "local": true,
+          "offload_horizontal": true,
+          "offload_vertical": true,
+          "vertical": true
+        },
+        "policy_name": "VO",
+        "resolved_destination": "cloud",
+        "scenario_name": "paper_default",
+        "seed": 2,
+        "selected_action": "vertical",
+        "source_agent_id": 1,
+        "trace_id": "paper_default-2"
+      },
+      {
+        "horizontal_destination_is_approved_neighbor": true,
+        "is_horizontal_neighbor": true,
+        "is_topology_legal": true,
+        "legal_action_mask": {
+          "compute_local": true,
+          "horizontal": true,
+          "local": true,
+          "offload_horizontal": true,
+          "offload_vertical": true,
+          "vertical": true
+        },
+        "policy_name": "VO",
+        "resolved_destination": "cloud",
+        "scenario_name": "paper_default",
+        "seed": 2,
+        "selected_action": "vertical",
+        "source_agent_id": 2,
+        "trace_id": "paper_default-2"
+      },
+      {
+        "horizontal_destination_is_approved_neighbor": true,
+        "is_horizontal_neighbor": true,
+        "is_topology_legal": true,
+        "legal_action_mask": {
+          "compute_local": true,
+          "horizontal": true,
+          "local": true,
+          "offload_horizontal": true,
+          "offload_vertical": true,
+          "vertical": true
+        },
+        "policy_name": "VO",
+        "resolved_destination": "cloud",
+        "scenario_name": "paper_default",
+        "seed": 2,
+        "selected_action": "vertical",
+        "source_agent_id": 3,
+        "trace_id": "paper_default-2"
+      },
+      {
+        "horizontal_destination_is_approved_neighbor": true,
+        "is_horizontal_neighbor": true,
+        "is_topology_legal": true,
+        "legal_action_mask": {
+          "compute_local": true,
+          "horizontal": true,
+          "local": true,
+          "offload_horizontal": true,
+          "offload_vertical": true,
+          "vertical": true
+        },
+        "policy_name": "VO",
+        "resolved_destination": "cloud",
+        "scenario_name": "paper_default",
+        "seed": 2,
+        "selected_action": "vertical",
+        "source_agent_id": 1,
+        "trace_id": "paper_default-2"
+      },
+      {
+        "horizontal_destination_is_approved_neighbor": true,
+        "is_horizontal_neighbor": true,
+        "is_topology_legal": true,
+        "legal_action_mask": {
+          "compute_local": true,
+          "horizontal": true,
+          "local": true,
+          "offload_horizontal": true,
+          "offload_vertical": true,
+          "vertical": true
+        },
+        "policy_name": "VO",
+        "resolved_destination": "cloud",
+        "scenario_name": "paper_default",
+        "seed": 2,
+        "selected_action": "vertical",
+        "source_agent_id": 2,
+        "trace_id": "paper_default-2"
+      },
+      {
+        "horizontal_destination_is_approved_neighbor": true,
+        "is_horizontal_neighbor": true,
+        "is_topology_legal": true,
+        "legal_action_mask": {
+          "compute_local": true,
+          "horizontal": true,
+          "local": true,
+          "offload_horizontal": true,
+          "offload_vertical": true,
+          "vertical": true
+        },
+        "policy_name": "VO",
+        "resolved_destination": "cloud",
+        "scenario_name": "paper_default",
+        "seed": 2,
+        "selected_action": "vertical",
+        "source_agent_id": 3,
+        "trace_id": "paper_default-2"
+      },
+      {
+        "horizontal_destination_is_approved_neighbor": true,
+        "is_horizontal_neighbor": true,
+        "is_topology_legal": true,
+        "legal_action_mask": {
+          "compute_local": true,
+          "horizontal": true,
+          "local": true,
+          "offload_horizontal": true,
+          "offload_vertical": true,
+          "vertical": true
+        },
+        "policy_name": "VO",
+        "resolved_destination": "cloud",
+        "scenario_name": "paper_default",
+        "seed": 2,
+        "selected_action": "vertical",
+        "source_agent_id": 1,
+        "trace_id": "paper_default-2"
+      },
+      {
+        "horizontal_destination_is_approved_neighbor": true,
+        "is_horizontal_neighbor": true,
+        "is_topology_legal": true,
+        "legal_action_mask": {
+          "compute_local": true,
+          "horizontal": true,
+          "local": true,
+          "offload_horizontal": true,
+          "offload_vertical": true,
+          "vertical": true
+        },
+        "policy_name": "VO",
+        "resolved_destination": "cloud",
+        "scenario_name": "paper_default",
+        "seed": 2,
+        "selected_action": "vertical",
+        "source_agent_id": 2,
+        "trace_id": "paper_default-2"
+      },
+      {
+        "horizontal_destination_is_approved_neighbor": true,
+        "is_horizontal_neighbor": true,
+        "is_topology_legal": true,
+        "legal_action_mask": {
+          "compute_local": true,
+          "horizontal": true,
+          "local": true,
+          "offload_horizontal": true,
+          "offload_vertical": true,
+          "vertical": true
+        },
+        "policy_name": "VO",
+        "resolved_destination": "cloud",
+        "scenario_name": "paper_default",
+        "seed": 2,
+        "selected_action": "vertical",
+        "source_agent_id": 3,
+        "trace_id": "paper_default-2"
+      },
+      {
+        "horizontal_destination_is_approved_neighbor": true,
+        "is_horizontal_neighbor": true,
+        "is_topology_legal": true,
+        "legal_action_mask": {
+          "compute_local": true,
+          "horizontal": true,
+          "local": true,
+          "offload_horizontal": true,
+          "offload_vertical": true,
+          "vertical": true
+        },
+        "policy_name": "VO",
+        "resolved_destination": "cloud",
+        "scenario_name": "paper_default",
+        "seed": 2,
+        "selected_action": "vertical",
+        "source_agent_id": 1,
+        "trace_id": "paper_default-2"
+      },
+      {
+        "horizontal_destination_is_approved_neighbor": true,
+        "is_horizontal_neighbor": true,
+        "is_topology_legal": true,
+        "legal_action_mask": {
+          "compute_local": true,
+          "horizontal": true,
+          "local": true,
+          "offload_horizontal": true,
+          "offload_vertical": true,
+          "vertical": true
+        },
+        "policy_name": "VO",
+        "resolved_destination": "cloud",
+        "scenario_name": "paper_default",
+        "seed": 2,
+        "selected_action": "vertical",
+        "source_agent_id": 2,
+        "trace_id": "paper_default-2"
+      },
+      {
+        "horizontal_destination_is_approved_neighbor": true,
+        "is_horizontal_neighbor": true,
+        "is_topology_legal": true,
+        "legal_action_mask": {
+          "compute_local": true,
+          "horizontal": true,
+          "local": true,
+          "offload_horizontal": true,
+          "offload_vertical": true,
+          "vertical": true
+        },
+        "policy_name": "VO",
+        "resolved_destination": "cloud",
+        "scenario_name": "paper_default",
+        "seed": 2,
+        "selected_action": "vertical",
+        "source_agent_id": 3,
+        "trace_id": "paper_default-2"
+      },
+      {
+        "horizontal_destination_is_approved_neighbor": true,
+        "is_horizontal_neighbor": true,
+        "is_topology_legal": true,
+        "legal_action_mask": {
+          "compute_local": true,
+          "horizontal": true,
+          "local": true,
+          "offload_horizontal": true,
+          "offload_vertical": true,
+          "vertical": true
+        },
+        "policy_name": "VO",
+        "resolved_destination": "cloud",
+        "scenario_name": "paper_default",
+        "seed": 2,
+        "selected_action": "vertical",
+        "source_agent_id": 1,
+        "trace_id": "paper_default-2"
+      },
+      {
+        "horizontal_destination_is_approved_neighbor": true,
+        "is_horizontal_neighbor": true,
+        "is_topology_legal": true,
+        "legal_action_mask": {
+          "compute_local": true,
+          "horizontal": true,
+          "local": true,
+          "offload_horizontal": true,
+          "offload_vertical": true,
+          "vertical": true
+        },
+        "policy_name": "VO",
+        "resolved_destination": "cloud",
+        "scenario_name": "paper_default",
+        "seed": 2,
+        "selected_action": "vertical",
+        "source_agent_id": 2,
+        "trace_id": "paper_default-2"
+      },
+      {
+        "horizontal_destination_is_approved_neighbor": true,
+        "is_horizontal_neighbor": true,
+        "is_topology_legal": true,
+        "legal_action_mask": {
+          "compute_local": true,
+          "horizontal": true,
+          "local": true,
+          "offload_horizontal": true,
+          "offload_vertical": true,
+          "vertical": true
+        },
+        "policy_name": "VO",
+        "resolved_destination": "cloud",
+        "scenario_name": "paper_default",
+        "seed": 2,
+        "selected_action": "vertical",
+        "source_agent_id": 3,
+        "trace_id": "paper_default-2"
+      },
+      {
+        "horizontal_destination_is_approved_neighbor": true,
+        "is_horizontal_neighbor": true,
+        "is_topology_legal": true,
+        "legal_action_mask": {
+          "compute_local": true,
+          "horizontal": true,
+          "local": true,
+          "offload_horizontal": true,
+          "offload_vertical": true,
+          "vertical": true
+        },
+        "policy_name": "VO",
+        "resolved_destination": "cloud",
+        "scenario_name": "paper_default",
+        "seed": 2,
+        "selected_action": "vertical",
+        "source_agent_id": 1,
+        "trace_id": "paper_default-2"
+      },
+      {
+        "horizontal_destination_is_approved_neighbor": true,
+        "is_horizontal_neighbor": true,
+        "is_topology_legal": true,
+        "legal_action_mask": {
+          "compute_local": true,
+          "horizontal": true,
+          "local": true,
+          "offload_horizontal": true,
+          "offload_vertical": true,
+          "vertical": true
+        },
+        "policy_name": "VO",
+        "resolved_destination": "cloud",
+        "scenario_name": "paper_default",
+        "seed": 2,
+        "selected_action": "vertical",
+        "source_agent_id": 2,
+        "trace_id": "paper_default-2"
+      },
+      {
+        "horizontal_destination_is_approved_neighbor": true,
+        "is_horizontal_neighbor": true,
+        "is_topology_legal": true,
+        "legal_action_mask": {
+          "compute_local": true,
+          "horizontal": true,
+          "local": true,
+          "offload_horizontal": true,
+          "offload_vertical": true,
+          "vertical": true
+        },
+        "policy_name": "VO",
+        "resolved_destination": "cloud",
+        "scenario_name": "paper_default",
+        "seed": 2,
+        "selected_action": "vertical",
+        "source_agent_id": 3,
+        "trace_id": "paper_default-2"
+      },
+      {
+        "horizontal_destination_is_approved_neighbor": true,
+        "is_horizontal_neighbor": true,
+        "is_topology_legal": true,
+        "legal_action_mask": {
+          "compute_local": true,
+          "horizontal": true,
+          "local": true,
+          "offload_horizontal": true,
+          "offload_vertical": true,
+          "vertical": true
+        },
+        "policy_name": "VO",
+        "resolved_destination": "cloud",
+        "scenario_name": "paper_default",
+        "seed": 2,
+        "selected_action": "vertical",
+        "source_agent_id": 1,
+        "trace_id": "paper_default-2"
+      },
+      {
+        "horizontal_destination_is_approved_neighbor": true,
+        "is_horizontal_neighbor": true,
+        "is_topology_legal": true,
+        "legal_action_mask": {
+          "compute_local": true,
+          "horizontal": true,
+          "local": true,
+          "offload_horizontal": true,
+          "offload_vertical": true,
+          "vertical": true
+        },
+        "policy_name": "VO",
+        "resolved_destination": "cloud",
+        "scenario_name": "paper_default",
+        "seed": 2,
+        "selected_action": "vertical",
+        "source_agent_id": 2,
+        "trace_id": "paper_default-2"
+      },
+      {
+        "horizontal_destination_is_approved_neighbor": true,
+        "is_horizontal_neighbor": true,
+        "is_topology_legal": true,
+        "legal_action_mask": {
+          "compute_local": true,
+          "horizontal": true,
+          "local": true,
+          "offload_horizontal": true,
+          "offload_vertical": true,
+          "vertical": true
+        },
+        "policy_name": "VO",
+        "resolved_destination": "cloud",
+        "scenario_name": "paper_default",
+        "seed": 2,
+        "selected_action": "vertical",
+        "source_agent_id": 3,
+        "trace_id": "paper_default-2"
+      },
+      {
+        "horizontal_destination_is_approved_neighbor": true,
+        "is_horizontal_neighbor": true,
+        "is_topology_legal": true,
+        "legal_action_mask": {
+          "compute_local": true,
+          "horizontal": true,
+          "local": true,
+          "offload_horizontal": true,
+          "offload_vertical": true,
+          "vertical": true
+        },
+        "policy_name": "VO",
+        "resolved_destination": "cloud",
+        "scenario_name": "paper_default",
+        "seed": 2,
+        "selected_action": "vertical",
+        "source_agent_id": 1,
+        "trace_id": "paper_default-2"
+      },
+      {
+        "horizontal_destination_is_approved_neighbor": true,
+        "is_horizontal_neighbor": true,
+        "is_topology_legal": true,
+        "legal_action_mask": {
+          "compute_local": true,
+          "horizontal": true,
+          "local": true,
+          "offload_horizontal": true,
+          "offload_vertical": true,
+          "vertical": true
+        },
+        "policy_name": "VO",
+        "resolved_destination": "cloud",
+        "scenario_name": "paper_default",
+        "seed": 2,
+        "selected_action": "vertical",
+        "source_agent_id": 2,
+        "trace_id": "paper_default-2"
+      },
+      {
+        "horizontal_destination_is_approved_neighbor": true,
+        "is_horizontal_neighbor": true,
+        "is_topology_legal": true,
+        "legal_action_mask": {
+          "compute_local": true,
+          "horizontal": true,
+          "local": true,
+          "offload_horizontal": true,
+          "offload_vertical": true,
+          "vertical": true
+        },
+        "policy_name": "VO",
+        "resolved_destination": "cloud",
+        "scenario_name": "paper_default",
+        "seed": 2,
+        "selected_action": "vertical",
+        "source_agent_id": 3,
+        "trace_id": "paper_default-2"
+      },
+      {
+        "horizontal_destination_is_approved_neighbor": true,
+        "is_horizontal_neighbor": true,
+        "is_topology_legal": true,
+        "legal_action_mask": {
+          "compute_local": true,
+          "horizontal": true,
+          "local": true,
+          "offload_horizontal": true,
+          "offload_vertical": true,
+          "vertical": true
+        },
+        "policy_name": "VO",
+        "resolved_destination": "cloud",
+        "scenario_name": "paper_default",
+        "seed": 2,
+        "selected_action": "vertical",
+        "source_agent_id": 1,
+        "trace_id": "paper_default-2"
+      },
+      {
+        "horizontal_destination_is_approved_neighbor": true,
+        "is_horizontal_neighbor": true,
+        "is_topology_legal": true,
+        "legal_action_mask": {
+          "compute_local": true,
+          "horizontal": true,
+          "local": true,
+          "offload_horizontal": true,
+          "offload_vertical": true,
+          "vertical": true
+        },
+        "policy_name": "VO",
+        "resolved_destination": "cloud",
+        "scenario_name": "paper_default",
+        "seed": 2,
+        "selected_action": "vertical",
+        "source_agent_id": 2,
+        "trace_id": "paper_default-2"
+      },
+      {
+        "horizontal_destination_is_approved_neighbor": true,
+        "is_horizontal_neighbor": true,
+        "is_topology_legal": true,
+        "legal_action_mask": {
+          "compute_local": true,
+          "horizontal": true,
+          "local": true,
+          "offload_horizontal": true,
+          "offload_vertical": true,
+          "vertical": true
+        },
+        "policy_name": "VO",
+        "resolved_destination": "cloud",
+        "scenario_name": "paper_default",
+        "seed": 2,
+        "selected_action": "vertical",
+        "source_agent_id": 3,
+        "trace_id": "paper_default-2"
+      },
+      {
+        "horizontal_destination_is_approved_neighbor": true,
+        "is_horizontal_neighbor": true,
+        "is_topology_legal": true,
+        "legal_action_mask": {
+          "compute_local": true,
+          "horizontal": true,
+          "local": true,
+          "offload_horizontal": true,
+          "offload_vertical": true,
+          "vertical": true
+        },
+        "policy_name": "VO",
+        "resolved_destination": "cloud",
+        "scenario_name": "paper_default",
+        "seed": 2,
+        "selected_action": "vertical",
+        "source_agent_id": 1,
+        "trace_id": "paper_default-2"
+      },
+      {
+        "horizontal_destination_is_approved_neighbor": true,
+        "is_horizontal_neighbor": true,
+        "is_topology_legal": true,
+        "legal_action_mask": {
+          "compute_local": true,
+          "horizontal": true,
+          "local": true,
+          "offload_horizontal": true,
+          "offload_vertical": true,
+          "vertical": true
+        },
+        "policy_name": "VO",
+        "resolved_destination": "cloud",
+        "scenario_name": "paper_default",
+        "seed": 2,
+        "selected_action": "vertical",
+        "source_agent_id": 2,
+        "trace_id": "paper_default-2"
+      },
+      {
+        "horizontal_destination_is_approved_neighbor": true,
+        "is_horizontal_neighbor": true,
+        "is_topology_legal": true,
+        "legal_action_mask": {
+          "compute_local": true,
+          "horizontal": true,
+          "local": true,
+          "offload_horizontal": true,
+          "offload_vertical": true,
+          "vertical": true
+        },
+        "policy_name": "VO",
+        "resolved_destination": "cloud",
+        "scenario_name": "paper_default",
+        "seed": 2,
+        "selected_action": "vertical",
+        "source_agent_id": 3,
+        "trace_id": "paper_default-2"
+      },
+      {
+        "horizontal_destination_is_approved_neighbor": true,
+        "is_horizontal_neighbor": true,
+        "is_topology_legal": true,
+        "legal_action_mask": {
+          "compute_local": true,
+          "horizontal": true,
+          "local": true,
+          "offload_horizontal": true,
+          "offload_vertical": true,
+          "vertical": true
+        },
+        "policy_name": "VO",
+        "resolved_destination": "cloud",
+        "scenario_name": "paper_default",
+        "seed": 2,
+        "selected_action": "vertical",
+        "source_agent_id": 1,
+        "trace_id": "paper_default-2"
+      },
+      {
+        "horizontal_destination_is_approved_neighbor": true,
+        "is_horizontal_neighbor": true,
+        "is_topology_legal": true,
+        "legal_action_mask": {
+          "compute_local": true,
+          "horizontal": true,
+          "local": true,
+          "offload_horizontal": true,
+          "offload_vertical": true,
+          "vertical": true
+        },
+        "policy_name": "VO",
+        "resolved_destination": "cloud",
+        "scenario_name": "paper_default",
+        "seed": 2,
+        "selected_action": "vertical",
+        "source_agent_id": 2,
+        "trace_id": "paper_default-2"
+      },
+      {
+        "horizontal_destination_is_approved_neighbor": true,
+        "is_horizontal_neighbor": true,
+        "is_topology_legal": true,
+        "legal_action_mask": {
+          "compute_local": true,
+          "horizontal": true,
+          "local": true,
+          "offload_horizontal": true,
+          "offload_vertical": true,
+          "vertical": true
+        },
+        "policy_name": "VO",
+        "resolved_destination": "cloud",
+        "scenario_name": "paper_default",
+        "seed": 2,
+        "selected_action": "vertical",
+        "source_agent_id": 3,
+        "trace_id": "paper_default-2"
+      },
+      {
+        "horizontal_destination_is_approved_neighbor": true,
+        "is_horizontal_neighbor": true,
+        "is_topology_legal": true,
+        "legal_action_mask": {
+          "compute_local": true,
+          "horizontal": true,
+          "local": true,
+          "offload_horizontal": true,
+          "offload_vertical": true,
+          "vertical": true
+        },
+        "policy_name": "VO",
+        "resolved_destination": "cloud",
+        "scenario_name": "paper_default",
+        "seed": 2,
+        "selected_action": "vertical",
+        "source_agent_id": 1,
+        "trace_id": "paper_default-2"
+      },
+      {
+        "horizontal_destination_is_approved_neighbor": true,
+        "is_horizontal_neighbor": true,
+        "is_topology_legal": true,
+        "legal_action_mask": {
+          "compute_local": true,
+          "horizontal": true,
+          "local": true,
+          "offload_horizontal": true,
+          "offload_vertical": true,
+          "vertical": true
+        },
+        "policy_name": "VO",
+        "resolved_destination": "cloud",
+        "scenario_name": "paper_default",
+        "seed": 2,
+        "selected_action": "vertical",
+        "source_agent_id": 2,
+        "trace_id": "paper_default-2"
+      },
+      {
+        "horizontal_destination_is_approved_neighbor": true,
+        "is_horizontal_neighbor": true,
+        "is_topology_legal": true,
+        "legal_action_mask": {
+          "compute_local": true,
+          "horizontal": true,
+          "local": true,
+          "offload_horizontal": true,
+          "offload_vertical": true,
+          "vertical": true
+        },
+        "policy_name": "VO",
+        "resolved_destination": "cloud",
+        "scenario_name": "paper_default",
+        "seed": 2,
+        "selected_action": "vertical",
+        "source_agent_id": 3,
+        "trace_id": "paper_default-2"
+      },
+      {
+        "horizontal_destination_is_approved_neighbor": true,
+        "is_horizontal_neighbor": true,
+        "is_topology_legal": true,
+        "legal_action_mask": {
+          "compute_local": true,
+          "horizontal": true,
+          "local": true,
+          "offload_horizontal": true,
+          "offload_vertical": true,
+          "vertical": true
+        },
+        "policy_name": "VO",
+        "resolved_destination": "cloud",
+        "scenario_name": "paper_default",
+        "seed": 2,
+        "selected_action": "vertical",
+        "source_agent_id": 1,
+        "trace_id": "paper_default-2"
+      },
+      {
+        "horizontal_destination_is_approved_neighbor": true,
+        "is_horizontal_neighbor": true,
+        "is_topology_legal": true,
+        "legal_action_mask": {
+          "compute_local": true,
+          "horizontal": true,
+          "local": true,
+          "offload_horizontal": true,
+          "offload_vertical": true,
+          "vertical": true
+        },
+        "policy_name": "VO",
+        "resolved_destination": "cloud",
+        "scenario_name": "paper_default",
+        "seed": 2,
+        "selected_action": "vertical",
+        "source_agent_id": 2,
+        "trace_id": "paper_default-2"
+      },
+      {
+        "horizontal_destination_is_approved_neighbor": true,
+        "is_horizontal_neighbor": true,
+        "is_topology_legal": true,
+        "legal_action_mask": {
+          "compute_local": true,
+          "horizontal": true,
+          "local": true,
+          "offload_horizontal": true,
+          "offload_vertical": true,
+          "vertical": true
+        },
+        "policy_name": "VO",
+        "resolved_destination": "cloud",
+        "scenario_name": "paper_default",
+        "seed": 2,
+        "selected_action": "vertical",
+        "source_agent_id": 3,
+        "trace_id": "paper_default-2"
+      },
+      {
+        "horizontal_destination_is_approved_neighbor": true,
+        "is_horizontal_neighbor": true,
+        "is_topology_legal": true,
+        "legal_action_mask": {
+          "compute_local": true,
+          "horizontal": true,
+          "local": true,
+          "offload_horizontal": true,
+          "offload_vertical": true,
+          "vertical": true
+        },
+        "policy_name": "VO",
+        "resolved_destination": "cloud",
+        "scenario_name": "paper_default",
+        "seed": 2,
+        "selected_action": "vertical",
+        "source_agent_id": 1,
+        "trace_id": "paper_default-2"
+      },
+      {
+        "horizontal_destination_is_approved_neighbor": true,
+        "is_horizontal_neighbor": true,
+        "is_topology_legal": true,
+        "legal_action_mask": {
+          "compute_local": true,
+          "horizontal": true,
+          "local": true,
+          "offload_horizontal": true,
+          "offload_vertical": true,
+          "vertical": true
+        },
+        "policy_name": "VO",
+        "resolved_destination": "cloud",
+        "scenario_name": "paper_default",
+        "seed": 2,
+        "selected_action": "vertical",
+        "source_agent_id": 2,
+        "trace_id": "paper_default-2"
+      },
+      {
+        "horizontal_destination_is_approved_neighbor": true,
+        "is_horizontal_neighbor": true,
+        "is_topology_legal": true,
+        "legal_action_mask": {
+          "compute_local": true,
+          "horizontal": true,
+          "local": true,
+          "offload_horizontal": true,
+          "offload_vertical": true,
+          "vertical": true
+        },
+        "policy_name": "VO",
+        "resolved_destination": "cloud",
+        "scenario_name": "paper_default",
+        "seed": 2,
+        "selected_action": "vertical",
+        "source_agent_id": 3,
+        "trace_id": "paper_default-2"
+      },
+      {
+        "horizontal_destination_is_approved_neighbor": true,
+        "is_horizontal_neighbor": true,
+        "is_topology_legal": true,
+        "legal_action_mask": {
+          "compute_local": true,
+          "horizontal": true,
+          "local": true,
+          "offload_horizontal": true,
+          "offload_vertical": true,
+          "vertical": true
+        },
+        "policy_name": "VO",
+        "resolved_destination": "cloud",
+        "scenario_name": "paper_default",
+        "seed": 2,
+        "selected_action": "vertical",
+        "source_agent_id": 1,
+        "trace_id": "paper_default-2"
+      },
+      {
+        "horizontal_destination_is_approved_neighbor": true,
+        "is_horizontal_neighbor": true,
+        "is_topology_legal": true,
+        "legal_action_mask": {
+          "compute_local": true,
+          "horizontal": true,
+          "local": true,
+          "offload_horizontal": true,
+          "offload_vertical": true,
+          "vertical": true
+        },
+        "policy_name": "VO",
+        "resolved_destination": "cloud",
+        "scenario_name": "paper_default",
+        "seed": 2,
+        "selected_action": "vertical",
+        "source_agent_id": 2,
+        "trace_id": "paper_default-2"
+      },
+      {
+        "horizontal_destination_is_approved_neighbor": true,
+        "is_horizontal_neighbor": true,
+        "is_topology_legal": true,
+        "legal_action_mask": {
+          "compute_local": true,
+          "horizontal": true,
+          "local": true,
+          "offload_horizontal": true,
+          "offload_vertical": true,
+          "vertical": true
+        },
+        "policy_name": "VO",
+        "resolved_destination": "cloud",
+        "scenario_name": "paper_default",
+        "seed": 2,
+        "selected_action": "vertical",
+        "source_agent_id": 3,
+        "trace_id": "paper_default-2"
+      },
+      {
+        "horizontal_destination_is_approved_neighbor": true,
+        "is_horizontal_neighbor": true,
+        "is_topology_legal": true,
+        "legal_action_mask": {
+          "compute_local": true,
+          "horizontal": true,
+          "local": true,
+          "offload_horizontal": true,
+          "offload_vertical": true,
+          "vertical": true
+        },
+        "policy_name": "VO",
+        "resolved_destination": "cloud",
+        "scenario_name": "paper_default",
+        "seed": 2,
+        "selected_action": "vertical",
+        "source_agent_id": 1,
+        "trace_id": "paper_default-2"
+      },
+      {
+        "horizontal_destination_is_approved_neighbor": true,
+        "is_horizontal_neighbor": true,
+        "is_topology_legal": true,
+        "legal_action_mask": {
+          "compute_local": true,
+          "horizontal": true,
+          "local": true,
+          "offload_horizontal": true,
+          "offload_vertical": true,
+          "vertical": true
+        },
+        "policy_name": "VO",
+        "resolved_destination": "cloud",
+        "scenario_name": "paper_default",
+        "seed": 2,
+        "selected_action": "vertical",
+        "source_agent_id": 2,
+        "trace_id": "paper_default-2"
+      },
+      {
+        "horizontal_destination_is_approved_neighbor": true,
+        "is_horizontal_neighbor": true,
+        "is_topology_legal": true,
+        "legal_action_mask": {
+          "compute_local": true,
+          "horizontal": true,
+          "local": true,
+          "offload_horizontal": true,
+          "offload_vertical": true,
+          "vertical": true
+        },
+        "policy_name": "VO",
+        "resolved_destination": "cloud",
+        "scenario_name": "paper_default",
+        "seed": 2,
+        "selected_action": "vertical",
+        "source_agent_id": 3,
+        "trace_id": "paper_default-2"
+      },
+      {
+        "horizontal_destination_is_approved_neighbor": true,
+        "is_horizontal_neighbor": true,
+        "is_topology_legal": true,
+        "legal_action_mask": {
+          "compute_local": true,
+          "horizontal": true,
+          "local": true,
+          "offload_horizontal": true,
+          "offload_vertical": true,
+          "vertical": true
+        },
+        "policy_name": "VO",
+        "resolved_destination": "cloud",
+        "scenario_name": "paper_default",
+        "seed": 2,
+        "selected_action": "vertical",
+        "source_agent_id": 1,
+        "trace_id": "paper_default-2"
+      },
+      {
+        "horizontal_destination_is_approved_neighbor": true,
+        "is_horizontal_neighbor": true,
+        "is_topology_legal": true,
+        "legal_action_mask": {
+          "compute_local": true,
+          "horizontal": true,
+          "local": true,
+          "offload_horizontal": true,
+          "offload_vertical": true,
+          "vertical": true
+        },
+        "policy_name": "VO",
+        "resolved_destination": "cloud",
+        "scenario_name": "paper_default",
+        "seed": 2,
+        "selected_action": "vertical",
+        "source_agent_id": 2,
+        "trace_id": "paper_default-2"
+      },
+      {
+        "horizontal_destination_is_approved_neighbor": true,
+        "is_horizontal_neighbor": true,
+        "is_topology_legal": true,
+        "legal_action_mask": {
+          "compute_local": true,
+          "horizontal": true,
+          "local": true,
+          "offload_horizontal": true,
+          "offload_vertical": true,
+          "vertical": true
+        },
+        "policy_name": "VO",
+        "resolved_destination": "cloud",
+        "scenario_name": "paper_default",
+        "seed": 2,
+        "selected_action": "vertical",
+        "source_agent_id": 3,
+        "trace_id": "paper_default-2"
+      },
+      {
+        "horizontal_destination_is_approved_neighbor": true,
+        "is_horizontal_neighbor": true,
+        "is_topology_legal": true,
+        "legal_action_mask": {
+          "compute_local": true,
+          "horizontal": true,
+          "local": true,
+          "offload_horizontal": true,
+          "offload_vertical": true,
+          "vertical": true
+        },
+        "policy_name": "VO",
+        "resolved_destination": "cloud",
+        "scenario_name": "paper_default",
+        "seed": 2,
+        "selected_action": "vertical",
+        "source_agent_id": 1,
+        "trace_id": "paper_default-2"
+      },
+      {
+        "horizontal_destination_is_approved_neighbor": true,
+        "is_horizontal_neighbor": true,
+        "is_topology_legal": true,
+        "legal_action_mask": {
+          "compute_local": true,
+          "horizontal": true,
+          "local": true,
+          "offload_horizontal": true,
+          "offload_vertical": true,
+          "vertical": true
+        },
+        "policy_name": "VO",
+        "resolved_destination": "cloud",
+        "scenario_name": "paper_default",
+        "seed": 2,
+        "selected_action": "vertical",
+        "source_agent_id": 2,
+        "trace_id": "paper_default-2"
+      },
+      {
+        "horizontal_destination_is_approved_neighbor": true,
+        "is_horizontal_neighbor": true,
+        "is_topology_legal": true,
+        "legal_action_mask": {
+          "compute_local": true,
+          "horizontal": true,
+          "local": true,
+          "offload_horizontal": true,
+          "offload_vertical": true,
+          "vertical": true
+        },
+        "policy_name": "VO",
+        "resolved_destination": "cloud",
+        "scenario_name": "paper_default",
+        "seed": 2,
+        "selected_action": "vertical",
+        "source_agent_id": 3,
+        "trace_id": "paper_default-2"
+      },
+      {
+        "horizontal_destination_is_approved_neighbor": true,
+        "is_horizontal_neighbor": true,
+        "is_topology_legal": true,
+        "legal_action_mask": {
+          "compute_local": true,
+          "horizontal": true,
+          "local": true,
+          "offload_horizontal": true,
+          "offload_vertical": true,
+          "vertical": true
+        },
+        "policy_name": "VO",
+        "resolved_destination": "cloud",
+        "scenario_name": "paper_default",
+        "seed": 2,
+        "selected_action": "vertical",
+        "source_agent_id": 1,
+        "trace_id": "paper_default-2"
+      },
+      {
+        "horizontal_destination_is_approved_neighbor": true,
+        "is_horizontal_neighbor": true,
+        "is_topology_legal": true,
+        "legal_action_mask": {
+          "compute_local": true,
+          "horizontal": true,
+          "local": true,
+          "offload_horizontal": true,
+          "offload_vertical": true,
+          "vertical": true
+        },
+        "policy_name": "VO",
+        "resolved_destination": "cloud",
+        "scenario_name": "paper_default",
+        "seed": 2,
+        "selected_action": "vertical",
+        "source_agent_id": 2,
+        "trace_id": "paper_default-2"
+      },
+      {
+        "horizontal_destination_is_approved_neighbor": true,
+        "is_horizontal_neighbor": true,
+        "is_topology_legal": true,
+        "legal_action_mask": {
+          "compute_local": true,
+          "horizontal": true,
+          "local": true,
+          "offload_horizontal": true,
+          "offload_vertical": true,
+          "vertical": true
+        },
+        "policy_name": "VO",
+        "resolved_destination": "cloud",
+        "scenario_name": "paper_default",
+        "seed": 2,
+        "selected_action": "vertical",
+        "source_agent_id": 3,
+        "trace_id": "paper_default-2"
+      },
+      {
+        "horizontal_destination_is_approved_neighbor": true,
+        "is_horizontal_neighbor": true,
+        "is_topology_legal": true,
+        "legal_action_mask": {
+          "compute_local": true,
+          "horizontal": true,
+          "local": true,
+          "offload_horizontal": true,
+          "offload_vertical": true,
+          "vertical": true
+        },
+        "policy_name": "VO",
+        "resolved_destination": "cloud",
+        "scenario_name": "paper_default",
+        "seed": 2,
+        "selected_action": "vertical",
+        "source_agent_id": 1,
+        "trace_id": "paper_default-2"
+      },
+      {
+        "horizontal_destination_is_approved_neighbor": true,
+        "is_horizontal_neighbor": true,
+        "is_topology_legal": true,
+        "legal_action_mask": {
+          "compute_local": true,
+          "horizontal": true,
+          "local": true,
+          "offload_horizontal": true,
+          "offload_vertical": true,
+          "vertical": true
+        },
+        "policy_name": "VO",
+        "resolved_destination": "cloud",
+        "scenario_name": "paper_default",
+        "seed": 2,
+        "selected_action": "vertical",
+        "source_agent_id": 2,
+        "trace_id": "paper_default-2"
+      },
+      {
+        "horizontal_destination_is_approved_neighbor": true,
+        "is_horizontal_neighbor": true,
+        "is_topology_legal": true,
+        "legal_action_mask": {
+          "compute_local": true,
+          "horizontal": true,
+          "local": true,
+          "offload_horizontal": true,
+          "offload_vertical": true,
+          "vertical": true
+        },
+        "policy_name": "VO",
+        "resolved_destination": "cloud",
+        "scenario_name": "paper_default",
+        "seed": 2,
+        "selected_action": "vertical",
+        "source_agent_id": 3,
+        "trace_id": "paper_default-2"
+      },
+      {
+        "horizontal_destination_is_approved_neighbor": true,
+        "is_horizontal_neighbor": true,
+        "is_topology_legal": true,
+        "legal_action_mask": {
+          "compute_local": true,
+          "horizontal": true,
+          "local": true,
+          "offload_horizontal": true,
+          "offload_vertical": true,
+          "vertical": true
+        },
+        "policy_name": "VO",
+        "resolved_destination": "cloud",
+        "scenario_name": "paper_default",
+        "seed": 2,
+        "selected_action": "vertical",
+        "source_agent_id": 1,
+        "trace_id": "paper_default-2"
+      },
+      {
+        "horizontal_destination_is_approved_neighbor": true,
+        "is_horizontal_neighbor": true,
+        "is_topology_legal": true,
+        "legal_action_mask": {
+          "compute_local": true,
+          "horizontal": true,
+          "local": true,
+          "offload_horizontal": true,
+          "offload_vertical": true,
+          "vertical": true
+        },
+        "policy_name": "VO",
+        "resolved_destination": "cloud",
+        "scenario_name": "paper_default",
+        "seed": 2,
+        "selected_action": "vertical",
+        "source_agent_id": 2,
+        "trace_id": "paper_default-2"
+      },
+      {
+        "horizontal_destination_is_approved_neighbor": true,
+        "is_horizontal_neighbor": true,
+        "is_topology_legal": true,
+        "legal_action_mask": {
+          "compute_local": true,
+          "horizontal": true,
+          "local": true,
+          "offload_horizontal": true,
+          "offload_vertical": true,
+          "vertical": true
+        },
+        "policy_name": "VO",
+        "resolved_destination": "cloud",
+        "scenario_name": "paper_default",
+        "seed": 2,
+        "selected_action": "vertical",
+        "source_agent_id": 3,
+        "trace_id": "paper_default-2"
+      },
+      {
+        "horizontal_destination_is_approved_neighbor": true,
+        "is_horizontal_neighbor": true,
+        "is_topology_legal": true,
+        "legal_action_mask": {
+          "compute_local": true,
+          "horizontal": true,
+          "local": true,
+          "offload_horizontal": true,
+          "offload_vertical": true,
+          "vertical": true
+        },
+        "policy_name": "VO",
+        "resolved_destination": "cloud",
+        "scenario_name": "paper_default",
+        "seed": 2,
+        "selected_action": "vertical",
+        "source_agent_id": 1,
+        "trace_id": "paper_default-2"
+      },
+      {
+        "horizontal_destination_is_approved_neighbor": true,
+        "is_horizontal_neighbor": true,
+        "is_topology_legal": true,
+        "legal_action_mask": {
+          "compute_local": true,
+          "horizontal": true,
+          "local": true,
+          "offload_horizontal": true,
+          "offload_vertical": true,
+          "vertical": true
+        },
+        "policy_name": "VO",
+        "resolved_destination": "cloud",
+        "scenario_name": "paper_default",
+        "seed": 2,
+        "selected_action": "vertical",
+        "source_agent_id": 2,
+        "trace_id": "paper_default-2"
+      },
+      {
+        "horizontal_destination_is_approved_neighbor": true,
+        "is_horizontal_neighbor": true,
+        "is_topology_legal": true,
+        "legal_action_mask": {
+          "compute_local": true,
+          "horizontal": true,
+          "local": true,
+          "offload_horizontal": true,
+          "offload_vertical": true,
+          "vertical": true
+        },
+        "policy_name": "VO",
+        "resolved_destination": "cloud",
+        "scenario_name": "paper_default",
+        "seed": 2,
+        "selected_action": "vertical",
+        "source_agent_id": 3,
+        "trace_id": "paper_default-2"
+      },
+      {
+        "horizontal_destination_is_approved_neighbor": true,
+        "is_horizontal_neighbor": true,
+        "is_topology_legal": true,
+        "legal_action_mask": {
+          "compute_local": true,
+          "horizontal": true,
+          "local": true,
+          "offload_horizontal": true,
+          "offload_vertical": true,
+          "vertical": true
+        },
+        "policy_name": "VO",
+        "resolved_destination": "cloud",
+        "scenario_name": "paper_default",
+        "seed": 2,
+        "selected_action": "vertical",
+        "source_agent_id": 1,
+        "trace_id": "paper_default-2"
+      },
+      {
+        "horizontal_destination_is_approved_neighbor": true,
+        "is_horizontal_neighbor": true,
+        "is_topology_legal": true,
+        "legal_action_mask": {
+          "compute_local": true,
+          "horizontal": true,
+          "local": true,
+          "offload_horizontal": true,
+          "offload_vertical": true,
+          "vertical": true
+        },
+        "policy_name": "VO",
+        "resolved_destination": "cloud",
+        "scenario_name": "paper_default",
+        "seed": 2,
+        "selected_action": "vertical",
+        "source_agent_id": 2,
+        "trace_id": "paper_default-2"
+      },
+      {
+        "horizontal_destination_is_approved_neighbor": true,
+        "is_horizontal_neighbor": true,
+        "is_topology_legal": true,
+        "legal_action_mask": {
+          "compute_local": true,
+          "horizontal": true,
+          "local": true,
+          "offload_horizontal": true,
+          "offload_vertical": true,
+          "vertical": true
+        },
+        "policy_name": "VO",
+        "resolved_destination": "cloud",
+        "scenario_name": "paper_default",
+        "seed": 2,
+        "selected_action": "vertical",
+        "source_agent_id": 3,
+        "trace_id": "paper_default-2"
+      },
+      {
+        "horizontal_destination_is_approved_neighbor": true,
+        "is_horizontal_neighbor": true,
+        "is_topology_legal": true,
+        "legal_action_mask": {
+          "compute_local": true,
+          "horizontal": true,
+          "local": true,
+          "offload_horizontal": true,
+          "offload_vertical": true,
+          "vertical": true
+        },
+        "policy_name": "VO",
+        "resolved_destination": "cloud",
+        "scenario_name": "paper_default",
+        "seed": 2,
+        "selected_action": "vertical",
+        "source_agent_id": 1,
+        "trace_id": "paper_default-2"
+      },
+      {
+        "horizontal_destination_is_approved_neighbor": true,
+        "is_horizontal_neighbor": true,
+        "is_topology_legal": true,
+        "legal_action_mask": {
+          "compute_local": true,
+          "horizontal": true,
+          "local": true,
+          "offload_horizontal": true,
+          "offload_vertical": true,
+          "vertical": true
+        },
+        "policy_name": "VO",
+        "resolved_destination": "cloud",
+        "scenario_name": "paper_default",
+        "seed": 2,
+        "selected_action": "vertical",
+        "source_agent_id": 2,
+        "trace_id": "paper_default-2"
+      }
+    ],
     "approved_runtime_contracts": [
       "032-runtime-adoption-approved-assumption-registry",
       "033-execution-time-contract-repair",
@@ -38,11 +4442,49 @@
       "035-public-cloud-queue-capacity-sharing-contract",
       "036-deadline-timeout-off-by-one-audit"
     ],
+    "approved_topology_contract": {
+      "neighbor_only_horizontal_legality_verified": true,
+      "topology_contract_verified": true,
+      "topology_degree_sequence": [
+        3,
+        3,
+        3,
+        3,
+        3,
+        3,
+        3,
+        3,
+        3,
+        3,
+        3,
+        3,
+        3,
+        3,
+        3,
+        3,
+        3,
+        3,
+        3,
+        3
+      ],
+      "topology_node_count": 20,
+      "topology_source": "TopologyGraph.from_approved_assumption_registry()",
+      "topology_symmetric_verified": true,
+      "topology_undirected_edge_count": 30,
+      "topology_zero_diagonal_verified": true,
+      "vertical_cloud_legality_independent_of_figure7_verified": true
+    },
+    "completed_tasks": 0,
+    "dropped_tasks": 1,
+    "finalized_terminal_tasks": 1,
+    "generated_arrivals": 1076,
     "legal_action_mask_verified": true,
     "metric_schema_verified": true,
+    "pending_at_horizon": 1075,
     "policy_name": "VO",
     "scenario_name": "paper_default",
     "seed": 2,
+    "total_terminal_tasks": 1,
     "trace_id": "paper_default-2"
   },
   "scenario_name": "paper_default",
@@ -1259,5 +5701,13 @@
       }
     }
   ],
-  "trace_id": "paper_default-2"
+  "trace_id": "paper_default-2",
+  "trace_summary": {
+    "completed_tasks": 0,
+    "dropped_tasks": 1,
+    "finalized_terminal_tasks": 1,
+    "generated_arrivals": 1076,
+    "pending_at_horizon": 1075,
+    "total_terminal_tasks": 1
+  }
 }
