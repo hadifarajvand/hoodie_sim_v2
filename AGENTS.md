@@ -1,12 +1,13 @@
 <!-- SPECKIT START -->
 For additional context about technologies to be used, project structure,
 shell commands, and other important information, read
-`specs/035-public-cloud-queue-capacity-sharing-contract/plan.md`
-and `specs/035-public-cloud-queue-capacity-sharing-contract/spec.md`
+`specs/036-deadline-timeout-off-by-one-audit/plan.md`
+and `specs/036-deadline-timeout-off-by-one-audit/spec.md`
 
-Feature 035 scope: public/cloud capacity sharing only.
-Do not change execution-helper formulas, transmission-delay wiring,
-training/neural-network/policy/dependency/campaign behavior, or paper-recovery claims.
+Feature 036 scope: deadline/timeout boundary semantics only.
+Do not change execution-time formulas, transmission-delay wiring,
+public/cloud capacity-sharing logic, topology legality, policy behavior,
+training/neural-network code, dependency files, campaign artifacts, or paper-recovery claims.
 <!-- SPECKIT END -->
 
 ## External Reference Usage

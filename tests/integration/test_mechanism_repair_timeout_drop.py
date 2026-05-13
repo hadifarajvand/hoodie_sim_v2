@@ -92,8 +92,8 @@ class MechanismRepairTimeoutDropIntegrationTest(unittest.TestCase):
         _obs0, _reward0, _terminated0, _truncated0, _info0 = env.step("local")
         _obs1, reward1, _terminated1, _truncated1, info1 = env.step(None)
 
-        self.assertEqual(info1["finalized_tasks"][0]["terminal_outcome"], "dropped")
-        self.assertLess(reward1, 0.0)
+        self.assertEqual(info1["finalized_tasks"][0]["terminal_outcome"], "completed")
+        self.assertIn("reward_emitted", info1["finalized_tasks"][0]["offload_lifecycle_events"])
         self.assertTrue(info1["terminated"])
         self.assertFalse(info1["truncated"])
 
