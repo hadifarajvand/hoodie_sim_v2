@@ -1,0 +1,1253 @@
+{
+  "final_metrics": {
+    "average_delay": 0.0,
+    "completed_tasks": 0,
+    "device": "cpu",
+    "drop_ratio": 0.0,
+    "dropped_tasks": 0,
+    "metadata": {
+      "device": "cpu",
+      "policy_name": "ADAPTIVE",
+      "seed": 0,
+      "trace_id": "paper_default-0"
+    },
+    "policy_name": "ADAPTIVE",
+    "raw_records": [],
+    "seed": 0,
+    "terminal_reward_total": 0.0,
+    "throughput": 0,
+    "total_tasks": 0,
+    "trace_id": "paper_default-0"
+  },
+  "policy_name": "ADAPTIVE",
+  "runtime_metadata": {
+    "approved_runtime_contracts": [
+      "032-runtime-adoption-approved-assumption-registry",
+      "033-execution-time-contract-repair",
+      "034-transmission-delay-runtime-wiring",
+      "035-public-cloud-queue-capacity-sharing-contract",
+      "036-deadline-timeout-off-by-one-audit"
+    ],
+    "legal_action_mask_verified": true,
+    "metric_schema_verified": true,
+    "policy_name": "ADAPTIVE",
+    "scenario_name": "paper_default",
+    "seed": 0,
+    "trace_id": "paper_default-0"
+  },
+  "scenario_name": "paper_default",
+  "seed": 0,
+  "selected_actions": [
+    {
+      "action": "horizontal",
+      "legal_action_mask": {
+        "compute_local": true,
+        "horizontal": true,
+        "local": true,
+        "offload_horizontal": true,
+        "offload_vertical": true,
+        "vertical": true
+      }
+    },
+    {
+      "action": "horizontal",
+      "legal_action_mask": {
+        "compute_local": true,
+        "horizontal": true,
+        "local": true,
+        "offload_horizontal": true,
+        "offload_vertical": true,
+        "vertical": true
+      }
+    },
+    {
+      "action": "horizontal",
+      "legal_action_mask": {
+        "compute_local": true,
+        "horizontal": true,
+        "local": true,
+        "offload_horizontal": true,
+        "offload_vertical": true,
+        "vertical": true
+      }
+    },
+    {
+      "action": "horizontal",
+      "legal_action_mask": {
+        "compute_local": true,
+        "horizontal": true,
+        "local": true,
+        "offload_horizontal": true,
+        "offload_vertical": true,
+        "vertical": true
+      }
+    },
+    {
+      "action": "horizontal",
+      "legal_action_mask": {
+        "compute_local": true,
+        "horizontal": true,
+        "local": true,
+        "offload_horizontal": true,
+        "offload_vertical": true,
+        "vertical": true
+      }
+    },
+    {
+      "action": "horizontal",
+      "legal_action_mask": {
+        "compute_local": true,
+        "horizontal": true,
+        "local": true,
+        "offload_horizontal": true,
+        "offload_vertical": true,
+        "vertical": true
+      }
+    },
+    {
+      "action": "horizontal",
+      "legal_action_mask": {
+        "compute_local": true,
+        "horizontal": true,
+        "local": true,
+        "offload_horizontal": true,
+        "offload_vertical": true,
+        "vertical": true
+      }
+    },
+    {
+      "action": "horizontal",
+      "legal_action_mask": {
+        "compute_local": true,
+        "horizontal": true,
+        "local": true,
+        "offload_horizontal": true,
+        "offload_vertical": true,
+        "vertical": true
+      }
+    },
+    {
+      "action": "horizontal",
+      "legal_action_mask": {
+        "compute_local": true,
+        "horizontal": true,
+        "local": true,
+        "offload_horizontal": true,
+        "offload_vertical": true,
+        "vertical": true
+      }
+    },
+    {
+      "action": "horizontal",
+      "legal_action_mask": {
+        "compute_local": true,
+        "horizontal": true,
+        "local": true,
+        "offload_horizontal": true,
+        "offload_vertical": true,
+        "vertical": true
+      }
+    },
+    {
+      "action": "horizontal",
+      "legal_action_mask": {
+        "compute_local": true,
+        "horizontal": true,
+        "local": true,
+        "offload_horizontal": true,
+        "offload_vertical": true,
+        "vertical": true
+      }
+    },
+    {
+      "action": "horizontal",
+      "legal_action_mask": {
+        "compute_local": true,
+        "horizontal": true,
+        "local": true,
+        "offload_horizontal": true,
+        "offload_vertical": true,
+        "vertical": true
+      }
+    },
+    {
+      "action": "horizontal",
+      "legal_action_mask": {
+        "compute_local": true,
+        "horizontal": true,
+        "local": true,
+        "offload_horizontal": true,
+        "offload_vertical": true,
+        "vertical": true
+      }
+    },
+    {
+      "action": "horizontal",
+      "legal_action_mask": {
+        "compute_local": true,
+        "horizontal": true,
+        "local": true,
+        "offload_horizontal": true,
+        "offload_vertical": true,
+        "vertical": true
+      }
+    },
+    {
+      "action": "horizontal",
+      "legal_action_mask": {
+        "compute_local": true,
+        "horizontal": true,
+        "local": true,
+        "offload_horizontal": true,
+        "offload_vertical": true,
+        "vertical": true
+      }
+    },
+    {
+      "action": "horizontal",
+      "legal_action_mask": {
+        "compute_local": true,
+        "horizontal": true,
+        "local": true,
+        "offload_horizontal": true,
+        "offload_vertical": true,
+        "vertical": true
+      }
+    },
+    {
+      "action": "horizontal",
+      "legal_action_mask": {
+        "compute_local": true,
+        "horizontal": true,
+        "local": true,
+        "offload_horizontal": true,
+        "offload_vertical": true,
+        "vertical": true
+      }
+    },
+    {
+      "action": "horizontal",
+      "legal_action_mask": {
+        "compute_local": true,
+        "horizontal": true,
+        "local": true,
+        "offload_horizontal": true,
+        "offload_vertical": true,
+        "vertical": true
+      }
+    },
+    {
+      "action": "horizontal",
+      "legal_action_mask": {
+        "compute_local": true,
+        "horizontal": true,
+        "local": true,
+        "offload_horizontal": true,
+        "offload_vertical": true,
+        "vertical": true
+      }
+    },
+    {
+      "action": "horizontal",
+      "legal_action_mask": {
+        "compute_local": true,
+        "horizontal": true,
+        "local": true,
+        "offload_horizontal": true,
+        "offload_vertical": true,
+        "vertical": true
+      }
+    },
+    {
+      "action": "horizontal",
+      "legal_action_mask": {
+        "compute_local": true,
+        "horizontal": true,
+        "local": true,
+        "offload_horizontal": true,
+        "offload_vertical": true,
+        "vertical": true
+      }
+    },
+    {
+      "action": "horizontal",
+      "legal_action_mask": {
+        "compute_local": true,
+        "horizontal": true,
+        "local": true,
+        "offload_horizontal": true,
+        "offload_vertical": true,
+        "vertical": true
+      }
+    },
+    {
+      "action": "horizontal",
+      "legal_action_mask": {
+        "compute_local": true,
+        "horizontal": true,
+        "local": true,
+        "offload_horizontal": true,
+        "offload_vertical": true,
+        "vertical": true
+      }
+    },
+    {
+      "action": "horizontal",
+      "legal_action_mask": {
+        "compute_local": true,
+        "horizontal": true,
+        "local": true,
+        "offload_horizontal": true,
+        "offload_vertical": true,
+        "vertical": true
+      }
+    },
+    {
+      "action": "horizontal",
+      "legal_action_mask": {
+        "compute_local": true,
+        "horizontal": true,
+        "local": true,
+        "offload_horizontal": true,
+        "offload_vertical": true,
+        "vertical": true
+      }
+    },
+    {
+      "action": "horizontal",
+      "legal_action_mask": {
+        "compute_local": true,
+        "horizontal": true,
+        "local": true,
+        "offload_horizontal": true,
+        "offload_vertical": true,
+        "vertical": true
+      }
+    },
+    {
+      "action": "horizontal",
+      "legal_action_mask": {
+        "compute_local": true,
+        "horizontal": true,
+        "local": true,
+        "offload_horizontal": true,
+        "offload_vertical": true,
+        "vertical": true
+      }
+    },
+    {
+      "action": "horizontal",
+      "legal_action_mask": {
+        "compute_local": true,
+        "horizontal": true,
+        "local": true,
+        "offload_horizontal": true,
+        "offload_vertical": true,
+        "vertical": true
+      }
+    },
+    {
+      "action": "horizontal",
+      "legal_action_mask": {
+        "compute_local": true,
+        "horizontal": true,
+        "local": true,
+        "offload_horizontal": true,
+        "offload_vertical": true,
+        "vertical": true
+      }
+    },
+    {
+      "action": "horizontal",
+      "legal_action_mask": {
+        "compute_local": true,
+        "horizontal": true,
+        "local": true,
+        "offload_horizontal": true,
+        "offload_vertical": true,
+        "vertical": true
+      }
+    },
+    {
+      "action": "horizontal",
+      "legal_action_mask": {
+        "compute_local": true,
+        "horizontal": true,
+        "local": true,
+        "offload_horizontal": true,
+        "offload_vertical": true,
+        "vertical": true
+      }
+    },
+    {
+      "action": "horizontal",
+      "legal_action_mask": {
+        "compute_local": true,
+        "horizontal": true,
+        "local": true,
+        "offload_horizontal": true,
+        "offload_vertical": true,
+        "vertical": true
+      }
+    },
+    {
+      "action": "horizontal",
+      "legal_action_mask": {
+        "compute_local": true,
+        "horizontal": true,
+        "local": true,
+        "offload_horizontal": true,
+        "offload_vertical": true,
+        "vertical": true
+      }
+    },
+    {
+      "action": "horizontal",
+      "legal_action_mask": {
+        "compute_local": true,
+        "horizontal": true,
+        "local": true,
+        "offload_horizontal": true,
+        "offload_vertical": true,
+        "vertical": true
+      }
+    },
+    {
+      "action": "horizontal",
+      "legal_action_mask": {
+        "compute_local": true,
+        "horizontal": true,
+        "local": true,
+        "offload_horizontal": true,
+        "offload_vertical": true,
+        "vertical": true
+      }
+    },
+    {
+      "action": "horizontal",
+      "legal_action_mask": {
+        "compute_local": true,
+        "horizontal": true,
+        "local": true,
+        "offload_horizontal": true,
+        "offload_vertical": true,
+        "vertical": true
+      }
+    },
+    {
+      "action": "horizontal",
+      "legal_action_mask": {
+        "compute_local": true,
+        "horizontal": true,
+        "local": true,
+        "offload_horizontal": true,
+        "offload_vertical": true,
+        "vertical": true
+      }
+    },
+    {
+      "action": "horizontal",
+      "legal_action_mask": {
+        "compute_local": true,
+        "horizontal": true,
+        "local": true,
+        "offload_horizontal": true,
+        "offload_vertical": true,
+        "vertical": true
+      }
+    },
+    {
+      "action": "horizontal",
+      "legal_action_mask": {
+        "compute_local": true,
+        "horizontal": true,
+        "local": true,
+        "offload_horizontal": true,
+        "offload_vertical": true,
+        "vertical": true
+      }
+    },
+    {
+      "action": "horizontal",
+      "legal_action_mask": {
+        "compute_local": true,
+        "horizontal": true,
+        "local": true,
+        "offload_horizontal": true,
+        "offload_vertical": true,
+        "vertical": true
+      }
+    },
+    {
+      "action": "horizontal",
+      "legal_action_mask": {
+        "compute_local": true,
+        "horizontal": true,
+        "local": true,
+        "offload_horizontal": true,
+        "offload_vertical": true,
+        "vertical": true
+      }
+    },
+    {
+      "action": "horizontal",
+      "legal_action_mask": {
+        "compute_local": true,
+        "horizontal": true,
+        "local": true,
+        "offload_horizontal": true,
+        "offload_vertical": true,
+        "vertical": true
+      }
+    },
+    {
+      "action": "horizontal",
+      "legal_action_mask": {
+        "compute_local": true,
+        "horizontal": true,
+        "local": true,
+        "offload_horizontal": true,
+        "offload_vertical": true,
+        "vertical": true
+      }
+    },
+    {
+      "action": "horizontal",
+      "legal_action_mask": {
+        "compute_local": true,
+        "horizontal": true,
+        "local": true,
+        "offload_horizontal": true,
+        "offload_vertical": true,
+        "vertical": true
+      }
+    },
+    {
+      "action": "horizontal",
+      "legal_action_mask": {
+        "compute_local": true,
+        "horizontal": true,
+        "local": true,
+        "offload_horizontal": true,
+        "offload_vertical": true,
+        "vertical": true
+      }
+    },
+    {
+      "action": "horizontal",
+      "legal_action_mask": {
+        "compute_local": true,
+        "horizontal": true,
+        "local": true,
+        "offload_horizontal": true,
+        "offload_vertical": true,
+        "vertical": true
+      }
+    },
+    {
+      "action": "horizontal",
+      "legal_action_mask": {
+        "compute_local": true,
+        "horizontal": true,
+        "local": true,
+        "offload_horizontal": true,
+        "offload_vertical": true,
+        "vertical": true
+      }
+    },
+    {
+      "action": "horizontal",
+      "legal_action_mask": {
+        "compute_local": true,
+        "horizontal": true,
+        "local": true,
+        "offload_horizontal": true,
+        "offload_vertical": true,
+        "vertical": true
+      }
+    },
+    {
+      "action": "horizontal",
+      "legal_action_mask": {
+        "compute_local": true,
+        "horizontal": true,
+        "local": true,
+        "offload_horizontal": true,
+        "offload_vertical": true,
+        "vertical": true
+      }
+    },
+    {
+      "action": "horizontal",
+      "legal_action_mask": {
+        "compute_local": true,
+        "horizontal": true,
+        "local": true,
+        "offload_horizontal": true,
+        "offload_vertical": true,
+        "vertical": true
+      }
+    },
+    {
+      "action": "horizontal",
+      "legal_action_mask": {
+        "compute_local": true,
+        "horizontal": true,
+        "local": true,
+        "offload_horizontal": true,
+        "offload_vertical": true,
+        "vertical": true
+      }
+    },
+    {
+      "action": "horizontal",
+      "legal_action_mask": {
+        "compute_local": true,
+        "horizontal": true,
+        "local": true,
+        "offload_horizontal": true,
+        "offload_vertical": true,
+        "vertical": true
+      }
+    },
+    {
+      "action": "horizontal",
+      "legal_action_mask": {
+        "compute_local": true,
+        "horizontal": true,
+        "local": true,
+        "offload_horizontal": true,
+        "offload_vertical": true,
+        "vertical": true
+      }
+    },
+    {
+      "action": "horizontal",
+      "legal_action_mask": {
+        "compute_local": true,
+        "horizontal": true,
+        "local": true,
+        "offload_horizontal": true,
+        "offload_vertical": true,
+        "vertical": true
+      }
+    },
+    {
+      "action": "horizontal",
+      "legal_action_mask": {
+        "compute_local": true,
+        "horizontal": true,
+        "local": true,
+        "offload_horizontal": true,
+        "offload_vertical": true,
+        "vertical": true
+      }
+    },
+    {
+      "action": "horizontal",
+      "legal_action_mask": {
+        "compute_local": true,
+        "horizontal": true,
+        "local": true,
+        "offload_horizontal": true,
+        "offload_vertical": true,
+        "vertical": true
+      }
+    },
+    {
+      "action": "horizontal",
+      "legal_action_mask": {
+        "compute_local": true,
+        "horizontal": true,
+        "local": true,
+        "offload_horizontal": true,
+        "offload_vertical": true,
+        "vertical": true
+      }
+    },
+    {
+      "action": "horizontal",
+      "legal_action_mask": {
+        "compute_local": true,
+        "horizontal": true,
+        "local": true,
+        "offload_horizontal": true,
+        "offload_vertical": true,
+        "vertical": true
+      }
+    },
+    {
+      "action": "horizontal",
+      "legal_action_mask": {
+        "compute_local": true,
+        "horizontal": true,
+        "local": true,
+        "offload_horizontal": true,
+        "offload_vertical": true,
+        "vertical": true
+      }
+    },
+    {
+      "action": "horizontal",
+      "legal_action_mask": {
+        "compute_local": true,
+        "horizontal": true,
+        "local": true,
+        "offload_horizontal": true,
+        "offload_vertical": true,
+        "vertical": true
+      }
+    },
+    {
+      "action": "horizontal",
+      "legal_action_mask": {
+        "compute_local": true,
+        "horizontal": true,
+        "local": true,
+        "offload_horizontal": true,
+        "offload_vertical": true,
+        "vertical": true
+      }
+    },
+    {
+      "action": "horizontal",
+      "legal_action_mask": {
+        "compute_local": true,
+        "horizontal": true,
+        "local": true,
+        "offload_horizontal": true,
+        "offload_vertical": true,
+        "vertical": true
+      }
+    },
+    {
+      "action": "horizontal",
+      "legal_action_mask": {
+        "compute_local": true,
+        "horizontal": true,
+        "local": true,
+        "offload_horizontal": true,
+        "offload_vertical": true,
+        "vertical": true
+      }
+    },
+    {
+      "action": "horizontal",
+      "legal_action_mask": {
+        "compute_local": true,
+        "horizontal": true,
+        "local": true,
+        "offload_horizontal": true,
+        "offload_vertical": true,
+        "vertical": true
+      }
+    },
+    {
+      "action": "horizontal",
+      "legal_action_mask": {
+        "compute_local": true,
+        "horizontal": true,
+        "local": true,
+        "offload_horizontal": true,
+        "offload_vertical": true,
+        "vertical": true
+      }
+    },
+    {
+      "action": "horizontal",
+      "legal_action_mask": {
+        "compute_local": true,
+        "horizontal": true,
+        "local": true,
+        "offload_horizontal": true,
+        "offload_vertical": true,
+        "vertical": true
+      }
+    },
+    {
+      "action": "horizontal",
+      "legal_action_mask": {
+        "compute_local": true,
+        "horizontal": true,
+        "local": true,
+        "offload_horizontal": true,
+        "offload_vertical": true,
+        "vertical": true
+      }
+    },
+    {
+      "action": "horizontal",
+      "legal_action_mask": {
+        "compute_local": true,
+        "horizontal": true,
+        "local": true,
+        "offload_horizontal": true,
+        "offload_vertical": true,
+        "vertical": true
+      }
+    },
+    {
+      "action": "horizontal",
+      "legal_action_mask": {
+        "compute_local": true,
+        "horizontal": true,
+        "local": true,
+        "offload_horizontal": true,
+        "offload_vertical": true,
+        "vertical": true
+      }
+    },
+    {
+      "action": "horizontal",
+      "legal_action_mask": {
+        "compute_local": true,
+        "horizontal": true,
+        "local": true,
+        "offload_horizontal": true,
+        "offload_vertical": true,
+        "vertical": true
+      }
+    },
+    {
+      "action": "horizontal",
+      "legal_action_mask": {
+        "compute_local": true,
+        "horizontal": true,
+        "local": true,
+        "offload_horizontal": true,
+        "offload_vertical": true,
+        "vertical": true
+      }
+    },
+    {
+      "action": "horizontal",
+      "legal_action_mask": {
+        "compute_local": true,
+        "horizontal": true,
+        "local": true,
+        "offload_horizontal": true,
+        "offload_vertical": true,
+        "vertical": true
+      }
+    },
+    {
+      "action": "horizontal",
+      "legal_action_mask": {
+        "compute_local": true,
+        "horizontal": true,
+        "local": true,
+        "offload_horizontal": true,
+        "offload_vertical": true,
+        "vertical": true
+      }
+    },
+    {
+      "action": "horizontal",
+      "legal_action_mask": {
+        "compute_local": true,
+        "horizontal": true,
+        "local": true,
+        "offload_horizontal": true,
+        "offload_vertical": true,
+        "vertical": true
+      }
+    },
+    {
+      "action": "horizontal",
+      "legal_action_mask": {
+        "compute_local": true,
+        "horizontal": true,
+        "local": true,
+        "offload_horizontal": true,
+        "offload_vertical": true,
+        "vertical": true
+      }
+    },
+    {
+      "action": "horizontal",
+      "legal_action_mask": {
+        "compute_local": true,
+        "horizontal": true,
+        "local": true,
+        "offload_horizontal": true,
+        "offload_vertical": true,
+        "vertical": true
+      }
+    },
+    {
+      "action": "horizontal",
+      "legal_action_mask": {
+        "compute_local": true,
+        "horizontal": true,
+        "local": true,
+        "offload_horizontal": true,
+        "offload_vertical": true,
+        "vertical": true
+      }
+    },
+    {
+      "action": "horizontal",
+      "legal_action_mask": {
+        "compute_local": true,
+        "horizontal": true,
+        "local": true,
+        "offload_horizontal": true,
+        "offload_vertical": true,
+        "vertical": true
+      }
+    },
+    {
+      "action": "horizontal",
+      "legal_action_mask": {
+        "compute_local": true,
+        "horizontal": true,
+        "local": true,
+        "offload_horizontal": true,
+        "offload_vertical": true,
+        "vertical": true
+      }
+    },
+    {
+      "action": "horizontal",
+      "legal_action_mask": {
+        "compute_local": true,
+        "horizontal": true,
+        "local": true,
+        "offload_horizontal": true,
+        "offload_vertical": true,
+        "vertical": true
+      }
+    },
+    {
+      "action": "horizontal",
+      "legal_action_mask": {
+        "compute_local": true,
+        "horizontal": true,
+        "local": true,
+        "offload_horizontal": true,
+        "offload_vertical": true,
+        "vertical": true
+      }
+    },
+    {
+      "action": "horizontal",
+      "legal_action_mask": {
+        "compute_local": true,
+        "horizontal": true,
+        "local": true,
+        "offload_horizontal": true,
+        "offload_vertical": true,
+        "vertical": true
+      }
+    },
+    {
+      "action": "horizontal",
+      "legal_action_mask": {
+        "compute_local": true,
+        "horizontal": true,
+        "local": true,
+        "offload_horizontal": true,
+        "offload_vertical": true,
+        "vertical": true
+      }
+    },
+    {
+      "action": "horizontal",
+      "legal_action_mask": {
+        "compute_local": true,
+        "horizontal": true,
+        "local": true,
+        "offload_horizontal": true,
+        "offload_vertical": true,
+        "vertical": true
+      }
+    },
+    {
+      "action": "horizontal",
+      "legal_action_mask": {
+        "compute_local": true,
+        "horizontal": true,
+        "local": true,
+        "offload_horizontal": true,
+        "offload_vertical": true,
+        "vertical": true
+      }
+    },
+    {
+      "action": "horizontal",
+      "legal_action_mask": {
+        "compute_local": true,
+        "horizontal": true,
+        "local": true,
+        "offload_horizontal": true,
+        "offload_vertical": true,
+        "vertical": true
+      }
+    },
+    {
+      "action": "horizontal",
+      "legal_action_mask": {
+        "compute_local": true,
+        "horizontal": true,
+        "local": true,
+        "offload_horizontal": true,
+        "offload_vertical": true,
+        "vertical": true
+      }
+    },
+    {
+      "action": "horizontal",
+      "legal_action_mask": {
+        "compute_local": true,
+        "horizontal": true,
+        "local": true,
+        "offload_horizontal": true,
+        "offload_vertical": true,
+        "vertical": true
+      }
+    },
+    {
+      "action": "horizontal",
+      "legal_action_mask": {
+        "compute_local": true,
+        "horizontal": true,
+        "local": true,
+        "offload_horizontal": true,
+        "offload_vertical": true,
+        "vertical": true
+      }
+    },
+    {
+      "action": "horizontal",
+      "legal_action_mask": {
+        "compute_local": true,
+        "horizontal": true,
+        "local": true,
+        "offload_horizontal": true,
+        "offload_vertical": true,
+        "vertical": true
+      }
+    },
+    {
+      "action": "horizontal",
+      "legal_action_mask": {
+        "compute_local": true,
+        "horizontal": true,
+        "local": true,
+        "offload_horizontal": true,
+        "offload_vertical": true,
+        "vertical": true
+      }
+    },
+    {
+      "action": "horizontal",
+      "legal_action_mask": {
+        "compute_local": true,
+        "horizontal": true,
+        "local": true,
+        "offload_horizontal": true,
+        "offload_vertical": true,
+        "vertical": true
+      }
+    },
+    {
+      "action": "horizontal",
+      "legal_action_mask": {
+        "compute_local": true,
+        "horizontal": true,
+        "local": true,
+        "offload_horizontal": true,
+        "offload_vertical": true,
+        "vertical": true
+      }
+    },
+    {
+      "action": "horizontal",
+      "legal_action_mask": {
+        "compute_local": true,
+        "horizontal": true,
+        "local": true,
+        "offload_horizontal": true,
+        "offload_vertical": true,
+        "vertical": true
+      }
+    },
+    {
+      "action": "horizontal",
+      "legal_action_mask": {
+        "compute_local": true,
+        "horizontal": true,
+        "local": true,
+        "offload_horizontal": true,
+        "offload_vertical": true,
+        "vertical": true
+      }
+    },
+    {
+      "action": "horizontal",
+      "legal_action_mask": {
+        "compute_local": true,
+        "horizontal": true,
+        "local": true,
+        "offload_horizontal": true,
+        "offload_vertical": true,
+        "vertical": true
+      }
+    },
+    {
+      "action": "horizontal",
+      "legal_action_mask": {
+        "compute_local": true,
+        "horizontal": true,
+        "local": true,
+        "offload_horizontal": true,
+        "offload_vertical": true,
+        "vertical": true
+      }
+    },
+    {
+      "action": "horizontal",
+      "legal_action_mask": {
+        "compute_local": true,
+        "horizontal": true,
+        "local": true,
+        "offload_horizontal": true,
+        "offload_vertical": true,
+        "vertical": true
+      }
+    },
+    {
+      "action": "horizontal",
+      "legal_action_mask": {
+        "compute_local": true,
+        "horizontal": true,
+        "local": true,
+        "offload_horizontal": true,
+        "offload_vertical": true,
+        "vertical": true
+      }
+    },
+    {
+      "action": "horizontal",
+      "legal_action_mask": {
+        "compute_local": true,
+        "horizontal": true,
+        "local": true,
+        "offload_horizontal": true,
+        "offload_vertical": true,
+        "vertical": true
+      }
+    },
+    {
+      "action": "horizontal",
+      "legal_action_mask": {
+        "compute_local": true,
+        "horizontal": true,
+        "local": true,
+        "offload_horizontal": true,
+        "offload_vertical": true,
+        "vertical": true
+      }
+    },
+    {
+      "action": "horizontal",
+      "legal_action_mask": {
+        "compute_local": true,
+        "horizontal": true,
+        "local": true,
+        "offload_horizontal": true,
+        "offload_vertical": true,
+        "vertical": true
+      }
+    },
+    {
+      "action": "horizontal",
+      "legal_action_mask": {
+        "compute_local": true,
+        "horizontal": true,
+        "local": true,
+        "offload_horizontal": true,
+        "offload_vertical": true,
+        "vertical": true
+      }
+    },
+    {
+      "action": "horizontal",
+      "legal_action_mask": {
+        "compute_local": true,
+        "horizontal": true,
+        "local": true,
+        "offload_horizontal": true,
+        "offload_vertical": true,
+        "vertical": true
+      }
+    },
+    {
+      "action": "horizontal",
+      "legal_action_mask": {
+        "compute_local": true,
+        "horizontal": true,
+        "local": true,
+        "offload_horizontal": true,
+        "offload_vertical": true,
+        "vertical": true
+      }
+    },
+    {
+      "action": "horizontal",
+      "legal_action_mask": {
+        "compute_local": true,
+        "horizontal": true,
+        "local": true,
+        "offload_horizontal": true,
+        "offload_vertical": true,
+        "vertical": true
+      }
+    },
+    {
+      "action": "horizontal",
+      "legal_action_mask": {
+        "compute_local": true,
+        "horizontal": true,
+        "local": true,
+        "offload_horizontal": true,
+        "offload_vertical": true,
+        "vertical": true
+      }
+    },
+    {
+      "action": "horizontal",
+      "legal_action_mask": {
+        "compute_local": true,
+        "horizontal": true,
+        "local": true,
+        "offload_horizontal": true,
+        "offload_vertical": true,
+        "vertical": true
+      }
+    },
+    {
+      "action": "horizontal",
+      "legal_action_mask": {
+        "compute_local": true,
+        "horizontal": true,
+        "local": true,
+        "offload_horizontal": true,
+        "offload_vertical": true,
+        "vertical": true
+      }
+    },
+    {
+      "action": "horizontal",
+      "legal_action_mask": {
+        "compute_local": true,
+        "horizontal": true,
+        "local": true,
+        "offload_horizontal": true,
+        "offload_vertical": true,
+        "vertical": true
+      }
+    }
+  ],
+  "trace_id": "paper_default-0"
+}
