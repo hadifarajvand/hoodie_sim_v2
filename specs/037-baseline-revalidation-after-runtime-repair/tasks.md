@@ -29,11 +29,11 @@ description: "Task list for Feature 037 - Baseline Revalidation After Runtime Re
 
 ## Phase 2: Foundational (Blocking Prerequisites)
 
-**Purpose**: Define the revalidation inventory, environment contract, metrics schema, and report contract before any baseline run is attempted.
+**Purpose**: Define the revalidation inventory, approved topology source, workload sanity rules, environment contract, metrics schema, and report contract before any baseline run is attempted.
 
-- [ ] T003 Define the revalidation scope, baseline inventory, deterministic seed policy, scenario policy, and no-reproduction claim boundary in `specs/037-baseline-revalidation-after-runtime-repair/data-model.md`
-- [ ] T004 Define the revalidation report schema and no-drift flags in `src/analysis/baseline_revalidation_after_runtime_repair/report.py`
-- [ ] T005 Update the feature quickstart validation flow in `specs/037-baseline-revalidation-after-runtime-repair/quickstart.md` to name the approved interpreter, baseline policies, deterministic seeds, runtime-contract checks, and report artifacts
+- [ ] T003 Define the revalidation scope, approved Figure 7 topology requirement, baseline inventory, deterministic seed policy, workload sanity rule, scenario policy, and no-reproduction claim boundary in `specs/037-baseline-revalidation-after-runtime-repair/data-model.md`
+- [ ] T004 Define the revalidation report schema, approved-topology provenance, trace-count fields, pending-at-horizon count, and no-drift flags in `src/analysis/baseline_revalidation_after_runtime_repair/report.py`
+- [ ] T005 Update the feature quickstart validation flow in `specs/037-baseline-revalidation-after-runtime-repair/quickstart.md` to name the approved interpreter, baseline policies, deterministic seeds, approved Figure 7 topology checks, workload sanity checks, and report artifacts
 - [ ] T006 Update `AGENTS.md` for Feature 037 so it references `specs/037-baseline-revalidation-after-runtime-repair/plan.md` and `specs/037-baseline-revalidation-after-runtime-repair/spec.md`, states baseline revalidation only, and states no policy redesign, training, dependency, runtime-contract, or paper-reproduction changes
 
 **Checkpoint**: Foundation ready - baseline revalidation can now be implemented.
@@ -42,19 +42,21 @@ description: "Task list for Feature 037 - Baseline Revalidation After Runtime Re
 
 **Goal**: Prove each in-scope baseline policy runs through the shared `HoodieGymEnvironment` interface and obeys the legal action mask.
 
-**Independent Test**: FLC, VO, HO, RO, BCO, MLEO, and ADAPTIVE each complete a revalidation episode through the same environment path, and every selected action is legal at the time it is chosen.
+**Independent Test**: FLC, VO, HO, RO, BCO, MLEO, and ADAPTIVE each complete a revalidation episode through the same `HoodieGymEnvironment` path, the approved Figure 7 topology is used for `paper_default`, and every selected action is legal at the time it is chosen against the real environment mask.
 
 ### Tests for User Story 1
 
 - [ ] T007 [P] [US1] Add registry coverage proving the in-scope baselines are present in the policy source of truth in `tests/unit/test_baseline_registry_revalidation.py`
-- [ ] T008 [P] [US1] Add environment-path coverage proving each baseline runs through `HoodieGymEnvironment` and receives `legal_action_mask` in `tests/integration/test_baseline_revalidation_after_runtime_repair.py`
-- [ ] T009 [P] [US1] Add legal-action coverage proving every selected action is legal at selection time in `tests/integration/test_baseline_revalidation_after_runtime_repair.py`
+- [ ] T008 [P] [US1] Add approved-topology coverage proving `paper_default` uses `TopologyGraph.from_approved_assumption_registry()` and satisfies the Figure 7 invariants in `tests/unit/test_baseline_registry_revalidation.py`
+- [ ] T009 [P] [US1] Add horizontal-legal-mask coverage proving every baseline only offloads to approved Figure 7 neighbors, never to self or non-neighbors, in `tests/integration/test_baseline_revalidation_after_runtime_repair.py`
+- [ ] T010 [P] [US1] Add environment-path coverage proving each baseline runs through `HoodieGymEnvironment`, not a direct SlotEngine path, and receives the real `legal_action_mask` in `tests/integration/test_baseline_revalidation_after_runtime_repair.py`
+- [ ] T011 [P] [US1] Add vertical/cloud-legality coverage proving cloud offload remains legal independently of Figure 7 horizontal adjacency in `tests/integration/test_baseline_revalidation_after_runtime_repair.py`
 
 ### Implementation for User Story 1
 
-- [ ] T010 [US1] Implement baseline registry and policy inventory helpers for the seven in-scope baselines in `src/analysis/baseline_revalidation_after_runtime_repair/registry.py`
-- [ ] T011 [US1] Implement the shared environment revalidation harness that runs baselines through `HoodieGymEnvironment` in `src/analysis/baseline_revalidation_after_runtime_repair/runner.py`
-- [ ] T012 [US1] Verify baseline selection always flows through the standard environment action path in `src/environment/gym_adapter.py`
+- [ ] T012 [US1] Implement baseline registry and policy inventory helpers for the seven in-scope baselines in `src/analysis/baseline_revalidation_after_runtime_repair/registry.py`
+- [ ] T013 [US1] Implement the shared revalidation harness that runs baselines through `HoodieGymEnvironment` with `TopologyGraph.from_approved_assumption_registry()` for `paper_default` in `src/analysis/baseline_revalidation_after_runtime_repair/runner.py`
+- [ ] T014 [US1] Remove any synthetic complete-graph or all-to-all topology fallback from the Feature 037 runner path in `src/analysis/baseline_revalidation_after_runtime_repair/runner.py`
 
 **Checkpoint**: Each baseline should run through the shared environment path and honor the legal action mask.
 
@@ -62,19 +64,22 @@ description: "Task list for Feature 037 - Baseline Revalidation After Runtime Re
 
 **Goal**: Re-run the baselines with deterministic seeds and verify reproducible results for deterministic policies and RO.
 
-**Independent Test**: Fixed-seed runs reproduce artifact contents and metric outputs for deterministic baselines, and RO reproduces its action/result trace for the same seed.
+**Independent Test**: Fixed-seed runs reproduce artifact contents and metric outputs for deterministic baselines, RO reproduces its action/result trace for the same seed, and the trace artifacts include arrivals, finalized terminal tasks, and pending-at-horizon counts.
 
 ### Tests for User Story 2
 
-- [ ] T013 [P] [US2] Add deterministic-seed reproducibility coverage for the baseline revalidation runner in `tests/integration/test_baseline_revalidation_after_runtime_repair.py`
-- [ ] T014 [P] [US2] Add RO seed-controlled reproducibility coverage in `tests/integration/test_baseline_revalidation_after_runtime_repair.py`
-- [ ] T015 [P] [US2] Add metrics-schema and numeric sanity coverage in `tests/integration/test_baseline_revalidation_report.py`
+- [ ] T015 [P] [US2] Add deterministic-seed reproducibility coverage for the baseline revalidation runner in `tests/integration/test_baseline_revalidation_after_runtime_repair.py`
+- [ ] T016 [P] [US2] Add RO seed-controlled reproducibility coverage in `tests/integration/test_baseline_revalidation_after_runtime_repair.py`
+- [ ] T017 [P] [US2] Add workload-sanity coverage proving `N=20`, `T=110`, `P=0.5`, `Δ=0.1`, and `timeout_slots=20` in `tests/integration/test_baseline_revalidation_after_runtime_repair.py`
+- [ ] T018 [P] [US2] Add metrics-schema and numeric sanity coverage in `tests/integration/test_baseline_revalidation_report.py`
+- [ ] T019 [P] [US2] Add trace-artifact validity coverage proving per-run JSON, trace JSON, and summary CSV are non-empty valid files in `tests/integration/test_baseline_revalidation_report.py`
 
 ### Implementation for User Story 2
 
-- [ ] T016 [US2] Implement deterministic seed configuration for the baseline revalidation runner in `src/analysis/baseline_revalidation_after_runtime_repair/runner.py`
-- [ ] T017 [US2] Implement scenario selection for paper-default or approved smoke validation in `src/analysis/baseline_revalidation_after_runtime_repair/runner.py`
-- [ ] T018 [US2] Verify the evaluation payload includes policy name, scenario name, seed, final metrics, task counts, drop ratio, throughput, average delay, and runtime-contract markers in `src/analysis/baseline_revalidation_after_runtime_repair/report.py`
+- [ ] T020 [US2] Implement deterministic seed configuration for the baseline revalidation runner in `src/analysis/baseline_revalidation_after_runtime_repair/runner.py`
+- [ ] T021 [US2] Implement paper-default scenario selection and reject any complete-graph fallback in `src/analysis/baseline_revalidation_after_runtime_repair/runner.py`
+- [ ] T022 [US2] Record generated arrivals, finalized terminal tasks, and pending-at-horizon count in the baseline revalidation payload in `src/analysis/baseline_revalidation_after_runtime_repair/runner.py`
+- [ ] T023 [US2] Verify the evaluation payload includes policy name, scenario name, seed, final metrics, task counts, drop ratio, throughput, average delay, runtime-contract markers, and topology provenance in `src/analysis/baseline_revalidation_after_runtime_repair/report.py`
 
 **Checkpoint**: Revalidation runs should be deterministic for fixed seeds and reproducible for RO.
 
@@ -82,23 +87,25 @@ description: "Task list for Feature 037 - Baseline Revalidation After Runtime Re
 
 **Goal**: Produce a baseline revalidation report that records the post-repair sanity results without claiming paper reproduction.
 
-**Independent Test**: The report records policies, scenarios, seeds, runtime-contract verification, environment-interface verification, legal-action verification, reproducibility status, and the explicit no-paper-reproduction boundary.
+**Independent Test**: The report records policies, scenarios, seeds, runtime-contract verification, environment-interface verification, legal-action verification, reproducibility status, topology provenance, trace-count sanity, and the explicit no-paper-reproduction boundary.
 
 ### Tests for User Story 3
 
-- [ ] T019 [P] [US3] Add report-schema coverage for the required fields in `tests/integration/test_baseline_revalidation_report.py`
-- [ ] T020 [P] [US3] Add report-write coverage for JSON and Markdown artifacts in `tests/integration/test_baseline_revalidation_report.py`
-- [ ] T021 [P] [US3] Add no-curve-fitting and no-paper-reproduction claim coverage in `tests/integration/test_baseline_revalidation_report.py`
-- [ ] T022 [P] [US3] Add runtime-contract drift-guard coverage for Features 032, 033, 034, 035, and 036 in `tests/integration/test_baseline_revalidation_scope_guard.py`
-- [ ] T023 [P] [US3] Add scope-guard coverage proving no dependency, training, policy-redesign, or runtime-contract drift in `tests/integration/test_baseline_revalidation_scope_guard.py`
+- [ ] T024 [P] [US3] Add report-schema coverage for the required fields in `tests/integration/test_baseline_revalidation_report.py`
+- [ ] T025 [P] [US3] Add report-write coverage for JSON and Markdown artifacts in `tests/integration/test_baseline_revalidation_report.py`
+- [ ] T026 [P] [US3] Add no-curve-fitting and no-paper-reproduction claim coverage in `tests/integration/test_baseline_revalidation_report.py`
+- [ ] T027 [P] [US3] Add runtime-contract drift-guard coverage for Features 032, 033, 034, 035, and 036 in `tests/integration/test_baseline_revalidation_scope_guard.py`
+- [ ] T028 [P] [US3] Add scope-guard coverage proving no dependency, training, policy-redesign, or runtime-contract drift in `tests/integration/test_baseline_revalidation_scope_guard.py`
+- [ ] T029 [P] [US3] Add approved-topology regression coverage proving the runner rejects complete-graph / all-to-all topology fallback in `tests/integration/test_baseline_revalidation_after_runtime_repair.py`
+- [ ] T030 [P] [US3] Add trace-count and pending-task coverage proving revalidation reports arrivals, finalized terminal tasks, and pending-at-horizon counts in `tests/integration/test_baseline_revalidation_report.py`
 
 ### Implementation for User Story 3
 
-- [ ] T024 [US3] Add the baseline revalidation analysis package in `src/analysis/baseline_revalidation_after_runtime_repair/__init__.py`
-- [ ] T025 [US3] Implement the baseline revalidation report builder in `src/analysis/baseline_revalidation_after_runtime_repair/report.py`
-- [ ] T026 [US3] Generate the JSON report at `artifacts/analysis/baseline-revalidation-after-runtime-repair/baseline-revalidation-report.json`
-- [ ] T027 [US3] Generate the Markdown report at `artifacts/analysis/baseline-revalidation-after-runtime-repair/baseline-revalidation-report.md`
-- [ ] T028 [US3] Write optional evaluation artifacts, if supported by the existing runner, under `artifacts/evaluation/baseline-revalidation-after-runtime-repair/`
+- [ ] T031 [US3] Add the baseline revalidation analysis package exports in `src/analysis/baseline_revalidation_after_runtime_repair/__init__.py`
+- [ ] T032 [US3] Implement the baseline revalidation report builder with required topology provenance, trace-count fields, and no-paper-reproduction wording in `src/analysis/baseline_revalidation_after_runtime_repair/report.py`
+- [ ] T033 [US3] Generate the JSON report at `artifacts/analysis/baseline-revalidation-after-runtime-repair/baseline-revalidation-report.json`
+- [ ] T034 [US3] Generate the Markdown report at `artifacts/analysis/baseline-revalidation-after-runtime-repair/baseline-revalidation-report.md`
+- [ ] T035 [US3] Write optional evaluation artifacts, including per-run JSON, trace JSON, and summary CSV, under `artifacts/evaluation/baseline-revalidation-after-runtime-repair/`
 
 **Checkpoint**: Baseline sanity reporting should now be covered.
 
@@ -106,9 +113,9 @@ description: "Task list for Feature 037 - Baseline Revalidation After Runtime Re
 
 **Purpose**: Final validation and cleanup across all stories.
 
-- [ ] T029 Validate the full targeted test suite with the approved interpreter in `specs/037-baseline-revalidation-after-runtime-repair/quickstart.md`
-- [ ] T030 Verify the report schema fields, prerequisite tags, deterministic seeds, and no-curve-fitting / no-paper-reproduction flags in `tests/integration/test_baseline_revalidation_report.py`
-- [ ] T031 Verify `git status --short` and `git diff --name-only main...HEAD` show only Feature 037 scoped changes
+- [ ] T036 Validate the full targeted test suite with the approved interpreter in `specs/037-baseline-revalidation-after-runtime-repair/quickstart.md`
+- [ ] T037 Verify the report schema fields, prerequisite tags, deterministic seeds, topology provenance, and no-curve-fitting / no-paper-reproduction flags in `tests/integration/test_baseline_revalidation_report.py`
+- [ ] T038 Verify `git status --short` and `git diff --name-only main...HEAD` show only Feature 037 scoped changes
 
 ---
 
@@ -139,16 +146,20 @@ description: "Task list for Feature 037 - Baseline Revalidation After Runtime Re
 
 ```bash
 Task: "Add registry coverage proving the in-scope baselines are present in the policy source of truth in tests/unit/test_baseline_registry_revalidation.py"
-Task: "Add environment-path coverage proving each baseline runs through HoodieGymEnvironment and receives legal_action_mask in tests/integration/test_baseline_revalidation_flow.py"
-Task: "Add legal-action coverage proving every selected action is legal at selection time in tests/integration/test_baseline_revalidation_flow.py"
+Task: "Add approved-topology coverage proving paper_default uses TopologyGraph.from_approved_assumption_registry() and satisfies the Figure 7 invariants in tests/unit/test_baseline_registry_revalidation.py"
+Task: "Add horizontal-legal-mask coverage proving every baseline only offloads to approved Figure 7 neighbors, never to self or non-neighbors, in tests/integration/test_baseline_revalidation_after_runtime_repair.py"
+Task: "Add environment-path coverage proving each baseline runs through HoodieGymEnvironment, not a direct SlotEngine path, and receives the real legal_action_mask in tests/integration/test_baseline_revalidation_after_runtime_repair.py"
+Task: "Add vertical/cloud-legality coverage proving cloud offload remains legal independently of Figure 7 horizontal adjacency in tests/integration/test_baseline_revalidation_after_runtime_repair.py"
 ```
 
 ### User Story 2
 
 ```bash
-Task: "Add deterministic-seed reproducibility coverage for the baseline revalidation runner in tests/integration/test_baseline_revalidation_flow.py"
-Task: "Add RO seed-controlled reproducibility coverage in tests/integration/test_baseline_revalidation_flow.py"
+Task: "Add deterministic-seed reproducibility coverage for the baseline revalidation runner in tests/integration/test_baseline_revalidation_after_runtime_repair.py"
+Task: "Add RO seed-controlled reproducibility coverage in tests/integration/test_baseline_revalidation_after_runtime_repair.py"
+Task: "Add workload-sanity coverage proving N=20, T=110, P=0.5, Δ=0.1, and timeout_slots=20 in tests/integration/test_baseline_revalidation_after_runtime_repair.py"
 Task: "Add metrics-schema and numeric sanity coverage in tests/integration/test_baseline_revalidation_report.py"
+Task: "Add trace-artifact validity coverage proving per-run JSON, trace JSON, and summary CSV are non-empty valid files in tests/integration/test_baseline_revalidation_report.py"
 ```
 
 ### User Story 3
@@ -159,6 +170,8 @@ Task: "Add report-write coverage for JSON and Markdown artifacts in tests/integr
 Task: "Add no-curve-fitting and no-paper-reproduction claim coverage in tests/integration/test_baseline_revalidation_report.py"
 Task: "Add runtime-contract drift-guard coverage for Features 032, 033, 034, 035, and 036 in tests/integration/test_baseline_revalidation_scope_guard.py"
 Task: "Add scope-guard coverage proving no dependency, training, policy-redesign, or runtime-contract drift in tests/integration/test_baseline_revalidation_scope_guard.py"
+Task: "Add approved-topology regression coverage proving the runner rejects complete-graph / all-to-all topology fallback in tests/integration/test_baseline_revalidation_after_runtime_repair.py"
+Task: "Add trace-count and pending-task coverage proving revalidation reports arrivals, finalized terminal tasks, and pending-at-horizon counts in tests/integration/test_baseline_revalidation_report.py"
 ```
 
 ## Implementation Strategy
