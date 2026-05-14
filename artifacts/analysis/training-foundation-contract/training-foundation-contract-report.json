@@ -1,0 +1,196 @@
+{
+  "action_index_contract": {
+    "action_to_semantics": {
+      "0": "local",
+      "1": "horizontal",
+      "2": "vertical_cloud"
+    },
+    "horizontal_resolution_rule": "helper_resolves_approved_neighbor",
+    "illegal_action_behavior": "explicitly_rejected_or_masked",
+    "mask_surface": "separate_metadata",
+    "version": "1.0",
+    "vertical_cloud_independent_rule": "vertical_cloud_independent_of_figure7_adjacency"
+  },
+  "checkpoint_schema": {
+    "action_contract_version": "1.0",
+    "commit_sha": {
+      "required": true,
+      "source": "checkpoint_creation",
+      "type": "git_commit_sha"
+    },
+    "config_hash": {
+      "required": true,
+      "source": "checkpoint_creation",
+      "type": "content_hash"
+    },
+    "config_path": {
+      "required": true,
+      "source": "checkpoint_creation",
+      "type": "filesystem_path"
+    },
+    "feature_id": "038-training-foundation-contract",
+    "metadata_only": true,
+    "no_actual_model_checkpoint": true,
+    "paper_default_parameter_refs": [
+      "paper_default"
+    ],
+    "replay_schema_version": "1.0",
+    "runtime_contract_refs": [
+      "Feature 032",
+      "Feature 033",
+      "Feature 034",
+      "Feature 035",
+      "Feature 036",
+      "Feature 037"
+    ],
+    "seed_bundle": {
+      "action_exploration_seed": 23,
+      "evaluation_trace_generation_seed": 13,
+      "model_initialization_seed": 19,
+      "replay_sampling_seed": 17,
+      "training_trace_generation_seed": 11
+    },
+    "state_contract_version": "1.0",
+    "target_update_counter": 0,
+    "training_step_counters": {
+      "environment_steps": 0,
+      "optimization_steps": 0
+    }
+  },
+  "feature_id": "038-training-foundation-contract",
+  "final_verdict": "blocked_readiness",
+  "no_curve_fitting": true,
+  "no_dependency_drift": true,
+  "no_environment_contract_drift": true,
+  "no_neural_network_change": true,
+  "no_paper_reproduction_claim": true,
+  "no_policy_drift": true,
+  "no_reward_timing_change": true,
+  "no_training_started": true,
+  "prerequisite_tags_verified": [
+    {
+      "commit": "69debe2f3c75e5cfe2e059c49e1063156c00130e",
+      "tag": "037-baseline-revalidation-after-runtime-repair-complete"
+    }
+  ],
+  "replay_schema": {
+    "delayed_reward_policy": "reward_available_false_until_terminal",
+    "fields": [
+      "state_t",
+      "action_index",
+      "action_semantics",
+      "legal_action_mask_t",
+      "reward_t_plus_k",
+      "reward_available",
+      "next_state",
+      "done",
+      "truncated",
+      "task_id",
+      "source_agent_id",
+      "selected_destination",
+      "arrival_slot",
+      "decision_slot",
+      "terminal_slot",
+      "terminal_outcome",
+      "delay_slots",
+      "seed",
+      "trace_id",
+      "episode_id",
+      "runtime_contract_version"
+    ],
+    "no_fake_terminal_samples": true,
+    "pending_at_horizon_policy": "explicit_pending_at_horizon",
+    "version": "1.0"
+  },
+  "runtime_contracts_verified": [
+    "Feature 032",
+    "Feature 033",
+    "Feature 034",
+    "Feature 035",
+    "Feature 036",
+    "Feature 037"
+  ],
+  "seed_protocol": {
+    "action_exploration_seed": 23,
+    "evaluation_trace_generation_seed": 13,
+    "model_initialization_seed": 19,
+    "numpy_seeded_now": true,
+    "python_seeded_now": true,
+    "recorded_in_artifacts": true,
+    "replay_sampling_seed": 17,
+    "torch_seed_future_required": true,
+    "training_trace_generation_seed": 11,
+    "version": "1.0"
+  },
+  "state_contract": {
+    "agent_key_field": "edge_agent_id",
+    "diagnostics_excluded_from_model_input": true,
+    "field_order": [
+      "queue_length",
+      "queue_delay",
+      "available_capacity"
+    ],
+    "field_types": {
+      "available_capacity": "float",
+      "queue_delay": "float",
+      "queue_length": "int"
+    },
+    "history_buffer_policy": "separate_history_buffer",
+    "lookback_w": 10,
+    "missing_value_encoding": {
+      "no_task": 0
+    },
+    "no_privileged_future_information": true,
+    "normalization_rules": {
+      "queue_delay": "divide_by_slot_duration"
+    },
+    "observable_only": true,
+    "version": "1.0"
+  },
+  "target_update_frequency_contract": {
+    "candidate_meanings": [
+      "environment_step",
+      "optimization_step",
+      "replay_insertion",
+      "gradient_update"
+    ],
+    "iteration_unit": null,
+    "iteration_unit_status": "unresolved_pending_user_approval",
+    "training_use_allowed": false,
+    "update_frequency": 2000
+  },
+  "terminal_outcome_exposure_gate": {
+    "completed_tasks": 5,
+    "decisions_exposed": 980,
+    "dropped_tasks": 5,
+    "feature_037_sparse_terminal_issue_recorded": true,
+    "finalized_terminal_tasks": 10,
+    "generated_arrivals": 1000,
+    "pending_at_horizon": 970,
+    "pending_transition_ratio": 0.9897959183673469,
+    "per_policy_smoke_statistics": [
+      {
+        "policy": "random",
+        "sample_size": 5
+      }
+    ],
+    "reward_bearing_transition_ratio": 0.01020408163265306,
+    "terminal_transition_ratio": 0.01020408163265306,
+    "threshold_status": "pending_user_approval",
+    "training_blocked": true
+  },
+  "train_eval_split_protocol": {
+    "evaluation_trace_ids": [
+      "eval-a"
+    ],
+    "explicit_trace_ids": true,
+    "fixed_evaluation_trace_bank": true,
+    "no_evaluation_on_training_traces": true,
+    "no_unfair_baseline_hoodie_trace_mismatch": true,
+    "training_trace_ids": [
+      "train-a",
+      "train-b"
+    ],
+    "version": "1.0"
+  }
+}
