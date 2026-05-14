@@ -17,7 +17,7 @@
 
 **Purpose**: Project initialization and shared documentation scaffolding
 
-- [ ] T001 Verify preconditions from the active branch and commit state in `tests/integration/test_training_foundation_scope_guard.py`
+- [ ] T001 Verify preconditions from the active branch and commit state in `tests/integration/test_training_foundation_scope_guard.py`, and block implementation unless all of these assertions pass exactly: `git branch --show-current == 038-training-foundation-contract`; current branch != `main`; `git fetch --all --tags --prune` has been run; `git rev-parse main == git rev-parse origin/main`; `git rev-parse main == git rev-parse 037-baseline-revalidation-after-runtime-repair-complete^{}`; `git diff --name-only 037-baseline-revalidation-after-runtime-repair-complete^{} main` is empty; `git status --short` has no unrelated files; Feature 038 is based on `main` after Feature 037 tag-complete; stale branches `037-baseline-revalidation`, `037-baseline-revalidation-after-runtime-repair`, and any `039-*` branch are not used as the implementation base; implementation is blocked if any prerequisite assertion fails
 - [ ] T002 Create analysis package scaffold for `src/analysis/training_foundation_contract/__init__.py` and `src/analysis/training_foundation_contract/report.py`
 - [ ] T003 [P] Create artifact output directories for `artifacts/analysis/training-foundation-contract/`
 - [ ] T004 [P] Create contract documentation folder for `specs/038-training-foundation-contract/contracts/`
@@ -119,7 +119,7 @@
 
 - [ ] T035 [P] Add contract notes for the readiness gate and sparse-terminal blocker in `specs/038-training-foundation-contract/quickstart.md`
 - [ ] T036 [P] Update `AGENTS.md` to point to `specs/038-training-foundation-contract/plan.md`
-- [ ] T037 Add scope-guard integration tests that reject training/model/agent/runtime/policy/dependency drift in `tests/integration/test_training_foundation_scope_guard.py`
+- [ ] T037 Add scope-guard integration tests in `tests/integration/test_training_foundation_scope_guard.py` that explicitly block any change outside these allowed paths: `specs/038-training-foundation-contract/`, `src/analysis/training_foundation_contract/`, `tests/unit/test_training_foundation_contract.py`, `tests/integration/test_training_foundation_contract_report.py`, `tests/integration/test_training_readiness_gate.py`, `tests/integration/test_training_foundation_scope_guard.py`, and `artifacts/analysis/training-foundation-contract/`; and explicitly block these file families: dependency files `requirements*.txt`, `pyproject.toml`, `poetry.lock`, `Pipfile`, `Pipfile.lock`, `environment*.yml`, `setup.py`, `setup.cfg`; runtime/environment contract files `src/environment/`; baseline policy files `src/policies/`; training loop files `src/training/`; neural-network/model/agent/learning files `src/models/`, `src/agents/`, `src/learning/`; replay execution or replay buffer implementation outside schema-only contract definitions `src/replay/`, `src/memory/`; optimizer code; campaign/experiment runners `src/campaigns/`, `artifacts/campaigns/`, and scripts that launch training/evaluation campaigns; and paper registries/resources `resources/papers/`, `artifacts/analysis/user-approved-assumption-patch-registry/`, `artifacts/analysis/runtime-adoption-approved-assumption-registry/`, `artifacts/analysis/baseline-revalidation-after-runtime-repair/`
 - [ ] T038 Add report file content checks for `artifacts/analysis/training-foundation-contract/training-foundation-contract-report.json` and `.md` in `tests/integration/test_training_foundation_contract_report.py`
 
 **Checkpoint**: Documentation, guardrails, and report validation are complete.
@@ -177,4 +177,3 @@
 2. Deliver US2 next to lock reproducibility and split hygiene.
 3. Deliver US3 last to prove training remains blocked until terminal exposure is sufficient.
 4. Finish with scope and report guardrails so later implementation cannot drift into training code or runtime changes.
-

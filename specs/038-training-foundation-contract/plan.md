@@ -1,6 +1,6 @@
 # Implementation Plan: Training Foundation Contract
 
-**Branch**: `[039-training-foundation-contract]` | **Date**: 2026-05-13 | **Spec**: [`spec.md`](spec.md)
+**Branch**: `[038-training-foundation-contract]` | **Date**: 2026-05-13 | **Spec**: [`spec.md`](spec.md)
 **Input**: Feature specification from `/specs/038-training-foundation-contract/spec.md`
 
 **Note**: This plan is contract-only. It defines the training foundation artifacts needed before any DRL implementation is approved.
@@ -141,4 +141,3 @@ tests/
 - [x] Definition-of-done impact checked
 
 No runtime or dependency changes are authorized by this plan.
-
