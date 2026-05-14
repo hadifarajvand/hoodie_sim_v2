@@ -154,9 +154,9 @@ class TrainEvalSplitProtocol:
 @dataclass(slots=True)
 class CheckpointSchema:
     feature_id: str
-    commit_sha: str
-    config_path: str
-    config_hash: str
+    commit_sha: dict[str, Any]
+    config_path: dict[str, Any]
+    config_hash: dict[str, Any]
     state_contract_version: str
     action_contract_version: str
     replay_schema_version: str
@@ -171,9 +171,9 @@ class CheckpointSchema:
     def to_dict(self) -> dict[str, Any]:
         return {
             "feature_id": self.feature_id,
-            "commit_sha": self.commit_sha,
-            "config_path": self.config_path,
-            "config_hash": self.config_hash,
+            "commit_sha": dict(self.commit_sha),
+            "config_path": dict(self.config_path),
+            "config_hash": dict(self.config_hash),
             "state_contract_version": self.state_contract_version,
             "action_contract_version": self.action_contract_version,
             "replay_schema_version": self.replay_schema_version,

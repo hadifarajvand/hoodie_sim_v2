@@ -13,9 +13,21 @@
   },
   "checkpoint_schema": {
     "action_contract_version": "1.0",
-    "commit_sha": "2967c2a",
-    "config_hash": "deadbeef",
-    "config_path": "configs/training_foundation.yaml",
+    "commit_sha": {
+      "required": true,
+      "source": "checkpoint_creation",
+      "type": "git_commit_sha"
+    },
+    "config_hash": {
+      "required": true,
+      "source": "checkpoint_creation",
+      "type": "content_hash"
+    },
+    "config_path": {
+      "required": true,
+      "source": "checkpoint_creation",
+      "type": "filesystem_path"
+    },
     "feature_id": "038-training-foundation-contract",
     "metadata_only": true,
     "no_actual_model_checkpoint": true,
@@ -142,8 +154,8 @@
       "replay_insertion",
       "gradient_update"
     ],
-    "iteration_unit": "environment_step",
-    "iteration_unit_status": "explicit",
+    "iteration_unit": null,
+    "iteration_unit_status": "unresolved_pending_user_approval",
     "training_use_allowed": false,
     "update_frequency": 2000
   },

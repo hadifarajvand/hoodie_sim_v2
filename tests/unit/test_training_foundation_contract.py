@@ -83,8 +83,8 @@ class TrainingFoundationContractUnitTests(unittest.TestCase):
     def _target_contract(self) -> TargetUpdateFrequencyContract:
         return TargetUpdateFrequencyContract(
             update_frequency=2000,
-            iteration_unit="environment_step",
-            iteration_unit_status="explicit",
+            iteration_unit=None,
+            iteration_unit_status="unresolved_pending_user_approval",
             candidate_meanings=["environment_step", "optimization_step", "replay_insertion", "gradient_update"],
             training_use_allowed=False,
         )
@@ -117,9 +117,9 @@ class TrainingFoundationContractUnitTests(unittest.TestCase):
     def _checkpoint_schema(self) -> CheckpointSchema:
         return CheckpointSchema(
             feature_id="038-training-foundation-contract",
-            commit_sha="abc123",
-            config_path="configs/training_foundation.yaml",
-            config_hash="deadbeef",
+            commit_sha={"required": True, "type": "git_commit_sha", "source": "checkpoint_creation"},
+            config_path={"required": True, "type": "filesystem_path", "source": "checkpoint_creation"},
+            config_hash={"required": True, "type": "content_hash", "source": "checkpoint_creation"},
             state_contract_version="1.0",
             action_contract_version="1.0",
             replay_schema_version="1.0",
@@ -183,21 +183,26 @@ class TrainingFoundationContractUnitTests(unittest.TestCase):
     def test_target_update_frequency_contract_records_2000_iterations(self) -> None:
         contract = self._target_contract()
         self.assertEqual(contract.update_frequency, 2000)
-        self.assertEqual(contract.iteration_unit, "environment_step")
+        self.assertIsNone(contract.iteration_unit)
+        self.assertEqual(contract.iteration_unit_status, "unresolved_pending_user_approval")
         self.assertFalse(contract.training_use_allowed)
 
     def test_target_update_frequency_iteration_unit_is_explicit_or_unresolved(self) -> None:
-        explicit = self._target_contract()
+        unresolved = self._target_contract()
+        self.assertEqual(unresolved.iteration_unit_status, "unresolved_pending_user_approval")
+        self.assertIsNone(unresolved.iteration_unit)
+        self.assertFalse(unresolved.training_use_allowed)
+        self.assertIn("optimization_step", unresolved.candidate_meanings)
+
         unresolved = TargetUpdateFrequencyContract(
             update_frequency=2000,
-            iteration_unit=None,
-            iteration_unit_status="unresolved",
-            candidate_meanings=explicit.candidate_meanings,
+            iteration_unit="environment_step",
+            iteration_unit_status="explicit_user_approved",
+            candidate_meanings=self._target_contract().candidate_meanings,
             training_use_allowed=False,
         )
-        self.assertIn(explicit.iteration_unit_status, {"explicit"})
-        self.assertEqual(unresolved.iteration_unit_status, "unresolved")
-        self.assertIn("optimization_step", unresolved.candidate_meanings)
+        self.assertEqual(unresolved.iteration_unit, "environment_step")
+        self.assertEqual(unresolved.iteration_unit_status, "explicit_user_approved")
 
     def test_seed_protocol_separates_train_eval_replay_model_exploration_seeds(self) -> None:
         protocol = self._seed_protocol()
@@ -227,6 +232,11 @@ class TrainingFoundationContractUnitTests(unittest.TestCase):
         self.assertIn("runtime_contract_refs", payload)
         self.assertTrue(payload["metadata_only"])
         self.assertTrue(payload["no_actual_model_checkpoint"])
+        self.assertIsInstance(payload["commit_sha"], dict)
+        self.assertIsInstance(payload["config_path"], dict)
+        self.assertIsInstance(payload["config_hash"], dict)
+        self.assertNotEqual(payload["commit_sha"], "2967c2a")
+        self.assertNotEqual(payload["config_hash"], "deadbeef")
 
     def test_terminal_outcome_exposure_gate_blocks_training_when_terminal_ratio_insufficient(self) -> None:
         report = build_training_foundation_report(

@@ -48,8 +48,8 @@ class TrainingFoundationReadinessGateIntegrationTests(unittest.TestCase):
             ),
             target_update_frequency_contract=TargetUpdateFrequencyContract(
                 update_frequency=2000,
-                iteration_unit="environment_step",
-                iteration_unit_status="explicit",
+                iteration_unit=None,
+                iteration_unit_status="unresolved_pending_user_approval",
                 candidate_meanings=["environment_step", "optimization_step", "replay_insertion", "gradient_update"],
                 training_use_allowed=False,
             ),
@@ -76,9 +76,9 @@ class TrainingFoundationReadinessGateIntegrationTests(unittest.TestCase):
             ),
             checkpoint_schema=CheckpointSchema(
                 feature_id="038-training-foundation-contract",
-                commit_sha="abc123",
-                config_path="configs/training_foundation.yaml",
-                config_hash="deadbeef",
+                commit_sha={"required": True, "type": "git_commit_sha", "source": "checkpoint_creation"},
+                config_path={"required": True, "type": "filesystem_path", "source": "checkpoint_creation"},
+                config_hash={"required": True, "type": "content_hash", "source": "checkpoint_creation"},
                 state_contract_version="1.0",
                 action_contract_version="1.0",
                 replay_schema_version="1.0",
@@ -107,6 +107,8 @@ class TrainingFoundationReadinessGateIntegrationTests(unittest.TestCase):
         self.assertEqual(gate.completed_tasks + gate.dropped_tasks, gate.finalized_terminal_tasks)
         self.assertGreater(gate.pending_transition_ratio, 0.0)
         self.assertGreater(gate.reward_bearing_transition_ratio, 0.0)
+        self.assertIsNone(report.target_update_frequency_contract.iteration_unit)
+        self.assertEqual(report.target_update_frequency_contract.iteration_unit_status, "unresolved_pending_user_approval")
 
 
 if __name__ == "__main__":

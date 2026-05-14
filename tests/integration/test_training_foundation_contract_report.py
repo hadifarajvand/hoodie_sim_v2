@@ -74,8 +74,8 @@ class TrainingFoundationContractReportIntegrationTests(unittest.TestCase):
             ),
             target_update_frequency_contract=TargetUpdateFrequencyContract(
                 update_frequency=2000,
-                iteration_unit="environment_step",
-                iteration_unit_status="explicit",
+                iteration_unit=None,
+                iteration_unit_status="unresolved_pending_user_approval",
                 candidate_meanings=["environment_step", "optimization_step", "replay_insertion", "gradient_update"],
                 training_use_allowed=False,
             ),
@@ -102,9 +102,9 @@ class TrainingFoundationContractReportIntegrationTests(unittest.TestCase):
             ),
             checkpoint_schema=CheckpointSchema(
                 feature_id="038-training-foundation-contract",
-                commit_sha="abc123",
-                config_path="configs/training_foundation.yaml",
-                config_hash="deadbeef",
+                commit_sha={"required": True, "type": "git_commit_sha", "source": "checkpoint_creation"},
+                config_path={"required": True, "type": "filesystem_path", "source": "checkpoint_creation"},
+                config_hash={"required": True, "type": "content_hash", "source": "checkpoint_creation"},
                 state_contract_version="1.0",
                 action_contract_version="1.0",
                 replay_schema_version="1.0",
@@ -171,6 +171,12 @@ class TrainingFoundationContractReportIntegrationTests(unittest.TestCase):
         self.assertTrue(payload["terminal_outcome_exposure_gate"]["training_blocked"])
         self.assertEqual(payload["replay_schema"]["pending_at_horizon_policy"], "explicit_pending_at_horizon")
         self.assertEqual(payload["target_update_frequency_contract"]["update_frequency"], 2000)
+        self.assertIsNone(payload["target_update_frequency_contract"]["iteration_unit"])
+        self.assertEqual(payload["target_update_frequency_contract"]["iteration_unit_status"], "unresolved_pending_user_approval")
+        self.assertNotEqual(payload["checkpoint_schema"]["commit_sha"], "2967c2a")
+        self.assertNotEqual(payload["checkpoint_schema"]["config_hash"], "deadbeef")
+        self.assertTrue(payload["checkpoint_schema"]["metadata_only"])
+        self.assertTrue(payload["checkpoint_schema"]["no_actual_model_checkpoint"])
 
     def test_training_foundation_artifacts_are_written(self) -> None:
         with tempfile.TemporaryDirectory() as tmpdir:
@@ -183,6 +189,10 @@ class TrainingFoundationContractReportIntegrationTests(unittest.TestCase):
             self.assertIn("terminal_outcome_exposure_gate", payload)
             self.assertIn("pending_user_approval", md_path.read_text(encoding="utf-8"))
             self.assertIn("no_training_started", md_path.read_text(encoding="utf-8"))
+            self.assertIsNone(payload["target_update_frequency_contract"]["iteration_unit"])
+            self.assertEqual(payload["target_update_frequency_contract"]["iteration_unit_status"], "unresolved_pending_user_approval")
+            self.assertIsInstance(payload["checkpoint_schema"]["commit_sha"], dict)
+            self.assertIsInstance(payload["checkpoint_schema"]["config_hash"], dict)
 
 
 if __name__ == "__main__":
