@@ -1,13 +1,13 @@
 <!-- SPECKIT START -->
 For additional context about technologies to be used, project structure,
 shell commands, and other important information, read
-`specs/038-training-foundation-contract/plan.md`
+`specs/036-deadline-timeout-off-by-one-audit/plan.md`
+and `specs/036-deadline-timeout-off-by-one-audit/spec.md`
 
-Feature 038 scope: contract-only training foundation for HOODIE.
-Do not add DRL training, neural-network code, replay execution, optimizer behavior,
-or production training loops. Do not change runtime contracts, baseline policies,
-topology, timeout/deadline, execution, transmission, capacity sharing, reward timing,
-reward equation, or dependencies.
+Feature 036 scope: deadline/timeout boundary semantics only.
+Do not change execution-time formulas, transmission-delay wiring,
+public/cloud capacity-sharing logic, topology legality, policy behavior,
+training/neural-network code, dependency files, campaign artifacts, or paper-recovery claims.
 <!-- SPECKIT END -->
 
 ## External Reference Usage

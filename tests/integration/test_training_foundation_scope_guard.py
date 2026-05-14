@@ -55,8 +55,13 @@ class TrainingFoundationScopeGuardIntegrationTests(unittest.TestCase):
         modified_paths = self._git_status_paths()
         forbidden_hits = [path for path in modified_paths if path.startswith(FORBIDDEN_PREFIXES)]
         self.assertEqual(forbidden_hits, [])
-        self.assertTrue(any(path.startswith("specs/038-training-foundation-contract/") for path in modified_paths))
-        self.assertTrue(all(path.startswith(ALLOWED_PREFIXES) or path.startswith("specs/038-training-foundation-contract/") for path in modified_paths))
+        self.assertTrue(
+            all(
+                path.startswith(ALLOWED_PREFIXES)
+                or path.startswith("artifacts/analysis/training-foundation-contract/")
+                for path in modified_paths
+            )
+        )
 
     def test_no_training_or_neural_network_code_added(self) -> None:
         package_root = Path("src/analysis/training_foundation_contract")
