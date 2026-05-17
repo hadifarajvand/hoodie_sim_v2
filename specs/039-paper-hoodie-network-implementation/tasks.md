@@ -16,15 +16,22 @@
 
 ## Phase 1: Setup and gates
 
-- [ ] T001 Verify the feature branch and repository prerequisite state before any implementation work:
-  - current branch is `039-paper-hoodie-network-implementation`
-  - current branch is not `main`
-  - `main == origin/main`
-  - `main == 038-training-foundation-contract-complete^{}` using the dereferenced annotated tag commit
+- [X] T001 Verify the feature branch and repository prerequisite state before any implementation work:
+  - `git branch --show-current == 039-paper-hoodie-network-implementation`
+  - current branch != main
+  - `git rev-parse main == git rev-parse origin/main`
+  - git rev-parse main == git rev-parse 038-training-foundation-contract-complete^{}
   - `git diff --name-only 038-training-foundation-contract-complete^{} main` is empty
-  - `git status --short` contains no unrelated dirty files outside `specs/039-paper-hoodie-network-implementation/`
-  - stop immediately if any prerequisite assertion fails
-- [ ] T002 Check dependency availability in the approved interpreter and record the result for the feature:
+  - `.specify/feature.json points to specs/039-paper-hoodie-network-implementation`
+  - `.specify/feature.json does not point to specs/036-deadline-timeout-off-by-one-audit`
+  - `specs/039-paper-hoodie-network-implementation/ exists`
+  - `git status --short may contain .specify/feature.json only as a local active-feature pointer`
+  - `git status --short may contain specs/039-paper-hoodie-network-implementation/`
+  - `git status --short must not contain other dirty files`
+  - `.specify/feature.json must not be staged`
+  - `.specify/feature.json must not appear in git diff --name-only main...HEAD`
+  - implementation is blocked if any assertion fails
+- [X] T002 Check dependency availability in the approved interpreter and record the result for the feature:
   - verify whether `torch` imports successfully in `/Users/hadi/Documents/GitHub/hoodie_sim_v2/src/.venvmac/bin/python`
   - verify no dependency files are modified
   - if `torch` is unavailable, generate the `dependency_blocked` report and stop without dependency edits
@@ -32,7 +39,7 @@
 
 ## Phase 2: Foundation
 
-- [ ] T003 [US1] Define the `PaperHoodieNetworkConfig` contract in `src/analysis/paper_hoodie_network_implementation/` and validate the architecture-only fields:
+- [X] T003 [US1] Define the `PaperHoodieNetworkConfig` contract in `src/analysis/paper_hoodie_network_implementation/` and validate the architecture-only fields:
   - separate `q_network_hidden_layers` from `lstm_hidden_size` and `lstm_num_layers`
   - require `q_network_hidden_layers == [1024, 1024, 1024]`
   - require `lstm_num_layers == 1`
@@ -41,7 +48,7 @@
   - require `action_count == 3`
   - reject sloppy `N_L` coupling or any reused field that conflates Q-network and LSTM configuration
   - reject any config that expands the stable Feature 038 action space
-- [ ] T004 [US3] Define the architecture data model and report schema contracts in `src/analysis/paper_hoodie_network_implementation/`:
+- [X] T004 [US3] Define the architecture data model and report schema contracts in `src/analysis/paper_hoodie_network_implementation/`:
   - `PaperHoodieNetworkConfig`
   - `LstmEncoder`
   - `QNetworkBody`
@@ -56,7 +63,7 @@
 
 **Independent Test**: The architecture can be instantiated deterministically and its shapes can be validated without any optimizer step, replay sampling, or campaign execution.
 
-- [ ] T005 [P] [US1] Add config validation tests in `tests/unit/test_paper_hoodie_network_config.py`:
+- [X] T005 [P] [US1] Add config validation tests in `tests/unit/test_paper_hoodie_network_config.py`:
   - `test_network_config_separates_q_and_lstm_layers`
   - `test_network_config_rejects_sloppy_n_l_coupling`
   - `test_action_count_matches_feature_038_contract`
@@ -103,12 +110,12 @@
 
 **Independent Test**: Report artifacts and tests show that no training loop, optimizer step, replay execution, or environment change was introduced.
 
-- [ ] T010 [P] [US3] Add regression tests in `tests/unit/test_paper_hoodie_network_shapes.py` and `tests/integration/test_paper_hoodie_network_scope_guard.py`:
+- [X] T010 [P] [US3] Add regression tests in `tests/unit/test_paper_hoodie_network_shapes.py` and `tests/integration/test_paper_hoodie_network_scope_guard.py`:
   - `test_no_training_optimizer_replay_execution_added`
   - `test_no_dependency_environment_policy_reward_drift`
   - ensure no training loop, optimizer step, replay execution, environment drift, policy drift, or reward timing drift is introduced
   - keep the Feature 038 readiness block respected
-- [ ] T011 [US3] Generate the architecture report artifacts under `artifacts/analysis/paper-hoodie-network-implementation/`:
+- [X] T011 [US3] Generate the architecture report artifacts under `artifacts/analysis/paper-hoodie-network-implementation/`:
   - `network-implementation-report.json`
   - `network-implementation-report.md`
   - include `dependency_status`
@@ -122,18 +129,32 @@
   - include `no_curve_fitting = true`
   - include `no_paper_reproduction_claim = true`
   - if `torch` is unavailable, the report must state `dependency_status=blocked_missing_existing_torch`
-- [ ] T012 [US3] Add the scope-guard test in `tests/integration/test_paper_hoodie_network_scope_guard.py`:
-  - block dependency files
-  - block `src/environment/`
-  - block `src/policies/`
-  - block `src/training/`
-  - block `src/replay/`
-  - block `src/memory/`
-  - block optimizer code
-  - block campaign runners
-  - block paper registries/resources
-  - block runtime and reward changes
-  - allow only the approved feature spec, analysis package, optional model file if torch is already available, tests, and artifacts
+- [X] T012 [US3] Add the scope-guard test in `tests/integration/test_paper_hoodie_network_scope_guard.py`:
+  - Allowed committed paths:
+    - `specs/039-paper-hoodie-network-implementation/`
+    - `src/analysis/paper_hoodie_network_implementation/`
+    - `src/models/hoodie_network.py` only if torch is already available
+    - `tests/unit/test_paper_hoodie_network_config.py`
+    - `tests/unit/test_paper_hoodie_network_shapes.py`
+    - `tests/integration/test_paper_hoodie_network_report.py`
+    - `tests/integration/test_paper_hoodie_network_scope_guard.py`
+    - `artifacts/analysis/paper-hoodie-network-implementation/`
+  - Local-only allowed path:
+    - `.specify/feature.json`, only while it points to `specs/039-paper-hoodie-network-implementation` and only if it is not staged and not included in `main...HEAD`
+  - Forbidden in committed branch diff:
+    - `.specify/feature.json`
+    - dependency files
+    - `src/environment/`
+    - `src/policies/`
+    - `src/training/`
+    - `src/replay/`
+    - `src/memory/`
+    - optimizer code
+    - campaign runners
+    - resources/papers/
+    - paper registries
+    - Feature 038 artifacts
+    - Feature 037 artifacts
 
 ## Phase 6: Final verification
 
