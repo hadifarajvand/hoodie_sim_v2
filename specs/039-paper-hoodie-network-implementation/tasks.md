@@ -21,7 +21,7 @@
   - current branch != main
   - `git rev-parse main == git rev-parse origin/main`
   - git rev-parse main == git rev-parse 038-training-foundation-contract-complete^{}
-  - `git diff --name-only 038-training-foundation-contract-complete^{} main` is empty
+  - git diff --name-only 038-training-foundation-contract-complete^{} main is empty
   - `.specify/feature.json points to specs/039-paper-hoodie-network-implementation`
   - `.specify/feature.json does not point to specs/036-deadline-timeout-off-by-one-audit`
   - `specs/039-paper-hoodie-network-implementation/ exists`
@@ -158,7 +158,7 @@
 
 ## Phase 6: Final verification
 
-- [ ] T013 Run the required validation command exactly as specified and record the outcome:
+- [X] T013 Run the required validation command exactly as specified and record the outcome:
   - `PYTHONPATH=/Users/hadi/Documents/GitHub/hoodie_sim_v2 /Users/hadi/Documents/GitHub/hoodie_sim_v2/src/.venvmac/bin/python -m unittest \`
     - `tests.unit.test_paper_hoodie_network_config`
     - `tests.unit.test_paper_hoodie_network_shapes`

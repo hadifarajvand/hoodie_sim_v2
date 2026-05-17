@@ -1,0 +1,6 @@
+# Direct runtime dependencies for hoodie_sim_v2
+#
+# The simulation stack is otherwise stdlib-only. These packages cover the
+# TorchRL-backed learner path and the paper HOODIE network surface.
+torch
+torchrl
