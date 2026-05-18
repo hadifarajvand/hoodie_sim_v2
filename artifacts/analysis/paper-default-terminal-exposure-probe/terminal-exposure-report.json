@@ -650,7 +650,7 @@
     {
       "details": ".specify/feature.json points to specs/042-paper-default-terminal-exposure-probe",
       "name": "pointer_matches_feature",
-      "verified": false
+      "verified": true
     },
     {
       "details": ".specify/feature.json must not be staged",

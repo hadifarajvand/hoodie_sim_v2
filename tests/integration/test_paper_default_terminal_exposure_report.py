@@ -75,6 +75,12 @@ class PaperDefaultTerminalExposureReportIntegrationTests(unittest.TestCase):
         self.assertTrue(pointer_not_staged["verified"])
         self.assertTrue(pointer_not_in_main_head["verified"])
 
+    def test_all_prerequisite_tags_must_verify_true(self) -> None:
+        from src.analysis.paper_default_terminal_exposure_probe.report import build_prerequisite_tags_verified
+
+        tags = build_prerequisite_tags_verified()
+        self.assertTrue(all(item["verified"] for item in tags))
+
     def test_feature_038_prerequisite_uses_training_foundation_contract_report_path(self) -> None:
         from src.analysis.paper_default_terminal_exposure_probe.report import collect_prior_feature_gates_verified
 
