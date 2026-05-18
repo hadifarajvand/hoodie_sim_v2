@@ -76,6 +76,7 @@ class PilotTrainingResult:
     pending_at_horizon_preserved: bool
     checkpoint_schema_valid: bool
     train_eval_trace_banks_disjoint: bool
+    pilot_training_executed: bool
     full_campaign_executed: bool
     full_campaign_block_reason: str | None
     evaluation_summary: dict[str, Any]
@@ -96,6 +97,7 @@ class PilotTrainingResult:
             "pending_at_horizon_preserved": self.pending_at_horizon_preserved,
             "checkpoint_schema_valid": self.checkpoint_schema_valid,
             "train_eval_trace_banks_disjoint": self.train_eval_trace_banks_disjoint,
+            "pilot_training_executed": self.pilot_training_executed,
             "full_campaign_executed": self.full_campaign_executed,
             "full_campaign_block_reason": self.full_campaign_block_reason,
             "evaluation_summary": dict(self.evaluation_summary),
@@ -349,6 +351,7 @@ class DDQNTrainer:
             pending_at_horizon_preserved=any(summary["pending_at_horizon_count"] > 0 for summary in episode_summaries),
             checkpoint_schema_valid=checkpoint_schema_valid,
             train_eval_trace_banks_disjoint=train_eval_trace_banks_disjoint,
+            pilot_training_executed=True,
             full_campaign_executed=full_campaign_executed,
             full_campaign_block_reason=full_campaign_block_reason,
             evaluation_summary=evaluation_summary.to_dict(),
@@ -412,6 +415,7 @@ class DDQNTrainer:
             pending_at_horizon_preserved=pilot_result.pending_at_horizon_preserved or any(summary["pending_at_horizon_count"] > 0 for summary in additional_summaries),
             checkpoint_schema_valid=checkpoint_schema_valid,
             train_eval_trace_banks_disjoint=evaluation_summary.trace_bank_disjoint,
+            pilot_training_executed=True,
             full_campaign_executed=True,
             full_campaign_block_reason=None,
             evaluation_summary=evaluation_summary.to_dict(),
@@ -434,6 +438,7 @@ class DDQNTrainer:
             pending_at_horizon_preserved=True,
             checkpoint_schema_valid=self._checkpoint_schema_valid(checkpoint_metadata),
             train_eval_trace_banks_disjoint=True,
+            pilot_training_executed=False,
             full_campaign_executed=False,
             full_campaign_block_reason=reason,
             evaluation_summary={

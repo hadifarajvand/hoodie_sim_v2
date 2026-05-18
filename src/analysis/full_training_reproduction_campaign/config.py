@@ -7,7 +7,8 @@ from src.analysis.paper_hoodie_network_implementation import PaperHoodieNetworkC
 
 FEATURE_ID = "041-full-training-reproduction-campaign"
 TARGET_UPDATE_UNIT = "optimizer_step"
-READINESS_MANUAL_APPROVAL_PENDING = "pending"
+READINESS_MANUAL_APPROVAL_NOT_APPROVED = "not_approved"
+READINESS_MANUAL_APPROVAL_PENDING = READINESS_MANUAL_APPROVAL_NOT_APPROVED
 READINESS_MANUAL_APPROVAL_APPROVED = "approved"
 READINESS_MANUAL_APPROVAL_REJECTED = "rejected"
 
@@ -133,7 +134,8 @@ class CampaignConfig:
     full_campaign_budget: int = 5_000
     full_campaign_enabled: bool = False
     readiness_manual_approval_required: bool = True
-    readiness_manual_approval_status: str = READINESS_MANUAL_APPROVAL_PENDING
+    readiness_manual_approval_status: str = READINESS_MANUAL_APPROVAL_NOT_APPROVED
+    readiness_manual_approval_reference: str = ""
     target_update_contract: TargetUpdateContract = field(default_factory=TargetUpdateContract)
     pilot_budget: PilotBudget = field(default_factory=PilotBudget)
     seed_bundle: CampaignSeedBundle = field(default_factory=CampaignSeedBundle)
@@ -187,11 +189,14 @@ class CampaignConfig:
         if self.readiness_manual_approval_required is not True:
             raise ValueError("CampaignConfig.readiness_manual_approval_required must remain true.")
         if self.readiness_manual_approval_status not in {
+            READINESS_MANUAL_APPROVAL_NOT_APPROVED,
             READINESS_MANUAL_APPROVAL_PENDING,
             READINESS_MANUAL_APPROVAL_APPROVED,
             READINESS_MANUAL_APPROVAL_REJECTED,
         }:
             raise ValueError("CampaignConfig.readiness_manual_approval_status has an invalid value.")
+        if self.readiness_manual_approval_status == READINESS_MANUAL_APPROVAL_APPROVED and not self.readiness_manual_approval_reference.strip():
+            raise ValueError("CampaignConfig.readiness_manual_approval_status cannot be approved without readiness_manual_approval_reference.")
         if not isinstance(self.seed_bundle, CampaignSeedBundle):
             raise ValueError("seed_bundle must be a CampaignSeedBundle.")
 
@@ -224,6 +229,7 @@ class CampaignConfig:
             "full_campaign_enabled": self.full_campaign_enabled,
             "readiness_manual_approval_required": self.readiness_manual_approval_required,
             "readiness_manual_approval_status": self.readiness_manual_approval_status,
+            "readiness_manual_approval_reference": self.readiness_manual_approval_reference,
             "target_update_contract": self.target_update_contract.to_dict(),
             "pilot_budget": self.pilot_budget.to_dict(),
             "seed_bundle": self.seed_bundle.to_dict(),

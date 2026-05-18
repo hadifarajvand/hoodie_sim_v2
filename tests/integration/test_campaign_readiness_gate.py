@@ -7,7 +7,7 @@ from src.analysis.full_training_reproduction_campaign import CampaignConfig, run
 
 class CampaignReadinessGateIntegrationTests(unittest.TestCase):
     def test_readiness_probe_report_has_exact_counter_schema(self) -> None:
-        config = CampaignConfig(readiness_manual_approval_status="pending", readiness_probe_episode_count=1, readiness_probe_episode_length=5)
+        config = CampaignConfig(readiness_manual_approval_status="not_approved", readiness_probe_episode_count=1, readiness_probe_episode_length=5)
         report = run_campaign_readiness_probe(config)
         payload = report.to_dict()
         expected_keys = {
@@ -35,22 +35,20 @@ class CampaignReadinessGateIntegrationTests(unittest.TestCase):
             "readiness_block_reason",
         }
         self.assertEqual(set(payload), expected_keys)
-        self.assertEqual(payload["readiness_manual_approval_status"], "pending")
+        self.assertEqual(payload["readiness_manual_approval_status"], "not_approved")
         self.assertTrue(payload["readiness_manual_approval_required"])
 
     def test_readiness_probe_blocks_when_manual_approval_missing(self) -> None:
-        config = CampaignConfig(readiness_manual_approval_status="pending", readiness_probe_episode_count=1, readiness_probe_episode_length=5)
+        config = CampaignConfig(readiness_manual_approval_status="not_approved", readiness_probe_episode_count=1, readiness_probe_episode_length=5)
         report = run_campaign_readiness_probe(config)
         self.assertEqual(report.gate_status, "blocked")
         self.assertTrue(report.readiness_manual_approval_required)
-        self.assertEqual(report.readiness_manual_approval_status, "pending")
+        self.assertEqual(report.readiness_manual_approval_status, "not_approved")
         self.assertIsNotNone(report.readiness_block_reason)
 
-    def test_readiness_probe_can_progress_when_approved(self) -> None:
-        config = CampaignConfig(readiness_manual_approval_status="approved", readiness_probe_episode_count=1, readiness_probe_episode_length=5)
-        report = run_campaign_readiness_probe(config)
-        self.assertEqual(report.gate_status, "pilot-ready")
-        self.assertEqual(report.readiness_manual_approval_status, "approved")
+    def test_readiness_probe_rejects_approved_status_without_explicit_marker(self) -> None:
+        with self.assertRaises(ValueError):
+            CampaignConfig(readiness_manual_approval_status="approved", readiness_probe_episode_count=1, readiness_probe_episode_length=5)
 
 
 if __name__ == "__main__":

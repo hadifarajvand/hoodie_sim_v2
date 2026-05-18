@@ -12,7 +12,7 @@ from src.environment.topology import TopologyGraph
 from .config import (
     CampaignConfig,
     READINESS_MANUAL_APPROVAL_APPROVED,
-    READINESS_MANUAL_APPROVAL_PENDING,
+    READINESS_MANUAL_APPROVAL_NOT_APPROVED,
     READINESS_MANUAL_APPROVAL_REJECTED,
 )
 from .replay import build_state_vector, build_state_window, legal_action_mask_to_tuple, action_index_to_semantics
@@ -155,16 +155,29 @@ class CampaignReadinessProbe:
 
         total_possible = max(transition_count, 1)
         readiness_manual_approval_required = True
-        readiness_manual_approval_status = self.config.readiness_manual_approval_status
-        if readiness_manual_approval_status == READINESS_MANUAL_APPROVAL_APPROVED:
-            gate_status = "pilot-ready"
-            readiness_block_reason = None
-        elif readiness_manual_approval_status == READINESS_MANUAL_APPROVAL_REJECTED:
+        explicit_readiness_reference = self.config.readiness_manual_approval_reference.strip()
+        requested_manual_approval = self.config.readiness_manual_approval_status
+        has_terminal_exposure = terminal_transition_count > 0 and reward_bearing_transition_count > 0
+        if requested_manual_approval == READINESS_MANUAL_APPROVAL_REJECTED:
             gate_status = "blocked"
             readiness_block_reason = "manual approval explicitly rejected"
+            readiness_manual_approval_status = READINESS_MANUAL_APPROVAL_REJECTED
+        elif requested_manual_approval == READINESS_MANUAL_APPROVAL_APPROVED and explicit_readiness_reference and has_terminal_exposure:
+            gate_status = "pilot-ready"
+            readiness_block_reason = None
+            readiness_manual_approval_status = READINESS_MANUAL_APPROVAL_APPROVED
+        elif not has_terminal_exposure:
+            gate_status = "blocked"
+            readiness_block_reason = "zero_reward_bearing_terminal_transitions"
+            readiness_manual_approval_status = READINESS_MANUAL_APPROVAL_NOT_APPROVED
+        elif requested_manual_approval == READINESS_MANUAL_APPROVAL_APPROVED and not explicit_readiness_reference:
+            gate_status = "blocked"
+            readiness_block_reason = "readiness_manual_approval_reference_missing"
+            readiness_manual_approval_status = READINESS_MANUAL_APPROVAL_NOT_APPROVED
         else:
             gate_status = "blocked"
             readiness_block_reason = "manual approval required before campaign progression"
+            readiness_manual_approval_status = READINESS_MANUAL_APPROVAL_NOT_APPROVED
 
         terminal_transition_ratio = terminal_transition_count / total_possible
         reward_bearing_transition_ratio = reward_bearing_transition_count / total_possible

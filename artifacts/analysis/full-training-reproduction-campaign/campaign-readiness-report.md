@@ -2,7 +2,7 @@
 
 - feature_id: `041-full-training-reproduction-campaign`
 - campaign_stage: `readiness_probe`
-- final_verdict: `pilot_training_passed`
+- final_verdict: `readiness_blocked_terminal_exposure`
 - no_curve_fitting: `True`
 - no_simulator_output_tuning: `True`
 - no_dependency_drift: `True`
@@ -27,9 +27,9 @@
   "pending_at_horizon_ratio": 0.2,
   "probe_episode_count": 1,
   "probe_step_count": 5,
-  "readiness_block_reason": null,
+  "readiness_block_reason": "zero_reward_bearing_terminal_transitions",
   "readiness_manual_approval_required": true,
-  "readiness_manual_approval_status": "approved",
+  "readiness_manual_approval_status": "not_approved",
   "reward_bearing_transition_count": 0,
   "reward_bearing_transition_ratio": 0.0,
   "terminal_transition_count": 0,
@@ -73,6 +73,7 @@
   "loss_value": 0.0,
   "optimizer_step_count": 0,
   "pending_at_horizon_preserved": true,
+  "pilot_training_executed": false,
   "replay_size": 0,
   "stage": "readiness_probe",
   "target_sync_count": 0,

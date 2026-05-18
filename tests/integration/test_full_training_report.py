@@ -5,13 +5,12 @@ import tempfile
 import unittest
 from pathlib import Path
 
-from src.analysis.full_training_reproduction_campaign import CampaignConfig, generate_campaign_artifacts, run_campaign
+from src.analysis.full_training_reproduction_campaign import CampaignConfig, build_campaign_prerequisite_tags_verified, generate_campaign_artifacts, run_campaign
 
 
 class FullTrainingReportIntegrationTests(unittest.TestCase):
     def _config(self) -> CampaignConfig:
         return CampaignConfig(
-            readiness_manual_approval_status="approved",
             readiness_probe_episode_count=1,
             readiness_probe_episode_length=5,
             pilot_episode_length=10,
@@ -19,7 +18,7 @@ class FullTrainingReportIntegrationTests(unittest.TestCase):
         )
 
     def test_campaign_report_schema(self) -> None:
-        result = run_campaign(self._config(), stage="pilot_training", episodes=10, enable_full_campaign=False)
+        result = run_campaign(self._config(), stage="readiness_probe", episodes=10, enable_full_campaign=False)
         payload = result.training_report.to_dict()
         required_keys = {
             "feature_id",
@@ -51,7 +50,7 @@ class FullTrainingReportIntegrationTests(unittest.TestCase):
         }
         self.assertTrue(required_keys.issubset(payload))
         self.assertEqual(payload["feature_id"], "041-full-training-reproduction-campaign")
-        self.assertEqual(payload["campaign_stage"], "pilot_training")
+        self.assertEqual(payload["campaign_stage"], "readiness_probe")
         self.assertEqual(payload["target_update_unit_decision"]["target_update_unit"], "optimizer_step")
         self.assertTrue(payload["no_curve_fitting"])
         self.assertTrue(payload["no_simulator_output_tuning"])
@@ -62,9 +61,13 @@ class FullTrainingReportIntegrationTests(unittest.TestCase):
         self.assertFalse(payload["reproduction_claim_status"]["automatic_claim"])
         self.assertEqual(payload["reproduction_claim_status"]["status"], "no_claim")
         self.assertFalse(payload["training_execution_summary"]["full_campaign_executed"])
+        self.assertFalse(payload["training_execution_summary"]["pilot_training_executed"])
+        self.assertEqual(payload["training_execution_summary"]["optimizer_step_count"], 0)
+        self.assertEqual(payload["training_execution_summary"]["replay_size"], 0)
         self.assertIsNotNone(payload["training_execution_summary"]["full_campaign_block_reason"])
-        self.assertEqual(payload["terminal_exposure_gate"]["readiness_manual_approval_status"], "approved")
+        self.assertEqual(payload["terminal_exposure_gate"]["readiness_manual_approval_status"], "not_approved")
         self.assertEqual(payload["terminal_exposure_gate"]["readiness_manual_approval_required"], True)
+        self.assertEqual(payload["terminal_exposure_gate"]["readiness_block_reason"], "zero_reward_bearing_terminal_transitions")
 
     def test_campaign_report_artifacts_are_written(self) -> None:
         with tempfile.TemporaryDirectory() as tmpdir:
@@ -86,16 +89,21 @@ class FullTrainingReportIntegrationTests(unittest.TestCase):
             self.assertTrue(training_md.exists())
             payload = json.loads(training_json.read_text(encoding="utf-8"))
             self.assertEqual(payload["feature_id"], "041-full-training-reproduction-campaign")
-            self.assertEqual(payload["campaign_stage"], "pilot_training")
-            self.assertEqual(payload["final_verdict"], "pilot_training_passed")
+            self.assertEqual(payload["campaign_stage"], "readiness_probe")
+            self.assertEqual(payload["final_verdict"], "readiness_blocked_terminal_exposure")
             self.assertTrue(result.training_report.no_curve_fitting)
 
     def test_no_curve_fitting_or_reproduction_claim(self) -> None:
-        result = run_campaign(self._config(), stage="pilot_training", episodes=10, enable_full_campaign=False)
+        result = run_campaign(self._config(), stage="readiness_probe", episodes=10, enable_full_campaign=False)
         self.assertTrue(result.training_report.no_curve_fitting)
         self.assertTrue(result.training_report.no_simulator_output_tuning)
         self.assertFalse(result.training_report.reproduction_claim_status["automatic_claim"])
         self.assertEqual(result.training_report.reproduction_claim_status["status"], "no_claim")
+
+    def test_prerequisite_tags_allow_only_local_specify_pointer_dirty_file(self) -> None:
+        tags = build_campaign_prerequisite_tags_verified()
+        no_unrelated_dirty_files = next(item for item in tags if item["name"] == "no_unrelated_dirty_files")
+        self.assertTrue(no_unrelated_dirty_files["verified"])
 
 
 if __name__ == "__main__":

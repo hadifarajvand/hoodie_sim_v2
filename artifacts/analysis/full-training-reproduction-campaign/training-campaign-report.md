@@ -1,8 +1,8 @@
 # Full Training/Reproduction Campaign Report
 
 - feature_id: `041-full-training-reproduction-campaign`
-- campaign_stage: `pilot_training`
-- final_verdict: `pilot_training_passed`
+- campaign_stage: `readiness_probe`
+- final_verdict: `readiness_blocked_terminal_exposure`
 - no_curve_fitting: `True`
 - no_simulator_output_tuning: `True`
 - no_dependency_drift: `True`
@@ -27,9 +27,9 @@
   "pending_at_horizon_ratio": 0.2,
   "probe_episode_count": 1,
   "probe_step_count": 5,
-  "readiness_block_reason": null,
+  "readiness_block_reason": "zero_reward_bearing_terminal_transitions",
   "readiness_manual_approval_required": true,
-  "readiness_manual_approval_status": "approved",
+  "readiness_manual_approval_status": "not_approved",
   "reward_bearing_transition_count": 0,
   "reward_bearing_transition_ratio": 0.0,
   "terminal_transition_count": 0,
@@ -41,12 +41,12 @@
 ## Training Execution Summary
 {
   "checkpoint_metadata": {
-    "config_hash": "2919d4ad1843ff15eb684044c508d1c21b11375e735fe08b4d3b173a57b34a93",
+    "config_hash": "6a9cd91eb53c8834db0c75dfaec969d2b8facf5d6d3e46cf83a291d1ababb222",
     "eval_trace_bank_id": "full-training-eval-bank",
     "feature_id": "041-full-training-reproduction-campaign",
     "full_campaign_enabled": false,
-    "optimizer_step_count": 37,
-    "replay_size": 100,
+    "optimizer_step_count": 0,
+    "replay_size": 0,
     "seed_bundle": {
       "action_exploration_seed": 53,
       "evaluation_trace_generation_seed": 43,
@@ -57,19 +57,19 @@
       "torch_seed": 61,
       "training_trace_generation_seed": 41
     },
-    "stage": "pilot_training",
+    "stage": "readiness_probe",
     "target_update_unit": "optimizer_step",
     "train_trace_bank_id": "full-training-train-bank"
   },
   "checkpoint_schema_valid": true,
   "delayed_reward_contract_preserved": true,
-  "episodes_completed": 10,
-  "episodes_requested": 10,
+  "episodes_completed": 0,
+  "episodes_requested": 0,
   "evaluation_summary": {
     "candidate_reproduction_supported": false,
     "completed_task_count": 0,
     "dropped_task_count": 0,
-    "evaluation_episode_count": 3,
+    "evaluation_episode_count": 0,
     "evaluation_on_training_traces": false,
     "mean_reward": 0.0,
     "reward_bearing_transition_count": 0,
@@ -79,21 +79,18 @@
       "evaluation": "full-training-eval-bank",
       "training": "full-training-train-bank"
     },
-    "trace_ids": [
-      "hoodie-43",
-      "hoodie-44",
-      "hoodie-45"
-    ]
+    "trace_ids": []
   },
-  "full_campaign_block_reason": "full campaign not requested during pilot",
+  "full_campaign_block_reason": "zero_reward_bearing_terminal_transitions",
   "full_campaign_executed": false,
   "legal_action_only": true,
   "loss_is_finite": true,
-  "loss_value": 4.02426394430222e-07,
-  "optimizer_step_count": 37,
+  "loss_value": 0.0,
+  "optimizer_step_count": 0,
   "pending_at_horizon_preserved": true,
-  "replay_size": 100,
-  "stage": "pilot_training",
+  "pilot_training_executed": false,
+  "replay_size": 0,
+  "stage": "readiness_probe",
   "target_sync_count": 0,
   "train_eval_trace_banks_disjoint": true
 }
@@ -103,7 +100,7 @@
   "candidate_reproduction_supported": false,
   "completed_task_count": 0,
   "dropped_task_count": 0,
-  "evaluation_episode_count": 3,
+  "evaluation_episode_count": 0,
   "evaluation_on_training_traces": false,
   "mean_reward": 0.0,
   "reward_bearing_transition_count": 0,
@@ -113,11 +110,7 @@
     "evaluation": "full-training-eval-bank",
     "training": "full-training-train-bank"
   },
-  "trace_ids": [
-    "hoodie-43",
-    "hoodie-44",
-    "hoodie-45"
-  ]
+  "trace_ids": []
 }
 
 ## Baseline Reference Summary

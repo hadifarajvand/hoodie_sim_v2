@@ -33,7 +33,8 @@ class FullTrainingCampaignConfigUnitTests(unittest.TestCase):
         self.assertEqual(config.full_campaign_budget, 5000)
         self.assertFalse(config.full_campaign_enabled)
         self.assertTrue(config.readiness_manual_approval_required)
-        self.assertEqual(config.readiness_manual_approval_status, "pending")
+        self.assertEqual(config.readiness_manual_approval_status, "not_approved")
+        self.assertEqual(config.readiness_manual_approval_reference, "")
         self.assertEqual(config.target_update_contract.target_update_unit, "optimizer_step")
 
     def test_campaign_config_rejects_sloppy_n_l_coupling(self) -> None:
@@ -41,6 +42,18 @@ class FullTrainingCampaignConfigUnitTests(unittest.TestCase):
             CampaignConfig(q_network_hidden_layers=[20])
         with self.assertRaises(ValueError):
             CampaignConfig(q_network_hidden_layers=20)  # type: ignore[arg-type]
+
+    def test_campaign_config_rejects_approved_readiness_without_reference(self) -> None:
+        with self.assertRaises(ValueError):
+            CampaignConfig(readiness_manual_approval_status="approved")
+
+    def test_campaign_config_allows_approved_readiness_with_reference(self) -> None:
+        config = CampaignConfig(
+            readiness_manual_approval_status="approved",
+            readiness_manual_approval_reference="user-approval-041",
+        )
+        self.assertEqual(config.readiness_manual_approval_status, "approved")
+        self.assertEqual(config.readiness_manual_approval_reference, "user-approval-041")
 
 
 if __name__ == "__main__":

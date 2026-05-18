@@ -9,7 +9,7 @@ from typing import Any
 from .config import (
     CampaignConfig,
     READINESS_MANUAL_APPROVAL_APPROVED,
-    READINESS_MANUAL_APPROVAL_PENDING,
+    READINESS_MANUAL_APPROVAL_NOT_APPROVED,
     READINESS_MANUAL_APPROVAL_REJECTED,
 )
 from .readiness import CampaignReadinessProbe, ReadinessProbeResult, run_campaign_readiness_probe
@@ -88,6 +88,7 @@ def _build_blocked_result(config: CampaignConfig, readiness_result: ReadinessPro
         pending_at_horizon_preserved=True,
         checkpoint_schema_valid=True,
         train_eval_trace_banks_disjoint=True,
+        pilot_training_executed=False,
         full_campaign_executed=False,
         full_campaign_block_reason=reason,
         evaluation_summary={
@@ -296,9 +297,14 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument("--stage", default="readiness_probe", choices=["readiness_probe", "pilot_training", "full_training_candidate", "final_reproduction_campaign"])
     parser.add_argument("--episodes", type=int, default=None)
     parser.add_argument("--enable-full-campaign", action="store_true")
-    parser.add_argument("--manual-approval-status", default=READINESS_MANUAL_APPROVAL_PENDING, choices=[READINESS_MANUAL_APPROVAL_PENDING, READINESS_MANUAL_APPROVAL_APPROVED, READINESS_MANUAL_APPROVAL_REJECTED])
+    parser.add_argument("--manual-approval-status", default=READINESS_MANUAL_APPROVAL_NOT_APPROVED, choices=[READINESS_MANUAL_APPROVAL_NOT_APPROVED, READINESS_MANUAL_APPROVAL_APPROVED, READINESS_MANUAL_APPROVAL_REJECTED])
+    parser.add_argument("--readiness-approval-reference", default="")
     args = parser.parse_args(argv)
-    config = CampaignConfig(readiness_manual_approval_status=args.manual_approval_status, full_campaign_enabled=args.enable_full_campaign)
+    config = CampaignConfig(
+        readiness_manual_approval_status=args.manual_approval_status,
+        readiness_manual_approval_reference=args.readiness_approval_reference,
+        full_campaign_enabled=args.enable_full_campaign,
+    )
     result = generate_campaign_artifacts(config, stage=args.stage, episodes=args.episodes, enable_full_campaign=args.enable_full_campaign)
     print(json.dumps(result.to_dict(), indent=2, sort_keys=True, ensure_ascii=False))
     return 0
