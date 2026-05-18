@@ -13,20 +13,20 @@
 ## Terminal Exposure Gate
 {
   "action_count_by_type": {
-    "local": 5
+    "local": 60
   },
   "completed_task_count": 0,
   "dropped_task_count": 0,
-  "generated_task_count": 5,
+  "generated_task_count": 60,
   "horizontal_action_count": 0,
   "illegal_action_count": 0,
   "illegal_action_ratio": 0.0,
-  "local_action_count": 5,
-  "non_terminal_transition_count": 5,
-  "pending_at_horizon_count": 1,
-  "pending_at_horizon_ratio": 0.2,
-  "probe_episode_count": 1,
-  "probe_step_count": 5,
+  "local_action_count": 60,
+  "non_terminal_transition_count": 60,
+  "pending_at_horizon_count": 3,
+  "pending_at_horizon_ratio": 0.05,
+  "probe_episode_count": 3,
+  "probe_step_count": 60,
   "readiness_block_reason": "zero_reward_bearing_terminal_transitions",
   "readiness_manual_approval_required": true,
   "readiness_manual_approval_status": "not_approved",
@@ -34,7 +34,7 @@
   "reward_bearing_transition_ratio": 0.0,
   "terminal_transition_count": 0,
   "terminal_transition_ratio": 0.0,
-  "transition_count": 5,
+  "transition_count": 60,
   "vertical_action_count": 0
 }
 

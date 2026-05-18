@@ -29,7 +29,8 @@ class FullTrainingScopeGuardIntegrationTests(unittest.TestCase):
         return [line.strip() for line in result.stdout.splitlines() if line.strip()]
 
     def test_no_dependency_environment_policy_reward_runtime_drift(self) -> None:
-        for path in self._git_diff_paths():
+        diff_paths = self._git_diff_paths()
+        for path in diff_paths:
             self.assertTrue(path.startswith(ALLOWED_COMMITTED_PREFIXES), path)
             self.assertNotIn(".specify/feature.json", path)
             self.assertNotIn("requirements.txt", path)
@@ -40,6 +41,10 @@ class FullTrainingScopeGuardIntegrationTests(unittest.TestCase):
             self.assertFalse(path.startswith("src/memory/"), path)
             self.assertFalse(path.startswith("campaign"), path)
             self.assertFalse(path.startswith("resources/papers/"), path)
+        self.assertNotIn(
+            "artifacts/checkpoints/full-training-reproduction-campaign/pilot_training-checkpoint-metadata.json",
+            diff_paths,
+        )
 
     def test_no_dependency_environment_policy_reward_drift_cached(self) -> None:
         for path in self._git_cached_paths():

@@ -92,6 +92,17 @@ class FullTrainingReportIntegrationTests(unittest.TestCase):
             self.assertEqual(payload["campaign_stage"], "readiness_probe")
             self.assertEqual(payload["final_verdict"], "readiness_blocked_terminal_exposure")
             self.assertTrue(result.training_report.no_curve_fitting)
+            self.assertIsNone(result.checkpoint_path)
+            self.assertEqual(result.training_report.training_execution_summary["pilot_training_executed"], False)
+            self.assertEqual(result.training_report.training_execution_summary["optimizer_step_count"], 0)
+            self.assertEqual(result.training_report.training_execution_summary["replay_size"], 0)
+            self.assertEqual(
+                result.training_report.checkpoint_schema_verified["optimizer_step_count"],
+                0,
+            )
+            self.assertFalse(
+                Path("artifacts/checkpoints/full-training-reproduction-campaign/pilot_training-checkpoint-metadata.json").exists()
+            )
 
     def test_no_curve_fitting_or_reproduction_claim(self) -> None:
         result = run_campaign(self._config(), stage="readiness_probe", episodes=10, enable_full_campaign=False)
