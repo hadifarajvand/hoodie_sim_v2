@@ -26,8 +26,8 @@
 - **double_dqn_api_enabled**: True
 - **state_contract_ref**: specs/038-training-foundation-contract/spec.md#FR-001
 - **action_contract_ref**: specs/038-training-foundation-contract/spec.md#FR-004
-- **dependency_status**: blocked_missing_existing_torch
-- **dependency_blocked_reason**: torch is unavailable in the approved interpreter
+- **dependency_status**: available_existing_torch
+- **dependency_blocked_reason**: None
 
 ## Shape Validation Summary
 - **expected_input_shape**: batch_size x 10 x state_dim
@@ -57,7 +57,7 @@
 - **feature_dir_exists**: True (specs/039-paper-hoodie-network-implementation/ exists)
 - **pointer_matches_feature**: True (.specify/feature.json points to specs/039-paper-hoodie-network-implementation)
 - **pointer_not_audit_036**: True (.specify/feature.json does not point to specs/036-deadline-timeout-off-by-one-audit)
-- **pointer_unstaged**: False (.specify/feature.json must not be staged)
+- **pointer_unstaged**: True (.specify/feature.json must not be staged)
 - **pointer_not_in_main_head**: True (.specify/feature.json must not appear in git diff --name-only main...HEAD)
 
 ## State / Action Contract References

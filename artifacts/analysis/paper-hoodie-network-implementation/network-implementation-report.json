@@ -2,8 +2,8 @@
   "architecture_config": {
     "action_contract_ref": "specs/038-training-foundation-contract/spec.md#FR-004",
     "action_count": 3,
-    "dependency_blocked_reason": "torch is unavailable in the approved interpreter",
-    "dependency_status": "blocked_missing_existing_torch",
+    "dependency_blocked_reason": null,
+    "dependency_status": "available_existing_torch",
     "double_dqn_api_enabled": true,
     "dueling_enabled": true,
     "lstm_hidden_size": 20,
@@ -81,7 +81,7 @@
     {
       "details": ".specify/feature.json must not be staged",
       "name": "pointer_unstaged",
-      "verified": false
+      "verified": true
     },
     {
       "details": ".specify/feature.json must not appear in git diff --name-only main...HEAD",

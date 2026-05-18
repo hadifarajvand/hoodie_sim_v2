@@ -32,6 +32,11 @@ def _git_output(*args: str) -> str:
     return result.stdout.strip()
 
 
+def _git_status_short(*args: str) -> str:
+    result = subprocess.run(["git", "status", "--short", *args], check=True, capture_output=True, text=True)
+    return result.stdout
+
+
 def _read_feature_pointer() -> str | None:
     pointer_path = Path(".specify/feature.json")
     if not pointer_path.exists():
@@ -57,7 +62,7 @@ def collect_prerequisite_tags_verified() -> list[dict[str, Any]]:
         ("feature_dir_exists", feature_dir.exists(), "specs/039-paper-hoodie-network-implementation/ exists"),
         ("pointer_matches_feature", pointer == "specs/039-paper-hoodie-network-implementation", ".specify/feature.json points to specs/039-paper-hoodie-network-implementation"),
         ("pointer_not_audit_036", pointer != "specs/036-deadline-timeout-off-by-one-audit", ".specify/feature.json does not point to specs/036-deadline-timeout-off-by-one-audit"),
-        ("pointer_unstaged", _git_output("status", "--short", "--", ".specify/feature.json") in {"", " M .specify/feature.json"}, ".specify/feature.json must not be staged"),
+        ("pointer_unstaged", _git_status_short("--", ".specify/feature.json").startswith(" M "), ".specify/feature.json must not be staged"),
         ("pointer_not_in_main_head", ".specify/feature.json" not in _git_output("diff", "--name-only", "main...HEAD").splitlines(), ".specify/feature.json must not appear in git diff --name-only main...HEAD"),
     ]
     for name, verified, details in expectations:
@@ -414,6 +419,9 @@ def build_network_implementation_report() -> ShapeValidationReport:
     config = _build_config()
     shape_summary = _build_shape_summary(config, torch_available=torch_available)
     dependency_status = "available_existing_torch" if torch_available else "blocked_missing_existing_torch"
+    architecture_config = config.to_dict()
+    architecture_config["dependency_status"] = dependency_status
+    architecture_config["dependency_blocked_reason"] = None if torch_available else config.dependency_blocked_reason
     q_layers_verified = list(config.q_network_hidden_layers or []) == [1024, 1024, 1024]
     lstm_layers_verified = config.lstm_num_layers == 1 and config.lstm_hidden_size == 20 and config.lstm_lookback_w == 10
     q_lstm_separation_verified = bool(
@@ -439,7 +447,7 @@ def build_network_implementation_report() -> ShapeValidationReport:
         feature_id=FEATURE_ID,
         prerequisite_tags_verified=collect_prerequisite_tags_verified(),
         dependency_status=dependency_status,
-        architecture_config=config.to_dict(),
+        architecture_config=architecture_config,
         q_network_hidden_layers_verified=q_layers_verified,
         lstm_hidden_layers_verified=lstm_layers_verified,
         q_lstm_config_separation_verified=q_lstm_separation_verified,
