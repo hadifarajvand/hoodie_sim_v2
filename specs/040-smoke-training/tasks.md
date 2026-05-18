@@ -16,7 +16,7 @@
 
 ## Phase 1: Setup and Gates
 
-- [ ] T001 Verify the feature branch and repository prerequisite state before any implementation work:
+- [X] T001 Verify the feature branch and repository prerequisite state before any implementation work:
   - current branch == `040-smoke-training`
   - current branch != `main`
   - `main == origin/main`
@@ -26,7 +26,7 @@
   - `.specify/feature.json` must not be staged
   - `.specify/feature.json` must not appear in `git diff --name-only main...HEAD`
   - implementation is blocked if any assertion fails
-- [ ] T002 Check dependency availability in the approved interpreter and record the result for the feature:
+- [X] T002 Check dependency availability in the approved interpreter and record the result for the feature:
   - verify whether `torch` imports successfully in `/Users/hadi/Documents/GitHub/hoodie_sim_v2/src/.venvmac/bin/python`
   - verify no dependency files are modified
   - if `torch` is unavailable, generate the `dependency_blocked` report and stop without dependency edits
@@ -34,7 +34,7 @@
 
 ## Phase 2: Foundational Prerequisites
 
-- [ ] T003 Define the smoke execution contract in `src/analysis/smoke_training/`:
+- [X] T003 Define the smoke execution contract in `src/analysis/smoke_training/`:
   - `SmokeTrainingConfig`
   - `SmokeReplayTransition`
   - `SmokeBatchSummary`
@@ -45,7 +45,7 @@
   - validate `action_count == 3`
   - validate deterministic seed bundle handling
   - validate that target update/sync is disabled
-- [ ] T004 Define the smoke reporting schema in `src/analysis/smoke_training/`:
+- [X] T004 Define the smoke reporting schema in `src/analysis/smoke_training/`:
   - required report fields from the spec
   - dependency status handling
   - smoke scope labeling
@@ -58,10 +58,10 @@
 
 **Independent Test**: The smoke run completes once on a fixture-first batch, reports finite loss, and changes at least one online-network parameter without updating the target network.
 
-- [ ] T005 [US1] Implement `SmokeTrainingConfig` validation and tiny smoke-batch constraints in `src/analysis/smoke_training/`
-- [ ] T006 [P] [US1] Add contract tests in `tests/unit/test_smoke_training_contract.py` for tiny deterministic config, batch size, state/action shape, and optimizer-step bounds
-- [ ] T007 [US1] Implement the smoke runner entrypoint in `src/analysis/smoke_training/` that builds the Feature 039 online and target networks, constructs the deterministic smoke batch, runs one optimizer step, checks finite loss, and records parameter changes
-- [ ] T008 [P] [US1] Add determinism tests in `tests/integration/test_smoke_training_determinism.py` to verify the same seed bundle yields the same smoke summary and parameter-update verdict
+- [X] T005 [US1] Implement `SmokeTrainingConfig` validation and tiny smoke-batch constraints in `src/analysis/smoke_training/`
+- [X] T006 [P] [US1] Add contract tests in `tests/unit/test_smoke_training_contract.py` for tiny deterministic config, batch size, state/action shape, and optimizer-step bounds
+- [X] T007 [US1] Implement the smoke runner entrypoint in `src/analysis/smoke_training/` that builds the Feature 039 online and target networks, constructs the deterministic smoke batch, runs one optimizer step, checks finite loss, and records parameter changes
+- [X] T008 [P] [US1] Add determinism tests in `tests/integration/test_smoke_training_determinism.py` to verify the same seed bundle yields the same smoke summary and parameter-update verdict
 
 ## Phase 4: User Story 2 - Delayed Reward and Replay Contract (Priority: P2)
 
@@ -69,10 +69,10 @@
 
 **Independent Test**: The smoke batch obeys delayed reward rules, labels fixture transitions as smoke fixtures, and keeps pending-at-horizon transitions non-terminal.
 
-- [ ] T009 [P] [US2] Define the smoke fixture transition schema in `src/analysis/smoke_training/` with `reward_available`, `pending_at_horizon`, and `source_type` rules
-- [ ] T010 [P] [US2] Add replay and delayed-reward contract tests in `tests/unit/test_smoke_training_contract.py` covering non-terminal reward handling, terminal reward handling, pending-at-horizon handling, and smoke-fixture labeling
-- [ ] T011 [US2] Implement the smoke batch builder in `src/analysis/smoke_training/` to emit deterministic fixture transitions only, with optional environment rollout limited to interface validation
-- [ ] T012 [US2] Ensure the smoke runner never converts pending-at-horizon transitions into terminal rewards and never injects fake rewards in `src/analysis/smoke_training/`
+- [X] T009 [P] [US2] Define the smoke fixture transition schema in `src/analysis/smoke_training/` with `reward_available`, `pending_at_horizon`, and `source_type` rules
+- [X] T010 [P] [US2] Add replay and delayed-reward contract tests in `tests/unit/test_smoke_training_contract.py` covering non-terminal reward handling, terminal reward handling, pending-at-horizon handling, and smoke-fixture labeling
+- [X] T011 [US2] Implement the smoke batch builder in `src/analysis/smoke_training/` to emit deterministic fixture transitions only, with optional environment rollout limited to interface validation
+- [X] T012 [US2] Ensure the smoke runner never converts pending-at-horizon transitions into terminal rewards and never injects fake rewards in `src/analysis/smoke_training/`
 
 ## Phase 5: User Story 3 - Reporting and Scope Guard (Priority: P3)
 
@@ -80,14 +80,14 @@
 
 **Independent Test**: The report artifacts show the smoke scope, finite loss, parameter change, deterministic repeatability, and explicit no-target-update status.
 
-- [ ] T013 [P] [US3] Generate the smoke report artifacts in `artifacts/analysis/smoke-training/` as JSON and Markdown
-- [ ] T014 [P] [US3] Add report schema tests in `tests/integration/test_smoke_training_report.py` for required fields, smoke scope, and banned claims
-- [ ] T015 [US3] Add the scope guard test in `tests/integration/test_smoke_training_scope_guard.py` to allow only the approved smoke paths and read-only imports from Feature 039 and Feature 038 analysis packages
-- [ ] T016 [US3] Ensure the smoke report records `feature_038_training_readiness_block_respected=true`, `no_target_update_execution=true`, and `no_paper_reproduction_claim=true` in `src/analysis/smoke_training/`
+- [X] T013 [P] [US3] Generate the smoke report artifacts in `artifacts/analysis/smoke-training/` as JSON and Markdown
+- [X] T014 [P] [US3] Add report schema tests in `tests/integration/test_smoke_training_report.py` for required fields, smoke scope, and banned claims
+- [X] T015 [US3] Add the scope guard test in `tests/integration/test_smoke_training_scope_guard.py` to allow only the approved smoke paths and read-only imports from Feature 039 and Feature 038 analysis packages
+- [X] T016 [US3] Ensure the smoke report records `feature_038_training_readiness_block_respected=true`, `no_target_update_execution=true`, and `no_paper_reproduction_claim=true` in `src/analysis/smoke_training/`
 
 ## Phase 6: Polish & Cross-Cutting Concerns
 
-- [ ] T017 Run the required validation command exactly as specified:
+- [X] T017 Run the required validation command exactly as specified:
   - `PYTHONPATH=/Users/hadi/Documents/GitHub/hoodie_sim_v2 /Users/hadi/Documents/GitHub/hoodie_sim_v2/src/.venvmac/bin/python -m unittest \`
   - `  tests.unit.test_smoke_training_contract \`
   - `  tests.integration.test_smoke_training_report \`
@@ -100,7 +100,7 @@
   - `  tests.unit.test_training_foundation_contract \`
   - `  tests.integration.test_training_foundation_contract_report \`
   - `  tests.integration.test_training_readiness_gate`
-- [ ] T018 Confirm `AGENTS.md` is not in Feature 040 committed scope; update only `specs/040-smoke-training/quickstart.md` if smoke validation text needs tightening
+- [X] T018 Confirm `AGENTS.md` is not in Feature 040 committed scope; update only `specs/040-smoke-training/quickstart.md` if smoke validation text needs tightening
 
 ## Dependencies & Execution Order
 
