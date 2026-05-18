@@ -51,7 +51,7 @@
       "max_queue_wait_slots": 0,
       "nan_or_omitted_reward_count": 0,
       "pending_at_horizon_count": 1,
-      "pending_at_horizon_ratio": 1.0,
+      "pending_at_horizon_ratio": 0.00909090909090909,
       "pending_by_action_type": {
         "local": 1
       },
@@ -89,7 +89,7 @@
       "max_queue_wait_slots": 0,
       "nan_or_omitted_reward_count": 0,
       "pending_at_horizon_count": 1,
-      "pending_at_horizon_ratio": 1.0,
+      "pending_at_horizon_ratio": 0.00909090909090909,
       "pending_by_action_type": {
         "local": 1
       },
@@ -129,7 +129,7 @@
       "max_queue_wait_slots": 0,
       "nan_or_omitted_reward_count": 0,
       "pending_at_horizon_count": 1,
-      "pending_at_horizon_ratio": 1.0,
+      "pending_at_horizon_ratio": 0.00909090909090909,
       "pending_by_action_type": {
         "local": 1
       },
@@ -169,7 +169,7 @@
       "max_queue_wait_slots": 0,
       "nan_or_omitted_reward_count": 0,
       "pending_at_horizon_count": 1,
-      "pending_at_horizon_ratio": 1.0,
+      "pending_at_horizon_ratio": 0.00909090909090909,
       "pending_by_action_type": {
         "local": 1
       },
@@ -207,7 +207,7 @@
       "max_queue_wait_slots": 0,
       "nan_or_omitted_reward_count": 0,
       "pending_at_horizon_count": 1,
-      "pending_at_horizon_ratio": 1.0,
+      "pending_at_horizon_ratio": 0.00909090909090909,
       "pending_by_action_type": {
         "local": 1
       },
@@ -247,7 +247,7 @@
       "max_queue_wait_slots": 0,
       "nan_or_omitted_reward_count": 0,
       "pending_at_horizon_count": 1,
-      "pending_at_horizon_ratio": 1.0,
+      "pending_at_horizon_ratio": 0.00909090909090909,
       "pending_by_action_type": {
         "local": 1
       },
@@ -287,7 +287,7 @@
       "max_queue_wait_slots": 0,
       "nan_or_omitted_reward_count": 0,
       "pending_at_horizon_count": 1,
-      "pending_at_horizon_ratio": 1.0,
+      "pending_at_horizon_ratio": 0.00909090909090909,
       "pending_by_action_type": {
         "horizontal": 1
       },
@@ -325,7 +325,7 @@
       "max_queue_wait_slots": 0,
       "nan_or_omitted_reward_count": 0,
       "pending_at_horizon_count": 1,
-      "pending_at_horizon_ratio": 1.0,
+      "pending_at_horizon_ratio": 0.00909090909090909,
       "pending_by_action_type": {
         "horizontal": 1
       },
@@ -365,7 +365,7 @@
       "max_queue_wait_slots": 0,
       "nan_or_omitted_reward_count": 0,
       "pending_at_horizon_count": 1,
-      "pending_at_horizon_ratio": 1.0,
+      "pending_at_horizon_ratio": 0.00909090909090909,
       "pending_by_action_type": {
         "horizontal": 1
       },
@@ -405,7 +405,7 @@
       "max_queue_wait_slots": 0,
       "nan_or_omitted_reward_count": 0,
       "pending_at_horizon_count": 1,
-      "pending_at_horizon_ratio": 1.0,
+      "pending_at_horizon_ratio": 0.00909090909090909,
       "pending_by_action_type": {
         "vertical": 1
       },
@@ -443,7 +443,7 @@
       "max_queue_wait_slots": 0,
       "nan_or_omitted_reward_count": 0,
       "pending_at_horizon_count": 1,
-      "pending_at_horizon_ratio": 1.0,
+      "pending_at_horizon_ratio": 0.00909090909090909,
       "pending_by_action_type": {
         "vertical": 1
       },
@@ -483,7 +483,7 @@
       "max_queue_wait_slots": 0,
       "nan_or_omitted_reward_count": 0,
       "pending_at_horizon_count": 1,
-      "pending_at_horizon_ratio": 1.0,
+      "pending_at_horizon_ratio": 0.00909090909090909,
       "pending_by_action_type": {
         "vertical": 1
       },
@@ -523,7 +523,7 @@
       "max_queue_wait_slots": 0,
       "nan_or_omitted_reward_count": 0,
       "pending_at_horizon_count": 1,
-      "pending_at_horizon_ratio": 1.0,
+      "pending_at_horizon_ratio": 0.00909090909090909,
       "pending_by_action_type": {
         "horizontal": 1
       },
@@ -561,7 +561,7 @@
       "max_queue_wait_slots": 0,
       "nan_or_omitted_reward_count": 0,
       "pending_at_horizon_count": 1,
-      "pending_at_horizon_ratio": 1.0,
+      "pending_at_horizon_ratio": 0.00909090909090909,
       "pending_by_action_type": {
         "horizontal": 1
       },
@@ -601,7 +601,7 @@
       "max_queue_wait_slots": 0,
       "nan_or_omitted_reward_count": 0,
       "pending_at_horizon_count": 1,
-      "pending_at_horizon_ratio": 1.0,
+      "pending_at_horizon_ratio": 0.00909090909090909,
       "pending_by_action_type": {
         "horizontal": 1
       },
@@ -650,12 +650,12 @@
     {
       "details": ".specify/feature.json points to specs/042-paper-default-terminal-exposure-probe",
       "name": "pointer_matches_feature",
-      "verified": true
+      "verified": false
     },
     {
       "details": ".specify/feature.json must not be staged",
       "name": "pointer_not_staged",
-      "verified": false
+      "verified": true
     },
     {
       "details": ".specify/feature.json must not appear in git diff --name-only main...HEAD",
@@ -671,10 +671,10 @@
       "verified": true
     },
     {
-      "details": "artifacts/analysis/training-foundation-contract/training-foundation-report.json exists",
+      "details": "artifacts/analysis/training-foundation-contract/training-foundation-contract-report.json exists",
       "feature": "038",
       "name": "training foundation",
-      "verified": false
+      "verified": true
     },
     {
       "details": "artifacts/analysis/paper-hoodie-network-implementation/network-implementation-report.json exists",

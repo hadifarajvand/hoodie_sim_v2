@@ -49,7 +49,7 @@
     "max_queue_wait_slots": 0,
     "nan_or_omitted_reward_count": 0,
     "pending_at_horizon_count": 1,
-    "pending_at_horizon_ratio": 1.0,
+    "pending_at_horizon_ratio": 0.00909090909090909,
     "pending_by_action_type": {
       "local": 1
     },
@@ -87,7 +87,7 @@
     "max_queue_wait_slots": 0,
     "nan_or_omitted_reward_count": 0,
     "pending_at_horizon_count": 1,
-    "pending_at_horizon_ratio": 1.0,
+    "pending_at_horizon_ratio": 0.00909090909090909,
     "pending_by_action_type": {
       "local": 1
     },
@@ -127,7 +127,7 @@
     "max_queue_wait_slots": 0,
     "nan_or_omitted_reward_count": 0,
     "pending_at_horizon_count": 1,
-    "pending_at_horizon_ratio": 1.0,
+    "pending_at_horizon_ratio": 0.00909090909090909,
     "pending_by_action_type": {
       "local": 1
     },
@@ -167,7 +167,7 @@
     "max_queue_wait_slots": 0,
     "nan_or_omitted_reward_count": 0,
     "pending_at_horizon_count": 1,
-    "pending_at_horizon_ratio": 1.0,
+    "pending_at_horizon_ratio": 0.00909090909090909,
     "pending_by_action_type": {
       "local": 1
     },
@@ -205,7 +205,7 @@
     "max_queue_wait_slots": 0,
     "nan_or_omitted_reward_count": 0,
     "pending_at_horizon_count": 1,
-    "pending_at_horizon_ratio": 1.0,
+    "pending_at_horizon_ratio": 0.00909090909090909,
     "pending_by_action_type": {
       "local": 1
     },
@@ -245,7 +245,7 @@
     "max_queue_wait_slots": 0,
     "nan_or_omitted_reward_count": 0,
     "pending_at_horizon_count": 1,
-    "pending_at_horizon_ratio": 1.0,
+    "pending_at_horizon_ratio": 0.00909090909090909,
     "pending_by_action_type": {
       "local": 1
     },
@@ -285,7 +285,7 @@
     "max_queue_wait_slots": 0,
     "nan_or_omitted_reward_count": 0,
     "pending_at_horizon_count": 1,
-    "pending_at_horizon_ratio": 1.0,
+    "pending_at_horizon_ratio": 0.00909090909090909,
     "pending_by_action_type": {
       "horizontal": 1
     },
@@ -323,7 +323,7 @@
     "max_queue_wait_slots": 0,
     "nan_or_omitted_reward_count": 0,
     "pending_at_horizon_count": 1,
-    "pending_at_horizon_ratio": 1.0,
+    "pending_at_horizon_ratio": 0.00909090909090909,
     "pending_by_action_type": {
       "horizontal": 1
     },
@@ -363,7 +363,7 @@
     "max_queue_wait_slots": 0,
     "nan_or_omitted_reward_count": 0,
     "pending_at_horizon_count": 1,
-    "pending_at_horizon_ratio": 1.0,
+    "pending_at_horizon_ratio": 0.00909090909090909,
     "pending_by_action_type": {
       "horizontal": 1
     },
@@ -403,7 +403,7 @@
     "max_queue_wait_slots": 0,
     "nan_or_omitted_reward_count": 0,
     "pending_at_horizon_count": 1,
-    "pending_at_horizon_ratio": 1.0,
+    "pending_at_horizon_ratio": 0.00909090909090909,
     "pending_by_action_type": {
       "vertical": 1
     },
@@ -441,7 +441,7 @@
     "max_queue_wait_slots": 0,
     "nan_or_omitted_reward_count": 0,
     "pending_at_horizon_count": 1,
-    "pending_at_horizon_ratio": 1.0,
+    "pending_at_horizon_ratio": 0.00909090909090909,
     "pending_by_action_type": {
       "vertical": 1
     },
@@ -481,7 +481,7 @@
     "max_queue_wait_slots": 0,
     "nan_or_omitted_reward_count": 0,
     "pending_at_horizon_count": 1,
-    "pending_at_horizon_ratio": 1.0,
+    "pending_at_horizon_ratio": 0.00909090909090909,
     "pending_by_action_type": {
       "vertical": 1
     },
@@ -521,7 +521,7 @@
     "max_queue_wait_slots": 0,
     "nan_or_omitted_reward_count": 0,
     "pending_at_horizon_count": 1,
-    "pending_at_horizon_ratio": 1.0,
+    "pending_at_horizon_ratio": 0.00909090909090909,
     "pending_by_action_type": {
       "horizontal": 1
     },
@@ -559,7 +559,7 @@
     "max_queue_wait_slots": 0,
     "nan_or_omitted_reward_count": 0,
     "pending_at_horizon_count": 1,
-    "pending_at_horizon_ratio": 1.0,
+    "pending_at_horizon_ratio": 0.00909090909090909,
     "pending_by_action_type": {
       "horizontal": 1
     },
@@ -599,7 +599,7 @@
     "max_queue_wait_slots": 0,
     "nan_or_omitted_reward_count": 0,
     "pending_at_horizon_count": 1,
-    "pending_at_horizon_ratio": 1.0,
+    "pending_at_horizon_ratio": 0.00909090909090909,
     "pending_by_action_type": {
       "horizontal": 1
     },
@@ -626,6 +626,6 @@
 - **main_equals_origin_main**: True (main == origin/main)
 - **main_equals_feature_041**: True (main == 041-full-training-reproduction-campaign-complete^{})
 - **prerequisite_diff_empty**: True (diff between 041-full-training-reproduction-campaign-complete^{} and main is empty)
-- **pointer_matches_feature**: True (.specify/feature.json points to specs/042-paper-default-terminal-exposure-probe)
-- **pointer_not_staged**: False (.specify/feature.json must not be staged)
+- **pointer_matches_feature**: False (.specify/feature.json points to specs/042-paper-default-terminal-exposure-probe)
+- **pointer_not_staged**: True (.specify/feature.json must not be staged)
 - **pointer_not_in_main_head**: True (.specify/feature.json must not appear in git diff --name-only main...HEAD)

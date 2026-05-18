@@ -40,6 +40,7 @@ def _read_feature_pointer() -> str | None:
 
 def build_prerequisite_tags_verified() -> list[dict[str, Any]]:
     pointer = _read_feature_pointer()
+    cached_pointer = _git_output("diff", "--cached", "--name-only", "--", ".specify/feature.json")
     diff_main_head = _git_output("diff", "--name-only", "main...HEAD").splitlines()
     checks = [
         ("branch", _git_output("branch", "--show-current") == FEATURE_ID, "git branch --show-current == 042-paper-default-terminal-exposure-probe"),
@@ -48,7 +49,7 @@ def build_prerequisite_tags_verified() -> list[dict[str, Any]]:
         ("main_equals_feature_041", _git_output("rev-parse", "main") == _git_output("rev-parse", "041-full-training-reproduction-campaign-complete^{}"), "main == 041-full-training-reproduction-campaign-complete^{}"),
         ("prerequisite_diff_empty", _git_output("diff", "--name-only", "041-full-training-reproduction-campaign-complete^{}", "main") == "", "diff between 041-full-training-reproduction-campaign-complete^{} and main is empty"),
         ("pointer_matches_feature", pointer == "specs/042-paper-default-terminal-exposure-probe", ".specify/feature.json points to specs/042-paper-default-terminal-exposure-probe"),
-        ("pointer_not_staged", ".specify/feature.json" not in _git_status_short("--", ".specify/feature.json"), ".specify/feature.json must not be staged"),
+        ("pointer_not_staged", cached_pointer == "", ".specify/feature.json must not be staged"),
         ("pointer_not_in_main_head", ".specify/feature.json" not in diff_main_head, ".specify/feature.json must not appear in git diff --name-only main...HEAD"),
     ]
     return [{"name": name, "verified": bool(verified), "details": details} for name, verified, details in checks]
@@ -57,7 +58,7 @@ def build_prerequisite_tags_verified() -> list[dict[str, Any]]:
 def collect_prior_feature_gates_verified() -> list[dict[str, Any]]:
     features = [
         ("037", "baseline revalidation", "artifacts/analysis/baseline-revalidation-after-runtime-repair/baseline-revalidation-report.json"),
-        ("038", "training foundation", "artifacts/analysis/training-foundation-contract/training-foundation-report.json"),
+        ("038", "training foundation", "artifacts/analysis/training-foundation-contract/training-foundation-contract-report.json"),
         ("039", "paper HOODIE network", "artifacts/analysis/paper-hoodie-network-implementation/network-implementation-report.json"),
         ("040", "smoke training", "artifacts/analysis/smoke-training/smoke-training-report.json"),
         ("041", "full-training campaign gate", "artifacts/analysis/full-training-reproduction-campaign/training-campaign-report.json"),

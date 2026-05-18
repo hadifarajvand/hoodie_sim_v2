@@ -5,7 +5,12 @@ import tempfile
 import unittest
 from pathlib import Path
 
-from src.analysis.paper_default_terminal_exposure_probe import TerminalExposureProbeConfig, generate_terminal_exposure_artifacts, run_terminal_exposure_probe, write_terminal_exposure_report
+from src.analysis.paper_default_terminal_exposure_probe import (
+    TerminalExposureProbeConfig,
+    generate_terminal_exposure_artifacts,
+    run_terminal_exposure_probe,
+    write_terminal_exposure_report,
+)
 
 
 class PaperDefaultTerminalExposureReportIntegrationTests(unittest.TestCase):
@@ -60,6 +65,26 @@ class PaperDefaultTerminalExposureReportIntegrationTests(unittest.TestCase):
     def test_report_rejects_training_approval(self) -> None:
         report = run_terminal_exposure_probe(TerminalExposureProbeConfig())
         self.assertEqual(report.final_verdict, "terminal_exposure_absent_under_paper_default" if report.aggregate_terminal_exposure_summary["reward_bearing_transition_count"] == 0 else "terminal_exposure_present")
+
+    def test_prerequisite_pointer_not_staged_true_when_local_only_pointer(self) -> None:
+        from src.analysis.paper_default_terminal_exposure_probe.report import build_prerequisite_tags_verified
+
+        tags = build_prerequisite_tags_verified()
+        pointer_not_staged = next(item for item in tags if item["name"] == "pointer_not_staged")
+        pointer_not_in_main_head = next(item for item in tags if item["name"] == "pointer_not_in_main_head")
+        self.assertTrue(pointer_not_staged["verified"])
+        self.assertTrue(pointer_not_in_main_head["verified"])
+
+    def test_feature_038_prerequisite_uses_training_foundation_contract_report_path(self) -> None:
+        from src.analysis.paper_default_terminal_exposure_probe.report import collect_prior_feature_gates_verified
+
+        tags = collect_prior_feature_gates_verified()
+        feature_038 = next(item for item in tags if item["feature"] == "038")
+        self.assertIn(
+            "training-foundation-contract-report.json",
+            feature_038["details"],
+        )
+        self.assertTrue(feature_038["verified"])
 
 
 if __name__ == "__main__":

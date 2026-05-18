@@ -100,6 +100,10 @@ class ProbeStrategyResult:
         return payload
 
 
+def _ratio(numerator: int, denominator: int) -> float:
+    return numerator / max(denominator, 1)
+
+
 def _environment(config: TerminalExposureProbeConfig, *, seed: int) -> HoodieGymEnvironment:
     return HoodieGymEnvironment(
         episode_length=config.episode_length,
@@ -239,9 +243,9 @@ def _run_single_strategy(config: TerminalExposureProbeConfig, strategy: ProbeStr
     counters["transmission_completed_count"] = counters["transmission_started_count"]
     counters["execution_started_count"] = counters["selected_action_count"]
     counters["execution_completed_count"] = counters["completed_task_count"]
-    counters["terminal_transition_ratio"] = counters["terminal_transition_count"] / max(counters["selected_action_count"], 1)
-    counters["reward_bearing_transition_ratio"] = counters["reward_bearing_transition_count"] / max(counters["selected_action_count"], 1)
-    counters["pending_at_horizon_ratio"] = counters["pending_at_horizon_count"] / max(counters["episode_count"], 1)
+    counters["terminal_transition_ratio"] = _ratio(counters["terminal_transition_count"], counters["selected_action_count"])
+    counters["reward_bearing_transition_ratio"] = _ratio(counters["reward_bearing_transition_count"], counters["selected_action_count"])
+    counters["pending_at_horizon_ratio"] = _ratio(counters["pending_at_horizon_count"], counters["selected_action_count"])
     counters["max_observed_task_age_slots"] = 0
     counters["max_queue_wait_slots"] = 0
     counters["deadline_reached_count"] = counters["terminal_transition_count"]

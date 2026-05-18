@@ -3,6 +3,7 @@ from __future__ import annotations
 import unittest
 
 from src.analysis.paper_default_terminal_exposure_probe import TerminalExposureProbeConfig, TerminalExposureReport, run_terminal_exposure_probe
+from src.analysis.paper_default_terminal_exposure_probe.runner import _ratio
 
 
 class PaperDefaultTerminalExposureSchemaUnitTests(unittest.TestCase):
@@ -142,6 +143,10 @@ class PaperDefaultTerminalExposureSchemaUnitTests(unittest.TestCase):
         self.assertTrue(report.no_curve_fitting)
         self.assertTrue(report.no_simulator_output_tuning)
         self.assertTrue(report.no_paper_reproduction_claim)
+
+    def test_pending_at_horizon_ratio_uses_decision_or_transition_denominator(self) -> None:
+        self.assertAlmostEqual(_ratio(1, 110), 1 / 110)
+        self.assertNotEqual(_ratio(1, 110), 1.0)
 
 
 if __name__ == "__main__":
