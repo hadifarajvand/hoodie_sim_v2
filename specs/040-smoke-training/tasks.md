@@ -96,7 +96,6 @@
   - `  tests.unit.test_paper_hoodie_network_config \`
   - `  tests.unit.test_paper_hoodie_network_shapes \`
   - `  tests.integration.test_paper_hoodie_network_report \`
-  - `  tests.integration.test_paper_hoodie_network_scope_guard \`
   - `  tests.unit.test_training_foundation_contract \`
   - `  tests.integration.test_training_foundation_contract_report \`
   - `  tests.integration.test_training_readiness_gate`

@@ -7,20 +7,13 @@ import unittest
 ALLOWED_COMMITTED_PREFIXES = (
     "requirements.txt",
     "specs/039-paper-hoodie-network-implementation/",
-    "specs/040-smoke-training/",
     "src/analysis/paper_hoodie_network_implementation/",
-    "src/analysis/smoke_training/",
     "tests/unit/test_paper_hoodie_network_config.py",
     "tests/unit/test_paper_hoodie_network_shapes.py",
     "tests/integration/test_paper_hoodie_network_report.py",
     "tests/integration/test_paper_hoodie_network_scope_guard.py",
-    "tests/unit/test_smoke_training_contract.py",
-    "tests/integration/test_smoke_training_report.py",
-    "tests/integration/test_smoke_training_determinism.py",
-    "tests/integration/test_smoke_training_scope_guard.py",
     "tests/integration/test_training_foundation_scope_guard.py",
     "artifacts/analysis/paper-hoodie-network-implementation/",
-    "artifacts/analysis/smoke-training/",
 )
 
 
