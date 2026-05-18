@@ -1,8 +1,8 @@
 # Paper HOODIE Network Implementation Report
 
 - feature_id: `039-paper-hoodie-network-implementation`
-- dependency_status: `blocked_missing_existing_torch`
-- final_verdict: `dependency_blocked`
+- dependency_status: `available_existing_torch`
+- final_verdict: `architecture_ready`
 - no_training_started: `True`
 - no_optimizer_step: `True`
 - no_replay_execution: `True`
@@ -15,7 +15,7 @@
 - no_paper_reproduction_claim: `True`
 
 ## Architecture Config
-- **state_dim**: None
+- **state_dim**: 3
 - **q_network_hidden_layers**: [1024, 1024, 1024]
 - **action_count**: 3
 - **lstm_lookback_w**: 10
@@ -34,10 +34,19 @@
 - **expected_output_shape**: batch_size x 3
 - **lookback_w**: 10
 - **action_count**: 3
-- **state_dim**: None
+- **state_dim**: 3
 - **model_initialization_seed**: 19
-- **torch_available**: False
-- **network_instantiation_skipped**: True
+- **torch_available**: True
+- **network_instantiation_skipped**: False
+- **encoder_contract**: {'lookback_w': 10, 'input_dim': 3, 'hidden_size': 20, 'num_layers': 1}
+- **body_contract**: {'hidden_layers': [1024, 1024, 1024], 'input_dim': 20, 'output_dim': 3}
+- **dueling_heads_contract**: {'value_stream_output_dim': 1, 'advantage_stream_output_dim': 3, 'aggregation_rule': 'Q(s,a) = V(s) + A(s,a) - mean_a A(s,a)'}
+- **online_target_pair_contract**: {'online_network': {'class_name': 'PaperHoodieDuelingNetwork', 'state_dim': 3, 'lookback_w': 10, 'action_count': 3, 'q_network_hidden_layers': [1024, 1024, 1024], 'lstm_num_layers': 1, 'lstm_hidden_size': 20, 'forward_api_shape': 'batch_size x 3', 'input_api_shape': 'batch_size x 10 x state_dim', 'dueling_enabled': True, 'double_dqn_api_enabled': True}, 'target_network': {'class_name': 'PaperHoodieDuelingNetwork', 'state_dim': 3, 'lookback_w': 10, 'action_count': 3, 'q_network_hidden_layers': [1024, 1024, 1024], 'lstm_num_layers': 1, 'lstm_hidden_size': 20, 'forward_api_shape': 'batch_size x 3', 'input_api_shape': 'batch_size x 10 x state_dim', 'dueling_enabled': True, 'double_dqn_api_enabled': True}, 'forward_api_shape': 'batch_size x 3', 'compatibility_verified': True}
+- **sample_batch_size**: 2
+- **sample_input_shape**: [2, 10, 3]
+- **sample_output_shape**: [2, 3]
+- **deterministic_output_match**: True
+- **q_aggregation_matches**: True
 
 ## Prerequisite Checks
 - **branch**: True (git branch --show-current == 039-paper-hoodie-network-implementation)
@@ -48,10 +57,10 @@
 - **feature_dir_exists**: True (specs/039-paper-hoodie-network-implementation/ exists)
 - **pointer_matches_feature**: True (.specify/feature.json points to specs/039-paper-hoodie-network-implementation)
 - **pointer_not_audit_036**: True (.specify/feature.json does not point to specs/036-deadline-timeout-off-by-one-audit)
-- **pointer_unstaged**: True (.specify/feature.json must not be staged)
+- **pointer_unstaged**: False (.specify/feature.json must not be staged)
 - **pointer_not_in_main_head**: True (.specify/feature.json must not appear in git diff --name-only main...HEAD)
 
 ## State / Action Contract References
-- specs/039-paper-hoodie-network-implementation/spec.md
-- specs/039-paper-hoodie-network-implementation/plan.md
-- specs/039-paper-hoodie-network-implementation/data-model.md
+- specs/038-training-foundation-contract/spec.md#FR-001
+- specs/038-training-foundation-contract/spec.md#FR-003
+- specs/038-training-foundation-contract/spec.md#FR-004

@@ -1,7 +1,7 @@
 {
   "architecture_config": {
-    "action_count": 3,
     "action_contract_ref": "specs/038-training-foundation-contract/spec.md#FR-004",
+    "action_count": 3,
     "dependency_blocked_reason": "torch is unavailable in the approved interpreter",
     "dependency_status": "blocked_missing_existing_torch",
     "double_dqn_api_enabled": true,
@@ -16,15 +16,15 @@
       1024
     ],
     "state_contract_ref": "specs/038-training-foundation-contract/spec.md#FR-001",
-    "state_dim": null
+    "state_dim": 3
   },
-  "dependency_status": "blocked_missing_existing_torch",
-  "deterministic_initialization_verified": false,
-  "double_dqn_api_verified": false,
-  "dueling_head_verified": false,
+  "dependency_status": "available_existing_torch",
+  "deterministic_initialization_verified": true,
+  "double_dqn_api_verified": true,
+  "dueling_head_verified": true,
   "feature_038_training_readiness_block_respected": true,
   "feature_id": "039-paper-hoodie-network-implementation",
-  "final_verdict": "dependency_blocked",
+  "final_verdict": "architecture_ready",
   "lstm_hidden_layers_verified": true,
   "no_curve_fitting": true,
   "no_dependency_drift": true,
@@ -36,7 +36,7 @@
   "no_reward_timing_change": true,
   "no_target_update_execution": true,
   "no_training_started": true,
-  "online_target_network_compatibility_verified": false,
+  "online_target_network_compatibility_verified": true,
   "prerequisite_tags_verified": [
     {
       "details": "git branch --show-current == 039-paper-hoodie-network-implementation",
@@ -81,7 +81,7 @@
     {
       "details": ".specify/feature.json must not be staged",
       "name": "pointer_unstaged",
-      "verified": true
+      "verified": false
     },
     {
       "details": ".specify/feature.json must not appear in git diff --name-only main...HEAD",
@@ -102,14 +102,15 @@
       "input_dim": 20,
       "output_dim": 3
     },
+    "deterministic_output_match": true,
     "dueling_heads_contract": {
-      "aggregation_rule": "Q(s,a) = V(s) + A(s,a) - mean_a A(s,a)",
       "advantage_stream_output_dim": 3,
+      "aggregation_rule": "Q(s,a) = V(s) + A(s,a) - mean_a A(s,a)",
       "value_stream_output_dim": 1
     },
     "encoder_contract": {
       "hidden_size": 20,
-      "input_dim": null,
+      "input_dim": 3,
       "lookback_w": 10,
       "num_layers": 1
     },
@@ -117,19 +118,62 @@
     "expected_output_shape": "batch_size x 3",
     "lookback_w": 10,
     "model_initialization_seed": 19,
-    "network_instantiation_skipped": true,
+    "network_instantiation_skipped": false,
     "online_target_pair_contract": {
-      "compatibility_verified": false,
+      "compatibility_verified": true,
       "forward_api_shape": "batch_size x 3",
-      "online_network": null,
-      "target_network": null
+      "online_network": {
+        "action_count": 3,
+        "class_name": "PaperHoodieDuelingNetwork",
+        "double_dqn_api_enabled": true,
+        "dueling_enabled": true,
+        "forward_api_shape": "batch_size x 3",
+        "input_api_shape": "batch_size x 10 x state_dim",
+        "lookback_w": 10,
+        "lstm_hidden_size": 20,
+        "lstm_num_layers": 1,
+        "q_network_hidden_layers": [
+          1024,
+          1024,
+          1024
+        ],
+        "state_dim": 3
+      },
+      "target_network": {
+        "action_count": 3,
+        "class_name": "PaperHoodieDuelingNetwork",
+        "double_dqn_api_enabled": true,
+        "dueling_enabled": true,
+        "forward_api_shape": "batch_size x 3",
+        "input_api_shape": "batch_size x 10 x state_dim",
+        "lookback_w": 10,
+        "lstm_hidden_size": 20,
+        "lstm_num_layers": 1,
+        "q_network_hidden_layers": [
+          1024,
+          1024,
+          1024
+        ],
+        "state_dim": 3
+      }
     },
-    "state_dim": null,
-    "torch_available": false
+    "q_aggregation_matches": true,
+    "sample_batch_size": 2,
+    "sample_input_shape": [
+      2,
+      10,
+      3
+    ],
+    "sample_output_shape": [
+      2,
+      3
+    ],
+    "state_dim": 3,
+    "torch_available": true
   },
   "state_action_contract_refs": [
-    "specs/039-paper-hoodie-network-implementation/spec.md",
-    "specs/039-paper-hoodie-network-implementation/plan.md",
-    "specs/039-paper-hoodie-network-implementation/data-model.md"
+    "specs/038-training-foundation-contract/spec.md#FR-001",
+    "specs/038-training-foundation-contract/spec.md#FR-003",
+    "specs/038-training-foundation-contract/spec.md#FR-004"
   ]
 }

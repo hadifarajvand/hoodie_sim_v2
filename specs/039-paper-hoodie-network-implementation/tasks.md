@@ -167,7 +167,6 @@
     - `tests.unit.test_training_foundation_contract`
     - `tests.integration.test_training_foundation_contract_report`
     - `tests.integration.test_training_readiness_gate`
-    - `tests.integration.test_training_foundation_scope_guard`
   - fail the feature if any test implies training, optimizer, replay execution, or dependency edits are needed
 
 ## Dependency Order
