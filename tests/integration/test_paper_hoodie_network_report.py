@@ -41,14 +41,15 @@ class PaperHoodieNetworkReportIntegrationTests(unittest.TestCase):
         }
         self.assertTrue(required_keys.issubset(payload))
         self.assertEqual(payload["feature_id"], "039-paper-hoodie-network-implementation")
-        self.assertEqual(payload["dependency_status"], "blocked_missing_existing_torch")
-        self.assertEqual(payload["final_verdict"], "dependency_blocked")
+        self.assertEqual(payload["dependency_status"], "available_existing_torch")
+        self.assertEqual(payload["final_verdict"], "architecture_ready")
         self.assertTrue(payload["q_network_hidden_layers_verified"])
         self.assertTrue(payload["lstm_hidden_layers_verified"])
         self.assertTrue(payload["q_lstm_config_separation_verified"])
-        self.assertFalse(payload["dueling_head_verified"])
-        self.assertFalse(payload["double_dqn_api_verified"])
-        self.assertFalse(payload["online_target_network_compatibility_verified"])
+        self.assertTrue(payload["dueling_head_verified"])
+        self.assertTrue(payload["double_dqn_api_verified"])
+        self.assertTrue(payload["online_target_network_compatibility_verified"])
+        self.assertTrue(payload["deterministic_initialization_verified"])
         self.assertTrue(payload["feature_038_training_readiness_block_respected"])
         self.assertTrue(payload["no_training_started"])
         self.assertTrue(payload["no_optimizer_step"])
@@ -60,6 +61,9 @@ class PaperHoodieNetworkReportIntegrationTests(unittest.TestCase):
         self.assertTrue(payload["no_dependency_drift"])
         self.assertTrue(payload["no_curve_fitting"])
         self.assertTrue(payload["no_paper_reproduction_claim"])
+        self.assertIn("specs/038-training-foundation-contract/spec.md#FR-001", payload["state_action_contract_refs"])
+        self.assertIn("specs/038-training-foundation-contract/spec.md#FR-003", payload["state_action_contract_refs"])
+        self.assertIn("specs/038-training-foundation-contract/spec.md#FR-004", payload["state_action_contract_refs"])
 
     def test_report_writes_json_and_markdown(self) -> None:
         report = build_network_implementation_report()
@@ -69,10 +73,12 @@ class PaperHoodieNetworkReportIntegrationTests(unittest.TestCase):
             self.assertTrue(json_path.exists())
             self.assertTrue(md_path.exists())
             self.assertEqual(payload["feature_id"], "039-paper-hoodie-network-implementation")
-            self.assertEqual(payload["dependency_status"], "blocked_missing_existing_torch")
-            self.assertEqual(payload["final_verdict"], "dependency_blocked")
-            self.assertIn("dependency_status", md_path.read_text(encoding="utf-8"))
-            self.assertIn("no_paper_reproduction_claim", md_path.read_text(encoding="utf-8"))
+            self.assertEqual(payload["dependency_status"], "available_existing_torch")
+            self.assertEqual(payload["final_verdict"], "architecture_ready")
+            markdown = md_path.read_text(encoding="utf-8")
+            self.assertIn("dependency_status", markdown)
+            self.assertIn("architecture_ready", markdown)
+            self.assertIn("no_paper_reproduction_claim", markdown)
 
 
 if __name__ == "__main__":

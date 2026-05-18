@@ -13,7 +13,7 @@
   - `action_count`
   - `state_contract_ref`
   - `action_contract_ref`
-  - `deterministic_initialization_seed`
+  - `model_initialization_seed`
   - `dependency_status`
   - `dependency_blocked_reason`
 - **Validation rules**:

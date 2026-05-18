@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from dataclasses import dataclass, field
+from dataclasses import dataclass
 from pathlib import Path
 import json
 import subprocess
@@ -108,7 +108,7 @@ class PaperHoodieNetworkConfig:
             raise ValueError("double_dqn_api_enabled must remain true.")
 
     @classmethod
-    def standard(cls, *, state_dim: int | None = None, model_initialization_seed: int = 19) -> "PaperHoodieNetworkConfig":
+    def standard(cls, *, state_dim: int | None = 3, model_initialization_seed: int = 19) -> "PaperHoodieNetworkConfig":
         return cls(
             state_dim=state_dim,
             q_network_hidden_layers=[1024, 1024, 1024],
@@ -122,7 +122,7 @@ class PaperHoodieNetworkConfig:
         )
 
     @classmethod
-    def from_shared_n_l(cls, *, shared_n_l: int, state_dim: int | None = None, model_initialization_seed: int = 19) -> "PaperHoodieNetworkConfig":
+    def from_shared_n_l(cls, *, shared_n_l: int, state_dim: int | None = 3, model_initialization_seed: int = 19) -> "PaperHoodieNetworkConfig":
         raise ValueError(
             f"Shared N_L coupling is forbidden for Feature 039; received shared_n_l={shared_n_l} instead of separate q_network_hidden_layers and lstm_* fields."
         )
@@ -293,47 +293,101 @@ class ShapeValidationReport:
         ]
         for key, value in payload["architecture_config"].items():
             lines.append(f"- **{key}**: {value}")
-        lines.extend(
-            [
-                "",
-                "## Shape Validation Summary",
-            ]
-        )
+        lines.extend(["", "## Shape Validation Summary"])
         for key, value in payload["shape_validation_summary"].items():
             lines.append(f"- **{key}**: {value}")
-        lines.extend(
-            [
-                "",
-                "## Prerequisite Checks",
-            ]
-        )
+        lines.extend(["", "## Prerequisite Checks"])
         for check in payload["prerequisite_tags_verified"]:
             lines.append(f"- **{check['name']}**: {check['verified']} ({check['details']})")
-        lines.extend(
-            [
-                "",
-                "## State / Action Contract References",
-            ]
-        )
+        lines.extend(["", "## State / Action Contract References"])
         lines.extend(f"- {item}" for item in payload["state_action_contract_refs"])
         lines.append("")
         return "\n".join(lines)
 
 
 def _build_config() -> PaperHoodieNetworkConfig:
-    return PaperHoodieNetworkConfig.standard(state_dim=None, model_initialization_seed=19)
+    return PaperHoodieNetworkConfig.standard(state_dim=3, model_initialization_seed=19)
 
 
 def _build_shape_summary(config: PaperHoodieNetworkConfig, torch_available: bool) -> dict[str, Any]:
-    encoder = LstmEncoder(lookback_w=config.lstm_lookback_w, input_dim=config.state_dim, hidden_size=config.lstm_hidden_size or 20, num_layers=config.lstm_num_layers or 1)
-    body = QNetworkBody(hidden_layers=list(config.q_network_hidden_layers or []), input_dim=config.lstm_hidden_size, output_dim=config.action_count)
-    heads = DuelingHeads(value_stream_output_dim=1, advantage_stream_output_dim=config.action_count)
-    pair = OnlineTargetNetworkPair(
-        online_network=None,
-        target_network=None,
-        forward_api_shape=config.expected_output_shape,
-        compatibility_verified=False,
+    encoder = LstmEncoder(
+        lookback_w=config.lstm_lookback_w,
+        input_dim=config.state_dim,
+        hidden_size=config.lstm_hidden_size or 20,
+        num_layers=config.lstm_num_layers or 1,
     )
+    body = QNetworkBody(
+        hidden_layers=list(config.q_network_hidden_layers or []),
+        input_dim=config.lstm_hidden_size,
+        output_dim=config.action_count,
+    )
+    heads = DuelingHeads(value_stream_output_dim=1, advantage_stream_output_dim=config.action_count)
+
+    if not torch_available or config.state_dim is None:
+        pair = OnlineTargetNetworkPair(
+            online_network=None,
+            target_network=None,
+            forward_api_shape=config.expected_output_shape,
+            compatibility_verified=False,
+        )
+        return {
+            "expected_input_shape": config.expected_input_shape,
+            "expected_output_shape": config.expected_output_shape,
+            "lookback_w": config.lstm_lookback_w,
+            "action_count": config.action_count,
+            "state_dim": config.state_dim,
+            "model_initialization_seed": config.model_initialization_seed,
+            "torch_available": torch_available,
+            "network_instantiation_skipped": True,
+            "encoder_contract": encoder.to_dict(),
+            "body_contract": body.to_dict(),
+            "dueling_heads_contract": heads.to_dict(),
+            "online_target_pair_contract": pair.to_dict(),
+            "sample_batch_size": None,
+            "sample_input_shape": None,
+            "sample_output_shape": None,
+            "deterministic_output_match": False,
+        }
+
+    import torch
+
+    from .network import build_online_network, build_target_network
+
+    online_network = build_online_network(config)
+    target_network = build_target_network(config)
+    repeat_network = build_online_network(config)
+
+    sample_batch_size = 2
+    sample_input = torch.zeros((sample_batch_size, config.lstm_lookback_w, config.state_dim), dtype=torch.float32)
+    with torch.no_grad():
+        online_value, online_advantage, online_q = online_network.forward_components(sample_input)
+        target_q = target_network(sample_input)
+        repeat_q = repeat_network(sample_input)
+
+    deterministic_output_match = bool(torch.equal(online_q, repeat_q))
+    deterministic_state_match = all(
+        torch.equal(a, b)
+        for a, b in zip(online_network.state_dict().values(), repeat_network.state_dict().values())
+    )
+    q_aggregation_matches = torch.allclose(
+        online_q,
+        online_value + online_advantage - online_advantage.mean(dim=-1, keepdim=True),
+    )
+    compatibility_verified = (
+        online_network.architecture_signature() == target_network.architecture_signature()
+        and list(online_network.state_dict().keys()) == list(target_network.state_dict().keys())
+        and tuple(online_q.shape) == tuple(target_q.shape)
+        and tuple(online_q.shape) == (sample_batch_size, config.action_count)
+        and q_aggregation_matches
+    )
+
+    pair = OnlineTargetNetworkPair(
+        online_network=online_network.architecture_signature(),
+        target_network=target_network.architecture_signature(),
+        forward_api_shape=config.expected_output_shape,
+        compatibility_verified=compatibility_verified,
+    )
+
     return {
         "expected_input_shape": config.expected_input_shape,
         "expected_output_shape": config.expected_output_shape,
@@ -342,11 +396,16 @@ def _build_shape_summary(config: PaperHoodieNetworkConfig, torch_available: bool
         "state_dim": config.state_dim,
         "model_initialization_seed": config.model_initialization_seed,
         "torch_available": torch_available,
-        "network_instantiation_skipped": not torch_available,
+        "network_instantiation_skipped": False,
         "encoder_contract": encoder.to_dict(),
         "body_contract": body.to_dict(),
         "dueling_heads_contract": heads.to_dict(),
         "online_target_pair_contract": pair.to_dict(),
+        "sample_batch_size": sample_batch_size,
+        "sample_input_shape": list(sample_input.shape),
+        "sample_output_shape": list(online_q.shape),
+        "deterministic_output_match": deterministic_output_match and deterministic_state_match,
+        "q_aggregation_matches": bool(q_aggregation_matches),
     }
 
 
@@ -355,24 +414,45 @@ def build_network_implementation_report() -> ShapeValidationReport:
     config = _build_config()
     shape_summary = _build_shape_summary(config, torch_available=torch_available)
     dependency_status = "available_existing_torch" if torch_available else "blocked_missing_existing_torch"
+    q_layers_verified = list(config.q_network_hidden_layers or []) == [1024, 1024, 1024]
+    lstm_layers_verified = config.lstm_num_layers == 1 and config.lstm_hidden_size == 20 and config.lstm_lookback_w == 10
+    q_lstm_separation_verified = bool(
+        q_layers_verified
+        and lstm_layers_verified
+        and config.q_network_hidden_layers != [config.lstm_hidden_size]
+    )
+    dueling_head_verified = torch_available and bool(
+        shape_summary["dueling_heads_contract"]["value_stream_output_dim"] == 1
+        and shape_summary["dueling_heads_contract"]["advantage_stream_output_dim"] == config.action_count
+        and shape_summary.get("q_aggregation_matches", False)
+    )
+    double_dqn_api_verified = torch_available and bool(
+        shape_summary["online_target_pair_contract"]["compatibility_verified"]
+        and shape_summary["online_target_pair_contract"]["forward_api_shape"] == config.expected_output_shape
+    )
+    online_target_network_compatibility_verified = bool(
+        torch_available and shape_summary["online_target_pair_contract"]["compatibility_verified"]
+    )
+    deterministic_initialization_verified = bool(torch_available and shape_summary["deterministic_output_match"])
+
     return ShapeValidationReport(
         feature_id=FEATURE_ID,
         prerequisite_tags_verified=collect_prerequisite_tags_verified(),
         dependency_status=dependency_status,
         architecture_config=config.to_dict(),
-        q_network_hidden_layers_verified=True,
-        lstm_hidden_layers_verified=True,
-        q_lstm_config_separation_verified=True,
-        dueling_head_verified=False,
-        double_dqn_api_verified=False,
-        online_target_network_compatibility_verified=False,
+        q_network_hidden_layers_verified=q_layers_verified,
+        lstm_hidden_layers_verified=lstm_layers_verified,
+        q_lstm_config_separation_verified=q_lstm_separation_verified,
+        dueling_head_verified=dueling_head_verified,
+        double_dqn_api_verified=double_dqn_api_verified,
+        online_target_network_compatibility_verified=online_target_network_compatibility_verified,
         state_action_contract_refs=[
-            "specs/039-paper-hoodie-network-implementation/spec.md",
-            "specs/039-paper-hoodie-network-implementation/plan.md",
-            "specs/039-paper-hoodie-network-implementation/data-model.md",
+            "specs/038-training-foundation-contract/spec.md#FR-001",
+            "specs/038-training-foundation-contract/spec.md#FR-003",
+            "specs/038-training-foundation-contract/spec.md#FR-004",
         ],
         shape_validation_summary=shape_summary,
-        deterministic_initialization_verified=False,
+        deterministic_initialization_verified=deterministic_initialization_verified,
         feature_038_training_readiness_block_respected=True,
         no_training_started=True,
         no_optimizer_step=True,
@@ -384,7 +464,7 @@ def build_network_implementation_report() -> ShapeValidationReport:
         no_dependency_drift=True,
         no_curve_fitting=True,
         no_paper_reproduction_claim=True,
-        final_verdict="dependency_blocked" if not torch_available else "architecture_ready",
+        final_verdict="architecture_ready" if torch_available else "dependency_blocked",
     )
 
 

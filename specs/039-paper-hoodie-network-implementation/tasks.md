@@ -71,7 +71,7 @@
   - reject `lstm_hidden_size == 1024`
   - reject missing separate `q_network_hidden_layers`
   - reject missing separate `lstm_hidden_size` and `lstm_num_layers`
-- [ ] T006 [US1] Implement the LSTM encoder and shared Q-network body contract in `src/analysis/paper_hoodie_network_implementation/`:
+- [X] T006 [US1] Implement the LSTM encoder and shared Q-network body contract in `src/analysis/paper_hoodie_network_implementation/`:
   - accept input in `batch_size x lookback_w x state_dim`
   - encode the `W=10` history with one LSTM layer before the body
   - implement the `3 x 1024` Q-network body
@@ -83,7 +83,7 @@
 
 **Independent Test**: The configuration and shape checks confirm that Q-network hidden layers and LSTM hidden settings are independently defined and that online/target networks are architecture-compatible.
 
-- [ ] T007 [P] [US2] Add shape and determinism tests in `tests/unit/test_paper_hoodie_network_shapes.py`:
+- [X] T007 [P] [US2] Add shape and determinism tests in `tests/unit/test_paper_hoodie_network_shapes.py`:
   - `test_lstm_forward_accepts_lookback_w_10`
   - `test_dueling_network_outputs_batch_by_action_count`
   - `test_dueling_q_aggregation_shape`
@@ -91,12 +91,12 @@
   - `test_deterministic_initialization_with_model_seed`
   - validate input shape `batch_size x W x state_dim`
   - validate output shape `batch_size x 3`
-- [ ] T008 [US2] Implement the dueling heads and Q aggregation contract in `src/analysis/paper_hoodie_network_implementation/`:
+- [X] T008 [US2] Implement the dueling heads and Q aggregation contract in `src/analysis/paper_hoodie_network_implementation/`:
   - add separate value and advantage heads after the shared body
   - combine outputs with `Q(s,a) = V(s) + A(s,a) - mean_a A(s,a)`
   - emit stable Q-values for action count 3
   - preserve the generic horizontal action as metadata-resolved, not per-destination
-- [ ] T009 [US2] Implement the online/target network factory surface in `src/analysis/paper_hoodie_network_implementation/`:
+- [X] T009 [US2] Implement the online/target network factory surface in `src/analysis/paper_hoodie_network_implementation/`:
   - build architecture-compatible online and target network instances
   - expose forward APIs needed for later Double-DQN-compatible use
   - do not implement target updates

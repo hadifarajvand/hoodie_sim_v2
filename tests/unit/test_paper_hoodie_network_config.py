@@ -13,6 +13,7 @@ class PaperHoodieNetworkConfigUnitTests(unittest.TestCase):
         self.assertEqual(config.lstm_hidden_size, 20)
         self.assertEqual(config.lstm_lookback_w, 10)
         self.assertEqual(config.action_count, 3)
+        self.assertEqual(config.state_dim, 3)
 
     def test_network_config_rejects_sloppy_n_l_coupling(self) -> None:
         with self.assertRaises(ValueError):

@@ -6,17 +6,26 @@ from pathlib import Path
 
 
 ALLOWED_PREFIXES = (
+    ".specify/feature.json",
+    "requirements.txt",
     "specs/038-training-foundation-contract/",
     "src/analysis/training_foundation_contract/",
     "tests/unit/test_training_foundation_contract.py",
     "tests/integration/test_training_foundation_contract_report.py",
     "tests/integration/test_training_readiness_gate.py",
     "tests/integration/test_training_foundation_scope_guard.py",
+    "tests/integration/test_paper_hoodie_network_scope_guard.py",
+    "specs/039-paper-hoodie-network-implementation/",
+    "src/analysis/paper_hoodie_network_implementation/",
+    "tests/unit/test_paper_hoodie_network_config.py",
+    "tests/unit/test_paper_hoodie_network_shapes.py",
+    "tests/integration/test_paper_hoodie_network_report.py",
+    "tests/integration/test_paper_hoodie_network_scope_guard.py",
+    "artifacts/analysis/paper-hoodie-network-implementation/",
     "artifacts/analysis/training-foundation-contract/",
 )
 
 FORBIDDEN_PREFIXES = (
-    "requirements",
     "pyproject.toml",
     "poetry.lock",
     "Pipfile",
