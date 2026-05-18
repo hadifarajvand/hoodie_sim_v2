@@ -79,7 +79,7 @@ def build_campaign_prerequisite_tags_verified() -> list[dict[str, Any]]:
         pointer = payload.get("feature_directory") if isinstance(payload, dict) else None
     diff_main_head = _git_output("diff", "--name-only", "main...HEAD").splitlines()
     cached_pointer = _git_output("diff", "--cached", "--name-only", "--", ".specify/feature.json")
-    dirty_paths = [line[3:].strip() for line in _git_output("status", "--short").splitlines() if line.strip()]
+    dirty_paths = [line[2:].strip() for line in _git_output("status", "--short").splitlines() if line.strip()]
     current_branch = _git_output("branch", "--show-current")
     allowed_local_dirty_pointer = pointer == "specs/041-full-training-reproduction-campaign" and cached_pointer == "" and ".specify/feature.json" not in diff_main_head
     checks = [
