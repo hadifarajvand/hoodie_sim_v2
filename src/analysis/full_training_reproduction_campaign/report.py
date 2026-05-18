@@ -81,7 +81,7 @@ def build_campaign_prerequisite_tags_verified() -> list[dict[str, Any]]:
     cached_pointer = _git_output("diff", "--cached", "--name-only", "--", ".specify/feature.json")
     dirty_paths = [line[3:].strip() for line in _git_output("status", "--short").splitlines() if line.strip()]
     current_branch = _git_output("branch", "--show-current")
-    allowed_local_dirty_paths = {".specify/feature.json"} if pointer == "specs/041-full-training-reproduction-campaign" and cached_pointer == "" and ".specify/feature.json" not in diff_main_head else set()
+    allowed_local_dirty_pointer = pointer == "specs/041-full-training-reproduction-campaign" and cached_pointer == "" and ".specify/feature.json" not in diff_main_head
     checks = [
         ("branch", current_branch == FEATURE_ID, f"git branch --show-current == {FEATURE_ID}"),
         ("not_main", current_branch != "main", "current branch != main"),
@@ -92,7 +92,11 @@ def build_campaign_prerequisite_tags_verified() -> list[dict[str, Any]]:
         ("pointer_matches_feature", pointer == "specs/041-full-training-reproduction-campaign", ".specify/feature.json points to specs/041-full-training-reproduction-campaign"),
         ("pointer_not_staged", cached_pointer == "", ".specify/feature.json must not be staged"),
         ("pointer_not_in_main_head", ".specify/feature.json" not in diff_main_head, ".specify/feature.json must not appear in git diff --name-only main...HEAD"),
-        ("no_unrelated_dirty_files", set(dirty_paths).issubset(allowed_local_dirty_paths), "no unrelated dirty files are present"),
+        (
+            "no_unrelated_dirty_files",
+            allowed_local_dirty_pointer and all(path == ".specify/feature.json" for path in dirty_paths),
+            "no unrelated dirty files are present",
+        ),
     ]
     return [{"name": name, "verified": bool(verified), "details": details} for name, verified, details in checks]
 
