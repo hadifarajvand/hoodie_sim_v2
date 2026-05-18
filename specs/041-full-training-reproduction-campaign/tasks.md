@@ -16,7 +16,7 @@
 
 ## Phase 1: Setup and Gates
 
-- [ ] T001 Verify the feature branch and repository prerequisite state before any implementation work:
+- [X] T001 Verify the feature branch and repository prerequisite state before any implementation work:
   - current branch == `041-full-training-reproduction-campaign`
   - current branch != `main`
   - `main == origin/main`
@@ -27,13 +27,13 @@
   - `.specify/feature.json` must not appear in `git diff --name-only main...HEAD`
   - no unrelated dirty files are present
   - implementation is blocked if any assertion fails
-- [ ] T002 Check prior feature gate artifacts and record the result for the campaign:
+- [X] T002 Check prior feature gate artifacts and record the result for the campaign:
   - verify Feature 037 baseline revalidation report exists and is valid
   - verify Feature 038 training foundation report exists and is valid
   - verify Feature 039 paper HOODIE network report exists and is valid
   - verify Feature 040 smoke training report exists and is valid
   - do not modify prior feature artifacts
-- [ ] T003 Check the campaign dependency state in the approved interpreter and record the result:
+- [X] T003 Check the campaign dependency state in the approved interpreter and record the result:
   - verify whether `torch` imports successfully in `/Users/hadi/Documents/GitHub/hoodie_sim_v2/src/.venvmac/bin/python`
   - verify no dependency files are modified
   - if `torch` is unavailable, the campaign must stop after emitting a readiness-blocked or dependency-blocked report
@@ -41,7 +41,7 @@
 
 ## Phase 2: Foundational Prerequisites
 
-- [ ] T004 Define the campaign config and approval contract in `src/analysis/full_training_reproduction_campaign/`:
+- [X] T004 Define the campaign config and approval contract in `src/analysis/full_training_reproduction_campaign/`:
   - `CampaignConfig`
   - `TargetUpdateContract`
   - `CampaignStage`
@@ -51,13 +51,13 @@
   - validate first pilot budget is 10 episodes
   - validate optional follow-on pilot budget is 25 episodes
   - validate full campaign budget is configured but not auto-executed
-- [ ] T005 [P] Define the campaign reporting schema in `src/analysis/full_training_reproduction_campaign/`:
+- [X] T005 [P] Define the campaign reporting schema in `src/analysis/full_training_reproduction_campaign/`:
   - required readiness report fields from the spec
   - required training-campaign report fields from the spec
   - baseline-reference-only status handling
   - candidate reproduction claim status handling
   - no-performance-metrics rule
-- [ ] T006 [P] Define the campaign replay contract in `src/analysis/full_training_reproduction_campaign/`:
+- [X] T006 [P] Define the campaign replay contract in `src/analysis/full_training_reproduction_campaign/`:
   - campaign-scoped `ReplayBuffer`
   - `ReplayTransition` fields for `reward_available`, `terminal_slot`, `outcome`, and `pending_at_horizon`
   - preserve Feature 038 schema compatibility
@@ -70,11 +70,11 @@
 
 **Independent Test**: The readiness probe reports the exposure evidence, target-update approval status, and a block reason when the campaign is not ready.
 
-- [ ] T007 [US1] Implement the readiness probe in `src/analysis/full_training_reproduction_campaign/` to run through `HoodieGymEnvironment`, measure and report `probe_episode_count`, `probe_step_count`, `generated_task_count`, `transition_count`, `completed_task_count`, `dropped_task_count`, `pending_at_horizon_count`, `terminal_transition_count`, `reward_bearing_transition_count`, `non_terminal_transition_count`, `terminal_transition_ratio`, `reward_bearing_transition_ratio`, `pending_at_horizon_ratio`, `illegal_action_count`, `illegal_action_ratio`, `action_count_by_type`, `local_action_count`, `horizontal_action_count`, `vertical_action_count`, `readiness_manual_approval_required`, `readiness_manual_approval_status`, and `readiness_block_reason`, and emit a readiness-blocked report when the gate is not met
-- [ ] T008 [P] [US1] Add contract tests in `tests/unit/test_full_training_campaign_config.py` for target-update approval, staged budgets, explicit 5000-episode gating, and config validation
-- [ ] T009 [P] [US1] Add readiness-gate tests in `tests/integration/test_campaign_readiness_gate.py` for blocked readiness, exposure summaries, and manual approval requirements
-- [ ] T010 [P] [US1] Add readiness-report schema tests in `tests/integration/test_campaign_readiness_gate.py` verifying `probe_episode_count`, `probe_step_count`, `generated_task_count`, `transition_count`, `completed_task_count`, `dropped_task_count`, `pending_at_horizon_count`, `terminal_transition_count`, `reward_bearing_transition_count`, `non_terminal_transition_count`, `terminal_transition_ratio`, `reward_bearing_transition_ratio`, `pending_at_horizon_ratio`, `illegal_action_count`, `illegal_action_ratio`, `action_count_by_type`, `local_action_count`, `horizontal_action_count`, `vertical_action_count`, `readiness_manual_approval_required`, `readiness_manual_approval_status`, and `readiness_block_reason`
-- [ ] T011 [US1] Record the approved target-update unit and rationale in `src/analysis/full_training_reproduction_campaign/` without silently inferring paper “iteration” semantics
+- [X] T007 [US1] Implement the readiness probe in `src/analysis/full_training_reproduction_campaign/` to run through `HoodieGymEnvironment`, measure and report `probe_episode_count`, `probe_step_count`, `generated_task_count`, `transition_count`, `completed_task_count`, `dropped_task_count`, `pending_at_horizon_count`, `terminal_transition_count`, `reward_bearing_transition_count`, `non_terminal_transition_count`, `terminal_transition_ratio`, `reward_bearing_transition_ratio`, `pending_at_horizon_ratio`, `illegal_action_count`, `illegal_action_ratio`, `action_count_by_type`, `local_action_count`, `horizontal_action_count`, `vertical_action_count`, `readiness_manual_approval_required`, `readiness_manual_approval_status`, and `readiness_block_reason`, and emit a readiness-blocked report when the gate is not met
+- [X] T008 [P] [US1] Add contract tests in `tests/unit/test_full_training_campaign_config.py` for target-update approval, staged budgets, explicit 5000-episode gating, and config validation
+- [X] T009 [P] [US1] Add readiness-gate tests in `tests/integration/test_campaign_readiness_gate.py` for blocked readiness, exposure summaries, and manual approval requirements
+- [X] T010 [P] [US1] Add readiness-report schema tests in `tests/integration/test_campaign_readiness_gate.py` verifying `probe_episode_count`, `probe_step_count`, `generated_task_count`, `transition_count`, `completed_task_count`, `dropped_task_count`, `pending_at_horizon_count`, `terminal_transition_count`, `reward_bearing_transition_count`, `non_terminal_transition_count`, `terminal_transition_ratio`, `reward_bearing_transition_ratio`, `pending_at_horizon_ratio`, `illegal_action_count`, `illegal_action_ratio`, `action_count_by_type`, `local_action_count`, `horizontal_action_count`, `vertical_action_count`, `readiness_manual_approval_required`, `readiness_manual_approval_status`, and `readiness_block_reason`
+- [X] T011 [US1] Record the approved target-update unit and rationale in `src/analysis/full_training_reproduction_campaign/` without silently inferring paper “iteration” semantics
 
 ## Phase 4: User Story 2 - Replay, Pilot Training, and Campaign Execution (Priority: P2)
 
@@ -82,13 +82,13 @@
 
 **Independent Test**: A pilot run completes on live environment replay, produces finite DDQN loss, updates legal actions only, and records checkpoint metadata while respecting the approved target-update unit. The gated full-campaign runner remains blocked until readiness and pilot gates pass and the explicit 5000-episode flag/command is supplied.
 
-- [ ] T012 [P] [US2] Implement the campaign replay buffer in `src/analysis/full_training_reproduction_campaign/` to store live `HoodieGymEnvironment` rollouts only, preserve delayed rewards, and keep pending-at-horizon explicit
-- [ ] T013 [US2] Implement the DDQN trainer and pilot runner in `src/analysis/full_training_reproduction_campaign/` using the Feature 039 online/target networks, Adam, learning_rate `7e-7`, gamma `0.99`, and the approved target-update unit
-- [ ] T014 [P] [US2] Add replay-contract tests in `tests/unit/test_full_training_replay_contract.py` covering delayed rewards, pending-at-horizon handling, terminal-slot/outcome storage, and rejection of fake terminal samples
-- [ ] T015 [P] [US2] Add pilot-training tests in `tests/integration/test_full_training_pilot.py` covering finite loss, legal action selection, replay growth, checkpoint metadata, and approved-unit target sync behavior
-- [ ] T016 [US2] Implement checkpoint metadata writing in `src/analysis/full_training_reproduction_campaign/` and emit checkpoints only when the metadata schema passes
-- [ ] T017 [US2] Implement the gated `full_training_candidate` / `final_reproduction_campaign` runner in `src/analysis/full_training_reproduction_campaign/` so that 5000-episode execution stays blocked by default until readiness and pilot gates pass and an explicit command/flag is supplied
-- [ ] T018 [P] [US2] Add full-campaign gate tests in `tests/integration/test_full_training_candidate_gate.py` proving the campaign cannot run before readiness approval, cannot run before pilot success, cannot run without explicit flag/command, and exposes the discoverable command path in `quickstart.md`
+- [X] T012 [P] [US2] Implement the campaign replay buffer in `src/analysis/full_training_reproduction_campaign/` to store live `HoodieGymEnvironment` rollouts only, preserve delayed rewards, and keep pending-at-horizon explicit
+- [X] T013 [US2] Implement the DDQN trainer and pilot runner in `src/analysis/full_training_reproduction_campaign/` using the Feature 039 online/target networks, Adam, learning_rate `7e-7`, gamma `0.99`, and the approved target-update unit
+- [X] T014 [P] [US2] Add replay-contract tests in `tests/unit/test_full_training_replay_contract.py` covering delayed rewards, pending-at-horizon handling, terminal-slot/outcome storage, and rejection of fake terminal samples
+- [X] T015 [P] [US2] Add pilot-training tests in `tests/integration/test_full_training_pilot.py` covering finite loss, legal action selection, replay growth, checkpoint metadata, and approved-unit target sync behavior
+- [X] T016 [US2] Implement checkpoint metadata writing in `src/analysis/full_training_reproduction_campaign/` and emit checkpoints only when the metadata schema passes
+- [X] T017 [US2] Implement the gated `full_training_candidate` / `final_reproduction_campaign` runner in `src/analysis/full_training_reproduction_campaign/` so that 5000-episode execution stays blocked by default until readiness and pilot gates pass and an explicit command/flag is supplied
+- [X] T018 [P] [US2] Add full-campaign gate tests in `tests/integration/test_full_training_candidate_gate.py` proving the campaign cannot run before readiness approval, cannot run before pilot success, cannot run without explicit flag/command, and exposes the discoverable command path in `quickstart.md`
 
 ## Phase 5: User Story 3 - Evaluation, Reporting, and Scope Guard (Priority: P3)
 
@@ -96,15 +96,15 @@
 
 **Independent Test**: The report artifacts distinguish readiness evidence, pilot evidence, baseline reference context, and candidate reproduction status without curve fitting or automatic success claims.
 
-- [ ] T019 [P] [US3] Implement the campaign evaluation flow in `src/analysis/full_training_reproduction_campaign/` using fixed disjoint evaluation trace banks and no training-trace reuse
-- [ ] T020 [P] [US3] Generate the campaign report artifacts in `artifacts/analysis/full-training-reproduction-campaign/` as JSON and Markdown
-- [ ] T021 [P] [US3] Add report schema tests in `tests/integration/test_full_training_report.py` for readiness evidence, pilot evidence, baseline-reference-only status, and candidate reproduction claim handling
-- [ ] T022 [US3] Add the scope guard in `tests/integration/test_full_training_scope_guard.py` to allow only the approved campaign paths and read-only imports from Feature 039, Feature 040, and Feature 038 analysis packages
-- [ ] T023 [US3] Ensure the campaign report records `no_curve_fitting=true`, `no_simulator_output_tuning=true`, `no_target_update_execution=false` only when explicitly approved, and `no_paper_reproduction_claim` by default in `src/analysis/full_training_reproduction_campaign/`
+- [X] T019 [P] [US3] Implement the campaign evaluation flow in `src/analysis/full_training_reproduction_campaign/` using fixed disjoint evaluation trace banks and no training-trace reuse
+- [X] T020 [P] [US3] Generate the campaign report artifacts in `artifacts/analysis/full-training-reproduction-campaign/` as JSON and Markdown
+- [X] T021 [P] [US3] Add report schema tests in `tests/integration/test_full_training_report.py` for readiness evidence, pilot evidence, baseline-reference-only status, and candidate reproduction claim handling
+- [X] T022 [US3] Add the scope guard in `tests/integration/test_full_training_scope_guard.py` to allow only the approved campaign paths and read-only imports from Feature 039, Feature 040, and Feature 038 analysis packages
+- [X] T023 [US3] Ensure the campaign report records `no_curve_fitting=true`, `no_simulator_output_tuning=true`, `no_target_update_execution=false` only when explicitly approved, and `no_paper_reproduction_claim` by default in `src/analysis/full_training_reproduction_campaign/`
 
 ## Phase 6: Polish & Cross-Cutting Concerns
 
-- [ ] T024 Run the required validation command exactly as specified:
+- [X] T024 Run the required validation command exactly as specified:
   - `PYTHONPATH=/Users/hadi/Documents/GitHub/hoodie_sim_v2 /Users/hadi/Documents/GitHub/hoodie_sim_v2/src/.venvmac/bin/python -m unittest \`
   - `  tests.unit.test_full_training_campaign_config \`
   - `  tests.unit.test_full_training_replay_contract \`
@@ -138,7 +138,7 @@
   - `  tests.integration.test_public_cloud_capacity_sharing_flow \`
   - `  tests.integration.test_deadline_timeout_off_by_one_report \`
   - `  tests.integration.test_reproducibility_bundle_flow`
-- [ ] T025 Confirm `.specify/feature.json` remains local-only and is not included in the committed 041 diff; update `specs/041-full-training-reproduction-campaign/quickstart.md` only if the validation text needs tightening
+- [X] T025 Confirm `.specify/feature.json` remains local-only and is not included in the committed 041 diff; update `specs/041-full-training-reproduction-campaign/quickstart.md` only if the validation text needs tightening
 
 ## Dependencies & Execution Order
 
