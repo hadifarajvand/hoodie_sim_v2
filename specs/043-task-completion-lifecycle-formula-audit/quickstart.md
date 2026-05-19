@@ -28,9 +28,8 @@ PYTHONPATH=/Users/hadi/Documents/GitHub/hoodie_sim_v2 /Users/hadi/Documents/GitH
   tests.integration.test_task_completion_lifecycle_audit \
   tests.integration.test_task_completion_lifecycle_report \
   tests.integration.test_task_completion_lifecycle_scope_guard \
-  tests.integration.test_paper_default_terminal_exposure_report \
-  tests.unit.test_paper_default_terminal_exposure_schema \
   tests.unit.test_paper_default_terminal_exposure_config \
+  tests.unit.test_paper_default_terminal_exposure_schema \
   tests.integration.test_runtime_adoption_scope_guard \
   tests.integration.test_runtime_adoption_report \
   tests.integration.test_execution_time_flow \
@@ -46,6 +45,10 @@ PYTHONPATH=/Users/hadi/Documents/GitHub/hoodie_sim_v2 /Users/hadi/Documents/GitH
   tests.integration.test_training_foundation_contract_report \
   tests.integration.test_deadline_timeout_off_by_one_report
 ```
+
+Feature 042 prerequisite artifact referenced by this validation scope:
+
+- `artifacts/analysis/paper-default-terminal-exposure-probe/terminal-exposure-report.json`
 
 ## Interpretation
 
