@@ -23,11 +23,17 @@ class LifecycleActionResult:
     counters: LifecycleTraceCounters
     evidence: LifecycleTraceEvidence
     result_note: str
+    finalized_task_count: int
+    finalized_completion_count: int
+    finalized_drop_count: int
 
     def to_dict(self) -> dict[str, Any]:
         return {
             "strategy": self.strategy,
             "seed": self.seed,
+            "finalized_task_count": self.finalized_task_count,
+            "finalized_completion_count": self.finalized_completion_count,
+            "finalized_drop_count": self.finalized_drop_count,
             "counters": self.counters.to_dict(),
             "evidence": self.evidence.to_dict(),
             "result_note": self.result_note,
@@ -75,11 +81,12 @@ def _run_strategy(config: CompletionLifecycleAuditConfig, strategy: str, seed: i
             "admitted_count": 0,
             "transmission_started_count": 0,
             "transmission_completed_count": 0,
-            "execution_started_count": 0,
-            "execution_completed_count": 0,
-            "completion_count": 0,
-            "drop_count": 0,
-            "pending_count": 0,
+            "finalized_task_count": 0,
+            "finalized_completion_count": 0,
+            "finalized_drop_count": 0,
+            "observed_execution_started_count": None,
+            "observed_execution_completed_count": None,
+            "pending_at_horizon_count": 0,
             "reward_count": 0,
             "terminal_count": 0,
             "legal_action_count": 0,
@@ -89,6 +96,7 @@ def _run_strategy(config: CompletionLifecycleAuditConfig, strategy: str, seed: i
     step_index = 0
     available_metadata: set[str] = set()
     runtime_trace_available = False
+    metadata_insufficient = False
     note = "insufficient_metadata"
     while True:
         current_task = env.current_task
@@ -114,21 +122,20 @@ def _run_strategy(config: CompletionLifecycleAuditConfig, strategy: str, seed: i
             available_metadata.update(legal_action_mask.keys())
         finalized_tasks = info.get("finalized_tasks", [])
         runtime_trace_available = runtime_trace_available or bool(finalized_tasks) or bool(info.get("queue_load", 0))
+        metadata_insufficient = metadata_insufficient or True
         for task in finalized_tasks:
+            counts["finalized_task_count"] += 1
             counts["terminal_count"] += 1
             counts["reward_count"] += 1
             if task.get("terminal_outcome") == "completed":
-                counts["completion_count"] += 1
+                counts["finalized_completion_count"] += 1
             elif task.get("terminal_outcome") == "dropped":
-                counts["drop_count"] += 1
+                counts["finalized_drop_count"] += 1
             if task.get("selected_action") in {"horizontal", "vertical"}:
                 counts["transmission_started_count"] += 1
                 counts["transmission_completed_count"] += 1
-            if task.get("selected_action") in {"local", "compute_local", "horizontal", "vertical"}:
-                counts["execution_started_count"] += 1
-                counts["execution_completed_count"] += 1
         if truncated:
-            counts["pending_count"] += 1 if env.queue_load > 0 else 0
+            counts["pending_at_horizon_count"] += 1 if env.queue_load > 0 else 0
         if terminated or truncated:
             break
     counters = LifecycleTraceCounters(**counts)
@@ -138,21 +145,31 @@ def _run_strategy(config: CompletionLifecycleAuditConfig, strategy: str, seed: i
         available_metadata=sorted(available_metadata),
         counters=counters,
         runtime_trace_available=runtime_trace_available,
+        metadata_insufficient=metadata_insufficient,
         note=note,
     )
-    return LifecycleActionResult(strategy=strategy, seed=seed, counters=counters, evidence=evidence, result_note=note)
+    return LifecycleActionResult(
+        strategy=strategy,
+        seed=seed,
+        counters=counters,
+        evidence=evidence,
+        result_note=note,
+        finalized_task_count=counters.finalized_task_count,
+        finalized_completion_count=counters.finalized_completion_count,
+        finalized_drop_count=counters.finalized_drop_count,
+    )
 
 
 def _classify(results: list[LifecycleActionResult], formula_summary: dict[str, Any]) -> tuple[BreakpointClassification, str, list[str], str | None]:
     if not results:
         return "prerequisite_blocked", "no results collected", ["no audit results"], None
-    if not any(result.evidence.runtime_trace_available for result in results):
-        return "audit_inconclusive_requires_runtime_trace_instrumentation", "metadata unavailable", ["runtime trace metadata insufficient"], "instrumentation audit"
+    if any(result.evidence.metadata_insufficient for result in results):
+        return "audit_inconclusive_requires_runtime_trace_instrumentation", "insufficient_lifecycle_trace_metadata", ["passive_runtime_lifecycle_trace_instrumentation"], "passive_runtime_lifecycle_trace_instrumentation"
     if formula_summary["local_min_total_slots"] > 110:
         return "completion_absence_explained_by_queue_pressure", "local path exceeds horizon", ["queue pressure"], "next_feature: runtime pressure audit"
-    if any(result.counters.completion_count > 0 for result in results):
+    if any(result.finalized_completion_count > 0 for result in results):
         return "completion_lifecycle_valid", "completions observed", ["no issue"], None
-    return "completion_lifecycle_counter_bug_detected", "zero completions with collected lifecycle traces", ["counter accounting"], "runtime repair audit"
+    return "completion_lifecycle_runtime_bug_detected", "zero completions with collected lifecycle traces", ["runtime lifecycle issue"], "runtime repair audit"
 
 
 def run_completion_lifecycle_audit(config: CompletionLifecycleAuditConfig | None = None, *, output_dir: Path | str | None = None) -> CompletionLifecycleAuditReport:
@@ -178,10 +195,12 @@ def run_completion_lifecycle_audit(config: CompletionLifecycleAuditConfig | None
     strategy_results = [_run_strategy(config, strategy, seed) for strategy in config.strategies for seed in config.seeds]
     verdict, diagnosis, suspected_root_causes, recommended_next_feature = _classify(strategy_results, formula_summary)
     per_action_lifecycle_results = [result.to_dict() for result in strategy_results]
+    prerequisite_tags_verified = build_prerequisite_tags_verified()
+    prior_feature_gates_verified = collect_prior_feature_gates_verified()
     report = CompletionLifecycleAuditReport(
         feature_id=config.feature_id,
-        prerequisite_tags_verified=build_prerequisite_tags_verified(),
-        prior_feature_gates_verified=collect_prior_feature_gates_verified(),
+        prerequisite_tags_verified=prerequisite_tags_verified,
+        prior_feature_gates_verified=prior_feature_gates_verified,
         paper_default_runtime_verified={
             "T": config.episode_length,
             "timeout_slots": config.timeout_slots,

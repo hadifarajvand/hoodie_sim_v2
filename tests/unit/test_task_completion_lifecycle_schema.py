@@ -76,6 +76,32 @@ class TaskCompletionLifecycleSchemaUnitTests(unittest.TestCase):
                 final_verdict="prerequisite_blocked",
             )
 
+    def test_report_rejects_failed_prerequisite_gates_and_prior_feature_gates(self) -> None:
+        from src.analysis.task_completion_lifecycle_formula_audit.report import validate_prerequisite_evidence
+
+        with self.assertRaises(ValueError):
+            validate_prerequisite_evidence(
+                [{"name": "branch", "verified": False, "details": "bad"}],
+                [{"feature": "037", "verified": True, "details": "ok"}],
+            )
+        with self.assertRaises(ValueError):
+            validate_prerequisite_evidence(
+                [{"name": "branch", "verified": True, "details": "ok"}],
+                [{"feature": "037", "verified": False, "details": "bad"}],
+            )
+
+    def test_dirty_pointer_only_keeps_no_unrelated_dirty_files_true(self) -> None:
+        from src.analysis.task_completion_lifecycle_formula_audit import report as report_module
+
+        original = report_module._tracked_dirty_paths
+        try:
+            report_module._tracked_dirty_paths = lambda: [".specify/feature.json"]  # type: ignore[assignment]
+            tags = report_module.build_prerequisite_tags_verified()
+            tag = next(item for item in tags if item["name"] == "no_unrelated_dirty_files")
+            self.assertTrue(tag["verified"])
+        finally:
+            report_module._tracked_dirty_paths = original  # type: ignore[assignment]
+
 
 if __name__ == "__main__":
     unittest.main()

@@ -20,11 +20,12 @@ class LifecycleTraceCounters:
     admitted_count: int
     transmission_started_count: int
     transmission_completed_count: int
-    execution_started_count: int
-    execution_completed_count: int
-    completion_count: int
-    drop_count: int
-    pending_count: int
+    finalized_task_count: int
+    finalized_completion_count: int
+    finalized_drop_count: int
+    observed_execution_started_count: int | None
+    observed_execution_completed_count: int | None
+    pending_at_horizon_count: int
     reward_count: int
     terminal_count: int
     legal_action_count: int
@@ -36,11 +37,12 @@ class LifecycleTraceCounters:
             "admitted_count": self.admitted_count,
             "transmission_started_count": self.transmission_started_count,
             "transmission_completed_count": self.transmission_completed_count,
-            "execution_started_count": self.execution_started_count,
-            "execution_completed_count": self.execution_completed_count,
-            "completion_count": self.completion_count,
-            "drop_count": self.drop_count,
-            "pending_count": self.pending_count,
+            "finalized_task_count": self.finalized_task_count,
+            "finalized_completion_count": self.finalized_completion_count,
+            "finalized_drop_count": self.finalized_drop_count,
+            "observed_execution_started_count": self.observed_execution_started_count,
+            "observed_execution_completed_count": self.observed_execution_completed_count,
+            "pending_at_horizon_count": self.pending_at_horizon_count,
             "reward_count": self.reward_count,
             "terminal_count": self.terminal_count,
             "legal_action_count": self.legal_action_count,
@@ -55,6 +57,7 @@ class LifecycleTraceEvidence:
     available_metadata: list[str]
     counters: LifecycleTraceCounters
     runtime_trace_available: bool
+    metadata_insufficient: bool
     note: str
 
     def to_dict(self) -> dict[str, object]:
@@ -64,6 +67,6 @@ class LifecycleTraceEvidence:
             "available_metadata": list(self.available_metadata),
             "counters": self.counters.to_dict(),
             "runtime_trace_available": self.runtime_trace_available,
+            "metadata_insufficient": self.metadata_insufficient,
             "note": self.note,
         }
-

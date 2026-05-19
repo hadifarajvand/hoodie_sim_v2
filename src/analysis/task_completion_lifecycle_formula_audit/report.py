@@ -3,6 +3,7 @@ from __future__ import annotations
 from dataclasses import dataclass
 import json
 from pathlib import Path
+import subprocess
 from typing import Any
 
 DEFAULT_OUTPUT_DIR = Path("artifacts/analysis/task-completion-lifecycle-formula-audit")
@@ -12,6 +13,27 @@ MARKDOWN_FILENAME = "completion-lifecycle-audit-report.md"
 
 def _json_dump(payload: Any) -> str:
     return json.dumps(payload, indent=2, sort_keys=True, ensure_ascii=False) + "\n"
+
+
+def _git_output(*args: str) -> str:
+    result = subprocess.run(["git", *args], check=True, capture_output=True, text=True)
+    return result.stdout.strip()
+
+
+def _git_status_short() -> list[str]:
+    result = subprocess.run(["git", "status", "--short"], check=True, capture_output=True, text=True)
+    return [line.rstrip() for line in result.stdout.splitlines() if line.strip()]
+
+
+def _tracked_dirty_paths() -> list[str]:
+    paths: list[str] = []
+    for entry in _git_status_short():
+        if len(entry) < 4:
+            continue
+        path = entry[3:].strip()
+        if path:
+            paths.append(path)
+    return paths
 
 
 @dataclass(frozen=True, slots=True)
@@ -159,15 +181,20 @@ def write_completion_lifecycle_audit_report(report: CompletionLifecycleAuditRepo
 
 
 def build_prerequisite_tags_verified() -> list[dict[str, Any]]:
+    dirty_paths = _tracked_dirty_paths()
+    pointer_dirty = [path for path in dirty_paths if path == ".specify/feature.json"]
+    unrelated_dirty = [path for path in dirty_paths if path != ".specify/feature.json"]
+    no_unrelated_dirty_files = len(unrelated_dirty) == 0 and (not dirty_paths or dirty_paths == pointer_dirty)
+    dirty_details = "working tree clean except optional pointer" if no_unrelated_dirty_files else "dirty_paths=" + ", ".join(dirty_paths)
     return [
-        {"name": "branch", "verified": True, "details": "git branch --show-current == 043-task-completion-lifecycle-formula-audit"},
-        {"name": "not_main", "verified": True, "details": "current branch != main"},
-        {"name": "main_equals_origin_main", "verified": True, "details": "main == origin/main"},
-        {"name": "main_equals_feature_042", "verified": True, "details": "main == 042-paper-default-terminal-exposure-probe^{}"},
-        {"name": "prerequisite_diff_empty", "verified": True, "details": "diff between 042-paper-default-terminal-exposure-probe^{} and main is empty"},
-        {"name": "pointer_not_staged", "verified": True, "details": ".specify/feature.json is not staged"},
-        {"name": "pointer_not_in_main_head", "verified": True, "details": ".specify/feature.json does not appear in git diff --name-only main...HEAD"},
-        {"name": "no_unrelated_dirty_files", "verified": False, "details": "working tree contains unrelated local edits"},
+        {"name": "branch", "verified": _git_output("branch", "--show-current") == "043-task-completion-lifecycle-formula-audit", "details": "git branch --show-current == 043-task-completion-lifecycle-formula-audit"},
+        {"name": "not_main", "verified": _git_output("branch", "--show-current") != "main", "details": "current branch != main"},
+        {"name": "main_equals_origin_main", "verified": _git_output("rev-parse", "main") == _git_output("rev-parse", "origin/main"), "details": "main == origin/main"},
+        {"name": "main_equals_feature_042", "verified": _git_output("rev-parse", "main") == _git_output("rev-parse", "042-paper-default-terminal-exposure-probe-complete^{}"), "details": "main == 042-paper-default-terminal-exposure-probe-complete^{}"},
+        {"name": "prerequisite_diff_empty", "verified": _git_output("diff", "--name-only", "042-paper-default-terminal-exposure-probe-complete^{}", "main") == "", "details": "diff between 042-paper-default-terminal-exposure-probe-complete^{} and main is empty"},
+        {"name": "pointer_not_staged", "verified": _git_output("diff", "--cached", "--name-only", "--", ".specify/feature.json") == "", "details": ".specify/feature.json is not staged"},
+        {"name": "pointer_not_in_main_head", "verified": ".specify/feature.json" not in _git_output("diff", "--name-only", "main...HEAD").splitlines(), "details": ".specify/feature.json does not appear in git diff --name-only main...HEAD"},
+        {"name": "no_unrelated_dirty_files", "verified": no_unrelated_dirty_files, "details": dirty_details},
     ]
 
 
@@ -182,3 +209,11 @@ def collect_prior_feature_gates_verified() -> list[dict[str, Any]]:
     ]
     return [{"feature": feature, "name": name, "verified": Path(path).exists(), "details": f"{path} exists"} for feature, name, path in features]
 
+
+def validate_prerequisite_evidence(prerequisite_tags_verified: list[dict[str, Any]], prior_feature_gates_verified: list[dict[str, Any]]) -> None:
+    failed_tags = [entry for entry in prerequisite_tags_verified if not entry["verified"]]
+    failed_gates = [entry for entry in prior_feature_gates_verified if not entry["verified"]]
+    if failed_tags:
+        raise ValueError("Prerequisite tags not verified: " + ", ".join(entry["name"] for entry in failed_tags))
+    if failed_gates:
+        raise ValueError("Prior feature gates not verified: " + ", ".join(entry["feature"] for entry in failed_gates))
