@@ -1247,9 +1247,9 @@
       "verified": true
     },
     {
-      "details": "dirty_paths=.specify/feature.json, AGENTS.md, artifacts/analysis/task-completion-lifecycle-formula-audit/completion-lifecycle-audit-report.json",
+      "details": "working tree clean except optional pointer",
       "name": "no_unrelated_dirty_files",
-      "verified": false
+      "verified": true
     }
   ],
   "prior_feature_gates_verified": [
