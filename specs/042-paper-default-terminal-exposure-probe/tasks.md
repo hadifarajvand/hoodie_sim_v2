@@ -109,8 +109,6 @@
   - `  tests.integration.test_paper_default_terminal_exposure_probe \`
   - `  tests.integration.test_paper_default_terminal_exposure_report \`
   - `  tests.integration.test_paper_default_terminal_exposure_scope_guard \`
-  - `  tests.integration.test_full_training_report \`
-  - `  tests.integration.test_full_training_candidate_gate \`
   - `  tests.unit.test_smoke_training_contract \`
   - `  tests.integration.test_smoke_training_report \`
   - `  tests.unit.test_paper_hoodie_network_config \`

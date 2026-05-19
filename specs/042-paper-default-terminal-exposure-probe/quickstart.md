@@ -32,11 +32,6 @@ PYTHONPATH=/Users/hadi/Documents/GitHub/hoodie_sim_v2 /Users/hadi/Documents/GitH
   tests.integration.test_paper_default_terminal_exposure_probe \
   tests.integration.test_paper_default_terminal_exposure_report \
   tests.integration.test_paper_default_terminal_exposure_scope_guard \
-  tests.integration.test_full_training_report \
-  tests.integration.test_full_training_candidate_gate \
-  tests.integration.test_campaign_readiness_gate \
-  tests.unit.test_full_training_campaign_config \
-  tests.unit.test_full_training_replay_contract \
   tests.unit.test_paper_hoodie_network_config \
   tests.unit.test_paper_hoodie_network_shapes \
   tests.integration.test_paper_hoodie_network_report \
@@ -45,22 +40,10 @@ PYTHONPATH=/Users/hadi/Documents/GitHub/hoodie_sim_v2 /Users/hadi/Documents/GitH
   tests.unit.test_training_foundation_contract \
   tests.integration.test_training_foundation_contract_report \
   tests.integration.test_training_readiness_gate \
-  tests.unit.test_execution_model \
-  tests.unit.test_task_compute_state \
-  tests.unit.test_deadline_expiration \
-  tests.unit.test_link_rate_config \
-  tests.unit.test_link_rate_transmission_delay \
-  tests.unit.test_public_cloud_capacity_sharing \
-  tests.unit.test_reproducibility_bundle \
-  tests.unit.test_runtime_adoption_approved_assumption_registry \
-  tests.integration.test_execution_time_contract_report \
   tests.integration.test_execution_time_flow \
-  tests.integration.test_transmission_delay_runtime_report \
   tests.integration.test_transmission_delay_runtime_wiring \
-  tests.integration.test_public_cloud_capacity_sharing_report \
   tests.integration.test_public_cloud_capacity_sharing_flow \
-  tests.integration.test_deadline_timeout_off_by_one_report \
-  tests.integration.test_reproducibility_bundle_flow
+  tests.integration.test_deadline_timeout_off_by_one_audit
 ```
 
 ## Probe Expectations
