@@ -29,21 +29,17 @@ PYTHONPATH=/Users/hadi/Documents/GitHub/hoodie_sim_v2 /Users/hadi/Documents/GitH
   tests.integration.test_task_completion_lifecycle_report \
   tests.integration.test_task_completion_lifecycle_scope_guard \
   tests.unit.test_paper_default_terminal_exposure_config \
-  tests.unit.test_paper_default_terminal_exposure_schema \
-  tests.integration.test_runtime_adoption_scope_guard \
-  tests.integration.test_runtime_adoption_report \
-  tests.integration.test_execution_time_flow \
-  tests.integration.test_evaluation_runner \
-  tests.integration.test_transmission_delay_runtime_wiring \
-  tests.unit.test_public_cloud_capacity_sharing \
-  tests.integration.test_public_cloud_capacity_sharing_flow \
-  tests.integration.test_deadline_timeout_off_by_one_audit \
+  tests.unit.test_smoke_training_contract \
+  tests.integration.test_smoke_training_report \
   tests.unit.test_paper_hoodie_network_config \
   tests.unit.test_paper_hoodie_network_shapes \
   tests.integration.test_paper_hoodie_network_report \
   tests.unit.test_training_foundation_contract \
   tests.integration.test_training_foundation_contract_report \
-  tests.integration.test_deadline_timeout_off_by_one_report
+  tests.integration.test_deadline_timeout_off_by_one_audit \
+  tests.integration.test_transmission_delay_runtime_wiring \
+  tests.integration.test_public_cloud_capacity_sharing_flow \
+  tests.integration.test_execution_time_flow
 ```
 
 Feature 042 prerequisite artifact referenced by this validation scope:

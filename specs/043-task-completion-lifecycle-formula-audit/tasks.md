@@ -51,7 +51,7 @@
 
 - [ ] T021 [P] Add unit tests for formula examples, slot expectations, and pending-at-horizon behavior in `tests/unit/test_task_completion_formula_audit.py`
 - [ ] T022 [P] Add integration tests for the audit runner and report generation in `tests/integration/test_task_completion_lifecycle_audit.py` and `tests/integration/test_task_completion_lifecycle_report.py`
-- [ ] T023 Update `specs/043-task-completion-lifecycle-formula-audit/quickstart.md` so the validation command exactly matches the approved Feature 043 regression set, including the relevant 032-035 runtime repair regressions, the safe Feature 042 prerequisite artifact/config coverage, and the existing 036/038/039/040 checks
+- [ ] T023 Update `specs/043-task-completion-lifecycle-formula-audit/quickstart.md` so the validation command exactly matches the approved Feature 043 regression set, including the safe Feature 042 prerequisite artifact/config coverage and the existing 036/038/039/040 checks
 - [ ] T024 Document the missing `tests.integration.test_feature_032_runtime_assumption_contract_not_changed` module as absent and point to the closest existing regression in `specs/043-task-completion-lifecycle-formula-audit/quickstart.md` and `specs/043-task-completion-lifecycle-formula-audit/tasks.md`
 - [ ] T025 Update `AGENTS.md` feature reference text if needed so it points at `specs/043-task-completion-lifecycle-formula-audit/plan.md` and `specs/043-task-completion-lifecycle-formula-audit/spec.md`
 
