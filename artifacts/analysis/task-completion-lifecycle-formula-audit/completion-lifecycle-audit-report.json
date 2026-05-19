@@ -1247,7 +1247,7 @@
       "verified": true
     },
     {
-      "details": "dirty_paths=.specify/feature.json, AGENTS.md, artifacts/analysis/task-completion-lifecycle-formula-audit/completion-lifecycle-audit-report.json, artifacts/analysis/task-completion-lifecycle-formula-audit/completion-lifecycle-audit-report.md, src/analysis/task_completion_lifecycle_formula_audit/model.py, src/analysis/task_completion_lifecycle_formula_audit/report.py, src/analysis/task_completion_lifecycle_formula_audit/runner.py, tests/integration/test_task_completion_lifecycle_report.py, tests/unit/test_task_completion_lifecycle_schema.py",
+      "details": "dirty_paths=.specify/feature.json, AGENTS.md, artifacts/analysis/task-completion-lifecycle-formula-audit/completion-lifecycle-audit-report.json",
       "name": "no_unrelated_dirty_files",
       "verified": false
     }
