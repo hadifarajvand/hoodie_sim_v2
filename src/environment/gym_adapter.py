@@ -19,6 +19,7 @@ from .private_queue import PrivateQueue
 from .public_queue import PublicQueue
 from .reward_timing import emit_delayed_reward, reward_for_terminal_task
 from .runtime_model import SharedRuntimeParameters, advance_shared_runtime
+from .lifecycle_trace import LifecycleTraceConfig, LifecycleTraceRecorder
 from .slot_engine import SlotEngine
 from .task import Task
 from .topology import TopologyGraph
@@ -45,6 +46,8 @@ class HoodieGymEnvironment:
     runtime_parameters: SharedRuntimeParameters = field(default_factory=SharedRuntimeParameters)
     compute_config: ComputeConfig = field(default_factory=ComputeConfig)
     trace_source: TraceSource | None = None
+    trace_config: LifecycleTraceConfig = field(default_factory=LifecycleTraceConfig)
+    trace_recorder: LifecycleTraceRecorder = field(default_factory=LifecycleTraceRecorder)
     link_rate_config: LinkRateConfig = field(default_factory=LinkRateConfig)
     policy_name: str = "HOODIE"
     engine: SlotEngine = field(default_factory=SlotEngine)
@@ -77,6 +80,7 @@ class HoodieGymEnvironment:
         self._drain_mode = False
         self.engine.current_slot = 0
         self.link_rate_config.__post_init__()
+        self.trace_recorder = LifecycleTraceRecorder(enabled=self.trace_config.trace_enabled)
 
         trace_id = self.trace_source.identifier if self.trace_source is not None else f"{self.policy_name.lower()}-{seed if seed is not None else 0}"
         if seed is None and self.trace_source is not None and self.trace_source.mode == "trace_bank":
@@ -183,6 +187,7 @@ class HoodieGymEnvironment:
             if action is None:
                 raise ValueError("An action is required while a task is pending")
             legal_action_mask = self.legal_action_mask(current_task)
+            current_task.metadata["legal_action_mask"] = dict(legal_action_mask)
             context = PolicyContext(
                 observation=self.observe_flat(current_task),
                 legal_action_mask=legal_action_mask,
@@ -220,6 +225,8 @@ class HoodieGymEnvironment:
         self._current_task = self._load_current_task()
         truncated = self.current_slot >= self.episode_length
         terminated = self._is_terminated() and not truncated
+        if truncated and not terminated:
+            self._record_pending_at_horizon_events()
         observation = self.observe()
         info = self._build_info(finalized_tasks=finalized_tasks, reward=reward, terminated=terminated, truncated=truncated)
         return observation, reward, terminated, truncated, info
@@ -243,6 +250,12 @@ class HoodieGymEnvironment:
             self._pending_arrivals.pop(arrival_slot, None)
         task = blueprint.build()
         self._active_tasks[task.task_id] = task
+        self._record_trace_event(
+            "task_generated",
+            task,
+            queue_type="pending_arrival",
+            trace_source_component="traffic_generator",
+        )
         return task
 
     def _admit_current_task(self, task: Task) -> None:
@@ -251,6 +264,17 @@ class HoodieGymEnvironment:
             queue = self._private_queues.setdefault(source_id, PrivateQueue(owner_node_id=source_id))
             queue.enqueue(task, slot=self.current_slot)
             task.start_slot = self.current_slot
+            task.metadata["queue_type"] = "private"
+            task.metadata["host_node_id"] = source_id
+            task.metadata["destination"] = "self"
+            self._record_trace_event(
+                "task_admitted",
+                task,
+                queue_type="private",
+                host_node_id=source_id,
+                destination="self",
+                trace_source_component="environment",
+            )
             self._trace_ledgers.setdefault(task.task_id, OffloadTraceLedger()).emit("execution_started")
             return
         destination = self._resolve_destination(task, task.selected_action or "")
@@ -278,9 +302,30 @@ class HoodieGymEnvironment:
         task.metadata["transmission_data_rate_bps"] = data_rate_bps
         task.metadata["transmission_rate_source"] = transmission_rate_source
         task.metadata["transmission_rounding_policy"] = transmission_delay.slot_rounding_policy
+        task.metadata["queue_type"] = "offloading"
+        task.metadata["host_node_id"] = source_id
+        task.metadata["destination"] = destination
         queue.enqueue(task, slot=self.current_slot)
         task.start_slot = self.current_slot
         ledger = self._trace_ledgers.setdefault(task.task_id, OffloadTraceLedger())
+        self._record_trace_event(
+            "task_admitted",
+            task,
+            queue_type="offloading",
+            host_node_id=source_id,
+            destination=destination,
+            trace_source_component="environment",
+        )
+        self._record_trace_event(
+            "transmission_started",
+            task,
+            queue_type="offloading",
+            host_node_id=source_id,
+            destination=destination,
+            transmission_started_at=self.current_slot,
+            transmission_delay_slots=transmission_delay.delay_slots,
+            trace_source_component="environment",
+        )
         if task.selected_action in {"horizontal", "offload_horizontal"}:
             ledger.emit("queued_public")
             ledger.emit("transmission_started")
@@ -296,6 +341,19 @@ class HoodieGymEnvironment:
                 task = admitted
                 task.metadata["transmission_completed_at"] = self.current_slot
                 task.metadata["public_queue_admitted_at"] = self.current_slot
+                task.metadata["queue_type"] = "public"
+                task.metadata["host_node_id"] = destination
+                self._record_trace_event(
+                    "transmission_completed",
+                    task,
+                    queue_type="public",
+                    host_node_id=destination,
+                    destination=destination,
+                    transmission_started_at=int(task.metadata.get("transmission_started_at", self.current_slot)),
+                    transmission_completed_at=self.current_slot,
+                    transmission_delay_slots=int(task.metadata.get("transmission_delay_slots", 0)),
+                    trace_source_component="environment",
+                )
                 self._trace_ledgers.setdefault(task.task_id, OffloadTraceLedger()).emit("transmission_completed")
         return finalized
 
@@ -320,10 +378,28 @@ class HoodieGymEnvironment:
             slot=self.current_slot,
             destination_kind=destination_kind,
         )
+        self._record_execution_progress(
+            task,
+            execution_progress,
+            destination_kind,
+            compute_capacity_gcycles_per_slot=self.compute_config.capacity_for(destination_kind),
+        )
         if not execution_progress.completed:
             return []
         finalized = queue.dequeue()
         ledger.emit("execution_completed")
+        self._record_trace_event(
+            "execution_completed",
+            task,
+            queue_type="private" if destination_kind == "local" else destination_kind,
+            host_node_id=str(task.source_agent_id) if destination_kind == "local" else task.resolved_destination,
+            destination=task.resolved_destination,
+            cycles_before_gcycles=execution_progress.cycles_before,
+            cycles_consumed_gcycles=execution_progress.cycles_consumed,
+            cycles_after_gcycles=execution_progress.cycles_after,
+            compute_capacity_gcycles_per_slot=self.compute_config.capacity_for(destination_kind),
+            trace_source_component="environment",
+        )
         return [finalized]
 
     def _progress_shared_execution_queues(self) -> list[Task]:
@@ -365,10 +441,29 @@ class HoodieGymEnvironment:
                     slot=self.current_slot,
                     destination_kind=destination_kind,
                 )
+                self._record_execution_progress(
+                    task,
+                    execution_progress,
+                    destination_kind,
+                    compute_capacity_gcycles_per_slot=per_head_capacity,
+                    host_node_id=host_node_id,
+                )
                 if not execution_progress.completed:
                     continue
                 finalized_task = queue.dequeue()
                 ledger.emit("execution_completed")
+                self._record_trace_event(
+                    "execution_completed",
+                    task,
+                    queue_type="public" if destination_kind == "public" else "cloud",
+                    host_node_id=host_node_id,
+                    destination=task.resolved_destination,
+                    cycles_before_gcycles=execution_progress.cycles_before,
+                    cycles_consumed_gcycles=execution_progress.cycles_consumed,
+                    cycles_after_gcycles=execution_progress.cycles_after,
+                    compute_capacity_gcycles_per_slot=per_head_capacity,
+                    trace_source_component="environment",
+                )
                 finalized.append(finalized_task)
         return finalized
 
@@ -438,9 +533,64 @@ class HoodieGymEnvironment:
 
     def _record_outcome(self, task: Task, reward: float) -> None:
         ledger = self._trace_ledgers.setdefault(task.task_id, OffloadTraceLedger())
+        is_expired = task.terminal_outcome == "dropped" and task.completion_slot is None
+        if task.terminal_outcome == "completed":
+            self._record_trace_event(
+                "task_completed",
+                task,
+                queue_type=task.metadata.get("queue_type"),
+                host_node_id=task.metadata.get("host_node_id"),
+                destination=task.resolved_destination,
+                terminal_outcome=task.terminal_outcome,
+                reward=reward,
+                reward_available=True,
+                trace_source_component="environment",
+            )
+        elif task.terminal_outcome == "dropped":
+            if is_expired:
+                self._record_trace_event(
+                    "deadline_reached",
+                    task,
+                    queue_type=task.metadata.get("queue_type"),
+                    host_node_id=task.metadata.get("host_node_id"),
+                    destination=task.resolved_destination,
+                    terminal_outcome=task.terminal_outcome,
+                    trace_source_component="environment",
+                )
+                self._record_trace_event(
+                    "deadline_expired",
+                    task,
+                    queue_type=task.metadata.get("queue_type"),
+                    host_node_id=task.metadata.get("host_node_id"),
+                    destination=task.resolved_destination,
+                    terminal_outcome=task.terminal_outcome,
+                    trace_source_component="environment",
+                )
+            self._record_trace_event(
+                "task_dropped",
+                task,
+                queue_type=task.metadata.get("queue_type"),
+                host_node_id=task.metadata.get("host_node_id"),
+                destination=task.resolved_destination,
+                terminal_outcome=task.terminal_outcome,
+                reward=reward,
+                reward_available=True,
+                trace_source_component="environment",
+            )
         if task.terminal_outcome == "dropped":
             ledger.emit("dropped_timeout")
         ledger.emit("reward_emitted")
+        self._record_trace_event(
+            "reward_emitted",
+            task,
+            queue_type=task.metadata.get("queue_type"),
+            host_node_id=task.metadata.get("host_node_id"),
+            destination=task.resolved_destination,
+            terminal_outcome=task.terminal_outcome,
+            reward=reward,
+            reward_available=True,
+            trace_source_component="environment",
+        )
         task.metadata["offload_lifecycle_events"] = ledger.snapshot()
         self._history.append(
             StepTraceRecord(
@@ -480,6 +630,8 @@ class HoodieGymEnvironment:
             "metrics": dict(self._metrics),
             "queue_load": self.queue_load,
             "link_rate_config": self.link_rate_config.to_dict(),
+            "trace_enabled": self.trace_recorder.enabled,
+            "lifecycle_trace_events": self.trace_recorder.snapshot(),
             "finalized_tasks": [
                 {
                     "task_id": task.task_id,
@@ -499,6 +651,87 @@ class HoodieGymEnvironment:
             if finalized_tasks
             else [],
         }
+
+    def _record_execution_progress(
+        self,
+        task: Task,
+        execution_progress: Any,
+        destination_kind: str,
+        *,
+        compute_capacity_gcycles_per_slot: float,
+        host_node_id: str | None = None,
+    ) -> None:
+        if execution_progress.cycles_consumed <= 0:
+            return
+        self._record_trace_event(
+            "execution_started",
+            task,
+            queue_type="private" if destination_kind == "local" else destination_kind,
+            host_node_id=host_node_id or (str(task.source_agent_id) if destination_kind == "local" else task.resolved_destination),
+            destination=task.resolved_destination,
+            cycles_before_gcycles=execution_progress.cycles_before,
+            cycles_consumed_gcycles=execution_progress.cycles_consumed,
+            cycles_after_gcycles=execution_progress.cycles_after,
+            compute_capacity_gcycles_per_slot=compute_capacity_gcycles_per_slot,
+            trace_source_component="environment",
+        )
+        self._record_trace_event(
+            "execution_progress",
+            task,
+            queue_type="private" if destination_kind == "local" else destination_kind,
+            host_node_id=host_node_id or (str(task.source_agent_id) if destination_kind == "local" else task.resolved_destination),
+            destination=task.resolved_destination,
+            cycles_before_gcycles=execution_progress.cycles_before,
+            cycles_consumed_gcycles=execution_progress.cycles_consumed,
+            cycles_after_gcycles=execution_progress.cycles_after,
+            compute_capacity_gcycles_per_slot=compute_capacity_gcycles_per_slot,
+            trace_source_component="environment",
+        )
+
+    def _record_trace_event(self, event_type: str, task: Task | None, *, trace_source_component: str, **fields: Any) -> None:
+        if not self.trace_recorder.enabled:
+            return
+        payload: dict[str, Any] = {
+            "task_id": task.task_id if task is not None else fields.pop("task_id", None),
+            "source_agent_id": task.source_agent_id if task is not None else fields.pop("source_agent_id", None),
+            "selected_action": task.selected_action if task is not None else fields.pop("selected_action", None),
+            "arrival_slot": task.arrival_slot if task is not None else fields.pop("arrival_slot", None),
+            "absolute_deadline_slot": task.absolute_deadline_slot if task is not None else fields.pop("absolute_deadline_slot", None),
+            "task_age_slots": max(0, self.current_slot - task.arrival_slot) if task is not None else fields.pop("task_age_slots", None),
+            "size_mbits": task.size if task is not None else fields.pop("size_mbits", None),
+            "processing_density_gcycles_per_mbit": task.processing_density if task is not None else fields.pop("processing_density_gcycles_per_mbit", None),
+            "cycles_required_gcycles": task.cycles_required if task is not None else fields.pop("cycles_required_gcycles", None),
+            "transmission_started_at": task.metadata.get("transmission_started_at") if task is not None else fields.pop("transmission_started_at", None),
+            "transmission_completed_at": task.metadata.get("transmission_completed_at") if task is not None else fields.pop("transmission_completed_at", None),
+            "transmission_delay_slots": task.metadata.get("transmission_delay_slots") if task is not None else fields.pop("transmission_delay_slots", None),
+            "terminal_outcome": task.terminal_outcome if task is not None else fields.pop("terminal_outcome", None),
+            "reward_available": task.reward_emitted if task is not None else fields.pop("reward_available", None),
+            "legality_snapshot": dict(task.metadata.get("legal_action_mask", {})) if task is not None and isinstance(task.metadata.get("legal_action_mask", {}), dict) else fields.pop("legality_snapshot", None),
+        }
+        payload.update(fields)
+        self.trace_recorder.emit(event_type, slot=self.current_slot, trace_source_component=trace_source_component, **payload)
+
+    def _record_pending_at_horizon_events(self) -> None:
+        if not self.trace_recorder.enabled:
+            return
+        candidates = [self._current_task] if self._current_task is not None else []
+        for queue in self._private_queues.values():
+            if queue.tasks:
+                candidates.append(queue.tasks[0])
+        for queue in self._offloading_queues.values():
+            if queue.tasks:
+                candidates.append(queue.tasks[0])
+        for queue in self._public_queues.values():
+            if queue.tasks:
+                candidates.append(queue.tasks[0])
+        for task in candidates:
+            self._record_trace_event(
+                "pending_at_horizon",
+                task,
+                pending_at_horizon=True,
+                reward_available=task.reward_emitted,
+                trace_source_component="environment",
+            )
 
     def _trace_from_loaded_payload(self, trace_id: str, payload: dict[str, Any]) -> EvaluationTrace:
         tasks_raw = payload.get("tasks", [])
