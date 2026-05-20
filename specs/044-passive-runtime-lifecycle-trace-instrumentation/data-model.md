@@ -35,6 +35,9 @@
   - Events MUST be passive and reflect observed simulator state only.
   - Fields MAY be omitted when they are not applicable to the event type, but the schema must remain stable.
   - `execution_progress` events MUST include cycle before/after accounting and capacity for the slot.
+  - `deadline_expired` MUST be emitted before or alongside `task_dropped` on timeout/drop paths.
+  - `task_completed` MUST be supported even if no completion is observed in a sampled run.
+  - `reward_emitted` MUST follow `task_completed` or `task_dropped`.
 
 ## LifecycleTraceRecorder
 
@@ -52,6 +55,7 @@
 - **Validation rules**:
   - Recorder MUST be opt-in and disabled by default where feasible.
   - Recorder MUST not mutate task outcomes, reward timing, or execution state.
+  - Recorder output must remain JSON-safe and report-ready when the workspace is clean except an optional local `.specify/feature.json` pointer.
 
 ## TraceCoverageSummary
 
@@ -66,8 +70,12 @@
   - `reward_observed`
   - `pending_observed`
   - `ordering_resolved`
+  - `event_type_supported`
+  - `event_type_observed`
+  - `event_type_missing_from_instrumentation`
 - **Validation rules**:
   - Summary MUST distinguish incomplete evidence from confirmed ordering.
+  - Summary MUST distinguish event support from event observation.
 
 ## InstrumentationReadinessReport
 
@@ -82,3 +90,6 @@
 - **Validation rules**:
   - Report MUST not claim paper reproduction.
   - Report MUST not imply runtime repair occurred.
+  - Report MUST require a clean workspace except an optional local `.specify/feature.json` pointer.
+  - Report MUST use the paper-default sample configuration and reject arbitrary trace samples.
+  - Report MUST deduplicate behavior-equivalence check names.

@@ -18,6 +18,17 @@
 - Q: If tracing reveals a bug, should this feature fix it? → A: No. It should report the bug and recommend a dedicated repair feature.
 - Q: Should Feature 044 run pointer-sensitive older report tests? → A: No. Validate older features through committed artifacts and safe non-pointer-sensitive tests only.
 
+## Additional Specification Constraints
+
+- Reports MUST be generated only when the workspace is clean except for an optional local `.specify/feature.json` active-pointer file.
+- The paper-default report sample MUST be taken from the approved Feature 044 probe configuration, not from an arbitrary runtime trace.
+- The report MUST distinguish trace support from trace observation, including whether an event type is supported, observed, or currently missing from instrumentation.
+- The report MUST treat `task_completed` as supported even if no completion appears in the sampled run.
+- The report MUST treat `task_completed_observed` as false when no completion occurs in the sampled run and MUST still report `task_completed_supported` as true.
+- For timeout/drop paths, `deadline_expired` MUST be emitted before or alongside `task_dropped`.
+- `reward_emitted` MUST occur after `task_completed` or `task_dropped`.
+- The report MUST collapse duplicate behavior-equivalence check names so each check appears only once.
+
 ## User Scenarios & Testing *(mandatory)*
 
 ### User Story 1 - Expose lifecycle evidence for diagnosis (Priority: P1)
@@ -26,7 +37,7 @@ As an analyst, I want passive lifecycle trace events exposed during a paper-defa
 
 **Why this priority**: Feature 043 could not distinguish missing completions from missing evidence. Without trace events, the diagnostic path remains blind.
 
-**Independent Test**: Run the simulator with tracing enabled and confirm the trace includes lifecycle breakpoints for generated, admitted, transmission, execution, completion, drop, reward, and pending-at-horizon states without changing the observed outcomes.
+**Independent Test**: Run the simulator with tracing enabled and confirm the trace includes lifecycle breakpoints for generated, admitted, transmission, execution, completion, drop, reward, and pending-at-horizon states without changing the observed outcomes. The paper-default report sample must be taken from the approved Feature 044 probe configuration.
 
 **Acceptance Scenarios**:
 
@@ -56,7 +67,7 @@ As an analyst, I want a report that summarizes trace coverage and readiness so I
 
 **Why this priority**: The point of instrumentation is not raw verbosity; it is diagnostic readiness.
 
-**Independent Test**: Generate the instrumentation report from a paper-default run and verify it summarizes trace coverage, trace sources, and readiness for the next diagnostic feature.
+**Independent Test**: Generate the instrumentation report from a paper-default run and verify it summarizes trace coverage, trace sources, readiness for the next diagnostic feature, and clean-workspace generation conditions.
 
 **Acceptance Scenarios**:
 
@@ -90,12 +101,20 @@ As an analyst, I want a report that summarizes trace coverage and readiness so I
 - **FR-013**: When tracing is enabled, the system MUST expose trace data through existing environment `info` output and the analysis runner path rather than a new dependency or external service.
 - **FR-014**: The trace MUST support opt-in configuration and preserve disabled-by-default behavior where feasible.
 - **FR-015**: The report MUST preserve ordering evidence needed to determine whether deadline expiration, terminal drop, or execution completion happened first.
+- **FR-016**: The report MUST be generated only when the workspace is clean except for an optional local `.specify/feature.json` pointer file, and it MUST report unrelated dirty paths explicitly when that condition is not met.
+- **FR-017**: The report MUST use a paper-default lifecycle sample drawn from the approved Feature 044 probe configuration, including `T = 110`, `timeout_slots = 20`, task sizes in `[2.0, 5.0]`, processing density `0.297`, private/public/cloud CPU capacities `0.5/0.5/3.0`, horizontal rate `30 Mbps`, and vertical rate `10 Mbps`.
+- **FR-018**: The report MUST distinguish supported event types from observed event types and from event types that are still missing from instrumentation.
+- **FR-019**: The report MUST treat `task_completed` as supported even when it is not observed in the sampled trace, and it MUST not mark the feature incomplete solely because the sample contains only drops.
+- **FR-020**: The report MUST ensure duplicate behavior-equivalence check names are collapsed so each unique check name appears once.
+- **FR-021**: The report MUST flag `deadline_expired` as observed on timeout/drop paths whenever `task_dropped` is observed, and it MUST fail report validation if a drop path lacks `deadline_expired` ordering evidence.
+- **FR-022**: The report MUST regenerate only from a clean workspace, except for an optional local `.specify/feature.json` pointer, and it MUST treat `AGENTS.md` as a disallowed dirty path for report generation.
 
 ### Key Entities *(include if feature involves data)*
 
 - **Lifecycle Trace Event**: A passive record of a task lifecycle moment, including the event type, slot, task context, and observable state at that moment.
 - **Trace Coverage Summary**: A diagnostic summary of which lifecycle stages were observed and which remained unobserved during a run.
 - **Instrumentation Readiness Report**: A report that states whether the trace is sufficient for downstream completion-lifecycle diagnosis.
+- **Trace Event Support State**: A per-event classification indicating whether an event type is supported by the instrumentation, observed in the sample, or still missing from the instrumentation.
 
 ## Success Criteria *(mandatory)*
 
@@ -106,6 +125,9 @@ As an analyst, I want a report that summarizes trace coverage and readiness so I
 - **SC-003**: The instrumentation report clearly states whether lifecycle evidence is sufficient for Feature 043 diagnosis in 100% of sampled paper-default runs.
 - **SC-004**: The trace report includes complete coverage summaries for all required lifecycle stages in the paper-default diagnostic scope.
 - **SC-005**: The feature introduces no paper-reproduction claim and no training-related behavior.
+- **SC-006**: The generated report is rejected if the workspace contains unrelated dirty files outside an optional local `.specify/feature.json` pointer.
+- **SC-007**: The paper-default trace sample in the report always reflects the approved Feature 044 probe configuration and never an arbitrary runtime case.
+- **SC-008**: The report distinguishes event support from event observation for all required lifecycle events, and duplicate behavior-equivalence check names do not appear.
 
 ## Assumptions
 

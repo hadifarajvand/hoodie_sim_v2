@@ -5,7 +5,7 @@
 
 ## Summary
 
-Add passive lifecycle trace instrumentation that exposes task-level runtime evidence for paper-default `T = 110` runs without changing simulator decisions, rewards, timing, legality, or queue behavior. The implementation will add trace event collection, trace exposure through existing environment info/report paths, and a diagnosis-ready analysis report that proves whether the trace is sufficient to explain why Feature 042 and Feature 043 observed drops without completions.
+Add passive lifecycle trace instrumentation that exposes task-level runtime evidence for paper-default `T = 110` runs without changing simulator decisions, rewards, timing, legality, or queue behavior. The implementation must generate report artifacts only from a clean workspace, except for an optional local `.specify/feature.json` pointer, and it must distinguish trace support from trace observation so the report can explain absent completions without overclaiming.
 
 ## Technical Context
 
@@ -16,7 +16,7 @@ Add passive lifecycle trace instrumentation that exposes task-level runtime evid
 **Target Platform**: Local development and CI on Linux/macOS-style POSIX environment  
 **Project Type**: CLI-driven simulator analysis feature inside a larger repository  
 **Performance Goals**: Deterministic passive trace collection for paper-default runs; trace overhead must not change observable simulator outcomes  
-**Constraints**: No runtime semantics changes; no reward timing changes; no timeout/deadline changes; no capacity or transmission changes; no action legality changes; no policy changes; no training or optimizer execution  
+**Constraints**: No runtime semantics changes; no reward timing changes; no timeout/deadline changes; no capacity or transmission changes; no action legality changes; no policy changes; no training or optimizer execution; no paper reproduction claim  
 **Scale/Scope**: Single-feature passive instrumentation across a fixed paper-default diagnostic horizon and a small set of validated seeds
 
 ## Constitution Check
@@ -60,6 +60,7 @@ specs/044-passive-runtime-lifecycle-trace-instrumentation/
 
 ```text
 src/environment/lifecycle_trace.py
+src/environment/gym_adapter.py
 src/analysis/passive_runtime_lifecycle_trace_instrumentation/
 tests/unit/test_lifecycle_trace_schema.py
 tests/unit/test_lifecycle_trace_behavior_equivalence.py
@@ -71,6 +72,33 @@ artifacts/analysis/passive-runtime-lifecycle-trace-instrumentation/
 
 **Structure Decision**: Add a passive lifecycle trace module in `src/environment/` for event creation and recording, then add a dedicated analysis package under `src/analysis/passive_runtime_lifecycle_trace_instrumentation/` with unit and integration tests plus report artifacts under `artifacts/analysis/passive-runtime-lifecycle-trace-instrumentation/`.
 
+## Technical Decisions
+
+- Reports must be generated only when the workspace is clean except for an optional local `.specify/feature.json` pointer file.
+- `AGENTS.md` is treated as a disallowed dirty path for report regeneration.
+- The paper-default report sample must come from the approved Feature 044 probe configuration, not from ad-hoc fixtures.
+- Trace reporting must distinguish `event_type_supported`, `event_type_observed`, and `event_type_missing_from_instrumentation`.
+- `task_completed` must remain supported even if not observed in the sample.
+- For timeout/drop paths, `deadline_expired` must be emitted before or alongside `task_dropped`, and `reward_emitted` must follow the terminal event.
+- Behavior-equivalence checks must be aggregated so each unique name appears once.
+
+## Constitution Notes
+
+This feature stays within the constitution because it only adds passive observability, preserves runtime behavior, and uses the approved interpreter. The plan does not justify any deviation from the reward, timeout, capacity, transmission, or policy contracts.
+
+## Validation Strategy
+
+The validation command must include the new Feature 044 tests plus safe prior regression tests only. It must exclude pointer-sensitive older report tests and must verify:
+
+- report cleanliness rules
+- paper-default sample bounds and metadata
+- `deadline_expired` ordering for drop paths
+- `task_completed` support even when not observed
+- deduplicated behavior-equivalence checks
+- no false audit flags
+- no simulator semantic drift
+
 ## Complexity Tracking
 
 No constitution violations require justification.
+

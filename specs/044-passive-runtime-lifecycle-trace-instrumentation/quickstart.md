@@ -4,6 +4,8 @@
 
 Collect passive lifecycle trace evidence for paper-default `T = 110` runs so downstream diagnostics can explain why completions are absent.
 
+Report regeneration must happen from a clean workspace, except for an optional local `.specify/feature.json` pointer file. `AGENTS.md` must be clean before regeneration.
+
 ## Run the instrumentation audit
 
 Use the approved interpreter and the Feature 044 analysis entrypoint:
@@ -16,6 +18,16 @@ PYTHONPATH=/Users/hadi/Documents/GitHub/hoodie_sim_v2 /Users/hadi/Documents/GitH
 
 - `artifacts/analysis/passive-runtime-lifecycle-trace-instrumentation/lifecycle-trace-instrumentation-report.json`
 - `artifacts/analysis/passive-runtime-lifecycle-trace-instrumentation/lifecycle-trace-instrumentation-report.md`
+
+The generated report sample must reflect the approved Feature 044 paper-default probe configuration:
+
+- `T = 110`
+- `timeout_slots = 20`
+- task sizes in `[2.0, 5.0]`
+- `processing_density_gcycles_per_mbit = 0.297`
+- private/public/cloud CPU capacities `0.5/0.5/3.0`
+- horizontal rate `30 Mbps`
+- vertical rate `10 Mbps`
 
 ## Validation
 
@@ -51,6 +63,15 @@ PYTHONPATH=/Users/hadi/Documents/GitHub/hoodie_sim_v2 /Users/hadi/Documents/GitH
 Feature 043 prerequisite artifact referenced by this validation scope:
 
 - `artifacts/analysis/task-completion-lifecycle-formula-audit/completion-lifecycle-audit-report.json`
+
+Validation expectations:
+
+- `no_unrelated_dirty_files` must be `true` when only the optional `.specify/feature.json` pointer is dirty.
+- The report must include a paper-default lifecycle sample, not an ad-hoc fixture sample.
+- `deadline_expired` must be visible on drop paths whenever `task_dropped` is observed.
+- `task_completed_supported` must remain `true` even if no completion is observed in the sample.
+- Duplicate behavior-equivalence check names must not appear.
+- Older Feature 042 report tests that inspect active pointer state remain out of scope.
 
 ## Interpretation
 

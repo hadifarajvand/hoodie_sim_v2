@@ -16,6 +16,7 @@ Define the analysis report written after a traced paper-default run.
 - `behavior_equivalence_checks`
 - `trace_coverage_summary`
 - `lifecycle_trace_sample`
+- `behavior_equivalence_checks_deduplicated`
 - `completion_diagnosis_readiness`
 - `runtime_contracts_verified`
 - `reward_timing_contract_verified`
@@ -48,3 +49,8 @@ Define the analysis report written after a traced paper-default run.
 - The report MUST remain descriptive and diagnostic.
 - The report MUST identify whether the trace is sufficient to support downstream lifecycle diagnosis.
 - The report MUST preserve the paper-default runtime context and not imply any runtime repair.
+- The report MUST be generated from a workspace that is clean except for an optional local `.specify/feature.json` pointer file.
+- The report MUST use a paper-default trace sample, not an arbitrary runtime trace.
+- The report MUST distinguish event support from event observation.
+- The report MUST treat `task_completed` as supported even when not observed in the sampled run.
+- The report MUST deduplicate behavior-equivalence checks so duplicate check names do not appear.

@@ -20,6 +20,22 @@ class LifecycleTraceBehaviorEquivalenceTests(unittest.TestCase):
         self.assertTrue(checks["same_action_sequence"]["verified"])
         self.assertTrue(checks["same_queue_load"]["verified"])
 
+    def test_behavior_equivalence_checks_are_deduplicated_by_name(self) -> None:
+        report = run_passive_runtime_lifecycle_trace_instrumentation()
+        names = [item["name"] for item in report.behavior_equivalence_checks]
+        self.assertEqual(len(names), len(set(names)))
+        self.assertEqual(
+            names,
+            [
+                "same_rewards",
+                "same_finalized_tasks",
+                "same_terminal_flags",
+                "same_queue_load",
+                "same_action_sequence",
+                "same_outcomes",
+            ],
+        )
+
     def test_config_defaults_match_paper_default_runtime(self) -> None:
         config = PassiveRuntimeLifecycleTraceConfig()
         self.assertEqual(config.episode_length, 110)
@@ -30,4 +46,3 @@ class LifecycleTraceBehaviorEquivalenceTests(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
-

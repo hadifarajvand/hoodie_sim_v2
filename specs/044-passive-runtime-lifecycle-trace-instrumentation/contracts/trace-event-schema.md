@@ -57,3 +57,6 @@ When applicable, each event MUST carry:
 - The schema is passive-only.
 - The schema MUST support ordering analysis for completion vs drop vs deadline events.
 - The schema MUST support execution progress visibility when compute capacity is consumed.
+- `task_completed` is a supported event type even if it is not observed in every paper-default sample.
+- `deadline_expired` MUST be present before or alongside `task_dropped` for timeout/drop paths.
+- `reward_emitted` MUST follow a terminal `task_completed` or `task_dropped` event.

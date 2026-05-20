@@ -533,7 +533,6 @@ class HoodieGymEnvironment:
 
     def _record_outcome(self, task: Task, reward: float) -> None:
         ledger = self._trace_ledgers.setdefault(task.task_id, OffloadTraceLedger())
-        is_expired = task.terminal_outcome == "dropped" and task.completion_slot is None
         if task.terminal_outcome == "completed":
             self._record_trace_event(
                 "task_completed",
@@ -547,25 +546,24 @@ class HoodieGymEnvironment:
                 trace_source_component="environment",
             )
         elif task.terminal_outcome == "dropped":
-            if is_expired:
-                self._record_trace_event(
-                    "deadline_reached",
-                    task,
-                    queue_type=task.metadata.get("queue_type"),
-                    host_node_id=task.metadata.get("host_node_id"),
-                    destination=task.resolved_destination,
-                    terminal_outcome=task.terminal_outcome,
-                    trace_source_component="environment",
-                )
-                self._record_trace_event(
-                    "deadline_expired",
-                    task,
-                    queue_type=task.metadata.get("queue_type"),
-                    host_node_id=task.metadata.get("host_node_id"),
-                    destination=task.resolved_destination,
-                    terminal_outcome=task.terminal_outcome,
-                    trace_source_component="environment",
-                )
+            self._record_trace_event(
+                "deadline_reached",
+                task,
+                queue_type=task.metadata.get("queue_type"),
+                host_node_id=task.metadata.get("host_node_id"),
+                destination=task.resolved_destination,
+                terminal_outcome=task.terminal_outcome,
+                trace_source_component="environment",
+            )
+            self._record_trace_event(
+                "deadline_expired",
+                task,
+                queue_type=task.metadata.get("queue_type"),
+                host_node_id=task.metadata.get("host_node_id"),
+                destination=task.resolved_destination,
+                terminal_outcome=task.terminal_outcome,
+                trace_source_component="environment",
+            )
             self._record_trace_event(
                 "task_dropped",
                 task,
