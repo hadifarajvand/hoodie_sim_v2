@@ -18,6 +18,3 @@ build/
 site/
 outputs/
 resources/references/simpy/venv_mac/
-
-# Local Spec Kit active-feature pointer
-.specify/feature.json
