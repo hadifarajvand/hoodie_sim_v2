@@ -52,6 +52,9 @@ Fields:
 Validation rules:
 - `confidence` must be one of `low`, `medium`, `high`.
 - `detected` can be true for more than one class in the same run.
+- A `root_cause_identified_runtime_repair_required` outcome is valid only when at least one runtime-fault class is detected, such as completion/counter-path mismatch, deadline/drop ordering failure, formula unit mismatch, proven capacity or accounting inconsistency, or a proven drop despite sufficient remaining budget under current queues, transmission, and deadline constraints.
+- If completions exist and formula, reward, and deadline ordering remain consistent, the report must prefer configuration/load or policy/action-exposure explanations unless a runtime-fault classifier is explicitly detected.
+- If execution progress is visible before deadline expiry but the other paths remain valid, the report must treat that evidence as deadline/load pressure unless additional evidence proves a runtime fault.
 
 ## DiagnosisReport
 
@@ -95,6 +98,7 @@ Validation rules:
 - The report must be generated from paper-default `T = 110` traces.
 - The report must preserve the diagnostic distinction between runtime bugs, load/configuration causes, action exposure issues, formula mismatches, and inconclusive evidence.
 - The report must never imply repair was performed.
+- The report's final verdict must be consistent with the detected root-cause classes and may only recommend runtime repair when a runtime-fault classifier is detected.
 
 ## FeatureRoutingOutcome
 
@@ -110,3 +114,4 @@ Allowed values:
 Validation rules:
 - Runtime-proven failures must route to Feature 046.
 - Load or action exposure explanations must not route to runtime repair.
+- Execution-progress-before-deadline-loss must route to deadline/load pressure unless additional runtime-fault evidence is present.

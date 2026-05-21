@@ -57,3 +57,15 @@ Each `root_cause_evaluations` entry must include:
 - `no_completion_problem_detected`
 - `inconclusive_requires_additional_trace_depth`
 - `prerequisite_blocked`
+
+## Verdict discipline
+
+- `root_cause_identified_runtime_repair_required` is valid only when a runtime-fault class is detected.
+- Acceptable runtime-fault classes are:
+  - `completion_emitted_but_reward_or_counter_path_wrong`
+  - `deadline_drop_ordering_issue`
+  - `formula_unit_mismatch`
+  - a proven capacity or accounting inconsistency
+  - a proven task drop despite sufficient remaining budget under the current queues, transmission, and deadline constraints
+- If completions exist and formula, reward, and deadline ordering remain consistent, the report must not use the runtime-repair verdict unless one of the runtime-fault classes above is explicitly detected.
+- If `execution_progress_deadline_expires_first` is detected without a separate runtime fault, the report must use `root_cause_identified_configuration_or_load_explanation` or `root_cause_identified_policy_or_action_exposure_issue`, not runtime repair.

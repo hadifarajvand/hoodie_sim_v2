@@ -33,6 +33,10 @@
 - The feature MUST diagnose paper-default `T = 110` runs using seeds `[0, 1, 2]` and the approved Feature 044 strategy set.
 - The diagnosis MAY report multiple root causes, but it MUST rank them by evidence strength and confidence.
 - Each root-cause class MUST carry a confidence value of low, medium, or high.
+- Runtime repair MUST only be recommended when a runtime-fault predicate is explicitly true and supported by evidence, such as completion/counter-path mismatch, deadline/drop ordering failure, formula unit mismatch, proven capacity or accounting inconsistency, or a proven drop despite sufficient remaining budget under the current queues, transmission, and deadline constraints.
+- The feature MUST NOT classify a run as runtime-repair-required merely because many tasks drop if completions exist and formula, reward, and deadline ordering remain consistent.
+- If completions exist and formula, reward, and deadline ordering remain consistent, the report MUST classify the issue as configuration/load or policy/action-exposure unless a runtime-fault predicate is explicitly true.
+- If execution progresses but deadline expiry arrives first while formula, reward, and ordering remain valid, the report MUST classify that evidence as deadline/load pressure unless additional evidence proves a runtime fault.
 - If runtime behavior is proven wrong, the next feature MUST be Feature 046 - Runtime Repair for Completion Lifecycle.
 - If runtime behavior is valid but load or action exposure is the issue, the report MUST route toward observation vector, exploration, or loss-sequence work rather than runtime repair.
 - Pointer-sensitive older report tests MUST remain out of scope; older features must be validated through committed artifacts and safe tests only.
@@ -99,12 +103,16 @@ As a reviewer, I want the diagnosis to separate queue pressure, admission overlo
 - **FR-018**: The system MUST route runtime-proven failures to Feature 046 - Runtime Repair for Completion Lifecycle.
 - **FR-019**: The system MUST route load or action-exposure explanations toward observation-vector, exploration, or loss-sequence follow-up rather than runtime repair.
 - **FR-020**: The system MUST keep older pointer-sensitive report tests out of scope and rely on committed artifacts and safe tests for prior feature validation.
+- **FR-021**: The system MUST only recommend runtime repair when a runtime-fault classifier is detected, including completion/counter-path mismatch, deadline/drop ordering failure, formula unit mismatch, proven capacity or accounting inconsistency, or proven drop despite sufficient remaining budget under current queues, transmission, and deadline constraints.
+- **FR-022**: The system MUST classify evidence as configuration/load or policy/action-exposure when completions exist and formula, reward, and deadline ordering remain consistent, unless a runtime-fault classifier is explicitly detected.
+- **FR-023**: The system MUST treat execution-progress-before-deadline-loss as deadline/load pressure unless additional evidence proves a runtime fault.
 
 ### Key Entities *(include if feature involves data)*
 
 - **Task Lifecycle Reconstruction**: Per-task evidence that captures how a task moved from generation through terminal outcome.
 - **Root Cause Evaluation**: A structured assessment for one candidate explanation of weak or absent completions.
 - **Diagnosis Report**: A passive analysis artifact that explains the dominant root cause and the recommended next feature type.
+- **Runtime Repair Verdict**: A diagnosis outcome that is permitted only when the evidence proves a runtime fault class, not merely because completion is weak or drops are frequent.
 - **Paper-Default Diagnosis Run**: A diagnostic pass over paper-default `T = 110` traces using the approved runtime configuration.
 - **Feature Routing Outcome**: The follow-up feature type recommended by the diagnosis, such as runtime repair, observation vector, exploration, loss sequence, or load/configuration audit.
 
@@ -116,7 +124,7 @@ As a reviewer, I want the diagnosis to separate queue pressure, admission overlo
 - **SC-002**: The report identifies a dominant root-cause class in 100% of sampled runs where enough evidence exists to support a dominant explanation.
 - **SC-003**: The report distinguishes at least 10 approved root-cause classes and reserves an explicit inconclusive class for insufficient evidence.
 - **SC-004**: The report outputs task-level lifecycle reconstruction evidence for generated, admitted, transmission, execution, deadline, terminal outcome, and reward stages in every sampled run.
-- **SC-005**: The report clearly recommends the next feature type in every sampled run, choosing from runtime repair, observation vector, loss contract, exploration schedule, or load/configuration audit.
+- **SC-005**: The report clearly recommends the next feature type in every sampled run, choosing from runtime repair, observation vector, loss contract, exploration schedule, or load/configuration audit, and only recommends runtime repair when a runtime-fault classifier is explicitly detected.
 - **SC-006**: The feature introduces no runtime repair, no training, and no paper reproduction claim.
 - **SC-007**: The diagnosis uses seeds `[0, 1, 2]` and the approved Feature 044 strategy set in every sampled paper-default run.
 - **SC-008**: Each sampled run includes a ranked set of dominant root causes with confidence values and a follow-up feature recommendation.

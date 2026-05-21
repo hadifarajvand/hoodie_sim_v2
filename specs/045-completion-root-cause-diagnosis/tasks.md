@@ -100,6 +100,11 @@
 - [x] T038 Validate report cleanliness before regeneration by enforcing that `.specify/feature.json` may only remain as a local active pointer, must not be staged, must not appear in `git diff --name-only main...HEAD`, `AGENTS.md` must not be staged or appear in `git diff --name-only main...HEAD`, any dirty path outside the active feature scope blocks report generation, `no_unrelated_dirty_files` must be `true`, and report validation must fail if `AGENTS.md` appears in dirty paths/details or any prerequisite/prior-feature gate is false
 - [x] T039 Regenerate `artifacts/analysis/completion-root-cause-diagnosis/completion-root-cause-report.json` and `artifacts/analysis/completion-root-cause-diagnosis/completion-root-cause-report.md`
 - [x] T040 Re-run the approved validation command from `specs/045-completion-root-cause-diagnosis/quickstart.md` and confirm no runtime behavior drift in `tests/integration/test_completion_root_cause_scope_guard.py`
+- [ ] T041 [P] Add report verdict-guard tests in `tests/integration/test_completion_root_cause_report.py` that require `root_cause_identified_runtime_repair_required` only when a runtime-fault classifier is detected with `evidence_count > 0` and confidence `medium` or `high`
+- [ ] T042 [P] Add report verdict-rule tests in `tests/integration/test_completion_root_cause_report.py` that forbid runtime-repair when completions exist, formula/reward/deadline ordering is consistent, and no runtime-fault classifier is detected
+- [ ] T043 [P] Add report consistency tests in `tests/integration/test_completion_root_cause_report.py` that require `execution_progress_deadline_expires_first` to route to configuration/load or policy/action-exposure follow-up unless sufficient-budget violation evidence exists
+- [ ] T044 [P] Add report routing tests in `tests/integration/test_completion_root_cause_report.py` that fail if `recommended_next_feature` contradicts `final_verdict`
+- [ ] T045 Implement verdict-consistency enforcement in `src/analysis/completion_root_cause_diagnosis/runner.py`, `model.py`, and `report.py` so runtime-repair recommendations require runtime-fault evidence and routing stays aligned with the detected verdict
 
 ## Dependencies & Execution Order
 
