@@ -1,12 +1,13 @@
 from __future__ import annotations
 
+import copy
 import json
 import tempfile
 import unittest
 from pathlib import Path
 from unittest import mock
 
-from src.analysis.completion_root_cause_diagnosis import run_completion_root_cause_diagnosis
+from src.analysis.completion_root_cause_diagnosis import CompletionRootCauseReport, run_completion_root_cause_diagnosis
 from src.analysis.completion_root_cause_diagnosis.runner import build_completion_root_cause_report
 
 
@@ -58,11 +59,10 @@ class CompletionRootCauseReportIntegrationTests(unittest.TestCase):
         self.assertIsNotNone(payload["recommended_next_feature"])
         self.assertIn(payload["recommended_next_feature"], {
             "Feature 046 - Runtime Repair for Completion Lifecycle",
-            "observation vector follow-up",
-            "exploration schedule follow-up",
-            "loss-sequence follow-up",
-            "load/configuration audit follow-up",
+            "observation/exploration/loss sequence",
+            "load/admission/action-exposure review",
         })
+        self.assertEqual(payload["final_verdict"], "root_cause_identified_configuration_or_load_explanation")
 
     def test_no_unrelated_dirty_files_is_true_and_agents_not_mentioned(self) -> None:
         report = run_completion_root_cause_diagnosis()
@@ -70,6 +70,89 @@ class CompletionRootCauseReportIntegrationTests(unittest.TestCase):
         self.assertTrue(dirty_tag["verified"])
         self.assertNotIn("AGENTS.md", dirty_tag["details"])
         self.assertTrue(all(entry["verified"] for entry in report.prior_feature_gates_verified))
+
+    def test_runtime_repair_verdict_requires_runtime_fault_evidence(self) -> None:
+        payload = copy.deepcopy(run_completion_root_cause_diagnosis().to_dict())
+        payload["final_verdict"] = "root_cause_identified_runtime_repair_required"
+        payload["recommended_next_feature"] = "Feature 046 - Runtime Repair for Completion Lifecycle"
+        for entry in payload["root_cause_evaluations"]:
+            if entry["root_cause_class"] in {
+                "completion_emitted_but_reward_or_counter_path_wrong",
+                "deadline_drop_ordering_issue",
+                "formula_unit_mismatch",
+            }:
+                entry["detected"] = False
+                entry["evidence_count"] = 0
+                entry["confidence"] = "low"
+        with self.assertRaises(ValueError):
+            CompletionRootCauseReport(**payload)
+
+    def test_runtime_repair_verdict_rejects_low_or_empty_runtime_fault_evidence(self) -> None:
+        for confidence, evidence_count in [("low", 2), ("medium", 0)]:
+            payload = copy.deepcopy(run_completion_root_cause_diagnosis().to_dict())
+            payload["final_verdict"] = "root_cause_identified_runtime_repair_required"
+            payload["recommended_next_feature"] = "Feature 046 - Runtime Repair for Completion Lifecycle"
+            entry = {
+                "root_cause_class": "formula_unit_mismatch",
+                "evaluated": True,
+                "detected": True,
+                "evidence_count": evidence_count,
+                "supporting_event_types": ["task_generated", "execution_progress"],
+                "representative_task_ids": ["synthetic:1"],
+                "explanation": "synthetic",
+                "confidence": confidence,
+                "required_next_action": "synthetic",
+            }
+            payload["root_cause_evaluations"] = [entry]
+            with self.subTest(confidence=confidence, evidence_count=evidence_count):
+                with self.assertRaises(ValueError):
+                    CompletionRootCauseReport(**payload)
+
+    def test_recommended_next_feature_must_match_final_verdict(self) -> None:
+        payload = copy.deepcopy(run_completion_root_cause_diagnosis().to_dict())
+        payload["final_verdict"] = "root_cause_identified_configuration_or_load_explanation"
+        payload["recommended_next_feature"] = "Feature 046 - Runtime Repair for Completion Lifecycle"
+        with self.assertRaises(ValueError):
+            CompletionRootCauseReport(**payload)
+
+        payload = copy.deepcopy(run_completion_root_cause_diagnosis().to_dict())
+        payload["final_verdict"] = "root_cause_identified_policy_or_action_exposure_issue"
+        payload["recommended_next_feature"] = "load/admission/action-exposure review"
+        with self.assertRaises(ValueError):
+            CompletionRootCauseReport(**payload)
+
+        payload = copy.deepcopy(run_completion_root_cause_diagnosis().to_dict())
+        payload["final_verdict"] = "root_cause_identified_configuration_or_load_explanation"
+        payload["recommended_next_feature"] = "observation/exploration/loss sequence"
+        with self.assertRaises(ValueError):
+            CompletionRootCauseReport(**payload)
+
+    def test_execution_progress_deadline_expires_first_alone_does_not_trigger_runtime_repair(self) -> None:
+        payload = copy.deepcopy(run_completion_root_cause_diagnosis().to_dict())
+        payload["final_verdict"] = "root_cause_identified_runtime_repair_required"
+        payload["recommended_next_feature"] = "Feature 046 - Runtime Repair for Completion Lifecycle"
+        payload["root_cause_evaluations"] = [
+            {
+                "root_cause_class": "execution_progress_deadline_expires_first",
+                "evaluated": True,
+                "detected": True,
+                "evidence_count": 3,
+                "supporting_event_types": ["execution_progress", "deadline_expired", "task_dropped"],
+                "representative_task_ids": ["synthetic:1"],
+                "explanation": "synthetic",
+                "confidence": "high",
+                "required_next_action": "synthetic",
+            }
+        ]
+        with self.assertRaises(ValueError):
+            CompletionRootCauseReport(**payload)
+
+    def test_no_completion_problem_detected_does_not_recommend_runtime_repair(self) -> None:
+        payload = copy.deepcopy(run_completion_root_cause_diagnosis().to_dict())
+        payload["final_verdict"] = "no_completion_problem_detected"
+        payload["recommended_next_feature"] = "Feature 046 - Runtime Repair for Completion Lifecycle"
+        with self.assertRaises(ValueError):
+            CompletionRootCauseReport(**payload)
 
 
 if __name__ == "__main__":

@@ -23,6 +23,21 @@ from .report import (
 FEATURE_044_REPORT_PATH = Path("artifacts/analysis/passive-runtime-lifecycle-trace-instrumentation/lifecycle-trace-instrumentation-report.json")
 APPROVED_OUTPUT_PREFIX = "artifacts/analysis/completion-root-cause-diagnosis/"
 
+RUNTIME_FAULT_CLASSES: tuple[str, ...] = (
+    "completion_emitted_but_reward_or_counter_path_wrong",
+    "deadline_drop_ordering_issue",
+    "formula_unit_mismatch",
+)
+
+LOAD_EXPLANATION_CLASSES: tuple[str, ...] = (
+    "queue_pressure",
+    "task_generation_admission_overload",
+    "local_private_queue_blockage",
+    "public_cloud_queue_blockage",
+    "transmission_delay_admission_mismatch",
+    "no_completion_problem_detected",
+)
+
 
 def _json_safe(value: Any) -> Any:
     if isinstance(value, dict):
@@ -84,6 +99,29 @@ def _allowed_trace_metadata(payload: dict[str, Any]) -> bool:
         and bool(coverage.get("deadline_expired_supported"))
         and bool(coverage.get("completion_drop_ordering_observed"))
     )
+
+
+def _runtime_fault_evaluations(evaluations: list[RootCauseEvaluation]) -> list[RootCauseEvaluation]:
+    return [
+        evaluation
+        for evaluation in evaluations
+        if evaluation.root_cause_class in RUNTIME_FAULT_CLASSES
+        and evaluation.detected
+        and evaluation.evidence_count > 0
+        and evaluation.confidence in {"medium", "high"}
+    ]
+
+
+def _runtime_repair_allowed(evaluations: list[RootCauseEvaluation]) -> bool:
+    return bool(_runtime_fault_evaluations(evaluations))
+
+
+def _recommended_next_feature_for_verdict(verdict: str) -> str:
+    if verdict == "root_cause_identified_runtime_repair_required":
+        return "Feature 046 - Runtime Repair for Completion Lifecycle"
+    if verdict == "root_cause_identified_policy_or_action_exposure_issue":
+        return "observation/exploration/loss sequence"
+    return "load/admission/action-exposure review"
 
 
 @dataclass(frozen=True, slots=True)
@@ -194,6 +232,7 @@ def _build_summary(runs: list[TraceRunResult], lifecycles: list[TaskLifecycleRec
 
 def _build_diagnosis(lifecycles: list[TaskLifecycleReconstruction], summary: dict[str, Any], evaluations: list[RootCauseEvaluation]) -> tuple[str, str, list[str]]:
     detected = [evaluation for evaluation in evaluations if evaluation.detected]
+    runtime_faults = _runtime_fault_evaluations(evaluations)
     if not detected:
         return "no_completion_problem_detected", "Completions occur under paper-default traces and no stronger root-cause class dominates.", ["no_completion_problem_detected"]
     ranked = RootCauseClassifier.rank(evaluations)
@@ -209,20 +248,14 @@ def _build_diagnosis(lifecycles: list[TaskLifecycleReconstruction], summary: dic
     )
     action_evidence = len(summary["action_exposure_bias_task_ids"])
     runtime_evidence = max(len(summary["completion_reward_counter_mismatch_task_ids"]), len(summary["deadline_drop_ordering_issue_task_ids"]), len(summary["execution_progress_deadline_expires_first_task_ids"]))
+    if runtime_faults:
+        runtime_fault = max(runtime_faults, key=lambda item: (item.evidence_count, 1 if item.confidence == "high" else 0, 1 if item.confidence == "medium" else 0))
+        return "root_cause_identified_runtime_repair_required", runtime_fault.explanation, [evaluation.root_cause_class for evaluation in ranked[:3]]
     if top.root_cause_class == "formula_unit_mismatch":
         return "root_cause_identified_formula_unit_mismatch", top.explanation, [evaluation.root_cause_class for evaluation in ranked[:3]]
-    if top.root_cause_class in {"completion_emitted_but_reward_or_counter_path_wrong", "deadline_drop_ordering_issue", "execution_progress_deadline_expires_first"} and runtime_evidence > load_evidence:
-        return "root_cause_identified_runtime_repair_required", top.explanation, [evaluation.root_cause_class for evaluation in ranked[:3]]
     if top.root_cause_class == "action_exposure_bias" and action_evidence > load_evidence:
         return "root_cause_identified_policy_or_action_exposure_issue", top.explanation, [evaluation.root_cause_class for evaluation in ranked[:3]]
-    if load_evidence > 0 or top.root_cause_class in {
-        "queue_pressure",
-        "task_generation_admission_overload",
-        "local_private_queue_blockage",
-        "public_cloud_queue_blockage",
-        "transmission_delay_admission_mismatch",
-        "no_completion_problem_detected",
-    }:
+    if load_evidence > 0 or top.root_cause_class in LOAD_EXPLANATION_CLASSES or runtime_evidence > 0:
         return "root_cause_identified_configuration_or_load_explanation", top.explanation, [evaluation.root_cause_class for evaluation in ranked[:3]]
     if top.root_cause_class == "action_exposure_bias":
         return "root_cause_identified_policy_or_action_exposure_issue", top.explanation, [evaluation.root_cause_class for evaluation in ranked[:3]]
@@ -242,16 +275,7 @@ def build_completion_root_cause_report(config: CompletionRootCauseConfig | None 
     evaluations = RootCauseClassifier.evaluate_all(lifecycles, summary)
     diagnosis_verdict, diagnosis_text, dominant_class_names = _build_diagnosis(lifecycles, summary, evaluations)
     dominant = [evaluation.to_dict() for evaluation in RootCauseClassifier.rank(evaluations)[:5]]
-    if diagnosis_verdict == "root_cause_identified_formula_unit_mismatch":
-        recommended_next_feature = "load/configuration audit follow-up"
-    elif diagnosis_verdict == "root_cause_identified_policy_or_action_exposure_issue":
-        recommended_next_feature = "observation vector follow-up"
-    elif diagnosis_verdict == "root_cause_identified_runtime_repair_required":
-        recommended_next_feature = "Feature 046 - Runtime Repair for Completion Lifecycle"
-    elif diagnosis_verdict == "no_completion_problem_detected":
-        recommended_next_feature = "load/configuration audit follow-up"
-    else:
-        recommended_next_feature = "load/configuration audit follow-up"
+    recommended_next_feature = _recommended_next_feature_for_verdict(diagnosis_verdict)
     trace_input_sources = [
         {
             "source_type": "feature_044_report",
@@ -336,6 +360,7 @@ def build_completion_root_cause_report(config: CompletionRootCauseConfig | None 
         diagnosis={
             "summary": diagnosis_text,
             "dominant_root_causes": dominant_class_names,
+            "runtime_repair_verdict_guard": _runtime_repair_allowed(evaluations),
             "trace_evidence": {
                 "completed_count": summary["completed_count"],
                 "dropped_count": summary["dropped_count"],

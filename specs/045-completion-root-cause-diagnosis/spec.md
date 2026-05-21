@@ -33,10 +33,16 @@
 - The feature MUST diagnose paper-default `T = 110` runs using seeds `[0, 1, 2]` and the approved Feature 044 strategy set.
 - The diagnosis MAY report multiple root causes, but it MUST rank them by evidence strength and confidence.
 - Each root-cause class MUST carry a confidence value of low, medium, or high.
-- Runtime repair MUST only be recommended when a runtime-fault predicate is explicitly true and supported by evidence, such as completion/counter-path mismatch, deadline/drop ordering failure, formula unit mismatch, proven capacity or accounting inconsistency, or a proven drop despite sufficient remaining budget under the current queues, transmission, and deadline constraints.
+- `root_cause_identified_runtime_repair_required` is allowed only when at least one runtime-fault classifier is detected with `evidence_count > 0` and confidence `medium` or `high`.
+- Runtime-fault classifiers are limited to:
+  - `completion_emitted_but_reward_or_counter_path_wrong`
+  - `deadline_drop_ordering_issue`
+  - `formula_unit_mismatch`
+  - `proven_capacity_accounting_inconsistency`
+  - `proven_sufficient_budget_drop_violation`
 - The feature MUST NOT classify a run as runtime-repair-required merely because many tasks drop if completions exist and formula, reward, and deadline ordering remain consistent.
 - If completions exist and formula, reward, and deadline ordering remain consistent, the report MUST classify the issue as configuration/load or policy/action-exposure unless a runtime-fault predicate is explicitly true.
-- If execution progresses but deadline expiry arrives first while formula, reward, and ordering remain valid, the report MUST classify that evidence as deadline/load pressure unless additional evidence proves a runtime fault.
+- `execution_progress_deadline_expires_first` may be detected, but it does not alone prove runtime repair. It MUST route to configuration/load/action-exposure diagnosis unless there is proven sufficient-budget violation evidence.
 - If runtime behavior is proven wrong, the next feature MUST be Feature 046 - Runtime Repair for Completion Lifecycle.
 - If runtime behavior is valid but load or action exposure is the issue, the report MUST route toward observation vector, exploration, or loss-sequence work rather than runtime repair.
 - Pointer-sensitive older report tests MUST remain out of scope; older features must be validated through committed artifacts and safe tests only.
@@ -112,7 +118,7 @@ As a reviewer, I want the diagnosis to separate queue pressure, admission overlo
 - **Task Lifecycle Reconstruction**: Per-task evidence that captures how a task moved from generation through terminal outcome.
 - **Root Cause Evaluation**: A structured assessment for one candidate explanation of weak or absent completions.
 - **Diagnosis Report**: A passive analysis artifact that explains the dominant root cause and the recommended next feature type.
-- **Runtime Repair Verdict**: A diagnosis outcome that is permitted only when the evidence proves a runtime fault class, not merely because completion is weak or drops are frequent.
+- **Runtime Repair Verdict**: A diagnosis outcome that is permitted only when the evidence proves a runtime fault class with non-zero evidence and medium or high confidence, not merely because completion is weak or drops are frequent.
 - **Paper-Default Diagnosis Run**: A diagnostic pass over paper-default `T = 110` traces using the approved runtime configuration.
 - **Feature Routing Outcome**: The follow-up feature type recommended by the diagnosis, such as runtime repair, observation vector, exploration, loss sequence, or load/configuration audit.
 

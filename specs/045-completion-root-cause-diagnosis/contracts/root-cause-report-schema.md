@@ -60,7 +60,32 @@ Each `root_cause_evaluations` entry must include:
 
 ## Verdict discipline
 
-- `root_cause_identified_runtime_repair_required` is valid only when a runtime-fault class is detected.
+- `runtime_repair_verdict_guard`:
+  - `root_cause_identified_runtime_repair_required` is valid only when a runtime-fault class is detected with `evidence_count > 0` and confidence `medium` or `high`.
+  - Runtime-fault classes are limited to:
+    - `completion_emitted_but_reward_or_counter_path_wrong`
+    - `deadline_drop_ordering_issue`
+    - `formula_unit_mismatch`
+    - `proven_capacity_accounting_inconsistency`
+    - `proven_sufficient_budget_drop_violation`
+- `runtime_fault_classifier_threshold`:
+  - The report must not emit the runtime-repair verdict if no runtime-fault classifier meets the guard above.
+- `non_runtime_verdict_rule`:
+  - If `completed_count > 0`
+  - and `formula_unit_mismatch` detected is false
+  - and `deadline_drop_ordering_issue` detected is false
+  - and `completion_emitted_but_reward_or_counter_path_wrong` detected is false
+  - and `reward_after_terminal_outcome` is true
+  - and deadline/drop ordering is supported
+  - then `root_cause_identified_runtime_repair_required` is not allowed.
+- `execution_progress_deadline_expires_first_interpretation`:
+  - `execution_progress_deadline_expires_first` may be detected.
+  - It does not alone prove runtime repair.
+  - It must route to configuration/load/action-exposure diagnosis unless there is proven sufficient-budget violation evidence.
+- `final_verdict_recommended_next_feature_consistency`:
+  - `final_verdict` and `recommended_next_feature` must not contradict the detected root causes.
+  - `recommended_next_feature = runtime repair` is invalid when `final_verdict` is configuration/load or policy/action-exposure.
+  - `execution_progress_deadline_expires_first` must not be the sole trigger for a runtime-repair recommendation.
 - Acceptable runtime-fault classes are:
   - `completion_emitted_but_reward_or_counter_path_wrong`
   - `deadline_drop_ordering_issue`

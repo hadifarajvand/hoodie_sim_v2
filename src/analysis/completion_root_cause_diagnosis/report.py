@@ -9,6 +9,12 @@ from typing import Any
 from .config import FEATURE_ID
 from .model import RootCauseEvaluation
 
+RUNTIME_FAULT_CLASSES: tuple[str, ...] = (
+    "completion_emitted_but_reward_or_counter_path_wrong",
+    "deadline_drop_ordering_issue",
+    "formula_unit_mismatch",
+)
+
 DEFAULT_OUTPUT_DIR = Path("artifacts/analysis/completion-root-cause-diagnosis")
 JSON_FILENAME = "completion-root-cause-report.json"
 MARKDOWN_FILENAME = "completion-root-cause-report.md"
@@ -164,6 +170,50 @@ class CompletionRootCauseReport:
         ):
             if getattr(self, flag) is not True:
                 raise ValueError(f"CompletionRootCauseReport.{flag} must be true.")
+        self._validate_verdict_consistency()
+
+    def _root_cause_evaluation_map(self) -> dict[str, dict[str, Any]]:
+        return {
+            str(entry.get("root_cause_class")): dict(entry)
+            for entry in self.root_cause_evaluations
+            if entry.get("root_cause_class")
+        }
+
+    def _runtime_fault_guard_satisfied(self) -> bool:
+        evaluations = self._root_cause_evaluation_map()
+        for root_cause_class in RUNTIME_FAULT_CLASSES:
+            entry = evaluations.get(root_cause_class)
+            if not entry:
+                continue
+            if entry.get("detected") is True and int(entry.get("evidence_count", 0)) > 0 and entry.get("confidence") in {"medium", "high"}:
+                return True
+        return False
+
+    def _validate_verdict_consistency(self) -> None:
+        verdict = self.final_verdict
+        recommendation = self.recommended_next_feature
+        load_follow_up = "load/admission/action-exposure review"
+        action_follow_up = "observation/exploration/loss sequence"
+        runtime_follow_up = "Feature 046 - Runtime Repair for Completion Lifecycle"
+        if verdict == "root_cause_identified_runtime_repair_required":
+            if not self._runtime_fault_guard_satisfied():
+                raise ValueError("Runtime-repair verdict requires detected runtime-fault evidence with non-zero evidence and medium/high confidence.")
+            if recommendation != runtime_follow_up:
+                raise ValueError("Runtime-repair verdict must recommend Feature 046.")
+        elif verdict == "root_cause_identified_configuration_or_load_explanation":
+            if recommendation != load_follow_up:
+                raise ValueError("Configuration/load verdict must recommend load/admission/action-exposure review.")
+        elif verdict == "root_cause_identified_policy_or_action_exposure_issue":
+            if recommendation != action_follow_up:
+                raise ValueError("Policy/action-exposure verdict must recommend observation/exploration/loss sequence.")
+        elif verdict == "root_cause_identified_formula_unit_mismatch":
+            if recommendation != load_follow_up:
+                raise ValueError("Formula mismatch verdict must recommend load/admission/action-exposure review.")
+        elif verdict == "no_completion_problem_detected":
+            if recommendation == runtime_follow_up:
+                raise ValueError("No-completion verdict must not recommend runtime repair.")
+        if verdict != "root_cause_identified_runtime_repair_required" and recommendation == runtime_follow_up:
+            raise ValueError("Runtime repair may only be recommended when the verdict is runtime-repair-required.")
 
     def to_dict(self) -> dict[str, Any]:
         return {

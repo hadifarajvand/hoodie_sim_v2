@@ -12,20 +12,9 @@ class CompletionRootCauseDiagnosisIntegrationTests(unittest.TestCase):
 
     def test_report_recommends_next_feature_without_repair(self) -> None:
         payload = self.report.to_dict()
-        self.assertIn(
-            payload["final_verdict"],
-            {
-                "root_cause_identified_runtime_repair_required",
-                "root_cause_identified_configuration_or_load_explanation",
-                "root_cause_identified_policy_or_action_exposure_issue",
-                "root_cause_identified_formula_unit_mismatch",
-                "no_completion_problem_detected",
-                "inconclusive_requires_additional_trace_depth",
-                "prerequisite_blocked",
-            },
-        )
+        self.assertEqual(payload["final_verdict"], "root_cause_identified_configuration_or_load_explanation")
         self.assertTrue(payload["no_runtime_repair_performed"])
-        self.assertIsNotNone(payload["recommended_next_feature"])
+        self.assertEqual(payload["recommended_next_feature"], "load/admission/action-exposure review")
 
     def test_prerequisite_and_prior_feature_gates_verified(self) -> None:
         payload = self.report.to_dict()

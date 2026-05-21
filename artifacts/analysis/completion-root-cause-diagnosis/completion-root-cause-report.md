@@ -1,8 +1,8 @@
 # Completion Root-Cause Diagnosis Report
 
 - feature_id: `045-completion-root-cause-diagnosis`
-- final_verdict: `root_cause_identified_runtime_repair_required`
-- recommended_next_feature: `Feature 046 - Runtime Repair for Completion Lifecycle`
+- final_verdict: `root_cause_identified_configuration_or_load_explanation`
+- recommended_next_feature: `load/admission/action-exposure review`
 
 ## Diagnosis
 {
@@ -11,6 +11,7 @@
     "no_completion_problem_detected",
     "task_generation_admission_overload"
   ],
+  "runtime_repair_verdict_guard": false,
   "summary": "Some tasks make measurable execution progress but the deadline drops them before completion can finish.",
   "trace_evidence": {
     "completed_count": 292,

@@ -11,6 +11,7 @@
       "no_completion_problem_detected",
       "task_generation_admission_overload"
     ],
+    "runtime_repair_verdict_guard": false,
     "summary": "Some tasks make measurable execution progress but the deadline drops them before completion can finish.",
     "trace_evidence": {
       "completed_count": 292,
@@ -85,7 +86,7 @@
     }
   ],
   "feature_id": "045-completion-root-cause-diagnosis",
-  "final_verdict": "root_cause_identified_runtime_repair_required",
+  "final_verdict": "root_cause_identified_configuration_or_load_explanation",
   "formula_consistency_summary": {
     "detected_root_cause": null,
     "formula_consistent": true,
@@ -613,7 +614,7 @@
       "verified": true
     }
   ],
-  "recommended_next_feature": "Feature 046 - Runtime Repair for Completion Lifecycle",
+  "recommended_next_feature": "load/admission/action-exposure review",
   "reward_counter_path_summary": {
     "notes": "Reward emission follows terminal state transitions in the passive traces.",
     "reward_after_terminal_outcome": true,
