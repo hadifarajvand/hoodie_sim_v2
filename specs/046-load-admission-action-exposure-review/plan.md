@@ -87,10 +87,11 @@ This feature stays within the constitution because it only adds passive diagnosi
 
 ## Validation Strategy
 
-The validation command must include the new Feature 046 tests plus safe prior regression tests only. It must exclude pointer-sensitive older report tests and must verify:
+The validation command must include the new Feature 046 tests plus safe prior regression tests only. It must exclude pointer-sensitive and dirty-worktree-sensitive older report tests and must verify:
 
 - passive trace consumption from Feature 044
 - use of the Feature 045 report as a prior-feature input
+- Feature 045 committed-artifact compatibility instead of active worktree cleanliness checks
 - load/admission/action exposure quantification
 - same-slot admission serialization and lag
 - queue pressure and offload-path pressure summaries

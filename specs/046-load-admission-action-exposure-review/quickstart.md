@@ -42,7 +42,6 @@ PYTHONPATH=/Users/hadi/Documents/GitHub/hoodie_sim_v2 /Users/hadi/Documents/GitH
   tests.integration.test_load_admission_action_exposure_report \
   tests.integration.test_load_admission_action_exposure_scope_guard \
   tests.unit.test_lifecycle_trace_schema \
-  tests.integration.test_passive_lifecycle_trace_report \
   tests.unit.test_task_completion_formula_audit \
   tests.unit.test_task_completion_lifecycle_schema \
   tests.unit.test_paper_default_terminal_exposure_config \
@@ -63,7 +62,8 @@ Validation expectations:
 - The report quantifies load, admission, action exposure, queue, and offload-path pressure.
 - The report ranks the dominant pressure source or states that evidence is inconclusive.
 - The report recommends the next diagnostic feature honestly.
-- Older pointer-sensitive report tests remain out of scope.
+- Older pointer-sensitive or dirty-worktree-sensitive report tests remain out of scope.
+- Feature 045 is validated through the committed artifact `artifacts/analysis/completion-root-cause-diagnosis/completion-root-cause-report.json`, not by rerunning its active worktree cleanliness gate during Feature 046.
 
 ## Interpretation
 
