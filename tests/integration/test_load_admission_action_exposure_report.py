@@ -11,6 +11,8 @@ class LoadAdmissionActionExposureReportIntegrationTest(unittest.TestCase):
         payload = report.to_dict()
         self.assertTrue(payload["no_runtime_repair_performed"])
         self.assertTrue(payload["no_paper_reproduction_claim"])
+        for key in ("no_optimizer_step", "no_replay_training", "no_target_update_execution", "no_curve_fitting", "no_simulator_output_tuning"):
+            self.assertTrue(payload[key])
 
 
 if __name__ == "__main__":

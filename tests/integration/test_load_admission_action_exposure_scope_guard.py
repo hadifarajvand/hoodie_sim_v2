@@ -27,6 +27,8 @@ class LoadAdmissionActionExposureScopeGuardTest(unittest.TestCase):
             "no_paper_reproduction_claim",
         ):
             self.assertTrue(payload[key])
+        self.assertEqual(payload["final_verdict"], "load_pressure_explains_completion_weakness")
+        self.assertEqual(payload["recommended_next_feature"], "exposure-matrix review")
 
 
 if __name__ == "__main__":

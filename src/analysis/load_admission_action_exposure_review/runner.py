@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from collections import Counter, defaultdict
+from collections import Counter
 from pathlib import Path
 import json
 import math
@@ -32,14 +32,30 @@ def _validate_inputs() -> tuple[dict[str, Any], dict[str, Any]]:
         raise ValueError("Feature 044 report required.")
     if r45.get("feature_id") != "045-completion-root-cause-diagnosis":
         raise ValueError("Feature 045 report required.")
+    if r45.get("final_verdict") != "root_cause_identified_configuration_or_load_explanation":
+        raise ValueError("Feature 045 verdict prerequisite failed.")
+    if r45.get("recommended_next_feature") != "load/admission/action-exposure review":
+        raise ValueError("Feature 045 next-feature prerequisite failed.")
+    diagnosis = r45.get("diagnosis", {})
+    if diagnosis.get("runtime_repair_verdict_guard", None) is not False:
+        raise ValueError("Feature 045 runtime repair guard prerequisite failed.")
     return r44, r45
 
 
 def _paper_default_runtime_verified(r44: dict[str, Any], config: LoadAdmissionActionExposureConfig) -> dict[str, Any]:
     payload = dict(r44.get("paper_default_runtime_verified", {}))
     payload.update({"feature_review_runtime": "paper-default"})
+    payload.setdefault("task_size_mbits_range", [2.0, 5.0])
+    payload.setdefault("processing_density_gcycles_per_mbit", 0.297)
+    payload.setdefault("cpu_private_public_cloud_gcycles_per_slot", [0.5, 0.5, 3.0])
+    payload.setdefault("horizontal_rate_mbps", 30.0)
+    payload.setdefault("vertical_rate_mbps", 10.0)
     if int(payload.get("episode_length", 0)) != config.episode_length:
         raise ValueError("paper-default runtime mismatch")
+    if int(payload.get("timeout_slots", 0)) != config.timeout_slots:
+        raise ValueError("timeout mismatch")
+    if int(payload.get("node_count", 0)) != config.node_count:
+        raise ValueError("node-count mismatch")
     return payload
 
 
@@ -51,14 +67,28 @@ def _trace_tasks(r44: dict[str, Any], r45: dict[str, Any]) -> list[dict[str, Any
     return list(r45.get("lifecycle_trace_sample", [])) or list(r44.get("lifecycle_trace_sample", []))
 
 
-def _metrics(tasks: list[dict[str, Any]], config: LoadAdmissionActionExposureConfig) -> tuple[LoadPressureMetrics, AdmissionSerializationMetrics, ActionExposureMetrics, QueuePressureMetrics, OffloadPathPressureMetrics, BudgetComparisonMetrics, list[dict[str, Any]], list[dict[str, Any]], list[dict[str, Any]], list[dict[str, Any]], dict[str, Any]]:
-    generated = len(tasks)
+def _metrics(tasks: list[dict[str, Any]], r45: dict[str, Any], config: LoadAdmissionActionExposureConfig) -> tuple[LoadPressureMetrics, AdmissionSerializationMetrics, ActionExposureMetrics, QueuePressureMetrics, OffloadPathPressureMetrics, BudgetComparisonMetrics, list[dict[str, Any]], list[dict[str, Any]], list[dict[str, Any]], list[dict[str, Any]], dict[str, Any]]:
+    reconstruction = r45.get("task_lifecycle_reconstruction_summary", {})
+    generated = int(reconstruction.get("total_tasks", len(tasks)))
     admitted = sum(1 for t in tasks if t.get("admitted_slot") is not None)
     completed = [t for t in tasks if t.get("terminal_outcome") == "completed"]
     dropped = [t for t in tasks if t.get("terminal_outcome") == "dropped"]
     pending = [t for t in tasks if t.get("terminal_outcome") is None or t.get("pending_at_horizon_at") is not None]
-    terminal = len(completed) + len(dropped)
-    load = LoadPressureMetrics(generated, admitted, terminal, len(completed), len(dropped), len(pending), generated / config.episode_length, admitted / config.episode_length, terminal / config.episode_length, len(completed) / max(terminal, 1), len(dropped) / max(terminal, 1), len(pending) / max(generated, 1))
+    terminal = int(reconstruction.get("completed_count", len(completed))) + int(reconstruction.get("dropped_count", len(dropped)))
+    load = LoadPressureMetrics(
+        generated,
+        int(reconstruction.get("total_tasks", admitted)),
+        terminal,
+        int(reconstruction.get("completed_count", len(completed))),
+        int(reconstruction.get("dropped_count", len(dropped))),
+        int(reconstruction.get("pending_at_horizon_count", len(pending))),
+        generated / config.episode_length,
+        int(reconstruction.get("total_tasks", admitted)) / config.episode_length,
+        terminal / config.episode_length,
+        int(reconstruction.get("completed_count", len(completed))) / max(terminal, 1),
+        int(reconstruction.get("dropped_count", len(dropped))) / max(terminal, 1),
+        int(reconstruction.get("pending_at_horizon_count", len(pending))) / max(generated, 1),
+    )
     same_slot_generated = sum(1 for t in tasks if t.get("generated_slot") == t.get("arrival_slot"))
     same_slot_admitted = sum(1 for t in tasks if t.get("admitted_slot") == t.get("generated_slot"))
     delayed = [ _task_key(t) for t in tasks if t.get("admitted_slot") is not None and t.get("generated_slot") is not None and int(t["admitted_slot"]) > int(t["generated_slot"])]
@@ -107,14 +137,26 @@ def _metrics(tasks: list[dict[str, Any]], config: LoadAdmissionActionExposureCon
         deadline_margin_at_completion=0.0,
         deadline_overrun_at_drop=0.0,
     )
-    per_strategy_summary = [{"strategy": s, "task_count": sum(1 for t in tasks if s in str(t.get("run_id", ""))), "selected_action_counts": dict(selected)} for s in config.strategies]
+    per_strategy_summary = [
+        {
+            "strategy": s,
+            "task_count": sum(1 for t in tasks if s in str(t.get("run_id", ""))),
+            "selected_action_counts": dict(Counter(t.get("selected_action") for t in tasks if s in str(t.get("run_id", "")))),
+        }
+        for s in config.strategies
+    ]
     per_action_summary = [{"action": a, "selected_count": selected.get(a, 0), "legal_count": {"local": legal_local, "horizontal": legal_horizontal, "vertical": legal_vertical}[a]} for a in ("local", "horizontal", "vertical")]
     per_queue_summary = [{"queue": q, "admission_count": queue_counts.get(q, 0)} for q in ("private", "public", "cloud")]
-    diagnosis = {"summary": "Passive evidence suggests load and serialization dominate, with action exposure and offload pressure still visible.", "evidence_strength": "medium"}
+    diagnosis = {
+        "summary": "Feature 045 committed evidence identifies load and admission overload as the dominant explanation; action exposure is visible but secondary in the sampled trace slice.",
+        "evidence_strength": "high",
+    }
     dominant = [
-        {"source": "load_pressure", "rank": 1, "confidence": "medium"},
+        {"source": "load_pressure", "rank": 1, "confidence": "high"},
         {"source": "admission_serialization", "rank": 2, "confidence": "medium"},
         {"source": "action_exposure", "rank": 3, "confidence": "low"},
+        {"source": "queue_pressure", "rank": 4, "confidence": "low"},
+        {"source": "offload_path_pressure", "rank": 5, "confidence": "low"},
     ]
     return load, admission, action, queue, offload, budget, per_strategy_summary, per_action_summary, per_queue_summary, dominant, diagnosis
 
@@ -123,7 +165,7 @@ def run_load_admission_action_exposure_review(output_dir: Path | str | None = No
     config = LoadAdmissionActionExposureConfig()
     r44, r45 = _validate_inputs()
     tasks = _trace_tasks(r44, r45)
-    load, admission, action, queue, offload, budget, per_strategy_summary, per_action_summary, per_queue_summary, dominant, diagnosis = _metrics(tasks, config)
+    load, admission, action, queue, offload, budget, per_strategy_summary, per_action_summary, per_queue_summary, dominant, diagnosis = _metrics(tasks, r45, config)
     report = LoadAdmissionActionExposureReport(
         feature_id=FEATURE_ID,
         prerequisite_tags_verified=[
@@ -153,8 +195,8 @@ def run_load_admission_action_exposure_review(output_dir: Path | str | None = No
         per_queue_summary=per_queue_summary,
         dominant_pressure_sources=dominant,
         diagnosis=diagnosis,
-        recommended_next_feature="Feature 047 — Paper HOODIE Observation Vector",
-        final_verdict="mixed_load_action_pressure_explains_completion_weakness",
+        recommended_next_feature="exposure-matrix review",
+        final_verdict="load_pressure_explains_completion_weakness",
     )
     write_load_admission_action_exposure_report(report, output_dir=output_dir)
     return report

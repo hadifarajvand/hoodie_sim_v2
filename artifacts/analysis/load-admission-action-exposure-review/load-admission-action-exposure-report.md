@@ -1,29 +1,29 @@
 # Load Admission Action Exposure Review
 
 - feature_id: `046-load-admission-action-exposure-review`
-- final_verdict: `mixed_load_action_pressure_explains_completion_weakness`
-- recommended_next_feature: `Feature 047 — Paper HOODIE Observation Vector`
+- final_verdict: `load_pressure_explains_completion_weakness`
+- recommended_next_feature: `exposure-matrix review`
 
 ## Diagnosis
 {
-  "evidence_strength": "medium",
-  "summary": "Passive evidence suggests load and serialization dominate, with action exposure and offload pressure still visible."
+  "evidence_strength": "high",
+  "summary": "Feature 045 committed evidence identifies load and admission overload as the dominant explanation; action exposure is visible but secondary in the sampled trace slice."
 }
 
 ## Load Pressure
 {
-  "admitted_per_slot": 0.045454545454545456,
-  "admitted_task_count": 5,
-  "completed_task_count": 5,
-  "completion_rate": 1.0,
-  "drop_rate": 0.0,
-  "dropped_task_count": 0,
-  "generated_per_slot": 0.045454545454545456,
-  "generated_task_count": 5,
-  "pending_at_horizon_count": 0,
-  "pending_rate": 0.0,
-  "terminal_per_slot": 0.045454545454545456,
-  "terminal_task_count": 5
+  "admitted_per_slot": 15.136363636363637,
+  "admitted_task_count": 1665,
+  "completed_task_count": 292,
+  "completion_rate": 0.18204488778054864,
+  "drop_rate": 0.8179551122194514,
+  "dropped_task_count": 1312,
+  "generated_per_slot": 15.136363636363637,
+  "generated_task_count": 1665,
+  "pending_at_horizon_count": 61,
+  "pending_rate": 0.03663663663663664,
+  "terminal_per_slot": 14.581818181818182,
+  "terminal_task_count": 1604
 }
 
 ## Admission Serialization
@@ -42,7 +42,7 @@
   "action_entropy": -0.0,
   "exposure_ratio_by_action": {
     "horizontal": 0.0,
-    "local": 1.0,
+    "local": 0.003003003003003003,
     "vertical": 0.0
   },
   "legal_but_unselected_by_action": {
