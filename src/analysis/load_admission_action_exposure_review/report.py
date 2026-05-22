@@ -22,6 +22,12 @@ class LoadAdmissionActionExposureReport:
     prerequisite_tags_verified: list[dict[str, Any]]
     prior_feature_gates_verified: list[dict[str, Any]]
     trace_input_sources: list[dict[str, Any]]
+    evidence_population_by_metric_group: dict[str, str]
+    sample_usage_policy: str
+    action_exposure_data_status: str
+    legal_action_exposure_evidence_source: str
+    metric_population_consistency_verified: bool
+    aggregate_metrics_not_sample_derived: bool
     paper_default_runtime_verified: dict[str, Any]
     load_pressure_summary: dict[str, Any]
     admission_serialization_summary: dict[str, Any]
@@ -58,11 +64,17 @@ class LoadAdmissionActionExposureReport:
             raise ValueError("feature_id mismatch")
 
     def to_dict(self) -> dict[str, Any]:
-        payload = {
+        return {
             "feature_id": self.feature_id,
             "prerequisite_tags_verified": list(self.prerequisite_tags_verified),
             "prior_feature_gates_verified": list(self.prior_feature_gates_verified),
             "trace_input_sources": list(self.trace_input_sources),
+            "evidence_population_by_metric_group": dict(self.evidence_population_by_metric_group),
+            "sample_usage_policy": self.sample_usage_policy,
+            "action_exposure_data_status": self.action_exposure_data_status,
+            "legal_action_exposure_evidence_source": self.legal_action_exposure_evidence_source,
+            "metric_population_consistency_verified": self.metric_population_consistency_verified,
+            "aggregate_metrics_not_sample_derived": self.aggregate_metrics_not_sample_derived,
             "paper_default_runtime_verified": dict(self.paper_default_runtime_verified),
             "load_pressure_summary": dict(self.load_pressure_summary),
             "admission_serialization_summary": dict(self.admission_serialization_summary),
@@ -94,38 +106,42 @@ class LoadAdmissionActionExposureReport:
             "no_paper_reproduction_claim": self.no_paper_reproduction_claim,
             "final_verdict": self.final_verdict,
         }
-        return payload
 
     def to_markdown(self) -> str:
         payload = self.to_dict()
-        return "\n".join([
-            "# Load Admission Action Exposure Review",
-            "",
-            f"- feature_id: `{payload['feature_id']}`",
-            f"- final_verdict: `{payload['final_verdict']}`",
-            f"- recommended_next_feature: `{payload['recommended_next_feature']}`",
-            "",
-            "## Diagnosis",
-            _json_dump(payload["diagnosis"]).strip(),
-            "",
-            "## Load Pressure",
-            _json_dump(payload["load_pressure_summary"]).strip(),
-            "",
-            "## Admission Serialization",
-            _json_dump(payload["admission_serialization_summary"]).strip(),
-            "",
-            "## Action Exposure",
-            _json_dump(payload["action_exposure_summary"]).strip(),
-            "",
-            "## Queue Pressure",
-            _json_dump(payload["queue_pressure_summary"]).strip(),
-            "",
-            "## Offload Path Pressure",
-            _json_dump(payload["offload_path_pressure_summary"]).strip(),
-            "",
-            "## Budget Comparison",
-            _json_dump(payload["budget_comparison_summary"]).strip(),
-        ])
+        return "\n".join(
+            [
+                "# Load Admission Action Exposure Review",
+                "",
+                f"- feature_id: `{payload['feature_id']}`",
+                f"- final_verdict: `{payload['final_verdict']}`",
+                f"- recommended_next_feature: `{payload['recommended_next_feature']}`",
+                "",
+                "## Evidence Populations",
+                _json_dump(payload["evidence_population_by_metric_group"]).strip(),
+                "",
+                "## Diagnosis",
+                _json_dump(payload["diagnosis"]).strip(),
+                "",
+                "## Load Pressure",
+                _json_dump(payload["load_pressure_summary"]).strip(),
+                "",
+                "## Admission Serialization",
+                _json_dump(payload["admission_serialization_summary"]).strip(),
+                "",
+                "## Action Exposure",
+                _json_dump(payload["action_exposure_summary"]).strip(),
+                "",
+                "## Queue Pressure",
+                _json_dump(payload["queue_pressure_summary"]).strip(),
+                "",
+                "## Offload Path Pressure",
+                _json_dump(payload["offload_path_pressure_summary"]).strip(),
+                "",
+                "## Budget Comparison",
+                _json_dump(payload["budget_comparison_summary"]).strip(),
+            ]
+        )
 
 
 def write_load_admission_action_exposure_report(report: LoadAdmissionActionExposureReport, output_dir: Path | str | None = None) -> tuple[Path, Path]:

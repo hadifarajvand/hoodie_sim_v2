@@ -27,8 +27,12 @@ class LoadAdmissionActionExposureScopeGuardTest(unittest.TestCase):
             "no_paper_reproduction_claim",
         ):
             self.assertTrue(payload[key])
-        self.assertEqual(payload["final_verdict"], "load_pressure_explains_completion_weakness")
+        self.assertEqual(payload["final_verdict"], "diagnosis_inconclusive_requires_deeper_exposure_matrix")
         self.assertEqual(payload["recommended_next_feature"], "exposure-matrix review")
+        self.assertEqual(payload["action_exposure_data_status"], "insufficient_data_for_legal_action_exposure")
+        self.assertEqual(payload["legal_action_exposure_evidence_source"], "unavailable_in_committed_artifacts")
+        self.assertFalse(payload["metric_population_consistency_verified"])
+        self.assertTrue(payload["aggregate_metrics_not_sample_derived"])
 
 
 if __name__ == "__main__":

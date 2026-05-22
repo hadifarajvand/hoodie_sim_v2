@@ -2,7 +2,7 @@
 
 ## Purpose
 
-Use Feature 044 passive traces and the Feature 045 report to explain whether paper-default completion weakness is primarily caused by load pressure, admission serialization, action exposure, queue pressure, or offload-path pressure.
+Use Feature 044 passive traces and the Feature 045 report to explain whether paper-default completion weakness is primarily caused by load pressure, admission serialization, action exposure, queue pressure, offload-path pressure, or insufficient full-population exposure evidence.
 
 ## Run the review
 
@@ -59,7 +59,7 @@ Validation expectations:
 
 - No runtime repair is performed.
 - The review uses Feature 044 traces and the Feature 045 report only.
-- The report quantifies load, admission, action exposure, queue, and offload-path pressure.
+- The report quantifies load, admission, action exposure, queue, and offload-path pressure when the committed evidence supports those aggregates, and otherwise marks the exposed groups unavailable or incomparable.
 - The report ranks the dominant pressure source or states that evidence is inconclusive.
 - The report recommends the next diagnostic feature honestly.
 - Older pointer-sensitive or dirty-worktree-sensitive report tests remain out of scope.
@@ -67,7 +67,7 @@ Validation expectations:
 
 ## Interpretation
 
-- If action exposure is dominant, the next feature should focus on `Feature 047 — Paper HOODIE Observation Vector`.
-- If mixed load/action pressure is dominant, the next feature should focus on `exposure-matrix review` before Feature 047.
+- If action exposure is dominant with trace-backed legal-vs-selected exposure evidence, the next feature should focus on `Feature 047 — Paper HOODIE Observation Vector`.
+- If mixed load/action pressure is dominant and the evidence is comparable, the next feature should focus on `exposure-matrix review` before Feature 047.
 - If load or admission pressure is dominant, the next feature should focus on load/admission assumptions or `exposure-matrix review`.
 - If the evidence remains insufficient, the next feature should deepen passive diagnosis rather than changing runtime semantics.

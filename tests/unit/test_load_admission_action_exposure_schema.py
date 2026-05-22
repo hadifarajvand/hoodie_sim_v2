@@ -17,6 +17,12 @@ class LoadAdmissionActionExposureSchemaTest(unittest.TestCase):
                 "prerequisite_tags_verified",
                 "prior_feature_gates_verified",
                 "trace_input_sources",
+                "evidence_population_by_metric_group",
+                "sample_usage_policy",
+                "action_exposure_data_status",
+                "legal_action_exposure_evidence_source",
+                "metric_population_consistency_verified",
+                "aggregate_metrics_not_sample_derived",
                 "paper_default_runtime_verified",
                 "load_pressure_summary",
                 "admission_serialization_summary",
@@ -54,10 +60,18 @@ class LoadAdmissionActionExposureSchemaTest(unittest.TestCase):
         report = run_load_admission_action_exposure_review()
         payload = report.to_dict()
         self.assertEqual(payload["feature_id"], "046-load-admission-action-exposure-review")
-        self.assertEqual(payload["final_verdict"], "load_pressure_explains_completion_weakness")
+        self.assertEqual(payload["final_verdict"], "diagnosis_inconclusive_requires_deeper_exposure_matrix")
         self.assertEqual(payload["recommended_next_feature"], "exposure-matrix review")
+        self.assertEqual(payload["action_exposure_data_status"], "insufficient_data_for_legal_action_exposure")
+        self.assertEqual(payload["legal_action_exposure_evidence_source"], "unavailable_in_committed_artifacts")
+        self.assertFalse(payload["metric_population_consistency_verified"])
+        self.assertTrue(payload["aggregate_metrics_not_sample_derived"])
         self.assertTrue(payload["no_runtime_repair_performed"])
         self.assertTrue(payload["no_paper_reproduction_claim"])
+
+    def test_prior_feature_gates_cover_037_through_045(self) -> None:
+        payload = run_load_admission_action_exposure_review().to_dict()
+        self.assertEqual({item["feature"] for item in payload["prior_feature_gates_verified"]}, {"037", "038", "039", "040", "041", "042", "043", "044", "045"})
 
     def test_feature_045_committed_artifact_prerequisites(self) -> None:
         payload = json.loads(Path("artifacts/analysis/completion-root-cause-diagnosis/completion-root-cause-report.json").read_text(encoding="utf-8"))
@@ -74,6 +88,16 @@ class LoadAdmissionActionExposureSchemaTest(unittest.TestCase):
         report = run_load_admission_action_exposure_review()
         sources = report.to_dict()["trace_input_sources"]
         self.assertEqual({item["feature"] for item in sources}, {"044", "045"})
+        populations = report.to_dict()["evidence_population_by_metric_group"]
+        self.assertEqual(populations["load_pressure"], "feature_045_full_reconstruction_summary")
+        self.assertEqual(populations["action_exposure"], "unavailable_in_committed_artifacts")
+
+    def test_legal_action_exposure_is_not_faked_with_zeros(self) -> None:
+        payload = run_load_admission_action_exposure_review().to_dict()["action_exposure_summary"]
+        self.assertIsNone(payload["legal_horizontal_count"])
+        self.assertIsNone(payload["legal_vertical_count"])
+        self.assertIsNone(payload["legal_but_unselected_by_action"]["horizontal"])
+        self.assertEqual(run_load_admission_action_exposure_review().to_dict()["action_exposure_data_status"], "insufficient_data_for_legal_action_exposure")
 
     def test_rejects_non_paper_default_trace(self) -> None:
         from src.analysis.load_admission_action_exposure_review.runner import _paper_default_runtime_verified

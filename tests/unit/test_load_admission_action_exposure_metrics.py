@@ -8,6 +8,7 @@ from src.analysis.load_admission_action_exposure_review.runner import run_load_a
 class LoadAdmissionActionExposureMetricsTest(unittest.TestCase):
     def test_load_pressure_counts_present(self) -> None:
         payload = run_load_admission_action_exposure_review().to_dict()["load_pressure_summary"]
+        self.assertEqual(payload["evidence_population"], "feature_045_full_reconstruction_summary")
         for key in (
             "generated_task_count",
             "admitted_task_count",
@@ -34,30 +35,44 @@ class LoadAdmissionActionExposureMetricsTest(unittest.TestCase):
         payload = run_load_admission_action_exposure_review().to_dict()
         admission = payload["admission_serialization_summary"]
         action = payload["action_exposure_summary"]
-        self.assertEqual(admission["same_slot_generated_count"], 1)
-        self.assertEqual(admission["same_slot_admitted_count"], 5)
-        self.assertEqual(action["legal_local_count"], 5)
-        self.assertEqual(action["selected_local_count"], 5)
-        self.assertEqual(action["selected_horizontal_count"], 0)
-        self.assertEqual(action["selected_vertical_count"], 0)
+        self.assertEqual(admission["evidence_population"], "unavailable_in_committed_artifacts")
+        self.assertIsNone(admission["same_slot_generated_count"])
+        self.assertIsNone(admission["same_slot_admitted_count"])
+        self.assertIsNone(action["legal_local_count"])
+        self.assertIsNone(action["legal_horizontal_count"])
+        self.assertIsNone(action["legal_vertical_count"])
+        self.assertIsNone(action["selected_local_count"])
+        self.assertIsNone(action["selected_horizontal_count"])
+        self.assertIsNone(action["selected_vertical_count"])
         self.assertIn("legal_but_unselected_by_action", action)
-        self.assertIn("queue_pressure_index", payload["queue_pressure_summary"])
-        self.assertIn("transmission_delay_slots_mean", payload["offload_path_pressure_summary"])
+        self.assertIsNone(action["legal_but_unselected_by_action"]["local"])
+        self.assertEqual(payload["queue_pressure_summary"]["evidence_population"], "unavailable_in_committed_artifacts")
+        self.assertEqual(payload["offload_path_pressure_summary"]["evidence_population"], "unavailable_in_committed_artifacts")
 
     def test_queue_offload_and_budget_metrics(self) -> None:
         payload = run_load_admission_action_exposure_review().to_dict()
         queue = payload["queue_pressure_summary"]
         offload = payload["offload_path_pressure_summary"]
         budget = payload["budget_comparison_summary"]
-        self.assertEqual(queue["private_queue_admission_count"], 0)
-        self.assertEqual(queue["public_queue_admission_count"], 0)
-        self.assertEqual(queue["cloud_queue_admission_count"], 0)
-        self.assertEqual(offload["transmission_started_count"], 0)
-        self.assertEqual(offload["offloaded_completed_count"], 0)
-        self.assertEqual(budget["expected_min_compute_slots"], 2.0)
-        self.assertEqual(budget["expected_transmission_slots"], 1.0)
-        self.assertIn("deadline_margin_at_completion", budget)
-        self.assertIn("deadline_overrun_at_drop", budget)
+        self.assertIsNone(queue["private_queue_admission_count"])
+        self.assertIsNone(queue["public_queue_admission_count"])
+        self.assertIsNone(queue["cloud_queue_admission_count"])
+        self.assertIsNone(offload["transmission_started_count"])
+        self.assertIsNone(offload["offloaded_completed_count"])
+        self.assertEqual(budget["evidence_population"], "representative_trace_sample")
+        self.assertEqual(
+            budget["representative_task_ids"],
+            [
+                "environment_default_policy_probe:0:1",
+                "environment_default_policy_probe:0:2",
+                "environment_default_policy_probe:0:3",
+                "environment_default_policy_probe:0:4",
+                "environment_default_policy_probe:0:5",
+            ],
+        )
+        self.assertIn("representative_examples", budget)
+        self.assertEqual(budget["expected_min_compute_slots"], None)
+        self.assertEqual(budget["expected_transmission_slots"], None)
 
 
 if __name__ == "__main__":
