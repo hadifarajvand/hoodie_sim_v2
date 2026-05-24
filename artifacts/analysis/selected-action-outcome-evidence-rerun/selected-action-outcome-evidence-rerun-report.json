@@ -1,0 +1,337 @@
+{
+  "behavior_equivalence_passed": true,
+  "behavior_equivalence_summary": {
+    "checks": [
+      {
+        "details": "reward sequences compared for traced and untraced runs",
+        "name": "same_rewards",
+        "verified": true
+      },
+      {
+        "details": "finalized task identifiers compared for traced and untraced runs",
+        "name": "same_finalized_tasks",
+        "verified": true
+      },
+      {
+        "details": "terminated/truncated flags compared for traced and untraced runs",
+        "name": "same_terminal_flags",
+        "verified": true
+      },
+      {
+        "details": "queue load progression compared for traced and untraced runs",
+        "name": "same_queue_load",
+        "verified": true
+      },
+      {
+        "details": "selected action sequence compared for traced and untraced runs",
+        "name": "same_action_sequence",
+        "verified": true
+      },
+      {
+        "details": "task outcomes compared for traced and untraced runs",
+        "name": "same_outcomes",
+        "verified": true
+      }
+    ],
+    "passed": true
+  },
+  "evidence_population_summary": {
+    "feature_051_source": "artifacts/analysis/passive-selected-action-trace-repair/passive-selected-action-trace-repair-report.json",
+    "legal_count_source": "artifacts/analysis/exposure-matrix-paper-mechanism-alignment/exposure-matrix-paper-mechanism-report.json",
+    "selected_action_family_source": "artifacts/analysis/passive-selected-action-trace-repair/passive-selected-action-trace-repair-report.json",
+    "selected_action_to_task_join_source": "artifacts/analysis/passive-selected-action-trace-repair/passive-selected-action-trace-repair-report.json",
+    "selected_action_trace_source": "artifacts/analysis/passive-selected-action-trace-repair/passive-selected-action-trace-repair-report.json",
+    "terminal_outcome_join_source": "artifacts/analysis/passive-selected-action-trace-repair/passive-selected-action-trace-repair-report.json"
+  },
+  "exposure_matrix_internal_consistency_summary": {
+    "exposure_matrix_internal_consistency_verified": true,
+    "legal_but_unselected_consistency_verified": true,
+    "per_action_outcome_evidence_status": "available",
+    "selected_action_count_consistency_verified": true,
+    "selected_action_to_task_join_status": "available",
+    "selected_illegal_action_count": 0
+  },
+  "feature_049_can_be_rerun": true,
+  "feature_049_remaining_blockers": [],
+  "feature_049_unblock_assessment": {
+    "behavior_equivalence_passed": true,
+    "exposure_matrix_internal_consistency_verified": true,
+    "feature_049_can_be_rerun": true,
+    "feature_049_remaining_blockers": [],
+    "legal_but_unselected_consistency_verified": true,
+    "per_action_outcome_evidence_status": "available",
+    "recommended_next_feature": "Feature 053 — Exposure Matrix Paper Mechanism Rerun with Outcome Evidence",
+    "selected_action_family_evidence_status": "available",
+    "selected_action_to_task_join_status": "available"
+  },
+  "feature_051_trace_readiness_verified": true,
+  "feature_id": "052-selected-action-outcome-evidence-rerun",
+  "final_verdict": "selected_action_outcome_evidence_ready_for_feature_049_rerun",
+  "legal_but_unselected_consistency_summary": {
+    "legal_but_unselected_consistency_verified": true,
+    "legal_but_unselected_horizontal_count": 3,
+    "legal_but_unselected_local_count": 0,
+    "legal_but_unselected_vertical_count": 3
+  },
+  "no_action_legality_drift": true,
+  "no_action_selection_drift": true,
+  "no_capacity_contract_drift": true,
+  "no_curve_fitting": true,
+  "no_dependency_drift": true,
+  "no_optimizer_step": true,
+  "no_paper_reproduction_claim": true,
+  "no_policy_drift": true,
+  "no_replay_training": true,
+  "no_reward_timing_change": true,
+  "no_runtime_repair_performed": true,
+  "no_simulator_output_tuning": true,
+  "no_target_update_execution": true,
+  "no_timeout_contract_drift": true,
+  "no_training_started": true,
+  "no_transmission_contract_drift": true,
+  "per_action_outcome_evidence_status": "available",
+  "per_action_outcome_join_summary": {
+    "per_action_completion_count": {
+      "horizontal": 0,
+      "local": 3,
+      "vertical": 0
+    },
+    "per_action_completion_rate": {
+      "horizontal": null,
+      "local": 1.0,
+      "vertical": null
+    },
+    "per_action_drop_count": {
+      "horizontal": 0,
+      "local": 0,
+      "vertical": 0
+    },
+    "per_action_drop_rate": {
+      "horizontal": null,
+      "local": 0.0,
+      "vertical": null
+    },
+    "per_action_outcome_evidence_status": "available",
+    "per_action_pending_count": {
+      "horizontal": 0,
+      "local": 0,
+      "vertical": 0
+    },
+    "per_action_pending_rate": {
+      "horizontal": null,
+      "local": 0.0,
+      "vertical": null
+    }
+  },
+  "per_action_outcome_matrix": {
+    "per_action_outcome_join_summary": {
+      "per_action_completion_count": {
+        "horizontal": 0,
+        "local": 3,
+        "vertical": 0
+      },
+      "per_action_completion_rate": {
+        "horizontal": null,
+        "local": 1.0,
+        "vertical": null
+      },
+      "per_action_drop_count": {
+        "horizontal": 0,
+        "local": 0,
+        "vertical": 0
+      },
+      "per_action_drop_rate": {
+        "horizontal": null,
+        "local": 0.0,
+        "vertical": null
+      },
+      "per_action_outcome_evidence_status": "available",
+      "per_action_pending_count": {
+        "horizontal": 0,
+        "local": 0,
+        "vertical": 0
+      },
+      "per_action_pending_rate": {
+        "horizontal": null,
+        "local": 0.0,
+        "vertical": null
+      }
+    },
+    "per_strategy_seed_selected_action_family_matrix": [
+      {
+        "action_family": "local",
+        "legal_action_count": 3,
+        "legal_but_unselected_count": 0,
+        "seed": 7,
+        "selected_action_completed_count": 3,
+        "selected_action_completion_rate": 1.0,
+        "selected_action_count": 3,
+        "selected_action_drop_rate": 0.0,
+        "selected_action_dropped_count": 0,
+        "selected_action_pending_count": 0,
+        "selected_action_pending_rate": 0.0,
+        "selected_action_to_task_join_key_count": 3,
+        "strategy": "selected_action_outcome_evidence_rerun_probe",
+        "terminal_outcome_join_key_count": 3
+      },
+      {
+        "action_family": "horizontal",
+        "legal_action_count": 3,
+        "legal_but_unselected_count": 3,
+        "seed": 7,
+        "selected_action_completed_count": 0,
+        "selected_action_completion_rate": null,
+        "selected_action_count": 0,
+        "selected_action_drop_rate": null,
+        "selected_action_dropped_count": 0,
+        "selected_action_pending_count": 0,
+        "selected_action_pending_rate": null,
+        "selected_action_to_task_join_key_count": 0,
+        "strategy": "selected_action_outcome_evidence_rerun_probe",
+        "terminal_outcome_join_key_count": 0
+      },
+      {
+        "action_family": "vertical",
+        "legal_action_count": 3,
+        "legal_but_unselected_count": 3,
+        "seed": 7,
+        "selected_action_completed_count": 0,
+        "selected_action_completion_rate": null,
+        "selected_action_count": 0,
+        "selected_action_drop_rate": null,
+        "selected_action_dropped_count": 0,
+        "selected_action_pending_count": 0,
+        "selected_action_pending_rate": null,
+        "selected_action_to_task_join_key_count": 0,
+        "strategy": "selected_action_outcome_evidence_rerun_probe",
+        "terminal_outcome_join_key_count": 0
+      }
+    ]
+  },
+  "prerequisite_tags_verified": [
+    {
+      "details": "current branch is 052-selected-action-outcome-evidence-rerun",
+      "name": "branch",
+      "verified": true
+    },
+    {
+      "details": "branch is not main",
+      "name": "not_main",
+      "verified": true
+    },
+    {
+      "details": "main matches 051-passive-selected-action-trace-repair-complete^{}",
+      "name": "main_equals_051",
+      "verified": true
+    },
+    {
+      "details": "diff between 051-passive-selected-action-trace-repair-complete^{} and main is empty",
+      "name": "prerequisite_diff_empty",
+      "verified": true
+    },
+    {
+      "details": ".specify/feature.json is not staged",
+      "name": "pointer_not_staged",
+      "verified": true
+    },
+    {
+      "details": ".specify/feature.json is not in main...HEAD diff",
+      "name": "pointer_not_in_main_head",
+      "verified": true
+    },
+    {
+      "details": "AGENTS.md clean before report generation",
+      "name": "agents_clean_before_report",
+      "verified": false
+    }
+  ],
+  "prior_feature_gates_verified": [
+    {
+      "details": "artifacts/analysis/legality-evidence-expansion/legality-evidence-report.json",
+      "name": "legality_evidence_expansion",
+      "verified": true
+    },
+    {
+      "details": "artifacts/analysis/exposure-matrix-paper-mechanism-alignment/exposure-matrix-paper-mechanism-report.json",
+      "name": "exposure_matrix_paper_mechanism_alignment",
+      "verified": true
+    },
+    {
+      "details": "artifacts/analysis/selected-action-family-per-action-outcome-evidence/selected-action-family-outcome-evidence-report.json",
+      "name": "selected_action_family_per_action_outcome_evidence",
+      "verified": true
+    },
+    {
+      "details": "artifacts/analysis/passive-selected-action-trace-repair/passive-selected-action-trace-repair-report.json",
+      "name": "passive_selected_action_trace_repair",
+      "verified": true
+    }
+  ],
+  "recommended_next_feature": "Feature 053 — Exposure Matrix Paper Mechanism Rerun with Outcome Evidence",
+  "selected_action_family_evidence_status": "available",
+  "selected_action_family_evidence_summary": {
+    "per_strategy_seed_selected_action_family_matrix": [
+      {
+        "action_family": "local",
+        "legal_action_count": 3,
+        "legal_but_unselected_count": 0,
+        "seed": 7,
+        "selected_action_completed_count": 3,
+        "selected_action_completion_rate": 1.0,
+        "selected_action_count": 3,
+        "selected_action_drop_rate": 0.0,
+        "selected_action_dropped_count": 0,
+        "selected_action_pending_count": 0,
+        "selected_action_pending_rate": 0.0,
+        "selected_action_to_task_join_key_count": 3,
+        "strategy": "selected_action_outcome_evidence_rerun_probe",
+        "terminal_outcome_join_key_count": 3
+      },
+      {
+        "action_family": "horizontal",
+        "legal_action_count": 3,
+        "legal_but_unselected_count": 3,
+        "seed": 7,
+        "selected_action_completed_count": 0,
+        "selected_action_completion_rate": null,
+        "selected_action_count": 0,
+        "selected_action_drop_rate": null,
+        "selected_action_dropped_count": 0,
+        "selected_action_pending_count": 0,
+        "selected_action_pending_rate": null,
+        "selected_action_to_task_join_key_count": 0,
+        "strategy": "selected_action_outcome_evidence_rerun_probe",
+        "terminal_outcome_join_key_count": 0
+      },
+      {
+        "action_family": "vertical",
+        "legal_action_count": 3,
+        "legal_but_unselected_count": 3,
+        "seed": 7,
+        "selected_action_completed_count": 0,
+        "selected_action_completion_rate": null,
+        "selected_action_count": 0,
+        "selected_action_drop_rate": null,
+        "selected_action_dropped_count": 0,
+        "selected_action_pending_count": 0,
+        "selected_action_pending_rate": null,
+        "selected_action_to_task_join_key_count": 0,
+        "strategy": "selected_action_outcome_evidence_rerun_probe",
+        "terminal_outcome_join_key_count": 0
+      }
+    ],
+    "selected_action_count": 3,
+    "selected_action_count_consistency_verified": true,
+    "selected_action_family_evidence_status": "available",
+    "selected_horizontal_count": 0,
+    "selected_local_count": 3,
+    "selected_vertical_count": 0
+  },
+  "selected_action_to_task_join_status": "available",
+  "selected_action_to_task_join_summary": {
+    "missing_selected_action_task_join_count": 0,
+    "selected_action_to_task_join_count": 3,
+    "selected_action_to_task_join_ratio": 1.0,
+    "selected_action_to_task_join_status": "available"
+  }
+}
