@@ -194,6 +194,12 @@ class HoodieGymEnvironment:
                 trace_history=(self.trace.trace_id,),
             )
             selected_action = select_legal_action(context, action)
+            current_task.metadata["selected_action_family"] = self._selected_action_family(selected_action)
+            current_task.metadata["action_index"] = {"local": 0, "compute_local": 0, "horizontal": 1, "offload_horizontal": 1, "vertical": 2, "offload_vertical": 2}.get(selected_action)
+            current_task.metadata["decision_event_id"] = f"{self.trace.trace_id}:{self.current_slot}:{current_task.task_id}"
+            current_task.metadata["strategy"] = self.policy_name
+            current_task.metadata["seed"] = self.seed
+            current_task.metadata["agent_id"] = current_task.source_agent_id
             resolved_destination = self._resolve_destination(current_task, selected_action)
             apply_policy_action(current_task, context, selected_action, resolved_destination=resolved_destination)
             ledger = OffloadTraceLedger()
@@ -689,10 +695,22 @@ class HoodieGymEnvironment:
     def _record_trace_event(self, event_type: str, task: Task | None, *, trace_source_component: str, **fields: Any) -> None:
         if not self.trace_recorder.enabled:
             return
+        selected_action = task.selected_action if task is not None else fields.pop("selected_action", None)
+        selected_action_family = None
+        if task is not None:
+            selected_action_family = task.metadata.get("selected_action_family")
+        if selected_action_family is None and isinstance(selected_action, str):
+            selected_action_family = self._selected_action_family(selected_action)
         payload: dict[str, Any] = {
             "task_id": task.task_id if task is not None else fields.pop("task_id", None),
             "source_agent_id": task.source_agent_id if task is not None else fields.pop("source_agent_id", None),
-            "selected_action": task.selected_action if task is not None else fields.pop("selected_action", None),
+            "selected_action": selected_action,
+            "selected_action_family": selected_action_family,
+            "action_index": task.metadata.get("action_index") if task is not None else fields.pop("action_index", None),
+            "decision_event_id": task.metadata.get("decision_event_id") if task is not None else fields.pop("decision_event_id", None),
+            "strategy": task.metadata.get("strategy") if task is not None else fields.pop("strategy", None),
+            "seed": self.seed if task is not None else fields.pop("seed", None),
+            "agent_id": task.source_agent_id if task is not None else fields.pop("agent_id", None),
             "arrival_slot": task.arrival_slot if task is not None else fields.pop("arrival_slot", None),
             "absolute_deadline_slot": task.absolute_deadline_slot if task is not None else fields.pop("absolute_deadline_slot", None),
             "task_age_slots": max(0, self.current_slot - task.arrival_slot) if task is not None else fields.pop("task_age_slots", None),
@@ -708,6 +726,16 @@ class HoodieGymEnvironment:
         }
         payload.update(fields)
         self.trace_recorder.emit(event_type, slot=self.current_slot, trace_source_component=trace_source_component, **payload)
+
+    @staticmethod
+    def _selected_action_family(selected_action: str) -> str | None:
+        if selected_action in {"local", "compute_local"}:
+            return "local"
+        if selected_action in {"horizontal", "offload_horizontal"}:
+            return "horizontal"
+        if selected_action in {"vertical", "offload_vertical"}:
+            return "vertical"
+        return None
 
     def _record_pending_at_horizon_events(self) -> None:
         if not self.trace_recorder.enabled:
