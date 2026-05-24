@@ -35,19 +35,62 @@ def _git_output(*args: str) -> str:
     return subprocess.run(["git", *args], check=True, capture_output=True, text=True).stdout.strip()
 
 
+def _git_bool(*args: str) -> bool:
+    return subprocess.run(["git", *args], check=False, capture_output=True, text=True).returncode == 0
+
+
 def _current_branch() -> str:
     return _git_output("branch", "--show-current")
 
 
 def _prerequisite_tags_verified() -> list[dict[str, Any]]:
+    approved_paths = {
+        "artifacts/analysis/selected-action-outcome-evidence-rerun/selected-action-outcome-evidence-rerun-report.json",
+        "artifacts/analysis/selected-action-outcome-evidence-rerun/selected-action-outcome-evidence-rerun-report.md",
+        "specs/052-selected-action-outcome-evidence-rerun/checklists/requirements.md",
+        "specs/052-selected-action-outcome-evidence-rerun/contracts/selected-action-outcome-evidence-rerun-report-schema.md",
+        "specs/052-selected-action-outcome-evidence-rerun/data-model.md",
+        "specs/052-selected-action-outcome-evidence-rerun/plan.md",
+        "specs/052-selected-action-outcome-evidence-rerun/quickstart.md",
+        "specs/052-selected-action-outcome-evidence-rerun/research.md",
+        "specs/052-selected-action-outcome-evidence-rerun/spec.md",
+        "specs/052-selected-action-outcome-evidence-rerun/tasks.md",
+        "src/analysis/selected_action_outcome_evidence_rerun/__init__.py",
+        "src/analysis/selected_action_outcome_evidence_rerun/__main__.py",
+        "src/analysis/selected_action_outcome_evidence_rerun/config.py",
+        "src/analysis/selected_action_outcome_evidence_rerun/model.py",
+        "src/analysis/selected_action_outcome_evidence_rerun/report.py",
+        "src/analysis/selected_action_outcome_evidence_rerun/runner.py",
+        "tests/integration/test_selected_action_outcome_rerun.py",
+        "tests/integration/test_selected_action_outcome_rerun_report.py",
+        "tests/integration/test_selected_action_outcome_rerun_scope_guard.py",
+        "tests/unit/test_selected_action_outcome_rerun_behavior_equivalence.py",
+        "tests/unit/test_selected_action_outcome_rerun_metrics.py",
+        "tests/unit/test_selected_action_outcome_rerun_schema.py",
+    }
+    main_contains_feature_051 = _git_bool("merge-base", "--is-ancestor", "051-passive-selected-action-trace-repair-complete^{}", "main")
+    main_contains_workflow_contract = _git_bool("merge-base", "--is-ancestor", "spec-kit-workflow-operating-contract-complete^{}", "main")
+    branch_based_on_current_main = _git_output("merge-base", "main", "HEAD") == _git_output("rev-parse", "main")
+    feature_diff = set(_git_output("diff", "--name-only", "main...HEAD").splitlines())
+    only_approved_feature_paths = feature_diff <= approved_paths and bool(feature_diff)
+    no_feature_037_051_artifact_rewrites = not any(
+        path.startswith("artifacts/analysis/") and not path.startswith("artifacts/analysis/selected-action-outcome-evidence-rerun/")
+        for path in feature_diff
+    )
+    pointer_not_staged = _git_output("diff", "--cached", "--name-only", "--", ".specify/feature.json") == ""
+    pointer_not_in_main_head = ".specify/feature.json" not in feature_diff
+    agents_clean_before_report = _git_output("status", "--short").find("AGENTS.md") == -1
     return [
         {"name": "branch", "verified": _current_branch() == FEATURE_ID, "details": f"current branch is {FEATURE_ID}"},
         {"name": "not_main", "verified": _current_branch() != "main", "details": "branch is not main"},
-        {"name": "main_equals_051", "verified": _git_output("rev-parse", "main") == _git_output("rev-parse", "051-passive-selected-action-trace-repair-complete^{}"), "details": "main matches 051-passive-selected-action-trace-repair-complete^{}"},
-        {"name": "prerequisite_diff_empty", "verified": _git_output("diff", "--name-only", "051-passive-selected-action-trace-repair-complete^{}", "main") == "", "details": "diff between 051-passive-selected-action-trace-repair-complete^{} and main is empty"},
-        {"name": "pointer_not_staged", "verified": _git_output("diff", "--cached", "--name-only", "--", ".specify/feature.json") == "", "details": ".specify/feature.json is not staged"},
-        {"name": "pointer_not_in_main_head", "verified": ".specify/feature.json" not in _git_output("diff", "--name-only", "main...HEAD").splitlines(), "details": ".specify/feature.json is not in main...HEAD diff"},
-        {"name": "agents_clean_before_report", "verified": _git_output("status", "--short").find("AGENTS.md") == -1, "details": "AGENTS.md clean before report generation"},
+        {"name": "main_contains_051_passive_selected_action_trace_repair_complete", "verified": main_contains_feature_051, "details": "main contains 051-passive-selected-action-trace-repair-complete"},
+        {"name": "main_contains_spec_kit_workflow_operating_contract_complete", "verified": main_contains_workflow_contract, "details": "main contains spec-kit-workflow-operating-contract-complete"},
+        {"name": "branch_based_on_current_main", "verified": branch_based_on_current_main, "details": "main is an ancestor of HEAD"},
+        {"name": "feature_diff_contains_only_approved_feature_paths", "verified": only_approved_feature_paths, "details": "main...HEAD diff contains only approved Feature 052 paths"},
+        {"name": "no_feature_037_051_artifact_rewrites", "verified": no_feature_037_051_artifact_rewrites, "details": "no Feature 037-051 artifact path is rewritten in the Feature 052 diff"},
+        {"name": "pointer_not_staged", "verified": pointer_not_staged, "details": ".specify/feature.json is not staged"},
+        {"name": "pointer_not_in_main_head", "verified": pointer_not_in_main_head, "details": ".specify/feature.json is not in main...HEAD diff"},
+        {"name": "agents_clean_before_report", "verified": agents_clean_before_report, "details": "AGENTS.md clean before report generation"},
     ]
 
 

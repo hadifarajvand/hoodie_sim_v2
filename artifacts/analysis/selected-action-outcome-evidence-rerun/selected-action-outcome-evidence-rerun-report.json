@@ -220,14 +220,29 @@
       "verified": true
     },
     {
-      "details": "main matches 051-passive-selected-action-trace-repair-complete^{}",
-      "name": "main_equals_051",
-      "verified": false
+      "details": "main contains 051-passive-selected-action-trace-repair-complete",
+      "name": "main_contains_051_passive_selected_action_trace_repair_complete",
+      "verified": true
     },
     {
-      "details": "diff between 051-passive-selected-action-trace-repair-complete^{} and main is empty",
-      "name": "prerequisite_diff_empty",
-      "verified": false
+      "details": "main contains spec-kit-workflow-operating-contract-complete",
+      "name": "main_contains_spec_kit_workflow_operating_contract_complete",
+      "verified": true
+    },
+    {
+      "details": "main is an ancestor of HEAD",
+      "name": "branch_based_on_current_main",
+      "verified": true
+    },
+    {
+      "details": "main...HEAD diff contains only approved Feature 052 paths",
+      "name": "feature_diff_contains_only_approved_feature_paths",
+      "verified": true
+    },
+    {
+      "details": "no Feature 037-051 artifact path is rewritten in the Feature 052 diff",
+      "name": "no_feature_037_051_artifact_rewrites",
+      "verified": true
     },
     {
       "details": ".specify/feature.json is not staged",
