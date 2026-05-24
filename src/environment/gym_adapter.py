@@ -197,6 +197,9 @@ class HoodieGymEnvironment:
             current_task.metadata["selected_action_family"] = self._selected_action_family(selected_action)
             current_task.metadata["action_index"] = {"local": 0, "compute_local": 0, "horizontal": 1, "offload_horizontal": 1, "vertical": 2, "offload_vertical": 2}.get(selected_action)
             current_task.metadata["decision_event_id"] = f"{self.trace.trace_id}:{self.current_slot}:{current_task.task_id}"
+            current_task.metadata["selected_action_trace_source"] = "decision_point"
+            current_task.metadata["selected_action_to_task_join_key"] = f"{self.trace.trace_id}:{current_task.task_id}"
+            current_task.metadata["terminal_outcome_join_key"] = f"{self.trace.trace_id}:{current_task.task_id}:terminal_outcome"
             current_task.metadata["strategy"] = self.policy_name
             current_task.metadata["seed"] = self.seed
             current_task.metadata["agent_id"] = current_task.source_agent_id
@@ -706,8 +709,11 @@ class HoodieGymEnvironment:
             "source_agent_id": task.source_agent_id if task is not None else fields.pop("source_agent_id", None),
             "selected_action": selected_action,
             "selected_action_family": selected_action_family,
+            "selected_action_trace_source": task.metadata.get("selected_action_trace_source") if task is not None else fields.pop("selected_action_trace_source", None),
             "action_index": task.metadata.get("action_index") if task is not None else fields.pop("action_index", None),
             "decision_event_id": task.metadata.get("decision_event_id") if task is not None else fields.pop("decision_event_id", None),
+            "selected_action_to_task_join_key": task.metadata.get("selected_action_to_task_join_key") if task is not None else fields.pop("selected_action_to_task_join_key", None),
+            "terminal_outcome_join_key": task.metadata.get("terminal_outcome_join_key") if task is not None else fields.pop("terminal_outcome_join_key", None),
             "strategy": task.metadata.get("strategy") if task is not None else fields.pop("strategy", None),
             "seed": self.seed if task is not None else fields.pop("seed", None),
             "agent_id": task.source_agent_id if task is not None else fields.pop("agent_id", None),
@@ -735,7 +741,7 @@ class HoodieGymEnvironment:
             return "horizontal"
         if selected_action in {"vertical", "offload_vertical"}:
             return "vertical"
-        return None
+        return "unknown"
 
     def _record_pending_at_horizon_events(self) -> None:
         if not self.trace_recorder.enabled:
