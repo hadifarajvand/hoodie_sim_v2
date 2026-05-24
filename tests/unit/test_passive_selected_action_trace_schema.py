@@ -38,6 +38,22 @@ class PassiveSelectedActionTraceSchemaTests(unittest.TestCase):
 
     def test_report_schema_lists_selected_action_repair_fields(self) -> None:
         payload = build_passive_selected_action_trace_repair_report().to_dict()
+        for key in [
+            "decision_opportunity_count",
+            "selected_action_trace_record_count",
+            "selected_action_family_trace_record_count",
+            "selected_action_to_task_join_key_count",
+            "terminal_outcome_join_key_count",
+            "selected_action_trace_coverage_ratio",
+            "selected_action_family_coverage_ratio",
+            "selected_action_to_task_join_coverage_ratio",
+            "terminal_outcome_join_key_coverage_ratio",
+            "missing_selected_action_trace_count",
+            "missing_selected_action_family_count",
+            "missing_selected_action_to_task_join_key_count",
+            "missing_terminal_outcome_join_key_count",
+        ]:
+            self.assertIn(key, payload)
         schema = payload["selected_action_trace_schema"]
         self.assertIn("selected_action", schema["required_fields"])
         self.assertIn("action_index", schema["required_fields"])

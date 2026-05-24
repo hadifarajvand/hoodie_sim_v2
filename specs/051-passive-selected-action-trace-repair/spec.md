@@ -75,6 +75,8 @@ As a feature owner, I want a passive readiness summary that tells me whether Fea
 - **FR-012**: The system MUST expose `remaining_blockers` when trace repair is incomplete and MUST leave the blocker list non-empty whenever the final verdict is not ready for Feature 050 rerun.
 - **FR-013**: The system MUST expose `recommended_next_feature` and MUST point to Feature 052 only when the passive trace repair is complete enough to support the Feature 050 rerun path.
 - **FR-019**: The report MUST expose `selected_action_family_evidence_status`, `selected_action_to_task_join_status`, `terminal_outcome_join_status`, and `per_action_outcome_join_readiness` as top-level fields in addition to the supporting summary objects.
+- **FR-020**: The system MUST expose decision-opportunity population evidence, including `decision_opportunity_count`, `selected_action_trace_record_count`, `selected_action_family_trace_record_count`, `selected_action_to_task_join_key_count`, `terminal_outcome_join_key_count`, and the corresponding coverage ratios and missing-count fields, so the report proves actual runtime trace population rather than schema presence alone.
+- **FR-021**: The system MUST treat emitted selected-action trace evidence as sufficient only when the population counts and coverage ratios demonstrate that each emitted decision opportunity is backed by real runtime trace records and deterministic join keys.
 - **FR-014**: The system MUST never fabricate selected-action family counts, join keys, or readiness states when the passive trace evidence is missing.
 - **FR-015**: The system MUST preserve passive-only behavior and MUST not change action selection, action legality, reward timing, timeout behavior, queue behavior, execution behavior, transmission behavior, or capacity semantics.
 - **FR-016**: The system MUST not run training, optimizer steps, replay training, target updates, checkpoints, campaigns, or paper reproduction workflows.
@@ -84,6 +86,7 @@ As a feature owner, I want a passive readiness summary that tells me whether Fea
 ### Key Entities *(include if feature involves data)*
 
 - **Selected-Action Trace Record**: Passive trace evidence for a decision opportunity, including selected action, action index, selected action family, and trace source.
+- **Trace Population Evidence**: Decision-opportunity counts, emitted record counts, coverage ratios, and missing-count metrics proving that the passive runtime trace was actually populated.
 - **Selected-Action Join Key**: Deterministic evidence that links a selected action to task identity and downstream terminal outcome evidence.
 - **Terminal Outcome Join Key**: Passive evidence that links a task lifecycle outcome back to the selected action that led to it.
 - **Trace Repair Readiness Summary**: A report-level summary that explains whether the passive trace is sufficient to unblock Feature 050 rerun analysis.
@@ -97,6 +100,8 @@ As a feature owner, I want a passive readiness summary that tells me whether Fea
 - **SC-003**: The report includes behavior-equivalence results that remain stable across repeated passive runs, with no runtime drift introduced by the trace repair.
 - **SC-004**: The report produces a clear Feature 050 readiness verdict and blocker list in every run, and the blocker list is non-empty whenever the verdict is not ready.
 - **SC-005**: The report artifacts are generated in both JSON and Markdown form and include all required trace-schema, emission, join, readiness, and drift sections.
+- **SC-006**: The report proves trace population with decision-opportunity counts, emitted record counts, coverage ratios, and missing-count metrics whenever selected-action fields are reported as emitted.
+- **SC-007**: The report does not claim availability for selected-action family evidence, task joins, or terminal outcome joins unless the corresponding counts and coverage ratios show complete population for every decision opportunity.
 
 ## Assumptions
 

@@ -5,7 +5,7 @@
 
 ## Summary
 
-Repair passive runtime trace emission so future evidence analysis can recover selected-action family identity, selected-action-to-task joins, and terminal-outcome join readiness without changing action selection, legality, rewards, timing, queueing, execution, transmission, or capacity behavior.
+Repair passive runtime trace emission so future evidence analysis can recover selected-action family identity, selected-action-to-task joins, and terminal-outcome join readiness from actual runtime trace population without changing action selection, legality, rewards, timing, queueing, execution, transmission, or capacity behavior.
 
 ## Technical Context
 
@@ -102,10 +102,11 @@ Research is limited to the passive evidence model already defined by committed F
 ### Decisions
 
 1. Extend passive trace schema to carry selected action, action index, selected action family, trace source, and deterministic join keys.
-2. Derive selected-action family from the selected action actually used by the environment, not from legality masks or downstream outcomes.
-3. Preserve deterministic trace paths from selected action to task identity to terminal outcome readiness.
-4. Treat missing evidence as incomplete or unavailable, not as zero-valued placeholders.
-5. Keep behavior-equivalence checks unique and passive so trace repair cannot silently change simulation semantics.
+2. Run a small deterministic paper-default trace sample with passive tracing enabled and collect actual selected-action trace records.
+3. Derive selected-action family from the selected action actually used by the environment, not from legality masks or downstream outcomes.
+4. Preserve deterministic trace paths from selected action to task identity to terminal outcome readiness.
+5. Treat missing evidence as incomplete or unavailable, not as zero-valued placeholders.
+6. Keep behavior-equivalence checks unique and passive so trace repair cannot silently change simulation semantics.
 
 ### Research Deliverable
 
@@ -122,6 +123,7 @@ Research is limited to the passive evidence model already defined by committed F
 ### Design Focus
 
 - Selected-action trace schema extension
+- Runtime trace population and count-based coverage
 - Selected-action family derivation
 - Selected-action-to-task join readiness
 - Terminal outcome join readiness
@@ -134,6 +136,19 @@ The Feature 051 report MUST expose these top-level fields:
 
 - `selected_action_trace_schema`
 - `selected_action_trace_emission_summary`
+- `decision_opportunity_count`
+- `selected_action_trace_record_count`
+- `selected_action_family_trace_record_count`
+- `selected_action_to_task_join_key_count`
+- `terminal_outcome_join_key_count`
+- `selected_action_trace_coverage_ratio`
+- `selected_action_family_coverage_ratio`
+- `selected_action_to_task_join_coverage_ratio`
+- `terminal_outcome_join_key_coverage_ratio`
+- `missing_selected_action_trace_count`
+- `missing_selected_action_family_count`
+- `missing_selected_action_to_task_join_key_count`
+- `missing_terminal_outcome_join_key_count`
 - `selected_action_family_trace_summary`
 - `selected_action_family_evidence_status`
 - `selected_action_to_task_join_summary`
@@ -153,15 +168,30 @@ Validation scope:
 - Feature 051 validation MUST use committed-artifact-only checks for prior Features 044, 048, 049, and 050.
 - Feature 051 validation MUST avoid any prior-feature test that inspects active worktree dirtiness, active `.specify/feature.json` state, current dirty paths, current branch local-only files, or report regeneration cleanliness from the active worktree.
 - Feature 051 validation MUST keep current Feature 051 hygiene rules limited to commit-scope rules such as not staging or committing `.specify/feature.json`, `AGENTS.md`, or unrelated files.
+- Feature 051 validation MUST require actual runtime trace payload inspection before any schema field is counted as emitted.
+- Feature 051 validation MUST fail if schema fields are declared but no runtime trace record contains them.
+- Feature 051 validation MUST require count-based coverage evidence for decision opportunities, emitted records, join keys, and missing counts.
 
 Readiness rule:
 
-- `evidence_readiness_for_feature_050_rerun` may be `true` only when `selected_action_family_evidence_status = available`, `selected_action_to_task_join_status = available`, `terminal_outcome_join_status = available`, `per_action_outcome_join_readiness = ready`, `behavior_equivalence_summary.passed = true`, `no_action_selection_drift = true`, and `no_action_legality_drift = true`.
+- `evidence_readiness_for_feature_050_rerun` may be `true` only when `decision_opportunity_count > 0`, `selected_action_trace_record_count = decision_opportunity_count`, `selected_action_family_trace_record_count = decision_opportunity_count`, `selected_action_to_task_join_key_count = decision_opportunity_count`, `terminal_outcome_join_key_count = decision_opportunity_count`, all coverage ratios are complete for the emitted sample, `selected_action_family_evidence_status = available`, `selected_action_to_task_join_status = available`, `terminal_outcome_join_status = available`, `per_action_outcome_join_readiness = ready`, `behavior_equivalence_summary.passed = true`, `no_action_selection_drift = true`, and `no_action_legality_drift = true`.
 - `behavior_equivalence_passed` MUST equal `behavior_equivalence_summary.passed`.
 - If any readiness condition fails, `evidence_readiness_for_feature_050_rerun` MUST be `false`, `remaining_blockers` MUST be non-empty, and `final_verdict` MUST NOT be `passive_selected_action_trace_ready_for_feature_050_rerun`.
 
 Validation failure conditions:
 
+- The plan MUST fail if `decision_opportunity_count` is missing.
+- The plan MUST fail if `selected_action_trace_record_count` is missing.
+- The plan MUST fail if `selected_action_family_trace_record_count` is missing.
+- The plan MUST fail if `selected_action_to_task_join_key_count` is missing.
+- The plan MUST fail if `terminal_outcome_join_key_count` is missing.
+- The plan MUST fail if any coverage ratio is missing.
+- The plan MUST fail if the emission summary says a field is emitted but the corresponding runtime count is zero.
+- The plan MUST fail if `selected_action_family_trace_record_count = 0` while emission says selected_action_family is emitted.
+- The plan MUST fail if `selected_action_to_task_join_key_count = 0` while emission says join key is emitted.
+- The plan MUST fail if `terminal_outcome_join_key_count = 0` while emission says terminal key is emitted.
+- The plan MUST fail if readiness remains false without exact count-based blockers.
+- The plan MUST fail if `final_verdict` remains `selected_action_family_trace_incomplete` after the repair while all required fields are present in actual trace records.
 - The plan MUST fail if any of the four top-level readiness/status fields is missing.
 - The plan MUST fail if any top-level readiness/status field contradicts its summary copy.
 - The plan MUST fail if `behavior_equivalence_passed` contradicts `behavior_equivalence_summary.passed`.
