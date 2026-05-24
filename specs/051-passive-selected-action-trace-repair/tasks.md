@@ -36,6 +36,8 @@
 - [x] T006 [P] Extend passive trace schema with selected-action fields in `src/environment/lifecycle_trace.py`
 - [x] T007 [P] Extend passive selected-action emission in `src/environment/gym_adapter.py`
 - [x] T008 [P] Add Feature 051 report artifact directory scaffolding under `artifacts/analysis/passive-selected-action-trace-repair/`
+- [x] T009 [P] Implement count-based trace population metrics in `src/analysis/passive_selected_action_trace_repair/model.py` for `decision_opportunity_count`, `selected_action_trace_record_count`, `selected_action_family_trace_record_count`, `selected_action_to_task_join_key_count`, `terminal_outcome_join_key_count`, coverage ratios, and missing-count fields
+- [x] T010 [P] Implement runtime trace payload inspection helpers in `src/analysis/passive_selected_action_trace_repair/runner.py` so selected-action fields are counted only when present in actual trace records
 
 **Checkpoint**: Passive trace schema and emission scaffolding are ready; user story implementation can now proceed.
 
@@ -49,15 +51,16 @@
 
 ### Tests for User Story 1
 
-- [x] T009 [P] [US1] Add schema coverage for selected-action trace fields in `tests/unit/test_passive_selected_action_trace_schema.py`
-- [x] T010 [P] [US1] Add emission coverage for actual selected action metadata in `tests/unit/test_passive_selected_action_trace_metrics.py`
+- [x] T011 [P] [US1] Add schema coverage for selected-action trace fields in `tests/unit/test_passive_selected_action_trace_schema.py`
+- [x] T012 [P] [US1] Add emission coverage for actual selected action metadata in `tests/unit/test_passive_selected_action_trace_metrics.py`
+- [x] T013 [P] [US1] Add trace population coverage for `decision_opportunity_count`, `selected_action_trace_record_count`, `selected_action_family_trace_record_count`, `selected_action_to_task_join_key_count`, `terminal_outcome_join_key_count`, and coverage ratios in `tests/unit/test_passive_selected_action_trace_metrics.py`
 
 ### Implementation for User Story 1
 
-- [x] T011 [P] [US1] Implement selected-action trace schema extension in `src/environment/lifecycle_trace.py` for `selected_action`, `action_index`, `selected_action_family`, `selected_action_trace_source`, `decision_event_id`, `selected_action_to_task_join_key`, and `terminal_outcome_join_key`
-- [x] T012 [US1] Implement passive selected-action emission at the decision point in `src/environment/gym_adapter.py` for `strategy`, `seed`, `slot`, `agent_id`, `task_id`, `selected_action`, `action_index`, `selected_action_family`, and `decision_event_id`
-- [x] T013 [US1] Implement selected-action family mapping logic in `src/analysis/passive_selected_action_trace_repair/model.py` so `local`, `horizontal`, `vertical`, and `unknown` are derived from the actual selected action only
-- [x] T014 [US1] Wire the selected-action trace summary into `src/analysis/passive_selected_action_trace_repair/runner.py` and `src/analysis/passive_selected_action_trace_repair/report.py`
+- [x] T014 [US1] Implement selected-action trace schema extension in `src/environment/lifecycle_trace.py` for `selected_action`, `action_index`, `selected_action_family`, `selected_action_trace_source`, `decision_event_id`, `selected_action_to_task_join_key`, and `terminal_outcome_join_key`
+- [x] T015 [US1] Implement passive selected-action emission at the decision point in `src/environment/gym_adapter.py` for `strategy`, `seed`, `slot`, `agent_id`, `task_id`, `selected_action`, `action_index`, `selected_action_family`, and `decision_event_id`
+- [x] T016 [US1] Implement selected-action family mapping logic in `src/analysis/passive_selected_action_trace_repair/model.py` so `local`, `horizontal`, `vertical`, and `unknown` are derived from the actual selected action only
+- [x] T017 [US1] Wire the selected-action trace summary into `src/analysis/passive_selected_action_trace_repair/runner.py` and `src/analysis/passive_selected_action_trace_repair/report.py`
 
 **Checkpoint**: Selected-action trace evidence is emitted passively and can be inspected independently.
 
@@ -71,14 +74,15 @@
 
 ### Tests for User Story 2
 
-- [x] T015 [P] [US2] Add deterministic decision-event and join-key assertions in `tests/unit/test_passive_selected_action_trace_metrics.py`
-- [x] T016 [P] [US2] Add selected-action-to-task join readiness coverage in `tests/integration/test_passive_selected_action_trace_repair.py`
+- [x] T018 [P] [US2] Add deterministic decision-event and join-key assertions in `tests/unit/test_passive_selected_action_trace_metrics.py`
+- [x] T019 [P] [US2] Add selected-action-to-task join readiness coverage in `tests/integration/test_passive_selected_action_trace_repair.py`
+- [x] T020 [P] [US2] Add contradiction coverage for emitted-vs-counted join keys in `tests/unit/test_passive_selected_action_trace_metrics.py`
 
 ### Implementation for User Story 2
 
-- [x] T017 [US2] Implement selected-action-to-task join summary in `src/analysis/passive_selected_action_trace_repair/model.py`
-- [x] T018 [US2] Implement terminal outcome join key summary in `src/analysis/passive_selected_action_trace_repair/model.py`
-- [x] T019 [US2] Implement selected-action join reporting in `src/analysis/passive_selected_action_trace_repair/report.py` for `selected_action_to_task_join_status`, `terminal_outcome_join_status`, and `per_action_outcome_join_readiness`
+- [x] T021 [US2] Implement selected-action-to-task join summary in `src/analysis/passive_selected_action_trace_repair/model.py`
+- [x] T022 [US2] Implement terminal outcome join key summary in `src/analysis/passive_selected_action_trace_repair/model.py`
+- [x] T023 [US2] Implement selected-action join reporting in `src/analysis/passive_selected_action_trace_repair/report.py` for `selected_action_to_task_join_status`, `terminal_outcome_join_status`, and `per_action_outcome_join_readiness`
 
 **Checkpoint**: Selected actions can be traced into task identity and terminal outcome join readiness without altering runtime semantics.
 
@@ -92,15 +96,16 @@
 
 ### Tests for User Story 3
 
-- [x] T020 [P] [US3] Add readiness-blocking coverage for missing join fields in `tests/integration/test_passive_selected_action_trace_scope_guard.py`
-- [x] T021 [P] [US3] Add readiness-pass coverage when all trace evidence exists in `tests/integration/test_passive_selected_action_trace_report.py`
-- [x] T022 [P] [US3] Add behavior-equivalence uniqueness and drift coverage in `tests/unit/test_passive_selected_action_trace_behavior_equivalence.py`
+- [x] T024 [P] [US3] Add readiness-blocking coverage for missing join fields and count-based blockers in `tests/integration/test_passive_selected_action_trace_scope_guard.py`
+- [x] T025 [P] [US3] Add readiness-pass coverage when all trace evidence exists in `tests/integration/test_passive_selected_action_trace_report.py`
+- [x] T026 [P] [US3] Add behavior-equivalence uniqueness and drift coverage in `tests/unit/test_passive_selected_action_trace_behavior_equivalence.py`
+- [x] T027 [P] [US3] Add final verdict and recommended-next-feature assertions for the count-based ready path in `tests/integration/test_passive_selected_action_trace_report.py`
 
 ### Implementation for User Story 3
 
-- [x] T023 [US3] Implement `selected_action_family_evidence_status`, `selected_action_to_task_join_status`, `terminal_outcome_join_status`, `per_action_outcome_join_readiness`, `behavior_equivalence_passed`, `evidence_readiness_for_feature_050_rerun`, and `remaining_blockers` in `src/analysis/passive_selected_action_trace_repair/model.py`
-- [x] T024 [US3] Implement behavior-equivalence summary and unique check naming in `src/analysis/passive_selected_action_trace_repair/model.py`
-- [x] T025 [US3] Implement top-level report fields and final verdict routing in `src/analysis/passive_selected_action_trace_repair/report.py`
+- [x] T028 [US3] Implement `selected_action_family_evidence_status`, `selected_action_to_task_join_status`, `terminal_outcome_join_status`, `per_action_outcome_join_readiness`, `behavior_equivalence_passed`, `evidence_readiness_for_feature_050_rerun`, and `remaining_blockers` in `src/analysis/passive_selected_action_trace_repair/model.py`
+- [x] T029 [US3] Implement behavior-equivalence summary and unique check naming in `src/analysis/passive_selected_action_trace_repair/model.py`
+- [x] T030 [US3] Implement top-level report fields and final verdict routing in `src/analysis/passive_selected_action_trace_repair/report.py`
 
 **Checkpoint**: The report can now state whether Feature 050 is unblocked or still blocked by missing trace evidence.
 
@@ -110,8 +115,8 @@
 
 **Purpose**: Generate the passive trace repair artifacts required by the feature.
 
-- [x] T026 [P] Generate `artifacts/analysis/passive-selected-action-trace-repair/passive-selected-action-trace-repair-report.json` from `src/analysis/passive_selected_action_trace_repair`
-- [x] T027 [P] Generate `artifacts/analysis/passive-selected-action-trace-repair/passive-selected-action-trace-repair-report.md` from `src/analysis/passive_selected_action_trace_repair`
+- [x] T031 [P] Generate `artifacts/analysis/passive-selected-action-trace-repair/passive-selected-action-trace-repair-report.json` from `src/analysis/passive_selected_action_trace_repair`
+- [x] T032 [P] Generate `artifacts/analysis/passive-selected-action-trace-repair/passive-selected-action-trace-repair-report.md` from `src/analysis/passive_selected_action_trace_repair`
 
 **Checkpoint**: The JSON and Markdown report artifacts exist and match the report contract.
 
@@ -121,8 +126,8 @@
 
 **Purpose**: Classify dirty paths and stage only approved Feature 051 paths before any commit.
 
-- [x] T028 Classify dirty paths before staging in the working tree and exclude `.specify/feature.json`, `AGENTS.md`, `.gitignore`, dependency files, `src/policies/`, Feature 037–050 artifacts, checkpoints, training artifacts, and campaign outputs
-- [x] T029 Stage only approved Feature 051 paths for `specs/051-passive-selected-action-trace-repair/`, `src/analysis/passive_selected_action_trace_repair/`, `src/environment/lifecycle_trace.py`, `src/environment/gym_adapter.py`, `tests/unit/test_passive_selected_action_trace_schema.py`, `tests/unit/test_passive_selected_action_trace_metrics.py`, `tests/unit/test_passive_selected_action_trace_behavior_equivalence.py`, `tests/integration/test_passive_selected_action_trace_repair.py`, `tests/integration/test_passive_selected_action_trace_report.py`, `tests/integration/test_passive_selected_action_trace_scope_guard.py`, and `artifacts/analysis/passive-selected-action-trace-repair/`
+- [x] T033 Classify dirty paths before staging in the working tree and exclude `.specify/feature.json`, `AGENTS.md`, `.gitignore`, dependency files, `src/policies/`, Feature 037–050 artifacts, checkpoints, training artifacts, and campaign outputs
+- [x] T034 Stage only approved Feature 051 paths for `specs/051-passive-selected-action-trace-repair/`, `src/analysis/passive_selected_action_trace_repair/`, `src/environment/lifecycle_trace.py`, `src/environment/gym_adapter.py`, `tests/unit/test_passive_selected_action_trace_schema.py`, `tests/unit/test_passive_selected_action_trace_metrics.py`, `tests/unit/test_passive_selected_action_trace_behavior_equivalence.py`, `tests/integration/test_passive_selected_action_trace_repair.py`, `tests/integration/test_passive_selected_action_trace_report.py`, `tests/integration/test_passive_selected_action_trace_scope_guard.py`, and `artifacts/analysis/passive-selected-action-trace-repair/`
 
 ---
 

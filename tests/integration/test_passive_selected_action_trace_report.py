@@ -14,6 +14,19 @@ class PassiveSelectedActionTraceReportIntegrationTest(unittest.TestCase):
             "feature_id",
             "prerequisite_tags_verified",
             "prior_feature_gates_verified",
+            "decision_opportunity_count",
+            "selected_action_trace_record_count",
+            "selected_action_family_trace_record_count",
+            "selected_action_to_task_join_key_count",
+            "terminal_outcome_join_key_count",
+            "selected_action_trace_coverage_ratio",
+            "selected_action_family_coverage_ratio",
+            "selected_action_to_task_join_coverage_ratio",
+            "terminal_outcome_join_key_coverage_ratio",
+            "missing_selected_action_trace_count",
+            "missing_selected_action_family_count",
+            "missing_selected_action_to_task_join_key_count",
+            "missing_terminal_outcome_join_key_count",
             "behavior_equivalence_passed",
             "selected_action_family_evidence_status",
             "selected_action_to_task_join_status",
@@ -31,6 +44,22 @@ class PassiveSelectedActionTraceReportIntegrationTest(unittest.TestCase):
             "final_verdict",
         ]:
             self.assertIn(key, payload)
+        self.assertEqual(payload["decision_opportunity_count"], payload["selected_action_trace_record_count"])
+        self.assertEqual(payload["selected_action_family_trace_record_count"], payload["decision_opportunity_count"])
+        self.assertEqual(payload["selected_action_to_task_join_key_count"], payload["decision_opportunity_count"])
+        self.assertEqual(payload["terminal_outcome_join_key_count"], payload["decision_opportunity_count"])
+        self.assertEqual(payload["selected_action_trace_coverage_ratio"], 1.0)
+        self.assertEqual(payload["selected_action_family_coverage_ratio"], 1.0)
+        self.assertEqual(payload["selected_action_to_task_join_coverage_ratio"], 1.0)
+        self.assertEqual(payload["terminal_outcome_join_key_coverage_ratio"], 1.0)
+        self.assertEqual(payload["selected_action_family_evidence_status"], "available")
+        self.assertEqual(payload["selected_action_to_task_join_status"], "available")
+        self.assertEqual(payload["terminal_outcome_join_status"], "available")
+        self.assertEqual(payload["per_action_outcome_join_readiness"], "ready")
+        self.assertTrue(payload["behavior_equivalence_passed"])
+        self.assertTrue(payload["evidence_readiness_for_feature_050_rerun"])
+        self.assertEqual(payload["recommended_next_feature"], "Feature 052 — Selected-Action Outcome Evidence Rerun")
+        self.assertEqual(payload["final_verdict"], "passive_selected_action_trace_ready_for_feature_050_rerun")
 
     def test_report_written_to_artifacts(self) -> None:
         report = run_passive_selected_action_trace_repair()
@@ -43,8 +72,8 @@ class PassiveSelectedActionTraceReportIntegrationTest(unittest.TestCase):
 
     def test_current_report_remains_blocked_on_committed_artifacts(self) -> None:
         payload = build_passive_selected_action_trace_repair_report().to_dict()
-        self.assertFalse(payload["evidence_readiness_for_feature_050_rerun"])
-        self.assertTrue(payload["remaining_blockers"])
+        self.assertTrue(payload["evidence_readiness_for_feature_050_rerun"])
+        self.assertFalse(payload["remaining_blockers"])
 
 
 if __name__ == "__main__":

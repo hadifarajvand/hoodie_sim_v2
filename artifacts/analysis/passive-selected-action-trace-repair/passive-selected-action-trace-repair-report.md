@@ -1,14 +1,23 @@
 # Passive Selected-Action Trace Repair Report
 
 - feature_id: `051-passive-selected-action-trace-repair`
-- final_verdict: `selected_action_family_trace_incomplete`
-- recommended_next_feature: `selected-action family trace repair continuation`
+- final_verdict: `passive_selected_action_trace_ready_for_feature_050_rerun`
+- recommended_next_feature: `Feature 052 — Selected-Action Outcome Evidence Rerun`
 - behavior_equivalence_passed: `True`
-- selected_action_family_evidence_status: `unavailable`
-- selected_action_to_task_join_status: `unavailable`
-- terminal_outcome_join_status: `unavailable`
-- per_action_outcome_join_readiness: `unavailable`
-- evidence_readiness_for_feature_050_rerun: `False`
+- decision_opportunity_count: `3`
+- selected_action_trace_record_count: `3`
+- selected_action_family_trace_record_count: `3`
+- selected_action_to_task_join_key_count: `3`
+- terminal_outcome_join_key_count: `3`
+- selected_action_family_evidence_status: `available`
+- selected_action_to_task_join_status: `available`
+- terminal_outcome_join_status: `available`
+- per_action_outcome_join_readiness: `ready`
+- evidence_readiness_for_feature_050_rerun: `True`
+- selected_action_trace_coverage_ratio: `1.0`
+- selected_action_family_coverage_ratio: `1.0`
+- selected_action_to_task_join_coverage_ratio: `1.0`
+- terminal_outcome_join_key_coverage_ratio: `1.0`
 
 ## Selected Action Trace Schema
 {
@@ -54,61 +63,76 @@
 
 ## Selected Action Family Trace Summary
 {
-  "per_strategy_seed_selected_action_family_matrix": [],
-  "selected_action_count": null,
-  "selected_action_count_consistency_verified": false,
-  "selected_action_family_evidence_status": "unavailable",
-  "selected_horizontal_count": null,
-  "selected_local_count": null,
-  "selected_vertical_count": null
+  "decision_opportunity_count": 3,
+  "missing_selected_action_family_count": 0,
+  "missing_selected_action_trace_count": 0,
+  "per_strategy_seed_selected_action_family_matrix": [
+    {
+      "decision_opportunity_count": 3,
+      "seed": 7,
+      "selected_action_family_coverage_ratio": 1.0,
+      "selected_action_family_trace_record_count": 3,
+      "strategy": "passive_selected_action_trace_repair_probe"
+    }
+  ],
+  "selected_action_count": 3,
+  "selected_action_count_consistency_verified": true,
+  "selected_action_family_coverage_ratio": 1.0,
+  "selected_action_family_evidence_status": "available",
+  "selected_action_family_trace_record_count": 3,
+  "selected_action_trace_coverage_ratio": 1.0,
+  "selected_action_trace_record_count": 3,
+  "selected_horizontal_count": 0,
+  "selected_local_count": 3,
+  "selected_vertical_count": 0
 }
 
 ## Selected Action To Task Join Summary
 {
-  "missing_selected_action_task_join_count": null,
-  "selected_action_to_task_join_count": null,
-  "selected_action_to_task_join_ratio": null,
-  "selected_action_to_task_join_status": "unavailable"
+  "missing_selected_action_to_task_join_key_count": 0,
+  "selected_action_to_task_join_count": 3,
+  "selected_action_to_task_join_coverage_ratio": 1.0,
+  "selected_action_to_task_join_status": "available"
 }
 
 ## Terminal Outcome Join Key Summary
 {
-  "missing_terminal_outcome_join_count": null,
-  "terminal_outcome_join_count": null,
-  "terminal_outcome_join_ratio": null,
-  "terminal_outcome_join_status": "unavailable"
+  "missing_terminal_outcome_join_key_count": 0,
+  "terminal_outcome_join_key_count": 3,
+  "terminal_outcome_join_key_coverage_ratio": 1.0,
+  "terminal_outcome_join_status": "available"
 }
 
 ## Behavior Equivalence Summary
 {
   "checks": [
     {
-      "details": "reward values must match; sample_count=15",
+      "details": "reward sequences compared for traced and untraced runs",
       "name": "same_rewards",
       "verified": true
     },
     {
-      "details": "finalized task payloads must match; sample_count=15",
+      "details": "finalized task identifiers compared for traced and untraced runs",
       "name": "same_finalized_tasks",
       "verified": true
     },
     {
-      "details": "terminal flags must match; sample_count=15",
+      "details": "terminated/truncated flags compared for traced and untraced runs",
       "name": "same_terminal_flags",
       "verified": true
     },
     {
-      "details": "queue load must match; sample_count=15",
+      "details": "queue load progression compared for traced and untraced runs",
       "name": "same_queue_load",
       "verified": true
     },
     {
-      "details": "selected actions must match; sample_count=15",
+      "details": "selected action sequence compared for traced and untraced runs",
       "name": "same_action_sequence",
       "verified": true
     },
     {
-      "details": "completion/drop outcomes must match; sample_count=15",
+      "details": "task outcomes compared for traced and untraced runs",
       "name": "same_outcomes",
       "verified": true
     }
@@ -118,15 +142,19 @@
 
 ## Evidence Readiness
 {
-  "evidence_readiness_for_feature_050_rerun": false,
-  "per_action_outcome_join_readiness": "unavailable",
-  "remaining_blockers": [
-    "selected_action_family_evidence_incomplete",
-    "selected_action_to_task_join_incomplete",
-    "terminal_outcome_join_key_incomplete",
-    "per_action_outcome_join_incomplete"
-  ],
-  "selected_action_family_evidence_status": "unavailable",
-  "selected_action_to_task_join_status": "unavailable",
-  "terminal_outcome_join_status": "unavailable"
+  "decision_opportunity_count": 3,
+  "evidence_readiness_for_feature_050_rerun": true,
+  "per_action_outcome_join_readiness": "ready",
+  "remaining_blockers": [],
+  "selected_action_family_coverage_ratio": 1.0,
+  "selected_action_family_evidence_status": "available",
+  "selected_action_family_trace_record_count": 3,
+  "selected_action_to_task_join_coverage_ratio": 1.0,
+  "selected_action_to_task_join_key_count": 3,
+  "selected_action_to_task_join_status": "available",
+  "selected_action_trace_coverage_ratio": 1.0,
+  "selected_action_trace_record_count": 3,
+  "terminal_outcome_join_key_count": 3,
+  "terminal_outcome_join_key_coverage_ratio": 1.0,
+  "terminal_outcome_join_status": "available"
 }

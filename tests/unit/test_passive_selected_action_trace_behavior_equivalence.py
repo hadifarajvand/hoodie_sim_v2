@@ -11,6 +11,17 @@ class PassiveSelectedActionTraceBehaviorEquivalenceTests(unittest.TestCase):
         checks = payload["behavior_equivalence_summary"]["checks"]
         names = [check["name"] for check in checks]
         self.assertEqual(len(names), len(set(names)))
+        self.assertEqual(
+            names,
+            [
+                "same_rewards",
+                "same_finalized_tasks",
+                "same_terminal_flags",
+                "same_queue_load",
+                "same_action_sequence",
+                "same_outcomes",
+            ],
+        )
 
     def test_behavior_equivalence_passthrough(self) -> None:
         payload = build_passive_selected_action_trace_repair_report().to_dict()
