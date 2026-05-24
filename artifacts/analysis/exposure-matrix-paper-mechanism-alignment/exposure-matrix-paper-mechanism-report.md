@@ -1,43 +1,49 @@
 # Exposure Matrix Paper Mechanism Alignment Report
 
 - feature_id: `049-exposure-matrix-paper-mechanism-alignment`
-- final_verdict: `paper_mechanism_alignment_ready_for_training_contract`
-- recommended_next_feature: `Feature 050 — DDQN Training Contract Bundle`
+- final_verdict: `insufficient_legality_or_trace_evidence`
+- recommended_next_feature: `selected-action family evidence expansion before training`
+- selected_action_family_evidence_status: `unavailable`
+- per_action_outcome_evidence_status: `unavailable`
+- exposure_matrix_internal_consistency_verified: `False`
 
 ## Exposure Matrix Rerun Summary
 {
   "decision_opportunity_count": 1650,
   "evidence_status": "available",
   "exposure_bias_summary": {
-    "bias_blocking": false,
+    "bias_blocking": true,
     "dominant_bias": false,
     "evidence_status": "available",
-    "reason": "full legality coverage and zero illegal selections in committed Feature 048 evidence",
+    "reason": "selected action family evidence and per-action outcomes are unavailable",
     "source_feature": "048-legality-evidence-expansion"
   },
+  "exposure_matrix_internal_consistency_verified": false,
   "exposure_matrix_unblocked": true,
   "legal_but_unselected_by_action": {
-    "horizontal": 0,
-    "local": 0,
-    "vertical": 0
+    "horizontal": null,
+    "local": null,
+    "vertical": null
   },
-  "legal_horizontal_count": 1650,
-  "legal_local_count": 1650,
-  "legal_vertical_count": 1650,
+  "legal_but_unselected_consistency_verified": false,
+  "legal_horizontal_count": null,
+  "legal_local_count": null,
+  "legal_vertical_count": null,
   "per_action_completion_rate": {
-    "horizontal": 0.0,
-    "local": 0.0,
-    "vertical": 0.0
+    "horizontal": null,
+    "local": null,
+    "vertical": null
   },
   "per_action_drop_rate": {
-    "horizontal": 0.0,
-    "local": 0.0,
-    "vertical": 0.0
+    "horizontal": null,
+    "local": null,
+    "vertical": null
   },
+  "per_action_outcome_evidence_status": "unavailable",
   "per_action_pending_rate": {
-    "horizontal": 0.0,
-    "local": 0.0,
-    "vertical": 0.0
+    "horizontal": null,
+    "local": null,
+    "vertical": null
   },
   "per_strategy_seed_matrix": [
     {
@@ -46,9 +52,13 @@
       "legality_snapshot_count": 110,
       "seed": 0,
       "selected_action_count": 110,
+      "selected_action_family_evidence_status": "unavailable",
+      "selected_horizontal_count": null,
       "selected_illegal_action_count": 0,
       "selected_illegal_action_evidence_status": "available",
       "selected_illegal_action_rate": 0.0,
+      "selected_local_count": null,
+      "selected_vertical_count": null,
       "strategy": "environment_default_policy_probe"
     },
     {
@@ -57,9 +67,13 @@
       "legality_snapshot_count": 110,
       "seed": 1,
       "selected_action_count": 110,
+      "selected_action_family_evidence_status": "unavailable",
+      "selected_horizontal_count": null,
       "selected_illegal_action_count": 0,
       "selected_illegal_action_evidence_status": "available",
       "selected_illegal_action_rate": 0.0,
+      "selected_local_count": null,
+      "selected_vertical_count": null,
       "strategy": "environment_default_policy_probe"
     },
     {
@@ -68,9 +82,13 @@
       "legality_snapshot_count": 110,
       "seed": 2,
       "selected_action_count": 110,
+      "selected_action_family_evidence_status": "unavailable",
+      "selected_horizontal_count": null,
       "selected_illegal_action_count": 0,
       "selected_illegal_action_evidence_status": "available",
       "selected_illegal_action_rate": 0.0,
+      "selected_local_count": null,
+      "selected_vertical_count": null,
       "strategy": "environment_default_policy_probe"
     },
     {
@@ -79,9 +97,13 @@
       "legality_snapshot_count": 110,
       "seed": 0,
       "selected_action_count": 110,
+      "selected_action_family_evidence_status": "unavailable",
+      "selected_horizontal_count": null,
       "selected_illegal_action_count": 0,
       "selected_illegal_action_evidence_status": "available",
       "selected_illegal_action_rate": 0.0,
+      "selected_local_count": null,
+      "selected_vertical_count": null,
       "strategy": "force_local_legal_probe"
     },
     {
@@ -90,9 +112,13 @@
       "legality_snapshot_count": 110,
       "seed": 1,
       "selected_action_count": 110,
+      "selected_action_family_evidence_status": "unavailable",
+      "selected_horizontal_count": null,
       "selected_illegal_action_count": 0,
       "selected_illegal_action_evidence_status": "available",
       "selected_illegal_action_rate": 0.0,
+      "selected_local_count": null,
+      "selected_vertical_count": null,
       "strategy": "force_local_legal_probe"
     },
     {
@@ -101,9 +127,13 @@
       "legality_snapshot_count": 110,
       "seed": 2,
       "selected_action_count": 110,
+      "selected_action_family_evidence_status": "unavailable",
+      "selected_horizontal_count": null,
       "selected_illegal_action_count": 0,
       "selected_illegal_action_evidence_status": "available",
       "selected_illegal_action_rate": 0.0,
+      "selected_local_count": null,
+      "selected_vertical_count": null,
       "strategy": "force_local_legal_probe"
     },
     {
@@ -112,9 +142,13 @@
       "legality_snapshot_count": 110,
       "seed": 0,
       "selected_action_count": 110,
+      "selected_action_family_evidence_status": "unavailable",
+      "selected_horizontal_count": null,
       "selected_illegal_action_count": 0,
       "selected_illegal_action_evidence_status": "available",
       "selected_illegal_action_rate": 0.0,
+      "selected_local_count": null,
+      "selected_vertical_count": null,
       "strategy": "force_horizontal_legal_probe"
     },
     {
@@ -123,9 +157,13 @@
       "legality_snapshot_count": 110,
       "seed": 1,
       "selected_action_count": 110,
+      "selected_action_family_evidence_status": "unavailable",
+      "selected_horizontal_count": null,
       "selected_illegal_action_count": 0,
       "selected_illegal_action_evidence_status": "available",
       "selected_illegal_action_rate": 0.0,
+      "selected_local_count": null,
+      "selected_vertical_count": null,
       "strategy": "force_horizontal_legal_probe"
     },
     {
@@ -134,9 +172,13 @@
       "legality_snapshot_count": 110,
       "seed": 2,
       "selected_action_count": 110,
+      "selected_action_family_evidence_status": "unavailable",
+      "selected_horizontal_count": null,
       "selected_illegal_action_count": 0,
       "selected_illegal_action_evidence_status": "available",
       "selected_illegal_action_rate": 0.0,
+      "selected_local_count": null,
+      "selected_vertical_count": null,
       "strategy": "force_horizontal_legal_probe"
     },
     {
@@ -145,9 +187,13 @@
       "legality_snapshot_count": 110,
       "seed": 0,
       "selected_action_count": 110,
+      "selected_action_family_evidence_status": "unavailable",
+      "selected_horizontal_count": null,
       "selected_illegal_action_count": 0,
       "selected_illegal_action_evidence_status": "available",
       "selected_illegal_action_rate": 0.0,
+      "selected_local_count": null,
+      "selected_vertical_count": null,
       "strategy": "force_vertical_legal_probe"
     },
     {
@@ -156,9 +202,13 @@
       "legality_snapshot_count": 110,
       "seed": 1,
       "selected_action_count": 110,
+      "selected_action_family_evidence_status": "unavailable",
+      "selected_horizontal_count": null,
       "selected_illegal_action_count": 0,
       "selected_illegal_action_evidence_status": "available",
       "selected_illegal_action_rate": 0.0,
+      "selected_local_count": null,
+      "selected_vertical_count": null,
       "strategy": "force_vertical_legal_probe"
     },
     {
@@ -167,9 +217,13 @@
       "legality_snapshot_count": 110,
       "seed": 2,
       "selected_action_count": 110,
+      "selected_action_family_evidence_status": "unavailable",
+      "selected_horizontal_count": null,
       "selected_illegal_action_count": 0,
       "selected_illegal_action_evidence_status": "available",
       "selected_illegal_action_rate": 0.0,
+      "selected_local_count": null,
+      "selected_vertical_count": null,
       "strategy": "force_vertical_legal_probe"
     },
     {
@@ -178,9 +232,13 @@
       "legality_snapshot_count": 110,
       "seed": 0,
       "selected_action_count": 110,
+      "selected_action_family_evidence_status": "unavailable",
+      "selected_horizontal_count": null,
       "selected_illegal_action_count": 0,
       "selected_illegal_action_evidence_status": "available",
       "selected_illegal_action_rate": 0.0,
+      "selected_local_count": null,
+      "selected_vertical_count": null,
       "strategy": "mixed_legal_round_robin_probe"
     },
     {
@@ -189,9 +247,13 @@
       "legality_snapshot_count": 110,
       "seed": 1,
       "selected_action_count": 110,
+      "selected_action_family_evidence_status": "unavailable",
+      "selected_horizontal_count": null,
       "selected_illegal_action_count": 0,
       "selected_illegal_action_evidence_status": "available",
       "selected_illegal_action_rate": 0.0,
+      "selected_local_count": null,
+      "selected_vertical_count": null,
       "strategy": "mixed_legal_round_robin_probe"
     },
     {
@@ -200,173 +262,203 @@
       "legality_snapshot_count": 110,
       "seed": 2,
       "selected_action_count": 110,
+      "selected_action_family_evidence_status": "unavailable",
+      "selected_horizontal_count": null,
       "selected_illegal_action_count": 0,
       "selected_illegal_action_evidence_status": "available",
       "selected_illegal_action_rate": 0.0,
+      "selected_local_count": null,
+      "selected_vertical_count": null,
       "strategy": "mixed_legal_round_robin_probe"
     }
   ],
-  "selected_horizontal_count": 0,
+  "selected_action_count_consistency_verified": false,
+  "selected_action_family_evidence_status": "unavailable",
+  "selected_horizontal_count": null,
   "selected_illegal_action_count": 0,
   "selected_illegal_action_rate": 0.0,
-  "selected_local_count": 0,
-  "selected_vertical_count": 0
+  "selected_local_count": null,
+  "selected_vertical_count": null
 }
 
 ## Legal vs Selected Action Matrix
 {
-  "evidence_status": "available",
-  "matrix_complete": true,
+  "evidence_status": "partial",
+  "matrix_complete": false,
   "rows": [
     {
       "legal_action_source": "Feature 048 legality snapshots",
-      "legal_counts_match_selected_counts": true,
+      "legal_counts_match_selected_counts": false,
       "seed": 0,
+      "selected_action_family_evidence_status": "unavailable",
       "selected_action_source": "Feature 048 legality snapshots",
       "selected_illegal_action_count": 0,
       "strategy": "environment_default_policy_probe",
-      "trace_backed": true
+      "trace_backed": false
     },
     {
       "legal_action_source": "Feature 048 legality snapshots",
-      "legal_counts_match_selected_counts": true,
+      "legal_counts_match_selected_counts": false,
       "seed": 1,
+      "selected_action_family_evidence_status": "unavailable",
       "selected_action_source": "Feature 048 legality snapshots",
       "selected_illegal_action_count": 0,
       "strategy": "environment_default_policy_probe",
-      "trace_backed": true
+      "trace_backed": false
     },
     {
       "legal_action_source": "Feature 048 legality snapshots",
-      "legal_counts_match_selected_counts": true,
+      "legal_counts_match_selected_counts": false,
       "seed": 2,
+      "selected_action_family_evidence_status": "unavailable",
       "selected_action_source": "Feature 048 legality snapshots",
       "selected_illegal_action_count": 0,
       "strategy": "environment_default_policy_probe",
-      "trace_backed": true
+      "trace_backed": false
     },
     {
       "legal_action_source": "Feature 048 legality snapshots",
-      "legal_counts_match_selected_counts": true,
+      "legal_counts_match_selected_counts": false,
       "seed": 0,
+      "selected_action_family_evidence_status": "unavailable",
       "selected_action_source": "Feature 048 legality snapshots",
       "selected_illegal_action_count": 0,
       "strategy": "force_local_legal_probe",
-      "trace_backed": true
+      "trace_backed": false
     },
     {
       "legal_action_source": "Feature 048 legality snapshots",
-      "legal_counts_match_selected_counts": true,
+      "legal_counts_match_selected_counts": false,
       "seed": 1,
+      "selected_action_family_evidence_status": "unavailable",
       "selected_action_source": "Feature 048 legality snapshots",
       "selected_illegal_action_count": 0,
       "strategy": "force_local_legal_probe",
-      "trace_backed": true
+      "trace_backed": false
     },
     {
       "legal_action_source": "Feature 048 legality snapshots",
-      "legal_counts_match_selected_counts": true,
+      "legal_counts_match_selected_counts": false,
       "seed": 2,
+      "selected_action_family_evidence_status": "unavailable",
       "selected_action_source": "Feature 048 legality snapshots",
       "selected_illegal_action_count": 0,
       "strategy": "force_local_legal_probe",
-      "trace_backed": true
+      "trace_backed": false
     },
     {
       "legal_action_source": "Feature 048 legality snapshots",
-      "legal_counts_match_selected_counts": true,
+      "legal_counts_match_selected_counts": false,
       "seed": 0,
+      "selected_action_family_evidence_status": "unavailable",
       "selected_action_source": "Feature 048 legality snapshots",
       "selected_illegal_action_count": 0,
       "strategy": "force_horizontal_legal_probe",
-      "trace_backed": true
+      "trace_backed": false
     },
     {
       "legal_action_source": "Feature 048 legality snapshots",
-      "legal_counts_match_selected_counts": true,
+      "legal_counts_match_selected_counts": false,
       "seed": 1,
+      "selected_action_family_evidence_status": "unavailable",
       "selected_action_source": "Feature 048 legality snapshots",
       "selected_illegal_action_count": 0,
       "strategy": "force_horizontal_legal_probe",
-      "trace_backed": true
+      "trace_backed": false
     },
     {
       "legal_action_source": "Feature 048 legality snapshots",
-      "legal_counts_match_selected_counts": true,
+      "legal_counts_match_selected_counts": false,
       "seed": 2,
+      "selected_action_family_evidence_status": "unavailable",
       "selected_action_source": "Feature 048 legality snapshots",
       "selected_illegal_action_count": 0,
       "strategy": "force_horizontal_legal_probe",
-      "trace_backed": true
+      "trace_backed": false
     },
     {
       "legal_action_source": "Feature 048 legality snapshots",
-      "legal_counts_match_selected_counts": true,
+      "legal_counts_match_selected_counts": false,
       "seed": 0,
+      "selected_action_family_evidence_status": "unavailable",
       "selected_action_source": "Feature 048 legality snapshots",
       "selected_illegal_action_count": 0,
       "strategy": "force_vertical_legal_probe",
-      "trace_backed": true
+      "trace_backed": false
     },
     {
       "legal_action_source": "Feature 048 legality snapshots",
-      "legal_counts_match_selected_counts": true,
+      "legal_counts_match_selected_counts": false,
       "seed": 1,
+      "selected_action_family_evidence_status": "unavailable",
       "selected_action_source": "Feature 048 legality snapshots",
       "selected_illegal_action_count": 0,
       "strategy": "force_vertical_legal_probe",
-      "trace_backed": true
+      "trace_backed": false
     },
     {
       "legal_action_source": "Feature 048 legality snapshots",
-      "legal_counts_match_selected_counts": true,
+      "legal_counts_match_selected_counts": false,
       "seed": 2,
+      "selected_action_family_evidence_status": "unavailable",
       "selected_action_source": "Feature 048 legality snapshots",
       "selected_illegal_action_count": 0,
       "strategy": "force_vertical_legal_probe",
-      "trace_backed": true
+      "trace_backed": false
     },
     {
       "legal_action_source": "Feature 048 legality snapshots",
-      "legal_counts_match_selected_counts": true,
+      "legal_counts_match_selected_counts": false,
       "seed": 0,
+      "selected_action_family_evidence_status": "unavailable",
       "selected_action_source": "Feature 048 legality snapshots",
       "selected_illegal_action_count": 0,
       "strategy": "mixed_legal_round_robin_probe",
-      "trace_backed": true
+      "trace_backed": false
     },
     {
       "legal_action_source": "Feature 048 legality snapshots",
-      "legal_counts_match_selected_counts": true,
+      "legal_counts_match_selected_counts": false,
       "seed": 1,
+      "selected_action_family_evidence_status": "unavailable",
       "selected_action_source": "Feature 048 legality snapshots",
       "selected_illegal_action_count": 0,
       "strategy": "mixed_legal_round_robin_probe",
-      "trace_backed": true
+      "trace_backed": false
     },
     {
       "legal_action_source": "Feature 048 legality snapshots",
-      "legal_counts_match_selected_counts": true,
+      "legal_counts_match_selected_counts": false,
       "seed": 2,
+      "selected_action_family_evidence_status": "unavailable",
       "selected_action_source": "Feature 048 legality snapshots",
       "selected_illegal_action_count": 0,
       "strategy": "mixed_legal_round_robin_probe",
-      "trace_backed": true
+      "trace_backed": false
     }
   ],
   "summary": {
     "evidence_status": "available",
-    "matrix_complete": true,
+    "matrix_complete": false,
     "selected_illegal_action_count": 0,
     "selected_illegal_action_rate": 0.0,
-    "trace_backed": true
+    "trace_backed": false
   },
   "supported_actions": [
     "local",
     "horizontal",
     "vertical"
   ],
-  "trace_backed": true
+  "trace_backed": false
+}
+
+## Exposure Consistency
+{
+  "exposure_matrix_internal_consistency_verified": false,
+  "legal_but_unselected_consistency_verified": false,
+  "per_action_outcome_evidence_status": "unavailable",
+  "selected_action_count_consistency_verified": false,
+  "selected_action_family_evidence_status": "unavailable"
 }
 
 ## Observation Vector Audit
@@ -500,10 +592,10 @@
 ## Training Readiness Decision
 {
   "exposure_matrix_unblocked": true,
-  "final_verdict": "paper_mechanism_alignment_ready_for_training_contract",
+  "final_verdict": "insufficient_legality_or_trace_evidence",
   "observation_vector_audit_passed": true,
   "paper_formula_unit_audit_passed": true,
-  "rationale": "Exposure rerun and paper-mechanism audits passed against committed artifacts.",
-  "readiness_state": "ready_for_feature_050",
-  "recommended_next_feature": "Feature 050 — DDQN Training Contract Bundle"
+  "rationale": "Selected action family counts are not exposed by the committed legality evidence.",
+  "readiness_state": "blocked_by_insufficient_evidence",
+  "recommended_next_feature": "selected-action family evidence expansion before training"
 }

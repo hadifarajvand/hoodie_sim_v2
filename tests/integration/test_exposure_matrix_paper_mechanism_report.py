@@ -21,6 +21,9 @@ class ExposureMatrixPaperMechanismReportIntegrationTests(unittest.TestCase):
             self.assertIn("observation_vector_audit", payload)
             self.assertIn("paper_formula_unit_audit", payload)
             self.assertIn("training_readiness_decision", payload)
+            self.assertIn("selected_action_family_evidence_status", payload)
+            self.assertIn("per_action_outcome_evidence_status", payload)
+            self.assertIn("exposure_matrix_internal_consistency_verified", payload)
 
     def test_report_includes_no_drift_flags(self) -> None:
         payload = build_exposure_matrix_paper_mechanism_report().to_dict()
@@ -43,6 +46,16 @@ class ExposureMatrixPaperMechanismReportIntegrationTests(unittest.TestCase):
             "no_paper_reproduction_claim",
         ):
             self.assertTrue(payload[flag])
+
+    def test_report_final_verdict_blocks_training_when_exposure_evidence_unavailable(self) -> None:
+        payload = build_exposure_matrix_paper_mechanism_report().to_dict()
+        decision = payload["training_readiness_decision"]
+        self.assertEqual(decision["readiness_state"], "blocked_by_insufficient_evidence")
+        self.assertEqual(decision["final_verdict"], "insufficient_legality_or_trace_evidence")
+        self.assertEqual(decision["recommended_next_feature"], "selected-action family evidence expansion before training")
+        self.assertFalse(payload["selected_action_count_consistency_verified"])
+        self.assertFalse(payload["legal_but_unselected_consistency_verified"])
+        self.assertFalse(payload["exposure_matrix_internal_consistency_verified"])
 
 
 if __name__ == "__main__":

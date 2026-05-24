@@ -22,6 +22,11 @@ class ExposureMatrixRerunSummary:
     per_strategy_seed_matrix: list[dict[str, Any]]
     exposure_bias_summary: dict[str, Any]
     evidence_status: str
+    selected_action_family_evidence_status: str
+    selected_action_count_consistency_verified: bool
+    legal_but_unselected_consistency_verified: bool
+    per_action_outcome_evidence_status: str
+    exposure_matrix_internal_consistency_verified: bool
     exposure_matrix_unblocked: bool
 
     def to_dict(self) -> dict[str, Any]:
@@ -88,6 +93,11 @@ class ExposureMatrixPaperMechanismReport:
     per_strategy_seed_matrix: list[dict[str, Any]]
     per_action_outcome_matrix: dict[str, Any]
     selected_illegal_action_summary: dict[str, Any]
+    selected_action_family_evidence_status: str
+    selected_action_count_consistency_verified: bool
+    legal_but_unselected_consistency_verified: bool
+    per_action_outcome_evidence_status: str
+    exposure_matrix_internal_consistency_verified: bool
     observation_vector_audit: ObservationVectorAudit | dict[str, Any]
     paper_formula_unit_audit: PaperFormulaUnitAudit | dict[str, Any]
     runtime_semantic_drift_check: dict[str, Any]
@@ -125,6 +135,17 @@ class ExposureMatrixPaperMechanismReport:
             raise ValueError("invalid final_verdict")
         if self.final_verdict == "paper_mechanism_alignment_ready_for_training_contract" and self.recommended_next_feature != "Feature 050 — DDQN Training Contract Bundle":
             raise ValueError("ready verdict must recommend Feature 050")
+        if self.final_verdict == "paper_mechanism_alignment_ready_for_training_contract":
+            if self.selected_action_family_evidence_status != "available":
+                raise ValueError("ready verdict requires selected action family evidence")
+            if self.per_action_outcome_evidence_status != "available":
+                raise ValueError("ready verdict requires per-action outcome evidence")
+            if not self.exposure_matrix_internal_consistency_verified:
+                raise ValueError("ready verdict requires internal consistency")
+            if not self.selected_action_count_consistency_verified:
+                raise ValueError("ready verdict requires selected action count consistency")
+            if not self.legal_but_unselected_consistency_verified:
+                raise ValueError("ready verdict requires legal-but-unselected consistency")
         if self.final_verdict == "observation_vector_gap_blocks_training" and self.recommended_next_feature != "observation vector implementation repair before training":
             raise ValueError("observation gap verdict must recommend observation repair")
         if self.final_verdict == "formula_unit_gap_blocks_training" and self.recommended_next_feature != "formula/unit repair before training":
@@ -133,10 +154,16 @@ class ExposureMatrixPaperMechanismReport:
             raise ValueError("exposure bias verdict must recommend exposure repair")
         if self.final_verdict == "runtime_semantic_contradiction_requires_repair" and self.recommended_next_feature != "runtime semantic repair before training":
             raise ValueError("runtime semantic verdict must recommend runtime repair")
-        if self.final_verdict == "insufficient_legality_or_trace_evidence" and self.recommended_next_feature != "trace/evidence expansion before training":
-            raise ValueError("insufficient evidence verdict must recommend trace/evidence expansion")
+        if self.final_verdict == "insufficient_legality_or_trace_evidence" and self.recommended_next_feature not in {
+            "trace/evidence expansion before training",
+            "selected-action family evidence expansion before training",
+            "per-action outcome evidence expansion before training",
+        }:
+            raise ValueError("insufficient evidence verdict must recommend an evidence expansion path")
         if self.final_verdict == "prerequisite_blocked" and not self.recommended_next_feature:
             raise ValueError("prerequisite blocked requires next feature guidance")
+        if self.final_verdict != "paper_mechanism_alignment_ready_for_training_contract" and self.recommended_next_feature == "Feature 050 — DDQN Training Contract Bundle":
+            raise ValueError("Feature 050 cannot be recommended unless readiness is achieved")
         for flag in (
             "no_runtime_repair_performed",
             "no_training_started",
@@ -169,6 +196,11 @@ class ExposureMatrixPaperMechanismReport:
             "per_strategy_seed_matrix": list(self.per_strategy_seed_matrix),
             "per_action_outcome_matrix": dict(self.per_action_outcome_matrix),
             "selected_illegal_action_summary": dict(self.selected_illegal_action_summary),
+            "selected_action_family_evidence_status": self.selected_action_family_evidence_status,
+            "selected_action_count_consistency_verified": self.selected_action_count_consistency_verified,
+            "legal_but_unselected_consistency_verified": self.legal_but_unselected_consistency_verified,
+            "per_action_outcome_evidence_status": self.per_action_outcome_evidence_status,
+            "exposure_matrix_internal_consistency_verified": self.exposure_matrix_internal_consistency_verified,
             "observation_vector_audit": self.observation_vector_audit.to_dict() if hasattr(self.observation_vector_audit, "to_dict") else dict(self.observation_vector_audit),
             "paper_formula_unit_audit": self.paper_formula_unit_audit.to_dict() if hasattr(self.paper_formula_unit_audit, "to_dict") else dict(self.paper_formula_unit_audit),
             "runtime_semantic_drift_check": dict(self.runtime_semantic_drift_check),

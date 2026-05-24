@@ -19,6 +19,11 @@ class ExposureMatrixPaperMechanismSchemaTests(unittest.TestCase):
             "per_strategy_seed_matrix",
             "per_action_outcome_matrix",
             "selected_illegal_action_summary",
+            "selected_action_family_evidence_status",
+            "selected_action_count_consistency_verified",
+            "legal_but_unselected_consistency_verified",
+            "per_action_outcome_evidence_status",
+            "exposure_matrix_internal_consistency_verified",
             "observation_vector_audit",
             "paper_formula_unit_audit",
             "runtime_semantic_drift_check",
@@ -43,6 +48,18 @@ class ExposureMatrixPaperMechanismSchemaTests(unittest.TestCase):
         self.assertIn("passed", audit)
         self.assertIn("blocking_items", audit)
         self.assertIn("evidence_sources", audit)
+
+    def test_exposure_matrix_rerun_summary_includes_consistency_fields(self) -> None:
+        report = build_exposure_matrix_paper_mechanism_report()
+        summary = report.to_dict()["exposure_matrix_rerun_summary"]
+        for key in (
+            "selected_action_family_evidence_status",
+            "selected_action_count_consistency_verified",
+            "legal_but_unselected_consistency_verified",
+            "per_action_outcome_evidence_status",
+            "exposure_matrix_internal_consistency_verified",
+        ):
+            self.assertIn(key, summary)
 
 
 if __name__ == "__main__":

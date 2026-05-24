@@ -6,15 +6,20 @@ from src.analysis.exposure_matrix_paper_mechanism_alignment import build_exposur
 
 
 class ExposureMatrixPaperMechanismAlignmentIntegrationTests(unittest.TestCase):
-    def test_report_routes_to_feature_050_when_audits_pass(self) -> None:
+    def test_feature_050_not_recommended_from_placeholder_exposure_matrix(self) -> None:
         report = build_exposure_matrix_paper_mechanism_report()
         payload = report.to_dict()
-        self.assertEqual(report.final_verdict, "paper_mechanism_alignment_ready_for_training_contract")
-        self.assertEqual(report.recommended_next_feature, "Feature 050 — DDQN Training Contract Bundle")
+        self.assertEqual(report.final_verdict, "insufficient_legality_or_trace_evidence")
+        self.assertEqual(report.recommended_next_feature, "selected-action family evidence expansion before training")
+        self.assertFalse(payload["selected_action_count_consistency_verified"])
+        self.assertFalse(payload["legal_but_unselected_consistency_verified"])
+        self.assertFalse(payload["exposure_matrix_internal_consistency_verified"])
         self.assertEqual(payload["legality_evidence_verified"]["source_feature"], "048-legality-evidence-expansion")
         self.assertTrue(payload["legality_evidence_verified"]["exposure_matrix_unblocked"])
-        self.assertEqual(payload["legal_vs_selected_action_matrix"]["matrix_complete"], True)
-        self.assertTrue(payload["legal_vs_selected_action_matrix"]["trace_backed"])
+        self.assertEqual(payload["selected_action_family_evidence_status"], "unavailable")
+        self.assertEqual(payload["per_action_outcome_evidence_status"], "unavailable")
+        self.assertFalse(payload["legal_vs_selected_action_matrix"]["matrix_complete"])
+        self.assertFalse(payload["legal_vs_selected_action_matrix"]["trace_backed"])
 
     def test_prior_feature_gates_include_043_through_048(self) -> None:
         report = build_exposure_matrix_paper_mechanism_report()
