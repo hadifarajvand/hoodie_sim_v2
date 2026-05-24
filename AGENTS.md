@@ -1,13 +1,10 @@
 <!-- SPECKIT START -->
-For additional context about technologies to be used, project structure,
-shell commands, and other important information, read
-`specs/036-deadline-timeout-off-by-one-audit/plan.md`
-and `specs/036-deadline-timeout-off-by-one-audit/spec.md`
+Use `docs/spec-kit-workflow/` as the repository-level SpecKit operating contract.
 
-Feature 036 scope: deadline/timeout boundary semantics only.
-Do not change execution-time formulas, transmission-delay wiring,
-public/cloud capacity-sharing logic, topology legality, policy behavior,
-training/neural-network code, dependency files, campaign artifacts, or paper-recovery claims.
+Feature-specific scope belongs in `specs/<feature-id>/`.
+Do not write feature-specific plan/spec pointers into AGENTS.md.
+Do not use AGENTS.md as an active feature pointer.
+`.specify/feature.json` is local-only and must not be committed.
 <!-- SPECKIT END -->
 
 ## External Reference Usage

@@ -62,7 +62,6 @@ You **MUST** consider the user input before proceeding (if not empty).
    - Evaluate gates (ERROR if violations unjustified)
    - Phase 0: Generate research.md (resolve all NEEDS CLARIFICATION)
    - Phase 1: Generate data-model.md, contracts/, quickstart.md
-   - Phase 1: Update agent context by running the agent script
    - Re-evaluate Constitution Check post-design
 
 4. **Stop and report**: Command ends after Phase 2 planning. Report branch, IMPL_PLAN path, and generated artifacts.
@@ -139,9 +138,12 @@ You **MUST** consider the user input before proceeding (if not empty).
 3. **Agent context update**:
    - Update the plan reference between the `<!-- SPECKIT START -->` and `<!-- SPECKIT END -->` markers in `AGENTS.md` to point to the plan file created in step 1 (the IMPL_PLAN path)
 
-**Output**: data-model.md, /contracts/*, quickstart.md, updated agent context file
+**Output**: data-model.md, /contracts/*, quickstart.md
 
 ## Key rules
 
 - Use absolute paths for filesystem operations; use project-relative paths for references in documentation and agent context files
+- Do not modify AGENTS.md during planning.
+- Feature-specific context remains in the generated `specs/<feature-id>/plan.md`.
+- Repository-wide operating rules live in `docs/spec-kit-workflow/`.
 - ERROR on gate failures or unresolved clarifications

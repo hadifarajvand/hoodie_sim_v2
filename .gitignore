@@ -18,3 +18,4 @@ build/
 site/
 outputs/
 resources/references/simpy/venv_mac/
+.specify/feature.json
