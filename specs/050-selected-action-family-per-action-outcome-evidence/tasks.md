@@ -21,7 +21,7 @@
 
 ### Quality Gate
 
-- [ ] T001 [P] Add Feature 050 prerequisite and scope-guard coverage in `tests/integration/test_selected_action_outcome_scope_guard.py` for branch == `050-selected-action-family-per-action-outcome-evidence`, branch != `main`, `main == origin/main`, `main == 049-exposure-matrix-paper-mechanism-alignment-complete^{}`, empty prerequisite diff, pointer hygiene, clean `AGENTS.md`, committed prior-artifact gates, and dirty-path rejection
+- [ ] T001 [P] Add Feature 050 prerequisite coverage in `tests/integration/test_selected_action_outcome_scope_guard.py` using committed-artifact-only validation for prior Features 044, 048, and 049, plus explicit committed prior-artifact gates and Feature 050 scope rejection for fake zeros, sample-derived counts, runtime drift, and prior artifact rewrites
 - [ ] T002 [P] Scaffold the passive-analysis package in `src/analysis/selected_action_family_per_action_outcome_evidence/__init__.py`, `src/analysis/selected_action_family_per_action_outcome_evidence/__main__.py`, `src/analysis/selected_action_family_per_action_outcome_evidence/config.py`, `src/analysis/selected_action_family_per_action_outcome_evidence/model.py`, `src/analysis/selected_action_family_per_action_outcome_evidence/runner.py`, and `src/analysis/selected_action_family_per_action_outcome_evidence/report.py`
 - [ ] T003 [P] Wire the Feature 050 report output paths and filenames in `src/analysis/selected_action_family_per_action_outcome_evidence/config.py` and `src/analysis/selected_action_family_per_action_outcome_evidence/report.py`
 
@@ -38,7 +38,7 @@
 - [ ] T004 [P] Audit committed Feature 044, Feature 048, and Feature 049 artifact inputs and add only passive loading helpers in `src/analysis/selected_action_family_per_action_outcome_evidence/runner.py`
 - [ ] T005 [P] Extend passive trace schema/emission only if required for selected-action family and terminal-outcome join keys in `src/environment/lifecycle_trace.py` and `src/environment/gym_adapter.py`
 - [ ] T006 [P] Define the Feature 050 report dataclasses for selected-action family evidence, selected-action-to-task joins, per-action outcome joins, legal-but-unselected consistency, internal consistency, and Feature 049 unblock assessment in `src/analysis/selected_action_family_per_action_outcome_evidence/model.py`
-- [ ] T007 [P] Add committed-artifact gate and pointer-hygiene checks to `tests/integration/test_selected_action_outcome_scope_guard.py` so prior feature validation uses committed artifacts only and never dirty-worktree-sensitive tests
+- [ ] T007 [P] Add committed-artifact-only validation for prior Features 044, 048, and 049 in `tests/integration/test_selected_action_outcome_evidence.py` and `tests/integration/test_selected_action_outcome_report.py`, asserting the committed reports exist and expose the required prior-feature fields without using active worktree dirtiness, active pointer state, or prior report regeneration
 
 **Checkpoint**: Foundation ready - story work can now begin in parallel
 
@@ -95,15 +95,17 @@
 
 ### Tests for User Story 3
 
-- [ ] T019 [P] [US3] Add report contract tests for `feature_049_can_be_rerun`, `feature_049_remaining_blockers`, `recommended_next_feature`, and all required top-level report fields in `tests/integration/test_selected_action_outcome_report.py`
+- [ ] T019 [P] [US3] Add report contract tests for `selected_action_family_evidence_status`, `selected_action_to_task_join_status`, `per_action_outcome_evidence_status`, `feature_049_can_be_rerun`, `feature_049_remaining_blockers`, `feature_049_unblock_assessment`, `recommended_next_feature`, and all required top-level report fields in `tests/integration/test_selected_action_outcome_report.py`
 - [ ] T020 [P] [US3] Add behavior-equivalence tests with unique check names in `tests/unit/test_selected_action_outcome_behavior_equivalence.py`
 
 ### Implementation for User Story 3
 
 - [ ] T021 [US3] Implement exposure-matrix internal consistency checks and `exposure_matrix_internal_consistency_verified` in `src/analysis/selected_action_family_per_action_outcome_evidence/runner.py`
-- [ ] T022 [US3] Implement Feature 049 unblock assessment fields and readiness routing in `src/analysis/selected_action_family_per_action_outcome_evidence/runner.py`
+- [ ] T022 [US3] Implement Feature 049 unblock assessment fields and readiness routing in `src/analysis/selected_action_family_per_action_outcome_evidence/runner.py`, including top-level and nested copies of `selected_action_family_evidence_status`, `selected_action_to_task_join_status`, `per_action_outcome_evidence_status`, `feature_049_can_be_rerun`, and `feature_049_remaining_blockers`
 - [ ] T023 [US3] Implement behavior-equivalence summary generation with unique check names in `src/analysis/selected_action_family_per_action_outcome_evidence/runner.py`
 - [ ] T024 [US3] Ensure the final report writer emits JSON and Markdown artifacts for `artifacts/analysis/selected-action-family-per-action-outcome-evidence/` in `src/analysis/selected_action_family_per_action_outcome_evidence/report.py`
+- [ ] T031 [P] [US3] Add readiness-field coverage tests in `tests/integration/test_selected_action_outcome_report.py` that require `behavior_equivalence_passed` to exist, equal `behavior_equivalence_summary.passed`, and gate `feature_049_can_be_rerun`
+- [ ] T032 [P] [US3] Add blocker-routing tests in `tests/integration/test_selected_action_outcome_scope_guard.py` that fail when `behavior_equivalence_passed = false` but `feature_049_remaining_blockers` omits `behavior_equivalence_failed`, or when `final_verdict` claims readiness while `behavior_equivalence_passed = false`
 
 **Checkpoint**: Feature 049 can be rerun only when selected-action family evidence, task joins, outcome joins, and consistency all pass
 
@@ -115,8 +117,12 @@
 
 - [ ] T025 [P] Reconcile `spec.md`, `plan.md`, `research.md`, `data-model.md`, and `contracts/selected-action-family-outcome-evidence-report-schema.md` with the final implementation contract
 - [ ] T026 [P] Generate the Feature 050 JSON and Markdown reports in `artifacts/analysis/selected-action-family-per-action-outcome-evidence/`
-- [ ] T027 Run the approved Feature 050 validation command from `specs/050-selected-action-family-per-action-outcome-evidence/quickstart.md`
-- [ ] T028 Verify the final report blocks Feature 049 rerun readiness unless `selected_action_family_evidence_status = available`, `per_action_outcome_evidence_status = available`, `selected_action_count_consistency_verified = true`, `legal_but_unselected_consistency_verified = true`, and `exposure_matrix_internal_consistency_verified = true`
+- [ ] T027 Run the approved Feature 050 validation command from `specs/050-selected-action-family-per-action-outcome-evidence/quickstart.md`, which validates committed prior artifacts only and excludes dirty-worktree-sensitive legacy Feature 048/049 report tests
+- [ ] T028 Verify the final report blocks Feature 049 rerun readiness unless `selected_action_family_evidence_status = available`, `selected_action_to_task_join_status = available`, `per_action_outcome_evidence_status = available`, `selected_action_count_consistency_verified = true`, `legal_but_unselected_consistency_verified = true`, `exposure_matrix_internal_consistency_verified = true`, and top-level readiness fields match `feature_049_unblock_assessment`
+
+- [ ] T029 [P] [US3] Add contract tests in `tests/integration/test_selected_action_outcome_report.py` that fail when top-level and nested `feature_049_unblock_assessment` values contradict each other or when `feature_049_can_be_rerun = true` while any evidence status is unavailable or partial
+- [ ] T030 [P] [US3] Add scope-guard assertions in `tests/integration/test_selected_action_outcome_scope_guard.py` that fail when `feature_049_can_be_rerun = false` but `feature_049_remaining_blockers` is empty, or when `final_verdict` claims readiness while `feature_049_can_be_rerun = false`
+- [ ] T033 [P] Add final commit-hygiene guard in `tests/integration/test_selected_action_outcome_scope_guard.py` that classifies dirty paths before staging and forbids staging `.specify/feature.json`, `AGENTS.md`, `.gitignore`, dependency files, `src/policies/`, Feature 037-049 artifacts, checkpoints, and training artifacts while allowing only approved Feature 050 paths
 
 ---
 

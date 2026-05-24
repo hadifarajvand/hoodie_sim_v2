@@ -1,6 +1,6 @@
 # Feature Specification: Selected-Action Family and Per-Action Outcome Evidence Expansion
 
-**Feature Branch**: `050-selected-action-family-outcome-evidence`  
+**Feature Branch**: `050-selected-action-family-per-action-outcome-evidence`  
 **Created**: 2026-05-24  
 **Status**: Draft  
 **Input**: User description: "Feature 050 must expand passive evidence so the system can compute selected local/horizontal/vertical counts and join selected actions to terminal outcomes without fake zeros, sample-derived counts, or placeholder rates."
@@ -75,15 +75,23 @@ As a feature owner, I want a passive evidence summary that tells me whether Feat
 - **FR-012**: The system MUST expose `legal_but_unselected_consistency_verified` and MUST set it to false when legal-but-unselected counts cannot be verified.
 - **FR-013**: The system MUST expose `exposure_matrix_internal_consistency_verified` and MUST set it to false whenever selected-family totals, legal-but-unselected totals, or action-outcome joins cannot be verified.
 - **FR-014**: The system MUST classify each strategy/seed/task/slot row in the selected-action family matrix so evidence can be traced without sample-derived aggregation.
-- **FR-015**: The system MUST provide a `feature_049_unblock_assessment` that states whether the passive evidence is sufficient to rerun Feature 049.
-- **FR-016**: The system MUST recommend `Feature 051 — Exposure Matrix Paper Mechanism Rerun with Outcome Evidence` only when selected-action family evidence, outcome joins, internal consistency, and behavior equivalence all pass.
-- **FR-017**: The system MUST recommend evidence repair before training when selected-action family evidence is incomplete, outcome joins are incomplete, or internal consistency fails.
-- **FR-018**: The system MUST never fabricate zero counts or zero rates to stand in for unavailable evidence.
-- **FR-019**: The system MUST never derive selected counts or outcome rates from sample assumptions when trace-backed evidence is missing.
-- **FR-020**: The system MUST preserve passive-only behavior and MUST not change action legality, action selection, reward timing, timeout behavior, queue behavior, execution behavior, transmission behavior, or capacity semantics.
-- **FR-021**: The system MUST not run training, optimizer steps, replay training, target updates, campaigns, or paper reproduction workflows.
-- **FR-022**: The system MUST emit JSON and Markdown reports containing the required sections and the evidence-status fields needed to audit Feature 049 unblock readiness.
-- **FR-023**: The system MUST keep `.specify/feature.json` local-only when used as the active SpecKit pointer and MUST not stage or commit it as part of the feature.
+- **FR-015**: The system MUST provide a `feature_049_unblock_assessment` umbrella object that reports `feature_049_can_be_rerun`, `feature_049_remaining_blockers`, `selected_action_family_evidence_status`, `selected_action_to_task_join_status`, `per_action_outcome_evidence_status`, `exposure_matrix_internal_consistency_verified`, and `recommended_next_feature`.
+- **FR-016**: The system MUST expose `selected_action_family_evidence_status`, `selected_action_to_task_join_status`, `per_action_outcome_evidence_status`, `feature_049_can_be_rerun`, and `feature_049_remaining_blockers` as top-level report fields as well as inside `feature_049_unblock_assessment`.
+- **FR-017**: The system MUST use the status vocabulary `available`, `partial`, and `unavailable` for selected-action family evidence, selected-action-to-task join evidence, and per-action outcome evidence.
+- **FR-018**: The system MUST set `feature_049_can_be_rerun = true` only when selected-action family evidence, selected-action-to-task joins, per-action outcome evidence, internal consistency, behavior equivalence, action-selection drift, and action-legality drift all pass.
+- **FR-019**: The system MUST expose `behavior_equivalence_passed` as a required readiness field and define it exactly as `behavior_equivalence_summary.passed`.
+- **FR-020**: The system MUST expose `behavior_equivalence_passed` both at the top level of the report and inside `feature_049_unblock_assessment`, and both values MUST match `behavior_equivalence_summary.passed`.
+- **FR-021**: The system MUST set `feature_049_can_be_rerun = true` only when selected-action family evidence, selected-action-to-task joins, per-action outcome evidence, internal consistency, `behavior_equivalence_passed`, action-selection drift, and action-legality drift all pass.
+- **FR-022**: The system MUST set `feature_049_can_be_rerun = false` and populate `feature_049_remaining_blockers` whenever any required evidence status is unavailable or partial, or when internal consistency or `behavior_equivalence_passed` fails.
+- **FR-023**: The system MUST require `feature_049_remaining_blockers` to include `behavior_equivalence_failed` whenever `behavior_equivalence_passed = false`.
+- **FR-024**: The system MUST recommend `Feature 051 — Exposure Matrix Paper Mechanism Rerun with Outcome Evidence` only when `feature_049_can_be_rerun = true`.
+- **FR-025**: The system MUST recommend evidence repair before training when selected-action family evidence is incomplete, selected-action-to-task joins are incomplete, per-action outcome joins are incomplete, or internal consistency fails.
+- **FR-026**: The system MUST never fabricate zero counts or zero rates to stand in for unavailable evidence.
+- **FR-027**: The system MUST never derive selected counts or outcome rates from sample assumptions when trace-backed evidence is missing.
+- **FR-028**: The system MUST preserve passive-only behavior and MUST not change action legality, action selection, reward timing, timeout behavior, queue behavior, execution behavior, transmission behavior, or capacity semantics.
+- **FR-029**: The system MUST not run training, optimizer steps, replay training, target updates, campaigns, or paper reproduction workflows.
+- **FR-030**: The system MUST emit JSON and Markdown reports containing the required sections and the evidence-status fields needed to audit Feature 049 unblock readiness.
+- **FR-031**: The system MUST keep `.specify/feature.json` local-only when used as the active SpecKit pointer and MUST not stage or commit it as part of the feature.
 
 ### Key Entities *(include if feature involves data)*
 
@@ -100,7 +108,7 @@ As a feature owner, I want a passive evidence summary that tells me whether Feat
 - **SC-002**: The report produces selected family counts only when evidence is trace-backed and otherwise marks them unavailable instead of substituting zeros.
 - **SC-003**: The report joins selected actions to terminal outcomes whenever the passive evidence provides the required keys, and reports join incompleteness otherwise.
 - **SC-004**: The report never emits fake all-zero completion, drop, or pending rates when the evidence is unavailable.
-- **SC-005**: The report blocks Feature 049 rerun readiness unless selected-action family evidence, terminal outcome joins, internal consistency, and behavior equivalence all pass.
+- **SC-005**: The report blocks Feature 049 rerun readiness unless selected-action family evidence, selected-action-to-task joins, per-action outcome joins, internal consistency, behavior equivalence, action-selection drift, and action-legality drift all pass.
 - **SC-006**: The report artifacts are generated in both JSON and Markdown form and include all required evidence-status and consistency sections.
 
 ## Assumptions

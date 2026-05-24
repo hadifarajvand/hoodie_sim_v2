@@ -1,6 +1,6 @@
 # Implementation Plan: Selected-Action Family and Per-Action Outcome Evidence Expansion
 
-**Branch**: `050-selected-action-family-outcome-evidence` | **Date**: 2026-05-24 | **Spec**: [spec.md](./spec.md)
+**Branch**: `050-selected-action-family-per-action-outcome-evidence` | **Date**: 2026-05-24 | **Spec**: [spec.md](./spec.md)
 **Input**: Feature specification from `/specs/050-selected-action-family-per-action-outcome-evidence/spec.md`
 
 **Note**: This plan is generated from the Feature 050 specification and is limited to passive evidence expansion only.
@@ -14,7 +14,7 @@ Feature 050 expands passive evidence so Feature 049 can be rerun without inventi
 **Language/Version**: Python 3.11  
 **Primary Dependencies**: Standard library only for the analysis package; existing project runtime modules for passive trace access  
 **Storage**: File-based JSON and Markdown artifacts under `artifacts/analysis/selected-action-family-per-action-outcome-evidence/`  
-**Testing**: `unittest` via the approved interpreter  
+**Testing**: `unittest` via the approved interpreter; Feature 050 validation uses Feature 050 tests plus safe prior schema/config/runtime checks, and validates prior Features 044, 048, and 049 through committed-artifact-only assertions inside Feature 050 tests
 **Target Platform**: Local Linux/macOS development and CI  
 **Project Type**: CLI-driven analysis package inside a simulator repository  
 **Performance Goals**: Generate the passive evidence report quickly enough for routine planning/validation use; no training or campaign execution  
@@ -123,7 +123,66 @@ Research is limited to the passive evidence model already defined by committed F
 - Feature 049 unblock assessment
 - Behavior equivalence audit with deduplicated checks
 
+### Report Contract
+
+The Feature 050 report MUST expose these top-level fields:
+
+- `selected_action_family_evidence_status`
+- `selected_action_to_task_join_status`
+- `per_action_outcome_evidence_status`
+- `behavior_equivalence_passed`
+- `feature_049_can_be_rerun`
+- `feature_049_remaining_blockers`
+- `feature_049_unblock_assessment`
+
+`feature_049_unblock_assessment` is the canonical umbrella object. It MUST contain:
+
+- `feature_049_can_be_rerun`
+- `feature_049_remaining_blockers`
+- `selected_action_family_evidence_status`
+- `selected_action_to_task_join_status`
+- `per_action_outcome_evidence_status`
+- `exposure_matrix_internal_consistency_verified`
+- `behavior_equivalence_passed`
+- `recommended_next_feature`
+
+Top-level values and nested `feature_049_unblock_assessment` values MUST match exactly for:
+
+- `selected_action_family_evidence_status`
+- `selected_action_to_task_join_status`
+- `per_action_outcome_evidence_status`
+- `behavior_equivalence_passed`
+- `feature_049_can_be_rerun`
+- `feature_049_remaining_blockers`
+
+Readiness rule:
+
+- `behavior_equivalence_passed` MUST equal `behavior_equivalence_summary.passed`.
+- `feature_049_can_be_rerun` may be `true` only when `selected_action_family_evidence_status = available`, `selected_action_to_task_join_status = available`, `per_action_outcome_evidence_status = available`, `exposure_matrix_internal_consistency_verified = true`, `behavior_equivalence_passed = true`, `no_action_selection_drift = true`, and `no_action_legality_drift = true`.
+- If any readiness condition fails, `feature_049_can_be_rerun` MUST be `false`, `feature_049_remaining_blockers` MUST be non-empty, `recommended_next_feature` MUST NOT point to a Feature 049 rerun, and `final_verdict` MUST NOT be `selected_action_outcome_evidence_ready_for_feature_049_rerun`.
+
+Validation language:
+
+- Validation MUST fail if any top-level status field is missing.
+- Validation MUST fail if `feature_049_unblock_assessment` is missing.
+- Validation MUST fail if `behavior_equivalence_passed` is missing.
+- Validation MUST fail if `feature_049_can_be_rerun` is missing.
+- Validation MUST fail if `feature_049_remaining_blockers` is missing.
+- Validation MUST fail if top-level and nested readiness/status values contradict each other.
+- Validation MUST fail if `behavior_equivalence_passed` contradicts `behavior_equivalence_summary.passed`.
+- Validation MUST fail if a Feature 049 rerun is recommended while any required evidence status is `unavailable` or `partial`.
+- Validation MUST fail if a Feature 049 rerun is recommended while `exposure_matrix_internal_consistency_verified = false`.
+- Validation MUST fail if a Feature 049 rerun is recommended while `behavior_equivalence_passed = false`.
+- Validation MUST fail if `final_verdict` claims readiness while `feature_049_can_be_rerun = false`.
+- Validation MUST fail if `feature_049_remaining_blockers` omits `behavior_equivalence_failed` when `behavior_equivalence_passed = false`.
+
+Validation scope discipline:
+
+- Feature 050 validation MUST use Feature 050 tests for current feature behavior.
+- Feature 050 validation MUST use committed-artifact-only checks for prior Features 044, 048, and 049.
+- Feature 050 validation MUST avoid any prior-feature test that inspects active worktree dirtiness, active `.specify/feature.json` state, current dirty paths, current branch local-only files, or report regeneration cleanliness from the active worktree.
+- Feature 050 validation MUST keep current Feature 050 hygiene rules limited to commit-scope rules such as not staging or committing `.specify/feature.json`, `AGENTS.md`, or unrelated files.
+
 ## Complexity Tracking
 
 No constitution violations require justification. The feature remains passive and scoped to evidence expansion only.
-

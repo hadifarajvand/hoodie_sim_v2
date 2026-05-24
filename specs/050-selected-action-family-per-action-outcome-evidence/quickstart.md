@@ -32,7 +32,15 @@ PYTHONPATH=/Users/hadi/Documents/GitHub/hoodie_sim_v2 \
   tests.unit.test_selected_action_outcome_behavior_equivalence \
   tests.integration.test_selected_action_outcome_evidence \
   tests.integration.test_selected_action_outcome_report \
-  tests.integration.test_selected_action_outcome_scope_guard
+  tests.integration.test_selected_action_outcome_scope_guard \
+  tests.unit.test_lifecycle_trace_schema \
+  tests.unit.test_task_completion_lifecycle_schema \
+  tests.unit.test_paper_default_terminal_exposure_config \
+  tests.unit.test_smoke_training_contract \
+  tests.unit.test_training_foundation_contract \
+  tests.integration.test_execution_time_flow \
+  tests.integration.test_transmission_delay_runtime_wiring \
+  tests.integration.test_public_cloud_capacity_sharing_flow
 ```
 
 ## What success looks like
