@@ -222,12 +222,12 @@
     {
       "details": "main matches 051-passive-selected-action-trace-repair-complete^{}",
       "name": "main_equals_051",
-      "verified": true
+      "verified": false
     },
     {
       "details": "diff between 051-passive-selected-action-trace-repair-complete^{} and main is empty",
       "name": "prerequisite_diff_empty",
-      "verified": true
+      "verified": false
     },
     {
       "details": ".specify/feature.json is not staged",
@@ -242,7 +242,7 @@
     {
       "details": "AGENTS.md clean before report generation",
       "name": "agents_clean_before_report",
-      "verified": false
+      "verified": true
     }
   ],
   "prior_feature_gates_verified": [
