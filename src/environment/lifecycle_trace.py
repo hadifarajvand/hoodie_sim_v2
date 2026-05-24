@@ -12,8 +12,11 @@ class LifecycleTraceEvent:
     source_agent_id: int | str | None = None
     selected_action: str | None = None
     selected_action_family: str | None = None
+    selected_action_trace_source: str | None = None
     action_index: int | None = None
     decision_event_id: str | None = None
+    selected_action_to_task_join_key: str | None = None
+    terminal_outcome_join_key: str | None = None
     strategy: str | None = None
     seed: int | None = None
     agent_id: int | str | None = None

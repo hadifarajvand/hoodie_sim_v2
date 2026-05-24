@@ -1,0 +1,191 @@
+{
+  "behavior_equivalence_passed": true,
+  "behavior_equivalence_summary": {
+    "checks": [
+      {
+        "details": "reward values must match; sample_count=15",
+        "name": "same_rewards",
+        "verified": true
+      },
+      {
+        "details": "finalized task payloads must match; sample_count=15",
+        "name": "same_finalized_tasks",
+        "verified": true
+      },
+      {
+        "details": "terminal flags must match; sample_count=15",
+        "name": "same_terminal_flags",
+        "verified": true
+      },
+      {
+        "details": "queue load must match; sample_count=15",
+        "name": "same_queue_load",
+        "verified": true
+      },
+      {
+        "details": "selected actions must match; sample_count=15",
+        "name": "same_action_sequence",
+        "verified": true
+      },
+      {
+        "details": "completion/drop outcomes must match; sample_count=15",
+        "name": "same_outcomes",
+        "verified": true
+      }
+    ],
+    "passed": true
+  },
+  "evidence_readiness_for_feature_050_rerun": false,
+  "feature_id": "051-passive-selected-action-trace-repair",
+  "final_verdict": "selected_action_family_trace_incomplete",
+  "no_action_legality_drift": true,
+  "no_action_selection_drift": true,
+  "no_capacity_contract_drift": true,
+  "no_curve_fitting": true,
+  "no_dependency_drift": true,
+  "no_optimizer_step": true,
+  "no_paper_reproduction_claim": true,
+  "no_policy_drift": true,
+  "no_replay_training": true,
+  "no_reward_timing_change": true,
+  "no_runtime_repair_performed": true,
+  "no_simulator_output_tuning": true,
+  "no_target_update_execution": true,
+  "no_timeout_contract_drift": true,
+  "no_training_started": true,
+  "no_transmission_contract_drift": true,
+  "per_action_outcome_join_readiness": "unavailable",
+  "prerequisite_tags_verified": [
+    {
+      "details": "current branch is 051-passive-selected-action-trace-repair",
+      "name": "branch",
+      "verified": true
+    },
+    {
+      "details": "branch is not main",
+      "name": "not_main",
+      "verified": true
+    },
+    {
+      "details": "main matches origin/main",
+      "name": "main_equals_origin_main",
+      "verified": true
+    },
+    {
+      "details": "main matches 050-selected-action-family-per-action-outcome-evidence-complete^{}",
+      "name": "main_equals_feature_050",
+      "verified": true
+    },
+    {
+      "details": "diff between 050-selected-action-family-per-action-outcome-evidence-complete^{} and main is empty",
+      "name": "prerequisite_diff_empty",
+      "verified": true
+    },
+    {
+      "details": ".specify/feature.json is not staged",
+      "name": "pointer_not_staged",
+      "verified": true
+    },
+    {
+      "details": ".specify/feature.json is not in main...HEAD diff",
+      "name": "pointer_not_in_main_head",
+      "verified": true
+    },
+    {
+      "details": "AGENTS.md is not staged or dirty before report generation",
+      "name": "agents_clean_before_report",
+      "verified": true
+    }
+  ],
+  "prior_feature_gates_verified": [
+    {
+      "details": "artifacts/analysis/passive-runtime-lifecycle-trace-instrumentation/lifecycle-trace-instrumentation-report.json",
+      "feature": "044",
+      "verified": true
+    },
+    {
+      "details": "artifacts/analysis/legality-evidence-expansion/legality-evidence-report.json",
+      "feature": "048",
+      "verified": true
+    },
+    {
+      "details": "artifacts/analysis/exposure-matrix-paper-mechanism-alignment/exposure-matrix-paper-mechanism-report.json",
+      "feature": "049",
+      "verified": true
+    },
+    {
+      "details": "artifacts/analysis/selected-action-family-per-action-outcome-evidence/selected-action-family-outcome-evidence-report.json",
+      "feature": "050",
+      "verified": true
+    }
+  ],
+  "recommended_next_feature": "selected-action family trace repair continuation",
+  "remaining_blockers": [
+    "selected_action_family_evidence_incomplete",
+    "selected_action_to_task_join_incomplete",
+    "terminal_outcome_join_key_incomplete",
+    "per_action_outcome_join_incomplete"
+  ],
+  "selected_action_family_evidence_status": "unavailable",
+  "selected_action_family_trace_summary": {
+    "per_strategy_seed_selected_action_family_matrix": [],
+    "selected_action_count": null,
+    "selected_action_count_consistency_verified": false,
+    "selected_action_family_evidence_status": "unavailable",
+    "selected_horizontal_count": null,
+    "selected_local_count": null,
+    "selected_vertical_count": null
+  },
+  "selected_action_to_task_join_status": "unavailable",
+  "selected_action_to_task_join_summary": {
+    "missing_selected_action_task_join_count": null,
+    "selected_action_to_task_join_count": null,
+    "selected_action_to_task_join_ratio": null,
+    "selected_action_to_task_join_status": "unavailable"
+  },
+  "selected_action_trace_emission_summary": {
+    "selected_action_emitted_at_decision_point": true,
+    "selected_action_family_guessed_from_legality_mask": false,
+    "selected_action_metadata_emitted_after_outcome": false,
+    "selected_action_to_task_join_key_emitted": true,
+    "selected_action_trace_source_emitted": true,
+    "terminal_outcome_join_key_emitted": true
+  },
+  "selected_action_trace_schema": {
+    "decision_point_fields": [
+      "strategy",
+      "seed",
+      "slot",
+      "agent_id",
+      "task_id",
+      "selected_action",
+      "action_index",
+      "selected_action_family",
+      "decision_event_id"
+    ],
+    "join_key_fields": [
+      "selected_action_to_task_join_key",
+      "terminal_outcome_join_key"
+    ],
+    "required_fields": [
+      "selected_action",
+      "action_index",
+      "selected_action_family",
+      "selected_action_trace_source",
+      "decision_event_id",
+      "selected_action_to_task_join_key",
+      "terminal_outcome_join_key"
+    ],
+    "trace_source_fields": [
+      "selected_action_trace_source",
+      "trace_source_component"
+    ]
+  },
+  "terminal_outcome_join_key_summary": {
+    "missing_terminal_outcome_join_count": null,
+    "terminal_outcome_join_count": null,
+    "terminal_outcome_join_ratio": null,
+    "terminal_outcome_join_status": "unavailable"
+  },
+  "terminal_outcome_join_status": "unavailable"
+}
