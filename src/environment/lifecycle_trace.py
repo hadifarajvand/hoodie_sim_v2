@@ -11,6 +11,12 @@ class LifecycleTraceEvent:
     task_id: int | str | None = None
     source_agent_id: int | str | None = None
     selected_action: str | None = None
+    selected_action_family: str | None = None
+    action_index: int | None = None
+    decision_event_id: str | None = None
+    strategy: str | None = None
+    seed: int | None = None
+    agent_id: int | str | None = None
     destination: str | None = None
     queue_type: str | None = None
     host_node_id: str | None = None
@@ -71,4 +77,3 @@ class LifecycleTraceRecorder:
 @dataclass(frozen=True, slots=True)
 class LifecycleTraceConfig:
     trace_enabled: bool = False
-
