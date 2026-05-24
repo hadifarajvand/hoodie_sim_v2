@@ -101,11 +101,13 @@ The implementation and report must include:
 
 1. Exposure-matrix rerun summary
 2. Legal-vs-selected action matrix
-3. Per-strategy/per-seed/per-action exposure and outcome summaries
-4. Observation vector audit
-5. Paper formula/unit audit
-6. Runtime semantic drift check
-7. Training readiness decision
+3. Selected-action family evidence status and consistency checks
+4. Per-action outcome evidence status and outcome summaries
+5. Per-strategy/per-seed/per-action exposure and outcome summaries
+6. Observation vector audit
+7. Paper formula/unit audit
+8. Runtime semantic drift check
+9. Training readiness decision
 
 ## Required Report Fields
 
@@ -120,6 +122,11 @@ The report must include, at minimum:
 - `per_strategy_seed_matrix`
 - `per_action_outcome_matrix`
 - `selected_illegal_action_summary`
+- `selected_action_family_evidence_status`
+- `selected_action_count_consistency_verified`
+- `legal_but_unselected_consistency_verified`
+- `per_action_outcome_evidence_status`
+- `exposure_matrix_internal_consistency_verified`
 - `observation_vector_audit`
 - `paper_formula_unit_audit`
 - `runtime_semantic_drift_check`
@@ -147,12 +154,12 @@ The report must include, at minimum:
 
 ## Verdict Discipline
 
-- `paper_mechanism_alignment_ready_for_training_contract` only when the exposure matrix is complete and the observation/formula audits pass.
+- `paper_mechanism_alignment_ready_for_training_contract` only when legality evidence is complete, `selected_action_family_evidence_status = available`, `per_action_outcome_evidence_status = available`, `exposure_matrix_internal_consistency_verified = true`, `selected_action_count_consistency_verified = true`, `legal_but_unselected_consistency_verified = true`, and the observation/formula audits pass with no runtime semantic contradiction.
 - `observation_vector_gap_blocks_training` when the observation vector is incomplete.
 - `formula_unit_gap_blocks_training` when a formula or unit mismatch is detected.
 - `exposure_bias_blocks_training` when legal-vs-selected exposure remains too biased for readiness.
 - `runtime_semantic_contradiction_requires_repair` when the simulator contract contradicts the paper mechanism.
-- `insufficient_legality_or_trace_evidence` when the rerun or audit cannot be supported by the available evidence.
+- `insufficient_legality_or_trace_evidence` when the rerun or audit cannot be supported by the available evidence, including missing selected-action family evidence or missing per-action outcome evidence.
 - `prerequisite_blocked` when a required prior artifact is missing.
 
 ## Validation Strategy
@@ -163,7 +170,8 @@ The validation workflow must use Feature 049 tests and safe prior artifact check
 - Validate Features 043 through 048 through committed artifact checks only.
 - Do not run dirty-worktree-sensitive older report-generation tests.
 - Use the approved interpreter and the Feature 049 passive analysis entrypoint.
-- Confirm that legality coverage, exposure bias, observation alignment, formula/unit alignment, and readiness routing are all present before planning implementation tasks.
+- Confirm that legality coverage, selected-action family evidence, per-action outcome evidence, exposure-count consistency, exposure bias, observation alignment, formula/unit alignment, and readiness routing are all present before planning implementation tasks.
+- Validation must fail if `selected_action_family_evidence_status` is missing, `per_action_outcome_evidence_status` is missing, `exposure_matrix_internal_consistency_verified` is missing, selected-action count consistency is not checked, legal-but-unselected consistency is not checked, hardcoded placeholder selected counts or outcome rates appear without trace-backed evidence, `ready_for_feature_050` is claimed from placeholder exposure data, or Feature 050 is recommended while selected-action family evidence or per-action outcome evidence is unavailable.
 
 ### Corrected Validation Command
 

@@ -32,6 +32,10 @@ This story is independently testable when the report can show a legality-backed 
 - [ ] T014 [US1] Implement exposure bias summarization in `src/analysis/exposure_matrix_paper_mechanism_alignment/runner.py` so the report can distinguish readiness from exposure-dominant blocking conditions.
 - [ ] T015 [US1] Add schema tests in `tests/unit/test_exposure_matrix_paper_mechanism_schema.py` for the rerun summary, legal-vs-selected matrix, per-strategy/per-seed matrix, and per-action outcome matrix fields.
 - [ ] T016 [US1] Add metrics tests in `tests/unit/test_exposure_matrix_paper_mechanism_metrics.py` that verify `selected_illegal_action_count` is derived from legality evidence, fake zero legal counts are rejected, and exposure bias is reported without using representative samples as aggregate proof.
+- [ ] T017 [US1] Add exposure-count consistency tests in `tests/unit/test_exposure_matrix_paper_mechanism_metrics.py` that fail unless `selected_action_count = selected_local_count + selected_horizontal_count + selected_vertical_count`, `selected_illegal_action_count <= selected_action_count`, `legal_but_unselected_by_action` is consistent with legal and selected counts, and no legal-but-unselected count is negative.
+- [ ] T018 [US1] Add selected-action family evidence handling in `src/analysis/exposure_matrix_paper_mechanism_alignment/runner.py` so unavailable selected action family counts set `selected_action_family_evidence_status = unavailable`, `final_verdict = insufficient_legality_or_trace_evidence`, and `recommended_next_feature = selected-action family evidence expansion before training` without inventing action-family counts.
+- [ ] T019 [US1] Add per-action outcome evidence handling in `src/analysis/exposure_matrix_paper_mechanism_alignment/runner.py` so completion/drop/pending rates are derived only from joinable selected action family outcomes, otherwise `per_action_outcome_evidence_status = unavailable` and `final_verdict = insufficient_legality_or_trace_evidence`.
+- [ ] T020 [US1] Add hardcoded-placeholder rejection tests in `tests/unit/test_exposure_matrix_paper_mechanism_metrics.py` that fail if the runner hardcodes `selected_local_count = 0`, `selected_horizontal_count = 0`, `selected_vertical_count = 0`, all-zero `legal_but_unselected_by_action`, or all-zero per-action completion/drop/pending rates without evidence status explaining availability.
 
 ## Phase 4: User Story 2 - Audit Paper HOODIE Mechanism
 
@@ -43,12 +47,12 @@ Audit the current simulator/network interface against the paper HOODIE mechanism
 
 This story is independently testable when the report can explain which observation components are present or missing and whether the paper timing/state formulas pass or fail, without requiring a training run.
 
-- [ ] T017 [P] [US2] Define `ObservationVectorAudit` and `PaperFormulaUnitAudit` in `src/analysis/exposure_matrix_paper_mechanism_alignment/model.py` with fields for required state components, timing checks, terminal-state checks, and contradiction notes.
-- [ ] T018 [US2] Implement the observation vector audit in `src/analysis/exposure_matrix_paper_mechanism_alignment/runner.py` to compare the current simulator/network interface against the paper HOODIE mechanism for state visibility and action context.
-- [ ] T019 [US2] Implement the formula/unit audit in `src/analysis/exposure_matrix_paper_mechanism_alignment/runner.py` to verify local compute time, transmission delays, queue wait, task age, deadline expiry, delayed reward timing, and terminal/pending semantics.
-- [ ] T020 [US2] Add schema tests in `tests/unit/test_exposure_matrix_paper_mechanism_schema.py` for the observation vector audit and paper formula/unit audit report sections.
-- [ ] T021 [US2] Add integration tests in `tests/integration/test_exposure_matrix_paper_mechanism_alignment.py` that validate the observation audit and formula audit against the committed Feature 043 through 048 artifacts.
-- [ ] T022 [US2] Add scope-guard tests in `tests/integration/test_exposure_matrix_paper_mechanism_scope_guard.py` that reject runtime semantic changes, `src/policies/` changes, dependency changes, training, optimizer, replay training, target update, checkpoints, fake evidence, curve fitting, and paper reproduction claims.
+- [ ] T021 [P] [US2] Define `ObservationVectorAudit` and `PaperFormulaUnitAudit` in `src/analysis/exposure_matrix_paper_mechanism_alignment/model.py` with fields for required state components, timing checks, terminal-state checks, and contradiction notes.
+- [ ] T022 [US2] Implement the observation vector audit in `src/analysis/exposure_matrix_paper_mechanism_alignment/runner.py` to compare the current simulator/network interface against the paper HOODIE mechanism for state visibility and action context.
+- [ ] T023 [US2] Implement the formula/unit audit in `src/analysis/exposure_matrix_paper_mechanism_alignment/runner.py` to verify local compute time, transmission delays, queue wait, task age, deadline expiry, delayed reward timing, and terminal/pending semantics.
+- [ ] T024 [US2] Add schema tests in `tests/unit/test_exposure_matrix_paper_mechanism_schema.py` for the observation vector audit and paper formula/unit audit report sections.
+- [ ] T025 [US2] Add integration tests in `tests/integration/test_exposure_matrix_paper_mechanism_alignment.py` that validate the observation audit and formula audit against the committed Feature 043 through 048 artifacts.
+- [ ] T026 [US2] Add scope-guard tests in `tests/integration/test_exposure_matrix_paper_mechanism_scope_guard.py` that reject runtime semantic changes, `src/policies/` changes, dependency changes, training, optimizer, replay training, target update, checkpoints, fake evidence, curve fitting, and paper reproduction claims.
 
 ## Phase 5: User Story 3 - Decide Training Readiness
 
@@ -60,34 +64,34 @@ Produce a final readiness decision that routes to the next training-contract bun
 
 This story is independently testable when the report emits a final verdict and next-feature recommendation that matches the exposure rerun and audit results, without starting any training work.
 
-- [ ] T023 [P] [US3] Define `TrainingReadinessDecision` and the final report schema in `src/analysis/exposure_matrix_paper_mechanism_alignment/model.py` so verdict routing and next-feature recommendations are explicit and machine-readable.
-- [ ] T024 [US3] Implement report writers in `src/analysis/exposure_matrix_paper_mechanism_alignment/report.py` for `artifacts/analysis/exposure-matrix-paper-mechanism-alignment/exposure-matrix-paper-mechanism-report.json` and `.md`.
-- [ ] T025 [US3] Implement readiness routing in `src/analysis/exposure_matrix_paper_mechanism_alignment/runner.py` so the final verdict resolves to readiness, observation-vector gap, formula/unit gap, exposure bias, runtime semantic contradiction, insufficient evidence, or prerequisite blocked.
-- [ ] T026 [US3] Add integration tests in `tests/integration/test_exposure_matrix_paper_mechanism_report.py` that validate the committed-artifact Feature 047 and Feature 048 prerequisites, the final verdict, the recommended next feature, and the no-training/no-drift flags.
-- [ ] T027 [US3] Add metrics tests in `tests/unit/test_exposure_matrix_paper_mechanism_metrics.py` that verify readiness routing consistency across exposure completeness, observation audit results, formula audit results, and exposure bias outcomes.
-- [ ] T028 [US3] Add end-to-end tests in `tests/integration/test_exposure_matrix_paper_mechanism_alignment.py` that ensure the report recommends `Feature 050 — DDQN Training Contract Bundle` only when the exposure matrix is complete and the audits pass.
+- [ ] T027 [P] [US3] Define `TrainingReadinessDecision` and the final report schema in `src/analysis/exposure_matrix_paper_mechanism_alignment/model.py` so verdict routing and next-feature recommendations are explicit and machine-readable.
+- [ ] T028 [US3] Implement report writers in `src/analysis/exposure_matrix_paper_mechanism_alignment/report.py` for `artifacts/analysis/exposure-matrix-paper-mechanism-alignment/exposure-matrix-paper-mechanism-report.json` and `.md`.
+- [ ] T029 [US3] Implement readiness routing in `src/analysis/exposure_matrix_paper_mechanism_alignment/runner.py` so the final verdict resolves to readiness, observation-vector gap, formula/unit gap, exposure bias, runtime semantic contradiction, insufficient evidence, or prerequisite blocked.
+- [ ] T030 [US3] Add integration tests in `tests/integration/test_exposure_matrix_paper_mechanism_report.py` that validate the committed-artifact Feature 047 and Feature 048 prerequisites, the final verdict, the recommended next feature, and the no-training/no-drift flags.
+- [ ] T031 [US3] Add metrics tests in `tests/unit/test_exposure_matrix_paper_mechanism_metrics.py` that verify readiness routing consistency across exposure completeness, observation audit results, formula audit results, exposure bias outcomes, selected action family evidence status, per-action outcome evidence status, and exposure matrix internal consistency.
+- [ ] T032 [US3] Add end-to-end tests in `tests/integration/test_exposure_matrix_paper_mechanism_alignment.py` that ensure the report recommends `Feature 050 — DDQN Training Contract Bundle` only when `exposure_matrix_internal_consistency_verified = true`, `selected_action_family_evidence_status = available`, `per_action_outcome_evidence_status = available`, the observation vector audit passes, and the formula/unit audit passes.
 
 ## Phase 6: Polish & Cross-Cutting Concerns
 
-- [ ] T029 [P] Update `specs/049-exposure-matrix-paper-mechanism-alignment/quickstart.md` with the corrected Feature 049 validation command that excludes dirty-worktree-sensitive older report tests and uses committed-artifact checks for Features 043 through 048.
-- [ ] T030 [P] Update `specs/049-exposure-matrix-paper-mechanism-alignment/spec.md` or `plan.md` only if any report field names, verdict names, or validation rules need alignment after implementation.
-- [ ] T031 Run the approved Feature 049 validation command and confirm the Feature 049 tests pass without modifying any forbidden paths or runtime semantics.
-- [ ] T032 Mark the Feature 049 tasks complete only after the report artifacts are regenerated, the tests pass, the scope guard confirms no unrelated files changed, and the readiness decision is consistent with the audits.
+- [ ] T033 [P] Update `specs/049-exposure-matrix-paper-mechanism-alignment/quickstart.md` with the corrected Feature 049 validation command that excludes dirty-worktree-sensitive older report tests and uses committed-artifact checks for Features 043 through 048.
+- [ ] T034 [P] Update `specs/049-exposure-matrix-paper-mechanism-alignment/spec.md` or `plan.md` only if any report field names, verdict names, or validation rules need alignment after implementation.
+- [ ] T035 Run the approved Feature 049 validation command and confirm the Feature 049 tests pass without modifying any forbidden paths or runtime semantics.
+- [ ] T036 Mark the Feature 049 tasks complete only after the report artifacts are regenerated, the tests pass, the scope guard confirms no unrelated files changed, `.specify/feature.json` remains local-only and unstaged, the readiness decision is consistent with the audits, and Feature 050 is not recommended unless all exposure consistency and evidence-status gates pass.
 
 ## Dependencies
 
 - T001-T003 must complete before any implementation work.
 - T004-T010 must complete before the user-story work starts.
-- T011-T016 support User Story 1.
-- T017-T022 support User Story 2.
-- T023-T028 support User Story 3.
-- T029-T032 are final validation and cleanup after implementation.
+- T011-T020 support User Story 1.
+- T021-T026 support User Story 2.
+- T027-T032 support User Story 3.
+- T033-T036 are final validation and cleanup after implementation.
 
 ## Parallel Execution Examples
 
-- User Story 1: T012 can run in parallel with T011; T015 and T016 can run in parallel after T011/T013 are available.
-- User Story 2: T017 can run in parallel with T018/T019; T020, T021, and T022 can proceed independently once the model/runner shape is settled.
-- User Story 3: T023 can run in parallel with T024; T026, T027, and T028 can proceed after the runner/report contract is defined.
+- User Story 1: T012 can run in parallel with T011; T015, T016, T017, and T020 can run in parallel after T011/T013 are available.
+- User Story 2: T021 can run in parallel with T022/T023; T024, T025, and T026 can proceed independently once the model/runner shape is settled.
+- User Story 3: T027 can run in parallel with T028; T030, T031, and T032 can proceed after the runner/report contract is defined.
 
 ## Implementation Strategy
 

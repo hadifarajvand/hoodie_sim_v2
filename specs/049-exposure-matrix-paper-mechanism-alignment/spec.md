@@ -72,24 +72,31 @@ As an analyst, I want a final readiness decision so that the next feature can fo
 - **FR-006**: The system MUST classify the readiness decision using only diagnostic/alignment evidence and MUST not start training, optimizer steps, replay training, or target updates.
 - **FR-007**: The system MUST not recommend the full training campaign, figure reproduction, or runtime repair unless that is separately routed to a future feature.
 - **FR-008**: The system MUST use the committed Feature 043, 044, 045, 046, 047, and 048 artifacts as prior evidence inputs.
-- **FR-009**: The system MUST expose report fields for `feature_id`, `prerequisite_tags_verified`, `prior_feature_gates_verified`, `legality_evidence_verified`, `exposure_matrix_rerun_summary`, `legal_vs_selected_action_matrix`, `per_strategy_seed_matrix`, `per_action_outcome_matrix`, `selected_illegal_action_summary`, `observation_vector_audit`, `paper_formula_unit_audit`, `runtime_semantic_drift_check`, `training_readiness_decision`, `recommended_next_feature`, the no-drift/no-training flags, and `final_verdict`.
-- **FR-010**: The system MUST classify the final verdict as `paper_mechanism_alignment_ready_for_training_contract` only when the exposure matrix is complete and the observation/formula audits pass.
+- **FR-009**: The system MUST expose report fields for `feature_id`, `prerequisite_tags_verified`, `prior_feature_gates_verified`, `legality_evidence_verified`, `exposure_matrix_rerun_summary`, `legal_vs_selected_action_matrix`, `per_strategy_seed_matrix`, `per_action_outcome_matrix`, `selected_illegal_action_summary`, `selected_action_family_evidence_status`, `selected_action_count_consistency_verified`, `legal_but_unselected_consistency_verified`, `per_action_outcome_evidence_status`, `exposure_matrix_internal_consistency_verified`, `observation_vector_audit`, `paper_formula_unit_audit`, `runtime_semantic_drift_check`, `training_readiness_decision`, `recommended_next_feature`, the no-drift/no-training flags, and `final_verdict`.
+- **FR-010**: The system MUST classify the final verdict as `paper_mechanism_alignment_ready_for_training_contract` only when legality evidence is complete, selected action family evidence is complete, per-action outcome evidence is complete, exposure matrix internal consistency is verified, and the observation/formula audits pass.
 - **FR-011**: The system MUST classify the final verdict as `observation_vector_gap_blocks_training` when the observation vector is incomplete.
 - **FR-012**: The system MUST classify the final verdict as `formula_unit_gap_blocks_training` when a formula or unit mismatch is detected.
 - **FR-013**: The system MUST classify the final verdict as `exposure_bias_blocks_training` when legal-vs-selected exposure shows a dominant bias that still blocks readiness.
 - **FR-014**: The system MUST classify the final verdict as `runtime_semantic_contradiction_requires_repair` when the current simulator contract contradicts the paper mechanism.
-- **FR-015**: The system MUST classify the final verdict as `insufficient_legality_or_trace_evidence` when the legality or trace evidence is not sufficient to support the rerun or audit.
+- **FR-015**: The system MUST classify the final verdict as `insufficient_legality_or_trace_evidence` when the legality, selected action family, per-action outcome, or trace evidence is not sufficient to support an internally consistent rerun or audit.
 - **FR-016**: The system MUST classify the final verdict as `prerequisite_blocked` when required prior artifacts or validation gates are missing.
-- **FR-017**: The system MUST recommend `Feature 050 — DDQN Training Contract Bundle` only when the exposure matrix is complete and the observation/formula audits pass.
+- **FR-017**: The system MUST recommend `Feature 050 — DDQN Training Contract Bundle` only when the exposure matrix is internally consistent, selected action family evidence is available, per-action outcome evidence is available, legality evidence is complete, and the observation/formula audits pass.
 - **FR-018**: The system MUST recommend observation vector repair before training when the observation vector is incomplete.
 - **FR-019**: The system MUST recommend formula/unit repair before training when a formula or unit mismatch is detected.
 - **FR-020**: The system MUST recommend observation vector or action exposure repair before training when exposure bias dominates.
 - **FR-021**: The system MUST not perform paper figure reproduction, training, optimizer, replay training, or target update work in this feature.
 - **FR-022**: The system MUST preserve diagnostic/alignment scope and MUST not change runtime semantics unless a future feature separately approves the repair path.
-- **FR-023**: The system MUST require `.specify/feature.json` to be non-commit-capable before implementation begins.
-- **FR-024**: For Feature 049, `.specify/feature.json` is non-commit-capable only when it is not staged, does not appear in `git diff --name-only main...HEAD`, is not committed as part of Feature 049, and is either clean or explicitly local-only and excluded from the committed feature surface.
-- **FR-025**: If `.specify/feature.json` is dirty, implementation MUST stop before any Feature 049 work starts, MUST ask the user for explicit approval before restoring it, and the only allowed restore action is `git restore .specify/feature.json`.
-- **FR-026**: When `.specify/feature.json` is restored under approved hygiene handling, the system MUST require a follow-up `git status --short` and a rerun of `/speckit-analyze` before implementation may proceed.
+- **FR-023**: The system MUST require `.specify/feature.json` to point to `specs/049-exposure-matrix-paper-mechanism-alignment` before Feature 049 analysis or implementation begins.
+- **FR-024**: For Feature 049, `.specify/feature.json` is non-commit-capable only when it is not staged, does not appear in `git diff --cached --name-only`, does not appear in `git diff --name-only main...HEAD`, is not committed as part of Feature 049, and is either clean or explicitly local-only and excluded from the committed feature surface.
+- **FR-025**: A locally dirty `.specify/feature.json` is allowed only when its sole purpose is selecting Feature 049; if it is staged, appears in the branch diff, or points to any feature other than 049, implementation MUST stop.
+- **FR-026**: The system MUST NOT auto-restore `.specify/feature.json` to HEAD during Feature 049 work because HEAD may point to an older feature and break Feature 049 analysis.
+- **FR-027**: The exposure matrix rerun MUST satisfy `selected_action_count = selected_local_count + selected_horizontal_count + selected_vertical_count`, and `selected_illegal_action_count` MUST be less than or equal to `selected_action_count`.
+- **FR-028**: The exposure matrix rerun MUST satisfy `legal_but_unselected_local_count = legal_local_count - selected_local_count`, `legal_but_unselected_horizontal_count = legal_horizontal_count - selected_horizontal_count`, and `legal_but_unselected_vertical_count = legal_vertical_count - selected_vertical_count` when the corresponding selections are legal; no legal-but-unselected count may be negative.
+- **FR-029**: The exposure matrix rerun MUST NOT hardcode `selected_local_count`, `selected_horizontal_count`, `selected_vertical_count`, `legal_but_unselected_by_action`, `per_action_completion_rate`, `per_action_drop_rate`, or `per_action_pending_rate`; these values MUST be derived from trace-backed evidence or marked unavailable.
+- **FR-030**: If Feature 048 does not expose selected action family counts, Feature 049 MUST set `selected_action_family_evidence_status = unavailable`, MUST classify `final_verdict = insufficient_legality_or_trace_evidence`, and MUST set `recommended_next_feature = selected-action family evidence expansion before training`.
+- **FR-031**: If per-action outcome evidence is unavailable, Feature 049 MUST set `per_action_outcome_evidence_status = unavailable` and MUST NOT report fake zero completion, drop, or pending rates.
+- **FR-032**: The report MUST set `exposure_matrix_internal_consistency_verified = false` when selected counts, legal-but-unselected counts, or per-action outcomes cannot be reconciled from trace-backed evidence.
+- **FR-033**: Training readiness MUST be blocked when `exposure_matrix_internal_consistency_verified = false`, `selected_action_family_evidence_status != available`, `per_action_outcome_evidence_status != available`, selected action counts do not sum to `selected_action_count`, or legal-but-unselected counts contradict legal and selected counts.
 
 ### Key Entities *(include if feature involves data)*
 
@@ -112,11 +119,14 @@ As an analyst, I want a final readiness decision so that the next feature can fo
 - **SC-007**: If exposure bias remains dominant, the report does not recommend the next training-contract bundle.
 - **SC-008**: If the observation vector is incomplete, the report routes to observation vector repair before training.
 - **SC-009**: If a formula or unit mismatch is detected, the report routes to formula/unit repair before training.
-- **SC-010**: If the exposure matrix is complete and the audits pass, the report recommends `Feature 050 — DDQN Training Contract Bundle`.
+- **SC-010**: If the exposure matrix is complete, internally consistent, backed by selected action family and per-action outcome evidence, and the audits pass, the report recommends `Feature 050 — DDQN Training Contract Bundle`.
+- **SC-011**: If selected action family evidence is unavailable, the report marks `selected_action_family_evidence_status = unavailable`, does not invent selected action family counts, and routes to `insufficient_legality_or_trace_evidence`.
+- **SC-012**: If per-action outcome evidence is unavailable, the report marks `per_action_outcome_evidence_status = unavailable`, does not fake zero outcome rates, and blocks Feature 050 readiness.
+- **SC-013**: The report verifies selected action count consistency and legal-but-unselected consistency before any training-readiness recommendation is allowed.
 
 ## Assumptions
 
-Feature 048 already provides sufficient legality evidence to rerun the exposure matrix without training. This feature is diagnostic and alignment-focused only; any runtime repair discovered here must be deferred to a future feature. The next training-contract bundle is not part of this feature and must not be started here.
+Feature 048 provides legality evidence for the exposure rerun, but legality coverage alone is not sufficient for training readiness unless selected action family counts and per-action outcome evidence are also available from trace-backed artifacts. This feature is diagnostic and alignment-focused only; any runtime repair discovered here must be deferred to a future feature. The next training-contract bundle is not part of this feature and must not be started here.
 
 ## Production Constraints
 
