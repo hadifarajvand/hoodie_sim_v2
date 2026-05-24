@@ -18,13 +18,13 @@ Bundle tightly related fixes into one feature. Do not create a separate feature 
 
 ## Local pointer rule
 
-`.specify/feature.json` may be dirty as the local active SpecKit pointer. It must stay unstaged and uncommitted, and it must not appear in `git diff --name-only main...HEAD`.
+`.specify/feature.json` is ignored and local-only. It must stay unstaged and uncommitted, and normal dirty-path classification should not treat it as a workflow artifact after the hygiene hardening feature.
 
 Treat pointer handling as commit hygiene, not as prior-feature validation.
 
 ## Agent instruction file rule
 
-`AGENTS.md` must not be staged or committed unless the feature explicitly changes it. If a report has an agent-cleanliness flag, regenerate the report only after this file is clean.
+`AGENTS.md` is stable repository policy and must not be rewritten by normal SpecKit phases. If a report has an agent-cleanliness flag, treat a dirty `AGENTS.md` as a tool regression rather than normal workflow.
 
 ## Prior feature validation
 

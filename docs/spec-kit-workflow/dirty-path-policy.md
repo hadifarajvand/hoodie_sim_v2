@@ -6,13 +6,13 @@ This policy defines how to classify dirty paths before staging any SpecKit featu
 
 | Path | Action |
 |---|---|
-| `.specify/feature.json` | May remain dirty as active feature pointer; never stage or commit. |
+| `.specify/feature.json` | Ignored and local-only; never stage or commit. After hygiene hardening, it should not normally appear in dirty-path classification. |
 
 ## Always forbidden unless explicitly approved
 
 | Path | Action |
 |---|---|
-| `AGENTS.md` | Restore before staging unless the feature explicitly changes agent instructions. |
+| `AGENTS.md` | Restore before staging unless the feature explicitly changes agent instructions. If it becomes dirty after hygiene hardening, treat that as a tool regression. |
 | `.gitignore` | Restore before staging unless the feature explicitly changes ignore rules. |
 | dependency files | Restore before staging unless dependency change is explicitly approved. |
 | `src/policies/` | Restore before staging unless policy work is explicitly approved. |
@@ -26,6 +26,8 @@ Before staging, print this table:
 | Path | Status | Classification | Proposed action |
 |---|---|---|---|
 | `<path>` | modified/untracked | approved / local-only / forbidden / unrelated | stage / leave / restore / ask approval |
+
+If `.specify/feature.json` appears after hygiene hardening, classify it as a local-only regression signal, not as a routine workflow artifact.
 
 ## Staging approval prompt
 
