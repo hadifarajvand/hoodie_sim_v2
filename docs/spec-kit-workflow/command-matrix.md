@@ -6,7 +6,7 @@ Use this matrix to keep future prompts short and phase-specific.
 |---|---|---|---|---|
 | `/speckit-git-feature` | Create or select branch | feature id, title, base tag, branch name | implementation instructions | wrong base, wrong branch |
 | `/speckit.specify` | Define what and why | purpose, problem, required outcomes, scope, acceptance criteria | source-code implementation details | missing required behavior or report contract |
-| `/speckit.plan` | Define how | architecture, allowed paths, input artifacts, output artifacts, validation strategy | excessive restatement of hygiene rules | plan/spec mismatch, unsafe allowed paths |
+| `/speckit.plan` | Define how | architecture, allowed paths, input artifacts, output artifacts, validation strategy | excessive restatement of hygiene rules, AGENTS.md rewrites, local-pointer mutation | plan/spec mismatch, unsafe allowed paths |
 | `/speckit.tasks` | Generate executable work | task groups, tests, report fields, scope guard, commit hygiene | broad prose or duplicated feature narrative | missing task coverage, skipped/duplicate task IDs |
 | `/speckit.analyze` | Gate implementation | hard-stop list and severity policy | implementation | CRITICAL/HIGH contract/scope/test issues |
 | `/speckit.implement` | Build and validate | allowed paths, validation command, final dirty-path table | auto-stage, auto-commit, auto-push | failed validation or dirty-path contamination |
