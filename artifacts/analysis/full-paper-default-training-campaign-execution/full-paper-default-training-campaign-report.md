@@ -9,7 +9,7 @@
 {
   "actual_baseline_evaluation_episode_count": 1,
   "actual_budget_is_reduced_for_local_validation": true,
-  "actual_evaluation_episode_count": 1,
+  "actual_evaluation_episode_count": 3,
   "actual_training_episode_count": 1,
   "baseline_harness_id": "feature-058-baseline-evaluation-harness",
   "configured_budget": {
@@ -20,6 +20,17 @@
   "controlled_output_directory": "artifacts/analysis/full-paper-default-training-campaign-execution",
   "evaluation_trace_bank_id": "feature-058-evaluation-trace-bank",
   "execution_completed": true,
+  "real_trainer_binding": {
+    "real_trainer_class": "src.analysis.full_training_reproduction_campaign.trainer.DDQNTrainer",
+    "real_trainer_import_used": true,
+    "real_trainer_instantiated": true,
+    "real_trainer_method_called": "DDQNTrainer.run_pilot",
+    "real_trainer_update_or_train_called": true,
+    "scalar_fallback_drives_campaign_claim": false,
+    "torch_import_used": true,
+    "torch_version": "2.12.0",
+    "torchrl_available": true
+  },
   "seed_bundle": {
     "baseline_policy_seed": 6101,
     "evaluation_trace_generation_seed": 43,
@@ -32,53 +43,63 @@
 ## Training Metrics Summary
 {
   "action_distribution": {
-    "horizontal": 37,
-    "local": 37,
-    "vertical": 36
+    "horizontal": 0,
+    "local": 0,
+    "vertical": 110
   },
-  "horizontal_action_count": 37,
-  "local_action_count": 37,
-  "loss_count": 47,
+  "horizontal_action_count": 0,
+  "local_action_count": 0,
+  "loss_count": 1,
   "loss_finite": true,
   "loss_summary": {
     "all_losses_finite": true,
-    "last_loss": 0.022984377836816384,
-    "loss_count": 47
+    "last_loss": 25.033153533935547,
+    "loss_count": 1
   },
   "optimizer_step_count": 47,
+  "real_trainer_binding": {
+    "real_trainer_class": "src.analysis.full_training_reproduction_campaign.trainer.DDQNTrainer",
+    "real_trainer_import_used": true,
+    "real_trainer_instantiated": true,
+    "real_trainer_method_called": "DDQNTrainer.run_pilot",
+    "real_trainer_update_or_train_called": true,
+    "scalar_fallback_drives_campaign_claim": false,
+    "torch_import_used": true,
+    "torch_version": "2.12.0",
+    "torchrl_available": true
+  },
   "replay_size": 110,
   "reward_summary": {
-    "mean_reward": 0.0408673,
+    "mean_reward": -40.0,
     "pending_at_horizon_count": 1,
-    "reward_available_count": 10,
-    "reward_count": 10,
-    "total_reward": 0.408673
+    "reward_available_count": 1,
+    "reward_count": 1,
+    "total_reward": -40.0
   },
   "target_update_summary": {
     "target_sync_count": 0,
     "target_update_frequency": 2000,
     "target_update_unit": "optimizer_step"
   },
-  "vertical_action_count": 36
+  "vertical_action_count": 110
 }
 
 ## Evaluation Metrics Summary
 {
   "action_distribution": {
-    "horizontal": null,
-    "local": null,
-    "status": "evaluation policy action distribution not persisted by existing trainer",
-    "vertical": null
+    "horizontal": 0,
+    "local": 0,
+    "vertical": 110
   },
-  "completed_task_count": 6,
+  "completed_task_count": 0,
   "delay": {
     "status": "not_claimed_in_feature_060",
     "value": null
   },
   "drop": {
-    "count": 4
+    "count": 6
   },
-  "evaluation_episode_count": 1,
+  "evaluation_episode_count": 3,
   "evaluation_trace_bank_id": "feature-058-evaluation-trace-bank",
   "metric_schema_coverage": {
     "metric_schema_complete": true,
@@ -112,17 +133,20 @@
   },
   "no_paper_reproduction_claim": true,
   "no_performance_superiority_claim": true,
+  "real_trainer_bound_evaluation": true,
   "reward": {
-    "mean_reward": 0.0408673,
-    "reward_bearing_transition_count": 10
+    "mean_reward": -80.0,
+    "reward_bearing_transition_count": 6
   },
-  "terminal_transition_count": 10,
+  "terminal_transition_count": 6,
   "timeout": {
     "status": "not_claimed_in_feature_060",
     "value": null
   },
   "trace_ids": [
-    "feature-058-evaluation-trace-bank-execution-eval-000"
+    "hoodie-43",
+    "hoodie-44",
+    "hoodie-45"
   ],
   "train_eval_separation": {
     "evaluation_on_training_traces": false,
@@ -469,8 +493,20 @@
   "checkpoint_binary_policy": "metadata-only artifact; no model checkpoint binary written by Feature 060",
   "metadata_artifact_exists": true,
   "metadata_artifact_path": "artifacts/analysis/full-paper-default-training-campaign-execution/checkpoint-metadata.json",
+  "real_trainer_binding": {
+    "real_trainer_class": "src.analysis.full_training_reproduction_campaign.trainer.DDQNTrainer",
+    "real_trainer_import_used": true,
+    "real_trainer_instantiated": true,
+    "real_trainer_method_called": "DDQNTrainer.run_pilot",
+    "real_trainer_update_or_train_called": true,
+    "scalar_fallback_drives_campaign_claim": false,
+    "torch_import_used": true,
+    "torch_version": "2.12.0",
+    "torchrl_available": true
+  },
   "replay_metadata": {
-    "replay_size": 110
+    "replay_size": 110,
+    "source": "DDQNTrainer.replay_buffer"
   },
   "seed_bundle": {
     "baseline_policy_seed": 6101,
@@ -480,6 +516,17 @@
   },
   "target_update_metadata": {
     "optimizer_step_count": 47,
+    "real_trainer_binding": {
+      "real_trainer_class": "src.analysis.full_training_reproduction_campaign.trainer.DDQNTrainer",
+      "real_trainer_import_used": true,
+      "real_trainer_instantiated": true,
+      "real_trainer_method_called": "DDQNTrainer.run_pilot",
+      "real_trainer_update_or_train_called": true,
+      "scalar_fallback_drives_campaign_claim": false,
+      "torch_import_used": true,
+      "torch_version": "2.12.0",
+      "torchrl_available": true
+    },
     "target_update_unit": "optimizer_step"
   },
   "trace_bank_ids": {
@@ -511,7 +558,7 @@
 {
   "actual_executed_budget": {
     "baseline_evaluation_episode_count": 1,
-    "evaluation_episode_count": 1,
+    "evaluation_episode_count": 3,
     "training_episode_count": 1
   },
   "configured_budget": {
