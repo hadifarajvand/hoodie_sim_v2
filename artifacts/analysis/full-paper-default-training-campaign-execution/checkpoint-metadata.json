@@ -1,0 +1,19 @@
+{
+  "feature_060_checkpoint_binary_policy": "metadata-only artifact; no model checkpoint binary written by Feature 060",
+  "feature_060_trace_bank_ids": {
+    "evaluation": "feature-058-evaluation-trace-bank",
+    "training": "full-training-train-bank"
+  },
+  "feature_id": "060-full-paper-default-training-campaign-execution",
+  "full_campaign_enabled": true,
+  "optimizer_step_count": 47,
+  "replay_size": 110,
+  "seed_bundle": {
+    "baseline_policy_seed": 6101,
+    "evaluation_trace_generation_seed": 43,
+    "trace_identity_seed": 5843,
+    "training_trace_generation_seed": 41
+  },
+  "stage": "full_paper_default_training_campaign_execution",
+  "target_update_unit": "optimizer_step"
+}
