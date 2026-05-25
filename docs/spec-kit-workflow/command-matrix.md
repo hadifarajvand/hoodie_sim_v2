@@ -1,15 +1,15 @@
 # SpecKit Command Matrix
 
-Use this matrix to keep future prompts short and phase-specific.
+Use this matrix to keep future prompts short, phase-specific, and auditable.
 
 | Command | Purpose | Must contain | Must not contain | Blocks on |
 |---|---|---|---|---|
 | `/speckit-git-feature` | Create or select branch | feature id, title, base tag, branch name | implementation instructions | wrong base, wrong branch |
 | `/speckit.specify` | Define what and why | purpose, problem, required outcomes, scope, acceptance criteria | source-code implementation details | missing required behavior or report contract |
-| `/speckit.plan` | Define how | architecture, allowed paths, input artifacts, output artifacts, validation strategy | excessive restatement of hygiene rules, AGENTS.md rewrites, local-pointer mutation | plan/spec mismatch, unsafe allowed paths |
-| `/speckit.tasks` | Generate executable work | task groups, tests, report fields, scope guard, commit hygiene | broad prose or duplicated feature narrative | missing task coverage, skipped/duplicate task IDs |
-| `/speckit.analyze` | Gate implementation | hard-stop list and severity policy | implementation | CRITICAL/HIGH contract/scope/test issues |
-| `/speckit.implement` | Build and validate | allowed paths, validation command, final dirty-path table | auto-stage, auto-commit, auto-push | failed validation or dirty-path contamination |
+| `/speckit.plan` | Define how | architecture, allowed paths, input artifacts, output artifacts, validation strategy, **Validation Handoff Packet** | excessive restatement of hygiene rules, AGENTS.md rewrites, local-pointer mutation | plan/spec mismatch, unsafe allowed paths, missing validation packet |
+| `/speckit.tasks` | Generate executable work | task groups, tests, report fields, scope guard, commit hygiene, **Validation Handoff and Remote Audit Packet** | broad prose or duplicated feature narrative | missing task coverage, skipped/duplicate task IDs, missing validation handoff tasks |
+| `/speckit.analyze` | Gate implementation | hard-stop list and severity policy | implementation | CRITICAL/HIGH contract/scope/test/handoff issues |
+| `/speckit.implement` | Build and validate | allowed paths, validation command, report proof fields, git-state proof, auto-commit guard if authorized | merge, tag, vague test claims | failed validation, dirty-path contamination, missing test proof |
 
 ## Standard phase prompts
 
@@ -17,9 +17,9 @@ Use this matrix to keep future prompts short and phase-specific.
 
 ```text
 Create Feature <ID> — <Title>.
-Base prerequisite: main must equal <previous-tag>^{}.
+Base prerequisite: main must contain <previous-tag>.
 Branch: <ID>-<short-name>.
-Do not implement. Print branch, main SHA, tag SHA, tag/main diff, and status.
+Do not implement. Print branch, main SHA, prerequisite tag SHA, tag/main diff, and status.
 ```
 
 ### Specify
@@ -42,7 +42,9 @@ Architecture: <package path, inputs, outputs>.
 Allowed paths: <paths>.
 Validation: feature tests plus committed-artifact checks for prior features.
 Report contract: required top-level fields, verdicts, routing.
-Use docs/spec-kit-workflow/operating-contract.md.
+Add section: ## Validation Handoff Packet.
+The packet must define: local test command, report-generation command, expected final verdict, expected next feature, JSON proof fields, git-state commands, approved paths, forbidden paths, and auto-commit/push authorization policy.
+Use docs/spec-kit-workflow/operating-contract.md and implementation-validation-handoff.md.
 Do not implement.
 ```
 
@@ -51,8 +53,10 @@ Do not implement.
 ```text
 Generate Feature <ID> tasks.
 Task groups: artifact gates, model/schema, computation, report, tests, scope guard, commit hygiene.
+Add final task group: ## Validation Handoff and Remote Audit Packet.
+That group must require: local test output or Codex validation output or CI result, JSON proof fields, git status, main...HEAD diff, cached diff, commit SHA, branch name, pushed remote ref, final_verdict, and recommended_next_feature.
 Keep task IDs sequential.
-Use docs/spec-kit-workflow/operating-contract.md and severity-policy.md.
+Use docs/spec-kit-workflow/operating-contract.md, severity-policy.md, and implementation-validation-handoff.md.
 Do not implement.
 ```
 
@@ -61,7 +65,7 @@ Do not implement.
 ```text
 Analyze Feature <ID>.
 Use docs/spec-kit-workflow/severity-policy.md.
-Block only CRITICAL/HIGH contract, scope, artifact, or validation issues.
+Block only CRITICAL/HIGH contract, scope, artifact, validation, or handoff issues.
 Return implementation_allowed = true or false.
 Do not implement.
 ```
@@ -70,10 +74,13 @@ Do not implement.
 
 ```text
 Implement Feature <ID> according to approved spec, plan, and tasks.
-Use docs/spec-kit-workflow/operating-contract.md.
+Use docs/spec-kit-workflow/operating-contract.md and implementation-validation-handoff.md.
 Allowed paths: <feature paths>.
 Forbidden paths: pointer, AGENTS.md, prior artifacts, policy/deps/training/checkpoints/campaign unless explicitly allowed.
 Run validation: <command>.
-Print status, main...HEAD diff, cached diff, dirty-path table.
-Ask for staging approval.
+Print exact local validation output or CI result.
+Print generated report proof fields.
+Print git status, main...HEAD diff, cached diff, and dirty-path table.
+If auto-commit/push is authorized and all guards pass, stage only approved paths, commit, push, and print commit SHA, branch, pushed ref, final_verdict, recommended_next_feature, and final git status.
+If any guard fails, do not stage, commit, or push.
 ```
