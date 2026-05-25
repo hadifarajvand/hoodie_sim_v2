@@ -1,19 +1,18 @@
 {
   "action_distribution": {
-    "horizontal": null,
-    "local": null,
-    "status": "evaluation policy action distribution not persisted by existing trainer",
-    "vertical": null
+    "horizontal": 0,
+    "local": 0,
+    "vertical": 110
   },
-  "completed_task_count": 6,
+  "completed_task_count": 0,
   "delay": {
     "status": "not_claimed_in_feature_060",
     "value": null
   },
   "drop": {
-    "count": 4
+    "count": 6
   },
-  "evaluation_episode_count": 1,
+  "evaluation_episode_count": 3,
   "evaluation_trace_bank_id": "feature-058-evaluation-trace-bank",
   "metric_schema_coverage": {
     "metric_schema_complete": true,
@@ -47,17 +46,20 @@
   },
   "no_paper_reproduction_claim": true,
   "no_performance_superiority_claim": true,
+  "real_trainer_bound_evaluation": true,
   "reward": {
-    "mean_reward": 0.0408673,
-    "reward_bearing_transition_count": 10
+    "mean_reward": -80.0,
+    "reward_bearing_transition_count": 6
   },
-  "terminal_transition_count": 10,
+  "terminal_transition_count": 6,
   "timeout": {
     "status": "not_claimed_in_feature_060",
     "value": null
   },
   "trace_ids": [
-    "feature-058-evaluation-trace-bank-execution-eval-000"
+    "hoodie-43",
+    "hoodie-44",
+    "hoodie-45"
   ],
   "train_eval_separation": {
     "evaluation_on_training_traces": false,

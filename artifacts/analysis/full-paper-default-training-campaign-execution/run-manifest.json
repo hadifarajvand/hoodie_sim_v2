@@ -1,7 +1,7 @@
 {
   "actual_executed_budget": {
     "baseline_evaluation_episode_count": 1,
-    "evaluation_episode_count": 1,
+    "evaluation_episode_count": 3,
     "training_episode_count": 1
   },
   "artifacts": {
