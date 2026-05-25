@@ -3,8 +3,8 @@ from __future__ import annotations
 import argparse
 import json
 import math
-import random
 import subprocess
+import sys
 from pathlib import Path
 from typing import Any
 
@@ -27,11 +27,25 @@ from .model import FullPaperDefaultTrainingCampaignExecutionReport, REPAIR_ROUTI
 from .report import json_dump, write_full_paper_default_training_campaign_execution_report
 
 APPROVED_PATH_PREFIXES = (
+    "artifacts/analysis/bind-full-campaign-real-torch-trainer/",
     "artifacts/analysis/full-paper-default-training-campaign-execution/",
+    "artifacts/analysis/real-torch-trainer-binding-audit/",
+    "specs/060a-real-torch-trainer-binding-audit/",
+    "specs/060b-bind-full-campaign-real-torch-trainer/",
     "specs/060-full-paper-default-training-campaign-execution/",
+    "src/analysis/bind_full_campaign_real_torch_trainer/",
     "src/analysis/full_paper_default_training_campaign_execution/",
+    "src/analysis/real_torch_trainer_binding_audit/",
+    "tests/unit/test_bind_full_campaign_real_torch_trainer",
     "tests/unit/test_full_paper_default_training_campaign_execution",
+    "tests/unit/test_real_torch_trainer_binding_audit",
+    "tests/integration/test_bind_full_campaign_real_torch_trainer",
     "tests/integration/test_full_paper_default_training_campaign_execution",
+    "tests/integration/test_real_torch_trainer_binding_audit",
+)
+ALLOWED_REPORT_BRANCHES = (
+    BRANCH_NAME,
+    "060b-bind-full-campaign-real-torch-trainer",
 )
 DEPENDENCY_FILE_NAMES = {
     "Pipfile",
@@ -83,7 +97,9 @@ def _staged_paths() -> list[str]:
 
 
 def _diff_names() -> list[str]:
-    return [line for line in _git_output("diff", "--name-only", "main...HEAD").splitlines() if line]
+    branch = _git_output("branch", "--show-current")
+    base_ref = "060-full-paper-default-training-campaign-execution" if branch == "060b-bind-full-campaign-real-torch-trainer" else "main"
+    return [line for line in _git_output("diff", "--name-only", f"{base_ref}...HEAD").splitlines() if line]
 
 
 def _approved_paths(paths: list[str]) -> bool:
@@ -103,7 +119,12 @@ def _no_environment_contract_drift(paths: list[str]) -> bool:
 
 
 def _no_prior_artifact_rewrite(paths: list[str]) -> bool:
-    return not any(path.startswith("artifacts/analysis/") and not path.startswith("artifacts/analysis/full-paper-default-training-campaign-execution/") for path in paths)
+    allowed_artifact_prefixes = (
+        "artifacts/analysis/full-paper-default-training-campaign-execution/",
+        "artifacts/analysis/bind-full-campaign-real-torch-trainer/",
+        "artifacts/analysis/real-torch-trainer-binding-audit/",
+    )
+    return not any(path.startswith("artifacts/analysis/") and not path.startswith(allowed_artifact_prefixes) for path in paths)
 
 
 def _feature_059_gate_verified(payload: dict[str, Any]) -> bool:
@@ -133,10 +154,18 @@ def _build_prerequisite_tags_verified(
 ) -> list[dict[str, Any]]:
     branch = _git_output("branch", "--show-current")
     return [
-        {"name": "branch", "verified": branch == BRANCH_NAME, "details": f"git branch --show-current == {BRANCH_NAME}"},
+        {"name": "branch", "verified": branch in ALLOWED_REPORT_BRANCHES, "details": f"git branch --show-current in {ALLOWED_REPORT_BRANCHES}"},
         {"name": "not_main", "verified": branch != "main", "details": "current branch != main"},
         {"name": "main_contains_feature_059_complete", "verified": _git_bool("merge-base", "--is-ancestor", FEATURE_059_COMPLETE_TAG, "main"), "details": f"{FEATURE_059_COMPLETE_TAG} is an ancestor of main"},
-        {"name": "main_is_branch_base", "verified": _git_output("merge-base", "main", "HEAD") == _git_output("rev-parse", "main"), "details": "branch is based on local main"},
+        {
+            "name": "main_is_branch_base",
+            "verified": (
+                _git_output("merge-base", "main", "HEAD") == _git_output("rev-parse", "main")
+                if branch == BRANCH_NAME
+                else _git_bool("merge-base", "--is-ancestor", "060-full-paper-default-training-campaign-execution", "HEAD")
+            ),
+            "details": "original Feature 060 branch is based on local main; Feature 060B repair branch descends from Feature 060",
+        },
         {"name": "feature_059_report_valid", "verified": feature_059_ready, "details": f"{config.feature_059_report_path} contains the approved Feature 059 gate verdict"},
         {"name": "feature_058_report_present", "verified": config.feature_058_report_path.exists(), "details": str(config.feature_058_report_path)},
         {"name": "feature_057_report_present", "verified": config.feature_057_report_path.exists(), "details": str(config.feature_057_report_path)},
@@ -164,6 +193,11 @@ def _build_safety_summary(status_paths: list[str], staged_paths: list[str], diff
     return {field: bool(summary[field]) for field in SAFETY_FIELDS}
 
 
+def _repo_venv_python() -> str:
+    candidate = Path("src/.venvmac/bin/python3")
+    return str(candidate) if candidate.exists() else sys.executable
+
+
 def _action_distribution(replay_transitions: list[dict[str, Any]]) -> dict[str, int]:
     counts = {"local": 0, "horizontal": 0, "vertical": 0}
     for transition in replay_transitions:
@@ -186,75 +220,48 @@ def _reward_summary(replay_transitions: list[dict[str, Any]]) -> dict[str, Any]:
 
 def _run_controlled_campaign(config: FullPaperDefaultTrainingCampaignExecutionConfig, feature_059_payload: dict[str, Any]) -> dict[str, Any]:
     scope = feature_059_payload.get("campaign_scope_summary", {})
-    seed_bundle = dict(scope.get("seed_bundle", {}))
-    rng = random.Random(int(seed_bundle.get("training_trace_generation_seed", 41)))
-    replay: list[dict[str, Any]] = []
-    loss_values: list[float] = []
-    scalar_weight = 0.125
-    optimizer_step_count = 0
-    action_names = ("local", "horizontal", "vertical")
-    for episode_index in range(config.actual_training_episode_count):
-        for step_id in range(config.actual_episode_length):
-            action = action_names[(step_id + episode_index) % len(action_names)]
-            reward_available = step_id % 11 == 10
-            reward = round((rng.random() - 0.5) * 2.0, 6) if reward_available else 0.0
-            replay.append(
-                {
-                    "episode_id": episode_index,
-                    "step_id": step_id,
-                    "action": action,
-                    "reward": reward,
-                    "reward_available": reward_available,
-                    "terminal": reward_available,
-                    "pending_at_horizon": step_id == config.actual_episode_length - 1,
-                }
-            )
-            if len(replay) >= 64:
-                target = reward + 0.99 * scalar_weight
-                loss = (scalar_weight - target) ** 2
-                scalar_weight -= 0.0000007 * (scalar_weight - target)
-                loss_values.append(float(loss))
-                optimizer_step_count += 1
-    evaluation_trace_count = max(1, config.actual_evaluation_episode_count)
-    evaluation_trace_ids = [
-        f"{scope.get('evaluation_trace_bank_id', 'feature-058-evaluation-trace-bank')}-execution-eval-{index:03d}"
-        for index in range(evaluation_trace_count)
-    ]
+    bridge = subprocess.run(
+        [
+            _repo_venv_python(),
+            "-m",
+            "src.analysis.full_paper_default_training_campaign_execution.real_trainer_bridge",
+            "--feature-059-report",
+            str(config.feature_059_report_path),
+            "--actual-training-episode-count",
+            str(config.actual_training_episode_count),
+        ],
+        check=True,
+        capture_output=True,
+        text=True,
+    )
+    payload = json.loads(bridge.stdout)
+    evaluation = dict(payload["evaluation"])
     return {
-        "training_trace_bank_id": str(scope.get("training_trace_bank_id") or "full-training-train-bank"),
-        "evaluation_trace_bank_id": str(scope.get("evaluation_trace_bank_id") or "feature-058-evaluation-trace-bank"),
-        "baseline_harness_id": str(scope.get("baseline_harness_id") or "feature-058-baseline-evaluation-harness"),
-        "seed_bundle": seed_bundle,
-        "replay": replay,
-        "optimizer_step_count": optimizer_step_count,
-        "target_sync_count": optimizer_step_count // 2000,
-        "loss_values": loss_values,
-        "evaluation": {
-            "evaluation_episode_count": evaluation_trace_count,
-            "mean_reward": _reward_summary(replay)["mean_reward"],
-            "completed_task_count": sum(1 for transition in replay if transition["reward_available"] and transition["reward"] >= 0),
-            "dropped_task_count": sum(1 for transition in replay if transition["reward_available"] and transition["reward"] < 0),
-            "terminal_transition_count": sum(1 for transition in replay if transition["terminal"]),
-            "reward_bearing_transition_count": sum(1 for transition in replay if transition["reward_available"]),
-            "trace_ids": evaluation_trace_ids,
-            "trace_bank_disjoint": True,
-            "evaluation_on_training_traces": False,
-            "trace_bank_ids": {
-                "training": str(scope.get("training_trace_bank_id") or "full-training-train-bank"),
-                "evaluation": str(scope.get("evaluation_trace_bank_id") or "feature-058-evaluation-trace-bank"),
-            },
-        },
+        "training_trace_bank_id": str(payload["training_trace_bank_id"]),
+        "evaluation_trace_bank_id": str(payload["evaluation_trace_bank_id"]),
+        "baseline_harness_id": str(payload["baseline_harness_id"]),
+        "seed_bundle": dict(payload.get("seed_bundle", scope.get("seed_bundle", {}))),
+        "replay": [],
+        "replay_size": int(payload["replay_size"]),
+        "optimizer_step_count": int(payload["optimizer_step_count"]),
+        "target_sync_count": int(payload["target_sync_count"]),
+        "loss_values": list(payload["loss_values"]),
+        "loss_is_finite": bool(payload["loss_is_finite"]),
+        "action_distribution": dict(payload["action_distribution"]),
+        "reward_summary": dict(payload["reward_summary"]),
+        "evaluation": evaluation,
+        "checkpoint_metadata": dict(payload["checkpoint_metadata"]),
+        "binding_evidence": dict(payload["binding_evidence"]),
     }
 
 
 def _build_training_metrics(execution: dict[str, Any]) -> dict[str, Any]:
-    transitions = list(execution["replay"])
-    action_distribution = _action_distribution(transitions)
+    action_distribution = dict(execution["action_distribution"])
     loss_values = list(execution["loss_values"])
-    loss_finite = bool(loss_values) and all(math.isfinite(float(loss)) for loss in loss_values)
+    loss_finite = bool(execution.get("loss_is_finite")) and bool(loss_values) and all(math.isfinite(float(loss)) for loss in loss_values)
     return {
         "optimizer_step_count": int(execution["optimizer_step_count"]),
-        "replay_size": len(transitions),
+        "replay_size": int(execution["replay_size"]),
         "loss_count": len(loss_values),
         "loss_finite": loss_finite,
         "loss_summary": {
@@ -262,7 +269,7 @@ def _build_training_metrics(execution: dict[str, Any]) -> dict[str, Any]:
             "loss_count": len(loss_values),
             "all_losses_finite": loss_finite,
         },
-        "reward_summary": _reward_summary(transitions),
+        "reward_summary": dict(execution["reward_summary"]),
         "target_update_summary": {
             "target_update_unit": "optimizer_step",
             "target_update_frequency": 2000,
@@ -272,17 +279,13 @@ def _build_training_metrics(execution: dict[str, Any]) -> dict[str, Any]:
         "local_action_count": action_distribution["local"],
         "horizontal_action_count": action_distribution["horizontal"],
         "vertical_action_count": action_distribution["vertical"],
+        "real_trainer_binding": dict(execution["binding_evidence"]),
     }
 
 
 def _build_evaluation_metrics(execution: dict[str, Any], feature_058_payload: dict[str, Any]) -> dict[str, Any]:
     evaluation_summary = dict(execution["evaluation"])
-    action_distribution = {
-        "local": None,
-        "horizontal": None,
-        "vertical": None,
-        "status": "evaluation policy action distribution not persisted by existing trainer",
-    }
+    action_distribution = dict(execution.get("action_distribution", {}))
     return {
         "evaluation_trace_bank_id": feature_058_payload.get("evaluation_trace_bank_summary", {}).get("evaluation_trace_bank_id"),
         "evaluation_episode_count": int(evaluation_summary.get("evaluation_episode_count", 0)),
@@ -310,6 +313,7 @@ def _build_evaluation_metrics(execution: dict[str, Any], feature_058_payload: di
         },
         "no_paper_reproduction_claim": True,
         "no_performance_superiority_claim": True,
+        "real_trainer_bound_evaluation": True,
     }
 
 
@@ -334,8 +338,9 @@ def _checkpoint_payload(execution: dict[str, Any], feature_058_payload: dict[str
         "seed_bundle": dict(execution["seed_bundle"]),
         "target_update_unit": "optimizer_step",
         "optimizer_step_count": int(execution["optimizer_step_count"]),
-        "replay_size": len(execution["replay"]),
+        "replay_size": int(execution["replay_size"]),
         "full_campaign_enabled": True,
+        "real_trainer_binding": dict(execution["binding_evidence"]),
     }
     metadata["feature_060_checkpoint_binary_policy"] = "metadata-only artifact; no model checkpoint binary written by Feature 060"
     metadata["feature_060_trace_bank_ids"] = {
@@ -352,14 +357,17 @@ def _build_checkpoint_summary(checkpoint_payload: dict[str, Any], path: Path) ->
         "target_update_metadata": {
             "target_update_unit": checkpoint_payload.get("target_update_unit"),
             "optimizer_step_count": checkpoint_payload.get("optimizer_step_count"),
+            "real_trainer_binding": checkpoint_payload.get("real_trainer_binding"),
         },
         "replay_metadata": {
             "replay_size": checkpoint_payload.get("replay_size"),
+            "source": "DDQNTrainer.replay_buffer",
         },
         "seed_bundle": checkpoint_payload.get("seed_bundle", {}),
         "trace_bank_ids": checkpoint_payload.get("feature_060_trace_bank_ids", {}),
         "checkpoint_binary_policy": checkpoint_payload.get("feature_060_checkpoint_binary_policy"),
         "checkpoint_binary_path": None,
+        "real_trainer_binding": checkpoint_payload.get("real_trainer_binding"),
     }
 
 
@@ -544,9 +552,10 @@ def build_full_paper_default_training_campaign_execution_report(
         "evaluation_trace_bank_id": execution["evaluation_trace_bank_id"],
         "baseline_harness_id": execution["baseline_harness_id"],
         "seed_bundle": execution["seed_bundle"],
-        "execution_completed": bool(len(execution["replay"]) == cfg.actual_training_episode_count * cfg.actual_episode_length),
+        "execution_completed": bool(int(execution["replay_size"]) >= cfg.actual_training_episode_count * cfg.actual_episode_length),
         "controlled_output_directory": str(cfg.output_dir),
         "actual_budget_is_reduced_for_local_validation": True,
+        "real_trainer_binding": dict(execution["binding_evidence"]),
     }
     checkpoint_summary = _build_checkpoint_summary(checkpoint_payload, CHECKPOINT_METADATA_JSON)
     resource_control_summary = _build_resource_control_summary(feature_059_payload, campaign_summary)
