@@ -153,6 +153,12 @@ class EvaluationTraceBankBaselineHarnessSchemaTests(unittest.TestCase):
         with self.assertRaises(ValueError):
             EvaluationTraceBankBaselineHarnessReport(**kwargs)
 
+    def test_report_rejects_ready_when_any_prerequisite_tag_is_false(self) -> None:
+        kwargs = _base_report_kwargs()
+        kwargs["prerequisite_tags_verified"][1]["verified"] = False
+        with self.assertRaises(ValueError):
+            EvaluationTraceBankBaselineHarnessReport(**kwargs)
+
 
 if __name__ == "__main__":
     unittest.main()

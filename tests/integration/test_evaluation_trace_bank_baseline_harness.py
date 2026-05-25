@@ -64,7 +64,7 @@ class EvaluationTraceBankBaselineHarnessIntegrationTests(unittest.TestCase):
             payload = build_evaluation_trace_bank_baseline_harness_report(config).to_dict()
         self.assertFalse(payload["feature_057_pilot_verified"])
         self.assertEqual(payload["final_verdict"], "feature_057_prerequisite_blocked")
-        self.assertIn("feature_057_prerequisite_blocked", payload["remaining_blockers"])
+        self.assertIn("feature_057_report_valid", payload["remaining_blockers"])
         self.assertNotEqual(payload["recommended_next_feature"], "Feature 059 — Full Paper-Default Training Campaign Gate")
 
 

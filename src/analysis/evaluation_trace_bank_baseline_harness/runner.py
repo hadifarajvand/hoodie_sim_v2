@@ -60,7 +60,7 @@ def _git_bool(*args: str) -> bool:
 
 
 def _status_paths() -> list[str]:
-    output = _git_output("status", "--short")
+    output = subprocess.run(["git", "status", "--short"], check=True, capture_output=True, text=True).stdout
     paths: list[str] = []
     for line in output.splitlines():
         if not line.strip():
@@ -398,7 +398,8 @@ def _build_prerequisite_tags_verified(
 def _blocked_report(
     *,
     config: EvaluationTraceBankBaselineHarnessConfig,
-    blocker: str,
+    final_verdict: str,
+    blockers: list[str],
     feature_057_pilot_verified: bool,
     prerequisite_tags_verified: list[dict[str, Any]],
     behavior_safety_summary: dict[str, bool],
@@ -460,9 +461,9 @@ def _blocked_report(
             "repeatability_proven": False,
         },
         behavior_safety_summary=behavior_safety_summary,
-        remaining_blockers=[blocker],
-        recommended_next_feature=REPAIR_ROUTING[blocker],
-        final_verdict=blocker,
+        remaining_blockers=blockers,
+        recommended_next_feature=REPAIR_ROUTING[final_verdict],
+        final_verdict=final_verdict,
     )
 
 
@@ -485,10 +486,21 @@ def build_evaluation_trace_bank_baseline_harness_report(
         diff_paths=diff_paths,
     )
 
-    if not feature_057_ready or not all(tag["verified"] for tag in prerequisite_tags_verified[:7]):
+    failed_prerequisite_tags = [
+        str(tag["name"])
+        for tag in prerequisite_tags_verified
+        if tag.get("verified") is not True
+    ]
+    if failed_prerequisite_tags:
+        final_verdict = (
+            "feature_057_prerequisite_blocked"
+            if not feature_057_ready
+            else "behavior_drift_detected"
+        )
         return _blocked_report(
             config=cfg,
-            blocker="feature_057_prerequisite_blocked",
+            final_verdict=final_verdict,
+            blockers=failed_prerequisite_tags,
             feature_057_pilot_verified=feature_057_ready,
             prerequisite_tags_verified=prerequisite_tags_verified,
             behavior_safety_summary=behavior_safety_summary,
@@ -498,7 +510,8 @@ def build_evaluation_trace_bank_baseline_harness_report(
         blocker = "behavior_drift_detected"
         return _blocked_report(
             config=cfg,
-            blocker=blocker,
+            final_verdict=blocker,
+            blockers=[blocker],
             feature_057_pilot_verified=feature_057_ready,
             prerequisite_tags_verified=prerequisite_tags_verified,
             behavior_safety_summary=behavior_safety_summary,

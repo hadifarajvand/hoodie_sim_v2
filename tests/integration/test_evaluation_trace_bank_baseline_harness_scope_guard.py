@@ -53,7 +53,7 @@ class EvaluationTraceBankBaselineHarnessScopeGuardTests(unittest.TestCase):
                 with mock.patch.object(runner, "_diff_names", return_value=[]):
                     payload = build_evaluation_trace_bank_baseline_harness_report().to_dict()
         self.assertEqual(payload["final_verdict"], "behavior_drift_detected")
-        self.assertIn("behavior_drift_detected", payload["remaining_blockers"])
+        self.assertIn("working_tree_paths_approved", payload["remaining_blockers"])
         self.assertFalse(payload["behavior_safety_summary"]["no_policy_drift"])
 
 

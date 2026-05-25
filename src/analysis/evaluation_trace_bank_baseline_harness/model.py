@@ -70,6 +70,10 @@ class EvaluationTraceBankBaselineHarnessReport:
             raise ValueError("invalid final_verdict")
 
         _ensure_unique_names(self.prerequisite_tags_verified, "prerequisite_tags_verified")
+        prerequisite_tags_ready = all(
+            _ensure_bool(entry.get("verified"), f"prerequisite_tags_verified.{entry.get('name')}.verified")
+            for entry in self.prerequisite_tags_verified
+        )
         feature_057_pilot_verified = _ensure_bool(self.feature_057_pilot_verified, "feature_057_pilot_verified")
 
         _required_keys(
@@ -193,7 +197,8 @@ class EvaluationTraceBankBaselineHarnessReport:
         behavior_safe = all(_ensure_bool(self.behavior_safety_summary.get(key), f"behavior_safety_summary.{key}") for key in BEHAVIOR_SAFETY_FIELDS)
 
         ready = (
-            feature_057_pilot_verified
+            prerequisite_tags_ready
+            and feature_057_pilot_verified
             and evaluation_trace_bank_ready
             and train_eval_separation_ready
             and baseline_registry_ready
