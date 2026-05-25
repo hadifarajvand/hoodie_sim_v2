@@ -1,0 +1,78 @@
+{
+  "controlled_experiment_data": true,
+  "evaluation_trace_bank_id": "feature-058-evaluation-trace-bank",
+  "metric_schema": {
+    "metric_schema_complete": true,
+    "missing_metric_fields": [],
+    "present_metric_fields": [
+      "delay",
+      "drop",
+      "timeout",
+      "reward",
+      "action_distribution",
+      "local_action_count",
+      "horizontal_action_count",
+      "vertical_action_count",
+      "per_episode_summary",
+      "train_eval_separation",
+      "baseline_policy_metrics"
+    ],
+    "required_metric_fields": [
+      "delay",
+      "drop",
+      "timeout",
+      "reward",
+      "action_distribution",
+      "local_action_count",
+      "horizontal_action_count",
+      "vertical_action_count",
+      "per_episode_summary",
+      "train_eval_separation",
+      "baseline_policy_metrics"
+    ]
+  },
+  "trace_ids": [
+    "feature-058-evaluation-trace-bank-trace-000-0d3321f39732",
+    "feature-058-evaluation-trace-bank-trace-001-27a429c2b824",
+    "feature-058-evaluation-trace-bank-trace-002-42c25a458cde",
+    "feature-058-evaluation-trace-bank-trace-003-de82e91aec97",
+    "feature-058-evaluation-trace-bank-trace-004-8050118c871c",
+    "feature-058-evaluation-trace-bank-trace-005-1bb74efa7a79",
+    "feature-058-evaluation-trace-bank-trace-006-618201f56169",
+    "feature-058-evaluation-trace-bank-trace-007-247fdb56879b",
+    "feature-058-evaluation-trace-bank-trace-008-c270890f4ea0",
+    "feature-058-evaluation-trace-bank-trace-009-d60c2618cbed",
+    "feature-058-evaluation-trace-bank-trace-010-135fe5d45383",
+    "feature-058-evaluation-trace-bank-trace-011-a095006b8c3c"
+  ],
+  "trained_policy_metrics": {
+    "action_distribution": {
+      "horizontal": 0,
+      "local": 0,
+      "vertical": 110
+    },
+    "delay": {
+      "status": "not_claimed_in_feature_060",
+      "value": null
+    },
+    "drop": {
+      "count": 6
+    },
+    "reward": {
+      "mean_reward": -80.0,
+      "reward_bearing_transition_count": 6
+    },
+    "timeout": {
+      "status": "not_claimed_in_feature_060",
+      "value": null
+    },
+    "train_eval_separation": {
+      "evaluation_on_training_traces": false,
+      "trace_bank_disjoint": true,
+      "trace_bank_ids": {
+        "evaluation": "feature-058-evaluation-trace-bank",
+        "training": "full-training-train-bank"
+      }
+    }
+  }
+}
