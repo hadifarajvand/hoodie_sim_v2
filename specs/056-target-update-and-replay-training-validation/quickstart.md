@@ -3,7 +3,7 @@
 ## Run implementation validation
 
 ```bash
-python3 -m unittest \
+PATH="$(pwd)/src/.venvmac/bin:$PATH" python3 -m unittest \
   tests.unit.test_target_update_replay_validation_schema \
   tests.unit.test_target_update_replay_validation_metrics \
   tests.unit.test_target_update_replay_validation_behavior_equivalence \
@@ -11,7 +11,7 @@ python3 -m unittest \
   tests.integration.test_target_update_replay_validation_report \
   tests.integration.test_target_update_replay_validation_scope_guard
 
-python3 -m src.analysis.target_update_replay_training_validation
+PATH="$(pwd)/src/.venvmac/bin:$PATH" python3 -m src.analysis.target_update_replay_training_validation
 ```
 
 ## Inspect report
