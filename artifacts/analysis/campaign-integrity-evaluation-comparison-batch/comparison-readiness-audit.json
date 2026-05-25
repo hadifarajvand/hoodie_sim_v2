@@ -1,0 +1,9 @@
+{
+  "identical_action_contract": true,
+  "identical_metric_schema": true,
+  "no_paper_reproduction_claim": true,
+  "no_training_traces_leak_into_evaluation": true,
+  "no_unsupported_superiority_claim": true,
+  "same_evaluation_trace_bank": true,
+  "trace_ids_comparable": true
+}

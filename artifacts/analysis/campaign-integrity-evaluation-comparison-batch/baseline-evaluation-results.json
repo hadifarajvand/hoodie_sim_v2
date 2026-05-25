@@ -1,0 +1,388 @@
+{
+  "baseline_policy_metrics": {
+    "fixed-horizontal": {
+      "action_distribution": {
+        "horizontal": 12,
+        "local": 0,
+        "vertical": 0
+      },
+      "delay": {
+        "status": "schema_only_not_performance_claim",
+        "value": null
+      },
+      "drop": {
+        "status": "schema_only_not_performance_claim",
+        "value": null
+      },
+      "horizontal_action_count": 12,
+      "local_action_count": 0,
+      "per_episode_summary": [
+        {
+          "episode_id": 0,
+          "metric_shell_only": true,
+          "performance_claim": false
+        },
+        {
+          "episode_id": 1,
+          "metric_shell_only": true,
+          "performance_claim": false
+        },
+        {
+          "episode_id": 2,
+          "metric_shell_only": true,
+          "performance_claim": false
+        }
+      ],
+      "reward": {
+        "status": "schema_only_not_performance_claim",
+        "value": null
+      },
+      "selected_actions": [
+        {
+          "legal": true,
+          "selected_action": "horizontal",
+          "trace_id": "feature-058-evaluation-trace-bank-trace-000-0d3321f39732"
+        },
+        {
+          "legal": true,
+          "selected_action": "horizontal",
+          "trace_id": "feature-058-evaluation-trace-bank-trace-001-27a429c2b824"
+        },
+        {
+          "legal": true,
+          "selected_action": "horizontal",
+          "trace_id": "feature-058-evaluation-trace-bank-trace-002-42c25a458cde"
+        },
+        {
+          "legal": true,
+          "selected_action": "horizontal",
+          "trace_id": "feature-058-evaluation-trace-bank-trace-003-de82e91aec97"
+        },
+        {
+          "legal": true,
+          "selected_action": "horizontal",
+          "trace_id": "feature-058-evaluation-trace-bank-trace-004-8050118c871c"
+        },
+        {
+          "legal": true,
+          "selected_action": "horizontal",
+          "trace_id": "feature-058-evaluation-trace-bank-trace-005-1bb74efa7a79"
+        },
+        {
+          "legal": true,
+          "selected_action": "horizontal",
+          "trace_id": "feature-058-evaluation-trace-bank-trace-006-618201f56169"
+        },
+        {
+          "legal": true,
+          "selected_action": "horizontal",
+          "trace_id": "feature-058-evaluation-trace-bank-trace-007-247fdb56879b"
+        },
+        {
+          "legal": true,
+          "selected_action": "horizontal",
+          "trace_id": "feature-058-evaluation-trace-bank-trace-008-c270890f4ea0"
+        },
+        {
+          "legal": true,
+          "selected_action": "horizontal",
+          "trace_id": "feature-058-evaluation-trace-bank-trace-009-d60c2618cbed"
+        },
+        {
+          "legal": true,
+          "selected_action": "horizontal",
+          "trace_id": "feature-058-evaluation-trace-bank-trace-010-135fe5d45383"
+        },
+        {
+          "legal": true,
+          "selected_action": "horizontal",
+          "trace_id": "feature-058-evaluation-trace-bank-trace-011-a095006b8c3c"
+        }
+      ],
+      "timeout": {
+        "status": "schema_only_not_performance_claim",
+        "value": null
+      },
+      "vertical_action_count": 0
+    },
+    "local-only": {
+      "action_distribution": {
+        "horizontal": 0,
+        "local": 12,
+        "vertical": 0
+      },
+      "delay": {
+        "status": "schema_only_not_performance_claim",
+        "value": null
+      },
+      "drop": {
+        "status": "schema_only_not_performance_claim",
+        "value": null
+      },
+      "horizontal_action_count": 0,
+      "local_action_count": 12,
+      "per_episode_summary": [
+        {
+          "episode_id": 0,
+          "metric_shell_only": true,
+          "performance_claim": false
+        },
+        {
+          "episode_id": 1,
+          "metric_shell_only": true,
+          "performance_claim": false
+        },
+        {
+          "episode_id": 2,
+          "metric_shell_only": true,
+          "performance_claim": false
+        }
+      ],
+      "reward": {
+        "status": "schema_only_not_performance_claim",
+        "value": null
+      },
+      "selected_actions": [
+        {
+          "legal": true,
+          "selected_action": "local",
+          "trace_id": "feature-058-evaluation-trace-bank-trace-000-0d3321f39732"
+        },
+        {
+          "legal": true,
+          "selected_action": "local",
+          "trace_id": "feature-058-evaluation-trace-bank-trace-001-27a429c2b824"
+        },
+        {
+          "legal": true,
+          "selected_action": "local",
+          "trace_id": "feature-058-evaluation-trace-bank-trace-002-42c25a458cde"
+        },
+        {
+          "legal": true,
+          "selected_action": "local",
+          "trace_id": "feature-058-evaluation-trace-bank-trace-003-de82e91aec97"
+        },
+        {
+          "legal": true,
+          "selected_action": "local",
+          "trace_id": "feature-058-evaluation-trace-bank-trace-004-8050118c871c"
+        },
+        {
+          "legal": true,
+          "selected_action": "local",
+          "trace_id": "feature-058-evaluation-trace-bank-trace-005-1bb74efa7a79"
+        },
+        {
+          "legal": true,
+          "selected_action": "local",
+          "trace_id": "feature-058-evaluation-trace-bank-trace-006-618201f56169"
+        },
+        {
+          "legal": true,
+          "selected_action": "local",
+          "trace_id": "feature-058-evaluation-trace-bank-trace-007-247fdb56879b"
+        },
+        {
+          "legal": true,
+          "selected_action": "local",
+          "trace_id": "feature-058-evaluation-trace-bank-trace-008-c270890f4ea0"
+        },
+        {
+          "legal": true,
+          "selected_action": "local",
+          "trace_id": "feature-058-evaluation-trace-bank-trace-009-d60c2618cbed"
+        },
+        {
+          "legal": true,
+          "selected_action": "local",
+          "trace_id": "feature-058-evaluation-trace-bank-trace-010-135fe5d45383"
+        },
+        {
+          "legal": true,
+          "selected_action": "local",
+          "trace_id": "feature-058-evaluation-trace-bank-trace-011-a095006b8c3c"
+        }
+      ],
+      "timeout": {
+        "status": "schema_only_not_performance_claim",
+        "value": null
+      },
+      "vertical_action_count": 0
+    },
+    "random-legal": {
+      "action_distribution": {
+        "horizontal": 3,
+        "local": 3,
+        "vertical": 6
+      },
+      "delay": {
+        "status": "schema_only_not_performance_claim",
+        "value": null
+      },
+      "drop": {
+        "status": "schema_only_not_performance_claim",
+        "value": null
+      },
+      "horizontal_action_count": 3,
+      "local_action_count": 3,
+      "per_episode_summary": [
+        {
+          "episode_id": 0,
+          "metric_shell_only": true,
+          "performance_claim": false
+        },
+        {
+          "episode_id": 1,
+          "metric_shell_only": true,
+          "performance_claim": false
+        },
+        {
+          "episode_id": 2,
+          "metric_shell_only": true,
+          "performance_claim": false
+        }
+      ],
+      "reward": {
+        "status": "schema_only_not_performance_claim",
+        "value": null
+      },
+      "selected_actions": [
+        {
+          "legal": true,
+          "selected_action": "horizontal",
+          "trace_id": "feature-058-evaluation-trace-bank-trace-000-0d3321f39732"
+        },
+        {
+          "legal": true,
+          "selected_action": "vertical",
+          "trace_id": "feature-058-evaluation-trace-bank-trace-001-27a429c2b824"
+        },
+        {
+          "legal": true,
+          "selected_action": "horizontal",
+          "trace_id": "feature-058-evaluation-trace-bank-trace-002-42c25a458cde"
+        },
+        {
+          "legal": true,
+          "selected_action": "vertical",
+          "trace_id": "feature-058-evaluation-trace-bank-trace-003-de82e91aec97"
+        },
+        {
+          "legal": true,
+          "selected_action": "local",
+          "trace_id": "feature-058-evaluation-trace-bank-trace-004-8050118c871c"
+        },
+        {
+          "legal": true,
+          "selected_action": "local",
+          "trace_id": "feature-058-evaluation-trace-bank-trace-005-1bb74efa7a79"
+        },
+        {
+          "legal": true,
+          "selected_action": "horizontal",
+          "trace_id": "feature-058-evaluation-trace-bank-trace-006-618201f56169"
+        },
+        {
+          "legal": true,
+          "selected_action": "vertical",
+          "trace_id": "feature-058-evaluation-trace-bank-trace-007-247fdb56879b"
+        },
+        {
+          "legal": true,
+          "selected_action": "local",
+          "trace_id": "feature-058-evaluation-trace-bank-trace-008-c270890f4ea0"
+        },
+        {
+          "legal": true,
+          "selected_action": "vertical",
+          "trace_id": "feature-058-evaluation-trace-bank-trace-009-d60c2618cbed"
+        },
+        {
+          "legal": true,
+          "selected_action": "vertical",
+          "trace_id": "feature-058-evaluation-trace-bank-trace-010-135fe5d45383"
+        },
+        {
+          "legal": true,
+          "selected_action": "vertical",
+          "trace_id": "feature-058-evaluation-trace-bank-trace-011-a095006b8c3c"
+        }
+      ],
+      "timeout": {
+        "status": "schema_only_not_performance_claim",
+        "value": null
+      },
+      "vertical_action_count": 6
+    }
+  },
+  "controlled_experiment_data": true,
+  "evaluation_trace_bank_id": "feature-058-evaluation-trace-bank",
+  "metric_schema": {
+    "metric_schema_complete": true,
+    "missing_metric_fields": [],
+    "present_metric_fields": [
+      "delay",
+      "drop",
+      "timeout",
+      "reward",
+      "action_distribution",
+      "local_action_count",
+      "horizontal_action_count",
+      "vertical_action_count",
+      "per_episode_summary",
+      "train_eval_separation",
+      "baseline_policy_metrics"
+    ],
+    "required_metric_fields": [
+      "delay",
+      "drop",
+      "timeout",
+      "reward",
+      "action_distribution",
+      "local_action_count",
+      "horizontal_action_count",
+      "vertical_action_count",
+      "per_episode_summary",
+      "train_eval_separation",
+      "baseline_policy_metrics"
+    ]
+  },
+  "policies": [
+    {
+      "action_contract_compatible": true,
+      "kind": "deterministic-fixed-action",
+      "learned_policy_checkpoint_dependency": false,
+      "name": "local-only",
+      "selected_action": "local"
+    },
+    {
+      "action_contract_compatible": true,
+      "kind": "deterministic-random-legal-action",
+      "learned_policy_checkpoint_dependency": false,
+      "name": "random-legal",
+      "selected_action": "seeded legal action per trace"
+    },
+    {
+      "action_contract_compatible": true,
+      "kind": "deterministic-fixed-action",
+      "learned_policy_checkpoint_dependency": false,
+      "name": "fixed-horizontal",
+      "selected_action": "horizontal"
+    }
+  ],
+  "trace_ids": [
+    "feature-058-evaluation-trace-bank-trace-000-0d3321f39732",
+    "feature-058-evaluation-trace-bank-trace-001-27a429c2b824",
+    "feature-058-evaluation-trace-bank-trace-002-42c25a458cde",
+    "feature-058-evaluation-trace-bank-trace-003-de82e91aec97",
+    "feature-058-evaluation-trace-bank-trace-004-8050118c871c",
+    "feature-058-evaluation-trace-bank-trace-005-1bb74efa7a79",
+    "feature-058-evaluation-trace-bank-trace-006-618201f56169",
+    "feature-058-evaluation-trace-bank-trace-007-247fdb56879b",
+    "feature-058-evaluation-trace-bank-trace-008-c270890f4ea0",
+    "feature-058-evaluation-trace-bank-trace-009-d60c2618cbed",
+    "feature-058-evaluation-trace-bank-trace-010-135fe5d45383",
+    "feature-058-evaluation-trace-bank-trace-011-a095006b8c3c"
+  ]
+}
