@@ -18,10 +18,10 @@
 ## C. Feature 060 real binding repair
 
 - [ ] T010 Update Feature 060 execution package to import real trainer, learner, or network code.
-- [ ] T011 Replace scalar-only campaign claim with real trainer-bound execution evidence.
+- [ ] T011 Replace unsupported fallback campaign claim with real trainer-bound execution evidence.
 - [ ] T012 Keep configured and actual execution budgets explicit.
 - [ ] T013 Regenerate Feature 060 report and support artifacts.
-- [ ] T014 Ensure Feature 060 report proves real trainer binding and no unsupported scalar fallback claim.
+- [ ] T014 Ensure Feature 060 report proves real trainer binding and no unsupported fallback claim.
 
 ## D. Feature 060B report
 
@@ -40,7 +40,7 @@
 - [ ] T024 Add `tests/integration/test_bind_full_campaign_real_torch_trainer.py`.
 - [ ] T025 Add `tests/integration/test_bind_full_campaign_real_torch_trainer_report.py`.
 - [ ] T026 Add `tests/integration/test_bind_full_campaign_real_torch_trainer_scope_guard.py`.
-- [ ] T027 Run Feature 060 regression tests after repair.
+- [ ] T027 Run Feature 060 regression tests after repair, excluding the Feature 060-only scope guard. Feature 060B scope guard owns the approved combined path set.
 
 ## Validation Handoff and Remote Audit Packet
 
