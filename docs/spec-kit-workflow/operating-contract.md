@@ -59,7 +59,21 @@ Reports must not use fake zeros, placeholder counts, sample-derived aggregate co
 
 Feature validation should include feature-specific tests, safe schema/config/runtime tests, and committed-artifact checks for prior features inside current-feature tests. It must not include dirty-worktree-sensitive prior-feature tests.
 
-## Approval gates
+## Validation handoff packet
+
+Every feature plan must include `## Validation Handoff Packet`.
+
+Every feature task graph must include `## Validation Handoff and Remote Audit Packet`.
+
+Every implementation result must provide one test-proof source:
+
+- local test output
+- Codex validation output
+- CI result URL
+
+Every implementation result must also provide report proof fields, git status, main...HEAD diff, cached diff, commit SHA, branch name, pushed remote ref, final verdict, and recommended next feature.
+
+## Approval and auto-push gates
 
 Before staging, print status, cached diff, and a dirty-path classification table. Ask:
 
@@ -67,8 +81,8 @@ Before staging, print status, cached diff, and a dirty-path classification table
 Approve staging only approved Feature <ID> paths? Reply APPROVE_STAGE_<ID> or DENY.
 ```
 
-After staging, print staged paths and ask for commit approval. After commit, ask for push approval.
+If a feature prompt explicitly grants guarded auto-commit/push authorization, Codex may stage, commit, and push only after tests pass, expected report verdict is present, blockers are empty, dirty paths are approved, and forbidden paths are absent.
 
 ## Merge and tag rule
 
-A feature is mergeable only when the remote diff contains only approved paths, the report is internally consistent, and no forbidden paths are present. Tags must point to the merge commit on `main`; verify `git rev-parse main` equals `git rev-parse <tag>^{}`.
+A feature is mergeable only when the remote diff contains only approved paths, the report is internally consistent, required test proof is available, and no forbidden paths are present. Tags must point to the merge commit on `main`; verify `git rev-parse main` equals `git rev-parse <tag>^{}`.
