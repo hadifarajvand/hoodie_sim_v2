@@ -675,7 +675,7 @@
     {
       "details": "git status --short contains only approved Feature 058 paths",
       "name": "working_tree_paths_approved",
-      "verified": false
+      "verified": true
     },
     {
       "details": "git diff --cached --name-only contains only approved Feature 058 paths",
