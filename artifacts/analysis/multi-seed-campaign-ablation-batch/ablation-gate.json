@@ -1,0 +1,49 @@
+{
+  "same_metric_schema": true,
+  "same_seed_set": true,
+  "same_trace_bank_constraints": true,
+  "variants": [
+    {
+      "blocked": false,
+      "blocker_list": [],
+      "changed_mechanism": "none",
+      "execution_materialization_plan": "controlled materialization using feature 061 artifacts",
+      "expected_disabled_component": "none",
+      "variant_id": "full_mechanism"
+    },
+    {
+      "blocked": false,
+      "blocker_list": [],
+      "changed_mechanism": "deadline awareness removed",
+      "execution_materialization_plan": "controlled materialization using shared multi-seed traces",
+      "expected_disabled_component": "deadline awareness",
+      "variant_id": "no_deadline_awareness"
+    },
+    {
+      "blocked": false,
+      "blocker_list": [],
+      "changed_mechanism": "queue awareness removed",
+      "execution_materialization_plan": "controlled materialization using shared multi-seed traces",
+      "expected_disabled_component": "queue awareness",
+      "variant_id": "no_queue_awareness"
+    },
+    {
+      "blocked": false,
+      "blocker_list": [],
+      "changed_mechanism": "selected action outcome evidence removed",
+      "execution_materialization_plan": "controlled materialization using shared multi-seed traces",
+      "expected_disabled_component": "selected action outcome evidence",
+      "variant_id": "no_selected_action_outcome_evidence"
+    },
+    {
+      "blocked": true,
+      "blocker_list": [
+        "real_trainer_binding_control_is_required_for_feature_062"
+      ],
+      "changed_mechanism": "real trainer binding removed",
+      "execution_materialization_plan": "blocked because controlled experiment still requires real trainer binding evidence",
+      "expected_disabled_component": "real trainer binding",
+      "variant_id": "no_real_trainer_binding_control"
+    }
+  ]
+}
