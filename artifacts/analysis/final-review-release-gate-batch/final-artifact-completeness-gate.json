@@ -1,0 +1,14 @@
+{
+  "feature_063_final_exports_exist": true,
+  "feature_064_outputs_exist_after_generation": true,
+  "final_artifacts": [
+    "artifacts/analysis/final-review-release-gate-batch/final-review-release-gate-batch-report.json",
+    "artifacts/analysis/final-review-release-gate-batch/final-review-release-gate-batch-report.md",
+    "artifacts/analysis/final-review-release-gate-batch/final-repository-state-audit.json",
+    "artifacts/analysis/final-review-release-gate-batch/final-artifact-completeness-gate.json",
+    "artifacts/analysis/final-review-release-gate-batch/final-claim-boundary-review.json",
+    "artifacts/analysis/final-review-release-gate-batch/release-tag-readiness-package.md",
+    "artifacts/analysis/final-review-release-gate-batch/final-handoff-and-next-work.md"
+  ],
+  "source_artifacts_exist": true
+}
