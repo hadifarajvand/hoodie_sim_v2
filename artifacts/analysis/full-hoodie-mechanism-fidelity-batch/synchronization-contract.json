@@ -1,0 +1,32 @@
+{
+  "barrier_reached": true,
+  "completed_agent_count": 3,
+  "completion_snapshots": [
+    {
+      "agent_id": "1",
+      "barrier_reached": false,
+      "completed_agent_count": 1,
+      "decision_cycle": 0,
+      "distributed_timestep_synchronization": true,
+      "expected_agent_count": 3
+    },
+    {
+      "agent_id": "2",
+      "barrier_reached": false,
+      "completed_agent_count": 2,
+      "decision_cycle": 0,
+      "distributed_timestep_synchronization": true,
+      "expected_agent_count": 3
+    },
+    {
+      "agent_id": "3",
+      "barrier_reached": true,
+      "completed_agent_count": 3,
+      "decision_cycle": 0,
+      "distributed_timestep_synchronization": true,
+      "expected_agent_count": 3
+    }
+  ],
+  "decision_cycle": 0,
+  "distributed_timestep_synchronization": true
+}

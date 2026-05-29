@@ -1,0 +1,147 @@
+{
+  "available_destinations_example": [
+    "local",
+    "6",
+    "11",
+    "16",
+    "cloud"
+  ],
+  "cloud_escalation_enabled": true,
+  "completion_snapshots": [
+    {
+      "agent_id": "1",
+      "barrier_reached": false,
+      "completed_agent_count": 1,
+      "decision_cycle": 0,
+      "distributed_timestep_synchronization": true,
+      "expected_agent_count": 3
+    },
+    {
+      "agent_id": "2",
+      "barrier_reached": false,
+      "completed_agent_count": 2,
+      "decision_cycle": 0,
+      "distributed_timestep_synchronization": true,
+      "expected_agent_count": 3
+    },
+    {
+      "agent_id": "3",
+      "barrier_reached": true,
+      "completed_agent_count": 3,
+      "decision_cycle": 0,
+      "distributed_timestep_synchronization": true,
+      "expected_agent_count": 3
+    }
+  ],
+  "delayed_reward_pipeline_verified": true,
+  "deterministic_topology_behavior": true,
+  "distributed_edge_agent_coordination_flow": true,
+  "dynamic_congestion_masks_verified": true,
+  "edge_to_edge_collaboration_enabled": true,
+  "neighbor_graph_operational": true,
+  "neighbor_reachability": {
+    "1": [
+      "6",
+      "11",
+      "16"
+    ],
+    "10": [
+      "5",
+      "15",
+      "20"
+    ],
+    "11": [
+      "1",
+      "6",
+      "16"
+    ],
+    "12": [
+      "2",
+      "7",
+      "17"
+    ],
+    "13": [
+      "3",
+      "8",
+      "18"
+    ],
+    "14": [
+      "4",
+      "9",
+      "19"
+    ],
+    "15": [
+      "5",
+      "10",
+      "20"
+    ],
+    "16": [
+      "1",
+      "6",
+      "11"
+    ],
+    "17": [
+      "2",
+      "7",
+      "12"
+    ],
+    "18": [
+      "3",
+      "8",
+      "13"
+    ],
+    "19": [
+      "4",
+      "9",
+      "14"
+    ],
+    "2": [
+      "7",
+      "12",
+      "17"
+    ],
+    "20": [
+      "5",
+      "10",
+      "15"
+    ],
+    "3": [
+      "8",
+      "13",
+      "18"
+    ],
+    "4": [
+      "9",
+      "14",
+      "19"
+    ],
+    "5": [
+      "10",
+      "15",
+      "20"
+    ],
+    "6": [
+      "1",
+      "11",
+      "16"
+    ],
+    "7": [
+      "2",
+      "12",
+      "17"
+    ],
+    "8": [
+      "3",
+      "13",
+      "18"
+    ],
+    "9": [
+      "4",
+      "14",
+      "19"
+    ]
+  },
+  "node_count": 20,
+  "synchronization_barrier_verified": true,
+  "topology_source": "approved_assumption_registry"
+}

@@ -1,0 +1,11 @@
+{
+  "completion_node_id": "cloud",
+  "correlation_id": "corr-1",
+  "dispatching_agent_id": "1",
+  "originating_agent_id": "1",
+  "ownership_tracking_enabled": true,
+  "reward": 1.0,
+  "reward_ready": true,
+  "reward_recipient_agent_id": "1",
+  "task_id": "task-1"
+}

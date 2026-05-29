@@ -1,0 +1,37 @@
+{
+  "congestion_threshold": 0.75,
+  "deterministic_congestion_scoring": true,
+  "dynamic_node_load_balancing": true,
+  "fallback_escalation_when_edge_routes_congested": true,
+  "filtered_mask_example": [
+    true,
+    true,
+    true,
+    true,
+    true
+  ],
+  "queue_pressure_aware_action_filtering": true,
+  "queue_pressure_example": {
+    "1": 0.2,
+    "10": 0.2,
+    "11": 0.9,
+    "12": 0.2,
+    "13": 0.2,
+    "14": 0.2,
+    "15": 0.2,
+    "16": 0.9,
+    "17": 0.2,
+    "18": 0.2,
+    "19": 0.2,
+    "2": 0.2,
+    "20": 0.2,
+    "3": 0.2,
+    "4": 0.2,
+    "5": 0.2,
+    "6": 0.9,
+    "7": 0.2,
+    "8": 0.2,
+    "9": 0.2,
+    "cloud": 0.2
+  }
+}
