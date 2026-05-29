@@ -1,0 +1,4 @@
+{
+  "different_seed_can_change_output": true,
+  "same_seed_same_output": true
+}

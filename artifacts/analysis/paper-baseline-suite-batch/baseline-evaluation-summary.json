@@ -1,0 +1,80 @@
+{
+  "BCO": {
+    "legal_action_compliance": true,
+    "offloading_distribution": {
+      "11": 0,
+      "16": 0,
+      "6": 0,
+      "cloud": 0,
+      "local": 1
+    },
+    "selected_destination_ids": [
+      "local"
+    ]
+  },
+  "FLC": {
+    "legal_action_compliance": true,
+    "offloading_distribution": {
+      "11": 0,
+      "16": 0,
+      "6": 0,
+      "cloud": 0,
+      "local": 1
+    },
+    "selected_destination_ids": [
+      "local"
+    ]
+  },
+  "HO": {
+    "legal_action_compliance": true,
+    "offloading_distribution": {
+      "11": 0,
+      "16": 0,
+      "6": 1,
+      "cloud": 0,
+      "local": 0
+    },
+    "selected_destination_ids": [
+      "6"
+    ]
+  },
+  "MLEO": {
+    "legal_action_compliance": true,
+    "offloading_distribution": {
+      "11": 0,
+      "16": 0,
+      "6": 0,
+      "cloud": 0,
+      "local": 1
+    },
+    "selected_destination_ids": [
+      "local"
+    ]
+  },
+  "RO": {
+    "legal_action_compliance": true,
+    "offloading_distribution": {
+      "11": 1,
+      "16": 0,
+      "6": 0,
+      "cloud": 0,
+      "local": 0
+    },
+    "selected_destination_ids": [
+      "11"
+    ]
+  },
+  "VO": {
+    "legal_action_compliance": true,
+    "offloading_distribution": {
+      "11": 0,
+      "16": 0,
+      "6": 0,
+      "cloud": 1,
+      "local": 0
+    },
+    "selected_destination_ids": [
+      "cloud"
+    ]
+  }
+}

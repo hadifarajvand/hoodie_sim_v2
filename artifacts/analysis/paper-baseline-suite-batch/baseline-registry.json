@@ -1,0 +1,11 @@
+{
+  "baseline_count": 6,
+  "implemented_baselines": [
+    "RO",
+    "FLC",
+    "VO",
+    "HO",
+    "BCO",
+    "MLEO"
+  ]
+}
