@@ -1,0 +1,25 @@
+{
+  "default_horizontal_rate_mbps": 30,
+  "default_vertical_rate_mbps": 10,
+  "horizontal_link": {
+    "data_rate_mbps": 30,
+    "destination_node_id": "2",
+    "link_delay_source": "per_link_override_capable",
+    "link_type": "horizontal",
+    "source_node_id": "1",
+    "task_size_mbits": 2.0,
+    "transmission_delay_seconds": 0.06666666666666667,
+    "transmission_delay_slots": 1
+  },
+  "per_link_delay_contract_available": true,
+  "vertical_link": {
+    "data_rate_mbps": 10,
+    "destination_node_id": "cloud",
+    "link_delay_source": "per_link_override_capable",
+    "link_type": "vertical",
+    "source_node_id": "1",
+    "task_size_mbits": 2.0,
+    "transmission_delay_seconds": 0.2,
+    "transmission_delay_slots": 1
+  }
+}
