@@ -1,0 +1,6 @@
+{
+  "decay_steps": 1000,
+  "epsilon_end": 0.05,
+  "epsilon_greedy_schedule_available": true,
+  "epsilon_start": 1.0
+}
