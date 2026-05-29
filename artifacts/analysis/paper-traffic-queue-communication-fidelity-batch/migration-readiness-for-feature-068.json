@@ -1,0 +1,8 @@
+{
+  "feature_066_distributed_training_preserved": true,
+  "next_training_migration_required": true,
+  "paper_traffic_contract_available": true,
+  "pubsub_contract_available": true,
+  "queue_fidelity_contract_available": true,
+  "recovery_contract_available": true
+}
