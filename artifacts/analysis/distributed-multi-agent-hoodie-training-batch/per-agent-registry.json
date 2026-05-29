@@ -1,0 +1,9 @@
+{
+  "agent_count": 20,
+  "online_network_count": 20,
+  "optimizer_count": 20,
+  "policy_count": 20,
+  "replay_buffer_count": 20,
+  "shared_network_instance_detected": false,
+  "target_network_count": 20
+}

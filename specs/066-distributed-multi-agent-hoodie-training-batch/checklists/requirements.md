@@ -1,0 +1,4 @@
+- [x] Feature 065 migration dependency is defined
+- [x] Per-agent ownership is required
+- [x] Delayed reward origin assignment is required
+- [x] No reproduction claim is permitted
