@@ -3,7 +3,7 @@ from __future__ import annotations
 import random
 from dataclasses import dataclass, field
 
-from .common import legal_actions
+from .common import placement_actions_for_family
 from .policy_interface import PolicyContext, SharedPolicy
 
 
@@ -17,7 +17,8 @@ class RandomOffloadingPolicy(SharedPolicy):
             self.rng = random.Random(self.seed)
 
     def choose_action(self, context: PolicyContext) -> str:
-        legal = legal_actions(context)
-        if not legal:
+        available_families = [family for family in ("local", "horizontal", "vertical") if placement_actions_for_family(context, family)]
+        if not available_families:
             raise ValueError("No legal actions available")
-        return self.rng.choice(legal)
+        chosen_family = self.rng.choice(available_families)
+        return self.rng.choice(placement_actions_for_family(context, chosen_family))
