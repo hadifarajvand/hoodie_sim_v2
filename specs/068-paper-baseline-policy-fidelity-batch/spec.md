@@ -2,7 +2,7 @@
 
 **Feature Branch**: `068-paper-baseline-policy-fidelity-batch`
 **Created**: 2026-05-29
-**Status**: Draft
+**Status**: Ready for implementation handoff
 
 ## Summary
 
