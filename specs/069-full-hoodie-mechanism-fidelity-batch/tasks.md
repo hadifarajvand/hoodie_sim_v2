@@ -6,7 +6,7 @@
 
 ## Phase 1: Setup and Scope Gate
 
-- [ ] T001 Verify branch starts from current `origin/main` after Feature 068R.
+- [X] T001 Verify branch starts from current `origin/main` after Feature 068R.
 
 Comment:
 This task prevents stale-branch contamination.
@@ -15,7 +15,7 @@ Acceptance:
 Failure mode:
 - Work starts from an old branch and drags unrelated files into scope.
 
-- [ ] T002 Read Feature 068R Spec Kit and targeted tests.
+- [X] T002 Read Feature 068R Spec Kit and targeted tests.
 
 Comment:
 Feature 069 must protect the baseline placement repair.
@@ -24,7 +24,7 @@ Acceptance:
 Failure mode:
 - Mechanism work silently breaks policy behavior.
 
-- [ ] T003 Read the paper mechanism registry and paper-to-code mapping.
+- [X] T003 Read the paper mechanism registry and paper-to-code mapping.
 
 Comment:
 Feature 069 must be grounded in existing paper evidence.
@@ -35,7 +35,7 @@ Failure mode:
 
 ## Phase 2: Contract Test Design
 
-- [ ] T004 Add Feature 068R regression tests to the Feature 069 validation slice.
+- [X] T004 Add Feature 068R regression tests to the Feature 069 validation slice.
 
 Comment:
 Mechanism fidelity is invalid if it damages baseline policy fidelity.
@@ -44,7 +44,7 @@ Acceptance:
 Failure mode:
 - The implementation passes mechanism tests while breaking Feature 068R.
 
-- [ ] T005 Define coordination graph contract tests.
+- [X] T005 Define coordination graph contract tests.
 
 Comment:
 Neighbor/coordination evidence must be explicit and auditable.
@@ -53,7 +53,7 @@ Acceptance:
 Failure mode:
 - Hard-coded topology is treated as paper fact.
 
-- [ ] T006 Define synchronization contract tests.
+- [X] T006 Define synchronization contract tests.
 
 Comment:
 Mechanism correctness depends on ordering across the slot lifecycle.
@@ -62,7 +62,7 @@ Acceptance:
 Failure mode:
 - Isolated helper tests miss lifecycle drift.
 
-- [ ] T007 Define delayed reward contract tests.
+- [X] T007 Define delayed reward contract tests.
 
 Comment:
 Delayed reward must be connected to terminal task outcomes.
@@ -71,7 +71,7 @@ Acceptance:
 Failure mode:
 - Reward is emitted too early or without outcome linkage.
 
-- [ ] T008 Define congestion and queue-pressure tests.
+- [X] T008 Define congestion and queue-pressure tests.
 
 Comment:
 Private, public, and cloud queue pressure drive mechanism fidelity.
@@ -82,7 +82,7 @@ Failure mode:
 
 ## Phase 3: Mechanism Modeling
 
-- [ ] T009 Implement CoordinationGraphContract only if evidence is available.
+- [X] T009 Implement CoordinationGraphContract only if evidence is available.
 
 Comment:
 Topology must not be invented.
@@ -91,7 +91,7 @@ Acceptance:
 Failure mode:
 - Agent encodes unsupported adjacency assumptions.
 
-- [ ] T010 Implement SynchronizationContract evidence.
+- [X] T010 Implement SynchronizationContract evidence.
 
 Comment:
 The report must show the slot lifecycle order.
@@ -100,7 +100,7 @@ Acceptance:
 Failure mode:
 - Report contains unordered snapshots.
 
-- [ ] T011 Implement DelayedRewardContract evidence.
+- [X] T011 Implement DelayedRewardContract evidence.
 
 Comment:
 Delayed reward is a central HOODIE mechanism.
@@ -109,7 +109,7 @@ Acceptance:
 Failure mode:
 - Reward evidence is detached from task outcome.
 
-- [ ] T012 Implement CongestionControlContract evidence.
+- [X] T012 Implement CongestionControlContract evidence.
 
 Comment:
 Queue pressure must be visible for placement decisions.
@@ -120,7 +120,7 @@ Failure mode:
 
 ## Phase 4: Report and Validation
 
-- [ ] T013 Produce a MechanismFidelityReport.
+- [X] T013 Produce a MechanismFidelityReport.
 
 Comment:
 The final output must be reviewable and claim-safe.
@@ -129,7 +129,7 @@ Acceptance:
 Failure mode:
 - Report overclaims paper reproduction.
 
-- [ ] T014 Validate report schema.
+- [X] T014 Validate report schema.
 
 Comment:
 Structured report evidence prevents vague handoff claims.
@@ -138,7 +138,7 @@ Acceptance:
 Failure mode:
 - Report cannot support future thesis or paper writing.
 
-- [ ] T015 Run targeted validation.
+- [X] T015 Run targeted validation.
 
 Comment:
 Only relevant tests should be used as the merge gate.
@@ -147,7 +147,7 @@ Acceptance:
 Failure mode:
 - Full-suite noise is misrepresented as Feature 069 failure or success.
 
-- [ ] T016 Run scope audit.
+- [X] T016 Run scope audit.
 
 Comment:
 Scope contamination previously caused invalid branches.
