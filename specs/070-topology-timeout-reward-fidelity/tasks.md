@@ -2,11 +2,11 @@
 
 **Input**: Spec Kit artifacts for `070-topology-timeout-reward-fidelity`  
 **Prerequisites**: Feature 069 merged into `main`  
-**Status**: Implementation not started
+**Status**: Implementation complete; PR review pending
 
 ## Phase 1: Setup and Evidence Read
 
-- [ ] T001 Verify branch starts from current `origin/main` after Feature 069.
+- [X] T001 Verify branch starts from current `origin/main` after Feature 069.
 
 Comment:
 This prevents stale-branch contamination.
@@ -15,7 +15,7 @@ Acceptance:
 Failure mode:
 - Old Feature 069 implementation attempts leak into Feature 070.
 
-- [ ] T002 Read Feature 069 report and blocker list.
+- [X] T002 Read Feature 069 report and blocker list.
 
 Comment:
 Feature 070 exists to resolve the blockers recorded by Feature 069.
@@ -24,7 +24,7 @@ Acceptance:
 Failure mode:
 - Agent implements random mechanism work instead of blocker resolution.
 
-- [ ] T003 Read paper mechanism registry and paper-to-code mapping.
+- [X] T003 Read paper mechanism registry and paper-to-code mapping.
 
 Comment:
 The implementation must be grounded in available paper evidence.
@@ -35,7 +35,7 @@ Failure mode:
 
 ## Phase 2: Topology Contract
 
-- [ ] T004 Add tests for TopologyEvidenceReport.
+- [X] T004 Add tests for TopologyEvidenceReport.
 
 Comment:
 Structured topology must be explicit before neighbor legality is trusted.
@@ -44,7 +44,7 @@ Acceptance:
 Failure mode:
 - A complete graph is assumed without paper-backed evidence.
 
-- [ ] T005 Add tests for NeighborLegalityEvidence.
+- [X] T005 Add tests for NeighborLegalityEvidence.
 
 Comment:
 Horizontal offloading must not allow self-destination or non-neighbor destinations.
@@ -53,7 +53,7 @@ Acceptance:
 Failure mode:
 - Legal mask alone is treated as enough topology evidence.
 
-- [ ] T006 Implement topology evidence model and report section.
+- [X] T006 Implement topology evidence model and report section.
 
 Comment:
 The report must expose structured or blocked topology evidence.
@@ -64,7 +64,7 @@ Failure mode:
 
 ## Phase 3: Timeout/Drop Contract
 
-- [ ] T007 Add tests for TimeoutDropAccountingEvidence.
+- [X] T007 Add tests for TimeoutDropAccountingEvidence.
 
 Comment:
 Timeout/drop fidelity needs per-task terminal evidence.
@@ -73,7 +73,7 @@ Acceptance:
 Failure mode:
 - Aggregate counters replace task-level accounting.
 
-- [ ] T008 Implement timeout/drop accounting evidence.
+- [X] T008 Implement timeout/drop accounting evidence.
 
 Comment:
 The report must show deadline, completion, terminal status, and drop reason.
@@ -84,7 +84,7 @@ Failure mode:
 
 ## Phase 4: Reward Contract
 
-- [ ] T009 Add tests for RewardEquationEvidence.
+- [X] T009 Add tests for RewardEquationEvidence.
 
 Comment:
 Recovered equation terms must be separated from assumptions.
@@ -93,7 +93,7 @@ Acceptance:
 Failure mode:
 - Reward timing is confused with reward equation fidelity.
 
-- [ ] T010 Add tests for TerminalRewardEvidence.
+- [X] T010 Add tests for TerminalRewardEvidence.
 
 Comment:
 Terminal reward must be emitted after terminal outcome evidence.
@@ -102,7 +102,7 @@ Acceptance:
 Failure mode:
 - Reward is emitted at decision time without terminal evidence.
 
-- [ ] T011 Implement reward equation and terminal reward evidence.
+- [X] T011 Implement reward equation and terminal reward evidence.
 
 Comment:
 Reward fidelity needs both equation status and terminal timing status.
@@ -113,7 +113,7 @@ Failure mode:
 
 ## Phase 5: Integrated Report
 
-- [ ] T012 Implement Feature070FidelityReport.
+- [X] T012 Implement Feature070FidelityReport.
 
 Comment:
 The final report must show all three blocker categories separately.
@@ -122,7 +122,7 @@ Acceptance:
 Failure mode:
 - Report collapses all blockers into one vague status.
 
-- [ ] T013 Preserve Feature 068R and Feature 069 regression gates.
+- [X] T013 Preserve Feature 068R and Feature 069 regression gates.
 
 Comment:
 Feature 070 must not break earlier fidelity layers.
@@ -131,7 +131,7 @@ Acceptance:
 Failure mode:
 - Blocker resolution breaks already-merged readiness.
 
-- [ ] T014 Run targeted validation.
+- [X] T014 Run targeted validation.
 
 Comment:
 The merge gate must use relevant tests, not unrelated full-suite noise.
@@ -140,7 +140,7 @@ Acceptance:
 Failure mode:
 - Full-suite noise is misreported as Feature 070 status.
 
-- [ ] T015 Run scope audit.
+- [X] T015 Run scope audit.
 
 Comment:
 Feature scope must stay clean.
