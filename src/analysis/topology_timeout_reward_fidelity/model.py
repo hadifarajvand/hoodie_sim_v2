@@ -226,6 +226,10 @@ class Feature070FidelityReport:
             raise ValueError("blockers categories must be unique")
         if self.passed and not (self.feature_068r_regression_status.passed and self.feature_069_regression_status.passed):
             raise ValueError("passed reports require green Feature 068R and Feature 069 regression gates")
+        if self.passed and self.blockers:
+            raise ValueError("passed reports must not carry blockers")
+        if self.passed and not self.terminal_reward_evidence.timing_valid:
+            raise ValueError("passed reports require valid terminal reward timing")
 
     def to_dict(self) -> dict[str, Any]:
         return {
