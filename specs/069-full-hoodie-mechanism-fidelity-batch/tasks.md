@@ -158,7 +158,7 @@ Failure mode:
 
 ## Phase 5: PR Evidence
 
-- [ ] T017 Record changed files, validation commands, blockers, claim boundary, and open risks in the PR.
+- [X] T017 Record changed files, validation commands, blockers, claim boundary, and open risks in the PR.
 
 Comment:
 Reviewers need operational proof, not vague status.
