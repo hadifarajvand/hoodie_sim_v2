@@ -151,7 +151,7 @@ Failure mode:
 
 ## Phase 6: PR Evidence
 
-- [ ] T016 Record changed files, validation results, blocker status, claim boundary, and open risks in the PR.
+- [X] T016 Record changed files, validation results, blocker status, claim boundary, and open risks in the PR.
 
 Comment:
 Reviewers need proof, not status theater.
