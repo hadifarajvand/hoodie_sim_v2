@@ -33,7 +33,7 @@ class TopologyTimeoutRewardFidelityReportTests(unittest.TestCase):
         }
         self.assertTrue(required.issubset(payload))
         self.assertEqual(payload["feature_name"], "Feature 070 - Topology, Timeout/Drop, and Reward Fidelity")
-        self.assertTrue(payload["passed"])
+        self.assertFalse(payload["passed"])
         self.assertEqual(payload["topology_evidence"]["evidence_status"], "blocked")
         self.assertEqual(payload["neighbor_legality_evidence"]["final_legal"], False)
         self.assertEqual(payload["timeout_drop_accounting_evidence"]["paper_semantics_status"], "blocked")
@@ -43,6 +43,38 @@ class TopologyTimeoutRewardFidelityReportTests(unittest.TestCase):
         self.assertTrue(payload["feature_068r_regression_status"]["passed"])
         self.assertTrue(payload["feature_069_regression_status"]["passed"])
         self.assertIn("No full paper reproduction claim", payload["paper_claim_boundary"])
+
+    def test_report_rejects_passing_with_invalid_terminal_reward_timing(self) -> None:
+        with self.assertRaises(ValueError):
+            from src.analysis.topology_timeout_reward_fidelity.report import (
+                _blockers,
+                _feature_068r_regression_evidence,
+                _feature_069_regression_evidence,
+                _neighbor_legality_evidence,
+                _reward_equation_evidence,
+                _terminal_reward_evidence,
+                _timeout_drop_accounting_evidence,
+                _topology_evidence,
+            )
+
+            from src.analysis.topology_timeout_reward_fidelity.model import Feature070FidelityReport
+
+            Feature070FidelityReport(
+                feature_name="Feature 070 - Topology, Timeout/Drop, and Reward Fidelity",
+                status="mechanism_fidelity_readiness_with_blockers",
+                passed=True,
+                changed_files=("specs/070-topology-timeout-reward-fidelity/tasks.md",),
+                topology_evidence=_topology_evidence(),
+                neighbor_legality_evidence=_neighbor_legality_evidence(),
+                timeout_drop_accounting_evidence=_timeout_drop_accounting_evidence(),
+                reward_equation_evidence=_reward_equation_evidence(),
+                terminal_reward_evidence=_terminal_reward_evidence(),
+                blockers=_blockers(),
+                feature_068r_regression_status=_feature_068r_regression_evidence(),
+                feature_069_regression_status=_feature_069_regression_evidence(),
+                paper_claim_boundary="boundary",
+                recommended_next_feature="next",
+            )
 
     def test_report_preserves_claim_boundary_and_blocker_categories(self) -> None:
         report = build_feature_070_report()

@@ -186,7 +186,7 @@ def build_feature_070_report(
     return Feature070FidelityReport(
         feature_name="Feature 070 - Topology, Timeout/Drop, and Reward Fidelity",
         status="mechanism_fidelity_readiness_with_blockers",
-        passed=True,
+        passed=False,
         changed_files=changed,
         topology_evidence=topology,
         neighbor_legality_evidence=neighbor,
