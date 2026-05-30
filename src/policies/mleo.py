@@ -148,7 +148,10 @@ def _placement_delay_candidate(
     transmission = _candidate_delay_value(observation, payload, action_id, family, "transmission_delay")
     compute = _candidate_delay_value(observation, payload, action_id, family, "compute_delay")
     total = _candidate_total_delay(observation, payload, action_id, family, queue, transmission, compute)
-    available = bool(payload.get("available", action_id in legal))
+    available = (action_id in legal) and bool(payload.get("available", True))
+    source_agent_id = _string_value(observation.get("source_agent_id"))
+    if family == "horizontal" and source_agent_id is not None and action_id == source_agent_id:
+        available = False
     notes = None if total is not None else "missing comparable delay estimate"
     return DelayCandidate(
         action_family=family,

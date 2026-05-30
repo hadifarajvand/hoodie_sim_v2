@@ -7,7 +7,7 @@
 
 ## Summary
 
-Feature 068 is a bounded baseline-policy fidelity batch. It constrains the implementation of RO, FLC, VO, HO, BCO, and MLEO so those baselines can be compared through one registry, one policy interface, one action-mask contract, and one testable behavior set. The main implementation risk is MLEO: it must rank available candidates by total estimated delay and expose a documented fallback when observations are incomplete.
+Feature 068 is a bounded baseline-policy fidelity batch. Feature 068R extends it and does not replace it. The branch constrains the implementation of RO, FLC, VO, HO, BCO, and MLEO so those baselines can be compared through one registry, one policy interface, one action-mask contract, and one testable behavior set. The main implementation risk is MLEO: it must rank available candidates by total estimated delay, keep the legal mask authoritative, and expose a documented fallback when observations are incomplete.
 
 ## Technical Context
 
@@ -26,6 +26,9 @@ Feature 068 is a bounded baseline-policy fidelity batch. It constrains the imple
 - Testing standard: REQUIRED. Test-first implementation is required for every behavior repair.
 - Artifact lifecycle: PASS. No generated artifacts are refreshed.
 - Assumption discipline: REQUIRED. MLEO fallback behavior must be documented if observation fields are incomplete.
+- Hardening discipline: REQUIRED. Feature 068R must preserve the prior Feature 068 registry coverage, mask compliance, fallback behavior, seeded RO behavior, BCO balance_hint behavior, and MLEO metadata contracts.
+- Test integrity: REQUIRED. Feature 068R must not pass by deleting, weakening, or replacing prior Feature 068 tests.
+- Mask authority: REQUIRED. A placement payload may describe a candidate, but the legal-action mask remains the final authority on availability.
 - Claim safety: REQUIRED. This feature may claim baseline-policy fidelity only, not paper reproduction.
 
 ## Project Structure
@@ -102,6 +105,14 @@ MLEO candidate fields: action family, action id or alias, availability, queue de
 
 Fallback is allowed only when the preferred action is unavailable, required MLEO estimate fields are incomplete, or no candidate is comparable. Fallback must be documented and tested.
 
+### Compatibility contract
+
+Placement-level repair is additive. If only family-level actions are exposed, baselines may keep the documented family-level fallback behavior, but that compatibility path must not be described as paper-exact placement fidelity.
+
+### Mask authority contract
+
+For placement candidates, `legal_action_mask` is authoritative. A candidate payload cannot override a false mask entry by marking itself available.
+
 ## Validation Gates
 
 - Registry coverage gate.
@@ -140,6 +151,8 @@ If that interpreter is unavailable, use the project interpreter and record the e
 - Tests prove mask compliance.
 - MLEO ranks available candidates by total delay.
 - MLEO fallback behavior is explicit.
+- Placement-level behavior is additive and keeps family-level compatibility intact.
+- The legal-action mask always wins over payload availability metadata.
 - Controlled differentiation tests exist.
 - No forbidden paths changed.
 - Implementation report lists commands, results, changed files, and risks.

@@ -17,6 +17,7 @@ Validation rules:
 - Name must resolve from the registry.
 - Policy must consume PolicyContext.
 - Policy must return only an available action or documented no-choice result.
+- Feature 068R must preserve the prior Feature 068 registry coverage and compatibility fallback behavior.
 
 ## PolicyContext
 
@@ -34,6 +35,7 @@ Validation rules:
 - Policies must not bypass the mask.
 - Policies must not read environment internals directly.
 - Missing optional fields must not produce hidden behavior.
+- For placement-level candidates, the legal action mask is the final authority.
 
 ## DelayCandidate
 
@@ -57,6 +59,9 @@ Validation rules:
 - Comparable candidates require total_delay.
 - Ties are deterministic.
 - Missing fields create visible fallback behavior.
+- Existing Feature 068 MLEO metadata fields and fallback diagnostics must remain available.
+- Placement candidates cannot become selectable solely because payload.available is true when the legal action mask rejects them.
+- Horizontal placement candidates that equal the source agent remain unavailable.
 
 ## BaselineFidelityEvidence
 
