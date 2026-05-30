@@ -46,6 +46,28 @@ class MinimumLatencyEstimatePolicyTests(unittest.TestCase):
         self.assertEqual(totals["horizontal"], 1.5)
         self.assertEqual(totals["vertical"], 3.0)
 
+    def test_placement_candidates_are_extracted_for_local_cloud_and_edge_placements(self) -> None:
+        context = self.context(
+            {
+                "queue_delay_estimates": {"local": 1.0, "cloud": 4.0, "2": 2.0, "3": 0.5},
+                "mleo_placement_candidates": [
+                    {"action_id": "local", "action_family": "local", "transmission_delay": 0.0, "compute_delay": 1.0},
+                    {"action_id": "cloud", "action_family": "vertical", "transmission_delay": 1.0, "compute_delay": 1.0},
+                    {"action_id": "2", "action_family": "horizontal", "transmission_delay": 1.0, "compute_delay": 1.0},
+                    {"action_id": "3", "action_family": "horizontal", "transmission_delay": 0.5, "compute_delay": 0.5},
+                ],
+            },
+            {"local": True, "cloud": True, "2": True, "3": True},
+        )
+        candidates = build_delay_candidates(context)
+        self.assertEqual([candidate.action_id for candidate in candidates], ["local", "cloud", "2", "3"])
+        totals = {candidate.action_id: candidate.total_delay for candidate in candidates}
+        self.assertEqual(totals["local"], 2.0)
+        self.assertEqual(totals["cloud"], 6.0)
+        self.assertEqual(totals["2"], 4.0)
+        self.assertEqual(totals["3"], 1.5)
+        self.assertTrue(all(isinstance(candidate, DelayCandidate) for candidate in candidates))
+
     def test_unavailable_candidates_are_removed_before_ranking(self) -> None:
         policy = PolicyRegistry.resolve("MLEO")
         context = self.context(
@@ -61,6 +83,50 @@ class MinimumLatencyEstimatePolicyTests(unittest.TestCase):
         self.assertEqual(policy.choose_action(context), "horizontal")
         self.assertFalse(next(candidate for candidate in policy.last_candidates if candidate.action_family == "local").available)
 
+    def test_unavailable_placement_candidates_are_removed_before_ranking(self) -> None:
+        policy = PolicyRegistry.resolve("MLEO")
+        context = self.context(
+            {
+                "mleo_placement_candidates": [
+                    {"action_id": "local", "action_family": "local", "total_delay": 1.0, "available": False},
+                    {"action_id": "cloud", "action_family": "vertical", "total_delay": 2.0},
+                    {"action_id": "2", "action_family": "horizontal", "total_delay": 3.0},
+                ]
+            },
+            {"local": False, "cloud": True, "2": True},
+        )
+        self.assertEqual(policy.choose_action(context), "cloud")
+        self.assertFalse(next(candidate for candidate in policy.last_candidates if candidate.action_id == "local").available)
+
+    def test_available_true_cannot_override_a_false_legal_mask_for_placement_candidates(self) -> None:
+        policy = PolicyRegistry.resolve("MLEO")
+        context = self.context(
+            {
+                "mleo_placement_candidates": [
+                    {"action_id": "2", "action_family": "horizontal", "total_delay": 0.1, "available": True},
+                    {"action_id": "cloud", "action_family": "vertical", "total_delay": 2.0, "available": True},
+                ]
+            },
+            {"2": False, "cloud": True},
+        )
+        self.assertEqual(policy.choose_action(context), "cloud")
+        self.assertFalse(next(candidate for candidate in policy.last_candidates if candidate.action_id == "2").available)
+
+    def test_horizontal_source_agent_candidate_is_excluded(self) -> None:
+        policy = PolicyRegistry.resolve("MLEO")
+        context = self.context(
+            {
+                "source_agent_id": "1",
+                "mleo_placement_candidates": [
+                    {"action_id": "1", "action_family": "horizontal", "total_delay": 0.1, "available": True},
+                    {"action_id": "2", "action_family": "horizontal", "total_delay": 1.0, "available": True},
+                ]
+            },
+            {"1": True, "2": True},
+        )
+        self.assertEqual(policy.choose_action(context), "2")
+        self.assertFalse(next(candidate for candidate in policy.last_candidates if candidate.action_id == "1").available)
+
     def test_total_delay_ranking_chooses_lowest_comparable_candidate(self) -> None:
         policy = PolicyRegistry.resolve("MLEO")
         context = self.context(
@@ -73,6 +139,22 @@ class MinimumLatencyEstimatePolicyTests(unittest.TestCase):
             }
         )
         self.assertEqual(policy.choose_action(context), "horizontal")
+        self.assertIsNone(policy.last_fallback_reason)
+
+    def test_total_delay_ranking_prefers_lowest_placement_candidate(self) -> None:
+        policy = PolicyRegistry.resolve("MLEO")
+        context = self.context(
+            {
+                "queue_delay_estimates": {"local": 1.0, "cloud": 4.0, "2": 0.5},
+                "mleo_placement_candidates": [
+                    {"action_id": "local", "action_family": "local", "compute_delay": 1.0},
+                    {"action_id": "cloud", "action_family": "vertical", "transmission_delay": 1.0, "compute_delay": 1.0},
+                    {"action_id": "2", "action_family": "horizontal", "transmission_delay": 0.5, "compute_delay": 0.5},
+                ],
+            },
+            {"local": True, "cloud": True, "2": True},
+        )
+        self.assertEqual(policy.choose_action(context), "2")
         self.assertIsNone(policy.last_fallback_reason)
 
     def test_deterministic_tie_handling_prefers_local_then_horizontal_then_vertical(self) -> None:
@@ -99,6 +181,20 @@ class MinimumLatencyEstimatePolicyTests(unittest.TestCase):
         )
         self.assertEqual(policy.choose_action(context_without_local), "horizontal")
 
+    def test_placement_tie_handling_prefers_local_then_cloud_then_horizontal(self) -> None:
+        policy = PolicyRegistry.resolve("MLEO")
+        tied_payload = {
+            "mleo_placement_candidates": [
+                {"action_id": "local", "action_family": "local", "total_delay": 5.0},
+                {"action_id": "cloud", "action_family": "vertical", "total_delay": 5.0},
+                {"action_id": "2", "action_family": "horizontal", "total_delay": 5.0},
+            ]
+        }
+        context = self.context(tied_payload, {"local": True, "cloud": True, "2": True})
+        self.assertEqual(policy.choose_action(context), "local")
+        context_without_local = self.context(tied_payload, {"local": False, "cloud": True, "2": True})
+        self.assertEqual(policy.choose_action(context_without_local), "cloud")
+
     def test_missing_fields_use_visible_fallback_hints(self) -> None:
         policy = PolicyRegistry.resolve("MLEO")
         context = self.context(
@@ -106,6 +202,23 @@ class MinimumLatencyEstimatePolicyTests(unittest.TestCase):
             {"local": True, "horizontal": True, "vertical": True},
         )
         self.assertEqual(policy.choose_action(context), "horizontal")
+        self.assertEqual(policy.last_fallback_reason, "no available delay candidates have comparable total delay")
+        self.assertTrue(all(candidate.total_delay is None for candidate in policy.last_candidates))
+
+    def test_missing_placement_fields_use_visible_fallback_hints(self) -> None:
+        policy = PolicyRegistry.resolve("MLEO")
+        context = self.context(
+            {
+                "mleo_placement_candidates": [
+                    {"action_id": "local", "action_family": "local"},
+                    {"action_id": "cloud", "action_family": "vertical"},
+                    {"action_id": "2", "action_family": "horizontal"},
+                ],
+                "fallback_hints": {"local": 3.0, "cloud": 1.0, "horizontal": 2.0},
+            },
+            {"local": True, "cloud": True, "2": True},
+        )
+        self.assertEqual(policy.choose_action(context), "cloud")
         self.assertEqual(policy.last_fallback_reason, "no available delay candidates have comparable total delay")
         self.assertTrue(all(candidate.total_delay is None for candidate in policy.last_candidates))
 

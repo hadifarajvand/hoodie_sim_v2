@@ -45,6 +45,32 @@ class BaselinePolicyFidelityTests(unittest.TestCase):
         )
         self.assertEqual(policy.choose_action(context), "local")
 
+    def test_flc_prefers_concrete_local_action_when_available(self) -> None:
+        policy = PolicyRegistry.resolve("FLC")
+        context = self.context(
+            {"compute_local": True, "cloud": False, "2": False},
+            {"local_action": "compute_local"},
+        )
+        self.assertEqual(policy.choose_action(context), "compute_local")
+
+    def test_vo_prefers_concrete_cloud_action_when_available(self) -> None:
+        policy = PolicyRegistry.resolve("VO")
+        context = self.context(
+            {"cloud": True, "local": True, "2": True},
+            {"cloud_action": "cloud"},
+        )
+        self.assertEqual(policy.choose_action(context), "cloud")
+
+    def test_ho_prefers_concrete_horizontal_destination_when_available(self) -> None:
+        policy = PolicyRegistry.resolve("HO")
+        context = self.context(
+            {"local": True, "2": True, "3": True},
+            {"source_agent_id": "1", "horizontal_destinations": ("1", "2", "3")},
+        )
+        action = policy.choose_action(context)
+        self.assertEqual(action, "2")
+        self.assertNotEqual(action, "1")
+
     def test_ro_seeded_sampling_is_reproducible_and_legal(self) -> None:
         first = PolicyRegistry.resolve("RO")
         second = PolicyRegistry.resolve("RO")
@@ -59,6 +85,18 @@ class BaselinePolicyFidelityTests(unittest.TestCase):
         context = self.context({"local": False, "horizontal": False, "vertical": True})
         self.assertEqual([policy.choose_action(context) for _ in range(5)], ["vertical"] * 5)
 
+    def test_ro_concrete_horizontal_destinations_are_sampled_reproducibly(self) -> None:
+        first = PolicyRegistry.resolve("RO")
+        second = PolicyRegistry.resolve("RO")
+        context = self.context(
+            {"2": True, "3": True},
+            {"source_agent_id": "1", "horizontal_destinations": ("2", "3")},
+        )
+        first_actions = [first.choose_action(context) for _ in range(8)]
+        second_actions = [second.choose_action(context) for _ in range(8)]
+        self.assertEqual(first_actions, second_actions)
+        self.assertTrue(all(action in {"2", "3"} for action in first_actions))
+
     def test_bco_uses_balance_hint_before_rollover(self) -> None:
         policy = PolicyRegistry.resolve("BCO")
         context = self.context(
@@ -66,6 +104,14 @@ class BaselinePolicyFidelityTests(unittest.TestCase):
             {"balance_hint": {"local": 3.0, "horizontal": 1.0, "vertical": 2.0}},
         )
         self.assertEqual(policy.choose_action(context), "horizontal")
+
+    def test_bco_rotates_over_concrete_placements_in_paper_order(self) -> None:
+        policy = PolicyRegistry.resolve("BCO")
+        context = self.context(
+            {"compute_local": True, "cloud": True, "2": True, "3": True},
+            {"local_action": "compute_local", "cloud_action": "cloud", "horizontal_destinations": ("2", "3")},
+        )
+        self.assertEqual([policy.choose_action(context) for _ in range(5)], ["compute_local", "cloud", "2", "3", "compute_local"])
 
     def test_bco_rollover_is_deterministic_and_mask_compliant(self) -> None:
         policy = PolicyRegistry.resolve("BCO")
