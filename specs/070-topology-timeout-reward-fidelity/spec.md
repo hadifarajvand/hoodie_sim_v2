@@ -2,8 +2,10 @@
 
 **Feature Branch**: `070-topology-timeout-reward-fidelity`  
 **Spec Branch**: `070-topology-timeout-reward-fidelity-spec-kit`  
+**Implementation Branch**: `070-topology-timeout-reward-fidelity-implementation`  
 **Created**: 2026-05-31  
-**Status**: Spec Kit handoff only; implementation not started  
+**Updated**: 2026-05-31  
+**Status**: Implementation branch under review; blocker-resolution refinement required before any merge  
 **Input**: Feature 070 resolves the three blockers recorded by Feature 069: structured topology/neighbor graph evidence, timeout/drop paper-faithful accounting, and reward equation / terminal reward fidelity.
 
 ## Dependency
@@ -21,6 +23,28 @@ Feature 070 is allowed to address all three, but only through a phased contract.
 ## Goal
 
 Create a defensible, paper-grounded fidelity layer that converts the three Feature 069 blockers into structured contracts, targeted tests, source evidence, and explicit claim boundaries.
+
+## Blocker-Resolution Upgrade
+
+The first implementation pass correctly prevented false `passed=True` reports, but it still preserved all three blockers. The next pass must try to actually resolve them where evidence exists.
+
+Resolution means:
+
+- **Topology**: convert paper-backed or user-extracted adjacency into a structured topology artifact and validate neighbor legality from that artifact.
+- **Timeout/drop**: recover the terminal accounting rule from existing runtime/paper evidence and distinguish verified semantics from blocker-backed semantics.
+- **Reward**: recover the reward equation or explicitly encode the exact missing terms; terminal reward timing alone is not reward-equation fidelity.
+
+## Evidence Intake Rule
+
+Feature 070 may accept user-provided evidence only when it is explicitly marked as manual paper extraction. User-provided topology adjacency, timeout/drop semantics, or reward equation text must include:
+
+- evidence category: `topology`, `timeout_drop`, or `reward`
+- source reference: paper figure/table/section or user extraction note
+- extraction method: manual, OCR, code-derived, or runtime-derived
+- confidence: verified, assumption-backed, or blocked
+- reviewer note explaining why the evidence is accepted
+
+Manual evidence is allowed as structured evidence only if tests can validate its shape and the final report clearly marks its provenance. Do not hide manual evidence as runtime truth.
 
 ## User Stories
 
@@ -40,10 +64,13 @@ As a reviewer, I need a final report that says exactly what was verified, what r
 
 - A structured topology/neighbor graph contract exists and is tested.
 - Horizontal neighbor legality is validated against structured topology evidence.
+- If user-extracted topology evidence is supplied, it is parsed, validated, provenance-tagged, and used instead of the current blocked empty topology.
 - Timeout/drop accounting is represented with task-level terminal-state evidence and tests.
+- Completed tasks cannot be counted as dropped; dropped tasks must have terminal evidence.
 - Reward equation recovery is represented with source/equation evidence and terminal reward tests.
+- `passed=True` is impossible while topology, timeout/drop, or reward blockers remain unresolved.
 - Feature 068R and Feature 069 targeted validations remain green.
-- The final report separates verified behavior, paper-backed behavior, assumption-backed behavior, compatibility fallback, and unresolved blockers.
+- The final report separates verified behavior, paper-backed behavior, user-provided evidence, assumption-backed behavior, compatibility fallback, and unresolved blockers.
 - The feature does not claim full paper reproduction unless all three blockers are actually resolved with evidence.
 
 ## Out of Scope
