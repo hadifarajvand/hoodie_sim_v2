@@ -21,9 +21,74 @@ from .model import (
     TopologyEvidenceReport,
 )
 
+TOPOLOGY_EVIDENCE_SOURCE = Path("specs/070-topology-timeout-reward-fidelity/evidence/figure-7-topology-extraction.md")
+
 
 def _json_dump(payload: Any) -> str:
     return json.dumps(payload, indent=2, sort_keys=True, ensure_ascii=False) + "\n"
+
+
+def _parse_figure_7_neighbor_map(source_path: Path = TOPOLOGY_EVIDENCE_SOURCE) -> dict[str, tuple[str, ...]]:
+    text = source_path.read_text(encoding="utf-8")
+    if "Nodes: 1..20" not in text:
+        raise ValueError("Figure 7 topology evidence must cover the N=20 scenario")
+
+    neighbor_map: dict[str, tuple[str, ...]] = {}
+    in_neighbor_map = False
+    for raw_line in text.splitlines():
+        line = raw_line.strip()
+        if not line:
+            continue
+        if line == "Neighbor map:":
+            in_neighbor_map = True
+            continue
+        if not in_neighbor_map:
+            continue
+        if ":" not in line:
+            continue
+        node_id, raw_neighbors = line.split(":", 1)
+        neighbors = tuple(part.strip() for part in raw_neighbors.split(",") if part.strip())
+        neighbor_map[node_id.strip()] = neighbors
+
+    if len(neighbor_map) != 20:
+        raise ValueError(f"Figure 7 topology evidence must define 20 nodes, found {len(neighbor_map)}")
+
+    expected_nodes = {str(node_id) for node_id in range(1, 21)}
+    if set(neighbor_map) != expected_nodes:
+        missing = sorted(expected_nodes - set(neighbor_map))
+        extra = sorted(set(neighbor_map) - expected_nodes)
+        raise ValueError(
+            "Figure 7 topology evidence must define nodes 1..20 exactly"
+            + (f"; missing={missing}" if missing else "")
+            + (f"; extra={extra}" if extra else "")
+        )
+
+    for source_node, destinations in neighbor_map.items():
+        if source_node in destinations:
+            raise ValueError(f"Figure 7 topology evidence contains a self-edge for node {source_node}")
+        for destination in destinations:
+            reverse_neighbors = neighbor_map.get(destination)
+            if reverse_neighbors is None or source_node not in reverse_neighbors:
+                raise ValueError(
+                    f"Figure 7 topology evidence must be undirected; missing {destination}->{source_node}"
+                )
+
+    return neighbor_map
+
+
+def _figure_7_topology_evidence() -> TopologyEvidenceReport:
+    neighbor_map = _parse_figure_7_neighbor_map()
+    edge_agent_ids = tuple(str(node_id) for node_id in range(1, 21))
+    return TopologyEvidenceReport(
+        source_agent_id="1",
+        edge_agent_ids=edge_agent_ids,
+        cloud_id="cloud",
+        adjacency_matrix_source=TOPOLOGY_EVIDENCE_SOURCE.as_posix(),
+        neighbor_map=neighbor_map,
+        cloud_reachability=False,
+        evidence_status="verified_manual_paper_extraction",
+        provenance=f"manual paper extraction from {TOPOLOGY_EVIDENCE_SOURCE.as_posix()}",
+    )
 
 
 def _feature_068r_regression_evidence() -> Feature068RRegressionEvidence:
@@ -51,16 +116,6 @@ def _feature_069_regression_evidence() -> Feature069RegressionEvidence:
     )
 
 
-def _topology_blocker() -> Feature070Blocker:
-    return Feature070Blocker(
-        category="topology",
-        severity="blocking",
-        description="Structured adjacency is unavailable; missing topology must remain a blocker.",
-        evidence_source=PAPER_MECHANISM_REGISTRY.as_posix(),
-        next_action="Recover a structured topology / neighbor graph artifact before claiming neighbor fidelity.",
-    )
-
-
 def _timeout_blocker() -> Feature070Blocker:
     return Feature070Blocker(
         category="timeout_drop",
@@ -82,28 +137,18 @@ def _reward_blocker() -> Feature070Blocker:
 
 
 def _topology_evidence() -> TopologyEvidenceReport:
-    return TopologyEvidenceReport(
-        source_agent_id="A1",
-        edge_agent_ids=("A2", "A3"),
-        cloud_id="cloud",
-        adjacency_matrix_source="blocked",
-        neighbor_map={},
-        cloud_reachability=False,
-        evidence_status="blocked",
-        blockers=(_topology_blocker(),),
-    )
+    return _figure_7_topology_evidence()
 
 
 def _neighbor_legality_evidence() -> NeighborLegalityEvidence:
     return NeighborLegalityEvidence(
-        source_agent_id="A1",
-        destination_agent_id="A2",
-        is_neighbor=False,
+        source_agent_id="1",
+        destination_agent_id="6",
+        is_neighbor=True,
         is_self_destination=False,
-        legal_under_topology=False,
+        legal_under_topology=True,
         legal_under_action_mask=True,
-        final_legal=False,
-        blockers=(_topology_blocker(),),
+        final_legal=True,
     )
 
 
@@ -149,7 +194,6 @@ def _terminal_reward_evidence() -> TerminalRewardEvidence:
 
 def _blockers() -> tuple[Feature070Blocker, ...]:
     return (
-        _topology_blocker(),
         _timeout_blocker(),
         _reward_blocker(),
     )

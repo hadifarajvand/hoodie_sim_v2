@@ -9,6 +9,8 @@ from src.analysis.topology_timeout_reward_fidelity import runner
 class TopologyTimeoutRewardFidelityScopeGuardTests(unittest.TestCase):
     def test_validate_scope_accepts_only_allowed_feature_paths(self) -> None:
         allowed = [
+            "specs/070-topology-timeout-reward-fidelity/spec.md",
+            "specs/070-topology-timeout-reward-fidelity/evidence/figure-7-topology-extraction.md",
             "specs/070-topology-timeout-reward-fidelity/tasks.md",
             "src/analysis/topology_timeout_reward_fidelity/report.py",
             "tests/unit/test_topology_timeout_reward_fidelity_report.py",

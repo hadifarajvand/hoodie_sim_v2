@@ -22,22 +22,24 @@ class TopologyTimeoutRewardFidelityModelTests(unittest.TestCase):
             next_action="Recover a structured neighbor graph artifact.",
         )
         report = TopologyEvidenceReport(
-            source_agent_id="A1",
-            edge_agent_ids=("A2", "A3"),
+            source_agent_id="1",
+            edge_agent_ids=("1", "2", "3"),
             cloud_id="cloud",
-            adjacency_matrix_source="blocked",
-            neighbor_map={"A1": ("A2",)},
+            adjacency_matrix_source="specs/070-topology-timeout-reward-fidelity/evidence/figure-7-topology-extraction.md",
+            neighbor_map={"1": ("2", "3"), "2": ("1",), "3": ("1",)},
             cloud_reachability=False,
-            evidence_status="blocked",
+            evidence_status="verified_manual_paper_extraction",
+            provenance="manual paper extraction from specs/070-topology-timeout-reward-fidelity/evidence/figure-7-topology-extraction.md",
             blockers=(blocker,),
         )
 
         payload = report.to_dict()
-        self.assertEqual(payload["source_agent_id"], "A1")
-        self.assertEqual(payload["edge_agent_ids"], ["A2", "A3"])
-        self.assertEqual(payload["adjacency_matrix_source"], "blocked")
+        self.assertEqual(payload["source_agent_id"], "1")
+        self.assertEqual(payload["edge_agent_ids"], ["1", "2", "3"])
+        self.assertEqual(payload["adjacency_matrix_source"], "specs/070-topology-timeout-reward-fidelity/evidence/figure-7-topology-extraction.md")
         self.assertFalse(payload["cloud_reachability"])
-        self.assertEqual(payload["evidence_status"], "blocked")
+        self.assertEqual(payload["evidence_status"], "verified_manual_paper_extraction")
+        self.assertEqual(payload["provenance"], "manual paper extraction from specs/070-topology-timeout-reward-fidelity/evidence/figure-7-topology-extraction.md")
         self.assertEqual(payload["blockers"][0]["category"], "topology")
 
     def test_neighbor_legality_requires_topology_and_mask_and_no_self_destination(self) -> None:
