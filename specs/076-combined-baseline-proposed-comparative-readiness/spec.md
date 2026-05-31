@@ -4,93 +4,86 @@
 **Created**: 2026-05-31  
 **Status**: Spec Kit created; implementation pending
 
-## Dependency
-
-Feature 076 depends on Feature 075 branch `075-proposed-integration-readiness` at commit `b23b2fa5b1c8fc6d58f3eb533164f83c05c2ec61` or newer.
-
-Feature 074 provides action-bound baseline comparative readiness. Feature 075 provides action-bound proposed-method integration readiness. Feature 076 must combine both layers into one readiness report without claiming final evaluation, statistical significance, superiority, training correctness, or full paper reproduction.
-
 ## Goal
 
-Create a read-only combined comparative readiness layer that places baseline policy rows and the proposed method rows into one contract-compatible comparison matrix.
+Create a read-only comparative readiness layer that combines Feature 074 baseline action-bound comparison rows with Feature 075 proposed-method action-bound readiness rows into a single normalized 7-by-7 matrix.
 
-Feature 076 answers this question:
+This feature is for readiness only. It must not rank methods, claim superiority, claim final evaluation, or claim full HOODIE reproduction.
 
-Can the repository present the baseline policies and the proposed method in one action-bound, paper-mode, controlled-scenario comparison structure without overclaiming final results?
+## Dependency Chain
 
-## Required Policies / Methods
+Feature 076 depends on:
 
-The combined matrix must include:
+- Feature 074 `074-baseline-policy-comparative-evaluation-readiness`
+- Feature 075 `075-proposed-integration-readiness`
 
-- FLC
-- VO
-- HO
-- RO
-- BCO
-- MLEO
-- PROPOSED_DCQ
+Feature 076 must consume their report objects and normalize their rows. It must not recompute baseline policy logic or proposed-method scoring.
 
-## Required Scenario Set
+## Required Coverage
 
-Feature 076 must use the same controlled scenario set from Features 073, 074, and 075:
+Required policy/method identifiers:
 
-1. `light_load_no_deadline_pressure`
-2. `tight_deadline_pressure`
-3. `legal_horizontal_offload`
-4. `illegal_horizontal_destination_attempt`
-5. `cloud_vertical_fallback`
-6. `timeout_drop_case`
-7. `mixed_local_horizontal_cloud_candidates`
+- `FLC`
+- `VO`
+- `HO`
+- `RO`
+- `BCO`
+- `MLEO`
+- `PROPOSED_DCQ`
 
-## Required Comparison Contract
+Required scenario identifiers:
 
-Every policy/method and scenario row must expose:
+- `light_load_no_deadline_pressure`
+- `tight_deadline_pressure`
+- `legal_horizontal_offload`
+- `illegal_horizontal_destination_attempt`
+- `cloud_vertical_fallback`
+- `timeout_drop_case`
+- `mixed_local_horizontal_cloud_candidates`
 
-- `policy_id`
-- `policy_family`
-- `scenario_id`
-- `selected_action_id`
-- `selected_action_family`
-- `action_legality`
-- `action_bound_terminal_status`
-- `action_bound_reward_value`
-- `action_bound_metrics_derived`
-- `candidate_or_decision_trace_present`
-- `compatibility_mode_used`
-- controlled metrics
+The combined matrix must contain 49 action-bound rows.
 
-## Acceptance Criteria
+## Required Output
 
-- Create a read-only analysis package under `src/analysis/combined_baseline_proposed_comparative_readiness/`.
-- Consume Feature 074 baseline action-bound comparison rows.
-- Consume Feature 075 proposed-method action-bound rows.
-- Normalize both sources into one combined comparison schema.
-- Produce per-policy/method aggregate metrics.
-- Preserve Feature 068R through Feature 075 targeted regression evidence.
-- Block readiness if any required policy/method or scenario row is missing.
-- Block readiness if compatibility mode is used by default.
-- Block readiness if any row lacks action-bound metrics.
-- No PR is opened and no merge is performed.
-- No final evaluation claim is made.
-- No policy superiority claim is made.
-- No statistical significance claim is made.
-- No training claim is made.
-- No full paper reproduction claim is made.
+The combined report must include:
 
-## Out of Scope
-
-- Training.
-- New policy implementation.
-- Proposed method redesign.
-- Baseline policy rewrites.
-- Runtime helper rewrites.
-- Statistical testing.
-- Ranking/winner declaration.
-- Plot generation.
-- Generated artifacts committed to git.
-- Dependency or lock-file changes.
-- Feature 077+ files.
+- normalized combined rows
+- aggregate rows per policy/method
+- upstream regression evidence for Features 068R through 075
+- explicit claim boundaries
+- explicit scope evidence
 
 ## Claim Boundary
 
-Feature 076 may claim combined baseline + proposed comparative readiness only. It must not claim final evaluation, superiority, statistical significance, training correctness, or full paper reproduction.
+Feature 076 may claim readiness only. It must not claim:
+
+- training
+- superiority
+- final evaluation
+- statistical significance
+- full paper reproduction
+
+## Out of Scope
+
+- training
+- DRL implementation
+- baseline policy rewrites
+- proposed-method rewrites
+- runtime helper rewrites
+- generated artifacts committed to git
+- dependency changes
+- lock-file changes
+- Feature 077+ files
+
+## Acceptance Criteria
+
+- report status is `combined_baseline_proposed_comparative_readiness_ready`
+- report `passed=True`
+- all 49 rows are present
+- all 7 aggregates are present
+- every row is action-bound
+- compatibility mode is not used
+- every row has decision trace evidence
+- scope validator passes
+- no PR is opened
+- no merge is performed
