@@ -17,29 +17,33 @@ class BaselinePolicyComparativeEvaluationReadinessReportTests(unittest.TestCase)
         self.assertEqual(report.status, "baseline_policy_comparative_evaluation_readiness_ready")
         self.assertEqual(report.feature_name, "Feature 074 - Baseline Policy Comparative Evaluation Readiness")
         self.assertEqual(report.recommended_next_feature, "Feature 075 - Proposed Deadline-Aware Method Integration Readiness")
+        self.assertIn("feature 073 controlled scenarios are used as fixtures", report.paper_claim_boundary.lower())
+        self.assertIn("selected policy actions are bound to controlled outcomes", report.paper_claim_boundary.lower())
+        self.assertIn("local/private actions map to local/private outcome semantics", report.paper_claim_boundary.lower())
+        self.assertIn("vertical/cloud actions map to cloud outcome semantics", report.paper_claim_boundary.lower())
+        self.assertIn("horizontal actions are checked against feature 070 figure 7 topology", report.paper_claim_boundary.lower())
+        self.assertIn("feature 071 helpers provide the paper-mode terminal and reward behavior", report.paper_claim_boundary.lower())
         self.assertIn("no final evaluation claim is made", report.paper_claim_boundary.lower())
         self.assertIn("no performance superiority claim is made", report.paper_claim_boundary.lower())
         self.assertIn("no statistical significance claim is made", report.paper_claim_boundary.lower())
         self.assertIn("no full paper reproduction claim is made", report.paper_claim_boundary.lower())
-        self.assertIn("feature 073 controlled scenarios are consumed", report.paper_claim_boundary.lower())
-        self.assertIn("baseline policies are not rewritten", report.paper_claim_boundary.lower())
 
-    def test_report_includes_policy_descriptors_and_regression_evidence(self) -> None:
+    def test_report_includes_policy_descriptors_selected_action_evidence_and_regression_evidence(self) -> None:
         report = build_feature_074_report()
         self.assertEqual({descriptor.policy_id for descriptor in report.policy_descriptors}, {"FLC", "VO", "HO", "RO", "BCO", "MLEO"})
         self.assertEqual(len(report.scenario_comparisons), 42)
         self.assertEqual(len(report.policy_aggregate_metrics), 6)
+        self.assertTrue(all(comparison.selected_action_id for comparison in report.scenario_comparisons))
+        self.assertTrue(all(comparison.selected_action_family for comparison in report.scenario_comparisons))
+        self.assertTrue(all(comparison.action_bound_metrics_derived for comparison in report.scenario_comparisons))
+        self.assertTrue(all(aggregate.action_bound_metrics_derived for aggregate in report.policy_aggregate_metrics))
+        self.assertTrue(all("local" in aggregate.distinct_selected_action_families or "horizontal" in aggregate.distinct_selected_action_families or "vertical" in aggregate.distinct_selected_action_families for aggregate in report.policy_aggregate_metrics))
         self.assertTrue(report.feature_068r_regression_status.passed)
         self.assertTrue(report.feature_069_regression_status.passed)
         self.assertTrue(report.feature_070_regression_status.passed)
         self.assertTrue(report.feature_071_regression_status.passed)
         self.assertTrue(report.feature_072_regression_status.passed)
         self.assertTrue(report.feature_073_regression_status.passed)
-
-    def test_report_fails_when_compatibility_mode_is_used_in_default_comparison(self) -> None:
-        report = build_feature_074_report()
-        self.assertFalse(any(comparison.compatibility_mode_used for comparison in report.scenario_comparisons))
-        self.assertFalse(any(aggregate.compatibility_mode_used for aggregate in report.policy_aggregate_metrics))
 
     def test_report_raises_when_policy_aggregate_is_inconsistent(self) -> None:
         report = build_feature_074_report()
@@ -55,6 +59,8 @@ class BaselinePolicyComparativeEvaluationReadinessReportTests(unittest.TestCase)
                 mean_delay=aggregate.mean_delay,
                 mean_reward=aggregate.mean_reward,
                 compatibility_mode_used=aggregate.compatibility_mode_used,
+                distinct_selected_action_families=aggregate.distinct_selected_action_families,
+                action_bound_metrics_derived=aggregate.action_bound_metrics_derived,
             )
             for aggregate in report.policy_aggregate_metrics
         )

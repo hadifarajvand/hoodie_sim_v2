@@ -40,6 +40,24 @@
 - [X] T023 Run git diff check and Feature 074 scope validator.
 - [X] T024 Commit and push only.
 
+## Required Action-Bound Repair
+
+- [X] T025 Extend comparison rows with selected action evidence.
+- [X] T026 Add action-bound outcome evidence.
+- [X] T027 Derive metrics from selected actions.
+- [X] T028 Map local/private actions to local/private controlled outcomes.
+- [X] T029 Map vertical/cloud actions to cloud outcomes.
+- [X] T030 Map horizontal actions through Feature 070 Figure 7 topology.
+- [X] T031 Map illegal/unavailable actions to dropped_unavailable metrics.
+- [X] T032 Test that metrics are not copied unchanged from Feature 073 for all policies.
+- [X] T033 Test that at least one selected action family changes scenario metrics.
+- [X] T034 Test that missing or unmapped selected actions fail readiness.
+- [X] T035 Test that horizontal selected actions use Figure 7 topology.
+- [X] T036 Test that compatibility_mode_used remains False.
+- [X] T037 Update report renderer with selected-action evidence.
+- [X] T038 Run validations.
+- [X] T039 Commit and push only.
+
 ## Notes
 
 Feature 074 must stay read-only. It must not open a PR, merge, change policy code, start training, generate campaign artifacts, or claim final evaluation results.
