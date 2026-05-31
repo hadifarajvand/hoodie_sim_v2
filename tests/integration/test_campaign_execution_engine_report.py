@@ -22,8 +22,14 @@ class CampaignExecutionEngineIntegrationReportTests(unittest.TestCase):
 
     def test_rendered_report_contains_source_and_boundary_evidence(self) -> None:
         rendered = render_feature_078_report(self.report)
-        self.assertIn("Feature 076 readiness rows are consumed as the action-bound execution substrate.", rendered)
-        self.assertIn("Feature 077 campaign dimensions are consumed as the execution contract.", rendered)
+        self.assertIn("Feature 076 rows are used only for dependency validation and compatibility proof.", rendered)
+        self.assertIn("Runtime-backed execution path is used for every campaign cell.", rendered)
+        self.assertIn("Feature 077 campaign contract consumed from config constants.", rendered)
+        self.assertIn("runtime_path=", rendered)
+        self.assertIn("scenario_source=", rendered)
+        self.assertIn("policy_source=", rendered)
+        self.assertIn("workload=", rendered)
+        self.assertIn("deadline=", rendered)
         self.assertIn("No training claim is made.", rendered)
         self.assertIn("No superiority claim is made.", rendered)
         self.assertIn("No final evaluation claim is made.", rendered)

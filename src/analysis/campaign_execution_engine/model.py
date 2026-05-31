@@ -127,6 +127,11 @@ class CampaignExecutionResultRow:
     unavailable_drop_rate: float
     deadline_violation_rate: float
     compatibility_mode_used: bool
+    execution_runtime_path_used: str
+    scenario_source: str
+    policy_source: str
+    workload_modifier_state: str
+    deadline_modifier_state: str
     execution_provenance: str
 
     def __post_init__(self) -> None:
@@ -144,6 +149,8 @@ class CampaignExecutionResultRow:
             raise ValueError("topology_mode must be paper_figure_7")
         if self.runtime_mode != RUNTIME_MODE:
             raise ValueError("runtime_mode must be paper")
+        if not self.selected_action_id:
+            raise ValueError("selected_action_id must be non-empty")
         if self.selected_action_family not in ALLOWED_SELECTED_ACTION_FAMILIES:
             raise ValueError("selected_action_family must be a recognized action family")
         if self.action_legality not in ALLOWED_ACTION_LEGALITIES:
@@ -172,6 +179,16 @@ class CampaignExecutionResultRow:
                 raise ValueError(f"{field_name} must be numeric")
         if self.compatibility_mode_used:
             raise ValueError("compatibility_mode_used must be false")
+        if not self.execution_runtime_path_used:
+            raise ValueError("execution_runtime_path_used must be non-empty")
+        if not self.scenario_source:
+            raise ValueError("scenario_source must be non-empty")
+        if not self.policy_source:
+            raise ValueError("policy_source must be non-empty")
+        if not self.workload_modifier_state:
+            raise ValueError("workload_modifier_state must be non-empty")
+        if not self.deadline_modifier_state:
+            raise ValueError("deadline_modifier_state must be non-empty")
         if not self.execution_provenance:
             raise ValueError("execution_provenance must be non-empty")
 

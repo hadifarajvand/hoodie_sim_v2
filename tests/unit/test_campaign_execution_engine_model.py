@@ -57,6 +57,16 @@ class CampaignExecutionEngineModelTests(unittest.TestCase):
         with self.assertRaises(ValueError):
             replace(row, compatibility_mode_used=True)
 
+    def test_result_row_rejects_empty_selected_action_id(self) -> None:
+        row = build_feature_078_report().result_rows[0]
+        with self.assertRaises(ValueError):
+            replace(row, selected_action_id="")
+
+    def test_result_row_rejects_empty_execution_runtime_path(self) -> None:
+        row = build_feature_078_report().result_rows[0]
+        with self.assertRaises(ValueError):
+            replace(row, execution_runtime_path_used="")
+
     def test_result_row_rejects_empty_provenance(self) -> None:
         row = build_feature_078_report().result_rows[0]
         with self.assertRaises(ValueError):

@@ -1,8 +1,11 @@
 from __future__ import annotations
 
 from collections import Counter
+from types import SimpleNamespace
+from unittest.mock import patch
 import unittest
 
+from src.analysis.campaign_execution_engine import report as campaign_report_module
 from src.analysis.campaign_execution_engine.config import (
     DEADLINE_PRESSURE_LEVELS,
     FEATURE_NAME,
@@ -53,8 +56,15 @@ class CampaignExecutionEngineReportTests(unittest.TestCase):
         self.assertTrue(all(not row.compatibility_mode_used for row in self.report.result_rows))
         self.assertTrue(all(row.topology_mode == TOPOLOGY_MODE for row in self.report.result_rows))
         self.assertTrue(all(row.runtime_mode == RUNTIME_MODE for row in self.report.result_rows))
+        self.assertTrue(all(row.execution_runtime_path_used for row in self.report.result_rows))
+        self.assertTrue(all(row.scenario_source for row in self.report.result_rows))
+        self.assertTrue(all(row.policy_source for row in self.report.result_rows))
+        self.assertTrue(all(row.workload_modifier_state for row in self.report.result_rows))
+        self.assertTrue(all(row.deadline_modifier_state for row in self.report.result_rows))
         self.assertTrue(all(row.execution_provenance for row in self.report.result_rows))
-        self.assertTrue(all("feature_076_source=" in row.execution_provenance for row in self.report.result_rows))
+        self.assertTrue(all("runtime_path=" in row.execution_provenance for row in self.report.result_rows))
+        self.assertTrue(all("scenario_source=" in row.execution_provenance for row in self.report.result_rows))
+        self.assertTrue(all("policy_source=" in row.execution_provenance for row in self.report.result_rows))
         self.assertTrue(all("seed_id=" in row.execution_provenance for row in self.report.result_rows))
 
     def test_build_helpers_are_consistent(self) -> None:
@@ -78,6 +88,25 @@ class CampaignExecutionEngineReportTests(unittest.TestCase):
         self.assertIn("No winner claim is made.", rendered)
         self.assertNotIn("winner:", rendered.lower())
         self.assertNotIn("statistical summary", rendered.lower().replace("no statistical summary claim is made.", ""))
+
+    def test_runtime_helper_is_invoked_for_every_cell(self) -> None:
+        campaign_report_module._feature_076_report.cache_clear()
+        fake_feature_076 = SimpleNamespace(passed=True)
+        with (
+            patch.object(campaign_report_module, "_feature_076_report", return_value=fake_feature_076),
+            patch.object(campaign_report_module, "build_action_bound_outcome", wraps=campaign_report_module.build_action_bound_outcome) as mocked_outcome,
+        ):
+            report = campaign_report_module.build_feature_078_report()
+        self.assertEqual(mocked_outcome.call_count, report.actual_row_count)
+
+    def test_rows_are_not_copied_from_feature_076(self) -> None:
+        campaign_report_module._feature_076_report.cache_clear()
+        fake_feature_076 = SimpleNamespace(passed=True, rows=(SimpleNamespace(selected_action_id="sentinel_action"),))
+        with patch.object(campaign_report_module, "_feature_076_report", return_value=fake_feature_076):
+            report = campaign_report_module.build_feature_078_report()
+        first_row = report.result_rows[0]
+        self.assertNotEqual(first_row.selected_action_id, "sentinel_action")
+        self.assertIn("runtime_path=", first_row.execution_provenance)
 
     def test_result_row_counts_are_non_negative(self) -> None:
         for row in self.report.result_rows[:25]:
