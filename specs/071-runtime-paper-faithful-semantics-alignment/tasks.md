@@ -24,7 +24,7 @@ Acceptance:
 Failure mode:
 - Branch starts from `main` and loses Feature 070 recovery.
 
-- [ ] T003 Read runtime helper files and prior evidence files.
+- [X] T003 Read runtime helper files and prior evidence files.
 
 Comment:
 Implementation must be grounded in current helper behavior and recovered equations.
@@ -64,7 +64,7 @@ Failure mode:
 
 ## Phase 3: Tests First
 
-- [ ] T007 Add paper-mode deadline strictness tests.
+- [X] T007 Add paper-mode deadline strictness tests.
 
 Comment:
 This is the main divergence identified by Feature 070.
@@ -73,7 +73,7 @@ Acceptance:
 Failure mode:
 - Equality-at-deadline remains silently paper-compatible.
 
-- [ ] T008 Add explicit compatibility-mode tests.
+- [X] T008 Add explicit compatibility-mode tests.
 
 Comment:
 Legacy behavior may remain only if named and tested.
@@ -82,7 +82,7 @@ Acceptance:
 Failure mode:
 - Legacy behavior stays default.
 
-- [ ] T009 Add terminal-state consistency tests.
+- [X] T009 Add terminal-state consistency tests.
 
 Comment:
 Reward must depend on terminal state.
@@ -91,7 +91,7 @@ Acceptance:
 Failure mode:
 - Contradictory terminal records still pass.
 
-- [ ] T010 Add reward Eq. (20)-(23) tests.
+- [X] T010 Add reward Eq. (20)-(23) tests.
 
 Comment:
 Runtime reward must use recovered paper equations.
@@ -102,7 +102,7 @@ Failure mode:
 
 ## Phase 4: Runtime Implementation
 
-- [ ] T011 Align `paper_timeout.py` with paper and compatibility modes.
+- [X] T011 Align `paper_timeout.py` with paper and compatibility modes.
 
 Comment:
 Deadline strictness must be executable behavior.
@@ -111,7 +111,7 @@ Acceptance:
 Failure mode:
 - Different modules continue disagreeing about deadline semantics.
 
-- [ ] T012 Align `deadline_rules.py` with `paper_timeout.py`.
+- [X] T012 Align `deadline_rules.py` with `paper_timeout.py`.
 
 Comment:
 Avoid duplicated contradictory deadline rules.
@@ -120,7 +120,7 @@ Acceptance:
 Failure mode:
 - Two deadline implementations diverge.
 
-- [ ] T013 Align `reward_timing.py` with Eq. (20)-(23).
+- [X] T013 Align `reward_timing.py` with Eq. (20)-(23).
 
 Comment:
 Feature 070 recovered the reward equations; Feature 071 must make them executable.
@@ -140,7 +140,7 @@ Failure mode:
 
 ## Phase 5: Feature 071 Report
 
-- [ ] T015 Implement Feature 071 analysis/report package.
+- [X] T015 Implement Feature 071 analysis/report package.
 
 Comment:
 The branch needs a clear audit output.
@@ -149,7 +149,7 @@ Acceptance:
 Failure mode:
 - Reviewer cannot tell what changed.
 
-- [ ] T016 Add scope validator.
+- [X] T016 Add scope validator.
 
 Comment:
 Protect the branch from artifact/training/dependency pollution.
@@ -160,17 +160,17 @@ Failure mode:
 
 ## Phase 6: Validation and Handoff
 
-- [ ] T017 Run Feature 068R regression slice.
+- [X] T017 Run Feature 068R regression slice.
 
-- [ ] T018 Run Feature 069 regression slice.
+- [X] T018 Run Feature 069 regression slice.
 
-- [ ] T019 Run Feature 070 regression slice.
+- [X] T019 Run Feature 070 regression slice.
 
-- [ ] T020 Run Feature 071 targeted tests.
+- [X] T020 Run Feature 071 targeted tests.
 
-- [ ] T021 Run `git diff --check` and scope validator.
+- [X] T021 Run `git diff --check` and scope validator.
 
-- [ ] T022 Commit and push only.
+- [X] T022 Commit and push only.
 
 Comment:
 No PR and no merge.
