@@ -274,6 +274,8 @@ class Feature070FidelityReport:
         blocker_categories = [blocker.category for blocker in self.blockers]
         if len(blocker_categories) != len(set(blocker_categories)):
             raise ValueError("blockers categories must be unique")
+        if self.passed and "with_blockers" in self.status:
+            raise ValueError("passed reports must not use a with_blockers status")
         if self.passed and not (self.feature_068r_regression_status.passed and self.feature_069_regression_status.passed):
             raise ValueError("passed reports require green Feature 068R and Feature 069 regression gates")
         if self.passed and self.blockers:

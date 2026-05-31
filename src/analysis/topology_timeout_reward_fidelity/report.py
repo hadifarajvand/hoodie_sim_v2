@@ -277,6 +277,24 @@ def build_feature_070_report(
     regression_068r = _feature_068r_regression_evidence()
     regression_069 = _feature_069_regression_evidence()
     commands = tuple(validation_commands or VALIDATION_COMMANDS)
+    blockers = _blockers()
+    passed = all(
+        (
+            not blockers,
+            regression_068r.passed,
+            regression_069.passed,
+            terminal_reward.timing_valid,
+            terminal_reward.reward_slot >= terminal_reward.terminal_slot,
+            topology.evidence_status == "verified_manual_paper_extraction",
+            timeout_drop_rule.paper_semantics_status == "paper_backed_recovered_with_runtime_compatibility_divergence",
+            reward_equation.recovered_status == "paper_backed_recovered",
+        )
+    )
+    status = (
+        "blocker_resolution_readiness_with_runtime_divergence"
+        if passed
+        else "mechanism_fidelity_readiness_with_blockers"
+    )
     changed = tuple(
         changed_files
         or (
@@ -295,8 +313,8 @@ def build_feature_070_report(
     )
     return Feature070FidelityReport(
         feature_name="Feature 070 - Topology, Timeout/Drop, and Reward Fidelity",
-        status="mechanism_fidelity_readiness_with_blockers",
-        passed=False,
+        status=status,
+        passed=passed,
         changed_files=changed,
         topology_evidence=topology,
         neighbor_legality_evidence=neighbor,
@@ -304,7 +322,7 @@ def build_feature_070_report(
         timeout_drop_accounting_evidence=timeout_drop,
         reward_equation_evidence=reward_equation,
         terminal_reward_evidence=terminal_reward,
-        blockers=_blockers(),
+        blockers=blockers,
         feature_068r_regression_status=regression_068r,
         feature_069_regression_status=regression_069,
         paper_claim_boundary=(

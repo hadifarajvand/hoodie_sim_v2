@@ -30,10 +30,13 @@ class TopologyTimeoutRewardFidelityReportIntegrationTests(unittest.TestCase):
 
     def test_rendered_report_mentions_regression_status_and_scope_boundary(self) -> None:
         report = build_feature_070_report()
+        self.assertTrue(report.passed)
+        self.assertEqual(report.status, "blocker_resolution_readiness_with_runtime_divergence")
         markdown = render_feature_070_report(report)
         self.assertIn("Feature 068R", markdown)
         self.assertIn("Feature 069", markdown)
         self.assertIn("No full paper reproduction claim", markdown)
+        self.assertIn("runtime_compatibility_divergence", markdown)
         self.assertIn("Recommended Next Feature", markdown)
 
 
