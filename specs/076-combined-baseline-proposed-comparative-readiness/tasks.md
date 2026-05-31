@@ -2,7 +2,7 @@
 
 ## Status
 
-Spec Kit preparation complete; implementation pending.
+Spec Kit preparation and implementation complete; validation passed.
 
 ## Tasks
 
@@ -11,22 +11,22 @@ Spec Kit preparation complete; implementation pending.
 - [X] T003 Add Feature 076 specification.
 - [X] T004 Add Feature 076 plan.
 - [X] T005 Add Feature 076 data model.
-- [ ] T006 Add Feature 076 report contract.
-- [ ] T007 Add Feature 076 requirements checklist.
-- [ ] T008 Implement read-only analysis package under `src/analysis/combined_baseline_proposed_comparative_readiness/`.
-- [ ] T009 Implement scope guard.
-- [ ] T010 Implement model entities: CombinedPolicyRow, CombinedPolicyAggregate, CombinedRegressionEvidence, CombinedComparativeReadinessReport.
-- [ ] T011 Consume and normalize Feature 074 baseline rows.
-- [ ] T012 Consume and normalize Feature 075 proposed-method rows.
-- [ ] T013 Validate full 7 method by 7 scenario matrix, total 49 rows.
-- [ ] T014 Compute per-policy and per-method aggregates.
-- [ ] T015 Implement report rendering with claim boundary.
-- [ ] T016 Add unit tests for model validation, missing coverage, duplicate rows, action-bound enforcement, compatibility rejection, aggregate correctness, and scope guard.
-- [ ] T017 Add integration tests for consuming Feature 074 and Feature 075 reports into one combined matrix.
-- [ ] T018 Run targeted regression slices for Features 068R through 075.
-- [ ] T019 Run Feature 076 unit and integration tests.
-- [ ] T020 Run git diff check and Feature 076 scope validator.
-- [ ] T021 Commit and push only.
+- [X] T006 Add Feature 076 report contract.
+- [X] T007 Add Feature 076 requirements checklist.
+- [X] T008 Implement read-only analysis package under `src/analysis/combined_baseline_proposed_comparative_readiness/`.
+- [X] T009 Implement scope guard.
+- [X] T010 Implement model entities: CombinedPolicyRow, CombinedPolicyAggregate, CombinedRegressionEvidence, CombinedComparativeReadinessReport.
+- [X] T011 Consume and normalize Feature 074 baseline rows.
+- [X] T012 Consume and normalize Feature 075 proposed-method rows.
+- [X] T013 Validate full 7 method by 7 scenario matrix, total 49 rows.
+- [X] T014 Compute per-policy and per-method aggregates.
+- [X] T015 Implement report rendering with claim boundary.
+- [X] T016 Add unit tests for model validation, missing coverage, duplicate rows, action-bound enforcement, compatibility rejection, aggregate correctness, and scope guard.
+- [X] T017 Add integration tests for consuming Feature 074 and Feature 075 reports into one combined matrix.
+- [X] T018 Run targeted regression slices for Features 068R through 075.
+- [X] T019 Run Feature 076 unit and integration tests.
+- [X] T020 Run git diff check and Feature 076 scope validator.
+- [X] T021 Commit and push only.
 
 ## Required Implementation Package
 
