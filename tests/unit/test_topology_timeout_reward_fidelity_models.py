@@ -187,9 +187,13 @@ class TopologyTimeoutRewardFidelityModelTests(unittest.TestCase):
         self.assertEqual(dropped.drop_reason, "deadline_exceeded")
         self.assertEqual(dropped.rule_evidence.rule_text, rule.rule_text)
 
-        runtime_contract = build_timeout_contract(arrival_slot=1, timeout_phi=4, completion_slot=4)
-        self.assertFalse(runtime_contract.dropped_due_to_timeout)
-        self.assertEqual(runtime_contract.deadline_slot, 4)
+        paper_contract = build_timeout_contract(arrival_slot=1, timeout_phi=4, completion_slot=4)
+        self.assertTrue(paper_contract.dropped_due_to_timeout)
+        self.assertEqual(paper_contract.deadline_slot, 4)
+
+        compatibility_contract = build_timeout_contract(arrival_slot=1, timeout_phi=4, completion_slot=4, mode="compatibility")
+        self.assertFalse(compatibility_contract.dropped_due_to_timeout)
+        self.assertEqual(compatibility_contract.deadline_slot, 4)
         self.assertIn(">= deadline_slot", rule.drop_condition)
 
     def test_reward_equation_and_terminal_reward_schema_and_timing(self) -> None:
@@ -243,7 +247,8 @@ class TopologyTimeoutRewardFidelityModelTests(unittest.TestCase):
             terminal_outcome="completed",
             reward_emitted=True,
         )
-        self.assertEqual(reward_for_terminal_task(task), -3.0)
+        self.assertEqual(reward_for_terminal_task(task), -4.0)
+        self.assertEqual(reward_for_terminal_task(task, mode="compatibility"), -3.0)
 
         terminal = TerminalRewardEvidence(
             task_id="task-1",
