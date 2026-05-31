@@ -4,6 +4,8 @@ from pathlib import Path
 import subprocess
 from typing import Sequence
 
+from src.analysis.proposed_method_integration_readiness.model import PROPOSED_METHOD_POLICY_ID
+
 
 FEATURE_ID = "076-combined-baseline-proposed-comparative-readiness"
 FEATURE_NAME = "Feature 076 - Combined Baseline + Proposed Comparative Readiness"
@@ -12,7 +14,7 @@ BLOCKED_STATUS = "combined_baseline_proposed_comparative_readiness_with_blockers
 IMPLEMENTATION_BRANCH = "076-combined-baseline-proposed-comparative-readiness"
 BASE_FEATURE_075_COMMIT = "b23b2fa5b1c8fc6d58f3eb533164f83c05c2ec61"
 
-REQUIRED_POLICY_IDS: tuple[str, ...] = ("FLC", "VO", "HO", "RO", "BCO", "MLEO", "PROPOSED_DCQ")
+REQUIRED_POLICY_IDS: tuple[str, ...] = ("FLC", "VO", "HO", "RO", "BCO", "MLEO", PROPOSED_METHOD_POLICY_ID)
 REQUIRED_SCENARIO_IDS: tuple[str, ...] = (
     "light_load_no_deadline_pressure",
     "tight_deadline_pressure",

@@ -735,7 +735,7 @@ def _claim_boundary() -> str:
         "local/private outcome semantics. Vertical/cloud actions map to cloud outcome semantics. Horizontal actions are "
         "checked against Feature 070 Figure 7 topology before public outcome metrics are assigned. Feature 071 helpers "
         "provide the paper-mode terminal and reward behavior. Compatibility mode is excluded from the default "
-        "comparison. Feature 075 is the next proposed deadline-aware method integration readiness step, not training."
+        "comparison. Feature 075 is the next proposed base-paper method integration readiness step, not training."
     )
 
 

@@ -336,7 +336,11 @@ def _candidate_context(profile: ScenarioReadinessProfile) -> PolicyContext:
         "policy_family": PROPOSED_METHOD_POLICY_FAMILY,
         "scenario_id": profile.scenario_id,
     }
-    return PolicyContext(observation=observation, legal_action_mask=legal_action_mask, trace_history=("PROPOSED_DCQ", profile.scenario_id))
+    return PolicyContext(
+        observation=observation,
+        legal_action_mask=legal_action_mask,
+        trace_history=("HOODIE_PROPOSED", profile.scenario_id),
+    )
 
 
 def _selected_action_family(profile: ScenarioReadinessProfile, candidates: tuple[ProposedMethodCandidate, ...]) -> ProposedMethodCandidate:

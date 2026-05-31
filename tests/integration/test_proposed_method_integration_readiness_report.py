@@ -4,6 +4,10 @@ import tempfile
 import unittest
 from pathlib import Path
 
+from src.analysis.proposed_method_integration_readiness.model import (
+    PROPOSED_METHOD_POLICY_FAMILY,
+    PROPOSED_METHOD_POLICY_ID,
+)
 from src.analysis.proposed_method_integration_readiness.report import (
     build_feature_075_report,
     render_feature_075_report,
@@ -27,8 +31,10 @@ class ProposedMethodIntegrationReadinessReportIntegrationTests(unittest.TestCase
         self.assertIn("action_bound_reward_value", rendered)
         self.assertIn("action_bound_metrics_derived", rendered)
         self.assertIn("compatibility_mode_used", rendered)
-        self.assertIn("PROPOSED_DCQ", rendered)
-        self.assertIn("proposed_deadline_queueing", rendered)
+        self.assertIn(PROPOSED_METHOD_POLICY_ID, rendered)
+        self.assertIn(PROPOSED_METHOD_POLICY_FAMILY, rendered)
+        self.assertNotIn("PROPOSED_DCQ", rendered)
+        self.assertNotIn("proposed_deadline_queueing", rendered)
         self.assertIn("light_load_no_deadline_pressure", rendered)
         self.assertIn("tight_deadline_pressure", rendered)
         self.assertIn("legal_horizontal_offload", rendered)

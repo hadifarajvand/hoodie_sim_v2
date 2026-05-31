@@ -3,6 +3,7 @@ from __future__ import annotations
 import unittest
 
 from src.analysis.baseline_policy_comparative_evaluation_readiness.report import build_action_bound_outcome
+from src.analysis.proposed_method_integration_readiness.model import PROPOSED_METHOD_POLICY_ID
 from src.analysis.proposed_method_integration_readiness.report import build_feature_075_report
 from src.policies import PolicyContext
 
@@ -59,10 +60,10 @@ class ProposedMethodIntegrationReadinessScoringTests(unittest.TestCase):
                 "2": False,
                 "1": True,
             },
-            trace_history=("PROPOSED_DCQ", "legal_horizontal_offload"),
+            trace_history=(PROPOSED_METHOD_POLICY_ID, "legal_horizontal_offload"),
         )
-        legal = build_action_bound_outcome("PROPOSED_DCQ", "legal_horizontal_offload", "6", context)
-        illegal = build_action_bound_outcome("PROPOSED_DCQ", "legal_horizontal_offload", "2", context)
+        legal = build_action_bound_outcome(PROPOSED_METHOD_POLICY_ID, "legal_horizontal_offload", "6", context)
+        illegal = build_action_bound_outcome(PROPOSED_METHOD_POLICY_ID, "legal_horizontal_offload", "2", context)
         self.assertEqual(legal.selected_action_family, "horizontal")
         self.assertEqual(legal.action_legality, "legal")
         self.assertEqual(legal.terminal_status, "completed_public")
@@ -71,7 +72,7 @@ class ProposedMethodIntegrationReadinessScoringTests(unittest.TestCase):
         self.assertEqual(illegal.metrics.dropped_unavailable_count, 1)
         self.assertEqual(illegal.metrics.illegal_action_rejection_count, 1)
 
-        self_refusal = build_action_bound_outcome("PROPOSED_DCQ", "legal_horizontal_offload", "1", context)
+        self_refusal = build_action_bound_outcome(PROPOSED_METHOD_POLICY_ID, "legal_horizontal_offload", "1", context)
         self.assertEqual(self_refusal.action_legality, "illegal_self_destination")
         self.assertEqual(self_refusal.terminal_status, "dropped_unavailable")
 
@@ -94,9 +95,9 @@ class ProposedMethodIntegrationReadinessScoringTests(unittest.TestCase):
                 "2": False,
                 "1": True,
             },
-            trace_history=("PROPOSED_DCQ", "illegal_horizontal_destination_attempt"),
+            trace_history=(PROPOSED_METHOD_POLICY_ID, "illegal_horizontal_destination_attempt"),
         )
-        illegal = build_action_bound_outcome("PROPOSED_DCQ", "illegal_horizontal_destination_attempt", "2", context)
+        illegal = build_action_bound_outcome(PROPOSED_METHOD_POLICY_ID, "illegal_horizontal_destination_attempt", "2", context)
         self.assertEqual(illegal.action_legality, "illegal_unavailable")
         self.assertEqual(illegal.terminal_status, "dropped_unavailable")
         self.assertEqual(illegal.metrics.illegal_action_rejection_count, 1)

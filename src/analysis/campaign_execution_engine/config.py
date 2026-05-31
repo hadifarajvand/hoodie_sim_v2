@@ -5,6 +5,8 @@ from pathlib import Path
 import subprocess
 from typing import Sequence
 
+from src.analysis.proposed_method_integration_readiness.model import PROPOSED_METHOD_POLICY_ID
+
 
 FEATURE_ID = "078-campaign-execution-engine"
 FEATURE_NAME = "Feature 078 - Campaign Execution Engine"
@@ -14,7 +16,7 @@ DEPENDENCY_FEATURES: tuple[str, ...] = (
     "076-combined-baseline-proposed-comparative-readiness",
     "077-experimental-campaign-readiness",
 )
-REQUIRED_POLICY_IDS: tuple[str, ...] = ("FLC", "VO", "HO", "RO", "BCO", "MLEO", "PROPOSED_DCQ")
+REQUIRED_POLICY_IDS: tuple[str, ...] = ("FLC", "VO", "HO", "RO", "BCO", "MLEO", PROPOSED_METHOD_POLICY_ID)
 REQUIRED_SCENARIO_IDS: tuple[str, ...] = (
     "light_load_no_deadline_pressure",
     "tight_deadline_pressure",

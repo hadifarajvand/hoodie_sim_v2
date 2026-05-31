@@ -6,8 +6,8 @@ from typing import Any
 from src.analysis.controlled_evaluation_batch_readiness.model import ControlledEvaluationMetrics
 
 
-PROPOSED_METHOD_POLICY_ID = "PROPOSED_DCQ"
-PROPOSED_METHOD_POLICY_FAMILY = "proposed_deadline_queueing"
+PROPOSED_METHOD_POLICY_ID = "HOODIE_PROPOSED"
+PROPOSED_METHOD_POLICY_FAMILY = "hoodie_proposed"
 REQUIRED_SCENARIO_IDS: tuple[str, ...] = (
     "light_load_no_deadline_pressure",
     "tight_deadline_pressure",
@@ -50,9 +50,9 @@ class ProposedMethodDescriptor:
 
     def __post_init__(self) -> None:
         if self.policy_id != PROPOSED_METHOD_POLICY_ID:
-            raise ValueError("policy_id must be PROPOSED_DCQ")
+            raise ValueError("policy_id must be HOODIE_PROPOSED")
         if self.policy_family != PROPOSED_METHOD_POLICY_FAMILY:
-            raise ValueError("policy_family must be proposed_deadline_queueing")
+            raise ValueError("policy_family must be hoodie_proposed")
         if not self.registry_key:
             raise ValueError("registry_key must be non-empty")
         if self.available not in {True, False}:
@@ -189,9 +189,9 @@ class ProposedMethodAggregateComparison:
 
     def __post_init__(self) -> None:
         if self.policy_id != PROPOSED_METHOD_POLICY_ID:
-            raise ValueError("policy_id must be PROPOSED_DCQ")
+            raise ValueError("policy_id must be HOODIE_PROPOSED")
         if self.policy_family != PROPOSED_METHOD_POLICY_FAMILY:
-            raise ValueError("policy_family must be proposed_deadline_queueing")
+            raise ValueError("policy_family must be hoodie_proposed")
         if self.scenario_count <= 0:
             raise ValueError("scenario_count must be positive")
         if any(not family for family in self.distinct_selected_action_families):

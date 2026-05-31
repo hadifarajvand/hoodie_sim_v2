@@ -12,6 +12,7 @@ from src.analysis.combined_baseline_proposed_comparative_readiness.report import
     render_feature_076_report,
 )
 from src.analysis.baseline_policy_comparative_evaluation_readiness.report import build_feature_074_report
+from src.analysis.proposed_method_integration_readiness.model import PROPOSED_METHOD_POLICY_ID
 from src.analysis.proposed_method_integration_readiness.report import build_feature_075_report
 
 
@@ -22,7 +23,7 @@ class CombinedBaselineProposedComparativeReadinessReportTests(unittest.TestCase)
         self.assertEqual(report.status, "combined_baseline_proposed_comparative_readiness_ready")
         self.assertEqual(len(report.rows), 49)
         self.assertEqual(len(report.aggregates), 7)
-        self.assertEqual(set(report.required_policy_ids), {"FLC", "VO", "HO", "RO", "BCO", "MLEO", "PROPOSED_DCQ"})
+        self.assertEqual(set(report.required_policy_ids), {"FLC", "VO", "HO", "RO", "BCO", "MLEO", PROPOSED_METHOD_POLICY_ID})
         self.assertEqual(
             set(report.required_scenario_ids),
             {
@@ -40,7 +41,7 @@ class CombinedBaselineProposedComparativeReadinessReportTests(unittest.TestCase)
         self.assertTrue(all(row.decision_trace_present for row in report.rows))
         self.assertEqual(sum(1 for row in report.rows if row.source_feature == "074"), 42)
         self.assertEqual(sum(1 for row in report.rows if row.source_feature == "075"), 7)
-        self.assertEqual(sum(1 for row in report.rows if row.policy_id == "PROPOSED_DCQ"), 7)
+        self.assertEqual(sum(1 for row in report.rows if row.policy_id == PROPOSED_METHOD_POLICY_ID), 7)
         self.assertEqual(sum(1 for row in report.rows if row.policy_id in {"FLC", "VO", "HO", "RO", "BCO", "MLEO"}), 42)
         self.assertEqual(len(build_combined_rows()), 49)
         self.assertEqual(len(build_combined_aggregates(report.rows)), 7)

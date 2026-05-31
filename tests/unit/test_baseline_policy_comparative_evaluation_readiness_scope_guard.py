@@ -27,7 +27,7 @@ class BaselinePolicyComparativeEvaluationReadinessScopeGuardTests(unittest.TestC
         with self.assertRaises(RuntimeError):
             validate_scope(
                 [
-                    "specs/075-proposed-deadline-aware-method-integration-readiness/spec.md",
+                    "specs/075-proposed-method-integration-readiness/spec.md",
                     "src/training/runner.py",
                 ]
             )

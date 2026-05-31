@@ -25,6 +25,7 @@ from src.analysis.campaign_execution_engine.report import (
     render_feature_078_report,
     validate_execution_rows,
 )
+from src.analysis.proposed_method_integration_readiness.model import PROPOSED_METHOD_POLICY_ID
 
 
 class CampaignExecutionEngineReportTests(unittest.TestCase):
@@ -66,6 +67,10 @@ class CampaignExecutionEngineReportTests(unittest.TestCase):
         self.assertTrue(all("scenario_source=" in row.execution_provenance for row in self.report.result_rows))
         self.assertTrue(all("policy_source=" in row.execution_provenance for row in self.report.result_rows))
         self.assertTrue(all("seed_id=" in row.execution_provenance for row in self.report.result_rows))
+        proposed_row = next(row for row in self.report.result_rows if row.policy_id == PROPOSED_METHOD_POLICY_ID)
+        self.assertIn(PROPOSED_METHOD_POLICY_ID, proposed_row.policy_source)
+        self.assertNotIn("PROPOSED_DCQ", proposed_row.policy_source)
+        self.assertNotIn("proposed_deadline_queueing", proposed_row.policy_source)
 
     def test_build_helpers_are_consistent(self) -> None:
         seeds = build_execution_seed_plan()
