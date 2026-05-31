@@ -96,7 +96,7 @@ Acceptance:
 Failure mode:
 - Aggregate counters replace task-level accounting.
 
-- [ ] T010R Search for timeout/drop paper and runtime evidence.
+- [X] T010R Search for timeout/drop paper and runtime evidence.
 
 Comment:
 The implementation must try to recover the accounting rule before keeping it blocker-backed.
@@ -106,7 +106,7 @@ Acceptance:
 Failure mode:
 - Runtime behavior is called paper-faithful without source evidence.
 
-- [ ] T011R Implement TimeoutDropRuleEvidence.
+- [X] T011R Implement TimeoutDropRuleEvidence.
 
 Comment:
 The report needs a separate rule-level object, not only per-task example evidence.
@@ -147,7 +147,7 @@ Acceptance:
 Failure mode:
 - Reward is emitted at decision time without terminal evidence.
 
-- [ ] T015R Search for exact reward equation evidence.
+- [X] T015R Search for exact reward equation evidence.
 
 Comment:
 The current implementation correctly avoids overclaiming reward fidelity. Next it must search for the equation before keeping it blocked.
@@ -157,7 +157,7 @@ Acceptance:
 Failure mode:
 - Reward equation remains blocked without evidence recovery attempt.
 
-- [ ] T016R Implement reward equation provenance and term validation.
+- [X] T016R Implement reward equation provenance and term validation.
 
 Comment:
 Equation text and inferred terms must be separated.
@@ -198,7 +198,7 @@ Acceptance:
 Failure mode:
 - A boolean can lie about reward timing and still produce a green report.
 
-- [ ] T020R Update report to include recovery search results.
+- [X] T020R Update report to include recovery search results.
 
 Comment:
 The reviewer must see whether blockers remained because evidence was unavailable or because the agent failed to search.
@@ -208,7 +208,7 @@ Acceptance:
 Failure mode:
 - Blockers remain without actionable recovery trail.
 
-- [ ] T021R Run targeted validation after blocker-recovery refinement.
+- [X] T021R Run targeted validation after blocker-recovery refinement.
 
 Comment:
 The merge gate must use relevant tests, not unrelated full-suite noise.
@@ -217,7 +217,7 @@ Acceptance:
 Failure mode:
 - Full-suite noise is misreported as Feature 070 status.
 
-- [ ] T022R Run scope audit.
+- [X] T022R Run scope audit.
 
 Comment:
 Feature scope must stay clean.
@@ -228,7 +228,7 @@ Failure mode:
 
 ## Phase 6: Handoff Evidence
 
-- [ ] T023R Record changed files, validation results, blocker status, claim boundary, open risks, and any user-input needs.
+- [X] T023R Record changed files, validation results, blocker status, claim boundary, open risks, and any user-input needs.
 
 Comment:
 Reviewers need proof, not status theater.

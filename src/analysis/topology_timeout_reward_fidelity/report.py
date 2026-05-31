@@ -17,11 +17,27 @@ from .model import (
     NeighborLegalityEvidence,
     RewardEquationEvidence,
     TerminalRewardEvidence,
+    TimeoutDropRuleEvidence,
     TimeoutDropAccountingEvidence,
     TopologyEvidenceReport,
 )
 
 TOPOLOGY_EVIDENCE_SOURCE = Path("specs/070-topology-timeout-reward-fidelity/evidence/figure-7-topology-extraction.md")
+TIMEOUT_DROP_SEARCH_SOURCES = (
+    "docs/paper_notes/runtime_model_evidence.md",
+    "artifacts/analysis/paper-mechanism-registry/paper-mechanism-registry.md",
+    "docs/paper_notes/paper_to_code_mapping.md",
+    "src/environment/paper_timeout.py",
+    "src/environment/deadline_rules.py",
+    "src/environment/environment.py",
+)
+REWARD_SEARCH_SOURCES = (
+    "docs/paper_notes/reward_evidence.md",
+    "artifacts/analysis/paper-mechanism-registry/paper-mechanism-registry.md",
+    "docs/paper_notes/paper_to_code_mapping.md",
+    "src/environment/reward_timing.py",
+    "src/analysis/reward_equation_terminal_reward_contract/report.py",
+)
 
 
 def _json_dump(payload: Any) -> str:
@@ -136,6 +152,21 @@ def _reward_blocker() -> Feature070Blocker:
     )
 
 
+def _timeout_drop_rule_evidence() -> TimeoutDropRuleEvidence:
+    return TimeoutDropRuleEvidence(
+        rule_text="drop if completion_slot is None or completion_slot > deadline_slot; deadline_slot = arrival_slot + timeout_phi - 1",
+        source_reference="docs/paper_notes/runtime_model_evidence.md; src/environment/paper_timeout.py",
+        timeout_relation="deadline_slot = arrival_slot + timeout_phi - 1",
+        drop_condition="completion_slot is None or completion_slot > deadline_slot",
+        provenance=(
+            "paper_timeout.py encodes the deadline relation recovered from runtime_model_evidence.md; "
+            "paper mechanism registry still marks exact terminal accounting as blocking."
+        ),
+        paper_semantics_status="source_backed_rule_with_unresolved_terminal_grace_behavior",
+        searched_sources=TIMEOUT_DROP_SEARCH_SOURCES,
+    )
+
+
 def _topology_evidence() -> TopologyEvidenceReport:
     return _figure_7_topology_evidence()
 
@@ -162,18 +193,24 @@ def _timeout_drop_accounting_evidence() -> TimeoutDropAccountingEvidence:
         terminal_slot=5,
         terminal_status="dropped",
         drop_reason="deadline_exceeded",
-        paper_semantics_status="blocked",
+        paper_semantics_status="blocked_by_unresolved_terminal_grace_behavior",
+        rule_evidence=_timeout_drop_rule_evidence(),
     )
 
 
 def _reward_equation_evidence() -> RewardEquationEvidence:
     return RewardEquationEvidence(
         equation_id="reward-eq-070",
-        equation_text="exact equation not recovered; inferred timing-only placeholder",
-        source_reference=PAPER_TO_CODE_MAPPING.as_posix(),
-        terms=("terminal_reward", "waiting_penalty"),
-        recovered_status="blocked",
-        assumption_status="assumption_backed",
+        equation_text="r_n(t+1) = -Phi_n(t) for successful processing; -C for dropped tasks; reward omitted when no task arrived",
+        source_reference="docs/paper_notes/reward_evidence.md; src/environment/reward_timing.py",
+        terms=("Phi_n(t)", "C", "NaN/omitted when no task arrived"),
+        recovered_status="source_backed_partial",
+        assumption_status="phi_n_t_remains_approximation_backed",
+        provenance=(
+            "reward_evidence.md recovers the paper's success and drop reward structure; "
+            "reward_timing.py preserves the runtime path, but exact Phi_n(t) remains approximation-backed."
+        ),
+        searched_sources=REWARD_SEARCH_SOURCES,
         blockers=(_reward_blocker(),),
     )
 
@@ -205,6 +242,7 @@ def build_feature_070_report(
 ) -> Feature070FidelityReport:
     topology = _topology_evidence()
     neighbor = _neighbor_legality_evidence()
+    timeout_drop_rule = _timeout_drop_rule_evidence()
     timeout_drop = _timeout_drop_accounting_evidence()
     reward_equation = _reward_equation_evidence()
     terminal_reward = _terminal_reward_evidence()
@@ -234,6 +272,7 @@ def build_feature_070_report(
         changed_files=changed,
         topology_evidence=topology,
         neighbor_legality_evidence=neighbor,
+        timeout_drop_rule_evidence=timeout_drop_rule,
         timeout_drop_accounting_evidence=timeout_drop,
         reward_equation_evidence=reward_equation,
         terminal_reward_evidence=terminal_reward,
@@ -265,6 +304,9 @@ def render_feature_070_report(report: Feature070FidelityReport) -> str:
             "",
             "## Neighbor Legality Evidence",
             _json_dump(payload["neighbor_legality_evidence"]).rstrip(),
+            "",
+            "## Timeout/Drop Rule Evidence",
+            _json_dump(payload["timeout_drop_rule_evidence"]).rstrip(),
             "",
             "## Timeout/Drop Accounting Evidence",
             _json_dump(payload["timeout_drop_accounting_evidence"]).rstrip(),

@@ -22,6 +22,7 @@ class TopologyTimeoutRewardFidelityReportTests(unittest.TestCase):
             "changed_files",
             "topology_evidence",
             "neighbor_legality_evidence",
+            "timeout_drop_rule_evidence",
             "timeout_drop_accounting_evidence",
             "reward_equation_evidence",
             "terminal_reward_evidence",
@@ -38,10 +39,14 @@ class TopologyTimeoutRewardFidelityReportTests(unittest.TestCase):
         self.assertEqual(len(payload["topology_evidence"]["neighbor_map"]), 20)
         self.assertEqual(payload["topology_evidence"]["neighbor_map"]["1"], ["6", "11", "16"])
         self.assertIn("figure-7-topology-extraction.md", payload["topology_evidence"]["provenance"])
+        self.assertEqual(payload["timeout_drop_rule_evidence"]["timeout_relation"], "deadline_slot = arrival_slot + timeout_phi - 1")
+        self.assertIn("src/environment/paper_timeout.py", payload["timeout_drop_rule_evidence"]["searched_sources"])
         self.assertEqual(payload["neighbor_legality_evidence"]["final_legal"], True)
         self.assertEqual(payload["neighbor_legality_evidence"]["destination_agent_id"], "6")
-        self.assertEqual(payload["timeout_drop_accounting_evidence"]["paper_semantics_status"], "blocked")
-        self.assertEqual(payload["reward_equation_evidence"]["recovered_status"], "blocked")
+        self.assertEqual(payload["timeout_drop_accounting_evidence"]["paper_semantics_status"], "blocked_by_unresolved_terminal_grace_behavior")
+        self.assertEqual(payload["timeout_drop_accounting_evidence"]["rule_evidence"]["paper_semantics_status"], "source_backed_rule_with_unresolved_terminal_grace_behavior")
+        self.assertEqual(payload["reward_equation_evidence"]["recovered_status"], "source_backed_partial")
+        self.assertIn("reward_evidence.md", payload["reward_equation_evidence"]["provenance"])
         self.assertEqual(payload["terminal_reward_evidence"]["timing_valid"], False)
         self.assertEqual(len(payload["blockers"]), 2)
         self.assertEqual({blocker["category"] for blocker in payload["blockers"]}, {"timeout_drop", "reward"})
@@ -58,6 +63,7 @@ class TopologyTimeoutRewardFidelityReportTests(unittest.TestCase):
                 _reward_equation_evidence,
                 _terminal_reward_evidence,
                 _timeout_drop_accounting_evidence,
+                _timeout_drop_rule_evidence,
                 _topology_evidence,
             )
 
@@ -70,6 +76,7 @@ class TopologyTimeoutRewardFidelityReportTests(unittest.TestCase):
                 changed_files=("specs/070-topology-timeout-reward-fidelity/tasks.md",),
                 topology_evidence=_topology_evidence(),
                 neighbor_legality_evidence=_neighbor_legality_evidence(),
+                timeout_drop_rule_evidence=_timeout_drop_rule_evidence(),
                 timeout_drop_accounting_evidence=_timeout_drop_accounting_evidence(),
                 reward_equation_evidence=_reward_equation_evidence(),
                 terminal_reward_evidence=_terminal_reward_evidence(),
@@ -88,6 +95,7 @@ class TopologyTimeoutRewardFidelityReportTests(unittest.TestCase):
             _neighbor_legality_evidence,
             _reward_equation_evidence,
             _timeout_drop_accounting_evidence,
+            _timeout_drop_rule_evidence,
             _topology_evidence,
         )
 
@@ -99,6 +107,7 @@ class TopologyTimeoutRewardFidelityReportTests(unittest.TestCase):
                 changed_files=("specs/070-topology-timeout-reward-fidelity/tasks.md",),
                 topology_evidence=_topology_evidence(),
                 neighbor_legality_evidence=_neighbor_legality_evidence(),
+                timeout_drop_rule_evidence=_timeout_drop_rule_evidence(),
                 timeout_drop_accounting_evidence=_timeout_drop_accounting_evidence(),
                 reward_equation_evidence=_reward_equation_evidence(),
                 terminal_reward_evidence=TerminalRewardEvidence(
@@ -127,6 +136,8 @@ class TopologyTimeoutRewardFidelityReportTests(unittest.TestCase):
         self.assertIn("structured evidence", report.paper_claim_boundary)
         self.assertIn("Feature 068R", report.feature_068r_regression_status.summary)
         self.assertIn("Feature 069", report.feature_069_regression_status.summary)
+        self.assertEqual(report.timeout_drop_rule_evidence.paper_semantics_status, "source_backed_rule_with_unresolved_terminal_grace_behavior")
+        self.assertIn("reward_evidence.md", report.reward_equation_evidence.provenance)
 
 
 if __name__ == "__main__":
