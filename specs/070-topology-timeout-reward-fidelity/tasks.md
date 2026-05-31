@@ -53,7 +53,7 @@ Acceptance:
 Failure mode:
 - Legal mask alone is treated as enough topology evidence.
 
-- [ ] T006R Search for existing topology or adjacency evidence.
+- [X] T006R Search for existing topology or adjacency evidence.
 
 Comment:
 The current implementation preserves the topology blocker. Before leaving it blocked, the agent must search committed evidence for an adjacency matrix, Figure 7 extraction, action-space topology mapping, or topology helper.
@@ -63,7 +63,7 @@ Acceptance:
 Failure mode:
 - Topology remains blocked even though the evidence already exists somewhere in the repo or prior files.
 
-- [ ] T007R Add manual topology evidence intake.
+- [X] T007R Add manual topology evidence intake.
 
 Comment:
 The user may already have manually extracted adjacency from the paper. The implementation must support that evidence without pretending it is runtime-derived truth.
@@ -74,7 +74,7 @@ Acceptance:
 Failure mode:
 - User-supplied topology is either ignored or silently treated as verified runtime fact.
 
-- [ ] T008R Derive neighbor map from structured evidence.
+- [X] T008R Derive neighbor map from structured evidence.
 
 Comment:
 Neighbor legality must come from topology evidence, not from a hard-coded complete graph.

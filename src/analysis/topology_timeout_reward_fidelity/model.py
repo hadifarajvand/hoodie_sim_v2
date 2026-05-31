@@ -25,6 +25,7 @@ class TopologyEvidenceReport:
     neighbor_map: dict[str, tuple[str, ...]]
     cloud_reachability: bool
     evidence_status: str
+    provenance: str = ""
     blockers: tuple[Feature070Blocker, ...] = ()
 
     def to_dict(self) -> dict[str, Any]:
@@ -36,6 +37,7 @@ class TopologyEvidenceReport:
             "neighbor_map": {key: list(value) for key, value in self.neighbor_map.items()},
             "cloud_reachability": self.cloud_reachability,
             "evidence_status": self.evidence_status,
+            "provenance": self.provenance,
             "blockers": [blocker.to_dict() for blocker in self.blockers],
         }
 

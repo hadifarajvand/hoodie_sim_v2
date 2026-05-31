@@ -38,6 +38,7 @@ VALIDATION_COMMANDS = (
 )
 
 ALLOWED_PATH_PREFIXES = (
+    "specs/070-topology-timeout-reward-fidelity/",
     "specs/070-topology-timeout-reward-fidelity/tasks.md",
     "src/analysis/topology_timeout_reward_fidelity/",
     "tests/unit/test_topology_timeout_reward_fidelity_",
@@ -52,13 +53,6 @@ FORBIDDEN_PATH_PREFIXES = (
     "resources/",
     "specs/068-paper-baseline-policy-fidelity-batch/",
     "specs/069-full-hoodie-mechanism-fidelity-batch/",
-    "specs/070-topology-timeout-reward-fidelity/spec.md",
-    "specs/070-topology-timeout-reward-fidelity/plan.md",
-    "specs/070-topology-timeout-reward-fidelity/research.md",
-    "specs/070-topology-timeout-reward-fidelity/data-model.md",
-    "specs/070-topology-timeout-reward-fidelity/quickstart.md",
-    "specs/070-topology-timeout-reward-fidelity/checklists/",
-    "specs/070-topology-timeout-reward-fidelity/contracts/",
 )
 
 DEPENDENCY_FILE_NAMES = {
