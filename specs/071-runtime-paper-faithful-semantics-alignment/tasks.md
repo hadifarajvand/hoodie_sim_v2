@@ -173,7 +173,7 @@ Failure mode:
 - [X] T022 Commit and push only.
 
 Comment:
-No PR and no merge.
+No PR and no merge. Default runtime path repairs are complete and validated.
 Acceptance:
 - Branch is pushed, SHA equality is proven, clean tree is shown, and no PR/merge occurred.
 Failure mode:
