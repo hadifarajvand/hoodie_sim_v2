@@ -2,7 +2,7 @@
 
 **Feature Branch**: `074-baseline-policy-comparative-evaluation-readiness`  
 **Created**: 2026-05-31  
-**Status**: Spec Kit created; implementation pending
+**Status**: Implemented; action-bound comparative metrics repair required
 
 ## Dependency
 
@@ -17,6 +17,18 @@ Create a read-only comparative evaluation readiness layer that runs the controll
 Feature 074 answers this question:
 
 Can the repository compare baseline policy behavior over the controlled paper-semantic batch without training, campaign generation, or performance-superiority claims?
+
+## Current Repair Target: Action-Bound Comparative Metrics
+
+The first implementation proved registry coverage, matrix completeness, policy decision trace presence, scope safety, and no-overclaim boundaries. That is useful, but it is not enough.
+
+Feature 074 must now close the remaining comparative-readiness gap:
+
+`policy-selected action -> scenario terminal state / reward / metrics`
+
+The comparative layer must not merely attach the same Feature 073 metrics substrate to every policy. Each policy/scenario row must bind the selected policy action to an action-aware controlled outcome. If all policies still have identical aggregate metrics because the chosen action is ignored, the report must not claim action-bound comparative readiness.
+
+This repair stays inside Feature 074. It must not be moved to Feature 075. Feature 075 is reserved for proposed-method integration readiness after baseline action-bound comparisons are defensible.
 
 ## Baseline Policy Set
 
@@ -58,6 +70,12 @@ Per policy and per scenario:
 - `compatibility_mode_used`
 - `policy_action_family`
 - `policy_decision_trace_present`
+- `selected_action_id`
+- `selected_action_family`
+- `action_legality`
+- `action_bound_terminal_status`
+- `action_bound_reward_value`
+- `action_bound_metrics_derived`
 
 Aggregate per policy:
 
@@ -70,20 +88,44 @@ Aggregate per policy:
 - mean delay
 - mean reward
 - compatibility mode usage flag
+- distinct selected action families
+- action-bound metrics derived flag
+
+## Action-Binding Requirements
+
+For every policy/scenario comparison:
+
+- Call the existing policy through the registry.
+- Capture the selected action id and selected action family.
+- Evaluate whether the selected action is legal under the scenario's legal-action mask and topology constraints.
+- Derive terminal status, delay, reward, and metric counts from the selected action using Feature 071 paper-mode helpers and Feature 073 controlled scenario data.
+- Do not let the Feature 073 scenario metrics pass through unchanged unless the selected action actually maps to the same controlled path.
+- Mark the row failed if the policy decision trace is missing, the selected action is not bound to a controlled outcome, or compatibility mode is used.
+
+Required action family behavior:
+
+- local action -> local/private controlled outcome
+- vertical/cloud action -> cloud/vertical controlled outcome
+- horizontal action -> Figure 7 topology legality check before public outcome
+- illegal or unavailable action -> dropped_unavailable and illegal_action_rejection_count increment
+- timeout path -> dropped_timeout under paper-mode deadline semantics
 
 ## Acceptance Criteria
 
-- Create a read-only analysis package under `src/analysis/baseline_policy_comparative_evaluation_readiness/`.
-- Consume Feature 073 controlled batch scenarios and metrics.
+- Create or update the read-only analysis package under `src/analysis/baseline_policy_comparative_evaluation_readiness/`.
+- Consume Feature 073 controlled batch scenarios and metrics as scenario fixtures, not as final per-policy metrics.
 - Consume the existing policy registry and baseline policy implementations.
 - Compare all required baseline policies over all required controlled scenarios.
-- Produce per-policy and aggregate comparison metrics.
+- Produce per-policy and aggregate comparison metrics derived from selected policy actions.
 - Preserve Feature 068R, 069, 070, 071, 072, and 073 targeted regression evidence.
 - Block readiness if any required baseline policy is missing.
+- Block readiness if a selected policy action cannot be mapped to an action-bound controlled outcome.
+- Block readiness if all policy aggregate metrics are identical solely because Feature 073 metrics were copied without action binding.
 - Block readiness if compatibility mode is used in default comparative evaluation.
 - No PR is opened and no merge is performed.
 - No final evaluation claim is made.
 - No performance superiority claim is made.
+- No statistical significance claim is made.
 - No full paper reproduction claim is made.
 
 ## Out of Scope
@@ -100,4 +142,4 @@ Aggregate per policy:
 
 ## Claim Boundary
 
-Feature 074 may claim baseline policy comparative evaluation readiness only. It must not claim final evaluation results, statistical significance, training correctness, policy superiority, or full HOODIE reproduction.
+Feature 074 may claim baseline policy comparative evaluation readiness only after policy-selected actions are bound to controlled outcome metrics. It must not claim final evaluation results, statistical significance, training correctness, policy superiority, or full HOODIE reproduction.
