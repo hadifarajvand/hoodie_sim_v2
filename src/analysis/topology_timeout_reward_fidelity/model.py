@@ -230,6 +230,8 @@ class Feature070FidelityReport:
             raise ValueError("passed reports must not carry blockers")
         if self.passed and not self.terminal_reward_evidence.timing_valid:
             raise ValueError("passed reports require valid terminal reward timing")
+        if self.passed and self.terminal_reward_evidence.reward_slot < self.terminal_reward_evidence.terminal_slot:
+            raise ValueError("passed reports require reward_slot to be at or after terminal_slot")
 
     def to_dict(self) -> dict[str, Any]:
         return {
