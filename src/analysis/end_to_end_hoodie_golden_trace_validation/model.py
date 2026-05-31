@@ -76,6 +76,8 @@ class GoldenTraceScenario:
             raise ValueError("name must be non-empty")
         if not self.steps:
             raise ValueError("golden trace scenarios require at least one step")
+        if self.expected_outputs is self.actual_outputs:
+            raise ValueError("expected_outputs and actual_outputs must be distinct objects")
 
     @property
     def passed(self) -> bool:
@@ -108,6 +110,8 @@ class TopologyTraceEvidence:
     is_neighbor: bool
     is_self_destination: bool
     final_legal: bool
+    topology_check_required: bool = True
+    reason: str = ""
 
     def to_dict(self) -> dict[str, Any]:
         return asdict(self)

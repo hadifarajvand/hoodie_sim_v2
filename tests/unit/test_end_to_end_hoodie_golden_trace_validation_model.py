@@ -7,6 +7,27 @@ from src.analysis.end_to_end_hoodie_golden_trace_validation.model import GoldenT
 
 
 class EndToEndHoodieGoldenTraceValidationModelTests(unittest.TestCase):
+    def _required_steps(self) -> tuple[GoldenTraceStep, ...]:
+        return tuple(
+            GoldenTraceStep(
+                step_name=step_name,
+                input_snapshot={"step": step_name},
+                expected_output={"value": step_name},
+                actual_output={"value": step_name},
+                passed=True,
+                evidence_source="tests.unit.test_end_to_end_hoodie_golden_trace_validation_model",
+            )
+            for step_name in (
+                "task_arrival",
+                "action_selection",
+                "topology_legality",
+                "deadline_computation",
+                "terminal_state_assignment",
+                "reward_emission",
+                "expected_actual_comparison",
+            )
+        )
+
     def test_golden_trace_step_compares_expected_and_actual_outputs(self) -> None:
         step = GoldenTraceStep(
             step_name="task_arrival",
@@ -44,14 +65,6 @@ class EndToEndHoodieGoldenTraceValidationModelTests(unittest.TestCase):
             )
 
     def test_golden_trace_scenario_requires_required_steps(self) -> None:
-        step = GoldenTraceStep(
-            step_name="task_arrival",
-            input_snapshot={"arrival_slot": 2},
-            expected_output={"arrival_slot": 2},
-            actual_output={"arrival_slot": 2},
-            passed=True,
-            evidence_source="src.analysis.end_to_end_hoodie_golden_trace_validation.report",
-        )
         scenario = GoldenTraceScenario(
             scenario_id="partial",
             name="Partial",
@@ -59,7 +72,46 @@ class EndToEndHoodieGoldenTraceValidationModelTests(unittest.TestCase):
             inputs={"arrival_slot": 2},
             expected_outputs={"status": "ok"},
             actual_outputs={"status": "ok"},
-            steps=(step,),
+            steps=(self._required_steps()[0],),
+        )
+        self.assertFalse(scenario.passed)
+
+    def test_golden_trace_scenario_rejects_shared_expected_and_actual_identity(self) -> None:
+        payload = {"status": "ok"}
+        with self.assertRaises(ValueError):
+            GoldenTraceScenario(
+                scenario_id="shared",
+                name="Shared",
+                description="shared references must fail",
+                inputs={"status": "ok"},
+                expected_outputs=payload,
+                actual_outputs=payload,
+                steps=self._required_steps(),
+            )
+
+    def test_golden_trace_scenario_fails_when_deadline_expected_and_actual_diverge(self) -> None:
+        steps = self._required_steps()
+        scenario = GoldenTraceScenario(
+            scenario_id="deadline-mismatch",
+            name="Deadline Mismatch",
+            description="expected deadline divergence must fail",
+            inputs={"arrival_slot": 2},
+            expected_outputs={"deadline": {"absolute_deadline_slot": 5}},
+            actual_outputs={"deadline": {"absolute_deadline_slot": 4}},
+            steps=steps,
+        )
+        self.assertFalse(scenario.passed)
+
+    def test_golden_trace_scenario_fails_when_reward_expected_and_actual_diverge(self) -> None:
+        steps = self._required_steps()
+        scenario = GoldenTraceScenario(
+            scenario_id="reward-mismatch",
+            name="Reward Mismatch",
+            description="expected reward divergence must fail",
+            inputs={"arrival_slot": 2},
+            expected_outputs={"reward": {"reward_value": -3.0}},
+            actual_outputs={"reward": {"reward_value": -4.0}},
+            steps=steps,
         )
         self.assertFalse(scenario.passed)
 
