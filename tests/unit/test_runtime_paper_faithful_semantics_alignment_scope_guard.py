@@ -11,6 +11,7 @@ class RuntimePaperFaithfulSemanticsAlignmentScopeGuardTests(unittest.TestCase):
             "specs/071-runtime-paper-faithful-semantics-alignment/spec.md",
             "src/analysis/runtime_paper_faithful_semantics_alignment/report.py",
             "src/environment/paper_timeout.py",
+            "tests/unit/test_topology_timeout_reward_fidelity_models.py",
             "tests/unit/test_runtime_paper_faithful_semantics_alignment_report.py",
         ]
         self.assertEqual(validate_scope(allowed), allowed)

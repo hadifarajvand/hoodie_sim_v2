@@ -28,6 +28,7 @@ ALLOWED_PATH_PREFIXES = (
     "src/environment/runtime_model.py",
     "tests/unit/test_runtime_paper_faithful_semantics_alignment_",
     "tests/integration/test_runtime_paper_faithful_semantics_alignment_",
+    "tests/unit/test_topology_timeout_reward_fidelity_models.py",
 )
 
 FORBIDDEN_PATH_PREFIXES = (
@@ -76,11 +77,13 @@ DEFAULT_CHANGED_FILES = (
     "src/environment/paper_timeout.py",
     "src/environment/deadline_rules.py",
     "src/environment/reward_timing.py",
+    "tests/unit/test_topology_timeout_reward_fidelity_models.py",
     "tests/unit/test_runtime_paper_faithful_semantics_alignment_deadline.py",
     "tests/unit/test_runtime_paper_faithful_semantics_alignment_reward.py",
     "tests/unit/test_runtime_paper_faithful_semantics_alignment_report.py",
     "tests/unit/test_runtime_paper_faithful_semantics_alignment_scope_guard.py",
     "tests/integration/test_runtime_paper_faithful_semantics_alignment_report.py",
+    "tests/unit/test_topology_timeout_reward_fidelity_models.py",
 )
 
 
