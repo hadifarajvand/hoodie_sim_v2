@@ -46,6 +46,48 @@ class TopologyTimeoutRewardFidelityModelTests(unittest.TestCase):
         self.assertEqual(payload["provenance"], "manual paper extraction from specs/070-topology-timeout-reward-fidelity/evidence/figure-7-topology-extraction.md")
         self.assertEqual(payload["blockers"][0]["category"], "topology")
 
+    def test_feature_070_fidelity_report_rejects_passed_with_with_blockers_status(self) -> None:
+        from src.analysis.topology_timeout_reward_fidelity.model import Feature070FidelityReport
+        from src.analysis.topology_timeout_reward_fidelity.report import (
+            _feature_068r_regression_evidence,
+            _feature_069_regression_evidence,
+            _neighbor_legality_evidence,
+            _reward_equation_evidence,
+            _timeout_drop_accounting_evidence,
+            _timeout_drop_rule_evidence,
+            _topology_evidence,
+        )
+
+        with self.assertRaises(ValueError) as ctx:
+            Feature070FidelityReport(
+                feature_name="Feature 070 - Topology, Timeout/Drop, and Reward Fidelity",
+                status="mechanism_fidelity_readiness_with_blockers",
+                passed=True,
+                changed_files=("specs/070-topology-timeout-reward-fidelity/tasks.md",),
+                topology_evidence=_topology_evidence(),
+                neighbor_legality_evidence=_neighbor_legality_evidence(),
+                timeout_drop_rule_evidence=_timeout_drop_rule_evidence(),
+                timeout_drop_accounting_evidence=_timeout_drop_accounting_evidence(),
+                reward_equation_evidence=_reward_equation_evidence(),
+                terminal_reward_evidence=TerminalRewardEvidence(
+                    task_id="task-1",
+                    selected_action="A2",
+                    terminal_status="completed",
+                    terminal_slot=3,
+                    reward_slot=4,
+                    reward_value=1.0,
+                    reward_equation_id="reward-eq-1",
+                    timing_valid=True,
+                ),
+                blockers=(),
+                feature_068r_regression_status=_feature_068r_regression_evidence(),
+                feature_069_regression_status=_feature_069_regression_evidence(),
+                paper_claim_boundary="boundary",
+                recommended_next_feature="next",
+            )
+
+        self.assertIn("with_blockers", str(ctx.exception))
+
     def test_neighbor_legality_requires_topology_and_mask_and_no_self_destination(self) -> None:
         legal = NeighborLegalityEvidence(
             source_agent_id="A1",
