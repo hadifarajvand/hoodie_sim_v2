@@ -2,7 +2,7 @@
 
 **Input**: Spec Kit artifacts for `070-topology-timeout-reward-fidelity`  
 **Prerequisites**: Feature 069 merged into `main`  
-**Status**: Implementation complete; PR review pending
+**Status**: Implementation branch under review; blocker-resolution refinement required
 
 ## Phase 1: Setup and Evidence Read
 
@@ -53,18 +53,41 @@ Acceptance:
 Failure mode:
 - Legal mask alone is treated as enough topology evidence.
 
-- [X] T006 Implement topology evidence model and report section.
+- [ ] T006R Search for existing topology or adjacency evidence.
 
 Comment:
-The report must expose structured or blocked topology evidence.
+The current implementation preserves the topology blocker. Before leaving it blocked, the agent must search committed evidence for an adjacency matrix, Figure 7 extraction, action-space topology mapping, or topology helper.
 Acceptance:
-- Missing adjacency becomes an explicit blocker.
+- Search results are recorded in the Feature 070 handoff.
+- If no structured evidence exists, the report says exactly what was searched.
 Failure mode:
-- Missing evidence is hidden behind defaults.
+- Topology remains blocked even though the evidence already exists somewhere in the repo or prior files.
+
+- [ ] T007R Add manual topology evidence intake.
+
+Comment:
+The user may already have manually extracted adjacency from the paper. The implementation must support that evidence without pretending it is runtime-derived truth.
+Acceptance:
+- Manual topology evidence can be represented as edge list or labeled adjacency matrix.
+- Provenance records extraction method, source reference, confidence, and reviewer note.
+- Invalid self-edges and mismatched labels are rejected.
+Failure mode:
+- User-supplied topology is either ignored or silently treated as verified runtime fact.
+
+- [ ] T008R Derive neighbor map from structured evidence.
+
+Comment:
+Neighbor legality must come from topology evidence, not from a hard-coded complete graph.
+Acceptance:
+- Neighbor map is derived from manual or source-backed topology evidence.
+- Self-destination is illegal.
+- Final legality requires topology legality and legal mask legality.
+Failure mode:
+- Legal mask alone is treated as enough topology evidence.
 
 ## Phase 3: Timeout/Drop Contract
 
-- [X] T007 Add tests for TimeoutDropAccountingEvidence.
+- [X] T009 Add tests for TimeoutDropAccountingEvidence.
 
 Comment:
 Timeout/drop fidelity needs per-task terminal evidence.
@@ -73,18 +96,40 @@ Acceptance:
 Failure mode:
 - Aggregate counters replace task-level accounting.
 
-- [X] T008 Implement timeout/drop accounting evidence.
+- [ ] T010R Search for timeout/drop paper and runtime evidence.
 
 Comment:
-The report must show deadline, completion, terminal status, and drop reason.
+The implementation must try to recover the accounting rule before keeping it blocker-backed.
 Acceptance:
-- Paper semantics status is explicit.
+- Existing runtime files and paper mechanism registry references are inspected.
+- Evidence distinguishes paper rule, runtime compatibility behavior, and unresolved gaps.
 Failure mode:
-- Runtime accounting is called paper-faithful without proof.
+- Runtime behavior is called paper-faithful without source evidence.
+
+- [ ] T011R Implement TimeoutDropRuleEvidence.
+
+Comment:
+The report needs a separate rule-level object, not only per-task example evidence.
+Acceptance:
+- Rule text, timeout relation, drop condition, provenance, and paper semantics status are represented.
+- Unverified rules remain assumption-backed or blocked.
+Failure mode:
+- Per-task sample evidence is mistaken for the paper rule.
+
+- [ ] T012R Strengthen timeout/drop validation.
+
+Comment:
+Task-level accounting must enforce terminal-state consistency.
+Acceptance:
+- Completed task with drop reason is rejected.
+- Dropped task without terminal slot is rejected.
+- Absolute deadline must equal arrival slot plus timeout length when that rule is claimed.
+Failure mode:
+- Contradictory terminal evidence still passes.
 
 ## Phase 4: Reward Contract
 
-- [X] T009 Add tests for RewardEquationEvidence.
+- [X] T013 Add tests for RewardEquationEvidence.
 
 Comment:
 Recovered equation terms must be separated from assumptions.
@@ -93,7 +138,7 @@ Acceptance:
 Failure mode:
 - Reward timing is confused with reward equation fidelity.
 
-- [X] T010 Add tests for TerminalRewardEvidence.
+- [X] T014 Add tests for TerminalRewardEvidence.
 
 Comment:
 Terminal reward must be emitted after terminal outcome evidence.
@@ -102,18 +147,30 @@ Acceptance:
 Failure mode:
 - Reward is emitted at decision time without terminal evidence.
 
-- [X] T011 Implement reward equation and terminal reward evidence.
+- [ ] T015R Search for exact reward equation evidence.
 
 Comment:
-Reward fidelity needs both equation status and terminal timing status.
+The current implementation correctly avoids overclaiming reward fidelity. Next it must search for the equation before keeping it blocked.
 Acceptance:
-- Report separates equation recovery from reward emission timing.
+- Search includes paper mechanism registry, paper-to-code mapping, reward timing code, reward equation analysis contracts, and environment reward files.
+- If exact equation is missing, the report states what was searched.
 Failure mode:
-- The implementation overclaims reward fidelity.
+- Reward equation remains blocked without evidence recovery attempt.
+
+- [ ] T016R Implement reward equation provenance and term validation.
+
+Comment:
+Equation text and inferred terms must be separated.
+Acceptance:
+- Verified equation text requires source reference.
+- Inferred terms are marked assumption-backed.
+- Terminal reward can be timing-valid while equation recovery remains blocked.
+Failure mode:
+- Timing validity is falsely treated as reward equation recovery.
 
 ## Phase 5: Integrated Report
 
-- [X] T012 Implement Feature070FidelityReport.
+- [X] T017 Implement Feature070FidelityReport.
 
 Comment:
 The final report must show all three blocker categories separately.
@@ -122,7 +179,7 @@ Acceptance:
 Failure mode:
 - Report collapses all blockers into one vague status.
 
-- [X] T013 Preserve Feature 068R and Feature 069 regression gates.
+- [X] T018 Preserve Feature 068R and Feature 069 regression gates.
 
 Comment:
 Feature 070 must not break earlier fidelity layers.
@@ -131,7 +188,27 @@ Acceptance:
 Failure mode:
 - Blocker resolution breaks already-merged readiness.
 
-- [X] T014 Run targeted validation.
+- [X] T019 Enforce terminal reward pass gate.
+
+Comment:
+A passed report must not be possible with invalid terminal reward timing or reward slot before terminal slot.
+Acceptance:
+- `passed=True` is rejected when `timing_valid=False`.
+- `passed=True` is rejected when `reward_slot < terminal_slot`.
+Failure mode:
+- A boolean can lie about reward timing and still produce a green report.
+
+- [ ] T020R Update report to include recovery search results.
+
+Comment:
+The reviewer must see whether blockers remained because evidence was unavailable or because the agent failed to search.
+Acceptance:
+- Report lists searched sources for topology, timeout/drop, and reward.
+- Report marks each category as verified, manual-paper-evidence, assumption-backed, or blocked.
+Failure mode:
+- Blockers remain without actionable recovery trail.
+
+- [ ] T021R Run targeted validation after blocker-recovery refinement.
 
 Comment:
 The merge gate must use relevant tests, not unrelated full-suite noise.
@@ -140,22 +217,22 @@ Acceptance:
 Failure mode:
 - Full-suite noise is misreported as Feature 070 status.
 
-- [X] T015 Run scope audit.
+- [ ] T022R Run scope audit.
 
 Comment:
 Feature scope must stay clean.
 Acceptance:
 - Diff contains only approved Feature 070 paths.
 Failure mode:
-- Campaign artifacts, resources, or dependencies leak into the PR.
+- Campaign artifacts, resources, or dependencies leak into the branch.
 
-## Phase 6: PR Evidence
+## Phase 6: Handoff Evidence
 
-- [X] T016 Record changed files, validation results, blocker status, claim boundary, and open risks in the PR.
+- [ ] T023R Record changed files, validation results, blocker status, claim boundary, open risks, and any user-input needs.
 
 Comment:
 Reviewers need proof, not status theater.
 Acceptance:
-- PR body contains scope proof, validation proof, and unresolved blocker list.
+- Handoff includes scope proof, validation proof, unresolved blocker list, and exactly what user evidence is still needed.
 Failure mode:
-- PR claims success without enough audit evidence.
+- Handoff claims progress without saying what remains missing.
