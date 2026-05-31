@@ -1,8 +1,10 @@
 from __future__ import annotations
 
+import inspect
 import math
 import unittest
 
+import src.environment.reward_timing as reward_timing_module
 from src.environment.reward_timing import (
     can_emit_reward,
     phi_private,
@@ -102,6 +104,11 @@ class RuntimePaperFaithfulSemanticsAlignmentRewardTests(unittest.TestCase):
         self.assertEqual(reward_for_terminal_task(dropped), -40.0)
         with self.assertRaises(ValueError):
             reward_for_terminal_task(pending)
+
+    def test_no_hidden_compatibility_shims_exist_in_reward_module(self) -> None:
+        self.assertFalse(hasattr(reward_timing_module, "_LEGACY_COMPATIBILITY_CALLERS"))
+        self.assertNotIn("inspect.currentframe", inspect.getsource(reward_timing_module))
+        self.assertEqual(reward_timing_module.reward_for_terminal_task.__kwdefaults__["mode"], "paper")
 
 
 if __name__ == "__main__":

@@ -1,6 +1,5 @@
 from __future__ import annotations
 
-import inspect
 import math
 
 from collections.abc import Iterable
@@ -8,11 +7,6 @@ from collections.abc import Iterable
 from .task import Task
 
 _ALLOWED_RUNTIME_MODES = {"paper", "compatibility"}
-_LEGACY_COMPATIBILITY_CALLERS = {
-    "src.analysis.reward_equation_terminal_reward_contract.report",
-    "tests.unit.test_reward_equation_terminal_reward_contract_sign",
-    "tests.unit.test_topology_timeout_reward_fidelity_models",
-}
 
 
 def emit_delayed_reward(task: Task) -> None:
@@ -26,23 +20,6 @@ def phi_private(psi_priv: int, t: int) -> int:
 def _validate_mode(mode: str) -> None:
     if mode not in _ALLOWED_RUNTIME_MODES:
         raise ValueError(f"mode must be one of {sorted(_ALLOWED_RUNTIME_MODES)}")
-
-
-def _resolve_effective_mode(mode: str) -> str:
-    _validate_mode(mode)
-    if mode == "compatibility":
-        return mode
-    frame = inspect.currentframe()
-    try:
-        frame = frame.f_back if frame is not None else None
-        while frame is not None:
-            module_name = frame.f_globals.get("__name__")
-            if module_name in _LEGACY_COMPATIBILITY_CALLERS:
-                return "compatibility"
-            frame = frame.f_back
-    finally:
-        del frame
-    return mode
 
 
 def _term_selected(term: object) -> bool:
@@ -137,7 +114,7 @@ def reward_from_terminal_state(
 
 
 def reward_for_terminal_task(task: Task, *, drop_penalty: float = 40.0, mode: str = "paper") -> float:
-    mode = _resolve_effective_mode(mode)
+    _validate_mode(mode)
     if task.terminal_outcome == "completed" and task.completion_slot is not None:
         if mode == "compatibility":
             return -float(task.completion_slot - task.arrival_slot)

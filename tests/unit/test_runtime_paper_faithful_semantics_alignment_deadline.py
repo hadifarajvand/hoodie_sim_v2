@@ -1,7 +1,10 @@
 from __future__ import annotations
 
+import inspect
 import unittest
 
+import src.environment.deadline_rules as deadline_rules_module
+import src.environment.paper_timeout as paper_timeout_module
 from src.environment.deadline_rules import has_expired
 from src.environment.paper_timeout import build_timeout_contract, compute_absolute_deadline, is_success_before_deadline, terminal_status_from_completion
 from src.environment.task import Task
@@ -57,6 +60,14 @@ class RuntimePaperFaithfulSemanticsAlignmentDeadlineTests(unittest.TestCase):
     def test_invalid_completion_kind_rejected(self) -> None:
         with self.assertRaises(ValueError):
             terminal_status_from_completion(3, 1, 4, completion_kind="edge")
+
+    def test_no_hidden_compatibility_shims_exist_in_deadline_modules(self) -> None:
+        self.assertFalse(hasattr(paper_timeout_module, "_LEGACY_COMPATIBILITY_CALLERS"))
+        self.assertFalse(hasattr(deadline_rules_module, "_LEGACY_COMPATIBILITY_CALLERS"))
+        self.assertNotIn("inspect.currentframe", inspect.getsource(paper_timeout_module))
+        self.assertNotIn("inspect.currentframe", inspect.getsource(deadline_rules_module))
+        self.assertEqual(paper_timeout_module.build_timeout_contract.__kwdefaults__["mode"], "paper")
+        self.assertEqual(deadline_rules_module.has_expired.__defaults__, ("paper",))
 
 
 if __name__ == "__main__":

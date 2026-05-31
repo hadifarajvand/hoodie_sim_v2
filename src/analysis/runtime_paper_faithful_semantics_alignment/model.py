@@ -131,6 +131,7 @@ class RuntimeCompatibilityEvidence:
     deadline_rules_compatibility_is_explicit: bool
     reward_for_terminal_task_default_is_paper: bool
     reward_for_terminal_task_compatibility_is_explicit: bool
+    no_call_stack_compatibility_bypass: bool
 
     @property
     def passed(self) -> bool:
@@ -144,6 +145,7 @@ class RuntimeCompatibilityEvidence:
                 self.deadline_rules_compatibility_is_explicit,
                 self.reward_for_terminal_task_default_is_paper,
                 self.reward_for_terminal_task_compatibility_is_explicit,
+                self.no_call_stack_compatibility_bypass,
                 bool(self.divergence_description),
             )
         )

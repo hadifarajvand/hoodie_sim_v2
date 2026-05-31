@@ -27,6 +27,7 @@ class RuntimePaperFaithfulSemanticsAlignmentReportIntegrationTests(unittest.Test
         self.assertIn("Feature 072", markdown)
         self.assertIn("build_timeout_contract_default_is_paper", markdown)
         self.assertIn("reward_for_terminal_task_default_uses_plus_one", markdown)
+        self.assertIn("no_call_stack_compatibility_bypass", markdown)
 
     def test_rendered_report_mentions_paper_and_compatibility_modes(self) -> None:
         report = build_feature_071_report()
@@ -34,6 +35,7 @@ class RuntimePaperFaithfulSemanticsAlignmentReportIntegrationTests(unittest.Test
         self.assertIn("paper mode", markdown.lower())
         self.assertIn("compatibility", markdown.lower())
         self.assertIn("reward_slot_for_terminal", markdown)
+        self.assertIn("call-stack-based bypass", markdown)
 
 
 if __name__ == "__main__":
