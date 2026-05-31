@@ -19,3 +19,7 @@ class ControlledEvaluationBatchReadinessIntegrationReportTests(unittest.TestCase
         self.assertIn("No full paper reproduction claim is made", rendered)
         self.assertIn("expected outputs are independent", rendered.lower())
         self.assertIn("actual outputs are computed from feature 070 and feature 071 helpers", rendered.lower())
+        self.assertIn("horizontal legality is computed from feature 070 figure 7 neighbor map", rendered.lower())
+        self.assertIn("local/private metrics are computed from feature 071 helpers", rendered.lower())
+        self.assertIn("cloud terminal status respects paper-mode deadline semantics", rendered.lower())
+        self.assertIn("compatibility mode is excluded from the default batch", rendered.lower())

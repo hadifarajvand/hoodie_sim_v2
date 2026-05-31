@@ -16,6 +16,10 @@ class ControlledEvaluationBatchReadinessReportTests(unittest.TestCase):
         self.assertIn("No final evaluation claim is made.", report.paper_claim_boundary)
         self.assertIn("No performance superiority claim is made.", report.paper_claim_boundary)
         self.assertIn("No full paper reproduction claim is made.", report.paper_claim_boundary)
+        self.assertIn("feature 070 figure 7 neighbor map", report.paper_claim_boundary.lower())
+        self.assertIn("feature 071 helpers", report.paper_claim_boundary.lower())
+        self.assertIn("cloud terminal status respects paper-mode deadline semantics", report.paper_claim_boundary.lower())
+        self.assertIn("compatibility mode is excluded from the default batch", report.paper_claim_boundary.lower())
 
     def test_feature_073_report_includes_prior_regression_evidence(self) -> None:
         report = build_feature_073_report()
