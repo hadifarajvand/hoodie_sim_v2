@@ -20,7 +20,7 @@ Feature 073 depends on Feature 072 deterministic trace readiness.
 Acceptance:
 - Branch `073-controlled-evaluation-batch-readiness` exists from commit `66f140c020ddf7f362d331523148782d923f2bdf` or newer.
 
-- [ ] T003 Read Feature 070, 071, and 072 evidence files.
+- [X] T003 Read Feature 070, 071, and 072 evidence files.
 
 Comment:
 The batch layer must consume prior validated topology, runtime semantics, and trace validation.
@@ -29,56 +29,56 @@ Acceptance:
 
 ## Phase 2: Tests First
 
-- [ ] T004 Add model tests for scenario, task record, metrics, and report.
+- [X] T004 Add model tests for scenario, task record, metrics, and report.
 
-- [ ] T005 Add tests for all required controlled scenarios.
+- [X] T005 Add tests for all required controlled scenarios.
 
-- [ ] T006 Add metric calculation tests.
+- [X] T006 Add metric calculation tests.
 
-- [ ] T007 Add aggregate metrics tests.
+- [X] T007 Add aggregate metrics tests.
 
-- [ ] T008 Add compatibility-mode exclusion tests.
+- [X] T008 Add compatibility-mode exclusion tests.
 
-- [ ] T009 Add report and scope-guard tests.
+- [X] T009 Add report and scope-guard tests.
 
 ## Phase 3: Implementation
 
-- [ ] T010 Implement Feature 073 analysis package.
+- [X] T010 Implement Feature 073 analysis package.
 
 Comment:
 Create a read-only package under `src/analysis/controlled_evaluation_batch_readiness/`.
 Acceptance:
 - Package has config, model, report, runner, CLI entry, and scope validator.
 
-- [ ] T011 Implement deterministic scenario fixtures.
+- [X] T011 Implement deterministic scenario fixtures.
 
 Comment:
 Scenarios must be deterministic and paper-mode by default.
 Acceptance:
 - All required scenarios are present.
 
-- [ ] T012 Implement per-scenario metrics.
+- [X] T012 Implement per-scenario metrics.
 
 Comment:
 Metrics must be derived from task records, not hand-written summary prose.
 Acceptance:
 - Completed/drop/violation/delay/reward metrics are computed deterministically.
 
-- [ ] T013 Implement aggregate batch metrics.
+- [X] T013 Implement aggregate batch metrics.
 
 Comment:
 The report must include batch-level metrics across scenarios.
 Acceptance:
 - Aggregate metrics equal the sum/average of scenario-level metrics.
 
-- [ ] T014 Implement Feature 073 report.
+- [X] T014 Implement Feature 073 report.
 
 Comment:
 Report must include scenario metrics, aggregate metrics, prior regression evidence, claim boundary, and next feature recommendation.
 Acceptance:
 - `passed=True` only when all scenarios, metrics, and prior regressions pass.
 
-- [ ] T015 Implement scope validator.
+- [X] T015 Implement scope validator.
 
 Comment:
 Protect branch from training, agents, artifacts, dependencies, and Feature 074+ paths.
@@ -87,21 +87,21 @@ Acceptance:
 
 ## Phase 4: Validation and Handoff
 
-- [ ] T016 Run Feature 068R regression slice.
+- [X] T016 Run Feature 068R regression slice.
 
-- [ ] T017 Run Feature 069 regression slice.
+- [X] T017 Run Feature 069 regression slice.
 
-- [ ] T018 Run Feature 070 regression slice.
+- [X] T018 Run Feature 070 regression slice.
 
-- [ ] T019 Run Feature 071 regression slice.
+- [X] T019 Run Feature 071 regression slice.
 
-- [ ] T020 Run Feature 072 regression slice.
+- [X] T020 Run Feature 072 regression slice.
 
-- [ ] T021 Run Feature 073 targeted tests.
+- [X] T021 Run Feature 073 targeted tests.
 
-- [ ] T022 Run `git diff --check` and Feature 073 scope validator.
+- [X] T022 Run `git diff --check` and Feature 073 scope validator.
 
-- [ ] T023 Commit and push only.
+- [X] T023 Commit and push only.
 
 Comment:
 No PR and no merge.
