@@ -4,6 +4,10 @@ from dataclasses import dataclass
 from typing import Any
 
 
+_ALLOWED_RUNTIME_MODES = {"paper", "compatibility"}
+_ALLOWED_COMPLETION_KINDS = {"private", "public", "cloud"}
+
+
 @dataclass(slots=True)
 class PaperTimeoutContract:
     arrival_slot: int
@@ -24,8 +28,62 @@ class PaperTimeoutContract:
         }
 
 
-def build_timeout_contract(*, arrival_slot: int, timeout_phi: int, completion_slot: int | None) -> PaperTimeoutContract:
-    deadline_slot = arrival_slot + timeout_phi - 1
-    dropped = completion_slot is None or completion_slot > deadline_slot
-    return PaperTimeoutContract(arrival_slot=arrival_slot, timeout_phi=timeout_phi, deadline_slot=deadline_slot, completion_slot=completion_slot, dropped_due_to_timeout=dropped)
+def compute_absolute_deadline(arrival_slot: int, phi: int) -> int:
+    return arrival_slot + phi - 1
 
+
+def _validate_mode(mode: str) -> None:
+    if mode not in _ALLOWED_RUNTIME_MODES:
+        raise ValueError(f"mode must be one of {sorted(_ALLOWED_RUNTIME_MODES)}")
+
+
+def is_success_before_deadline(
+    completion_slot: int | None,
+    arrival_slot: int,
+    phi: int,
+    mode: str = "paper",
+) -> bool:
+    _validate_mode(mode)
+    if completion_slot is None:
+        return False
+    deadline_slot = compute_absolute_deadline(arrival_slot, phi)
+    if mode == "paper":
+        return completion_slot < deadline_slot
+    return completion_slot <= deadline_slot
+
+
+def terminal_status_from_completion(
+    completion_slot: int | None,
+    arrival_slot: int,
+    phi: int,
+    completion_kind: str = "private",
+    mode: str = "paper",
+) -> str:
+    _validate_mode(mode)
+    if completion_kind not in _ALLOWED_COMPLETION_KINDS:
+        raise ValueError(f"completion_kind must be one of {sorted(_ALLOWED_COMPLETION_KINDS)}")
+    if is_success_before_deadline(completion_slot, arrival_slot, phi, mode=mode):
+        return {
+            "private": "completed_private",
+            "public": "completed_public",
+            "cloud": "completed_cloud",
+        }[completion_kind]
+    return "dropped_timeout"
+
+
+def build_timeout_contract(
+    *,
+    arrival_slot: int,
+    timeout_phi: int,
+    completion_slot: int | None,
+    mode: str = "compatibility",
+) -> PaperTimeoutContract:
+    deadline_slot = compute_absolute_deadline(arrival_slot, timeout_phi)
+    dropped = not is_success_before_deadline(completion_slot, arrival_slot, timeout_phi, mode=mode)
+    return PaperTimeoutContract(
+        arrival_slot=arrival_slot,
+        timeout_phi=timeout_phi,
+        deadline_slot=deadline_slot,
+        completion_slot=completion_slot,
+        dropped_due_to_timeout=dropped,
+    )
