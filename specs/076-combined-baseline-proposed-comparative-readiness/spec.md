@@ -2,7 +2,7 @@
 
 **Feature Branch**: `076-combined-baseline-proposed-comparative-readiness`  
 **Created**: 2026-05-31  
-**Status**: Spec Kit created; implementation pending
+**Status**: Implementation ready; Feature 077 Spec Kit merged into this branch
 
 ## Goal
 
@@ -73,7 +73,7 @@ Feature 076 may claim readiness only. It must not claim:
 - generated artifacts committed to git
 - dependency changes
 - lock-file changes
-- Feature 077+ files
+- Feature 078+ files
 
 ## Acceptance Criteria
 
@@ -85,5 +85,6 @@ Feature 076 may claim readiness only. It must not claim:
 - compatibility mode is not used
 - every row has decision trace evidence
 - scope validator passes
-- no PR is opened
-- no merge is performed
+- Feature 077 Spec Kit is present under `specs/077-experimental-campaign-readiness/`
+- no PR is required for branch-to-branch integration
+- no implementation code is added by Feature 077
