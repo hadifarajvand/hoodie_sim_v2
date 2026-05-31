@@ -7,11 +7,13 @@ from src.environment.reward_timing import (
     can_emit_reward,
     phi_private,
     phi_public,
+    reward_for_terminal_task,
     reward_from_terminal_state,
     reward_slot_for_terminal,
     select_phi,
     validate_terminal_state,
 )
+from src.environment.task import Task
 
 
 class RuntimePaperFaithfulSemanticsAlignmentRewardTests(unittest.TestCase):
@@ -58,6 +60,48 @@ class RuntimePaperFaithfulSemanticsAlignmentRewardTests(unittest.TestCase):
 
     def test_reward_slot_and_terminal_evidence_are_explicit(self) -> None:
         self.assertEqual(reward_slot_for_terminal(5), 6)
+
+    def test_reward_for_terminal_task_defaults_to_paper_plus_one_semantics(self) -> None:
+        completed = Task(
+            task_id=1,
+            source_agent_id=1,
+            arrival_slot=2,
+            size=1.0,
+            processing_density=1.0,
+            timeout_length=4,
+            absolute_deadline_slot=5,
+            completion_slot=5,
+            terminal_outcome="completed",
+            reward_emitted=True,
+        )
+        dropped = Task(
+            task_id=2,
+            source_agent_id=1,
+            arrival_slot=2,
+            size=1.0,
+            processing_density=1.0,
+            timeout_length=4,
+            absolute_deadline_slot=5,
+            terminal_outcome="dropped",
+            reward_emitted=True,
+        )
+        pending = Task(
+            task_id=3,
+            source_agent_id=1,
+            arrival_slot=2,
+            size=1.0,
+            processing_density=1.0,
+            timeout_length=4,
+            absolute_deadline_slot=5,
+            terminal_outcome=None,
+            reward_emitted=False,
+        )
+
+        self.assertEqual(reward_for_terminal_task(completed), -4.0)
+        self.assertEqual(reward_for_terminal_task(completed, mode="compatibility"), -3.0)
+        self.assertEqual(reward_for_terminal_task(dropped), -40.0)
+        with self.assertRaises(ValueError):
+            reward_for_terminal_task(pending)
 
 
 if __name__ == "__main__":

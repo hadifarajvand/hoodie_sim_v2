@@ -6,16 +6,19 @@ from typing import Any, Sequence
 
 from src.analysis.full_hoodie_mechanism_fidelity_batch.report import build_feature_069_report
 from src.analysis.topology_timeout_reward_fidelity.report import build_feature_070_report
-from src.environment.paper_timeout import compute_absolute_deadline, is_success_before_deadline
+from src.environment.deadline_rules import has_expired
+from src.environment.paper_timeout import build_timeout_contract, compute_absolute_deadline, is_success_before_deadline
 from src.environment.reward_timing import (
     can_emit_reward,
     phi_private,
     phi_public,
+    reward_for_terminal_task,
     reward_from_terminal_state,
     reward_slot_for_terminal,
     select_phi,
     validate_terminal_state,
 )
+from src.environment.task import Task
 
 from .config import DEFAULT_CHANGED_FILES, VALIDATION_COMMANDS, validate_scope
 from .model import (
@@ -101,6 +104,18 @@ def _terminal_state_evidence() -> TerminalStateEvidence:
 def _reward_runtime_evidence() -> RewardRuntimeEvidence:
     phi_priv = phi_private(psi_priv=5, t=2)
     phi_pub = phi_public(((1, 6), (0, 9)), t=2)
+    completed_task = Task(
+        task_id=71,
+        source_agent_id=7,
+        arrival_slot=2,
+        size=1.0,
+        processing_density=1.0,
+        timeout_length=4,
+        absolute_deadline_slot=5,
+        completion_slot=5,
+        terminal_outcome="completed",
+        reward_emitted=True,
+    )
     return RewardRuntimeEvidence(
         equation_20_inactive_sentinel_is_explicit=bool(reward_from_terminal_state(False, "completed_private", 4, 40) != reward_from_terminal_state(False, "completed_private", 4, 40)),
         equation_20_success_reward_is_negative_phi=reward_from_terminal_state(True, "completed_private", 4, 40) == -4.0,
@@ -109,6 +124,10 @@ def _reward_runtime_evidence() -> RewardRuntimeEvidence:
         equation_21_public_selection_is_explicit=select_phi(False, phi_priv, phi_pub) == phi_pub,
         equation_22_private_example_phi=phi_priv,
         equation_22_private_example_passed=phi_priv == 4,
+        reward_for_terminal_task_default_completion_reward=reward_for_terminal_task(completed_task),
+        reward_for_terminal_task_compatibility_completion_reward=reward_for_terminal_task(completed_task, mode="compatibility"),
+        reward_for_terminal_task_default_uses_plus_one=reward_for_terminal_task(completed_task) == -4.0,
+        reward_for_terminal_task_compatibility_preserves_old_approximation=reward_for_terminal_task(completed_task, mode="compatibility") == -3.0,
         equation_23_public_example_phi=phi_pub,
         equation_23_public_example_passed=phi_pub == 5,
         inactive_reward_behavior="inactive tasks return an explicit NaN no-reward sentinel",
@@ -118,12 +137,41 @@ def _reward_runtime_evidence() -> RewardRuntimeEvidence:
 
 
 def _compatibility_evidence() -> RuntimeCompatibilityEvidence:
+    timeout_contract_default = build_timeout_contract(arrival_slot=1, timeout_phi=4, completion_slot=4)
+    timeout_contract_compatibility = build_timeout_contract(arrival_slot=1, timeout_phi=4, completion_slot=4, mode="compatibility")
+    deadline_task = Task(
+        task_id=72,
+        source_agent_id=7,
+        arrival_slot=1,
+        size=1.0,
+        processing_density=1.0,
+        timeout_length=3,
+        absolute_deadline_slot=4,
+    )
+    reward_task = Task(
+        task_id=73,
+        source_agent_id=7,
+        arrival_slot=2,
+        size=1.0,
+        processing_density=1.0,
+        timeout_length=4,
+        absolute_deadline_slot=5,
+        completion_slot=5,
+        terminal_outcome="completed",
+        reward_emitted=True,
+    )
     return RuntimeCompatibilityEvidence(
         legacy_behavior_name="completion_at_deadline_compatibility_mode",
         paper_behavior_name="strict_completion_before_deadline_paper_mode",
         divergence_description="Compatibility mode keeps equality-at-deadline behavior explicit instead of hiding it in the default paper path.",
         compatibility_mode_available=True,
         paper_mode_default_in_feature_071=True,
+        build_timeout_contract_default_is_paper=timeout_contract_default.dropped_due_to_timeout,
+        build_timeout_contract_compatibility_is_explicit=not timeout_contract_compatibility.dropped_due_to_timeout,
+        deadline_rules_default_is_paper=has_expired(deadline_task, current_slot=4),
+        deadline_rules_compatibility_is_explicit=not has_expired(deadline_task, current_slot=4, mode="compatibility"),
+        reward_for_terminal_task_default_is_paper=reward_for_terminal_task(reward_task) == -4.0,
+        reward_for_terminal_task_compatibility_is_explicit=reward_for_terminal_task(reward_task, mode="compatibility") == -3.0,
     )
 
 
