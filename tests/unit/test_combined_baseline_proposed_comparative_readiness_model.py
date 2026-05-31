@@ -10,6 +10,7 @@ from src.analysis.combined_baseline_proposed_comparative_readiness.model import 
     CombinedRegressionEvidence,
 )
 from src.analysis.combined_baseline_proposed_comparative_readiness.report import build_feature_076_report
+from src.analysis.proposed_method_integration_readiness.model import PROPOSED_METHOD_POLICY_ID
 
 
 class CombinedBaselineProposedComparativeReadinessModelTests(unittest.TestCase):
@@ -76,7 +77,7 @@ class CombinedBaselineProposedComparativeReadinessModelTests(unittest.TestCase):
         aggregates = list(report.aggregates)
         evidence = list(report.regression_evidence)
 
-        missing_policy_rows = tuple(row for row in rows if row.policy_id != "PROPOSED_DCQ")
+        missing_policy_rows = tuple(row for row in rows if row.policy_id != PROPOSED_METHOD_POLICY_ID)
         with self.assertRaises(ValueError):
             CombinedComparativeReadinessReport(
                 feature_name=report.feature_name,

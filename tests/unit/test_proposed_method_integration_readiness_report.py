@@ -2,6 +2,10 @@ from __future__ import annotations
 
 import unittest
 
+from src.analysis.proposed_method_integration_readiness.model import (
+    PROPOSED_METHOD_POLICY_FAMILY,
+    PROPOSED_METHOD_POLICY_ID,
+)
 from src.analysis.proposed_method_integration_readiness.report import build_feature_075_report, render_feature_075_report
 
 
@@ -11,8 +15,8 @@ class ProposedMethodIntegrationReadinessReportTests(unittest.TestCase):
         self.assertTrue(report.passed)
         self.assertEqual(report.status, "proposed_method_integration_readiness_ready")
         self.assertEqual(report.feature_name, "Feature 075 - Proposed Method Integration Readiness")
-        self.assertEqual(report.proposed_method_descriptor.policy_id, "PROPOSED_DCQ")
-        self.assertEqual(report.proposed_method_descriptor.policy_family, "proposed_deadline_queueing")
+        self.assertEqual(report.proposed_method_descriptor.policy_id, PROPOSED_METHOD_POLICY_ID)
+        self.assertEqual(report.proposed_method_descriptor.policy_family, PROPOSED_METHOD_POLICY_FAMILY)
         self.assertEqual(len(report.scenario_evaluations), 7)
         self.assertEqual(len(report.policy_aggregate_metrics), 1)
         self.assertTrue(all(evaluation.selected_action_id for evaluation in report.scenario_evaluations))
@@ -38,6 +42,8 @@ class ProposedMethodIntegrationReadinessReportTests(unittest.TestCase):
         self.assertIn("no statistical significance claim is made", boundary)
         self.assertIn("no full paper reproduction claim is made", boundary)
         rendered_lower = rendered.lower()
+        self.assertNotIn("proposed_dcq", rendered_lower)
+        self.assertNotIn("proposed_deadline_queueing", rendered_lower)
         self.assertIn("feature 073 controlled scenarios are used as fixtures, not copied final metrics.", rendered_lower)
         self.assertIn("selected policy actions are bound to controlled outcomes.", rendered_lower)
         self.assertIn("local selected actions map to local/private controlled outcomes.", rendered_lower)

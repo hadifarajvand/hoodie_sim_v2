@@ -133,7 +133,7 @@ def _deadline_modifier_state(deadline_pressure_level: str) -> str:
 
 def _policy_source(policy_id: str, seed_value: int) -> str:
     if policy_id == PROPOSED_METHOD_POLICY_ID:
-        return "Feature 075 proposed_deadline_queueing runtime decision path"
+        return "Feature 075 HOODIE_PROPOSED runtime decision path"
     if policy_id == "RO":
         return f"RandomOffloadingPolicy(seed={seed_value})"
     return f"PolicyRegistry.resolve({policy_id})"
