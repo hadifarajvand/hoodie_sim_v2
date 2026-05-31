@@ -47,7 +47,6 @@ class TopologyTimeoutRewardFidelityReportTests(unittest.TestCase):
     def test_report_rejects_passing_with_invalid_terminal_reward_timing(self) -> None:
         with self.assertRaises(ValueError):
             from src.analysis.topology_timeout_reward_fidelity.report import (
-                _blockers,
                 _feature_068r_regression_evidence,
                 _feature_069_regression_evidence,
                 _neighbor_legality_evidence,
@@ -69,12 +68,52 @@ class TopologyTimeoutRewardFidelityReportTests(unittest.TestCase):
                 timeout_drop_accounting_evidence=_timeout_drop_accounting_evidence(),
                 reward_equation_evidence=_reward_equation_evidence(),
                 terminal_reward_evidence=_terminal_reward_evidence(),
-                blockers=_blockers(),
+                blockers=(),
                 feature_068r_regression_status=_feature_068r_regression_evidence(),
                 feature_069_regression_status=_feature_069_regression_evidence(),
                 paper_claim_boundary="boundary",
                 recommended_next_feature="next",
             )
+
+    def test_report_rejects_passing_when_reward_slot_precedes_terminal_slot(self) -> None:
+        from src.analysis.topology_timeout_reward_fidelity.model import Feature070FidelityReport, TerminalRewardEvidence
+        from src.analysis.topology_timeout_reward_fidelity.report import (
+            _feature_068r_regression_evidence,
+            _feature_069_regression_evidence,
+            _neighbor_legality_evidence,
+            _reward_equation_evidence,
+            _timeout_drop_accounting_evidence,
+            _topology_evidence,
+        )
+
+        with self.assertRaises(ValueError) as ctx:
+            Feature070FidelityReport(
+                feature_name="Feature 070 - Topology, Timeout/Drop, and Reward Fidelity",
+                status="mechanism_fidelity_readiness_with_blockers",
+                passed=True,
+                changed_files=("specs/070-topology-timeout-reward-fidelity/tasks.md",),
+                topology_evidence=_topology_evidence(),
+                neighbor_legality_evidence=_neighbor_legality_evidence(),
+                timeout_drop_accounting_evidence=_timeout_drop_accounting_evidence(),
+                reward_equation_evidence=_reward_equation_evidence(),
+                terminal_reward_evidence=TerminalRewardEvidence(
+                    task_id="task-070-1",
+                    selected_action="A2",
+                    terminal_status="completed",
+                    terminal_slot=5,
+                    reward_slot=4,
+                    reward_value=1.0,
+                    reward_equation_id="reward-eq-1",
+                    timing_valid=True,
+                ),
+                blockers=(),
+                feature_068r_regression_status=_feature_068r_regression_evidence(),
+                feature_069_regression_status=_feature_069_regression_evidence(),
+                paper_claim_boundary="boundary",
+                recommended_next_feature="next",
+            )
+
+        self.assertIn("reward_slot", str(ctx.exception))
 
     def test_report_preserves_claim_boundary_and_blocker_categories(self) -> None:
         report = build_feature_070_report()
