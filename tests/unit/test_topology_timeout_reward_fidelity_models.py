@@ -11,6 +11,9 @@ from src.analysis.topology_timeout_reward_fidelity.model import (
     TimeoutDropAccountingEvidence,
     TopologyEvidenceReport,
 )
+from src.environment.paper_timeout import build_timeout_contract
+from src.environment.reward_timing import reward_for_terminal_task
+from src.environment.task import Task
 
 
 class TopologyTimeoutRewardFidelityModelTests(unittest.TestCase):
@@ -82,12 +85,21 @@ class TopologyTimeoutRewardFidelityModelTests(unittest.TestCase):
 
     def test_timeout_drop_accounting_schema_and_terminal_requirements(self) -> None:
         rule = TimeoutDropRuleEvidence(
-            rule_text="drop if completion_slot is None or completion_slot > deadline_slot; deadline_slot = arrival_slot + timeout_phi - 1",
-            source_reference="docs/paper_notes/runtime_model_evidence.md; src/environment/paper_timeout.py",
+            rule_text=(
+                "absolute_deadline_slot = t + phi_n(t) - 1; success requires psi_n^priv(t) < t + phi_n(t) - 1 "
+                "or psi_n,k^pub(t') < t + phi_n(t) - 1; otherwise the task is thrown"
+            ),
+            source_reference=(
+                "docs/paper_notes/runtime_model_evidence.md; "
+                "artifacts/analysis/paper-mechanism-registry/paper-mechanism-registry.md; "
+                "src/environment/paper_timeout.py"
+            ),
             timeout_relation="deadline_slot = arrival_slot + timeout_phi - 1",
-            drop_condition="completion_slot is None or completion_slot > deadline_slot",
-            provenance="paper_timeout.py encodes the deadline relation recovered from runtime_model_evidence.md",
-            paper_semantics_status="source_backed_rule_with_unresolved_terminal_grace_behavior",
+            strict_success_condition="psi_n^priv(t) < t + phi_n(t) - 1 or psi_n,k^pub(t') < t + phi_n(t) - 1",
+            drop_condition="completion_slot is None or completion_slot >= deadline_slot",
+            provenance="runtime_model_evidence.md and the paper mechanism registry recover the strict paper rule",
+            paper_semantics_status="paper_backed_recovered_with_runtime_compatibility_divergence",
+            runtime_compatibility_divergence="completion_slot == deadline_slot is accepted by the runtime helper but rejected by the paper's strict success condition",
             searched_sources=(
                 "docs/paper_notes/runtime_model_evidence.md",
                 "artifacts/analysis/paper-mechanism-registry/paper-mechanism-registry.md",
@@ -106,12 +118,14 @@ class TopologyTimeoutRewardFidelityModelTests(unittest.TestCase):
             terminal_slot=3,
             terminal_status="completed",
             drop_reason=None,
-            paper_semantics_status="verified",
+            paper_semantics_status="paper_backed_recovered_with_runtime_compatibility_divergence",
+            runtime_compatibility_divergence="completion_slot == deadline_slot is accepted by the runtime helper but rejected by the paper's strict success condition",
             rule_evidence=rule,
         )
         self.assertEqual(completed.to_dict()["terminal_status"], "completed")
         self.assertIsNone(completed.drop_reason)
         self.assertEqual(completed.to_dict()["rule_evidence"]["timeout_relation"], "deadline_slot = arrival_slot + timeout_phi - 1")
+        self.assertIn("strict_success_condition", completed.to_dict()["rule_evidence"])
 
         dropped = TimeoutDropAccountingEvidence(
             task_id="task-2",
@@ -122,7 +136,8 @@ class TopologyTimeoutRewardFidelityModelTests(unittest.TestCase):
             terminal_slot=5,
             terminal_status="dropped",
             drop_reason="deadline_exceeded",
-            paper_semantics_status="blocked_by_unresolved_terminal_grace_behavior",
+            paper_semantics_status="paper_backed_recovered_with_runtime_compatibility_divergence",
+            runtime_compatibility_divergence="completion_slot == deadline_slot is accepted by the runtime helper but rejected by the paper's strict success condition",
             rule_evidence=rule,
         )
         self.assertEqual(dropped.terminal_status, "dropped")
@@ -130,15 +145,31 @@ class TopologyTimeoutRewardFidelityModelTests(unittest.TestCase):
         self.assertEqual(dropped.drop_reason, "deadline_exceeded")
         self.assertEqual(dropped.rule_evidence.rule_text, rule.rule_text)
 
+        runtime_contract = build_timeout_contract(arrival_slot=1, timeout_phi=4, completion_slot=4)
+        self.assertFalse(runtime_contract.dropped_due_to_timeout)
+        self.assertEqual(runtime_contract.deadline_slot, 4)
+        self.assertIn(">= deadline_slot", rule.drop_condition)
+
     def test_reward_equation_and_terminal_reward_schema_and_timing(self) -> None:
         equation = RewardEquationEvidence(
             equation_id="reward-eq-1",
-            equation_text="r_n(t+1) = -Phi_n(t) for successful processing; -C for dropped tasks; reward omitted when no task arrived",
-            source_reference="docs/paper_notes/reward_evidence.md; src/environment/reward_timing.py",
-            terms=("Phi_n(t)", "C", "NaN/omitted when no task arrived"),
-            recovered_status="source_backed_partial",
-            assumption_status="phi_n_t_remains_approximation_backed",
-            provenance="reward_evidence.md recovers the paper's success and drop reward structure",
+            equation_text=(
+                "Eq. (20): r_n(t+1) = NaN if x_n(t) = 0; r_n(t+1) = -Phi_n(t) if successfully processed; "
+                "r_n(t+1) = -C otherwise. Eq. (21): Phi_n(t) = Phi_n^priv(t) when d_n^(1)=1 and "
+                "Phi_n(t) = Phi_n^pub(t) when d_n^(1)=0. Eq. (22): Phi_n^priv(t) = psi_n^priv(t) - t + 1. "
+                "Eq. (23): Phi_n^pub(t) = sum_{k in N \\ {n}} sum_{t'=t}^T d_{n,k}^{(2)}(t) * "
+                "(psi_{n,k}^pub(t') - t + 1)"
+            ),
+            equation_20_text="r_n(t+1) = NaN if x_n(t)=0; r_n(t+1) = -Phi_n(t) if successfully processed before timeout; r_n(t+1) = -C otherwise (task thrown)",
+            equation_21_text="Phi_n(t) = Phi_n^priv(t) if d_n^(1)=1; Phi_n(t) = Phi_n^pub(t) if d_n^(1)=0",
+            equation_22_text="Phi_n^priv(t) = psi_n^priv(t) - t + 1",
+            equation_23_text="Phi_n^pub(t) = sum over k in N \\ {n} of sum over t' = t..T d_{n,k}^{(2)}(t) * (psi_{n,k}^pub(t') - t + 1)",
+            source_reference="resources/papers/hoodie/ocr/merged.tex; docs/paper_notes/reward_evidence.md",
+            terms=("x_n(t)", "Phi_n(t)", "Phi_n^priv(t)", "Phi_n^pub(t)", "psi_n^priv(t)", "psi_{n,k}^pub(t')", "d_n^(1)", "d_{n,k}^{(2)}", "C"),
+            recovered_status="paper_backed_recovered",
+            assumption_status="paper_backed",
+            provenance="resources/papers/hoodie/ocr/merged.tex and reward_evidence.md recover Eq. (20)-(23) directly",
+            runtime_compatibility_divergence="src/environment/reward_timing.py still uses completion_slot - arrival_slot for completed tasks, which is an off-by-one compatibility divergence from Phi_n^priv(t)",
             searched_sources=(
                 "docs/paper_notes/reward_evidence.md",
                 "artifacts/analysis/paper-mechanism-registry/paper-mechanism-registry.md",
@@ -148,10 +179,29 @@ class TopologyTimeoutRewardFidelityModelTests(unittest.TestCase):
             ),
             blockers=(),
         )
-        self.assertEqual(equation.recovered_status, "source_backed_partial")
-        self.assertEqual(equation.terms, ("Phi_n(t)", "C", "NaN/omitted when no task arrived"))
-        self.assertIn("-Phi_n(t)", equation.equation_text)
+        self.assertEqual(equation.recovered_status, "paper_backed_recovered")
+        self.assertEqual(
+            equation.terms,
+            ("x_n(t)", "Phi_n(t)", "Phi_n^priv(t)", "Phi_n^pub(t)", "psi_n^priv(t)", "psi_{n,k}^pub(t')", "d_n^(1)", "d_{n,k}^{(2)}", "C"),
+        )
+        self.assertIn("Eq. (20)", equation.equation_text)
+        self.assertIn("Eq. (23)", equation.equation_text)
         self.assertIn("reward_evidence.md", equation.provenance)
+        self.assertIn("completion_slot - arrival_slot", equation.runtime_compatibility_divergence)
+
+        task = Task(
+            task_id=1,
+            source_agent_id=1,
+            arrival_slot=10,
+            size=1.0,
+            processing_density=1.0,
+            timeout_length=4,
+            absolute_deadline_slot=13,
+            completion_slot=13,
+            terminal_outcome="completed",
+            reward_emitted=True,
+        )
+        self.assertEqual(reward_for_terminal_task(task), -3.0)
 
         terminal = TerminalRewardEvidence(
             task_id="task-1",
@@ -170,6 +220,10 @@ class TopologyTimeoutRewardFidelityModelTests(unittest.TestCase):
         blocked = RewardEquationEvidence(
             equation_id="reward-eq-2",
             equation_text="blocked",
+            equation_20_text="blocked",
+            equation_21_text="blocked",
+            equation_22_text="blocked",
+            equation_23_text="blocked",
             source_reference="specs/070-topology-timeout-reward-fidelity/research.md",
             terms=(),
             recovered_status="blocked",
