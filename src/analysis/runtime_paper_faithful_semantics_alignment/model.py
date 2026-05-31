@@ -87,6 +87,10 @@ class RewardRuntimeEvidence:
     equation_21_public_selection_is_explicit: bool
     equation_22_private_example_phi: int
     equation_22_private_example_passed: bool
+    reward_for_terminal_task_default_completion_reward: float
+    reward_for_terminal_task_compatibility_completion_reward: float
+    reward_for_terminal_task_default_uses_plus_one: bool
+    reward_for_terminal_task_compatibility_preserves_old_approximation: bool
     equation_23_public_example_phi: int
     equation_23_public_example_passed: bool
     inactive_reward_behavior: str
@@ -103,6 +107,8 @@ class RewardRuntimeEvidence:
                 self.equation_21_private_selection_is_explicit,
                 self.equation_21_public_selection_is_explicit,
                 self.equation_22_private_example_passed,
+                self.reward_for_terminal_task_default_uses_plus_one,
+                self.reward_for_terminal_task_compatibility_preserves_old_approximation,
                 self.equation_23_public_example_passed,
                 self.reward_emission_after_terminal_evidence,
             )
@@ -119,10 +125,28 @@ class RuntimeCompatibilityEvidence:
     divergence_description: str
     compatibility_mode_available: bool
     paper_mode_default_in_feature_071: bool
+    build_timeout_contract_default_is_paper: bool
+    build_timeout_contract_compatibility_is_explicit: bool
+    deadline_rules_default_is_paper: bool
+    deadline_rules_compatibility_is_explicit: bool
+    reward_for_terminal_task_default_is_paper: bool
+    reward_for_terminal_task_compatibility_is_explicit: bool
 
     @property
     def passed(self) -> bool:
-        return self.compatibility_mode_available and self.paper_mode_default_in_feature_071 and bool(self.divergence_description)
+        return all(
+            (
+                self.compatibility_mode_available,
+                self.paper_mode_default_in_feature_071,
+                self.build_timeout_contract_default_is_paper,
+                self.build_timeout_contract_compatibility_is_explicit,
+                self.deadline_rules_default_is_paper,
+                self.deadline_rules_compatibility_is_explicit,
+                self.reward_for_terminal_task_default_is_paper,
+                self.reward_for_terminal_task_compatibility_is_explicit,
+                bool(self.divergence_description),
+            )
+        )
 
     def to_dict(self) -> dict[str, Any]:
         return asdict(self)

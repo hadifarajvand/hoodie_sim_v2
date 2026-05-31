@@ -22,9 +22,11 @@ class RuntimePaperFaithfulSemanticsAlignmentReportIntegrationTests(unittest.Test
             self.assertIn("Feature 071 Runtime Paper-Faithful Semantics Alignment Report", markdown)
             self.assertIn("Deadline Evidence", markdown)
             self.assertIn("Terminal State Evidence", markdown)
-            self.assertIn("Reward Runtime Evidence", markdown)
-            self.assertIn("Compatibility Evidence", markdown)
-            self.assertIn("Feature 072", markdown)
+        self.assertIn("Reward Runtime Evidence", markdown)
+        self.assertIn("Compatibility Evidence", markdown)
+        self.assertIn("Feature 072", markdown)
+        self.assertIn("build_timeout_contract_default_is_paper", markdown)
+        self.assertIn("reward_for_terminal_task_default_uses_plus_one", markdown)
 
     def test_rendered_report_mentions_paper_and_compatibility_modes(self) -> None:
         report = build_feature_071_report()
