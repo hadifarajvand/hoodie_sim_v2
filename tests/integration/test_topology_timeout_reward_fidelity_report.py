@@ -24,6 +24,7 @@ class TopologyTimeoutRewardFidelityReportIntegrationTests(unittest.TestCase):
             markdown = md_path.read_text(encoding="utf-8")
             self.assertIn("Feature 070 Fidelity Report", markdown)
             self.assertIn("## Topology Evidence", markdown)
+            self.assertIn("## Timeout/Drop Rule Evidence", markdown)
             self.assertIn("## Timeout/Drop Accounting Evidence", markdown)
             self.assertIn("## Reward Equation Evidence", markdown)
 

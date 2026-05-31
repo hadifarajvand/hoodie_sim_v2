@@ -9,6 +9,7 @@ from .model import (
     NeighborLegalityEvidence,
     RewardEquationEvidence,
     TerminalRewardEvidence,
+    TimeoutDropRuleEvidence,
     TimeoutDropAccountingEvidence,
     TopologyEvidenceReport,
 )
@@ -26,6 +27,7 @@ __all__ = [
     "NeighborLegalityEvidence",
     "RewardEquationEvidence",
     "TerminalRewardEvidence",
+    "TimeoutDropRuleEvidence",
     "TimeoutDropAccountingEvidence",
     "TopologyEvidenceReport",
     "build_feature_070_report",

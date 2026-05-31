@@ -67,6 +67,30 @@ class NeighborLegalityEvidence:
 
 
 @dataclass(frozen=True, slots=True)
+class TimeoutDropRuleEvidence:
+    rule_text: str
+    source_reference: str
+    timeout_relation: str
+    drop_condition: str
+    provenance: str
+    paper_semantics_status: str
+    searched_sources: tuple[str, ...]
+    blockers: tuple[Feature070Blocker, ...] = ()
+
+    def to_dict(self) -> dict[str, Any]:
+        return {
+            "rule_text": self.rule_text,
+            "source_reference": self.source_reference,
+            "timeout_relation": self.timeout_relation,
+            "drop_condition": self.drop_condition,
+            "provenance": self.provenance,
+            "paper_semantics_status": self.paper_semantics_status,
+            "searched_sources": list(self.searched_sources),
+            "blockers": [blocker.to_dict() for blocker in self.blockers],
+        }
+
+
+@dataclass(frozen=True, slots=True)
 class TimeoutDropAccountingEvidence:
     task_id: str
     arrival_slot: int
@@ -77,9 +101,13 @@ class TimeoutDropAccountingEvidence:
     terminal_status: str
     drop_reason: str | None
     paper_semantics_status: str
+    rule_evidence: TimeoutDropRuleEvidence | None = None
 
     def to_dict(self) -> dict[str, Any]:
-        return asdict(self)
+        payload = asdict(self)
+        if self.rule_evidence is not None:
+            payload["rule_evidence"] = self.rule_evidence.to_dict()
+        return payload
 
 
 @dataclass(frozen=True, slots=True)
@@ -90,6 +118,8 @@ class RewardEquationEvidence:
     terms: tuple[str, ...]
     recovered_status: str
     assumption_status: str
+    provenance: str = ""
+    searched_sources: tuple[str, ...] = ()
     blockers: tuple[Feature070Blocker, ...] = ()
 
     def to_dict(self) -> dict[str, Any]:
@@ -100,6 +130,8 @@ class RewardEquationEvidence:
             "terms": list(self.terms),
             "recovered_status": self.recovered_status,
             "assumption_status": self.assumption_status,
+            "provenance": self.provenance,
+            "searched_sources": list(self.searched_sources),
             "blockers": [blocker.to_dict() for blocker in self.blockers],
         }
 
@@ -211,6 +243,7 @@ class Feature070FidelityReport:
     changed_files: tuple[str, ...]
     topology_evidence: TopologyEvidenceReport
     neighbor_legality_evidence: NeighborLegalityEvidence
+    timeout_drop_rule_evidence: TimeoutDropRuleEvidence
     timeout_drop_accounting_evidence: TimeoutDropAccountingEvidence
     reward_equation_evidence: RewardEquationEvidence
     terminal_reward_evidence: TerminalRewardEvidence
@@ -243,6 +276,7 @@ class Feature070FidelityReport:
             "changed_files": list(self.changed_files),
             "topology_evidence": self.topology_evidence.to_dict(),
             "neighbor_legality_evidence": self.neighbor_legality_evidence.to_dict(),
+            "timeout_drop_rule_evidence": self.timeout_drop_rule_evidence.to_dict(),
             "timeout_drop_accounting_evidence": self.timeout_drop_accounting_evidence.to_dict(),
             "reward_equation_evidence": self.reward_equation_evidence.to_dict(),
             "terminal_reward_evidence": self.terminal_reward_evidence.to_dict(),
