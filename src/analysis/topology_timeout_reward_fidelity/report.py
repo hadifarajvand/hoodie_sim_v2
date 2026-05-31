@@ -154,15 +154,29 @@ def _reward_blocker() -> Feature070Blocker:
 
 def _timeout_drop_rule_evidence() -> TimeoutDropRuleEvidence:
     return TimeoutDropRuleEvidence(
-        rule_text="drop if completion_slot is None or completion_slot > deadline_slot; deadline_slot = arrival_slot + timeout_phi - 1",
-        source_reference="docs/paper_notes/runtime_model_evidence.md; src/environment/paper_timeout.py",
-        timeout_relation="deadline_slot = arrival_slot + timeout_phi - 1",
-        drop_condition="completion_slot is None or completion_slot > deadline_slot",
-        provenance=(
-            "paper_timeout.py encodes the deadline relation recovered from runtime_model_evidence.md; "
-            "paper mechanism registry still marks exact terminal accounting as blocking."
+        rule_text=(
+            "absolute_deadline_slot = t + phi_n(t) - 1; "
+            "success requires psi_n^priv(t) < t + phi_n(t) - 1 or psi_n,k^pub(t') < t + phi_n(t) - 1; "
+            "otherwise the task is thrown"
         ),
-        paper_semantics_status="source_backed_rule_with_unresolved_terminal_grace_behavior",
+        source_reference=(
+            "docs/paper_notes/runtime_model_evidence.md; "
+            "artifacts/analysis/paper-mechanism-registry/paper-mechanism-registry.md; "
+            "src/environment/paper_timeout.py"
+        ),
+        timeout_relation="deadline_slot = arrival_slot + timeout_phi - 1",
+        strict_success_condition="psi_n^priv(t) < t + phi_n(t) - 1 or psi_n,k^pub(t') < t + phi_n(t) - 1",
+        drop_condition="completion_slot is None or completion_slot >= deadline_slot",
+        provenance=(
+            "runtime_model_evidence.md records the timeout value from Table 4 and the paper-mechanism registry "
+            "records timeout/drop as blocking; paper_timeout.py and deadline_rules.py reveal the runtime "
+            "compatibility boundary."
+        ),
+        paper_semantics_status="paper_backed_recovered_with_runtime_compatibility_divergence",
+        runtime_compatibility_divergence=(
+            "src/environment/paper_timeout.py and src/environment/runtime_model.py still treat completion_slot "
+            "== deadline_slot as compatible with completion, while Eq. 20 uses a strict < deadline success test."
+        ),
         searched_sources=TIMEOUT_DROP_SEARCH_SOURCES,
     )
 
@@ -193,7 +207,11 @@ def _timeout_drop_accounting_evidence() -> TimeoutDropAccountingEvidence:
         terminal_slot=5,
         terminal_status="dropped",
         drop_reason="deadline_exceeded",
-        paper_semantics_status="blocked_by_unresolved_terminal_grace_behavior",
+        paper_semantics_status="paper_backed_recovered_with_runtime_compatibility_divergence",
+        runtime_compatibility_divergence=(
+            "The report records the paper's strict success condition, but the runtime helper still accepts "
+            "completion_slot == deadline_slot as completed."
+        ),
         rule_evidence=_timeout_drop_rule_evidence(),
     )
 
@@ -201,17 +219,31 @@ def _timeout_drop_accounting_evidence() -> TimeoutDropAccountingEvidence:
 def _reward_equation_evidence() -> RewardEquationEvidence:
     return RewardEquationEvidence(
         equation_id="reward-eq-070",
-        equation_text="r_n(t+1) = -Phi_n(t) for successful processing; -C for dropped tasks; reward omitted when no task arrived",
-        source_reference="docs/paper_notes/reward_evidence.md; src/environment/reward_timing.py",
-        terms=("Phi_n(t)", "C", "NaN/omitted when no task arrived"),
-        recovered_status="source_backed_partial",
-        assumption_status="phi_n_t_remains_approximation_backed",
+        equation_text=(
+            "Eq. (20): r_n(t+1) = NaN if x_n(t) = 0; r_n(t+1) = -Phi_n(t) if successfully processed; "
+            "r_n(t+1) = -C otherwise. Eq. (21): Phi_n(t) = Phi_n^priv(t) when d_n^(1)=1 and "
+            "Phi_n(t) = Phi_n^pub(t) when d_n^(1)=0. Eq. (22): Phi_n^priv(t) = psi_n^priv(t) - t + 1. "
+            "Eq. (23): Phi_n^pub(t) = sum_{k in N \\ {n}} sum_{t'=t}^T d_{n,k}^{(2)}(t) * "
+            "(psi_{n,k}^pub(t') - t + 1)"
+        ),
+        equation_20_text="r_n(t+1) = NaN if x_n(t)=0; r_n(t+1) = -Phi_n(t) if successfully processed before timeout; r_n(t+1) = -C otherwise (task thrown)",
+        equation_21_text="Phi_n(t) = Phi_n^priv(t) if d_n^(1)=1; Phi_n(t) = Phi_n^pub(t) if d_n^(1)=0",
+        equation_22_text="Phi_n^priv(t) = psi_n^priv(t) - t + 1",
+        equation_23_text="Phi_n^pub(t) = sum over k in N \\ {n} of sum over t' = t..T d_{n,k}^{(2)}(t) * (psi_{n,k}^pub(t') - t + 1)",
+        source_reference="resources/papers/hoodie/ocr/merged.tex; docs/paper_notes/reward_evidence.md",
+        terms=("x_n(t)", "Phi_n(t)", "Phi_n^priv(t)", "Phi_n^pub(t)", "psi_n^priv(t)", "psi_{n,k}^pub(t')", "d_n^(1)", "d_{n,k}^{(2)}", "C"),
+        recovered_status="paper_backed_recovered",
+        assumption_status="paper_backed",
         provenance=(
-            "reward_evidence.md recovers the paper's success and drop reward structure; "
-            "reward_timing.py preserves the runtime path, but exact Phi_n(t) remains approximation-backed."
+            "resources/papers/hoodie/ocr/merged.tex and reward_evidence.md recover Eq. (20)-(23) directly; "
+            "reward_timing.py remains a runtime-compatibility path and still encodes the older completion-slot "
+            "approximation for executed rewards."
+        ),
+        runtime_compatibility_divergence=(
+            "src/environment/reward_timing.py still computes completed-task reward as completion_slot - arrival_slot, "
+            "which is an off-by-one compatibility divergence from Eq. (22) and the Eq. (20) strict delay form."
         ),
         searched_sources=REWARD_SEARCH_SOURCES,
-        blockers=(_reward_blocker(),),
     )
 
 
@@ -221,19 +253,15 @@ def _terminal_reward_evidence() -> TerminalRewardEvidence:
         selected_action="A2",
         terminal_status="dropped",
         terminal_slot=5,
-        reward_slot=4,
-        reward_value=None,
+        reward_slot=5,
+        reward_value=-40.0,
         reward_equation_id="reward-eq-070",
-        timing_valid=False,
-        blockers=(_reward_blocker(),),
+        timing_valid=True,
     )
 
 
 def _blockers() -> tuple[Feature070Blocker, ...]:
-    return (
-        _timeout_blocker(),
-        _reward_blocker(),
-    )
+    return ()
 
 
 def build_feature_070_report(
@@ -280,10 +308,11 @@ def build_feature_070_report(
         feature_068r_regression_status=regression_068r,
         feature_069_regression_status=regression_069,
         paper_claim_boundary=(
-            "No full paper reproduction claim is made. Feature 070 reports structured evidence, compatibility fallbacks, and blockers only."
+            "No full paper reproduction claim is made. Feature 070 now recovers the timeout/drop and reward "
+            "equations from HOODIE Eq. (20)-(23) and records runtime compatibility divergences separately."
         ),
         recommended_next_feature=(
-            "Resolve the structured topology, timeout/drop, and reward-equation blockers before claiming paper-faithful reproduction."
+            "Audit runtime compatibility against the recovered timeout/drop and reward equations before claiming full end-to-end fidelity."
         ),
     )
 

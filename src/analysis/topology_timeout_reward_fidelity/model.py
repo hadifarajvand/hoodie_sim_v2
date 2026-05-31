@@ -71,9 +71,11 @@ class TimeoutDropRuleEvidence:
     rule_text: str
     source_reference: str
     timeout_relation: str
+    strict_success_condition: str
     drop_condition: str
     provenance: str
     paper_semantics_status: str
+    runtime_compatibility_divergence: str
     searched_sources: tuple[str, ...]
     blockers: tuple[Feature070Blocker, ...] = ()
 
@@ -82,9 +84,11 @@ class TimeoutDropRuleEvidence:
             "rule_text": self.rule_text,
             "source_reference": self.source_reference,
             "timeout_relation": self.timeout_relation,
+            "strict_success_condition": self.strict_success_condition,
             "drop_condition": self.drop_condition,
             "provenance": self.provenance,
             "paper_semantics_status": self.paper_semantics_status,
+            "runtime_compatibility_divergence": self.runtime_compatibility_divergence,
             "searched_sources": list(self.searched_sources),
             "blockers": [blocker.to_dict() for blocker in self.blockers],
         }
@@ -101,6 +105,7 @@ class TimeoutDropAccountingEvidence:
     terminal_status: str
     drop_reason: str | None
     paper_semantics_status: str
+    runtime_compatibility_divergence: str
     rule_evidence: TimeoutDropRuleEvidence | None = None
 
     def to_dict(self) -> dict[str, Any]:
@@ -114,11 +119,16 @@ class TimeoutDropAccountingEvidence:
 class RewardEquationEvidence:
     equation_id: str
     equation_text: str
+    equation_20_text: str
+    equation_21_text: str
+    equation_22_text: str
+    equation_23_text: str
     source_reference: str
     terms: tuple[str, ...]
     recovered_status: str
     assumption_status: str
     provenance: str = ""
+    runtime_compatibility_divergence: str = ""
     searched_sources: tuple[str, ...] = ()
     blockers: tuple[Feature070Blocker, ...] = ()
 
@@ -126,11 +136,16 @@ class RewardEquationEvidence:
         return {
             "equation_id": self.equation_id,
             "equation_text": self.equation_text,
+            "equation_20_text": self.equation_20_text,
+            "equation_21_text": self.equation_21_text,
+            "equation_22_text": self.equation_22_text,
+            "equation_23_text": self.equation_23_text,
             "source_reference": self.source_reference,
             "terms": list(self.terms),
             "recovered_status": self.recovered_status,
             "assumption_status": self.assumption_status,
             "provenance": self.provenance,
+            "runtime_compatibility_divergence": self.runtime_compatibility_divergence,
             "searched_sources": list(self.searched_sources),
             "blockers": [blocker.to_dict() for blocker in self.blockers],
         }

@@ -116,7 +116,7 @@ Acceptance:
 Failure mode:
 - Per-task sample evidence is mistaken for the paper rule.
 
-- [ ] T012R Strengthen timeout/drop validation.
+- [X] T012R Strengthen timeout/drop validation.
 
 Comment:
 Task-level accounting must enforce terminal-state consistency.
