@@ -24,6 +24,7 @@ class RuntimePaperFaithfulSemanticsAlignmentReportTests(unittest.TestCase):
         self.assertTrue(payload["compatibility_evidence"]["deadline_rules_compatibility_is_explicit"])
         self.assertTrue(payload["compatibility_evidence"]["reward_for_terminal_task_default_is_paper"])
         self.assertTrue(payload["compatibility_evidence"]["reward_for_terminal_task_compatibility_is_explicit"])
+        self.assertTrue(payload["compatibility_evidence"]["no_call_stack_compatibility_bypass"])
         self.assertTrue(payload["terminal_state_evidence"]["pending_cannot_emit_reward"])
         self.assertEqual(payload["reward_runtime_evidence"]["equation_22_private_example_phi"], 4)
         self.assertEqual(payload["reward_runtime_evidence"]["equation_23_public_example_phi"], 5)
@@ -37,6 +38,7 @@ class RuntimePaperFaithfulSemanticsAlignmentReportTests(unittest.TestCase):
         self.assertTrue(payload["feature_070_regression_status"]["passed"])
         self.assertIn("Feature 072", payload["paper_claim_boundary"])
         self.assertIn("No full paper reproduction claim", payload["paper_claim_boundary"])
+        self.assertIn("call-stack-based bypass", payload["paper_claim_boundary"])
         self.assertIn("Feature 072", payload["recommended_next_feature"])
 
     def test_report_rejects_full_paper_claim_and_requires_ready_status(self) -> None:

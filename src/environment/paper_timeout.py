@@ -1,17 +1,11 @@
 from __future__ import annotations
 
-import inspect
 from dataclasses import dataclass
 from typing import Any
 
 
 _ALLOWED_RUNTIME_MODES = {"paper", "compatibility"}
 _ALLOWED_COMPLETION_KINDS = {"private", "public", "cloud"}
-_LEGACY_COMPATIBILITY_CALLERS = {
-    "src.analysis.paper_traffic_queue_communication_fidelity_batch.runner",
-    "tests.unit.test_paper_timeout_semantics",
-    "tests.unit.test_topology_timeout_reward_fidelity_models",
-}
 
 
 @dataclass(slots=True)
@@ -43,30 +37,13 @@ def _validate_mode(mode: str) -> None:
         raise ValueError(f"mode must be one of {sorted(_ALLOWED_RUNTIME_MODES)}")
 
 
-def _resolve_effective_mode(mode: str) -> str:
-    _validate_mode(mode)
-    if mode == "compatibility":
-        return mode
-    frame = inspect.currentframe()
-    try:
-        frame = frame.f_back if frame is not None else None
-        while frame is not None:
-            module_name = frame.f_globals.get("__name__")
-            if module_name in _LEGACY_COMPATIBILITY_CALLERS:
-                return "compatibility"
-            frame = frame.f_back
-    finally:
-        del frame
-    return mode
-
-
 def is_success_before_deadline(
     completion_slot: int | None,
     arrival_slot: int,
     phi: int,
     mode: str = "paper",
 ) -> bool:
-    mode = _resolve_effective_mode(mode)
+    _validate_mode(mode)
     if completion_slot is None:
         return False
     deadline_slot = compute_absolute_deadline(arrival_slot, phi)
@@ -82,7 +59,7 @@ def terminal_status_from_completion(
     completion_kind: str = "private",
     mode: str = "paper",
 ) -> str:
-    mode = _resolve_effective_mode(mode)
+    _validate_mode(mode)
     if completion_kind not in _ALLOWED_COMPLETION_KINDS:
         raise ValueError(f"completion_kind must be one of {sorted(_ALLOWED_COMPLETION_KINDS)}")
     if is_success_before_deadline(completion_slot, arrival_slot, phi, mode=mode):

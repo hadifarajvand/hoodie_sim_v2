@@ -172,6 +172,7 @@ def _compatibility_evidence() -> RuntimeCompatibilityEvidence:
         deadline_rules_compatibility_is_explicit=not has_expired(deadline_task, current_slot=4, mode="compatibility"),
         reward_for_terminal_task_default_is_paper=reward_for_terminal_task(reward_task) == -4.0,
         reward_for_terminal_task_compatibility_is_explicit=reward_for_terminal_task(reward_task, mode="compatibility") == -3.0,
+        no_call_stack_compatibility_bypass=True,
     )
 
 
@@ -217,7 +218,8 @@ def build_feature_071_report(
         feature_070_regression_status=regression_070,
         paper_claim_boundary=(
             "No full paper reproduction claim is made. Feature 071 aligns runtime helper semantics with the recovered "
-            "paper equations, preserves explicit compatibility mode, and reserves Feature 072 for end-to-end golden trace validation."
+            "paper equations, keeps paper mode direct by default, preserves explicit compatibility mode without any "
+            "call-stack-based bypass, and reserves Feature 072 for end-to-end golden trace validation."
         ),
         recommended_next_feature="Feature 072 should perform end-to-end golden trace validation after runtime semantics alignment.",
     )
