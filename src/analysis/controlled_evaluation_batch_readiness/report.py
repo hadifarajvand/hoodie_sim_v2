@@ -74,12 +74,12 @@ def _local_task_record(
     phi: int,
     completion_slot: int,
     reward_value: float | None = None,
-    terminal_status: str | None = None,
     delay: float | int | None = None,
     deadline_violation: bool = False,
 ) -> ControlledEvaluationTaskRecord:
     deadline_slot = compute_absolute_deadline(arrival_slot, phi)
     success_before_deadline = is_success_before_deadline(completion_slot, arrival_slot, phi)
+    local_phi = phi_private(psi_priv=completion_slot, t=arrival_slot)
     task = Task(
         task_id=int(task_id.split("-")[-1]) if task_id.split("-")[-1].isdigit() else 1,
         source_agent_id=1,
@@ -89,13 +89,10 @@ def _local_task_record(
         timeout_length=phi,
         absolute_deadline_slot=deadline_slot,
         completion_slot=completion_slot,
-        terminal_outcome="completed" if (terminal_status or "completed_private").startswith("completed") else "dropped",
+        terminal_outcome="completed" if success_before_deadline else "dropped",
         reward_emitted=True,
     )
-    private_phi = phi_private(psi_priv=4, t=arrival_slot)
-    public_phi = phi_public(((1, 6), (0, 9)), t=arrival_slot)
-    selected_phi = select_phi(True, private_phi, public_phi)
-    reward_can_emit = can_emit_reward(terminal_status or "completed_private")
+    reward_can_emit = can_emit_reward("completed_private" if success_before_deadline else "dropped_timeout")
     if not reward_can_emit:
         raise ValueError("terminal tasks in the controlled batch must be able to emit reward")
     return ControlledEvaluationTaskRecord(
@@ -106,13 +103,15 @@ def _local_task_record(
         arrival_slot=arrival_slot,
         phi=phi,
         completion_slot=completion_slot,
-        terminal_status=terminal_status or ("completed_private" if success_before_deadline else "dropped_timeout"),
-        reward_value=reward_value if reward_value is not None else reward_for_terminal_task(task),
-        delay=delay if delay is not None else reward_slot_for_terminal(completion_slot) - arrival_slot,
+        terminal_status="completed_private" if success_before_deadline else "dropped_timeout",
+        reward_value=reward_value if reward_value is not None else (
+            reward_for_terminal_task(task) if success_before_deadline else reward_from_terminal_state(True, "dropped_timeout", None, PAPER_DROP_PENALTY)
+        ),
+        delay=delay if delay is not None else local_phi,
         illegal_action_rejected=False,
         compatibility_mode_used=False,
         mode="paper",
-        deadline_violation=deadline_violation,
+        deadline_violation=deadline_violation or not success_before_deadline,
         topology_check_required=False,
         topology_final_legal=True,
         topology_reason="local_private_execution",
@@ -123,22 +122,40 @@ def _local_task_record(
 def _horizontal_task_record(
     *,
     task_id: str,
+    source_agent_id: str,
+    destination_agent_id: str,
     arrival_slot: int,
     phi: int,
     completion_slot: int,
-    terminal_status: str,
-    reward_value: float,
-    illegal_action_rejected: bool = False,
-    deadline_violation: bool = False,
 ) -> ControlledEvaluationTaskRecord:
     success_before_deadline = is_success_before_deadline(completion_slot, arrival_slot, phi)
-    if not can_emit_reward(terminal_status):
-        raise ValueError("terminal tasks in the controlled batch must be able to emit reward")
+    is_neighbor = _is_horizontal_neighbor(source_agent_id, destination_agent_id)
+    is_self_destination = source_agent_id == destination_agent_id
+    topology_final_legal = is_neighbor and not is_self_destination
+    if topology_final_legal:
+        terminal_status = terminal_status_from_completion(completion_slot, arrival_slot, phi, completion_kind="public")
+        terminal_outcome = "completed"
+        reward_value = reward_from_terminal_state(
+            True,
+            terminal_status,
+            select_phi(
+                False,
+                phi_private(psi_priv=completion_slot, t=arrival_slot),
+                phi_public(((1, 6), (0, 9)), t=arrival_slot),
+            ),
+            PAPER_DROP_PENALTY,
+        )
+        illegal_action_rejected = False
+    else:
+        terminal_status = "dropped_unavailable"
+        terminal_outcome = "dropped"
+        reward_value = reward_from_terminal_state(True, terminal_status, None, PAPER_DROP_PENALTY)
+        illegal_action_rejected = True
     return ControlledEvaluationTaskRecord(
         task_id=task_id,
-        source_agent_id="1",
+        source_agent_id=source_agent_id,
         action_type="horizontal",
-        destination_agent_id="6" if terminal_status != "dropped_unavailable" else "2",
+        destination_agent_id=destination_agent_id,
         arrival_slot=arrival_slot,
         phi=phi,
         completion_slot=completion_slot,
@@ -148,10 +165,10 @@ def _horizontal_task_record(
         illegal_action_rejected=illegal_action_rejected,
         compatibility_mode_used=False,
         mode="paper",
-        deadline_violation=deadline_violation,
+        deadline_violation=not success_before_deadline if topology_final_legal else False,
         topology_check_required=True,
-        topology_final_legal=(terminal_status != "dropped_unavailable"),
-        topology_reason="figure7_neighbor_map",
+        topology_final_legal=topology_final_legal,
+        topology_reason="figure7_neighbor_map" if topology_final_legal else "figure7_non_neighbor_or_self_destination",
         topology_neighbor_map_source=FIGURE_7_SOURCE,
     )
 
@@ -167,6 +184,26 @@ def _cloud_task_record(
     if not can_emit_reward("completed_cloud"):
         raise ValueError("terminal tasks in the controlled batch must be able to emit reward")
     success_before_deadline = is_success_before_deadline(completion_slot, arrival_slot, phi)
+    terminal_status = terminal_status_from_completion(completion_slot, arrival_slot, phi, completion_kind="cloud")
+    cloud_phi = phi_private(psi_priv=completion_slot, t=arrival_slot)
+    reward_value = (
+        reward_for_terminal_task(
+            Task(
+                task_id=int(task_id.split("-")[-1]) if task_id.split("-")[-1].isdigit() else 1,
+                source_agent_id=1,
+                arrival_slot=arrival_slot,
+                size=1.0,
+                processing_density=1.0,
+                timeout_length=phi,
+                absolute_deadline_slot=compute_absolute_deadline(arrival_slot, phi),
+                completion_slot=completion_slot,
+                terminal_outcome="completed" if success_before_deadline else "dropped",
+                reward_emitted=True,
+            )
+        )
+        if terminal_status.startswith("completed")
+        else reward_from_terminal_state(True, terminal_status, None, PAPER_DROP_PENALTY)
+    )
     return ControlledEvaluationTaskRecord(
         task_id=task_id,
         source_agent_id="1",
@@ -175,8 +212,8 @@ def _cloud_task_record(
         arrival_slot=arrival_slot,
         phi=phi,
         completion_slot=completion_slot,
-        terminal_status="completed_cloud",
-        reward_value=reward_value if reward_value is not None else reward_from_terminal_state(True, "completed_cloud", 3.0, PAPER_DROP_PENALTY),
+        terminal_status=terminal_status,
+        reward_value=reward_value if reward_value is not None else reward_from_terminal_state(True, terminal_status, cloud_phi, PAPER_DROP_PENALTY),
         delay=reward_slot_for_terminal(completion_slot) - arrival_slot,
         illegal_action_rejected=False,
         compatibility_mode_used=False,
@@ -346,11 +383,11 @@ def _build_legal_horizontal_offload() -> ControlledEvaluationScenario:
     selected_phi = select_phi(False, private_phi, public_phi)
     task = _horizontal_task_record(
         task_id="073-3",
+        source_agent_id="1",
+        destination_agent_id="6",
         arrival_slot=2,
         phi=5,
         completion_slot=5,
-        terminal_status=terminal_status_from_completion(5, 2, 5, completion_kind="public"),
-        reward_value=reward_from_terminal_state(True, "completed_public", selected_phi, PAPER_DROP_PENALTY),
     )
     expected = _scenario_metrics(
         completed_count=1,
@@ -379,12 +416,11 @@ def _build_legal_horizontal_offload() -> ControlledEvaluationScenario:
 def _build_illegal_horizontal_destination_attempt() -> ControlledEvaluationScenario:
     task = _horizontal_task_record(
         task_id="073-4",
+        source_agent_id="1",
+        destination_agent_id="2",
         arrival_slot=2,
         phi=4,
         completion_slot=4,
-        terminal_status="dropped_unavailable",
-        reward_value=reward_from_terminal_state(True, "dropped_unavailable", None, PAPER_DROP_PENALTY),
-        illegal_action_rejected=True,
     )
     expected = _scenario_metrics(
         completed_count=0,
@@ -468,11 +504,11 @@ def _build_mixed_local_horizontal_cloud_candidates() -> ControlledEvaluationScen
     public_phi = phi_public(((1, 6), (0, 9)), t=2)
     horizontal_task = _horizontal_task_record(
         task_id="073-7b",
+        source_agent_id="1",
+        destination_agent_id="6",
         arrival_slot=2,
         phi=5,
         completion_slot=5,
-        terminal_status=terminal_status_from_completion(5, 2, 5, completion_kind="public"),
-        reward_value=reward_from_terminal_state(True, "completed_public", select_phi(False, private_phi, public_phi), PAPER_DROP_PENALTY),
     )
     cloud_task = _cloud_task_record(task_id="073-7c", arrival_slot=2, phi=4, completion_slot=4)
     tasks = (local_task, horizontal_task, cloud_task)
@@ -567,8 +603,10 @@ def _batch_report_claim_boundary() -> str:
     return (
         "No final evaluation claim is made. No performance superiority claim is made. No full paper reproduction claim "
         "is made. This layer only proves controlled evaluation batch readiness with paper-mode default semantics, "
-        "explicit compatibility exclusion, and deterministic batch metrics. Feature 074 is the next comparative "
-        "baseline evaluation readiness step."
+        "compatibility mode is excluded from the default batch, and deterministic batch metrics. Horizontal legality is computed from "
+        "Feature 070 Figure 7 neighbor map. Local/private metrics are computed from Feature 071 helpers. Cloud "
+        "terminal status respects paper-mode deadline semantics. Feature 074 is the next comparative baseline "
+        "evaluation readiness step."
     )
 
 
@@ -649,6 +687,10 @@ def render_feature_073_report(report: ControlledEvaluationBatchReport) -> str:
             "Feature 072 report is consumed here to verify deterministic golden trace readiness before the batch layer is built.",
             "Expected outputs are independent scenario constants.",
             "Actual outputs are computed from Feature 070 and Feature 071 helpers.",
+            "Horizontal legality is computed from Feature 070 Figure 7 neighbor map.",
+            "Local/private metrics are computed from Feature 071 helpers.",
+            "Cloud terminal status respects paper-mode deadline semantics.",
+            "Compatibility mode is excluded from the default batch.",
             "",
             "## Aggregate Metrics",
             _json_dump(payload["aggregate_metrics"]).rstrip(),
