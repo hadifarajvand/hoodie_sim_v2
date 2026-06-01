@@ -1,56 +1,71 @@
-# Feature 080 - Base Paper Evaluation Ranking
+# Feature 080 - HOODIE Proposed Method Implementation
 
 ## Goal
 
-Evaluate the base paper method against its baseline policies using the base paper metric family.
+Implement and model the proposed method from the base HOODIE paper before ranking.
 
-Feature 080 must not evaluate the user's thesis method.
+Feature 080 is no longer an evaluation-ranking feature. Ranking must wait until HOODIE_PROPOSED is implemented faithfully enough.
 
-## Target Method
+## Target
 
-The target method is the proposed method from the base HOODIE paper.
+Target method: HOODIE_PROPOSED.
 
-Do not use the user's DCQ or deadline-aware thesis method here.
+This means the proposed method from the base HOODIE paper only.
 
-## Input
+## Paper Components
 
-Feature 079 aggregation report.
+Required components:
+- hybrid local horizontal vertical action model
+- private queue timing
+- offloading queue timing
+- public queue timing
+- reward cost model
+- distributed edge-agent decision model
+- DQN interface
+- Double DQN target rule
+- Dueling DQN value advantage interface
+- LSTM forecast interface
+- replay memory interface
+- epsilon greedy training schedule
+- inference mode with epsilon zero
+- Pub Sub recovery metadata
 
-## Metric Family
+## Core Formula Set
 
-Use the metrics already available from Feature 078 and Feature 079 that match the base paper evaluation layer:
+Action:
+- a_n(t) = [d_n^(1)(t), D_n(t)]
 
-Higher is better:
-- average_reward
-- total_reward
-- completion_rate
+Reward:
+- no task: omitted
+- success: -Phi_n(t)
+- thrown: -C
 
-Lower is better:
-- average_delay
-- timeout_drop_rate
-- unavailable_drop_rate
+Local cost:
+- Phi_priv = psi_priv - t + 1
 
-Deadline violation can be reported as an auxiliary metric only if it exists in the current report. It must not be treated as the main thesis metric here.
+Offloaded cost:
+- Phi_pub = destination completion delay from task arrival
 
-## Required Output
+Learning:
+- target values use Double DQN rule
+- loss uses MSE between target and predicted Q values
 
-- all-policy evaluation table
-- base-paper proposed method row
-- baseline rows
-- per-metric ordering
-- compact evaluation notes
+## Output
+
+- HOODIE proposed method model
+- formula registry
+- component coverage report
+- implementation gap report
+- readiness report
 
 ## Rules
 
-- consume Feature 079 only
-- do not execute campaign cells
-- do not recompute raw rows
-- include all policies
-- use base-paper metric direction
-- keep claim boundary explicit
+- do not rank policies
+- do not evaluate baselines
+- do not introduce thesis method
+- do not use DCQ
+- do not claim full reproduction unless all required components pass
 
 ## Boundary
 
-Feature 080 may report current simulation evidence for the base paper method versus baselines.
-
-Feature 080 must not claim thesis-method superiority.
+Feature 080 prepares HOODIE_PROPOSED for later evaluation.
