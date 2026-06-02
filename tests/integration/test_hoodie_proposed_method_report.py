@@ -33,10 +33,11 @@ class HoodieProposedMethodReportIntegrationTests(unittest.TestCase):
         self.assertIn("hoodie_proposed", rendered)
         self.assertIn("claim boundary", rendered)
         self.assertIn("scope evidence", rendered)
-        self.assertNotIn("rank", rendered)
-        self.assertNotIn("baseline", rendered)
-        self.assertNotIn("dcq", rendered)
-        self.assertNotIn("thesis", rendered)
+        self.assertIn("no ranking is performed.", rendered)
+        self.assertIn("no baseline evaluation is performed.", rendered)
+        self.assertNotIn("ranking table", rendered)
+        self.assertIn("no thesis/dcq extension is introduced.", rendered)
+        self.assertNotIn("proposed_dcq", rendered)
 
     def test_report_writer_and_cli_entrypoint_remain_callable(self) -> None:
         with tempfile.TemporaryDirectory() as tmpdir:

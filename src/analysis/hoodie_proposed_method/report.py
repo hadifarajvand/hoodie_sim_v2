@@ -10,6 +10,7 @@ from .communication_model import EdgeControllerBroker, PubSubRecoveryMetadata
 from .config import (
     DEFAULT_CHANGED_FILES,
     DEFAULT_OUTPUT_DIR,
+    BLOCKED_STATUS,
     FEATURE_ID,
     FEATURE_NAME,
     READY_STATUS,
