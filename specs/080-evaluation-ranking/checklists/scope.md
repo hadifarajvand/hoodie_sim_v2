@@ -1,6 +1,6 @@
 # Scope Checklist for Feature 080 — HOODIE Proposed Method Implementation
 
-Status summary: implemented 5, partial 2, missing 0.
+Status summary: implemented 5, partial 2, missing 0. The scope remains base-paper only; the partial items are limited to learning-internal fidelity gaps.
 
 ## Implemented
 

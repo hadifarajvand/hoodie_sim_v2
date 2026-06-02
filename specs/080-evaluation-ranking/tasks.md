@@ -1,6 +1,6 @@
 # Tasks for Feature 080 — HOODIE Proposed Method Implementation
 
-Status summary: implemented 6, partial 4, missing 0.
+Status summary: implemented 7, partial 3, missing 0.
 
 ## Implemented
 
@@ -8,6 +8,7 @@ Status summary: implemented 6, partial 4, missing 0.
 2. [x] Implement private queue timing and completion logic.
 3. [x] Implement offloading/public queue timing and processing logic.
 4. [x] Implement reward and cost computation: Phi_priv, Phi_pub, drop cost C.
+7. [x] Implement replay memory and batch sampling.
 9. [x] Implement inference mode with epsilon=0.
 10. [x] Implement Pub-Sub metadata handling.
 
@@ -15,7 +16,6 @@ Status summary: implemented 6, partial 4, missing 0.
 
 5. [ ] Implement DQN interfaces, Double DQN target, Dueling DQN value/advantage. [partial]
 6. [ ] Implement LSTM forecast/recovery interface. [partial]
-7. [ ] Implement replay memory and batch sampling. [partial]
 8. [ ] Implement epsilon-greedy training schedule. [partial]
 
 ## Missing

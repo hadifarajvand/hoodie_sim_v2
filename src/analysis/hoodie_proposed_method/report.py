@@ -55,6 +55,7 @@ def _validation_summary() -> tuple[str, ...]:
         "integration tests (tests/integration/test_hoodie_proposed_method_*.py): passed",
         "module entrypoint (python -m analysis.hoodie_proposed_method): passed",
         "remaining partial components are learning internals expected to be implemented later.",
+        "next partial targets: dqn_interface, double_dqn_target_rule, dueling_dqn_value_advantage_interface, lstm_forecast_recovery_interface, epsilon_greedy_training_schedule.",
     )
 
 

@@ -1,6 +1,6 @@
 # Requirements Checklist for Feature 080 — HOODIE Proposed Method Implementation
 
-Status summary: implemented 8, partial 5, missing 0.
+Status summary: implemented 8, partial 5, missing 0. The remaining partial items are the learning-internal interfaces listed below.
 
 ## Implemented
 
