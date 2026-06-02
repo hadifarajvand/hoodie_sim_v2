@@ -64,6 +64,7 @@ class HoodieProposedMethodReport:
     component_coverage: tuple[ComponentCoverageEntry, ...]
     remaining_gaps: tuple[str, ...]
     readiness_level: str
+    validation_summary: tuple[str, ...]
     claim_boundary: tuple[str, ...]
     scope_evidence: tuple[str, ...]
 
@@ -92,12 +93,16 @@ class HoodieProposedMethodReport:
             raise ValueError("formula_registry must be non-empty")
         if not self.remaining_gaps:
             raise ValueError("remaining_gaps must be non-empty")
+        if not self.validation_summary:
+            raise ValueError("validation_summary must be non-empty")
         if not self.claim_boundary:
             raise ValueError("claim_boundary must be non-empty")
         if not self.scope_evidence:
             raise ValueError("scope_evidence must be non-empty")
         if any(not _is_non_empty_text(item) for item in self.remaining_gaps):
             raise ValueError("remaining_gaps must contain explicit text")
+        if any(not _is_non_empty_text(item) for item in self.validation_summary):
+            raise ValueError("validation_summary must contain explicit text")
         if any(not _is_non_empty_text(item) for item in self.claim_boundary):
             raise ValueError("claim_boundary must contain explicit text")
         if any(not _is_non_empty_text(item) for item in self.scope_evidence):
@@ -126,6 +131,7 @@ class HoodieProposedMethodReport:
             "component_coverage": [component.to_dict() for component in self.component_coverage],
             "remaining_gaps": list(self.remaining_gaps),
             "readiness_level": self.readiness_level,
+            "validation_summary": list(self.validation_summary),
             "claim_boundary": list(self.claim_boundary),
             "scope_evidence": list(self.scope_evidence),
         }

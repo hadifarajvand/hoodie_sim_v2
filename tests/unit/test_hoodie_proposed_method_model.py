@@ -26,6 +26,7 @@ class HoodieProposedMethodModelTests(unittest.TestCase):
         self.assertEqual(report.status, "hoodie_proposed_method_blocked")
         self.assertEqual(len(report.formula_registry), 12)
         self.assertEqual(len(report.remaining_gaps), 7)
+        self.assertTrue(report.validation_summary)
         self.assertEqual(TARGET_METHOD_ID, "HOODIE_PROPOSED")
 
         payload = report.to_dict()
@@ -79,6 +80,7 @@ class HoodieProposedMethodModelTests(unittest.TestCase):
                 component_coverage=report.component_coverage,
                 remaining_gaps=report.remaining_gaps,
                 readiness_level=report.readiness_level,
+                validation_summary=report.validation_summary,
                 claim_boundary=report.claim_boundary,
                 scope_evidence=report.scope_evidence,
             )

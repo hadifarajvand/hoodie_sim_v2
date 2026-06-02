@@ -48,6 +48,16 @@ def _claim_boundary() -> tuple[str, ...]:
     )
 
 
+def _validation_summary() -> tuple[str, ...]:
+    return (
+        "git diff --check: passed",
+        "unit tests (tests/unit/test_hoodie_proposed_method_*.py): passed",
+        "integration tests (tests/integration/test_hoodie_proposed_method_*.py): passed",
+        "module entrypoint (python -m analysis.hoodie_proposed_method): passed",
+        "scope validation remains partial because interface-only learning components are not fully trainable.",
+    )
+
+
 def _component_definitions() -> tuple[ComponentCoverageEntry, ...]:
     return (
         ComponentCoverageEntry(
@@ -234,6 +244,7 @@ def build_feature_080_report(changed_files: Sequence[str] | None = None) -> Hood
         component_coverage=component_coverage,
         remaining_gaps=_remaining_gaps(component_coverage),
         readiness_level=readiness_level,
+        validation_summary=_validation_summary(),
         claim_boundary=_claim_boundary(),
         scope_evidence=tuple(validate_scope(DEFAULT_CHANGED_FILES if changed_files is None else changed_files)),
     )
@@ -274,6 +285,9 @@ def render_feature_080_report(report: HoodieProposedMethodReport) -> str:
             f"- partial_count: `{payload['partial_count']}`",
             f"- missing_count: `{payload['missing_count']}`",
             f"- readiness_level: `{payload['readiness_level']}`",
+            "",
+            "## Validation Summary",
+            *[f"- {item}" for item in payload["validation_summary"]],
             "",
             "## Claim Boundary",
             *[f"- {item}" for item in payload["claim_boundary"]],

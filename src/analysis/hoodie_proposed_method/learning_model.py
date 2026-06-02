@@ -21,6 +21,11 @@ class DQNInterface:
         state_value = float(state_features.get("state_value", 0.0))
         return {action: state_value for action in legal_actions}
 
+    def choose_action(self, q_values: Mapping[str, float]) -> str:
+        if not q_values:
+            raise ValueError("q_values must be non-empty")
+        return max(q_values, key=lambda key: (q_values[key], key))
+
     def to_dict(self) -> dict[str, Any]:
         return asdict(self)
 
@@ -28,6 +33,9 @@ class DQNInterface:
 @dataclass(frozen=True, slots=True)
 class DoubleDQNTargetRule:
     selector: DoubleDQNSelector = field(default_factory=DoubleDQNSelector)
+
+    def select_action(self, online_q_values: dict[str, float], legal_actions: tuple[str, ...]) -> str:
+        return self.selector.select_action(online_q_values, legal_actions)
 
     def target_value(self, online_q_values: dict[str, float], target_q_values: dict[str, float], legal_actions: tuple[str, ...]) -> float:
         return self.selector.target_value(online_q_values, target_q_values, legal_actions)
@@ -44,6 +52,12 @@ class DuelingDQNInterface:
     def q_values(self, state_features: Mapping[str, float], legal_actions: Sequence[str]) -> dict[str, float]:
         model = DuelingDQN(value_weight=self.value_weight, advantage_weights=dict(self.advantage_weights))
         return model.q_values(dict(state_features), tuple(legal_actions))
+
+    def choose_action(self, state_features: Mapping[str, float], legal_actions: Sequence[str]) -> str:
+        q_values = self.q_values(state_features, legal_actions)
+        if not q_values:
+            raise ValueError("legal_actions must be non-empty")
+        return max(q_values, key=lambda key: (q_values[key], key))
 
     def to_dict(self) -> dict[str, Any]:
         return {
@@ -96,6 +110,15 @@ class ReplayMemoryInterface:
         rng = random.Random(self.seed + len(self._items))
         indices = sorted(rng.sample(range(len(self._items)), batch_size))
         return tuple(self._items[index] for index in indices)
+
+    def __len__(self) -> int:
+        return len(self._items)
+
+    def sample(self, batch_size: int) -> tuple[Transition, ...]:
+        return self.sample_batch(batch_size)
+
+    def clear(self) -> None:
+        self._items.clear()
 
     def to_dict(self) -> dict[str, Any]:
         return {"capacity": self.capacity, "size": len(self._items), "seed": self.seed}

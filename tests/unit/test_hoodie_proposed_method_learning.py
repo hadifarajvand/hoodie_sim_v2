@@ -19,8 +19,10 @@ class HoodieProposedMethodLearningTests(unittest.TestCase):
     def test_learning_interfaces_cover_dqn_double_dqn_dueling_and_lstm_shapes(self) -> None:
         dqn = DQNInterface()
         self.assertEqual(dqn.q_values({"state_value": 3.0}, ["local", "horizontal"]), {"local": 3.0, "horizontal": 3.0})
+        self.assertEqual(dqn.choose_action({"local": 1.0, "horizontal": 2.0}), "horizontal")
 
         double_dqn = DoubleDQNTargetRule()
+        self.assertEqual(double_dqn.select_action({"local": 1.0, "horizontal": 3.0}, ("local", "horizontal")), "horizontal")
         self.assertEqual(
             double_dqn.target_value({"local": 1.0, "horizontal": 3.0}, {"local": 8.0, "horizontal": 5.0}, ("local", "horizontal")),
             5.0,
@@ -30,6 +32,7 @@ class HoodieProposedMethodLearningTests(unittest.TestCase):
         q_values = dueling.q_values({"state_value": 2.0}, ("local", "horizontal"))
         self.assertEqual(q_values["horizontal"], 5.0)
         self.assertEqual(q_values["local"], 3.0)
+        self.assertEqual(dueling.choose_action({"state_value": 2.0}, ("local", "horizontal")), "horizontal")
 
         lstm = LSTMForecastRecoveryInterface(lookback_window=3)
         self.assertEqual(lstm.forecast([1.0, 2.0, 3.0, 6.0]), 11.0 / 3.0)
@@ -44,8 +47,10 @@ class HoodieProposedMethodLearningTests(unittest.TestCase):
                 Transition(state={"slot": 3}, action="vertical", reward=-3.0, next_state={"slot": 4}, done=True),
             )
         )
+        self.assertEqual(len(replay), 2)
         self.assertEqual(replay.to_dict()["size"], 2)
         self.assertEqual(len(replay.sample_batch(1)), 1)
+        self.assertEqual(len(replay.sample(1)), 1)
         self.assertEqual(len(replay.sample_batch(10)), 2)
 
         schedule = EpsilonGreedyTrainingSchedule(epsilon_start=1.0, epsilon_end=0.0, decay_episodes=8)
