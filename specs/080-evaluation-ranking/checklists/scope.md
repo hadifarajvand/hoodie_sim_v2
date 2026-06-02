@@ -1,9 +1,9 @@
 # Scope Checklist for Feature 080 — HOODIE Proposed Method Implementation
 
-- [x] Implement/model HOODIE proposed method only.
-- [x] Do not rank policies.
-- [x] Do not evaluate baselines.
-- [x] Do not introduce thesis/DCQ methods.
-- [x] Ensure all components from the base paper are represented.
-- [x] Include unit and integration tests stubs.
-- [x] Maintain strict paper fidelity.
+- [ ] Implement/model HOODIE proposed method only.
+- [ ] Do not rank policies.
+- [ ] Do not evaluate baselines.
+- [ ] Do not introduce thesis/DCQ methods.
+- [ ] Ensure all components from the base paper are represented.
+- [ ] Include unit and integration tests stubs.
+- [ ] Maintain strict paper fidelity.

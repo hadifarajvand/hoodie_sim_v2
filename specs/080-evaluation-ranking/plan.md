@@ -1,15 +1,15 @@
 # Plan
 
-Input: Feature 079 report.
+Input: base HOODIE paper sources and the current simulator implementation.
 
 Steps:
-- validate dependency
-- load policy aggregates
-- load comparative aggregates
-- evaluate metrics
-- compute rankings
-- compute composite scores
-- generate evaluation report
+- validate scope
+- load paper-grounded formulas
+- model action, queue, reward, learning, and communication interfaces
+- classify implementation coverage
+- compute readiness level
+- generate proposed-method report
 
-No execution.
-No aggregation recomputation.
+No ranking.
+No baseline evaluation.
+No thesis/DCQ extension.
