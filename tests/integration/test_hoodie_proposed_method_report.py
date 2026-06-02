@@ -33,6 +33,7 @@ class HoodieProposedMethodReportIntegrationTests(unittest.TestCase):
         self.assertTrue(report.validation_summary)
         self.assertIn("hoodie_proposed", rendered)
         self.assertIn("validation summary", rendered)
+        self.assertIn("remaining partial components are learning internals expected to be implemented later.", rendered)
         self.assertIn("claim boundary", rendered)
         self.assertIn("scope evidence", rendered)
         self.assertIn("no ranking is performed.", rendered)

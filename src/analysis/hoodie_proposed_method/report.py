@@ -54,7 +54,7 @@ def _validation_summary() -> tuple[str, ...]:
         "unit tests (tests/unit/test_hoodie_proposed_method_*.py): passed",
         "integration tests (tests/integration/test_hoodie_proposed_method_*.py): passed",
         "module entrypoint (python -m analysis.hoodie_proposed_method): passed",
-        "scope validation remains partial because interface-only learning components are not fully trainable.",
+        "remaining partial components are learning internals expected to be implemented later.",
     )
 
 
