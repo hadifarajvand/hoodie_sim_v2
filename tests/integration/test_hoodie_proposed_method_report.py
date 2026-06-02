@@ -1,0 +1,56 @@
+from __future__ import annotations
+
+import io
+import tempfile
+import unittest
+from contextlib import redirect_stdout
+from pathlib import Path
+from unittest.mock import patch
+
+from src.analysis.hoodie_proposed_method.report import build_feature_080_report, render_feature_080_report, write_feature_080_report
+from src.analysis.hoodie_proposed_method.runner import main as hoodie_proposed_method_main
+
+
+class HoodieProposedMethodReportIntegrationTests(unittest.TestCase):
+    def _changed_files(self) -> tuple[str, ...]:
+        return (
+            "specs/080-evaluation-ranking/plan.md",
+            "specs/080-evaluation-ranking/checklists/requirements.md",
+            "src/analysis/hoodie_proposed_method/report.py",
+            "tests/integration/test_hoodie_proposed_method_report.py",
+        )
+
+    def test_report_renders_honestly_without_ranking_or_baselines(self) -> None:
+        report = build_feature_080_report(changed_files=self._changed_files())
+        rendered = render_feature_080_report(report).lower()
+        self.assertFalse(report.passed)
+        self.assertEqual(report.status, "hoodie_proposed_method_blocked")
+        self.assertEqual(report.readiness_level, "mostly_implemented")
+        self.assertEqual(report.component_count, 14)
+        self.assertEqual(report.implemented_count, 7)
+        self.assertEqual(report.partial_count, 7)
+        self.assertEqual(report.missing_count, 0)
+        self.assertIn("hoodie_proposed", rendered)
+        self.assertIn("claim boundary", rendered)
+        self.assertIn("scope evidence", rendered)
+        self.assertNotIn("rank", rendered)
+        self.assertNotIn("baseline", rendered)
+        self.assertNotIn("dcq", rendered)
+        self.assertNotIn("thesis", rendered)
+
+    def test_report_writer_and_cli_entrypoint_remain_callable(self) -> None:
+        with tempfile.TemporaryDirectory() as tmpdir:
+            output_path = write_feature_080_report(Path(tmpdir))
+            self.assertTrue(output_path.exists())
+            self.assertTrue((Path(tmpdir) / "feature-080-hoodie-proposed-method-report.json").exists())
+
+        buffer = io.StringIO()
+        with patch("src.analysis.hoodie_proposed_method.runner.write_feature_080_report", return_value=Path("/tmp/fake-report.md")):
+            with redirect_stdout(buffer):
+                exit_code = hoodie_proposed_method_main(["--output-dir", str(Path(tempfile.gettempdir()) / "hoodie-proposed-method-test")])
+        self.assertEqual(exit_code, 0)
+        self.assertEqual(buffer.getvalue().strip(), "/tmp/fake-report.md")
+
+
+if __name__ == "__main__":  # pragma: no cover
+    unittest.main()
