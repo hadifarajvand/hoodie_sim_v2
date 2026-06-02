@@ -8,6 +8,9 @@ import random
 from src.agents.double_dqn import DoubleDQNSelector
 from src.agents.dueling_dqn import DuelingDQN
 from src.agents.replay_buffer import Transition
+from src.policies.adaptive_context import AdaptiveDecisionContext, build_adaptive_context
+from src.policies.common import action_family, legal_actions as context_legal_actions
+from src.policies.policy_interface import PolicyContext, SharedPolicy
 
 
 @dataclass(frozen=True, slots=True)
@@ -183,19 +186,197 @@ class DistributedEdgeAgentDecisionModel:
     inference: InferenceMode = field(default_factory=InferenceMode)
     target_rule: DoubleDQNTargetRule = field(default_factory=DoubleDQNTargetRule)
     lstm_interface: LSTMForecastRecoveryInterface = field(default_factory=LSTMForecastRecoveryInterface)
+    exploration_seed: int = 23
+    family_biases: dict[str, float] = field(default_factory=dict)
+    decision_history: list[dict[str, Any]] = field(default_factory=list)
 
-    def choose_action(self, state_features: Mapping[str, float], legal_actions: Sequence[str], *, episode_index: int, use_inference: bool = False) -> str:
-        if not legal_actions:
+    def _coerce_float(self, value: object) -> float | None:
+        if isinstance(value, (int, float)):
+            return float(value)
+        return None
+
+    def _decision_pressure(self, adaptive_context: AdaptiveDecisionContext) -> float:
+        queue_load = self._coerce_float(adaptive_context.queue_load)
+        load_hint = self._coerce_float(adaptive_context.observation.get("load_hint"))
+        observed_arrival = self._coerce_float(adaptive_context.observed_arrival_probability)
+        cycles_remaining = self._coerce_float(adaptive_context.cycles_remaining)
+        deadline_slack: float | None = None
+        if adaptive_context.absolute_deadline_slot is not None and adaptive_context.current_slot is not None:
+            deadline_slack = float(max(1, adaptive_context.absolute_deadline_slot - adaptive_context.current_slot))
+
+        pressure_terms: list[float] = []
+        for value in (queue_load, load_hint, observed_arrival):
+            if value is not None:
+                pressure_terms.append(value)
+        if cycles_remaining is not None:
+            if deadline_slack is not None:
+                pressure_terms.append(cycles_remaining / deadline_slack)
+            else:
+                pressure_terms.append(cycles_remaining)
+        return max(pressure_terms) if pressure_terms else 0.0
+
+    def _base_features(self, adaptive_context: AdaptiveDecisionContext, legal_actions: Sequence[str]) -> dict[str, float]:
+        topology = adaptive_context.topology
+        topology_size = 0.0
+        if isinstance(topology, (tuple, list, set)):
+            topology_size = float(len(topology))
+        elif hasattr(topology, "__len__"):
+            try:
+                topology_size = float(len(topology))  # type: ignore[arg-type]
+            except TypeError:
+                topology_size = 0.0
+
+        queue_load = self._coerce_float(adaptive_context.queue_load) or 0.0
+        load_hint = self._coerce_float(adaptive_context.observation.get("load_hint")) or 0.0
+        cycles_remaining = self._coerce_float(adaptive_context.cycles_remaining) or 0.0
+        deadline_slack = 0.0
+        if adaptive_context.absolute_deadline_slot is not None and adaptive_context.current_slot is not None:
+            deadline_slack = float(max(0, adaptive_context.absolute_deadline_slot - adaptive_context.current_slot))
+
+        return {
+            "state_value": float(len(adaptive_context.observation) + len(adaptive_context.legal_action_mask) + len(tuple(legal_actions))),
+            "queue_load": queue_load,
+            "load_hint": load_hint,
+            "cycles_remaining": cycles_remaining,
+            "deadline_slack": deadline_slack,
+            "topology_size": topology_size,
+            "fallback_hint_total": float(
+                sum(
+                    float(value)
+                    for value in (
+                        adaptive_context.observation.get("fallback_hints", {}) or {}
+                    ).values()
+                    if isinstance(value, (int, float))
+                )
+            ),
+        }
+
+    def _family_score(self, adaptive_context: AdaptiveDecisionContext, family: str) -> float:
+        pressure = self._decision_pressure(adaptive_context)
+        if pressure <= 0.5:
+            score_map = {"local": 3.2, "horizontal": 1.4, "vertical": 0.8}
+        elif pressure <= 1.5:
+            score_map = {"local": 1.9, "horizontal": 3.1, "vertical": 2.2}
+        else:
+            score_map = {"local": 0.7, "horizontal": 2.2, "vertical": 3.3}
+        score = score_map.get(family, 0.0)
+        fallback_hints = adaptive_context.observation.get("fallback_hints")
+        if isinstance(fallback_hints, dict):
+            hint = fallback_hints.get(family)
+            if isinstance(hint, (int, float)):
+                score += float(hint) * 0.1
+        score += float(self.family_biases.get(family, 0.0))
+        if adaptive_context.topology is not None and family == "horizontal":
+            score += 0.2
+        if adaptive_context.absolute_deadline_slot is not None and adaptive_context.current_slot is not None:
+            deadline_slack = adaptive_context.absolute_deadline_slot - adaptive_context.current_slot
+            if deadline_slack <= 1 and family == "vertical":
+                score += 0.3
+            if deadline_slack > 2 and family == "local":
+                score += 0.1
+        return score
+
+    def score_actions(self, adaptive_context: AdaptiveDecisionContext, legal_actions: Sequence[str]) -> dict[str, float]:
+        normalized_legal = tuple(dict.fromkeys(legal_actions))
+        if not normalized_legal:
+            return {}
+        features = self._base_features(adaptive_context, normalized_legal)
+        q_values = self.dueling_interface.q_values(features, normalized_legal)
+        dqn_values = self.dqn_interface.q_values(features, normalized_legal)
+        scores: dict[str, float] = {}
+        fallback_hints = adaptive_context.observation.get("fallback_hints")
+        hint_map = fallback_hints if isinstance(fallback_hints, dict) else {}
+        latency_estimates = adaptive_context.observation.get("latency_estimates")
+        latency_map = latency_estimates if isinstance(latency_estimates, dict) else {}
+        balance_hint = adaptive_context.observation.get("balance_hint")
+        balance_map = balance_hint if isinstance(balance_hint, dict) else {}
+
+        for action in normalized_legal:
+            family = action_family(action)
+            score = q_values.get(action, 0.0) + dqn_values.get(action, 0.0) + self._family_score(adaptive_context, family)
+            for candidate in (action, family):
+                hint = hint_map.get(candidate)
+                if isinstance(hint, (int, float)):
+                    score += float(hint) * 0.05
+                latency = latency_map.get(candidate)
+                if isinstance(latency, (int, float)):
+                    score -= float(latency) * 0.05
+                balance = balance_map.get(candidate)
+                if isinstance(balance, (int, float)):
+                    score += float(balance) * 0.05
+            if action in {"local", "compute_local"} and family == "local":
+                score += 0.05
+            elif action in {"horizontal", "offload_horizontal"} and family == "horizontal":
+                score += 0.05
+            elif action in {"vertical", "offload_vertical"} and family == "vertical":
+                score += 0.05
+            scores[action] = score
+        return scores
+
+    def _choose_greedy(self, scores: Mapping[str, float]) -> str:
+        if not scores:
+            raise ValueError("scores must be non-empty")
+        return max(scores, key=lambda key: (scores[key], key))
+
+    def _choose_exploratory(self, legal_actions: Sequence[str], *, episode_index: int, trace_history: Sequence[object]) -> str:
+        rng = random.Random(self.exploration_seed + episode_index + len(legal_actions) + len(trace_history))
+        return rng.choice(tuple(sorted(legal_actions)))
+
+    def choose_from_context(self, context: PolicyContext, *, episode_index: int = 0, use_inference: bool = False) -> str:
+        legal = context_legal_actions(context)
+        if not legal:
             raise ValueError("legal_actions must be non-empty")
-        q_values = self.dueling_interface.q_values(state_features, legal_actions)
+        adaptive_context = build_adaptive_context(context)
+        scores = self.score_actions(adaptive_context, legal)
+        epsilon = 0.0 if use_inference else self.schedule.epsilon(episode_index)
+        if self.inference.epsilon == 0.0 or use_inference:
+            chosen = self._choose_greedy(scores)
+        elif epsilon <= 0.0:
+            chosen = self._choose_greedy(scores)
+        else:
+            exploratory_rng = random.Random(self.exploration_seed + episode_index + len(legal) + len(context.trace_history))
+            if exploratory_rng.random() < epsilon:
+                chosen = self._choose_exploratory(legal, episode_index=episode_index, trace_history=context.trace_history)
+            else:
+                chosen = self._choose_greedy(scores)
+        self.decision_history.append(
+            {
+                "agent_id": self.agent_id,
+                "episode_index": episode_index,
+                "use_inference": use_inference,
+                "epsilon": epsilon,
+                "legal_actions": tuple(legal),
+                "scores": dict(scores),
+                "chosen_action": chosen,
+                "chosen_family": action_family(chosen),
+            }
+        )
+        return chosen
+
+    def choose_action(
+        self,
+        state_or_context: Mapping[str, float] | PolicyContext,
+        legal_actions: Sequence[str] | None = None,
+        *,
+        episode_index: int = 0,
+        use_inference: bool = False,
+    ) -> str:
+        if isinstance(state_or_context, PolicyContext):
+            return self.choose_from_context(state_or_context, episode_index=episode_index, use_inference=use_inference)
+        if legal_actions is None:
+            raise TypeError("legal_actions must be provided when choosing from raw state features")
+        normalized_legal = tuple(dict.fromkeys(legal_actions))
+        if not normalized_legal:
+            raise ValueError("legal_actions must be non-empty")
+        q_values = self.dueling_interface.q_values(state_or_context, normalized_legal)
         if use_inference or self.inference.epsilon == 0.0:
             return self.inference.choose_action(q_values)
         epsilon = self.schedule.epsilon(episode_index)
         if epsilon <= 0.0:
             return self.inference.choose_action(q_values)
-        rng = random.Random(episode_index + len(legal_actions))
+        rng = random.Random(self.exploration_seed + episode_index + len(normalized_legal))
         if rng.random() < epsilon:
-            return sorted(legal_actions)[0]
+            return rng.choice(tuple(sorted(normalized_legal)))
         return self.inference.choose_action(q_values)
 
     def record_transition(self, state: dict[str, object], action: str, reward: float, next_state: dict[str, object], done: bool) -> None:
@@ -222,4 +403,6 @@ class DistributedEdgeAgentDecisionModel:
             "schedule": self.schedule.to_dict(),
             "inference": self.inference.to_dict(),
             "lstm_interface": self.lstm_interface.to_dict(),
+            "family_biases": dict(self.family_biases),
+            "decision_history_size": len(self.decision_history),
         }

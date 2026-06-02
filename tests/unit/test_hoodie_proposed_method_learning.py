@@ -13,6 +13,7 @@ from src.analysis.hoodie_proposed_method.learning_model import (
     ReplayMemoryInterface,
 )
 from src.agents.replay_buffer import Transition
+from src.policies.policy_interface import PolicyContext
 
 
 class HoodieProposedMethodLearningTests(unittest.TestCase):
@@ -74,6 +75,28 @@ class HoodieProposedMethodLearningTests(unittest.TestCase):
             dueling_interface=DuelingDQNInterface(advantage_weights={"horizontal": 2.0}),
         )
         self.assertEqual(model.choose_action({"state_value": 2.0}, ["local", "horizontal"], episode_index=0, use_inference=True), "horizontal")
+        context = PolicyContext(
+            observation={
+                "slot": 2,
+                "queue_load": 0.1,
+                "current_slot": 2,
+                "absolute_deadline_slot": 12,
+                "fallback_hints": {"local": 1.0, "horizontal": 2.0, "vertical": 3.0},
+            },
+            legal_action_mask={
+                "local": True,
+                "compute_local": True,
+                "horizontal": True,
+                "offload_horizontal": True,
+                "vertical": True,
+                "offload_vertical": True,
+            },
+            trace_history=("trace-1",),
+        )
+        context_model = DistributedEdgeAgentDecisionModel(agent_id="EA-10")
+        self.assertEqual(context_model.choose_action(context, episode_index=0), "local")
+        self.assertEqual(context_model.decision_history[-1]["chosen_action"], "local")
+        self.assertEqual(context_model.to_dict()["decision_history_size"], 1)
         model.record_transition({"slot": 1}, "local", -1.0, {"slot": 2}, False)
         self.assertEqual(len(model.sample_replay_batch(1)), 1)
         self.assertEqual(model.forecast_next_load([1.0, 3.0, 5.0]), 3.0)

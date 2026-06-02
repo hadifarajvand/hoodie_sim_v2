@@ -27,8 +27,8 @@ class HoodieProposedMethodReportIntegrationTests(unittest.TestCase):
         self.assertEqual(report.status, "hoodie_proposed_method_blocked")
         self.assertEqual(report.readiness_level, "mostly_implemented")
         self.assertEqual(report.component_count, 14)
-        self.assertEqual(report.implemented_count, 8)
-        self.assertEqual(report.partial_count, 6)
+        self.assertEqual(report.implemented_count, 9)
+        self.assertEqual(report.partial_count, 5)
         self.assertEqual(report.missing_count, 0)
         self.assertTrue(report.validation_summary)
         self.assertIn("hoodie_proposed", rendered)
@@ -41,8 +41,11 @@ class HoodieProposedMethodReportIntegrationTests(unittest.TestCase):
         self.assertNotIn("ranking table", rendered)
         self.assertIn("no thesis/dcq extension is introduced.", rendered)
         self.assertNotIn("proposed_dcq", rendered)
+        self.assertIn("policycontext", rendered)
         self.assertIn("replay memory interface", rendered)
         self.assertIn("bounded fifo replay memory", rendered)
+        self.assertIn("distributed edge-agent decision model", rendered)
+        self.assertIn("scores legal local/horizontal/vertical actions", rendered)
 
     def test_report_writer_and_cli_entrypoint_remain_callable(self) -> None:
         with tempfile.TemporaryDirectory() as tmpdir:

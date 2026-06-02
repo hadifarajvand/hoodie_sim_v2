@@ -1,6 +1,6 @@
 # Requirements Checklist for Feature 080 — HOODIE Proposed Method Implementation
 
-Status summary: implemented 7, partial 6, missing 0.
+Status summary: implemented 8, partial 5, missing 0.
 
 ## Implemented
 
@@ -8,13 +8,13 @@ Status summary: implemented 7, partial 6, missing 0.
 - [x] Private queue timing logic.
 - [x] Offloading/public queue timing.
 - [x] Reward/cost computation (Phi_priv, Phi_pub, C).
+- [x] Distributed edge-agent decision model.
 - [x] Inference mode with epsilon=0.
 - [x] Pub-Sub metadata handling.
 - [x] Replay memory interface.
 
 ## Partial
 
-- [ ] Distributed edge-agent decision model. [partial]
 - [ ] DQN interfaces. [partial]
 - [ ] Double DQN target. [partial]
 - [ ] Dueling DQN value/advantage. [partial]

@@ -120,8 +120,8 @@ def build_formula_registry() -> tuple[FormulaRegistryEntry, ...]:
             equation="agent decision = q(state, action family) with epsilon-greedy selection",
             source="HOODIE base paper, distributed decision section",
             implementation_reference="src/analysis/hoodie_proposed_method/learning_model.py",
-            status="partial",
-            note="The repository exposes the decision interface, but not a full training runtime.",
+            status="implemented",
+            note="The repository now scores legal local/horizontal/vertical actions from PolicyContext with bounded epsilon-greedy selection.",
         ),
         FormulaRegistryEntry(
             formula_id="double_dqn_target",
