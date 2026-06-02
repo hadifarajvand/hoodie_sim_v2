@@ -156,8 +156,8 @@ def build_formula_registry() -> tuple[FormulaRegistryEntry, ...]:
             equation="experience buffer with sampled batches",
             source="HOODIE base paper, experience replay section",
             implementation_reference="src/analysis/hoodie_proposed_method/learning_model.py",
-            status="partial",
-            note="The buffer is represented as a lightweight interface for skeleton validation.",
+            status="implemented",
+            note="The buffer is a bounded FIFO replay memory with deterministic and random sampling paths.",
         ),
         FormulaRegistryEntry(
             formula_id="epsilon_greedy_schedule",

@@ -100,22 +100,39 @@ class ReplayMemoryInterface:
         for transition in transitions:
             self.add(transition)
 
-    def sample_batch(self, batch_size: int) -> tuple[Transition, ...]:
+    def sample_batch(
+        self,
+        batch_size: int,
+        *,
+        deterministic: bool = True,
+        seed: int | None = None,
+    ) -> tuple[Transition, ...]:
         if batch_size <= 0:
             return ()
         if not self._items:
             return ()
         if batch_size >= len(self._items):
             return tuple(self._items)
-        rng = random.Random(self.seed + len(self._items))
+        if deterministic:
+            rng = random.Random(self.seed + len(self._items) if seed is None else seed)
+        else:
+            rng = random.Random(seed) if seed is not None else random.Random()
         indices = sorted(rng.sample(range(len(self._items)), batch_size))
         return tuple(self._items[index] for index in indices)
 
     def __len__(self) -> int:
         return len(self._items)
 
-    def sample(self, batch_size: int) -> tuple[Transition, ...]:
-        return self.sample_batch(batch_size)
+    def is_empty(self) -> bool:
+        return not self._items
+
+    def sample(self, batch_size: int, *, deterministic: bool = True, seed: int | None = None) -> tuple[Transition, ...]:
+        return self.sample_batch(batch_size, deterministic=deterministic, seed=seed)
+
+    def latest(self) -> Transition | None:
+        if not self._items:
+            return None
+        return self._items[-1]
 
     def clear(self) -> None:
         self._items.clear()

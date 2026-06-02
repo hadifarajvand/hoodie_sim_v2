@@ -1,6 +1,6 @@
 # Requirements Checklist for Feature 080 — HOODIE Proposed Method Implementation
 
-Status summary: implemented 6, partial 7, missing 0.
+Status summary: implemented 7, partial 6, missing 0.
 
 ## Implemented
 
@@ -10,6 +10,7 @@ Status summary: implemented 6, partial 7, missing 0.
 - [x] Reward/cost computation (Phi_priv, Phi_pub, C).
 - [x] Inference mode with epsilon=0.
 - [x] Pub-Sub metadata handling.
+- [x] Replay memory interface.
 
 ## Partial
 
@@ -18,7 +19,6 @@ Status summary: implemented 6, partial 7, missing 0.
 - [ ] Double DQN target. [partial]
 - [ ] Dueling DQN value/advantage. [partial]
 - [ ] LSTM forecast/recovery interface. [partial]
-- [ ] Replay memory interface. [partial]
 - [ ] Epsilon-greedy schedule. [partial]
 
 ## Missing
