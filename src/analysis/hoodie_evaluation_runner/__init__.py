@@ -12,7 +12,13 @@ from .model import (
     ScenarioCoverageRow,
     TaskBlueprint,
 )
-from .report import build_feature_081_report
+from .report import build_feature_081_report, render_feature_081_report
+from .runner import (
+    generate_feature_081_evaluation_artifacts,
+    generate_hoodie_evaluation_runner_artifacts,
+    main,
+    write_feature_081_evaluation_artifacts,
+)
 
 __all__ = [
     "EvaluationConfig",
@@ -26,4 +32,9 @@ __all__ = [
     "ScenarioCoverageRow",
     "TaskBlueprint",
     "build_feature_081_report",
+    "generate_feature_081_evaluation_artifacts",
+    "generate_hoodie_evaluation_runner_artifacts",
+    "main",
+    "render_feature_081_report",
+    "write_feature_081_evaluation_artifacts",
 ]

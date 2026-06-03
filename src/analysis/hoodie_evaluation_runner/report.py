@@ -241,7 +241,7 @@ def _simulate_task(policy_name: str, scenario: ScenarioContext, task, seed: int,
     )
 
 
-def build_execution_rows(config: EvaluationConfig | None = None) -> tuple[MetricRow, tuple[ScenarioContext, ...], dict[tuple[str, str, str, int], tuple[ExecutionOutcome, ...]]]:
+def build_execution_rows(config: EvaluationConfig | None = None) -> tuple[MetricRow, tuple[ScenarioContext, ...], dict[tuple[str, str, str, str, int], tuple[ExecutionOutcome, ...]]]:
     config = config or EvaluationConfig()
     scenarios = build_scenario_contexts(config)
     outcomes_by_key: dict[tuple[str, str, str, int], tuple[ExecutionOutcome, ...]] = {}
@@ -253,7 +253,7 @@ def build_execution_rows(config: EvaluationConfig | None = None) -> tuple[Metric
                 outcome = _simulate_task(policy_name, scenario, task, scenario.seed, scenario.workload, scenario.deadline_pressure, task.queue_length_snapshot)
                 outcomes.append(outcome)
             outcomes_tuple = tuple(outcomes)
-            outcomes_by_key[(policy_name, scenario.scenario_name, scenario.workload, scenario.seed)] = outcomes_tuple
+            outcomes_by_key[(policy_name, scenario.scenario_name, scenario.workload, scenario.deadline_pressure, scenario.seed)] = outcomes_tuple
             metric_rows.append(
                 build_metric_row(
                     policy=policy_name,
@@ -328,8 +328,8 @@ def build_feature_081_report(config: EvaluationConfig | None = None) -> Feature0
     )
 
 
-def render_feature_081_report() -> str:
-    report = build_feature_081_report()
+def render_feature_081_report(report: Feature081Report | None = None) -> str:
+    report = report or build_feature_081_report()
     lines = [
         "# Feature 081 HOODIE Evaluation & Baseline Benchmarking Report",
         "",

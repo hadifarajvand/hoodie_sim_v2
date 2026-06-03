@@ -1,10 +1,6 @@
 from __future__ import annotations
 
-from .report import render_feature_081_report
-
-
-def main() -> None:
-    print(render_feature_081_report())
+from .runner import main
 
 
 if __name__ == "__main__":
