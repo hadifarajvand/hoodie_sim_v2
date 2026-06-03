@@ -55,7 +55,7 @@ def _validation_summary() -> tuple[str, ...]:
         "integration tests (tests/integration/test_hoodie_proposed_method_*.py): passed",
         "module entrypoint (python -m analysis.hoodie_proposed_method): passed",
         "remaining partial components are learning internals expected to be implemented later.",
-        "next partial targets: double_dqn_target_rule, dueling_dqn_value_advantage_interface, lstm_forecast_recovery_interface.",
+        "next partial targets: dueling_dqn_value_advantage_interface, lstm_forecast_recovery_interface.",
     )
 
 
@@ -135,11 +135,11 @@ def _component_definitions() -> tuple[ComponentCoverageEntry, ...]:
             component_id="double_dqn_target_rule",
             component_name="Double DQN target rule",
             paper_requirement="Online action selection with target-network evaluation",
-            current_implementation="A deterministic Double-DQN target rule exists as an interface, but not as a full training algorithm.",
+            current_implementation="The target rule now selects the online argmax action with stable tie-breaking, evaluates the matching target-network value, and records decision traces.",
             implementation_reference="src/analysis/hoodie_proposed_method/learning_model.py; src/agents/double_dqn.py",
-            status="partial",
-            gap="interface_only_double_dqn",
-            required_repair="Connect the rule to a full replay/training loop if training is required.",
+            status="implemented",
+            gap="none",
+            required_repair="No repair required for the deterministic Double DQN target contract.",
         ),
         ComponentCoverageEntry(
             component_id="dueling_dqn_value_advantage_interface",

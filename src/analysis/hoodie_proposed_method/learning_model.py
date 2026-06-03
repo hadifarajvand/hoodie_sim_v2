@@ -5,7 +5,6 @@ from typing import Any, Mapping, Sequence
 import math
 import random
 
-from src.agents.double_dqn import DoubleDQNSelector
 from src.agents.dueling_dqn import DuelingDQN
 from src.agents.replay_buffer import Transition
 from src.policies.adaptive_context import AdaptiveDecisionContext, build_adaptive_context
@@ -28,6 +27,24 @@ class DQNDecisionTrace:
             "q_values": dict(self.q_values),
             "chosen_action": self.chosen_action,
             "source": self.source,
+        }
+
+
+@dataclass(slots=True)
+class DoubleDQNTargetTrace:
+    online_q_values: dict[str, float]
+    target_q_values: dict[str, float]
+    legal_actions: tuple[str, ...]
+    chosen_action: str
+    target_value: float
+
+    def to_dict(self) -> dict[str, Any]:
+        return {
+            "online_q_values": dict(self.online_q_values),
+            "target_q_values": dict(self.target_q_values),
+            "legal_actions": list(self.legal_actions),
+            "chosen_action": self.chosen_action,
+            "target_value": self.target_value,
         }
 
 
@@ -139,16 +156,46 @@ class DQNInterface:
 
 @dataclass(frozen=True, slots=True)
 class DoubleDQNTargetRule:
-    selector: DoubleDQNSelector = field(default_factory=DoubleDQNSelector)
+    default_target_value: float = 0.0
+    decision_trace: list[DoubleDQNTargetTrace] = field(default_factory=list)
 
-    def select_action(self, online_q_values: dict[str, float], legal_actions: tuple[str, ...]) -> str:
-        return self.selector.select_action(online_q_values, legal_actions)
+    def select_action(self, online_q_values: Mapping[str, float], legal_actions: Sequence[str]) -> str:
+        candidates = tuple(dict.fromkeys(legal_actions))
+        if not candidates:
+            raise ValueError("legal_actions must be non-empty")
+        best_action = candidates[0]
+        best_value = float(online_q_values.get(best_action, float("-inf")))
+        for action in candidates[1:]:
+            value = float(online_q_values.get(action, float("-inf")))
+            if value > best_value:
+                best_action = action
+                best_value = value
+        return best_action
 
-    def target_value(self, online_q_values: dict[str, float], target_q_values: dict[str, float], legal_actions: tuple[str, ...]) -> float:
-        return self.selector.target_value(online_q_values, target_q_values, legal_actions)
+    def target_value(
+        self,
+        online_q_values: Mapping[str, float],
+        target_q_values: Mapping[str, float],
+        legal_actions: Sequence[str],
+    ) -> float:
+        chosen_action = self.select_action(online_q_values, legal_actions)
+        target_value = float(target_q_values.get(chosen_action, self.default_target_value))
+        self.decision_trace.append(
+            DoubleDQNTargetTrace(
+                online_q_values=dict(online_q_values),
+                target_q_values=dict(target_q_values),
+                legal_actions=tuple(dict.fromkeys(legal_actions)),
+                chosen_action=chosen_action,
+                target_value=target_value,
+            )
+        )
+        return target_value
 
     def to_dict(self) -> dict[str, Any]:
-        return {"selector": self.selector.__class__.__name__}
+        return {
+            "default_target_value": self.default_target_value,
+            "decision_trace": [trace.to_dict() for trace in self.decision_trace],
+        }
 
 
 @dataclass(frozen=True, slots=True)

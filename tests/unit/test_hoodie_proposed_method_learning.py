@@ -97,10 +97,18 @@ class HoodieProposedMethodLearningTests(unittest.TestCase):
     def test_learning_interfaces_cover_double_dqn_dueling_and_lstm_shapes(self) -> None:
         double_dqn = DoubleDQNTargetRule()
         self.assertEqual(double_dqn.select_action({"local": 1.0, "horizontal": 3.0}, ("local", "horizontal")), "horizontal")
+        self.assertEqual(double_dqn.select_action({"local": 5.0, "horizontal": 5.0, "vertical": 1.0}, ("local", "horizontal", "vertical")), "local")
         self.assertEqual(
             double_dqn.target_value({"local": 1.0, "horizontal": 3.0}, {"local": 8.0, "horizontal": 5.0}, ("local", "horizontal")),
             5.0,
         )
+        self.assertEqual(double_dqn.decision_trace[-1].chosen_action, "horizontal")
+        self.assertEqual(double_dqn.decision_trace[-1].target_value, 5.0)
+        self.assertEqual(double_dqn.to_dict()["decision_trace"][-1]["chosen_action"], "horizontal")
+        with self.assertRaises(ValueError):
+            double_dqn.select_action({"local": 1.0}, ())
+        with self.assertRaises(ValueError):
+            double_dqn.target_value({"local": 1.0}, {"local": 2.0}, ())
 
         dueling = DuelingDQNInterface(value_weight=2.0, advantage_weights={"local": 1.0, "horizontal": 3.0})
         q_values = dueling.q_values({"state_value": 2.0}, ("local", "horizontal"))

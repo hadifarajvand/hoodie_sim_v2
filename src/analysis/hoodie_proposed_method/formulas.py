@@ -129,8 +129,8 @@ def build_formula_registry() -> tuple[FormulaRegistryEntry, ...]:
             equation="target = Q_target(argmax_a Q_online(s', a))",
             source="HOODIE base paper, Double DQN target update rule",
             implementation_reference="src/analysis/hoodie_proposed_method/learning_model.py",
-            status="partial",
-            note="Target selection is modeled as an interface-level helper.",
+            status="implemented",
+            note="Target selection now performs deterministic online argmax selection, evaluates the matching target value, and records traces.",
         ),
         FormulaRegistryEntry(
             formula_id="dueling_value_advantage",

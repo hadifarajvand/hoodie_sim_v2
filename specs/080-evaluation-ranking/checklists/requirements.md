@@ -1,6 +1,6 @@
 # Requirements Checklist for Feature 080 — HOODIE Proposed Method Implementation
 
-Status summary: implemented 11, partial 3, missing 0. The remaining partial items are the learning-internal interfaces listed below.
+Status summary: implemented 12, partial 2, missing 0. The remaining partial items are the learning-internal interfaces listed below.
 
 ## Implemented
 
@@ -17,7 +17,7 @@ Status summary: implemented 11, partial 3, missing 0. The remaining partial item
 
 ## Partial
 
-- [ ] Double DQN target. [partial]
+- [x] Double DQN target.
 - [ ] Dueling DQN value/advantage. [partial]
 - [ ] LSTM forecast/recovery interface. [partial]
 

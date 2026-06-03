@@ -26,5 +26,5 @@ Status summary: implemented 8, partial 2, missing 0.
 
 - All tasks strictly follow the base HOODIE paper.
 - No thesis/DCQ extensions included.
-- Within task 5, the DQN interface subcomponent is now implemented; Double DQN and Dueling DQN remain partial.
+- Within task 5, the DQN interface and Double DQN target are now implemented; Dueling DQN remains partial.
 - Within task 8, the epsilon-greedy training schedule is now implemented; it still does not imply a full trainable learner stack.
