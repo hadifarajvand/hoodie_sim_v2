@@ -110,11 +110,24 @@ class HoodieProposedMethodLearningTests(unittest.TestCase):
         with self.assertRaises(ValueError):
             double_dqn.target_value({"local": 1.0}, {"local": 2.0}, ())
 
-        dueling = DuelingDQNInterface(value_weight=2.0, advantage_weights={"local": 1.0, "horizontal": 3.0})
-        q_values = dueling.q_values({"state_value": 2.0}, ("local", "horizontal"))
-        self.assertEqual(q_values["horizontal"], 5.0)
-        self.assertEqual(q_values["local"], 3.0)
-        self.assertEqual(dueling.choose_action({"state_value": 2.0}, ("local", "horizontal")), "horizontal")
+        dueling = DuelingDQNInterface(value_weight=2.0, advantage_weights={"local": 1.0, "horizontal": 3.0, "vertical": 2.0})
+        q_values = dueling.q_values({"state_value": 2.0}, ("local", "horizontal", "vertical"))
+        self.assertEqual(q_values, {"local": 1.0, "horizontal": 3.0, "vertical": 2.0})
+        self.assertEqual(dueling.choose_action({"state_value": 2.0}, ("local", "horizontal", "vertical")), "horizontal")
+        self.assertEqual(dueling.decision_trace[-1].value_estimate, 2.0)
+        self.assertEqual(dueling.decision_trace[-1].raw_advantages, {"local": 1.0, "horizontal": 3.0, "vertical": 2.0})
+        self.assertEqual(dueling.decision_trace[-1].mean_advantage, 2.0)
+        self.assertEqual(dueling.decision_trace[-1].q_values, {"local": 1.0, "horizontal": 3.0, "vertical": 2.0})
+        self.assertEqual(dueling.decision_trace[-1].selected_action, "horizontal")
+        self.assertEqual(dueling.to_dict()["decision_trace"][-1]["selected_action"], "horizontal")
+        tie_dueling = DuelingDQNInterface(advantage_weights={"local": 0.0, "horizontal": 0.0, "vertical": 0.0})
+        self.assertEqual(tie_dueling.choose_action({"state_value": 1.0}, ("vertical", "horizontal", "local")), "vertical")
+        with self.assertRaises(ValueError):
+            DuelingDQNInterface(advantage_weights={"local": 1.0}).q_values({"state_value": 1.0}, ("local", "horizontal"))
+        with self.assertRaises(ValueError):
+            DuelingDQNInterface(advantage_weights={"local": 1.0, "horizontal": 2.0}).q_values({}, ("local", "horizontal"))
+        with self.assertRaises(ValueError):
+            DuelingDQNInterface(advantage_weights={"local": 1.0, "horizontal": 2.0}).q_values({"state_value": 1.0}, [])
 
         lstm = LSTMForecastRecoveryInterface(lookback_window=3)
         self.assertEqual(lstm.forecast([1.0, 2.0, 3.0, 6.0]), 11.0 / 3.0)
@@ -149,7 +162,7 @@ class HoodieProposedMethodLearningTests(unittest.TestCase):
 
         model = DistributedEdgeAgentDecisionModel(
             agent_id="EA-9",
-            dueling_interface=DuelingDQNInterface(advantage_weights={"horizontal": 2.0}),
+            dueling_interface=DuelingDQNInterface(advantage_weights={"local": 0.0, "horizontal": 2.0}),
         )
         self.assertEqual(model.choose_action({"state_value": 2.0}, ["local", "horizontal"], episode_index=0, use_inference=True), "horizontal")
         context = PolicyContext(

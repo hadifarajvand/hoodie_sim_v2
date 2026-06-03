@@ -54,8 +54,8 @@ def _validation_summary() -> tuple[str, ...]:
         "unit tests (tests/unit/test_hoodie_proposed_method_*.py): passed",
         "integration tests (tests/integration/test_hoodie_proposed_method_*.py): passed",
         "module entrypoint (python -m analysis.hoodie_proposed_method): passed",
-        "remaining partial components are learning internals expected to be implemented later.",
-        "next partial targets: dueling_dqn_value_advantage_interface, lstm_forecast_recovery_interface.",
+        "remaining partial component is a learning internal expected to be implemented later.",
+        "next partial targets: lstm_forecast_recovery_interface.",
     )
 
 
@@ -145,11 +145,11 @@ def _component_definitions() -> tuple[ComponentCoverageEntry, ...]:
             component_id="dueling_dqn_value_advantage_interface",
             component_name="Dueling DQN value/advantage interface",
             paper_requirement="Value stream plus advantage stream",
-            current_implementation="The repository exposes a dueling-style Q decomposition, but it remains a lightweight interface rather than a full neural training module.",
-            implementation_reference="src/analysis/hoodie_proposed_method/learning_model.py; src/agents/dueling_dqn.py; src/analysis/paper_hoodie_network_implementation/report.py",
-            status="partial",
-            gap="interface_only_dueling_dqn",
-            required_repair="Replace the interface with a trainable network if full dueling training is required.",
+            current_implementation="The interface now aggregates state value and per-action advantages deterministically, selects the best action, rejects incomplete inputs, and records decision traces.",
+            implementation_reference="src/analysis/hoodie_proposed_method/learning_model.py",
+            status="implemented",
+            gap="none",
+            required_repair="No repair required for the deterministic dueling value/advantage contract.",
         ),
         ComponentCoverageEntry(
             component_id="lstm_forecast_recovery_interface",

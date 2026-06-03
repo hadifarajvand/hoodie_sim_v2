@@ -1,6 +1,6 @@
 # Tasks for Feature 080 — HOODIE Proposed Method Implementation
 
-Status summary: implemented 8, partial 2, missing 0.
+Status summary: implemented 9, partial 1, missing 0.
 
 ## Implemented
 
@@ -15,7 +15,7 @@ Status summary: implemented 8, partial 2, missing 0.
 
 ## Partial
 
-5. [ ] Implement DQN interfaces, Double DQN target, Dueling DQN value/advantage. [partial]
+5. [x] Implement DQN interfaces, Double DQN target, Dueling DQN value/advantage.
 6. [ ] Implement LSTM forecast/recovery interface. [partial]
 
 ## Missing
@@ -26,5 +26,5 @@ Status summary: implemented 8, partial 2, missing 0.
 
 - All tasks strictly follow the base HOODIE paper.
 - No thesis/DCQ extensions included.
-- Within task 5, the DQN interface and Double DQN target are now implemented; Dueling DQN remains partial.
+- Within task 5, the DQN interface, Double DQN target, and Dueling DQN value/advantage interface are implemented; only LSTM remains partial.
 - Within task 8, the epsilon-greedy training schedule is now implemented; it still does not imply a full trainable learner stack.

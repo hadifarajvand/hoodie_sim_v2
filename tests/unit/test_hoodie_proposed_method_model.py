@@ -18,8 +18,8 @@ class HoodieProposedMethodModelTests(unittest.TestCase):
         )
         self.assertEqual(report.feature_id, FEATURE_ID)
         self.assertEqual(report.component_count, 14)
-        self.assertEqual(report.implemented_count, 12)
-        self.assertEqual(report.partial_count, 2)
+        self.assertEqual(report.implemented_count, 13)
+        self.assertEqual(report.partial_count, 1)
         self.assertEqual(report.missing_count, 0)
         self.assertEqual(report.readiness_level, "mostly_implemented")
         self.assertFalse(report.passed)
@@ -27,7 +27,8 @@ class HoodieProposedMethodModelTests(unittest.TestCase):
         self.assertEqual(len(report.formula_registry), 12)
         formula_registry = {entry.formula_id: entry for entry in report.formula_registry}
         self.assertEqual(formula_registry["double_dqn_target"].status, "implemented")
-        self.assertEqual(len(report.remaining_gaps), 2)
+        self.assertEqual(formula_registry["dueling_value_advantage"].status, "implemented")
+        self.assertEqual(len(report.remaining_gaps), 1)
         self.assertTrue(report.validation_summary)
         self.assertEqual(TARGET_METHOD_ID, "HOODIE_PROPOSED")
 

@@ -5,7 +5,6 @@ from typing import Any, Mapping, Sequence
 import math
 import random
 
-from src.agents.dueling_dqn import DuelingDQN
 from src.agents.replay_buffer import Transition
 from src.policies.adaptive_context import AdaptiveDecisionContext, build_adaptive_context
 from src.policies.common import action_family, legal_actions as context_legal_actions
@@ -46,6 +45,18 @@ class DoubleDQNTargetTrace:
             "chosen_action": self.chosen_action,
             "target_value": self.target_value,
         }
+
+
+def _default_dueling_advantages() -> dict[str, float]:
+    return {
+        "local": 0.0,
+        "compute_local": 0.0,
+        "horizontal": 0.0,
+        "offload_horizontal": 0.0,
+        "vertical": 0.0,
+        "offload_vertical": 0.0,
+        "cloud": 0.0,
+    }
 
 
 @dataclass(slots=True)
@@ -199,24 +210,144 @@ class DoubleDQNTargetRule:
 
 
 @dataclass(frozen=True, slots=True)
+class DuelingDecisionTrace:
+    state_vector: tuple[float, ...]
+    state_id: str | None
+    value_estimate: float
+    raw_advantages: dict[str, float]
+    mean_advantage: float
+    q_values: dict[str, float]
+    selected_action: str
+
+    def to_dict(self) -> dict[str, Any]:
+        return {
+            "state_vector": list(self.state_vector),
+            "state_id": self.state_id,
+            "value_estimate": self.value_estimate,
+            "raw_advantages": dict(self.raw_advantages),
+            "mean_advantage": self.mean_advantage,
+            "q_values": dict(self.q_values),
+            "selected_action": self.selected_action,
+        }
+
+
+@dataclass(frozen=True, slots=True)
 class DuelingDQNInterface:
     value_weight: float = 1.0
-    advantage_weights: dict[str, float] = field(default_factory=dict)
+    advantage_weights: dict[str, float] = field(default_factory=_default_dueling_advantages)
+    state_feature_order: tuple[str, ...] = ("state_value",)
+    decision_trace: list[DuelingDecisionTrace] = field(default_factory=list)
 
-    def q_values(self, state_features: Mapping[str, float], legal_actions: Sequence[str]) -> dict[str, float]:
-        model = DuelingDQN(value_weight=self.value_weight, advantage_weights=dict(self.advantage_weights))
-        return model.q_values(dict(state_features), tuple(legal_actions))
+    def __post_init__(self) -> None:
+        if len(set(self.state_feature_order)) != len(self.state_feature_order):
+            raise ValueError("state_feature_order must be unique")
 
-    def choose_action(self, state_features: Mapping[str, float], legal_actions: Sequence[str]) -> str:
-        q_values = self.q_values(state_features, legal_actions)
-        if not q_values:
+    def state_vector(self, state_features: Mapping[str, float] | Sequence[float]) -> tuple[float, ...]:
+        if isinstance(state_features, Mapping):
+            ordered_keys = list(self.state_feature_order)
+            ordered_keys.extend(key for key in sorted(state_features) if key not in self.state_feature_order)
+            vector: list[float] = []
+            for key in ordered_keys:
+                value = state_features.get(key)
+                if isinstance(value, (int, float)):
+                    vector.append(float(value))
+                elif key == "state_value":
+                    raise ValueError("state value is required")
+            return tuple(vector)
+        return tuple(float(value) for value in state_features)
+
+    def state_value(self, state_features: Mapping[str, float] | Sequence[float] | float) -> float:
+        if isinstance(state_features, (int, float)):
+            return float(state_features)
+        if isinstance(state_features, Mapping):
+            value = state_features.get("state_value")
+            if not isinstance(value, (int, float)):
+                raise ValueError("state value is required")
+            return float(value)
+        if not state_features:
+            raise ValueError("state value is required")
+        return float(state_features[0])
+
+    def _candidate_actions(self, legal_actions: Sequence[str]) -> tuple[str, ...]:
+        candidate_actions = tuple(dict.fromkeys(legal_actions))
+        if not candidate_actions:
             raise ValueError("legal_actions must be non-empty")
-        return max(q_values, key=lambda key: (q_values[key], key))
+        return candidate_actions
+
+    def advantages(self, legal_actions: Sequence[str]) -> dict[str, float]:
+        candidate_actions = self._candidate_actions(legal_actions)
+        raw_advantages: dict[str, float] = {}
+        for action in candidate_actions:
+            if action not in self.advantage_weights:
+                raise ValueError(f"missing advantage for action: {action}")
+            raw_advantages[action] = float(self.advantage_weights[action])
+        return raw_advantages
+
+    def q_values(
+        self,
+        state_features: Mapping[str, float] | Sequence[float] | float,
+        legal_actions: Sequence[str],
+    ) -> dict[str, float]:
+        candidate_actions = self._candidate_actions(legal_actions)
+        value_estimate = self.state_value(state_features)
+        raw_advantages = self.advantages(candidate_actions)
+        mean_advantage = math.fsum(raw_advantages.values()) / len(raw_advantages)
+        return {
+            action: value_estimate + raw_advantages[action] - mean_advantage
+            for action in candidate_actions
+        }
+
+    def _choose_action_from_q_values(self, q_values: Mapping[str, float], legal_actions: Sequence[str]) -> str:
+        candidate_actions = self._candidate_actions(legal_actions)
+        selected_action = candidate_actions[0]
+        selected_value = float(q_values[selected_action])
+        for action in candidate_actions[1:]:
+            value = float(q_values[action])
+            if value > selected_value:
+                selected_action = action
+                selected_value = value
+        return selected_action
+
+    def select_action(
+        self,
+        state_features: Mapping[str, float] | Sequence[float] | float,
+        legal_actions: Sequence[str],
+    ) -> str:
+        candidate_actions = self._candidate_actions(legal_actions)
+        value_estimate = self.state_value(state_features)
+        raw_advantages = self.advantages(candidate_actions)
+        mean_advantage = math.fsum(raw_advantages.values()) / len(raw_advantages)
+        q_values = {
+            action: value_estimate + raw_advantages[action] - mean_advantage
+            for action in candidate_actions
+        }
+        selected_action = self._choose_action_from_q_values(q_values, candidate_actions)
+        self.decision_trace.append(
+            DuelingDecisionTrace(
+                state_vector=self.state_vector(state_features),
+                state_id=state_features.get("state_id") if isinstance(state_features, Mapping) else None,
+                value_estimate=value_estimate,
+                raw_advantages=dict(raw_advantages),
+                mean_advantage=mean_advantage,
+                q_values=dict(q_values),
+                selected_action=selected_action,
+            )
+        )
+        return selected_action
+
+    def choose_action(
+        self,
+        state_features: Mapping[str, float] | Sequence[float] | float,
+        legal_actions: Sequence[str],
+    ) -> str:
+        return self.select_action(state_features, legal_actions)
 
     def to_dict(self) -> dict[str, Any]:
         return {
             "value_weight": self.value_weight,
             "advantage_weights": dict(self.advantage_weights),
+            "state_feature_order": list(self.state_feature_order),
+            "decision_trace": [trace.to_dict() for trace in self.decision_trace],
         }
 
 

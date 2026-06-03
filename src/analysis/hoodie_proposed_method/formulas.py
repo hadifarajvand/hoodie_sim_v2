@@ -138,8 +138,8 @@ def build_formula_registry() -> tuple[FormulaRegistryEntry, ...]:
             equation="Q(s, a) = V(s) + A(s, a) - mean_a A(s, a)",
             source="HOODIE base paper, dueling architecture section",
             implementation_reference="src/analysis/hoodie_proposed_method/learning_model.py",
-            status="partial",
-            note="The value/advantage interface is present, but it is not a trainable network.",
+            status="implemented",
+            note="The interface now aggregates deterministic state value and action advantages with stable tie-breaking and trace output.",
         ),
         FormulaRegistryEntry(
             formula_id="lstm_forecast_recovery",
