@@ -1,4 +1,9 @@
-# Entry point for HOODIE Evaluation & Baseline Benchmarking (Feature 081)
+"""Entry point for Feature 081 evaluation runner."""
 
-if __name__ == '__main__':
-    print("HOODIE Evaluation Runner ready. Use this entry point to run scenarios and log metrics.")
+
+def main() -> None:
+    print("Feature 081 HOODIE evaluation runner specification is ready for implementation.")
+
+
+if __name__ == "__main__":
+    main()
