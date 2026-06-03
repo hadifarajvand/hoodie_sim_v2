@@ -1,0 +1,725 @@
+{
+  "metric_count": 10,
+  "ranking_tables": {
+    "average_delay": [
+      {
+        "direction": "lower_is_better",
+        "metric": "average_delay",
+        "policy": "CLOUD_ONLY",
+        "rank": 1,
+        "tie_break_trace": [
+          "average_delay=5.04384133611691",
+          "average_delay=5.04384133611691",
+          "deadline_violation_rate=0.10317460317460317",
+          "timeout_drop_rate=0.0496031746031746",
+          "policy=CLOUD_ONLY"
+        ],
+        "value": 5.04384133611691
+      },
+      {
+        "direction": "lower_is_better",
+        "metric": "average_delay",
+        "policy": "ORIGINAL_HOODIE_BASELINE",
+        "rank": 2,
+        "tie_break_trace": [
+          "average_delay=5.04384133611691",
+          "average_delay=5.04384133611691",
+          "deadline_violation_rate=0.10317460317460317",
+          "timeout_drop_rate=0.0496031746031746",
+          "policy=ORIGINAL_HOODIE_BASELINE"
+        ],
+        "value": 5.04384133611691
+      },
+      {
+        "direction": "lower_is_better",
+        "metric": "average_delay",
+        "policy": "HOODIE_PROPOSED",
+        "rank": 3,
+        "tie_break_trace": [
+          "average_delay=5.186582809224318",
+          "average_delay=5.186582809224318",
+          "deadline_violation_rate=0.12301587301587301",
+          "timeout_drop_rate=0.05357142857142857",
+          "policy=HOODIE_PROPOSED"
+        ],
+        "value": 5.186582809224318
+      },
+      {
+        "direction": "lower_is_better",
+        "metric": "average_delay",
+        "policy": "LOCAL_ONLY",
+        "rank": 4,
+        "tie_break_trace": [
+          "average_delay=5.186582809224318",
+          "average_delay=5.186582809224318",
+          "deadline_violation_rate=0.12301587301587301",
+          "timeout_drop_rate=0.05357142857142857",
+          "policy=LOCAL_ONLY"
+        ],
+        "value": 5.186582809224318
+      },
+      {
+        "direction": "lower_is_better",
+        "metric": "average_delay",
+        "policy": "RANDOM_POLICY",
+        "rank": 5,
+        "tie_break_trace": [
+          "average_delay=5.325239146431199",
+          "average_delay=5.325239146431199",
+          "deadline_violation_rate=0.13293650793650794",
+          "timeout_drop_rate=0.05555555555555555",
+          "policy=RANDOM_POLICY"
+        ],
+        "value": 5.325239146431199
+      }
+    ],
+    "average_reward": [
+      {
+        "direction": "higher_is_better",
+        "metric": "average_reward",
+        "policy": "CLOUD_ONLY",
+        "rank": 1,
+        "tie_break_trace": [
+          "average_reward=-6.777777777777778",
+          "average_delay=5.04384133611691",
+          "deadline_violation_rate=0.10317460317460317",
+          "timeout_drop_rate=0.0496031746031746",
+          "policy=CLOUD_ONLY"
+        ],
+        "value": -6.777777777777778
+      },
+      {
+        "direction": "higher_is_better",
+        "metric": "average_reward",
+        "policy": "ORIGINAL_HOODIE_BASELINE",
+        "rank": 2,
+        "tie_break_trace": [
+          "average_reward=-6.777777777777778",
+          "average_delay=5.04384133611691",
+          "deadline_violation_rate=0.10317460317460317",
+          "timeout_drop_rate=0.0496031746031746",
+          "policy=ORIGINAL_HOODIE_BASELINE"
+        ],
+        "value": -6.777777777777778
+      },
+      {
+        "direction": "higher_is_better",
+        "metric": "average_reward",
+        "policy": "HOODIE_PROPOSED",
+        "rank": 3,
+        "tie_break_trace": [
+          "average_reward=-7.051587301587301",
+          "average_delay=5.186582809224318",
+          "deadline_violation_rate=0.12301587301587301",
+          "timeout_drop_rate=0.05357142857142857",
+          "policy=HOODIE_PROPOSED"
+        ],
+        "value": -7.051587301587301
+      },
+      {
+        "direction": "higher_is_better",
+        "metric": "average_reward",
+        "policy": "LOCAL_ONLY",
+        "rank": 4,
+        "tie_break_trace": [
+          "average_reward=-7.051587301587301",
+          "average_delay=5.186582809224318",
+          "deadline_violation_rate=0.12301587301587301",
+          "timeout_drop_rate=0.05357142857142857",
+          "policy=LOCAL_ONLY"
+        ],
+        "value": -7.051587301587301
+      },
+      {
+        "direction": "higher_is_better",
+        "metric": "average_reward",
+        "policy": "RANDOM_POLICY",
+        "rank": 5,
+        "tie_break_trace": [
+          "average_reward=-8.833994708994709",
+          "average_delay=5.325239146431199",
+          "deadline_violation_rate=0.13293650793650794",
+          "timeout_drop_rate=0.05555555555555555",
+          "policy=RANDOM_POLICY"
+        ],
+        "value": -8.833994708994709
+      }
+    ],
+    "completion_rate": [
+      {
+        "direction": "higher_is_better",
+        "metric": "completion_rate",
+        "policy": "CLOUD_ONLY",
+        "rank": 1,
+        "tie_break_trace": [
+          "completion_rate=0.9503968253968254",
+          "average_delay=5.04384133611691",
+          "deadline_violation_rate=0.10317460317460317",
+          "timeout_drop_rate=0.0496031746031746",
+          "policy=CLOUD_ONLY"
+        ],
+        "value": 0.9503968253968254
+      },
+      {
+        "direction": "higher_is_better",
+        "metric": "completion_rate",
+        "policy": "ORIGINAL_HOODIE_BASELINE",
+        "rank": 2,
+        "tie_break_trace": [
+          "completion_rate=0.9503968253968254",
+          "average_delay=5.04384133611691",
+          "deadline_violation_rate=0.10317460317460317",
+          "timeout_drop_rate=0.0496031746031746",
+          "policy=ORIGINAL_HOODIE_BASELINE"
+        ],
+        "value": 0.9503968253968254
+      },
+      {
+        "direction": "higher_is_better",
+        "metric": "completion_rate",
+        "policy": "HOODIE_PROPOSED",
+        "rank": 3,
+        "tie_break_trace": [
+          "completion_rate=0.9464285714285714",
+          "average_delay=5.186582809224318",
+          "deadline_violation_rate=0.12301587301587301",
+          "timeout_drop_rate=0.05357142857142857",
+          "policy=HOODIE_PROPOSED"
+        ],
+        "value": 0.9464285714285714
+      },
+      {
+        "direction": "higher_is_better",
+        "metric": "completion_rate",
+        "policy": "LOCAL_ONLY",
+        "rank": 4,
+        "tie_break_trace": [
+          "completion_rate=0.9464285714285714",
+          "average_delay=5.186582809224318",
+          "deadline_violation_rate=0.12301587301587301",
+          "timeout_drop_rate=0.05357142857142857",
+          "policy=LOCAL_ONLY"
+        ],
+        "value": 0.9464285714285714
+      },
+      {
+        "direction": "higher_is_better",
+        "metric": "completion_rate",
+        "policy": "RANDOM_POLICY",
+        "rank": 5,
+        "tie_break_trace": [
+          "completion_rate=0.8988095238095238",
+          "average_delay=5.325239146431199",
+          "deadline_violation_rate=0.13293650793650794",
+          "timeout_drop_rate=0.05555555555555555",
+          "policy=RANDOM_POLICY"
+        ],
+        "value": 0.8988095238095238
+      }
+    ],
+    "deadline_violation_rate": [
+      {
+        "direction": "lower_is_better",
+        "metric": "deadline_violation_rate",
+        "policy": "CLOUD_ONLY",
+        "rank": 1,
+        "tie_break_trace": [
+          "deadline_violation_rate=0.10317460317460317",
+          "average_delay=5.04384133611691",
+          "deadline_violation_rate=0.10317460317460317",
+          "timeout_drop_rate=0.0496031746031746",
+          "policy=CLOUD_ONLY"
+        ],
+        "value": 0.10317460317460317
+      },
+      {
+        "direction": "lower_is_better",
+        "metric": "deadline_violation_rate",
+        "policy": "ORIGINAL_HOODIE_BASELINE",
+        "rank": 2,
+        "tie_break_trace": [
+          "deadline_violation_rate=0.10317460317460317",
+          "average_delay=5.04384133611691",
+          "deadline_violation_rate=0.10317460317460317",
+          "timeout_drop_rate=0.0496031746031746",
+          "policy=ORIGINAL_HOODIE_BASELINE"
+        ],
+        "value": 0.10317460317460317
+      },
+      {
+        "direction": "lower_is_better",
+        "metric": "deadline_violation_rate",
+        "policy": "HOODIE_PROPOSED",
+        "rank": 3,
+        "tie_break_trace": [
+          "deadline_violation_rate=0.12301587301587301",
+          "average_delay=5.186582809224318",
+          "deadline_violation_rate=0.12301587301587301",
+          "timeout_drop_rate=0.05357142857142857",
+          "policy=HOODIE_PROPOSED"
+        ],
+        "value": 0.12301587301587301
+      },
+      {
+        "direction": "lower_is_better",
+        "metric": "deadline_violation_rate",
+        "policy": "LOCAL_ONLY",
+        "rank": 4,
+        "tie_break_trace": [
+          "deadline_violation_rate=0.12301587301587301",
+          "average_delay=5.186582809224318",
+          "deadline_violation_rate=0.12301587301587301",
+          "timeout_drop_rate=0.05357142857142857",
+          "policy=LOCAL_ONLY"
+        ],
+        "value": 0.12301587301587301
+      },
+      {
+        "direction": "lower_is_better",
+        "metric": "deadline_violation_rate",
+        "policy": "RANDOM_POLICY",
+        "rank": 5,
+        "tie_break_trace": [
+          "deadline_violation_rate=0.13293650793650794",
+          "average_delay=5.325239146431199",
+          "deadline_violation_rate=0.13293650793650794",
+          "timeout_drop_rate=0.05555555555555555",
+          "policy=RANDOM_POLICY"
+        ],
+        "value": 0.13293650793650794
+      }
+    ],
+    "illegal_action_rejection_count": [
+      {
+        "direction": "lower_is_better",
+        "metric": "illegal_action_rejection_count",
+        "policy": "CLOUD_ONLY",
+        "rank": 1,
+        "tie_break_trace": [
+          "illegal_action_rejection_count=0.0",
+          "average_delay=5.04384133611691",
+          "deadline_violation_rate=0.10317460317460317",
+          "timeout_drop_rate=0.0496031746031746",
+          "policy=CLOUD_ONLY"
+        ],
+        "value": 0.0
+      },
+      {
+        "direction": "lower_is_better",
+        "metric": "illegal_action_rejection_count",
+        "policy": "ORIGINAL_HOODIE_BASELINE",
+        "rank": 2,
+        "tie_break_trace": [
+          "illegal_action_rejection_count=0.0",
+          "average_delay=5.04384133611691",
+          "deadline_violation_rate=0.10317460317460317",
+          "timeout_drop_rate=0.0496031746031746",
+          "policy=ORIGINAL_HOODIE_BASELINE"
+        ],
+        "value": 0.0
+      },
+      {
+        "direction": "lower_is_better",
+        "metric": "illegal_action_rejection_count",
+        "policy": "HOODIE_PROPOSED",
+        "rank": 3,
+        "tie_break_trace": [
+          "illegal_action_rejection_count=0.0",
+          "average_delay=5.186582809224318",
+          "deadline_violation_rate=0.12301587301587301",
+          "timeout_drop_rate=0.05357142857142857",
+          "policy=HOODIE_PROPOSED"
+        ],
+        "value": 0.0
+      },
+      {
+        "direction": "lower_is_better",
+        "metric": "illegal_action_rejection_count",
+        "policy": "LOCAL_ONLY",
+        "rank": 4,
+        "tie_break_trace": [
+          "illegal_action_rejection_count=0.0",
+          "average_delay=5.186582809224318",
+          "deadline_violation_rate=0.12301587301587301",
+          "timeout_drop_rate=0.05357142857142857",
+          "policy=LOCAL_ONLY"
+        ],
+        "value": 0.0
+      },
+      {
+        "direction": "lower_is_better",
+        "metric": "illegal_action_rejection_count",
+        "policy": "RANDOM_POLICY",
+        "rank": 5,
+        "tie_break_trace": [
+          "illegal_action_rejection_count=69.0",
+          "average_delay=5.325239146431199",
+          "deadline_violation_rate=0.13293650793650794",
+          "timeout_drop_rate=0.05555555555555555",
+          "policy=RANDOM_POLICY"
+        ],
+        "value": 69.0
+      }
+    ],
+    "queue_stability_score": [
+      {
+        "direction": "higher_is_better",
+        "metric": "queue_stability_score",
+        "policy": "CLOUD_ONLY",
+        "rank": 1,
+        "tie_break_trace": [
+          "queue_stability_score=0.23214285714285715",
+          "average_delay=5.04384133611691",
+          "deadline_violation_rate=0.10317460317460317",
+          "timeout_drop_rate=0.0496031746031746",
+          "policy=CLOUD_ONLY"
+        ],
+        "value": 0.23214285714285715
+      },
+      {
+        "direction": "higher_is_better",
+        "metric": "queue_stability_score",
+        "policy": "ORIGINAL_HOODIE_BASELINE",
+        "rank": 2,
+        "tie_break_trace": [
+          "queue_stability_score=0.23214285714285715",
+          "average_delay=5.04384133611691",
+          "deadline_violation_rate=0.10317460317460317",
+          "timeout_drop_rate=0.0496031746031746",
+          "policy=ORIGINAL_HOODIE_BASELINE"
+        ],
+        "value": 0.23214285714285715
+      },
+      {
+        "direction": "higher_is_better",
+        "metric": "queue_stability_score",
+        "policy": "HOODIE_PROPOSED",
+        "rank": 3,
+        "tie_break_trace": [
+          "queue_stability_score=0.23214285714285715",
+          "average_delay=5.186582809224318",
+          "deadline_violation_rate=0.12301587301587301",
+          "timeout_drop_rate=0.05357142857142857",
+          "policy=HOODIE_PROPOSED"
+        ],
+        "value": 0.23214285714285715
+      },
+      {
+        "direction": "higher_is_better",
+        "metric": "queue_stability_score",
+        "policy": "LOCAL_ONLY",
+        "rank": 4,
+        "tie_break_trace": [
+          "queue_stability_score=0.23214285714285715",
+          "average_delay=5.186582809224318",
+          "deadline_violation_rate=0.12301587301587301",
+          "timeout_drop_rate=0.05357142857142857",
+          "policy=LOCAL_ONLY"
+        ],
+        "value": 0.23214285714285715
+      },
+      {
+        "direction": "higher_is_better",
+        "metric": "queue_stability_score",
+        "policy": "RANDOM_POLICY",
+        "rank": 5,
+        "tie_break_trace": [
+          "queue_stability_score=0.23214285714285715",
+          "average_delay=5.325239146431199",
+          "deadline_violation_rate=0.13293650793650794",
+          "timeout_drop_rate=0.05555555555555555",
+          "policy=RANDOM_POLICY"
+        ],
+        "value": 0.23214285714285715
+      }
+    ],
+    "throughput": [
+      {
+        "direction": "higher_is_better",
+        "metric": "throughput",
+        "policy": "CLOUD_ONLY",
+        "rank": 1,
+        "tie_break_trace": [
+          "throughput=0.9503968253968254",
+          "average_delay=5.04384133611691",
+          "deadline_violation_rate=0.10317460317460317",
+          "timeout_drop_rate=0.0496031746031746",
+          "policy=CLOUD_ONLY"
+        ],
+        "value": 0.9503968253968254
+      },
+      {
+        "direction": "higher_is_better",
+        "metric": "throughput",
+        "policy": "ORIGINAL_HOODIE_BASELINE",
+        "rank": 2,
+        "tie_break_trace": [
+          "throughput=0.9503968253968254",
+          "average_delay=5.04384133611691",
+          "deadline_violation_rate=0.10317460317460317",
+          "timeout_drop_rate=0.0496031746031746",
+          "policy=ORIGINAL_HOODIE_BASELINE"
+        ],
+        "value": 0.9503968253968254
+      },
+      {
+        "direction": "higher_is_better",
+        "metric": "throughput",
+        "policy": "HOODIE_PROPOSED",
+        "rank": 3,
+        "tie_break_trace": [
+          "throughput=0.9464285714285714",
+          "average_delay=5.186582809224318",
+          "deadline_violation_rate=0.12301587301587301",
+          "timeout_drop_rate=0.05357142857142857",
+          "policy=HOODIE_PROPOSED"
+        ],
+        "value": 0.9464285714285714
+      },
+      {
+        "direction": "higher_is_better",
+        "metric": "throughput",
+        "policy": "LOCAL_ONLY",
+        "rank": 4,
+        "tie_break_trace": [
+          "throughput=0.9464285714285714",
+          "average_delay=5.186582809224318",
+          "deadline_violation_rate=0.12301587301587301",
+          "timeout_drop_rate=0.05357142857142857",
+          "policy=LOCAL_ONLY"
+        ],
+        "value": 0.9464285714285714
+      },
+      {
+        "direction": "higher_is_better",
+        "metric": "throughput",
+        "policy": "RANDOM_POLICY",
+        "rank": 5,
+        "tie_break_trace": [
+          "throughput=0.8988095238095238",
+          "average_delay=5.325239146431199",
+          "deadline_violation_rate=0.13293650793650794",
+          "timeout_drop_rate=0.05555555555555555",
+          "policy=RANDOM_POLICY"
+        ],
+        "value": 0.8988095238095238
+      }
+    ],
+    "timeout_drop_rate": [
+      {
+        "direction": "lower_is_better",
+        "metric": "timeout_drop_rate",
+        "policy": "CLOUD_ONLY",
+        "rank": 1,
+        "tie_break_trace": [
+          "timeout_drop_rate=0.0496031746031746",
+          "average_delay=5.04384133611691",
+          "deadline_violation_rate=0.10317460317460317",
+          "timeout_drop_rate=0.0496031746031746",
+          "policy=CLOUD_ONLY"
+        ],
+        "value": 0.0496031746031746
+      },
+      {
+        "direction": "lower_is_better",
+        "metric": "timeout_drop_rate",
+        "policy": "ORIGINAL_HOODIE_BASELINE",
+        "rank": 2,
+        "tie_break_trace": [
+          "timeout_drop_rate=0.0496031746031746",
+          "average_delay=5.04384133611691",
+          "deadline_violation_rate=0.10317460317460317",
+          "timeout_drop_rate=0.0496031746031746",
+          "policy=ORIGINAL_HOODIE_BASELINE"
+        ],
+        "value": 0.0496031746031746
+      },
+      {
+        "direction": "lower_is_better",
+        "metric": "timeout_drop_rate",
+        "policy": "HOODIE_PROPOSED",
+        "rank": 3,
+        "tie_break_trace": [
+          "timeout_drop_rate=0.05357142857142857",
+          "average_delay=5.186582809224318",
+          "deadline_violation_rate=0.12301587301587301",
+          "timeout_drop_rate=0.05357142857142857",
+          "policy=HOODIE_PROPOSED"
+        ],
+        "value": 0.05357142857142857
+      },
+      {
+        "direction": "lower_is_better",
+        "metric": "timeout_drop_rate",
+        "policy": "LOCAL_ONLY",
+        "rank": 4,
+        "tie_break_trace": [
+          "timeout_drop_rate=0.05357142857142857",
+          "average_delay=5.186582809224318",
+          "deadline_violation_rate=0.12301587301587301",
+          "timeout_drop_rate=0.05357142857142857",
+          "policy=LOCAL_ONLY"
+        ],
+        "value": 0.05357142857142857
+      },
+      {
+        "direction": "lower_is_better",
+        "metric": "timeout_drop_rate",
+        "policy": "RANDOM_POLICY",
+        "rank": 5,
+        "tie_break_trace": [
+          "timeout_drop_rate=0.05555555555555555",
+          "average_delay=5.325239146431199",
+          "deadline_violation_rate=0.13293650793650794",
+          "timeout_drop_rate=0.05555555555555555",
+          "policy=RANDOM_POLICY"
+        ],
+        "value": 0.05555555555555555
+      }
+    ],
+    "total_reward": [
+      {
+        "direction": "higher_is_better",
+        "metric": "total_reward",
+        "policy": "CLOUD_ONLY",
+        "rank": 1,
+        "tie_break_trace": [
+          "total_reward=-10248.0",
+          "average_delay=5.04384133611691",
+          "deadline_violation_rate=0.10317460317460317",
+          "timeout_drop_rate=0.0496031746031746",
+          "policy=CLOUD_ONLY"
+        ],
+        "value": -10248.0
+      },
+      {
+        "direction": "higher_is_better",
+        "metric": "total_reward",
+        "policy": "ORIGINAL_HOODIE_BASELINE",
+        "rank": 2,
+        "tie_break_trace": [
+          "total_reward=-10248.0",
+          "average_delay=5.04384133611691",
+          "deadline_violation_rate=0.10317460317460317",
+          "timeout_drop_rate=0.0496031746031746",
+          "policy=ORIGINAL_HOODIE_BASELINE"
+        ],
+        "value": -10248.0
+      },
+      {
+        "direction": "higher_is_better",
+        "metric": "total_reward",
+        "policy": "HOODIE_PROPOSED",
+        "rank": 3,
+        "tie_break_trace": [
+          "total_reward=-10662.0",
+          "average_delay=5.186582809224318",
+          "deadline_violation_rate=0.12301587301587301",
+          "timeout_drop_rate=0.05357142857142857",
+          "policy=HOODIE_PROPOSED"
+        ],
+        "value": -10662.0
+      },
+      {
+        "direction": "higher_is_better",
+        "metric": "total_reward",
+        "policy": "LOCAL_ONLY",
+        "rank": 4,
+        "tie_break_trace": [
+          "total_reward=-10662.0",
+          "average_delay=5.186582809224318",
+          "deadline_violation_rate=0.12301587301587301",
+          "timeout_drop_rate=0.05357142857142857",
+          "policy=LOCAL_ONLY"
+        ],
+        "value": -10662.0
+      },
+      {
+        "direction": "higher_is_better",
+        "metric": "total_reward",
+        "policy": "RANDOM_POLICY",
+        "rank": 5,
+        "tie_break_trace": [
+          "total_reward=-13357.0",
+          "average_delay=5.325239146431199",
+          "deadline_violation_rate=0.13293650793650794",
+          "timeout_drop_rate=0.05555555555555555",
+          "policy=RANDOM_POLICY"
+        ],
+        "value": -13357.0
+      }
+    ],
+    "unavailable_drop_rate": [
+      {
+        "direction": "lower_is_better",
+        "metric": "unavailable_drop_rate",
+        "policy": "CLOUD_ONLY",
+        "rank": 1,
+        "tie_break_trace": [
+          "unavailable_drop_rate=0.0",
+          "average_delay=5.04384133611691",
+          "deadline_violation_rate=0.10317460317460317",
+          "timeout_drop_rate=0.0496031746031746",
+          "policy=CLOUD_ONLY"
+        ],
+        "value": 0.0
+      },
+      {
+        "direction": "lower_is_better",
+        "metric": "unavailable_drop_rate",
+        "policy": "ORIGINAL_HOODIE_BASELINE",
+        "rank": 2,
+        "tie_break_trace": [
+          "unavailable_drop_rate=0.0",
+          "average_delay=5.04384133611691",
+          "deadline_violation_rate=0.10317460317460317",
+          "timeout_drop_rate=0.0496031746031746",
+          "policy=ORIGINAL_HOODIE_BASELINE"
+        ],
+        "value": 0.0
+      },
+      {
+        "direction": "lower_is_better",
+        "metric": "unavailable_drop_rate",
+        "policy": "HOODIE_PROPOSED",
+        "rank": 3,
+        "tie_break_trace": [
+          "unavailable_drop_rate=0.0",
+          "average_delay=5.186582809224318",
+          "deadline_violation_rate=0.12301587301587301",
+          "timeout_drop_rate=0.05357142857142857",
+          "policy=HOODIE_PROPOSED"
+        ],
+        "value": 0.0
+      },
+      {
+        "direction": "lower_is_better",
+        "metric": "unavailable_drop_rate",
+        "policy": "LOCAL_ONLY",
+        "rank": 4,
+        "tie_break_trace": [
+          "unavailable_drop_rate=0.0",
+          "average_delay=5.186582809224318",
+          "deadline_violation_rate=0.12301587301587301",
+          "timeout_drop_rate=0.05357142857142857",
+          "policy=LOCAL_ONLY"
+        ],
+        "value": 0.0
+      },
+      {
+        "direction": "lower_is_better",
+        "metric": "unavailable_drop_rate",
+        "policy": "RANDOM_POLICY",
+        "rank": 5,
+        "tie_break_trace": [
+          "unavailable_drop_rate=0.04563492063492063",
+          "average_delay=5.325239146431199",
+          "deadline_violation_rate=0.13293650793650794",
+          "timeout_drop_rate=0.05555555555555555",
+          "policy=RANDOM_POLICY"
+        ],
+        "value": 0.04563492063492063
+      }
+    ]
+  }
+}
