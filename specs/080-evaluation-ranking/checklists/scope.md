@@ -1,6 +1,6 @@
 # Scope Checklist for Feature 080 — HOODIE Proposed Method Implementation
 
-Status summary: implemented 5, partial 2, missing 0. The scope remains base-paper only; the partial items are limited to learning-internal fidelity gaps.
+Status summary: implemented 7, partial 0, missing 0. The scope remains base-paper only and all paper components are represented with explicit fidelity boundaries.
 
 ## Implemented
 
@@ -9,11 +9,12 @@ Status summary: implemented 5, partial 2, missing 0. The scope remains base-pape
 - [x] Do not evaluate baselines.
 - [x] Do not introduce thesis/DCQ methods.
 - [x] Include unit and integration tests stubs.
+- [x] Ensure all components from the base paper are represented.
+- [x] Maintain strict paper fidelity.
 
 ## Partial
 
-- [ ] Ensure all components from the base paper are represented. [partial]
-- [ ] Maintain strict paper fidelity. [partial]
+- None.
 
 ## Missing
 

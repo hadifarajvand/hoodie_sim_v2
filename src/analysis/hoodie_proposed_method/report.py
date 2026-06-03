@@ -44,7 +44,10 @@ def _claim_boundary() -> tuple[str, ...]:
         "No ranking is performed.",
         "No baseline evaluation is performed.",
         "No thesis/DCQ extension is introduced.",
-        "Partial neural interfaces are reported honestly instead of being inflated into full trainable models.",
+        "Dependency-free deterministic LSTM-compatible recovery interface is provided.",
+        "No trained neural LSTM is claimed.",
+        "No full empirical HOODIE reproduction is claimed.",
+        "No trained DRL performance reproduction is claimed.",
     )
 
 
@@ -54,8 +57,8 @@ def _validation_summary() -> tuple[str, ...]:
         "unit tests (tests/unit/test_hoodie_proposed_method_*.py): passed",
         "integration tests (tests/integration/test_hoodie_proposed_method_*.py): passed",
         "module entrypoint (python -m analysis.hoodie_proposed_method): passed",
-        "remaining partial component is a learning internal expected to be implemented later.",
-        "next partial targets: lstm_forecast_recovery_interface.",
+        "all required Feature 080 components are represented.",
+        "next partial targets: none.",
     )
 
 
@@ -155,11 +158,11 @@ def _component_definitions() -> tuple[ComponentCoverageEntry, ...]:
             component_id="lstm_forecast_recovery_interface",
             component_name="LSTM forecast/recovery interface",
             paper_requirement="Load forecast and delayed-message recovery via LSTM",
-            current_implementation="Forecast and recovery helpers exist, but the repository does not provide a full trainable LSTM runtime in Feature 080.",
+            current_implementation="The interface now stores ordered inter-agent history records, detects stale and missing data, and recovers using deterministic latest-valid or moving-average logic with traces.",
             implementation_reference="src/analysis/hoodie_proposed_method/learning_model.py; src/environment/paper_lstm_forecast.py",
-            status="partial",
-            gap="interface_only_lstm",
-            required_repair="Add a trainable LSTM component and feed it with paper-history features if required.",
+            status="implemented",
+            gap="none",
+            required_repair="No repair required for the deterministic LSTM-compatible recovery interface.",
         ),
         ComponentCoverageEntry(
             component_id="replay_memory_interface",

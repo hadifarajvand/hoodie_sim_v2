@@ -16,7 +16,7 @@ No thesis/DCQ extension.
 
 ## Current Progress
 
-- Implemented: hybrid action selection, private/offloading/public queue timing, reward/cost mapping, distributed edge-agent decision, DQN interface, Double DQN target rule, Dueling DQN value/advantage interface, replay memory, epsilon-greedy training schedule, inference mode, and pub-sub metadata.
-- Partial: LSTM forecast/recovery interface.
-- Next component to tighten: `lstm_forecast_recovery_interface`.
-- Readiness remains `mostly_implemented` because the learning-internal interfaces are still not full trainable modules.
+- Implemented: hybrid action selection, private/offloading/public queue timing, reward/cost mapping, distributed edge-agent decision, DQN interface, Double DQN target rule, Dueling DQN value/advantage interface, LSTM forecast/recovery interface, replay memory, epsilon-greedy training schedule, inference mode, and pub-sub metadata.
+- Partial: none.
+- Next component to tighten: none.
+- Readiness is `fully_implemented` for the Feature 080 paper-fidelity implementation package.

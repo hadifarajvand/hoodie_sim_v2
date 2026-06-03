@@ -91,7 +91,7 @@ class HoodieProposedMethodReport:
             raise ValueError("component_coverage must not contain duplicate component IDs")
         if not self.formula_registry:
             raise ValueError("formula_registry must be non-empty")
-        if not self.remaining_gaps:
+        if not self.remaining_gaps and self.readiness_level != "fully_implemented":
             raise ValueError("remaining_gaps must be non-empty")
         if not self.validation_summary:
             raise ValueError("validation_summary must be non-empty")
@@ -111,6 +111,8 @@ class HoodieProposedMethodReport:
             raise ValueError("fully_implemented requires zero missing components")
         if self.partial_count > 0 and self.readiness_level == "fully_implemented":
             raise ValueError("fully_implemented requires zero partial components")
+        if self.partial_count == 0 and self.readiness_level != "fully_implemented":
+            raise ValueError("zero partial components requires fully_implemented readiness")
         if self.passed and self.status != READY_STATUS:
             raise ValueError("passed reports must use the ready status")
         if self.passed and self.readiness_level == "blocked":

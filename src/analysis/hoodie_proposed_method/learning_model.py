@@ -232,6 +232,60 @@ class DuelingDecisionTrace:
 
 
 @dataclass(frozen=True, slots=True)
+class LSTMHistoryRecord:
+    time_slot: int
+    source_agent: str
+    destination_agent_or_broker: str
+    key: str
+    payload_summary: Any
+    numeric_value: float | None
+    freshness_status: str
+    staleness_age: int | None
+    stale: bool
+
+    def to_dict(self) -> dict[str, Any]:
+        return {
+            "time_slot": self.time_slot,
+            "source_agent": self.source_agent,
+            "destination_agent_or_broker": self.destination_agent_or_broker,
+            "key": self.key,
+            "payload_summary": self.payload_summary,
+            "numeric_value": self.numeric_value,
+            "freshness_status": self.freshness_status,
+            "staleness_age": self.staleness_age,
+            "stale": self.stale,
+        }
+
+
+@dataclass(frozen=True, slots=True)
+class LSTMRecoveryTrace:
+    operation: str
+    requested_source: str | None
+    requested_key: str | None
+    current_time_slot: int | None
+    selected_history_window: tuple[dict[str, Any], ...]
+    stale_reason: str
+    recovery_method: str
+    recovered_value: float
+    confidence: str
+    status: str
+
+    def to_dict(self) -> dict[str, Any]:
+        return {
+            "operation": self.operation,
+            "requested_source": self.requested_source,
+            "requested_key": self.requested_key,
+            "current_time_slot": self.current_time_slot,
+            "selected_history_window": [dict(item) for item in self.selected_history_window],
+            "stale_reason": self.stale_reason,
+            "recovery_method": self.recovery_method,
+            "recovered_value": self.recovered_value,
+            "confidence": self.confidence,
+            "status": self.status,
+        }
+
+
+@dataclass(frozen=True, slots=True)
 class DuelingDQNInterface:
     value_weight: float = 1.0
     advantage_weights: dict[str, float] = field(default_factory=_default_dueling_advantages)
@@ -354,20 +408,370 @@ class DuelingDQNInterface:
 @dataclass(frozen=True, slots=True)
 class LSTMForecastRecoveryInterface:
     lookback_window: int = 10
+    max_staleness: int = 5
+    fallback_default: float = 0.0
+    history_records: list[LSTMHistoryRecord] = field(default_factory=list)
+    recovery_trace: list[LSTMRecoveryTrace] = field(default_factory=list)
 
-    def forecast(self, history: Sequence[float]) -> float:
-        if not history:
-            return 0.0
-        window = list(history)[-self.lookback_window :]
-        return sum(window) / len(window)
+    def __post_init__(self) -> None:
+        if self.lookback_window <= 0:
+            raise ValueError("lookback_window must be positive")
+        if self.max_staleness < 0:
+            raise ValueError("max_staleness must be non-negative")
 
-    def recover(self, delayed_history: Sequence[float]) -> float:
-        if not delayed_history:
-            return 0.0
-        return float(delayed_history[-1])
+    def _coerce_numeric(self, payload_summary: object, numeric_value: float | None = None) -> float | None:
+        if numeric_value is not None:
+            return float(numeric_value)
+        if isinstance(payload_summary, (int, float)):
+            return float(payload_summary)
+        if isinstance(payload_summary, Mapping):
+            for key in ("numeric_value", "value", "estimate", "load", "payload_value"):
+                candidate = payload_summary.get(key)
+                if isinstance(candidate, (int, float)):
+                    return float(candidate)
+        return None
+
+    def record_observation(
+        self,
+        *,
+        time_slot: int,
+        source_agent: str,
+        destination_agent_or_broker: str,
+        key: str,
+        payload_summary: Any,
+        numeric_value: float | None = None,
+        freshness_status: str = "fresh",
+    ) -> LSTMHistoryRecord:
+        if time_slot < 0:
+            raise ValueError("time_slot must be non-negative")
+        if not source_agent or not destination_agent_or_broker or not key:
+            raise ValueError("source_agent, destination_agent_or_broker, and key must be non-empty")
+        value = self._coerce_numeric(payload_summary, numeric_value)
+        record = LSTMHistoryRecord(
+            time_slot=time_slot,
+            source_agent=source_agent,
+            destination_agent_or_broker=destination_agent_or_broker,
+            key=key,
+            payload_summary=payload_summary,
+            numeric_value=value,
+            freshness_status=freshness_status,
+            staleness_age=0,
+            stale=False,
+        )
+        self.history_records.append(record)
+        self.history_records.sort(key=lambda item: (item.time_slot, item.source_agent, item.key, item.destination_agent_or_broker))
+        return record
+
+    def _history_matches(self, source_agent: str | None, key: str | None) -> list[LSTMHistoryRecord]:
+        matches = [
+            record
+            for record in self.history_records
+            if (source_agent is None or record.source_agent == source_agent)
+            and (key is None or record.key == key)
+        ]
+        return matches
+
+    def is_missing(self, source_agent: str, key: str) -> bool:
+        return not self._history_matches(source_agent, key)
+
+    def is_stale(self, record: LSTMHistoryRecord, current_time_slot: int) -> bool:
+        return current_time_slot - record.time_slot > self.max_staleness
+
+    def _windowed_history(self, records: Sequence[LSTMHistoryRecord], window_size: int | None = None) -> tuple[LSTMHistoryRecord, ...]:
+        limit = self.lookback_window if window_size is None else max(1, window_size)
+        return tuple(records[-limit:])
+
+    def select_history_window(
+        self,
+        *,
+        source_agent: str | None = None,
+        key: str | None = None,
+        window_size: int | None = None,
+    ) -> tuple[LSTMHistoryRecord, ...]:
+        return self._windowed_history(self._history_matches(source_agent, key), window_size=window_size)
+
+    def _numeric_window(self, records: Sequence[LSTMHistoryRecord], current_time_slot: int | None) -> tuple[float, ...]:
+        numeric_values: list[float] = []
+        for record in records:
+            if current_time_slot is not None and self.is_stale(record, current_time_slot):
+                continue
+            if record.numeric_value is not None:
+                numeric_values.append(float(record.numeric_value))
+        return tuple(numeric_values)
+
+    def _trace(
+        self,
+        *,
+        operation: str,
+        source_agent: str | None,
+        key: str | None,
+        current_time_slot: int | None,
+        window: Sequence[LSTMHistoryRecord],
+        stale_reason: str,
+        recovery_method: str,
+        recovered_value: float,
+        confidence: str,
+        status: str,
+    ) -> None:
+        selected_history_window = tuple(
+            {
+                "time_slot": record.time_slot,
+                "source_agent": record.source_agent,
+                "destination_agent_or_broker": record.destination_agent_or_broker,
+                "key": record.key,
+                "payload_summary": record.payload_summary,
+                "numeric_value": record.numeric_value,
+                "stale": current_time_slot is not None and self.is_stale(record, current_time_slot),
+            }
+            for record in window
+        )
+        self.recovery_trace.append(
+            LSTMRecoveryTrace(
+                operation=operation,
+                requested_source=source_agent,
+                requested_key=key,
+                current_time_slot=current_time_slot,
+                selected_history_window=selected_history_window,
+                stale_reason=stale_reason,
+                recovery_method=recovery_method,
+                recovered_value=recovered_value,
+                confidence=confidence,
+                status=status,
+            )
+        )
+
+    def _forecast_from_numeric(self, numeric_history: Sequence[float], *, operation: str) -> float:
+        if not numeric_history:
+            self._trace(
+                operation=operation,
+                source_agent=None,
+                key=None,
+                current_time_slot=None,
+                window=(),
+                stale_reason="missing",
+                recovery_method="fallback_default",
+                recovered_value=self.fallback_default,
+                confidence="low",
+                status="missing",
+            )
+            return self.fallback_default
+        if len(numeric_history) == 1:
+            recovered_value = float(numeric_history[-1])
+            self._trace(
+                operation=operation,
+                source_agent=None,
+                key=None,
+                current_time_slot=None,
+                window=(),
+                stale_reason="none",
+                recovery_method="latest_valid_observation",
+                recovered_value=recovered_value,
+                confidence="high",
+                status="ok",
+            )
+            return recovered_value
+        window = tuple(numeric_history[-self.lookback_window :])
+        recovered_value = math.fsum(window) / len(window)
+        self._trace(
+            operation=operation,
+            source_agent=None,
+            key=None,
+            current_time_slot=None,
+            window=(),
+            stale_reason="none",
+            recovery_method="moving_average",
+            recovered_value=recovered_value,
+            confidence="medium",
+            status="ok",
+        )
+        return recovered_value
+
+    def _recover_from_records(
+        self,
+        *,
+        operation: str,
+        source_agent: str,
+        key: str,
+        current_time_slot: int,
+        destination_agent_or_broker: str | None = None,
+        fallback_default: float | None = None,
+        window_size: int | None = None,
+    ) -> float:
+        matches = self._history_matches(source_agent, key)
+        window = self._windowed_history(matches, window_size=window_size)
+        default_value = self.fallback_default if fallback_default is None else float(fallback_default)
+        if not window:
+            self._trace(
+                operation=operation,
+                source_agent=source_agent,
+                key=key,
+                current_time_slot=current_time_slot,
+                window=(),
+                stale_reason="missing",
+                recovery_method="fallback_default",
+                recovered_value=default_value,
+                confidence="low",
+                status="missing",
+            )
+            return default_value
+
+        fresh_window = tuple(record for record in window if not self.is_stale(record, current_time_slot))
+        if not fresh_window:
+            self._trace(
+                operation=operation,
+                source_agent=source_agent,
+                key=key,
+                current_time_slot=current_time_slot,
+                window=window,
+                stale_reason="stale",
+                recovery_method="fallback_default",
+                recovered_value=default_value,
+                confidence="low",
+                status="stale",
+            )
+            return default_value
+
+        numeric_window = [record.numeric_value for record in fresh_window if record.numeric_value is not None]
+        if not numeric_window:
+            self._trace(
+                operation=operation,
+                source_agent=source_agent,
+                key=key,
+                current_time_slot=current_time_slot,
+                window=window,
+                stale_reason="non_numeric_payload",
+                recovery_method="fallback_default",
+                recovered_value=default_value,
+                confidence="low",
+                status="fallback",
+            )
+            return default_value
+
+        if operation == "recover":
+            recovered_value = float(numeric_window[-1])
+            self._trace(
+                operation=operation,
+                source_agent=source_agent,
+                key=key,
+                current_time_slot=current_time_slot,
+                window=window,
+                stale_reason="none",
+                recovery_method="latest_valid_observation",
+                recovered_value=recovered_value,
+                confidence="high",
+                status="ok",
+            )
+            return recovered_value
+
+        if len(numeric_window) == 1:
+            recovered_value = float(numeric_window[0])
+            method = "latest_valid_observation"
+            confidence = "high"
+        else:
+            recovered_value = math.fsum(float(value) for value in numeric_window) / len(numeric_window)
+            method = "moving_average"
+            confidence = "medium"
+        self._trace(
+            operation=operation,
+            source_agent=source_agent,
+            key=key,
+            current_time_slot=current_time_slot,
+            window=window,
+            stale_reason="none",
+            recovery_method=method,
+            recovered_value=recovered_value,
+            confidence=confidence,
+            status="ok",
+        )
+        return recovered_value
+
+    def forecast(
+        self,
+        history: Sequence[float] | None = None,
+        *,
+        source_agent: str | None = None,
+        key: str | None = None,
+        current_time_slot: int | None = None,
+        destination_agent_or_broker: str | None = None,
+        fallback_default: float | None = None,
+        window_size: int | None = None,
+    ) -> float:
+        if source_agent is not None or key is not None or current_time_slot is not None:
+            if source_agent is None or key is None or current_time_slot is None:
+                raise ValueError("source_agent, key, and current_time_slot are required for record-based forecasting")
+            return self._recover_from_records(
+                operation="forecast",
+                source_agent=source_agent,
+                key=key,
+                current_time_slot=current_time_slot,
+                destination_agent_or_broker=destination_agent_or_broker,
+                fallback_default=fallback_default,
+                window_size=window_size,
+            )
+        numeric_history = tuple(float(value) for value in history or ())
+        return self._forecast_from_numeric(numeric_history, operation="forecast")
+
+    def recover(
+        self,
+        delayed_history: Sequence[float] | None = None,
+        *,
+        source_agent: str | None = None,
+        key: str | None = None,
+        current_time_slot: int | None = None,
+        destination_agent_or_broker: str | None = None,
+        fallback_default: float | None = None,
+        window_size: int | None = None,
+    ) -> float:
+        if source_agent is not None or key is not None or current_time_slot is not None:
+            if source_agent is None or key is None or current_time_slot is None:
+                raise ValueError("source_agent, key, and current_time_slot are required for record-based recovery")
+            return self._recover_from_records(
+                operation="recover",
+                source_agent=source_agent,
+                key=key,
+                current_time_slot=current_time_slot,
+                destination_agent_or_broker=destination_agent_or_broker,
+                fallback_default=fallback_default,
+                window_size=window_size,
+            )
+        numeric_history = tuple(float(value) for value in delayed_history or ())
+        if not numeric_history:
+            self._trace(
+                operation="recover",
+                source_agent=None,
+                key=None,
+                current_time_slot=None,
+                window=(),
+                stale_reason="missing",
+                recovery_method="fallback_default",
+                recovered_value=self.fallback_default if fallback_default is None else float(fallback_default),
+                confidence="low",
+                status="missing",
+            )
+            return self.fallback_default if fallback_default is None else float(fallback_default)
+        recovered_value = float(numeric_history[-1])
+        self._trace(
+            operation="recover",
+            source_agent=None,
+            key=None,
+            current_time_slot=None,
+            window=(),
+            stale_reason="none",
+            recovery_method="latest_valid_observation",
+            recovered_value=recovered_value,
+            confidence="high",
+            status="ok",
+        )
+        return recovered_value
 
     def to_dict(self) -> dict[str, Any]:
-        return asdict(self)
+        return {
+            "lookback_window": self.lookback_window,
+            "max_staleness": self.max_staleness,
+            "fallback_default": self.fallback_default,
+            "history_records": [record.to_dict() for record in self.history_records],
+            "recovery_trace": [trace.to_dict() for trace in self.recovery_trace],
+        }
 
 
 @dataclass(slots=True)

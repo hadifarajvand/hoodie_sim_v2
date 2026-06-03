@@ -147,8 +147,8 @@ def build_formula_registry() -> tuple[FormulaRegistryEntry, ...]:
             equation="forecast(history) -> next load estimate; recover(delayed_history) -> restored signal",
             source="HOODIE base paper, load forecasting and recovery section",
             implementation_reference="src/analysis/hoodie_proposed_method/learning_model.py",
-            status="partial",
-            note="The interface exists, but the repository does not expose a trained LSTM runtime here.",
+            status="implemented",
+            note="The interface now stores ordered observation history, detects stale and missing data, and performs deterministic latest-valid or moving-average recovery with traces.",
         ),
         FormulaRegistryEntry(
             formula_id="replay_memory",

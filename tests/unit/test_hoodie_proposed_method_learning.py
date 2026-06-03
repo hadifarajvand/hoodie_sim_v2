@@ -192,6 +192,98 @@ class HoodieProposedMethodLearningTests(unittest.TestCase):
         self.assertEqual(model.forecast_next_load([1.0, 3.0, 5.0]), 3.0)
         self.assertEqual(model.recover_delayed_load([4.0, 6.0]), 6.0)
 
+    def test_lstm_history_storage_staleness_and_recovery_traces(self) -> None:
+        lstm = LSTMForecastRecoveryInterface(lookback_window=3, max_staleness=2, fallback_default=-7.0)
+
+        self.assertTrue(lstm.is_missing("edge-a", "load"))
+        lstm.record_observation(
+            time_slot=3,
+            source_agent="edge-a",
+            destination_agent_or_broker="broker",
+            key="load",
+            payload_summary={"value": 5.0},
+        )
+        lstm.record_observation(
+            time_slot=1,
+            source_agent="edge-a",
+            destination_agent_or_broker="broker",
+            key="load",
+            payload_summary={"value": 1.0},
+        )
+        lstm.record_observation(
+            time_slot=2,
+            source_agent="edge-a",
+            destination_agent_or_broker="broker",
+            key="load",
+            payload_summary={"value": 3.0},
+        )
+        self.assertEqual([record.time_slot for record in lstm.history_records], [1, 2, 3])
+        self.assertTrue(lstm.is_stale(lstm.history_records[0], current_time_slot=6))
+        self.assertFalse(lstm.is_stale(lstm.history_records[-1], current_time_slot=5))
+        self.assertFalse(lstm.is_missing("edge-a", "load"))
+
+        recovered = lstm.recover(
+            source_agent="edge-a",
+            key="load",
+            current_time_slot=5,
+            destination_agent_or_broker="broker",
+        )
+        self.assertEqual(recovered, 5.0)
+        recovery_trace = lstm.recovery_trace[-1]
+        self.assertEqual(recovery_trace.operation, "recover")
+        self.assertEqual(recovery_trace.requested_source, "edge-a")
+        self.assertEqual(recovery_trace.requested_key, "load")
+        self.assertEqual(recovery_trace.current_time_slot, 5)
+        self.assertEqual(recovery_trace.recovery_method, "latest_valid_observation")
+        self.assertEqual(recovery_trace.recovered_value, 5.0)
+        self.assertEqual(recovery_trace.confidence, "high")
+        self.assertEqual(recovery_trace.status, "ok")
+        self.assertEqual(len(recovery_trace.selected_history_window), 3)
+        self.assertEqual(recovery_trace.to_dict()["recovered_value"], 5.0)
+
+        forecast = lstm.forecast(
+            source_agent="edge-a",
+            key="load",
+            current_time_slot=4,
+            destination_agent_or_broker="broker",
+        )
+        self.assertEqual(forecast, 4.0)
+        forecast_trace = lstm.recovery_trace[-1]
+        self.assertEqual(forecast_trace.operation, "forecast")
+        self.assertEqual(forecast_trace.recovery_method, "moving_average")
+        self.assertEqual(forecast_trace.recovered_value, 4.0)
+        self.assertEqual(forecast_trace.confidence, "medium")
+        self.assertEqual(forecast_trace.status, "ok")
+
+        stale_recovery = lstm.recover(
+            source_agent="edge-a",
+            key="load",
+            current_time_slot=100,
+            destination_agent_or_broker="broker",
+            fallback_default=-9.0,
+        )
+        self.assertEqual(stale_recovery, -9.0)
+        stale_trace = lstm.recovery_trace[-1]
+        self.assertEqual(stale_trace.stale_reason, "stale")
+        self.assertEqual(stale_trace.recovery_method, "fallback_default")
+        self.assertEqual(stale_trace.recovered_value, -9.0)
+        self.assertEqual(stale_trace.confidence, "low")
+        self.assertEqual(stale_trace.status, "stale")
+
+        missing_recovery = lstm.recover(
+            source_agent="edge-a",
+            key="missing",
+            current_time_slot=5,
+            destination_agent_or_broker="broker",
+            fallback_default=-11.0,
+        )
+        self.assertEqual(missing_recovery, -11.0)
+        missing_trace = lstm.recovery_trace[-1]
+        self.assertEqual(missing_trace.stale_reason, "missing")
+        self.assertEqual(missing_trace.recovery_method, "fallback_default")
+        self.assertEqual(missing_trace.status, "missing")
+        self.assertEqual(missing_trace.confidence, "low")
+
 
 if __name__ == "__main__":  # pragma: no cover
     unittest.main()
