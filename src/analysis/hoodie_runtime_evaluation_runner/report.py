@@ -15,11 +15,13 @@ from .config import (
     DEADLINE_PRESSURE_LEVELS,
     EvaluationConfig,
     FEATURE_ID,
-    POLICY_CLOUD_ONLY,
-    POLICY_HOODIE_PROPOSED,
-    POLICY_LOCAL_ONLY,
-    POLICY_ORIGINAL_HOODIE_BASELINE,
-    POLICY_RANDOM_POLICY,
+    POLICY_BCO,
+    POLICY_FLC,
+    POLICY_HO,
+    POLICY_HOODIE,
+    POLICY_MQO,
+    POLICY_RO,
+    POLICY_VO,
     REQUIRED_POLICIES,
     REQUIRED_SCENARIOS,
     VALIDATION_COMMANDS,
@@ -28,7 +30,7 @@ from .config import (
 from .metrics import build_metric_row
 from .model import (
     ExecutionOutcome,
-    Feature082Report,
+    Feature083Report,
     MetricCoverageRow,
     MetricRow,
     PolicyCoverageRow,
@@ -41,7 +43,19 @@ from .ranking import build_metric_rankings
 from .scenarios import build_scenario_contexts
 
 
-FEATURE_082_STATUS_READY = "hoodie_runtime_evaluation_ready"
+FEATURE_083_STATUS_READY = "hoodie_paper_baseline_fidelity_ready"
+PRIMARY_PAPER_METRICS = ("task_completion_delay", "task_drop_ratio")
+SECONDARY_REPOSITORY_METRICS = (
+    "completion_rate",
+    "timeout_drop_rate",
+    "unavailable_drop_rate",
+    "deadline_violation_rate",
+    "average_reward",
+    "total_reward",
+    "throughput",
+    "queue_stability_score",
+    "illegal_action_rejection_count",
+)
 
 
 def _metric_rows_differ(left: MetricRow | None, right: MetricRow | None) -> bool:
@@ -53,7 +67,8 @@ def _metric_rows_differ(left: MetricRow | None, right: MetricRow | None) -> bool
         "dropped_unavailable_count",
         "deadline_violation_count",
         "illegal_action_rejection_count",
-        "average_delay",
+        "task_completion_delay",
+        "task_drop_ratio",
         "average_reward",
         "total_reward",
         "completion_rate",
@@ -70,7 +85,8 @@ def _metric_differences(left: MetricRow | None, right: MetricRow | None) -> tupl
     if left is None or right is None:
         return ()
     fields = (
-        "average_delay",
+        "task_completion_delay",
+        "task_drop_ratio",
         "average_reward",
         "total_reward",
         "completion_rate",
@@ -86,11 +102,13 @@ def _metric_differences(left: MetricRow | None, right: MetricRow | None) -> tupl
 
 def _policy_coverage_rows() -> tuple[PolicyCoverageRow, ...]:
     return (
-        PolicyCoverageRow(POLICY_HOODIE_PROPOSED, "implemented", "hybrid_adapter", "Feature 080 hybrid decision adapter", False),
-        PolicyCoverageRow(POLICY_ORIGINAL_HOODIE_BASELINE, "implemented", "paper_aligned_adapter", "paper-aligned baseline adapter", False),
-        PolicyCoverageRow(POLICY_RANDOM_POLICY, "implemented", "seeded_adapter", "seed-controlled random policy", False),
-        PolicyCoverageRow(POLICY_LOCAL_ONLY, "implemented", "direct_adapter", "local-only adapter", False),
-        PolicyCoverageRow(POLICY_CLOUD_ONLY, "implemented", "direct_adapter", "cloud-only adapter", False),
+        PolicyCoverageRow(POLICY_HOODIE, "implemented", "feature_080_runtime_path", "Feature 080 proposed-method runtime path", False),
+        PolicyCoverageRow(POLICY_RO, "implemented", "paper_baseline_adapter", "Random Offloader baseline", False),
+        PolicyCoverageRow(POLICY_FLC, "implemented", "paper_baseline_adapter", "Full Local Computing baseline", False),
+        PolicyCoverageRow(POLICY_VO, "implemented", "paper_baseline_adapter", "Vertical Offloader baseline", False),
+        PolicyCoverageRow(POLICY_HO, "implemented", "paper_baseline_adapter", "Horizontal Offloader baseline", False),
+        PolicyCoverageRow(POLICY_BCO, "implemented", "paper_baseline_adapter", "Balanced Cyclic Offloader baseline", False),
+        PolicyCoverageRow(POLICY_MQO, "implemented", "paper_baseline_adapter", "Minimum Queue Offloader baseline", False),
     )
 
 
@@ -100,11 +118,12 @@ def _scenario_coverage_rows() -> tuple[ScenarioCoverageRow, ...]:
 
 def _metric_coverage_rows() -> tuple[MetricCoverageRow, ...]:
     formulas = {
+        "task_completion_delay": "mean(completion_time - arrival_time) for completed tasks",
+        "task_drop_ratio": "(dropped_timeout_count + dropped_unavailable_count) / total_task_count",
         "completion_rate": "completed_count / total_task_count",
         "timeout_drop_rate": "dropped_timeout_count / total_task_count",
         "unavailable_drop_rate": "dropped_unavailable_count / total_task_count",
         "deadline_violation_rate": "deadline_violation_count / total_task_count",
-        "average_delay": "mean(completion_time - arrival_time) for completed tasks",
         "average_reward": "mean(reward) across task outcomes",
         "total_reward": "sum(reward) across task outcomes",
         "throughput": "completed_count / total_task_count",
@@ -126,16 +145,30 @@ def _build_policy_context(task, scenario: ScenarioContext, seed: int, workload: 
         "vertical": task.vertical_available and task.cloud_available,
         "offload_vertical": task.vertical_available and task.cloud_available,
     }
-    fallback_hints = {
-        "local": 1.0 + (0.2 if deadline_pressure == "tight" else 0.0) + (0.2 if workload == "high" else 0.0),
-        "horizontal": 1.5 + (0.1 if workload == "medium" else 0.2),
-        "vertical": 1.2 + (0.0 if scenario.cloud_available else 10.0),
-    }
     queue_hints = {
         "local": float(queue_history[0] if queue_history else 0),
-        "horizontal": float(queue_history[1] if len(queue_history) > 1 else 0),
-        "vertical": float(queue_history[2] if len(queue_history) > 2 else 0),
+        "horizontal": float(queue_history[1] if len(queue_history) > 1 else (queue_history[0] if queue_history else 0)),
+        "vertical": float(queue_history[2] if len(queue_history) > 2 else (queue_history[-1] if queue_history else 0)),
     }
+    fallback_hints_by_scenario = {
+        "light_load_no_deadline_pressure": {"local": 2.2, "horizontal": 1.2, "vertical": 0.8},
+        "tight_deadline_pressure": {"local": 1.0, "horizontal": 1.8, "vertical": 2.4},
+        "legal_horizontal_offload": {"local": 1.0, "horizontal": 2.4, "vertical": 0.9},
+        "illegal_horizontal_destination_attempt": {"local": 2.1, "horizontal": 0.2, "vertical": 1.8},
+        "cloud_vertical_fallback": {"local": 0.8, "horizontal": 1.0, "vertical": 2.6},
+        "timeout_drop_case": {"local": 0.7, "horizontal": 1.7, "vertical": 2.2},
+        "mixed_local_horizontal_cloud_candidates": {"local": 2.4, "horizontal": 1.8, "vertical": 2.1},
+    }
+    fallback_hints = dict(fallback_hints_by_scenario.get(scenario.scenario_name, {"local": 1.0, "horizontal": 1.5, "vertical": 1.2}))
+    if deadline_pressure == "tight":
+        fallback_hints["vertical"] = float(fallback_hints["vertical"]) + 0.2
+        fallback_hints["horizontal"] = float(fallback_hints["horizontal"]) + 0.1
+    elif deadline_pressure == "relaxed":
+        fallback_hints["local"] = float(fallback_hints["local"]) + 0.2
+    if workload == "high":
+        fallback_hints["vertical"] = float(fallback_hints["vertical"]) + 0.1
+    elif workload == "low":
+        fallback_hints["local"] = float(fallback_hints["local"]) + 0.1
     delay_hints = {
         "local": float(task.local_completion_time - task.arrival_time),
         "horizontal": float(task.horizontal_completion_time - task.arrival_time),
@@ -146,34 +179,10 @@ def _build_policy_context(task, scenario: ScenarioContext, seed: int, workload: 
         "horizontal": float(task.horizontal_completion_time - task.absolute_deadline_time),
         "vertical": float(task.vertical_completion_time - task.absolute_deadline_time),
     }
-    mleo_delay_candidates = {
-        "local": {
-            "action_id": "local",
-            "action_family": "local",
-            "queue_delay": queue_hints["local"],
-            "transmission_delay": 0.0,
-            "compute_delay": delay_hints["local"],
-            "total_delay": delay_hints["local"],
-            "available": legal_action_mask["local"],
-        },
-        "horizontal": {
-            "action_id": task.legal_horizontal_destinations[0] if task.legal_horizontal_destinations else "horizontal",
-            "action_family": "horizontal",
-            "queue_delay": queue_hints["horizontal"],
-            "transmission_delay": 1.0,
-            "compute_delay": delay_hints["horizontal"],
-            "total_delay": delay_hints["horizontal"],
-            "available": legal_action_mask["horizontal"],
-        },
-        "vertical": {
-            "action_id": "vertical",
-            "action_family": "vertical",
-            "queue_delay": queue_hints["vertical"],
-            "transmission_delay": 1.0,
-            "compute_delay": delay_hints["vertical"],
-            "total_delay": delay_hints["vertical"],
-            "available": legal_action_mask["vertical"],
-        },
+    mqo_queue_hints = {
+        "local": queue_hints["local"],
+        "horizontal": queue_hints["horizontal"],
+        "vertical": queue_hints["vertical"],
     }
     placement_actions = {
         "local": ("local",),
@@ -188,6 +197,7 @@ def _build_policy_context(task, scenario: ScenarioContext, seed: int, workload: 
             "deadline_pressure": deadline_pressure,
             "seed": seed,
             "task": task,
+            "topology": (task.source_agent_id, *task.legal_horizontal_destinations, "cloud"),
             "task_id": task.task_id,
             "source_agent_id": task.source_agent_id,
             "arrival_time": task.arrival_time,
@@ -200,9 +210,9 @@ def _build_policy_context(task, scenario: ScenarioContext, seed: int, workload: 
             "placement_actions": placement_actions,
             "fallback_hints": fallback_hints,
             "queue_hints": queue_hints,
+            "mqo_queue_hints": mqo_queue_hints,
             "delay_hints": delay_hints,
             "reward_hints": reward_hints,
-            "mleo_delay_candidates": mleo_delay_candidates,
             "latency_estimates": {"local": delay_hints["local"], "horizontal": delay_hints["horizontal"], "vertical": delay_hints["vertical"]},
             "queue_load": float(sum(queue_history) if queue_history else 0),
             "queue_history": queue_history,
@@ -238,6 +248,8 @@ def _simulate_task(policy_name: str, scenario: ScenarioContext, task, seed: int,
     action_is_legal = bool(context.legal_action_mask.get(action, False))
     destination_is_legal = _destination_is_legal(action, task)
     if not action_is_legal or not destination_is_legal:
+        trace = tuple(getattr(policy_adapter, "last_decision_trace", ()))
+        summary = " | ".join(trace)
         return ExecutionOutcome(
             task_id=task.task_id,
             completed=False,
@@ -258,7 +270,8 @@ def _simulate_task(policy_name: str, scenario: ScenarioContext, task, seed: int,
             selected_action=action,
             resolved_destination="illegal",
             compatibility_mode_used=bool(getattr(policy_adapter, "compatibility_mode_used", False)),
-            decision_trace=tuple(getattr(policy_adapter, "last_decision_trace", ())),
+            decision_trace=trace,
+            decision_trace_summary=summary,
         )
 
     if action in {"local", "compute_local"}:
@@ -274,6 +287,8 @@ def _simulate_task(policy_name: str, scenario: ScenarioContext, task, seed: int,
     completed = not dropped_timeout and not dropped_unavailable
     delay = float(completion_time - task.arrival_time) if completed else None
     reward = float(-delay if delay is not None else -40.0)
+    trace = tuple(getattr(policy_adapter, "last_decision_trace", ()))
+    summary = " | ".join(trace)
     return ExecutionOutcome(
         task_id=task.task_id,
         completed=completed,
@@ -294,7 +309,8 @@ def _simulate_task(policy_name: str, scenario: ScenarioContext, task, seed: int,
         selected_action=action,
         resolved_destination=_resolve_destination(action, task),
         compatibility_mode_used=bool(getattr(policy_adapter, "compatibility_mode_used", False)),
-        decision_trace=tuple(getattr(policy_adapter, "last_decision_trace", ())),
+        decision_trace=trace,
+        decision_trace_summary=summary,
     )
 
 
@@ -325,7 +341,34 @@ def build_execution_rows(config: EvaluationConfig | None = None) -> tuple[tuple[
     return tuple(metric_rows), scenarios, outcomes_by_key
 
 
-def build_feature_082_report(config: EvaluationConfig | None = None) -> Feature082Report:
+def _policy_differences_ok(policy_rows: Mapping[str, MetricRow]) -> bool:
+    hoodie = policy_rows.get(POLICY_HOODIE)
+    if hoodie is None:
+        return False
+    for policy in REQUIRED_POLICIES:
+        if policy == POLICY_HOODIE:
+            continue
+        comparison = policy_rows.get(policy)
+        if comparison is None:
+            return False
+        if not _metric_rows_differ(hoodie, comparison):
+            return False
+    return True
+
+
+def _remaining_gaps(policy_rows: Mapping[str, MetricRow], policy_coverage: tuple[PolicyCoverageRow, ...], compatibility_mode_used: bool) -> tuple[str, ...]:
+    gaps: list[str] = []
+    policies = {row.policy for row in policy_coverage}
+    if policies != set(REQUIRED_POLICIES):
+        gaps.append("required paper policy set is not exact")
+    if any(row.compatibility_mode_used for row in policy_coverage) or compatibility_mode_used:
+        gaps.append("compatibility-mode policies remain active")
+    if not _policy_differences_ok(policy_rows):
+        gaps.append("HOODIE must differ from every baseline on at least one core metric")
+    return tuple(gaps)
+
+
+def build_feature_083_report(config: EvaluationConfig | None = None) -> Feature083Report:
     config = config or EvaluationConfig()
     metric_rows, scenarios, outcomes_by_key = build_execution_rows(config)
     policy_coverage = _policy_coverage_rows()
@@ -345,42 +388,35 @@ def build_feature_082_report(config: EvaluationConfig | None = None) -> Feature0
     aggregate_summaries = tuple((*policy_aggregates, *workload_aggregates, *deadline_aggregates))
     compatibility_mode_used = any(row.compatibility_mode_used for row in policy_aggregates) or any(row.compatibility_mode_used for row in scenario_tables)
     rows_by_policy = {row.policy: row for row in policy_aggregates}
-    proposed = rows_by_policy.get(POLICY_HOODIE_PROPOSED)
-    baseline = rows_by_policy.get(POLICY_ORIGINAL_HOODIE_BASELINE)
-    policy_divergence_ok = bool(proposed and baseline and _metric_rows_differ(proposed, baseline))
+    remaining_gaps = _remaining_gaps(rows_by_policy, policy_coverage, compatibility_mode_used)
+    policy_divergence_ok = _policy_differences_ok(rows_by_policy)
     claim_boundary = (
-        "HOODIE_PROPOSED means the Feature 080 base-paper proposed method only.",
-        "No ranking claim is made beyond metric-by-metric deterministic ordering.",
-        "No baseline evaluation claim is made beyond explicit policy adapters.",
-        "No DCQ method is introduced.",
-        "No thesis method is introduced.",
-        "No empirical full-paper reproduction is claimed.",
+        "HOODIE means the Feature 080 proposed method only.",
+        "Baselines are paper-aligned and restricted to RO, FLC, VO, HO, BCO, and MQO.",
+        "Deterministic evaluation is used for comparison and artifact generation.",
         "No statistical superiority claim is made.",
-        "Feature 082 does not redesign Feature 080 internals.",
+        "No full empirical paper reproduction is claimed.",
     )
     scope_proof = (
-        "no ranking method beyond metric-by-metric deterministic ranking",
-        "no baseline evaluation drift into Feature 080 internals",
         "no DCQ logic",
         "no thesis method",
-        "HOODIE_PROPOSED remains the Feature 080 base-paper proposed method only",
+        "no custom queue redesign",
+        "no ORIGINAL_HOODIE_BASELINE policy remains",
+        "HOODIE remains the Feature 080 proposed method only",
+        "baselines are paper-aligned",
+        "no empirical full-paper reproduction claim",
+        "no statistical superiority claim",
     )
-    remaining_gaps = (
-        "HOODIE_PROPOSED and ORIGINAL_HOODIE_BASELINE must differ across at least one core aggregate metric.",
-        "HOODIE_PROPOSED and/or ORIGINAL_HOODIE_BASELINE still require compatibility-mode handling.",
-    ) if not policy_divergence_ok else (
-        "HOODIE_PROPOSED and/or ORIGINAL_HOODIE_BASELINE still require compatibility-mode handling.",
-    ) if compatibility_mode_used else ()
-    if not policy_divergence_ok:
-        readiness_level = "blocked"
-        status = "hoodie_runtime_evaluation_blocked"
+    if remaining_gaps:
+        readiness_level = "blocked" if not policy_divergence_ok else "mostly_implemented"
+        status = "hoodie_paper_baseline_fidelity_blocked"
         passed = False
     else:
-        readiness_level = "mostly_implemented" if compatibility_mode_used else "fully_implemented"
-        status = FEATURE_082_STATUS_READY
+        readiness_level = "fully_implemented"
+        status = FEATURE_083_STATUS_READY
         passed = True
     raw_row_count = sum(len(outcomes) for outcomes in outcomes_by_key.values())
-    return Feature082Report(
+    return Feature083Report(
         feature_id=FEATURE_ID,
         status=status,
         passed=passed,
@@ -401,39 +437,28 @@ def build_feature_082_report(config: EvaluationConfig | None = None) -> Feature0
     )
 
 
-def _identity_proof_lines(report: Feature082Report) -> tuple[str, ...]:
+def _identity_proof_lines(report: Feature083Report) -> tuple[str, ...]:
     rows = {row.policy: row for row in report.summary_rows}
-    proposed = rows.get(POLICY_HOODIE_PROPOSED)
-    local = rows.get(POLICY_LOCAL_ONLY)
-    baseline = rows.get(POLICY_ORIGINAL_HOODIE_BASELINE)
-    cloud = rows.get(POLICY_CLOUD_ONLY)
-    if proposed is None or local is None or baseline is None or cloud is None:
+    hoodie = rows.get(POLICY_HOODIE)
+    if hoodie is None:
         return ("policy identity proof unavailable",)
-
-    lines = [
-        "HOODIE_PROPOSED and LOCAL_ONLY are not equal on aggregate policy metrics.",
-        "ORIGINAL_HOODIE_BASELINE and CLOUD_ONLY are not equal on aggregate policy metrics.",
-    ]
-    if proposed.total_reward != local.total_reward or proposed.average_delay != local.average_delay:
-        lines.append(
-            f"HOODIE_PROPOSED differs from LOCAL_ONLY on total_reward ({proposed.total_reward} vs {local.total_reward}) and/or average_delay ({proposed.average_delay} vs {local.average_delay})."
-        )
-    if baseline.total_reward != cloud.total_reward or baseline.average_delay != cloud.average_delay:
-        lines.append(
-            f"ORIGINAL_HOODIE_BASELINE differs from CLOUD_ONLY on total_reward ({baseline.total_reward} vs {cloud.total_reward}) and/or average_delay ({baseline.average_delay} vs {cloud.average_delay})."
-        )
-    if proposed.total_reward != baseline.total_reward or proposed.average_delay != baseline.average_delay:
-        metrics = ", ".join(_metric_differences(proposed, baseline))
-        lines.append(
-            f"HOODIE_PROPOSED differs from ORIGINAL_HOODIE_BASELINE on metrics: {metrics or 'none'}."
-        )
+    lines = []
+    for policy in REQUIRED_POLICIES:
+        if policy == POLICY_HOODIE:
+            continue
+        comparison = rows.get(policy)
+        if comparison is None:
+            lines.append(f"{POLICY_HOODIE} vs {policy}: unavailable")
+            continue
+        metrics = ", ".join(_metric_differences(hoodie, comparison)) or "none"
+        lines.append(f"{POLICY_HOODIE} differs from {policy} on metrics: {metrics}.")
     return tuple(lines)
 
 
-def render_feature_082_report(report: Feature082Report | None = None) -> str:
-    report = report or build_feature_082_report()
+def render_feature_083_report(report: Feature083Report | None = None) -> str:
+    report = report or build_feature_083_report()
     lines = [
-        "# Feature 082 HOODIE Runtime Evaluation Report",
+        "# Feature 083 HOODIE Paper Baseline Fidelity Report",
         "",
         f"- status: `{report.status}`",
         f"- passed: `{report.passed}`",
@@ -461,6 +486,18 @@ def render_feature_082_report(report: Feature082Report | None = None) -> str:
     for row in report.policy_coverage:
         lines.append(f"- {row.policy}: {row.status} ({row.implementation_mode})")
     lines.append("")
+    lines.append("## Paper Baseline Mapping")
+    for row in report.policy_coverage:
+        lines.append(f"- {row.policy} -> {row.evidence}")
+    lines.append("")
+    lines.append("## Primary Paper Metrics")
+    for metric in PRIMARY_PAPER_METRICS:
+        lines.append(f"- {metric}")
+    lines.append("")
+    lines.append("## Secondary Repository Metrics")
+    for metric in SECONDARY_REPOSITORY_METRICS:
+        lines.append(f"- {metric}")
+    lines.append("")
     lines.append("## Identity Proof")
     lines.extend(f"- {line}" for line in _identity_proof_lines(report))
     lines.append("")
@@ -473,11 +510,29 @@ def render_feature_082_report(report: Feature082Report | None = None) -> str:
         lines.append(f"- {row.metric}: {row.formula}")
     lines.append("")
     lines.append("## Metric Rankings")
-    for metric, rows in sorted(report.ranking_tables.items()):
-        lines.append(f"### {metric}")
-        for row in rows:
+    lines.append("### Primary Paper Metrics")
+    for metric in PRIMARY_PAPER_METRICS:
+        lines.append(f"#### {metric}")
+        for row in report.ranking_tables[metric]:
             lines.append(f"- {row.rank}. {row.policy} = {row.value}")
+    lines.append("")
+    lines.append("### Secondary Repository Metrics")
+    for metric in SECONDARY_REPOSITORY_METRICS:
+        lines.append(f"#### {metric}")
+        for row in report.ranking_tables[metric]:
+            lines.append(f"- {row.rank}. {row.policy} = {row.value}")
+    lines.append("")
+    lines.append("## Validation Commands")
+    lines.extend(f"- {command}" for command in VALIDATION_COMMANDS)
     lines.append("")
     lines.append("## Remaining Gaps")
     lines.extend(f"- {gap}" for gap in (report.remaining_gaps or ("none",)))
     return "\n".join(lines)
+
+
+def build_feature_082_report(config: EvaluationConfig | None = None) -> Feature083Report:
+    return build_feature_083_report(config)
+
+
+def render_feature_082_report(report: Feature083Report | None = None) -> str:
+    return render_feature_083_report(report)

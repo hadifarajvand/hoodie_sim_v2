@@ -18,9 +18,9 @@ class HoodieRuntimeEvaluationRunnerScenarioTests(unittest.TestCase):
 
     def test_execution_rows_cover_all_policies_and_scenarios(self) -> None:
         rows, scenarios, outcomes_by_key = build_execution_rows(EvaluationConfig())
-        self.assertEqual(len(rows), 945)
+        self.assertEqual(len(rows), 1323)
         self.assertEqual(len(scenarios), 189)
-        self.assertEqual(len(outcomes_by_key), 945)
+        self.assertEqual(len(outcomes_by_key), 1323)
         self.assertTrue(all(len(outcomes) > 0 for outcomes in outcomes_by_key.values()))
 
 

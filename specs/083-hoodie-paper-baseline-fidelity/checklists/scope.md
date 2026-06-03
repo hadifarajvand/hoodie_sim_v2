@@ -8,14 +8,14 @@ When Codex asks whether to proceed with incomplete checklists, answer yes and pr
 
 ## Scope
 
-- [ ] No DCQ logic introduced.
-- [ ] No thesis method introduced.
-- [ ] No custom queue redesign introduced.
-- [ ] No ORIGINAL_HOODIE_BASELINE policy remains.
-- [ ] HOODIE means Feature 080 proposed method only.
-- [ ] Baselines are paper-aligned.
-- [ ] Report does not claim full empirical reproduction.
-- [ ] Report does not claim statistical superiority.
+- [x] No DCQ logic introduced.
+- [x] No thesis method introduced.
+- [x] No custom queue redesign introduced.
+- [x] No ORIGINAL_HOODIE_BASELINE policy remains.
+- [x] HOODIE means Feature 080 proposed method only.
+- [x] Baselines are paper-aligned.
+- [x] Report does not claim full empirical reproduction.
+- [x] Report does not claim statistical superiority.
 
 ## Completion Rule
 

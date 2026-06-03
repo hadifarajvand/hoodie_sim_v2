@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from dataclasses import asdict, dataclass, field
+from dataclasses import asdict, dataclass
 from math import isnan
 from typing import Any
 
@@ -103,6 +103,7 @@ class ExecutionOutcome:
     resolved_destination: str
     compatibility_mode_used: bool
     decision_trace: tuple[str, ...] = ()
+    decision_trace_summary: str = ""
 
     def to_dict(self) -> dict[str, Any]:
         return asdict(self)
@@ -120,13 +121,16 @@ class MetricRow:
     dropped_unavailable_count: int
     deadline_violation_count: int
     illegal_action_rejection_count: int
+    task_completion_delay: float | None
+    task_drop_ratio: float
     average_delay: float | None
-    average_reward: float
-    total_reward: float
+    drop_ratio: float
     completion_rate: float
     timeout_drop_rate: float
     unavailable_drop_rate: float
     deadline_violation_rate: float
+    average_reward: float
+    total_reward: float
     throughput: float
     queue_stability_score: float
     compatibility_mode_used: bool
@@ -189,7 +193,7 @@ class MetricCoverageRow:
 
 
 @dataclass(frozen=True, slots=True)
-class Feature082Report:
+class Feature083Report:
     feature_id: str
     status: str
     passed: bool
@@ -228,3 +232,6 @@ class Feature082Report:
             "compatibility_mode_used": self.compatibility_mode_used,
             "raw_row_count": self.raw_row_count,
         }
+
+
+Feature082Report = Feature083Report

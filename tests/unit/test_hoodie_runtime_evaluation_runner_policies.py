@@ -3,120 +3,113 @@ from __future__ import annotations
 import unittest
 
 from src.analysis.hoodie_runtime_evaluation_runner.config import (
-    POLICY_CLOUD_ONLY,
-    POLICY_HOODIE_PROPOSED,
-    POLICY_LOCAL_ONLY,
+    POLICY_BCO,
+    POLICY_FLC,
+    POLICY_HO,
+    POLICY_HOODIE,
+    POLICY_MQO,
     POLICY_ORIGINAL_HOODIE_BASELINE,
-    POLICY_RANDOM_POLICY,
+    POLICY_RO,
+    POLICY_VO,
+    REQUIRED_POLICIES,
 )
 from src.analysis.hoodie_runtime_evaluation_runner.policies import build_policy_adapter
+from src.policies.common import action_family
 from src.policies.policy_interface import PolicyContext
 
 
 class HoodieRuntimeEvaluationRunnerPolicyTests(unittest.TestCase):
-    def _context(self, *, scenario_name: str, workload: str, deadline_pressure: str, delay_hints: dict[str, float]) -> PolicyContext:
-        queue_hints = {"local": 1.0, "horizontal": 2.0, "vertical": 3.0}
-        reward_hints = {family: delay - 10.0 for family, delay in delay_hints.items()}
+    def _context(self, *, queue_hints: dict[str, float], legal_horizontal_destinations: tuple[str, ...] = ("6",)) -> PolicyContext:
         legal_action_mask = {
             "local": True,
             "compute_local": True,
-            "horizontal": True,
-            "offload_horizontal": True,
+            "horizontal": bool(legal_horizontal_destinations),
+            "offload_horizontal": bool(legal_horizontal_destinations),
             "vertical": True,
             "offload_vertical": True,
         }
         return PolicyContext(
             observation={
-                "scenario_name": scenario_name,
-                "workload": workload,
-                "deadline_pressure": deadline_pressure,
+                "scenario_name": "mixed_local_horizontal_cloud_candidates",
+                "workload": "medium",
+                "deadline_pressure": "moderate",
                 "task_id": "task-1",
                 "source_agent_id": "1",
+                "topology": ("1", *legal_horizontal_destinations, "cloud"),
                 "candidate_actions": ("local", "horizontal", "vertical"),
-                "legal_horizontal_destinations": ("6",),
+                "legal_horizontal_destinations": legal_horizontal_destinations,
                 "illegal_horizontal_destinations": ("2",),
                 "cloud_available": True,
-                "placement_actions": {"local": ("local",), "horizontal": ("6",), "vertical": ("vertical",), "cloud": ("vertical",)},
-                "delay_hints": delay_hints,
+                "placement_actions": {"local": ("local",), "horizontal": legal_horizontal_destinations, "vertical": ("vertical",), "cloud": ("vertical",)},
                 "queue_hints": queue_hints,
-                "reward_hints": reward_hints,
-                "mleo_delay_candidates": {
-                    "local": {"action_id": "local", "action_family": "local", "total_delay": delay_hints["local"], "available": True},
-                    "horizontal": {"action_id": "6", "action_family": "horizontal", "total_delay": delay_hints["horizontal"], "available": True},
-                    "vertical": {"action_id": "vertical", "action_family": "vertical", "total_delay": delay_hints["vertical"], "available": True},
-                },
-                "latency_estimates": delay_hints,
-                "queue_history": (1, 2, 3),
+                "mqo_queue_hints": queue_hints,
+                "fallback_hints": {"local": 1.0, "horizontal": 4.0, "vertical": 2.0},
+                "delay_hints": {"local": 4.0, "horizontal": 3.0, "vertical": 2.0},
+                "reward_hints": {"local": -4.0, "horizontal": -3.0, "vertical": -2.0},
+                "latency_estimates": {"local": 4.0, "horizontal": 3.0, "vertical": 2.0},
+                "queue_history": (queue_hints["local"], queue_hints["horizontal"], queue_hints["vertical"]),
             },
             legal_action_mask=legal_action_mask,
-            trace_history=("scenario", workload, deadline_pressure, "7"),
+            trace_history=("scenario", "medium", "moderate", "7"),
         )
 
-    def test_policy_identity_flags_are_not_compatibility_shims(self) -> None:
-        self.assertFalse(build_policy_adapter(POLICY_HOODIE_PROPOSED).compatibility_mode_used)
-        self.assertFalse(build_policy_adapter(POLICY_ORIGINAL_HOODIE_BASELINE).compatibility_mode_used)
-        self.assertFalse(build_policy_adapter(POLICY_RANDOM_POLICY).compatibility_mode_used)
-        self.assertFalse(build_policy_adapter(POLICY_LOCAL_ONLY).compatibility_mode_used)
-        self.assertFalse(build_policy_adapter(POLICY_CLOUD_ONLY).compatibility_mode_used)
+    def test_required_policy_set_matches_feature_083(self) -> None:
+        self.assertEqual(REQUIRED_POLICIES, (POLICY_HOODIE, POLICY_RO, POLICY_FLC, POLICY_VO, POLICY_HO, POLICY_BCO, POLICY_MQO))
 
-    def test_proposed_policy_is_hybrid_not_local_only(self) -> None:
-        proposed = build_policy_adapter(POLICY_HOODIE_PROPOSED)
-        action = proposed.choose_action(
-            self._context(
-                scenario_name="legal_horizontal_offload",
-                workload="low",
-                deadline_pressure="moderate",
-                delay_hints={"local": 4.0, "horizontal": 3.0, "vertical": 4.0},
-            )
-        )
+    def test_original_baseline_is_not_active(self) -> None:
+        with self.assertRaises(ValueError):
+            build_policy_adapter(POLICY_ORIGINAL_HOODIE_BASELINE)
+
+    def test_hoodie_uses_feature_080_proposed_path(self) -> None:
+        hoodie = build_policy_adapter(POLICY_HOODIE)
+        action = hoodie.choose_action(self._context(queue_hints={"local": 3.0, "horizontal": 2.0, "vertical": 4.0}))
         self.assertEqual(action, "horizontal")
-        self.assertIn("policy=HOODIE_PROPOSED", proposed.last_decision_trace)
-        self.assertIn("selected_action=horizontal", proposed.last_decision_trace)
+        trace = " | ".join(hoodie.last_decision_trace)
+        self.assertIn("policy=HOODIE", trace)
+        self.assertIn("state_value=", trace)
+        self.assertIn("raw_advantages=", trace)
+        self.assertIn("mean_advantage=", trace)
+        self.assertIn("adjusted_q_values=", trace)
 
-    def test_original_baseline_is_paper_aligned_not_cloud_only(self) -> None:
-        baseline = build_policy_adapter(POLICY_ORIGINAL_HOODIE_BASELINE)
-        action = baseline.choose_action(
-            self._context(
-                scenario_name="legal_horizontal_offload",
-                workload="low",
-                deadline_pressure="moderate",
-                delay_hints={"local": 4.0, "horizontal": 3.0, "vertical": 4.0},
-            )
-        )
-        self.assertEqual(action, "local")
-        self.assertIn("policy=ORIGINAL_HOODIE_BASELINE", baseline.last_decision_trace)
-        self.assertIn("selected_action=local", baseline.last_decision_trace)
-
-    def test_core_policies_diverge_on_mixed_candidates(self) -> None:
-        context = self._context(
-            scenario_name="legal_horizontal_offload",
-            workload="low",
-            deadline_pressure="moderate",
-            delay_hints={"local": 4.0, "horizontal": 3.0, "vertical": 4.0},
-        )
-        proposed = build_policy_adapter(POLICY_HOODIE_PROPOSED)
-        baseline = build_policy_adapter(POLICY_ORIGINAL_HOODIE_BASELINE)
-
-        proposed_action = proposed.choose_action(context)
-        baseline_action = baseline.choose_action(context)
-
-        self.assertEqual(proposed_action, "horizontal")
-        self.assertEqual(baseline_action, "local")
-        self.assertNotEqual(proposed_action, baseline_action)
-        self.assertNotEqual(proposed.last_decision_trace, baseline.last_decision_trace)
-        self.assertIn("policy=HOODIE_PROPOSED", proposed.last_decision_trace)
-        self.assertIn("policy=ORIGINAL_HOODIE_BASELINE", baseline.last_decision_trace)
-
-    def test_random_policy_is_seeded(self) -> None:
-        context = self._context(
-            scenario_name="mixed_local_horizontal_cloud_candidates",
-            workload="medium",
-            deadline_pressure="tight",
-            delay_hints={"local": 3.0, "horizontal": 2.0, "vertical": 4.0},
-        )
-        first = build_policy_adapter(POLICY_RANDOM_POLICY, seed=11).choose_action(context)
-        second = build_policy_adapter(POLICY_RANDOM_POLICY, seed=11).choose_action(context)
+    def test_ro_random_behavior_is_seed_controlled(self) -> None:
+        context = self._context(queue_hints={"local": 3.0, "horizontal": 2.0, "vertical": 4.0})
+        first = build_policy_adapter(POLICY_RO, seed=11).choose_action(context)
+        second = build_policy_adapter(POLICY_RO, seed=11).choose_action(context)
         self.assertEqual(first, second)
+
+    def test_flc_always_local(self) -> None:
+        flc = build_policy_adapter(POLICY_FLC)
+        action = flc.choose_action(self._context(queue_hints={"local": 3.0, "horizontal": 2.0, "vertical": 4.0}))
+        self.assertIn(action, {"local", "compute_local"})
+        self.assertIn("policy=FLC", " | ".join(flc.last_decision_trace))
+
+    def test_vo_always_vertical(self) -> None:
+        vo = build_policy_adapter(POLICY_VO)
+        action = vo.choose_action(self._context(queue_hints={"local": 3.0, "horizontal": 2.0, "vertical": 1.0}))
+        self.assertIn(action, {"vertical", "offload_vertical"})
+        self.assertIn("policy=VO", " | ".join(vo.last_decision_trace))
+
+    def test_ho_prefers_horizontal_when_legal_destination_exists(self) -> None:
+        ho = build_policy_adapter(POLICY_HO)
+        action = ho.choose_action(self._context(queue_hints={"local": 4.0, "horizontal": 1.0, "vertical": 3.0}))
+        self.assertIn(action, {"horizontal", "offload_horizontal"})
+        self.assertIn("selected_family=horizontal", " | ".join(ho.last_decision_trace))
+
+    def test_bco_cycles_through_local_vertical_horizontal(self) -> None:
+        bco = build_policy_adapter(POLICY_BCO)
+        context = self._context(queue_hints={"local": 4.0, "horizontal": 2.0, "vertical": 1.0})
+        first = bco.choose_action(context)
+        second = bco.choose_action(context)
+        third = bco.choose_action(context)
+        self.assertIn(first, {"local", "compute_local"})
+        self.assertIn(second, {"vertical", "offload_vertical"})
+        self.assertIn(third, {"horizontal", "offload_horizontal"})
+
+    def test_mqo_selects_minimum_queue_destination(self) -> None:
+        mqo = build_policy_adapter(POLICY_MQO)
+        action = mqo.choose_action(self._context(queue_hints={"local": 5.0, "horizontal": 2.0, "vertical": 3.0}))
+        self.assertIn(action_family(action), {"horizontal"})
+        self.assertIn("queue_snapshot", " | ".join(mqo.last_decision_trace))
 
 
 if __name__ == "__main__":

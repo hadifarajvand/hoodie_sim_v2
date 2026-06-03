@@ -53,8 +53,17 @@ def _task_deadline(base_duration: int, deadline_pressure: str, arrival_slot: int
 
 def _queue_snapshot(index: int, workload: str, scenario_name: str) -> tuple[int, ...]:
     base = {"low": 1, "medium": 2, "high": 3}[workload]
-    family_bias = 1 if scenario_name == "timeout_drop_case" else 0
-    return tuple(max(0, base + family_bias + offset) for offset in (0, 1, 2))
+    scenario_biases = {
+        "light_load_no_deadline_pressure": (0, 1, 2),
+        "tight_deadline_pressure": (1, 0, 2),
+        "legal_horizontal_offload": (2, 0, 1),
+        "illegal_horizontal_destination_attempt": (1, 2, 0),
+        "cloud_vertical_fallback": (2, 1, 0),
+        "timeout_drop_case": (2, 1, 3),
+        "mixed_local_horizontal_cloud_candidates": (1, 0, 2),
+    }
+    offsets = scenario_biases.get(scenario_name, (0, 1, 2))
+    return tuple(max(0, base + offsets[i] + (1 if index % 4 == i else 0)) for i in range(3))
 
 
 def _completion_time(blueprint: ScenarioBlueprint, action_family: str, workload: str, deadline_pressure: str, index: int) -> int:
@@ -131,4 +140,3 @@ def build_scenario_contexts(config: EvaluationConfig) -> tuple[ScenarioContext, 
                         )
                     )
     return tuple(contexts)
-

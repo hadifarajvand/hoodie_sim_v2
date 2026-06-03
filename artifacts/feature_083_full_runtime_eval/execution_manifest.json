@@ -1,0 +1,315 @@
+{
+  "branch": "083-hoodie-paper-baseline-fidelity",
+  "claim_boundary": [
+    "HOODIE means the Feature 080 proposed method only.",
+    "Baselines are paper-aligned and restricted to RO, FLC, VO, HO, BCO, and MQO.",
+    "Deterministic evaluation is used for comparison and artifact generation.",
+    "No statistical superiority claim is made.",
+    "No full empirical paper reproduction is claimed."
+  ],
+  "compatibility_mode_policies": [],
+  "deadline_pressures": [
+    "relaxed",
+    "moderate",
+    "tight"
+  ],
+  "feature": "083",
+  "feature_name": "HOODIE Paper Baseline Fidelity",
+  "generated_files": [
+    "raw_rows.json",
+    "raw_rows.csv",
+    "aggregate_by_policy.json",
+    "aggregate_by_policy.csv",
+    "ranking_by_metric.json",
+    "ranking_by_metric.csv",
+    "feature_083_runtime_evaluation_report.json",
+    "feature_083_runtime_evaluation_report.md",
+    "execution_manifest.json"
+  ],
+  "identity_proof": {
+    "hoodie_vs_bco": {
+      "different": true,
+      "metrics": [
+        "task_completion_delay",
+        "task_drop_ratio",
+        "average_reward",
+        "total_reward",
+        "completion_rate",
+        "timeout_drop_rate",
+        "unavailable_drop_rate",
+        "deadline_violation_rate",
+        "throughput",
+        "illegal_action_rejection_count"
+      ]
+    },
+    "hoodie_vs_flc": {
+      "different": true,
+      "metrics": [
+        "task_completion_delay",
+        "task_drop_ratio",
+        "average_reward",
+        "total_reward",
+        "completion_rate",
+        "timeout_drop_rate",
+        "deadline_violation_rate",
+        "throughput"
+      ]
+    },
+    "hoodie_vs_ho": {
+      "different": true,
+      "metrics": [
+        "task_completion_delay",
+        "task_drop_ratio",
+        "average_reward",
+        "total_reward",
+        "completion_rate",
+        "timeout_drop_rate",
+        "unavailable_drop_rate",
+        "deadline_violation_rate",
+        "throughput",
+        "illegal_action_rejection_count"
+      ]
+    },
+    "hoodie_vs_mqo": {
+      "different": true,
+      "metrics": [
+        "task_completion_delay",
+        "task_drop_ratio",
+        "average_reward",
+        "total_reward",
+        "completion_rate",
+        "timeout_drop_rate",
+        "deadline_violation_rate",
+        "throughput"
+      ]
+    },
+    "hoodie_vs_ro": {
+      "different": true,
+      "metrics": [
+        "task_completion_delay",
+        "task_drop_ratio",
+        "average_reward",
+        "total_reward",
+        "completion_rate",
+        "timeout_drop_rate",
+        "unavailable_drop_rate",
+        "deadline_violation_rate",
+        "throughput",
+        "illegal_action_rejection_count"
+      ]
+    },
+    "hoodie_vs_vo": {
+      "different": true,
+      "metrics": [
+        "task_completion_delay",
+        "task_drop_ratio",
+        "average_reward",
+        "total_reward",
+        "completion_rate",
+        "timeout_drop_rate",
+        "deadline_violation_rate",
+        "throughput"
+      ]
+    }
+  },
+  "local_head_sha": "f5d206460eb267e05aa3124ac68d460324780b59",
+  "metric_count": 11,
+  "metric_coverage": [
+    {
+      "evidence": "src/analysis/hoodie_runtime_evaluation_runner/metrics.py",
+      "formula": "mean(completion_time - arrival_time) for completed tasks",
+      "metric": "task_completion_delay",
+      "status": "implemented"
+    },
+    {
+      "evidence": "src/analysis/hoodie_runtime_evaluation_runner/metrics.py",
+      "formula": "(dropped_timeout_count + dropped_unavailable_count) / total_task_count",
+      "metric": "task_drop_ratio",
+      "status": "implemented"
+    },
+    {
+      "evidence": "src/analysis/hoodie_runtime_evaluation_runner/metrics.py",
+      "formula": "completed_count / total_task_count",
+      "metric": "completion_rate",
+      "status": "implemented"
+    },
+    {
+      "evidence": "src/analysis/hoodie_runtime_evaluation_runner/metrics.py",
+      "formula": "dropped_timeout_count / total_task_count",
+      "metric": "timeout_drop_rate",
+      "status": "implemented"
+    },
+    {
+      "evidence": "src/analysis/hoodie_runtime_evaluation_runner/metrics.py",
+      "formula": "dropped_unavailable_count / total_task_count",
+      "metric": "unavailable_drop_rate",
+      "status": "implemented"
+    },
+    {
+      "evidence": "src/analysis/hoodie_runtime_evaluation_runner/metrics.py",
+      "formula": "deadline_violation_count / total_task_count",
+      "metric": "deadline_violation_rate",
+      "status": "implemented"
+    },
+    {
+      "evidence": "src/analysis/hoodie_runtime_evaluation_runner/metrics.py",
+      "formula": "mean(reward) across task outcomes",
+      "metric": "average_reward",
+      "status": "implemented"
+    },
+    {
+      "evidence": "src/analysis/hoodie_runtime_evaluation_runner/metrics.py",
+      "formula": "sum(reward) across task outcomes",
+      "metric": "total_reward",
+      "status": "implemented"
+    },
+    {
+      "evidence": "src/analysis/hoodie_runtime_evaluation_runner/metrics.py",
+      "formula": "completed_count / total_task_count",
+      "metric": "throughput",
+      "status": "implemented"
+    },
+    {
+      "evidence": "src/analysis/hoodie_runtime_evaluation_runner/metrics.py",
+      "formula": "1 / (1 + average_queue_length + positive_queue_growth)",
+      "metric": "queue_stability_score",
+      "status": "implemented"
+    },
+    {
+      "evidence": "src/analysis/hoodie_runtime_evaluation_runner/metrics.py",
+      "formula": "count of illegal candidate rejection events",
+      "metric": "illegal_action_rejection_count",
+      "status": "implemented"
+    }
+  ],
+  "output_dir": "artifacts/feature_083_full_runtime_eval",
+  "passed": true,
+  "policy_count": 7,
+  "policy_coverage": [
+    {
+      "compatibility_mode_used": false,
+      "evidence": "Feature 080 proposed-method runtime path",
+      "implementation_mode": "feature_080_runtime_path",
+      "policy": "HOODIE",
+      "status": "implemented"
+    },
+    {
+      "compatibility_mode_used": false,
+      "evidence": "Random Offloader baseline",
+      "implementation_mode": "paper_baseline_adapter",
+      "policy": "RO",
+      "status": "implemented"
+    },
+    {
+      "compatibility_mode_used": false,
+      "evidence": "Full Local Computing baseline",
+      "implementation_mode": "paper_baseline_adapter",
+      "policy": "FLC",
+      "status": "implemented"
+    },
+    {
+      "compatibility_mode_used": false,
+      "evidence": "Vertical Offloader baseline",
+      "implementation_mode": "paper_baseline_adapter",
+      "policy": "VO",
+      "status": "implemented"
+    },
+    {
+      "compatibility_mode_used": false,
+      "evidence": "Horizontal Offloader baseline",
+      "implementation_mode": "paper_baseline_adapter",
+      "policy": "HO",
+      "status": "implemented"
+    },
+    {
+      "compatibility_mode_used": false,
+      "evidence": "Balanced Cyclic Offloader baseline",
+      "implementation_mode": "paper_baseline_adapter",
+      "policy": "BCO",
+      "status": "implemented"
+    },
+    {
+      "compatibility_mode_used": false,
+      "evidence": "Minimum Queue Offloader baseline",
+      "implementation_mode": "paper_baseline_adapter",
+      "policy": "MQO",
+      "status": "implemented"
+    }
+  ],
+  "ranking_metrics": [
+    "average_reward",
+    "completion_rate",
+    "deadline_violation_rate",
+    "illegal_action_rejection_count",
+    "queue_stability_score",
+    "task_completion_delay",
+    "task_drop_ratio",
+    "throughput",
+    "timeout_drop_rate",
+    "total_reward",
+    "unavailable_drop_rate"
+  ],
+  "raw_row_count": 10584,
+  "readiness_level": "fully_implemented",
+  "remote_head_sha": "f5d206460eb267e05aa3124ac68d460324780b59",
+  "report_status": "hoodie_paper_baseline_fidelity_ready",
+  "scenario_count": 7,
+  "scenario_coverage": [
+    {
+      "evidence": "deterministic blueprint expansion",
+      "scenario": "light_load_no_deadline_pressure",
+      "status": "implemented"
+    },
+    {
+      "evidence": "deterministic blueprint expansion",
+      "scenario": "tight_deadline_pressure",
+      "status": "implemented"
+    },
+    {
+      "evidence": "deterministic blueprint expansion",
+      "scenario": "legal_horizontal_offload",
+      "status": "implemented"
+    },
+    {
+      "evidence": "deterministic blueprint expansion",
+      "scenario": "illegal_horizontal_destination_attempt",
+      "status": "implemented"
+    },
+    {
+      "evidence": "deterministic blueprint expansion",
+      "scenario": "cloud_vertical_fallback",
+      "status": "implemented"
+    },
+    {
+      "evidence": "deterministic blueprint expansion",
+      "scenario": "timeout_drop_case",
+      "status": "implemented"
+    },
+    {
+      "evidence": "deterministic blueprint expansion",
+      "scenario": "mixed_local_horizontal_cloud_candidates",
+      "status": "implemented"
+    }
+  ],
+  "scope_proof": [
+    "no DCQ logic",
+    "no thesis method",
+    "no custom queue redesign",
+    "no ORIGINAL_HOODIE_BASELINE policy remains",
+    "HOODIE remains the Feature 080 proposed method only",
+    "baselines are paper-aligned",
+    "no empirical full-paper reproduction claim",
+    "no statistical superiority claim"
+  ],
+  "seeds": [
+    7,
+    13,
+    21
+  ],
+  "sha_equality": true,
+  "workloads": [
+    "low",
+    "medium",
+    "high"
+  ]
+}

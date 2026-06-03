@@ -21,8 +21,14 @@ def deadline_violation_rate(violations: int, total: int) -> float:
     return float(violations / total) if total else 0.0
 
 
-def average_delay(delays: list[float]) -> float | None:
+def task_completion_delay(delays: list[float]) -> float | None:
     return float(mean(delays)) if delays else None
+
+
+def task_drop_ratio(timeout_dropped: int, unavailable_dropped: int, total: int) -> float:
+    if not total:
+        return 0.0
+    return float((timeout_dropped + unavailable_dropped) / total)
 
 
 def average_reward(rewards: list[float]) -> float:
@@ -58,6 +64,8 @@ def build_metric_row(*, policy: str, scenario: str, workload: str, deadline_pres
     delays = [outcome.delay for outcome in outcomes if outcome.delay is not None]
     rewards = [float(outcome.reward) for outcome in outcomes if outcome.reward is not None]
     queue_observations = [outcome.queue_length_observations for outcome in outcomes]
+    completion_delay = task_completion_delay(delays)
+    drop_ratio = task_drop_ratio(timeout_dropped, unavailable_dropped, total)
     return MetricRow(
         policy=policy,
         scenario=scenario,
@@ -69,15 +77,17 @@ def build_metric_row(*, policy: str, scenario: str, workload: str, deadline_pres
         dropped_unavailable_count=unavailable_dropped,
         deadline_violation_count=deadline_violations,
         illegal_action_rejection_count=illegal_action_rejections,
-        average_delay=average_delay(delays),
-        average_reward=average_reward(rewards),
-        total_reward=total_reward(rewards),
+        task_completion_delay=completion_delay,
+        task_drop_ratio=drop_ratio,
+        average_delay=completion_delay,
+        drop_ratio=drop_ratio,
         completion_rate=completion_rate(completed, total),
         timeout_drop_rate=timeout_drop_rate(timeout_dropped, total),
         unavailable_drop_rate=unavailable_drop_rate(unavailable_dropped, total),
         deadline_violation_rate=deadline_violation_rate(deadline_violations, total),
+        average_reward=average_reward(rewards),
+        total_reward=total_reward(rewards),
         throughput=throughput(completed, total),
         queue_stability_score=queue_stability_score(queue_observations),
         compatibility_mode_used=any(outcome.compatibility_mode_used for outcome in outcomes),
     )
-

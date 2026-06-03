@@ -9,9 +9,9 @@ from pathlib import Path
 from typing import Any
 
 from .aggregation import aggregate_by_policy
-from .config import DEFAULT_OUTPUT_DIR, EvaluationConfig
-from .model import Feature082Report, RankingRow
-from .report import build_execution_rows, build_feature_082_report, render_feature_082_report
+from .config import DEFAULT_OUTPUT_DIR, EvaluationConfig, FEATURE_NAME, POLICY_HOODIE, REQUIRED_POLICIES
+from .model import Feature083Report, RankingRow
+from .report import build_execution_rows, build_feature_083_report, render_feature_083_report
 
 
 RAW_ROWS_JSON = "raw_rows.json"
@@ -20,8 +20,8 @@ AGGREGATE_BY_POLICY_JSON = "aggregate_by_policy.json"
 AGGREGATE_BY_POLICY_CSV = "aggregate_by_policy.csv"
 RANKING_BY_METRIC_JSON = "ranking_by_metric.json"
 RANKING_BY_METRIC_CSV = "ranking_by_metric.csv"
-REPORT_JSON = "feature_082_runtime_evaluation_report.json"
-REPORT_MD = "feature_082_runtime_evaluation_report.md"
+REPORT_JSON = "feature_083_runtime_evaluation_report.json"
+REPORT_MD = "feature_083_runtime_evaluation_report.md"
 EXECUTION_MANIFEST_JSON = "execution_manifest.json"
 
 
@@ -91,9 +91,51 @@ def _ranking_rows_to_dict(ranking_tables: dict[str, tuple[RankingRow, ...]]) -> 
     return {metric: [row.to_dict() for row in rows] for metric, rows in sorted(ranking_tables.items())}
 
 
-def _artifact_markdown(report: Feature082Report, *, output_dir: Path, raw_row_count: int, manifest_path: Path) -> str:
+def _metric_rows_differ(left: Any, right: Any) -> bool:
+    if left is None or right is None:
+        return False
+    comparable_fields = (
+        "completed_count",
+        "dropped_timeout_count",
+        "dropped_unavailable_count",
+        "deadline_violation_count",
+        "illegal_action_rejection_count",
+        "task_completion_delay",
+        "task_drop_ratio",
+        "average_reward",
+        "total_reward",
+        "completion_rate",
+        "timeout_drop_rate",
+        "unavailable_drop_rate",
+        "deadline_violation_rate",
+        "throughput",
+        "queue_stability_score",
+    )
+    return any(getattr(left, field) != getattr(right, field) for field in comparable_fields)
+
+
+def _metric_differences(left: Any, right: Any) -> list[str]:
+    if left is None or right is None:
+        return []
+    fields = (
+        "task_completion_delay",
+        "task_drop_ratio",
+        "average_reward",
+        "total_reward",
+        "completion_rate",
+        "timeout_drop_rate",
+        "unavailable_drop_rate",
+        "deadline_violation_rate",
+        "throughput",
+        "queue_stability_score",
+        "illegal_action_rejection_count",
+    )
+    return [field for field in fields if getattr(left, field) != getattr(right, field)]
+
+
+def _artifact_markdown(report: Feature083Report, *, output_dir: Path, raw_row_count: int, manifest_path: Path) -> str:
     lines = [
-        "# Feature 082 HOODIE Runtime Evaluation Artifact Bundle",
+        "# Feature 083 HOODIE Paper Baseline Fidelity Artifact Bundle",
         "",
         f"- output_dir: `{output_dir}`",
         f"- raw_row_count: `{raw_row_count}`",
@@ -121,29 +163,40 @@ def _artifact_markdown(report: Feature082Report, *, output_dir: Path, raw_row_co
     else:
         lines.append("- no compatibility-mode policies remain")
     lines.append("")
-    lines.append(render_feature_082_report(report))
+    lines.append(render_feature_083_report(report))
     lines.append("")
     lines.append("## Manifest")
     lines.append(f"- `{manifest_path.name}`")
     return "\n".join(lines) + "\n"
 
 
-def _execution_manifest(report: Feature082Report, *, config: EvaluationConfig, raw_row_count: int, output_dir: Path) -> dict[str, Any]:
+def _execution_manifest(report: Feature083Report, *, config: EvaluationConfig, raw_row_count: int, output_dir: Path) -> dict[str, Any]:
     repo_identity = _repo_identity()
-    compatibility_policies = [row.policy for row in report.policy_coverage if row.compatibility_mode_used]
     rows_by_policy = {row.policy: row for row in report.summary_rows}
     identity_proof = {
-        "proposed_vs_local": {
-            "different": _metric_rows_differ(rows_by_policy.get("HOODIE_PROPOSED"), rows_by_policy.get("LOCAL_ONLY")),
-            "metrics": _metric_differences(rows_by_policy.get("HOODIE_PROPOSED"), rows_by_policy.get("LOCAL_ONLY")),
+        "hoodie_vs_ro": {
+            "different": _metric_rows_differ(rows_by_policy.get("HOODIE"), rows_by_policy.get("RO")),
+            "metrics": _metric_differences(rows_by_policy.get("HOODIE"), rows_by_policy.get("RO")),
         },
-        "baseline_vs_cloud": {
-            "different": _metric_rows_differ(rows_by_policy.get("ORIGINAL_HOODIE_BASELINE"), rows_by_policy.get("CLOUD_ONLY")),
-            "metrics": _metric_differences(rows_by_policy.get("ORIGINAL_HOODIE_BASELINE"), rows_by_policy.get("CLOUD_ONLY")),
+        "hoodie_vs_flc": {
+            "different": _metric_rows_differ(rows_by_policy.get("HOODIE"), rows_by_policy.get("FLC")),
+            "metrics": _metric_differences(rows_by_policy.get("HOODIE"), rows_by_policy.get("FLC")),
         },
-        "proposed_vs_baseline": {
-            "different": _metric_rows_differ(rows_by_policy.get("HOODIE_PROPOSED"), rows_by_policy.get("ORIGINAL_HOODIE_BASELINE")),
-            "metrics": _metric_differences(rows_by_policy.get("HOODIE_PROPOSED"), rows_by_policy.get("ORIGINAL_HOODIE_BASELINE")),
+        "hoodie_vs_vo": {
+            "different": _metric_rows_differ(rows_by_policy.get("HOODIE"), rows_by_policy.get("VO")),
+            "metrics": _metric_differences(rows_by_policy.get("HOODIE"), rows_by_policy.get("VO")),
+        },
+        "hoodie_vs_ho": {
+            "different": _metric_rows_differ(rows_by_policy.get("HOODIE"), rows_by_policy.get("HO")),
+            "metrics": _metric_differences(rows_by_policy.get("HOODIE"), rows_by_policy.get("HO")),
+        },
+        "hoodie_vs_bco": {
+            "different": _metric_rows_differ(rows_by_policy.get("HOODIE"), rows_by_policy.get("BCO")),
+            "metrics": _metric_differences(rows_by_policy.get("HOODIE"), rows_by_policy.get("BCO")),
+        },
+        "hoodie_vs_mqo": {
+            "different": _metric_rows_differ(rows_by_policy.get("HOODIE"), rows_by_policy.get("MQO")),
+            "metrics": _metric_differences(rows_by_policy.get("HOODIE"), rows_by_policy.get("MQO")),
         },
     }
     generated_files = [
@@ -158,8 +211,8 @@ def _execution_manifest(report: Feature082Report, *, config: EvaluationConfig, r
         EXECUTION_MANIFEST_JSON,
     ]
     return {
-        "feature": "082",
-        "feature_name": "HOODIE Runtime Evaluation",
+        "feature": "083",
+        "feature_name": FEATURE_NAME,
         **repo_identity,
         "output_dir": str(output_dir),
         "generated_files": generated_files,
@@ -172,7 +225,7 @@ def _execution_manifest(report: Feature082Report, *, config: EvaluationConfig, r
         "seeds": list(config.seeds),
         "claim_boundary": list(report.claim_boundary),
         "scope_proof": list(report.scope_proof),
-        "compatibility_mode_policies": compatibility_policies,
+        "compatibility_mode_policies": [row.policy for row in report.policy_coverage if row.compatibility_mode_used],
         "identity_proof": identity_proof,
         "policy_coverage": [row.to_dict() for row in report.policy_coverage],
         "scenario_coverage": [row.to_dict() for row in report.scenario_coverage],
@@ -184,51 +237,11 @@ def _execution_manifest(report: Feature082Report, *, config: EvaluationConfig, r
     }
 
 
-def _metric_rows_differ(left: Any, right: Any) -> bool:
-    if left is None or right is None:
-        return False
-    comparable_fields = (
-        "completed_count",
-        "dropped_timeout_count",
-        "dropped_unavailable_count",
-        "deadline_violation_count",
-        "illegal_action_rejection_count",
-        "average_delay",
-        "average_reward",
-        "total_reward",
-        "completion_rate",
-        "timeout_drop_rate",
-        "unavailable_drop_rate",
-        "deadline_violation_rate",
-        "throughput",
-        "queue_stability_score",
-    )
-    return any(getattr(left, field) != getattr(right, field) for field in comparable_fields)
-
-
-def _metric_differences(left: Any, right: Any) -> list[str]:
-    if left is None or right is None:
-        return []
-    fields = (
-        "average_delay",
-        "average_reward",
-        "total_reward",
-        "completion_rate",
-        "timeout_drop_rate",
-        "unavailable_drop_rate",
-        "deadline_violation_rate",
-        "throughput",
-        "queue_stability_score",
-        "illegal_action_rejection_count",
-    )
-    return [field for field in fields if getattr(left, field) != getattr(right, field)]
-
-
-def generate_hoodie_runtime_evaluation_artifacts(output_dir: Path | None = None) -> tuple[Feature082Report, dict[str, Path], dict[str, Any]]:
+def generate_hoodie_runtime_evaluation_artifacts(output_dir: Path | None = None) -> tuple[Feature083Report, dict[str, Path], dict[str, Any]]:
     config = EvaluationConfig(output_dir=Path(output_dir or DEFAULT_OUTPUT_DIR))
     output_dir = config.output_dir
     output_dir.mkdir(parents=True, exist_ok=True)
-    report = build_feature_082_report(config)
+    report = build_feature_083_report(config)
     raw_metric_rows, _, outcomes_by_key = build_execution_rows(config)
     aggregate_rows = aggregate_by_policy(raw_metric_rows)
     raw_rows = _flatten_raw_rows(outcomes_by_key)
@@ -288,35 +301,40 @@ def validate_hoodie_runtime_evaluation_artifacts(output_dir: Path | None = None)
     )
     missing = [name for name in required if not (output_dir / name).exists()]
     if missing:
-        raise FileNotFoundError(f"Missing Feature 082 artifacts: {', '.join(missing)}")
+        raise FileNotFoundError(f"Missing Feature 083 artifacts: {', '.join(missing)}")
     manifest = json.loads((output_dir / EXECUTION_MANIFEST_JSON).read_text(encoding="utf-8"))
     if manifest.get("generated_files") != list(required):
-        raise ValueError("Feature 082 execution manifest generated_files does not match the required artifact set")
+        raise ValueError("Feature 083 execution manifest generated_files does not match the required artifact set")
     aggregate_payload = json.loads((output_dir / AGGREGATE_BY_POLICY_JSON).read_text(encoding="utf-8"))
     rows = {row["policy"]: row for row in aggregate_payload.get("rows", [])}
-    if rows:
-        proposed = rows.get("HOODIE_PROPOSED")
-        baseline = rows.get("ORIGINAL_HOODIE_BASELINE")
-        if proposed is None or baseline is None:
-            raise ValueError("Feature 082 aggregate_by_policy.json does not contain both core policies")
-        comparable_fields = (
-            "completed_count",
-            "dropped_timeout_count",
-            "dropped_unavailable_count",
-            "deadline_violation_count",
-            "illegal_action_rejection_count",
-            "average_delay",
-            "average_reward",
-            "total_reward",
-            "completion_rate",
-            "timeout_drop_rate",
-            "unavailable_drop_rate",
-            "deadline_violation_rate",
-            "throughput",
-            "queue_stability_score",
-        )
-        if all(proposed[field] == baseline[field] for field in comparable_fields):
-            raise ValueError("Feature 082 aggregate metrics still show HOODIE_PROPOSED == ORIGINAL_HOODIE_BASELINE")
+    if set(rows) != set(REQUIRED_POLICIES):
+        raise ValueError("Feature 083 aggregate_by_policy.json must contain exactly the required paper policies")
+    if "ORIGINAL_HOODIE_BASELINE" in rows:
+        raise ValueError("Feature 083 aggregate metrics still contain ORIGINAL_HOODIE_BASELINE")
+    hoodie = rows.get(POLICY_HOODIE)
+    if hoodie is None:
+        raise ValueError("Feature 083 aggregate_by_policy.json does not contain HOODIE")
+    for baseline in (policy for policy in REQUIRED_POLICIES if policy != POLICY_HOODIE):
+        comparison = rows.get(baseline)
+        if comparison is None:
+            raise ValueError(f"Feature 083 aggregate_by_policy.json does not contain {baseline}")
+        if all(
+            hoodie[field] == comparison[field]
+            for field in (
+                "task_completion_delay",
+                "task_drop_ratio",
+                "average_reward",
+                "total_reward",
+                "completion_rate",
+                "timeout_drop_rate",
+                "unavailable_drop_rate",
+                "deadline_violation_rate",
+                "throughput",
+                "queue_stability_score",
+                "illegal_action_rejection_count",
+            )
+        ):
+            raise ValueError(f"Feature 083 aggregate metrics still show HOODIE == {baseline}")
     return {
         "output_dir": str(output_dir),
         "validated": True,
@@ -326,9 +344,9 @@ def validate_hoodie_runtime_evaluation_artifacts(output_dir: Path | None = None)
 
 
 def main(argv: list[str] | None = None) -> None:
-    parser = argparse.ArgumentParser(description="Generate or validate Feature 082 runtime evaluation artifacts.")
-    parser.add_argument("--write-artifacts", nargs="?", const=str(DEFAULT_OUTPUT_DIR), default=None, metavar="DIR", help="Write Feature 082 artifacts to DIR.")
-    parser.add_argument("--validate-artifacts", action="store_true", help="Validate the Feature 082 artifact bundle in the default output directory.")
+    parser = argparse.ArgumentParser(description="Generate or validate Feature 083 runtime evaluation artifacts.")
+    parser.add_argument("--write-artifacts", nargs="?", const=str(DEFAULT_OUTPUT_DIR), default=None, metavar="DIR", help="Write Feature 083 artifacts to DIR.")
+    parser.add_argument("--validate-artifacts", action="store_true", help="Validate the Feature 083 artifact bundle in the default output directory.")
     parser.add_argument("--artifact-dir", default=None, help="Override the artifact directory used by validation.")
     args = parser.parse_args(argv)
 
@@ -338,10 +356,10 @@ def main(argv: list[str] | None = None) -> None:
     if args.validate_artifacts:
         validate_hoodie_runtime_evaluation_artifacts(Path(args.artifact_dir) if args.artifact_dir else None)
         if report is None:
-            report = build_feature_082_report(EvaluationConfig(output_dir=Path(args.artifact_dir) if args.artifact_dir else DEFAULT_OUTPUT_DIR))
+            report = build_feature_083_report(EvaluationConfig(output_dir=Path(args.artifact_dir) if args.artifact_dir else DEFAULT_OUTPUT_DIR))
     if report is None:
-        report = build_feature_082_report()
-    print(render_feature_082_report(report))
+        report = build_feature_083_report()
+    print(render_feature_083_report(report))
 
 
 if __name__ == "__main__":

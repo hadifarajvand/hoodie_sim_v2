@@ -5,6 +5,7 @@ from pathlib import Path
 import tempfile
 import unittest
 
+from src.analysis.hoodie_runtime_evaluation_runner.config import REQUIRED_POLICIES
 from src.analysis.hoodie_runtime_evaluation_runner.runner import (
     generate_hoodie_runtime_evaluation_artifacts,
     validate_hoodie_runtime_evaluation_artifacts,
@@ -14,7 +15,7 @@ from src.analysis.hoodie_runtime_evaluation_runner.runner import (
 class HoodieRuntimeEvaluationRunnerArtifactTests(unittest.TestCase):
     def test_artifact_bundle_is_written_with_expected_coverage(self) -> None:
         with tempfile.TemporaryDirectory() as tmpdir:
-            output_dir = Path(tmpdir) / "artifacts/feature_082_full_runtime_eval"
+            output_dir = Path(tmpdir) / "artifacts/feature_083_full_runtime_eval"
             report, paths, manifest = generate_hoodie_runtime_evaluation_artifacts(output_dir)
 
             required_names = {
@@ -24,8 +25,8 @@ class HoodieRuntimeEvaluationRunnerArtifactTests(unittest.TestCase):
                 "aggregate_by_policy.csv",
                 "ranking_by_metric.json",
                 "ranking_by_metric.csv",
-                "feature_082_runtime_evaluation_report.json",
-                "feature_082_runtime_evaluation_report.md",
+                "feature_083_runtime_evaluation_report.json",
+                "feature_083_runtime_evaluation_report.md",
                 "execution_manifest.json",
             }
             self.assertEqual(set(paths), required_names)
@@ -35,67 +36,63 @@ class HoodieRuntimeEvaluationRunnerArtifactTests(unittest.TestCase):
             raw_payload = json.loads(paths["raw_rows.json"].read_text(encoding="utf-8"))
             aggregate_payload = json.loads(paths["aggregate_by_policy.json"].read_text(encoding="utf-8"))
             ranking_payload = json.loads(paths["ranking_by_metric.json"].read_text(encoding="utf-8"))
-            report_payload = json.loads(paths["feature_082_runtime_evaluation_report.json"].read_text(encoding="utf-8"))
+            report_payload = json.loads(paths["feature_083_runtime_evaluation_report.json"].read_text(encoding="utf-8"))
             manifest_payload = json.loads(paths["execution_manifest.json"].read_text(encoding="utf-8"))
 
-            self.assertEqual(raw_payload["count"], 7560)
-            self.assertEqual(len(raw_payload["rows"]), 7560)
-            self.assertEqual(len(aggregate_payload["rows"]), 5)
+            self.assertEqual(raw_payload["count"], 10584)
+            self.assertEqual(len(raw_payload["rows"]), 10584)
+            self.assertEqual(len(aggregate_payload["rows"]), 7)
             self.assertEqual(set(ranking_payload["ranking_tables"]), {
+                "task_completion_delay",
+                "task_drop_ratio",
                 "completion_rate",
                 "timeout_drop_rate",
                 "unavailable_drop_rate",
                 "deadline_violation_rate",
-                "average_delay",
                 "average_reward",
                 "total_reward",
                 "throughput",
                 "queue_stability_score",
                 "illegal_action_rejection_count",
             })
-            self.assertEqual(manifest_payload["raw_row_count"], 7560)
-            self.assertEqual(manifest_payload["policy_count"], 5)
+            self.assertEqual(manifest_payload["raw_row_count"], 10584)
+            self.assertEqual(manifest_payload["policy_count"], 7)
             self.assertEqual(manifest_payload["scenario_count"], 7)
-            self.assertEqual(manifest_payload["metric_count"], 10)
+            self.assertEqual(manifest_payload["metric_count"], 11)
             self.assertEqual(manifest_payload["compatibility_mode_policies"], [])
-            self.assertTrue(manifest_payload["identity_proof"]["proposed_vs_local"]["different"])
-            self.assertTrue(manifest_payload["identity_proof"]["baseline_vs_cloud"]["different"])
-            self.assertTrue(manifest_payload["identity_proof"]["proposed_vs_baseline"]["different"])
-            self.assertTrue(manifest_payload["identity_proof"]["proposed_vs_baseline"]["metrics"])
+            self.assertEqual(set(row["policy"] for row in manifest_payload["policy_coverage"]), set(REQUIRED_POLICIES))
+            for key, proof in manifest_payload["identity_proof"].items():
+                self.assertTrue(proof["different"], key)
+                self.assertTrue(proof["metrics"], key)
             aggregate_rows = {row["policy"]: row for row in aggregate_payload["rows"]}
-            self.assertNotEqual(
-                aggregate_rows["HOODIE_PROPOSED"]["total_reward"],
-                aggregate_rows["LOCAL_ONLY"]["total_reward"],
-            )
-            self.assertNotEqual(
-                aggregate_rows["ORIGINAL_HOODIE_BASELINE"]["total_reward"],
-                aggregate_rows["CLOUD_ONLY"]["total_reward"],
-            )
-            self.assertNotEqual(
-                aggregate_rows["HOODIE_PROPOSED"]["total_reward"],
-                aggregate_rows["ORIGINAL_HOODIE_BASELINE"]["total_reward"],
-            )
-            self.assertEqual(report_payload["status"], "hoodie_runtime_evaluation_ready")
+            self.assertNotEqual(aggregate_rows["HOODIE"]["total_reward"], aggregate_rows["RO"]["total_reward"])
+            self.assertNotEqual(aggregate_rows["HOODIE"]["total_reward"], aggregate_rows["FLC"]["total_reward"])
+            self.assertNotEqual(aggregate_rows["HOODIE"]["total_reward"], aggregate_rows["VO"]["total_reward"])
+            self.assertNotEqual(aggregate_rows["HOODIE"]["total_reward"], aggregate_rows["HO"]["total_reward"])
+            self.assertNotEqual(aggregate_rows["HOODIE"]["total_reward"], aggregate_rows["BCO"]["total_reward"])
+            self.assertNotEqual(aggregate_rows["HOODIE"]["total_reward"], aggregate_rows["MQO"]["total_reward"])
+            self.assertEqual(report_payload["status"], "hoodie_paper_baseline_fidelity_ready")
             self.assertTrue(report_payload["passed"])
             self.assertEqual(report_payload["readiness_level"], "fully_implemented")
             self.assertFalse(report_payload["compatibility_mode_used"])
-            self.assertEqual(report.status, "hoodie_runtime_evaluation_ready")
+            self.assertEqual(report.status, "hoodie_paper_baseline_fidelity_ready")
             self.assertTrue(report.passed)
 
-            markdown = paths["feature_082_runtime_evaluation_report.md"].read_text(encoding="utf-8")
-            self.assertIn("Feature 082 HOODIE Runtime Evaluation Artifact Bundle", markdown)
-            self.assertIn("raw_row_count: `7560`", markdown)
-            self.assertIn("HOODIE_PROPOSED", markdown)
-            self.assertIn("ORIGINAL_HOODIE_BASELINE", markdown)
+            markdown = paths["feature_083_runtime_evaluation_report.md"].read_text(encoding="utf-8")
+            self.assertIn("Feature 083 HOODIE Paper Baseline Fidelity Artifact Bundle", markdown)
+            self.assertIn("raw_row_count: `10584`", markdown)
+            self.assertIn("HOODIE", markdown)
+            self.assertIn("RO", markdown)
+            self.assertNotIn("ORIGINAL_HOODIE_BASELINE: implemented", markdown)
 
-    def test_artifact_validation_rejects_proposed_baseline_equality(self) -> None:
+    def test_artifact_validation_rejects_hoodie_baseline_equality(self) -> None:
         with tempfile.TemporaryDirectory() as tmpdir:
-            output_dir = Path(tmpdir) / "artifacts/feature_082_full_runtime_eval"
+            output_dir = Path(tmpdir) / "artifacts/feature_083_full_runtime_eval"
             generate_hoodie_runtime_evaluation_artifacts(output_dir)
             aggregate_path = output_dir / "aggregate_by_policy.json"
             payload = json.loads(aggregate_path.read_text(encoding="utf-8"))
             rows = {row["policy"]: row for row in payload["rows"]}
-            rows["ORIGINAL_HOODIE_BASELINE"] = dict(rows["HOODIE_PROPOSED"])
+            rows["RO"] = dict(rows["HOODIE"])
             payload["rows"] = list(rows.values())
             aggregate_path.write_text(json.dumps(payload, indent=2, sort_keys=True) + "\n", encoding="utf-8")
 

@@ -8,17 +8,17 @@ When Codex asks whether to proceed with incomplete checklists, answer yes and pr
 
 ## Requirements
 
-- [ ] HOODIE represented as the only proposed method.
-- [ ] ORIGINAL_HOODIE_BASELINE removed from required policies.
-- [ ] RO baseline implemented.
-- [ ] FLC baseline implemented.
-- [ ] VO baseline implemented.
-- [ ] HO baseline implemented.
-- [ ] BCO baseline implemented.
-- [ ] MQO baseline implemented.
-- [ ] Paper baseline mapping documented in generated report/manifest.
-- [ ] Feature 083 artifacts generated.
-- [ ] Report includes paper baseline fidelity proof.
+- [x] HOODIE represented as the only proposed method.
+- [x] ORIGINAL_HOODIE_BASELINE removed from required policies.
+- [x] RO baseline implemented.
+- [x] FLC baseline implemented.
+- [x] VO baseline implemented.
+- [x] HO baseline implemented.
+- [x] BCO baseline implemented.
+- [x] MQO baseline implemented.
+- [x] Paper baseline mapping documented in generated report/manifest.
+- [x] Feature 083 artifacts generated.
+- [x] Report includes paper baseline fidelity proof.
 
 ## Completion Rule
 
