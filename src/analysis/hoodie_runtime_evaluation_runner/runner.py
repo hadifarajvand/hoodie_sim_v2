@@ -141,6 +141,10 @@ def _execution_manifest(report: Feature082Report, *, config: EvaluationConfig, r
             "different": _metric_rows_differ(rows_by_policy.get("ORIGINAL_HOODIE_BASELINE"), rows_by_policy.get("CLOUD_ONLY")),
             "metrics": _metric_differences(rows_by_policy.get("ORIGINAL_HOODIE_BASELINE"), rows_by_policy.get("CLOUD_ONLY")),
         },
+        "proposed_vs_baseline": {
+            "different": _metric_rows_differ(rows_by_policy.get("HOODIE_PROPOSED"), rows_by_policy.get("ORIGINAL_HOODIE_BASELINE")),
+            "metrics": _metric_differences(rows_by_policy.get("HOODIE_PROPOSED"), rows_by_policy.get("ORIGINAL_HOODIE_BASELINE")),
+        },
     }
     generated_files = [
         RAW_ROWS_JSON,
@@ -288,6 +292,31 @@ def validate_hoodie_runtime_evaluation_artifacts(output_dir: Path | None = None)
     manifest = json.loads((output_dir / EXECUTION_MANIFEST_JSON).read_text(encoding="utf-8"))
     if manifest.get("generated_files") != list(required):
         raise ValueError("Feature 082 execution manifest generated_files does not match the required artifact set")
+    aggregate_payload = json.loads((output_dir / AGGREGATE_BY_POLICY_JSON).read_text(encoding="utf-8"))
+    rows = {row["policy"]: row for row in aggregate_payload.get("rows", [])}
+    if rows:
+        proposed = rows.get("HOODIE_PROPOSED")
+        baseline = rows.get("ORIGINAL_HOODIE_BASELINE")
+        if proposed is None or baseline is None:
+            raise ValueError("Feature 082 aggregate_by_policy.json does not contain both core policies")
+        comparable_fields = (
+            "completed_count",
+            "dropped_timeout_count",
+            "dropped_unavailable_count",
+            "deadline_violation_count",
+            "illegal_action_rejection_count",
+            "average_delay",
+            "average_reward",
+            "total_reward",
+            "completion_rate",
+            "timeout_drop_rate",
+            "unavailable_drop_rate",
+            "deadline_violation_rate",
+            "throughput",
+            "queue_stability_score",
+        )
+        if all(proposed[field] == baseline[field] for field in comparable_fields):
+            raise ValueError("Feature 082 aggregate metrics still show HOODIE_PROPOSED == ORIGINAL_HOODIE_BASELINE")
     return {
         "output_dir": str(output_dir),
         "validated": True,

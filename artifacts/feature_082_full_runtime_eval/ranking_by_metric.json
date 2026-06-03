@@ -19,22 +19,8 @@
       {
         "direction": "lower_is_better",
         "metric": "average_delay",
-        "policy": "ORIGINAL_HOODIE_BASELINE",
-        "rank": 2,
-        "tie_break_trace": [
-          "average_delay=4.902286902286902",
-          "average_delay=4.902286902286902",
-          "deadline_violation_rate=0.08333333333333333",
-          "timeout_drop_rate=0.04563492063492063",
-          "policy=ORIGINAL_HOODIE_BASELINE"
-        ],
-        "value": 4.902286902286902
-      },
-      {
-        "direction": "lower_is_better",
-        "metric": "average_delay",
         "policy": "CLOUD_ONLY",
-        "rank": 3,
+        "rank": 2,
         "tie_break_trace": [
           "average_delay=5.04384133611691",
           "average_delay=5.04384133611691",
@@ -43,6 +29,20 @@
           "policy=CLOUD_ONLY"
         ],
         "value": 5.04384133611691
+      },
+      {
+        "direction": "lower_is_better",
+        "metric": "average_delay",
+        "policy": "ORIGINAL_HOODIE_BASELINE",
+        "rank": 3,
+        "tie_break_trace": [
+          "average_delay=5.142259414225942",
+          "average_delay=5.142259414225942",
+          "deadline_violation_rate=0.10317460317460317",
+          "timeout_drop_rate=0.051587301587301584",
+          "policy=ORIGINAL_HOODIE_BASELINE"
+        ],
+        "value": 5.142259414225942
       },
       {
         "direction": "lower_is_better",
@@ -91,22 +91,8 @@
       {
         "direction": "higher_is_better",
         "metric": "average_reward",
-        "policy": "ORIGINAL_HOODIE_BASELINE",
-        "rank": 2,
-        "tie_break_trace": [
-          "average_reward=-6.503968253968254",
-          "average_delay=4.902286902286902",
-          "deadline_violation_rate=0.08333333333333333",
-          "timeout_drop_rate=0.04563492063492063",
-          "policy=ORIGINAL_HOODIE_BASELINE"
-        ],
-        "value": -6.503968253968254
-      },
-      {
-        "direction": "higher_is_better",
-        "metric": "average_reward",
         "policy": "CLOUD_ONLY",
-        "rank": 3,
+        "rank": 2,
         "tie_break_trace": [
           "average_reward=-6.777777777777778",
           "average_delay=5.04384133611691",
@@ -115,6 +101,20 @@
           "policy=CLOUD_ONLY"
         ],
         "value": -6.777777777777778
+      },
+      {
+        "direction": "higher_is_better",
+        "metric": "average_reward",
+        "policy": "ORIGINAL_HOODIE_BASELINE",
+        "rank": 3,
+        "tie_break_trace": [
+          "average_reward=-6.940476190476191",
+          "average_delay=5.142259414225942",
+          "deadline_violation_rate=0.10317460317460317",
+          "timeout_drop_rate=0.051587301587301584",
+          "policy=ORIGINAL_HOODIE_BASELINE"
+        ],
+        "value": -6.940476190476191
       },
       {
         "direction": "higher_is_better",
@@ -163,22 +163,8 @@
       {
         "direction": "higher_is_better",
         "metric": "completion_rate",
-        "policy": "ORIGINAL_HOODIE_BASELINE",
-        "rank": 2,
-        "tie_break_trace": [
-          "completion_rate=0.9543650793650794",
-          "average_delay=4.902286902286902",
-          "deadline_violation_rate=0.08333333333333333",
-          "timeout_drop_rate=0.04563492063492063",
-          "policy=ORIGINAL_HOODIE_BASELINE"
-        ],
-        "value": 0.9543650793650794
-      },
-      {
-        "direction": "higher_is_better",
-        "metric": "completion_rate",
         "policy": "CLOUD_ONLY",
-        "rank": 3,
+        "rank": 2,
         "tie_break_trace": [
           "completion_rate=0.9503968253968254",
           "average_delay=5.04384133611691",
@@ -187,6 +173,20 @@
           "policy=CLOUD_ONLY"
         ],
         "value": 0.9503968253968254
+      },
+      {
+        "direction": "higher_is_better",
+        "metric": "completion_rate",
+        "policy": "ORIGINAL_HOODIE_BASELINE",
+        "rank": 3,
+        "tie_break_trace": [
+          "completion_rate=0.9484126984126984",
+          "average_delay=5.142259414225942",
+          "deadline_violation_rate=0.10317460317460317",
+          "timeout_drop_rate=0.051587301587301584",
+          "policy=ORIGINAL_HOODIE_BASELINE"
+        ],
+        "value": 0.9484126984126984
       },
       {
         "direction": "higher_is_better",
@@ -235,28 +235,28 @@
       {
         "direction": "lower_is_better",
         "metric": "deadline_violation_rate",
-        "policy": "ORIGINAL_HOODIE_BASELINE",
-        "rank": 2,
-        "tie_break_trace": [
-          "deadline_violation_rate=0.08333333333333333",
-          "average_delay=4.902286902286902",
-          "deadline_violation_rate=0.08333333333333333",
-          "timeout_drop_rate=0.04563492063492063",
-          "policy=ORIGINAL_HOODIE_BASELINE"
-        ],
-        "value": 0.08333333333333333
-      },
-      {
-        "direction": "lower_is_better",
-        "metric": "deadline_violation_rate",
         "policy": "CLOUD_ONLY",
-        "rank": 3,
+        "rank": 2,
         "tie_break_trace": [
           "deadline_violation_rate=0.10317460317460317",
           "average_delay=5.04384133611691",
           "deadline_violation_rate=0.10317460317460317",
           "timeout_drop_rate=0.0496031746031746",
           "policy=CLOUD_ONLY"
+        ],
+        "value": 0.10317460317460317
+      },
+      {
+        "direction": "lower_is_better",
+        "metric": "deadline_violation_rate",
+        "policy": "ORIGINAL_HOODIE_BASELINE",
+        "rank": 3,
+        "tie_break_trace": [
+          "deadline_violation_rate=0.10317460317460317",
+          "average_delay=5.142259414225942",
+          "deadline_violation_rate=0.10317460317460317",
+          "timeout_drop_rate=0.051587301587301584",
+          "policy=ORIGINAL_HOODIE_BASELINE"
         ],
         "value": 0.10317460317460317
       },
@@ -307,28 +307,28 @@
       {
         "direction": "lower_is_better",
         "metric": "illegal_action_rejection_count",
-        "policy": "ORIGINAL_HOODIE_BASELINE",
-        "rank": 2,
-        "tie_break_trace": [
-          "illegal_action_rejection_count=0.0",
-          "average_delay=4.902286902286902",
-          "deadline_violation_rate=0.08333333333333333",
-          "timeout_drop_rate=0.04563492063492063",
-          "policy=ORIGINAL_HOODIE_BASELINE"
-        ],
-        "value": 0.0
-      },
-      {
-        "direction": "lower_is_better",
-        "metric": "illegal_action_rejection_count",
         "policy": "CLOUD_ONLY",
-        "rank": 3,
+        "rank": 2,
         "tie_break_trace": [
           "illegal_action_rejection_count=0.0",
           "average_delay=5.04384133611691",
           "deadline_violation_rate=0.10317460317460317",
           "timeout_drop_rate=0.0496031746031746",
           "policy=CLOUD_ONLY"
+        ],
+        "value": 0.0
+      },
+      {
+        "direction": "lower_is_better",
+        "metric": "illegal_action_rejection_count",
+        "policy": "ORIGINAL_HOODIE_BASELINE",
+        "rank": 3,
+        "tie_break_trace": [
+          "illegal_action_rejection_count=0.0",
+          "average_delay=5.142259414225942",
+          "deadline_violation_rate=0.10317460317460317",
+          "timeout_drop_rate=0.051587301587301584",
+          "policy=ORIGINAL_HOODIE_BASELINE"
         ],
         "value": 0.0
       },
@@ -379,28 +379,28 @@
       {
         "direction": "higher_is_better",
         "metric": "queue_stability_score",
-        "policy": "ORIGINAL_HOODIE_BASELINE",
-        "rank": 2,
-        "tie_break_trace": [
-          "queue_stability_score=0.23214285714285715",
-          "average_delay=4.902286902286902",
-          "deadline_violation_rate=0.08333333333333333",
-          "timeout_drop_rate=0.04563492063492063",
-          "policy=ORIGINAL_HOODIE_BASELINE"
-        ],
-        "value": 0.23214285714285715
-      },
-      {
-        "direction": "higher_is_better",
-        "metric": "queue_stability_score",
         "policy": "CLOUD_ONLY",
-        "rank": 3,
+        "rank": 2,
         "tie_break_trace": [
           "queue_stability_score=0.23214285714285715",
           "average_delay=5.04384133611691",
           "deadline_violation_rate=0.10317460317460317",
           "timeout_drop_rate=0.0496031746031746",
           "policy=CLOUD_ONLY"
+        ],
+        "value": 0.23214285714285715
+      },
+      {
+        "direction": "higher_is_better",
+        "metric": "queue_stability_score",
+        "policy": "ORIGINAL_HOODIE_BASELINE",
+        "rank": 3,
+        "tie_break_trace": [
+          "queue_stability_score=0.23214285714285715",
+          "average_delay=5.142259414225942",
+          "deadline_violation_rate=0.10317460317460317",
+          "timeout_drop_rate=0.051587301587301584",
+          "policy=ORIGINAL_HOODIE_BASELINE"
         ],
         "value": 0.23214285714285715
       },
@@ -451,22 +451,8 @@
       {
         "direction": "higher_is_better",
         "metric": "throughput",
-        "policy": "ORIGINAL_HOODIE_BASELINE",
-        "rank": 2,
-        "tie_break_trace": [
-          "throughput=0.9543650793650794",
-          "average_delay=4.902286902286902",
-          "deadline_violation_rate=0.08333333333333333",
-          "timeout_drop_rate=0.04563492063492063",
-          "policy=ORIGINAL_HOODIE_BASELINE"
-        ],
-        "value": 0.9543650793650794
-      },
-      {
-        "direction": "higher_is_better",
-        "metric": "throughput",
         "policy": "CLOUD_ONLY",
-        "rank": 3,
+        "rank": 2,
         "tie_break_trace": [
           "throughput=0.9503968253968254",
           "average_delay=5.04384133611691",
@@ -475,6 +461,20 @@
           "policy=CLOUD_ONLY"
         ],
         "value": 0.9503968253968254
+      },
+      {
+        "direction": "higher_is_better",
+        "metric": "throughput",
+        "policy": "ORIGINAL_HOODIE_BASELINE",
+        "rank": 3,
+        "tie_break_trace": [
+          "throughput=0.9484126984126984",
+          "average_delay=5.142259414225942",
+          "deadline_violation_rate=0.10317460317460317",
+          "timeout_drop_rate=0.051587301587301584",
+          "policy=ORIGINAL_HOODIE_BASELINE"
+        ],
+        "value": 0.9484126984126984
       },
       {
         "direction": "higher_is_better",
@@ -523,22 +523,8 @@
       {
         "direction": "lower_is_better",
         "metric": "timeout_drop_rate",
-        "policy": "ORIGINAL_HOODIE_BASELINE",
-        "rank": 2,
-        "tie_break_trace": [
-          "timeout_drop_rate=0.04563492063492063",
-          "average_delay=4.902286902286902",
-          "deadline_violation_rate=0.08333333333333333",
-          "timeout_drop_rate=0.04563492063492063",
-          "policy=ORIGINAL_HOODIE_BASELINE"
-        ],
-        "value": 0.04563492063492063
-      },
-      {
-        "direction": "lower_is_better",
-        "metric": "timeout_drop_rate",
         "policy": "CLOUD_ONLY",
-        "rank": 3,
+        "rank": 2,
         "tie_break_trace": [
           "timeout_drop_rate=0.0496031746031746",
           "average_delay=5.04384133611691",
@@ -547,6 +533,20 @@
           "policy=CLOUD_ONLY"
         ],
         "value": 0.0496031746031746
+      },
+      {
+        "direction": "lower_is_better",
+        "metric": "timeout_drop_rate",
+        "policy": "ORIGINAL_HOODIE_BASELINE",
+        "rank": 3,
+        "tie_break_trace": [
+          "timeout_drop_rate=0.051587301587301584",
+          "average_delay=5.142259414225942",
+          "deadline_violation_rate=0.10317460317460317",
+          "timeout_drop_rate=0.051587301587301584",
+          "policy=ORIGINAL_HOODIE_BASELINE"
+        ],
+        "value": 0.051587301587301584
       },
       {
         "direction": "lower_is_better",
@@ -595,22 +595,8 @@
       {
         "direction": "higher_is_better",
         "metric": "total_reward",
-        "policy": "ORIGINAL_HOODIE_BASELINE",
-        "rank": 2,
-        "tie_break_trace": [
-          "total_reward=-9834.0",
-          "average_delay=4.902286902286902",
-          "deadline_violation_rate=0.08333333333333333",
-          "timeout_drop_rate=0.04563492063492063",
-          "policy=ORIGINAL_HOODIE_BASELINE"
-        ],
-        "value": -9834.0
-      },
-      {
-        "direction": "higher_is_better",
-        "metric": "total_reward",
         "policy": "CLOUD_ONLY",
-        "rank": 3,
+        "rank": 2,
         "tie_break_trace": [
           "total_reward=-10248.0",
           "average_delay=5.04384133611691",
@@ -619,6 +605,20 @@
           "policy=CLOUD_ONLY"
         ],
         "value": -10248.0
+      },
+      {
+        "direction": "higher_is_better",
+        "metric": "total_reward",
+        "policy": "ORIGINAL_HOODIE_BASELINE",
+        "rank": 3,
+        "tie_break_trace": [
+          "total_reward=-10494.0",
+          "average_delay=5.142259414225942",
+          "deadline_violation_rate=0.10317460317460317",
+          "timeout_drop_rate=0.051587301587301584",
+          "policy=ORIGINAL_HOODIE_BASELINE"
+        ],
+        "value": -10494.0
       },
       {
         "direction": "higher_is_better",
@@ -667,28 +667,28 @@
       {
         "direction": "lower_is_better",
         "metric": "unavailable_drop_rate",
-        "policy": "ORIGINAL_HOODIE_BASELINE",
-        "rank": 2,
-        "tie_break_trace": [
-          "unavailable_drop_rate=0.0",
-          "average_delay=4.902286902286902",
-          "deadline_violation_rate=0.08333333333333333",
-          "timeout_drop_rate=0.04563492063492063",
-          "policy=ORIGINAL_HOODIE_BASELINE"
-        ],
-        "value": 0.0
-      },
-      {
-        "direction": "lower_is_better",
-        "metric": "unavailable_drop_rate",
         "policy": "CLOUD_ONLY",
-        "rank": 3,
+        "rank": 2,
         "tie_break_trace": [
           "unavailable_drop_rate=0.0",
           "average_delay=5.04384133611691",
           "deadline_violation_rate=0.10317460317460317",
           "timeout_drop_rate=0.0496031746031746",
           "policy=CLOUD_ONLY"
+        ],
+        "value": 0.0
+      },
+      {
+        "direction": "lower_is_better",
+        "metric": "unavailable_drop_rate",
+        "policy": "ORIGINAL_HOODIE_BASELINE",
+        "rank": 3,
+        "tie_break_trace": [
+          "unavailable_drop_rate=0.0",
+          "average_delay=5.142259414225942",
+          "deadline_violation_rate=0.10317460317460317",
+          "timeout_drop_rate=0.051587301587301584",
+          "policy=ORIGINAL_HOODIE_BASELINE"
         ],
         "value": 0.0
       },

@@ -5,7 +5,10 @@ from pathlib import Path
 import tempfile
 import unittest
 
-from src.analysis.hoodie_runtime_evaluation_runner.runner import generate_hoodie_runtime_evaluation_artifacts
+from src.analysis.hoodie_runtime_evaluation_runner.runner import (
+    generate_hoodie_runtime_evaluation_artifacts,
+    validate_hoodie_runtime_evaluation_artifacts,
+)
 
 
 class HoodieRuntimeEvaluationRunnerArtifactTests(unittest.TestCase):
@@ -57,6 +60,8 @@ class HoodieRuntimeEvaluationRunnerArtifactTests(unittest.TestCase):
             self.assertEqual(manifest_payload["compatibility_mode_policies"], [])
             self.assertTrue(manifest_payload["identity_proof"]["proposed_vs_local"]["different"])
             self.assertTrue(manifest_payload["identity_proof"]["baseline_vs_cloud"]["different"])
+            self.assertTrue(manifest_payload["identity_proof"]["proposed_vs_baseline"]["different"])
+            self.assertTrue(manifest_payload["identity_proof"]["proposed_vs_baseline"]["metrics"])
             aggregate_rows = {row["policy"]: row for row in aggregate_payload["rows"]}
             self.assertNotEqual(
                 aggregate_rows["HOODIE_PROPOSED"]["total_reward"],
@@ -65,6 +70,10 @@ class HoodieRuntimeEvaluationRunnerArtifactTests(unittest.TestCase):
             self.assertNotEqual(
                 aggregate_rows["ORIGINAL_HOODIE_BASELINE"]["total_reward"],
                 aggregate_rows["CLOUD_ONLY"]["total_reward"],
+            )
+            self.assertNotEqual(
+                aggregate_rows["HOODIE_PROPOSED"]["total_reward"],
+                aggregate_rows["ORIGINAL_HOODIE_BASELINE"]["total_reward"],
             )
             self.assertEqual(report_payload["status"], "hoodie_runtime_evaluation_ready")
             self.assertTrue(report_payload["passed"])
@@ -78,6 +87,20 @@ class HoodieRuntimeEvaluationRunnerArtifactTests(unittest.TestCase):
             self.assertIn("raw_row_count: `7560`", markdown)
             self.assertIn("HOODIE_PROPOSED", markdown)
             self.assertIn("ORIGINAL_HOODIE_BASELINE", markdown)
+
+    def test_artifact_validation_rejects_proposed_baseline_equality(self) -> None:
+        with tempfile.TemporaryDirectory() as tmpdir:
+            output_dir = Path(tmpdir) / "artifacts/feature_082_full_runtime_eval"
+            generate_hoodie_runtime_evaluation_artifacts(output_dir)
+            aggregate_path = output_dir / "aggregate_by_policy.json"
+            payload = json.loads(aggregate_path.read_text(encoding="utf-8"))
+            rows = {row["policy"]: row for row in payload["rows"]}
+            rows["ORIGINAL_HOODIE_BASELINE"] = dict(rows["HOODIE_PROPOSED"])
+            payload["rows"] = list(rows.values())
+            aggregate_path.write_text(json.dumps(payload, indent=2, sort_keys=True) + "\n", encoding="utf-8")
+
+            with self.assertRaises(ValueError):
+                validate_hoodie_runtime_evaluation_artifacts(output_dir)
 
 
 if __name__ == "__main__":

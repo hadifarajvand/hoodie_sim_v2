@@ -44,6 +44,46 @@ from .scenarios import build_scenario_contexts
 FEATURE_082_STATUS_READY = "hoodie_runtime_evaluation_ready"
 
 
+def _metric_rows_differ(left: MetricRow | None, right: MetricRow | None) -> bool:
+    if left is None or right is None:
+        return False
+    comparable_fields = (
+        "completed_count",
+        "dropped_timeout_count",
+        "dropped_unavailable_count",
+        "deadline_violation_count",
+        "illegal_action_rejection_count",
+        "average_delay",
+        "average_reward",
+        "total_reward",
+        "completion_rate",
+        "timeout_drop_rate",
+        "unavailable_drop_rate",
+        "deadline_violation_rate",
+        "throughput",
+        "queue_stability_score",
+    )
+    return any(getattr(left, field) != getattr(right, field) for field in comparable_fields)
+
+
+def _metric_differences(left: MetricRow | None, right: MetricRow | None) -> tuple[str, ...]:
+    if left is None or right is None:
+        return ()
+    fields = (
+        "average_delay",
+        "average_reward",
+        "total_reward",
+        "completion_rate",
+        "timeout_drop_rate",
+        "unavailable_drop_rate",
+        "deadline_violation_rate",
+        "throughput",
+        "queue_stability_score",
+        "illegal_action_rejection_count",
+    )
+    return tuple(field for field in fields if getattr(left, field) != getattr(right, field))
+
+
 def _policy_coverage_rows() -> tuple[PolicyCoverageRow, ...]:
     return (
         PolicyCoverageRow(POLICY_HOODIE_PROPOSED, "implemented", "hybrid_adapter", "Feature 080 hybrid decision adapter", False),
@@ -304,6 +344,10 @@ def build_feature_082_report(config: EvaluationConfig | None = None) -> Feature0
     scenario_tables = tuple(policy_scenario_aggregates)
     aggregate_summaries = tuple((*policy_aggregates, *workload_aggregates, *deadline_aggregates))
     compatibility_mode_used = any(row.compatibility_mode_used for row in policy_aggregates) or any(row.compatibility_mode_used for row in scenario_tables)
+    rows_by_policy = {row.policy: row for row in policy_aggregates}
+    proposed = rows_by_policy.get(POLICY_HOODIE_PROPOSED)
+    baseline = rows_by_policy.get(POLICY_ORIGINAL_HOODIE_BASELINE)
+    policy_divergence_ok = bool(proposed and baseline and _metric_rows_differ(proposed, baseline))
     claim_boundary = (
         "HOODIE_PROPOSED means the Feature 080 base-paper proposed method only.",
         "No ranking claim is made beyond metric-by-metric deterministic ordering.",
@@ -322,14 +366,24 @@ def build_feature_082_report(config: EvaluationConfig | None = None) -> Feature0
         "HOODIE_PROPOSED remains the Feature 080 base-paper proposed method only",
     )
     remaining_gaps = (
+        "HOODIE_PROPOSED and ORIGINAL_HOODIE_BASELINE must differ across at least one core aggregate metric.",
+        "HOODIE_PROPOSED and/or ORIGINAL_HOODIE_BASELINE still require compatibility-mode handling.",
+    ) if not policy_divergence_ok else (
         "HOODIE_PROPOSED and/or ORIGINAL_HOODIE_BASELINE still require compatibility-mode handling.",
     ) if compatibility_mode_used else ()
-    readiness_level = "mostly_implemented" if compatibility_mode_used else "fully_implemented"
+    if not policy_divergence_ok:
+        readiness_level = "blocked"
+        status = "hoodie_runtime_evaluation_blocked"
+        passed = False
+    else:
+        readiness_level = "mostly_implemented" if compatibility_mode_used else "fully_implemented"
+        status = FEATURE_082_STATUS_READY
+        passed = True
     raw_row_count = sum(len(outcomes) for outcomes in outcomes_by_key.values())
     return Feature082Report(
         feature_id=FEATURE_ID,
-        status=FEATURE_082_STATUS_READY,
-        passed=True,
+        status=status,
+        passed=passed,
         readiness_level=readiness_level,
         policy_coverage=policy_coverage,
         scenario_coverage=scenario_coverage,
@@ -367,6 +421,11 @@ def _identity_proof_lines(report: Feature082Report) -> tuple[str, ...]:
     if baseline.total_reward != cloud.total_reward or baseline.average_delay != cloud.average_delay:
         lines.append(
             f"ORIGINAL_HOODIE_BASELINE differs from CLOUD_ONLY on total_reward ({baseline.total_reward} vs {cloud.total_reward}) and/or average_delay ({baseline.average_delay} vs {cloud.average_delay})."
+        )
+    if proposed.total_reward != baseline.total_reward or proposed.average_delay != baseline.average_delay:
+        metrics = ", ".join(_metric_differences(proposed, baseline))
+        lines.append(
+            f"HOODIE_PROPOSED differs from ORIGINAL_HOODIE_BASELINE on metrics: {metrics or 'none'}."
         )
     return tuple(lines)
 

@@ -38,6 +38,17 @@
         "total_reward",
         "completion_rate",
         "timeout_drop_rate",
+        "throughput"
+      ]
+    },
+    "proposed_vs_baseline": {
+      "different": true,
+      "metrics": [
+        "average_delay",
+        "average_reward",
+        "total_reward",
+        "completion_rate",
+        "timeout_drop_rate",
         "deadline_violation_rate",
         "throughput"
       ]
@@ -55,7 +66,7 @@
       ]
     }
   },
-  "local_head_sha": "9e95fd7a32d5aaab8c16ebf37920d59cd5fbe7f5",
+  "local_head_sha": "7b7388d094004be0d8d0669476758f636c2d50b9",
   "metric_count": 10,
   "metric_coverage": [
     {
@@ -173,7 +184,7 @@
   ],
   "raw_row_count": 7560,
   "readiness_level": "fully_implemented",
-  "remote_head_sha": "9e95fd7a32d5aaab8c16ebf37920d59cd5fbe7f5",
+  "remote_head_sha": "7b7388d094004be0d8d0669476758f636c2d50b9",
   "report_status": "hoodie_runtime_evaluation_ready",
   "scenario_count": 7,
   "scenario_coverage": [

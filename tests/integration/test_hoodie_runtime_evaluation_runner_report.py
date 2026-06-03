@@ -24,6 +24,7 @@ class HoodieRuntimeEvaluationRunnerReportIntegrationTests(unittest.TestCase):
         self.assertIn("no compatibility-mode policies remain", rendered.lower())
         self.assertIn("HOODIE_PROPOSED differs from LOCAL_ONLY", rendered)
         self.assertIn("ORIGINAL_HOODIE_BASELINE differs from CLOUD_ONLY", rendered)
+        self.assertIn("HOODIE_PROPOSED differs from ORIGINAL_HOODIE_BASELINE", rendered)
         self.assertIn("metric-by-metric", rendered.lower())
         self.assertIn("no dcq", rendered.lower())
         self.assertIn("no thesis method", rendered.lower())

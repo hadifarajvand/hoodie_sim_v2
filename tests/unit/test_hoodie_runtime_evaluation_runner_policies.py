@@ -83,9 +83,29 @@ class HoodieRuntimeEvaluationRunnerPolicyTests(unittest.TestCase):
                 delay_hints={"local": 4.0, "horizontal": 3.0, "vertical": 4.0},
             )
         )
-        self.assertEqual(action, "horizontal")
+        self.assertEqual(action, "local")
         self.assertIn("policy=ORIGINAL_HOODIE_BASELINE", baseline.last_decision_trace)
-        self.assertIn("selected_action=horizontal", baseline.last_decision_trace)
+        self.assertIn("selected_action=local", baseline.last_decision_trace)
+
+    def test_core_policies_diverge_on_mixed_candidates(self) -> None:
+        context = self._context(
+            scenario_name="legal_horizontal_offload",
+            workload="low",
+            deadline_pressure="moderate",
+            delay_hints={"local": 4.0, "horizontal": 3.0, "vertical": 4.0},
+        )
+        proposed = build_policy_adapter(POLICY_HOODIE_PROPOSED)
+        baseline = build_policy_adapter(POLICY_ORIGINAL_HOODIE_BASELINE)
+
+        proposed_action = proposed.choose_action(context)
+        baseline_action = baseline.choose_action(context)
+
+        self.assertEqual(proposed_action, "horizontal")
+        self.assertEqual(baseline_action, "local")
+        self.assertNotEqual(proposed_action, baseline_action)
+        self.assertNotEqual(proposed.last_decision_trace, baseline.last_decision_trace)
+        self.assertIn("policy=HOODIE_PROPOSED", proposed.last_decision_trace)
+        self.assertIn("policy=ORIGINAL_HOODIE_BASELINE", baseline.last_decision_trace)
 
     def test_random_policy_is_seeded(self) -> None:
         context = self._context(
