@@ -1,18 +1,21 @@
-# Checklists for HOODIE Evaluation & Baseline Benchmarking (Feature 081)
+# Feature 081 Checklists: HOODIE Evaluation & Baseline Benchmarking
 
 ## Requirements
-- [ ] Baselines implemented and loadable.
+- [ ] All baseline methods implemented and loadable.
 - [ ] Feature 080 integration ready.
 - [ ] Scenario generator functional.
-- [ ] Metrics collected correctly (Delay, Drop Ratio, Deadline Violation, Queue Stability).
+- [ ] Metrics collected correctly (Delay, Drop Ratio, Deadline Violation, Queue Stability, Throughput, Success Ratio).
 - [ ] Evaluation runner executes without errors.
 - [ ] Aggregation of metrics correct.
-- [ ] Report generated correctly.
-- [ ] Ranking tables match metrics.
+- [ ] Report with ranking tables generated.
+- [ ] Metrics are reproducible.
+- [ ] Validation passes without errors.
 
 ## Scope
-- [ ] All required baselines are represented.
-- [ ] Evaluation only; no internal Feature 080 modification.
-- [ ] Scope must not include ranking method change or DCQ/thesis logic.
-- [ ] Results reproducible and deterministic where applicable.
-- [ ] Checklists accurately reflect implementation state.
+- [ ] All baseline methods represented.
+- [ ] No modification of Feature 080 internal logic.
+- [ ] No ranking method redesign.
+- [ ] No DCQ/thesis logic introduced.
+- [ ] Deterministic and reproducible outputs.
+- [ ] Checklists reflect current implementation state.
+- [ ] Evaluation only; no other feature development.
