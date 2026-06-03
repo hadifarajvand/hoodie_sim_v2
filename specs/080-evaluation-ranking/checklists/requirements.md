@@ -1,6 +1,6 @@
 # Requirements Checklist for Feature 080 — HOODIE Proposed Method Implementation
 
-Status summary: implemented 12, partial 2, missing 0. The remaining partial items are the learning-internal interfaces listed below.
+Status summary: implemented 11, partial 2, missing 0. The remaining partial items are the learning-internal interfaces listed below.
 
 ## Implemented
 
@@ -10,6 +10,7 @@ Status summary: implemented 12, partial 2, missing 0. The remaining partial item
 - [x] Reward/cost computation (Phi_priv, Phi_pub, C).
 - [x] Distributed edge-agent decision model.
 - [x] DQN interfaces.
+- [x] Double DQN target.
 - [x] Epsilon-greedy schedule.
 - [x] Inference mode with epsilon=0.
 - [x] Pub-Sub metadata handling.
@@ -17,7 +18,6 @@ Status summary: implemented 12, partial 2, missing 0. The remaining partial item
 
 ## Partial
 
-- [x] Double DQN target.
 - [ ] Dueling DQN value/advantage. [partial]
 - [ ] LSTM forecast/recovery interface. [partial]
 
