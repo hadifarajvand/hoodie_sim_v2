@@ -1,7 +1,29 @@
-"""Feature 081 — HOODIE Evaluation & Baseline Benchmarking.
+from __future__ import annotations
 
-This package will implement deterministic evaluation and baseline benchmarking for
-Feature 080 HOODIE_PROPOSED against explicit baseline policies.
-"""
+from .config import EvaluationConfig
+from .model import (
+    ExecutionOutcome,
+    Feature081Report,
+    MetricRow,
+    PolicyDecision,
+    PolicyCoverageRow,
+    RankingRow,
+    ScenarioContext,
+    ScenarioCoverageRow,
+    TaskBlueprint,
+)
+from .report import build_feature_081_report
 
-__all__ = []
+__all__ = [
+    "EvaluationConfig",
+    "ExecutionOutcome",
+    "Feature081Report",
+    "MetricRow",
+    "PolicyDecision",
+    "PolicyCoverageRow",
+    "RankingRow",
+    "ScenarioContext",
+    "ScenarioCoverageRow",
+    "TaskBlueprint",
+    "build_feature_081_report",
+]

@@ -1,36 +1,36 @@
 # Feature 081 Requirements Checklist
 
 ## Policies
-- [ ] HOODIE_PROPOSED adapter represented.
-- [ ] ORIGINAL_HOODIE_BASELINE adapter represented.
-- [ ] RANDOM_POLICY adapter represented.
-- [ ] LOCAL_ONLY adapter represented.
-- [ ] CLOUD_ONLY adapter represented.
+- [x] HOODIE_PROPOSED adapter represented.
+- [x] ORIGINAL_HOODIE_BASELINE adapter represented.
+- [x] RANDOM_POLICY adapter represented.
+- [x] LOCAL_ONLY adapter represented.
+- [x] CLOUD_ONLY adapter represented.
 
 ## Scenarios
-- [ ] light_load_no_deadline_pressure represented.
-- [ ] tight_deadline_pressure represented.
-- [ ] legal_horizontal_offload represented.
-- [ ] illegal_horizontal_destination_attempt represented.
-- [ ] cloud_vertical_fallback represented.
-- [ ] timeout_drop_case represented.
-- [ ] mixed_local_horizontal_cloud_candidates represented.
+- [x] light_load_no_deadline_pressure represented.
+- [x] tight_deadline_pressure represented.
+- [x] legal_horizontal_offload represented.
+- [x] illegal_horizontal_destination_attempt represented.
+- [x] cloud_vertical_fallback represented.
+- [x] timeout_drop_case represented.
+- [x] mixed_local_horizontal_cloud_candidates represented.
 
 ## Metrics
-- [ ] completion_rate implemented.
-- [ ] timeout_drop_rate implemented.
-- [ ] unavailable_drop_rate implemented.
-- [ ] deadline_violation_rate implemented.
-- [ ] average_delay implemented.
-- [ ] average_reward implemented.
-- [ ] total_reward implemented.
-- [ ] throughput implemented.
-- [ ] queue_stability_score implemented.
-- [ ] illegal_action_rejection_count implemented.
+- [x] completion_rate implemented.
+- [x] timeout_drop_rate implemented.
+- [x] unavailable_drop_rate implemented.
+- [x] deadline_violation_rate implemented.
+- [x] average_delay implemented.
+- [x] average_reward implemented.
+- [x] total_reward implemented.
+- [x] throughput implemented.
+- [x] queue_stability_score implemented.
+- [x] illegal_action_rejection_count implemented.
 
 ## Ranking and Reporting
-- [ ] metric-by-metric ranking implemented.
-- [ ] deterministic tie-breaking implemented.
-- [ ] `build_feature_081_report()` implemented.
-- [ ] claim boundary included.
-- [ ] scope proof included.
+- [x] metric-by-metric ranking implemented.
+- [x] deterministic tie-breaking implemented.
+- [x] `build_feature_081_report()` implemented.
+- [x] claim boundary included.
+- [x] scope proof included.

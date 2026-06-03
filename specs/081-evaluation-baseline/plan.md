@@ -85,6 +85,12 @@ Implement metrics:
 - Include policy coverage, scenario coverage, metric coverage, ranking coverage, claim boundary, and scope proof.
 - Keep claim boundary explicit.
 
+## Current Progress
+- Implemented package: `src/analysis/hoodie_evaluation_runner/`
+- All required policies, scenarios, metrics, aggregation, ranking, report, and tests are present.
+- The report intentionally marks `HOODIE_PROPOSED` and `ORIGINAL_HOODIE_BASELINE` as compatibility adapters because Feature 080 internals are treated as a read-only dependency boundary in this feature.
+- Next technical focus: none for Feature 081.
+
 ## Readiness Levels
 
 - `blocked`: required policy/scenario/metric missing

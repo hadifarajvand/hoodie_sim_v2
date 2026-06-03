@@ -1,8 +1,10 @@
-"""Entry point for Feature 081 evaluation runner."""
+from __future__ import annotations
+
+from .report import render_feature_081_report
 
 
 def main() -> None:
-    print("Feature 081 HOODIE evaluation runner specification is ready for implementation.")
+    print(render_feature_081_report())
 
 
 if __name__ == "__main__":
