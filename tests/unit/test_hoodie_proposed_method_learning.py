@@ -17,11 +17,33 @@ from src.policies.policy_interface import PolicyContext
 
 
 class HoodieProposedMethodLearningTests(unittest.TestCase):
-    def test_learning_interfaces_cover_dqn_double_dqn_dueling_and_lstm_shapes(self) -> None:
-        dqn = DQNInterface()
-        self.assertEqual(dqn.q_values({"state_value": 3.0}, ["local", "horizontal"]), {"local": 3.0, "horizontal": 3.0})
-        self.assertEqual(dqn.choose_action({"local": 1.0, "horizontal": 2.0}), "horizontal")
+    def test_dqn_interface_selects_highest_q_action_and_records_trace(self) -> None:
+        dqn = DQNInterface(state_feature_order=("load", "deadline"))
+        state = {"load": 2.0, "deadline": 1.0}
+        dqn.set_q_values(state, {"local": 1.0, "horizontal": 4.0, "vertical": 2.0})
 
+        self.assertEqual(dqn.state_vector(state), (2.0, 1.0))
+        self.assertEqual(dqn.q_values(state, ["local", "horizontal", "vertical"]), {"local": 1.0, "horizontal": 4.0, "vertical": 2.0})
+        self.assertEqual(dqn.choose_action({"local": 1.0, "horizontal": 2.0}), "horizontal")
+        self.assertEqual(dqn.select_action(state, ["local", "horizontal", "vertical"]), "horizontal")
+        self.assertEqual(dqn.decision_trace[-1].chosen_action, "horizontal")
+        self.assertEqual(dqn.decision_trace[-1].state_vector, (2.0, 1.0))
+        self.assertEqual(dqn.decision_trace[-1].legal_actions, ("local", "horizontal", "vertical"))
+        self.assertEqual(dqn.to_dict()["decision_trace"][0]["chosen_action"], "horizontal")
+
+    def test_dqn_tie_breaking_and_empty_action_validation(self) -> None:
+        dqn = DQNInterface()
+        state = {"state_value": 1.0}
+        dqn.set_q_values(state, {"vertical": 3.0, "horizontal": 3.0, "local": 3.0})
+        legal_actions = ("vertical", "horizontal", "local")
+        self.assertEqual(dqn.select_action(state, legal_actions), "vertical")
+        self.assertEqual(dqn.select_action(state, legal_actions), "vertical")
+        with self.assertRaises(ValueError):
+            dqn.q_values(state, [])
+        with self.assertRaises(ValueError):
+            dqn.select_action(state, [])
+
+    def test_learning_interfaces_cover_double_dqn_dueling_and_lstm_shapes(self) -> None:
         double_dqn = DoubleDQNTargetRule()
         self.assertEqual(double_dqn.select_action({"local": 1.0, "horizontal": 3.0}, ("local", "horizontal")), "horizontal")
         self.assertEqual(

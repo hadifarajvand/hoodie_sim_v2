@@ -26,3 +26,4 @@ Status summary: implemented 7, partial 3, missing 0.
 
 - All tasks strictly follow the base HOODIE paper.
 - No thesis/DCQ extensions included.
+- Within task 5, the DQN interface subcomponent is now implemented; Double DQN and Dueling DQN remain partial.

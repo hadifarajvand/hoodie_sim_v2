@@ -14,23 +14,127 @@ from src.policies.policy_interface import PolicyContext, SharedPolicy
 
 
 @dataclass(frozen=True, slots=True)
+class DQNDecisionTrace:
+    state_vector: tuple[float, ...]
+    legal_actions: tuple[str, ...]
+    q_values: dict[str, float]
+    chosen_action: str
+    source: str
+
+    def to_dict(self) -> dict[str, Any]:
+        return {
+            "state_vector": list(self.state_vector),
+            "legal_actions": list(self.legal_actions),
+            "q_values": dict(self.q_values),
+            "chosen_action": self.chosen_action,
+            "source": self.source,
+        }
+
+
+@dataclass(slots=True)
 class DQNInterface:
     action_names: tuple[str, ...] = ("local", "horizontal", "vertical")
     trainable: bool = False
+    default_q_value: float = 0.0
+    state_feature_order: tuple[str, ...] = ("state_value",)
+    q_table: dict[tuple[float, ...], dict[str, float]] = field(default_factory=dict)
+    decision_trace: list[DQNDecisionTrace] = field(default_factory=list)
 
-    def q_values(self, state_features: Mapping[str, float], legal_actions: Sequence[str]) -> dict[str, float]:
+    def __post_init__(self) -> None:
+        if not self.action_names:
+            raise ValueError("action_names must be non-empty")
+        if len(set(self.action_names)) != len(self.action_names):
+            raise ValueError("action_names must be unique")
+        if len(set(self.state_feature_order)) != len(self.state_feature_order):
+            raise ValueError("state_feature_order must be unique")
+
+    def state_vector(self, state_features: Mapping[str, float] | Sequence[float]) -> tuple[float, ...]:
+        if isinstance(state_features, Mapping):
+            ordered_keys = list(self.state_feature_order)
+            ordered_keys.extend(key for key in sorted(state_features) if key not in self.state_feature_order)
+            return tuple(float(state_features.get(key, 0.0)) for key in ordered_keys)
+        return tuple(float(value) for value in state_features)
+
+    def set_q_value(self, state_features: Mapping[str, float] | Sequence[float], action: str, value: float) -> None:
+        state = self.state_vector(state_features)
+        q_values = dict(self.q_table.get(state, {}))
+        q_values[action] = float(value)
+        self.q_table[state] = q_values
+
+    def set_q_values(self, state_features: Mapping[str, float] | Sequence[float], q_values: Mapping[str, float]) -> None:
+        state = self.state_vector(state_features)
+        self.q_table[state] = {str(action): float(value) for action, value in q_values.items()}
+
+    def _stored_q_values(self, state: tuple[float, ...]) -> dict[str, float]:
+        return dict(self.q_table.get(state, {}))
+
+    def _fallback_q_value(self, state: tuple[float, ...], action: str) -> float:
+        state_sum = sum(state)
+        action_bias = 0.0
+        if action in self.action_names:
+            action_bias = float(len(self.action_names) - self.action_names.index(action)) * 0.001
+        return self.default_q_value + (state_sum * 0.01) + action_bias
+
+    def q_values(self, state_features: Mapping[str, float] | Sequence[float], legal_actions: Sequence[str]) -> dict[str, float]:
         if not legal_actions:
-            return {}
-        state_value = float(state_features.get("state_value", 0.0))
-        return {action: state_value for action in legal_actions}
+            raise ValueError("legal_actions must be non-empty")
+        state = self.state_vector(state_features)
+        stored = self._stored_q_values(state)
+        return {
+            action: float(stored.get(action, self._fallback_q_value(state, action)))
+            for action in tuple(legal_actions)
+        }
 
-    def choose_action(self, q_values: Mapping[str, float]) -> str:
-        if not q_values:
-            raise ValueError("q_values must be non-empty")
-        return max(q_values, key=lambda key: (q_values[key], key))
+    def choose_action(self, q_values: Mapping[str, float], legal_actions: Sequence[str] | None = None) -> str:
+        candidate_actions = tuple(legal_actions) if legal_actions is not None else tuple(q_values.keys())
+        if not candidate_actions:
+            raise ValueError("legal_actions must be non-empty")
+        best_action = candidate_actions[0]
+        best_value = float(q_values.get(best_action, self.default_q_value))
+        best_index = 0
+        for index, action in enumerate(candidate_actions[1:], start=1):
+            value = float(q_values.get(action, self.default_q_value))
+            if value > best_value or (value == best_value and index < best_index):
+                best_action = action
+                best_value = value
+                best_index = index
+        return best_action
+
+    def select_action(
+        self,
+        state_features: Mapping[str, float] | Sequence[float],
+        legal_actions: Sequence[str],
+        *,
+        source: str = "q_table",
+    ) -> str:
+        q_values = self.q_values(state_features, legal_actions)
+        chosen = self.choose_action(q_values, legal_actions)
+        self.decision_trace.append(
+            DQNDecisionTrace(
+                state_vector=self.state_vector(state_features),
+                legal_actions=tuple(legal_actions),
+                q_values=dict(q_values),
+                chosen_action=chosen,
+                source=source,
+            )
+        )
+        return chosen
 
     def to_dict(self) -> dict[str, Any]:
-        return asdict(self)
+        return {
+            "action_names": list(self.action_names),
+            "trainable": self.trainable,
+            "default_q_value": self.default_q_value,
+            "state_feature_order": list(self.state_feature_order),
+            "q_table": [
+                {
+                    "state_vector": list(state_vector),
+                    "q_values": dict(self.q_table[state_vector]),
+                }
+                for state_vector in sorted(self.q_table)
+            ],
+            "decision_trace": [trace.to_dict() for trace in self.decision_trace],
+        }
 
 
 @dataclass(frozen=True, slots=True)

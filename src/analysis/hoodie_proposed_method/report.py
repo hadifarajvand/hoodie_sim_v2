@@ -55,7 +55,7 @@ def _validation_summary() -> tuple[str, ...]:
         "integration tests (tests/integration/test_hoodie_proposed_method_*.py): passed",
         "module entrypoint (python -m analysis.hoodie_proposed_method): passed",
         "remaining partial components are learning internals expected to be implemented later.",
-        "next partial targets: dqn_interface, double_dqn_target_rule, dueling_dqn_value_advantage_interface, lstm_forecast_recovery_interface, epsilon_greedy_training_schedule.",
+        "next partial targets: double_dqn_target_rule, dueling_dqn_value_advantage_interface, lstm_forecast_recovery_interface, epsilon_greedy_training_schedule.",
     )
 
 
@@ -125,11 +125,11 @@ def _component_definitions() -> tuple[ComponentCoverageEntry, ...]:
             component_id="dqn_interface",
             component_name="DQN interface",
             paper_requirement="Q-network interface for value estimation",
-            current_implementation="The repository exposes Q-value interfaces, but not a trainable DQN implementation wired into Feature 080.",
+            current_implementation="The interface now stores deterministic Q-values for state vectors, predicts action values, selects the maximum legal action, and records decision traces.",
             implementation_reference="src/analysis/hoodie_proposed_method/learning_model.py; src/agents/hoodie_model.py",
-            status="partial",
-            gap="interface_only_q_learning",
-            required_repair="Add a trainable DQN module if the paper interface must be executed end-to-end.",
+            status="implemented",
+            gap="none",
+            required_repair="No repair required for the deterministic DQN interface contract.",
         ),
         ComponentCoverageEntry(
             component_id="double_dqn_target_rule",

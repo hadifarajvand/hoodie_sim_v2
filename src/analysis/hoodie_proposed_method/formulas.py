@@ -121,7 +121,7 @@ def build_formula_registry() -> tuple[FormulaRegistryEntry, ...]:
             source="HOODIE base paper, distributed decision section",
             implementation_reference="src/analysis/hoodie_proposed_method/learning_model.py",
             status="implemented",
-            note="The repository now scores legal local/horizontal/vertical actions from PolicyContext with bounded epsilon-greedy selection.",
+            note="The repository now encodes state vectors, stores deterministic Q-values, selects stable best actions, and records decision traces.",
         ),
         FormulaRegistryEntry(
             formula_id="double_dqn_target",
