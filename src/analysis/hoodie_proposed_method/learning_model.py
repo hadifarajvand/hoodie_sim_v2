@@ -193,6 +193,24 @@ class LSTMForecastRecoveryInterface:
 
 
 @dataclass(slots=True)
+class EpsilonGreedyDecisionTrace:
+    episode_index: int
+    epsilon: float
+    mode: str
+    selected_action: str
+    legal_actions: tuple[str, ...]
+
+    def to_dict(self) -> dict[str, Any]:
+        return {
+            "episode_index": self.episode_index,
+            "epsilon": self.epsilon,
+            "mode": self.mode,
+            "selected_action": self.selected_action,
+            "legal_actions": list(self.legal_actions),
+        }
+
+
+@dataclass(slots=True)
 class ReplayMemoryInterface:
     capacity: int = 10_000
     seed: int = 7
@@ -248,23 +266,108 @@ class ReplayMemoryInterface:
         return {"capacity": self.capacity, "size": len(self._items), "seed": self.seed}
 
 
-@dataclass(frozen=True, slots=True)
+@dataclass(slots=True)
 class EpsilonGreedyTrainingSchedule:
     epsilon_start: float = 1.0
     epsilon_end: float = 0.0
-    decay_episodes: int = 100
+    total_episodes: int = 100
+    decay_episodes: int | None = None
+    exploration_seed: int = 13
+    decision_trace: list[EpsilonGreedyDecisionTrace] = field(default_factory=list)
+
+    def __post_init__(self) -> None:
+        effective_total_episodes = self.total_episodes if self.decay_episodes is None else self.decay_episodes
+        if effective_total_episodes <= 0:
+            raise ValueError("total_episodes must be positive")
+        if self.epsilon_start < self.epsilon_end:
+            raise ValueError("epsilon_start must be greater than or equal to epsilon_end")
+        self.total_episodes = int(effective_total_episodes)
+        if self.decay_episodes is None:
+            self.decay_episodes = int(effective_total_episodes)
 
     def epsilon(self, episode_index: int) -> float:
-        if episode_index <= 0:
+        if episode_index < 0:
+            raise ValueError("episode_index must be non-negative")
+        if episode_index == 0:
             return self.epsilon_start
-        half_point = max(1, self.decay_episodes // 2)
+        half_point = max(1, self.total_episodes // 2)
         if episode_index >= half_point:
             return self.epsilon_end
         progress = episode_index / half_point
         return self.epsilon_start + (self.epsilon_end - self.epsilon_start) * progress
 
+    def epsilon_for_inference(self) -> float:
+        return 0.0
+
+    def _exploration_action(self, legal_actions: Sequence[str], *, episode_index: int, seed: int | None = None, deterministic: bool = True) -> str:
+        if not legal_actions:
+            raise ValueError("legal_actions must be non-empty")
+        ordered_actions = tuple(sorted(dict.fromkeys(legal_actions)))
+        if deterministic:
+            index = (self.exploration_seed + episode_index + (seed or 0)) % len(ordered_actions)
+            return ordered_actions[index]
+        rng = random.Random(seed if seed is not None else self.exploration_seed + episode_index + len(ordered_actions))
+        return rng.choice(ordered_actions)
+
+    def select_action(
+        self,
+        dqn_interface: DQNInterface,
+        state_features: Mapping[str, float] | Sequence[float],
+        legal_actions: Sequence[str],
+        *,
+        episode_index: int,
+        use_inference: bool = False,
+        force_mode: str | None = None,
+        deterministic_exploration: bool = True,
+        exploration_seed: int | None = None,
+    ) -> str:
+        if not legal_actions:
+            raise ValueError("legal_actions must be non-empty")
+        if episode_index < 0:
+            raise ValueError("episode_index must be non-negative")
+
+        epsilon = self.epsilon_for_inference() if use_inference else self.epsilon(episode_index)
+        mode: str
+        if use_inference:
+            mode = "inference"
+        elif force_mode == "explore":
+            mode = "explore"
+        elif force_mode == "exploit":
+            mode = "exploit"
+        else:
+            rng = random.Random((exploration_seed if exploration_seed is not None else self.exploration_seed) + episode_index + len(legal_actions))
+            mode = "explore" if rng.random() < epsilon else "exploit"
+
+        if mode in {"exploit", "inference"}:
+            selected_action = dqn_interface.select_action(state_features, legal_actions, source=f"epsilon_greedy:{mode}")
+        else:
+            selected_action = self._exploration_action(
+                legal_actions,
+                episode_index=episode_index,
+                seed=exploration_seed,
+                deterministic=deterministic_exploration,
+            )
+
+        self.decision_trace.append(
+            EpsilonGreedyDecisionTrace(
+                episode_index=episode_index,
+                epsilon=epsilon,
+                mode=mode,
+                selected_action=selected_action,
+                legal_actions=tuple(legal_actions),
+            )
+        )
+        return selected_action
+
     def to_dict(self) -> dict[str, Any]:
-        return asdict(self)
+        return {
+            "epsilon_start": self.epsilon_start,
+            "epsilon_end": self.epsilon_end,
+            "total_episodes": self.total_episodes,
+            "decay_episodes": self.decay_episodes,
+            "exploration_seed": self.exploration_seed,
+            "decision_trace": [trace.to_dict() for trace in self.decision_trace],
+        }
 
 
 @dataclass(frozen=True, slots=True)

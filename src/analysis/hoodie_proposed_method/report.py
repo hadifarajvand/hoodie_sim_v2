@@ -55,7 +55,7 @@ def _validation_summary() -> tuple[str, ...]:
         "integration tests (tests/integration/test_hoodie_proposed_method_*.py): passed",
         "module entrypoint (python -m analysis.hoodie_proposed_method): passed",
         "remaining partial components are learning internals expected to be implemented later.",
-        "next partial targets: double_dqn_target_rule, dueling_dqn_value_advantage_interface, lstm_forecast_recovery_interface, epsilon_greedy_training_schedule.",
+        "next partial targets: double_dqn_target_rule, dueling_dqn_value_advantage_interface, lstm_forecast_recovery_interface.",
     )
 
 
@@ -175,11 +175,11 @@ def _component_definitions() -> tuple[ComponentCoverageEntry, ...]:
             component_id="epsilon_greedy_training_schedule",
             component_name="Epsilon-greedy training schedule",
             paper_requirement="Epsilon starts at 1 and decays to 0 in the first half of episodes",
-            current_implementation="The package exposes the paper-shaped schedule, but the repo-wide training stack still uses other readiness-oriented schedules elsewhere.",
+            current_implementation="The schedule now decays from 1 to 0 across the first half of episodes, stays at 0 afterward, supports inference epsilon zero, and records decision traces.",
             implementation_reference="src/analysis/hoodie_proposed_method/learning_model.py; src/analysis/distributed_multi_agent_hoodie_training/schedule.py",
-            status="partial",
-            gap="schedule_not_globally_wired",
-            required_repair="Route the paper schedule into the training loop if paper-faithful training is required.",
+            status="implemented",
+            gap="none",
+            required_repair="No repair required for the epsilon-greedy schedule contract.",
         ),
         ComponentCoverageEntry(
             component_id="inference_mode_epsilon_zero",

@@ -165,8 +165,8 @@ def build_formula_registry() -> tuple[FormulaRegistryEntry, ...]:
             equation="epsilon decays from 1.0 to 0.0 across early episodes",
             source="HOODIE base paper, exploration schedule section",
             implementation_reference="src/analysis/hoodie_proposed_method/learning_model.py",
-            status="partial",
-            note="The schedule helper exists, but it is not wired into a full trainer loop.",
+            status="implemented",
+            note="The schedule now provides deterministic epsilon decay, inference epsilon zero, and paper-shaped explore/exploit selection.",
         ),
         FormulaRegistryEntry(
             formula_id="inference_mode",

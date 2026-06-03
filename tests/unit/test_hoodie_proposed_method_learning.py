@@ -43,6 +43,57 @@ class HoodieProposedMethodLearningTests(unittest.TestCase):
         with self.assertRaises(ValueError):
             dqn.select_action(state, [])
 
+    def test_epsilon_greedy_schedule_respects_decay_boundary_and_inference(self) -> None:
+        dqn = DQNInterface()
+        dqn.set_q_values({"state_value": 1.0}, {"local": 1.0, "horizontal": 3.0, "vertical": 2.0})
+
+        schedule = EpsilonGreedyTrainingSchedule(total_episodes=8, exploration_seed=1)
+        self.assertEqual(schedule.epsilon(0), 1.0)
+        self.assertEqual(schedule.epsilon(4), 0.0)
+        self.assertEqual(schedule.epsilon(6), 0.0)
+        self.assertEqual(schedule.epsilon_for_inference(), 0.0)
+        with self.assertRaises(ValueError):
+            schedule.epsilon(-1)
+
+        exploratory_action = schedule.select_action(
+            dqn,
+            {"state_value": 1.0},
+            ["local", "horizontal", "vertical"],
+            episode_index=0,
+            force_mode="explore",
+            deterministic_exploration=True,
+        )
+        self.assertEqual(exploratory_action, "local")
+        self.assertEqual(schedule.decision_trace[-1].mode, "explore")
+        self.assertEqual(schedule.decision_trace[-1].epsilon, 1.0)
+        self.assertEqual(schedule.decision_trace[-1].selected_action, "local")
+
+        exploit_action = schedule.select_action(
+            dqn,
+            {"state_value": 1.0},
+            ["local", "horizontal", "vertical"],
+            episode_index=4,
+            force_mode="exploit",
+        )
+        self.assertEqual(exploit_action, "horizontal")
+        self.assertEqual(schedule.decision_trace[-1].mode, "exploit")
+
+        inference_action = schedule.select_action(
+            dqn,
+            {"state_value": 1.0},
+            ["local", "horizontal", "vertical"],
+            episode_index=7,
+            use_inference=True,
+        )
+        self.assertEqual(inference_action, "horizontal")
+        self.assertEqual(schedule.decision_trace[-1].mode, "inference")
+        self.assertEqual(schedule.decision_trace[-1].epsilon, 0.0)
+
+        with self.assertRaises(ValueError):
+            schedule.select_action(dqn, {"state_value": 1.0}, [], episode_index=0)
+        with self.assertRaises(ValueError):
+            EpsilonGreedyTrainingSchedule(total_episodes=0)
+
     def test_learning_interfaces_cover_double_dqn_dueling_and_lstm_shapes(self) -> None:
         double_dqn = DoubleDQNTargetRule()
         self.assertEqual(double_dqn.select_action({"local": 1.0, "horizontal": 3.0}, ("local", "horizontal")), "horizontal")
@@ -84,10 +135,6 @@ class HoodieProposedMethodLearningTests(unittest.TestCase):
         self.assertTrue(replay.is_empty())
         self.assertIsNone(replay.latest())
         self.assertEqual(replay.sample_batch(1), ())
-
-        schedule = EpsilonGreedyTrainingSchedule(epsilon_start=1.0, epsilon_end=0.0, decay_episodes=8)
-        self.assertEqual(schedule.epsilon(0), 1.0)
-        self.assertEqual(schedule.epsilon(4), 0.0)
 
         inference = InferenceMode()
         self.assertEqual(inference.choose_action({"local": 1.0, "horizontal": 2.0, "vertical": 2.0}), "vertical")
