@@ -1,9 +1,17 @@
-# Plan
+# Feature 082 Plan — Policy Adapter Repair
 
-1. Define the runtime evaluation data model and policy adapters.
-2. Generate deterministic scenario expansions across workloads, deadline pressures, and seeds.
-3. Execute the policy matrix and compute per-task outcomes.
-4. Aggregate metrics by policy, policy+scenario, workload, and deadline pressure.
-5. Produce deterministic metric-by-metric rankings and reports.
-6. Export the runtime evaluation artifact bundle and validate it.
+## Objective
+Repair compatibility-mode policies in Feature 082 runtime evaluation so that all baseline and proposed policies are distinct.
 
+## Phases
+1. Inspect current adapter logic
+2. Repair HOODIE_PROPOSED adapter
+3. Repair ORIGINAL_HOODIE_BASELINE adapter
+4. Add policy identity guard tests
+5. Regenerate artifacts
+6. Update report and execution manifest with identity proof
+
+## Validation
+- Artifact verification
+- Unit and integration tests
+- Metrics distinguish HOODIE_PROPOSED from LOCAL_ONLY and ORIGINAL_HOODIE_BASELINE from CLOUD_ONLY
