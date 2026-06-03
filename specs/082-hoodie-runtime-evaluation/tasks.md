@@ -1,5 +1,13 @@
 # Feature 082 Tasks — Policy Adapter Repair
 
+## Status
+- [x] Policy adapters repaired
+- [x] Decision traces added
+- [x] Identity proof added to report and manifest
+- [x] Artifact bundle regenerated
+- [x] Unit and integration tests updated and passing
+- [x] Validation passed on the repaired artifact bundle
+
 ## Task Group A — Confirm Failure
 - Read aggregate_by_policy.csv
 - Confirm HOODIE_PROPOSED == LOCAL_ONLY

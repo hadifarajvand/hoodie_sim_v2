@@ -102,6 +102,7 @@ class ExecutionOutcome:
     selected_action: str
     resolved_destination: str
     compatibility_mode_used: bool
+    decision_trace: tuple[str, ...] = ()
 
     def to_dict(self) -> dict[str, Any]:
         return asdict(self)
@@ -227,4 +228,3 @@ class Feature082Report:
             "compatibility_mode_used": self.compatibility_mode_used,
             "raw_row_count": self.raw_row_count,
         }
-

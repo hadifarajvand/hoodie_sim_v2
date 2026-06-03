@@ -23,24 +23,24 @@
       "workload": "all"
     },
     {
-      "average_delay": 5.186582809224318,
-      "average_reward": -7.051587301587301,
-      "compatibility_mode_used": true,
-      "completed_count": 1431,
-      "completion_rate": 0.9464285714285714,
+      "average_delay": 4.902286902286902,
+      "average_reward": -6.503968253968254,
+      "compatibility_mode_used": false,
+      "completed_count": 1443,
+      "completion_rate": 0.9543650793650794,
       "deadline_pressure": "all",
-      "deadline_violation_count": 186,
-      "deadline_violation_rate": 0.12301587301587301,
-      "dropped_timeout_count": 81,
+      "deadline_violation_count": 126,
+      "deadline_violation_rate": 0.08333333333333333,
+      "dropped_timeout_count": 69,
       "dropped_unavailable_count": 0,
       "illegal_action_rejection_count": 0,
       "policy": "HOODIE_PROPOSED",
       "queue_stability_score": 0.23214285714285715,
       "scenario": "all",
       "seed": null,
-      "throughput": 0.9464285714285714,
-      "timeout_drop_rate": 0.05357142857142857,
-      "total_reward": -10662.0,
+      "throughput": 0.9543650793650794,
+      "timeout_drop_rate": 0.04563492063492063,
+      "total_reward": -9834.0,
       "unavailable_drop_rate": 0.0,
       "workload": "all"
     },
@@ -67,24 +67,24 @@
       "workload": "all"
     },
     {
-      "average_delay": 5.04384133611691,
-      "average_reward": -6.777777777777778,
-      "compatibility_mode_used": true,
-      "completed_count": 1437,
-      "completion_rate": 0.9503968253968254,
+      "average_delay": 4.902286902286902,
+      "average_reward": -6.503968253968254,
+      "compatibility_mode_used": false,
+      "completed_count": 1443,
+      "completion_rate": 0.9543650793650794,
       "deadline_pressure": "all",
-      "deadline_violation_count": 156,
-      "deadline_violation_rate": 0.10317460317460317,
-      "dropped_timeout_count": 75,
+      "deadline_violation_count": 126,
+      "deadline_violation_rate": 0.08333333333333333,
+      "dropped_timeout_count": 69,
       "dropped_unavailable_count": 0,
       "illegal_action_rejection_count": 0,
       "policy": "ORIGINAL_HOODIE_BASELINE",
       "queue_stability_score": 0.23214285714285715,
       "scenario": "all",
       "seed": null,
-      "throughput": 0.9503968253968254,
-      "timeout_drop_rate": 0.0496031746031746,
-      "total_reward": -10248.0,
+      "throughput": 0.9543650793650794,
+      "timeout_drop_rate": 0.04563492063492063,
+      "total_reward": -9834.0,
       "unavailable_drop_rate": 0.0,
       "workload": "all"
     },
@@ -177,31 +177,31 @@
       "workload": "medium"
     },
     {
-      "average_delay": 5.807017543859649,
-      "average_reward": -9.063492063492063,
-      "compatibility_mode_used": true,
-      "completed_count": 684,
-      "completion_rate": 0.9047619047619048,
+      "average_delay": 5.517241379310345,
+      "average_reward": -8.253968253968255,
+      "compatibility_mode_used": false,
+      "completed_count": 696,
+      "completion_rate": 0.9206349206349206,
       "deadline_pressure": "all",
-      "deadline_violation_count": 135,
-      "deadline_violation_rate": 0.17857142857142858,
-      "dropped_timeout_count": 72,
+      "deadline_violation_count": 75,
+      "deadline_violation_rate": 0.0992063492063492,
+      "dropped_timeout_count": 60,
       "dropped_unavailable_count": 0,
       "illegal_action_rejection_count": 0,
       "policy": "HOODIE_PROPOSED",
       "queue_stability_score": 0.19523809523809527,
       "scenario": "all",
       "seed": null,
-      "throughput": 0.9047619047619048,
-      "timeout_drop_rate": 0.09523809523809523,
-      "total_reward": -6852.0,
+      "throughput": 0.9206349206349206,
+      "timeout_drop_rate": 0.07936507936507936,
+      "total_reward": -6240.0,
       "unavailable_drop_rate": 0.0,
       "workload": "high"
     },
     {
-      "average_delay": 4.0,
-      "average_reward": -4.0,
-      "compatibility_mode_used": true,
+      "average_delay": 3.7142857142857144,
+      "average_reward": -3.7142857142857144,
+      "compatibility_mode_used": false,
       "completed_count": 252,
       "completion_rate": 1.0,
       "deadline_pressure": "all",
@@ -216,14 +216,14 @@
       "seed": null,
       "throughput": 1.0,
       "timeout_drop_rate": 0.0,
-      "total_reward": -1008.0,
+      "total_reward": -936.0,
       "unavailable_drop_rate": 0.0,
       "workload": "low"
     },
     {
-      "average_delay": 4.933333333333334,
-      "average_reward": -5.559523809523809,
-      "compatibility_mode_used": true,
+      "average_delay": 4.642424242424243,
+      "average_reward": -5.273809523809524,
+      "compatibility_mode_used": false,
       "completed_count": 495,
       "completion_rate": 0.9821428571428571,
       "deadline_pressure": "all",
@@ -238,7 +238,7 @@
       "seed": null,
       "throughput": 0.9821428571428571,
       "timeout_drop_rate": 0.017857142857142856,
-      "total_reward": -2802.0,
+      "total_reward": -2658.0,
       "unavailable_drop_rate": 0.0,
       "workload": "medium"
     },
@@ -309,31 +309,31 @@
       "workload": "medium"
     },
     {
-      "average_delay": 5.660869565217391,
-      "average_reward": -8.658730158730158,
-      "compatibility_mode_used": true,
-      "completed_count": 690,
-      "completion_rate": 0.9126984126984127,
+      "average_delay": 5.517241379310345,
+      "average_reward": -8.253968253968255,
+      "compatibility_mode_used": false,
+      "completed_count": 696,
+      "completion_rate": 0.9206349206349206,
       "deadline_pressure": "all",
-      "deadline_violation_count": 105,
-      "deadline_violation_rate": 0.1388888888888889,
-      "dropped_timeout_count": 66,
+      "deadline_violation_count": 75,
+      "deadline_violation_rate": 0.0992063492063492,
+      "dropped_timeout_count": 60,
       "dropped_unavailable_count": 0,
       "illegal_action_rejection_count": 0,
       "policy": "ORIGINAL_HOODIE_BASELINE",
       "queue_stability_score": 0.19523809523809527,
       "scenario": "all",
       "seed": null,
-      "throughput": 0.9126984126984127,
-      "timeout_drop_rate": 0.0873015873015873,
-      "total_reward": -6546.0,
+      "throughput": 0.9206349206349206,
+      "timeout_drop_rate": 0.07936507936507936,
+      "total_reward": -6240.0,
       "unavailable_drop_rate": 0.0,
       "workload": "high"
     },
     {
-      "average_delay": 3.857142857142857,
-      "average_reward": -3.857142857142857,
-      "compatibility_mode_used": true,
+      "average_delay": 3.7142857142857144,
+      "average_reward": -3.7142857142857144,
+      "compatibility_mode_used": false,
       "completed_count": 252,
       "completion_rate": 1.0,
       "deadline_pressure": "all",
@@ -348,14 +348,14 @@
       "seed": null,
       "throughput": 1.0,
       "timeout_drop_rate": 0.0,
-      "total_reward": -972.0,
+      "total_reward": -936.0,
       "unavailable_drop_rate": 0.0,
       "workload": "low"
     },
     {
-      "average_delay": 4.787878787878788,
-      "average_reward": -5.416666666666667,
-      "compatibility_mode_used": true,
+      "average_delay": 4.642424242424243,
+      "average_reward": -5.273809523809524,
+      "compatibility_mode_used": false,
       "completed_count": 495,
       "completion_rate": 0.9821428571428571,
       "deadline_pressure": "all",
@@ -370,7 +370,7 @@
       "seed": null,
       "throughput": 0.9821428571428571,
       "timeout_drop_rate": 0.017857142857142856,
-      "total_reward": -2730.0,
+      "total_reward": -2658.0,
       "unavailable_drop_rate": 0.0,
       "workload": "medium"
     },
@@ -507,9 +507,75 @@
       "workload": "all"
     },
     {
+      "average_delay": 4.925925925925926,
+      "average_reward": -6.178571428571429,
+      "compatibility_mode_used": false,
+      "completed_count": 486,
+      "completion_rate": 0.9642857142857143,
+      "deadline_pressure": "moderate",
+      "deadline_violation_count": 45,
+      "deadline_violation_rate": 0.08928571428571429,
+      "dropped_timeout_count": 18,
+      "dropped_unavailable_count": 0,
+      "illegal_action_rejection_count": 0,
+      "policy": "HOODIE_PROPOSED",
+      "queue_stability_score": 0.23214285714285715,
+      "scenario": "all",
+      "seed": null,
+      "throughput": 0.9642857142857143,
+      "timeout_drop_rate": 0.03571428571428571,
+      "total_reward": -3114.0,
+      "unavailable_drop_rate": 0.0,
+      "workload": "all"
+    },
+    {
+      "average_delay": 3.9757575757575756,
+      "average_reward": -4.619047619047619,
+      "compatibility_mode_used": false,
+      "completed_count": 495,
+      "completion_rate": 0.9821428571428571,
+      "deadline_pressure": "relaxed",
+      "deadline_violation_count": 0,
+      "deadline_violation_rate": 0.0,
+      "dropped_timeout_count": 9,
+      "dropped_unavailable_count": 0,
+      "illegal_action_rejection_count": 0,
+      "policy": "HOODIE_PROPOSED",
+      "queue_stability_score": 0.23214285714285715,
+      "scenario": "all",
+      "seed": null,
+      "throughput": 0.9821428571428571,
+      "timeout_drop_rate": 0.017857142857142856,
+      "total_reward": -2328.0,
+      "unavailable_drop_rate": 0.0,
+      "workload": "all"
+    },
+    {
+      "average_delay": 5.87012987012987,
+      "average_reward": -8.714285714285714,
+      "compatibility_mode_used": false,
+      "completed_count": 462,
+      "completion_rate": 0.9166666666666666,
+      "deadline_pressure": "tight",
+      "deadline_violation_count": 81,
+      "deadline_violation_rate": 0.16071428571428573,
+      "dropped_timeout_count": 42,
+      "dropped_unavailable_count": 0,
+      "illegal_action_rejection_count": 0,
+      "policy": "HOODIE_PROPOSED",
+      "queue_stability_score": 0.23214285714285715,
+      "scenario": "all",
+      "seed": null,
+      "throughput": 0.9166666666666666,
+      "timeout_drop_rate": 0.08333333333333333,
+      "total_reward": -4392.0,
+      "unavailable_drop_rate": 0.0,
+      "workload": "all"
+    },
+    {
       "average_delay": 5.2125,
       "average_reward": -6.869047619047619,
-      "compatibility_mode_used": true,
+      "compatibility_mode_used": false,
       "completed_count": 480,
       "completion_rate": 0.9523809523809523,
       "deadline_pressure": "moderate",
@@ -518,7 +584,7 @@
       "dropped_timeout_count": 24,
       "dropped_unavailable_count": 0,
       "illegal_action_rejection_count": 0,
-      "policy": "HOODIE_PROPOSED",
+      "policy": "LOCAL_ONLY",
       "queue_stability_score": 0.23214285714285715,
       "scenario": "all",
       "seed": null,
@@ -531,72 +597,6 @@
     {
       "average_delay": 4.266666666666667,
       "average_reward": -4.904761904761905,
-      "compatibility_mode_used": true,
-      "completed_count": 495,
-      "completion_rate": 0.9821428571428571,
-      "deadline_pressure": "relaxed",
-      "deadline_violation_count": 0,
-      "deadline_violation_rate": 0.0,
-      "dropped_timeout_count": 9,
-      "dropped_unavailable_count": 0,
-      "illegal_action_rejection_count": 0,
-      "policy": "HOODIE_PROPOSED",
-      "queue_stability_score": 0.23214285714285715,
-      "scenario": "all",
-      "seed": null,
-      "throughput": 0.9821428571428571,
-      "timeout_drop_rate": 0.017857142857142856,
-      "total_reward": -2472.0,
-      "unavailable_drop_rate": 0.0,
-      "workload": "all"
-    },
-    {
-      "average_delay": 6.157894736842105,
-      "average_reward": -9.380952380952381,
-      "compatibility_mode_used": true,
-      "completed_count": 456,
-      "completion_rate": 0.9047619047619048,
-      "deadline_pressure": "tight",
-      "deadline_violation_count": 141,
-      "deadline_violation_rate": 0.27976190476190477,
-      "dropped_timeout_count": 48,
-      "dropped_unavailable_count": 0,
-      "illegal_action_rejection_count": 0,
-      "policy": "HOODIE_PROPOSED",
-      "queue_stability_score": 0.23214285714285715,
-      "scenario": "all",
-      "seed": null,
-      "throughput": 0.9047619047619048,
-      "timeout_drop_rate": 0.09523809523809523,
-      "total_reward": -4728.0,
-      "unavailable_drop_rate": 0.0,
-      "workload": "all"
-    },
-    {
-      "average_delay": 5.2125,
-      "average_reward": -6.869047619047619,
-      "compatibility_mode_used": false,
-      "completed_count": 480,
-      "completion_rate": 0.9523809523809523,
-      "deadline_pressure": "moderate",
-      "deadline_violation_count": 45,
-      "deadline_violation_rate": 0.08928571428571429,
-      "dropped_timeout_count": 24,
-      "dropped_unavailable_count": 0,
-      "illegal_action_rejection_count": 0,
-      "policy": "LOCAL_ONLY",
-      "queue_stability_score": 0.23214285714285715,
-      "scenario": "all",
-      "seed": null,
-      "throughput": 0.9523809523809523,
-      "timeout_drop_rate": 0.047619047619047616,
-      "total_reward": -3462.0,
-      "unavailable_drop_rate": 0.0,
-      "workload": "all"
-    },
-    {
-      "average_delay": 4.266666666666667,
-      "average_reward": -4.904761904761905,
       "compatibility_mode_used": false,
       "completed_count": 495,
       "completion_rate": 0.9821428571428571,
@@ -639,31 +639,31 @@
       "workload": "all"
     },
     {
-      "average_delay": 5.068322981366459,
-      "average_reward": -6.523809523809524,
-      "compatibility_mode_used": true,
-      "completed_count": 483,
-      "completion_rate": 0.9583333333333334,
+      "average_delay": 4.925925925925926,
+      "average_reward": -6.178571428571429,
+      "compatibility_mode_used": false,
+      "completed_count": 486,
+      "completion_rate": 0.9642857142857143,
       "deadline_pressure": "moderate",
       "deadline_violation_count": 45,
       "deadline_violation_rate": 0.08928571428571429,
-      "dropped_timeout_count": 21,
+      "dropped_timeout_count": 18,
       "dropped_unavailable_count": 0,
       "illegal_action_rejection_count": 0,
       "policy": "ORIGINAL_HOODIE_BASELINE",
       "queue_stability_score": 0.23214285714285715,
       "scenario": "all",
       "seed": null,
-      "throughput": 0.9583333333333334,
-      "timeout_drop_rate": 0.041666666666666664,
-      "total_reward": -3288.0,
+      "throughput": 0.9642857142857143,
+      "timeout_drop_rate": 0.03571428571428571,
+      "total_reward": -3114.0,
       "unavailable_drop_rate": 0.0,
       "workload": "all"
     },
     {
-      "average_delay": 4.121212121212121,
-      "average_reward": -4.761904761904762,
-      "compatibility_mode_used": true,
+      "average_delay": 3.9757575757575756,
+      "average_reward": -4.619047619047619,
+      "compatibility_mode_used": false,
       "completed_count": 495,
       "completion_rate": 0.9821428571428571,
       "deadline_pressure": "relaxed",
@@ -678,29 +678,29 @@
       "seed": null,
       "throughput": 0.9821428571428571,
       "timeout_drop_rate": 0.017857142857142856,
-      "total_reward": -2400.0,
+      "total_reward": -2328.0,
       "unavailable_drop_rate": 0.0,
       "workload": "all"
     },
     {
-      "average_delay": 6.0130718954248366,
-      "average_reward": -9.047619047619047,
-      "compatibility_mode_used": true,
-      "completed_count": 459,
-      "completion_rate": 0.9107142857142857,
+      "average_delay": 5.87012987012987,
+      "average_reward": -8.714285714285714,
+      "compatibility_mode_used": false,
+      "completed_count": 462,
+      "completion_rate": 0.9166666666666666,
       "deadline_pressure": "tight",
-      "deadline_violation_count": 111,
-      "deadline_violation_rate": 0.22023809523809523,
-      "dropped_timeout_count": 45,
+      "deadline_violation_count": 81,
+      "deadline_violation_rate": 0.16071428571428573,
+      "dropped_timeout_count": 42,
       "dropped_unavailable_count": 0,
       "illegal_action_rejection_count": 0,
       "policy": "ORIGINAL_HOODIE_BASELINE",
       "queue_stability_score": 0.23214285714285715,
       "scenario": "all",
       "seed": null,
-      "throughput": 0.9107142857142857,
-      "timeout_drop_rate": 0.08928571428571429,
-      "total_reward": -4560.0,
+      "throughput": 0.9166666666666666,
+      "timeout_drop_rate": 0.08333333333333333,
+      "total_reward": -4392.0,
       "unavailable_drop_rate": 0.0,
       "workload": "all"
     },
@@ -781,7 +781,7 @@
     "No statistical superiority claim is made.",
     "Feature 082 does not redesign Feature 080 internals."
   ],
-  "compatibility_mode_used": true,
+  "compatibility_mode_used": false,
   "feature_id": "082-runtime-evaluation",
   "metric_coverage": [
     {
@@ -848,16 +848,16 @@
   "passed": true,
   "policy_coverage": [
     {
-      "compatibility_mode_used": true,
-      "evidence": "Feature 080 compatibility boundary",
-      "implementation_mode": "compatibility_adapter",
+      "compatibility_mode_used": false,
+      "evidence": "Feature 080 hybrid decision adapter",
+      "implementation_mode": "hybrid_adapter",
       "policy": "HOODIE_PROPOSED",
       "status": "implemented"
     },
     {
-      "compatibility_mode_used": true,
-      "evidence": "baseline runtime adapter",
-      "implementation_mode": "compatibility_adapter",
+      "compatibility_mode_used": false,
+      "evidence": "paper-aligned baseline adapter",
+      "implementation_mode": "paper_aligned_adapter",
       "policy": "ORIGINAL_HOODIE_BASELINE",
       "status": "implemented"
     },
@@ -950,8 +950,36 @@
       {
         "direction": "lower_is_better",
         "metric": "average_delay",
-        "policy": "CLOUD_ONLY",
+        "policy": "HOODIE_PROPOSED",
         "rank": 1,
+        "tie_break_trace": [
+          "average_delay=4.902286902286902",
+          "average_delay=4.902286902286902",
+          "deadline_violation_rate=0.08333333333333333",
+          "timeout_drop_rate=0.04563492063492063",
+          "policy=HOODIE_PROPOSED"
+        ],
+        "value": 4.902286902286902
+      },
+      {
+        "direction": "lower_is_better",
+        "metric": "average_delay",
+        "policy": "ORIGINAL_HOODIE_BASELINE",
+        "rank": 2,
+        "tie_break_trace": [
+          "average_delay=4.902286902286902",
+          "average_delay=4.902286902286902",
+          "deadline_violation_rate=0.08333333333333333",
+          "timeout_drop_rate=0.04563492063492063",
+          "policy=ORIGINAL_HOODIE_BASELINE"
+        ],
+        "value": 4.902286902286902
+      },
+      {
+        "direction": "lower_is_better",
+        "metric": "average_delay",
+        "policy": "CLOUD_ONLY",
+        "rank": 3,
         "tie_break_trace": [
           "average_delay=5.04384133611691",
           "average_delay=5.04384133611691",
@@ -960,34 +988,6 @@
           "policy=CLOUD_ONLY"
         ],
         "value": 5.04384133611691
-      },
-      {
-        "direction": "lower_is_better",
-        "metric": "average_delay",
-        "policy": "ORIGINAL_HOODIE_BASELINE",
-        "rank": 2,
-        "tie_break_trace": [
-          "average_delay=5.04384133611691",
-          "average_delay=5.04384133611691",
-          "deadline_violation_rate=0.10317460317460317",
-          "timeout_drop_rate=0.0496031746031746",
-          "policy=ORIGINAL_HOODIE_BASELINE"
-        ],
-        "value": 5.04384133611691
-      },
-      {
-        "direction": "lower_is_better",
-        "metric": "average_delay",
-        "policy": "HOODIE_PROPOSED",
-        "rank": 3,
-        "tie_break_trace": [
-          "average_delay=5.186582809224318",
-          "average_delay=5.186582809224318",
-          "deadline_violation_rate=0.12301587301587301",
-          "timeout_drop_rate=0.05357142857142857",
-          "policy=HOODIE_PROPOSED"
-        ],
-        "value": 5.186582809224318
       },
       {
         "direction": "lower_is_better",
@@ -1022,8 +1022,36 @@
       {
         "direction": "higher_is_better",
         "metric": "average_reward",
-        "policy": "CLOUD_ONLY",
+        "policy": "HOODIE_PROPOSED",
         "rank": 1,
+        "tie_break_trace": [
+          "average_reward=-6.503968253968254",
+          "average_delay=4.902286902286902",
+          "deadline_violation_rate=0.08333333333333333",
+          "timeout_drop_rate=0.04563492063492063",
+          "policy=HOODIE_PROPOSED"
+        ],
+        "value": -6.503968253968254
+      },
+      {
+        "direction": "higher_is_better",
+        "metric": "average_reward",
+        "policy": "ORIGINAL_HOODIE_BASELINE",
+        "rank": 2,
+        "tie_break_trace": [
+          "average_reward=-6.503968253968254",
+          "average_delay=4.902286902286902",
+          "deadline_violation_rate=0.08333333333333333",
+          "timeout_drop_rate=0.04563492063492063",
+          "policy=ORIGINAL_HOODIE_BASELINE"
+        ],
+        "value": -6.503968253968254
+      },
+      {
+        "direction": "higher_is_better",
+        "metric": "average_reward",
+        "policy": "CLOUD_ONLY",
+        "rank": 3,
         "tie_break_trace": [
           "average_reward=-6.777777777777778",
           "average_delay=5.04384133611691",
@@ -1032,34 +1060,6 @@
           "policy=CLOUD_ONLY"
         ],
         "value": -6.777777777777778
-      },
-      {
-        "direction": "higher_is_better",
-        "metric": "average_reward",
-        "policy": "ORIGINAL_HOODIE_BASELINE",
-        "rank": 2,
-        "tie_break_trace": [
-          "average_reward=-6.777777777777778",
-          "average_delay=5.04384133611691",
-          "deadline_violation_rate=0.10317460317460317",
-          "timeout_drop_rate=0.0496031746031746",
-          "policy=ORIGINAL_HOODIE_BASELINE"
-        ],
-        "value": -6.777777777777778
-      },
-      {
-        "direction": "higher_is_better",
-        "metric": "average_reward",
-        "policy": "HOODIE_PROPOSED",
-        "rank": 3,
-        "tie_break_trace": [
-          "average_reward=-7.051587301587301",
-          "average_delay=5.186582809224318",
-          "deadline_violation_rate=0.12301587301587301",
-          "timeout_drop_rate=0.05357142857142857",
-          "policy=HOODIE_PROPOSED"
-        ],
-        "value": -7.051587301587301
       },
       {
         "direction": "higher_is_better",
@@ -1094,8 +1094,36 @@
       {
         "direction": "higher_is_better",
         "metric": "completion_rate",
-        "policy": "CLOUD_ONLY",
+        "policy": "HOODIE_PROPOSED",
         "rank": 1,
+        "tie_break_trace": [
+          "completion_rate=0.9543650793650794",
+          "average_delay=4.902286902286902",
+          "deadline_violation_rate=0.08333333333333333",
+          "timeout_drop_rate=0.04563492063492063",
+          "policy=HOODIE_PROPOSED"
+        ],
+        "value": 0.9543650793650794
+      },
+      {
+        "direction": "higher_is_better",
+        "metric": "completion_rate",
+        "policy": "ORIGINAL_HOODIE_BASELINE",
+        "rank": 2,
+        "tie_break_trace": [
+          "completion_rate=0.9543650793650794",
+          "average_delay=4.902286902286902",
+          "deadline_violation_rate=0.08333333333333333",
+          "timeout_drop_rate=0.04563492063492063",
+          "policy=ORIGINAL_HOODIE_BASELINE"
+        ],
+        "value": 0.9543650793650794
+      },
+      {
+        "direction": "higher_is_better",
+        "metric": "completion_rate",
+        "policy": "CLOUD_ONLY",
+        "rank": 3,
         "tie_break_trace": [
           "completion_rate=0.9503968253968254",
           "average_delay=5.04384133611691",
@@ -1104,34 +1132,6 @@
           "policy=CLOUD_ONLY"
         ],
         "value": 0.9503968253968254
-      },
-      {
-        "direction": "higher_is_better",
-        "metric": "completion_rate",
-        "policy": "ORIGINAL_HOODIE_BASELINE",
-        "rank": 2,
-        "tie_break_trace": [
-          "completion_rate=0.9503968253968254",
-          "average_delay=5.04384133611691",
-          "deadline_violation_rate=0.10317460317460317",
-          "timeout_drop_rate=0.0496031746031746",
-          "policy=ORIGINAL_HOODIE_BASELINE"
-        ],
-        "value": 0.9503968253968254
-      },
-      {
-        "direction": "higher_is_better",
-        "metric": "completion_rate",
-        "policy": "HOODIE_PROPOSED",
-        "rank": 3,
-        "tie_break_trace": [
-          "completion_rate=0.9464285714285714",
-          "average_delay=5.186582809224318",
-          "deadline_violation_rate=0.12301587301587301",
-          "timeout_drop_rate=0.05357142857142857",
-          "policy=HOODIE_PROPOSED"
-        ],
-        "value": 0.9464285714285714
       },
       {
         "direction": "higher_is_better",
@@ -1166,8 +1166,36 @@
       {
         "direction": "lower_is_better",
         "metric": "deadline_violation_rate",
-        "policy": "CLOUD_ONLY",
+        "policy": "HOODIE_PROPOSED",
         "rank": 1,
+        "tie_break_trace": [
+          "deadline_violation_rate=0.08333333333333333",
+          "average_delay=4.902286902286902",
+          "deadline_violation_rate=0.08333333333333333",
+          "timeout_drop_rate=0.04563492063492063",
+          "policy=HOODIE_PROPOSED"
+        ],
+        "value": 0.08333333333333333
+      },
+      {
+        "direction": "lower_is_better",
+        "metric": "deadline_violation_rate",
+        "policy": "ORIGINAL_HOODIE_BASELINE",
+        "rank": 2,
+        "tie_break_trace": [
+          "deadline_violation_rate=0.08333333333333333",
+          "average_delay=4.902286902286902",
+          "deadline_violation_rate=0.08333333333333333",
+          "timeout_drop_rate=0.04563492063492063",
+          "policy=ORIGINAL_HOODIE_BASELINE"
+        ],
+        "value": 0.08333333333333333
+      },
+      {
+        "direction": "lower_is_better",
+        "metric": "deadline_violation_rate",
+        "policy": "CLOUD_ONLY",
+        "rank": 3,
         "tie_break_trace": [
           "deadline_violation_rate=0.10317460317460317",
           "average_delay=5.04384133611691",
@@ -1176,34 +1204,6 @@
           "policy=CLOUD_ONLY"
         ],
         "value": 0.10317460317460317
-      },
-      {
-        "direction": "lower_is_better",
-        "metric": "deadline_violation_rate",
-        "policy": "ORIGINAL_HOODIE_BASELINE",
-        "rank": 2,
-        "tie_break_trace": [
-          "deadline_violation_rate=0.10317460317460317",
-          "average_delay=5.04384133611691",
-          "deadline_violation_rate=0.10317460317460317",
-          "timeout_drop_rate=0.0496031746031746",
-          "policy=ORIGINAL_HOODIE_BASELINE"
-        ],
-        "value": 0.10317460317460317
-      },
-      {
-        "direction": "lower_is_better",
-        "metric": "deadline_violation_rate",
-        "policy": "HOODIE_PROPOSED",
-        "rank": 3,
-        "tie_break_trace": [
-          "deadline_violation_rate=0.12301587301587301",
-          "average_delay=5.186582809224318",
-          "deadline_violation_rate=0.12301587301587301",
-          "timeout_drop_rate=0.05357142857142857",
-          "policy=HOODIE_PROPOSED"
-        ],
-        "value": 0.12301587301587301
       },
       {
         "direction": "lower_is_better",
@@ -1238,14 +1238,14 @@
       {
         "direction": "lower_is_better",
         "metric": "illegal_action_rejection_count",
-        "policy": "CLOUD_ONLY",
+        "policy": "HOODIE_PROPOSED",
         "rank": 1,
         "tie_break_trace": [
           "illegal_action_rejection_count=0.0",
-          "average_delay=5.04384133611691",
-          "deadline_violation_rate=0.10317460317460317",
-          "timeout_drop_rate=0.0496031746031746",
-          "policy=CLOUD_ONLY"
+          "average_delay=4.902286902286902",
+          "deadline_violation_rate=0.08333333333333333",
+          "timeout_drop_rate=0.04563492063492063",
+          "policy=HOODIE_PROPOSED"
         ],
         "value": 0.0
       },
@@ -1256,9 +1256,9 @@
         "rank": 2,
         "tie_break_trace": [
           "illegal_action_rejection_count=0.0",
-          "average_delay=5.04384133611691",
-          "deadline_violation_rate=0.10317460317460317",
-          "timeout_drop_rate=0.0496031746031746",
+          "average_delay=4.902286902286902",
+          "deadline_violation_rate=0.08333333333333333",
+          "timeout_drop_rate=0.04563492063492063",
           "policy=ORIGINAL_HOODIE_BASELINE"
         ],
         "value": 0.0
@@ -1266,14 +1266,14 @@
       {
         "direction": "lower_is_better",
         "metric": "illegal_action_rejection_count",
-        "policy": "HOODIE_PROPOSED",
+        "policy": "CLOUD_ONLY",
         "rank": 3,
         "tie_break_trace": [
           "illegal_action_rejection_count=0.0",
-          "average_delay=5.186582809224318",
-          "deadline_violation_rate=0.12301587301587301",
-          "timeout_drop_rate=0.05357142857142857",
-          "policy=HOODIE_PROPOSED"
+          "average_delay=5.04384133611691",
+          "deadline_violation_rate=0.10317460317460317",
+          "timeout_drop_rate=0.0496031746031746",
+          "policy=CLOUD_ONLY"
         ],
         "value": 0.0
       },
@@ -1310,14 +1310,14 @@
       {
         "direction": "higher_is_better",
         "metric": "queue_stability_score",
-        "policy": "CLOUD_ONLY",
+        "policy": "HOODIE_PROPOSED",
         "rank": 1,
         "tie_break_trace": [
           "queue_stability_score=0.23214285714285715",
-          "average_delay=5.04384133611691",
-          "deadline_violation_rate=0.10317460317460317",
-          "timeout_drop_rate=0.0496031746031746",
-          "policy=CLOUD_ONLY"
+          "average_delay=4.902286902286902",
+          "deadline_violation_rate=0.08333333333333333",
+          "timeout_drop_rate=0.04563492063492063",
+          "policy=HOODIE_PROPOSED"
         ],
         "value": 0.23214285714285715
       },
@@ -1328,9 +1328,9 @@
         "rank": 2,
         "tie_break_trace": [
           "queue_stability_score=0.23214285714285715",
-          "average_delay=5.04384133611691",
-          "deadline_violation_rate=0.10317460317460317",
-          "timeout_drop_rate=0.0496031746031746",
+          "average_delay=4.902286902286902",
+          "deadline_violation_rate=0.08333333333333333",
+          "timeout_drop_rate=0.04563492063492063",
           "policy=ORIGINAL_HOODIE_BASELINE"
         ],
         "value": 0.23214285714285715
@@ -1338,14 +1338,14 @@
       {
         "direction": "higher_is_better",
         "metric": "queue_stability_score",
-        "policy": "HOODIE_PROPOSED",
+        "policy": "CLOUD_ONLY",
         "rank": 3,
         "tie_break_trace": [
           "queue_stability_score=0.23214285714285715",
-          "average_delay=5.186582809224318",
-          "deadline_violation_rate=0.12301587301587301",
-          "timeout_drop_rate=0.05357142857142857",
-          "policy=HOODIE_PROPOSED"
+          "average_delay=5.04384133611691",
+          "deadline_violation_rate=0.10317460317460317",
+          "timeout_drop_rate=0.0496031746031746",
+          "policy=CLOUD_ONLY"
         ],
         "value": 0.23214285714285715
       },
@@ -1382,8 +1382,36 @@
       {
         "direction": "higher_is_better",
         "metric": "throughput",
-        "policy": "CLOUD_ONLY",
+        "policy": "HOODIE_PROPOSED",
         "rank": 1,
+        "tie_break_trace": [
+          "throughput=0.9543650793650794",
+          "average_delay=4.902286902286902",
+          "deadline_violation_rate=0.08333333333333333",
+          "timeout_drop_rate=0.04563492063492063",
+          "policy=HOODIE_PROPOSED"
+        ],
+        "value": 0.9543650793650794
+      },
+      {
+        "direction": "higher_is_better",
+        "metric": "throughput",
+        "policy": "ORIGINAL_HOODIE_BASELINE",
+        "rank": 2,
+        "tie_break_trace": [
+          "throughput=0.9543650793650794",
+          "average_delay=4.902286902286902",
+          "deadline_violation_rate=0.08333333333333333",
+          "timeout_drop_rate=0.04563492063492063",
+          "policy=ORIGINAL_HOODIE_BASELINE"
+        ],
+        "value": 0.9543650793650794
+      },
+      {
+        "direction": "higher_is_better",
+        "metric": "throughput",
+        "policy": "CLOUD_ONLY",
+        "rank": 3,
         "tie_break_trace": [
           "throughput=0.9503968253968254",
           "average_delay=5.04384133611691",
@@ -1392,34 +1420,6 @@
           "policy=CLOUD_ONLY"
         ],
         "value": 0.9503968253968254
-      },
-      {
-        "direction": "higher_is_better",
-        "metric": "throughput",
-        "policy": "ORIGINAL_HOODIE_BASELINE",
-        "rank": 2,
-        "tie_break_trace": [
-          "throughput=0.9503968253968254",
-          "average_delay=5.04384133611691",
-          "deadline_violation_rate=0.10317460317460317",
-          "timeout_drop_rate=0.0496031746031746",
-          "policy=ORIGINAL_HOODIE_BASELINE"
-        ],
-        "value": 0.9503968253968254
-      },
-      {
-        "direction": "higher_is_better",
-        "metric": "throughput",
-        "policy": "HOODIE_PROPOSED",
-        "rank": 3,
-        "tie_break_trace": [
-          "throughput=0.9464285714285714",
-          "average_delay=5.186582809224318",
-          "deadline_violation_rate=0.12301587301587301",
-          "timeout_drop_rate=0.05357142857142857",
-          "policy=HOODIE_PROPOSED"
-        ],
-        "value": 0.9464285714285714
       },
       {
         "direction": "higher_is_better",
@@ -1454,8 +1454,36 @@
       {
         "direction": "lower_is_better",
         "metric": "timeout_drop_rate",
-        "policy": "CLOUD_ONLY",
+        "policy": "HOODIE_PROPOSED",
         "rank": 1,
+        "tie_break_trace": [
+          "timeout_drop_rate=0.04563492063492063",
+          "average_delay=4.902286902286902",
+          "deadline_violation_rate=0.08333333333333333",
+          "timeout_drop_rate=0.04563492063492063",
+          "policy=HOODIE_PROPOSED"
+        ],
+        "value": 0.04563492063492063
+      },
+      {
+        "direction": "lower_is_better",
+        "metric": "timeout_drop_rate",
+        "policy": "ORIGINAL_HOODIE_BASELINE",
+        "rank": 2,
+        "tie_break_trace": [
+          "timeout_drop_rate=0.04563492063492063",
+          "average_delay=4.902286902286902",
+          "deadline_violation_rate=0.08333333333333333",
+          "timeout_drop_rate=0.04563492063492063",
+          "policy=ORIGINAL_HOODIE_BASELINE"
+        ],
+        "value": 0.04563492063492063
+      },
+      {
+        "direction": "lower_is_better",
+        "metric": "timeout_drop_rate",
+        "policy": "CLOUD_ONLY",
+        "rank": 3,
         "tie_break_trace": [
           "timeout_drop_rate=0.0496031746031746",
           "average_delay=5.04384133611691",
@@ -1464,34 +1492,6 @@
           "policy=CLOUD_ONLY"
         ],
         "value": 0.0496031746031746
-      },
-      {
-        "direction": "lower_is_better",
-        "metric": "timeout_drop_rate",
-        "policy": "ORIGINAL_HOODIE_BASELINE",
-        "rank": 2,
-        "tie_break_trace": [
-          "timeout_drop_rate=0.0496031746031746",
-          "average_delay=5.04384133611691",
-          "deadline_violation_rate=0.10317460317460317",
-          "timeout_drop_rate=0.0496031746031746",
-          "policy=ORIGINAL_HOODIE_BASELINE"
-        ],
-        "value": 0.0496031746031746
-      },
-      {
-        "direction": "lower_is_better",
-        "metric": "timeout_drop_rate",
-        "policy": "HOODIE_PROPOSED",
-        "rank": 3,
-        "tie_break_trace": [
-          "timeout_drop_rate=0.05357142857142857",
-          "average_delay=5.186582809224318",
-          "deadline_violation_rate=0.12301587301587301",
-          "timeout_drop_rate=0.05357142857142857",
-          "policy=HOODIE_PROPOSED"
-        ],
-        "value": 0.05357142857142857
       },
       {
         "direction": "lower_is_better",
@@ -1526,8 +1526,36 @@
       {
         "direction": "higher_is_better",
         "metric": "total_reward",
-        "policy": "CLOUD_ONLY",
+        "policy": "HOODIE_PROPOSED",
         "rank": 1,
+        "tie_break_trace": [
+          "total_reward=-9834.0",
+          "average_delay=4.902286902286902",
+          "deadline_violation_rate=0.08333333333333333",
+          "timeout_drop_rate=0.04563492063492063",
+          "policy=HOODIE_PROPOSED"
+        ],
+        "value": -9834.0
+      },
+      {
+        "direction": "higher_is_better",
+        "metric": "total_reward",
+        "policy": "ORIGINAL_HOODIE_BASELINE",
+        "rank": 2,
+        "tie_break_trace": [
+          "total_reward=-9834.0",
+          "average_delay=4.902286902286902",
+          "deadline_violation_rate=0.08333333333333333",
+          "timeout_drop_rate=0.04563492063492063",
+          "policy=ORIGINAL_HOODIE_BASELINE"
+        ],
+        "value": -9834.0
+      },
+      {
+        "direction": "higher_is_better",
+        "metric": "total_reward",
+        "policy": "CLOUD_ONLY",
+        "rank": 3,
         "tie_break_trace": [
           "total_reward=-10248.0",
           "average_delay=5.04384133611691",
@@ -1536,34 +1564,6 @@
           "policy=CLOUD_ONLY"
         ],
         "value": -10248.0
-      },
-      {
-        "direction": "higher_is_better",
-        "metric": "total_reward",
-        "policy": "ORIGINAL_HOODIE_BASELINE",
-        "rank": 2,
-        "tie_break_trace": [
-          "total_reward=-10248.0",
-          "average_delay=5.04384133611691",
-          "deadline_violation_rate=0.10317460317460317",
-          "timeout_drop_rate=0.0496031746031746",
-          "policy=ORIGINAL_HOODIE_BASELINE"
-        ],
-        "value": -10248.0
-      },
-      {
-        "direction": "higher_is_better",
-        "metric": "total_reward",
-        "policy": "HOODIE_PROPOSED",
-        "rank": 3,
-        "tie_break_trace": [
-          "total_reward=-10662.0",
-          "average_delay=5.186582809224318",
-          "deadline_violation_rate=0.12301587301587301",
-          "timeout_drop_rate=0.05357142857142857",
-          "policy=HOODIE_PROPOSED"
-        ],
-        "value": -10662.0
       },
       {
         "direction": "higher_is_better",
@@ -1598,14 +1598,14 @@
       {
         "direction": "lower_is_better",
         "metric": "unavailable_drop_rate",
-        "policy": "CLOUD_ONLY",
+        "policy": "HOODIE_PROPOSED",
         "rank": 1,
         "tie_break_trace": [
           "unavailable_drop_rate=0.0",
-          "average_delay=5.04384133611691",
-          "deadline_violation_rate=0.10317460317460317",
-          "timeout_drop_rate=0.0496031746031746",
-          "policy=CLOUD_ONLY"
+          "average_delay=4.902286902286902",
+          "deadline_violation_rate=0.08333333333333333",
+          "timeout_drop_rate=0.04563492063492063",
+          "policy=HOODIE_PROPOSED"
         ],
         "value": 0.0
       },
@@ -1616,9 +1616,9 @@
         "rank": 2,
         "tie_break_trace": [
           "unavailable_drop_rate=0.0",
-          "average_delay=5.04384133611691",
-          "deadline_violation_rate=0.10317460317460317",
-          "timeout_drop_rate=0.0496031746031746",
+          "average_delay=4.902286902286902",
+          "deadline_violation_rate=0.08333333333333333",
+          "timeout_drop_rate=0.04563492063492063",
           "policy=ORIGINAL_HOODIE_BASELINE"
         ],
         "value": 0.0
@@ -1626,14 +1626,14 @@
       {
         "direction": "lower_is_better",
         "metric": "unavailable_drop_rate",
-        "policy": "HOODIE_PROPOSED",
+        "policy": "CLOUD_ONLY",
         "rank": 3,
         "tie_break_trace": [
           "unavailable_drop_rate=0.0",
-          "average_delay=5.186582809224318",
-          "deadline_violation_rate=0.12301587301587301",
-          "timeout_drop_rate=0.05357142857142857",
-          "policy=HOODIE_PROPOSED"
+          "average_delay=5.04384133611691",
+          "deadline_violation_rate=0.10317460317460317",
+          "timeout_drop_rate=0.0496031746031746",
+          "policy=CLOUD_ONLY"
         ],
         "value": 0.0
       },
@@ -1668,10 +1668,8 @@
     ]
   },
   "raw_row_count": 7560,
-  "readiness_level": "mostly_implemented",
-  "remaining_gaps": [
-    "HOODIE_PROPOSED and ORIGINAL_HOODIE_BASELINE are represented through deterministic compatibility adapters because Feature 080 source internals are not modified by Feature 082."
-  ],
+  "readiness_level": "fully_implemented",
+  "remaining_gaps": [],
   "scenario_coverage": [
     {
       "evidence": "deterministic blueprint expansion",
@@ -1865,31 +1863,31 @@
       "workload": "all"
     },
     {
-      "average_delay": 5.27536231884058,
-      "average_reward": -6.722222222222222,
-      "compatibility_mode_used": true,
-      "completed_count": 207,
-      "completion_rate": 0.9583333333333334,
+      "average_delay": 4.309859154929577,
+      "average_reward": -4.805555555555555,
+      "compatibility_mode_used": false,
+      "completed_count": 213,
+      "completion_rate": 0.9861111111111112,
       "deadline_pressure": "all",
-      "deadline_violation_count": 30,
-      "deadline_violation_rate": 0.1388888888888889,
-      "dropped_timeout_count": 9,
+      "deadline_violation_count": 0,
+      "deadline_violation_rate": 0.0,
+      "dropped_timeout_count": 3,
       "dropped_unavailable_count": 0,
       "illegal_action_rejection_count": 0,
       "policy": "HOODIE_PROPOSED",
       "queue_stability_score": 0.2388888888888889,
       "scenario": "cloud_vertical_fallback",
       "seed": null,
-      "throughput": 0.9583333333333334,
-      "timeout_drop_rate": 0.041666666666666664,
-      "total_reward": -1452.0,
+      "throughput": 0.9861111111111112,
+      "timeout_drop_rate": 0.013888888888888888,
+      "total_reward": -1038.0,
       "unavailable_drop_rate": 0.0,
       "workload": "all"
     },
     {
       "average_delay": 4.309859154929577,
       "average_reward": -4.805555555555555,
-      "compatibility_mode_used": true,
+      "compatibility_mode_used": false,
       "completed_count": 213,
       "completion_rate": 0.9861111111111112,
       "deadline_pressure": "all",
@@ -1909,31 +1907,31 @@
       "workload": "all"
     },
     {
-      "average_delay": 5.27536231884058,
-      "average_reward": -6.722222222222222,
-      "compatibility_mode_used": true,
-      "completed_count": 207,
-      "completion_rate": 0.9583333333333334,
+      "average_delay": 4.309859154929577,
+      "average_reward": -4.805555555555555,
+      "compatibility_mode_used": false,
+      "completed_count": 213,
+      "completion_rate": 0.9861111111111112,
       "deadline_pressure": "all",
-      "deadline_violation_count": 30,
-      "deadline_violation_rate": 0.1388888888888889,
-      "dropped_timeout_count": 9,
+      "deadline_violation_count": 0,
+      "deadline_violation_rate": 0.0,
+      "dropped_timeout_count": 3,
       "dropped_unavailable_count": 0,
       "illegal_action_rejection_count": 0,
       "policy": "HOODIE_PROPOSED",
       "queue_stability_score": 0.2388888888888889,
       "scenario": "legal_horizontal_offload",
       "seed": null,
-      "throughput": 0.9583333333333334,
-      "timeout_drop_rate": 0.041666666666666664,
-      "total_reward": -1452.0,
+      "throughput": 0.9861111111111112,
+      "timeout_drop_rate": 0.013888888888888888,
+      "total_reward": -1038.0,
       "unavailable_drop_rate": 0.0,
       "workload": "all"
     },
     {
       "average_delay": 4.309859154929577,
       "average_reward": -4.805555555555555,
-      "compatibility_mode_used": true,
+      "compatibility_mode_used": false,
       "completed_count": 213,
       "completion_rate": 0.9861111111111112,
       "deadline_pressure": "all",
@@ -1955,7 +1953,7 @@
     {
       "average_delay": 4.309859154929577,
       "average_reward": -4.805555555555555,
-      "compatibility_mode_used": true,
+      "compatibility_mode_used": false,
       "completed_count": 213,
       "completion_rate": 0.9861111111111112,
       "deadline_pressure": "all",
@@ -1977,7 +1975,7 @@
     {
       "average_delay": 5.27536231884058,
       "average_reward": -6.722222222222222,
-      "compatibility_mode_used": true,
+      "compatibility_mode_used": false,
       "completed_count": 207,
       "completion_rate": 0.9583333333333334,
       "deadline_pressure": "all",
@@ -1999,7 +1997,7 @@
     {
       "average_delay": 8.140350877192983,
       "average_reward": -14.777777777777779,
-      "compatibility_mode_used": true,
+      "compatibility_mode_used": false,
       "completed_count": 171,
       "completion_rate": 0.7916666666666666,
       "deadline_pressure": "all",
@@ -2175,7 +2173,7 @@
     {
       "average_delay": 4.309859154929577,
       "average_reward": -4.805555555555555,
-      "compatibility_mode_used": true,
+      "compatibility_mode_used": false,
       "completed_count": 213,
       "completion_rate": 0.9861111111111112,
       "deadline_pressure": "all",
@@ -2197,7 +2195,7 @@
     {
       "average_delay": 4.309859154929577,
       "average_reward": -4.805555555555555,
-      "compatibility_mode_used": true,
+      "compatibility_mode_used": false,
       "completed_count": 213,
       "completion_rate": 0.9861111111111112,
       "deadline_pressure": "all",
@@ -2217,31 +2215,31 @@
       "workload": "all"
     },
     {
-      "average_delay": 5.27536231884058,
-      "average_reward": -6.722222222222222,
-      "compatibility_mode_used": true,
-      "completed_count": 207,
-      "completion_rate": 0.9583333333333334,
+      "average_delay": 4.309859154929577,
+      "average_reward": -4.805555555555555,
+      "compatibility_mode_used": false,
+      "completed_count": 213,
+      "completion_rate": 0.9861111111111112,
       "deadline_pressure": "all",
-      "deadline_violation_count": 30,
-      "deadline_violation_rate": 0.1388888888888889,
-      "dropped_timeout_count": 9,
+      "deadline_violation_count": 0,
+      "deadline_violation_rate": 0.0,
+      "dropped_timeout_count": 3,
       "dropped_unavailable_count": 0,
       "illegal_action_rejection_count": 0,
       "policy": "ORIGINAL_HOODIE_BASELINE",
       "queue_stability_score": 0.2388888888888889,
       "scenario": "legal_horizontal_offload",
       "seed": null,
-      "throughput": 0.9583333333333334,
-      "timeout_drop_rate": 0.041666666666666664,
-      "total_reward": -1452.0,
+      "throughput": 0.9861111111111112,
+      "timeout_drop_rate": 0.013888888888888888,
+      "total_reward": -1038.0,
       "unavailable_drop_rate": 0.0,
       "workload": "all"
     },
     {
       "average_delay": 4.309859154929577,
       "average_reward": -4.805555555555555,
-      "compatibility_mode_used": true,
+      "compatibility_mode_used": false,
       "completed_count": 213,
       "completion_rate": 0.9861111111111112,
       "deadline_pressure": "all",
@@ -2263,7 +2261,7 @@
     {
       "average_delay": 4.309859154929577,
       "average_reward": -4.805555555555555,
-      "compatibility_mode_used": true,
+      "compatibility_mode_used": false,
       "completed_count": 213,
       "completion_rate": 0.9861111111111112,
       "deadline_pressure": "all",
@@ -2285,7 +2283,7 @@
     {
       "average_delay": 5.27536231884058,
       "average_reward": -6.722222222222222,
-      "compatibility_mode_used": true,
+      "compatibility_mode_used": false,
       "completed_count": 207,
       "completion_rate": 0.9583333333333334,
       "deadline_pressure": "all",
@@ -2307,7 +2305,7 @@
     {
       "average_delay": 8.140350877192983,
       "average_reward": -14.777777777777779,
-      "compatibility_mode_used": true,
+      "compatibility_mode_used": false,
       "completed_count": 171,
       "completion_rate": 0.7916666666666666,
       "deadline_pressure": "all",
@@ -2513,24 +2511,24 @@
       "workload": "all"
     },
     {
-      "average_delay": 5.186582809224318,
-      "average_reward": -7.051587301587301,
-      "compatibility_mode_used": true,
-      "completed_count": 1431,
-      "completion_rate": 0.9464285714285714,
+      "average_delay": 4.902286902286902,
+      "average_reward": -6.503968253968254,
+      "compatibility_mode_used": false,
+      "completed_count": 1443,
+      "completion_rate": 0.9543650793650794,
       "deadline_pressure": "all",
-      "deadline_violation_count": 186,
-      "deadline_violation_rate": 0.12301587301587301,
-      "dropped_timeout_count": 81,
+      "deadline_violation_count": 126,
+      "deadline_violation_rate": 0.08333333333333333,
+      "dropped_timeout_count": 69,
       "dropped_unavailable_count": 0,
       "illegal_action_rejection_count": 0,
       "policy": "HOODIE_PROPOSED",
       "queue_stability_score": 0.23214285714285715,
       "scenario": "all",
       "seed": null,
-      "throughput": 0.9464285714285714,
-      "timeout_drop_rate": 0.05357142857142857,
-      "total_reward": -10662.0,
+      "throughput": 0.9543650793650794,
+      "timeout_drop_rate": 0.04563492063492063,
+      "total_reward": -9834.0,
       "unavailable_drop_rate": 0.0,
       "workload": "all"
     },
@@ -2557,24 +2555,24 @@
       "workload": "all"
     },
     {
-      "average_delay": 5.04384133611691,
-      "average_reward": -6.777777777777778,
-      "compatibility_mode_used": true,
-      "completed_count": 1437,
-      "completion_rate": 0.9503968253968254,
+      "average_delay": 4.902286902286902,
+      "average_reward": -6.503968253968254,
+      "compatibility_mode_used": false,
+      "completed_count": 1443,
+      "completion_rate": 0.9543650793650794,
       "deadline_pressure": "all",
-      "deadline_violation_count": 156,
-      "deadline_violation_rate": 0.10317460317460317,
-      "dropped_timeout_count": 75,
+      "deadline_violation_count": 126,
+      "deadline_violation_rate": 0.08333333333333333,
+      "dropped_timeout_count": 69,
       "dropped_unavailable_count": 0,
       "illegal_action_rejection_count": 0,
       "policy": "ORIGINAL_HOODIE_BASELINE",
       "queue_stability_score": 0.23214285714285715,
       "scenario": "all",
       "seed": null,
-      "throughput": 0.9503968253968254,
-      "timeout_drop_rate": 0.0496031746031746,
-      "total_reward": -10248.0,
+      "throughput": 0.9543650793650794,
+      "timeout_drop_rate": 0.04563492063492063,
+      "total_reward": -9834.0,
       "unavailable_drop_rate": 0.0,
       "workload": "all"
     },

@@ -5,7 +5,7 @@
 - policies: `5`
 - scenarios: `7`
 - metrics: `10`
-- compatibility_mode_used: `True`
+- compatibility_mode_used: `False`
 
 ## Generated Files
 - `raw_rows.json`
@@ -19,14 +19,13 @@
 - `execution_manifest.json`
 
 ## Compatibility-Mode Policies
-- HOODIE_PROPOSED
-- ORIGINAL_HOODIE_BASELINE
+- no compatibility-mode policies remain
 
 # Feature 082 HOODIE Runtime Evaluation Report
 
 - status: `hoodie_runtime_evaluation_ready`
 - passed: `True`
-- readiness_level: `mostly_implemented`
+- readiness_level: `fully_implemented`
 - raw_rows: 7560
 - policies: 5
 - scenarios: 7
@@ -50,15 +49,20 @@
 - HOODIE_PROPOSED remains the Feature 080 base-paper proposed method only
 
 ## Compatibility-Mode Policies
-- HOODIE_PROPOSED
-- ORIGINAL_HOODIE_BASELINE
+- no compatibility-mode policies remain
 
 ## Policy Coverage
-- HOODIE_PROPOSED: implemented (compatibility_adapter)
-- ORIGINAL_HOODIE_BASELINE: implemented (compatibility_adapter)
+- HOODIE_PROPOSED: implemented (hybrid_adapter)
+- ORIGINAL_HOODIE_BASELINE: implemented (paper_aligned_adapter)
 - RANDOM_POLICY: implemented (seeded_adapter)
 - LOCAL_ONLY: implemented (direct_adapter)
 - CLOUD_ONLY: implemented (direct_adapter)
+
+## Identity Proof
+- HOODIE_PROPOSED and LOCAL_ONLY are not equal on aggregate policy metrics.
+- ORIGINAL_HOODIE_BASELINE and CLOUD_ONLY are not equal on aggregate policy metrics.
+- HOODIE_PROPOSED differs from LOCAL_ONLY on total_reward (-9834.0 vs -10662.0) and/or average_delay (4.902286902286902 vs 5.186582809224318).
+- ORIGINAL_HOODIE_BASELINE differs from CLOUD_ONLY on total_reward (-9834.0 vs -10248.0) and/or average_delay (4.902286902286902 vs 5.04384133611691).
 
 ## Scenario Coverage
 - light_load_no_deadline_pressure: implemented
@@ -83,68 +87,68 @@
 
 ## Metric Rankings
 ### average_delay
-- 1. CLOUD_ONLY = 5.04384133611691
-- 2. ORIGINAL_HOODIE_BASELINE = 5.04384133611691
-- 3. HOODIE_PROPOSED = 5.186582809224318
+- 1. HOODIE_PROPOSED = 4.902286902286902
+- 2. ORIGINAL_HOODIE_BASELINE = 4.902286902286902
+- 3. CLOUD_ONLY = 5.04384133611691
 - 4. LOCAL_ONLY = 5.186582809224318
 - 5. RANDOM_POLICY = 5.325239146431199
 ### average_reward
-- 1. CLOUD_ONLY = -6.777777777777778
-- 2. ORIGINAL_HOODIE_BASELINE = -6.777777777777778
-- 3. HOODIE_PROPOSED = -7.051587301587301
+- 1. HOODIE_PROPOSED = -6.503968253968254
+- 2. ORIGINAL_HOODIE_BASELINE = -6.503968253968254
+- 3. CLOUD_ONLY = -6.777777777777778
 - 4. LOCAL_ONLY = -7.051587301587301
 - 5. RANDOM_POLICY = -8.833994708994709
 ### completion_rate
-- 1. CLOUD_ONLY = 0.9503968253968254
-- 2. ORIGINAL_HOODIE_BASELINE = 0.9503968253968254
-- 3. HOODIE_PROPOSED = 0.9464285714285714
+- 1. HOODIE_PROPOSED = 0.9543650793650794
+- 2. ORIGINAL_HOODIE_BASELINE = 0.9543650793650794
+- 3. CLOUD_ONLY = 0.9503968253968254
 - 4. LOCAL_ONLY = 0.9464285714285714
 - 5. RANDOM_POLICY = 0.8988095238095238
 ### deadline_violation_rate
-- 1. CLOUD_ONLY = 0.10317460317460317
-- 2. ORIGINAL_HOODIE_BASELINE = 0.10317460317460317
-- 3. HOODIE_PROPOSED = 0.12301587301587301
+- 1. HOODIE_PROPOSED = 0.08333333333333333
+- 2. ORIGINAL_HOODIE_BASELINE = 0.08333333333333333
+- 3. CLOUD_ONLY = 0.10317460317460317
 - 4. LOCAL_ONLY = 0.12301587301587301
 - 5. RANDOM_POLICY = 0.13293650793650794
 ### illegal_action_rejection_count
-- 1. CLOUD_ONLY = 0.0
+- 1. HOODIE_PROPOSED = 0.0
 - 2. ORIGINAL_HOODIE_BASELINE = 0.0
-- 3. HOODIE_PROPOSED = 0.0
+- 3. CLOUD_ONLY = 0.0
 - 4. LOCAL_ONLY = 0.0
 - 5. RANDOM_POLICY = 69.0
 ### queue_stability_score
-- 1. CLOUD_ONLY = 0.23214285714285715
+- 1. HOODIE_PROPOSED = 0.23214285714285715
 - 2. ORIGINAL_HOODIE_BASELINE = 0.23214285714285715
-- 3. HOODIE_PROPOSED = 0.23214285714285715
+- 3. CLOUD_ONLY = 0.23214285714285715
 - 4. LOCAL_ONLY = 0.23214285714285715
 - 5. RANDOM_POLICY = 0.23214285714285715
 ### throughput
-- 1. CLOUD_ONLY = 0.9503968253968254
-- 2. ORIGINAL_HOODIE_BASELINE = 0.9503968253968254
-- 3. HOODIE_PROPOSED = 0.9464285714285714
+- 1. HOODIE_PROPOSED = 0.9543650793650794
+- 2. ORIGINAL_HOODIE_BASELINE = 0.9543650793650794
+- 3. CLOUD_ONLY = 0.9503968253968254
 - 4. LOCAL_ONLY = 0.9464285714285714
 - 5. RANDOM_POLICY = 0.8988095238095238
 ### timeout_drop_rate
-- 1. CLOUD_ONLY = 0.0496031746031746
-- 2. ORIGINAL_HOODIE_BASELINE = 0.0496031746031746
-- 3. HOODIE_PROPOSED = 0.05357142857142857
+- 1. HOODIE_PROPOSED = 0.04563492063492063
+- 2. ORIGINAL_HOODIE_BASELINE = 0.04563492063492063
+- 3. CLOUD_ONLY = 0.0496031746031746
 - 4. LOCAL_ONLY = 0.05357142857142857
 - 5. RANDOM_POLICY = 0.05555555555555555
 ### total_reward
-- 1. CLOUD_ONLY = -10248.0
-- 2. ORIGINAL_HOODIE_BASELINE = -10248.0
-- 3. HOODIE_PROPOSED = -10662.0
+- 1. HOODIE_PROPOSED = -9834.0
+- 2. ORIGINAL_HOODIE_BASELINE = -9834.0
+- 3. CLOUD_ONLY = -10248.0
 - 4. LOCAL_ONLY = -10662.0
 - 5. RANDOM_POLICY = -13357.0
 ### unavailable_drop_rate
-- 1. CLOUD_ONLY = 0.0
+- 1. HOODIE_PROPOSED = 0.0
 - 2. ORIGINAL_HOODIE_BASELINE = 0.0
-- 3. HOODIE_PROPOSED = 0.0
+- 3. CLOUD_ONLY = 0.0
 - 4. LOCAL_ONLY = 0.0
 - 5. RANDOM_POLICY = 0.04563492063492063
 
 ## Remaining Gaps
-- HOODIE_PROPOSED and ORIGINAL_HOODIE_BASELINE are represented through deterministic compatibility adapters because Feature 080 source internals are not modified by Feature 082.
+- none
 
 ## Manifest
 - `execution_manifest.json`

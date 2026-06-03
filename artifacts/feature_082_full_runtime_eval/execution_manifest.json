@@ -10,10 +10,7 @@
     "No statistical superiority claim is made.",
     "Feature 082 does not redesign Feature 080 internals."
   ],
-  "compatibility_mode_policies": [
-    "HOODIE_PROPOSED",
-    "ORIGINAL_HOODIE_BASELINE"
-  ],
+  "compatibility_mode_policies": [],
   "deadline_pressures": [
     "relaxed",
     "moderate",
@@ -32,7 +29,33 @@
     "feature_082_runtime_evaluation_report.md",
     "execution_manifest.json"
   ],
-  "local_head_sha": "70023311a3fafa184cbc688f83bcb1e32485c660",
+  "identity_proof": {
+    "baseline_vs_cloud": {
+      "different": true,
+      "metrics": [
+        "average_delay",
+        "average_reward",
+        "total_reward",
+        "completion_rate",
+        "timeout_drop_rate",
+        "deadline_violation_rate",
+        "throughput"
+      ]
+    },
+    "proposed_vs_local": {
+      "different": true,
+      "metrics": [
+        "average_delay",
+        "average_reward",
+        "total_reward",
+        "completion_rate",
+        "timeout_drop_rate",
+        "deadline_violation_rate",
+        "throughput"
+      ]
+    }
+  },
+  "local_head_sha": "9e95fd7a32d5aaab8c16ebf37920d59cd5fbe7f5",
   "metric_count": 10,
   "metric_coverage": [
     {
@@ -101,16 +124,16 @@
   "policy_count": 5,
   "policy_coverage": [
     {
-      "compatibility_mode_used": true,
-      "evidence": "Feature 080 compatibility boundary",
-      "implementation_mode": "compatibility_adapter",
+      "compatibility_mode_used": false,
+      "evidence": "Feature 080 hybrid decision adapter",
+      "implementation_mode": "hybrid_adapter",
       "policy": "HOODIE_PROPOSED",
       "status": "implemented"
     },
     {
-      "compatibility_mode_used": true,
-      "evidence": "baseline runtime adapter",
-      "implementation_mode": "compatibility_adapter",
+      "compatibility_mode_used": false,
+      "evidence": "paper-aligned baseline adapter",
+      "implementation_mode": "paper_aligned_adapter",
       "policy": "ORIGINAL_HOODIE_BASELINE",
       "status": "implemented"
     },
@@ -149,8 +172,8 @@
     "unavailable_drop_rate"
   ],
   "raw_row_count": 7560,
-  "readiness_level": "mostly_implemented",
-  "remote_head_sha": "70023311a3fafa184cbc688f83bcb1e32485c660",
+  "readiness_level": "fully_implemented",
+  "remote_head_sha": "9e95fd7a32d5aaab8c16ebf37920d59cd5fbe7f5",
   "report_status": "hoodie_runtime_evaluation_ready",
   "scenario_count": 7,
   "scenario_coverage": [

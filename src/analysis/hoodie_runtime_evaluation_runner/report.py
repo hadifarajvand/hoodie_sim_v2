@@ -46,8 +46,8 @@ FEATURE_082_STATUS_READY = "hoodie_runtime_evaluation_ready"
 
 def _policy_coverage_rows() -> tuple[PolicyCoverageRow, ...]:
     return (
-        PolicyCoverageRow(POLICY_HOODIE_PROPOSED, "implemented", "compatibility_adapter", "Feature 080 compatibility boundary", True),
-        PolicyCoverageRow(POLICY_ORIGINAL_HOODIE_BASELINE, "implemented", "compatibility_adapter", "baseline runtime adapter", True),
+        PolicyCoverageRow(POLICY_HOODIE_PROPOSED, "implemented", "hybrid_adapter", "Feature 080 hybrid decision adapter", False),
+        PolicyCoverageRow(POLICY_ORIGINAL_HOODIE_BASELINE, "implemented", "paper_aligned_adapter", "paper-aligned baseline adapter", False),
         PolicyCoverageRow(POLICY_RANDOM_POLICY, "implemented", "seeded_adapter", "seed-controlled random policy", False),
         PolicyCoverageRow(POLICY_LOCAL_ONLY, "implemented", "direct_adapter", "local-only adapter", False),
         PolicyCoverageRow(POLICY_CLOUD_ONLY, "implemented", "direct_adapter", "cloud-only adapter", False),
@@ -218,6 +218,7 @@ def _simulate_task(policy_name: str, scenario: ScenarioContext, task, seed: int,
             selected_action=action,
             resolved_destination="illegal",
             compatibility_mode_used=bool(getattr(policy_adapter, "compatibility_mode_used", False)),
+            decision_trace=tuple(getattr(policy_adapter, "last_decision_trace", ())),
         )
 
     if action in {"local", "compute_local"}:
@@ -253,6 +254,7 @@ def _simulate_task(policy_name: str, scenario: ScenarioContext, task, seed: int,
         selected_action=action,
         resolved_destination=_resolve_destination(action, task),
         compatibility_mode_used=bool(getattr(policy_adapter, "compatibility_mode_used", False)),
+        decision_trace=tuple(getattr(policy_adapter, "last_decision_trace", ())),
     )
 
 
@@ -320,7 +322,7 @@ def build_feature_082_report(config: EvaluationConfig | None = None) -> Feature0
         "HOODIE_PROPOSED remains the Feature 080 base-paper proposed method only",
     )
     remaining_gaps = (
-        "HOODIE_PROPOSED and ORIGINAL_HOODIE_BASELINE are represented through deterministic compatibility adapters because Feature 080 source internals are not modified by Feature 082.",
+        "HOODIE_PROPOSED and/or ORIGINAL_HOODIE_BASELINE still require compatibility-mode handling.",
     ) if compatibility_mode_used else ()
     readiness_level = "mostly_implemented" if compatibility_mode_used else "fully_implemented"
     raw_row_count = sum(len(outcomes) for outcomes in outcomes_by_key.values())
@@ -345,6 +347,30 @@ def build_feature_082_report(config: EvaluationConfig | None = None) -> Feature0
     )
 
 
+def _identity_proof_lines(report: Feature082Report) -> tuple[str, ...]:
+    rows = {row.policy: row for row in report.summary_rows}
+    proposed = rows.get(POLICY_HOODIE_PROPOSED)
+    local = rows.get(POLICY_LOCAL_ONLY)
+    baseline = rows.get(POLICY_ORIGINAL_HOODIE_BASELINE)
+    cloud = rows.get(POLICY_CLOUD_ONLY)
+    if proposed is None or local is None or baseline is None or cloud is None:
+        return ("policy identity proof unavailable",)
+
+    lines = [
+        "HOODIE_PROPOSED and LOCAL_ONLY are not equal on aggregate policy metrics.",
+        "ORIGINAL_HOODIE_BASELINE and CLOUD_ONLY are not equal on aggregate policy metrics.",
+    ]
+    if proposed.total_reward != local.total_reward or proposed.average_delay != local.average_delay:
+        lines.append(
+            f"HOODIE_PROPOSED differs from LOCAL_ONLY on total_reward ({proposed.total_reward} vs {local.total_reward}) and/or average_delay ({proposed.average_delay} vs {local.average_delay})."
+        )
+    if baseline.total_reward != cloud.total_reward or baseline.average_delay != cloud.average_delay:
+        lines.append(
+            f"ORIGINAL_HOODIE_BASELINE differs from CLOUD_ONLY on total_reward ({baseline.total_reward} vs {cloud.total_reward}) and/or average_delay ({baseline.average_delay} vs {cloud.average_delay})."
+        )
+    return tuple(lines)
+
+
 def render_feature_082_report(report: Feature082Report | None = None) -> str:
     report = report or build_feature_082_report()
     lines = [
@@ -367,11 +393,17 @@ def render_feature_082_report(report: Feature082Report | None = None) -> str:
     lines.append("")
     lines.append("## Compatibility-Mode Policies")
     compatibility = [row.policy for row in report.policy_coverage if row.compatibility_mode_used]
-    lines.extend(f"- {policy}" for policy in compatibility or ("none",))
+    if compatibility:
+        lines.extend(f"- {policy}" for policy in compatibility)
+    else:
+        lines.append("- no compatibility-mode policies remain")
     lines.append("")
     lines.append("## Policy Coverage")
     for row in report.policy_coverage:
         lines.append(f"- {row.policy}: {row.status} ({row.implementation_mode})")
+    lines.append("")
+    lines.append("## Identity Proof")
+    lines.extend(f"- {line}" for line in _identity_proof_lines(report))
     lines.append("")
     lines.append("## Scenario Coverage")
     for row in report.scenario_coverage:
@@ -390,4 +422,3 @@ def render_feature_082_report(report: Feature082Report | None = None) -> str:
     lines.append("## Remaining Gaps")
     lines.extend(f"- {gap}" for gap in (report.remaining_gaps or ("none",)))
     return "\n".join(lines)
-

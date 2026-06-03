@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import argparse
 import csv
+import io
 import json
 import subprocess
 from pathlib import Path
@@ -49,11 +50,13 @@ def _write_csv(path: Path, rows: list[dict[str, Any]]) -> None:
         path.write_text("", encoding="utf-8")
         return
     fieldnames = list(rows[0].keys())
+    buffer = io.StringIO(newline="")
+    writer = csv.DictWriter(buffer, fieldnames=fieldnames, lineterminator="\n")
     with path.open("w", encoding="utf-8", newline="") as handle:
-        writer = csv.DictWriter(handle, fieldnames=fieldnames)
         writer.writeheader()
         for row in rows:
             writer.writerow({key: _csv_value(row.get(key)) for key in fieldnames})
+        handle.write(buffer.getvalue().replace("\r\n", "\n").replace("\r", "\n"))
 
 
 def _git_output(*args: str) -> str:
@@ -113,7 +116,10 @@ def _artifact_markdown(report: Feature082Report, *, output_dir: Path, raw_row_co
         "## Compatibility-Mode Policies",
     ]
     compatibility = [row.policy for row in report.policy_coverage if row.compatibility_mode_used]
-    lines.extend(f"- {policy}" for policy in compatibility or ("none",))
+    if compatibility:
+        lines.extend(f"- {policy}" for policy in compatibility)
+    else:
+        lines.append("- no compatibility-mode policies remain")
     lines.append("")
     lines.append(render_feature_082_report(report))
     lines.append("")
@@ -125,6 +131,17 @@ def _artifact_markdown(report: Feature082Report, *, output_dir: Path, raw_row_co
 def _execution_manifest(report: Feature082Report, *, config: EvaluationConfig, raw_row_count: int, output_dir: Path) -> dict[str, Any]:
     repo_identity = _repo_identity()
     compatibility_policies = [row.policy for row in report.policy_coverage if row.compatibility_mode_used]
+    rows_by_policy = {row.policy: row for row in report.summary_rows}
+    identity_proof = {
+        "proposed_vs_local": {
+            "different": _metric_rows_differ(rows_by_policy.get("HOODIE_PROPOSED"), rows_by_policy.get("LOCAL_ONLY")),
+            "metrics": _metric_differences(rows_by_policy.get("HOODIE_PROPOSED"), rows_by_policy.get("LOCAL_ONLY")),
+        },
+        "baseline_vs_cloud": {
+            "different": _metric_rows_differ(rows_by_policy.get("ORIGINAL_HOODIE_BASELINE"), rows_by_policy.get("CLOUD_ONLY")),
+            "metrics": _metric_differences(rows_by_policy.get("ORIGINAL_HOODIE_BASELINE"), rows_by_policy.get("CLOUD_ONLY")),
+        },
+    }
     generated_files = [
         RAW_ROWS_JSON,
         RAW_ROWS_CSV,
@@ -152,6 +169,7 @@ def _execution_manifest(report: Feature082Report, *, config: EvaluationConfig, r
         "claim_boundary": list(report.claim_boundary),
         "scope_proof": list(report.scope_proof),
         "compatibility_mode_policies": compatibility_policies,
+        "identity_proof": identity_proof,
         "policy_coverage": [row.to_dict() for row in report.policy_coverage],
         "scenario_coverage": [row.to_dict() for row in report.scenario_coverage],
         "metric_coverage": [row.to_dict() for row in report.metric_coverage],
@@ -160,6 +178,46 @@ def _execution_manifest(report: Feature082Report, *, config: EvaluationConfig, r
         "passed": report.passed,
         "readiness_level": report.readiness_level,
     }
+
+
+def _metric_rows_differ(left: Any, right: Any) -> bool:
+    if left is None or right is None:
+        return False
+    comparable_fields = (
+        "completed_count",
+        "dropped_timeout_count",
+        "dropped_unavailable_count",
+        "deadline_violation_count",
+        "illegal_action_rejection_count",
+        "average_delay",
+        "average_reward",
+        "total_reward",
+        "completion_rate",
+        "timeout_drop_rate",
+        "unavailable_drop_rate",
+        "deadline_violation_rate",
+        "throughput",
+        "queue_stability_score",
+    )
+    return any(getattr(left, field) != getattr(right, field) for field in comparable_fields)
+
+
+def _metric_differences(left: Any, right: Any) -> list[str]:
+    if left is None or right is None:
+        return []
+    fields = (
+        "average_delay",
+        "average_reward",
+        "total_reward",
+        "completion_rate",
+        "timeout_drop_rate",
+        "unavailable_drop_rate",
+        "deadline_violation_rate",
+        "throughput",
+        "queue_stability_score",
+        "illegal_action_rejection_count",
+    )
+    return [field for field in fields if getattr(left, field) != getattr(right, field)]
 
 
 def generate_hoodie_runtime_evaluation_artifacts(output_dir: Path | None = None) -> tuple[Feature082Report, dict[str, Path], dict[str, Any]]:

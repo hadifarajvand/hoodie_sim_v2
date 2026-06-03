@@ -54,9 +54,22 @@ class HoodieRuntimeEvaluationRunnerArtifactTests(unittest.TestCase):
             self.assertEqual(manifest_payload["policy_count"], 5)
             self.assertEqual(manifest_payload["scenario_count"], 7)
             self.assertEqual(manifest_payload["metric_count"], 10)
-            self.assertEqual(manifest_payload["compatibility_mode_policies"], ["HOODIE_PROPOSED", "ORIGINAL_HOODIE_BASELINE"])
+            self.assertEqual(manifest_payload["compatibility_mode_policies"], [])
+            self.assertTrue(manifest_payload["identity_proof"]["proposed_vs_local"]["different"])
+            self.assertTrue(manifest_payload["identity_proof"]["baseline_vs_cloud"]["different"])
+            aggregate_rows = {row["policy"]: row for row in aggregate_payload["rows"]}
+            self.assertNotEqual(
+                aggregate_rows["HOODIE_PROPOSED"]["total_reward"],
+                aggregate_rows["LOCAL_ONLY"]["total_reward"],
+            )
+            self.assertNotEqual(
+                aggregate_rows["ORIGINAL_HOODIE_BASELINE"]["total_reward"],
+                aggregate_rows["CLOUD_ONLY"]["total_reward"],
+            )
             self.assertEqual(report_payload["status"], "hoodie_runtime_evaluation_ready")
             self.assertTrue(report_payload["passed"])
+            self.assertEqual(report_payload["readiness_level"], "fully_implemented")
+            self.assertFalse(report_payload["compatibility_mode_used"])
             self.assertEqual(report.status, "hoodie_runtime_evaluation_ready")
             self.assertTrue(report.passed)
 
