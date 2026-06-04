@@ -1,0 +1,203 @@
+{
+  "count": 22,
+  "rows": [
+    {
+      "code_location": "resources/papers/hoodie/ocr/merged.txt; src/analysis/hoodie_runtime_evaluation_runner/config.py; src/analysis/hoodie_runtime_evaluation_runner/scenarios.py",
+      "mechanism_id": "three_tier_topology",
+      "paper_expectation": "Task source / IoT layer, edge agents, and cloud are represented as a three-tier CEC topology.",
+      "required_fix_or_claim_boundary": "Document the deterministic topology abstraction; no new simulator topology is claimed.",
+      "simulator_behavior": "The runtime layer uses deterministic topology profiles and scenario fixtures to represent the source, edge, and cloud tiers.",
+      "status": "approximate_documented",
+      "test_artifact_evidence": "tests/unit/test_hoodie_runtime_evaluation_runner_scenarios.py; artifacts/feature_085_full_audit/raw_rows.json"
+    },
+    {
+      "code_location": "src/analysis/hoodie_runtime_evaluation_runner/config.py; src/analysis/hoodie_runtime_evaluation_runner/model.py",
+      "mechanism_id": "edge_agent_set_cloud_node",
+      "paper_expectation": "Multiple edge agents plus one cloud node exist as active runtime participants.",
+      "required_fix_or_claim_boundary": "Treat the active policy set and scenario contexts as the evidence boundary, not as a full distributed runtime simulator.",
+      "simulator_behavior": "The runtime policy set and scenario contexts model multiple edge agents plus a cloud destination.",
+      "status": "approximate_documented",
+      "test_artifact_evidence": "tests/unit/test_hoodie_runtime_evaluation_runner_policies.py; artifacts/feature_085_full_audit/feature_085_audit_report.json"
+    },
+    {
+      "code_location": "src/analysis/hoodie_runtime_evaluation_runner/policies.py; src/analysis/hoodie_runtime_evaluation_runner/scenarios.py",
+      "mechanism_id": "horizontal_connectivity_legality",
+      "paper_expectation": "Horizontal EA-to-EA destinations must be legal only when topology permits them.",
+      "required_fix_or_claim_boundary": "The legality model is documented through candidate/action legality checks.",
+      "simulator_behavior": "The policy layer distinguishes legal horizontal destinations from illegal attempts and rejects invalid horizontal choices.",
+      "status": "approximate_documented",
+      "test_artifact_evidence": "tests/unit/test_hoodie_runtime_evaluation_runner_policies.py::test_ho_prefers_horizontal_when_legal_destination_exists; tests/integration/test_hoodie_runtime_evaluation_runner_report.py"
+    },
+    {
+      "code_location": "src/analysis/hoodie_runtime_evaluation_runner/policies.py; src/analysis/hoodie_runtime_evaluation_runner/scenarios.py",
+      "mechanism_id": "vertical_ea_cloud_path",
+      "paper_expectation": "Vertical offload reaches the cloud path and uses cloud-side execution capacity.",
+      "required_fix_or_claim_boundary": "The cloud path is evidenced by scenario traces, not by a separate cloud simulator service.",
+      "simulator_behavior": "The runtime scenarios include cloud-vertical fallback and vertical offload decisions with cloud destinations.",
+      "status": "approximate_documented",
+      "test_artifact_evidence": "tests/unit/test_hoodie_runtime_evaluation_runner_policies.py::test_vo_always_vertical; artifacts/feature_085_full_audit/raw_rows.json"
+    },
+    {
+      "code_location": "src/analysis/hoodie_runtime_evaluation_runner/model.py; src/analysis/hoodie_runtime_evaluation_runner/scenarios.py",
+      "mechanism_id": "task_model",
+      "paper_expectation": "Tasks carry ID, data size, CPU demand/processing density, and deadline/timeout semantics.",
+      "required_fix_or_claim_boundary": "The task model is reconstructed through deterministic scenario fixtures and runtime rows.",
+      "simulator_behavior": "TaskBlueprint and scenario rows retain task_id, workload, deadline pressure, and arrival/completion timing fields.",
+      "status": "approximate_documented",
+      "test_artifact_evidence": "artifacts/feature_085_full_audit/raw_rows.json; tests/unit/test_hoodie_runtime_evaluation_runner_scenarios.py"
+    },
+    {
+      "code_location": "src/analysis/hoodie_runtime_evaluation_runner/config.py; src/analysis/hoodie_runtime_evaluation_runner/scenarios.py",
+      "mechanism_id": "workload_arrival_representation",
+      "paper_expectation": "Workload arrivals are represented over time or documented as deterministic approximations.",
+      "required_fix_or_claim_boundary": "Document the deterministic workload approximation; do not claim stochastic arrival fidelity.",
+      "simulator_behavior": "Scenario definitions encode workload and deadline-pressure profiles deterministically with seeds.",
+      "status": "approximate_documented",
+      "test_artifact_evidence": "tests/unit/test_hoodie_runtime_evaluation_runner_scenarios.py; artifacts/feature_085_full_audit/execution_manifest.json"
+    },
+    {
+      "code_location": "src/analysis/hoodie_runtime_evaluation_runner/model.py; src/analysis/hoodie_runtime_evaluation_runner/runner.py",
+      "mechanism_id": "private_queue_behavior",
+      "paper_expectation": "Local/private queue behavior contributes waiting and completion time before local execution finishes.",
+      "required_fix_or_claim_boundary": "This is an evidence-layer queue approximation, not a claim that the full FIFO queue simulator exists.",
+      "simulator_behavior": "Queue-length observations and delay traces are captured in the runtime rows, but the queue is represented through deterministic evidence rather than a standalone queue engine.",
+      "status": "approximate_documented",
+      "test_artifact_evidence": "artifacts/feature_085_full_audit/raw_rows.json; tests/unit/test_hoodie_runtime_evaluation_runner_metrics.py"
+    },
+    {
+      "code_location": "src/policies/mleo.py; src/analysis/hoodie_runtime_evaluation_runner/policies.py; src/analysis/hoodie_runtime_evaluation_runner/model.py",
+      "mechanism_id": "offloading_queue_behavior",
+      "paper_expectation": "Offloaded tasks use offloading queues and transmission-time evidence before destination execution.",
+      "required_fix_or_claim_boundary": "The evidence is candidate-based, not a full queue-simulation replay.",
+      "simulator_behavior": "Horizontal and vertical candidate traces expose delay components and queue-length snapshots for offloaded actions.",
+      "status": "approximate_documented",
+      "test_artifact_evidence": "tests/unit/test_mleo_latency_evidence.py; artifacts/feature_085_full_audit/raw_rows.json"
+    },
+    {
+      "code_location": "src/analysis/hoodie_runtime_evaluation_runner/scenarios.py; src/analysis/hoodie_runtime_evaluation_runner/runner.py",
+      "mechanism_id": "public_cloud_queue_behavior",
+      "paper_expectation": "Public/cloud queues receive vertically offloaded tasks and expose cloud-side waiting/execution behavior.",
+      "required_fix_or_claim_boundary": "The cloud queue is an audit abstraction and not a dedicated runtime queue class.",
+      "simulator_behavior": "The cloud path appears in the runtime outcomes and scenario traces; public/cloud queue behavior is documented through output timing rather than a separate queue model.",
+      "status": "approximate_documented",
+      "test_artifact_evidence": "artifacts/feature_085_full_audit/raw_rows.json; artifacts/feature_085_full_audit/feature_085_audit_report.md"
+    },
+    {
+      "code_location": "src/analysis/hoodie_runtime_evaluation_runner/model.py; src/analysis/hoodie_runtime_evaluation_runner/runner.py",
+      "mechanism_id": "local_execution_delay",
+      "paper_expectation": "Local execution delay contributes to completion time.",
+      "required_fix_or_claim_boundary": "Local delay is evidenced in runtime rows, not by a standalone physical simulator.",
+      "simulator_behavior": "Local actions surface delay values and completion times in raw rows and aggregate metrics.",
+      "status": "approximate_documented",
+      "test_artifact_evidence": "artifacts/feature_085_full_audit/raw_rows.json; tests/unit/test_hoodie_runtime_evaluation_runner_artifacts.py"
+    },
+    {
+      "code_location": "src/policies/mleo.py; src/analysis/hoodie_runtime_evaluation_runner/policies.py",
+      "mechanism_id": "horizontal_transmission_delay",
+      "paper_expectation": "Horizontal offload delay includes transmission delay between edge agents.",
+      "required_fix_or_claim_boundary": "No additional repair required for the evidence layer.",
+      "simulator_behavior": "MLEO candidate traces expose horizontal transmission_delay and total_delay components.",
+      "status": "exact",
+      "test_artifact_evidence": "tests/unit/test_mleo_latency_evidence.py::test_mleo_selects_minimum_total_delay_not_minimum_queue_length"
+    },
+    {
+      "code_location": "src/policies/mleo.py; src/analysis/hoodie_runtime_evaluation_runner/policies.py",
+      "mechanism_id": "vertical_transmission_delay",
+      "paper_expectation": "Vertical offload delay includes EA-to-cloud transmission delay.",
+      "required_fix_or_claim_boundary": "No additional repair required for the evidence layer.",
+      "simulator_behavior": "Vertical candidates in the MLEO and policy traces expose transmission_delay and total_delay components.",
+      "status": "exact",
+      "test_artifact_evidence": "tests/unit/test_mleo_latency_evidence.py; artifacts/feature_085_full_audit/raw_rows.json"
+    },
+    {
+      "code_location": "src/policies/mleo.py; src/analysis/hoodie_runtime_evaluation_runner/policies.py; src/analysis/hoodie_runtime_evaluation_runner/model.py",
+      "mechanism_id": "remote_cloud_execution_delay",
+      "paper_expectation": "Remote/cloud execution delay contributes to total delay for vertical offload.",
+      "required_fix_or_claim_boundary": "The remote compute term is evidence-backed, not a separate cloud runtime service.",
+      "simulator_behavior": "Cloud-bearing candidates carry compute_delay and total_delay evidence in the MLEO trace and runtime rows.",
+      "status": "approximate_documented",
+      "test_artifact_evidence": "tests/unit/test_mleo_latency_evidence.py; artifacts/feature_085_full_audit/raw_rows.json"
+    },
+    {
+      "code_location": "src/analysis/hoodie_runtime_evaluation_runner/model.py; src/analysis/hoodie_runtime_evaluation_runner/runner.py",
+      "mechanism_id": "waiting_time_completion_time",
+      "paper_expectation": "Waiting time and completion time are explicit parts of task latency accounting.",
+      "required_fix_or_claim_boundary": "Completion timing is represented in the audit layer, not as a full event simulator.",
+      "simulator_behavior": "Runtime rows capture arrival_time, completion_time, delay, and queue_length_observations.",
+      "status": "approximate_documented",
+      "test_artifact_evidence": "artifacts/feature_085_full_audit/raw_rows.json; artifacts/feature_085_full_audit/aggregate_by_policy.csv"
+    },
+    {
+      "code_location": "src/analysis/hoodie_runtime_evaluation_runner/model.py; src/analysis/hoodie_runtime_evaluation_runner/metrics.py",
+      "mechanism_id": "timeout_drop_unavailability_behavior",
+      "paper_expectation": "Timeout, drop, and unavailability are reflected in output outcomes.",
+      "required_fix_or_claim_boundary": "The audit tracks these outcomes explicitly; it does not claim a full event-level simulator.",
+      "simulator_behavior": "Runtime rows and aggregate metrics include dropped_timeout, dropped_unavailable, and illegal_action_rejected flags.",
+      "status": "approximate_documented",
+      "test_artifact_evidence": "artifacts/feature_085_full_audit/raw_rows.json; tests/unit/test_hoodie_runtime_evaluation_runner_metrics.py"
+    },
+    {
+      "code_location": "src/analysis/hoodie_runtime_evaluation_runner/policies.py; src/analysis/hoodie_runtime_evaluation_runner/config.py",
+      "mechanism_id": "hybrid_action_model",
+      "paper_expectation": "Local, horizontal, and vertical actions exist as a hybrid offloading action space.",
+      "required_fix_or_claim_boundary": "No repair required; the hybrid action contract is already active.",
+      "simulator_behavior": "Active policies expose local, horizontal, and vertical families and the runtime policy set is the paper set.",
+      "status": "exact",
+      "test_artifact_evidence": "tests/unit/test_hoodie_runtime_evaluation_runner_policies.py::test_required_policy_set_matches_feature_085"
+    },
+    {
+      "code_location": "src/analysis/hoodie_runtime_evaluation_runner/policies.py; src/policies/mleo.py",
+      "mechanism_id": "two_stage_decision_boundary",
+      "paper_expectation": "Local-vs-offload and destination selection are distinct or are clearly documented when collapsed.",
+      "required_fix_or_claim_boundary": "Document the single-stage runtime approximation instead of pretending the training-stage boundary is reproduced.",
+      "simulator_behavior": "The runtime policy adapters operate as a documented single-stage approximation over legal candidate actions.",
+      "status": "approximate_documented",
+      "test_artifact_evidence": "tests/unit/test_hoodie_runtime_evaluation_runner_policies.py; tests/unit/test_mleo_latency_evidence.py"
+    },
+    {
+      "code_location": "specs/086-mleo-latency-evidence-test/spec.md; specs/086-mleo-latency-evidence-test/quickstart.md; src/analysis/hoodie_runtime_evaluation_runner/report.py",
+      "mechanism_id": "hoodie_claim_boundary",
+      "paper_expectation": "HOODIE remains the proposed method boundary and is not renamed or expanded into a thesis/DCQ method.",
+      "required_fix_or_claim_boundary": "No thesis/DCQ/custom-method claim is allowed.",
+      "simulator_behavior": "Feature 085/086 artifacts keep HOODIE as the proposed method boundary and do not introduce an alternate method claim.",
+      "status": "exact",
+      "test_artifact_evidence": "tests/integration/test_hoodie_runtime_evaluation_runner_report.py; artifacts/feature_085_full_audit/feature_085_audit_report.md"
+    },
+    {
+      "code_location": "src/analysis/hoodie_runtime_evaluation_runner/config.py; src/analysis/hoodie_runtime_evaluation_runner/policies.py",
+      "mechanism_id": "official_paper_baselines",
+      "paper_expectation": "Only RO, FLC, VO, HO, BCO, and MLEO are active baselines.",
+      "required_fix_or_claim_boundary": "No legacy active labels remain in the 086 outputs.",
+      "simulator_behavior": "The runtime evaluation policy registry exposes exactly the paper baselines plus HOODIE.",
+      "status": "exact",
+      "test_artifact_evidence": "tests/unit/test_hoodie_runtime_evaluation_runner_policies.py::test_required_policy_set_matches_feature_085"
+    },
+    {
+      "code_location": "src/policies/mleo.py; src/analysis/hoodie_runtime_evaluation_runner/policies.py",
+      "mechanism_id": "mleo_min_total_latency",
+      "paper_expectation": "MLEO selects the legal candidate with minimum estimated total latency, not queue length only.",
+      "required_fix_or_claim_boundary": "No repair required for the evidence layer; keep the numeric proof.",
+      "simulator_behavior": "The candidate trace test proves MLEO chooses the minimum total_delay candidate when queue-length minimum is different.",
+      "status": "exact",
+      "test_artifact_evidence": "tests/unit/test_mleo_latency_evidence.py::test_mleo_selects_minimum_total_delay_not_minimum_queue_length"
+    },
+    {
+      "code_location": "src/analysis/hoodie_runtime_evaluation_runner/metrics.py; src/analysis/hoodie_runtime_evaluation_runner/report.py; resources/papers/hoodie/ocr/merged.txt",
+      "mechanism_id": "reward_cost_boundary",
+      "paper_expectation": "Reward/cost equations remain inside the paper’s comparison boundary and are not overclaimed.",
+      "required_fix_or_claim_boundary": "Do not claim a trained end-to-end reward model; keep the boundary conservative.",
+      "simulator_behavior": "The runtime audit reports reward, delay, and drop outcomes with explicit claim-boundary text.",
+      "status": "approximate_documented",
+      "test_artifact_evidence": "tests/unit/test_hoodie_runtime_evaluation_runner_metrics.py; artifacts/feature_085_full_audit/feature_085_audit_report.md"
+    },
+    {
+      "code_location": "specs/086-mleo-latency-evidence-test/metric-readiness-matrix.md; src/analysis/hoodie_system_model_fidelity_gate/report.py",
+      "mechanism_id": "output_metrics_readiness",
+      "paper_expectation": "Metrics are classified so that paper-headline comparison and repository diagnostics are not conflated.",
+      "required_fix_or_claim_boundary": "Do not promote repository diagnostics to paper headline metrics.",
+      "simulator_behavior": "The metric readiness matrix classifies primary, secondary, and diagnostic metrics explicitly.",
+      "status": "exact",
+      "test_artifact_evidence": "tests/unit/test_hoodie_system_model_fidelity_gate.py"
+    }
+  ]
+}

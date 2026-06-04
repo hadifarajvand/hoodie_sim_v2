@@ -1,0 +1,24 @@
+{
+  "differing_rows": 432,
+  "divergent_action_counts": {
+    "tight_deadline_pressure": {
+      "vertical->local": 216
+    },
+    "timeout_drop_case": {
+      "vertical->local": 216
+    }
+  },
+  "divergent_scenarios": [
+    "tight_deadline_pressure",
+    "timeout_drop_case"
+  ],
+  "identical_scenarios": [
+    "cloud_vertical_fallback",
+    "illegal_horizontal_destination_attempt",
+    "legal_horizontal_offload",
+    "light_load_no_deadline_pressure",
+    "mixed_local_horizontal_cloud_candidates"
+  ],
+  "matching_rows": 1080,
+  "source_artifact_dir": "artifacts/feature_085_full_audit"
+}

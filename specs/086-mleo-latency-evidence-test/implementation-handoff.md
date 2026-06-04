@@ -2,9 +2,7 @@
 
 ## Current State
 
-The latest implementation on this branch added valid MLEO latency evidence and HOODIE/MLEO tie documentation. That is useful and should be preserved.
-
-However, it does **not** complete Feature 086 as currently scoped. Feature 086 is now the HOODIE system-model fidelity gate before paper-output comparison.
+The current implementation on this branch preserves the valid MLEO latency evidence and HOODIE/MLEO tie documentation, and it now also generates the Feature 086 system-model fidelity gate artifacts and report.
 
 ## Completed Evidence To Preserve
 
@@ -15,17 +13,8 @@ However, it does **not** complete Feature 086 as currently scoped. Feature 086 i
 
 ## Still Required
 
-The next implementation pass must add the full system-model fidelity gate:
-
-1. Paper system-model extraction and code mapping.
-2. Mechanism coverage matrix.
-3. Metric readiness matrix.
-4. Scenario mechanism coverage artifact.
-5. Feature 086 artifact directory.
-6. Final readiness verdict:
-   - `system_model_fidelity_ready_for_output_comparison`, or
-   - `system_model_fidelity_blocked`.
+No additional implementation is required for the current gate pass. Preserve the evidence bundle and do not add thesis/DCQ/custom-method code.
 
 ## Do Not Repeat
 
-Do not spend another pass only renaming MQO or only testing MLEO. That work is already done. The next pass must close the full Chapter/System-Model gate.
+Do not spend another pass only renaming MQO or only testing MLEO. That work is already done. Keep the gate focused on system-model evidence and claim boundaries.

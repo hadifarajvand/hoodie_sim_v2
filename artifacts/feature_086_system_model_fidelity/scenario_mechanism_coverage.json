@@ -1,0 +1,89 @@
+{
+  "count": 7,
+  "rows": [
+    {
+      "deadline_pressure": "relaxed",
+      "evidence": "Runtime rows include low-load local and offload decisions with completed-delay evidence.",
+      "exercised_mechanisms": [
+        "local_execution_delay",
+        "hybrid_action_model",
+        "output_metrics_readiness"
+      ],
+      "scenario": "light_load_no_deadline_pressure",
+      "status": "exact",
+      "workload": "low"
+    },
+    {
+      "deadline_pressure": "tight",
+      "evidence": "This is the divergent HOODIE/MLEO scenario with explicit delay-vs-drop behavior.",
+      "exercised_mechanisms": [
+        "timeout_drop_unavailability_behavior",
+        "mleo_min_total_latency",
+        "output_metrics_readiness"
+      ],
+      "scenario": "tight_deadline_pressure",
+      "status": "exact",
+      "workload": "high"
+    },
+    {
+      "deadline_pressure": "moderate",
+      "evidence": "Horizontal offload is legal and exercised in runtime rows and policy tests.",
+      "exercised_mechanisms": [
+        "horizontal_connectivity_legality",
+        "horizontal_transmission_delay",
+        "hybrid_action_model"
+      ],
+      "scenario": "legal_horizontal_offload",
+      "status": "exact",
+      "workload": "medium"
+    },
+    {
+      "deadline_pressure": "moderate",
+      "evidence": "Illegal horizontal destination attempts are rejected in policy traces.",
+      "exercised_mechanisms": [
+        "horizontal_connectivity_legality",
+        "timeout_drop_unavailability_behavior",
+        "hybrid_action_model"
+      ],
+      "scenario": "illegal_horizontal_destination_attempt",
+      "status": "exact",
+      "workload": "medium"
+    },
+    {
+      "deadline_pressure": "tight",
+      "evidence": "Cloud fallback exercises the vertical/cloud path and cloud delay components.",
+      "exercised_mechanisms": [
+        "vertical_ea_cloud_path",
+        "vertical_transmission_delay",
+        "remote_cloud_execution_delay"
+      ],
+      "scenario": "cloud_vertical_fallback",
+      "status": "exact",
+      "workload": "high"
+    },
+    {
+      "deadline_pressure": "tight",
+      "evidence": "Timeout/drop behavior is exercised and the HOODIE/MLEO divergence is documented here.",
+      "exercised_mechanisms": [
+        "timeout_drop_unavailability_behavior",
+        "waiting_time_completion_time",
+        "mleo_min_total_latency"
+      ],
+      "scenario": "timeout_drop_case",
+      "status": "exact",
+      "workload": "high"
+    },
+    {
+      "deadline_pressure": "moderate",
+      "evidence": "Mixed candidate sets exercise local, horizontal, and vertical candidate selection.",
+      "exercised_mechanisms": [
+        "hybrid_action_model",
+        "two_stage_decision_boundary",
+        "official_paper_baselines"
+      ],
+      "scenario": "mixed_local_horizontal_cloud_candidates",
+      "status": "exact",
+      "workload": "medium"
+    }
+  ]
+}

@@ -1,0 +1,82 @@
+{
+  "count": 11,
+  "rows": [
+    {
+      "classification": "paper_primary_metric",
+      "evidence": "paper OCR defines average delay / completion-delay comparison and runtime rows expose completion time and delay.",
+      "metric": "task_completion_delay",
+      "paper_use": "headline_paper-comparison metric",
+      "status": "ready"
+    },
+    {
+      "classification": "paper_primary_metric",
+      "evidence": "paper OCR compares drop ratio and runtime rows expose timeout/drop/unavailability outcomes.",
+      "metric": "task_drop_ratio",
+      "paper_use": "headline_paper-comparison metric",
+      "status": "ready"
+    },
+    {
+      "classification": "paper_secondary_or_derived_metric",
+      "evidence": "Derived from completed and dropped rows in the runtime evaluation bundle.",
+      "metric": "completion_rate",
+      "paper_use": "derived reliability metric for supporting analysis",
+      "status": "ready"
+    },
+    {
+      "classification": "repository_diagnostic_metric",
+      "evidence": "Useful for simulator validation; do not present as a paper headline unless separately justified.",
+      "metric": "timeout_drop_rate",
+      "paper_use": "runtime diagnostic; not a paper headline metric",
+      "status": "diagnostic_only"
+    },
+    {
+      "classification": "repository_diagnostic_metric",
+      "evidence": "Tracks availability failures as a simulator diagnostic.",
+      "metric": "unavailable_drop_rate",
+      "paper_use": "runtime diagnostic; not a paper headline metric",
+      "status": "diagnostic_only"
+    },
+    {
+      "classification": "repository_diagnostic_metric",
+      "evidence": "Tracks deadline misses as a validation aid, not as a headline paper metric.",
+      "metric": "deadline_violation_rate",
+      "paper_use": "runtime diagnostic; not a paper headline metric",
+      "status": "diagnostic_only"
+    },
+    {
+      "classification": "paper_secondary_or_repository_metric",
+      "evidence": "Reward output exists in runtime rows but the audit does not claim a full training-loop reproduction.",
+      "metric": "average_reward",
+      "paper_use": "supporting optimization metric with an explicit claim boundary",
+      "status": "ready_with_boundary"
+    },
+    {
+      "classification": "paper_secondary_or_repository_metric",
+      "evidence": "Aggregate reward is exposed for analysis and marked as a supporting metric only.",
+      "metric": "total_reward",
+      "paper_use": "supporting optimization metric with an explicit claim boundary",
+      "status": "ready_with_boundary"
+    },
+    {
+      "classification": "paper_secondary_or_repository_metric",
+      "evidence": "Throughput is retained as a secondary comparison metric, not a headline one.",
+      "metric": "throughput",
+      "paper_use": "supporting system-throughput metric with an explicit claim boundary",
+      "status": "ready_with_boundary"
+    },
+    {
+      "classification": "repository_diagnostic_metric",
+      "evidence": "Queue-stability score is an audit helper, not a paper metric.",
+      "metric": "queue_stability_score",
+      "paper_use": "internal diagnostic only",
+      "status": "diagnostic_only"
+    },
+    {
+      "classification": "repository_diagnostic_metric",
+      "evidence": "Counts illegal-action rejections to validate legality handling.",
+      "metric": "illegal_action_rejection_count",
+      "paper_use": "legal-action diagnostic only",
+      "status": "diagnostic_only"
+    }
+  ]
+}

@@ -13,80 +13,80 @@ The branch already contains a successful MLEO latency-evidence implementation. D
 
 ## B. Paper System-Model Extraction
 
-- [ ] B001 Read `resources/papers/hoodie/ocr/merged.txt` for Chapter/System-Model obligations.
-- [ ] B002 Use `resources/papers/hoodie/original/HOODIE_paper.pdf` only where OCR is ambiguous.
-- [ ] B003 Extract topology obligations: task-source/IoT/MD layer, Edge Agents, Cloud.
-- [ ] B004 Extract connectivity obligations: horizontal EA-to-EA legality and vertical EA-to-cloud path.
-- [ ] B005 Extract task-model obligations: ID, data/input size, CPU demand or processing density, timeout/deadline, arrivals/workload.
-- [ ] B006 Extract queue obligations: private/local, offloading, public/cloud.
-- [ ] B007 Extract delay obligations: local execution, horizontal transmission, vertical transmission, remote/cloud execution, waiting, completion.
-- [ ] B008 Extract drop obligations: timeout, deadline violation, unavailability, illegal action handling if represented.
-- [ ] B009 Extract action/decision obligations: local, horizontal, vertical, two-stage boundary or runtime approximation.
-- [ ] B010 Extract policy obligations: HOODIE, RO, FLC, VO, HO, BCO, MLEO.
-- [ ] B011 Extract reward/cost and output metric obligations.
+- [x] B001 Read `resources/papers/hoodie/ocr/merged.txt` for Chapter/System-Model obligations.
+- [x] B002 Use `resources/papers/hoodie/original/HOODIE_paper.pdf` only where OCR is ambiguous.
+- [x] B003 Extract topology obligations: task-source/IoT/MD layer, Edge Agents, Cloud.
+- [x] B004 Extract connectivity obligations: horizontal EA-to-EA legality and vertical EA-to-cloud path.
+- [x] B005 Extract task-model obligations: ID, data/input size, CPU demand or processing density, timeout/deadline, arrivals/workload.
+- [x] B006 Extract queue obligations: private/local, offloading, public/cloud.
+- [x] B007 Extract delay obligations: local execution, horizontal transmission, vertical transmission, remote/cloud execution, waiting, completion.
+- [x] B008 Extract drop obligations: timeout, deadline violation, unavailability, illegal action handling if represented.
+- [x] B009 Extract action/decision obligations: local, horizontal, vertical, two-stage boundary or runtime approximation.
+- [x] B010 Extract policy obligations: HOODIE, RO, FLC, VO, HO, BCO, MLEO.
+- [x] B011 Extract reward/cost and output metric obligations.
 
 ## C. Code Mapping and Gap Classification
 
-- [ ] C001 Map each paper mechanism to code in `src/analysis/hoodie_runtime_evaluation_runner/`, `src/analysis/hoodie_proposed_method/`, `src/policies/`, tests, and artifacts.
-- [ ] C002 Update `system-model-gap-matrix.md` with paper expectation, simulator behavior, code/test/artifact evidence, status, and required fix.
-- [ ] C003 Use only statuses: `exact`, `approximate_documented`, `missing`, `wrong`, `not_exercised`.
-- [ ] C004 Treat `missing`, `wrong`, and `not_exercised` as blocking unless explicitly scoped out with evidence.
-- [ ] C005 Convert generic placeholders in matrices into concrete evidence rows.
+- [x] C001 Map each paper mechanism to code in `src/analysis/hoodie_runtime_evaluation_runner/`, `src/analysis/hoodie_proposed_method/`, `src/policies/`, tests, and artifacts.
+- [x] C002 Update `system-model-gap-matrix.md` with paper expectation, simulator behavior, code/test/artifact evidence, status, and required fix.
+- [x] C003 Use only statuses: `exact`, `approximate_documented`, `missing`, `wrong`, `not_exercised`.
+- [x] C004 Treat `missing`, `wrong`, and `not_exercised` as blocking unless explicitly scoped out with evidence.
+- [x] C005 Convert generic placeholders in matrices into concrete evidence rows.
 
 ## D. Gap Repair and Evidence
 
-- [ ] D001 Make horizontal topology/adjacency/legality explicit in config/model/scenarios or document existing representation with tests.
-- [ ] D002 Document deterministic workload approximation if stochastic arrivals are not implemented.
-- [ ] D003 Document LSTM/forecast as interface-only unless trained forecast behavior is actually implemented.
-- [ ] D004 Add evidence for local/private queue timing.
-- [ ] D005 Add evidence for horizontal offloading timing.
-- [ ] D006 Add evidence for vertical/cloud timing.
-- [ ] D007 Add evidence for public/cloud queue behavior or document approximation.
-- [ ] D008 Add evidence for timeout/drop/deadline behavior.
-- [ ] D009 Add evidence for illegal horizontal destination rejection.
-- [ ] D010 Add evidence for reward/cost formula boundary.
+- [x] D001 Make horizontal topology/adjacency/legality explicit in config/model/scenarios or document existing representation with tests.
+- [x] D002 Document deterministic workload approximation if stochastic arrivals are not implemented.
+- [x] D003 Document LSTM/forecast as interface-only unless trained forecast behavior is actually implemented.
+- [x] D004 Add evidence for local/private queue timing.
+- [x] D005 Add evidence for horizontal offloading timing.
+- [x] D006 Add evidence for vertical/cloud timing.
+- [x] D007 Add evidence for public/cloud queue behavior or document approximation.
+- [x] D008 Add evidence for timeout/drop/deadline behavior.
+- [x] D009 Add evidence for illegal horizontal destination rejection.
+- [x] D010 Add evidence for reward/cost formula boundary.
 
 ## E. Tests
 
-- [ ] E001 Add/verify active policy exact-set test: `HOODIE`, `RO`, `FLC`, `VO`, `HO`, `BCO`, `MLEO`.
-- [ ] E002 Add/verify legacy label absence test for active outputs: `MQO`, `Minimum Queue Offloader`, `ORIGINAL_HOODIE_BASELINE`, `HOODIE_PROPOSED`.
-- [ ] E003 Add/verify local execution path test.
-- [ ] E004 Add/verify horizontal offload path and legality test.
-- [ ] E005 Add/verify vertical/cloud path test.
-- [ ] E006 Add/verify private/offloading/public queue evidence test or validation artifact test.
-- [ ] E007 Add/verify timeout/drop behavior test.
-- [ ] E008 Add/verify Feature 086 artifact schema/readiness test.
+- [x] E001 Add/verify active policy exact-set test: `HOODIE`, `RO`, `FLC`, `VO`, `HO`, `BCO`, `MLEO`.
+- [x] E002 Add/verify legacy label absence test for active outputs: `MQO`, `Minimum Queue Offloader`, `ORIGINAL_HOODIE_BASELINE`, `HOODIE_PROPOSED`.
+- [x] E003 Add/verify local execution path test.
+- [x] E004 Add/verify horizontal offload path and legality test.
+- [x] E005 Add/verify vertical/cloud path test.
+- [x] E006 Add/verify private/offloading/public queue evidence test or validation artifact test.
+- [x] E007 Add/verify timeout/drop behavior test.
+- [x] E008 Add/verify Feature 086 artifact schema/readiness test.
 
 ## F. Metric Readiness
 
-- [ ] F001 Update `metric-readiness-matrix.md` with concrete paper/repository classification.
-- [ ] F002 Mark `task_completion_delay` as paper primary candidate only if denominator/filtering is mapped.
-- [ ] F003 Mark `task_drop_ratio` as paper primary candidate only if denominator/drop semantics are mapped.
-- [ ] F004 Mark `completion_rate` as derived/reliability metric.
-- [ ] F005 Confirm or limit reward metrics according to paper formula evidence.
-- [ ] F006 Confirm or limit throughput according to paper output evidence.
-- [ ] F007 Keep `queue_stability_score` and `illegal_action_rejection_count` as repository diagnostics unless paper defines them.
+- [x] F001 Update `metric-readiness-matrix.md` with concrete paper/repository classification.
+- [x] F002 Mark `task_completion_delay` as paper primary candidate only if denominator/filtering is mapped.
+- [x] F003 Mark `task_drop_ratio` as paper primary candidate only if denominator/drop semantics are mapped.
+- [x] F004 Mark `completion_rate` as derived/reliability metric.
+- [x] F005 Confirm or limit reward metrics according to paper formula evidence.
+- [x] F006 Confirm or limit throughput according to paper output evidence.
+- [x] F007 Keep `queue_stability_score` and `illegal_action_rejection_count` as repository diagnostics unless paper defines them.
 
 ## G. Feature 086 Artifacts
 
-- [ ] G001 Generate `artifacts/feature_086_system_model_fidelity/mechanism_coverage.json`.
-- [ ] G002 Generate `artifacts/feature_086_system_model_fidelity/mechanism_coverage.csv`.
-- [ ] G003 Generate `artifacts/feature_086_system_model_fidelity/system_model_gap_matrix.json`.
-- [ ] G004 Generate `artifacts/feature_086_system_model_fidelity/system_model_gap_matrix.md`.
-- [ ] G005 Generate `artifacts/feature_086_system_model_fidelity/metric_readiness_matrix.json`.
-- [ ] G006 Generate `artifacts/feature_086_system_model_fidelity/metric_readiness_matrix.md`.
-- [ ] G007 Generate `artifacts/feature_086_system_model_fidelity/scenario_mechanism_coverage.json`.
-- [ ] G008 Generate or copy forward `artifacts/feature_086_system_model_fidelity/hoodie_mleo_tie_evidence.json`.
-- [ ] G009 Generate `artifacts/feature_086_system_model_fidelity/feature_086_system_model_fidelity_report.json`.
-- [ ] G010 Generate `artifacts/feature_086_system_model_fidelity/feature_086_system_model_fidelity_report.md`.
+- [x] G001 Generate `artifacts/feature_086_system_model_fidelity/mechanism_coverage.json`.
+- [x] G002 Generate `artifacts/feature_086_system_model_fidelity/mechanism_coverage.csv`.
+- [x] G003 Generate `artifacts/feature_086_system_model_fidelity/system_model_gap_matrix.json`.
+- [x] G004 Generate `artifacts/feature_086_system_model_fidelity/system_model_gap_matrix.md`.
+- [x] G005 Generate `artifacts/feature_086_system_model_fidelity/metric_readiness_matrix.json`.
+- [x] G006 Generate `artifacts/feature_086_system_model_fidelity/metric_readiness_matrix.md`.
+- [x] G007 Generate `artifacts/feature_086_system_model_fidelity/scenario_mechanism_coverage.json`.
+- [x] G008 Generate or copy forward `artifacts/feature_086_system_model_fidelity/hoodie_mleo_tie_evidence.json`.
+- [x] G009 Generate `artifacts/feature_086_system_model_fidelity/feature_086_system_model_fidelity_report.json`.
+- [x] G010 Generate `artifacts/feature_086_system_model_fidelity/feature_086_system_model_fidelity_report.md`.
 
 ## H. Final Validation
 
-- [ ] H001 Run `git diff --check`.
-- [ ] H002 Run runtime evaluation unit tests.
-- [ ] H003 Run MLEO-focused tests.
-- [ ] H004 Run runtime evaluation integration tests.
-- [ ] H005 Validate Feature 085 artifacts.
-- [ ] H006 Validate Feature 086 artifacts.
-- [ ] H007 Final Feature 086 report declares exactly one verdict: `system_model_fidelity_ready_for_output_comparison` or `system_model_fidelity_blocked`.
-- [ ] H008 Commit with `Implement Feature 086 HOODIE system model fidelity gate`.
+- [x] H001 Run `git diff --check`.
+- [x] H002 Run runtime evaluation unit tests.
+- [x] H003 Run MLEO-focused tests.
+- [x] H004 Run runtime evaluation integration tests.
+- [x] H005 Validate Feature 085 artifacts.
+- [x] H006 Validate Feature 086 artifacts.
+- [x] H007 Final Feature 086 report declares exactly one verdict: `system_model_fidelity_ready_for_output_comparison` or `system_model_fidelity_blocked`.
+- [x] H008 Commit with `Implement Feature 086 HOODIE system model fidelity gate`.

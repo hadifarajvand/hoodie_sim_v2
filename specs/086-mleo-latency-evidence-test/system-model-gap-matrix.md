@@ -2,6 +2,8 @@
 
 Status values: `exact`, `approximate_documented`, `missing`, `wrong`, `not_exercised`.
 
+This matrix mirrors the generated Feature 086 artifact bundle and records the current readiness verdict as `system_model_fidelity_ready_for_output_comparison`.
+
 | Mechanism | Expected Simulator Behavior | Code/Artifact Evidence | Status | Required Fix / Evidence |
 |---|---|---|---|---|
 | Three-tier topology | Represent task source/IoT or MD layer, edge agents, and cloud | runtime config/model/scenarios | approximate_documented | Verify explicit representation and document simplifications. |
@@ -28,8 +30,8 @@ Status values: `exact`, `approximate_documented`, `missing`, `wrong`, `not_exerc
 | Two-stage decision boundary | Local-vs-offload and destination selection represented or documented | proposed-method/runtime | approximate_documented | Document if runtime collapses into single action choice. |
 | HOODIE method | HOODIE is the only proposed method | Feature 080/085 runtime | approximate_documented | Preserve interface/training claim boundary. |
 | Baselines | RO, FLC, VO, HO, BCO, MLEO only | policy registry/artifacts | exact | Keep invalid-label tests. |
-| MLEO | Select minimum estimated total latency, not queue length | `src/policies/mleo.py` and adapter | not_exercised | Add numeric non-queue-only test. |
+| MLEO | Select minimum estimated total latency, not queue length | `src/policies/mleo.py` and adapter | exact | Numeric non-queue-only evidence exists and must remain passing. |
 | Reward/cost | Reward follows paper or documented approximation | reward/runtime/report | approximate_documented | Verify coefficients/sign/signature. |
-| Output metrics | Metrics classified for paper comparison or diagnostics | report/artifacts | approximate_documented | Add metric readiness matrix. |
+| Output metrics | Metrics classified for paper comparison or diagnostics | report/artifacts | exact | Metric readiness matrix exists and separates paper-comparison metrics from diagnostics. |
 | LSTM/forecast | Trained forecast only claimed if actually implemented | Feature 080 components | approximate_documented | Keep interface-only boundary unless trained implementation exists. |
 | Paper figures/results | Figure reproduction only claimed if generated from matching setup | artifacts/report | missing | Keep for later output-comparison phase unless implemented here. |

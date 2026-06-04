@@ -2,7 +2,7 @@
 
 ## Purpose
 
-Feature 086 is the blocking gate before moving from HOODIE system-model implementation to output comparison against the paper.
+Feature 086 is the gating audit before moving from HOODIE system-model implementation to output comparison against the paper. The current implementation produces a `system_model_fidelity_ready_for_output_comparison` verdict with explicit approximations documented.
 
 Feature 085 repaired the active baseline set to `HOODIE`, `RO`, `FLC`, `VO`, `HO`, `BCO`, and `MLEO`. Feature 086 must now prove that the simulator implements the HOODIE paper system model, not only the baseline labels.
 

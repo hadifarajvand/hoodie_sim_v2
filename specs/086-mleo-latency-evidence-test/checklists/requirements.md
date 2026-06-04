@@ -2,28 +2,28 @@
 
 ## MLEO Numeric Behavior
 
-- [ ] MLEO candidate delay values are directly inspectable.
-- [ ] MLEO selects the candidate with minimum total estimated latency.
-- [ ] A smallest-queue-but-not-smallest-latency candidate loses in a controlled test.
-- [ ] Tests fail for queue-length-only behavior.
+- [x] MLEO candidate delay values are directly inspectable.
+- [x] MLEO selects the candidate with minimum total estimated latency.
+- [x] A smallest-queue-but-not-smallest-latency candidate loses in a controlled test.
+- [x] Tests fail for queue-length-only behavior.
 
 ## HOODIE/MLEO Tie Evidence
 
-- [ ] HOODIE/MLEO aggregate tie is explicitly explained.
-- [ ] Evidence includes selected-action comparison or a clear reason why trace evidence is unavailable.
-- [ ] Readiness level does not overclaim if tie cannot be fully explained.
+- [x] HOODIE/MLEO aggregate tie is explicitly explained.
+- [x] Evidence includes selected-action comparison and scenario-level counts.
+- [x] Readiness level does not overclaim and lists remaining approximations honestly.
 
 ## Scope Guard
 
-- [ ] No DCQ.
-- [ ] No thesis method.
-- [ ] No custom queue redesign.
-- [ ] No full empirical paper reproduction claim.
+- [x] No DCQ.
+- [x] No thesis method.
+- [x] No custom queue redesign.
+- [x] No full empirical paper reproduction claim.
 
 ## Validation
 
-- [ ] `git diff --check` passes.
-- [ ] Runtime evaluation unit tests pass.
-- [ ] MLEO-focused tests pass.
-- [ ] Runtime evaluation integration tests pass.
-- [ ] Feature 085 artifacts still validate.
+- [x] `git diff --check` passes.
+- [x] Runtime evaluation unit tests pass.
+- [x] MLEO-focused tests pass.
+- [x] Runtime evaluation integration tests pass.
+- [x] Feature 085 artifacts still validate.

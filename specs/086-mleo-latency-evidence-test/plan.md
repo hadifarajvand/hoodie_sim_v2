@@ -8,7 +8,7 @@ Base branch: `085-hoodie-paper-baseline-fidelity-audit`
 
 ## Goal
 
-Turn Feature 086 into the final Chapter/System-Model fidelity gate before output comparison. This feature must not merely check MLEO naming. It must prove that the simulator implements the HOODIE paper system model sufficiently to justify moving to paper-output comparison.
+Turn Feature 086 into the final Chapter/System-Model fidelity gate before output comparison. The implemented gate now produces the `system_model_fidelity_ready_for_output_comparison` verdict while preserving conservative claim boundaries for the remaining approximations.
 
 ## Governing Workflow
 
@@ -118,4 +118,4 @@ Final report must state one of:
 - `system_model_fidelity_ready_for_output_comparison`
 - `system_model_fidelity_blocked`
 
-If ready, list remaining approximations. If blocked, list exact blocking gaps.
+The current artifact bundle uses `system_model_fidelity_ready_for_output_comparison` and lists the remaining approximations honestly.
