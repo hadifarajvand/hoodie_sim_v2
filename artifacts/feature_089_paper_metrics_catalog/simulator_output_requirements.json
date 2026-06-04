@@ -1,0 +1,658 @@
+[
+  {
+    "artifact_outputs": [
+      "figure_10a_delay_vs_arrival_probability.csv",
+      "figure_10a_delay_vs_arrival_probability.json"
+    ],
+    "blocked_by_lstm": false,
+    "blocked_by_simulator_support": false,
+    "blocked_by_training": false,
+    "claim_boundary": [
+      "HOODIE remains the paper proposed method boundary.",
+      "No thesis/DCQ/custom-method claim is allowed.",
+      "Feature 086 approximations remain in force for output comparison.",
+      "Feature 080 prepares HOODIE_PROPOSED for later evaluation.",
+      "Ranking must wait until HOODIE_PROPOSED is implemented faithfully enough.",
+      "Do not rank policies.",
+      "Do not evaluate baselines.",
+      "Do not introduce thesis method.",
+      "Do not use DCQ.",
+      "Do not claim full reproduction unless all required components pass."
+    ],
+    "implementation_priority": "priority_1",
+    "metrics": [
+      "task_completion_delay",
+      "paper_style_delay_for_plotting"
+    ],
+    "notes": "Preserve raw positive delay and a paper-style negative plotting value. Use the Feature 086 approximation boundary only.",
+    "output_family": "arrival_probability_delay_sweep",
+    "policies": [
+      "HOODIE",
+      "RO",
+      "FLC",
+      "VO",
+      "HO",
+      "BCO",
+      "MLEO"
+    ],
+    "requirement_id": "req_figure_10a_delay_arrival",
+    "scenario_setup": "High timeout window: 10 sec; Table 4 defaults otherwise.",
+    "sweep_values": [
+      0.1,
+      0.2,
+      0.3,
+      0.4,
+      0.5,
+      0.6,
+      0.7,
+      0.8,
+      0.9
+    ],
+    "target_figures": [
+      "Figure 10a"
+    ],
+    "x_axis": "task_arrival_probability"
+  },
+  {
+    "artifact_outputs": [
+      "figure_10b_delay_vs_cpu_capacity.csv",
+      "figure_10b_delay_vs_cpu_capacity.json"
+    ],
+    "blocked_by_lstm": false,
+    "blocked_by_simulator_support": false,
+    "blocked_by_training": false,
+    "claim_boundary": [
+      "HOODIE remains the paper proposed method boundary.",
+      "No thesis/DCQ/custom-method claim is allowed.",
+      "Feature 086 approximations remain in force for output comparison.",
+      "Feature 080 prepares HOODIE_PROPOSED for later evaluation.",
+      "Ranking must wait until HOODIE_PROPOSED is implemented faithfully enough.",
+      "Do not rank policies.",
+      "Do not evaluate baselines.",
+      "Do not introduce thesis method.",
+      "Do not use DCQ.",
+      "Do not claim full reproduction unless all required components pass."
+    ],
+    "implementation_priority": "priority_1",
+    "metrics": [
+      "task_completion_delay",
+      "paper_style_delay_for_plotting"
+    ],
+    "notes": "Preserve raw positive delay and a paper-style negative plotting value. Use the Feature 086 approximation boundary only.",
+    "output_family": "cpu_capacity_delay_sweep",
+    "policies": [
+      "HOODIE",
+      "RO",
+      "FLC",
+      "VO",
+      "HO",
+      "BCO",
+      "MLEO"
+    ],
+    "requirement_id": "req_figure_10b_delay_cpu",
+    "scenario_setup": "High timeout window: 10 sec; CPU capacity sweep.",
+    "sweep_values": [
+      3,
+      4,
+      5,
+      6,
+      7
+    ],
+    "target_figures": [
+      "Figure 10b"
+    ],
+    "x_axis": "cpu_computation_capacity_ghz"
+  },
+  {
+    "artifact_outputs": [
+      "figure_10c_delay_vs_timeout.csv",
+      "figure_10c_delay_vs_timeout.json"
+    ],
+    "blocked_by_lstm": false,
+    "blocked_by_simulator_support": false,
+    "blocked_by_training": false,
+    "claim_boundary": [
+      "HOODIE remains the paper proposed method boundary.",
+      "No thesis/DCQ/custom-method claim is allowed.",
+      "Feature 086 approximations remain in force for output comparison.",
+      "Feature 080 prepares HOODIE_PROPOSED for later evaluation.",
+      "Ranking must wait until HOODIE_PROPOSED is implemented faithfully enough.",
+      "Do not rank policies.",
+      "Do not evaluate baselines.",
+      "Do not introduce thesis method.",
+      "Do not use DCQ.",
+      "Do not claim full reproduction unless all required components pass."
+    ],
+    "implementation_priority": "priority_1",
+    "metrics": [
+      "task_completion_delay",
+      "paper_style_delay_for_plotting"
+    ],
+    "notes": "Preserve raw positive delay and a paper-style negative plotting value. Use the Feature 086 approximation boundary only.",
+    "output_family": "timeout_delay_sweep",
+    "policies": [
+      "HOODIE",
+      "RO",
+      "FLC",
+      "VO",
+      "HO",
+      "BCO",
+      "MLEO"
+    ],
+    "requirement_id": "req_figure_10c_delay_timeout",
+    "scenario_setup": "High timeout comparison window from 9.6 to 10.4 sec.",
+    "sweep_values": [
+      9.6,
+      9.8,
+      10.0,
+      10.2,
+      10.4
+    ],
+    "target_figures": [
+      "Figure 10c"
+    ],
+    "x_axis": "task_timeout_sec"
+  },
+  {
+    "artifact_outputs": [
+      "figure_10d_drop_ratio_vs_arrival_probability.csv",
+      "figure_10d_drop_ratio_vs_arrival_probability.json"
+    ],
+    "blocked_by_lstm": false,
+    "blocked_by_simulator_support": false,
+    "blocked_by_training": false,
+    "claim_boundary": [
+      "HOODIE remains the paper proposed method boundary.",
+      "No thesis/DCQ/custom-method claim is allowed.",
+      "Feature 086 approximations remain in force for output comparison.",
+      "Feature 080 prepares HOODIE_PROPOSED for later evaluation.",
+      "Ranking must wait until HOODIE_PROPOSED is implemented faithfully enough.",
+      "Do not rank policies.",
+      "Do not evaluate baselines.",
+      "Do not introduce thesis method.",
+      "Do not use DCQ.",
+      "Do not claim full reproduction unless all required components pass."
+    ],
+    "implementation_priority": "priority_1",
+    "metrics": [
+      "task_drop_ratio",
+      "task_drop_percent"
+    ],
+    "notes": "Preserve raw drop ratio and percentage form for plotting and validation.",
+    "output_family": "arrival_probability_drop_sweep",
+    "policies": [
+      "HOODIE",
+      "RO",
+      "FLC",
+      "VO",
+      "HO",
+      "BCO",
+      "MLEO"
+    ],
+    "requirement_id": "req_figure_10d_drop_arrival",
+    "scenario_setup": "Strict timeout window: 2 sec; Table 4 defaults otherwise.",
+    "sweep_values": [
+      0.1,
+      0.2,
+      0.3,
+      0.4,
+      0.5,
+      0.6,
+      0.7,
+      0.8,
+      0.9
+    ],
+    "target_figures": [
+      "Figure 10d"
+    ],
+    "x_axis": "task_arrival_probability"
+  },
+  {
+    "artifact_outputs": [
+      "figure_10e_drop_ratio_vs_cpu_capacity.csv",
+      "figure_10e_drop_ratio_vs_cpu_capacity.json"
+    ],
+    "blocked_by_lstm": false,
+    "blocked_by_simulator_support": false,
+    "blocked_by_training": false,
+    "claim_boundary": [
+      "HOODIE remains the paper proposed method boundary.",
+      "No thesis/DCQ/custom-method claim is allowed.",
+      "Feature 086 approximations remain in force for output comparison.",
+      "Feature 080 prepares HOODIE_PROPOSED for later evaluation.",
+      "Ranking must wait until HOODIE_PROPOSED is implemented faithfully enough.",
+      "Do not rank policies.",
+      "Do not evaluate baselines.",
+      "Do not introduce thesis method.",
+      "Do not use DCQ.",
+      "Do not claim full reproduction unless all required components pass."
+    ],
+    "implementation_priority": "priority_1",
+    "metrics": [
+      "task_drop_ratio",
+      "task_drop_percent"
+    ],
+    "notes": "Preserve raw drop ratio and percentage form for plotting and validation.",
+    "output_family": "cpu_capacity_drop_sweep",
+    "policies": [
+      "HOODIE",
+      "RO",
+      "FLC",
+      "VO",
+      "HO",
+      "BCO",
+      "MLEO"
+    ],
+    "requirement_id": "req_figure_10e_drop_cpu",
+    "scenario_setup": "Strict timeout window: 2 sec; CPU capacity sweep.",
+    "sweep_values": [
+      3,
+      4,
+      5,
+      6,
+      7
+    ],
+    "target_figures": [
+      "Figure 10e"
+    ],
+    "x_axis": "cpu_computation_capacity_ghz"
+  },
+  {
+    "artifact_outputs": [
+      "figure_10f_drop_ratio_vs_timeout.csv",
+      "figure_10f_drop_ratio_vs_timeout.json"
+    ],
+    "blocked_by_lstm": false,
+    "blocked_by_simulator_support": false,
+    "blocked_by_training": false,
+    "claim_boundary": [
+      "HOODIE remains the paper proposed method boundary.",
+      "No thesis/DCQ/custom-method claim is allowed.",
+      "Feature 086 approximations remain in force for output comparison.",
+      "Feature 080 prepares HOODIE_PROPOSED for later evaluation.",
+      "Ranking must wait until HOODIE_PROPOSED is implemented faithfully enough.",
+      "Do not rank policies.",
+      "Do not evaluate baselines.",
+      "Do not introduce thesis method.",
+      "Do not use DCQ.",
+      "Do not claim full reproduction unless all required components pass."
+    ],
+    "implementation_priority": "priority_1",
+    "metrics": [
+      "task_drop_ratio",
+      "task_drop_percent"
+    ],
+    "notes": "Preserve raw drop ratio and percentage form for plotting and validation.",
+    "output_family": "timeout_drop_sweep",
+    "policies": [
+      "HOODIE",
+      "RO",
+      "FLC",
+      "VO",
+      "HO",
+      "BCO",
+      "MLEO"
+    ],
+    "requirement_id": "req_figure_10f_drop_timeout",
+    "scenario_setup": "Strict timeout comparison window from 1.6 to 2.4 sec.",
+    "sweep_values": [
+      1.6,
+      1.8,
+      2.0,
+      2.2,
+      2.4
+    ],
+    "target_figures": [
+      "Figure 10f"
+    ],
+    "x_axis": "task_timeout_sec"
+  },
+  {
+    "artifact_outputs": [
+      "figure_9a_reward_vs_arrival_probability.csv",
+      "figure_9a_reward_vs_arrival_probability.json"
+    ],
+    "blocked_by_lstm": false,
+    "blocked_by_simulator_support": true,
+    "blocked_by_training": false,
+    "claim_boundary": [
+      "Feature 080 prepares HOODIE_PROPOSED for later evaluation.",
+      "Ranking must wait until HOODIE_PROPOSED is implemented faithfully enough.",
+      "Do not rank policies.",
+      "Do not evaluate baselines.",
+      "Do not introduce thesis method.",
+      "Do not use DCQ.",
+      "Do not claim full reproduction unless all required components pass.",
+      "HOODIE remains the paper proposed method boundary.",
+      "No thesis/DCQ/custom-method claim is allowed.",
+      "Feature 086 approximations remain in force for output comparison."
+    ],
+    "implementation_priority": "priority_2",
+    "metrics": [
+      "average_reward"
+    ],
+    "notes": "Figure 9 behavior output is cataloged but remains blocked until the simulator can sweep the arrival probability grid without inventing training claims.",
+    "output_family": "arrival_probability_reward_sweep",
+    "policies": [
+      "HOODIE"
+    ],
+    "requirement_id": "req_figure_9a_reward_arrival",
+    "scenario_setup": "Table 4 defaults; N=10/15/20; 200 validation episodes; exploitative actions.",
+    "sweep_values": [
+      0.1,
+      0.3,
+      0.5,
+      0.7,
+      0.9
+    ],
+    "target_figures": [
+      "Figure 9a"
+    ],
+    "x_axis": "task_arrival_probability"
+  },
+  {
+    "artifact_outputs": [
+      "figure_9b_action_distribution_vs_arrival_probability.csv",
+      "figure_9b_action_distribution_vs_arrival_probability.json"
+    ],
+    "blocked_by_lstm": false,
+    "blocked_by_simulator_support": true,
+    "blocked_by_training": false,
+    "claim_boundary": [
+      "Feature 080 prepares HOODIE_PROPOSED for later evaluation.",
+      "Ranking must wait until HOODIE_PROPOSED is implemented faithfully enough.",
+      "Do not rank policies.",
+      "Do not evaluate baselines.",
+      "Do not introduce thesis method.",
+      "Do not use DCQ.",
+      "Do not claim full reproduction unless all required components pass.",
+      "HOODIE remains the paper proposed method boundary.",
+      "No thesis/DCQ/custom-method claim is allowed.",
+      "Feature 086 approximations remain in force for output comparison."
+    ],
+    "implementation_priority": "priority_2",
+    "metrics": [
+      "action_distribution"
+    ],
+    "notes": "Figure 9 behavior output is cataloged but remains blocked until the simulator can produce action counts directly from the policy traces.",
+    "output_family": "arrival_probability_action_distribution",
+    "policies": [
+      "HOODIE"
+    ],
+    "requirement_id": "req_figure_9b_action_distribution",
+    "scenario_setup": "Table 4 defaults; HOODIE only; exploitative validation episodes.",
+    "sweep_values": [
+      0.1,
+      0.3,
+      0.5,
+      0.7,
+      0.9
+    ],
+    "target_figures": [
+      "Figure 9b"
+    ],
+    "x_axis": "action_type"
+  },
+  {
+    "artifact_outputs": [
+      "figure_9c_reward_vs_cpu_capacity.csv",
+      "figure_9c_reward_vs_cpu_capacity.json"
+    ],
+    "blocked_by_lstm": false,
+    "blocked_by_simulator_support": true,
+    "blocked_by_training": false,
+    "claim_boundary": [
+      "Feature 080 prepares HOODIE_PROPOSED for later evaluation.",
+      "Ranking must wait until HOODIE_PROPOSED is implemented faithfully enough.",
+      "Do not rank policies.",
+      "Do not evaluate baselines.",
+      "Do not introduce thesis method.",
+      "Do not use DCQ.",
+      "Do not claim full reproduction unless all required components pass.",
+      "HOODIE remains the paper proposed method boundary.",
+      "No thesis/DCQ/custom-method claim is allowed.",
+      "Feature 086 approximations remain in force for output comparison."
+    ],
+    "implementation_priority": "priority_2",
+    "metrics": [
+      "average_reward"
+    ],
+    "notes": "Figure 9 behavior output is cataloged but remains blocked until the simulator can sweep CPU capacity directly.",
+    "output_family": "cpu_capacity_reward_sweep",
+    "policies": [
+      "HOODIE"
+    ],
+    "requirement_id": "req_figure_9c_reward_cpu",
+    "scenario_setup": "Table 4 defaults; CPU capacity sweep; HOODIE only.",
+    "sweep_values": [
+      4,
+      5,
+      6,
+      7,
+      8,
+      9
+    ],
+    "target_figures": [
+      "Figure 9c"
+    ],
+    "x_axis": "cpu_computation_capacity_ghz"
+  },
+  {
+    "artifact_outputs": [
+      "figure_9d_reward_vs_agent_count_traffic.csv",
+      "figure_9d_reward_vs_agent_count_traffic.json"
+    ],
+    "blocked_by_lstm": false,
+    "blocked_by_simulator_support": true,
+    "blocked_by_training": false,
+    "claim_boundary": [
+      "Feature 080 prepares HOODIE_PROPOSED for later evaluation.",
+      "Ranking must wait until HOODIE_PROPOSED is implemented faithfully enough.",
+      "Do not rank policies.",
+      "Do not evaluate baselines.",
+      "Do not introduce thesis method.",
+      "Do not use DCQ.",
+      "Do not claim full reproduction unless all required components pass.",
+      "HOODIE remains the paper proposed method boundary.",
+      "No thesis/DCQ/custom-method claim is allowed.",
+      "Feature 086 approximations remain in force for output comparison."
+    ],
+    "implementation_priority": "priority_2",
+    "metrics": [
+      "average_reward"
+    ],
+    "notes": "Figure 9 behavior output is cataloged but remains blocked until the simulator can vary agent count and workload intensity directly.",
+    "output_family": "agent_count_traffic_reward_sweep",
+    "policies": [
+      "HOODIE"
+    ],
+    "requirement_id": "req_figure_9d_reward_agents_traffic",
+    "scenario_setup": "Moderate: task sizes 1-3 Mbits, P=0.5; Heavy: task sizes 2-5 Mbits, P=0.7; Extreme: task sizes 3-7 Mbits, P=0.9.",
+    "sweep_values": [
+      10,
+      15,
+      20,
+      25,
+      30
+    ],
+    "target_figures": [
+      "Figure 9d"
+    ],
+    "x_axis": "number_of_agents"
+  },
+  {
+    "artifact_outputs": [
+      "figure_9e_reward_vs_agent_count_data_rate.csv",
+      "figure_9e_reward_vs_agent_count_data_rate.json"
+    ],
+    "blocked_by_lstm": false,
+    "blocked_by_simulator_support": true,
+    "blocked_by_training": false,
+    "claim_boundary": [
+      "Feature 080 prepares HOODIE_PROPOSED for later evaluation.",
+      "Ranking must wait until HOODIE_PROPOSED is implemented faithfully enough.",
+      "Do not rank policies.",
+      "Do not evaluate baselines.",
+      "Do not introduce thesis method.",
+      "Do not use DCQ.",
+      "Do not claim full reproduction unless all required components pass.",
+      "HOODIE remains the paper proposed method boundary.",
+      "No thesis/DCQ/custom-method claim is allowed.",
+      "Feature 086 approximations remain in force for output comparison."
+    ],
+    "implementation_priority": "priority_2",
+    "metrics": [
+      "average_reward"
+    ],
+    "notes": "Figure 9 behavior output is cataloged but remains blocked until the simulator can vary agent count and link-rate configurations directly.",
+    "output_family": "agent_count_data_rate_reward_sweep",
+    "policies": [
+      "HOODIE"
+    ],
+    "requirement_id": "req_figure_9e_reward_agents_rates",
+    "scenario_setup": "Balanced: RH=10 Mbps, RV=30 Mbps; Horizontal-centric: RH=20 Mbps, RV=20 Mbps; Vertical-centric: RH=5 Mbps, RV=40 Mbps.",
+    "sweep_values": [
+      10,
+      15,
+      20,
+      25,
+      30
+    ],
+    "target_figures": [
+      "Figure 9e"
+    ],
+    "x_axis": "number_of_agents"
+  },
+  {
+    "artifact_outputs": [
+      "figure_8a_learning_rate_training_curve.csv",
+      "figure_8a_learning_rate_training_curve.json"
+    ],
+    "blocked_by_lstm": true,
+    "blocked_by_simulator_support": true,
+    "blocked_by_training": true,
+    "claim_boundary": [
+      "Feature 080 prepares HOODIE_PROPOSED for later evaluation.",
+      "Ranking must wait until HOODIE_PROPOSED is implemented faithfully enough.",
+      "Do not rank policies.",
+      "Do not evaluate baselines.",
+      "Do not introduce thesis method.",
+      "Do not use DCQ.",
+      "Do not claim full reproduction unless all required components pass.",
+      "HOODIE remains the paper proposed method boundary.",
+      "No thesis/DCQ/custom-method claim is allowed.",
+      "Feature 086 approximations remain in force for output comparison."
+    ],
+    "implementation_priority": "priority_3",
+    "metrics": [
+      "accumulated_reward"
+    ],
+    "notes": "Future-required training curve. Do not schedule as deterministic evaluation output.",
+    "output_family": "training_learning_rate_curve",
+    "policies": [
+      "HOODIE"
+    ],
+    "requirement_id": "req_figure_8a_training_curve",
+    "scenario_setup": "Table 4 defaults; P=0.5; N=20; Figure 7 topology; 5000 training episodes.",
+    "sweep_values": [
+      1e-09,
+      5e-09,
+      1e-08,
+      1e-07,
+      5e-07,
+      7e-07
+    ],
+    "target_figures": [
+      "Figure 8a"
+    ],
+    "x_axis": "training_episode"
+  },
+  {
+    "artifact_outputs": [
+      "figure_8b_discount_factor_training_curve.csv",
+      "figure_8b_discount_factor_training_curve.json"
+    ],
+    "blocked_by_lstm": true,
+    "blocked_by_simulator_support": true,
+    "blocked_by_training": true,
+    "claim_boundary": [
+      "Feature 080 prepares HOODIE_PROPOSED for later evaluation.",
+      "Ranking must wait until HOODIE_PROPOSED is implemented faithfully enough.",
+      "Do not rank policies.",
+      "Do not evaluate baselines.",
+      "Do not introduce thesis method.",
+      "Do not use DCQ.",
+      "Do not claim full reproduction unless all required components pass.",
+      "HOODIE remains the paper proposed method boundary.",
+      "No thesis/DCQ/custom-method claim is allowed.",
+      "Feature 086 approximations remain in force for output comparison."
+    ],
+    "implementation_priority": "priority_3",
+    "metrics": [
+      "accumulated_reward"
+    ],
+    "notes": "Future-required training curve. Do not schedule as deterministic evaluation output.",
+    "output_family": "training_discount_factor_curve",
+    "policies": [
+      "HOODIE"
+    ],
+    "requirement_id": "req_figure_8b_training_curve",
+    "scenario_setup": "Table 4 defaults except gamma sweep; optimal learning rate carried over from Figure 8a.",
+    "sweep_values": [
+      0.2,
+      0.4,
+      0.6,
+      0.8,
+      0.99
+    ],
+    "target_figures": [
+      "Figure 8b"
+    ],
+    "x_axis": "training_episode"
+  },
+  {
+    "artifact_outputs": [
+      "figure_11_lstm_ablation_curve.csv",
+      "figure_11_lstm_ablation_curve.json"
+    ],
+    "blocked_by_lstm": true,
+    "blocked_by_simulator_support": true,
+    "blocked_by_training": true,
+    "claim_boundary": [
+      "Feature 080 prepares HOODIE_PROPOSED for later evaluation.",
+      "Ranking must wait until HOODIE_PROPOSED is implemented faithfully enough.",
+      "Do not rank policies.",
+      "Do not evaluate baselines.",
+      "Do not introduce thesis method.",
+      "Do not use DCQ.",
+      "Do not claim full reproduction unless all required components pass.",
+      "HOODIE remains the paper proposed method boundary.",
+      "No thesis/DCQ/custom-method claim is allowed.",
+      "Feature 086 approximations remain in force for output comparison."
+    ],
+    "implementation_priority": "priority_3",
+    "metrics": [
+      "average_task_delay_with_vs_without_lstm"
+    ],
+    "notes": "Future-required LSTM ablation. Do not schedule as deterministic evaluation output.",
+    "output_family": "lstm_ablation_curve",
+    "policies": [
+      "HOODIE"
+    ],
+    "requirement_id": "req_figure_11_lstm_ablation",
+    "scenario_setup": "P=0.3; phi_n=1 sec; 20 EAs; Table 4 defaults otherwise.",
+    "sweep_values": [
+      0,
+      500,
+      1000,
+      1500,
+      2000,
+      2500,
+      3000
+    ],
+    "target_figures": [
+      "Figure 11"
+    ],
+    "x_axis": "training_episode"
+  }
+]

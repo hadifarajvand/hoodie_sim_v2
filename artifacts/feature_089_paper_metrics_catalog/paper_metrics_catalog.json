@@ -1,0 +1,148 @@
+[
+  {
+    "claim_boundary": [
+      "HOODIE remains the paper proposed method boundary.",
+      "No thesis/DCQ/custom-method claim is allowed.",
+      "Feature 086 approximations remain in force for output comparison."
+    ],
+    "comparison_allowed_now": true,
+    "definition": "Mean task completion delay used in the paper's comparative figures.",
+    "metric_id": "average_task_completion_delay",
+    "paper_names": [
+      "average delay",
+      "average task delay",
+      "completion delay"
+    ],
+    "primary_or_secondary": "primary",
+    "requires_lstm": false,
+    "requires_training": false,
+    "simulator_metric_mapping": "task_completion_delay",
+    "used_in_figures": [
+      "Figure 10a",
+      "Figure 10b",
+      "Figure 10c",
+      "Figure 11"
+    ]
+  },
+  {
+    "claim_boundary": [
+      "HOODIE remains the paper proposed method boundary.",
+      "No thesis/DCQ/custom-method claim is allowed.",
+      "Feature 086 approximations remain in force for output comparison."
+    ],
+    "comparison_allowed_now": true,
+    "definition": "Fraction of tasks dropped before completion.",
+    "metric_id": "task_drop_ratio",
+    "paper_names": [
+      "drop ratio"
+    ],
+    "primary_or_secondary": "primary",
+    "requires_lstm": false,
+    "requires_training": false,
+    "simulator_metric_mapping": "task_drop_ratio",
+    "used_in_figures": [
+      "Figure 10d",
+      "Figure 10e",
+      "Figure 10f"
+    ]
+  },
+  {
+    "claim_boundary": [
+      "Feature 080 prepares HOODIE_PROPOSED for later evaluation.",
+      "Ranking must wait until HOODIE_PROPOSED is implemented faithfully enough.",
+      "Do not rank policies.",
+      "Do not evaluate baselines.",
+      "Do not introduce thesis method.",
+      "Do not use DCQ.",
+      "Do not claim full reproduction unless all required components pass."
+    ],
+    "comparison_allowed_now": false,
+    "definition": "Paper reward signal used in behavior and sensitivity figures.",
+    "metric_id": "average_reward",
+    "paper_names": [
+      "average reward"
+    ],
+    "primary_or_secondary": "behavioral",
+    "requires_lstm": false,
+    "requires_training": false,
+    "simulator_metric_mapping": "average_reward",
+    "used_in_figures": [
+      "Figure 9a",
+      "Figure 9c",
+      "Figure 9d",
+      "Figure 9e"
+    ]
+  },
+  {
+    "claim_boundary": [
+      "Feature 080 prepares HOODIE_PROPOSED for later evaluation.",
+      "Ranking must wait until HOODIE_PROPOSED is implemented faithfully enough.",
+      "Do not rank policies.",
+      "Do not evaluate baselines.",
+      "Do not introduce thesis method.",
+      "Do not use DCQ.",
+      "Do not claim full reproduction unless all required components pass."
+    ],
+    "comparison_allowed_now": false,
+    "definition": "Training convergence reward plotted across episodes.",
+    "metric_id": "accumulated_reward",
+    "paper_names": [
+      "accumulated reward",
+      "cumulative reward"
+    ],
+    "primary_or_secondary": "training",
+    "requires_lstm": true,
+    "requires_training": true,
+    "simulator_metric_mapping": "total_reward",
+    "used_in_figures": [
+      "Figure 8a",
+      "Figure 8b"
+    ]
+  },
+  {
+    "claim_boundary": [
+      "HOODIE remains the paper proposed method boundary.",
+      "No thesis/DCQ/custom-method claim is allowed.",
+      "Feature 086 approximations remain in force for output comparison."
+    ],
+    "comparison_allowed_now": false,
+    "definition": "Distribution of local, horizontal, and vertical actions across arrival probabilities.",
+    "metric_id": "action_distribution",
+    "paper_names": [
+      "actions count",
+      "action distribution"
+    ],
+    "primary_or_secondary": "behavioral",
+    "requires_lstm": false,
+    "requires_training": false,
+    "simulator_metric_mapping": null,
+    "used_in_figures": [
+      "Figure 9b"
+    ]
+  },
+  {
+    "claim_boundary": [
+      "Feature 080 prepares HOODIE_PROPOSED for later evaluation.",
+      "Ranking must wait until HOODIE_PROPOSED is implemented faithfully enough.",
+      "Do not rank policies.",
+      "Do not evaluate baselines.",
+      "Do not introduce thesis method.",
+      "Do not use DCQ.",
+      "Do not claim full reproduction unless all required components pass."
+    ],
+    "comparison_allowed_now": false,
+    "definition": "Training ablation curve comparing HOODIE with and without the LSTM module.",
+    "metric_id": "average_task_delay_with_vs_without_lstm",
+    "paper_names": [
+      "average task delay with vs without LSTM",
+      "LSTM ablation delay"
+    ],
+    "primary_or_secondary": "training",
+    "requires_lstm": true,
+    "requires_training": true,
+    "simulator_metric_mapping": "task_completion_delay",
+    "used_in_figures": [
+      "Figure 11"
+    ]
+  }
+]

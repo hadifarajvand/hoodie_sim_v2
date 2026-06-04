@@ -1,0 +1,34 @@
+[
+  {
+    "claim_boundary": [
+      "Feature 080 prepares HOODIE_PROPOSED for later evaluation.",
+      "Ranking must wait until HOODIE_PROPOSED is implemented faithfully enough.",
+      "Do not rank policies.",
+      "Do not evaluate baselines.",
+      "Do not introduce thesis method.",
+      "Do not use DCQ.",
+      "Do not claim full reproduction unless all required components pass.",
+      "HOODIE remains the paper proposed method boundary.",
+      "No thesis/DCQ/custom-method claim is allowed.",
+      "Feature 086 approximations remain in force for output comparison."
+    ],
+    "figure_id": "Figure 9d",
+    "metric": "average_reward",
+    "notes": "Figure 9 behavior output is cataloged but remains blocked until the simulator can vary agent count and workload intensity directly.",
+    "policy": "HOODIE",
+    "reference_average_reward": -6.503968253968254,
+    "reference_drop_percent": null,
+    "reference_drop_ratio": null,
+    "reference_task_completion_delay_plot": null,
+    "reference_task_completion_delay_raw": null,
+    "status": "blocked_by_simulator_support",
+    "sweep_values": [
+      10,
+      15,
+      20,
+      25,
+      30
+    ],
+    "x_axis": "number_of_agents"
+  }
+]
