@@ -1,44 +1,74 @@
-# Feature 086: MLEO Latency Evidence Test
+# Feature 086: HOODIE System-Model Mechanism Fidelity Gate
 
 ## Purpose
 
-Feature 086 adds a narrow validation layer on top of Feature 085. Feature 085 repaired the active paper baseline identity from the invalid `MQO` label to the paper-correct `MLEO` baseline. However, the Feature 085 aggregate results show `HOODIE` and `MLEO` tied exactly across all reported benchmark metrics. That tie may be valid for the deterministic benchmark, but it must be backed by numeric evidence rather than accepted from aggregate equality alone.
+Feature 086 is the blocking gate before moving from HOODIE system-model implementation to output comparison against the paper.
 
-This feature must add tests and artifact/report evidence proving that `MLEO` is implemented as a minimum estimated latency policy and not merely a renamed minimum-queue policy.
+Feature 085 repaired the active baseline set to `HOODIE`, `RO`, `FLC`, `VO`, `HO`, `BCO`, and `MLEO`. Feature 086 must now prove that the simulator implements the HOODIE paper system model, not only the baseline labels.
 
-## Scope
+## Required Verdict
 
-In scope:
+The final report must declare one of:
 
-- Add numeric unit/integration tests for `MinimumLatencyEstimateOffloadingPolicy`.
-- Verify `MLEO` selects the candidate with the smallest estimated total delay.
-- Verify queue length alone cannot dominate candidate selection when total latency says otherwise.
-- Add a deterministic tie-evidence test or report field explaining why `HOODIE` and `MLEO` tie in Feature 085 artifacts.
-- Update Feature 086 Spec Kit files with completion evidence after implementation.
+- `system_model_fidelity_ready_for_output_comparison`
+- `system_model_fidelity_blocked`
 
-Out of scope:
+If blocked, the report must list exact blocking gaps. If ready, it must list remaining approximations honestly.
+
+## Required Mechanisms
+
+Feature 086 must audit, repair where needed, test, and produce evidence for:
+
+1. three-tier topology: IoT/task source, Edge Agents, Cloud;
+2. Edge Agent set and Cloud node representation;
+3. horizontal EA-to-EA connectivity and legality constraints;
+4. vertical EA-to-Cloud path;
+5. task ID, task size/data, CPU demand or processing density, timeout/deadline;
+6. workload/task arrival representation;
+7. private/local queue behavior;
+8. offloading queue behavior;
+9. public/cloud queue behavior;
+10. local execution delay;
+11. horizontal transmission delay;
+12. vertical transmission delay;
+13. remote/cloud execution delay;
+14. waiting time and completion time;
+15. timeout/drop/unavailability behavior;
+16. hybrid action model: local, horizontal, vertical;
+17. two-stage decision boundary where represented or a documented single-stage approximation;
+18. HOODIE proposed-method claim boundary;
+19. official paper baselines only: RO, FLC, VO, HO, BCO, MLEO;
+20. MLEO as minimum estimated total latency, not queue-length-only;
+21. reward/cost formula boundary;
+22. output metrics readiness for paper comparison.
+
+## Status Labels
+
+Every mechanism must be classified as:
+
+- `exact`
+- `approximate_documented`
+- `missing`
+- `wrong`
+- `not_exercised`
+
+`missing`, `wrong`, and `not_exercised` are blocking unless explicitly out of paper scope.
+
+## Out of Scope
 
 - No thesis method.
 - No DCQ.
-- No custom deadline-aware queue redesign.
-- No change to HOODIE algorithm semantics unless a verified bug is found.
-- No full empirical paper reproduction claim.
-
-## Required Evidence
-
-The implementation must prove all of the following:
-
-1. `MLEO` builds or receives candidate latency estimates.
-2. Each candidate has an auditable `total_delay` value.
-3. `MLEO` chooses the legal candidate with the minimum `total_delay`.
-4. A candidate with the smallest queue length must lose if its total estimated latency is larger.
-5. If `HOODIE` and `MLEO` remain tied in aggregate artifacts, the report must state whether the tie is due to deterministic scenario structure, identical selected actions, or another measured reason.
+- No custom queue redesign.
+- No new proposed method.
+- No full empirical paper reproduction claim unless separately validated.
 
 ## Acceptance Criteria
 
-- Tests fail if `MLEO` is implemented as queue-length-only behavior.
-- Tests expose candidate latency numbers, either through assertions against `last_candidates` or equivalent policy trace detail.
-- Tests verify selected action equals the candidate with minimum `total_delay`.
-- Tie with `HOODIE` is documented as evidence-based, not inferred from final aggregate equality.
-- `python -m unittest discover tests/unit -p 'test_hoodie_runtime_evaluation_*.py'` passes.
-- Runtime artifact validation still passes after the evidence/report update.
+- Mechanism coverage artifact exists.
+- System-model gap matrix artifact exists.
+- Metric readiness artifact exists.
+- Scenario mechanism coverage artifact exists.
+- MLEO numeric non-queue-only test exists.
+- Tests fail if active policies are not exactly `HOODIE`, `RO`, `FLC`, `VO`, `HO`, `BCO`, `MLEO`.
+- Tests fail if legacy labels appear in active outputs: `MQO`, `Minimum Queue Offloader`, `ORIGINAL_HOODIE_BASELINE`, `HOODIE_PROPOSED`.
+- Final report states whether we may proceed to output comparison.
