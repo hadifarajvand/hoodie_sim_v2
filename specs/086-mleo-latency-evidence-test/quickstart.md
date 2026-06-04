@@ -1,4 +1,4 @@
-# Quickstart: Feature 086
+# Quickstart: Feature 086 Full System-Model Fidelity Gate
 
 ## Pull Branch
 
@@ -9,62 +9,223 @@ git checkout 086-mleo-latency-evidence-test
 git pull --ff-only origin 086-mleo-latency-evidence-test
 ```
 
+## Important Current State
+
+This branch already contains an implementation pass that added MLEO numeric evidence and HOODIE/MLEO tie evidence. That work is valid but partial.
+
+The next Codex run must complete the **full HOODIE system-model fidelity gate**. Do not stop at MLEO evidence again.
+
 ## Codex Implementation Prompt
 
 ```text
-You are working in repository `/Users/hadi/Documents/GitHub/hoodie_sim_v2` on branch `086-mleo-latency-evidence-test`.
+You are working in repository:
 
-Goal: Add numeric evidence tests proving that MLEO is a real minimum latency estimation baseline and not a renamed minimum-queue policy. Do not introduce any thesis method, DCQ method, custom queue redesign, or new proposed method.
+/Users/hadi/Documents/GitHub/hoodie_sim_v2
 
-Context:
-- Feature 085 repaired the paper baseline set to HOODIE, RO, FLC, VO, HO, BCO, MLEO.
-- Feature 085 artifacts show HOODIE and MLEO tied exactly across aggregate metrics.
-- That tie may be valid, but it must be supported by evidence.
-- The main implementation under review is `MinimumLatencyEstimateOffloadingPolicy` in `src/policies/mleo.py` and the runtime adapter in `src/analysis/hoodie_runtime_evaluation_runner/policies.py`.
+Current branch:
 
-Required changes:
+086-mleo-latency-evidence-test
 
-1. Add numeric MLEO policy tests.
-   - Create or update an appropriate unit test file, preferably `tests/unit/test_hoodie_runtime_evaluation_runner_policies.py` or a focused `tests/unit/test_mleo_latency_evidence.py`.
-   - Construct a deterministic context with at least three candidates: local, horizontal, vertical.
-   - Ensure the smallest queue-length candidate is NOT the smallest total-latency candidate.
-   - Assert that MLEO selects the candidate with the smallest `total_delay`, not the smallest queue length.
-   - Assert candidate total delay values explicitly by inspecting `last_candidates` or adapter trace details.
-   - The test must fail if MLEO is implemented as queue-length-only behavior.
+Goal:
 
-2. Add tie evidence for HOODIE vs MLEO.
-   - Inspect generated Feature 085 raw rows and/or runtime traces.
-   - Determine whether HOODIE and MLEO select identical actions across deterministic scenarios or whether they differ but aggregate metrics tie.
-   - Add a report field, artifact, or test assertion documenting the tie reason.
-   - Preferred output: update `artifacts/feature_085_full_audit/feature_085_audit_report.json` and `.md` or generate a small Feature 086 artifact directory such as `artifacts/feature_086_mleo_latency_evidence/`.
-   - Do not overclaim full paper reproduction.
+Complete Feature 086 as the HOODIE System-Model Fidelity Gate before output comparison.
 
-3. Add/adjust tests for tie evidence.
-   - Add a test that reads the generated evidence and fails if the HOODIE/MLEO tie is undocumented.
-   - If HOODIE and MLEO selected actions are identical in all benchmark rows, assert that explicitly and include counts by scenario.
-   - If they differ, assert the metric tie explanation and include counts.
+The branch already contains a successful partial implementation:
+- MLEO numeric non-queue-only evidence exists.
+- MLEO selected the minimum estimated total-delay candidate in a controlled test.
+- HOODIE/MLEO aggregate tie is documented at action/scenario level in the Feature 085 audit report/manifest.
 
-4. Documentation.
-   - Update `specs/086-mleo-latency-evidence-test/tasks.md` with completed tasks.
-   - Update `specs/086-mleo-latency-evidence-test/quickstart.md` with exact validation commands.
-   - Update `specs/086-mleo-latency-evidence-test/contracts/validation-rules.md` if the implemented evidence format differs from this plan.
+Preserve that work. Do not redo Feature 086 as only an MLEO test. The remaining task is the full Chapter/System-Model fidelity gate.
 
-Validation commands:
+Strict scope:
+- Do not introduce the user's thesis method.
+- Do not introduce DCQ.
+- Do not introduce a custom queue redesign.
+- Do not introduce any new proposed method.
+- Do not claim full empirical reproduction of the HOODIE paper unless trained DRL, trained LSTM/forecast behavior, topology, stochastic traffic, and paper figures/results are actually reproduced and validated.
+
+Canonical policy rules:
+- HOODIE is the only proposed paper method.
+- Active policies must be exactly: HOODIE, RO, FLC, VO, HO, BCO, MLEO.
+- MLEO means Minimum Latency Estimation Offloader.
+- MLEO must choose minimum estimated total delay, not minimum queue length.
+- Active outputs must not contain: MQO, Minimum Queue Offloader, ORIGINAL_HOODIE_BASELINE, HOODIE_PROPOSED.
+- Historical invalid-label notes are allowed only inside Spec Kit documentation.
+
+Paper sources:
+- Read `resources/papers/hoodie/ocr/merged.txt`.
+- Use `resources/papers/hoodie/original/HOODIE_paper.pdf` only if OCR is ambiguous for formula/table/figure extraction.
+
+Relevant implementation areas:
+- `src/analysis/hoodie_runtime_evaluation_runner/`
+- `src/analysis/hoodie_proposed_method/`
+- `src/policies/`
+- `tests/unit/`
+- `tests/integration/`
+- `artifacts/feature_085_full_audit/`
+- `specs/086-mleo-latency-evidence-test/`
+
+Required system-model mechanisms to audit, map, and validate:
+
+1. Three-tier topology: task source / IoT or MD layer, Edge Agents, Cloud.
+2. Edge Agent set and Cloud node representation.
+3. Horizontal EA-to-EA connectivity and destination legality.
+4. Vertical EA-to-cloud path.
+5. Task model: task ID, input/data size, processing density or CPU demand, timeout/deadline, arrivals/workload.
+6. Queue model: private/local queue, offloading queue, public/cloud queue.
+7. Delay model: local execution delay, horizontal transmission delay, vertical transmission delay, remote edge execution delay, cloud execution delay, waiting time, completion time.
+8. Drop model: timeout drop, deadline violation, unavailability if represented, illegal action rejection.
+9. Action model: local, horizontal offload, vertical offload, and the two-stage decision boundary or a documented single-stage approximation.
+10. Policy model: HOODIE, RO, FLC, VO, HO, BCO, MLEO.
+11. Reward/cost model and exact/approximate claim boundary.
+12. Output metric readiness for paper comparison.
+
+Use exactly these status labels:
+- exact
+- approximate_documented
+- missing
+- wrong
+- not_exercised
+
+Blocking rules:
+- missing blocks readiness.
+- wrong blocks readiness.
+- not_exercised blocks readiness.
+- approximate_documented is acceptable only when the approximation is explicit, conservative, and exercised by tests/scenarios/artifacts.
+
+Implementation requirements:
+
+1. Complete the system-model gap matrix.
+   Update `specs/086-mleo-latency-evidence-test/system-model-gap-matrix.md`.
+   Replace generic placeholders with concrete rows that include:
+   - paper mechanism
+   - paper expectation
+   - simulator behavior
+   - code location
+   - test/artifact evidence
+   - status
+   - required fix or claim boundary
+
+2. Complete the metric readiness matrix.
+   Update `specs/086-mleo-latency-evidence-test/metric-readiness-matrix.md`.
+   Classify every metric as one of:
+   - paper_primary_metric
+   - paper_secondary_or_derived_metric
+   - paper_secondary_or_repository_metric
+   - repository_diagnostic_metric
+   - not_for_paper_comparison
+
+   Required metrics:
+   - task_completion_delay
+   - task_drop_ratio
+   - completion_rate
+   - timeout_drop_rate
+   - unavailable_drop_rate
+   - deadline_violation_rate
+   - average_reward
+   - total_reward
+   - throughput
+   - queue_stability_score
+   - illegal_action_rejection_count
+
+   Do not use repository diagnostics as paper headline metrics.
+
+3. Add or repair tests/evidence for all required mechanisms.
+   Required evidence must cover:
+   - local execution path
+   - horizontal offloading path
+   - vertical/cloud path
+   - horizontal destination legality / illegal rejection
+   - timeout/drop behavior
+   - private/local queue timing
+   - offloading/public/cloud queue behavior, or explicit documented approximation
+   - active policy exact set
+   - absence of legacy active labels
+   - existing MLEO numeric evidence remains passing
+
+4. Generate Feature 086 artifact directory:
+
+   `artifacts/feature_086_system_model_fidelity/`
+
+   Required files:
+   - `mechanism_coverage.json`
+   - `mechanism_coverage.csv`
+   - `system_model_gap_matrix.json`
+   - `system_model_gap_matrix.md`
+   - `metric_readiness_matrix.json`
+   - `metric_readiness_matrix.md`
+   - `scenario_mechanism_coverage.json`
+   - `hoodie_mleo_tie_evidence.json`
+   - `feature_086_system_model_fidelity_report.json`
+   - `feature_086_system_model_fidelity_report.md`
+
+5. Final report requirement.
+   The final Feature 086 report must declare exactly one of:
+   - `system_model_fidelity_ready_for_output_comparison`
+   - `system_model_fidelity_blocked`
+
+   If blocked, list exact blocking mechanisms.
+   If ready, list remaining approximations.
+
+   The report must also include:
+   - active policy set
+   - invalid-label check
+   - mechanism coverage summary
+   - scenario mechanism coverage summary
+   - metric readiness summary
+   - allowed paper-comparison metrics
+   - repository diagnostic metrics
+   - HOODIE/MLEO tie evidence summary
+   - no-thesis/no-DCQ/no-custom-method scope proof
+   - claim boundary for interface-only DRL/LSTM/forecast components
+
+6. Update Spec Kit files.
+   Update these files to reflect implementation evidence:
+   - `specs/086-mleo-latency-evidence-test/spec.md`
+   - `specs/086-mleo-latency-evidence-test/plan.md`
+   - `specs/086-mleo-latency-evidence-test/tasks.md`
+   - `specs/086-mleo-latency-evidence-test/contracts/validation-rules.md`
+   - `specs/086-mleo-latency-evidence-test/system-model-gap-matrix.md`
+   - `specs/086-mleo-latency-evidence-test/metric-readiness-matrix.md`
+   - `specs/086-mleo-latency-evidence-test/checklists/requirements.md`
+   - `specs/086-mleo-latency-evidence-test/checklists/scope.md`
+   - `specs/086-mleo-latency-evidence-test/implementation-handoff.md`
+   - `specs/086-mleo-latency-evidence-test/quickstart.md`
+
+   Mark tasks complete only when implementation/test/artifact evidence exists.
+
+Validation commands to run:
+
 - `git diff --check`
 - `src/.venvmac/bin/python -m unittest discover tests/unit -p 'test_hoodie_runtime_evaluation_*.py'`
 - `src/.venvmac/bin/python -m unittest discover tests/unit -p 'test_*mleo*.py'`
 - `src/.venvmac/bin/python -m unittest discover tests/integration -p 'test_hoodie_runtime_evaluation_*.py'`
 - `src/.venvmac/bin/python -m analysis.hoodie_runtime_evaluation_runner --validate-artifacts --artifact-dir artifacts/feature_085_full_audit`
+- Run the Feature 086 artifact generation command you create or reuse.
+- Run the Feature 086 artifact validation command you create or reuse.
 
-Commit message:
-`Implement Feature 086 MLEO latency evidence test`
+Run grep validation:
+
+`git grep -n "MQO\|Minimum Queue Offloader\|ORIGINAL_HOODIE_BASELINE\|HOODIE_PROPOSED" -- . ':!specs/086-mleo-latency-evidence-test'`
+
+This must return no active code/artifact/report hits.
+
+Commit all changes with:
+
+`Implement Feature 086 HOODIE system model fidelity gate`
 
 Final response must include:
 - branch name
 - final commit SHA
 - files changed
-- exact tests run and results
-- whether MLEO passed the non-queue-only numeric test
+- exact commands run and results
+- generated Feature 086 artifact paths
+- final readiness verdict
+- whether we can proceed to paper output comparison
+- blocked mechanisms, if any
+- remaining approximations
+- allowed paper-comparison metrics
+- repository diagnostic metrics
 - HOODIE/MLEO tie explanation
-- remaining limitations
+- confirmation that no thesis/DCQ/custom method was added
 ```
