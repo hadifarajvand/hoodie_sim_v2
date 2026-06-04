@@ -1,0 +1,113 @@
+{
+  "metrics": [
+    {
+      "comparison_status": "partially_aligned",
+      "metric": "task_completion_delay",
+      "notes": "Paper values are mostly qualitative for the comparative section; numeric differences are only available for setup and LSTM ablation outputs.",
+      "paper_reference_items": [
+        "figure_10a_delay_vs_arrival",
+        "figure_10b_delay_vs_cpu",
+        "figure_10c_delay_vs_timeout",
+        "figure_11_lstm_ablation"
+      ],
+      "simulator_value_by_policy": {
+        "BCO": 5.2967032967032965,
+        "FLC": 5.186582809224318,
+        "HO": 5.834170854271357,
+        "HOODIE": 4.902286902286902,
+        "MLEO": 4.902286902286902,
+        "RO": 5.325239146431199,
+        "VO": 5.04384133611691
+      }
+    },
+    {
+      "comparison_status": "partially_aligned",
+      "metric": "task_drop_ratio",
+      "notes": "Paper values are mostly qualitative for the comparative section; numeric differences are only available for setup and LSTM ablation outputs.",
+      "paper_reference_items": [
+        "figure_10d_drop_vs_arrival",
+        "figure_10e_drop_vs_cpu",
+        "figure_10f_drop_vs_timeout"
+      ],
+      "simulator_value_by_policy": {
+        "BCO": 0.09722222222222222,
+        "FLC": 0.05357142857142857,
+        "HO": 0.21031746031746032,
+        "HOODIE": 0.04563492063492063,
+        "MLEO": 0.04563492063492063,
+        "RO": 0.10119047619047619,
+        "VO": 0.0496031746031746
+      }
+    },
+    {
+      "comparison_status": "not_comparable",
+      "metric": "completion_rate",
+      "notes": "Paper values are mostly qualitative for the comparative section; numeric differences are only available for setup and LSTM ablation outputs.",
+      "paper_reference_items": [
+        "qualitative_comparative_claim"
+      ],
+      "simulator_value_by_policy": {
+        "BCO": 0.9027777777777778,
+        "FLC": 0.9464285714285714,
+        "HO": 0.7896825396825397,
+        "HOODIE": 0.9543650793650794,
+        "MLEO": 0.9543650793650794,
+        "RO": 0.8988095238095238,
+        "VO": 0.9503968253968254
+      }
+    },
+    {
+      "comparison_status": "not_comparable",
+      "metric": "average_reward",
+      "notes": "Paper values are mostly qualitative for the comparative section; numeric differences are only available for setup and LSTM ablation outputs.",
+      "paper_reference_items": [
+        "figure_8_learning_curve",
+        "figure_9a_reward_vs_arrival",
+        "figure_9c_reward_vs_cpu",
+        "figure_9d_reward_vs_agents_traffic",
+        "figure_9e_reward_vs_agents_rates"
+      ],
+      "simulator_value_by_policy": {
+        "BCO": -8.670634920634921,
+        "FLC": -7.051587301587301,
+        "HO": -13.01984126984127,
+        "HOODIE": -6.503968253968254,
+        "MLEO": -6.503968253968254,
+        "RO": -8.833994708994709,
+        "VO": -6.777777777777778
+      }
+    },
+    {
+      "comparison_status": "not_comparable",
+      "metric": "total_reward",
+      "notes": "Paper values are mostly qualitative for the comparative section; numeric differences are only available for setup and LSTM ablation outputs.",
+      "paper_reference_items": [],
+      "simulator_value_by_policy": {
+        "BCO": -13110.0,
+        "FLC": -10662.0,
+        "HO": -19686.0,
+        "HOODIE": -9834.0,
+        "MLEO": -9834.0,
+        "RO": -13357.0,
+        "VO": -10248.0
+      }
+    },
+    {
+      "comparison_status": "not_comparable",
+      "metric": "throughput",
+      "notes": "Paper values are mostly qualitative for the comparative section; numeric differences are only available for setup and LSTM ablation outputs.",
+      "paper_reference_items": [
+        "qualitative_comparative_claim"
+      ],
+      "simulator_value_by_policy": {
+        "BCO": 0.9027777777777778,
+        "FLC": 0.9464285714285714,
+        "HO": 0.7896825396825397,
+        "HOODIE": 0.9543650793650794,
+        "MLEO": 0.9543650793650794,
+        "RO": 0.8988095238095238,
+        "VO": 0.9503968253968254
+      }
+    }
+  ]
+}

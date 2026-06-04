@@ -1,0 +1,62 @@
+{
+  "allowed_metrics": [
+    "task_completion_delay",
+    "task_drop_ratio",
+    "completion_rate",
+    "average_reward",
+    "total_reward",
+    "throughput"
+  ],
+  "blocking_issues": [],
+  "comparable_paper_outputs": [
+    "Figure 10a",
+    "Figure 10b",
+    "Figure 10c",
+    "Figure 10d",
+    "Figure 10e",
+    "Figure 10f"
+  ],
+  "diagnostic_metrics": [
+    "timeout_drop_rate",
+    "unavailable_drop_rate",
+    "deadline_violation_rate",
+    "queue_stability_score",
+    "illegal_action_rejection_count"
+  ],
+  "feature_086_boundary": [
+    "HOODIE remains the Feature 080 proposed method boundary.",
+    "No thesis method, DCQ method, or custom queue redesign is introduced.",
+    "The audit documents interface-only DRL/LSTM/forecast boundaries where full training is not reproduced.",
+    "No full empirical HOODIE reproduction claim is made."
+  ],
+  "feature_id": "087-hoodie-paper-output-comparison",
+  "non_comparable_paper_outputs": [
+    "Table 4",
+    "Figure 8a",
+    "Figure 8b",
+    "Figure 9a",
+    "Figure 9b",
+    "Figure 9c",
+    "Figure 9d",
+    "Figure 9e",
+    "Figure 11"
+  ],
+  "numeric_difference_summary": {
+    "numeric_differences_available": false,
+    "reason": "Paper comparison figures are mostly qualitative in the text layer; explicit numeric differences are only available for Table 4 setup values and Figure 11 ablation values, which are not simulator-to-paper evaluation matches."
+  },
+  "paper_items_comparable": 6,
+  "paper_items_extracted": 15,
+  "paper_items_not_comparable": 9,
+  "ranking_agreement_summary": {
+    "exact": 0,
+    "not_available": 4,
+    "partial": 2
+  },
+  "remaining_limitations": [
+    "Paper comparison figures are mostly qualitative in the text layer rather than clean numeric tables.",
+    "Figure 8, Figure 9, and Figure 11 are not directly comparable to the simulator evaluation bundle.",
+    "Reward and throughput outputs remain secondary under the Feature 086 claim boundary."
+  ],
+  "verdict": "paper_output_comparison_partial"
+}

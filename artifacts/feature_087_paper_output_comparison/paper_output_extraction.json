@@ -1,0 +1,410 @@
+[
+  {
+    "extraction_confidence": "high",
+    "item_type": "table",
+    "metric": "none",
+    "notes": "Paper setup parameters for the evaluation section. Explicit values are available in Table 4.",
+    "paper_item_id": "table_4_system_parameters",
+    "paper_values": {
+      "batch_size": 64,
+      "cpu_frequency_cloud_ghz": 30,
+      "cpu_frequency_private_ghz": 5,
+      "cpu_frequency_public_ghz": 5,
+      "discount_factor": 0.99,
+      "horizontal_data_rate_mbps": 30,
+      "learning_rate": 7e-07,
+      "lstm_lookback_steps": 10,
+      "number_of_eas": 20,
+      "number_of_training_episodes": 5000,
+      "replay_memory_size": 10000,
+      "task_arrival_probability": 0.5,
+      "task_drop_penalty": 40,
+      "task_processing_density_gigacycles_per_mbit": 0.297,
+      "task_size_mbits": [
+        2,
+        2.1,
+        5
+      ],
+      "task_timeout_sec": 2.0,
+      "task_timeout_slots": 20,
+      "time_slot_duration_sec": 0.1,
+      "time_slots_per_episode": 110,
+      "vertical_data_rate_mbps": 10
+    },
+    "policies": [
+      "HOODIE",
+      "RO",
+      "FLC",
+      "VO",
+      "HO",
+      "BCO",
+      "MLEO"
+    ],
+    "scenario_variable": "system_parameters",
+    "source_location": "resources/papers/hoodie/original/HOODIE_paper.pdf p.17; resources/papers/hoodie/ocr/merged.txt:763-771",
+    "value_extraction_method": "table_value"
+  },
+  {
+    "extraction_confidence": "medium",
+    "item_type": "figure",
+    "metric": "average_reward",
+    "notes": "Training-convergence figure. It is informative for paper context but not directly comparable to the simulator evaluation bundle.",
+    "paper_item_id": "figure_8_learning_curve",
+    "paper_values": {
+      "discount_factor_sweep": [
+        0.2,
+        0.4,
+        0.6,
+        0.8,
+        0.99
+      ],
+      "learning_rate_sweep": [
+        1e-09,
+        5e-09,
+        1e-08,
+        1e-07,
+        5e-07,
+        7e-07
+      ],
+      "reward_curve_convention": "negative reward values increase toward zero"
+    },
+    "policies": [
+      "HOODIE"
+    ],
+    "scenario_variable": "training_episode",
+    "source_location": "resources/papers/hoodie/original/HOODIE_paper.pdf pp.18-19; resources/papers/hoodie/ocr/merged.txt:823-899",
+    "value_extraction_method": "qualitative_only"
+  },
+  {
+    "extraction_confidence": "medium",
+    "item_type": "figure",
+    "metric": "average_reward",
+    "notes": "Average reward decreases with higher task arrival probability; HOODIE remains strongest among the shown agent-count settings.",
+    "paper_item_id": "figure_9a_reward_vs_arrival",
+    "paper_values": {
+      "agent_counts": [
+        10,
+        15,
+        20
+      ],
+      "x_range": [
+        0.1,
+        0.9
+      ]
+    },
+    "policies": [
+      "HOODIE"
+    ],
+    "scenario_variable": "task_arrival_probability",
+    "source_location": "resources/papers/hoodie/original/HOODIE_paper.pdf p.19; resources/papers/hoodie/ocr/merged.txt:899-930",
+    "value_extraction_method": "qualitative_only"
+  },
+  {
+    "extraction_confidence": "medium",
+    "item_type": "figure",
+    "metric": "none",
+    "notes": "Action-distribution figure is qualitative and does not map cleanly to the simulator's aggregate policy metrics.",
+    "paper_item_id": "figure_9b_action_distribution",
+    "paper_values": {
+      "action_types": [
+        "local",
+        "horizontal",
+        "vertical"
+      ],
+      "x_range": [
+        0.1,
+        0.9
+      ]
+    },
+    "policies": [
+      "HOODIE"
+    ],
+    "scenario_variable": "action_type",
+    "source_location": "resources/papers/hoodie/original/HOODIE_paper.pdf p.19; resources/papers/hoodie/ocr/merged.txt:899-930",
+    "value_extraction_method": "qualitative_only"
+  },
+  {
+    "extraction_confidence": "medium",
+    "item_type": "figure",
+    "metric": "average_reward",
+    "notes": "Average reward improves with more CPU capacity; HOODIE improves the most at constrained capacities.",
+    "paper_item_id": "figure_9c_reward_vs_cpu",
+    "paper_values": {
+      "agent_counts": [
+        10,
+        20
+      ],
+      "x_range_ghz": [
+        4,
+        9
+      ]
+    },
+    "policies": [
+      "HOODIE"
+    ],
+    "scenario_variable": "cpu_computation_capacity_ghz",
+    "source_location": "resources/papers/hoodie/original/HOODIE_paper.pdf p.19; resources/papers/hoodie/ocr/merged.txt:940-988",
+    "value_extraction_method": "qualitative_only"
+  },
+  {
+    "extraction_confidence": "medium",
+    "item_type": "figure",
+    "metric": "average_reward",
+    "notes": "Traffic-intensity figure is qualitative; paper states reward declines with more agents, especially under heavy/extreme traffic.",
+    "paper_item_id": "figure_9d_reward_vs_agents_traffic",
+    "paper_values": {
+      "traffic_scenarios": {
+        "extreme": [
+          3,
+          7
+        ],
+        "heavy": [
+          2,
+          5
+        ],
+        "moderate": [
+          1,
+          3
+        ]
+      }
+    },
+    "policies": [
+      "HOODIE"
+    ],
+    "scenario_variable": "number_of_agents",
+    "source_location": "resources/papers/hoodie/original/HOODIE_paper.pdf pp.19-20; resources/papers/hoodie/ocr/merged.txt:948-988",
+    "value_extraction_method": "qualitative_only"
+  },
+  {
+    "extraction_confidence": "medium",
+    "item_type": "figure",
+    "metric": "average_reward",
+    "notes": "The paper reports trend ordering, not a directly reusable numeric table, for the offloading-rate study.",
+    "paper_item_id": "figure_9e_reward_vs_agents_rates",
+    "paper_values": {
+      "balanced_capacity": {
+        "RH": 10,
+        "RV": 30
+      },
+      "horizontal_centric": {
+        "RH": 20,
+        "RV": 20
+      },
+      "vertical_centric": {
+        "RH": 5,
+        "RV": 40
+      }
+    },
+    "policies": [
+      "HOODIE"
+    ],
+    "scenario_variable": "offloading_data_rate_configuration",
+    "source_location": "resources/papers/hoodie/original/HOODIE_paper.pdf p.20; resources/papers/hoodie/ocr/merged.txt:988-1000",
+    "value_extraction_method": "qualitative_only"
+  },
+  {
+    "extraction_confidence": "high",
+    "item_type": "figure",
+    "metric": "task_completion_delay",
+    "notes": "Comparative delay figure. The paper's textual claim is explicit; exact numeric values are not cleanly recoverable from the OCR tables.",
+    "paper_item_id": "figure_10a_delay_vs_arrival",
+    "paper_values": {
+      "order_claim": "HOODIE lowest delay; MLEO close but behind HOODIE at high load",
+      "timeout_sec": 10.0,
+      "x_range": [
+        0.1,
+        0.9
+      ]
+    },
+    "policies": [
+      "HOODIE",
+      "RO",
+      "FLC",
+      "VO",
+      "HO",
+      "BCO",
+      "MLEO"
+    ],
+    "scenario_variable": "task_arrival_probability",
+    "source_location": "resources/papers/hoodie/original/HOODIE_paper.pdf p.21; resources/papers/hoodie/ocr/merged.txt:934-936",
+    "value_extraction_method": "qualitative_only"
+  },
+  {
+    "extraction_confidence": "high",
+    "item_type": "figure",
+    "metric": "task_completion_delay",
+    "notes": "Comparative delay figure against CPU capacity; paper provides trend claims rather than a compact numeric table in the text layer.",
+    "paper_item_id": "figure_10b_delay_vs_cpu",
+    "paper_values": {
+      "order_claim": "HOODIE lowest delay; MLEO strong but less pronounced than HOODIE",
+      "timeout_sec": 10.0,
+      "x_range_ghz": [
+        3,
+        7
+      ]
+    },
+    "policies": [
+      "HOODIE",
+      "RO",
+      "FLC",
+      "VO",
+      "HO",
+      "BCO",
+      "MLEO"
+    ],
+    "scenario_variable": "cpu_computation_capacity_ghz",
+    "source_location": "resources/papers/hoodie/original/HOODIE_paper.pdf p.21; resources/papers/hoodie/ocr/merged.txt:940-988",
+    "value_extraction_method": "qualitative_only"
+  },
+  {
+    "extraction_confidence": "high",
+    "item_type": "figure",
+    "metric": "task_completion_delay",
+    "notes": "Comparative delay figure against timeout; qualitative ordering is explicit in the paper text.",
+    "paper_item_id": "figure_10c_delay_vs_timeout",
+    "paper_values": {
+      "order_claim": "HOODIE lowest delay; MLEO slightly higher at shorter timeouts",
+      "x_range_sec": [
+        9.6,
+        10.4
+      ]
+    },
+    "policies": [
+      "HOODIE",
+      "RO",
+      "FLC",
+      "VO",
+      "HO",
+      "BCO",
+      "MLEO"
+    ],
+    "scenario_variable": "task_timeout_sec",
+    "source_location": "resources/papers/hoodie/original/HOODIE_paper.pdf p.22; resources/papers/hoodie/ocr/merged.txt:992-996",
+    "value_extraction_method": "qualitative_only"
+  },
+  {
+    "extraction_confidence": "high",
+    "item_type": "figure",
+    "metric": "task_drop_ratio",
+    "notes": "Comparative drop-ratio figure; the paper's text gives the high-level ordering but not a clean numeric table in text form.",
+    "paper_item_id": "figure_10d_drop_vs_arrival",
+    "paper_values": {
+      "order_claim": "HOODIE lowest drop ratio; FLC and HO highest at heavier load",
+      "timeout_sec": 2.0,
+      "x_range": [
+        0.1,
+        0.9
+      ]
+    },
+    "policies": [
+      "HOODIE",
+      "RO",
+      "FLC",
+      "VO",
+      "HO",
+      "BCO",
+      "MLEO"
+    ],
+    "scenario_variable": "task_arrival_probability",
+    "source_location": "resources/papers/hoodie/original/HOODIE_paper.pdf p.21; resources/papers/hoodie/ocr/merged.txt:936-936",
+    "value_extraction_method": "qualitative_only"
+  },
+  {
+    "extraction_confidence": "high",
+    "item_type": "figure",
+    "metric": "task_drop_ratio",
+    "notes": "Comparative drop-ratio figure against CPU capacity.",
+    "paper_item_id": "figure_10e_drop_vs_cpu",
+    "paper_values": {
+      "order_claim": "HOODIE lowest drop ratio; VO and HO perform poorly",
+      "timeout_sec": 2.0,
+      "x_range_ghz": [
+        3,
+        7
+      ]
+    },
+    "policies": [
+      "HOODIE",
+      "RO",
+      "FLC",
+      "VO",
+      "HO",
+      "BCO",
+      "MLEO"
+    ],
+    "scenario_variable": "cpu_computation_capacity_ghz",
+    "source_location": "resources/papers/hoodie/original/HOODIE_paper.pdf p.21; resources/papers/hoodie/ocr/merged.txt:988-988",
+    "value_extraction_method": "qualitative_only"
+  },
+  {
+    "extraction_confidence": "high",
+    "item_type": "figure",
+    "metric": "task_drop_ratio",
+    "notes": "Comparative drop-ratio figure against timeout.",
+    "paper_item_id": "figure_10f_drop_vs_timeout",
+    "paper_values": {
+      "order_claim": "HOODIE lowest drop ratio across all timeout values",
+      "x_range_sec": [
+        1.6,
+        2.4
+      ]
+    },
+    "policies": [
+      "HOODIE",
+      "RO",
+      "FLC",
+      "VO",
+      "HO",
+      "BCO",
+      "MLEO"
+    ],
+    "scenario_variable": "task_timeout_sec",
+    "source_location": "resources/papers/hoodie/original/HOODIE_paper.pdf p.22; resources/papers/hoodie/ocr/merged.txt:992-996",
+    "value_extraction_method": "qualitative_only"
+  },
+  {
+    "extraction_confidence": "high",
+    "item_type": "figure",
+    "metric": "task_completion_delay",
+    "notes": "Explicit ablation values are stated in the paper text. This is a paper-training result, not a simulator evaluation output.",
+    "paper_item_id": "figure_11_lstm_ablation",
+    "paper_values": {
+      "difference_sec": 0.13,
+      "with_lstm_final_delay_sec": 0.35,
+      "without_lstm_final_delay_sec": 0.48
+    },
+    "policies": [
+      "HOODIE"
+    ],
+    "scenario_variable": "training_episode",
+    "source_location": "resources/papers/hoodie/original/HOODIE_paper.pdf p.22; resources/papers/hoodie/ocr/merged.txt:1000-1041",
+    "value_extraction_method": "explicit_text"
+  },
+  {
+    "extraction_confidence": "high",
+    "item_type": "text_claim",
+    "metric": "none",
+    "notes": "This claim is the core comparison boundary for Feature 087.",
+    "paper_item_id": "qualitative_comparative_claim",
+    "paper_values": {
+      "claims": [
+        "HOODIE consistently outperforms the baseline schemes on average delay.",
+        "HOODIE demonstrates the lowest drop ratios across the comparative sweeps.",
+        "MLEO is strong but trails HOODIE in the comparative section.",
+        "Reward values are useful for training, but the paper prefers delay and drop ratio for comparison."
+      ]
+    },
+    "policies": [
+      "HOODIE",
+      "RO",
+      "FLC",
+      "VO",
+      "HO",
+      "BCO",
+      "MLEO"
+    ],
+    "scenario_variable": "comparison_section",
+    "source_location": "resources/papers/hoodie/original/HOODIE_paper.pdf pp.20-23; resources/papers/hoodie/ocr/merged.txt:934-1058",
+    "value_extraction_method": "explicit_text"
+  }
+]

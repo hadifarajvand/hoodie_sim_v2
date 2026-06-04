@@ -1,0 +1,90 @@
+[
+  {
+    "allowed_for_comparison": true,
+    "caveat": "Paper reports average computation delay / completion delay across comparative sweeps; the simulator reports task_completion_delay under the Feature 086 approximation boundary.",
+    "classification": "paper_primary_metric",
+    "mapping_status": "approximate_metric_match",
+    "paper_metric": "task_completion_delay",
+    "simulator_metric": "task_completion_delay"
+  },
+  {
+    "allowed_for_comparison": true,
+    "caveat": "Paper explicitly compares drop ratio in the evaluation section.",
+    "classification": "paper_primary_metric",
+    "mapping_status": "exact_metric_match",
+    "paper_metric": "task_drop_ratio",
+    "simulator_metric": "task_drop_ratio"
+  },
+  {
+    "allowed_for_comparison": true,
+    "caveat": "Derived from drop/completion counts; the paper does not foreground it as the primary comparative metric.",
+    "classification": "paper_secondary_or_derived_metric",
+    "mapping_status": "derived_metric_match",
+    "paper_metric": "completion_rate",
+    "simulator_metric": "completion_rate"
+  },
+  {
+    "allowed_for_comparison": true,
+    "caveat": "Paper reward curves are training/behavioral outputs and are not the main comparison metric; simulator average_reward is available but must be read under the claim boundary.",
+    "classification": "paper_secondary_or_repository_metric",
+    "mapping_status": "approximate_metric_match",
+    "paper_metric": "average_reward",
+    "simulator_metric": "average_reward"
+  },
+  {
+    "allowed_for_comparison": true,
+    "caveat": "Paper discusses cumulative reward during training; simulator total_reward is available for comparison but is not a direct evaluation headline metric.",
+    "classification": "paper_secondary_or_repository_metric",
+    "mapping_status": "approximate_metric_match",
+    "paper_metric": "total_reward",
+    "simulator_metric": "total_reward"
+  },
+  {
+    "allowed_for_comparison": true,
+    "caveat": "Paper discusses throughput in the objective framing rather than as the main comparative figure; simulator throughput is derived from completion counts.",
+    "classification": "paper_secondary_or_repository_metric",
+    "mapping_status": "derived_metric_match",
+    "paper_metric": "throughput",
+    "simulator_metric": "throughput"
+  },
+  {
+    "allowed_for_comparison": false,
+    "caveat": "Repository diagnostic only unless the paper explicitly supports the denominator and drop semantics.",
+    "classification": "repository_diagnostic_metric",
+    "mapping_status": "not_reported_by_paper",
+    "paper_metric": "timeout_drop_rate",
+    "simulator_metric": "timeout_drop_rate"
+  },
+  {
+    "allowed_for_comparison": false,
+    "caveat": "Repository diagnostic only unless the paper explicitly supports the denominator and drop semantics.",
+    "classification": "repository_diagnostic_metric",
+    "mapping_status": "not_reported_by_paper",
+    "paper_metric": "unavailable_drop_rate",
+    "simulator_metric": "unavailable_drop_rate"
+  },
+  {
+    "allowed_for_comparison": false,
+    "caveat": "Repository diagnostic only; the paper discusses deadline violations qualitatively but does not expose this as a paper headline metric.",
+    "classification": "repository_diagnostic_metric",
+    "mapping_status": "not_reported_by_paper",
+    "paper_metric": "deadline_violation_rate",
+    "simulator_metric": "deadline_violation_rate"
+  },
+  {
+    "allowed_for_comparison": false,
+    "caveat": "Repository diagnostic only.",
+    "classification": "repository_diagnostic_metric",
+    "mapping_status": "not_reported_by_paper",
+    "paper_metric": "queue_stability_score",
+    "simulator_metric": "queue_stability_score"
+  },
+  {
+    "allowed_for_comparison": false,
+    "caveat": "Repository diagnostic only.",
+    "classification": "repository_diagnostic_metric",
+    "mapping_status": "not_reported_by_paper",
+    "paper_metric": "illegal_action_rejection_count",
+    "simulator_metric": "illegal_action_rejection_count"
+  }
+]

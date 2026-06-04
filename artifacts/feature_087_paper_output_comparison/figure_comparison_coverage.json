@@ -1,0 +1,43 @@
+[
+  {
+    "comparison_status": "not_comparable",
+    "figure_id": "Figure 8",
+    "notes": "Training convergence figure; no direct simulator evaluation counterpart.",
+    "paper_item_ids": [
+      "figure_8_learning_curve"
+    ]
+  },
+  {
+    "comparison_status": "partially_aligned",
+    "figure_id": "Figure 9",
+    "notes": "Behavior/scalability figures provide qualitative claim alignment but not one-to-one output comparisons.",
+    "paper_item_ids": [
+      "figure_9a_reward_vs_arrival",
+      "figure_9b_action_distribution",
+      "figure_9c_reward_vs_cpu",
+      "figure_9d_reward_vs_agents_traffic",
+      "figure_9e_reward_vs_agents_rates"
+    ]
+  },
+  {
+    "comparison_status": "aligned",
+    "figure_id": "Figure 10",
+    "notes": "Comparative evaluation figures map directly to the simulator's allowed paper-comparison metrics under the Feature 086 boundary.",
+    "paper_item_ids": [
+      "figure_10a_delay_vs_arrival",
+      "figure_10b_delay_vs_cpu",
+      "figure_10c_delay_vs_timeout",
+      "figure_10d_drop_vs_arrival",
+      "figure_10e_drop_vs_cpu",
+      "figure_10f_drop_vs_timeout"
+    ]
+  },
+  {
+    "comparison_status": "not_comparable",
+    "figure_id": "Figure 11",
+    "notes": "LSTM ablation is a paper-training result and not an output-comparison target.",
+    "paper_item_ids": [
+      "figure_11_lstm_ablation"
+    ]
+  }
+]

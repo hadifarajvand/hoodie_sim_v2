@@ -1,0 +1,782 @@
+[
+  {
+    "aggregation_method": "aggregate_by_policy",
+    "artifact_path": "/Users/hadi/Documents/GitHub/hoodie_sim_v2/artifacts/feature_085_full_audit/aggregate_by_policy.json",
+    "claim_boundary": "Feature 086 approximation boundary remains active for all paper-comparison outputs.",
+    "metric": "task_completion_delay",
+    "policy": "BCO",
+    "scenario": "all",
+    "source_feature": "085",
+    "value": 5.2967032967032965
+  },
+  {
+    "aggregation_method": "aggregate_by_policy",
+    "artifact_path": "/Users/hadi/Documents/GitHub/hoodie_sim_v2/artifacts/feature_085_full_audit/aggregate_by_policy.json",
+    "claim_boundary": "Feature 086 approximation boundary remains active for all paper-comparison outputs.",
+    "metric": "task_drop_ratio",
+    "policy": "BCO",
+    "scenario": "all",
+    "source_feature": "085",
+    "value": 0.09722222222222222
+  },
+  {
+    "aggregation_method": "aggregate_by_policy",
+    "artifact_path": "/Users/hadi/Documents/GitHub/hoodie_sim_v2/artifacts/feature_085_full_audit/aggregate_by_policy.json",
+    "claim_boundary": "Feature 086 approximation boundary remains active for all paper-comparison outputs.",
+    "metric": "completion_rate",
+    "policy": "BCO",
+    "scenario": "all",
+    "source_feature": "085",
+    "value": 0.9027777777777778
+  },
+  {
+    "aggregation_method": "aggregate_by_policy",
+    "artifact_path": "/Users/hadi/Documents/GitHub/hoodie_sim_v2/artifacts/feature_085_full_audit/aggregate_by_policy.json",
+    "claim_boundary": "Feature 086 approximation boundary remains active for all paper-comparison outputs.",
+    "metric": "average_reward",
+    "policy": "BCO",
+    "scenario": "all",
+    "source_feature": "085",
+    "value": -8.670634920634921
+  },
+  {
+    "aggregation_method": "aggregate_by_policy",
+    "artifact_path": "/Users/hadi/Documents/GitHub/hoodie_sim_v2/artifacts/feature_085_full_audit/aggregate_by_policy.json",
+    "claim_boundary": "Feature 086 approximation boundary remains active for all paper-comparison outputs.",
+    "metric": "total_reward",
+    "policy": "BCO",
+    "scenario": "all",
+    "source_feature": "085",
+    "value": -13110.0
+  },
+  {
+    "aggregation_method": "aggregate_by_policy",
+    "artifact_path": "/Users/hadi/Documents/GitHub/hoodie_sim_v2/artifacts/feature_085_full_audit/aggregate_by_policy.json",
+    "claim_boundary": "Feature 086 approximation boundary remains active for all paper-comparison outputs.",
+    "metric": "throughput",
+    "policy": "BCO",
+    "scenario": "all",
+    "source_feature": "085",
+    "value": 0.9027777777777778
+  },
+  {
+    "aggregation_method": "aggregate_by_policy",
+    "artifact_path": "/Users/hadi/Documents/GitHub/hoodie_sim_v2/artifacts/feature_085_full_audit/aggregate_by_policy.json",
+    "claim_boundary": "Feature 086 approximation boundary remains active for all paper-comparison outputs.",
+    "metric": "timeout_drop_rate",
+    "policy": "BCO",
+    "scenario": "all",
+    "source_feature": "085",
+    "value": 0.05555555555555555
+  },
+  {
+    "aggregation_method": "aggregate_by_policy",
+    "artifact_path": "/Users/hadi/Documents/GitHub/hoodie_sim_v2/artifacts/feature_085_full_audit/aggregate_by_policy.json",
+    "claim_boundary": "Feature 086 approximation boundary remains active for all paper-comparison outputs.",
+    "metric": "unavailable_drop_rate",
+    "policy": "BCO",
+    "scenario": "all",
+    "source_feature": "085",
+    "value": 0.041666666666666664
+  },
+  {
+    "aggregation_method": "aggregate_by_policy",
+    "artifact_path": "/Users/hadi/Documents/GitHub/hoodie_sim_v2/artifacts/feature_085_full_audit/aggregate_by_policy.json",
+    "claim_boundary": "Feature 086 approximation boundary remains active for all paper-comparison outputs.",
+    "metric": "deadline_violation_rate",
+    "policy": "BCO",
+    "scenario": "all",
+    "source_feature": "085",
+    "value": 0.13095238095238096
+  },
+  {
+    "aggregation_method": "aggregate_by_policy",
+    "artifact_path": "/Users/hadi/Documents/GitHub/hoodie_sim_v2/artifacts/feature_085_full_audit/aggregate_by_policy.json",
+    "claim_boundary": "Feature 086 approximation boundary remains active for all paper-comparison outputs.",
+    "metric": "queue_stability_score",
+    "policy": "BCO",
+    "scenario": "all",
+    "source_feature": "085",
+    "value": 0.17937041032955262
+  },
+  {
+    "aggregation_method": "aggregate_by_policy",
+    "artifact_path": "/Users/hadi/Documents/GitHub/hoodie_sim_v2/artifacts/feature_085_full_audit/aggregate_by_policy.json",
+    "claim_boundary": "Feature 086 approximation boundary remains active for all paper-comparison outputs.",
+    "metric": "illegal_action_rejection_count",
+    "policy": "BCO",
+    "scenario": "all",
+    "source_feature": "085",
+    "value": 63
+  },
+  {
+    "aggregation_method": "aggregate_by_policy",
+    "artifact_path": "/Users/hadi/Documents/GitHub/hoodie_sim_v2/artifacts/feature_085_full_audit/aggregate_by_policy.json",
+    "claim_boundary": "Feature 086 approximation boundary remains active for all paper-comparison outputs.",
+    "metric": "task_completion_delay",
+    "policy": "FLC",
+    "scenario": "all",
+    "source_feature": "085",
+    "value": 5.186582809224318
+  },
+  {
+    "aggregation_method": "aggregate_by_policy",
+    "artifact_path": "/Users/hadi/Documents/GitHub/hoodie_sim_v2/artifacts/feature_085_full_audit/aggregate_by_policy.json",
+    "claim_boundary": "Feature 086 approximation boundary remains active for all paper-comparison outputs.",
+    "metric": "task_drop_ratio",
+    "policy": "FLC",
+    "scenario": "all",
+    "source_feature": "085",
+    "value": 0.05357142857142857
+  },
+  {
+    "aggregation_method": "aggregate_by_policy",
+    "artifact_path": "/Users/hadi/Documents/GitHub/hoodie_sim_v2/artifacts/feature_085_full_audit/aggregate_by_policy.json",
+    "claim_boundary": "Feature 086 approximation boundary remains active for all paper-comparison outputs.",
+    "metric": "completion_rate",
+    "policy": "FLC",
+    "scenario": "all",
+    "source_feature": "085",
+    "value": 0.9464285714285714
+  },
+  {
+    "aggregation_method": "aggregate_by_policy",
+    "artifact_path": "/Users/hadi/Documents/GitHub/hoodie_sim_v2/artifacts/feature_085_full_audit/aggregate_by_policy.json",
+    "claim_boundary": "Feature 086 approximation boundary remains active for all paper-comparison outputs.",
+    "metric": "average_reward",
+    "policy": "FLC",
+    "scenario": "all",
+    "source_feature": "085",
+    "value": -7.051587301587301
+  },
+  {
+    "aggregation_method": "aggregate_by_policy",
+    "artifact_path": "/Users/hadi/Documents/GitHub/hoodie_sim_v2/artifacts/feature_085_full_audit/aggregate_by_policy.json",
+    "claim_boundary": "Feature 086 approximation boundary remains active for all paper-comparison outputs.",
+    "metric": "total_reward",
+    "policy": "FLC",
+    "scenario": "all",
+    "source_feature": "085",
+    "value": -10662.0
+  },
+  {
+    "aggregation_method": "aggregate_by_policy",
+    "artifact_path": "/Users/hadi/Documents/GitHub/hoodie_sim_v2/artifacts/feature_085_full_audit/aggregate_by_policy.json",
+    "claim_boundary": "Feature 086 approximation boundary remains active for all paper-comparison outputs.",
+    "metric": "throughput",
+    "policy": "FLC",
+    "scenario": "all",
+    "source_feature": "085",
+    "value": 0.9464285714285714
+  },
+  {
+    "aggregation_method": "aggregate_by_policy",
+    "artifact_path": "/Users/hadi/Documents/GitHub/hoodie_sim_v2/artifacts/feature_085_full_audit/aggregate_by_policy.json",
+    "claim_boundary": "Feature 086 approximation boundary remains active for all paper-comparison outputs.",
+    "metric": "timeout_drop_rate",
+    "policy": "FLC",
+    "scenario": "all",
+    "source_feature": "085",
+    "value": 0.05357142857142857
+  },
+  {
+    "aggregation_method": "aggregate_by_policy",
+    "artifact_path": "/Users/hadi/Documents/GitHub/hoodie_sim_v2/artifacts/feature_085_full_audit/aggregate_by_policy.json",
+    "claim_boundary": "Feature 086 approximation boundary remains active for all paper-comparison outputs.",
+    "metric": "unavailable_drop_rate",
+    "policy": "FLC",
+    "scenario": "all",
+    "source_feature": "085",
+    "value": 0.0
+  },
+  {
+    "aggregation_method": "aggregate_by_policy",
+    "artifact_path": "/Users/hadi/Documents/GitHub/hoodie_sim_v2/artifacts/feature_085_full_audit/aggregate_by_policy.json",
+    "claim_boundary": "Feature 086 approximation boundary remains active for all paper-comparison outputs.",
+    "metric": "deadline_violation_rate",
+    "policy": "FLC",
+    "scenario": "all",
+    "source_feature": "085",
+    "value": 0.12301587301587301
+  },
+  {
+    "aggregation_method": "aggregate_by_policy",
+    "artifact_path": "/Users/hadi/Documents/GitHub/hoodie_sim_v2/artifacts/feature_085_full_audit/aggregate_by_policy.json",
+    "claim_boundary": "Feature 086 approximation boundary remains active for all paper-comparison outputs.",
+    "metric": "queue_stability_score",
+    "policy": "FLC",
+    "scenario": "all",
+    "source_feature": "085",
+    "value": 0.17937041032955262
+  },
+  {
+    "aggregation_method": "aggregate_by_policy",
+    "artifact_path": "/Users/hadi/Documents/GitHub/hoodie_sim_v2/artifacts/feature_085_full_audit/aggregate_by_policy.json",
+    "claim_boundary": "Feature 086 approximation boundary remains active for all paper-comparison outputs.",
+    "metric": "illegal_action_rejection_count",
+    "policy": "FLC",
+    "scenario": "all",
+    "source_feature": "085",
+    "value": 0
+  },
+  {
+    "aggregation_method": "aggregate_by_policy",
+    "artifact_path": "/Users/hadi/Documents/GitHub/hoodie_sim_v2/artifacts/feature_085_full_audit/aggregate_by_policy.json",
+    "claim_boundary": "Feature 086 approximation boundary remains active for all paper-comparison outputs.",
+    "metric": "task_completion_delay",
+    "policy": "HO",
+    "scenario": "all",
+    "source_feature": "085",
+    "value": 5.834170854271357
+  },
+  {
+    "aggregation_method": "aggregate_by_policy",
+    "artifact_path": "/Users/hadi/Documents/GitHub/hoodie_sim_v2/artifacts/feature_085_full_audit/aggregate_by_policy.json",
+    "claim_boundary": "Feature 086 approximation boundary remains active for all paper-comparison outputs.",
+    "metric": "task_drop_ratio",
+    "policy": "HO",
+    "scenario": "all",
+    "source_feature": "085",
+    "value": 0.21031746031746032
+  },
+  {
+    "aggregation_method": "aggregate_by_policy",
+    "artifact_path": "/Users/hadi/Documents/GitHub/hoodie_sim_v2/artifacts/feature_085_full_audit/aggregate_by_policy.json",
+    "claim_boundary": "Feature 086 approximation boundary remains active for all paper-comparison outputs.",
+    "metric": "completion_rate",
+    "policy": "HO",
+    "scenario": "all",
+    "source_feature": "085",
+    "value": 0.7896825396825397
+  },
+  {
+    "aggregation_method": "aggregate_by_policy",
+    "artifact_path": "/Users/hadi/Documents/GitHub/hoodie_sim_v2/artifacts/feature_085_full_audit/aggregate_by_policy.json",
+    "claim_boundary": "Feature 086 approximation boundary remains active for all paper-comparison outputs.",
+    "metric": "average_reward",
+    "policy": "HO",
+    "scenario": "all",
+    "source_feature": "085",
+    "value": -13.01984126984127
+  },
+  {
+    "aggregation_method": "aggregate_by_policy",
+    "artifact_path": "/Users/hadi/Documents/GitHub/hoodie_sim_v2/artifacts/feature_085_full_audit/aggregate_by_policy.json",
+    "claim_boundary": "Feature 086 approximation boundary remains active for all paper-comparison outputs.",
+    "metric": "total_reward",
+    "policy": "HO",
+    "scenario": "all",
+    "source_feature": "085",
+    "value": -19686.0
+  },
+  {
+    "aggregation_method": "aggregate_by_policy",
+    "artifact_path": "/Users/hadi/Documents/GitHub/hoodie_sim_v2/artifacts/feature_085_full_audit/aggregate_by_policy.json",
+    "claim_boundary": "Feature 086 approximation boundary remains active for all paper-comparison outputs.",
+    "metric": "throughput",
+    "policy": "HO",
+    "scenario": "all",
+    "source_feature": "085",
+    "value": 0.7896825396825397
+  },
+  {
+    "aggregation_method": "aggregate_by_policy",
+    "artifact_path": "/Users/hadi/Documents/GitHub/hoodie_sim_v2/artifacts/feature_085_full_audit/aggregate_by_policy.json",
+    "claim_boundary": "Feature 086 approximation boundary remains active for all paper-comparison outputs.",
+    "metric": "timeout_drop_rate",
+    "policy": "HO",
+    "scenario": "all",
+    "source_feature": "085",
+    "value": 0.06746031746031746
+  },
+  {
+    "aggregation_method": "aggregate_by_policy",
+    "artifact_path": "/Users/hadi/Documents/GitHub/hoodie_sim_v2/artifacts/feature_085_full_audit/aggregate_by_policy.json",
+    "claim_boundary": "Feature 086 approximation boundary remains active for all paper-comparison outputs.",
+    "metric": "unavailable_drop_rate",
+    "policy": "HO",
+    "scenario": "all",
+    "source_feature": "085",
+    "value": 0.14285714285714285
+  },
+  {
+    "aggregation_method": "aggregate_by_policy",
+    "artifact_path": "/Users/hadi/Documents/GitHub/hoodie_sim_v2/artifacts/feature_085_full_audit/aggregate_by_policy.json",
+    "claim_boundary": "Feature 086 approximation boundary remains active for all paper-comparison outputs.",
+    "metric": "deadline_violation_rate",
+    "policy": "HO",
+    "scenario": "all",
+    "source_feature": "085",
+    "value": 0.17063492063492064
+  },
+  {
+    "aggregation_method": "aggregate_by_policy",
+    "artifact_path": "/Users/hadi/Documents/GitHub/hoodie_sim_v2/artifacts/feature_085_full_audit/aggregate_by_policy.json",
+    "claim_boundary": "Feature 086 approximation boundary remains active for all paper-comparison outputs.",
+    "metric": "queue_stability_score",
+    "policy": "HO",
+    "scenario": "all",
+    "source_feature": "085",
+    "value": 0.17937041032955262
+  },
+  {
+    "aggregation_method": "aggregate_by_policy",
+    "artifact_path": "/Users/hadi/Documents/GitHub/hoodie_sim_v2/artifacts/feature_085_full_audit/aggregate_by_policy.json",
+    "claim_boundary": "Feature 086 approximation boundary remains active for all paper-comparison outputs.",
+    "metric": "illegal_action_rejection_count",
+    "policy": "HO",
+    "scenario": "all",
+    "source_feature": "085",
+    "value": 216
+  },
+  {
+    "aggregation_method": "aggregate_by_policy",
+    "artifact_path": "/Users/hadi/Documents/GitHub/hoodie_sim_v2/artifacts/feature_085_full_audit/aggregate_by_policy.json",
+    "claim_boundary": "Feature 086 approximation boundary remains active for all paper-comparison outputs.",
+    "metric": "task_completion_delay",
+    "policy": "HOODIE",
+    "scenario": "all",
+    "source_feature": "085",
+    "value": 4.902286902286902
+  },
+  {
+    "aggregation_method": "aggregate_by_policy",
+    "artifact_path": "/Users/hadi/Documents/GitHub/hoodie_sim_v2/artifacts/feature_085_full_audit/aggregate_by_policy.json",
+    "claim_boundary": "Feature 086 approximation boundary remains active for all paper-comparison outputs.",
+    "metric": "task_drop_ratio",
+    "policy": "HOODIE",
+    "scenario": "all",
+    "source_feature": "085",
+    "value": 0.04563492063492063
+  },
+  {
+    "aggregation_method": "aggregate_by_policy",
+    "artifact_path": "/Users/hadi/Documents/GitHub/hoodie_sim_v2/artifacts/feature_085_full_audit/aggregate_by_policy.json",
+    "claim_boundary": "Feature 086 approximation boundary remains active for all paper-comparison outputs.",
+    "metric": "completion_rate",
+    "policy": "HOODIE",
+    "scenario": "all",
+    "source_feature": "085",
+    "value": 0.9543650793650794
+  },
+  {
+    "aggregation_method": "aggregate_by_policy",
+    "artifact_path": "/Users/hadi/Documents/GitHub/hoodie_sim_v2/artifacts/feature_085_full_audit/aggregate_by_policy.json",
+    "claim_boundary": "Feature 086 approximation boundary remains active for all paper-comparison outputs.",
+    "metric": "average_reward",
+    "policy": "HOODIE",
+    "scenario": "all",
+    "source_feature": "085",
+    "value": -6.503968253968254
+  },
+  {
+    "aggregation_method": "aggregate_by_policy",
+    "artifact_path": "/Users/hadi/Documents/GitHub/hoodie_sim_v2/artifacts/feature_085_full_audit/aggregate_by_policy.json",
+    "claim_boundary": "Feature 086 approximation boundary remains active for all paper-comparison outputs.",
+    "metric": "total_reward",
+    "policy": "HOODIE",
+    "scenario": "all",
+    "source_feature": "085",
+    "value": -9834.0
+  },
+  {
+    "aggregation_method": "aggregate_by_policy",
+    "artifact_path": "/Users/hadi/Documents/GitHub/hoodie_sim_v2/artifacts/feature_085_full_audit/aggregate_by_policy.json",
+    "claim_boundary": "Feature 086 approximation boundary remains active for all paper-comparison outputs.",
+    "metric": "throughput",
+    "policy": "HOODIE",
+    "scenario": "all",
+    "source_feature": "085",
+    "value": 0.9543650793650794
+  },
+  {
+    "aggregation_method": "aggregate_by_policy",
+    "artifact_path": "/Users/hadi/Documents/GitHub/hoodie_sim_v2/artifacts/feature_085_full_audit/aggregate_by_policy.json",
+    "claim_boundary": "Feature 086 approximation boundary remains active for all paper-comparison outputs.",
+    "metric": "timeout_drop_rate",
+    "policy": "HOODIE",
+    "scenario": "all",
+    "source_feature": "085",
+    "value": 0.04563492063492063
+  },
+  {
+    "aggregation_method": "aggregate_by_policy",
+    "artifact_path": "/Users/hadi/Documents/GitHub/hoodie_sim_v2/artifacts/feature_085_full_audit/aggregate_by_policy.json",
+    "claim_boundary": "Feature 086 approximation boundary remains active for all paper-comparison outputs.",
+    "metric": "unavailable_drop_rate",
+    "policy": "HOODIE",
+    "scenario": "all",
+    "source_feature": "085",
+    "value": 0.0
+  },
+  {
+    "aggregation_method": "aggregate_by_policy",
+    "artifact_path": "/Users/hadi/Documents/GitHub/hoodie_sim_v2/artifacts/feature_085_full_audit/aggregate_by_policy.json",
+    "claim_boundary": "Feature 086 approximation boundary remains active for all paper-comparison outputs.",
+    "metric": "deadline_violation_rate",
+    "policy": "HOODIE",
+    "scenario": "all",
+    "source_feature": "085",
+    "value": 0.08333333333333333
+  },
+  {
+    "aggregation_method": "aggregate_by_policy",
+    "artifact_path": "/Users/hadi/Documents/GitHub/hoodie_sim_v2/artifacts/feature_085_full_audit/aggregate_by_policy.json",
+    "claim_boundary": "Feature 086 approximation boundary remains active for all paper-comparison outputs.",
+    "metric": "queue_stability_score",
+    "policy": "HOODIE",
+    "scenario": "all",
+    "source_feature": "085",
+    "value": 0.17937041032955262
+  },
+  {
+    "aggregation_method": "aggregate_by_policy",
+    "artifact_path": "/Users/hadi/Documents/GitHub/hoodie_sim_v2/artifacts/feature_085_full_audit/aggregate_by_policy.json",
+    "claim_boundary": "Feature 086 approximation boundary remains active for all paper-comparison outputs.",
+    "metric": "illegal_action_rejection_count",
+    "policy": "HOODIE",
+    "scenario": "all",
+    "source_feature": "085",
+    "value": 0
+  },
+  {
+    "aggregation_method": "aggregate_by_policy",
+    "artifact_path": "/Users/hadi/Documents/GitHub/hoodie_sim_v2/artifacts/feature_085_full_audit/aggregate_by_policy.json",
+    "claim_boundary": "Feature 086 approximation boundary remains active for all paper-comparison outputs.",
+    "metric": "task_completion_delay",
+    "policy": "MLEO",
+    "scenario": "all",
+    "source_feature": "085",
+    "value": 4.902286902286902
+  },
+  {
+    "aggregation_method": "aggregate_by_policy",
+    "artifact_path": "/Users/hadi/Documents/GitHub/hoodie_sim_v2/artifacts/feature_085_full_audit/aggregate_by_policy.json",
+    "claim_boundary": "Feature 086 approximation boundary remains active for all paper-comparison outputs.",
+    "metric": "task_drop_ratio",
+    "policy": "MLEO",
+    "scenario": "all",
+    "source_feature": "085",
+    "value": 0.04563492063492063
+  },
+  {
+    "aggregation_method": "aggregate_by_policy",
+    "artifact_path": "/Users/hadi/Documents/GitHub/hoodie_sim_v2/artifacts/feature_085_full_audit/aggregate_by_policy.json",
+    "claim_boundary": "Feature 086 approximation boundary remains active for all paper-comparison outputs.",
+    "metric": "completion_rate",
+    "policy": "MLEO",
+    "scenario": "all",
+    "source_feature": "085",
+    "value": 0.9543650793650794
+  },
+  {
+    "aggregation_method": "aggregate_by_policy",
+    "artifact_path": "/Users/hadi/Documents/GitHub/hoodie_sim_v2/artifacts/feature_085_full_audit/aggregate_by_policy.json",
+    "claim_boundary": "Feature 086 approximation boundary remains active for all paper-comparison outputs.",
+    "metric": "average_reward",
+    "policy": "MLEO",
+    "scenario": "all",
+    "source_feature": "085",
+    "value": -6.503968253968254
+  },
+  {
+    "aggregation_method": "aggregate_by_policy",
+    "artifact_path": "/Users/hadi/Documents/GitHub/hoodie_sim_v2/artifacts/feature_085_full_audit/aggregate_by_policy.json",
+    "claim_boundary": "Feature 086 approximation boundary remains active for all paper-comparison outputs.",
+    "metric": "total_reward",
+    "policy": "MLEO",
+    "scenario": "all",
+    "source_feature": "085",
+    "value": -9834.0
+  },
+  {
+    "aggregation_method": "aggregate_by_policy",
+    "artifact_path": "/Users/hadi/Documents/GitHub/hoodie_sim_v2/artifacts/feature_085_full_audit/aggregate_by_policy.json",
+    "claim_boundary": "Feature 086 approximation boundary remains active for all paper-comparison outputs.",
+    "metric": "throughput",
+    "policy": "MLEO",
+    "scenario": "all",
+    "source_feature": "085",
+    "value": 0.9543650793650794
+  },
+  {
+    "aggregation_method": "aggregate_by_policy",
+    "artifact_path": "/Users/hadi/Documents/GitHub/hoodie_sim_v2/artifacts/feature_085_full_audit/aggregate_by_policy.json",
+    "claim_boundary": "Feature 086 approximation boundary remains active for all paper-comparison outputs.",
+    "metric": "timeout_drop_rate",
+    "policy": "MLEO",
+    "scenario": "all",
+    "source_feature": "085",
+    "value": 0.04563492063492063
+  },
+  {
+    "aggregation_method": "aggregate_by_policy",
+    "artifact_path": "/Users/hadi/Documents/GitHub/hoodie_sim_v2/artifacts/feature_085_full_audit/aggregate_by_policy.json",
+    "claim_boundary": "Feature 086 approximation boundary remains active for all paper-comparison outputs.",
+    "metric": "unavailable_drop_rate",
+    "policy": "MLEO",
+    "scenario": "all",
+    "source_feature": "085",
+    "value": 0.0
+  },
+  {
+    "aggregation_method": "aggregate_by_policy",
+    "artifact_path": "/Users/hadi/Documents/GitHub/hoodie_sim_v2/artifacts/feature_085_full_audit/aggregate_by_policy.json",
+    "claim_boundary": "Feature 086 approximation boundary remains active for all paper-comparison outputs.",
+    "metric": "deadline_violation_rate",
+    "policy": "MLEO",
+    "scenario": "all",
+    "source_feature": "085",
+    "value": 0.08333333333333333
+  },
+  {
+    "aggregation_method": "aggregate_by_policy",
+    "artifact_path": "/Users/hadi/Documents/GitHub/hoodie_sim_v2/artifacts/feature_085_full_audit/aggregate_by_policy.json",
+    "claim_boundary": "Feature 086 approximation boundary remains active for all paper-comparison outputs.",
+    "metric": "queue_stability_score",
+    "policy": "MLEO",
+    "scenario": "all",
+    "source_feature": "085",
+    "value": 0.17937041032955262
+  },
+  {
+    "aggregation_method": "aggregate_by_policy",
+    "artifact_path": "/Users/hadi/Documents/GitHub/hoodie_sim_v2/artifacts/feature_085_full_audit/aggregate_by_policy.json",
+    "claim_boundary": "Feature 086 approximation boundary remains active for all paper-comparison outputs.",
+    "metric": "illegal_action_rejection_count",
+    "policy": "MLEO",
+    "scenario": "all",
+    "source_feature": "085",
+    "value": 0
+  },
+  {
+    "aggregation_method": "aggregate_by_policy",
+    "artifact_path": "/Users/hadi/Documents/GitHub/hoodie_sim_v2/artifacts/feature_085_full_audit/aggregate_by_policy.json",
+    "claim_boundary": "Feature 086 approximation boundary remains active for all paper-comparison outputs.",
+    "metric": "task_completion_delay",
+    "policy": "RO",
+    "scenario": "all",
+    "source_feature": "085",
+    "value": 5.325239146431199
+  },
+  {
+    "aggregation_method": "aggregate_by_policy",
+    "artifact_path": "/Users/hadi/Documents/GitHub/hoodie_sim_v2/artifacts/feature_085_full_audit/aggregate_by_policy.json",
+    "claim_boundary": "Feature 086 approximation boundary remains active for all paper-comparison outputs.",
+    "metric": "task_drop_ratio",
+    "policy": "RO",
+    "scenario": "all",
+    "source_feature": "085",
+    "value": 0.10119047619047619
+  },
+  {
+    "aggregation_method": "aggregate_by_policy",
+    "artifact_path": "/Users/hadi/Documents/GitHub/hoodie_sim_v2/artifacts/feature_085_full_audit/aggregate_by_policy.json",
+    "claim_boundary": "Feature 086 approximation boundary remains active for all paper-comparison outputs.",
+    "metric": "completion_rate",
+    "policy": "RO",
+    "scenario": "all",
+    "source_feature": "085",
+    "value": 0.8988095238095238
+  },
+  {
+    "aggregation_method": "aggregate_by_policy",
+    "artifact_path": "/Users/hadi/Documents/GitHub/hoodie_sim_v2/artifacts/feature_085_full_audit/aggregate_by_policy.json",
+    "claim_boundary": "Feature 086 approximation boundary remains active for all paper-comparison outputs.",
+    "metric": "average_reward",
+    "policy": "RO",
+    "scenario": "all",
+    "source_feature": "085",
+    "value": -8.833994708994709
+  },
+  {
+    "aggregation_method": "aggregate_by_policy",
+    "artifact_path": "/Users/hadi/Documents/GitHub/hoodie_sim_v2/artifacts/feature_085_full_audit/aggregate_by_policy.json",
+    "claim_boundary": "Feature 086 approximation boundary remains active for all paper-comparison outputs.",
+    "metric": "total_reward",
+    "policy": "RO",
+    "scenario": "all",
+    "source_feature": "085",
+    "value": -13357.0
+  },
+  {
+    "aggregation_method": "aggregate_by_policy",
+    "artifact_path": "/Users/hadi/Documents/GitHub/hoodie_sim_v2/artifacts/feature_085_full_audit/aggregate_by_policy.json",
+    "claim_boundary": "Feature 086 approximation boundary remains active for all paper-comparison outputs.",
+    "metric": "throughput",
+    "policy": "RO",
+    "scenario": "all",
+    "source_feature": "085",
+    "value": 0.8988095238095238
+  },
+  {
+    "aggregation_method": "aggregate_by_policy",
+    "artifact_path": "/Users/hadi/Documents/GitHub/hoodie_sim_v2/artifacts/feature_085_full_audit/aggregate_by_policy.json",
+    "claim_boundary": "Feature 086 approximation boundary remains active for all paper-comparison outputs.",
+    "metric": "timeout_drop_rate",
+    "policy": "RO",
+    "scenario": "all",
+    "source_feature": "085",
+    "value": 0.05555555555555555
+  },
+  {
+    "aggregation_method": "aggregate_by_policy",
+    "artifact_path": "/Users/hadi/Documents/GitHub/hoodie_sim_v2/artifacts/feature_085_full_audit/aggregate_by_policy.json",
+    "claim_boundary": "Feature 086 approximation boundary remains active for all paper-comparison outputs.",
+    "metric": "unavailable_drop_rate",
+    "policy": "RO",
+    "scenario": "all",
+    "source_feature": "085",
+    "value": 0.04563492063492063
+  },
+  {
+    "aggregation_method": "aggregate_by_policy",
+    "artifact_path": "/Users/hadi/Documents/GitHub/hoodie_sim_v2/artifacts/feature_085_full_audit/aggregate_by_policy.json",
+    "claim_boundary": "Feature 086 approximation boundary remains active for all paper-comparison outputs.",
+    "metric": "deadline_violation_rate",
+    "policy": "RO",
+    "scenario": "all",
+    "source_feature": "085",
+    "value": 0.13293650793650794
+  },
+  {
+    "aggregation_method": "aggregate_by_policy",
+    "artifact_path": "/Users/hadi/Documents/GitHub/hoodie_sim_v2/artifacts/feature_085_full_audit/aggregate_by_policy.json",
+    "claim_boundary": "Feature 086 approximation boundary remains active for all paper-comparison outputs.",
+    "metric": "queue_stability_score",
+    "policy": "RO",
+    "scenario": "all",
+    "source_feature": "085",
+    "value": 0.17937041032955262
+  },
+  {
+    "aggregation_method": "aggregate_by_policy",
+    "artifact_path": "/Users/hadi/Documents/GitHub/hoodie_sim_v2/artifacts/feature_085_full_audit/aggregate_by_policy.json",
+    "claim_boundary": "Feature 086 approximation boundary remains active for all paper-comparison outputs.",
+    "metric": "illegal_action_rejection_count",
+    "policy": "RO",
+    "scenario": "all",
+    "source_feature": "085",
+    "value": 69
+  },
+  {
+    "aggregation_method": "aggregate_by_policy",
+    "artifact_path": "/Users/hadi/Documents/GitHub/hoodie_sim_v2/artifacts/feature_085_full_audit/aggregate_by_policy.json",
+    "claim_boundary": "Feature 086 approximation boundary remains active for all paper-comparison outputs.",
+    "metric": "task_completion_delay",
+    "policy": "VO",
+    "scenario": "all",
+    "source_feature": "085",
+    "value": 5.04384133611691
+  },
+  {
+    "aggregation_method": "aggregate_by_policy",
+    "artifact_path": "/Users/hadi/Documents/GitHub/hoodie_sim_v2/artifacts/feature_085_full_audit/aggregate_by_policy.json",
+    "claim_boundary": "Feature 086 approximation boundary remains active for all paper-comparison outputs.",
+    "metric": "task_drop_ratio",
+    "policy": "VO",
+    "scenario": "all",
+    "source_feature": "085",
+    "value": 0.0496031746031746
+  },
+  {
+    "aggregation_method": "aggregate_by_policy",
+    "artifact_path": "/Users/hadi/Documents/GitHub/hoodie_sim_v2/artifacts/feature_085_full_audit/aggregate_by_policy.json",
+    "claim_boundary": "Feature 086 approximation boundary remains active for all paper-comparison outputs.",
+    "metric": "completion_rate",
+    "policy": "VO",
+    "scenario": "all",
+    "source_feature": "085",
+    "value": 0.9503968253968254
+  },
+  {
+    "aggregation_method": "aggregate_by_policy",
+    "artifact_path": "/Users/hadi/Documents/GitHub/hoodie_sim_v2/artifacts/feature_085_full_audit/aggregate_by_policy.json",
+    "claim_boundary": "Feature 086 approximation boundary remains active for all paper-comparison outputs.",
+    "metric": "average_reward",
+    "policy": "VO",
+    "scenario": "all",
+    "source_feature": "085",
+    "value": -6.777777777777778
+  },
+  {
+    "aggregation_method": "aggregate_by_policy",
+    "artifact_path": "/Users/hadi/Documents/GitHub/hoodie_sim_v2/artifacts/feature_085_full_audit/aggregate_by_policy.json",
+    "claim_boundary": "Feature 086 approximation boundary remains active for all paper-comparison outputs.",
+    "metric": "total_reward",
+    "policy": "VO",
+    "scenario": "all",
+    "source_feature": "085",
+    "value": -10248.0
+  },
+  {
+    "aggregation_method": "aggregate_by_policy",
+    "artifact_path": "/Users/hadi/Documents/GitHub/hoodie_sim_v2/artifacts/feature_085_full_audit/aggregate_by_policy.json",
+    "claim_boundary": "Feature 086 approximation boundary remains active for all paper-comparison outputs.",
+    "metric": "throughput",
+    "policy": "VO",
+    "scenario": "all",
+    "source_feature": "085",
+    "value": 0.9503968253968254
+  },
+  {
+    "aggregation_method": "aggregate_by_policy",
+    "artifact_path": "/Users/hadi/Documents/GitHub/hoodie_sim_v2/artifacts/feature_085_full_audit/aggregate_by_policy.json",
+    "claim_boundary": "Feature 086 approximation boundary remains active for all paper-comparison outputs.",
+    "metric": "timeout_drop_rate",
+    "policy": "VO",
+    "scenario": "all",
+    "source_feature": "085",
+    "value": 0.0496031746031746
+  },
+  {
+    "aggregation_method": "aggregate_by_policy",
+    "artifact_path": "/Users/hadi/Documents/GitHub/hoodie_sim_v2/artifacts/feature_085_full_audit/aggregate_by_policy.json",
+    "claim_boundary": "Feature 086 approximation boundary remains active for all paper-comparison outputs.",
+    "metric": "unavailable_drop_rate",
+    "policy": "VO",
+    "scenario": "all",
+    "source_feature": "085",
+    "value": 0.0
+  },
+  {
+    "aggregation_method": "aggregate_by_policy",
+    "artifact_path": "/Users/hadi/Documents/GitHub/hoodie_sim_v2/artifacts/feature_085_full_audit/aggregate_by_policy.json",
+    "claim_boundary": "Feature 086 approximation boundary remains active for all paper-comparison outputs.",
+    "metric": "deadline_violation_rate",
+    "policy": "VO",
+    "scenario": "all",
+    "source_feature": "085",
+    "value": 0.10317460317460317
+  },
+  {
+    "aggregation_method": "aggregate_by_policy",
+    "artifact_path": "/Users/hadi/Documents/GitHub/hoodie_sim_v2/artifacts/feature_085_full_audit/aggregate_by_policy.json",
+    "claim_boundary": "Feature 086 approximation boundary remains active for all paper-comparison outputs.",
+    "metric": "queue_stability_score",
+    "policy": "VO",
+    "scenario": "all",
+    "source_feature": "085",
+    "value": 0.17937041032955262
+  },
+  {
+    "aggregation_method": "aggregate_by_policy",
+    "artifact_path": "/Users/hadi/Documents/GitHub/hoodie_sim_v2/artifacts/feature_085_full_audit/aggregate_by_policy.json",
+    "claim_boundary": "Feature 086 approximation boundary remains active for all paper-comparison outputs.",
+    "metric": "illegal_action_rejection_count",
+    "policy": "VO",
+    "scenario": "all",
+    "source_feature": "085",
+    "value": 0
+  },
+  {
+    "aggregation_method": "feature_086_verdict",
+    "artifact_path": "/Users/hadi/Documents/GitHub/hoodie_sim_v2/artifacts/feature_086_system_model_fidelity/feature_086_system_model_fidelity_report.json",
+    "claim_boundary": "HOODIE remains the paper proposed method boundary; the feature 086 report documents the approximation boundary.",
+    "metric": "task_completion_delay",
+    "policy": "HOODIE",
+    "scenario": "all",
+    "source_feature": "086",
+    "value": true
+  }
+]

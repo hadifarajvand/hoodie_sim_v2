@@ -1,0 +1,108 @@
+[
+  {
+    "agreement_level": "partial",
+    "metric": "task_completion_delay",
+    "notes": "Paper text explicitly supports HOODIE best and MLEO close behind; the simulator order matches the aggregate artifact ranking exactly.",
+    "paper_ranking": [
+      "HOODIE",
+      "MLEO",
+      "VO",
+      "FLC",
+      "BCO",
+      "RO",
+      "HO"
+    ],
+    "simulator_ranking": [
+      "HOODIE",
+      "MLEO",
+      "VO",
+      "FLC",
+      "BCO",
+      "RO",
+      "HO"
+    ]
+  },
+  {
+    "agreement_level": "partial",
+    "metric": "task_drop_ratio",
+    "notes": "Paper text supports HOODIE as best and identifies FLC/HO as weak; simulator ranking is fully ordered but the paper does not expose a clean numeric table in the text layer.",
+    "paper_ranking": [
+      "HOODIE",
+      "MLEO",
+      "VO",
+      "FLC",
+      "BCO",
+      "RO",
+      "HO"
+    ],
+    "simulator_ranking": [
+      "HOODIE",
+      "MLEO",
+      "VO",
+      "FLC",
+      "BCO",
+      "RO",
+      "HO"
+    ]
+  },
+  {
+    "agreement_level": "not_available",
+    "metric": "completion_rate",
+    "notes": "Paper does not directly report completion rate as a headline output; it is derived from drop/completion counts in the simulator.",
+    "paper_ranking": null,
+    "simulator_ranking": [
+      "HOODIE",
+      "MLEO",
+      "VO",
+      "FLC",
+      "BCO",
+      "RO",
+      "HO"
+    ]
+  },
+  {
+    "agreement_level": "not_available",
+    "metric": "average_reward",
+    "notes": "Paper uses reward primarily for training behavior and explicitly warns that it is not directly interpretable in the comparative section.",
+    "paper_ranking": null,
+    "simulator_ranking": [
+      "HOODIE",
+      "MLEO",
+      "VO",
+      "FLC",
+      "BCO",
+      "RO",
+      "HO"
+    ]
+  },
+  {
+    "agreement_level": "not_available",
+    "metric": "total_reward",
+    "notes": "Paper cumulative reward is a training artifact, not a primary paper-output comparison metric.",
+    "paper_ranking": null,
+    "simulator_ranking": [
+      "HOODIE",
+      "MLEO",
+      "VO",
+      "FLC",
+      "BCO",
+      "RO",
+      "HO"
+    ]
+  },
+  {
+    "agreement_level": "not_available",
+    "metric": "throughput",
+    "notes": "Paper mentions throughput in the objective framing but does not publish a dedicated comparative table in the text layer.",
+    "paper_ranking": null,
+    "simulator_ranking": [
+      "HOODIE",
+      "MLEO",
+      "VO",
+      "FLC",
+      "BCO",
+      "RO",
+      "HO"
+    ]
+  }
+]
