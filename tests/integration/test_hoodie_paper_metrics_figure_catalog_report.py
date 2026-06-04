@@ -23,4 +23,5 @@ class HoodiePaperMetricsFigureCatalogIntegrationTests(unittest.TestCase):
         self.assertEqual(payload["metrics_cataloged"], 6)
         self.assertEqual(payload["simulator_output_requirements"], 14)
         self.assertIn("Figure 10a", payload["ready_now_figures"])
+        self.assertIn("Figure 9a", payload["ready_now_figures"])
         self.assertIn("Figure 11", payload["future_required_figures"])

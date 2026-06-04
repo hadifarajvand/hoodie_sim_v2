@@ -8,13 +8,7 @@
     "BCO",
     "MLEO"
   ],
-  "blocked_figures": [
-    "Figure 9a",
-    "Figure 9b",
-    "Figure 9c",
-    "Figure 9d",
-    "Figure 9e"
-  ],
+  "blocked_figures": [],
   "feature_080_boundary": [
     "Feature 080 prepares HOODIE_PROPOSED for later evaluation.",
     "Ranking must wait until HOODIE_PROPOSED is implemented faithfully enough.",
@@ -58,6 +52,11 @@
     "Figure 11"
   ],
   "ready_now_figures": [
+    "Figure 9a",
+    "Figure 9b",
+    "Figure 9c",
+    "Figure 9d",
+    "Figure 9e",
     "Figure 10a",
     "Figure 10b",
     "Figure 10c",
@@ -66,7 +65,7 @@
     "Figure 10f"
   ],
   "remaining_limitations": [
-    "Figure 9 outputs are cataloged as blocked because the current simulator does not expose the exact sweep outputs without adding new sweep plumbing.",
+    "Figure 9d and Figure 9e use the simulator's dynamic multi-agent topology support path to scale beyond the 20-node Figure 7 runtime fixture.",
     "Figures 8a, 8b, and 11 remain future-required because they depend on trained DRL and LSTM artifacts.",
     "Figure 10 output files are live simulator sweeps over the approved runtime controls, with Feature 086 approximations preserved for the plotting transforms."
   ],

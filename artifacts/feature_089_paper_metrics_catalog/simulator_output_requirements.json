@@ -313,7 +313,7 @@
       "figure_9a_reward_vs_arrival_probability.json"
     ],
     "blocked_by_lstm": false,
-    "blocked_by_simulator_support": true,
+    "blocked_by_simulator_support": false,
     "blocked_by_training": false,
     "claim_boundary": [
       "Feature 080 prepares HOODIE_PROPOSED for later evaluation.",
@@ -331,7 +331,7 @@
     "metrics": [
       "average_reward"
     ],
-    "notes": "Figure 9 behavior output is cataloged but remains blocked until the simulator can sweep the arrival probability grid without inventing training claims.",
+    "notes": "Live simulator sweep over arrival probability with curve-wise agent counts. Keep the Feature 080 and 086 claim boundaries intact.",
     "output_family": "arrival_probability_reward_sweep",
     "policies": [
       "HOODIE"
@@ -356,7 +356,7 @@
       "figure_9b_action_distribution_vs_arrival_probability.json"
     ],
     "blocked_by_lstm": false,
-    "blocked_by_simulator_support": true,
+    "blocked_by_simulator_support": false,
     "blocked_by_training": false,
     "claim_boundary": [
       "Feature 080 prepares HOODIE_PROPOSED for later evaluation.",
@@ -374,7 +374,7 @@
     "metrics": [
       "action_distribution"
     ],
-    "notes": "Figure 9 behavior output is cataloged but remains blocked until the simulator can produce action counts directly from the policy traces.",
+    "notes": "Live simulator action-distribution sweep over arrival probability. Output includes raw counts and shares for local, horizontal, and vertical actions.",
     "output_family": "arrival_probability_action_distribution",
     "policies": [
       "HOODIE"
@@ -399,7 +399,7 @@
       "figure_9c_reward_vs_cpu_capacity.json"
     ],
     "blocked_by_lstm": false,
-    "blocked_by_simulator_support": true,
+    "blocked_by_simulator_support": false,
     "blocked_by_training": false,
     "claim_boundary": [
       "Feature 080 prepares HOODIE_PROPOSED for later evaluation.",
@@ -417,7 +417,7 @@
     "metrics": [
       "average_reward"
     ],
-    "notes": "Figure 9 behavior output is cataloged but remains blocked until the simulator can sweep CPU capacity directly.",
+    "notes": "Live simulator sweep over CPU capacity with curve-wise agent counts.",
     "output_family": "cpu_capacity_reward_sweep",
     "policies": [
       "HOODIE"
@@ -443,7 +443,7 @@
       "figure_9d_reward_vs_agent_count_traffic.json"
     ],
     "blocked_by_lstm": false,
-    "blocked_by_simulator_support": true,
+    "blocked_by_simulator_support": false,
     "blocked_by_training": false,
     "claim_boundary": [
       "Feature 080 prepares HOODIE_PROPOSED for later evaluation.",
@@ -461,7 +461,7 @@
     "metrics": [
       "average_reward"
     ],
-    "notes": "Figure 9 behavior output is cataloged but remains blocked until the simulator can vary agent count and workload intensity directly.",
+    "notes": "Live simulator sweep over agent count and traffic intensity using supported traffic presets.",
     "output_family": "agent_count_traffic_reward_sweep",
     "policies": [
       "HOODIE"
@@ -486,7 +486,7 @@
       "figure_9e_reward_vs_agent_count_data_rate.json"
     ],
     "blocked_by_lstm": false,
-    "blocked_by_simulator_support": true,
+    "blocked_by_simulator_support": false,
     "blocked_by_training": false,
     "claim_boundary": [
       "Feature 080 prepares HOODIE_PROPOSED for later evaluation.",
@@ -504,7 +504,7 @@
     "metrics": [
       "average_reward"
     ],
-    "notes": "Figure 9 behavior output is cataloged but remains blocked until the simulator can vary agent count and link-rate configurations directly.",
+    "notes": "Live simulator sweep over agent count and data-rate configurations using the supported link-rate control path.",
     "output_family": "agent_count_data_rate_reward_sweep",
     "policies": [
       "HOODIE"
