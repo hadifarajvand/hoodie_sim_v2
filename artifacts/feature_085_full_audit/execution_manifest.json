@@ -1,5 +1,5 @@
 {
-  "branch": "085-hoodie-paper-baseline-fidelity-audit",
+  "branch": "086-mleo-latency-evidence-test",
   "claim_boundary": [
     "HOODIE means the Feature 080 proposed method only.",
     "Baselines are paper-aligned and restricted to RO, FLC, VO, HO, BCO, and MLEO.",
@@ -103,7 +103,7 @@
       ]
     }
   },
-  "local_head_sha": "3f66a8a7bb330bf1c3f65d67b42426c78b67a838",
+  "local_head_sha": "ea52c5e029fa2b82ed9ca946a5b9c840f2f38f25",
   "metric_count": 11,
   "metric_coverage": [
     {
@@ -175,6 +175,13 @@
   ],
   "output_dir": "artifacts/feature_085_full_audit",
   "passed": true,
+  "policy_action_evidence": [
+    "HOODIE and MLEO match in 1080 of 1512 raw rows and differ in 432 rows.",
+    "Identical-action scenarios: cloud_vertical_fallback: 216/216; illegal_horizontal_destination_attempt: 216/216; legal_horizontal_offload: 216/216; light_load_no_deadline_pressure: 216/216; mixed_local_horizontal_cloud_candidates: 216/216.",
+    "Divergent-action scenarios: tight_deadline_pressure: 0/216 same, 216/216 different; timeout_drop_case: 0/216 same, 216/216 different.",
+    "Divergent action pairs: tight_deadline_pressure: vertical->local x216; timeout_drop_case: vertical->local x216.",
+    "Aggregate metrics still tie exactly across all core metrics, so the tie is metric-level rather than action-level."
+  ],
   "policy_count": 7,
   "policy_coverage": [
     {
@@ -242,7 +249,7 @@
   ],
   "raw_row_count": 10584,
   "readiness_level": "fully_implemented",
-  "remote_head_sha": "3f66a8a7bb330bf1c3f65d67b42426c78b67a838",
+  "remote_head_sha": "ea52c5e029fa2b82ed9ca946a5b9c840f2f38f25",
   "report_status": "hoodie_paper_baseline_fidelity_audit_ready",
   "scenario_count": 7,
   "scenario_coverage": [

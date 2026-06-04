@@ -225,6 +225,7 @@ def _execution_manifest(report: Feature083Report, *, config: EvaluationConfig, r
         "seeds": list(config.seeds),
         "claim_boundary": list(report.claim_boundary),
         "scope_proof": list(report.scope_proof),
+        "policy_action_evidence": list(report.policy_action_evidence),
         "compatibility_mode_policies": [row.policy for row in report.policy_coverage if row.compatibility_mode_used],
         "identity_proof": identity_proof,
         "policy_coverage": [row.to_dict() for row in report.policy_coverage],

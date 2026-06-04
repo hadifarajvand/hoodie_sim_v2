@@ -1304,6 +1304,13 @@
     }
   ],
   "passed": true,
+  "policy_action_evidence": [
+    "HOODIE and MLEO match in 1080 of 1512 raw rows and differ in 432 rows.",
+    "Identical-action scenarios: cloud_vertical_fallback: 216/216; illegal_horizontal_destination_attempt: 216/216; legal_horizontal_offload: 216/216; light_load_no_deadline_pressure: 216/216; mixed_local_horizontal_cloud_candidates: 216/216.",
+    "Divergent-action scenarios: tight_deadline_pressure: 0/216 same, 216/216 different; timeout_drop_case: 0/216 same, 216/216 different.",
+    "Divergent action pairs: tight_deadline_pressure: vertical->local x216; timeout_drop_case: vertical->local x216.",
+    "Aggregate metrics still tie exactly across all core metrics, so the tie is metric-level rather than action-level."
+  ],
   "policy_coverage": [
     {
       "compatibility_mode_used": false,

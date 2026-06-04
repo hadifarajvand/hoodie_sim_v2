@@ -28,6 +28,7 @@ class HoodieRuntimeEvaluationRunnerReportIntegrationTests(unittest.TestCase):
         self.assertIn("MLEO", rendered)
         self.assertEqual({row.policy for row in report.policy_coverage}, {"HOODIE", "RO", "FLC", "VO", "HO", "BCO", "MLEO"})
         self.assertIn("identity proof", rendered.lower())
+        self.assertIn("hoodie/mleo tie evidence", rendered.lower())
         self.assertIn("no compatibility-mode policies remain", rendered.lower())
         self.assertIn("task_completion_delay", rendered)
         self.assertIn("task_drop_ratio", rendered)
@@ -38,6 +39,9 @@ class HoodieRuntimeEvaluationRunnerReportIntegrationTests(unittest.TestCase):
         self.assertIn("no thesis method", rendered.lower())
         self.assertIn("no empirical full-paper reproduction", rendered.lower())
         self.assertIn("no statistical superiority", rendered.lower())
+        self.assertIn("1080 of 1512 raw rows", rendered)
+        self.assertIn("tight_deadline_pressure", rendered)
+        self.assertIn("timeout_drop_case", rendered)
         self.assertNotIn("ORIGINAL_HOODIE_BASELINE: implemented", rendered)
         self.assertFalse(report.remaining_gaps)
 

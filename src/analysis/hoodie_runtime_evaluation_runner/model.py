@@ -207,6 +207,7 @@ class Feature083Report:
     claim_boundary: tuple[str, ...]
     scope_proof: tuple[str, ...]
     remaining_gaps: tuple[str, ...]
+    policy_action_evidence: tuple[str, ...] = ()
     scenario_tables: tuple[MetricRow, ...] = ()
     aggregate_summaries: tuple[MetricRow, ...] = ()
     compatibility_mode_used: bool = False
@@ -227,6 +228,7 @@ class Feature083Report:
             "claim_boundary": list(self.claim_boundary),
             "scope_proof": list(self.scope_proof),
             "remaining_gaps": list(self.remaining_gaps),
+            "policy_action_evidence": list(self.policy_action_evidence),
             "scenario_tables": [row.to_dict() for row in self.scenario_tables],
             "aggregate_summaries": [row.to_dict() for row in self.aggregate_summaries],
             "compatibility_mode_used": self.compatibility_mode_used,

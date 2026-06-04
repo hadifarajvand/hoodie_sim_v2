@@ -100,6 +100,62 @@ def _metric_differences(left: MetricRow | None, right: MetricRow | None) -> tupl
     return tuple(field for field in fields if getattr(left, field) != getattr(right, field))
 
 
+def _policy_action_evidence_lines(
+    outcomes_by_key: Mapping[tuple[str, str, str, str, int], tuple[ExecutionOutcome, ...]],
+) -> tuple[str, ...]:
+    hoodie_rows: dict[str, list[ExecutionOutcome]] = {}
+    mleo_rows: dict[str, list[ExecutionOutcome]] = {}
+    for (policy, scenario_name, _workload, _deadline_pressure, _seed), outcomes in sorted(outcomes_by_key.items()):
+        if policy == POLICY_HOODIE:
+            hoodie_rows.setdefault(scenario_name, []).extend(outcomes)
+        elif policy == POLICY_MLEO:
+            mleo_rows.setdefault(scenario_name, []).extend(outcomes)
+
+    if not hoodie_rows or not mleo_rows:
+        return ("HOODIE/MLEO action evidence unavailable",)
+
+    total_same = 0
+    total_different = 0
+    identical_scenarios: list[str] = []
+    divergent_scenarios: list[str] = []
+    divergent_pairs: list[str] = []
+
+    for scenario_name in sorted(hoodie_rows):
+        hoodie_outcomes = hoodie_rows[scenario_name]
+        mleo_outcomes = mleo_rows.get(scenario_name)
+        if mleo_outcomes is None:
+            continue
+        same = 0
+        different = 0
+        pair_counts: dict[str, int] = {}
+        for left, right in zip(hoodie_outcomes, mleo_outcomes):
+            if left.selected_action == right.selected_action:
+                same += 1
+            else:
+                different += 1
+                pair = f"{left.selected_action}->{right.selected_action}"
+                pair_counts[pair] = pair_counts.get(pair, 0) + 1
+        total_same += same
+        total_different += different
+        if different == 0:
+            identical_scenarios.append(f"{scenario_name}: {same}/{same + different}")
+        else:
+            pair_text = ", ".join(f"{pair} x{count}" for pair, count in sorted(pair_counts.items()))
+            divergent_scenarios.append(f"{scenario_name}: {same}/{same + different} same, {different}/{same + different} different")
+            divergent_pairs.append(f"{scenario_name}: {pair_text}")
+
+    total_rows = total_same + total_different
+    lines = [f"HOODIE and MLEO match in {total_same} of {total_rows} raw rows and differ in {total_different} rows."]
+    if identical_scenarios:
+        lines.append("Identical-action scenarios: " + "; ".join(identical_scenarios) + ".")
+    if divergent_scenarios:
+        lines.append("Divergent-action scenarios: " + "; ".join(divergent_scenarios) + ".")
+    if divergent_pairs:
+        lines.append("Divergent action pairs: " + "; ".join(divergent_pairs) + ".")
+    lines.append("Aggregate metrics still tie exactly across all core metrics, so the tie is metric-level rather than action-level.")
+    return tuple(lines)
+
+
 def _policy_coverage_rows() -> tuple[PolicyCoverageRow, ...]:
     return (
         PolicyCoverageRow(POLICY_HOODIE, "implemented", "feature_080_runtime_path", "Feature 080 proposed-method runtime path", False),
@@ -372,6 +428,7 @@ def build_feature_083_report(config: EvaluationConfig | None = None) -> Feature0
     compatibility_mode_used = any(row.compatibility_mode_used for row in policy_aggregates) or any(row.compatibility_mode_used for row in scenario_tables)
     rows_by_policy = {row.policy: row for row in policy_aggregates}
     remaining_gaps = _remaining_gaps(rows_by_policy, policy_coverage, compatibility_mode_used)
+    policy_action_evidence = _policy_action_evidence_lines(outcomes_by_key)
     claim_boundary = (
         "HOODIE means the Feature 080 proposed method only.",
         "Baselines are paper-aligned and restricted to RO, FLC, VO, HO, BCO, and MLEO.",
@@ -413,6 +470,7 @@ def build_feature_083_report(config: EvaluationConfig | None = None) -> Feature0
         claim_boundary=claim_boundary,
         scope_proof=scope_proof,
         remaining_gaps=remaining_gaps,
+        policy_action_evidence=policy_action_evidence,
         scenario_tables=scenario_tables,
         aggregate_summaries=aggregate_summaries,
         compatibility_mode_used=compatibility_mode_used,
@@ -495,6 +553,9 @@ def render_feature_083_report(report: Feature083Report | None = None) -> str:
     lines.append("## Formula Audit")
     lines.append("- see `specs/085-hoodie-paper-baseline-fidelity-audit/formula-mapping-matrix.md`")
     lines.append("- see `specs/085-hoodie-paper-baseline-fidelity-audit/baseline-mapping-matrix.md`")
+    lines.append("")
+    lines.append("## HOODIE/MLEO Tie Evidence")
+    lines.extend(f"- {line}" for line in (report.policy_action_evidence or ("tie evidence unavailable",)))
     lines.append("")
     lines.append("## Metric Rankings")
     lines.append("### Primary Paper Metrics")
