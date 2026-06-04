@@ -97,7 +97,22 @@ class HoodiePaperMetricsFigureCatalogTests(unittest.TestCase):
         report = generate_artifacts(artifact_dir)
         self.assertEqual(report.verdict, "paper_metrics_catalog_partial")
         self.assertTrue((artifact_dir / "feature_089_report.json").exists())
-        payload = json.loads((artifact_dir / "figure_10a_delay_vs_arrival_probability.json").read_text(encoding="utf-8"))
-        self.assertEqual(len(payload), len(ACTIVE_POLICIES))
-        self.assertEqual(payload[0]["policy"], ACTIVE_POLICIES[0])
-        self.assertEqual(payload[0]["sweep_values"], [0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9])
+        delay_payload = json.loads((artifact_dir / "figure_10a_delay_vs_arrival_probability.json").read_text(encoding="utf-8"))
+        self.assertEqual(len(delay_payload), len(ACTIVE_POLICIES) * 9)
+        self.assertEqual(
+            {row["policy"] for row in delay_payload},
+            set(ACTIVE_POLICIES),
+        )
+        self.assertEqual(
+            {row["sweep_value"] for row in delay_payload},
+            {0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9},
+        )
+        self.assertTrue(all(row["status"] == "simulator_generated" for row in delay_payload))
+        self.assertTrue(all(row["task_completion_delay_raw"] >= 0 for row in delay_payload))
+        self.assertTrue(all(row["paper_style_delay_for_plotting"] <= 0 for row in delay_payload))
+        self.assertTrue(all(abs(row["paper_style_delay_for_plotting"] + row["task_completion_delay_raw"]) < 1e-9 for row in delay_payload))
+
+        drop_payload = json.loads((artifact_dir / "figure_10f_drop_ratio_vs_timeout.json").read_text(encoding="utf-8"))
+        self.assertEqual(len(drop_payload), len(ACTIVE_POLICIES) * 5)
+        self.assertTrue(all(0.0 <= row["task_drop_ratio"] <= 1.0 for row in drop_payload))
+        self.assertTrue(all(abs(row["task_drop_percent"] - (row["task_drop_ratio"] * 100.0)) < 1e-9 for row in drop_payload))

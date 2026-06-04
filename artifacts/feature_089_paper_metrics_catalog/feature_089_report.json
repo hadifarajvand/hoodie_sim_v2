@@ -68,7 +68,7 @@
   "remaining_limitations": [
     "Figure 9 outputs are cataloged as blocked because the current simulator does not expose the exact sweep outputs without adding new sweep plumbing.",
     "Figures 8a, 8b, and 11 remain future-required because they depend on trained DRL and LSTM artifacts.",
-    "Figure 10 output files are extension scaffolds that preserve the required raw versus paper-style transformations, but they do not claim fresh simulator-run measurements yet."
+    "Figure 10 output files are live simulator sweeps over the approved runtime controls, with Feature 086 approximations preserved for the plotting transforms."
   ],
   "simulator_output_requirements": 14,
   "source_truth_files": [

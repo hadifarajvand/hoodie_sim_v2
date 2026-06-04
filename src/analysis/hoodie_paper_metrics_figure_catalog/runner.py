@@ -1,9 +1,25 @@
 from __future__ import annotations
 
+from dataclasses import dataclass
+from math import isnan
 from pathlib import Path
 import csv
 import json
+from tempfile import TemporaryDirectory
 from typing import Any
+
+from src.environment.compute_config import ComputeConfig
+from src.environment.gym_adapter import HoodieGymEnvironment
+from src.environment.runtime_model import SharedRuntimeParameters
+from src.environment.topology import TopologyGraph
+from src.environment.trace_source import TraceSource
+from src.environment.traffic_config import TrafficConfig
+from src.environment.traffic_generator import TrafficGenerator
+from src.evaluation.metrics import TaskEvaluationRecord, evaluate_trace
+from src.evaluation.policy_registry import PolicyRegistry
+from src.evaluation.scenario_registry import ScenarioRegistry
+from src.policies import RandomOffloadingPolicy
+from src.policies.policy_interface import PolicyContext
 
 from .config import (
     ACTIVE_POLICIES,
@@ -21,6 +37,83 @@ from .config import (
     SPEC_DIR,
 )
 from .model import Feature089Report, PaperFigure, PaperMetric, SimulatorOutputRequirement
+
+
+FIGURE_10_SIMULATION_SEED = 7
+FIGURE_10_HIGH_TIMEOUT_SECONDS = 10.0
+FIGURE_10_STRICT_TIMEOUT_SECONDS = 2.0
+
+
+@dataclass(frozen=True, slots=True)
+class Figure10SweepRow:
+    figure_id: str
+    policy: str
+    metric: str
+    x_axis: str
+    sweep_value: float
+    seed: int
+    scenario_name: str
+    number_of_agents: int
+    episode_length: int
+    arrival_probability: float
+    timeout_slots: int
+    timeout_seconds: float
+    cpu_capacity_per_slot_agent: float
+    cpu_capacity_per_slot_edge: float
+    cpu_capacity_per_slot_cloud: float
+    task_completion_delay_raw: float
+    paper_style_delay_for_plotting: float
+    task_drop_ratio: float
+    task_drop_percent: float
+    completion_rate: float
+    throughput: int
+    average_reward: float
+    total_reward: float
+    completed_tasks: int
+    dropped_tasks: int
+    total_tasks: int
+    generated_arrivals: int
+    finalized_terminal_tasks: int
+    pending_at_horizon: int
+    status: str
+    claim_boundary: tuple[str, ...]
+    notes: str
+
+    def to_dict(self) -> dict[str, Any]:
+        return {
+            "figure_id": self.figure_id,
+            "policy": self.policy,
+            "metric": self.metric,
+            "x_axis": self.x_axis,
+            "sweep_value": self.sweep_value,
+            "seed": self.seed,
+            "scenario_name": self.scenario_name,
+            "number_of_agents": self.number_of_agents,
+            "episode_length": self.episode_length,
+            "arrival_probability": self.arrival_probability,
+            "timeout_slots": self.timeout_slots,
+            "timeout_seconds": self.timeout_seconds,
+            "cpu_capacity_per_slot_agent": self.cpu_capacity_per_slot_agent,
+            "cpu_capacity_per_slot_edge": self.cpu_capacity_per_slot_edge,
+            "cpu_capacity_per_slot_cloud": self.cpu_capacity_per_slot_cloud,
+            "task_completion_delay_raw": self.task_completion_delay_raw,
+            "paper_style_delay_for_plotting": self.paper_style_delay_for_plotting,
+            "task_drop_ratio": self.task_drop_ratio,
+            "task_drop_percent": self.task_drop_percent,
+            "completion_rate": self.completion_rate,
+            "throughput": self.throughput,
+            "average_reward": self.average_reward,
+            "total_reward": self.total_reward,
+            "completed_tasks": self.completed_tasks,
+            "dropped_tasks": self.dropped_tasks,
+            "total_tasks": self.total_tasks,
+            "generated_arrivals": self.generated_arrivals,
+            "finalized_terminal_tasks": self.finalized_terminal_tasks,
+            "pending_at_horizon": self.pending_at_horizon,
+            "status": self.status,
+            "claim_boundary": list(self.claim_boundary),
+            "notes": self.notes,
+        }
 
 
 def _json_dump(payload: Any) -> str:
@@ -62,6 +155,219 @@ def _write_markdown_table(path: Path, rows: list[dict[str, Any]], title: str) ->
         values = [str(row.get(header, "")) for header in headers]
         lines.append("| " + " | ".join(values) + " |")
     path.write_text("\n".join(lines) + "\n", encoding="utf-8")
+
+
+def _approved_topology() -> TopologyGraph:
+    return TopologyGraph.from_approved_assumption_registry()
+
+
+def _validate_topology_contract(topology: TopologyGraph) -> None:
+    if len(topology.node_ids) != 20:
+        raise ValueError("Approved Figure 7 topology must contain exactly 20 nodes")
+    if len(topology.legal_adjacency) != 20:
+        raise ValueError("Approved Figure 7 topology must expose 20 adjacency rows")
+    degrees = [len(topology.legal_adjacency[node]) for node in topology.node_ids]
+    if any(degree != 3 for degree in degrees):
+        raise ValueError("Approved Figure 7 topology must have degree 3 for every node")
+    if sum(degrees) // 2 != 30:
+        raise ValueError("Approved Figure 7 topology must contain 30 undirected edges")
+
+
+def _policy_factory(policy_name: str, seed: int) -> object:
+    if policy_name == "RO":
+        return RandomOffloadingPolicy(seed=seed)
+    return PolicyRegistry.resolve(policy_name)
+
+
+def _base_traffic_config() -> TrafficConfig:
+    return ScenarioRegistry.resolve("paper_default", 110)
+
+
+def _traffic_config_for_figure(figure_id: str, sweep_value: float) -> TrafficConfig:
+    base = _base_traffic_config()
+    if figure_id in {"Figure 10a", "Figure 10b", "Figure 10c"}:
+        timeout_seconds = FIGURE_10_HIGH_TIMEOUT_SECONDS
+        arrival_probability = float(sweep_value) if figure_id == "Figure 10a" else base.arrival_probability
+        timeout_slots = int(round(timeout_seconds / base.slot_duration_seconds)) if figure_id != "Figure 10c" else int(
+            round(float(sweep_value) / base.slot_duration_seconds)
+        )
+    elif figure_id in {"Figure 10d", "Figure 10e", "Figure 10f"}:
+        timeout_seconds = FIGURE_10_STRICT_TIMEOUT_SECONDS
+        arrival_probability = float(sweep_value) if figure_id == "Figure 10d" else base.arrival_probability
+        timeout_slots = int(round(timeout_seconds / base.slot_duration_seconds)) if figure_id != "Figure 10f" else int(
+            round(float(sweep_value) / base.slot_duration_seconds)
+        )
+    else:
+        raise ValueError(f"Unsupported Figure 10 identifier: {figure_id}")
+    return TrafficConfig(
+        scenario_name=base.scenario_name,
+        number_of_agents=base.number_of_agents,
+        episode_length=base.episode_length,
+        arrival_probability=arrival_probability,
+        slot_duration_seconds=base.slot_duration_seconds,
+        timeout_slots=timeout_slots,
+        task_size_mbits_min=base.task_size_mbits_min,
+        task_size_mbits_max=base.task_size_mbits_max,
+        task_size_mbits_step=base.task_size_mbits_step,
+        processing_density_gcycles_per_mbit=base.processing_density_gcycles_per_mbit,
+    )
+
+
+def _compute_config_for_figure(figure_id: str, sweep_value: float) -> ComputeConfig:
+    if figure_id in {"Figure 10b", "Figure 10e"}:
+        default_compute = ComputeConfig()
+        return ComputeConfig(
+            cpu_capacity_per_slot_agent=float(sweep_value),
+            cpu_capacity_per_slot_edge=default_compute.cpu_capacity_per_slot_edge,
+            cpu_capacity_per_slot_cloud=default_compute.cpu_capacity_per_slot_cloud,
+        )
+    return ComputeConfig()
+
+
+def _collect_task_records(info: dict[str, Any], policy_name: str, scenario_name: str, seed: int) -> list[TaskEvaluationRecord]:
+    records: list[TaskEvaluationRecord] = []
+    for finalized in info.get("finalized_tasks", []):
+        records.append(
+            TaskEvaluationRecord(
+                task_id=int(finalized["task_id"]),
+                arrival_slot=int(finalized["arrival_slot"]),
+                completion_slot=int(finalized["completion_slot"]) if finalized.get("completion_slot") is not None else None,
+                terminal_outcome=finalized.get("terminal_outcome"),
+                selected_action=finalized.get("selected_action"),
+                resolved_destination=finalized.get("resolved_destination"),
+                delay=(
+                    int(finalized["completion_slot"]) - int(finalized["arrival_slot"])
+                    if finalized.get("terminal_outcome") == "completed" and finalized.get("completion_slot") is not None
+                    else None
+                ),
+            )
+        )
+    return records
+
+
+def _run_policy_episode(
+    *,
+    policy_name: str,
+    traffic_config: TrafficConfig,
+    compute_config: ComputeConfig,
+    trace_source: TraceSource,
+    seed: int,
+    generated_arrivals: int,
+) -> dict[str, Any]:
+    topology = _approved_topology()
+    _validate_topology_contract(topology)
+    policy = _policy_factory(policy_name, seed)
+    env = HoodieGymEnvironment(
+        episode_length=traffic_config.episode_length,
+        topology=topology,
+        runtime_parameters=SharedRuntimeParameters(),
+        compute_config=compute_config,
+        trace_source=trace_source,
+        policy_name=policy_name,
+    )
+    observation, _info = env.reset(seed=None)
+    del observation
+    total_reward = 0.0
+    while True:
+        current_task = env.current_task
+        if current_task is None:
+            action = None
+        else:
+            observation = env.observe_flat(current_task)
+            legal_action_mask = env.legal_action_mask(current_task)
+            context = PolicyContext(
+                observation=observation,
+                legal_action_mask=legal_action_mask,
+                trace_history=(trace_source.identifier,),
+            )
+            action = policy.choose_action(context)
+        _observation, reward, terminated, truncated, info = env.step(action)
+        if isinstance(reward, (int, float)) and not isnan(float(reward)):
+            total_reward += float(reward)
+        if terminated or truncated:
+            break
+    records = _collect_task_records(info, policy_name, traffic_config.scenario_name, seed)
+    trace_metrics = evaluate_trace(
+        trace_id=trace_source.identifier,
+        policy_name=policy_name,
+        seed=seed,
+        device="cpu",
+        records=records,
+    )
+    finalized_terminal_tasks = len(records)
+    pending_at_horizon = max(generated_arrivals - finalized_terminal_tasks, 0)
+    average_reward = float(total_reward / finalized_terminal_tasks) if finalized_terminal_tasks else 0.0
+    return {
+        "trace_metrics": trace_metrics.to_dict(),
+        "generated_arrivals": generated_arrivals,
+        "finalized_terminal_tasks": finalized_terminal_tasks,
+        "pending_at_horizon": pending_at_horizon,
+        "average_reward": average_reward,
+        "total_reward": float(total_reward),
+        "trace_id": trace_source.identifier,
+    }
+
+
+def _figure_10_row(
+    *,
+    figure: PaperFigure,
+    policy: str,
+    sweep_value: float,
+    traffic_config: TrafficConfig,
+    compute_config: ComputeConfig,
+    trace_metrics: dict[str, Any],
+    generated_arrivals: int,
+    finalized_terminal_tasks: int,
+    pending_at_horizon: int,
+    average_reward: float,
+    total_reward: float,
+) -> Figure10SweepRow:
+    task_completion_delay_raw = float(trace_metrics.get("average_delay", 0.0))
+    task_drop_ratio = float(trace_metrics.get("drop_ratio", 0.0))
+    total_tasks = int(trace_metrics.get("total_tasks", finalized_terminal_tasks))
+    completed_tasks = int(trace_metrics.get("completed_tasks", 0))
+    dropped_tasks = int(trace_metrics.get("dropped_tasks", 0))
+    throughput = int(trace_metrics.get("throughput", 0))
+    completion_rate = float(completed_tasks / total_tasks) if total_tasks else 0.0
+    paper_style_delay = -abs(task_completion_delay_raw)
+    return Figure10SweepRow(
+        figure_id=figure.figure_id,
+        policy=policy,
+        metric=figure.metric,
+        x_axis=figure.x_axis,
+        sweep_value=float(sweep_value),
+        seed=FIGURE_10_SIMULATION_SEED,
+        scenario_name=traffic_config.scenario_name,
+        number_of_agents=traffic_config.number_of_agents,
+        episode_length=traffic_config.episode_length,
+        arrival_probability=float(traffic_config.arrival_probability),
+        timeout_slots=int(traffic_config.timeout_slots),
+        timeout_seconds=float(traffic_config.timeout_slots * traffic_config.slot_duration_seconds),
+        cpu_capacity_per_slot_agent=float(compute_config.cpu_capacity_per_slot_agent),
+        cpu_capacity_per_slot_edge=float(compute_config.cpu_capacity_per_slot_edge),
+        cpu_capacity_per_slot_cloud=float(compute_config.cpu_capacity_per_slot_cloud),
+        task_completion_delay_raw=task_completion_delay_raw,
+        paper_style_delay_for_plotting=paper_style_delay,
+        task_drop_ratio=task_drop_ratio,
+        task_drop_percent=_drop_percent(task_drop_ratio),
+        completion_rate=completion_rate,
+        throughput=throughput,
+        average_reward=average_reward,
+        total_reward=total_reward,
+        completed_tasks=completed_tasks,
+        dropped_tasks=dropped_tasks,
+        total_tasks=total_tasks,
+        generated_arrivals=generated_arrivals,
+        finalized_terminal_tasks=finalized_terminal_tasks,
+        pending_at_horizon=pending_at_horizon,
+        status="simulator_generated",
+        claim_boundary=figure.claim_boundary,
+        notes=(
+            "Live simulator sweep generated from the approved runtime controls. "
+            "Preserve raw positive delay and paper-style negative plotting delay; "
+            "preserve raw drop ratio and percentage."
+        ),
+    )
 
 
 def _ordered_figures() -> list[PaperFigure]:
@@ -742,6 +1048,43 @@ def _figure_output_rows(figure: PaperFigure, requirement: SimulatorOutputRequire
     return rows
 
 
+def _figure_10_output_rows(figure: PaperFigure) -> list[dict[str, Any]]:
+    rows: list[dict[str, Any]] = []
+    for sweep_value in figure.sweep_values:
+        traffic_config = _traffic_config_for_figure(figure.figure_id, float(sweep_value))
+        compute_config = _compute_config_for_figure(figure.figure_id, float(sweep_value))
+        trace = TrafficGenerator.generate(traffic_config, FIGURE_10_SIMULATION_SEED)
+        with TemporaryDirectory(prefix=f"feature_089_{figure.figure_id.lower().replace(' ', '_')}_") as temp_dir:
+            temp_path = Path(temp_dir)
+            trace.write_json(temp_path / f"{trace.trace_id}.json")
+            trace_source = TraceSource.from_trace_bank(trace.trace_id, root_path=temp_path)
+            for policy in ACTIVE_POLICIES:
+                result = _run_policy_episode(
+                    policy_name=policy,
+                    traffic_config=traffic_config,
+                    compute_config=compute_config,
+                    trace_source=trace_source,
+                    seed=FIGURE_10_SIMULATION_SEED,
+                    generated_arrivals=len(trace.records),
+                )
+                rows.append(
+                    _figure_10_row(
+                        figure=figure,
+                        policy=policy,
+                        sweep_value=float(sweep_value),
+                        traffic_config=traffic_config,
+                        compute_config=compute_config,
+                        trace_metrics=result["trace_metrics"],
+                        generated_arrivals=int(result["generated_arrivals"]),
+                        finalized_terminal_tasks=int(result["finalized_terminal_tasks"]),
+                        pending_at_horizon=int(result["pending_at_horizon"]),
+                        average_reward=float(result["average_reward"]),
+                        total_reward=float(result["total_reward"]),
+                    ).to_dict()
+                )
+    return rows
+
+
 def _write_figure_output_files(artifact_dir: Path, figures: list[PaperFigure], requirements: list[SimulatorOutputRequirement]) -> None:
     references = _reference_metric_values()
     requirement_by_id = {item.requirement_id: item for item in requirements}
@@ -759,12 +1102,16 @@ def _write_figure_output_files(artifact_dir: Path, figures: list[PaperFigure], r
         "Figure 9d": ("figure_9d_reward_vs_agent_count_traffic.csv", "figure_9d_reward_vs_agent_count_traffic.json"),
         "Figure 9e": ("figure_9e_reward_vs_agent_count_data_rate.csv", "figure_9e_reward_vs_agent_count_data_rate.json"),
     }
+    figure_10_ids = {"Figure 10a", "Figure 10b", "Figure 10c", "Figure 10d", "Figure 10e", "Figure 10f"}
     for figure_id, figure in by_id.items():
         if figure_id not in filenames:
             continue
         requirement = requirement_by_id[figure.simulator_output_requirement_id]
-        rows = _figure_output_rows(figure, requirement, references)
         csv_name, json_name = filenames[figure_id]
+        if figure_id in figure_10_ids:
+            rows = _figure_10_output_rows(figure)
+        else:
+            rows = _figure_output_rows(figure, requirement, references)
         csv_path = artifact_dir / csv_name
         json_path = artifact_dir / json_name
         _write_csv(csv_path, rows)
@@ -835,7 +1182,7 @@ def _report(figures: list[PaperFigure], metrics: list[PaperMetric], requirements
         remaining_limitations=(
             "Figure 9 outputs are cataloged as blocked because the current simulator does not expose the exact sweep outputs without adding new sweep plumbing.",
             "Figures 8a, 8b, and 11 remain future-required because they depend on trained DRL and LSTM artifacts.",
-            "Figure 10 output files are extension scaffolds that preserve the required raw versus paper-style transformations, but they do not claim fresh simulator-run measurements yet.",
+            "Figure 10 output files are live simulator sweeps over the approved runtime controls, with Feature 086 approximations preserved for the plotting transforms.",
         ),
     )
 
@@ -891,6 +1238,38 @@ def generate_artifacts(artifact_dir: Path | None = None) -> Feature089Report:
     return report
 
 
+def _validate_figure_10_output(path: Path, figure: PaperFigure) -> None:
+    payload = json.loads(path.read_text(encoding="utf-8"))
+    if not isinstance(payload, list):
+        raise ValueError(f"{path.name} must contain a JSON array")
+    expected_row_count = len(ACTIVE_POLICIES) * len(figure.sweep_values)
+    if len(payload) != expected_row_count:
+        raise ValueError(f"{path.name} must contain {expected_row_count} rows")
+    seen_policies = {str(row.get("policy")) for row in payload}
+    if seen_policies != set(ACTIVE_POLICIES):
+        raise ValueError(f"{path.name} must cover the Figure 10 policy set")
+    seen_sweeps = {float(row.get("sweep_value")) for row in payload}
+    if seen_sweeps != {float(value) for value in figure.sweep_values}:
+        raise ValueError(f"{path.name} must cover the Figure 10 sweep values")
+    for row in payload:
+        if row.get("figure_id") != figure.figure_id:
+            raise ValueError(f"{path.name} contains a row for the wrong figure")
+        if row.get("status") != "simulator_generated":
+            raise ValueError(f"{path.name} must mark Figure 10 rows as simulator-generated")
+        delay_raw = float(row["task_completion_delay_raw"])
+        delay_plot = float(row["paper_style_delay_for_plotting"])
+        if delay_raw < 0:
+            raise ValueError(f"{path.name} must preserve raw positive delay")
+        if abs(delay_plot + abs(delay_raw)) > 1e-9:
+            raise ValueError(f"{path.name} must keep paper-style delay negative")
+        drop_ratio = float(row["task_drop_ratio"])
+        drop_percent = float(row["task_drop_percent"])
+        if not 0.0 <= drop_ratio <= 1.0:
+            raise ValueError(f"{path.name} must preserve raw drop ratio")
+        if abs(drop_percent - (drop_ratio * 100.0)) > 1e-9:
+            raise ValueError(f"{path.name} must preserve drop ratio percentage")
+
+
 def validate_artifacts(artifact_dir: Path | None = None) -> Feature089Report:
     artifact_dir = artifact_dir or ARTIFACT_DIR
     report = _report(_ordered_figures(), _paper_metric_catalog(), _requirements())
@@ -934,6 +1313,17 @@ def validate_artifacts(artifact_dir: Path | None = None) -> Feature089Report:
         raise ValueError("unexpected Feature 089 verdict")
     if len(report_json["feature_086_boundary"]) != len(FEATURE_086_BOUNDARY):
         raise ValueError("Feature 086 boundary mismatch")
+    figures = {figure.figure_id: figure for figure in _ordered_figures()}
+    figure_10_paths = {
+        "Figure 10a": artifact_dir / "figure_10a_delay_vs_arrival_probability.json",
+        "Figure 10b": artifact_dir / "figure_10b_delay_vs_cpu_capacity.json",
+        "Figure 10c": artifact_dir / "figure_10c_delay_vs_timeout.json",
+        "Figure 10d": artifact_dir / "figure_10d_drop_ratio_vs_arrival_probability.json",
+        "Figure 10e": artifact_dir / "figure_10e_drop_ratio_vs_cpu_capacity.json",
+        "Figure 10f": artifact_dir / "figure_10f_drop_ratio_vs_timeout.json",
+    }
+    for figure_id, path in figure_10_paths.items():
+        _validate_figure_10_output(path, figures[figure_id])
     return report
 
 
