@@ -1,0 +1,1105 @@
+{
+  "metric_count": 11,
+  "ranking_tables": {
+    "average_reward": [
+      {
+        "direction": "higher_is_better",
+        "metric": "average_reward",
+        "policy": "HOODIE",
+        "rank": 1,
+        "tie_break_trace": [
+          "average_reward=-6.503968253968254",
+          "task_completion_delay=4.902286902286902",
+          "deadline_violation_rate=0.08333333333333333",
+          "timeout_drop_rate=0.04563492063492063",
+          "policy=HOODIE"
+        ],
+        "value": -6.503968253968254
+      },
+      {
+        "direction": "higher_is_better",
+        "metric": "average_reward",
+        "policy": "MLEO",
+        "rank": 2,
+        "tie_break_trace": [
+          "average_reward=-6.503968253968254",
+          "task_completion_delay=4.902286902286902",
+          "deadline_violation_rate=0.08333333333333333",
+          "timeout_drop_rate=0.04563492063492063",
+          "policy=MLEO"
+        ],
+        "value": -6.503968253968254
+      },
+      {
+        "direction": "higher_is_better",
+        "metric": "average_reward",
+        "policy": "VO",
+        "rank": 3,
+        "tie_break_trace": [
+          "average_reward=-6.777777777777778",
+          "task_completion_delay=5.04384133611691",
+          "deadline_violation_rate=0.10317460317460317",
+          "timeout_drop_rate=0.0496031746031746",
+          "policy=VO"
+        ],
+        "value": -6.777777777777778
+      },
+      {
+        "direction": "higher_is_better",
+        "metric": "average_reward",
+        "policy": "FLC",
+        "rank": 4,
+        "tie_break_trace": [
+          "average_reward=-7.051587301587301",
+          "task_completion_delay=5.186582809224318",
+          "deadline_violation_rate=0.12301587301587301",
+          "timeout_drop_rate=0.05357142857142857",
+          "policy=FLC"
+        ],
+        "value": -7.051587301587301
+      },
+      {
+        "direction": "higher_is_better",
+        "metric": "average_reward",
+        "policy": "BCO",
+        "rank": 5,
+        "tie_break_trace": [
+          "average_reward=-8.670634920634921",
+          "task_completion_delay=5.2967032967032965",
+          "deadline_violation_rate=0.13095238095238096",
+          "timeout_drop_rate=0.05555555555555555",
+          "policy=BCO"
+        ],
+        "value": -8.670634920634921
+      },
+      {
+        "direction": "higher_is_better",
+        "metric": "average_reward",
+        "policy": "RO",
+        "rank": 6,
+        "tie_break_trace": [
+          "average_reward=-8.833994708994709",
+          "task_completion_delay=5.325239146431199",
+          "deadline_violation_rate=0.13293650793650794",
+          "timeout_drop_rate=0.05555555555555555",
+          "policy=RO"
+        ],
+        "value": -8.833994708994709
+      },
+      {
+        "direction": "higher_is_better",
+        "metric": "average_reward",
+        "policy": "HO",
+        "rank": 7,
+        "tie_break_trace": [
+          "average_reward=-13.01984126984127",
+          "task_completion_delay=5.834170854271357",
+          "deadline_violation_rate=0.17063492063492064",
+          "timeout_drop_rate=0.06746031746031746",
+          "policy=HO"
+        ],
+        "value": -13.01984126984127
+      }
+    ],
+    "completion_rate": [
+      {
+        "direction": "higher_is_better",
+        "metric": "completion_rate",
+        "policy": "HOODIE",
+        "rank": 1,
+        "tie_break_trace": [
+          "completion_rate=0.9543650793650794",
+          "task_completion_delay=4.902286902286902",
+          "deadline_violation_rate=0.08333333333333333",
+          "timeout_drop_rate=0.04563492063492063",
+          "policy=HOODIE"
+        ],
+        "value": 0.9543650793650794
+      },
+      {
+        "direction": "higher_is_better",
+        "metric": "completion_rate",
+        "policy": "MLEO",
+        "rank": 2,
+        "tie_break_trace": [
+          "completion_rate=0.9543650793650794",
+          "task_completion_delay=4.902286902286902",
+          "deadline_violation_rate=0.08333333333333333",
+          "timeout_drop_rate=0.04563492063492063",
+          "policy=MLEO"
+        ],
+        "value": 0.9543650793650794
+      },
+      {
+        "direction": "higher_is_better",
+        "metric": "completion_rate",
+        "policy": "VO",
+        "rank": 3,
+        "tie_break_trace": [
+          "completion_rate=0.9503968253968254",
+          "task_completion_delay=5.04384133611691",
+          "deadline_violation_rate=0.10317460317460317",
+          "timeout_drop_rate=0.0496031746031746",
+          "policy=VO"
+        ],
+        "value": 0.9503968253968254
+      },
+      {
+        "direction": "higher_is_better",
+        "metric": "completion_rate",
+        "policy": "FLC",
+        "rank": 4,
+        "tie_break_trace": [
+          "completion_rate=0.9464285714285714",
+          "task_completion_delay=5.186582809224318",
+          "deadline_violation_rate=0.12301587301587301",
+          "timeout_drop_rate=0.05357142857142857",
+          "policy=FLC"
+        ],
+        "value": 0.9464285714285714
+      },
+      {
+        "direction": "higher_is_better",
+        "metric": "completion_rate",
+        "policy": "BCO",
+        "rank": 5,
+        "tie_break_trace": [
+          "completion_rate=0.9027777777777778",
+          "task_completion_delay=5.2967032967032965",
+          "deadline_violation_rate=0.13095238095238096",
+          "timeout_drop_rate=0.05555555555555555",
+          "policy=BCO"
+        ],
+        "value": 0.9027777777777778
+      },
+      {
+        "direction": "higher_is_better",
+        "metric": "completion_rate",
+        "policy": "RO",
+        "rank": 6,
+        "tie_break_trace": [
+          "completion_rate=0.8988095238095238",
+          "task_completion_delay=5.325239146431199",
+          "deadline_violation_rate=0.13293650793650794",
+          "timeout_drop_rate=0.05555555555555555",
+          "policy=RO"
+        ],
+        "value": 0.8988095238095238
+      },
+      {
+        "direction": "higher_is_better",
+        "metric": "completion_rate",
+        "policy": "HO",
+        "rank": 7,
+        "tie_break_trace": [
+          "completion_rate=0.7896825396825397",
+          "task_completion_delay=5.834170854271357",
+          "deadline_violation_rate=0.17063492063492064",
+          "timeout_drop_rate=0.06746031746031746",
+          "policy=HO"
+        ],
+        "value": 0.7896825396825397
+      }
+    ],
+    "deadline_violation_rate": [
+      {
+        "direction": "lower_is_better",
+        "metric": "deadline_violation_rate",
+        "policy": "HOODIE",
+        "rank": 1,
+        "tie_break_trace": [
+          "deadline_violation_rate=0.08333333333333333",
+          "task_completion_delay=4.902286902286902",
+          "deadline_violation_rate=0.08333333333333333",
+          "timeout_drop_rate=0.04563492063492063",
+          "policy=HOODIE"
+        ],
+        "value": 0.08333333333333333
+      },
+      {
+        "direction": "lower_is_better",
+        "metric": "deadline_violation_rate",
+        "policy": "MLEO",
+        "rank": 2,
+        "tie_break_trace": [
+          "deadline_violation_rate=0.08333333333333333",
+          "task_completion_delay=4.902286902286902",
+          "deadline_violation_rate=0.08333333333333333",
+          "timeout_drop_rate=0.04563492063492063",
+          "policy=MLEO"
+        ],
+        "value": 0.08333333333333333
+      },
+      {
+        "direction": "lower_is_better",
+        "metric": "deadline_violation_rate",
+        "policy": "VO",
+        "rank": 3,
+        "tie_break_trace": [
+          "deadline_violation_rate=0.10317460317460317",
+          "task_completion_delay=5.04384133611691",
+          "deadline_violation_rate=0.10317460317460317",
+          "timeout_drop_rate=0.0496031746031746",
+          "policy=VO"
+        ],
+        "value": 0.10317460317460317
+      },
+      {
+        "direction": "lower_is_better",
+        "metric": "deadline_violation_rate",
+        "policy": "FLC",
+        "rank": 4,
+        "tie_break_trace": [
+          "deadline_violation_rate=0.12301587301587301",
+          "task_completion_delay=5.186582809224318",
+          "deadline_violation_rate=0.12301587301587301",
+          "timeout_drop_rate=0.05357142857142857",
+          "policy=FLC"
+        ],
+        "value": 0.12301587301587301
+      },
+      {
+        "direction": "lower_is_better",
+        "metric": "deadline_violation_rate",
+        "policy": "BCO",
+        "rank": 5,
+        "tie_break_trace": [
+          "deadline_violation_rate=0.13095238095238096",
+          "task_completion_delay=5.2967032967032965",
+          "deadline_violation_rate=0.13095238095238096",
+          "timeout_drop_rate=0.05555555555555555",
+          "policy=BCO"
+        ],
+        "value": 0.13095238095238096
+      },
+      {
+        "direction": "lower_is_better",
+        "metric": "deadline_violation_rate",
+        "policy": "RO",
+        "rank": 6,
+        "tie_break_trace": [
+          "deadline_violation_rate=0.13293650793650794",
+          "task_completion_delay=5.325239146431199",
+          "deadline_violation_rate=0.13293650793650794",
+          "timeout_drop_rate=0.05555555555555555",
+          "policy=RO"
+        ],
+        "value": 0.13293650793650794
+      },
+      {
+        "direction": "lower_is_better",
+        "metric": "deadline_violation_rate",
+        "policy": "HO",
+        "rank": 7,
+        "tie_break_trace": [
+          "deadline_violation_rate=0.17063492063492064",
+          "task_completion_delay=5.834170854271357",
+          "deadline_violation_rate=0.17063492063492064",
+          "timeout_drop_rate=0.06746031746031746",
+          "policy=HO"
+        ],
+        "value": 0.17063492063492064
+      }
+    ],
+    "illegal_action_rejection_count": [
+      {
+        "direction": "lower_is_better",
+        "metric": "illegal_action_rejection_count",
+        "policy": "HOODIE",
+        "rank": 1,
+        "tie_break_trace": [
+          "illegal_action_rejection_count=0.0",
+          "task_completion_delay=4.902286902286902",
+          "deadline_violation_rate=0.08333333333333333",
+          "timeout_drop_rate=0.04563492063492063",
+          "policy=HOODIE"
+        ],
+        "value": 0.0
+      },
+      {
+        "direction": "lower_is_better",
+        "metric": "illegal_action_rejection_count",
+        "policy": "MLEO",
+        "rank": 2,
+        "tie_break_trace": [
+          "illegal_action_rejection_count=0.0",
+          "task_completion_delay=4.902286902286902",
+          "deadline_violation_rate=0.08333333333333333",
+          "timeout_drop_rate=0.04563492063492063",
+          "policy=MLEO"
+        ],
+        "value": 0.0
+      },
+      {
+        "direction": "lower_is_better",
+        "metric": "illegal_action_rejection_count",
+        "policy": "VO",
+        "rank": 3,
+        "tie_break_trace": [
+          "illegal_action_rejection_count=0.0",
+          "task_completion_delay=5.04384133611691",
+          "deadline_violation_rate=0.10317460317460317",
+          "timeout_drop_rate=0.0496031746031746",
+          "policy=VO"
+        ],
+        "value": 0.0
+      },
+      {
+        "direction": "lower_is_better",
+        "metric": "illegal_action_rejection_count",
+        "policy": "FLC",
+        "rank": 4,
+        "tie_break_trace": [
+          "illegal_action_rejection_count=0.0",
+          "task_completion_delay=5.186582809224318",
+          "deadline_violation_rate=0.12301587301587301",
+          "timeout_drop_rate=0.05357142857142857",
+          "policy=FLC"
+        ],
+        "value": 0.0
+      },
+      {
+        "direction": "lower_is_better",
+        "metric": "illegal_action_rejection_count",
+        "policy": "BCO",
+        "rank": 5,
+        "tie_break_trace": [
+          "illegal_action_rejection_count=63.0",
+          "task_completion_delay=5.2967032967032965",
+          "deadline_violation_rate=0.13095238095238096",
+          "timeout_drop_rate=0.05555555555555555",
+          "policy=BCO"
+        ],
+        "value": 63.0
+      },
+      {
+        "direction": "lower_is_better",
+        "metric": "illegal_action_rejection_count",
+        "policy": "RO",
+        "rank": 6,
+        "tie_break_trace": [
+          "illegal_action_rejection_count=69.0",
+          "task_completion_delay=5.325239146431199",
+          "deadline_violation_rate=0.13293650793650794",
+          "timeout_drop_rate=0.05555555555555555",
+          "policy=RO"
+        ],
+        "value": 69.0
+      },
+      {
+        "direction": "lower_is_better",
+        "metric": "illegal_action_rejection_count",
+        "policy": "HO",
+        "rank": 7,
+        "tie_break_trace": [
+          "illegal_action_rejection_count=216.0",
+          "task_completion_delay=5.834170854271357",
+          "deadline_violation_rate=0.17063492063492064",
+          "timeout_drop_rate=0.06746031746031746",
+          "policy=HO"
+        ],
+        "value": 216.0
+      }
+    ],
+    "queue_stability_score": [
+      {
+        "direction": "higher_is_better",
+        "metric": "queue_stability_score",
+        "policy": "HOODIE",
+        "rank": 1,
+        "tie_break_trace": [
+          "queue_stability_score=0.17937041032955262",
+          "task_completion_delay=4.902286902286902",
+          "deadline_violation_rate=0.08333333333333333",
+          "timeout_drop_rate=0.04563492063492063",
+          "policy=HOODIE"
+        ],
+        "value": 0.17937041032955262
+      },
+      {
+        "direction": "higher_is_better",
+        "metric": "queue_stability_score",
+        "policy": "MLEO",
+        "rank": 2,
+        "tie_break_trace": [
+          "queue_stability_score=0.17937041032955262",
+          "task_completion_delay=4.902286902286902",
+          "deadline_violation_rate=0.08333333333333333",
+          "timeout_drop_rate=0.04563492063492063",
+          "policy=MLEO"
+        ],
+        "value": 0.17937041032955262
+      },
+      {
+        "direction": "higher_is_better",
+        "metric": "queue_stability_score",
+        "policy": "VO",
+        "rank": 3,
+        "tie_break_trace": [
+          "queue_stability_score=0.17937041032955262",
+          "task_completion_delay=5.04384133611691",
+          "deadline_violation_rate=0.10317460317460317",
+          "timeout_drop_rate=0.0496031746031746",
+          "policy=VO"
+        ],
+        "value": 0.17937041032955262
+      },
+      {
+        "direction": "higher_is_better",
+        "metric": "queue_stability_score",
+        "policy": "FLC",
+        "rank": 4,
+        "tie_break_trace": [
+          "queue_stability_score=0.17937041032955262",
+          "task_completion_delay=5.186582809224318",
+          "deadline_violation_rate=0.12301587301587301",
+          "timeout_drop_rate=0.05357142857142857",
+          "policy=FLC"
+        ],
+        "value": 0.17937041032955262
+      },
+      {
+        "direction": "higher_is_better",
+        "metric": "queue_stability_score",
+        "policy": "BCO",
+        "rank": 5,
+        "tie_break_trace": [
+          "queue_stability_score=0.17937041032955262",
+          "task_completion_delay=5.2967032967032965",
+          "deadline_violation_rate=0.13095238095238096",
+          "timeout_drop_rate=0.05555555555555555",
+          "policy=BCO"
+        ],
+        "value": 0.17937041032955262
+      },
+      {
+        "direction": "higher_is_better",
+        "metric": "queue_stability_score",
+        "policy": "RO",
+        "rank": 6,
+        "tie_break_trace": [
+          "queue_stability_score=0.17937041032955262",
+          "task_completion_delay=5.325239146431199",
+          "deadline_violation_rate=0.13293650793650794",
+          "timeout_drop_rate=0.05555555555555555",
+          "policy=RO"
+        ],
+        "value": 0.17937041032955262
+      },
+      {
+        "direction": "higher_is_better",
+        "metric": "queue_stability_score",
+        "policy": "HO",
+        "rank": 7,
+        "tie_break_trace": [
+          "queue_stability_score=0.17937041032955262",
+          "task_completion_delay=5.834170854271357",
+          "deadline_violation_rate=0.17063492063492064",
+          "timeout_drop_rate=0.06746031746031746",
+          "policy=HO"
+        ],
+        "value": 0.17937041032955262
+      }
+    ],
+    "task_completion_delay": [
+      {
+        "direction": "lower_is_better",
+        "metric": "task_completion_delay",
+        "policy": "HOODIE",
+        "rank": 1,
+        "tie_break_trace": [
+          "task_completion_delay=4.902286902286902",
+          "task_completion_delay=4.902286902286902",
+          "deadline_violation_rate=0.08333333333333333",
+          "timeout_drop_rate=0.04563492063492063",
+          "policy=HOODIE"
+        ],
+        "value": 4.902286902286902
+      },
+      {
+        "direction": "lower_is_better",
+        "metric": "task_completion_delay",
+        "policy": "MLEO",
+        "rank": 2,
+        "tie_break_trace": [
+          "task_completion_delay=4.902286902286902",
+          "task_completion_delay=4.902286902286902",
+          "deadline_violation_rate=0.08333333333333333",
+          "timeout_drop_rate=0.04563492063492063",
+          "policy=MLEO"
+        ],
+        "value": 4.902286902286902
+      },
+      {
+        "direction": "lower_is_better",
+        "metric": "task_completion_delay",
+        "policy": "VO",
+        "rank": 3,
+        "tie_break_trace": [
+          "task_completion_delay=5.04384133611691",
+          "task_completion_delay=5.04384133611691",
+          "deadline_violation_rate=0.10317460317460317",
+          "timeout_drop_rate=0.0496031746031746",
+          "policy=VO"
+        ],
+        "value": 5.04384133611691
+      },
+      {
+        "direction": "lower_is_better",
+        "metric": "task_completion_delay",
+        "policy": "FLC",
+        "rank": 4,
+        "tie_break_trace": [
+          "task_completion_delay=5.186582809224318",
+          "task_completion_delay=5.186582809224318",
+          "deadline_violation_rate=0.12301587301587301",
+          "timeout_drop_rate=0.05357142857142857",
+          "policy=FLC"
+        ],
+        "value": 5.186582809224318
+      },
+      {
+        "direction": "lower_is_better",
+        "metric": "task_completion_delay",
+        "policy": "BCO",
+        "rank": 5,
+        "tie_break_trace": [
+          "task_completion_delay=5.2967032967032965",
+          "task_completion_delay=5.2967032967032965",
+          "deadline_violation_rate=0.13095238095238096",
+          "timeout_drop_rate=0.05555555555555555",
+          "policy=BCO"
+        ],
+        "value": 5.2967032967032965
+      },
+      {
+        "direction": "lower_is_better",
+        "metric": "task_completion_delay",
+        "policy": "RO",
+        "rank": 6,
+        "tie_break_trace": [
+          "task_completion_delay=5.325239146431199",
+          "task_completion_delay=5.325239146431199",
+          "deadline_violation_rate=0.13293650793650794",
+          "timeout_drop_rate=0.05555555555555555",
+          "policy=RO"
+        ],
+        "value": 5.325239146431199
+      },
+      {
+        "direction": "lower_is_better",
+        "metric": "task_completion_delay",
+        "policy": "HO",
+        "rank": 7,
+        "tie_break_trace": [
+          "task_completion_delay=5.834170854271357",
+          "task_completion_delay=5.834170854271357",
+          "deadline_violation_rate=0.17063492063492064",
+          "timeout_drop_rate=0.06746031746031746",
+          "policy=HO"
+        ],
+        "value": 5.834170854271357
+      }
+    ],
+    "task_drop_ratio": [
+      {
+        "direction": "lower_is_better",
+        "metric": "task_drop_ratio",
+        "policy": "HOODIE",
+        "rank": 1,
+        "tie_break_trace": [
+          "task_drop_ratio=0.04563492063492063",
+          "task_completion_delay=4.902286902286902",
+          "deadline_violation_rate=0.08333333333333333",
+          "timeout_drop_rate=0.04563492063492063",
+          "policy=HOODIE"
+        ],
+        "value": 0.04563492063492063
+      },
+      {
+        "direction": "lower_is_better",
+        "metric": "task_drop_ratio",
+        "policy": "MLEO",
+        "rank": 2,
+        "tie_break_trace": [
+          "task_drop_ratio=0.04563492063492063",
+          "task_completion_delay=4.902286902286902",
+          "deadline_violation_rate=0.08333333333333333",
+          "timeout_drop_rate=0.04563492063492063",
+          "policy=MLEO"
+        ],
+        "value": 0.04563492063492063
+      },
+      {
+        "direction": "lower_is_better",
+        "metric": "task_drop_ratio",
+        "policy": "VO",
+        "rank": 3,
+        "tie_break_trace": [
+          "task_drop_ratio=0.0496031746031746",
+          "task_completion_delay=5.04384133611691",
+          "deadline_violation_rate=0.10317460317460317",
+          "timeout_drop_rate=0.0496031746031746",
+          "policy=VO"
+        ],
+        "value": 0.0496031746031746
+      },
+      {
+        "direction": "lower_is_better",
+        "metric": "task_drop_ratio",
+        "policy": "FLC",
+        "rank": 4,
+        "tie_break_trace": [
+          "task_drop_ratio=0.05357142857142857",
+          "task_completion_delay=5.186582809224318",
+          "deadline_violation_rate=0.12301587301587301",
+          "timeout_drop_rate=0.05357142857142857",
+          "policy=FLC"
+        ],
+        "value": 0.05357142857142857
+      },
+      {
+        "direction": "lower_is_better",
+        "metric": "task_drop_ratio",
+        "policy": "BCO",
+        "rank": 5,
+        "tie_break_trace": [
+          "task_drop_ratio=0.09722222222222222",
+          "task_completion_delay=5.2967032967032965",
+          "deadline_violation_rate=0.13095238095238096",
+          "timeout_drop_rate=0.05555555555555555",
+          "policy=BCO"
+        ],
+        "value": 0.09722222222222222
+      },
+      {
+        "direction": "lower_is_better",
+        "metric": "task_drop_ratio",
+        "policy": "RO",
+        "rank": 6,
+        "tie_break_trace": [
+          "task_drop_ratio=0.10119047619047619",
+          "task_completion_delay=5.325239146431199",
+          "deadline_violation_rate=0.13293650793650794",
+          "timeout_drop_rate=0.05555555555555555",
+          "policy=RO"
+        ],
+        "value": 0.10119047619047619
+      },
+      {
+        "direction": "lower_is_better",
+        "metric": "task_drop_ratio",
+        "policy": "HO",
+        "rank": 7,
+        "tie_break_trace": [
+          "task_drop_ratio=0.21031746031746032",
+          "task_completion_delay=5.834170854271357",
+          "deadline_violation_rate=0.17063492063492064",
+          "timeout_drop_rate=0.06746031746031746",
+          "policy=HO"
+        ],
+        "value": 0.21031746031746032
+      }
+    ],
+    "throughput": [
+      {
+        "direction": "higher_is_better",
+        "metric": "throughput",
+        "policy": "HOODIE",
+        "rank": 1,
+        "tie_break_trace": [
+          "throughput=0.9543650793650794",
+          "task_completion_delay=4.902286902286902",
+          "deadline_violation_rate=0.08333333333333333",
+          "timeout_drop_rate=0.04563492063492063",
+          "policy=HOODIE"
+        ],
+        "value": 0.9543650793650794
+      },
+      {
+        "direction": "higher_is_better",
+        "metric": "throughput",
+        "policy": "MLEO",
+        "rank": 2,
+        "tie_break_trace": [
+          "throughput=0.9543650793650794",
+          "task_completion_delay=4.902286902286902",
+          "deadline_violation_rate=0.08333333333333333",
+          "timeout_drop_rate=0.04563492063492063",
+          "policy=MLEO"
+        ],
+        "value": 0.9543650793650794
+      },
+      {
+        "direction": "higher_is_better",
+        "metric": "throughput",
+        "policy": "VO",
+        "rank": 3,
+        "tie_break_trace": [
+          "throughput=0.9503968253968254",
+          "task_completion_delay=5.04384133611691",
+          "deadline_violation_rate=0.10317460317460317",
+          "timeout_drop_rate=0.0496031746031746",
+          "policy=VO"
+        ],
+        "value": 0.9503968253968254
+      },
+      {
+        "direction": "higher_is_better",
+        "metric": "throughput",
+        "policy": "FLC",
+        "rank": 4,
+        "tie_break_trace": [
+          "throughput=0.9464285714285714",
+          "task_completion_delay=5.186582809224318",
+          "deadline_violation_rate=0.12301587301587301",
+          "timeout_drop_rate=0.05357142857142857",
+          "policy=FLC"
+        ],
+        "value": 0.9464285714285714
+      },
+      {
+        "direction": "higher_is_better",
+        "metric": "throughput",
+        "policy": "BCO",
+        "rank": 5,
+        "tie_break_trace": [
+          "throughput=0.9027777777777778",
+          "task_completion_delay=5.2967032967032965",
+          "deadline_violation_rate=0.13095238095238096",
+          "timeout_drop_rate=0.05555555555555555",
+          "policy=BCO"
+        ],
+        "value": 0.9027777777777778
+      },
+      {
+        "direction": "higher_is_better",
+        "metric": "throughput",
+        "policy": "RO",
+        "rank": 6,
+        "tie_break_trace": [
+          "throughput=0.8988095238095238",
+          "task_completion_delay=5.325239146431199",
+          "deadline_violation_rate=0.13293650793650794",
+          "timeout_drop_rate=0.05555555555555555",
+          "policy=RO"
+        ],
+        "value": 0.8988095238095238
+      },
+      {
+        "direction": "higher_is_better",
+        "metric": "throughput",
+        "policy": "HO",
+        "rank": 7,
+        "tie_break_trace": [
+          "throughput=0.7896825396825397",
+          "task_completion_delay=5.834170854271357",
+          "deadline_violation_rate=0.17063492063492064",
+          "timeout_drop_rate=0.06746031746031746",
+          "policy=HO"
+        ],
+        "value": 0.7896825396825397
+      }
+    ],
+    "timeout_drop_rate": [
+      {
+        "direction": "lower_is_better",
+        "metric": "timeout_drop_rate",
+        "policy": "HOODIE",
+        "rank": 1,
+        "tie_break_trace": [
+          "timeout_drop_rate=0.04563492063492063",
+          "task_completion_delay=4.902286902286902",
+          "deadline_violation_rate=0.08333333333333333",
+          "timeout_drop_rate=0.04563492063492063",
+          "policy=HOODIE"
+        ],
+        "value": 0.04563492063492063
+      },
+      {
+        "direction": "lower_is_better",
+        "metric": "timeout_drop_rate",
+        "policy": "MLEO",
+        "rank": 2,
+        "tie_break_trace": [
+          "timeout_drop_rate=0.04563492063492063",
+          "task_completion_delay=4.902286902286902",
+          "deadline_violation_rate=0.08333333333333333",
+          "timeout_drop_rate=0.04563492063492063",
+          "policy=MLEO"
+        ],
+        "value": 0.04563492063492063
+      },
+      {
+        "direction": "lower_is_better",
+        "metric": "timeout_drop_rate",
+        "policy": "VO",
+        "rank": 3,
+        "tie_break_trace": [
+          "timeout_drop_rate=0.0496031746031746",
+          "task_completion_delay=5.04384133611691",
+          "deadline_violation_rate=0.10317460317460317",
+          "timeout_drop_rate=0.0496031746031746",
+          "policy=VO"
+        ],
+        "value": 0.0496031746031746
+      },
+      {
+        "direction": "lower_is_better",
+        "metric": "timeout_drop_rate",
+        "policy": "FLC",
+        "rank": 4,
+        "tie_break_trace": [
+          "timeout_drop_rate=0.05357142857142857",
+          "task_completion_delay=5.186582809224318",
+          "deadline_violation_rate=0.12301587301587301",
+          "timeout_drop_rate=0.05357142857142857",
+          "policy=FLC"
+        ],
+        "value": 0.05357142857142857
+      },
+      {
+        "direction": "lower_is_better",
+        "metric": "timeout_drop_rate",
+        "policy": "BCO",
+        "rank": 5,
+        "tie_break_trace": [
+          "timeout_drop_rate=0.05555555555555555",
+          "task_completion_delay=5.2967032967032965",
+          "deadline_violation_rate=0.13095238095238096",
+          "timeout_drop_rate=0.05555555555555555",
+          "policy=BCO"
+        ],
+        "value": 0.05555555555555555
+      },
+      {
+        "direction": "lower_is_better",
+        "metric": "timeout_drop_rate",
+        "policy": "RO",
+        "rank": 6,
+        "tie_break_trace": [
+          "timeout_drop_rate=0.05555555555555555",
+          "task_completion_delay=5.325239146431199",
+          "deadline_violation_rate=0.13293650793650794",
+          "timeout_drop_rate=0.05555555555555555",
+          "policy=RO"
+        ],
+        "value": 0.05555555555555555
+      },
+      {
+        "direction": "lower_is_better",
+        "metric": "timeout_drop_rate",
+        "policy": "HO",
+        "rank": 7,
+        "tie_break_trace": [
+          "timeout_drop_rate=0.06746031746031746",
+          "task_completion_delay=5.834170854271357",
+          "deadline_violation_rate=0.17063492063492064",
+          "timeout_drop_rate=0.06746031746031746",
+          "policy=HO"
+        ],
+        "value": 0.06746031746031746
+      }
+    ],
+    "total_reward": [
+      {
+        "direction": "higher_is_better",
+        "metric": "total_reward",
+        "policy": "HOODIE",
+        "rank": 1,
+        "tie_break_trace": [
+          "total_reward=-9834.0",
+          "task_completion_delay=4.902286902286902",
+          "deadline_violation_rate=0.08333333333333333",
+          "timeout_drop_rate=0.04563492063492063",
+          "policy=HOODIE"
+        ],
+        "value": -9834.0
+      },
+      {
+        "direction": "higher_is_better",
+        "metric": "total_reward",
+        "policy": "MLEO",
+        "rank": 2,
+        "tie_break_trace": [
+          "total_reward=-9834.0",
+          "task_completion_delay=4.902286902286902",
+          "deadline_violation_rate=0.08333333333333333",
+          "timeout_drop_rate=0.04563492063492063",
+          "policy=MLEO"
+        ],
+        "value": -9834.0
+      },
+      {
+        "direction": "higher_is_better",
+        "metric": "total_reward",
+        "policy": "VO",
+        "rank": 3,
+        "tie_break_trace": [
+          "total_reward=-10248.0",
+          "task_completion_delay=5.04384133611691",
+          "deadline_violation_rate=0.10317460317460317",
+          "timeout_drop_rate=0.0496031746031746",
+          "policy=VO"
+        ],
+        "value": -10248.0
+      },
+      {
+        "direction": "higher_is_better",
+        "metric": "total_reward",
+        "policy": "FLC",
+        "rank": 4,
+        "tie_break_trace": [
+          "total_reward=-10662.0",
+          "task_completion_delay=5.186582809224318",
+          "deadline_violation_rate=0.12301587301587301",
+          "timeout_drop_rate=0.05357142857142857",
+          "policy=FLC"
+        ],
+        "value": -10662.0
+      },
+      {
+        "direction": "higher_is_better",
+        "metric": "total_reward",
+        "policy": "BCO",
+        "rank": 5,
+        "tie_break_trace": [
+          "total_reward=-13110.0",
+          "task_completion_delay=5.2967032967032965",
+          "deadline_violation_rate=0.13095238095238096",
+          "timeout_drop_rate=0.05555555555555555",
+          "policy=BCO"
+        ],
+        "value": -13110.0
+      },
+      {
+        "direction": "higher_is_better",
+        "metric": "total_reward",
+        "policy": "RO",
+        "rank": 6,
+        "tie_break_trace": [
+          "total_reward=-13357.0",
+          "task_completion_delay=5.325239146431199",
+          "deadline_violation_rate=0.13293650793650794",
+          "timeout_drop_rate=0.05555555555555555",
+          "policy=RO"
+        ],
+        "value": -13357.0
+      },
+      {
+        "direction": "higher_is_better",
+        "metric": "total_reward",
+        "policy": "HO",
+        "rank": 7,
+        "tie_break_trace": [
+          "total_reward=-19686.0",
+          "task_completion_delay=5.834170854271357",
+          "deadline_violation_rate=0.17063492063492064",
+          "timeout_drop_rate=0.06746031746031746",
+          "policy=HO"
+        ],
+        "value": -19686.0
+      }
+    ],
+    "unavailable_drop_rate": [
+      {
+        "direction": "lower_is_better",
+        "metric": "unavailable_drop_rate",
+        "policy": "HOODIE",
+        "rank": 1,
+        "tie_break_trace": [
+          "unavailable_drop_rate=0.0",
+          "task_completion_delay=4.902286902286902",
+          "deadline_violation_rate=0.08333333333333333",
+          "timeout_drop_rate=0.04563492063492063",
+          "policy=HOODIE"
+        ],
+        "value": 0.0
+      },
+      {
+        "direction": "lower_is_better",
+        "metric": "unavailable_drop_rate",
+        "policy": "MLEO",
+        "rank": 2,
+        "tie_break_trace": [
+          "unavailable_drop_rate=0.0",
+          "task_completion_delay=4.902286902286902",
+          "deadline_violation_rate=0.08333333333333333",
+          "timeout_drop_rate=0.04563492063492063",
+          "policy=MLEO"
+        ],
+        "value": 0.0
+      },
+      {
+        "direction": "lower_is_better",
+        "metric": "unavailable_drop_rate",
+        "policy": "VO",
+        "rank": 3,
+        "tie_break_trace": [
+          "unavailable_drop_rate=0.0",
+          "task_completion_delay=5.04384133611691",
+          "deadline_violation_rate=0.10317460317460317",
+          "timeout_drop_rate=0.0496031746031746",
+          "policy=VO"
+        ],
+        "value": 0.0
+      },
+      {
+        "direction": "lower_is_better",
+        "metric": "unavailable_drop_rate",
+        "policy": "FLC",
+        "rank": 4,
+        "tie_break_trace": [
+          "unavailable_drop_rate=0.0",
+          "task_completion_delay=5.186582809224318",
+          "deadline_violation_rate=0.12301587301587301",
+          "timeout_drop_rate=0.05357142857142857",
+          "policy=FLC"
+        ],
+        "value": 0.0
+      },
+      {
+        "direction": "lower_is_better",
+        "metric": "unavailable_drop_rate",
+        "policy": "BCO",
+        "rank": 5,
+        "tie_break_trace": [
+          "unavailable_drop_rate=0.041666666666666664",
+          "task_completion_delay=5.2967032967032965",
+          "deadline_violation_rate=0.13095238095238096",
+          "timeout_drop_rate=0.05555555555555555",
+          "policy=BCO"
+        ],
+        "value": 0.041666666666666664
+      },
+      {
+        "direction": "lower_is_better",
+        "metric": "unavailable_drop_rate",
+        "policy": "RO",
+        "rank": 6,
+        "tie_break_trace": [
+          "unavailable_drop_rate=0.04563492063492063",
+          "task_completion_delay=5.325239146431199",
+          "deadline_violation_rate=0.13293650793650794",
+          "timeout_drop_rate=0.05555555555555555",
+          "policy=RO"
+        ],
+        "value": 0.04563492063492063
+      },
+      {
+        "direction": "lower_is_better",
+        "metric": "unavailable_drop_rate",
+        "policy": "HO",
+        "rank": 7,
+        "tie_break_trace": [
+          "unavailable_drop_rate=0.14285714285714285",
+          "task_completion_delay=5.834170854271357",
+          "deadline_violation_rate=0.17063492063492064",
+          "timeout_drop_rate=0.06746031746031746",
+          "policy=HO"
+        ],
+        "value": 0.14285714285714285
+      }
+    ]
+  }
+}

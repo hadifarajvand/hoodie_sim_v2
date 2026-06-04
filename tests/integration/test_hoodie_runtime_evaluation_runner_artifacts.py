@@ -10,7 +10,7 @@ from src.analysis.hoodie_runtime_evaluation_runner.runner import generate_hoodie
 class HoodieRuntimeEvaluationRunnerArtifactIntegrationTests(unittest.TestCase):
     def test_cli_writes_expected_artifacts(self) -> None:
         with tempfile.TemporaryDirectory() as tmpdir:
-            output_dir = Path(tmpdir) / "artifacts/feature_083_full_runtime_eval"
+            output_dir = Path(tmpdir) / "artifacts/feature_085_full_audit"
             main(["--write-artifacts", str(output_dir)])
             expected = {
                 "raw_rows.json",
@@ -19,8 +19,8 @@ class HoodieRuntimeEvaluationRunnerArtifactIntegrationTests(unittest.TestCase):
                 "aggregate_by_policy.csv",
                 "ranking_by_metric.json",
                 "ranking_by_metric.csv",
-                "feature_083_runtime_evaluation_report.json",
-                "feature_083_runtime_evaluation_report.md",
+                "feature_085_audit_report.json",
+                "feature_085_audit_report.md",
                 "execution_manifest.json",
             }
             self.assertTrue(output_dir.exists())
@@ -28,7 +28,7 @@ class HoodieRuntimeEvaluationRunnerArtifactIntegrationTests(unittest.TestCase):
 
     def test_validate_artifacts_round_trip(self) -> None:
         with tempfile.TemporaryDirectory() as tmpdir:
-            output_dir = Path(tmpdir) / "artifacts/feature_083_full_runtime_eval"
+            output_dir = Path(tmpdir) / "artifacts/feature_085_full_audit"
             generate_hoodie_runtime_evaluation_artifacts(output_dir)
             main(["--validate-artifacts", "--artifact-dir", str(output_dir)])
 

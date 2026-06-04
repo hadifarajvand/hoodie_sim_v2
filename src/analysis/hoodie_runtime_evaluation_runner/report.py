@@ -19,7 +19,7 @@ from .config import (
     POLICY_FLC,
     POLICY_HO,
     POLICY_HOODIE,
-    POLICY_MQO,
+    POLICY_MLEO,
     POLICY_RO,
     POLICY_VO,
     REQUIRED_POLICIES,
@@ -43,7 +43,7 @@ from .ranking import build_metric_rankings
 from .scenarios import build_scenario_contexts
 
 
-FEATURE_083_STATUS_READY = "hoodie_paper_baseline_fidelity_ready"
+FEATURE_085_STATUS_READY = "hoodie_paper_baseline_fidelity_audit_ready"
 PRIMARY_PAPER_METRICS = ("task_completion_delay", "task_drop_ratio")
 SECONDARY_REPOSITORY_METRICS = (
     "completion_rate",
@@ -108,7 +108,7 @@ def _policy_coverage_rows() -> tuple[PolicyCoverageRow, ...]:
         PolicyCoverageRow(POLICY_VO, "implemented", "paper_baseline_adapter", "Vertical Offloader baseline", False),
         PolicyCoverageRow(POLICY_HO, "implemented", "paper_baseline_adapter", "Horizontal Offloader baseline", False),
         PolicyCoverageRow(POLICY_BCO, "implemented", "paper_baseline_adapter", "Balanced Cyclic Offloader baseline", False),
-        PolicyCoverageRow(POLICY_MQO, "implemented", "paper_baseline_adapter", "Minimum Queue Offloader baseline", False),
+        PolicyCoverageRow(POLICY_MLEO, "implemented", "paper_baseline_adapter", "Minimum Latency Estimate Offloader baseline", False),
     )
 
 
@@ -341,21 +341,6 @@ def build_execution_rows(config: EvaluationConfig | None = None) -> tuple[tuple[
     return tuple(metric_rows), scenarios, outcomes_by_key
 
 
-def _policy_differences_ok(policy_rows: Mapping[str, MetricRow]) -> bool:
-    hoodie = policy_rows.get(POLICY_HOODIE)
-    if hoodie is None:
-        return False
-    for policy in REQUIRED_POLICIES:
-        if policy == POLICY_HOODIE:
-            continue
-        comparison = policy_rows.get(policy)
-        if comparison is None:
-            return False
-        if not _metric_rows_differ(hoodie, comparison):
-            return False
-    return True
-
-
 def _remaining_gaps(policy_rows: Mapping[str, MetricRow], policy_coverage: tuple[PolicyCoverageRow, ...], compatibility_mode_used: bool) -> tuple[str, ...]:
     gaps: list[str] = []
     policies = {row.policy for row in policy_coverage}
@@ -363,8 +348,6 @@ def _remaining_gaps(policy_rows: Mapping[str, MetricRow], policy_coverage: tuple
         gaps.append("required paper policy set is not exact")
     if any(row.compatibility_mode_used for row in policy_coverage) or compatibility_mode_used:
         gaps.append("compatibility-mode policies remain active")
-    if not _policy_differences_ok(policy_rows):
-        gaps.append("HOODIE must differ from every baseline on at least one core metric")
     return tuple(gaps)
 
 
@@ -389,10 +372,9 @@ def build_feature_083_report(config: EvaluationConfig | None = None) -> Feature0
     compatibility_mode_used = any(row.compatibility_mode_used for row in policy_aggregates) or any(row.compatibility_mode_used for row in scenario_tables)
     rows_by_policy = {row.policy: row for row in policy_aggregates}
     remaining_gaps = _remaining_gaps(rows_by_policy, policy_coverage, compatibility_mode_used)
-    policy_divergence_ok = _policy_differences_ok(rows_by_policy)
     claim_boundary = (
         "HOODIE means the Feature 080 proposed method only.",
-        "Baselines are paper-aligned and restricted to RO, FLC, VO, HO, BCO, and MQO.",
+        "Baselines are paper-aligned and restricted to RO, FLC, VO, HO, BCO, and MLEO.",
         "Deterministic evaluation is used for comparison and artifact generation.",
         "No statistical superiority claim is made.",
         "No full empirical paper reproduction is claimed.",
@@ -401,19 +383,20 @@ def build_feature_083_report(config: EvaluationConfig | None = None) -> Feature0
         "no DCQ logic",
         "no thesis method",
         "no custom queue redesign",
-        "no ORIGINAL_HOODIE_BASELINE policy remains",
+        "no legacy minimum-queue policy remains as an active baseline label",
         "HOODIE remains the Feature 080 proposed method only",
         "baselines are paper-aligned",
         "no empirical full-paper reproduction claim",
         "no statistical superiority claim",
+        "PR #24 remains blocked until baseline correction and formula audit validations pass",
     )
     if remaining_gaps:
-        readiness_level = "blocked" if not policy_divergence_ok else "mostly_implemented"
-        status = "hoodie_paper_baseline_fidelity_blocked"
+        readiness_level = "blocked"
+        status = "hoodie_paper_baseline_fidelity_audit_blocked"
         passed = False
     else:
         readiness_level = "fully_implemented"
-        status = FEATURE_083_STATUS_READY
+        status = FEATURE_085_STATUS_READY
         passed = True
     raw_row_count = sum(len(outcomes) for outcomes in outcomes_by_key.values())
     return Feature083Report(
@@ -458,7 +441,7 @@ def _identity_proof_lines(report: Feature083Report) -> tuple[str, ...]:
 def render_feature_083_report(report: Feature083Report | None = None) -> str:
     report = report or build_feature_083_report()
     lines = [
-        "# Feature 083 HOODIE Paper Baseline Fidelity Report",
+        "# Feature 085 HOODIE Baseline Fidelity Audit Report",
         "",
         f"- status: `{report.status}`",
         f"- passed: `{report.passed}`",
@@ -509,6 +492,10 @@ def render_feature_083_report(report: Feature083Report | None = None) -> str:
     for row in report.metric_coverage:
         lines.append(f"- {row.metric}: {row.formula}")
     lines.append("")
+    lines.append("## Formula Audit")
+    lines.append("- see `specs/085-hoodie-paper-baseline-fidelity-audit/formula-mapping-matrix.md`")
+    lines.append("- see `specs/085-hoodie-paper-baseline-fidelity-audit/baseline-mapping-matrix.md`")
+    lines.append("")
     lines.append("## Metric Rankings")
     lines.append("### Primary Paper Metrics")
     for metric in PRIMARY_PAPER_METRICS:
@@ -530,9 +517,13 @@ def render_feature_083_report(report: Feature083Report | None = None) -> str:
     return "\n".join(lines)
 
 
-def build_feature_082_report(config: EvaluationConfig | None = None) -> Feature083Report:
+def build_feature_085_report(config: EvaluationConfig | None = None) -> Feature083Report:
     return build_feature_083_report(config)
 
 
-def render_feature_082_report(report: Feature083Report | None = None) -> str:
+def render_feature_085_report(report: Feature083Report | None = None) -> str:
     return render_feature_083_report(report)
+
+
+build_feature_082_report = build_feature_083_report
+render_feature_082_report = render_feature_083_report

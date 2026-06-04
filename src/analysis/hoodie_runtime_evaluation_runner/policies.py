@@ -1,13 +1,14 @@
 from __future__ import annotations
 
-from dataclasses import dataclass, field
+from dataclasses import asdict, dataclass, field
 from typing import Protocol
 
 from src.agents.hoodie_agent import HoodieAgent
 from src.policies.bco import BalancedCooperationOffloadingPolicy
-from src.policies.common import action_family, legal_actions, placement_actions_for_family
+from src.policies.common import action_family, placement_actions_for_family
 from src.policies.flc import FullLocalComputingPolicy
 from src.policies.ho import HorizontalOffloadingPolicy
+from src.policies.mleo import MinimumLatencyEstimateOffloadingPolicy
 from src.policies.policy_interface import PolicyContext
 from src.policies.ro import RandomOffloadingPolicy
 from src.policies.vo import VerticalOffloadingPolicy
@@ -34,6 +35,10 @@ def _decision_trace(policy_name: str, *, legal_actions: tuple[str, ...], selecte
     for key in sorted(details):
         lines.append(f"{key}={details[key]}")
     return tuple(lines)
+
+
+def _trace_summary(trace: tuple[str, ...]) -> str:
+    return " | ".join(trace)
 
 
 def _queue_hint_for_action(context: PolicyContext, action: str) -> float:
@@ -69,10 +74,6 @@ def _family_queue_snapshot(context: PolicyContext, legal: tuple[str, ...]) -> di
         if family not in snapshot:
             snapshot[family] = _queue_hint_for_action(context, action)
     return snapshot
-
-
-def _trace_summary(trace: tuple[str, ...]) -> str:
-    return " | ".join(trace)
 
 
 @dataclass(slots=True)
@@ -217,30 +218,25 @@ class BalancedCyclicOffloaderAdapter:
 
 
 @dataclass(slots=True)
-class MinimumQueueOffloaderAdapter:
-    policy_name: str = "MQO"
+class MinimumLatencyEstimateOffloaderAdapter:
+    policy_name: str = "MLEO"
     compatibility_mode_used: bool = False
+    policy: MinimumLatencyEstimateOffloadingPolicy = field(default_factory=MinimumLatencyEstimateOffloadingPolicy)
     last_decision_trace: tuple[str, ...] = ()
 
     def choose_action(self, context: PolicyContext) -> str:
         legal = _legal_action_tuple(context)
-        queue_snapshot = _family_queue_snapshot(context, legal)
-        ranked = sorted(
-            (
-                (queue_snapshot.get(action_family(action), float("inf")), 0 if action_family(action) == "local" else 1 if action_family(action) == "horizontal" else 2, action)
-                for action in legal
-            ),
-            key=lambda item: (item[0], item[1], item[2]),
-        )
-        if not ranked:
-            raise ValueError("No legal actions available")
-        selected_action = ranked[0][2]
+        selected_action = self.policy.choose_action(context)
         self.last_decision_trace = _decision_trace(
             self.policy_name,
             legal_actions=legal,
             selected_action=selected_action,
-            reason="minimum queue offloader chooses the legal candidate with the smallest observed queue length",
-            details={"queue_snapshot": queue_snapshot, "ranking": ranked},
+            reason="minimum latency estimate offloader chooses the legal candidate with the smallest estimated total delay",
+            details={
+                "candidate_count": len(self.policy.last_candidates),
+                "candidates": tuple(asdict(candidate) for candidate in self.policy.last_candidates),
+                "fallback_reason": self.policy.last_fallback_reason,
+            },
         )
         return selected_action
 
@@ -259,8 +255,8 @@ def build_policy_adapter(policy_name: str, seed: int = 0) -> RuntimePolicyAdapte
         return HorizontalOffloadingAdapter()
     if normalized == "BCO":
         return BalancedCyclicOffloaderAdapter()
-    if normalized == "MQO":
-        return MinimumQueueOffloaderAdapter()
+    if normalized == "MLEO":
+        return MinimumLatencyEstimateOffloaderAdapter()
     if normalized == "ORIGINAL_HOODIE_BASELINE":
-        raise ValueError("ORIGINAL_HOODIE_BASELINE is not an active Feature 083 policy")
+        raise ValueError("ORIGINAL_HOODIE_BASELINE is not an active Feature 085 policy")
     raise ValueError(f"Unsupported runtime evaluation policy: {policy_name!r}")

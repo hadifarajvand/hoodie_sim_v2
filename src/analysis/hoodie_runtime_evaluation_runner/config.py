@@ -3,8 +3,8 @@ from __future__ import annotations
 from dataclasses import dataclass
 from pathlib import Path
 
-FEATURE_ID = "083-hoodie-paper-baseline-fidelity"
-FEATURE_NAME = "HOODIE Paper Baseline Fidelity"
+FEATURE_ID = "085-hoodie-paper-baseline-fidelity-audit"
+FEATURE_NAME = "HOODIE Baseline Fidelity Audit and Formula Mapping"
 
 POLICY_HOODIE = "HOODIE"
 POLICY_RO = "RO"
@@ -12,7 +12,7 @@ POLICY_FLC = "FLC"
 POLICY_VO = "VO"
 POLICY_HO = "HO"
 POLICY_BCO = "BCO"
-POLICY_MQO = "MQO"
+POLICY_MLEO = "MLEO"
 
 # Deprecated aliases retained only for compatibility with older local code paths.
 POLICY_HOODIE_PROPOSED = POLICY_HOODIE
@@ -28,7 +28,7 @@ REQUIRED_POLICIES = (
     POLICY_VO,
     POLICY_HO,
     POLICY_BCO,
-    POLICY_MQO,
+    POLICY_MLEO,
 )
 
 REQUIRED_SCENARIOS = (
@@ -48,13 +48,13 @@ WORKLOAD_SCENARIO_DURATION = {"low": 12, "medium": 14, "high": 16}
 RUNTIME_SEEDS = (7, 13, 21)
 TOPOLOGY_MODE_PAPER_FIGURE_7 = "paper_figure_7"
 RUNTIME_MODE_PAPER = "paper"
-DEFAULT_OUTPUT_DIR = Path("artifacts/feature_083_full_runtime_eval")
+DEFAULT_OUTPUT_DIR = Path("artifacts/feature_085_full_audit")
 
 VALIDATION_COMMANDS = (
     "git diff --check",
     "src/.venvmac/bin/python -m unittest discover tests/unit -p 'test_hoodie_runtime_evaluation_*.py'",
     "src/.venvmac/bin/python -m unittest discover tests/integration -p 'test_hoodie_runtime_evaluation_*.py'",
-    "src/.venvmac/bin/python -m analysis.hoodie_runtime_evaluation_runner --validate-artifacts --artifact-dir artifacts/feature_083_full_runtime_eval",
+    "src/.venvmac/bin/python -m analysis.hoodie_runtime_evaluation_runner --validate-artifacts --artifact-dir artifacts/feature_085_full_audit",
 )
 
 

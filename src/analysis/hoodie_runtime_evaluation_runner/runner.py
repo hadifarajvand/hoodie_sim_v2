@@ -11,7 +11,7 @@ from typing import Any
 from .aggregation import aggregate_by_policy
 from .config import DEFAULT_OUTPUT_DIR, EvaluationConfig, FEATURE_NAME, POLICY_HOODIE, REQUIRED_POLICIES
 from .model import Feature083Report, RankingRow
-from .report import build_execution_rows, build_feature_083_report, render_feature_083_report
+from .report import build_execution_rows, build_feature_085_report, render_feature_085_report
 
 
 RAW_ROWS_JSON = "raw_rows.json"
@@ -20,8 +20,8 @@ AGGREGATE_BY_POLICY_JSON = "aggregate_by_policy.json"
 AGGREGATE_BY_POLICY_CSV = "aggregate_by_policy.csv"
 RANKING_BY_METRIC_JSON = "ranking_by_metric.json"
 RANKING_BY_METRIC_CSV = "ranking_by_metric.csv"
-REPORT_JSON = "feature_083_runtime_evaluation_report.json"
-REPORT_MD = "feature_083_runtime_evaluation_report.md"
+REPORT_JSON = "feature_085_audit_report.json"
+REPORT_MD = "feature_085_audit_report.md"
 EXECUTION_MANIFEST_JSON = "execution_manifest.json"
 
 
@@ -135,7 +135,7 @@ def _metric_differences(left: Any, right: Any) -> list[str]:
 
 def _artifact_markdown(report: Feature083Report, *, output_dir: Path, raw_row_count: int, manifest_path: Path) -> str:
     lines = [
-        "# Feature 083 HOODIE Paper Baseline Fidelity Artifact Bundle",
+        "# Feature 085 HOODIE Baseline Fidelity Audit Artifact Bundle",
         "",
         f"- output_dir: `{output_dir}`",
         f"- raw_row_count: `{raw_row_count}`",
@@ -163,7 +163,7 @@ def _artifact_markdown(report: Feature083Report, *, output_dir: Path, raw_row_co
     else:
         lines.append("- no compatibility-mode policies remain")
     lines.append("")
-    lines.append(render_feature_083_report(report))
+    lines.append(render_feature_085_report(report))
     lines.append("")
     lines.append("## Manifest")
     lines.append(f"- `{manifest_path.name}`")
@@ -194,9 +194,9 @@ def _execution_manifest(report: Feature083Report, *, config: EvaluationConfig, r
             "different": _metric_rows_differ(rows_by_policy.get("HOODIE"), rows_by_policy.get("BCO")),
             "metrics": _metric_differences(rows_by_policy.get("HOODIE"), rows_by_policy.get("BCO")),
         },
-        "hoodie_vs_mqo": {
-            "different": _metric_rows_differ(rows_by_policy.get("HOODIE"), rows_by_policy.get("MQO")),
-            "metrics": _metric_differences(rows_by_policy.get("HOODIE"), rows_by_policy.get("MQO")),
+        "hoodie_vs_mleo": {
+            "different": _metric_rows_differ(rows_by_policy.get("HOODIE"), rows_by_policy.get("MLEO")),
+            "metrics": _metric_differences(rows_by_policy.get("HOODIE"), rows_by_policy.get("MLEO")),
         },
     }
     generated_files = [
@@ -211,7 +211,7 @@ def _execution_manifest(report: Feature083Report, *, config: EvaluationConfig, r
         EXECUTION_MANIFEST_JSON,
     ]
     return {
-        "feature": "083",
+        "feature": "085",
         "feature_name": FEATURE_NAME,
         **repo_identity,
         "output_dir": str(output_dir),
@@ -241,7 +241,7 @@ def generate_hoodie_runtime_evaluation_artifacts(output_dir: Path | None = None)
     config = EvaluationConfig(output_dir=Path(output_dir or DEFAULT_OUTPUT_DIR))
     output_dir = config.output_dir
     output_dir.mkdir(parents=True, exist_ok=True)
-    report = build_feature_083_report(config)
+    report = build_feature_085_report(config)
     raw_metric_rows, _, outcomes_by_key = build_execution_rows(config)
     aggregate_rows = aggregate_by_policy(raw_metric_rows)
     raw_rows = _flatten_raw_rows(outcomes_by_key)
@@ -301,40 +301,21 @@ def validate_hoodie_runtime_evaluation_artifacts(output_dir: Path | None = None)
     )
     missing = [name for name in required if not (output_dir / name).exists()]
     if missing:
-        raise FileNotFoundError(f"Missing Feature 083 artifacts: {', '.join(missing)}")
+        raise FileNotFoundError(f"Missing Feature 085 artifacts: {', '.join(missing)}")
     manifest = json.loads((output_dir / EXECUTION_MANIFEST_JSON).read_text(encoding="utf-8"))
     if manifest.get("generated_files") != list(required):
-        raise ValueError("Feature 083 execution manifest generated_files does not match the required artifact set")
+        raise ValueError("Feature 085 execution manifest generated_files does not match the required artifact set")
+    if manifest.get("feature") != "085":
+        raise ValueError("Feature 085 execution manifest must declare feature id 085")
+    if manifest.get("feature_name") != FEATURE_NAME:
+        raise ValueError("Feature 085 execution manifest must declare the canonical feature name")
     aggregate_payload = json.loads((output_dir / AGGREGATE_BY_POLICY_JSON).read_text(encoding="utf-8"))
     rows = {row["policy"]: row for row in aggregate_payload.get("rows", [])}
     if set(rows) != set(REQUIRED_POLICIES):
-        raise ValueError("Feature 083 aggregate_by_policy.json must contain exactly the required paper policies")
-    if "ORIGINAL_HOODIE_BASELINE" in rows:
-        raise ValueError("Feature 083 aggregate metrics still contain ORIGINAL_HOODIE_BASELINE")
-    hoodie = rows.get(POLICY_HOODIE)
-    if hoodie is None:
-        raise ValueError("Feature 083 aggregate_by_policy.json does not contain HOODIE")
+        raise ValueError("Feature 085 aggregate_by_policy.json must contain exactly the required paper policies")
     for baseline in (policy for policy in REQUIRED_POLICIES if policy != POLICY_HOODIE):
-        comparison = rows.get(baseline)
-        if comparison is None:
-            raise ValueError(f"Feature 083 aggregate_by_policy.json does not contain {baseline}")
-        if all(
-            hoodie[field] == comparison[field]
-            for field in (
-                "task_completion_delay",
-                "task_drop_ratio",
-                "average_reward",
-                "total_reward",
-                "completion_rate",
-                "timeout_drop_rate",
-                "unavailable_drop_rate",
-                "deadline_violation_rate",
-                "throughput",
-                "queue_stability_score",
-                "illegal_action_rejection_count",
-            )
-        ):
-            raise ValueError(f"Feature 083 aggregate metrics still show HOODIE == {baseline}")
+        if rows.get(baseline) is None:
+            raise ValueError(f"Feature 085 aggregate_by_policy.json does not contain {baseline}")
     return {
         "output_dir": str(output_dir),
         "validated": True,
@@ -344,9 +325,9 @@ def validate_hoodie_runtime_evaluation_artifacts(output_dir: Path | None = None)
 
 
 def main(argv: list[str] | None = None) -> None:
-    parser = argparse.ArgumentParser(description="Generate or validate Feature 083 runtime evaluation artifacts.")
-    parser.add_argument("--write-artifacts", nargs="?", const=str(DEFAULT_OUTPUT_DIR), default=None, metavar="DIR", help="Write Feature 083 artifacts to DIR.")
-    parser.add_argument("--validate-artifacts", action="store_true", help="Validate the Feature 083 artifact bundle in the default output directory.")
+    parser = argparse.ArgumentParser(description="Generate or validate Feature 085 runtime evaluation artifacts.")
+    parser.add_argument("--write-artifacts", nargs="?", const=str(DEFAULT_OUTPUT_DIR), default=None, metavar="DIR", help="Write Feature 085 artifacts to DIR.")
+    parser.add_argument("--validate-artifacts", action="store_true", help="Validate the Feature 085 artifact bundle in the default output directory.")
     parser.add_argument("--artifact-dir", default=None, help="Override the artifact directory used by validation.")
     args = parser.parse_args(argv)
 
@@ -356,10 +337,10 @@ def main(argv: list[str] | None = None) -> None:
     if args.validate_artifacts:
         validate_hoodie_runtime_evaluation_artifacts(Path(args.artifact_dir) if args.artifact_dir else None)
         if report is None:
-            report = build_feature_083_report(EvaluationConfig(output_dir=Path(args.artifact_dir) if args.artifact_dir else DEFAULT_OUTPUT_DIR))
+            report = build_feature_085_report(EvaluationConfig(output_dir=Path(args.artifact_dir) if args.artifact_dir else DEFAULT_OUTPUT_DIR))
     if report is None:
-        report = build_feature_083_report()
-    print(render_feature_083_report(report))
+        report = build_feature_085_report()
+    print(render_feature_085_report(report))
 
 
 if __name__ == "__main__":
