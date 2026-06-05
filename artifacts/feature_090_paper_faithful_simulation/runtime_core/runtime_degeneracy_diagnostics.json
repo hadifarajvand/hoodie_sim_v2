@@ -1,0 +1,15 @@
+[
+  {
+    "all_policy_tie_detected": false,
+    "drop_saturation_detected": false,
+    "figure_id": "runtime_core",
+    "message": "runtime core diagnostics",
+    "missing_sweep_injection_detected": false,
+    "policy": "mixed_test_policy",
+    "severity": "low",
+    "single_task_trace_detected": false,
+    "sweep_name": "policy",
+    "sweep_value": "mixed_test_policy",
+    "zero_completion_detected": false
+  }
+]

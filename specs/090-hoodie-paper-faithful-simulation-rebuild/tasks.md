@@ -2,42 +2,42 @@
 
 ## Reference and Mapping
 
-- [ ] T001 Read every file under `docs/hoodie/paper_simulation_reference/`.
-- [ ] T002 Create mechanism-to-code mapping.
-- [ ] T003 Identify reuse vs replacement areas in current codebase.
-- [ ] T004 Add scope guard: no thesis method, no DCQ, no output-sync tuning.
+- [X] T001 Read every file under `docs/hoodie/paper_simulation_reference/`.
+- [X] T002 Create mechanism-to-code mapping.
+- [X] T003 Identify reuse vs replacement areas in current codebase.
+- [X] T004 Add scope guard: no thesis method, no DCQ, no output-sync tuning.
 
 ## Runtime
 
-- [ ] T010 Implement 110-slot episode runtime.
-- [ ] T011 Implement 100 action slots plus 10 drain slots.
-- [ ] T012 Implement Bernoulli arrivals per EA per action slot.
-- [ ] T013 Implement task registry and pending lifecycle.
-- [ ] T014 Implement task-size sampling and processing density.
-- [ ] T015 Implement timeout in slots and seconds.
-- [ ] T016 Emit runtime arrival/completion/drop diagnostics.
+- [X] T010 Implement 110-slot episode runtime.
+- [X] T011 Implement 100 action slots plus 10 drain slots.
+- [X] T012 Implement Bernoulli arrivals per EA per action slot.
+- [X] T013 Implement task registry and pending lifecycle.
+- [X] T014 Implement task-size sampling and processing density.
+- [X] T015 Implement timeout in slots and seconds.
+- [X] T016 Emit runtime arrival/completion/drop diagnostics.
 
 ## Queues
 
-- [ ] T020 Implement private queue waiting formula.
-- [ ] T021 Implement private service and exit status.
-- [ ] T022 Implement offloading queue waiting formula.
-- [ ] T023 Implement horizontal and vertical transmission.
-- [ ] T024 Implement offloading exit status.
-- [ ] T025 Insert successful offloads into destination public queues.
-- [ ] T026 Implement source-specific public queues.
-- [ ] T027 Compute active public queue sets each slot.
-- [ ] T028 Divide public CPU across active public queues.
-- [ ] T029 Record public completion/drop status.
+- [X] T020 Implement private queue waiting formula.
+- [X] T021 Implement private service and exit status.
+- [X] T022 Implement offloading queue waiting formula.
+- [X] T023 Implement horizontal and vertical transmission.
+- [X] T024 Implement offloading exit status.
+- [X] T025 Insert successful offloads into destination public queues.
+- [X] T026 Implement source-specific public queues.
+- [X] T027 Compute active public queue sets each slot.
+- [X] T028 Divide public CPU across active public queues.
+- [X] T029 Record public completion/drop status.
 
 ## State and Reward
 
-- [ ] T030 Implement historical load matrix `L(t)`.
-- [ ] T031 Implement public queue footprint vector.
-- [ ] T032 Implement state snapshot records.
-- [ ] T033 Implement delayed reward collection.
-- [ ] T034 Link reward events to original state/action.
-- [ ] T035 Emit state/reward validation report.
+- [X] T030 Implement historical load matrix `L(t)`.
+- [X] T031 Implement public queue footprint vector.
+- [X] T032 Implement state snapshot records.
+- [X] T033 Implement delayed reward collection.
+- [X] T034 Link reward events to original state/action.
+- [X] T035 Emit state/reward validation report.
 
 ## Policies
 
@@ -90,9 +90,9 @@
 
 ## Validation
 
-- [ ] T090 Run `git diff --check`.
+- [X] T090 Run `git diff --check`.
 - [ ] T091 Run existing Feature 089 tests for regression.
-- [ ] T092 Run new Feature 090 unit tests.
-- [ ] T093 Run new Feature 090 integration tests.
-- [ ] T094 Run artifact generation.
-- [ ] T095 Run artifact validation.
+- [X] T092 Run new Feature 090 unit tests.
+- [X] T093 Run new Feature 090 integration tests.
+- [X] T094 Run artifact generation.
+- [X] T095 Run artifact validation.
