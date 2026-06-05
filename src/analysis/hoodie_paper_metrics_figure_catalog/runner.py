@@ -38,6 +38,7 @@ from .config import (
     PRIORITY_1_FIGURES,
     PRIORITY_2_FIGURES,
     PRIORITY_3_FIGURES,
+    ROOT_DIR,
     SIMULATOR_REFERENCE_ARTIFACTS,
     SPEC_DIR,
 )
@@ -354,6 +355,155 @@ def _plot_paper_style_outputs(artifact_dir: Path, figures: list[PaperFigure]) ->
                 payload["figure_id"],
                 payload["reason"],
             )
+
+
+def _paper_style_plot_entries(figures: list[PaperFigure]) -> list[dict[str, Any]]:
+    entries: list[dict[str, Any]] = []
+    for figure in figures:
+        if figure.figure_id in PRIORITY_1_FIGURES:
+            plot_type = "simulator_output_plot"
+            data_source = f"artifacts/feature_089_paper_metrics_catalog/{_figure_10_artifact_files()[figure.figure_id][1]}"
+            numeric_values_source = "simulator_output"
+            status = "generated"
+        elif figure.figure_id in PRIORITY_2_FIGURES:
+            plot_type = "approximation_tagged_simulator_output_plot"
+            data_source = f"artifacts/feature_089_paper_metrics_catalog/{_figure_9_artifact_files()[figure.figure_id][1]}"
+            numeric_values_source = "simulator_output"
+            status = "generated"
+        else:
+            plot_type = "gated_status_plot"
+            data_source = f"artifacts/feature_089_paper_metrics_catalog/figure_{figure.figure_id.lower().replace(' ', '_')}_status.json"
+            numeric_values_source = "gated_status_metadata"
+            status = "gated_status_generated"
+        plot_filename = {
+            "Figure 8a": "figure_8a_learning_rate_convergence_status.png",
+            "Figure 8b": "figure_8b_discount_factor_convergence_status.png",
+            "Figure 9a": "figure_9a_reward_vs_arrival_probability.png",
+            "Figure 9b": "figure_9b_action_distribution_vs_arrival_probability.png",
+            "Figure 9c": "figure_9c_reward_vs_cpu_capacity.png",
+            "Figure 9d": "figure_9d_reward_vs_agent_count_traffic.png",
+            "Figure 9e": "figure_9e_reward_vs_agent_count_data_rate.png",
+            "Figure 10a": "figure_10a_delay_vs_arrival_probability.png",
+            "Figure 10b": "figure_10b_delay_vs_cpu_capacity.png",
+            "Figure 10c": "figure_10c_delay_vs_timeout.png",
+            "Figure 10d": "figure_10d_drop_ratio_vs_arrival_probability.png",
+            "Figure 10e": "figure_10e_drop_ratio_vs_cpu_capacity.png",
+            "Figure 10f": "figure_10f_drop_ratio_vs_timeout.png",
+            "Figure 11": "figure_11_lstm_ablation_status.png",
+        }[figure.figure_id]
+        entries.append(
+            {
+                "figure_id": figure.figure_id,
+                "plot_path": f"artifacts/feature_089_paper_metrics_catalog/paper_style_plots/{plot_filename}",
+                "plot_type": plot_type,
+                "data_source": data_source,
+                "numeric_values_source": numeric_values_source,
+                "paper_values_used": False,
+                "output_sync_tuning_performed": False,
+                "claim_boundary": list(figure.claim_boundary),
+                "status": status,
+            }
+        )
+    return entries
+
+
+def _write_paper_style_plot_metadata(artifact_dir: Path, figures: list[PaperFigure]) -> None:
+    plot_dir = _paper_style_plot_dir(artifact_dir)
+    manifest = {
+        "feature_id": FEATURE_ID,
+        "plot_family": "paper_style_plots",
+        "verdict": "feature_089_paper_style_plots_ready",
+        "plot_count": len(figures),
+        "entries": _paper_style_plot_entries(figures),
+        "claim_boundary": list(FEATURE_080_BOUNDARY + FEATURE_086_BOUNDARY),
+    }
+    _write_json(plot_dir / "paper_style_plot_manifest.json", manifest)
+
+    report_lines = [
+        "# Feature 089 Paper-Style Plot Report",
+        "",
+        "Final verdict: `feature_089_paper_style_plots_ready`",
+        "",
+        "Generated PNG plots:",
+    ]
+    for entry in manifest["entries"]:
+        report_lines.append(f"- `{entry['plot_path']}`")
+    report_lines.extend(
+        [
+            "",
+            "## Confirmations",
+            "",
+            "- Figure 10 plots use simulator outputs.",
+            "- Figure 9 plots use approximation-tagged current-simulator outputs.",
+            "- Figure 8a, Figure 8b, and Figure 11 are gated/status plots.",
+            "- No Figure 8/11 numeric training or LSTM curves were faked.",
+            "- No output-sync tuning was performed.",
+            "- Plotted numeric values are simulator outputs, not paper values.",
+            "- Feature 080 and Feature 086 claim boundaries are preserved.",
+            "- No thesis method, no DCQ, no custom queue redesign, no new proposed method.",
+        ]
+    )
+    (plot_dir / "paper_style_plot_report.md").write_text("\n".join(report_lines) + "\n", encoding="utf-8")
+
+
+def _validate_paper_style_plot_metadata(artifact_dir: Path, figures: list[PaperFigure]) -> None:
+    plot_dir = _paper_style_plot_dir(artifact_dir)
+    manifest_path = plot_dir / "paper_style_plot_manifest.json"
+    report_path = plot_dir / "paper_style_plot_report.md"
+    if not manifest_path.exists():
+        raise FileNotFoundError("missing Feature 089 paper style plot manifest")
+    if not report_path.exists():
+        raise FileNotFoundError("missing Feature 089 paper style plot report")
+    manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
+    entries = manifest.get("entries")
+    if not isinstance(entries, list):
+        raise ValueError("paper_style_plot_manifest.json must contain an entries array")
+    if len(entries) != 14:
+        raise ValueError("paper_style_plot_manifest.json must contain exactly 14 entries")
+    expected_by_figure = {figure.figure_id: figure for figure in figures}
+    expected_plot_types = {
+        **{figure_id: "simulator_output_plot" for figure_id in PRIORITY_1_FIGURES},
+        **{figure_id: "approximation_tagged_simulator_output_plot" for figure_id in PRIORITY_2_FIGURES},
+        "Figure 8a": "gated_status_plot",
+        "Figure 8b": "gated_status_plot",
+        "Figure 11": "gated_status_plot",
+    }
+    expected_statuses = {
+        **{figure_id: "generated" for figure_id in PRIORITY_1_FIGURES + PRIORITY_2_FIGURES},
+        "Figure 8a": "gated_status_generated",
+        "Figure 8b": "gated_status_generated",
+        "Figure 11": "gated_status_generated",
+    }
+    expected_numeric_sources = {
+        **{figure_id: "simulator_output" for figure_id in PRIORITY_1_FIGURES + PRIORITY_2_FIGURES},
+        "Figure 8a": "gated_status_metadata",
+        "Figure 8b": "gated_status_metadata",
+        "Figure 11": "gated_status_metadata",
+    }
+    expected_paths = {entry["plot_path"] for entry in _paper_style_plot_entries(figures)}
+    seen_paths = set()
+    for entry in entries:
+        figure_id = str(entry.get("figure_id"))
+        if figure_id not in expected_by_figure:
+            raise ValueError(f"unexpected paper style plot entry: {figure_id}")
+        if str(entry.get("plot_type")) != expected_plot_types[figure_id]:
+            raise ValueError(f"unexpected plot_type for {figure_id}")
+        if str(entry.get("numeric_values_source")) != expected_numeric_sources[figure_id]:
+            raise ValueError(f"unexpected numeric_values_source for {figure_id}")
+        if entry.get("paper_values_used") is not False:
+            raise ValueError(f"paper_values_used must be false for {figure_id}")
+        if entry.get("output_sync_tuning_performed") is not False:
+            raise ValueError(f"output_sync_tuning_performed must be false for {figure_id}")
+        if str(entry.get("status")) != expected_statuses[figure_id]:
+            raise ValueError(f"unexpected status for {figure_id}")
+        plot_path = str(entry.get("plot_path"))
+        seen_paths.add(plot_path)
+        if not (ROOT_DIR / plot_path).exists():
+            raise ValueError(f"missing PNG for {figure_id}: {plot_path}")
+    if seen_paths != expected_paths:
+        raise ValueError("paper_style_plot_manifest.json must list all required PNGs")
+    if manifest.get("verdict") != "feature_089_paper_style_plots_ready":
+        raise ValueError("unexpected paper style plot verdict")
 
 
 def _write_csv(path: Path, rows: list[dict[str, Any]]) -> None:
@@ -2107,6 +2257,7 @@ def generate_artifacts(artifact_dir: Path | None = None) -> Feature089Report:
     _write_figure_8_11_status_artifacts(artifact_dir)
     _write_remaining_figure_outputs_report(artifact_dir)
     _plot_paper_style_outputs(artifact_dir, figures)
+    _write_paper_style_plot_metadata(artifact_dir, figures)
     generate_output_usage_bundle(artifact_dir)
     _generate_supporting_spec_docs(figures, metrics, requirements)
     return report
@@ -2333,6 +2484,8 @@ def validate_artifacts(artifact_dir: Path | None = None) -> Feature089Report:
         "paper_style_plots/figure_10e_drop_ratio_vs_cpu_capacity.png",
         "paper_style_plots/figure_10f_drop_ratio_vs_timeout.png",
         "paper_style_plots/figure_11_lstm_ablation_status.png",
+        "paper_style_plots/paper_style_plot_manifest.json",
+        "paper_style_plots/paper_style_plot_report.md",
     )
     missing = [name for name in required_files if not (artifact_dir / name).exists()]
     if missing:
@@ -2415,6 +2568,7 @@ def validate_artifacts(artifact_dir: Path | None = None) -> Feature089Report:
             raise ValueError(f"{status_path.name} must not fabricate plot-ready curves")
         if payload.get("claim_boundary") != list(FEATURE_080_BOUNDARY + FEATURE_086_BOUNDARY):
             raise ValueError(f"{status_path.name} must carry the claim boundary")
+    _validate_paper_style_plot_metadata(artifact_dir, _ordered_figures())
     forbidden_training_outputs = (
         artifact_dir / "figure_8a_learning_rate_training_curve.csv",
         artifact_dir / "figure_8a_learning_rate_training_curve.json",
