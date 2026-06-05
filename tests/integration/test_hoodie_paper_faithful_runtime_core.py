@@ -32,6 +32,8 @@ class HoodiePaperFaithfulRuntimeCoreIntegrationTests(unittest.TestCase):
             for name in required:
                 self.assertTrue((output_dir / name).exists(), name)
             self.assertEqual(report["phase"], "090-A runtime core only")
+            self.assertTrue(report["public_queue_cpu_sharing_active"])
+            self.assertTrue(report["completion_drop_status_separated"])
 
     def test_runtime_core_exercises_paths_and_public_sharing(self) -> None:
         with tempfile.TemporaryDirectory() as tmpdir:
@@ -40,6 +42,7 @@ class HoodiePaperFaithfulRuntimeCoreIntegrationTests(unittest.TestCase):
             active = (output_dir / "public_queue_active_set_trace.json").read_text(encoding="utf-8")
             self.assertIn("active_public_queue_count", active)
             self.assertIn("cpu_share_per_active_queue_ghz", active)
+            self.assertIn("public_completed", (output_dir / "task_lifecycle_trace.json").read_text(encoding="utf-8"))
 
     def test_runtime_core_drain_phase_collects_rewards(self) -> None:
         with tempfile.TemporaryDirectory() as tmpdir:
@@ -47,6 +50,7 @@ class HoodiePaperFaithfulRuntimeCoreIntegrationTests(unittest.TestCase):
             generate_runtime_artifacts(output_dir)
             report = validate_runtime_artifacts(output_dir)
             self.assertTrue(report["passed"])
+            self.assertIn("reward_events", report)
 
     def test_runtime_core_public_queue_active_set_non_empty(self) -> None:
         with tempfile.TemporaryDirectory() as tmpdir:
@@ -54,8 +58,8 @@ class HoodiePaperFaithfulRuntimeCoreIntegrationTests(unittest.TestCase):
             generate_runtime_artifacts(output_dir)
             payload = (output_dir / "public_queue_active_set_trace.json").read_text(encoding="utf-8")
             self.assertIn("\"active_public_queue_count\":", payload)
+            self.assertIn("\"cpu_share_per_active_queue_ghz\":", payload)
 
 
 if __name__ == "__main__":
     unittest.main()
-

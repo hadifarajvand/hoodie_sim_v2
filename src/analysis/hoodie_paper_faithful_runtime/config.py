@@ -2,6 +2,12 @@ from __future__ import annotations
 
 from dataclasses import asdict, dataclass, field
 
+ALLOWED_TOPOLOGY_MODES = {
+    "complete_edge_graph",
+    "paper_topology_adjacency",
+    "unknown_from_ocr_requires_pdf_visual_confirmation",
+}
+
 
 @dataclass(slots=True)
 class EpisodeConfig:
@@ -32,7 +38,13 @@ class EpisodeConfig:
     forecast_mode: str = "gated_no_lstm_trace"
 
     def __post_init__(self) -> None:
+        if self.topology_mode not in ALLOWED_TOPOLOGY_MODES:
+            raise ValueError(f"topology_mode must be one of {sorted(ALLOWED_TOPOLOGY_MODES)}")
         if self.adjacency_matrix is None:
+            if self.topology_mode == "paper_topology_adjacency":
+                raise ValueError("paper_topology_adjacency requires an explicit adjacency_matrix")
+            if self.topology_mode == "unknown_from_ocr_requires_pdf_visual_confirmation":
+                raise ValueError("unknown_from_ocr_requires_pdf_visual_confirmation cannot be used without a trustworthy adjacency_matrix")
             self.adjacency_matrix = [[0 if i == j else 1 for j in range(self.num_edge_agents)] for i in range(self.num_edge_agents)]
         if len(self.adjacency_matrix) != self.num_edge_agents:
             raise ValueError("adjacency_matrix must match num_edge_agents")
@@ -49,5 +61,5 @@ class EpisodeConfig:
         payload = asdict(self)
         payload["task_size_values_mbits"] = list(self.task_size_values_mbits)
         payload["task_size_range_mbits"] = list(self.task_size_range_mbits)
+        payload["topology_mode_is_explicit"] = True
         return payload
-

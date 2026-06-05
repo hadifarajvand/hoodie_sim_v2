@@ -20,6 +20,7 @@ class TaskRecord:
     status: str = "pending"
     private_queue_enter_slot: int | None = None
     offloading_queue_enter_slot: int | None = None
+    offloading_queue_exit_slot: int | None = None
     public_queue_enter_slot: int | None = None
     queue_exit_slot: int | None = None
     final_completion_slot: int | None = None
@@ -167,4 +168,3 @@ class DegeneracyDiagnostic:
 
     def to_dict(self) -> dict[str, Any]:
         return asdict(self)
-

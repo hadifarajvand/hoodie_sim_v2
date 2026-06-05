@@ -495,9 +495,12 @@
     4.9,
     5.0
   ],
+  "temporary_complete_edge_graph": true,
   "test_mode_reason": "runtime_core_test_policy_adapter",
   "timeout_sec": 2.0,
   "timeout_slots": 20,
   "topology_mode": "complete_edge_graph",
+  "topology_mode_is_explicit": true,
+  "topology_mode_warning": "complete_edge_graph used as explicit temporary mode",
   "vertical_rate_mbps": 10.0
 }

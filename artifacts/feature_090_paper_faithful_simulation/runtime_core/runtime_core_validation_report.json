@@ -1,16 +1,44 @@
 {
+  "bernoulli_arrival_active": true,
+  "claims": {
+    "no_dcq": true,
+    "no_figure_8_11_claim": true,
+    "no_figure_9_10_claim": true,
+    "no_thesis_method": true,
+    "no_training": true
+  },
+  "completion_drop_status_separated": true,
   "delayed_reward_collection_active": true,
   "drain_phase_active": true,
-  "figure_claims_allowed": false,
   "forecast_mode": "gated_no_lstm_trace",
+  "no_figure_8_9_10_11_claims": true,
   "no_trained_hoodie_policy_exists": true,
+  "no_training_or_dcq_introduced": true,
+  "offloading_queue_active": true,
+  "path_coverage": [
+    "horizontal",
+    "local",
+    "vertical"
+  ],
   "phase": "090-A runtime core only",
-  "public_cpu_sharing_active": true,
+  "private_queue_active": true,
+  "public_cpu_sharing_exercised": true,
+  "public_queue_cpu_sharing_active": true,
+  "runtime_slot_phase_active": true,
   "summary": {
-    "arrived_tasks": 1030,
-    "completed_tasks": 483,
-    "dropped_tasks": 491,
-    "unresolved_tasks": 56
+    "arrival_opportunities": 2000,
+    "arrival_rate_configured": 0.5,
+    "arrival_rate_observed": 0.5175,
+    "arrived_tasks": 1035,
+    "completed_tasks": 379,
+    "dropped_tasks": 44,
+    "reward_event_count": 423,
+    "unresolved_tasks": 612
   },
-  "topology_mode": "complete_edge_graph"
+  "topology_mode": "complete_edge_graph",
+  "topology_temporary": true,
+  "warnings": [
+    "complete_edge_graph used as explicit temporary topology mode",
+    "some tasks remain unresolved at episode end"
+  ]
 }
