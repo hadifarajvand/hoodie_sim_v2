@@ -1,0 +1,252 @@
+[
+  {
+    "paper_mechanism": "task arrival model",
+    "paper_expectation": "Bernoulli task arrivals per slot across N agents",
+    "code_location": "src/environment/traffic_generator.py:74-128",
+    "current_code_behavior": "Generates Bernoulli arrivals with deterministic seeding and paper config presets",
+    "evidence": "TrafficGenerator.generate and TrafficScenarioPreset.paper_default",
+    "status": "exact",
+    "impact_on_figure_9_10": "Enables sweeps but still produces sparse/degenerate traces under current runtime",
+    "required_future_fix": "No change required to core model; validate end-to-end workload exercise"
+  },
+  {
+    "paper_mechanism": "task size model",
+    "paper_expectation": "Task sizes drawn from paper-supported discrete range",
+    "code_location": "src/environment/traffic_config.py:9-53 and src/environment/traffic_generator.py:14-19",
+    "current_code_behavior": "Builds discrete task-size values from min/max/step and cycles through them deterministically",
+    "evidence": "TrafficConfig.task_size_values and _size_for_task",
+    "status": "exact",
+    "impact_on_figure_9_10": "Current figure sweeps still collapse because size variation alone does not produce paper-like dynamics",
+    "required_future_fix": "No change required; ensure size ranges are actually exercised in validation runs"
+  },
+  {
+    "paper_mechanism": "processing density",
+    "paper_expectation": "Use paper density of 0.297 Gcycles/Mbit",
+    "code_location": "src/environment/traffic_config.py:61-122",
+    "current_code_behavior": "Paper-default preset uses 0.297 and propagates it into generated traces",
+    "evidence": "TrafficScenarioPreset.paper_default",
+    "status": "exact",
+    "impact_on_figure_9_10": "Present in traces but not sufficient to recover paper-like outputs",
+    "required_future_fix": "No change required"
+  },
+  {
+    "paper_mechanism": "time-slot loop",
+    "paper_expectation": "Advance the simulation one slot at a time with queue progression",
+    "code_location": "src/environment/gym_adapter.py:179-241",
+    "current_code_behavior": "Step loop advances queues, finalizes tasks, and loads next arrivals",
+    "evidence": "Step method",
+    "status": "exact",
+    "impact_on_figure_9_10": "Figure 10 traces still collapse to one-task or zero-completion episodes",
+    "required_future_fix": "Ensure runtime sweeps fully exercise this loop across long traces"
+  },
+  {
+    "paper_mechanism": "private queue",
+    "paper_expectation": "Maintain per-agent private queue before offloading or execution",
+    "code_location": "src/environment/paper_queue_fidelity.py:8-26 and src/environment/gym_adapter.py:243-260",
+    "current_code_behavior": "Queue fidelity snapshot exists and environment tracks private queues",
+    "evidence": "PaperQueueFidelitySnapshot and queue_load",
+    "status": "approximate",
+    "impact_on_figure_9_10": "Queue plumbing exists but does not produce paper-like queue pressure in current sweeps",
+    "required_future_fix": "Re-run with higher-fidelity workload progression if allowed by future work"
+  },
+  {
+    "paper_mechanism": "offloading queue",
+    "paper_expectation": "Maintain offloading queue for transferred tasks",
+    "code_location": "src/environment/paper_queue_fidelity.py:8-26 and src/environment/gym_adapter.py:243-260",
+    "current_code_behavior": "Environment tracks offloading queues and drains them during step progression",
+    "evidence": "PaperQueueFidelitySnapshot and queue_load",
+    "status": "approximate",
+    "impact_on_figure_9_10": "Offloading exists but outputs still collapse rather than differentiating policies",
+    "required_future_fix": "No code change in audit; future validation should confirm queue pressure is exercised"
+  },
+  {
+    "paper_mechanism": "public/cloud queue",
+    "paper_expectation": "Maintain public/cloud queues for forwarded tasks",
+    "code_location": "src/environment/paper_queue_fidelity.py:8-26 and src/environment/gym_adapter.py:243-260",
+    "current_code_behavior": "Public queues are tracked per destination and included in queue load",
+    "evidence": "PaperQueueFidelitySnapshot and queue_load",
+    "status": "approximate",
+    "impact_on_figure_9_10": "Queue presence alone is not yielding paper-like Figure 10 separation",
+    "required_future_fix": "No code change in audit; inspect queue progression in dedicated runtime validation"
+  },
+  {
+    "paper_mechanism": "local execution",
+    "paper_expectation": "Local family should complete on the source agent",
+    "code_location": "src/policies/flc.py:1-40 and src/analysis/hoodie_runtime_evaluation_runner/policies.py:140-157",
+    "current_code_behavior": "FLC adapter always selects local family when legal",
+    "evidence": "FullLocalComputingAdapter",
+    "status": "exact",
+    "impact_on_figure_9_10": "Does not meaningfully separate from others in degenerate traces",
+    "required_future_fix": "Verify local-vs-offload effects under a more active workload if future work permits"
+  },
+  {
+    "paper_mechanism": "horizontal offloading",
+    "paper_expectation": "Horizontal family should choose neighbor destinations",
+    "code_location": "src/policies/ho.py:1-40 and src/analysis/hoodie_runtime_evaluation_runner/policies.py:180-197",
+    "current_code_behavior": "HO adapter chooses horizontal destinations when legal",
+    "evidence": "HorizontalOffloadingAdapter",
+    "status": "exact",
+    "impact_on_figure_9_10": "Ties with other policies because runtime traces are too sparse and candidate signals are weak",
+    "required_future_fix": "Need richer queue and latency signals in future validation"
+  },
+  {
+    "paper_mechanism": "vertical offloading",
+    "paper_expectation": "Vertical family should choose cloud destination",
+    "code_location": "src/policies/vo.py:1-40 and src/analysis/hoodie_runtime_evaluation_runner/policies.py:160-177",
+    "current_code_behavior": "VO adapter chooses cloud family when legal",
+    "evidence": "VerticalOffloadingAdapter",
+    "status": "exact",
+    "impact_on_figure_9_10": "Still collapses to degenerate Figure 10 outputs",
+    "required_future_fix": "No audit-time fix; future validation should ensure policy-specific traces diverge"
+  },
+  {
+    "paper_mechanism": "delay computation",
+    "paper_expectation": "Measure completed-task delay from simulation runtime",
+    "code_location": "src/evaluation/metrics.py:42-68 and src/environment/reward_timing.py:116-124",
+    "current_code_behavior": "Average delay is computed only from completed task delays and reward is based on terminal outcomes",
+    "evidence": "TaskEvaluationRecord and reward_for_terminal_task",
+    "status": "exact",
+    "impact_on_figure_9_10": "Allows zero-delay-looking outputs when tasks never complete or complete instantly in sparse traces",
+    "required_future_fix": "Do not change in audit; future work should validate delay accounting against richer traces"
+  },
+  {
+    "paper_mechanism": "drop-ratio computation",
+    "paper_expectation": "Count dropped over total tasks with meaningful denominators",
+    "code_location": "src/evaluation/metrics.py:42-68 and src/evaluation/metric_formulas.py",
+    "current_code_behavior": "Drop ratio is computed from dropped tasks divided by total tasks",
+    "evidence": "evaluate_trace and drop_ratio",
+    "status": "exact",
+    "impact_on_figure_9_10": "Produces 100% drop in many current sweeps because total tasks are tiny and completions are absent",
+    "required_future_fix": "No change in audit; future work should ensure sweeps create enough completed tasks"
+  },
+  {
+    "paper_mechanism": "reward/cost function",
+    "paper_expectation": "Use terminal reward or cost that reflects deadline success/failure",
+    "code_location": "src/environment/reward_timing.py:116-124",
+    "current_code_behavior": "Completed tasks get negative completion-time reward and dropped tasks get fixed penalty",
+    "evidence": "reward_for_terminal_task",
+    "status": "exact",
+    "impact_on_figure_9_10": "Reward values are current-simulator outputs, but not paper-faithful enough for claims",
+    "required_future_fix": "No change in audit; future work should verify reward against paper-trained validation traces"
+  },
+  {
+    "paper_mechanism": "HOODIE policy behavior",
+    "paper_expectation": "Learned proposed-method behavior should outperform baselines and not collapse to ties",
+    "code_location": "src/analysis/hoodie_runtime_evaluation_runner/policies.py:79-112 and src/evaluation/policy_registry.py:29-39",
+    "current_code_behavior": "Adapter uses HoodieAgent and learned q-values path, but current outputs do not show robust differentiation",
+    "evidence": "HoodiePolicyAdapter and PolicyRegistry",
+    "status": "partial",
+    "impact_on_figure_9_10": "Policies tie in Figure 10 and HOODIE often matches MLEO",
+    "required_future_fix": "Need real trained model/traces and end-to-end validation"
+  },
+  {
+    "paper_mechanism": "RO baseline",
+    "paper_expectation": "Random offloading should vary actions and serve as a weak baseline",
+    "code_location": "src/analysis/hoodie_runtime_evaluation_runner/policies.py:115-137",
+    "current_code_behavior": "Seed-controlled random legal action selection",
+    "evidence": "RandomOffloaderAdapter",
+    "status": "exact",
+    "impact_on_figure_9_10": "Still ties numerically in many traces because the workload is too sparse",
+    "required_future_fix": "No audit-time fix; future validation should confirm stochastic diversity"
+  },
+  {
+    "paper_mechanism": "FLC baseline",
+    "paper_expectation": "Local-only should bias toward local execution and be distinct from offloaders",
+    "code_location": "src/analysis/hoodie_runtime_evaluation_runner/policies.py:140-157",
+    "current_code_behavior": "Always selects local family when legal",
+    "evidence": "FullLocalComputingAdapter",
+    "status": "exact",
+    "impact_on_figure_9_10": "Does not produce paper-like separation in current figures",
+    "required_future_fix": "No audit-time fix; future validation should confirm local-only trace behavior"
+  },
+  {
+    "paper_mechanism": "VO baseline",
+    "paper_expectation": "Cloud-only should bias toward cloud execution and be distinct from local policies",
+    "code_location": "src/analysis/hoodie_runtime_evaluation_runner/policies.py:160-177",
+    "current_code_behavior": "Always selects vertical/cloud family when legal",
+    "evidence": "VerticalOffloadingAdapter",
+    "status": "exact",
+    "impact_on_figure_9_10": "Still collapses in Figure 10 outputs",
+    "required_future_fix": "No audit-time fix; future validation should confirm cloud-specific dynamics"
+  },
+  {
+    "paper_mechanism": "HO baseline",
+    "paper_expectation": "Horizontal-only should bias toward neighbor offload and be distinct from vertical/local",
+    "code_location": "src/analysis/hoodie_runtime_evaluation_runner/policies.py:180-197",
+    "current_code_behavior": "Chooses horizontal family when legal",
+    "evidence": "HorizontalOffloadingAdapter",
+    "status": "exact",
+    "impact_on_figure_9_10": "Currently tied with other policies in many sweeps",
+    "required_future_fix": "No audit-time fix; future validation should confirm horizontal destination effects"
+  },
+  {
+    "paper_mechanism": "BCO baseline",
+    "paper_expectation": "Balanced cyclic offloader should rotate among families",
+    "code_location": "src/analysis/hoodie_runtime_evaluation_runner/policies.py:200-217",
+    "current_code_behavior": "Rotates through local, vertical, and horizontal actions",
+    "evidence": "BalancedCyclicOffloaderAdapter",
+    "status": "exact",
+    "impact_on_figure_9_10": "Rotation is present but not reflected in useful Figure 10 separation",
+    "required_future_fix": "No audit-time fix; future validation should confirm rotation changes metrics"
+  },
+  {
+    "paper_mechanism": "MLEO baseline",
+    "paper_expectation": "Minimum-latency estimator should select the smallest estimated total delay",
+    "code_location": "src/analysis/hoodie_runtime_evaluation_runner/policies.py:220-241",
+    "current_code_behavior": "Uses candidate delays when present and falls back when not",
+    "evidence": "MinimumLatencyEstimateOffloaderAdapter",
+    "status": "partial",
+    "impact_on_figure_9_10": "HOODIE and MLEO tie in current traces",
+    "required_future_fix": "Need stronger candidate coverage and real runtime pressure"
+  },
+  {
+    "paper_mechanism": "Figure 9 sweep generation",
+    "paper_expectation": "Figure 9 should be based on trained validation outputs with correct sweep semantics",
+    "code_location": "artifacts/feature_089_paper_metrics_catalog/figure_9a_reward_vs_arrival_probability.json and output_usage_bundle",
+    "current_code_behavior": "Current artifact is approximation-tagged current-simulator output with explicit approximation notes",
+    "evidence": "figure_9a_reward_vs_arrival_probability.json and figure_9b_action_distribution_vs_arrival_probability.json",
+    "status": "approximate",
+    "impact_on_figure_9_10": "Figure 9 is usable only as current-simulator output, not paper proof",
+    "required_future_fix": "Future validation should use paper-trained episodes if they exist"
+  },
+  {
+    "paper_mechanism": "Figure 10 sweep generation",
+    "paper_expectation": "Figure 10 should reflect policy-separated simulator sweeps that match paper trends",
+    "code_location": "artifacts/feature_089_paper_metrics_catalog/figure_10a_delay_vs_arrival_probability.json through figure_10f_drop_ratio_vs_timeout.json",
+    "current_code_behavior": "Current sweeps are simulator-generated but degenerate, with ties and zero/100% outputs",
+    "evidence": "figure_10_output_audit.md and figure_10_paper_claim_alignment.md",
+    "status": "wrong",
+    "impact_on_figure_9_10": "Figure 10 cannot support paper reproduction claims",
+    "required_future_fix": "Need richer runtime traces and verified sweep injection"
+  },
+  {
+    "paper_mechanism": "DQN/DDQN/Dueling training loop",
+    "paper_expectation": "Paper training loop should exist and produce learned policy traces",
+    "code_location": "src/agents/hoodie_agent.py:1-200 and related model stack",
+    "current_code_behavior": "Learning-path scaffolding exists but there is no verified training trace bundle for Figures 8 and 11",
+    "evidence": "HoodiePolicyAdapter and gated status artifacts",
+    "status": "missing",
+    "impact_on_figure_9_10": "No impact on current figures beyond gated status for 8/11",
+    "required_future_fix": "Future work must provide real training traces before un-gating"
+  },
+  {
+    "paper_mechanism": "LSTM forecast/recovery logic",
+    "paper_expectation": "Paper LSTM ablation should be based on real forecast/recovery traces",
+    "code_location": "artifacts/feature_089_paper_metrics_catalog/figure_11_lstm_ablation_status.json and report artifacts",
+    "current_code_behavior": "Current status is gated because no LSTM traces exist",
+    "evidence": "Figure 11 gated artifact",
+    "status": "missing",
+    "impact_on_figure_9_10": "Figure 11 remains gated and cannot be claimed as reproduced",
+    "required_future_fix": "Future work must supply real LSTM traces and ablation outputs"
+  },
+  {
+    "paper_mechanism": "validation episodes",
+    "paper_expectation": "Paper validation should use the documented episode count and exploitative evaluation protocol",
+    "code_location": "artifacts/feature_089_paper_metrics_catalog/figure_9a_reward_vs_arrival_probability.json and related bundle",
+    "current_code_behavior": "Current artifacts state paper validation uses 200 episodes but simulator artifacts use small seed ensembles",
+    "evidence": "approximation notes and support_status fields",
+    "status": "approximate",
+    "impact_on_figure_9_10": "Current outputs do not support paper-level validation claims",
+    "required_future_fix": "If future paper validation is desired, use real 200-episode policy validation"
+  }
+]

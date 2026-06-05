@@ -1,0 +1,111 @@
+[
+  {
+    "figure_id": "Figure 10a",
+    "expected_paper_behavior": "HOODIE should outperform baselines as arrival probability increases",
+    "current_simulator_behavior": "Policies frequently tie or collapse to near-identical results across sweeps",
+    "observed_failure": "No meaningful policy separation",
+    "likely_root_cause": "Sparse workload traces and weak end-to-end policy pressure",
+    "evidence_artifacts": [
+      "artifacts/feature_089_paper_metrics_catalog/figure_10_output_audit.md",
+      "artifacts/feature_089_paper_metrics_catalog/figure_10_paper_claim_alignment.md",
+      "artifacts/feature_089_paper_metrics_catalog/figure_10a_delay_vs_arrival_probability.json"
+    ],
+    "blocking_category": "missing_queue_runtime",
+    "recommended_fix": "Generate longer active traces with enough queue pressure to separate policies",
+    "severity": "high",
+    "why_policies_tie": "The policy layer is present, but the runtime traces do not create enough differentiated pressure.",
+    "why_hoodie_and_mleo_tie": "Candidate latency signals are not strong enough in current traces to separate them.",
+    "whether_x_axis_sweep_affects_runtime_configuration": true,
+    "whether_policy_specific_runs_are_independent": true
+  },
+  {
+    "figure_id": "Figure 10b",
+    "expected_paper_behavior": "Increasing CPU capacity should reduce delay",
+    "current_simulator_behavior": "Delay often becomes zero or negative-zero in the plotting channel",
+    "observed_failure": "Delay collapse to zero",
+    "likely_root_cause": "Completion accounting is too sparse; many runs complete no meaningful tasks",
+    "evidence_artifacts": [
+      "artifacts/feature_089_paper_metrics_catalog/figure_10b_delay_vs_cpu_capacity.json",
+      "src/evaluation/metrics.py:42-68"
+    ],
+    "blocking_category": "metric_bug",
+    "recommended_fix": "Validate delay on episodes with actual completions before treating zero delay as informative",
+    "severity": "high",
+    "why_policies_tie": "All policies are being evaluated in runs that do not create enough completed tasks to separate them.",
+    "why_hoodie_and_mleo_tie": "Both policies are measured on the same sparse completion pool.",
+    "whether_x_axis_sweep_affects_runtime_configuration": true,
+    "whether_policy_specific_runs_are_independent": true
+  },
+  {
+    "figure_id": "Figure 10c",
+    "expected_paper_behavior": "Increasing timeout should slightly improve delay",
+    "current_simulator_behavior": "Only partial directional behavior appears",
+    "observed_failure": "Weak trend only",
+    "likely_root_cause": "Current runtime has limited completion depth and may not propagate timeout effects strongly",
+    "evidence_artifacts": [
+      "artifacts/feature_089_paper_metrics_catalog/figure_10c_delay_vs_timeout.json",
+      "artifacts/feature_089_paper_metrics_catalog/figure_10_paper_claim_alignment.md"
+    ],
+    "blocking_category": "acceptable_current_simulator_limitation",
+    "recommended_fix": "Validate timeout sensitivity on richer traces rather than current degenerate runs",
+    "severity": "medium",
+    "why_policies_tie": "Timeout variation does not produce enough policy divergence in the current workload regime.",
+    "why_hoodie_and_mleo_tie": "The runtime is not creating enough latency contrast for the estimator to exploit.",
+    "whether_x_axis_sweep_affects_runtime_configuration": true,
+    "whether_policy_specific_runs_are_independent": true
+  },
+  {
+    "figure_id": "Figure 10d",
+    "expected_paper_behavior": "Drop ratio should vary with arrival probability and policy",
+    "current_simulator_behavior": "Drop ratio saturates at 100 percent in many sweeps",
+    "observed_failure": "Drop-ratio ceiling",
+    "likely_root_cause": "Episodes usually end with one or zero completions and almost all tasks remain pending",
+    "evidence_artifacts": [
+      "artifacts/feature_089_paper_metrics_catalog/figure_10d_drop_ratio_vs_arrival_probability.json",
+      "src/environment/gym_adapter.py:179-241"
+    ],
+    "blocking_category": "missing_queue_runtime",
+    "recommended_fix": "Ensure sweeps actually exercise the queue runtime long enough to complete tasks",
+    "severity": "critical",
+    "why_policies_tie": "All policies are evaluated in the same starvation-like regime.",
+    "why_hoodie_and_mleo_tie": "Neither gets enough meaningful completion samples to diverge.",
+    "whether_x_axis_sweep_affects_runtime_configuration": true,
+    "whether_policy_specific_runs_are_independent": true
+  },
+  {
+    "figure_id": "Figure 10e",
+    "expected_paper_behavior": "CPU capacity should reduce drop ratio",
+    "current_simulator_behavior": "Drop ratio stays pinned at 100 percent across many CPU values",
+    "observed_failure": "No CPU sensitivity",
+    "likely_root_cause": "Sweep values are recorded but not producing strong runtime separation",
+    "evidence_artifacts": [
+      "artifacts/feature_089_paper_metrics_catalog/figure_10e_drop_ratio_vs_cpu_capacity.json",
+      "src/environment/traffic_config.py:61-122"
+    ],
+    "blocking_category": "missing_sweep_injection",
+    "recommended_fix": "Verify CPU sweep values are injected into the runtime path and affect execution",
+    "severity": "high",
+    "why_policies_tie": "The capacity sweep is not strong enough to differentiate policy outcomes in current runs.",
+    "why_hoodie_and_mleo_tie": "Estimator-driven differences are flattened by the current runtime.",
+    "whether_x_axis_sweep_affects_runtime_configuration": true,
+    "whether_policy_specific_runs_are_independent": true
+  },
+  {
+    "figure_id": "Figure 10f",
+    "expected_paper_behavior": "Timeout changes should reduce drop ratio",
+    "current_simulator_behavior": "Drop ratio remains 100 percent across most timeout values",
+    "observed_failure": "Timeout has little effect",
+    "likely_root_cause": "Completion depth is too shallow for timeout variation to matter",
+    "evidence_artifacts": [
+      "artifacts/feature_089_paper_metrics_catalog/figure_10f_drop_ratio_vs_timeout.json",
+      "src/environment/paper_timeout.py:31-52"
+    ],
+    "blocking_category": "acceptable_current_simulator_limitation",
+    "recommended_fix": "Run longer traces with more completions to expose timeout sensitivity",
+    "severity": "medium",
+    "why_policies_tie": "Timeout variation is not producing enough policy-specific behavior.",
+    "why_hoodie_and_mleo_tie": "Both are measured under a regime that starves meaningful completion differences.",
+    "whether_x_axis_sweep_affects_runtime_configuration": true,
+    "whether_policy_specific_runs_are_independent": true
+  }
+]

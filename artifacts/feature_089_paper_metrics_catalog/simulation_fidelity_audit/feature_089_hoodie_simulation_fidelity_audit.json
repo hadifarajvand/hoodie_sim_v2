@@ -1,0 +1,93 @@
+{
+  "feature": "089",
+  "branch": "089-hoodie-paper-metrics-figure-catalog",
+  "head_sha": "5b3fa3a066a1d055f5d6738b4c4b60a04cf3fc36",
+  "remote_ref": "origin/089-hoodie-paper-metrics-figure-catalog",
+  "verdict": "hoodie_simulation_not_faithful_to_paper",
+  "summary": "Current simulator outputs exist, but the runtime does not faithfully reproduce the paper's figure-level behavior. Figure 9 is approximation-tagged, Figure 8 and Figure 11 are correctly gated, and Figure 10 sweeps are real but degenerate.",
+  "structured_artifacts": [
+    "artifacts/feature_089_paper_metrics_catalog/simulation_fidelity_audit/mechanism_to_code_mapping.csv",
+    "artifacts/feature_089_paper_metrics_catalog/simulation_fidelity_audit/mechanism_to_code_mapping.json",
+    "artifacts/feature_089_paper_metrics_catalog/simulation_fidelity_audit/figure_10_failure_diagnosis.csv",
+    "artifacts/feature_089_paper_metrics_catalog/simulation_fidelity_audit/figure_10_failure_diagnosis.json",
+    "artifacts/feature_089_paper_metrics_catalog/simulation_fidelity_audit/figure_9_failure_diagnosis.csv",
+    "artifacts/feature_089_paper_metrics_catalog/simulation_fidelity_audit/figure_9_failure_diagnosis.json",
+    "artifacts/feature_089_paper_metrics_catalog/simulation_fidelity_audit/policy_behavior_audit.csv",
+    "artifacts/feature_089_paper_metrics_catalog/simulation_fidelity_audit/policy_behavior_audit.json",
+    "artifacts/feature_089_paper_metrics_catalog/simulation_fidelity_audit/metric_computation_audit.csv",
+    "artifacts/feature_089_paper_metrics_catalog/simulation_fidelity_audit/metric_computation_audit.json"
+  ],
+  "findings": [
+    {
+      "id": "F1",
+      "severity": "high",
+      "title": "Figure 10 outputs are simulator-generated but degenerate",
+      "evidence": [
+        "artifacts/feature_089_paper_metrics_catalog/figure_10_output_audit.md",
+        "artifacts/feature_089_paper_metrics_catalog/figure_10_paper_claim_alignment.md",
+        "artifacts/feature_089_paper_metrics_catalog/figure_10a_delay_vs_arrival_probability.json",
+        "artifacts/feature_089_paper_metrics_catalog/figure_10b_delay_vs_cpu_capacity.json",
+        "artifacts/feature_089_paper_metrics_catalog/figure_10d_drop_ratio_vs_arrival_probability.json",
+        "artifacts/feature_089_paper_metrics_catalog/figure_10e_drop_ratio_vs_cpu_capacity.json",
+        "artifacts/feature_089_paper_metrics_catalog/figure_10f_drop_ratio_vs_timeout.json"
+      ],
+      "impact": "The paper claim cannot be supported from the current Figure 10 outputs."
+    },
+    {
+      "id": "F2",
+      "severity": "high",
+      "title": "Figure 9 is explicitly approximation-tagged",
+      "evidence": [
+        "artifacts/feature_089_paper_metrics_catalog/figure_9a_reward_vs_arrival_probability.json",
+        "artifacts/feature_089_paper_metrics_catalog/figure_9b_action_distribution_vs_arrival_probability.json"
+      ],
+      "impact": "Figure 9 can be used only as current-simulator output, not as paper reproduction."
+    },
+    {
+      "id": "F3",
+      "severity": "high",
+      "title": "Figure 8 and Figure 11 remain gated",
+      "evidence": [
+        "artifacts/feature_089_paper_metrics_catalog/paper_figures_8_11_catalog.md",
+        "artifacts/feature_089_paper_metrics_catalog/figure_8a_learning_rate_convergence_status.json",
+        "artifacts/feature_089_paper_metrics_catalog/figure_8b_discount_factor_convergence_status.json",
+        "artifacts/feature_089_paper_metrics_catalog/figure_11_lstm_ablation_status.json"
+      ],
+      "impact": "No training/LSTM curve claim is allowed."
+    },
+    {
+      "id": "F4",
+      "severity": "medium",
+      "title": "Metric aggregation hides sparse-trace collapse",
+      "evidence": [
+        "src/evaluation/metrics.py:42-88"
+      ],
+      "impact": "Averages over completed tasks can look stable while the episode actually completes very little."
+    },
+    {
+      "id": "F5",
+      "severity": "medium",
+      "title": "Environment stepping often collapses into one-task traces",
+      "evidence": [
+        "src/environment/gym_adapter.py:68-241"
+      ],
+      "impact": "The simulator does not reliably exercise the workload regime needed for paper-like curves."
+    }
+  ],
+  "status": "complete",
+  "claim_boundary_preserved": [
+    "Feature 080 prepares HOODIE_PROPOSED for later evaluation.",
+    "Do not rank policies.",
+    "Do not evaluate baselines.",
+    "Do not introduce thesis method.",
+    "Do not use DCQ.",
+    "HOODIE remains the paper proposed method boundary.",
+    "Feature 086 approximations remain in force for output comparison."
+  ],
+  "paper_claims_supported": false,
+  "figure_9_approximation_tagged": true,
+  "figure_8_11_gated": true,
+  "figure_10_simulator_outputs": true,
+  "numeric_values_fabricated": false,
+  "output_sync_tuning_performed": false
+}

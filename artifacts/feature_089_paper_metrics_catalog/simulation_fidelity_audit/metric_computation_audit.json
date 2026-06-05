@@ -1,0 +1,98 @@
+[
+  {
+    "metric": "task_completion_delay",
+    "paper_definition": "Delay should measure completed-task latency under paper semantics",
+    "code_location": "src/evaluation/metrics.py:42-68 and src/environment/reward_timing.py:116-124",
+    "current_computation": "Average of delays from completed tasks only",
+    "denominator": "Completed tasks only",
+    "task_filtering": "Completed-task filter only",
+    "observed_problem": "Zero-completion sweeps can still look valid when plotting delays",
+    "effect_on_outputs": "Leads to zero/negative-zero-looking Figure 10 delay outputs",
+    "status": "exact",
+    "required_fix": "Validate against episodes with actual completions"
+  },
+  {
+    "metric": "task_drop_ratio",
+    "paper_definition": "Drop ratio should count dropped tasks over total tasks",
+    "code_location": "src/evaluation/metrics.py:42-68 and src/evaluation/metric_formulas.py",
+    "current_computation": "Dropped tasks divided by total tasks",
+    "denominator": "Total tasks",
+    "task_filtering": "No additional filtering beyond terminal outcome counts",
+    "observed_problem": "One-task or sparse-task episodes make the ratio saturate quickly",
+    "effect_on_outputs": "Produces 100% drop in Figures 10d-10f",
+    "status": "exact",
+    "required_fix": "Ensure sweeps create enough completed tasks to avoid trivial saturation"
+  },
+  {
+    "metric": "average_reward",
+    "paper_definition": "Average reward should reflect validation episode returns",
+    "code_location": "src/evaluation/metrics.py:91-106 and artifact-level reward summaries",
+    "current_computation": "Average over per-agent terminal rewards",
+    "denominator": "Per-agent reward totals",
+    "task_filtering": "Filters out None and NaN entries",
+    "observed_problem": "Can hide sparse episode structure and flatten differences between policies",
+    "effect_on_outputs": "Used in Figure 9 approximation outputs",
+    "status": "exact",
+    "required_fix": "Use real validation episodes and preserve sample-size metadata"
+  },
+  {
+    "metric": "total_reward",
+    "paper_definition": "Total reward should accumulate terminal task rewards across the episode",
+    "code_location": "src/environment/reward_timing.py:116-124 and artifact summaries",
+    "current_computation": "Sum of terminal rewards and penalties",
+    "denominator": "Episode-level sum",
+    "task_filtering": "Terminal outcomes only",
+    "observed_problem": "Can look decisive even when episode has tiny sample size",
+    "effect_on_outputs": "Used as a proxy in Figure 9 and 10 outputs",
+    "status": "exact",
+    "required_fix": "Keep but validate against richer traces"
+  },
+  {
+    "metric": "throughput",
+    "paper_definition": "Throughput should count completed tasks or processed work under paper semantics",
+    "code_location": "src/evaluation/metrics.py:42-68",
+    "current_computation": "Completed-task count",
+    "denominator": "Completed tasks",
+    "task_filtering": "Completed-task filter only",
+    "observed_problem": "Remains zero in many current sweeps",
+    "effect_on_outputs": "Contributes to degenerate Figure 10 results",
+    "status": "exact",
+    "required_fix": "Validate with episodes that produce completions"
+  },
+  {
+    "metric": "action_distribution",
+    "paper_definition": "Action distribution should count selected actions by type across validation episodes",
+    "code_location": "artifacts/feature_089_paper_metrics_catalog/figure_9b_action_distribution_vs_arrival_probability.json",
+    "current_computation": "Derived from sparse current-simulator action counts",
+    "denominator": "Total selected actions",
+    "task_filtering": "Action counts only from current simulator artifacts",
+    "observed_problem": "Distribution does not faithfully preserve paper validation groups",
+    "effect_on_outputs": "Used in Figure 9b approximation outputs",
+    "status": "approximate",
+    "required_fix": "Build from real validation episodes and larger sample sizes"
+  },
+  {
+    "metric": "timeout_drop_rate",
+    "paper_definition": "Timeout drop rate should isolate deadline-based failures",
+    "code_location": "src/evaluation/metrics.py:42-68 and src/environment/paper_timeout.py:31-89",
+    "current_computation": "Implicit inside dropped-task count and terminal status handling",
+    "denominator": "Total tasks",
+    "task_filtering": "Terminal outcome classification only",
+    "observed_problem": "Timeout sensitivity is muted in current traces",
+    "effect_on_outputs": "Impacts Figure 10d-10f drop behavior",
+    "status": "exact",
+    "required_fix": "Generate more completions so timeout effects become measurable"
+  },
+  {
+    "metric": "deadline_violation_rate",
+    "paper_definition": "Deadline violations should be separately measurable under paper semantics",
+    "code_location": "src/environment/paper_timeout.py:31-89 and runtime trace artifacts",
+    "current_computation": "Not explicitly exposed in the current figure outputs",
+    "denominator": "None or not explicitly reported",
+    "task_filtering": "None",
+    "observed_problem": "Missing explicit metric exposure",
+    "effect_on_outputs": "No direct Figure 9/10 output for deadline-violation sensitivity",
+    "status": "missing",
+    "required_fix": "Expose deadline-violation metric in future validation artifacts"
+  }
+]

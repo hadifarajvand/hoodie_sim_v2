@@ -1,0 +1,79 @@
+[
+  {
+    "policy": "HOODIE",
+    "intended_behavior_from_paper": "Learned proposed method should choose actions using trained value/action estimates",
+    "code_location": "src/analysis/hoodie_runtime_evaluation_runner/policies.py:79-112",
+    "observed_action_behavior": "Uses HoodieAgent q-values path but current outputs do not separate cleanly from MLEO",
+    "distinct_from_other_policies": "partial",
+    "tied_with": ["MLEO"],
+    "evidence": "HoodiePolicyAdapter and PolicyRegistry",
+    "effect_on_figure_10": "Creates ties and weak policy separation in Figure 10",
+    "required_fix": "Need real trained model traces and end-to-end validation"
+  },
+  {
+    "policy": "RO",
+    "intended_behavior_from_paper": "Random offloading baseline should vary legal actions stochastically",
+    "code_location": "src/analysis/hoodie_runtime_evaluation_runner/policies.py:115-137",
+    "observed_action_behavior": "Seed-controlled random legal action selection",
+    "distinct_from_other_policies": "yes",
+    "tied_with": [],
+    "evidence": "RandomOffloaderAdapter",
+    "effect_on_figure_10": "Still collapses numerically in sparse traces",
+    "required_fix": "No audit-time fix; validate stochastic diversity later"
+  },
+  {
+    "policy": "FLC",
+    "intended_behavior_from_paper": "Local-only baseline should stay on the source agent when legal",
+    "code_location": "src/analysis/hoodie_runtime_evaluation_runner/policies.py:140-157",
+    "observed_action_behavior": "Always selects local family when legal",
+    "distinct_from_other_policies": "yes",
+    "tied_with": [],
+    "evidence": "FullLocalComputingAdapter",
+    "effect_on_figure_10": "Contributes to tie-like outputs when workload is too sparse",
+    "required_fix": "No audit-time fix; validate local-only trace behavior later"
+  },
+  {
+    "policy": "VO",
+    "intended_behavior_from_paper": "Cloud-only baseline should choose cloud execution when legal",
+    "code_location": "src/analysis/hoodie_runtime_evaluation_runner/policies.py:160-177",
+    "observed_action_behavior": "Always selects vertical/cloud family when legal",
+    "distinct_from_other_policies": "yes",
+    "tied_with": [],
+    "evidence": "VerticalOffloadingAdapter",
+    "effect_on_figure_10": "Does not produce paper-like separation in current Figure 10 runs",
+    "required_fix": "No audit-time fix; validate cloud-specific dynamics later"
+  },
+  {
+    "policy": "HO",
+    "intended_behavior_from_paper": "Horizontal baseline should prefer neighbor offload when legal",
+    "code_location": "src/analysis/hoodie_runtime_evaluation_runner/policies.py:180-197",
+    "observed_action_behavior": "Chooses horizontal family when legal",
+    "distinct_from_other_policies": "yes",
+    "tied_with": [],
+    "evidence": "HorizontalOffloadingAdapter",
+    "effect_on_figure_10": "Ties numerically with other policies in many sweeps",
+    "required_fix": "No audit-time fix; validate horizontal effects later"
+  },
+  {
+    "policy": "BCO",
+    "intended_behavior_from_paper": "Balanced cyclic offloader should rotate among local, vertical, and horizontal actions",
+    "code_location": "src/analysis/hoodie_runtime_evaluation_runner/policies.py:200-217",
+    "observed_action_behavior": "Rotates through families, but trace outcomes remain too similar",
+    "distinct_from_other_policies": "partial",
+    "tied_with": ["HOODIE", "MLEO"],
+    "evidence": "BalancedCyclicOffloaderAdapter",
+    "effect_on_figure_10": "Rotation is not visible in useful Figure 10 separation",
+    "required_fix": "Need richer traces and stronger runtime pressure"
+  },
+  {
+    "policy": "MLEO",
+    "intended_behavior_from_paper": "Minimum-latency estimate baseline should pick smallest estimated total delay",
+    "code_location": "src/analysis/hoodie_runtime_evaluation_runner/policies.py:220-241",
+    "observed_action_behavior": "Uses candidate delays when present and falls back when not",
+    "distinct_from_other_policies": "partial",
+    "tied_with": ["HOODIE"],
+    "evidence": "MinimumLatencyEstimateOffloaderAdapter",
+    "effect_on_figure_10": "Frequently ties with HOODIE in Figure 10 outputs",
+    "required_fix": "Need stronger candidate coverage and verified runtime pressure"
+  }
+]

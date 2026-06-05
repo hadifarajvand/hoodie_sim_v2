@@ -1,0 +1,102 @@
+[
+  {
+    "figure_id": "Figure 9a",
+    "expected_paper_behavior": "Reward should come from trained validation and reflect policy quality across N and arrival probability",
+    "current_simulator_behavior": "Current output is approximation-tagged current-simulator reward data with some zero-task and one-task traces",
+    "approximation_status": "generated_with_approximation",
+    "missing_runtime_support": "Real trained validation episodes are not present",
+    "evidence_artifacts": [
+      "artifacts/feature_089_paper_metrics_catalog/figure_9a_reward_vs_arrival_probability.json",
+      "artifacts/feature_089_paper_metrics_catalog/output_usage_bundle/figure_9_plot_ready_combined.json"
+    ],
+    "whether_current_output_is_usable": true,
+    "whether_it_supports_paper_behavior_claim": false,
+    "recommended_fix": "Use real trained validation traces and ensure the output is not treated as a paper reproduction",
+    "severity": "high",
+    "whether_N_actually_changes_number_of_agents": true,
+    "whether_traffic_intensity_changes_task_size_and_arrival_probability": true,
+    "whether_data_rate_configurations_affect_horizontal_vertical_rates": true,
+    "whether_action_distribution_preserves_probability_groups": false,
+    "whether_reward_values_come_from_trained_validation_or_deterministic_approximation": "deterministic_approximation"
+  },
+  {
+    "figure_id": "Figure 9b",
+    "expected_paper_behavior": "Action distribution should preserve probability groups and show distinct action shares",
+    "current_simulator_behavior": "Current output is approximation-tagged and action counts are dominated by sparse traces",
+    "approximation_status": "generated_with_approximation",
+    "missing_runtime_support": "Robust action-trace aggregation over validation episodes is missing",
+    "evidence_artifacts": [
+      "artifacts/feature_089_paper_metrics_catalog/figure_9b_action_distribution_vs_arrival_probability.json",
+      "artifacts/feature_089_paper_metrics_catalog/output_usage_bundle/figure_9_plot_ready_combined.json"
+    ],
+    "whether_current_output_is_usable": true,
+    "whether_it_supports_paper_behavior_claim": false,
+    "recommended_fix": "Generate action distributions from real validation episodes with sufficient sample size",
+    "severity": "high",
+    "whether_N_actually_changes_number_of_agents": true,
+    "whether_traffic_intensity_changes_task_size_and_arrival_probability": true,
+    "whether_data_rate_configurations_affect_horizontal_vertical_rates": true,
+    "whether_action_distribution_preserves_probability_groups": false,
+    "whether_reward_values_come_from_trained_validation_or_deterministic_approximation": "deterministic_approximation"
+  },
+  {
+    "figure_id": "Figure 9c",
+    "expected_paper_behavior": "CPU sweep should change reward and show policy sensitivity to compute capacity",
+    "current_simulator_behavior": "Current output is approximation-tagged current-simulator data with weak reward differentiation",
+    "approximation_status": "generated_with_approximation",
+    "missing_runtime_support": "Runtime does not produce strong CPU sensitivity in current traces",
+    "evidence_artifacts": [
+      "artifacts/feature_089_paper_metrics_catalog/figure_9c_reward_vs_cpu_capacity.json",
+      "artifacts/feature_089_paper_metrics_catalog/output_usage_bundle/figure_9_plot_ready_combined.json"
+    ],
+    "whether_current_output_is_usable": true,
+    "whether_it_supports_paper_behavior_claim": false,
+    "recommended_fix": "Exercise the CPU sweep on longer runs with more completions",
+    "severity": "medium",
+    "whether_N_actually_changes_number_of_agents": true,
+    "whether_traffic_intensity_changes_task_size_and_arrival_probability": true,
+    "whether_data_rate_configurations_affect_horizontal_vertical_rates": true,
+    "whether_action_distribution_preserves_probability_groups": false,
+    "whether_reward_values_come_from_trained_validation_or_deterministic_approximation": "deterministic_approximation"
+  },
+  {
+    "figure_id": "Figure 9d",
+    "expected_paper_behavior": "Agent-count traffic sweep should reflect different traffic intensities and N values",
+    "current_simulator_behavior": "Current output is approximation-tagged and uses current simulator sweeps rather than trained validation",
+    "approximation_status": "generated_with_approximation",
+    "missing_runtime_support": "Need reliable mapping from N to runtime behavior and traffic intensity",
+    "evidence_artifacts": [
+      "artifacts/feature_089_paper_metrics_catalog/figure_9d_reward_vs_agent_count_traffic.json",
+      "artifacts/feature_089_paper_metrics_catalog/output_usage_bundle/figure_9_plot_ready_combined.json"
+    ],
+    "whether_current_output_is_usable": true,
+    "whether_it_supports_paper_behavior_claim": false,
+    "recommended_fix": "Confirm N changes agent population and traffic intensity across the full sweep set",
+    "severity": "high",
+    "whether_N_actually_changes_number_of_agents": true,
+    "whether_traffic_intensity_changes_task_size_and_arrival_probability": true,
+    "whether_data_rate_configurations_affect_horizontal_vertical_rates": true,
+    "whether_action_distribution_preserves_probability_groups": false,
+    "whether_reward_values_come_from_trained_validation_or_deterministic_approximation": "deterministic_approximation"
+  },
+  {
+    "figure_id": "Figure 9e",
+    "expected_paper_behavior": "Agent-count data-rate sweep should preserve configured horizontal/vertical rates",
+    "current_simulator_behavior": "Current output is approximation-tagged and only partially reflects the rate configuration semantics",
+    "approximation_status": "generated_with_approximation",
+    "missing_runtime_support": "Need robust rate-configuration propagation into runtime selection and reward",
+    "evidence_artifacts": [
+      "artifacts/feature_089_paper_metrics_catalog/figure_9e_reward_vs_agent_count_data_rate.json",
+      "artifacts/feature_089_paper_metrics_catalog/output_usage_bundle/figure_9_plot_ready_combined.json"
+    ],
+    "whether_current_output_is_usable": true,
+    "whether_it_supports_paper_behavior_claim": false,
+    "recommended_fix": "Verify data-rate settings actually alter horizontal and vertical transmission rates",
+    "severity": "high",
+    "whether_N_actually_changes_number_of_agents": true,
+    "whether_traffic_intensity_changes_task_size_and_arrival_probability": true,
+    "whether_data_rate_configurations_affect_horizontal_vertical_rates": true,
+    "whether_action_distribution_preserves_probability_groups": false,
+    "whether_reward_values_come_from_trained_validation_or_deterministic_approximation": "deterministic_approximation"
+  }
+]
