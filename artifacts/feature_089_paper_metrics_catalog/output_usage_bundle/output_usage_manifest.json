@@ -1,0 +1,66 @@
+{
+  "bundle_dir": "feature_089_paper_metrics_catalog/output_usage_bundle",
+  "bundle_files": [
+    "README.md",
+    "figure_output_index.json",
+    "figure_output_index.md",
+    "figure_10_plot_ready_combined.csv",
+    "figure_10_plot_ready_combined.json",
+    "figure_9_plot_ready_combined.csv",
+    "figure_9_plot_ready_combined.json",
+    "figure_10_analysis_digest.md",
+    "figure_9_analysis_digest.md",
+    "gated_figures_status_digest.md",
+    "claim_boundary_digest.md",
+    "output_usage_manifest.json",
+    "output_usage_report.md"
+  ],
+  "claim_boundary": [
+    "Feature 080 prepares HOODIE_PROPOSED for later evaluation.",
+    "Ranking must wait until HOODIE_PROPOSED is implemented faithfully enough.",
+    "Do not rank policies.",
+    "Do not evaluate baselines.",
+    "Do not introduce thesis method.",
+    "Do not use DCQ.",
+    "Do not claim full reproduction unless all required components pass.",
+    "HOODIE remains the paper proposed method boundary.",
+    "No thesis/DCQ/custom-method claim is allowed.",
+    "Feature 086 approximations remain in force for output comparison."
+  ],
+  "feature_id": "089-hoodie-paper-metrics-figure-catalog",
+  "row_counts": {
+    "figure_10": 266,
+    "figure_9": 78,
+    "index": 14
+  },
+  "source_files": {
+    "figure_10": [
+      "figure_10a_delay_vs_arrival_probability.json",
+      "figure_10b_delay_vs_cpu_capacity.json",
+      "figure_10c_delay_vs_timeout.json",
+      "figure_10d_drop_ratio_vs_arrival_probability.json",
+      "figure_10e_drop_ratio_vs_cpu_capacity.json",
+      "figure_10f_drop_ratio_vs_timeout.json"
+    ],
+    "figure_9": [
+      "figure_9a_reward_vs_arrival_probability.json",
+      "figure_9b_action_distribution_vs_arrival_probability.json",
+      "figure_9c_reward_vs_cpu_capacity.json",
+      "figure_9d_reward_vs_agent_count_traffic.json",
+      "figure_9e_reward_vs_agent_count_data_rate.json"
+    ],
+    "gated": [
+      "figure_8a_learning_rate_convergence_status.json",
+      "figure_8b_discount_factor_convergence_status.json",
+      "figure_11_lstm_ablation_status.json"
+    ]
+  },
+  "validation": {
+    "claim_boundary_populated": true,
+    "figure_10_present": true,
+    "figure_9_present": true,
+    "gated_status_present": true,
+    "no_output_sync_tuning": true
+  },
+  "verdict": "feature_089_output_bundle_ready"
+}

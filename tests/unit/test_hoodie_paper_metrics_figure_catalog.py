@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import json
+import shutil
 from pathlib import Path
 import unittest
 
@@ -113,7 +114,10 @@ class HoodiePaperMetricsFigureCatalogTests(unittest.TestCase):
         artifact_dir = Path("/tmp/feature_089_test_artifacts")
         if artifact_dir.exists():
             for path in sorted(artifact_dir.glob("*")):
-                path.unlink()
+                if path.is_dir():
+                    shutil.rmtree(path)
+                else:
+                    path.unlink()
         report = generate_artifacts(artifact_dir)
         self.assertEqual(report.verdict, "paper_metrics_catalog_partial")
         self.assertTrue((artifact_dir / "feature_089_report.json").exists())

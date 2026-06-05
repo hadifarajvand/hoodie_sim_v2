@@ -39,6 +39,7 @@ from .config import (
     SIMULATOR_REFERENCE_ARTIFACTS,
     SPEC_DIR,
 )
+from .output_usage_bundle import generate_output_usage_bundle, validate_output_usage_bundle
 from .model import Feature089Report, PaperFigure, PaperMetric, SimulatorOutputRequirement
 
 
@@ -1885,6 +1886,7 @@ def generate_artifacts(artifact_dir: Path | None = None) -> Feature089Report:
     _write_figure_10_comparison_analysis_artifacts(artifact_dir)
     _write_figure_8_11_status_artifacts(artifact_dir)
     _write_remaining_figure_outputs_report(artifact_dir)
+    generate_output_usage_bundle(artifact_dir)
     _generate_supporting_spec_docs(figures, metrics, requirements)
     return report
 
@@ -2188,6 +2190,7 @@ def validate_artifacts(artifact_dir: Path | None = None) -> Feature089Report:
     )
     if any(path.exists() for path in forbidden_training_outputs):
         raise ValueError("Validation must not accept fabricated Figure 8/11 training curves")
+    validate_output_usage_bundle(artifact_dir)
     return report
 
 

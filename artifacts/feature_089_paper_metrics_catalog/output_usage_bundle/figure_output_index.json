@@ -1,0 +1,374 @@
+[
+  {
+    "artifact_paths": [
+      "feature_089_paper_metrics_catalog/figure_10a_delay_vs_arrival_probability.csv",
+      "feature_089_paper_metrics_catalog/figure_10a_delay_vs_arrival_probability.json",
+      "feature_089_paper_metrics_catalog/output_usage_bundle/figure_10_plot_ready_combined.csv",
+      "feature_089_paper_metrics_catalog/output_usage_bundle/figure_10_plot_ready_combined.json"
+    ],
+    "claim_boundary": [
+      "Feature 080 prepares HOODIE_PROPOSED for later evaluation.",
+      "Ranking must wait until HOODIE_PROPOSED is implemented faithfully enough.",
+      "Do not rank policies.",
+      "Do not evaluate baselines.",
+      "Do not introduce thesis method.",
+      "Do not use DCQ.",
+      "Do not claim full reproduction unless all required components pass.",
+      "HOODIE remains the paper proposed method boundary.",
+      "No thesis/DCQ/custom-method claim is allowed.",
+      "Feature 086 approximations remain in force for output comparison."
+    ],
+    "figure_family": "Figure 10",
+    "figure_id": "Figure 10a",
+    "metric": "average_task_completion_delay",
+    "notes": "Figure 10 outputs are validated and ready for plotting.",
+    "plot_ready_available": true,
+    "status": "validated",
+    "support_status": "figure_10_outputs_validated"
+  },
+  {
+    "artifact_paths": [
+      "feature_089_paper_metrics_catalog/figure_10b_delay_vs_cpu_capacity.csv",
+      "feature_089_paper_metrics_catalog/figure_10b_delay_vs_cpu_capacity.json",
+      "feature_089_paper_metrics_catalog/output_usage_bundle/figure_10_plot_ready_combined.csv",
+      "feature_089_paper_metrics_catalog/output_usage_bundle/figure_10_plot_ready_combined.json"
+    ],
+    "claim_boundary": [
+      "Feature 080 prepares HOODIE_PROPOSED for later evaluation.",
+      "Ranking must wait until HOODIE_PROPOSED is implemented faithfully enough.",
+      "Do not rank policies.",
+      "Do not evaluate baselines.",
+      "Do not introduce thesis method.",
+      "Do not use DCQ.",
+      "Do not claim full reproduction unless all required components pass.",
+      "HOODIE remains the paper proposed method boundary.",
+      "No thesis/DCQ/custom-method claim is allowed.",
+      "Feature 086 approximations remain in force for output comparison."
+    ],
+    "figure_family": "Figure 10",
+    "figure_id": "Figure 10b",
+    "metric": "average_task_completion_delay",
+    "notes": "Figure 10 outputs are validated and ready for plotting.",
+    "plot_ready_available": true,
+    "status": "validated",
+    "support_status": "figure_10_outputs_validated"
+  },
+  {
+    "artifact_paths": [
+      "feature_089_paper_metrics_catalog/figure_10c_delay_vs_timeout.csv",
+      "feature_089_paper_metrics_catalog/figure_10c_delay_vs_timeout.json",
+      "feature_089_paper_metrics_catalog/output_usage_bundle/figure_10_plot_ready_combined.csv",
+      "feature_089_paper_metrics_catalog/output_usage_bundle/figure_10_plot_ready_combined.json"
+    ],
+    "claim_boundary": [
+      "Feature 080 prepares HOODIE_PROPOSED for later evaluation.",
+      "Ranking must wait until HOODIE_PROPOSED is implemented faithfully enough.",
+      "Do not rank policies.",
+      "Do not evaluate baselines.",
+      "Do not introduce thesis method.",
+      "Do not use DCQ.",
+      "Do not claim full reproduction unless all required components pass.",
+      "HOODIE remains the paper proposed method boundary.",
+      "No thesis/DCQ/custom-method claim is allowed.",
+      "Feature 086 approximations remain in force for output comparison."
+    ],
+    "figure_family": "Figure 10",
+    "figure_id": "Figure 10c",
+    "metric": "average_task_completion_delay",
+    "notes": "Figure 10 outputs are validated and ready for plotting.",
+    "plot_ready_available": true,
+    "status": "validated",
+    "support_status": "figure_10_outputs_validated"
+  },
+  {
+    "artifact_paths": [
+      "feature_089_paper_metrics_catalog/figure_10d_drop_ratio_vs_arrival_probability.csv",
+      "feature_089_paper_metrics_catalog/figure_10d_drop_ratio_vs_arrival_probability.json",
+      "feature_089_paper_metrics_catalog/output_usage_bundle/figure_10_plot_ready_combined.csv",
+      "feature_089_paper_metrics_catalog/output_usage_bundle/figure_10_plot_ready_combined.json"
+    ],
+    "claim_boundary": [
+      "Feature 080 prepares HOODIE_PROPOSED for later evaluation.",
+      "Ranking must wait until HOODIE_PROPOSED is implemented faithfully enough.",
+      "Do not rank policies.",
+      "Do not evaluate baselines.",
+      "Do not introduce thesis method.",
+      "Do not use DCQ.",
+      "Do not claim full reproduction unless all required components pass.",
+      "HOODIE remains the paper proposed method boundary.",
+      "No thesis/DCQ/custom-method claim is allowed.",
+      "Feature 086 approximations remain in force for output comparison."
+    ],
+    "figure_family": "Figure 10",
+    "figure_id": "Figure 10d",
+    "metric": "task_drop_ratio",
+    "notes": "Figure 10 outputs are validated and ready for plotting.",
+    "plot_ready_available": true,
+    "status": "validated",
+    "support_status": "figure_10_outputs_validated"
+  },
+  {
+    "artifact_paths": [
+      "feature_089_paper_metrics_catalog/figure_10e_drop_ratio_vs_cpu_capacity.csv",
+      "feature_089_paper_metrics_catalog/figure_10e_drop_ratio_vs_cpu_capacity.json",
+      "feature_089_paper_metrics_catalog/output_usage_bundle/figure_10_plot_ready_combined.csv",
+      "feature_089_paper_metrics_catalog/output_usage_bundle/figure_10_plot_ready_combined.json"
+    ],
+    "claim_boundary": [
+      "Feature 080 prepares HOODIE_PROPOSED for later evaluation.",
+      "Ranking must wait until HOODIE_PROPOSED is implemented faithfully enough.",
+      "Do not rank policies.",
+      "Do not evaluate baselines.",
+      "Do not introduce thesis method.",
+      "Do not use DCQ.",
+      "Do not claim full reproduction unless all required components pass.",
+      "HOODIE remains the paper proposed method boundary.",
+      "No thesis/DCQ/custom-method claim is allowed.",
+      "Feature 086 approximations remain in force for output comparison."
+    ],
+    "figure_family": "Figure 10",
+    "figure_id": "Figure 10e",
+    "metric": "task_drop_ratio",
+    "notes": "Figure 10 outputs are validated and ready for plotting.",
+    "plot_ready_available": true,
+    "status": "validated",
+    "support_status": "figure_10_outputs_validated"
+  },
+  {
+    "artifact_paths": [
+      "feature_089_paper_metrics_catalog/figure_10f_drop_ratio_vs_timeout.csv",
+      "feature_089_paper_metrics_catalog/figure_10f_drop_ratio_vs_timeout.json",
+      "feature_089_paper_metrics_catalog/output_usage_bundle/figure_10_plot_ready_combined.csv",
+      "feature_089_paper_metrics_catalog/output_usage_bundle/figure_10_plot_ready_combined.json"
+    ],
+    "claim_boundary": [
+      "Feature 080 prepares HOODIE_PROPOSED for later evaluation.",
+      "Ranking must wait until HOODIE_PROPOSED is implemented faithfully enough.",
+      "Do not rank policies.",
+      "Do not evaluate baselines.",
+      "Do not introduce thesis method.",
+      "Do not use DCQ.",
+      "Do not claim full reproduction unless all required components pass.",
+      "HOODIE remains the paper proposed method boundary.",
+      "No thesis/DCQ/custom-method claim is allowed.",
+      "Feature 086 approximations remain in force for output comparison."
+    ],
+    "figure_family": "Figure 10",
+    "figure_id": "Figure 10f",
+    "metric": "task_drop_ratio",
+    "notes": "Figure 10 outputs are validated and ready for plotting.",
+    "plot_ready_available": true,
+    "status": "validated",
+    "support_status": "figure_10_outputs_validated"
+  },
+  {
+    "artifact_paths": [
+      "feature_089_paper_metrics_catalog/figure_9a_reward_vs_arrival_probability.csv",
+      "feature_089_paper_metrics_catalog/figure_9a_reward_vs_arrival_probability.json",
+      "feature_089_paper_metrics_catalog/output_usage_bundle/figure_9_plot_ready_combined.csv",
+      "feature_089_paper_metrics_catalog/output_usage_bundle/figure_9_plot_ready_combined.json"
+    ],
+    "claim_boundary": [
+      "Feature 080 prepares HOODIE_PROPOSED for later evaluation.",
+      "Ranking must wait until HOODIE_PROPOSED is implemented faithfully enough.",
+      "Do not rank policies.",
+      "Do not evaluate baselines.",
+      "Do not introduce thesis method.",
+      "Do not use DCQ.",
+      "Do not claim full reproduction unless all required components pass.",
+      "HOODIE remains the paper proposed method boundary.",
+      "No thesis/DCQ/custom-method claim is allowed.",
+      "Feature 086 approximations remain in force for output comparison."
+    ],
+    "figure_family": "Figure 9",
+    "figure_id": "Figure 9a",
+    "metric": "average_reward",
+    "notes": "Generated from current simulator sweeps with explicit N curves; paper validation uses 200 episodes, while this artifact records the current simulator seed ensemble.",
+    "plot_ready_available": true,
+    "status": "generated_with_approximation",
+    "support_status": "generated_with_approximation"
+  },
+  {
+    "artifact_paths": [
+      "feature_089_paper_metrics_catalog/figure_9b_action_distribution_vs_arrival_probability.csv",
+      "feature_089_paper_metrics_catalog/figure_9b_action_distribution_vs_arrival_probability.json",
+      "feature_089_paper_metrics_catalog/output_usage_bundle/figure_9_plot_ready_combined.csv",
+      "feature_089_paper_metrics_catalog/output_usage_bundle/figure_9_plot_ready_combined.json"
+    ],
+    "claim_boundary": [
+      "Feature 080 prepares HOODIE_PROPOSED for later evaluation.",
+      "Ranking must wait until HOODIE_PROPOSED is implemented faithfully enough.",
+      "Do not rank policies.",
+      "Do not evaluate baselines.",
+      "Do not introduce thesis method.",
+      "Do not use DCQ.",
+      "Do not claim full reproduction unless all required components pass.",
+      "HOODIE remains the paper proposed method boundary.",
+      "No thesis/DCQ/custom-method claim is allowed.",
+      "Feature 086 approximations remain in force for output comparison."
+    ],
+    "figure_family": "Figure 9",
+    "figure_id": "Figure 9b",
+    "metric": "action_distribution",
+    "notes": "Generated from current simulator action traces; action counts and shares are derived from exploitative validation rather than paper-trained policy runs.",
+    "plot_ready_available": true,
+    "status": "generated_with_approximation",
+    "support_status": "generated_with_approximation"
+  },
+  {
+    "artifact_paths": [
+      "feature_089_paper_metrics_catalog/figure_9c_reward_vs_cpu_capacity.csv",
+      "feature_089_paper_metrics_catalog/figure_9c_reward_vs_cpu_capacity.json",
+      "feature_089_paper_metrics_catalog/output_usage_bundle/figure_9_plot_ready_combined.csv",
+      "feature_089_paper_metrics_catalog/output_usage_bundle/figure_9_plot_ready_combined.json"
+    ],
+    "claim_boundary": [
+      "Feature 080 prepares HOODIE_PROPOSED for later evaluation.",
+      "Ranking must wait until HOODIE_PROPOSED is implemented faithfully enough.",
+      "Do not rank policies.",
+      "Do not evaluate baselines.",
+      "Do not introduce thesis method.",
+      "Do not use DCQ.",
+      "Do not claim full reproduction unless all required components pass.",
+      "HOODIE remains the paper proposed method boundary.",
+      "No thesis/DCQ/custom-method claim is allowed.",
+      "Feature 086 approximations remain in force for output comparison."
+    ],
+    "figure_family": "Figure 9",
+    "figure_id": "Figure 9c",
+    "metric": "average_reward",
+    "notes": "Generated from current simulator sweeps with explicit N curves; paper validation uses 200 episodes, while this artifact records the current simulator seed ensemble.",
+    "plot_ready_available": true,
+    "status": "generated_with_approximation",
+    "support_status": "generated_with_approximation"
+  },
+  {
+    "artifact_paths": [
+      "feature_089_paper_metrics_catalog/figure_9d_reward_vs_agent_count_traffic.csv",
+      "feature_089_paper_metrics_catalog/figure_9d_reward_vs_agent_count_traffic.json",
+      "feature_089_paper_metrics_catalog/output_usage_bundle/figure_9_plot_ready_combined.csv",
+      "feature_089_paper_metrics_catalog/output_usage_bundle/figure_9_plot_ready_combined.json"
+    ],
+    "claim_boundary": [
+      "Feature 080 prepares HOODIE_PROPOSED for later evaluation.",
+      "Ranking must wait until HOODIE_PROPOSED is implemented faithfully enough.",
+      "Do not rank policies.",
+      "Do not evaluate baselines.",
+      "Do not introduce thesis method.",
+      "Do not use DCQ.",
+      "Do not claim full reproduction unless all required components pass.",
+      "HOODIE remains the paper proposed method boundary.",
+      "No thesis/DCQ/custom-method claim is allowed.",
+      "Feature 086 approximations remain in force for output comparison."
+    ],
+    "figure_family": "Figure 9",
+    "figure_id": "Figure 9d",
+    "metric": "average_reward",
+    "notes": "Generated from current simulator sweeps using the available topology and scenario adapters; the output is feasible from runtime evaluation, but it is not a trained-paper reproduction.",
+    "plot_ready_available": true,
+    "status": "generated_with_approximation",
+    "support_status": "generated_with_approximation"
+  },
+  {
+    "artifact_paths": [
+      "feature_089_paper_metrics_catalog/figure_9e_reward_vs_agent_count_data_rate.csv",
+      "feature_089_paper_metrics_catalog/figure_9e_reward_vs_agent_count_data_rate.json",
+      "feature_089_paper_metrics_catalog/output_usage_bundle/figure_9_plot_ready_combined.csv",
+      "feature_089_paper_metrics_catalog/output_usage_bundle/figure_9_plot_ready_combined.json"
+    ],
+    "claim_boundary": [
+      "Feature 080 prepares HOODIE_PROPOSED for later evaluation.",
+      "Ranking must wait until HOODIE_PROPOSED is implemented faithfully enough.",
+      "Do not rank policies.",
+      "Do not evaluate baselines.",
+      "Do not introduce thesis method.",
+      "Do not use DCQ.",
+      "Do not claim full reproduction unless all required components pass.",
+      "HOODIE remains the paper proposed method boundary.",
+      "No thesis/DCQ/custom-method claim is allowed.",
+      "Feature 086 approximations remain in force for output comparison."
+    ],
+    "figure_family": "Figure 9",
+    "figure_id": "Figure 9e",
+    "metric": "average_reward",
+    "notes": "Generated from current simulator sweeps using the available topology and scenario adapters; the output is feasible from runtime evaluation, but it is not a trained-paper reproduction.",
+    "plot_ready_available": true,
+    "status": "generated_with_approximation",
+    "support_status": "generated_with_approximation"
+  },
+  {
+    "artifact_paths": [
+      "feature_089_paper_metrics_catalog/figure_8a_learning_rate_convergence_status.md",
+      "feature_089_paper_metrics_catalog/figure_8a_learning_rate_convergence_status.json"
+    ],
+    "claim_boundary": [
+      "Feature 080 prepares HOODIE_PROPOSED for later evaluation.",
+      "Ranking must wait until HOODIE_PROPOSED is implemented faithfully enough.",
+      "Do not rank policies.",
+      "Do not evaluate baselines.",
+      "Do not introduce thesis method.",
+      "Do not use DCQ.",
+      "Do not claim full reproduction unless all required components pass.",
+      "HOODIE remains the paper proposed method boundary.",
+      "No thesis/DCQ/custom-method claim is allowed.",
+      "Feature 086 approximations remain in force for output comparison."
+    ],
+    "figure_family": "Figure 8",
+    "figure_id": "Figure 8a",
+    "metric": null,
+    "notes": "No real trained HOODIE DRL traces were found in the repository; deterministic benchmark rows are not used.",
+    "plot_ready_available": false,
+    "status": "not_generated_training_required",
+    "support_status": "not_generated_training_required"
+  },
+  {
+    "artifact_paths": [
+      "feature_089_paper_metrics_catalog/figure_8b_discount_factor_convergence_status.md",
+      "feature_089_paper_metrics_catalog/figure_8b_discount_factor_convergence_status.json"
+    ],
+    "claim_boundary": [
+      "Feature 080 prepares HOODIE_PROPOSED for later evaluation.",
+      "Ranking must wait until HOODIE_PROPOSED is implemented faithfully enough.",
+      "Do not rank policies.",
+      "Do not evaluate baselines.",
+      "Do not introduce thesis method.",
+      "Do not use DCQ.",
+      "Do not claim full reproduction unless all required components pass.",
+      "HOODIE remains the paper proposed method boundary.",
+      "No thesis/DCQ/custom-method claim is allowed.",
+      "Feature 086 approximations remain in force for output comparison."
+    ],
+    "figure_family": "Figure 8",
+    "figure_id": "Figure 8b",
+    "metric": null,
+    "notes": "No real trained HOODIE DRL traces were found in the repository; deterministic benchmark rows are not used.",
+    "plot_ready_available": false,
+    "status": "not_generated_training_required",
+    "support_status": "not_generated_training_required"
+  },
+  {
+    "artifact_paths": [
+      "feature_089_paper_metrics_catalog/figure_11_lstm_ablation_status.md",
+      "feature_089_paper_metrics_catalog/figure_11_lstm_ablation_status.json"
+    ],
+    "claim_boundary": [
+      "Feature 080 prepares HOODIE_PROPOSED for later evaluation.",
+      "Ranking must wait until HOODIE_PROPOSED is implemented faithfully enough.",
+      "Do not rank policies.",
+      "Do not evaluate baselines.",
+      "Do not introduce thesis method.",
+      "Do not use DCQ.",
+      "Do not claim full reproduction unless all required components pass.",
+      "HOODIE remains the paper proposed method boundary.",
+      "No thesis/DCQ/custom-method claim is allowed.",
+      "Feature 086 approximations remain in force for output comparison."
+    ],
+    "figure_family": "Figure 11",
+    "figure_id": "Figure 11",
+    "metric": null,
+    "notes": "No real LSTM ablation traces were found in the repository; deterministic benchmark rows are not used.",
+    "plot_ready_available": false,
+    "status": "not_generated_lstm_training_required",
+    "support_status": "not_generated_lstm_training_required"
+  }
+]
