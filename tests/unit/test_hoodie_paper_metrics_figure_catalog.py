@@ -54,6 +54,15 @@ class HoodiePaperMetricsFigureCatalogTests(unittest.TestCase):
         self.assertEqual(figures["Figure 10e"].sweep_values, (3, 4, 5, 6, 7))
         self.assertEqual(figures["Figure 10f"].sweep_values, (1.6, 1.8, 2.0, 2.2, 2.4))
 
+    def test_figure_9_catalog_preserves_paper_curve_semantics(self) -> None:
+        figures = {figure.figure_id: figure for figure in _ordered_figures()}
+        self.assertEqual(figures["Figure 9a"].policies_or_curves, ("N=10", "N=15", "N=20"))
+        self.assertEqual(figures["Figure 9b"].x_axis, "action_type")
+        self.assertEqual(figures["Figure 9b"].policies_or_curves, ("local", "horizontal", "vertical"))
+        self.assertIn("N=20", figures["Figure 9b"].scenario_setup)
+        self.assertEqual(figures["Figure 9d"].policies_or_curves, ("Moderate Traffic", "Heavy Traffic", "Extreme Traffic"))
+        self.assertEqual(figures["Figure 9e"].policies_or_curves, ("Balanced", "Horizontal-centric", "Vertical-centric"))
+
     def test_delay_and_drop_transforms(self) -> None:
         self.assertEqual(_delay_plot_value(3.5), -3.5)
         self.assertEqual(_delay_plot_value(-3.5), -3.5)
@@ -115,6 +124,10 @@ class HoodiePaperMetricsFigureCatalogTests(unittest.TestCase):
         reward_payload = json.loads((artifact_dir / "figure_9a_reward_vs_arrival_probability.json").read_text(encoding="utf-8"))
         self.assertEqual(len(reward_payload), 15)
         self.assertEqual({row["curve_label"] for row in reward_payload}, {"N=10", "N=15", "N=20"})
+        self.assertEqual({row["paper_curve_dimension"] for row in reward_payload}, {"number_of_agents"})
+        self.assertEqual({row["paper_validation_episodes"] for row in reward_payload}, {200})
+        self.assertEqual({row["simulator_validation_episodes"] for row in reward_payload}, {3})
+        self.assertTrue(all(row["agent_count_curve"] == row["number_of_agents"] for row in reward_payload))
         self.assertTrue(all(row["policy"] == "HOODIE" for row in reward_payload))
         self.assertTrue(all(row["status"] == "simulator_generated" for row in reward_payload))
         self.assertTrue(all(row["seed_count"] == 3 for row in reward_payload))
@@ -122,6 +135,12 @@ class HoodiePaperMetricsFigureCatalogTests(unittest.TestCase):
 
         action_payload = json.loads((artifact_dir / "figure_9b_action_distribution_vs_arrival_probability.json").read_text(encoding="utf-8"))
         self.assertEqual(len(action_payload), 15)
+        self.assertEqual({row["paper_curve_dimension"] for row in action_payload}, {"task_arrival_probability"})
+        self.assertEqual({row["action_type"] for row in action_payload}, {"local", "horizontal", "vertical"})
+        self.assertEqual({row["curve_label"] for row in action_payload}, {"local", "horizontal", "vertical"})
+        self.assertEqual({row["number_of_agents"] for row in action_payload}, {20})
+        self.assertEqual({row["arrival_probability_bar"] for row in action_payload}, {0.1, 0.3, 0.5, 0.7, 0.9})
+        self.assertTrue(all(row["paper_x_axis_value"] == row["action_type"] for row in action_payload))
         self.assertTrue(
             all(
                 (
@@ -134,14 +153,43 @@ class HoodiePaperMetricsFigureCatalogTests(unittest.TestCase):
             )
         )
         self.assertTrue(all(row["total_selected_actions"] == row["finalized_terminal_tasks"] for row in action_payload))
+        for probability in {0.1, 0.3, 0.5, 0.7, 0.9}:
+            rows_for_probability = [row for row in action_payload if row["arrival_probability_bar"] == probability]
+            self.assertEqual(len(rows_for_probability), 3)
+            self.assertEqual(
+                sum(row["action_count"] for row in rows_for_probability),
+                rows_for_probability[0]["total_selected_actions"],
+            )
 
         traffic_payload = json.loads((artifact_dir / "figure_9d_reward_vs_agent_count_traffic.json").read_text(encoding="utf-8"))
         self.assertEqual({row["curve_label"] for row in traffic_payload}, {"moderate", "heavy", "extreme"})
         self.assertEqual({row["sweep_value"] for row in traffic_payload}, {10.0, 15.0, 20.0, 25.0, 30.0})
+        self.assertEqual(
+            {
+                (row["curve_label"], row["arrival_probability"], row["task_size_mbits_min"], row["task_size_mbits_max"])
+                for row in traffic_payload
+            },
+            {
+                ("moderate", 0.5, 1.0, 3.0),
+                ("heavy", 0.7, 2.0, 5.0),
+                ("extreme", 0.9, 3.0, 7.0),
+            },
+        )
 
         rate_payload = json.loads((artifact_dir / "figure_9e_reward_vs_agent_count_data_rate.json").read_text(encoding="utf-8"))
         self.assertEqual({row["horizontal_data_rate_mbps"] for row in rate_payload}, {5.0, 10.0, 20.0})
         self.assertEqual({row["vertical_data_rate_mbps"] for row in rate_payload}, {20.0, 30.0, 40.0})
+        self.assertEqual(
+            {
+                (row["curve_label"], row["horizontal_data_rate_mbps"], row["vertical_data_rate_mbps"])
+                for row in rate_payload
+            },
+            {
+                ("balanced", 10.0, 30.0),
+                ("horizontal_centric", 20.0, 20.0),
+                ("vertical_centric", 5.0, 40.0),
+            },
+        )
 
         drop_payload = json.loads((artifact_dir / "figure_10f_drop_ratio_vs_timeout.json").read_text(encoding="utf-8"))
         self.assertEqual(len(drop_payload), len(ACTIVE_POLICIES) * 5)

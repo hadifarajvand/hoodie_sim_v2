@@ -45,6 +45,7 @@ FIGURE_10_SIMULATION_SEED = 7
 FIGURE_10_HIGH_TIMEOUT_SECONDS = 10.0
 FIGURE_10_STRICT_TIMEOUT_SECONDS = 2.0
 FIGURE_9_VALIDATION_SEEDS = (7, 13, 21)
+FIGURE_9_PAPER_VALIDATION_EPISODES = 200
 
 
 @dataclass(frozen=True, slots=True)
@@ -466,7 +467,7 @@ def _ordered_figures() -> list[PaperFigure]:
             metric="average_reward",
             x_axis="task_arrival_probability",
             sweep_values=(0.1, 0.3, 0.5, 0.7, 0.9),
-            policies_or_curves=("HOODIE",),
+            policies_or_curves=("N=10", "N=15", "N=20"),
             scenario_setup="Table 4 defaults; N=10/15/20; 200 validation episodes; exploitative actions.",
             requires_training=False,
             requires_lstm=False,
@@ -488,7 +489,7 @@ def _ordered_figures() -> list[PaperFigure]:
             x_axis="action_type",
             sweep_values=(0.1, 0.3, 0.5, 0.7, 0.9),
             policies_or_curves=("local", "horizontal", "vertical"),
-            scenario_setup="Table 4 defaults; HOODIE only; exploitative validation episodes.",
+            scenario_setup="Table 4 defaults; N=20; HOODIE only; exploitative validation episodes; bars are task arrival probabilities P=0.1/0.3/0.5/0.7/0.9.",
             requires_training=False,
             requires_lstm=False,
             requires_digitization=False,
@@ -909,7 +910,7 @@ def _requirements() -> list[SimulatorOutputRequirement]:
             blocked_by_training=False,
             blocked_by_lstm=False,
             blocked_by_simulator_support=False,
-            notes="Live simulator sweep over arrival probability with curve-wise agent counts. Keep the Feature 080 and 086 claim boundaries intact.",
+            notes="Live simulator sweep over arrival probability with N=10/15/20 as the paper curve dimension. Keep the Feature 080 and 086 claim boundaries intact.",
             claim_boundary=FEATURE_080_BOUNDARY + FEATURE_086_BOUNDARY,
         ),
         SimulatorOutputRequirement(
@@ -926,7 +927,7 @@ def _requirements() -> list[SimulatorOutputRequirement]:
             blocked_by_training=False,
             blocked_by_lstm=False,
             blocked_by_simulator_support=False,
-            notes="Live simulator action-distribution sweep over arrival probability. Output includes raw counts and shares for local, horizontal, and vertical actions.",
+            notes="Live simulator action-distribution output with action type as the paper x-axis and arrival probability as the bar-group dimension at Table 4 N=20.",
             claim_boundary=FEATURE_080_BOUNDARY + FEATURE_086_BOUNDARY,
         ),
         SimulatorOutputRequirement(
@@ -1135,13 +1136,41 @@ def _figure_10_output_rows(figure: PaperFigure) -> list[dict[str, Any]]:
 
 
 def _figure_9_curve_labels(figure_id: str) -> list[tuple[str, int | None]]:
-    if figure_id in {"Figure 9a", "Figure 9b", "Figure 9c"}:
+    if figure_id in {"Figure 9a", "Figure 9c"}:
         return [("N=10", 10), ("N=15", 15), ("N=20", 20)]
+    if figure_id == "Figure 9b":
+        return [("local", None), ("horizontal", None), ("vertical", None)]
     if figure_id == "Figure 9d":
         return [("moderate", None), ("heavy", None), ("extreme", None)]
     if figure_id == "Figure 9e":
         return [("balanced", None), ("horizontal_centric", None), ("vertical_centric", None)]
     raise ValueError(f"Unsupported Figure 9 identifier: {figure_id}")
+
+
+def _figure_9_paper_curve_dimension(figure_id: str) -> str:
+    if figure_id in {"Figure 9a", "Figure 9c"}:
+        return "number_of_agents"
+    if figure_id == "Figure 9b":
+        return "task_arrival_probability"
+    if figure_id == "Figure 9d":
+        return "traffic_intensity"
+    if figure_id == "Figure 9e":
+        return "data_rate_configuration"
+    raise ValueError(f"Unsupported Figure 9 identifier: {figure_id}")
+
+
+def _figure_9_paper_x_value(figure_id: str, sweep_value: float, action_type: str | None) -> float | str:
+    if figure_id == "Figure 9b":
+        if action_type is None:
+            raise ValueError("Figure 9b requires an action_type x-axis value")
+        return action_type
+    return float(sweep_value)
+
+
+def _figure_9_paper_series_value(figure_id: str, curve_label: str, sweep_value: float) -> float | str:
+    if figure_id == "Figure 9b":
+        return float(sweep_value)
+    return curve_label
 
 
 def _figure_9_traffic_config(figure_id: str, sweep_value: float, curve_label: str, agent_count: int | None) -> TrafficConfig:
@@ -1209,6 +1238,7 @@ def _figure_9_curve_row(
     compute_config: ComputeConfig,
     link_rate_config: LinkRateConfig,
     runs: list[dict[str, Any]],
+    action_type: str | None = None,
 ) -> dict[str, Any]:
     all_records: list[TaskEvaluationRecord] = []
     action_counts = Counter({"local": 0, "horizontal": 0, "vertical": 0})
@@ -1236,20 +1266,46 @@ def _figure_9_curve_row(
     total_tasks = int(combined_metrics.get("total_tasks", len(all_records)))
     completion_rate = float(combined_metrics.get("completed_tasks", 0)) / total_tasks if total_tasks else 0.0
     average_reward = float(total_reward / total_tasks) if total_tasks else 0.0
+    selected_action_total = int(sum(action_counts.values()))
+    selected_action_count = int(action_counts[action_type]) if action_type is not None else None
+    selected_action_share = (
+        float(selected_action_count / selected_action_total)
+        if action_type is not None and selected_action_total
+        else None
+    )
     row: dict[str, Any] = {
         "figure_id": figure.figure_id,
         "policy": policy,
         "metric": figure.metric,
         "x_axis": figure.x_axis,
+        "paper_x_axis": figure.x_axis,
+        "paper_x_axis_value": _figure_9_paper_x_value(figure.figure_id, float(sweep_value), action_type),
+        "paper_y_axis": figure.metric,
+        "paper_curve_dimension": _figure_9_paper_curve_dimension(figure.figure_id),
+        "paper_curve_label": _figure_9_paper_series_value(figure.figure_id, curve_label, float(sweep_value)),
+        "paper_curve_value": _figure_9_paper_series_value(figure.figure_id, curve_label, float(sweep_value)),
+        "paper_validation_episodes": FIGURE_9_PAPER_VALIDATION_EPISODES,
+        "simulator_validation_episodes": len(FIGURE_9_VALIDATION_SEEDS),
+        "validation_policy_mode": "exploitative",
         "sweep_value": float(sweep_value),
         "curve_label": curve_label,
         "curve_value": curve_value,
+        "agent_count_curve": curve_value if figure.figure_id in {"Figure 9a", "Figure 9c"} else None,
+        "action_type": action_type,
+        "action_count": selected_action_count,
+        "action_share": selected_action_share,
+        "arrival_probability_bar": float(sweep_value) if figure.figure_id == "Figure 9b" else None,
+        "traffic_intensity_label": curve_label if figure.figure_id == "Figure 9d" else None,
+        "data_rate_configuration_label": curve_label if figure.figure_id == "Figure 9e" else None,
         "seed_count": len(FIGURE_9_VALIDATION_SEEDS),
         "seeds": list(FIGURE_9_VALIDATION_SEEDS),
         "scenario_name": traffic_config.scenario_name,
         "number_of_agents": traffic_config.number_of_agents,
         "episode_length": traffic_config.episode_length,
         "arrival_probability": float(traffic_config.arrival_probability),
+        "task_size_mbits_min": float(traffic_config.task_size_mbits_min),
+        "task_size_mbits_max": float(traffic_config.task_size_mbits_max),
+        "task_size_mbits_step": float(traffic_config.task_size_mbits_step),
         "timeout_slots": int(traffic_config.timeout_slots),
         "timeout_seconds": float(traffic_config.timeout_slots * traffic_config.slot_duration_seconds),
         "cpu_capacity_per_slot_agent": float(compute_config.cpu_capacity_per_slot_agent),
@@ -1274,14 +1330,15 @@ def _figure_9_curve_row(
         "local_action_count": int(action_counts["local"]),
         "horizontal_action_count": int(action_counts["horizontal"]),
         "vertical_action_count": int(action_counts["vertical"]),
-        "total_selected_actions": int(sum(action_counts.values())),
-        "local_action_share": float(action_counts["local"] / sum(action_counts.values())) if sum(action_counts.values()) else 0.0,
-        "horizontal_action_share": float(action_counts["horizontal"] / sum(action_counts.values())) if sum(action_counts.values()) else 0.0,
-        "vertical_action_share": float(action_counts["vertical"] / sum(action_counts.values())) if sum(action_counts.values()) else 0.0,
+        "total_selected_actions": selected_action_total,
+        "local_action_share": float(action_counts["local"] / selected_action_total) if selected_action_total else 0.0,
+        "horizontal_action_share": float(action_counts["horizontal"] / selected_action_total) if selected_action_total else 0.0,
+        "vertical_action_share": float(action_counts["vertical"] / selected_action_total) if selected_action_total else 0.0,
         "status": "simulator_generated",
         "claim_boundary": list(figure.claim_boundary),
         "notes": (
-            "Live simulator sweep generated from the simulator-supported Figure 9 parameter path. "
+            "Live simulator sweep generated from the paper Figure 9 semantic contract. "
+            "The paper uses 200 exploitative validation episodes; this artifact records the simulator seed ensemble separately. "
             "Figure 9d/9e use the dynamic multi-agent topology support path for N up to 30."
         ),
     }
@@ -1291,7 +1348,7 @@ def _figure_9_curve_row(
 def _figure_9_output_rows(figure: PaperFigure) -> list[dict[str, Any]]:
     rows: list[dict[str, Any]] = []
     for curve_label, curve_value in _figure_9_curve_labels(figure.figure_id):
-        if figure.figure_id in {"Figure 9a", "Figure 9b", "Figure 9c"}:
+        if figure.figure_id in {"Figure 9a", "Figure 9c"}:
             agent_count = curve_value
             for sweep_value in figure.sweep_values:
                 traffic_config = _figure_9_traffic_config(figure.figure_id, float(sweep_value), curve_label, agent_count)
@@ -1332,6 +1389,46 @@ def _figure_9_output_rows(figure: PaperFigure) -> list[dict[str, Any]]:
                         compute_config=compute_config,
                         link_rate_config=link_rate_config,
                         runs=runs,
+                    )
+                )
+        elif figure.figure_id == "Figure 9b":
+            action_type = curve_label
+            for sweep_value in figure.sweep_values:
+                traffic_config = _figure_9_traffic_config(figure.figure_id, float(sweep_value), curve_label, None)
+                compute_config = ComputeConfig()
+                link_rate_config = _link_rate_config_for_figure9(figure.figure_id, curve_label)
+                topology = _dynamic_topology(traffic_config.number_of_agents)
+                runs: list[dict[str, Any]] = []
+                for seed in FIGURE_9_VALIDATION_SEEDS:
+                    trace = TrafficGenerator.generate(traffic_config, seed=seed)
+                    with TemporaryDirectory(prefix=f"feature_089_{figure.figure_id.lower().replace(' ', '_')}_") as temp_dir:
+                        temp_path = Path(temp_dir)
+                        trace.write_json(temp_path / f"{trace.trace_id}.json")
+                        trace_source = TraceSource.from_trace_bank(trace.trace_id, root_path=temp_path)
+                        runs.append(
+                            _run_policy_episode(
+                                policy_name="HOODIE",
+                                traffic_config=traffic_config,
+                                compute_config=compute_config,
+                                topology=topology,
+                                link_rate_config=link_rate_config,
+                                trace_source=trace_source,
+                                seed=seed,
+                                generated_arrivals=len(trace.records),
+                            )
+                        )
+                rows.append(
+                    _figure_9_curve_row(
+                        figure=figure,
+                        policy="HOODIE",
+                        curve_label=curve_label,
+                        curve_value=curve_value,
+                        sweep_value=float(sweep_value),
+                        traffic_config=traffic_config,
+                        compute_config=compute_config,
+                        link_rate_config=link_rate_config,
+                        runs=runs,
+                        action_type=action_type,
                     )
                 )
         elif figure.figure_id == "Figure 9d":
@@ -1623,6 +1720,18 @@ def _validate_figure_9_output(path: Path, figure: PaperFigure) -> None:
             raise ValueError(f"{path.name} must remain HOODIE-only")
         if row.get("status") != "simulator_generated":
             raise ValueError(f"{path.name} must mark Figure 9 rows as simulator-generated")
+        if row.get("paper_x_axis") != figure.x_axis:
+            raise ValueError(f"{path.name} must preserve the paper x-axis")
+        if row.get("paper_y_axis") != figure.metric:
+            raise ValueError(f"{path.name} must preserve the paper y-axis")
+        if row.get("paper_curve_dimension") != _figure_9_paper_curve_dimension(figure.figure_id):
+            raise ValueError(f"{path.name} must preserve the Figure 9 curve dimension")
+        if int(row.get("paper_validation_episodes", 0)) != FIGURE_9_PAPER_VALIDATION_EPISODES:
+            raise ValueError(f"{path.name} must record the paper validation episode count")
+        if int(row.get("simulator_validation_episodes", 0)) != len(FIGURE_9_VALIDATION_SEEDS):
+            raise ValueError(f"{path.name} must record the simulator validation episode count")
+        if row.get("validation_policy_mode") != "exploitative":
+            raise ValueError(f"{path.name} must record exploitative Figure 9 validation mode")
         if int(row.get("seed_count", 0)) != len(FIGURE_9_VALIDATION_SEEDS):
             raise ValueError(f"{path.name} must report the Figure 9 validation seed count")
         if list(row.get("seeds", [])) != list(FIGURE_9_VALIDATION_SEEDS):
@@ -1635,18 +1744,53 @@ def _validate_figure_9_output(path: Path, figure: PaperFigure) -> None:
                 raise ValueError(f"{path.name} must keep zero-action shares at zero")
         elif abs(share_total - 1.0) > 1e-9:
             raise ValueError(f"{path.name} must preserve action-share totals")
-        if figure.figure_id in {"Figure 9a", "Figure 9b", "Figure 9c"}:
+        if figure.figure_id in {"Figure 9a", "Figure 9c"}:
             if int(row.get("curve_value")) not in {10, 15, 20}:
                 raise ValueError(f"{path.name} must keep the Figure 9 N curves")
+            if int(row.get("agent_count_curve", 0)) != int(row.get("number_of_agents", 0)):
+                raise ValueError(f"{path.name} must align the N curve with the simulator agent count")
         if figure.figure_id == "Figure 9c":
             if abs(float(row.get("cpu_capacity_per_slot_agent", 0.0)) - float(row.get("sweep_value", 0.0))) > 1e-9:
                 raise ValueError(f"{path.name} must sweep CPU capacity on the agent slot capacity axis")
-        if figure.figure_id in {"Figure 9a", "Figure 9b"}:
+        if figure.figure_id == "Figure 9a":
             if abs(float(row.get("arrival_probability", 0.0)) - float(row.get("sweep_value", 0.0))) > 1e-9:
                 raise ValueError(f"{path.name} must sweep arrival probability on the x-axis")
+        if figure.figure_id == "Figure 9b":
+            action_type = str(row.get("action_type"))
+            if action_type not in {"local", "horizontal", "vertical"}:
+                raise ValueError(f"{path.name} must use action type as the Figure 9b x-axis")
+            if row.get("paper_x_axis_value") != action_type:
+                raise ValueError(f"{path.name} must preserve the Figure 9b action-type x-axis value")
+            if abs(float(row.get("arrival_probability", 0.0)) - float(row.get("arrival_probability_bar", -1.0))) > 1e-9:
+                raise ValueError(f"{path.name} must preserve the Figure 9b arrival-probability bar group")
+            if abs(float(row.get("arrival_probability", 0.0)) - float(row.get("sweep_value", 0.0))) > 1e-9:
+                raise ValueError(f"{path.name} must generate Figure 9b bars over arrival probability")
+            if int(row.get("number_of_agents", 0)) != 20:
+                raise ValueError(f"{path.name} must keep Figure 9b at Table 4 N=20")
+            action_count = int(row.get("action_count", -1))
+            total_actions = int(row.get("total_selected_actions", 0))
+            if action_count < 0 or action_count > total_actions:
+                raise ValueError(f"{path.name} must keep Figure 9b action counts inside the selected-action total")
+            action_share = float(row.get("action_share", -1.0))
+            expected_share = float(action_count / total_actions) if total_actions else 0.0
+            if abs(action_share - expected_share) > 1e-9:
+                raise ValueError(f"{path.name} must keep Figure 9b action shares aligned with action counts")
         if figure.figure_id == "Figure 9d":
             if row.get("scenario_name") not in {"moderate", "heavy", "extreme"}:
                 raise ValueError(f"{path.name} must preserve the traffic scenario labels")
+            expected_traffic = {
+                "moderate": (0.5, 1.0, 3.0),
+                "heavy": (0.7, 2.0, 5.0),
+                "extreme": (0.9, 3.0, 7.0),
+            }[str(row.get("curve_label"))]
+            if abs(float(row.get("arrival_probability", 0.0)) - expected_traffic[0]) > 1e-9:
+                raise ValueError(f"{path.name} must preserve the Figure 9d traffic arrival probability")
+            if abs(float(row.get("task_size_mbits_min", 0.0)) - expected_traffic[1]) > 1e-9:
+                raise ValueError(f"{path.name} must preserve the Figure 9d task-size lower bound")
+            if abs(float(row.get("task_size_mbits_max", 0.0)) - expected_traffic[2]) > 1e-9:
+                raise ValueError(f"{path.name} must preserve the Figure 9d task-size upper bound")
+            if int(row.get("number_of_agents", 0)) != int(float(row.get("sweep_value", 0.0))):
+                raise ValueError(f"{path.name} must sweep Figure 9d on number of agents")
         if figure.figure_id == "Figure 9e":
             expected_rates = {
                 "balanced": (10.0, 30.0),
@@ -1657,6 +1801,8 @@ def _validate_figure_9_output(path: Path, figure: PaperFigure) -> None:
                 raise ValueError(f"{path.name} must preserve the Figure 9e horizontal rate path")
             if abs(float(row.get("vertical_data_rate_mbps", 0.0)) - expected_rates[1]) > 1e-9:
                 raise ValueError(f"{path.name} must preserve the Figure 9e vertical rate path")
+            if int(row.get("number_of_agents", 0)) != int(float(row.get("sweep_value", 0.0))):
+                raise ValueError(f"{path.name} must sweep Figure 9e on number of agents")
 
 
 def validate_artifacts(artifact_dir: Path | None = None) -> Feature089Report:

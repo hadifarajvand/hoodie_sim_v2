@@ -331,7 +331,7 @@
     "metrics": [
       "average_reward"
     ],
-    "notes": "Live simulator sweep over arrival probability with curve-wise agent counts. Keep the Feature 080 and 086 claim boundaries intact.",
+    "notes": "Live simulator sweep over arrival probability with N=10/15/20 as the paper curve dimension. Keep the Feature 080 and 086 claim boundaries intact.",
     "output_family": "arrival_probability_reward_sweep",
     "policies": [
       "HOODIE"
@@ -374,13 +374,13 @@
     "metrics": [
       "action_distribution"
     ],
-    "notes": "Live simulator action-distribution sweep over arrival probability. Output includes raw counts and shares for local, horizontal, and vertical actions.",
+    "notes": "Live simulator action-distribution output with action type as the paper x-axis and arrival probability as the bar-group dimension at Table 4 N=20.",
     "output_family": "arrival_probability_action_distribution",
     "policies": [
       "HOODIE"
     ],
     "requirement_id": "req_figure_9b_action_distribution",
-    "scenario_setup": "Table 4 defaults; HOODIE only; exploitative validation episodes.",
+    "scenario_setup": "Table 4 defaults; N=20; HOODIE only; exploitative validation episodes; bars are task arrival probabilities P=0.1/0.3/0.5/0.7/0.9.",
     "sweep_values": [
       0.1,
       0.3,

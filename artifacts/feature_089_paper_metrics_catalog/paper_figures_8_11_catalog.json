@@ -103,7 +103,9 @@
     "paper_section": "Section V.B",
     "pdf_verified": true,
     "policies_or_curves": [
-      "HOODIE"
+      "N=10",
+      "N=15",
+      "N=20"
     ],
     "priority": "priority_2_hoodie_behavior_output",
     "requires_digitization": false,
@@ -151,7 +153,7 @@
     "requires_digitization": false,
     "requires_lstm": false,
     "requires_training": false,
-    "scenario_setup": "Table 4 defaults; HOODIE only; exploitative validation episodes.",
+    "scenario_setup": "Table 4 defaults; N=20; HOODIE only; exploitative validation episodes; bars are task arrival probabilities P=0.1/0.3/0.5/0.7/0.9.",
     "simulator_output_requirement_id": "req_figure_9b_action_distribution",
     "sweep_values": [
       0.1,
