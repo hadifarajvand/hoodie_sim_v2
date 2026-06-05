@@ -9,6 +9,8 @@ import json
 import subprocess
 from tempfile import TemporaryDirectory
 from typing import Any
+import struct
+import zlib
 
 from src.environment.compute_config import ComputeConfig
 from src.environment.gym_adapter import HoodieGymEnvironment
@@ -53,6 +55,7 @@ FIGURE_10_COMPARISON_ANALYSIS_MODE = "qualitative_ranking_based"
 FIGURE_9_OUTPUT_SUPPORT_STATUS = "generated_with_approximation"
 FIGURE_8_TRAINING_STATUS = "not_generated_training_required"
 FIGURE_11_TRAINING_STATUS = "not_generated_lstm_training_required"
+PAPER_STYLE_PLOT_DIR_NAME = "paper_style_plots"
 
 
 @dataclass(frozen=True, slots=True)
@@ -134,6 +137,223 @@ def _json_dump(payload: Any) -> str:
 def _write_json(path: Path, payload: Any) -> None:
     path.parent.mkdir(parents=True, exist_ok=True)
     path.write_text(_json_dump(payload), encoding="utf-8")
+
+
+def _paper_style_plot_dir(artifact_dir: Path) -> Path:
+    return artifact_dir / PAPER_STYLE_PLOT_DIR_NAME
+
+
+def _png_bytes(width: int, height: int, rgb_rows: list[bytes]) -> bytes:
+    raw = b"".join(b"\x00" + row for row in rgb_rows)
+    compressor = zlib.compressobj()
+    compressed = compressor.compress(raw) + compressor.flush()
+
+    def chunk(tag: bytes, data: bytes) -> bytes:
+        return struct.pack(">I", len(data)) + tag + data + struct.pack(">I", zlib.crc32(tag + data) & 0xFFFFFFFF)
+
+    header = struct.pack(">IIBBBBB", width, height, 8, 2, 0, 0, 0)
+    return b"\x89PNG\r\n\x1a\n" + chunk(b"IHDR", header) + chunk(b"IDAT", compressed) + chunk(b"IEND", b"")
+
+
+def _blank_canvas(width: int = 1000, height: int = 600, color: tuple[int, int, int] = (255, 255, 255)) -> list[list[list[int]]]:
+    return [[[color[0], color[1], color[2]] for _ in range(width)] for _ in range(height)]
+
+
+def _set_px(canvas: list[list[list[int]]], x: int, y: int, color: tuple[int, int, int]) -> None:
+    if 0 <= y < len(canvas) and 0 <= x < len(canvas[0]):
+        canvas[y][x] = [color[0], color[1], color[2]]
+
+
+def _fill_rect(canvas: list[list[list[int]]], x0: int, y0: int, x1: int, y1: int, color: tuple[int, int, int]) -> None:
+    for y in range(max(0, y0), min(len(canvas), y1)):
+        row = canvas[y]
+        for x in range(max(0, x0), min(len(row), x1)):
+            row[x] = [color[0], color[1], color[2]]
+
+
+def _line(canvas: list[list[list[int]]], x0: int, y0: int, x1: int, y1: int, color: tuple[int, int, int]) -> None:
+    dx = abs(x1 - x0)
+    dy = -abs(y1 - y0)
+    sx = 1 if x0 < x1 else -1
+    sy = 1 if y0 < y1 else -1
+    err = dx + dy
+    while True:
+        _set_px(canvas, x0, y0, color)
+        if x0 == x1 and y0 == y1:
+            break
+        e2 = 2 * err
+        if e2 >= dy:
+            err += dy
+            x0 += sx
+        if e2 <= dx:
+            err += dx
+            y0 += sy
+
+
+def _write_png_canvas(path: Path, canvas: list[list[list[int]]]) -> None:
+    rows = [bytes(channel for pixel in row for channel in pixel) for row in canvas]
+    path.parent.mkdir(parents=True, exist_ok=True)
+    path.write_bytes(_png_bytes(len(canvas[0]), len(canvas), rows))
+
+
+def _draw_series_plot(path: Path, title: str, x_label: str, y_label: str, series: list[dict[str, Any]], kind: str = "line") -> None:
+    width, height = 1000, 600
+    canvas = _blank_canvas(width, height)
+    _fill_rect(canvas, 0, 0, width, height, (250, 250, 252))
+    _fill_rect(canvas, 80, 60, width - 40, height - 70, (255, 255, 255))
+    _line(canvas, 80, height - 70, width - 40, height - 70, (0, 0, 0))
+    _line(canvas, 80, 60, 80, height - 70, (0, 0, 0))
+    colors = [(31, 119, 180), (255, 127, 14), (44, 160, 44), (214, 39, 40), (148, 103, 189), (140, 86, 75), (227, 119, 194)]
+    xs = [float(point) for s in series for point in s["x"]]
+    ys = [float(point) for s in series for point in s["y"]]
+    min_x, max_x = min(xs), max(xs)
+    min_y, max_y = min(ys), max(ys)
+    if abs(max_x - min_x) < 1e-9:
+        max_x += 1.0
+    if abs(max_y - min_y) < 1e-9:
+        max_y += 1.0
+
+    def sx(value: float) -> int:
+        return int(80 + (value - min_x) / (max_x - min_x) * (width - 120))
+
+    def sy(value: float) -> int:
+        return int((height - 70) - (value - min_y) / (max_y - min_y) * (height - 140))
+
+    for idx, s in enumerate(series):
+        color = colors[idx % len(colors)]
+        points = list(zip(s["x"], s["y"]))
+        for i in range(len(points) - 1):
+            _line(canvas, sx(float(points[i][0])), sy(float(points[i][1])), sx(float(points[i + 1][0])), sy(float(points[i + 1][1])), color)
+        for x_val, y_val in points:
+            cx, cy = sx(float(x_val)), sy(float(y_val))
+            _fill_rect(canvas, cx - 3, cy - 3, cx + 4, cy + 4, color)
+    _fill_rect(canvas, width - 250, 80, width - 50, 170, (245, 245, 245))
+    _write_png_canvas(path, canvas)
+
+
+def _draw_status_plot(path: Path, figure_id: str, reason: str) -> None:
+    canvas = _blank_canvas()
+    _fill_rect(canvas, 0, 0, 1000, 600, (244, 248, 252))
+    _fill_rect(canvas, 120, 120, 880, 480, (255, 255, 255))
+    _fill_rect(canvas, 120, 120, 880, 180, (230, 236, 244))
+    _fill_rect(canvas, 120, 420, 880, 480, (245, 235, 235))
+    _fill_rect(canvas, 160, 220, 840, 380, (250, 250, 250))
+    _write_png_canvas(path, canvas)
+
+
+def _plot_status_panel(path: Path, figure_id: str, reason: str) -> None:
+    _draw_status_plot(path, figure_id, reason)
+
+
+def _load_rows(path: Path) -> list[dict[str, Any]]:
+    payload = json.loads(path.read_text(encoding="utf-8"))
+    if not isinstance(payload, list):
+        raise ValueError(f"{path.name} must contain a JSON array")
+    return [dict(row) for row in payload]
+
+
+def _plot_figure_9(artifact_dir: Path, plot_dir: Path, figure_id: str, rows: list[dict[str, Any]]) -> None:
+    path_map = {
+        "Figure 9a": "figure_9a_reward_vs_arrival_probability.png",
+        "Figure 9b": "figure_9b_action_distribution_vs_arrival_probability.png",
+        "Figure 9c": "figure_9c_reward_vs_cpu_capacity.png",
+        "Figure 9d": "figure_9d_reward_vs_agent_count_traffic.png",
+        "Figure 9e": "figure_9e_reward_vs_agent_count_data_rate.png",
+    }
+    if figure_id == "Figure 9b":
+        action_types = ["local", "horizontal", "vertical"]
+        sweep_values = sorted({float(row["sweep_value"]) for row in rows})
+        series = []
+        for action_type in action_types:
+            values = []
+            for sweep_value in sweep_values:
+                match = next(row for row in rows if float(row["sweep_value"]) == sweep_value and row["action_type"] == action_type)
+                values.append(float(match["action_share"]))
+            series.append({"label": action_type.title(), "x": sweep_values, "y": values})
+        _draw_series_plot(plot_dir / path_map[figure_id], "Figure 9b", "Task Arrival Probability P", "Action Share", series)
+    else:
+        series_key = "curve_label"
+        x_key = "sweep_value"
+        y_key = "average_reward"
+        series = []
+        for curve_label in sorted({str(row[series_key]) for row in rows}):
+            series_rows = sorted((row for row in rows if str(row[series_key]) == curve_label), key=lambda row: float(row[x_key]))
+            x_values = [float(row[x_key]) for row in series_rows]
+            y_values = [float(row[y_key]) for row in series_rows]
+            series.append({"label": curve_label.replace("_", " ").title(), "x": x_values, "y": y_values})
+        if figure_id in {"Figure 9a", "Figure 9c"}:
+            x_label = "Task Arrival Probability P" if figure_id == "Figure 9a" else "CPU Computation Capacity (GHz)"
+            _draw_series_plot(plot_dir / path_map[figure_id], figure_id, x_label, "Average Reward (a.u.)", series)
+        elif figure_id == "Figure 9d":
+            _draw_series_plot(plot_dir / path_map[figure_id], figure_id, "Number of Agents N", "Average Reward (a.u.)", series)
+        else:
+            _draw_series_plot(plot_dir / path_map[figure_id], figure_id, "Number of Agents N", "Average Reward (a.u.)", series)
+
+
+def _plot_figure_10(artifact_dir: Path, plot_dir: Path, figure_id: str, rows: list[dict[str, Any]]) -> None:
+    path_map = {
+        "Figure 10a": "figure_10a_delay_vs_arrival_probability.png",
+        "Figure 10b": "figure_10b_delay_vs_cpu_capacity.png",
+        "Figure 10c": "figure_10c_delay_vs_timeout.png",
+        "Figure 10d": "figure_10d_drop_ratio_vs_arrival_probability.png",
+        "Figure 10e": "figure_10e_drop_ratio_vs_cpu_capacity.png",
+        "Figure 10f": "figure_10f_drop_ratio_vs_timeout.png",
+    }
+    y_key = "paper_style_delay_for_plotting" if "delay" in figure_id else "task_drop_ratio"
+    x_key = "sweep_value"
+    series = []
+    for policy in ACTIVE_POLICIES:
+        series_rows = sorted((row for row in rows if row["policy"] == policy), key=lambda row: float(row[x_key]))
+        x_values = [float(row[x_key]) for row in series_rows]
+        y_values = [float(row[y_key]) for row in series_rows]
+        series.append({"label": policy, "x": x_values, "y": y_values})
+    x_labels = {
+        "Figure 10a": "Task Arrival Probability P",
+        "Figure 10b": "CPU Computation Capacity (GHz)",
+        "Figure 10c": "Task Timeout (sec)",
+        "Figure 10d": "Task Arrival Probability P",
+        "Figure 10e": "CPU Computation Capacity (GHz)",
+        "Figure 10f": "Task Timeout (sec)",
+    }
+    y_labels = {
+        "Figure 10a": "Average Delay (paper-style negative)",
+        "Figure 10b": "Average Delay (paper-style negative)",
+        "Figure 10c": "Average Delay (paper-style negative)",
+        "Figure 10d": "Drop Ratio",
+        "Figure 10e": "Drop Ratio",
+        "Figure 10f": "Drop Ratio",
+    }
+    _draw_series_plot(plot_dir / path_map[figure_id], figure_id, x_labels[figure_id], y_labels[figure_id], series)
+
+
+def _plot_paper_style_outputs(artifact_dir: Path, figures: list[PaperFigure]) -> None:
+    plot_dir = _paper_style_plot_dir(artifact_dir)
+    plot_dir.mkdir(parents=True, exist_ok=True)
+    gated_status_paths = {
+        "Figure 8a": artifact_dir / "figure_8a_learning_rate_convergence_status.json",
+        "Figure 8b": artifact_dir / "figure_8b_discount_factor_convergence_status.json",
+        "Figure 11": artifact_dir / "figure_11_lstm_ablation_status.json",
+    }
+    for figure in figures:
+        if figure.figure_id in PRIORITY_1_FIGURES:
+            rows = _load_rows(artifact_dir / _figure_10_artifact_files()[figure.figure_id][1])
+            _plot_figure_10(artifact_dir, plot_dir, figure.figure_id, rows)
+        elif figure.figure_id in PRIORITY_2_FIGURES:
+            rows = _load_rows(artifact_dir / _figure_9_artifact_files()[figure.figure_id][1])
+            _plot_figure_9(artifact_dir, plot_dir, figure.figure_id, rows)
+        elif figure.figure_id in {"Figure 8a", "Figure 8b", "Figure 11"}:
+            payload = json.loads(gated_status_paths[figure.figure_id].read_text(encoding="utf-8"))
+            _plot_status_panel(
+                plot_dir / (
+                    "figure_8a_learning_rate_convergence_status.png"
+                    if figure.figure_id == "Figure 8a"
+                    else "figure_8b_discount_factor_convergence_status.png"
+                    if figure.figure_id == "Figure 8b"
+                    else "figure_11_lstm_ablation_status.png"
+                ),
+                payload["figure_id"],
+                payload["reason"],
+            )
 
 
 def _write_csv(path: Path, rows: list[dict[str, Any]]) -> None:
@@ -1886,6 +2106,7 @@ def generate_artifacts(artifact_dir: Path | None = None) -> Feature089Report:
     _write_figure_10_comparison_analysis_artifacts(artifact_dir)
     _write_figure_8_11_status_artifacts(artifact_dir)
     _write_remaining_figure_outputs_report(artifact_dir)
+    _plot_paper_style_outputs(artifact_dir, figures)
     generate_output_usage_bundle(artifact_dir)
     _generate_supporting_spec_docs(figures, metrics, requirements)
     return report
@@ -2098,6 +2319,20 @@ def validate_artifacts(artifact_dir: Path | None = None) -> Feature089Report:
         "figure_8b_discount_factor_convergence_status.md",
         "figure_11_lstm_ablation_status.json",
         "figure_11_lstm_ablation_status.md",
+        "paper_style_plots/figure_8a_learning_rate_convergence_status.png",
+        "paper_style_plots/figure_8b_discount_factor_convergence_status.png",
+        "paper_style_plots/figure_9a_reward_vs_arrival_probability.png",
+        "paper_style_plots/figure_9b_action_distribution_vs_arrival_probability.png",
+        "paper_style_plots/figure_9c_reward_vs_cpu_capacity.png",
+        "paper_style_plots/figure_9d_reward_vs_agent_count_traffic.png",
+        "paper_style_plots/figure_9e_reward_vs_agent_count_data_rate.png",
+        "paper_style_plots/figure_10a_delay_vs_arrival_probability.png",
+        "paper_style_plots/figure_10b_delay_vs_cpu_capacity.png",
+        "paper_style_plots/figure_10c_delay_vs_timeout.png",
+        "paper_style_plots/figure_10d_drop_ratio_vs_arrival_probability.png",
+        "paper_style_plots/figure_10e_drop_ratio_vs_cpu_capacity.png",
+        "paper_style_plots/figure_10f_drop_ratio_vs_timeout.png",
+        "paper_style_plots/figure_11_lstm_ablation_status.png",
     )
     missing = [name for name in required_files if not (artifact_dir / name).exists()]
     if missing:
