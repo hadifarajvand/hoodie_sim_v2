@@ -1,0 +1,68 @@
+[
+  {
+    "claim_alignment_status": "not_supported",
+    "claim_notes": "HOODIE is tied with all baselines on every sweep, so the paper claim is not reproduced.",
+    "feature_088_repair_recommended": true,
+    "figure_id": "Figure 10a",
+    "hoody_matches_paper_claims": false,
+    "mleo_relation": "ties_with_hoodie",
+    "numeric_digitization_performed": false,
+    "paper_claim_summary": "Average delay should stay lower than baselines as arrival probability increases; MLEO should fall behind HOODIE at high load.",
+    "trend_matches_paper_claim": false
+  },
+  {
+    "claim_alignment_status": "not_supported",
+    "claim_notes": "HOODIE is tied with all baselines on every sweep, so the paper claim is not reproduced.",
+    "feature_088_repair_recommended": true,
+    "figure_id": "Figure 10b",
+    "hoody_matches_paper_claims": false,
+    "mleo_relation": "ties_with_hoodie",
+    "numeric_digitization_performed": false,
+    "paper_claim_summary": "Increasing CPU capacity should generally reduce average delay while HOODIE remains better than baselines.",
+    "trend_matches_paper_claim": false
+  },
+  {
+    "claim_alignment_status": "partial_directional_only",
+    "claim_notes": "Only a directional timeout effect is visible; policy separation is still absent.",
+    "feature_088_repair_recommended": true,
+    "figure_id": "Figure 10c",
+    "hoody_matches_paper_claims": false,
+    "mleo_relation": "ties_with_hoodie",
+    "numeric_digitization_performed": false,
+    "paper_claim_summary": "Increasing timeout should slightly improve average delay while HOODIE remains lower-delay than baselines.",
+    "trend_matches_paper_claim": true
+  },
+  {
+    "claim_alignment_status": "not_supported",
+    "claim_notes": "HOODIE is tied with all baselines on every sweep, so the paper claim is not reproduced.",
+    "feature_088_repair_recommended": true,
+    "figure_id": "Figure 10d",
+    "hoody_matches_paper_claims": false,
+    "mleo_relation": "ties_with_hoodie",
+    "numeric_digitization_performed": false,
+    "paper_claim_summary": "HOODIE should maintain the lowest drop ratio as arrival probability increases; FLC and HO should be weak at high load.",
+    "trend_matches_paper_claim": false
+  },
+  {
+    "claim_alignment_status": "not_supported",
+    "claim_notes": "HOODIE is tied with all baselines on every sweep, so the paper claim is not reproduced.",
+    "feature_088_repair_recommended": true,
+    "figure_id": "Figure 10e",
+    "hoody_matches_paper_claims": false,
+    "mleo_relation": "ties_with_hoodie",
+    "numeric_digitization_performed": false,
+    "paper_claim_summary": "Increasing CPU capacity should reduce drop ratio, with HOODIE showing strong reduction at low CPU capacity.",
+    "trend_matches_paper_claim": false
+  },
+  {
+    "claim_alignment_status": "not_supported",
+    "claim_notes": "HOODIE is tied with all baselines on every sweep, so the paper claim is not reproduced.",
+    "feature_088_repair_recommended": true,
+    "figure_id": "Figure 10f",
+    "hoody_matches_paper_claims": false,
+    "mleo_relation": "ties_with_hoodie",
+    "numeric_digitization_performed": false,
+    "paper_claim_summary": "Increasing timeout should reduce drop ratio while HOODIE maintains the lowest drop ratio.",
+    "trend_matches_paper_claim": false
+  }
+]

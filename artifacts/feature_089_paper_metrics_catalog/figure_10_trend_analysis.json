@@ -1,0 +1,560 @@
+[
+  {
+    "claim_alignment_status": "not_supported",
+    "feature_088_repair_recommended": true,
+    "figure_id": "Figure 10a",
+    "hoodie_series": [
+      -60.0,
+      -86.0,
+      -93.0,
+      -98.0,
+      -0.0,
+      -0.0,
+      -0.0,
+      -0.0,
+      -0.0
+    ],
+    "metric": "average_task_completion_delay",
+    "metric_field": "paper_style_delay_for_plotting",
+    "paper_metric_goal": "lower_is_better",
+    "paper_numeric_digitization_performed": false,
+    "series_by_policy": {
+      "BCO": [
+        -60.0,
+        -86.0,
+        -93.0,
+        -98.0,
+        -0.0,
+        -0.0,
+        -0.0,
+        -0.0,
+        -0.0
+      ],
+      "FLC": [
+        -60.0,
+        -86.0,
+        -93.0,
+        -98.0,
+        -0.0,
+        -0.0,
+        -0.0,
+        -0.0,
+        -0.0
+      ],
+      "HO": [
+        -60.0,
+        -86.0,
+        -93.0,
+        -98.0,
+        -0.0,
+        -0.0,
+        -0.0,
+        -0.0,
+        -0.0
+      ],
+      "HOODIE": [
+        -60.0,
+        -86.0,
+        -93.0,
+        -98.0,
+        -0.0,
+        -0.0,
+        -0.0,
+        -0.0,
+        -0.0
+      ],
+      "MLEO": [
+        -60.0,
+        -86.0,
+        -93.0,
+        -98.0,
+        -0.0,
+        -0.0,
+        -0.0,
+        -0.0,
+        -0.0
+      ],
+      "RO": [
+        -60.0,
+        -86.0,
+        -93.0,
+        -98.0,
+        -0.0,
+        -0.0,
+        -0.0,
+        -0.0,
+        -0.0
+      ],
+      "VO": [
+        -60.0,
+        -86.0,
+        -93.0,
+        -98.0,
+        -0.0,
+        -0.0,
+        -0.0,
+        -0.0,
+        -0.0
+      ]
+    },
+    "series_delta": 60.0,
+    "series_end_value": -0.0,
+    "series_start_value": -60.0,
+    "sweep_values": [
+      0.1,
+      0.2,
+      0.3,
+      0.4,
+      0.5,
+      0.6,
+      0.7,
+      0.8,
+      0.9
+    ],
+    "trend_direction": "non_monotonic",
+    "trend_notes": "No paper numeric digitization was performed. Trend analysis uses the validated simulator rows and paper-style negative delay for the delay figures.",
+    "trend_summary": "Average delay should stay lower than baselines as arrival probability increases; MLEO should fall behind HOODIE at high load.",
+    "x_axis": "task_arrival_probability"
+  },
+  {
+    "claim_alignment_status": "not_supported",
+    "feature_088_repair_recommended": true,
+    "figure_id": "Figure 10b",
+    "hoodie_series": [
+      -0.0,
+      -0.0,
+      -0.0,
+      -0.0,
+      -0.0
+    ],
+    "metric": "average_task_completion_delay",
+    "metric_field": "paper_style_delay_for_plotting",
+    "paper_metric_goal": "lower_is_better",
+    "paper_numeric_digitization_performed": false,
+    "series_by_policy": {
+      "BCO": [
+        -0.0,
+        -0.0,
+        -0.0,
+        -0.0,
+        -0.0
+      ],
+      "FLC": [
+        -0.0,
+        -0.0,
+        -0.0,
+        -0.0,
+        -0.0
+      ],
+      "HO": [
+        -0.0,
+        -0.0,
+        -0.0,
+        -0.0,
+        -0.0
+      ],
+      "HOODIE": [
+        -0.0,
+        -0.0,
+        -0.0,
+        -0.0,
+        -0.0
+      ],
+      "MLEO": [
+        -0.0,
+        -0.0,
+        -0.0,
+        -0.0,
+        -0.0
+      ],
+      "RO": [
+        -0.0,
+        -0.0,
+        -0.0,
+        -0.0,
+        -0.0
+      ],
+      "VO": [
+        -0.0,
+        -0.0,
+        -0.0,
+        -0.0,
+        -0.0
+      ]
+    },
+    "series_delta": 0.0,
+    "series_end_value": -0.0,
+    "series_start_value": -0.0,
+    "sweep_values": [
+      3,
+      4,
+      5,
+      6,
+      7
+    ],
+    "trend_direction": "flat",
+    "trend_notes": "No paper numeric digitization was performed. Trend analysis uses the validated simulator rows and paper-style negative delay for the delay figures.",
+    "trend_summary": "Increasing CPU capacity should generally reduce average delay while HOODIE remains better than baselines.",
+    "x_axis": "cpu_computation_capacity_ghz"
+  },
+  {
+    "claim_alignment_status": "partial_directional_only",
+    "feature_088_repair_recommended": true,
+    "figure_id": "Figure 10c",
+    "hoodie_series": [
+      -0.0,
+      -0.0,
+      -0.0,
+      -100.0,
+      -100.0
+    ],
+    "metric": "average_task_completion_delay",
+    "metric_field": "paper_style_delay_for_plotting",
+    "paper_metric_goal": "lower_is_better",
+    "paper_numeric_digitization_performed": false,
+    "series_by_policy": {
+      "BCO": [
+        -0.0,
+        -0.0,
+        -0.0,
+        -100.0,
+        -100.0
+      ],
+      "FLC": [
+        -0.0,
+        -0.0,
+        -0.0,
+        -100.0,
+        -100.0
+      ],
+      "HO": [
+        -0.0,
+        -0.0,
+        -0.0,
+        -100.0,
+        -100.0
+      ],
+      "HOODIE": [
+        -0.0,
+        -0.0,
+        -0.0,
+        -100.0,
+        -100.0
+      ],
+      "MLEO": [
+        -0.0,
+        -0.0,
+        -0.0,
+        -100.0,
+        -100.0
+      ],
+      "RO": [
+        -0.0,
+        -0.0,
+        -0.0,
+        -100.0,
+        -100.0
+      ],
+      "VO": [
+        -0.0,
+        -0.0,
+        -0.0,
+        -100.0,
+        -100.0
+      ]
+    },
+    "series_delta": -100.0,
+    "series_end_value": -100.0,
+    "series_start_value": -0.0,
+    "sweep_values": [
+      9.6,
+      9.8,
+      10.0,
+      10.2,
+      10.4
+    ],
+    "trend_direction": "decreasing",
+    "trend_notes": "No paper numeric digitization was performed. Trend analysis uses the validated simulator rows and paper-style negative delay for the delay figures.",
+    "trend_summary": "Increasing timeout should slightly improve average delay while HOODIE remains lower-delay than baselines.",
+    "x_axis": "task_timeout_sec"
+  },
+  {
+    "claim_alignment_status": "not_supported",
+    "feature_088_repair_recommended": true,
+    "figure_id": "Figure 10d",
+    "hoodie_series": [
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0
+    ],
+    "metric": "task_drop_ratio",
+    "metric_field": "task_drop_ratio",
+    "paper_metric_goal": "lower_is_better",
+    "paper_numeric_digitization_performed": false,
+    "series_by_policy": {
+      "BCO": [
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0
+      ],
+      "FLC": [
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0
+      ],
+      "HO": [
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0
+      ],
+      "HOODIE": [
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0
+      ],
+      "MLEO": [
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0
+      ],
+      "RO": [
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0
+      ],
+      "VO": [
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0
+      ]
+    },
+    "series_delta": 0.0,
+    "series_end_value": 1.0,
+    "series_start_value": 1.0,
+    "sweep_values": [
+      0.1,
+      0.2,
+      0.3,
+      0.4,
+      0.5,
+      0.6,
+      0.7,
+      0.8,
+      0.9
+    ],
+    "trend_direction": "flat",
+    "trend_notes": "No paper numeric digitization was performed. Trend analysis uses the validated simulator rows and raw drop ratio.",
+    "trend_summary": "HOODIE should maintain the lowest drop ratio as arrival probability increases; FLC and HO should be weak at high load.",
+    "x_axis": "task_arrival_probability"
+  },
+  {
+    "claim_alignment_status": "not_supported",
+    "feature_088_repair_recommended": true,
+    "figure_id": "Figure 10e",
+    "hoodie_series": [
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0
+    ],
+    "metric": "task_drop_ratio",
+    "metric_field": "task_drop_ratio",
+    "paper_metric_goal": "lower_is_better",
+    "paper_numeric_digitization_performed": false,
+    "series_by_policy": {
+      "BCO": [
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0
+      ],
+      "FLC": [
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0
+      ],
+      "HO": [
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0
+      ],
+      "HOODIE": [
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0
+      ],
+      "MLEO": [
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0
+      ],
+      "RO": [
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0
+      ],
+      "VO": [
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0
+      ]
+    },
+    "series_delta": 0.0,
+    "series_end_value": 1.0,
+    "series_start_value": 1.0,
+    "sweep_values": [
+      3,
+      4,
+      5,
+      6,
+      7
+    ],
+    "trend_direction": "flat",
+    "trend_notes": "No paper numeric digitization was performed. Trend analysis uses the validated simulator rows and raw drop ratio.",
+    "trend_summary": "Increasing CPU capacity should reduce drop ratio, with HOODIE showing strong reduction at low CPU capacity.",
+    "x_axis": "cpu_computation_capacity_ghz"
+  },
+  {
+    "claim_alignment_status": "not_supported",
+    "feature_088_repair_recommended": true,
+    "figure_id": "Figure 10f",
+    "hoodie_series": [
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0
+    ],
+    "metric": "task_drop_ratio",
+    "metric_field": "task_drop_ratio",
+    "paper_metric_goal": "lower_is_better",
+    "paper_numeric_digitization_performed": false,
+    "series_by_policy": {
+      "BCO": [
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0
+      ],
+      "FLC": [
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0
+      ],
+      "HO": [
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0
+      ],
+      "HOODIE": [
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0
+      ],
+      "MLEO": [
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0
+      ],
+      "RO": [
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0
+      ],
+      "VO": [
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0
+      ]
+    },
+    "series_delta": 0.0,
+    "series_end_value": 1.0,
+    "series_start_value": 1.0,
+    "sweep_values": [
+      1.6,
+      1.8,
+      2.0,
+      2.2,
+      2.4
+    ],
+    "trend_direction": "flat",
+    "trend_notes": "No paper numeric digitization was performed. Trend analysis uses the validated simulator rows and raw drop ratio.",
+    "trend_summary": "Increasing timeout should reduce drop ratio while HOODIE maintains the lowest drop ratio.",
+    "x_axis": "task_timeout_sec"
+  }
+]

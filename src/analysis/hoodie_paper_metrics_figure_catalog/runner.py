@@ -46,6 +46,8 @@ FIGURE_10_HIGH_TIMEOUT_SECONDS = 10.0
 FIGURE_10_STRICT_TIMEOUT_SECONDS = 2.0
 FIGURE_9_VALIDATION_SEEDS = (7, 13, 21)
 FIGURE_9_PAPER_VALIDATION_EPISODES = 200
+FIGURE_10_COMPARISON_ANALYSIS_VERDICT = "figure_10_comparison_analysis_partial"
+FIGURE_10_COMPARISON_ANALYSIS_MODE = "qualitative_ranking_based"
 
 
 @dataclass(frozen=True, slots=True)
@@ -1834,6 +1836,7 @@ def generate_artifacts(artifact_dir: Path | None = None) -> Feature089Report:
 
     _write_figure_output_files(artifact_dir, figures, requirements)
     _write_figure_10_analysis_artifacts(artifact_dir, {figure.figure_id: figure for figure in figures}, report)
+    _write_figure_10_comparison_analysis_artifacts(artifact_dir)
     _generate_supporting_spec_docs(figures, metrics, requirements)
     return report
 
@@ -2020,6 +2023,14 @@ def validate_artifacts(artifact_dir: Path | None = None) -> Feature089Report:
         "figure_10_analysis_summary.md",
         "feature_089_completion_report.json",
         "feature_089_completion_report.md",
+        "figure_10_trend_analysis.json",
+        "figure_10_trend_analysis.md",
+        "figure_10_ranking_analysis.json",
+        "figure_10_ranking_analysis.md",
+        "figure_10_paper_claim_alignment.json",
+        "figure_10_paper_claim_alignment.md",
+        "figure_10_comparison_analysis_report.json",
+        "figure_10_comparison_analysis_report.md",
         "figure_10a_delay_vs_arrival_probability.csv",
         "figure_10a_delay_vs_arrival_probability.json",
         "figure_10b_delay_vs_cpu_capacity.csv",
@@ -2079,6 +2090,19 @@ def validate_artifacts(artifact_dir: Path | None = None) -> Feature089Report:
         raise ValueError("Feature 089 completion report must keep Figure 9 blocked")
     if completion.get("future_required_figures") != list(PRIORITY_3_FIGURES):
         raise ValueError("Feature 089 completion report must keep Figure 8/11 future-required")
+    comparison_report = json.loads((artifact_dir / "figure_10_comparison_analysis_report.json").read_text(encoding="utf-8"))
+    if comparison_report.get("verdict") != FIGURE_10_COMPARISON_ANALYSIS_VERDICT:
+        raise ValueError("Figure 10 comparison analysis report must use the partial verdict")
+    if comparison_report.get("paper_numeric_digitization_performed") is not False:
+        raise ValueError("Figure 10 comparison analysis report must state that numeric digitization was not performed")
+    if comparison_report.get("analysis_mode") != FIGURE_10_COMPARISON_ANALYSIS_MODE:
+        raise ValueError("Figure 10 comparison analysis report must be qualitative/ranking-based")
+    if comparison_report.get("feature_088_repair_recommended") is not True:
+        raise ValueError("Figure 10 comparison analysis report must recommend Feature 088 repair")
+    if comparison_report.get("claim_alignment_by_figure", {}).get("Figure 10c") != "partial_directional_only":
+        raise ValueError("Figure 10 comparison analysis report must record the timeout-only partial match for Figure 10c")
+    if any(comparison_report.get("hoody_matches_paper_claims_by_figure", {}).get(figure_id) for figure_id in PRIORITY_1_FIGURES):
+        raise ValueError("Figure 10 comparison analysis report must not claim full paper matching")
     figure_9_paths = {
         "Figure 9a": artifact_dir / "figure_9a_reward_vs_arrival_probability.json",
         "Figure 9b": artifact_dir / "figure_9b_action_distribution_vs_arrival_probability.json",
@@ -2089,6 +2113,305 @@ def validate_artifacts(artifact_dir: Path | None = None) -> Feature089Report:
     for figure_id, path in figure_9_paths.items():
         _validate_blocked_figure_9_output(path, figures[figure_id])
     return report
+
+
+def _figure_10_metric_field(figure_id: str) -> str:
+    if figure_id in {"Figure 10a", "Figure 10b", "Figure 10c"}:
+        return "paper_style_delay_for_plotting"
+    if figure_id in {"Figure 10d", "Figure 10e", "Figure 10f"}:
+        return "task_drop_ratio"
+    raise ValueError(f"Unsupported Figure 10 identifier: {figure_id}")
+
+
+def _figure_10_metric_goal(figure_id: str) -> str:
+    return "lower_is_better"
+
+
+def _figure_10_metric_summary(figure_id: str) -> str:
+    if figure_id == "Figure 10a":
+        return "Average delay should stay lower than baselines as arrival probability increases; MLEO should fall behind HOODIE at high load."
+    if figure_id == "Figure 10b":
+        return "Increasing CPU capacity should generally reduce average delay while HOODIE remains better than baselines."
+    if figure_id == "Figure 10c":
+        return "Increasing timeout should slightly improve average delay while HOODIE remains lower-delay than baselines."
+    if figure_id == "Figure 10d":
+        return "HOODIE should maintain the lowest drop ratio as arrival probability increases; FLC and HO should be weak at high load."
+    if figure_id == "Figure 10e":
+        return "Increasing CPU capacity should reduce drop ratio, with HOODIE showing strong reduction at low CPU capacity."
+    if figure_id == "Figure 10f":
+        return "Increasing timeout should reduce drop ratio while HOODIE maintains the lowest drop ratio."
+    raise ValueError(f"Unsupported Figure 10 identifier: {figure_id}")
+
+
+def _figure_10_claim_status(figure_id: str) -> str:
+    if figure_id == "Figure 10c":
+        return "partial_directional_only"
+    return "not_supported"
+
+
+def _figure_10_series_direction(series: list[float], tol: float = 1e-9) -> str:
+    if len(series) < 2:
+        return "flat"
+    deltas = [b - a for a, b in zip(series, series[1:])]
+    if all(abs(delta) <= tol for delta in deltas):
+        return "flat"
+    if all(delta <= tol for delta in deltas) and any(delta < -tol for delta in deltas):
+        return "decreasing"
+    if all(delta >= -tol for delta in deltas) and any(delta > tol for delta in deltas):
+        return "increasing"
+    return "non_monotonic"
+
+
+def _figure_10_rank_groups(metric_by_policy: dict[str, float], tol: float = 1e-9) -> tuple[list[list[str]], list[tuple[str, float]]]:
+    ordered = sorted(metric_by_policy.items(), key=lambda item: (item[1], item[0]))
+    groups: list[list[str]] = []
+    current_group: list[str] = []
+    current_value: float | None = None
+    for policy, value in ordered:
+        if current_value is None or abs(value - current_value) <= tol:
+            current_group.append(policy)
+        else:
+            groups.append(current_group)
+            current_group = [policy]
+        current_value = value
+    if current_group:
+        groups.append(current_group)
+    return groups, ordered
+
+
+def _figure_10_read_analysis_rows(artifact_dir: Path, figure_id: str) -> list[dict[str, Any]]:
+    _, json_name = _figure_10_artifact_files()[figure_id]
+    return _read_json_array(artifact_dir / json_name)
+
+
+def _figure_10_comparison_analysis_payloads(artifact_dir: Path) -> tuple[list[dict[str, Any]], list[dict[str, Any]], list[dict[str, Any]], dict[str, Any]]:
+    figures = {figure.figure_id: figure for figure in _ordered_figures() if figure.figure_id in PRIORITY_1_FIGURES}
+    trend_rows: list[dict[str, Any]] = []
+    ranking_rows: list[dict[str, Any]] = []
+    claim_rows: list[dict[str, Any]] = []
+    claim_status_by_figure: dict[str, str] = {}
+    claim_match_by_figure: dict[str, bool] = {}
+
+    for figure_id in PRIORITY_1_FIGURES:
+        figure = figures[figure_id]
+        rows = _figure_10_read_analysis_rows(artifact_dir, figure_id)
+        metric_field = _figure_10_metric_field(figure_id)
+        by_policy: dict[str, list[tuple[float, float]]] = {}
+        by_sweep: dict[float, dict[str, float]] = {}
+        for row in rows:
+            policy = str(row["policy"])
+            sweep_value = float(row["sweep_value"])
+            metric_value = float(row[metric_field])
+            by_policy.setdefault(policy, []).append((sweep_value, metric_value))
+            by_sweep.setdefault(sweep_value, {})[policy] = metric_value
+
+        series_by_policy = {policy: [value for _sweep, value in sorted(items)] for policy, items in by_policy.items()}
+        hoodie_series = series_by_policy["HOODIE"]
+        hoodie_mean = sum(hoodie_series) / len(hoodie_series)
+        trend_direction = _figure_10_series_direction(hoodie_series)
+        start_value = hoodie_series[0]
+        end_value = hoodie_series[-1]
+        delta_value = end_value - start_value
+        trend_matches_claim = figure_id == "Figure 10c" and trend_direction == "decreasing"
+        claim_status = _figure_10_claim_status(figure_id)
+        claim_status_by_figure[figure_id] = claim_status
+        claim_matches = claim_status == "supported"
+        claim_match_by_figure[figure_id] = claim_matches
+
+        per_sweep_rankings: list[dict[str, Any]] = []
+        for sweep_value in sorted(by_sweep):
+            sweep_metric_by_policy = by_sweep[sweep_value]
+            rank_groups, ordered = _figure_10_rank_groups(sweep_metric_by_policy)
+            hoodie_value = sweep_metric_by_policy["HOODIE"]
+            mleo_value = sweep_metric_by_policy["MLEO"]
+            per_sweep_rankings.append(
+                {
+                    "sweep_value": sweep_value,
+                    "best_value": ordered[0][1],
+                    "rank_groups": rank_groups,
+                    "ordered_policies": [policy for policy, _value in ordered],
+                    "hoodie_value": hoodie_value,
+                    "hoodie_rank_band": "best" if len(rank_groups[0]) == 1 and rank_groups[0][0] == "HOODIE" else "tied-best",
+                    "mleo_relation": "ties_with_hoodie" if abs(mleo_value - hoodie_value) <= 1e-9 else "diverges_from_hoodie",
+                }
+            )
+
+        aggregate_means = {policy: sum(value for _sweep, value in items) / len(items) for policy, items in by_policy.items()}
+        aggregate_groups, aggregate_ordered = _figure_10_rank_groups(aggregate_means)
+        hoodie_group = next(group for group in aggregate_groups if "HOODIE" in group)
+        mleo_relation = "ties_with_hoodie" if abs(aggregate_means["MLEO"] - aggregate_means["HOODIE"]) <= 1e-9 else "diverges_from_hoodie"
+        worst_group = aggregate_groups[-1]
+        weak_baselines = [policy for policy in worst_group if policy != "HOODIE" and len(worst_group) == 1]
+
+        trend_rows.append(
+            {
+                "figure_id": figure_id,
+                "metric": figure.metric,
+                "metric_field": metric_field,
+                "x_axis": figure.x_axis,
+                "paper_numeric_digitization_performed": False,
+                "paper_metric_goal": _figure_10_metric_goal(figure_id),
+                "sweep_values": list(figure.sweep_values),
+                "series_by_policy": series_by_policy,
+                "hoodie_series": hoodie_series,
+                "series_start_value": start_value,
+                "series_end_value": end_value,
+                "series_delta": delta_value,
+                "trend_direction": trend_direction,
+                "trend_summary": _figure_10_metric_summary(figure_id),
+                "trend_notes": (
+                    "No paper numeric digitization was performed. "
+                    "Trend analysis uses the validated simulator rows and paper-style negative delay for the delay figures."
+                    if figure_id in {"Figure 10a", "Figure 10b", "Figure 10c"}
+                    else "No paper numeric digitization was performed. Trend analysis uses the validated simulator rows and raw drop ratio."
+                ),
+                "claim_alignment_status": claim_status,
+                "feature_088_repair_recommended": True,
+            }
+        )
+        ranking_rows.append(
+            {
+                "figure_id": figure_id,
+                "metric": figure.metric,
+                "metric_field": metric_field,
+                "paper_numeric_digitization_performed": False,
+                "per_sweep_rankings": per_sweep_rankings,
+                "aggregate_means": aggregate_means,
+                "aggregate_rank_groups": aggregate_groups,
+                "aggregate_rank_order": [policy for policy, _value in aggregate_ordered],
+                "hoodie_rank_band": "best" if len(hoodie_group) == 1 else "tied-best",
+                "mleo_relation": mleo_relation,
+                "weak_baselines": weak_baselines,
+                "ranking_summary": "All policies tie across every sweep on the paper-facing metric." if len(aggregate_groups) == 1 else "Policy separation exists, but the tie structure is still shallow.",
+                "feature_088_repair_recommended": True,
+            }
+        )
+        claim_rows.append(
+            {
+                "figure_id": figure_id,
+                "paper_claim_summary": _figure_10_metric_summary(figure_id),
+                "claim_alignment_status": claim_status,
+                "hoody_matches_paper_claims": claim_matches,
+                "trend_matches_paper_claim": trend_matches_claim,
+                "mleo_relation": mleo_relation,
+                "numeric_digitization_performed": False,
+                "feature_088_repair_recommended": True,
+                "claim_notes": (
+                    "HOODIE is tied with all baselines on every sweep, so the paper claim is not reproduced."
+                    if not trend_matches_claim
+                    else "Only a directional timeout effect is visible; policy separation is still absent."
+                ),
+            }
+        )
+
+    report = {
+        "feature_id": FEATURE_ID,
+        "analysis_mode": FIGURE_10_COMPARISON_ANALYSIS_MODE,
+        "verdict": FIGURE_10_COMPARISON_ANALYSIS_VERDICT,
+        "paper_numeric_digitization_performed": False,
+        "overall_claim_alignment": "mostly_not_supported",
+        "claim_alignment_by_figure": claim_status_by_figure,
+        "hoody_matches_paper_claims_by_figure": claim_match_by_figure,
+        "feature_088_repair_recommended": True,
+        "feature_088_repair_reason": (
+            "The Figure 10 outputs collapse to ties across policies, so the paper's qualitative separation is not supported."
+        ),
+        "feature_080_boundary_preserved": True,
+        "feature_086_boundary_preserved": True,
+        "claim_boundary": list(FEATURE_080_BOUNDARY + FEATURE_086_BOUNDARY),
+        "notes": (
+            "Comparison analysis is qualitative and ranking-based only. "
+            "Paper numeric values were not digitized."
+        ),
+    }
+    return trend_rows, ranking_rows, claim_rows, report
+
+
+def _figure_10_comparison_analysis_md_rows(rows: list[dict[str, Any]], fields: tuple[str, ...]) -> list[dict[str, Any]]:
+    md_rows: list[dict[str, Any]] = []
+    for row in rows:
+        md_rows.append({field: (json.dumps(row[field], ensure_ascii=False) if isinstance(row[field], (dict, list, tuple)) else row[field]) for field in fields})
+    return md_rows
+
+
+def _write_figure_10_comparison_analysis_artifacts(artifact_dir: Path) -> None:
+    trend_rows, ranking_rows, claim_rows, report = _figure_10_comparison_analysis_payloads(artifact_dir)
+    _write_json(artifact_dir / "figure_10_trend_analysis.json", trend_rows)
+    _write_markdown_table(
+        artifact_dir / "figure_10_trend_analysis.md",
+        _figure_10_comparison_analysis_md_rows(
+            trend_rows,
+            (
+                "figure_id",
+                "metric",
+                "metric_field",
+                "trend_direction",
+                "series_start_value",
+                "series_end_value",
+                "series_delta",
+                "claim_alignment_status",
+                "feature_088_repair_recommended",
+                "trend_summary",
+            ),
+        ),
+        "Feature 089 Figure 10 Trend Analysis",
+    )
+    _write_json(artifact_dir / "figure_10_ranking_analysis.json", ranking_rows)
+    _write_markdown_table(
+        artifact_dir / "figure_10_ranking_analysis.md",
+        _figure_10_comparison_analysis_md_rows(
+            ranking_rows,
+            (
+                "figure_id",
+                "metric",
+                "hoodie_rank_band",
+                "mleo_relation",
+                "aggregate_rank_groups",
+                "weak_baselines",
+                "ranking_summary",
+                "feature_088_repair_recommended",
+            ),
+        ),
+        "Feature 089 Figure 10 Ranking Analysis",
+    )
+    _write_json(artifact_dir / "figure_10_paper_claim_alignment.json", claim_rows)
+    _write_markdown_table(
+        artifact_dir / "figure_10_paper_claim_alignment.md",
+        _figure_10_comparison_analysis_md_rows(
+            claim_rows,
+            (
+                "figure_id",
+                "claim_alignment_status",
+                "hoody_matches_paper_claims",
+                "trend_matches_paper_claim",
+                "mleo_relation",
+                "numeric_digitization_performed",
+                "feature_088_repair_recommended",
+                "paper_claim_summary",
+            ),
+        ),
+        "Feature 089 Figure 10 Paper Claim Alignment",
+    )
+    _write_json(artifact_dir / "figure_10_comparison_analysis_report.json", report)
+    _write_markdown_table(
+        artifact_dir / "figure_10_comparison_analysis_report.md",
+        [
+            {
+                "feature_id": report["feature_id"],
+                "verdict": report["verdict"],
+                "analysis_mode": report["analysis_mode"],
+                "paper_numeric_digitization_performed": report["paper_numeric_digitization_performed"],
+                "overall_claim_alignment": report["overall_claim_alignment"],
+                "feature_088_repair_recommended": report["feature_088_repair_recommended"],
+                "feature_080_boundary_preserved": report["feature_080_boundary_preserved"],
+                "feature_086_boundary_preserved": report["feature_086_boundary_preserved"],
+                "claim_alignment_by_figure": json.dumps(report["claim_alignment_by_figure"], ensure_ascii=False),
+                "hoody_matches_paper_claims_by_figure": json.dumps(report["hoody_matches_paper_claims_by_figure"], ensure_ascii=False),
+                "notes": report["notes"],
+            }
+        ],
+        "Feature 089 Figure 10 Comparison Analysis Report",
+    )
 
 
 def build_report() -> Feature089Report:

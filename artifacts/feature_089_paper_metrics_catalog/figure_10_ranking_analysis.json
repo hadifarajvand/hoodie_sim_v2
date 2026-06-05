@@ -1,0 +1,1280 @@
+[
+  {
+    "aggregate_means": {
+      "BCO": -37.44444444444444,
+      "FLC": -37.44444444444444,
+      "HO": -37.44444444444444,
+      "HOODIE": -37.44444444444444,
+      "MLEO": -37.44444444444444,
+      "RO": -37.44444444444444,
+      "VO": -37.44444444444444
+    },
+    "aggregate_rank_groups": [
+      [
+        "BCO",
+        "FLC",
+        "HO",
+        "HOODIE",
+        "MLEO",
+        "RO",
+        "VO"
+      ]
+    ],
+    "aggregate_rank_order": [
+      "BCO",
+      "FLC",
+      "HO",
+      "HOODIE",
+      "MLEO",
+      "RO",
+      "VO"
+    ],
+    "feature_088_repair_recommended": true,
+    "figure_id": "Figure 10a",
+    "hoodie_rank_band": "tied-best",
+    "metric": "average_task_completion_delay",
+    "metric_field": "paper_style_delay_for_plotting",
+    "mleo_relation": "ties_with_hoodie",
+    "paper_numeric_digitization_performed": false,
+    "per_sweep_rankings": [
+      {
+        "best_value": -60.0,
+        "hoodie_rank_band": "tied-best",
+        "hoodie_value": -60.0,
+        "mleo_relation": "ties_with_hoodie",
+        "ordered_policies": [
+          "BCO",
+          "FLC",
+          "HO",
+          "HOODIE",
+          "MLEO",
+          "RO",
+          "VO"
+        ],
+        "rank_groups": [
+          [
+            "BCO",
+            "FLC",
+            "HO",
+            "HOODIE",
+            "MLEO",
+            "RO",
+            "VO"
+          ]
+        ],
+        "sweep_value": 0.1
+      },
+      {
+        "best_value": -86.0,
+        "hoodie_rank_band": "tied-best",
+        "hoodie_value": -86.0,
+        "mleo_relation": "ties_with_hoodie",
+        "ordered_policies": [
+          "BCO",
+          "FLC",
+          "HO",
+          "HOODIE",
+          "MLEO",
+          "RO",
+          "VO"
+        ],
+        "rank_groups": [
+          [
+            "BCO",
+            "FLC",
+            "HO",
+            "HOODIE",
+            "MLEO",
+            "RO",
+            "VO"
+          ]
+        ],
+        "sweep_value": 0.2
+      },
+      {
+        "best_value": -93.0,
+        "hoodie_rank_band": "tied-best",
+        "hoodie_value": -93.0,
+        "mleo_relation": "ties_with_hoodie",
+        "ordered_policies": [
+          "BCO",
+          "FLC",
+          "HO",
+          "HOODIE",
+          "MLEO",
+          "RO",
+          "VO"
+        ],
+        "rank_groups": [
+          [
+            "BCO",
+            "FLC",
+            "HO",
+            "HOODIE",
+            "MLEO",
+            "RO",
+            "VO"
+          ]
+        ],
+        "sweep_value": 0.3
+      },
+      {
+        "best_value": -98.0,
+        "hoodie_rank_band": "tied-best",
+        "hoodie_value": -98.0,
+        "mleo_relation": "ties_with_hoodie",
+        "ordered_policies": [
+          "BCO",
+          "FLC",
+          "HO",
+          "HOODIE",
+          "MLEO",
+          "RO",
+          "VO"
+        ],
+        "rank_groups": [
+          [
+            "BCO",
+            "FLC",
+            "HO",
+            "HOODIE",
+            "MLEO",
+            "RO",
+            "VO"
+          ]
+        ],
+        "sweep_value": 0.4
+      },
+      {
+        "best_value": -0.0,
+        "hoodie_rank_band": "tied-best",
+        "hoodie_value": -0.0,
+        "mleo_relation": "ties_with_hoodie",
+        "ordered_policies": [
+          "BCO",
+          "FLC",
+          "HO",
+          "HOODIE",
+          "MLEO",
+          "RO",
+          "VO"
+        ],
+        "rank_groups": [
+          [
+            "BCO",
+            "FLC",
+            "HO",
+            "HOODIE",
+            "MLEO",
+            "RO",
+            "VO"
+          ]
+        ],
+        "sweep_value": 0.5
+      },
+      {
+        "best_value": -0.0,
+        "hoodie_rank_band": "tied-best",
+        "hoodie_value": -0.0,
+        "mleo_relation": "ties_with_hoodie",
+        "ordered_policies": [
+          "BCO",
+          "FLC",
+          "HO",
+          "HOODIE",
+          "MLEO",
+          "RO",
+          "VO"
+        ],
+        "rank_groups": [
+          [
+            "BCO",
+            "FLC",
+            "HO",
+            "HOODIE",
+            "MLEO",
+            "RO",
+            "VO"
+          ]
+        ],
+        "sweep_value": 0.6
+      },
+      {
+        "best_value": -0.0,
+        "hoodie_rank_band": "tied-best",
+        "hoodie_value": -0.0,
+        "mleo_relation": "ties_with_hoodie",
+        "ordered_policies": [
+          "BCO",
+          "FLC",
+          "HO",
+          "HOODIE",
+          "MLEO",
+          "RO",
+          "VO"
+        ],
+        "rank_groups": [
+          [
+            "BCO",
+            "FLC",
+            "HO",
+            "HOODIE",
+            "MLEO",
+            "RO",
+            "VO"
+          ]
+        ],
+        "sweep_value": 0.7
+      },
+      {
+        "best_value": -0.0,
+        "hoodie_rank_band": "tied-best",
+        "hoodie_value": -0.0,
+        "mleo_relation": "ties_with_hoodie",
+        "ordered_policies": [
+          "BCO",
+          "FLC",
+          "HO",
+          "HOODIE",
+          "MLEO",
+          "RO",
+          "VO"
+        ],
+        "rank_groups": [
+          [
+            "BCO",
+            "FLC",
+            "HO",
+            "HOODIE",
+            "MLEO",
+            "RO",
+            "VO"
+          ]
+        ],
+        "sweep_value": 0.8
+      },
+      {
+        "best_value": -0.0,
+        "hoodie_rank_band": "tied-best",
+        "hoodie_value": -0.0,
+        "mleo_relation": "ties_with_hoodie",
+        "ordered_policies": [
+          "BCO",
+          "FLC",
+          "HO",
+          "HOODIE",
+          "MLEO",
+          "RO",
+          "VO"
+        ],
+        "rank_groups": [
+          [
+            "BCO",
+            "FLC",
+            "HO",
+            "HOODIE",
+            "MLEO",
+            "RO",
+            "VO"
+          ]
+        ],
+        "sweep_value": 0.9
+      }
+    ],
+    "ranking_summary": "All policies tie across every sweep on the paper-facing metric.",
+    "weak_baselines": []
+  },
+  {
+    "aggregate_means": {
+      "BCO": 0.0,
+      "FLC": 0.0,
+      "HO": 0.0,
+      "HOODIE": 0.0,
+      "MLEO": 0.0,
+      "RO": 0.0,
+      "VO": 0.0
+    },
+    "aggregate_rank_groups": [
+      [
+        "BCO",
+        "FLC",
+        "HO",
+        "HOODIE",
+        "MLEO",
+        "RO",
+        "VO"
+      ]
+    ],
+    "aggregate_rank_order": [
+      "BCO",
+      "FLC",
+      "HO",
+      "HOODIE",
+      "MLEO",
+      "RO",
+      "VO"
+    ],
+    "feature_088_repair_recommended": true,
+    "figure_id": "Figure 10b",
+    "hoodie_rank_band": "tied-best",
+    "metric": "average_task_completion_delay",
+    "metric_field": "paper_style_delay_for_plotting",
+    "mleo_relation": "ties_with_hoodie",
+    "paper_numeric_digitization_performed": false,
+    "per_sweep_rankings": [
+      {
+        "best_value": -0.0,
+        "hoodie_rank_band": "tied-best",
+        "hoodie_value": -0.0,
+        "mleo_relation": "ties_with_hoodie",
+        "ordered_policies": [
+          "BCO",
+          "FLC",
+          "HO",
+          "HOODIE",
+          "MLEO",
+          "RO",
+          "VO"
+        ],
+        "rank_groups": [
+          [
+            "BCO",
+            "FLC",
+            "HO",
+            "HOODIE",
+            "MLEO",
+            "RO",
+            "VO"
+          ]
+        ],
+        "sweep_value": 3.0
+      },
+      {
+        "best_value": -0.0,
+        "hoodie_rank_band": "tied-best",
+        "hoodie_value": -0.0,
+        "mleo_relation": "ties_with_hoodie",
+        "ordered_policies": [
+          "BCO",
+          "FLC",
+          "HO",
+          "HOODIE",
+          "MLEO",
+          "RO",
+          "VO"
+        ],
+        "rank_groups": [
+          [
+            "BCO",
+            "FLC",
+            "HO",
+            "HOODIE",
+            "MLEO",
+            "RO",
+            "VO"
+          ]
+        ],
+        "sweep_value": 4.0
+      },
+      {
+        "best_value": -0.0,
+        "hoodie_rank_band": "tied-best",
+        "hoodie_value": -0.0,
+        "mleo_relation": "ties_with_hoodie",
+        "ordered_policies": [
+          "BCO",
+          "FLC",
+          "HO",
+          "HOODIE",
+          "MLEO",
+          "RO",
+          "VO"
+        ],
+        "rank_groups": [
+          [
+            "BCO",
+            "FLC",
+            "HO",
+            "HOODIE",
+            "MLEO",
+            "RO",
+            "VO"
+          ]
+        ],
+        "sweep_value": 5.0
+      },
+      {
+        "best_value": -0.0,
+        "hoodie_rank_band": "tied-best",
+        "hoodie_value": -0.0,
+        "mleo_relation": "ties_with_hoodie",
+        "ordered_policies": [
+          "BCO",
+          "FLC",
+          "HO",
+          "HOODIE",
+          "MLEO",
+          "RO",
+          "VO"
+        ],
+        "rank_groups": [
+          [
+            "BCO",
+            "FLC",
+            "HO",
+            "HOODIE",
+            "MLEO",
+            "RO",
+            "VO"
+          ]
+        ],
+        "sweep_value": 6.0
+      },
+      {
+        "best_value": -0.0,
+        "hoodie_rank_band": "tied-best",
+        "hoodie_value": -0.0,
+        "mleo_relation": "ties_with_hoodie",
+        "ordered_policies": [
+          "BCO",
+          "FLC",
+          "HO",
+          "HOODIE",
+          "MLEO",
+          "RO",
+          "VO"
+        ],
+        "rank_groups": [
+          [
+            "BCO",
+            "FLC",
+            "HO",
+            "HOODIE",
+            "MLEO",
+            "RO",
+            "VO"
+          ]
+        ],
+        "sweep_value": 7.0
+      }
+    ],
+    "ranking_summary": "All policies tie across every sweep on the paper-facing metric.",
+    "weak_baselines": []
+  },
+  {
+    "aggregate_means": {
+      "BCO": -40.0,
+      "FLC": -40.0,
+      "HO": -40.0,
+      "HOODIE": -40.0,
+      "MLEO": -40.0,
+      "RO": -40.0,
+      "VO": -40.0
+    },
+    "aggregate_rank_groups": [
+      [
+        "BCO",
+        "FLC",
+        "HO",
+        "HOODIE",
+        "MLEO",
+        "RO",
+        "VO"
+      ]
+    ],
+    "aggregate_rank_order": [
+      "BCO",
+      "FLC",
+      "HO",
+      "HOODIE",
+      "MLEO",
+      "RO",
+      "VO"
+    ],
+    "feature_088_repair_recommended": true,
+    "figure_id": "Figure 10c",
+    "hoodie_rank_band": "tied-best",
+    "metric": "average_task_completion_delay",
+    "metric_field": "paper_style_delay_for_plotting",
+    "mleo_relation": "ties_with_hoodie",
+    "paper_numeric_digitization_performed": false,
+    "per_sweep_rankings": [
+      {
+        "best_value": -0.0,
+        "hoodie_rank_band": "tied-best",
+        "hoodie_value": -0.0,
+        "mleo_relation": "ties_with_hoodie",
+        "ordered_policies": [
+          "BCO",
+          "FLC",
+          "HO",
+          "HOODIE",
+          "MLEO",
+          "RO",
+          "VO"
+        ],
+        "rank_groups": [
+          [
+            "BCO",
+            "FLC",
+            "HO",
+            "HOODIE",
+            "MLEO",
+            "RO",
+            "VO"
+          ]
+        ],
+        "sweep_value": 9.6
+      },
+      {
+        "best_value": -0.0,
+        "hoodie_rank_band": "tied-best",
+        "hoodie_value": -0.0,
+        "mleo_relation": "ties_with_hoodie",
+        "ordered_policies": [
+          "BCO",
+          "FLC",
+          "HO",
+          "HOODIE",
+          "MLEO",
+          "RO",
+          "VO"
+        ],
+        "rank_groups": [
+          [
+            "BCO",
+            "FLC",
+            "HO",
+            "HOODIE",
+            "MLEO",
+            "RO",
+            "VO"
+          ]
+        ],
+        "sweep_value": 9.8
+      },
+      {
+        "best_value": -0.0,
+        "hoodie_rank_band": "tied-best",
+        "hoodie_value": -0.0,
+        "mleo_relation": "ties_with_hoodie",
+        "ordered_policies": [
+          "BCO",
+          "FLC",
+          "HO",
+          "HOODIE",
+          "MLEO",
+          "RO",
+          "VO"
+        ],
+        "rank_groups": [
+          [
+            "BCO",
+            "FLC",
+            "HO",
+            "HOODIE",
+            "MLEO",
+            "RO",
+            "VO"
+          ]
+        ],
+        "sweep_value": 10.0
+      },
+      {
+        "best_value": -100.0,
+        "hoodie_rank_band": "tied-best",
+        "hoodie_value": -100.0,
+        "mleo_relation": "ties_with_hoodie",
+        "ordered_policies": [
+          "BCO",
+          "FLC",
+          "HO",
+          "HOODIE",
+          "MLEO",
+          "RO",
+          "VO"
+        ],
+        "rank_groups": [
+          [
+            "BCO",
+            "FLC",
+            "HO",
+            "HOODIE",
+            "MLEO",
+            "RO",
+            "VO"
+          ]
+        ],
+        "sweep_value": 10.2
+      },
+      {
+        "best_value": -100.0,
+        "hoodie_rank_band": "tied-best",
+        "hoodie_value": -100.0,
+        "mleo_relation": "ties_with_hoodie",
+        "ordered_policies": [
+          "BCO",
+          "FLC",
+          "HO",
+          "HOODIE",
+          "MLEO",
+          "RO",
+          "VO"
+        ],
+        "rank_groups": [
+          [
+            "BCO",
+            "FLC",
+            "HO",
+            "HOODIE",
+            "MLEO",
+            "RO",
+            "VO"
+          ]
+        ],
+        "sweep_value": 10.4
+      }
+    ],
+    "ranking_summary": "All policies tie across every sweep on the paper-facing metric.",
+    "weak_baselines": []
+  },
+  {
+    "aggregate_means": {
+      "BCO": 1.0,
+      "FLC": 1.0,
+      "HO": 1.0,
+      "HOODIE": 1.0,
+      "MLEO": 1.0,
+      "RO": 1.0,
+      "VO": 1.0
+    },
+    "aggregate_rank_groups": [
+      [
+        "BCO",
+        "FLC",
+        "HO",
+        "HOODIE",
+        "MLEO",
+        "RO",
+        "VO"
+      ]
+    ],
+    "aggregate_rank_order": [
+      "BCO",
+      "FLC",
+      "HO",
+      "HOODIE",
+      "MLEO",
+      "RO",
+      "VO"
+    ],
+    "feature_088_repair_recommended": true,
+    "figure_id": "Figure 10d",
+    "hoodie_rank_band": "tied-best",
+    "metric": "task_drop_ratio",
+    "metric_field": "task_drop_ratio",
+    "mleo_relation": "ties_with_hoodie",
+    "paper_numeric_digitization_performed": false,
+    "per_sweep_rankings": [
+      {
+        "best_value": 1.0,
+        "hoodie_rank_band": "tied-best",
+        "hoodie_value": 1.0,
+        "mleo_relation": "ties_with_hoodie",
+        "ordered_policies": [
+          "BCO",
+          "FLC",
+          "HO",
+          "HOODIE",
+          "MLEO",
+          "RO",
+          "VO"
+        ],
+        "rank_groups": [
+          [
+            "BCO",
+            "FLC",
+            "HO",
+            "HOODIE",
+            "MLEO",
+            "RO",
+            "VO"
+          ]
+        ],
+        "sweep_value": 0.1
+      },
+      {
+        "best_value": 1.0,
+        "hoodie_rank_band": "tied-best",
+        "hoodie_value": 1.0,
+        "mleo_relation": "ties_with_hoodie",
+        "ordered_policies": [
+          "BCO",
+          "FLC",
+          "HO",
+          "HOODIE",
+          "MLEO",
+          "RO",
+          "VO"
+        ],
+        "rank_groups": [
+          [
+            "BCO",
+            "FLC",
+            "HO",
+            "HOODIE",
+            "MLEO",
+            "RO",
+            "VO"
+          ]
+        ],
+        "sweep_value": 0.2
+      },
+      {
+        "best_value": 1.0,
+        "hoodie_rank_band": "tied-best",
+        "hoodie_value": 1.0,
+        "mleo_relation": "ties_with_hoodie",
+        "ordered_policies": [
+          "BCO",
+          "FLC",
+          "HO",
+          "HOODIE",
+          "MLEO",
+          "RO",
+          "VO"
+        ],
+        "rank_groups": [
+          [
+            "BCO",
+            "FLC",
+            "HO",
+            "HOODIE",
+            "MLEO",
+            "RO",
+            "VO"
+          ]
+        ],
+        "sweep_value": 0.3
+      },
+      {
+        "best_value": 1.0,
+        "hoodie_rank_band": "tied-best",
+        "hoodie_value": 1.0,
+        "mleo_relation": "ties_with_hoodie",
+        "ordered_policies": [
+          "BCO",
+          "FLC",
+          "HO",
+          "HOODIE",
+          "MLEO",
+          "RO",
+          "VO"
+        ],
+        "rank_groups": [
+          [
+            "BCO",
+            "FLC",
+            "HO",
+            "HOODIE",
+            "MLEO",
+            "RO",
+            "VO"
+          ]
+        ],
+        "sweep_value": 0.4
+      },
+      {
+        "best_value": 1.0,
+        "hoodie_rank_band": "tied-best",
+        "hoodie_value": 1.0,
+        "mleo_relation": "ties_with_hoodie",
+        "ordered_policies": [
+          "BCO",
+          "FLC",
+          "HO",
+          "HOODIE",
+          "MLEO",
+          "RO",
+          "VO"
+        ],
+        "rank_groups": [
+          [
+            "BCO",
+            "FLC",
+            "HO",
+            "HOODIE",
+            "MLEO",
+            "RO",
+            "VO"
+          ]
+        ],
+        "sweep_value": 0.5
+      },
+      {
+        "best_value": 1.0,
+        "hoodie_rank_band": "tied-best",
+        "hoodie_value": 1.0,
+        "mleo_relation": "ties_with_hoodie",
+        "ordered_policies": [
+          "BCO",
+          "FLC",
+          "HO",
+          "HOODIE",
+          "MLEO",
+          "RO",
+          "VO"
+        ],
+        "rank_groups": [
+          [
+            "BCO",
+            "FLC",
+            "HO",
+            "HOODIE",
+            "MLEO",
+            "RO",
+            "VO"
+          ]
+        ],
+        "sweep_value": 0.6
+      },
+      {
+        "best_value": 1.0,
+        "hoodie_rank_band": "tied-best",
+        "hoodie_value": 1.0,
+        "mleo_relation": "ties_with_hoodie",
+        "ordered_policies": [
+          "BCO",
+          "FLC",
+          "HO",
+          "HOODIE",
+          "MLEO",
+          "RO",
+          "VO"
+        ],
+        "rank_groups": [
+          [
+            "BCO",
+            "FLC",
+            "HO",
+            "HOODIE",
+            "MLEO",
+            "RO",
+            "VO"
+          ]
+        ],
+        "sweep_value": 0.7
+      },
+      {
+        "best_value": 1.0,
+        "hoodie_rank_band": "tied-best",
+        "hoodie_value": 1.0,
+        "mleo_relation": "ties_with_hoodie",
+        "ordered_policies": [
+          "BCO",
+          "FLC",
+          "HO",
+          "HOODIE",
+          "MLEO",
+          "RO",
+          "VO"
+        ],
+        "rank_groups": [
+          [
+            "BCO",
+            "FLC",
+            "HO",
+            "HOODIE",
+            "MLEO",
+            "RO",
+            "VO"
+          ]
+        ],
+        "sweep_value": 0.8
+      },
+      {
+        "best_value": 1.0,
+        "hoodie_rank_band": "tied-best",
+        "hoodie_value": 1.0,
+        "mleo_relation": "ties_with_hoodie",
+        "ordered_policies": [
+          "BCO",
+          "FLC",
+          "HO",
+          "HOODIE",
+          "MLEO",
+          "RO",
+          "VO"
+        ],
+        "rank_groups": [
+          [
+            "BCO",
+            "FLC",
+            "HO",
+            "HOODIE",
+            "MLEO",
+            "RO",
+            "VO"
+          ]
+        ],
+        "sweep_value": 0.9
+      }
+    ],
+    "ranking_summary": "All policies tie across every sweep on the paper-facing metric.",
+    "weak_baselines": []
+  },
+  {
+    "aggregate_means": {
+      "BCO": 1.0,
+      "FLC": 1.0,
+      "HO": 1.0,
+      "HOODIE": 1.0,
+      "MLEO": 1.0,
+      "RO": 1.0,
+      "VO": 1.0
+    },
+    "aggregate_rank_groups": [
+      [
+        "BCO",
+        "FLC",
+        "HO",
+        "HOODIE",
+        "MLEO",
+        "RO",
+        "VO"
+      ]
+    ],
+    "aggregate_rank_order": [
+      "BCO",
+      "FLC",
+      "HO",
+      "HOODIE",
+      "MLEO",
+      "RO",
+      "VO"
+    ],
+    "feature_088_repair_recommended": true,
+    "figure_id": "Figure 10e",
+    "hoodie_rank_band": "tied-best",
+    "metric": "task_drop_ratio",
+    "metric_field": "task_drop_ratio",
+    "mleo_relation": "ties_with_hoodie",
+    "paper_numeric_digitization_performed": false,
+    "per_sweep_rankings": [
+      {
+        "best_value": 1.0,
+        "hoodie_rank_band": "tied-best",
+        "hoodie_value": 1.0,
+        "mleo_relation": "ties_with_hoodie",
+        "ordered_policies": [
+          "BCO",
+          "FLC",
+          "HO",
+          "HOODIE",
+          "MLEO",
+          "RO",
+          "VO"
+        ],
+        "rank_groups": [
+          [
+            "BCO",
+            "FLC",
+            "HO",
+            "HOODIE",
+            "MLEO",
+            "RO",
+            "VO"
+          ]
+        ],
+        "sweep_value": 3.0
+      },
+      {
+        "best_value": 1.0,
+        "hoodie_rank_band": "tied-best",
+        "hoodie_value": 1.0,
+        "mleo_relation": "ties_with_hoodie",
+        "ordered_policies": [
+          "BCO",
+          "FLC",
+          "HO",
+          "HOODIE",
+          "MLEO",
+          "RO",
+          "VO"
+        ],
+        "rank_groups": [
+          [
+            "BCO",
+            "FLC",
+            "HO",
+            "HOODIE",
+            "MLEO",
+            "RO",
+            "VO"
+          ]
+        ],
+        "sweep_value": 4.0
+      },
+      {
+        "best_value": 1.0,
+        "hoodie_rank_band": "tied-best",
+        "hoodie_value": 1.0,
+        "mleo_relation": "ties_with_hoodie",
+        "ordered_policies": [
+          "BCO",
+          "FLC",
+          "HO",
+          "HOODIE",
+          "MLEO",
+          "RO",
+          "VO"
+        ],
+        "rank_groups": [
+          [
+            "BCO",
+            "FLC",
+            "HO",
+            "HOODIE",
+            "MLEO",
+            "RO",
+            "VO"
+          ]
+        ],
+        "sweep_value": 5.0
+      },
+      {
+        "best_value": 1.0,
+        "hoodie_rank_band": "tied-best",
+        "hoodie_value": 1.0,
+        "mleo_relation": "ties_with_hoodie",
+        "ordered_policies": [
+          "BCO",
+          "FLC",
+          "HO",
+          "HOODIE",
+          "MLEO",
+          "RO",
+          "VO"
+        ],
+        "rank_groups": [
+          [
+            "BCO",
+            "FLC",
+            "HO",
+            "HOODIE",
+            "MLEO",
+            "RO",
+            "VO"
+          ]
+        ],
+        "sweep_value": 6.0
+      },
+      {
+        "best_value": 1.0,
+        "hoodie_rank_band": "tied-best",
+        "hoodie_value": 1.0,
+        "mleo_relation": "ties_with_hoodie",
+        "ordered_policies": [
+          "BCO",
+          "FLC",
+          "HO",
+          "HOODIE",
+          "MLEO",
+          "RO",
+          "VO"
+        ],
+        "rank_groups": [
+          [
+            "BCO",
+            "FLC",
+            "HO",
+            "HOODIE",
+            "MLEO",
+            "RO",
+            "VO"
+          ]
+        ],
+        "sweep_value": 7.0
+      }
+    ],
+    "ranking_summary": "All policies tie across every sweep on the paper-facing metric.",
+    "weak_baselines": []
+  },
+  {
+    "aggregate_means": {
+      "BCO": 1.0,
+      "FLC": 1.0,
+      "HO": 1.0,
+      "HOODIE": 1.0,
+      "MLEO": 1.0,
+      "RO": 1.0,
+      "VO": 1.0
+    },
+    "aggregate_rank_groups": [
+      [
+        "BCO",
+        "FLC",
+        "HO",
+        "HOODIE",
+        "MLEO",
+        "RO",
+        "VO"
+      ]
+    ],
+    "aggregate_rank_order": [
+      "BCO",
+      "FLC",
+      "HO",
+      "HOODIE",
+      "MLEO",
+      "RO",
+      "VO"
+    ],
+    "feature_088_repair_recommended": true,
+    "figure_id": "Figure 10f",
+    "hoodie_rank_band": "tied-best",
+    "metric": "task_drop_ratio",
+    "metric_field": "task_drop_ratio",
+    "mleo_relation": "ties_with_hoodie",
+    "paper_numeric_digitization_performed": false,
+    "per_sweep_rankings": [
+      {
+        "best_value": 1.0,
+        "hoodie_rank_band": "tied-best",
+        "hoodie_value": 1.0,
+        "mleo_relation": "ties_with_hoodie",
+        "ordered_policies": [
+          "BCO",
+          "FLC",
+          "HO",
+          "HOODIE",
+          "MLEO",
+          "RO",
+          "VO"
+        ],
+        "rank_groups": [
+          [
+            "BCO",
+            "FLC",
+            "HO",
+            "HOODIE",
+            "MLEO",
+            "RO",
+            "VO"
+          ]
+        ],
+        "sweep_value": 1.6
+      },
+      {
+        "best_value": 1.0,
+        "hoodie_rank_band": "tied-best",
+        "hoodie_value": 1.0,
+        "mleo_relation": "ties_with_hoodie",
+        "ordered_policies": [
+          "BCO",
+          "FLC",
+          "HO",
+          "HOODIE",
+          "MLEO",
+          "RO",
+          "VO"
+        ],
+        "rank_groups": [
+          [
+            "BCO",
+            "FLC",
+            "HO",
+            "HOODIE",
+            "MLEO",
+            "RO",
+            "VO"
+          ]
+        ],
+        "sweep_value": 1.8
+      },
+      {
+        "best_value": 1.0,
+        "hoodie_rank_band": "tied-best",
+        "hoodie_value": 1.0,
+        "mleo_relation": "ties_with_hoodie",
+        "ordered_policies": [
+          "BCO",
+          "FLC",
+          "HO",
+          "HOODIE",
+          "MLEO",
+          "RO",
+          "VO"
+        ],
+        "rank_groups": [
+          [
+            "BCO",
+            "FLC",
+            "HO",
+            "HOODIE",
+            "MLEO",
+            "RO",
+            "VO"
+          ]
+        ],
+        "sweep_value": 2.0
+      },
+      {
+        "best_value": 1.0,
+        "hoodie_rank_band": "tied-best",
+        "hoodie_value": 1.0,
+        "mleo_relation": "ties_with_hoodie",
+        "ordered_policies": [
+          "BCO",
+          "FLC",
+          "HO",
+          "HOODIE",
+          "MLEO",
+          "RO",
+          "VO"
+        ],
+        "rank_groups": [
+          [
+            "BCO",
+            "FLC",
+            "HO",
+            "HOODIE",
+            "MLEO",
+            "RO",
+            "VO"
+          ]
+        ],
+        "sweep_value": 2.2
+      },
+      {
+        "best_value": 1.0,
+        "hoodie_rank_band": "tied-best",
+        "hoodie_value": 1.0,
+        "mleo_relation": "ties_with_hoodie",
+        "ordered_policies": [
+          "BCO",
+          "FLC",
+          "HO",
+          "HOODIE",
+          "MLEO",
+          "RO",
+          "VO"
+        ],
+        "rank_groups": [
+          [
+            "BCO",
+            "FLC",
+            "HO",
+            "HOODIE",
+            "MLEO",
+            "RO",
+            "VO"
+          ]
+        ],
+        "sweep_value": 2.4
+      }
+    ],
+    "ranking_summary": "All policies tie across every sweep on the paper-facing metric.",
+    "weak_baselines": []
+  }
+]
