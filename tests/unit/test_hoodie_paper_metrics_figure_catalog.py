@@ -117,6 +117,9 @@ class HoodiePaperMetricsFigureCatalogTests(unittest.TestCase):
         report = generate_artifacts(artifact_dir)
         self.assertEqual(report.verdict, "paper_metrics_catalog_partial")
         self.assertTrue((artifact_dir / "feature_089_report.json").exists())
+        self.assertTrue((artifact_dir / "figure_10_output_audit.json").exists())
+        self.assertTrue((artifact_dir / "figure_10_analysis_summary.json").exists())
+        self.assertTrue((artifact_dir / "feature_089_completion_report.json").exists())
         delay_payload = json.loads((artifact_dir / "figure_10a_delay_vs_arrival_probability.json").read_text(encoding="utf-8"))
         self.assertEqual(len(delay_payload), len(ACTIVE_POLICIES) * 9)
         self.assertEqual(
@@ -160,3 +163,33 @@ class HoodiePaperMetricsFigureCatalogTests(unittest.TestCase):
         self.assertEqual(len(drop_payload), len(ACTIVE_POLICIES) * 5)
         self.assertTrue(all(0.0 <= row["task_drop_ratio"] <= 1.0 for row in drop_payload))
         self.assertTrue(all(abs(row["task_drop_percent"] - (row["task_drop_ratio"] * 100.0)) < 1e-9 for row in drop_payload))
+
+        audit_payload = json.loads((artifact_dir / "figure_10_output_audit.json").read_text(encoding="utf-8"))
+        self.assertEqual(
+            [row["figure_id"] for row in audit_payload],
+            ["Figure 10a", "Figure 10b", "Figure 10c", "Figure 10d", "Figure 10e", "Figure 10f"],
+        )
+        self.assertTrue(all(row["audit_status"] == "pass" for row in audit_payload))
+        self.assertTrue(all(row["policy_count"] == len(ACTIVE_POLICIES) for row in audit_payload))
+        self.assertTrue(all(row["raw_positive_delay_valid"] for row in audit_payload))
+        self.assertTrue(all(row["paper_style_negative_delay_valid"] for row in audit_payload))
+        self.assertTrue(all(row["drop_ratio_valid"] for row in audit_payload))
+        self.assertTrue(all(row["drop_percent_valid"] for row in audit_payload))
+
+        summary_payload = json.loads((artifact_dir / "figure_10_analysis_summary.json").read_text(encoding="utf-8"))
+        self.assertEqual(summary_payload["verdict"], "figure_10_outputs_validated")
+        self.assertEqual(summary_payload["figures_analyzed"], ["Figure 10a", "Figure 10b", "Figure 10c", "Figure 10d", "Figure 10e", "Figure 10f"])
+        self.assertEqual(summary_payload["policies"], list(ACTIVE_POLICIES))
+        self.assertTrue(summary_payload["all_audits_passed"])
+        self.assertTrue(summary_payload["raw_positive_delay_preserved"])
+        self.assertTrue(summary_payload["paper_style_negative_delay_preserved"])
+        self.assertTrue(summary_payload["drop_ratio_and_percent_preserved"])
+        self.assertEqual(summary_payload["figure_9_boundary"], "Figure 9a-9e remain blocked/reference-only.")
+
+        completion_payload = json.loads((artifact_dir / "feature_089_completion_report.json").read_text(encoding="utf-8"))
+        self.assertEqual(completion_payload["completion_status"], "complete")
+        self.assertEqual(completion_payload["ready_now_figures"], ["Figure 10a", "Figure 10b", "Figure 10c", "Figure 10d", "Figure 10e", "Figure 10f"])
+        self.assertEqual(completion_payload["blocked_figures"], ["Figure 9a", "Figure 9b", "Figure 9c", "Figure 9d", "Figure 9e"])
+        self.assertEqual(completion_payload["future_required_figures"], ["Figure 8a", "Figure 8b", "Figure 11"])
+        self.assertTrue(completion_payload["figure_9_boundary_preserved"])
+        self.assertTrue(completion_payload["training_lstm_boundary_preserved"])

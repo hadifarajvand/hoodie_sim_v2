@@ -1,0 +1,103 @@
+{
+  "all_audits_passed": true,
+  "analysis_scope": "Figure 10a-10f simulator output analysis",
+  "claim_boundary": [
+    "Feature 080 prepares HOODIE_PROPOSED for later evaluation.",
+    "Ranking must wait until HOODIE_PROPOSED is implemented faithfully enough.",
+    "Do not rank policies.",
+    "Do not evaluate baselines.",
+    "Do not introduce thesis method.",
+    "Do not use DCQ.",
+    "Do not claim full reproduction unless all required components pass.",
+    "HOODIE remains the paper proposed method boundary.",
+    "No thesis/DCQ/custom-method claim is allowed.",
+    "Feature 086 approximations remain in force for output comparison."
+  ],
+  "delay_figures": [
+    "Figure 10a",
+    "Figure 10b",
+    "Figure 10c"
+  ],
+  "drop_ratio_and_percent_preserved": true,
+  "drop_ratio_figures": [
+    "Figure 10d",
+    "Figure 10e",
+    "Figure 10f"
+  ],
+  "feature_id": "089-hoodie-paper-metrics-figure-catalog",
+  "figure_9_boundary": "Figure 9a-9e remain blocked/reference-only.",
+  "figure_sweep_values": {
+    "Figure 10a": [
+      0.1,
+      0.2,
+      0.3,
+      0.4,
+      0.5,
+      0.6,
+      0.7,
+      0.8,
+      0.9
+    ],
+    "Figure 10b": [
+      3,
+      4,
+      5,
+      6,
+      7
+    ],
+    "Figure 10c": [
+      9.6,
+      9.8,
+      10.0,
+      10.2,
+      10.4
+    ],
+    "Figure 10d": [
+      0.1,
+      0.2,
+      0.3,
+      0.4,
+      0.5,
+      0.6,
+      0.7,
+      0.8,
+      0.9
+    ],
+    "Figure 10e": [
+      3,
+      4,
+      5,
+      6,
+      7
+    ],
+    "Figure 10f": [
+      1.6,
+      1.8,
+      2.0,
+      2.2,
+      2.4
+    ]
+  },
+  "figures_analyzed": [
+    "Figure 10a",
+    "Figure 10b",
+    "Figure 10c",
+    "Figure 10d",
+    "Figure 10e",
+    "Figure 10f"
+  ],
+  "paper_style_negative_delay_preserved": true,
+  "policies": [
+    "HOODIE",
+    "RO",
+    "FLC",
+    "VO",
+    "HO",
+    "BCO",
+    "MLEO"
+  ],
+  "raw_positive_delay_preserved": true,
+  "total_rows": 266,
+  "training_lstm_boundary": "Figure 8a, Figure 8b, and Figure 11 remain future-required/training-LSTM-gated.",
+  "verdict": "figure_10_outputs_validated"
+}

@@ -1135,6 +1135,17 @@ def _figure_10_output_rows(figure: PaperFigure) -> list[dict[str, Any]]:
     return rows
 
 
+def _figure_10_artifact_files() -> dict[str, tuple[str, str]]:
+    return {
+        "Figure 10a": ("figure_10a_delay_vs_arrival_probability.csv", "figure_10a_delay_vs_arrival_probability.json"),
+        "Figure 10b": ("figure_10b_delay_vs_cpu_capacity.csv", "figure_10b_delay_vs_cpu_capacity.json"),
+        "Figure 10c": ("figure_10c_delay_vs_timeout.csv", "figure_10c_delay_vs_timeout.json"),
+        "Figure 10d": ("figure_10d_drop_ratio_vs_arrival_probability.csv", "figure_10d_drop_ratio_vs_arrival_probability.json"),
+        "Figure 10e": ("figure_10e_drop_ratio_vs_cpu_capacity.csv", "figure_10e_drop_ratio_vs_cpu_capacity.json"),
+        "Figure 10f": ("figure_10f_drop_ratio_vs_timeout.csv", "figure_10f_drop_ratio_vs_timeout.json"),
+    }
+
+
 def _figure_9_curve_labels(figure_id: str) -> list[tuple[str, int | None]]:
     if figure_id in {"Figure 9a", "Figure 9c"}:
         return [("N=10", 10), ("N=15", 15), ("N=20", 20)]
@@ -1512,17 +1523,176 @@ def _figure_9_output_rows(figure: PaperFigure) -> list[dict[str, Any]]:
     return rows
 
 
+def _read_json_array(path: Path) -> list[dict[str, Any]]:
+    payload = json.loads(path.read_text(encoding="utf-8"))
+    if not isinstance(payload, list):
+        raise ValueError(f"{path.name} must contain a JSON array")
+    return payload
+
+
+def _figure_10_audit_rows(artifact_dir: Path, figures: dict[str, PaperFigure]) -> list[dict[str, Any]]:
+    rows: list[dict[str, Any]] = []
+    for figure_id, (csv_name, json_name) in _figure_10_artifact_files().items():
+        figure = figures[figure_id]
+        payload = _read_json_array(artifact_dir / json_name)
+        expected_sweeps = {float(value) for value in figure.sweep_values}
+        seen_sweeps = {float(row.get("sweep_value")) for row in payload}
+        seen_policies = {str(row.get("policy")) for row in payload}
+        expected_rows = len(ACTIVE_POLICIES) * len(figure.sweep_values)
+        status_valid = all(row.get("status") == "simulator_generated" for row in payload)
+        raw_delay_valid = all(float(row.get("task_completion_delay_raw", 0.0)) >= 0.0 for row in payload)
+        plot_delay_valid = all(
+            abs(float(row.get("paper_style_delay_for_plotting", 0.0)) + abs(float(row.get("task_completion_delay_raw", 0.0)))) <= 1e-9
+            for row in payload
+        )
+        drop_ratio_valid = all(0.0 <= float(row.get("task_drop_ratio", 0.0)) <= 1.0 for row in payload)
+        drop_percent_valid = all(
+            abs(float(row.get("task_drop_percent", 0.0)) - (float(row.get("task_drop_ratio", 0.0)) * 100.0)) <= 1e-9
+            for row in payload
+        )
+        boundary_valid = all(
+            all(boundary in row.get("claim_boundary", []) for boundary in FEATURE_080_BOUNDARY + FEATURE_086_BOUNDARY)
+            for row in payload
+        )
+        audit_passed = (
+            len(payload) == expected_rows
+            and seen_policies == set(ACTIVE_POLICIES)
+            and seen_sweeps == expected_sweeps
+            and status_valid
+            and raw_delay_valid
+            and plot_delay_valid
+            and drop_ratio_valid
+            and drop_percent_valid
+            and boundary_valid
+        )
+        rows.append(
+            {
+                "figure_id": figure_id,
+                "metric": figure.metric,
+                "x_axis": figure.x_axis,
+                "csv_artifact": csv_name,
+                "json_artifact": json_name,
+                "row_count": len(payload),
+                "expected_row_count": expected_rows,
+                "policy_count": len(seen_policies),
+                "expected_policy_count": len(ACTIVE_POLICIES),
+                "sweep_count": len(seen_sweeps),
+                "expected_sweep_count": len(figure.sweep_values),
+                "raw_positive_delay_valid": raw_delay_valid,
+                "paper_style_negative_delay_valid": plot_delay_valid,
+                "drop_ratio_valid": drop_ratio_valid,
+                "drop_percent_valid": drop_percent_valid,
+                "claim_boundary_valid": boundary_valid,
+                "status_valid": status_valid,
+                "audit_status": "pass" if audit_passed else "fail",
+            }
+        )
+    return rows
+
+
+def _figure_10_analysis_summary(audit_rows: list[dict[str, Any]], figures: dict[str, PaperFigure]) -> dict[str, Any]:
+    delay_figures = [row["figure_id"] for row in audit_rows if "delay" in str(row["json_artifact"])]
+    drop_figures = [row["figure_id"] for row in audit_rows if "drop" in str(row["json_artifact"])]
+    return {
+        "feature_id": FEATURE_ID,
+        "analysis_scope": "Figure 10a-10f simulator output analysis",
+        "verdict": "figure_10_outputs_validated" if all(row["audit_status"] == "pass" for row in audit_rows) else "figure_10_outputs_invalid",
+        "figures_analyzed": [row["figure_id"] for row in audit_rows],
+        "delay_figures": delay_figures,
+        "drop_ratio_figures": drop_figures,
+        "policies": list(ACTIVE_POLICIES),
+        "total_rows": sum(int(row["row_count"]) for row in audit_rows),
+        "all_audits_passed": all(row["audit_status"] == "pass" for row in audit_rows),
+        "raw_positive_delay_preserved": all(bool(row["raw_positive_delay_valid"]) for row in audit_rows),
+        "paper_style_negative_delay_preserved": all(bool(row["paper_style_negative_delay_valid"]) for row in audit_rows),
+        "drop_ratio_and_percent_preserved": all(bool(row["drop_ratio_valid"]) and bool(row["drop_percent_valid"]) for row in audit_rows),
+        "figure_9_boundary": "Figure 9a-9e remain blocked/reference-only.",
+        "training_lstm_boundary": "Figure 8a, Figure 8b, and Figure 11 remain future-required/training-LSTM-gated.",
+        "claim_boundary": list(FEATURE_080_BOUNDARY + FEATURE_086_BOUNDARY),
+        "figure_sweep_values": {figure_id: list(figures[figure_id].sweep_values) for figure_id in PRIORITY_1_FIGURES},
+    }
+
+
+def _completion_report_payload(report: Feature089Report, audit_rows: list[dict[str, Any]], summary: dict[str, Any]) -> dict[str, Any]:
+    return {
+        "feature_id": FEATURE_ID,
+        "completion_status": "complete" if summary["all_audits_passed"] else "incomplete",
+        "figure_10_verdict": summary["verdict"],
+        "figure_10_audit_artifacts": [
+            "figure_10_output_audit.json",
+            "figure_10_output_audit.md",
+            "figure_10_analysis_summary.json",
+            "figure_10_analysis_summary.md",
+        ],
+        "ready_now_figures": list(report.ready_now_figures),
+        "blocked_figures": list(report.blocked_figures),
+        "future_required_figures": list(report.future_required_figures),
+        "figure_10_figures": [row["figure_id"] for row in audit_rows],
+        "figure_10_rows": summary["total_rows"],
+        "figure_10_all_audits_passed": summary["all_audits_passed"],
+        "figure_9_boundary_preserved": list(report.blocked_figures) == list(PRIORITY_2_FIGURES),
+        "training_lstm_boundary_preserved": list(report.future_required_figures) == list(PRIORITY_3_FIGURES),
+        "feature_086_boundary": list(FEATURE_086_BOUNDARY),
+        "feature_080_boundary": list(FEATURE_080_BOUNDARY),
+        "notes": (
+            "Feature 089 is complete for Figure 10 simulator outputs. "
+            "Figure 9 remains blocked/reference-only; Figures 8a, 8b, and 11 remain future-required."
+        ),
+    }
+
+
+def _write_figure_10_analysis_artifacts(artifact_dir: Path, figures: dict[str, PaperFigure], report: Feature089Report) -> None:
+    audit_rows = _figure_10_audit_rows(artifact_dir, figures)
+    summary = _figure_10_analysis_summary(audit_rows, figures)
+    completion_report = _completion_report_payload(report, audit_rows, summary)
+    _write_json(artifact_dir / "figure_10_output_audit.json", audit_rows)
+    _write_markdown_table(artifact_dir / "figure_10_output_audit.md", audit_rows, "Feature 089 Figure 10 Output Audit")
+    _write_json(artifact_dir / "figure_10_analysis_summary.json", summary)
+    _write_markdown_table(
+        artifact_dir / "figure_10_analysis_summary.md",
+        [
+            {
+                "feature_id": summary["feature_id"],
+                "verdict": summary["verdict"],
+                "figures_analyzed": ", ".join(summary["figures_analyzed"]),
+                "total_rows": summary["total_rows"],
+                "all_audits_passed": summary["all_audits_passed"],
+                "raw_positive_delay_preserved": summary["raw_positive_delay_preserved"],
+                "paper_style_negative_delay_preserved": summary["paper_style_negative_delay_preserved"],
+                "drop_ratio_and_percent_preserved": summary["drop_ratio_and_percent_preserved"],
+                "figure_9_boundary": summary["figure_9_boundary"],
+                "training_lstm_boundary": summary["training_lstm_boundary"],
+            }
+        ],
+        "Feature 089 Figure 10 Analysis Summary",
+    )
+    _write_json(artifact_dir / "feature_089_completion_report.json", completion_report)
+    _write_markdown_table(
+        artifact_dir / "feature_089_completion_report.md",
+        [
+            {
+                "feature_id": completion_report["feature_id"],
+                "completion_status": completion_report["completion_status"],
+                "figure_10_verdict": completion_report["figure_10_verdict"],
+                "figure_10_rows": completion_report["figure_10_rows"],
+                "figure_10_all_audits_passed": completion_report["figure_10_all_audits_passed"],
+                "ready_now_figures": ", ".join(completion_report["ready_now_figures"]),
+                "blocked_figures": ", ".join(completion_report["blocked_figures"]),
+                "future_required_figures": ", ".join(completion_report["future_required_figures"]),
+                "figure_9_boundary_preserved": completion_report["figure_9_boundary_preserved"],
+                "training_lstm_boundary_preserved": completion_report["training_lstm_boundary_preserved"],
+            }
+        ],
+        "Feature 089 Completion Report",
+    )
+
+
 def _write_figure_output_files(artifact_dir: Path, figures: list[PaperFigure], requirements: list[SimulatorOutputRequirement]) -> None:
     references = _reference_metric_values()
     requirement_by_id = {item.requirement_id: item for item in requirements}
     by_id = {figure.figure_id: figure for figure in figures}
     filenames = {
-        "Figure 10a": ("figure_10a_delay_vs_arrival_probability.csv", "figure_10a_delay_vs_arrival_probability.json"),
-        "Figure 10b": ("figure_10b_delay_vs_cpu_capacity.csv", "figure_10b_delay_vs_cpu_capacity.json"),
-        "Figure 10c": ("figure_10c_delay_vs_timeout.csv", "figure_10c_delay_vs_timeout.json"),
-        "Figure 10d": ("figure_10d_drop_ratio_vs_arrival_probability.csv", "figure_10d_drop_ratio_vs_arrival_probability.json"),
-        "Figure 10e": ("figure_10e_drop_ratio_vs_cpu_capacity.csv", "figure_10e_drop_ratio_vs_cpu_capacity.json"),
-        "Figure 10f": ("figure_10f_drop_ratio_vs_timeout.csv", "figure_10f_drop_ratio_vs_timeout.json"),
+        **_figure_10_artifact_files(),
         "Figure 9a": ("figure_9a_reward_vs_arrival_probability.csv", "figure_9a_reward_vs_arrival_probability.json"),
         "Figure 9b": ("figure_9b_action_distribution_vs_arrival_probability.csv", "figure_9b_action_distribution_vs_arrival_probability.json"),
         "Figure 9c": ("figure_9c_reward_vs_cpu_capacity.csv", "figure_9c_reward_vs_cpu_capacity.json"),
@@ -1663,6 +1833,7 @@ def generate_artifacts(artifact_dir: Path | None = None) -> Feature089Report:
     )
 
     _write_figure_output_files(artifact_dir, figures, requirements)
+    _write_figure_10_analysis_artifacts(artifact_dir, {figure.figure_id: figure for figure in figures}, report)
     _generate_supporting_spec_docs(figures, metrics, requirements)
     return report
 
@@ -1843,6 +2014,12 @@ def validate_artifacts(artifact_dir: Path | None = None) -> Feature089Report:
         "simulator_output_requirements.md",
         "feature_089_report.json",
         "feature_089_report.md",
+        "figure_10_output_audit.json",
+        "figure_10_output_audit.md",
+        "figure_10_analysis_summary.json",
+        "figure_10_analysis_summary.md",
+        "feature_089_completion_report.json",
+        "feature_089_completion_report.md",
         "figure_10a_delay_vs_arrival_probability.csv",
         "figure_10a_delay_vs_arrival_probability.json",
         "figure_10b_delay_vs_cpu_capacity.csv",
@@ -1875,16 +2052,33 @@ def validate_artifacts(artifact_dir: Path | None = None) -> Feature089Report:
     if len(report_json["feature_086_boundary"]) != len(FEATURE_086_BOUNDARY):
         raise ValueError("Feature 086 boundary mismatch")
     figures = {figure.figure_id: figure for figure in _ordered_figures()}
-    figure_10_paths = {
-        "Figure 10a": artifact_dir / "figure_10a_delay_vs_arrival_probability.json",
-        "Figure 10b": artifact_dir / "figure_10b_delay_vs_cpu_capacity.json",
-        "Figure 10c": artifact_dir / "figure_10c_delay_vs_timeout.json",
-        "Figure 10d": artifact_dir / "figure_10d_drop_ratio_vs_arrival_probability.json",
-        "Figure 10e": artifact_dir / "figure_10e_drop_ratio_vs_cpu_capacity.json",
-        "Figure 10f": artifact_dir / "figure_10f_drop_ratio_vs_timeout.json",
-    }
-    for figure_id, path in figure_10_paths.items():
-        _validate_figure_10_output(path, figures[figure_id])
+    for figure_id, (_csv_name, json_name) in _figure_10_artifact_files().items():
+        _validate_figure_10_output(artifact_dir / json_name, figures[figure_id])
+    audit_rows = _read_json_array(artifact_dir / "figure_10_output_audit.json")
+    if len(audit_rows) != len(PRIORITY_1_FIGURES):
+        raise ValueError("Figure 10 output audit must cover every Priority 1 figure")
+    if any(row.get("audit_status") != "pass" for row in audit_rows):
+        raise ValueError("Figure 10 output audit contains failures")
+    summary = json.loads((artifact_dir / "figure_10_analysis_summary.json").read_text(encoding="utf-8"))
+    if summary.get("verdict") != "figure_10_outputs_validated":
+        raise ValueError("Figure 10 analysis summary must validate Figure 10 outputs")
+    if summary.get("figures_analyzed") != list(PRIORITY_1_FIGURES):
+        raise ValueError("Figure 10 analysis summary must cover Figure 10a-10f")
+    if not summary.get("raw_positive_delay_preserved"):
+        raise ValueError("Figure 10 analysis summary must preserve raw positive delay")
+    if not summary.get("paper_style_negative_delay_preserved"):
+        raise ValueError("Figure 10 analysis summary must preserve paper-style negative delay")
+    if not summary.get("drop_ratio_and_percent_preserved"):
+        raise ValueError("Figure 10 analysis summary must preserve drop ratio and percent")
+    completion = json.loads((artifact_dir / "feature_089_completion_report.json").read_text(encoding="utf-8"))
+    if completion.get("completion_status") != "complete":
+        raise ValueError("Feature 089 completion report must mark completion")
+    if completion.get("ready_now_figures") != list(PRIORITY_1_FIGURES):
+        raise ValueError("Feature 089 completion report must keep only Figure 10 ready now")
+    if completion.get("blocked_figures") != list(PRIORITY_2_FIGURES):
+        raise ValueError("Feature 089 completion report must keep Figure 9 blocked")
+    if completion.get("future_required_figures") != list(PRIORITY_3_FIGURES):
+        raise ValueError("Feature 089 completion report must keep Figure 8/11 future-required")
     figure_9_paths = {
         "Figure 9a": artifact_dir / "figure_9a_reward_vs_arrival_probability.json",
         "Figure 9b": artifact_dir / "figure_9b_action_distribution_vs_arrival_probability.json",
