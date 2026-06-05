@@ -1,6 +1,0 @@
-{
-  "bounded_distributed_pilot_executed": true,
-  "deterministic_shared_environment_stepping": true,
-  "paper_state_contract_bound": true,
-  "shared_environment_interaction_available": true
-}

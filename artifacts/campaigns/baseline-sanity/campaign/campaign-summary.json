@@ -1,9 +1,0 @@
-{
-  "mean_average_delay": 5.25,
-  "mean_drop_ratio": 0.0,
-  "result_count": 28,
-  "total_completed_tasks": 236,
-  "total_dropped_tasks": 0,
-  "total_tasks": 236,
-  "total_throughput": 236
-}

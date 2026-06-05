@@ -1,5 +1,0 @@
-{
-  "delayed_reward_to_originating_agent": true,
-  "pending_at_horizon": false,
-  "reward_recipient_agent_id": "1"
-}
