@@ -85,7 +85,11 @@ class HoodiePaperMetricsFigureCatalogTests(unittest.TestCase):
     def test_output_requirements_cover_blocked_and_ready_figures(self) -> None:
         requirements = {item.requirement_id: item for item in _requirements()}
         self.assertFalse(requirements["req_figure_10a_delay_arrival"].blocked_by_simulator_support)
-        self.assertFalse(requirements["req_figure_9a_reward_arrival"].blocked_by_simulator_support)
+        self.assertTrue(requirements["req_figure_9a_reward_arrival"].blocked_by_simulator_support)
+        self.assertTrue(requirements["req_figure_9b_action_distribution"].blocked_by_simulator_support)
+        self.assertTrue(requirements["req_figure_9c_reward_cpu"].blocked_by_simulator_support)
+        self.assertTrue(requirements["req_figure_9d_reward_agents_traffic"].blocked_by_simulator_support)
+        self.assertTrue(requirements["req_figure_9e_reward_agents_rates"].blocked_by_simulator_support)
         self.assertTrue(requirements["req_figure_8a_training_curve"].blocked_by_training)
         self.assertTrue(requirements["req_figure_11_lstm_ablation"].blocked_by_lstm)
 
@@ -95,8 +99,15 @@ class HoodiePaperMetricsFigureCatalogTests(unittest.TestCase):
         self.assertEqual(report.metrics_cataloged, 6)
         self.assertEqual(report.simulator_output_requirements, 14)
         self.assertIn("Figure 10a", report.ready_now_figures)
-        self.assertIn("Figure 9a", report.ready_now_figures)
+        self.assertNotIn("Figure 9a", report.ready_now_figures)
+        self.assertIn("Figure 9a", report.blocked_figures)
+        self.assertIn("Figure 9b", report.blocked_figures)
+        self.assertIn("Figure 9c", report.blocked_figures)
+        self.assertIn("Figure 9d", report.blocked_figures)
+        self.assertIn("Figure 9e", report.blocked_figures)
         self.assertIn("Figure 8a", report.future_required_figures)
+        self.assertIn("Figure 8b", report.future_required_figures)
+        self.assertIn("Figure 11", report.future_required_figures)
 
     def test_generate_artifacts_writes_files(self) -> None:
         artifact_dir = Path("/tmp/feature_089_test_artifacts")
@@ -122,74 +133,28 @@ class HoodiePaperMetricsFigureCatalogTests(unittest.TestCase):
         self.assertTrue(all(abs(row["paper_style_delay_for_plotting"] + row["task_completion_delay_raw"]) < 1e-9 for row in delay_payload))
 
         reward_payload = json.loads((artifact_dir / "figure_9a_reward_vs_arrival_probability.json").read_text(encoding="utf-8"))
-        self.assertEqual(len(reward_payload), 15)
-        self.assertEqual({row["curve_label"] for row in reward_payload}, {"N=10", "N=15", "N=20"})
-        self.assertEqual({row["paper_curve_dimension"] for row in reward_payload}, {"number_of_agents"})
-        self.assertEqual({row["paper_validation_episodes"] for row in reward_payload}, {200})
-        self.assertEqual({row["simulator_validation_episodes"] for row in reward_payload}, {3})
-        self.assertTrue(all(row["agent_count_curve"] == row["number_of_agents"] for row in reward_payload))
-        self.assertTrue(all(row["policy"] == "HOODIE" for row in reward_payload))
-        self.assertTrue(all(row["status"] == "simulator_generated" for row in reward_payload))
-        self.assertTrue(all(row["seed_count"] == 3 for row in reward_payload))
-        self.assertTrue(all(row["total_selected_actions"] == row["finalized_terminal_tasks"] for row in reward_payload))
+        self.assertEqual(len(reward_payload), 1)
+        self.assertEqual(reward_payload[0]["policy"], "HOODIE")
+        self.assertEqual(reward_payload[0]["status"], "blocked_by_simulator_support")
+        self.assertEqual(reward_payload[0]["sweep_values"], [0.1, 0.3, 0.5, 0.7, 0.9])
+        self.assertIn("Reference-only Figure 9 behavior output", reward_payload[0]["notes"])
 
         action_payload = json.loads((artifact_dir / "figure_9b_action_distribution_vs_arrival_probability.json").read_text(encoding="utf-8"))
-        self.assertEqual(len(action_payload), 15)
-        self.assertEqual({row["paper_curve_dimension"] for row in action_payload}, {"task_arrival_probability"})
-        self.assertEqual({row["action_type"] for row in action_payload}, {"local", "horizontal", "vertical"})
-        self.assertEqual({row["curve_label"] for row in action_payload}, {"local", "horizontal", "vertical"})
-        self.assertEqual({row["number_of_agents"] for row in action_payload}, {20})
-        self.assertEqual({row["arrival_probability_bar"] for row in action_payload}, {0.1, 0.3, 0.5, 0.7, 0.9})
-        self.assertTrue(all(row["paper_x_axis_value"] == row["action_type"] for row in action_payload))
-        self.assertTrue(
-            all(
-                (
-                    abs((row["local_action_share"] + row["horizontal_action_share"] + row["vertical_action_share"]))
-                    < 1e-9
-                    if row["total_selected_actions"] == 0
-                    else abs((row["local_action_share"] + row["horizontal_action_share"] + row["vertical_action_share"]) - 1.0) < 1e-9
-                )
-                for row in action_payload
-            )
-        )
-        self.assertTrue(all(row["total_selected_actions"] == row["finalized_terminal_tasks"] for row in action_payload))
-        for probability in {0.1, 0.3, 0.5, 0.7, 0.9}:
-            rows_for_probability = [row for row in action_payload if row["arrival_probability_bar"] == probability]
-            self.assertEqual(len(rows_for_probability), 3)
-            self.assertEqual(
-                sum(row["action_count"] for row in rows_for_probability),
-                rows_for_probability[0]["total_selected_actions"],
-            )
+        self.assertEqual(len(action_payload), 1)
+        self.assertEqual(action_payload[0]["status"], "blocked_by_simulator_support")
+        self.assertEqual(action_payload[0]["metric"], "action_distribution")
+        self.assertEqual(action_payload[0]["x_axis"], "action_type")
+        self.assertIn("trained HOODIE DRL/LSTM", action_payload[0]["notes"])
 
         traffic_payload = json.loads((artifact_dir / "figure_9d_reward_vs_agent_count_traffic.json").read_text(encoding="utf-8"))
-        self.assertEqual({row["curve_label"] for row in traffic_payload}, {"moderate", "heavy", "extreme"})
-        self.assertEqual({row["sweep_value"] for row in traffic_payload}, {10.0, 15.0, 20.0, 25.0, 30.0})
-        self.assertEqual(
-            {
-                (row["curve_label"], row["arrival_probability"], row["task_size_mbits_min"], row["task_size_mbits_max"])
-                for row in traffic_payload
-            },
-            {
-                ("moderate", 0.5, 1.0, 3.0),
-                ("heavy", 0.7, 2.0, 5.0),
-                ("extreme", 0.9, 3.0, 7.0),
-            },
-        )
+        self.assertEqual(len(traffic_payload), 1)
+        self.assertEqual(traffic_payload[0]["status"], "blocked_by_simulator_support")
+        self.assertEqual(traffic_payload[0]["sweep_values"], [10, 15, 20, 25, 30])
 
         rate_payload = json.loads((artifact_dir / "figure_9e_reward_vs_agent_count_data_rate.json").read_text(encoding="utf-8"))
-        self.assertEqual({row["horizontal_data_rate_mbps"] for row in rate_payload}, {5.0, 10.0, 20.0})
-        self.assertEqual({row["vertical_data_rate_mbps"] for row in rate_payload}, {20.0, 30.0, 40.0})
-        self.assertEqual(
-            {
-                (row["curve_label"], row["horizontal_data_rate_mbps"], row["vertical_data_rate_mbps"])
-                for row in rate_payload
-            },
-            {
-                ("balanced", 10.0, 30.0),
-                ("horizontal_centric", 20.0, 20.0),
-                ("vertical_centric", 5.0, 40.0),
-            },
-        )
+        self.assertEqual(len(rate_payload), 1)
+        self.assertEqual(rate_payload[0]["status"], "blocked_by_simulator_support")
+        self.assertEqual(rate_payload[0]["sweep_values"], [10, 15, 20, 25, 30])
 
         drop_payload = json.loads((artifact_dir / "figure_10f_drop_ratio_vs_timeout.json").read_text(encoding="utf-8"))
         self.assertEqual(len(drop_payload), len(ACTIVE_POLICIES) * 5)

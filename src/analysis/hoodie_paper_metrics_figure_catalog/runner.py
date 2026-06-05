@@ -477,7 +477,7 @@ def _ordered_figures() -> list[PaperFigure]:
             pdf_verified=True,
             ocr_caveat="OCR and PDF disagree on some tick labels; the paper text supports the 0.1-0.9 sweep.",
             simulator_output_requirement_id="req_figure_9a_reward_arrival",
-            output_status="required_now",
+            output_status="reference_only",
             claim_boundary=FEATURE_080_BOUNDARY + FEATURE_086_BOUNDARY,
         ),
         PaperFigure(
@@ -498,7 +498,7 @@ def _ordered_figures() -> list[PaperFigure]:
             pdf_verified=True,
             ocr_caveat="Action categories are explicit in the paper text.",
             simulator_output_requirement_id="req_figure_9b_action_distribution",
-            output_status="required_now",
+            output_status="reference_only",
             claim_boundary=FEATURE_080_BOUNDARY + FEATURE_086_BOUNDARY,
         ),
         PaperFigure(
@@ -519,7 +519,7 @@ def _ordered_figures() -> list[PaperFigure]:
             pdf_verified=True,
             ocr_caveat="CPU sweep values are explicit in the paper text.",
             simulator_output_requirement_id="req_figure_9c_reward_cpu",
-            output_status="required_now",
+            output_status="reference_only",
             claim_boundary=FEATURE_080_BOUNDARY + FEATURE_086_BOUNDARY,
         ),
         PaperFigure(
@@ -540,7 +540,7 @@ def _ordered_figures() -> list[PaperFigure]:
             pdf_verified=True,
             ocr_caveat="Traffic-intensity scenarios are explicit in the paper text.",
             simulator_output_requirement_id="req_figure_9d_reward_agents_traffic",
-            output_status="required_now",
+            output_status="reference_only",
             claim_boundary=FEATURE_080_BOUNDARY + FEATURE_086_BOUNDARY,
         ),
         PaperFigure(
@@ -561,7 +561,7 @@ def _ordered_figures() -> list[PaperFigure]:
             pdf_verified=True,
             ocr_caveat="Data-rate configurations are explicit in the paper text.",
             simulator_output_requirement_id="req_figure_9e_reward_agents_rates",
-            output_status="required_now",
+            output_status="reference_only",
             claim_boundary=FEATURE_080_BOUNDARY + FEATURE_086_BOUNDARY,
         ),
         PaperFigure(
@@ -909,8 +909,8 @@ def _requirements() -> list[SimulatorOutputRequirement]:
             implementation_priority="priority_2",
             blocked_by_training=False,
             blocked_by_lstm=False,
-            blocked_by_simulator_support=False,
-            notes="Live simulator sweep over arrival probability with N=10/15/20 as the paper curve dimension. Keep the Feature 080 and 086 claim boundaries intact.",
+            blocked_by_simulator_support=True,
+            notes="Reference-only Figure 9 behavior output. Do not schedule as deterministic simulator output until trained HOODIE DRL/LSTM policy support and paper validation semantics are available.",
             claim_boundary=FEATURE_080_BOUNDARY + FEATURE_086_BOUNDARY,
         ),
         SimulatorOutputRequirement(
@@ -926,8 +926,8 @@ def _requirements() -> list[SimulatorOutputRequirement]:
             implementation_priority="priority_2",
             blocked_by_training=False,
             blocked_by_lstm=False,
-            blocked_by_simulator_support=False,
-            notes="Live simulator action-distribution output with action type as the paper x-axis and arrival probability as the bar-group dimension at Table 4 N=20.",
+            blocked_by_simulator_support=True,
+            notes="Reference-only Figure 9 behavior output. Action type remains the paper x-axis, but generation is blocked until trained HOODIE DRL/LSTM policy support and paper validation semantics are available.",
             claim_boundary=FEATURE_080_BOUNDARY + FEATURE_086_BOUNDARY,
         ),
         SimulatorOutputRequirement(
@@ -943,8 +943,8 @@ def _requirements() -> list[SimulatorOutputRequirement]:
             implementation_priority="priority_2",
             blocked_by_training=False,
             blocked_by_lstm=False,
-            blocked_by_simulator_support=False,
-            notes="Live simulator sweep over CPU capacity with curve-wise agent counts.",
+            blocked_by_simulator_support=True,
+            notes="Reference-only Figure 9 behavior output. Do not schedule as deterministic simulator output until trained HOODIE DRL/LSTM policy support and paper validation semantics are available.",
             claim_boundary=FEATURE_080_BOUNDARY + FEATURE_086_BOUNDARY,
         ),
         SimulatorOutputRequirement(
@@ -960,8 +960,8 @@ def _requirements() -> list[SimulatorOutputRequirement]:
             implementation_priority="priority_2",
             blocked_by_training=False,
             blocked_by_lstm=False,
-            blocked_by_simulator_support=False,
-            notes="Live simulator sweep over agent count and traffic intensity using supported traffic presets.",
+            blocked_by_simulator_support=True,
+            notes="Reference-only Figure 9 behavior output. Agent-count traffic sweep is cataloged but blocked until trained HOODIE DRL/LSTM policy support and paper validation semantics are available.",
             claim_boundary=FEATURE_080_BOUNDARY + FEATURE_086_BOUNDARY,
         ),
         SimulatorOutputRequirement(
@@ -977,8 +977,8 @@ def _requirements() -> list[SimulatorOutputRequirement]:
             implementation_priority="priority_2",
             blocked_by_training=False,
             blocked_by_lstm=False,
-            blocked_by_simulator_support=False,
-            notes="Live simulator sweep over agent count and data-rate configurations using the supported link-rate control path.",
+            blocked_by_simulator_support=True,
+            notes="Reference-only Figure 9 behavior output. Agent-count data-rate sweep is cataloged but blocked until trained HOODIE DRL/LSTM policy support and paper validation semantics are available.",
             claim_boundary=FEATURE_080_BOUNDARY + FEATURE_086_BOUNDARY,
         ),
         SimulatorOutputRequirement(
@@ -1066,7 +1066,7 @@ def _figure_output_rows(figure: PaperFigure, requirement: SimulatorOutputRequire
     if figure.figure_id in PRIORITY_1_FIGURES:
         metric_name = "task_completion_delay" if "delay" in figure.caption.lower() else "task_drop_ratio"
     elif figure.figure_id in PRIORITY_2_FIGURES:
-        metric_name = "average_reward"
+        metric_name = figure.metric
     else:
         metric_name = "accumulated_reward" if figure.figure_id.startswith("Figure 8") else "average_task_delay_with_vs_without_lstm"
 
@@ -1537,7 +1537,7 @@ def _write_figure_output_files(artifact_dir: Path, figures: list[PaperFigure], r
         csv_name, json_name = filenames[figure_id]
         if figure_id in figure_10_ids:
             rows = _figure_10_output_rows(figure)
-        elif figure_id in PRIORITY_2_FIGURES:
+        elif figure_id in PRIORITY_2_FIGURES and not requirement.blocked_by_simulator_support:
             rows = _figure_9_output_rows(figure)
         else:
             rows = _figure_output_rows(figure, requirement, references)
@@ -1609,7 +1609,7 @@ def _report(figures: list[PaperFigure], metrics: list[PaperMetric], requirements
         feature_080_boundary=FEATURE_080_BOUNDARY,
         allowed_policies=ACTIVE_POLICIES,
         remaining_limitations=(
-            "Figure 9d and Figure 9e use the simulator's dynamic multi-agent topology support path to scale beyond the 20-node Figure 7 runtime fixture.",
+            "Figure 9a-9e remain blocked/reference-only because faithful behavior outputs require trained HOODIE DRL/LSTM policy support and paper validation semantics.",
             "Figures 8a, 8b, and 11 remain future-required because they depend on trained DRL and LSTM artifacts.",
             "Figure 10 output files are live simulator sweeps over the approved runtime controls, with Feature 086 approximations preserved for the plotting transforms.",
         ),
@@ -1805,6 +1805,32 @@ def _validate_figure_9_output(path: Path, figure: PaperFigure) -> None:
                 raise ValueError(f"{path.name} must sweep Figure 9e on number of agents")
 
 
+def _validate_blocked_figure_9_output(path: Path, figure: PaperFigure) -> None:
+    payload = json.loads(path.read_text(encoding="utf-8"))
+    if not isinstance(payload, list):
+        raise ValueError(f"{path.name} must contain a JSON array")
+    if len(payload) != 1:
+        raise ValueError(f"{path.name} must contain one reference-only row while Figure 9 is blocked")
+    row = payload[0]
+    if row.get("figure_id") != figure.figure_id:
+        raise ValueError(f"{path.name} contains a row for the wrong figure")
+    if row.get("policy") != "HOODIE":
+        raise ValueError(f"{path.name} must keep blocked Figure 9 outputs HOODIE-only")
+    if row.get("status") != "blocked_by_simulator_support":
+        raise ValueError(f"{path.name} must mark Figure 9 as blocked by simulator support")
+    if row.get("metric") != figure.metric:
+        raise ValueError(f"{path.name} must preserve the Figure 9 paper metric while blocked")
+    if row.get("x_axis") != figure.x_axis:
+        raise ValueError(f"{path.name} must preserve the paper x-axis while blocked")
+    if list(row.get("sweep_values", [])) != list(figure.sweep_values):
+        raise ValueError(f"{path.name} must preserve the Figure 9 sweep values while blocked")
+    notes = str(row.get("notes", ""))
+    if "Reference-only Figure 9 behavior output" not in notes:
+        raise ValueError(f"{path.name} must explain the Figure 9 reference-only boundary")
+    if "trained HOODIE DRL/LSTM" not in notes:
+        raise ValueError(f"{path.name} must document the trained-policy blocker")
+
+
 def validate_artifacts(artifact_dir: Path | None = None) -> Feature089Report:
     artifact_dir = artifact_dir or ARTIFACT_DIR
     report = _report(_ordered_figures(), _paper_metric_catalog(), _requirements())
@@ -1867,7 +1893,7 @@ def validate_artifacts(artifact_dir: Path | None = None) -> Feature089Report:
         "Figure 9e": artifact_dir / "figure_9e_reward_vs_agent_count_data_rate.json",
     }
     for figure_id, path in figure_9_paths.items():
-        _validate_figure_9_output(path, figures[figure_id])
+        _validate_blocked_figure_9_output(path, figures[figure_id])
     return report
 
 

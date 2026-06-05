@@ -99,7 +99,7 @@
     "figure_id": "Figure 9a",
     "metric": "average_reward",
     "ocr_caveat": "OCR and PDF disagree on some tick labels; the paper text supports the 0.1-0.9 sweep.",
-    "output_status": "required_now",
+    "output_status": "reference_only",
     "paper_section": "Section V.B",
     "pdf_verified": true,
     "policies_or_curves": [
@@ -141,7 +141,7 @@
     "figure_id": "Figure 9b",
     "metric": "action_distribution",
     "ocr_caveat": "Action categories are explicit in the paper text.",
-    "output_status": "required_now",
+    "output_status": "reference_only",
     "paper_section": "Section V.B",
     "pdf_verified": true,
     "policies_or_curves": [
@@ -183,7 +183,7 @@
     "figure_id": "Figure 9c",
     "metric": "average_reward",
     "ocr_caveat": "CPU sweep values are explicit in the paper text.",
-    "output_status": "required_now",
+    "output_status": "reference_only",
     "paper_section": "Section V.B",
     "pdf_verified": true,
     "policies_or_curves": [
@@ -226,7 +226,7 @@
     "figure_id": "Figure 9d",
     "metric": "average_reward",
     "ocr_caveat": "Traffic-intensity scenarios are explicit in the paper text.",
-    "output_status": "required_now",
+    "output_status": "reference_only",
     "paper_section": "Section V.B",
     "pdf_verified": true,
     "policies_or_curves": [
@@ -268,7 +268,7 @@
     "figure_id": "Figure 9e",
     "metric": "average_reward",
     "ocr_caveat": "Data-rate configurations are explicit in the paper text.",
-    "output_status": "required_now",
+    "output_status": "reference_only",
     "paper_section": "Section V.B",
     "pdf_verified": true,
     "policies_or_curves": [

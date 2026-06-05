@@ -313,7 +313,7 @@
       "figure_9a_reward_vs_arrival_probability.json"
     ],
     "blocked_by_lstm": false,
-    "blocked_by_simulator_support": false,
+    "blocked_by_simulator_support": true,
     "blocked_by_training": false,
     "claim_boundary": [
       "Feature 080 prepares HOODIE_PROPOSED for later evaluation.",
@@ -331,7 +331,7 @@
     "metrics": [
       "average_reward"
     ],
-    "notes": "Live simulator sweep over arrival probability with N=10/15/20 as the paper curve dimension. Keep the Feature 080 and 086 claim boundaries intact.",
+    "notes": "Reference-only Figure 9 behavior output. Do not schedule as deterministic simulator output until trained HOODIE DRL/LSTM policy support and paper validation semantics are available.",
     "output_family": "arrival_probability_reward_sweep",
     "policies": [
       "HOODIE"
@@ -356,7 +356,7 @@
       "figure_9b_action_distribution_vs_arrival_probability.json"
     ],
     "blocked_by_lstm": false,
-    "blocked_by_simulator_support": false,
+    "blocked_by_simulator_support": true,
     "blocked_by_training": false,
     "claim_boundary": [
       "Feature 080 prepares HOODIE_PROPOSED for later evaluation.",
@@ -374,7 +374,7 @@
     "metrics": [
       "action_distribution"
     ],
-    "notes": "Live simulator action-distribution output with action type as the paper x-axis and arrival probability as the bar-group dimension at Table 4 N=20.",
+    "notes": "Reference-only Figure 9 behavior output. Action type remains the paper x-axis, but generation is blocked until trained HOODIE DRL/LSTM policy support and paper validation semantics are available.",
     "output_family": "arrival_probability_action_distribution",
     "policies": [
       "HOODIE"
@@ -399,7 +399,7 @@
       "figure_9c_reward_vs_cpu_capacity.json"
     ],
     "blocked_by_lstm": false,
-    "blocked_by_simulator_support": false,
+    "blocked_by_simulator_support": true,
     "blocked_by_training": false,
     "claim_boundary": [
       "Feature 080 prepares HOODIE_PROPOSED for later evaluation.",
@@ -417,7 +417,7 @@
     "metrics": [
       "average_reward"
     ],
-    "notes": "Live simulator sweep over CPU capacity with curve-wise agent counts.",
+    "notes": "Reference-only Figure 9 behavior output. Do not schedule as deterministic simulator output until trained HOODIE DRL/LSTM policy support and paper validation semantics are available.",
     "output_family": "cpu_capacity_reward_sweep",
     "policies": [
       "HOODIE"
@@ -443,7 +443,7 @@
       "figure_9d_reward_vs_agent_count_traffic.json"
     ],
     "blocked_by_lstm": false,
-    "blocked_by_simulator_support": false,
+    "blocked_by_simulator_support": true,
     "blocked_by_training": false,
     "claim_boundary": [
       "Feature 080 prepares HOODIE_PROPOSED for later evaluation.",
@@ -461,7 +461,7 @@
     "metrics": [
       "average_reward"
     ],
-    "notes": "Live simulator sweep over agent count and traffic intensity using supported traffic presets.",
+    "notes": "Reference-only Figure 9 behavior output. Agent-count traffic sweep is cataloged but blocked until trained HOODIE DRL/LSTM policy support and paper validation semantics are available.",
     "output_family": "agent_count_traffic_reward_sweep",
     "policies": [
       "HOODIE"
@@ -486,7 +486,7 @@
       "figure_9e_reward_vs_agent_count_data_rate.json"
     ],
     "blocked_by_lstm": false,
-    "blocked_by_simulator_support": false,
+    "blocked_by_simulator_support": true,
     "blocked_by_training": false,
     "claim_boundary": [
       "Feature 080 prepares HOODIE_PROPOSED for later evaluation.",
@@ -504,7 +504,7 @@
     "metrics": [
       "average_reward"
     ],
-    "notes": "Live simulator sweep over agent count and data-rate configurations using the supported link-rate control path.",
+    "notes": "Reference-only Figure 9 behavior output. Agent-count data-rate sweep is cataloged but blocked until trained HOODIE DRL/LSTM policy support and paper validation semantics are available.",
     "output_family": "agent_count_data_rate_reward_sweep",
     "policies": [
       "HOODIE"
