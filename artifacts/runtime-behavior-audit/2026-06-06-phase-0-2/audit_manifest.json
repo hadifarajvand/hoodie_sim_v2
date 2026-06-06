@@ -1,0 +1,35 @@
+{
+  "branch": "100-hoodie-paper-base",
+  "baseline_commit": "f114960cf12931ad6238c38ee8397649bbaec4cb",
+  "current_commit_before_audit": "f114960cf12931ad6238c38ee8397649bbaec4cb",
+  "audit_timestamp": "2026-06-06",
+  "smoke_folder_path": "artifacts/runtime-audit-smoke/2026-06-06-071900",
+  "files_inspected": [
+    "main.py",
+    "environment/environment.py",
+    "environment/queues.py",
+    "environment/task.py",
+    "environment/task_generator.py",
+    "environment/server.py",
+    "environment/cloud.py",
+    "environment/matchmaker.py",
+    "decision_makers/agent.py",
+    "decision_makers/dummies.py",
+    "decision_makers/rule_based.py",
+    "utils/__init__.py",
+    "artifacts/runtime-audit-smoke/2026-06-06-071900/run_command.txt",
+    "artifacts/runtime-audit-smoke/2026-06-06-071900/run_stdout.txt",
+    "artifacts/runtime-audit-smoke/2026-06-06-071900/run_stderr.txt",
+    "artifacts/runtime-audit-smoke/2026-06-06-071900/exit_code.txt",
+    "artifacts/runtime-audit-smoke/2026-06-06-071900/run_manifest.json",
+    "artifacts/runtime-audit-smoke/2026-06-06-071900/run_report.md",
+    "artifacts/runtime-audit-smoke/2026-06-06-071900/log_folder/scheduler.pth"
+  ],
+  "artifacts_created": [
+    "artifacts/runtime-behavior-audit/2026-06-06-phase-0-2/runtime_behavior_audit.md",
+    "artifacts/runtime-behavior-audit/2026-06-06-phase-0-2/runtime_gap_matrix.csv",
+    "artifacts/runtime-behavior-audit/2026-06-06-phase-0-2/code_trace.md",
+    "artifacts/runtime-behavior-audit/2026-06-06-phase-0-2/audit_manifest.json"
+  ],
+  "simulator_logic_modified": false
+}
