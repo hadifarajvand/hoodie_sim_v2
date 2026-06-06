@@ -1,0 +1,33 @@
+{
+  "action_count": 5,
+  "approximation_warnings": [
+    "state and next_state were reconstructed from task lifecycle fields"
+  ],
+  "episodes": 1,
+  "missing_optional_fields": {
+    "baseline_name": 0,
+    "policy_name": 0,
+    "step_index": 0,
+    "task_id": 0
+  },
+  "notes": [
+    "reconstructed transitions from task lifecycle traces"
+  ],
+  "reconstructed": true,
+  "required_files_present": {
+    "action_trace.csv": true,
+    "episode_metrics.csv": true,
+    "queue_trace.csv": true,
+    "task_lifecycle.csv": true
+  },
+  "reward_max": 0.0,
+  "reward_mean": -0.172346716790167,
+  "reward_min": -1.225000023841858,
+  "source_trace_dir": "artifacts/phase3_trace_smoke",
+  "state_dim": 2,
+  "transitions": 3213,
+  "unavailable_fields": [
+    "state",
+    "next_state"
+  ]
+}

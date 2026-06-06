@@ -56,6 +56,13 @@ class ReplayBuffer:
         indices = self._rng.choice(len(self._buffer), size=batch_size, replace=False)
         return [self._buffer[int(index)] for index in indices]
 
+    def sample_indices(self, batch_size: int) -> np.ndarray:
+        if batch_size <= 0:
+            raise ValueError("batch_size must be positive")
+        if batch_size > len(self._buffer):
+            raise ValueError("batch_size exceeds buffer length")
+        return self._rng.choice(len(self._buffer), size=batch_size, replace=False)
+
     def clear(self) -> None:
         self._buffer.clear()
         self._position = 0

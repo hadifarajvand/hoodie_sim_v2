@@ -17,7 +17,7 @@ REQUIRED_FIELDS = {"state", "action", "reward", "next_state", "done"}
 
 @dataclass(frozen=True)
 class TraceDatasetSummary:
-    trace_dir: str
+    source_trace_dir: str
     episodes: int
     transitions: int
     state_dim: int | None
@@ -25,7 +25,10 @@ class TraceDatasetSummary:
     reward_mean: float | None
     reward_min: float | None
     reward_max: float | None
+    required_files_present: dict[str, bool]
     missing_optional_fields: dict[str, int]
+    unavailable_fields: list[str]
+    approximation_warnings: list[str]
     reconstructed: bool
     notes: list[str]
 
@@ -41,6 +44,14 @@ def _iter_files(trace_dir: Path) -> list[Path]:
     for pattern in ("*.json", "*.jsonl", "*.csv"):
         files.extend(trace_dir.rglob(pattern))
     return sorted({path for path in files if path.is_file()})
+
+
+REQUIRED_TRACE_FILES = (
+    "task_lifecycle.csv",
+    "queue_trace.csv",
+    "action_trace.csv",
+    "episode_metrics.csv",
+)
 
 
 def _load_json_file(path: Path) -> list[dict[str, Any]]:
@@ -169,14 +180,20 @@ def _reconstruct_from_task_traces(rows: list[dict[str, Any]]) -> list[Transition
 
 def load_trace_dataset(trace_dir: str | Path) -> tuple[list[Transition], TraceDatasetSummary]:
     trace_dir = Path(trace_dir)
+    required_files_present = {name: (trace_dir / name).exists() for name in REQUIRED_TRACE_FILES}
+    missing_required_files = [name for name, present in required_files_present.items() if not present]
     rows: list[dict[str, Any]] = []
     notes: list[str] = []
+    unavailable_fields: list[str] = []
+    approximation_warnings: list[str] = []
     missing_optional_fields = {
         "task_id": 0,
         "step_index": 0,
         "policy_name": 0,
         "baseline_name": 0,
     }
+    if missing_required_files:
+        raise ValueError(f"missing required trace files: {missing_required_files}")
     for path in _iter_files(trace_dir):
         loaded = _load_any(path)
         rows.extend(loaded)
@@ -197,14 +214,19 @@ def load_trace_dataset(trace_dir: str | Path) -> tuple[list[Transition], TraceDa
             transitions = _reconstruct_from_task_traces(task_rows)
             reconstructed = True
             notes.append("reconstructed transitions from task lifecycle traces")
+            unavailable_fields.extend(["state", "next_state"])
+            approximation_warnings.append("state and next_state were reconstructed from task lifecycle fields")
         else:
             raise ValueError("trace directory does not contain direct RL transitions or task traces")
 
+    if not transitions:
+        raise ValueError("trace directory did not produce any training transitions")
+
     rewards = [transition.reward for transition in transitions]
     state_dim = len(transitions[0].state) if transitions else None
-    action_count = len(sorted({transition.action for transition in transitions})) if transitions else None
+    action_count = (max(transition.action for transition in transitions) + 1) if transitions else None
     summary = TraceDatasetSummary(
-        trace_dir=str(trace_dir),
+        source_trace_dir=str(trace_dir),
         episodes=len({transition.episode_id for transition in transitions if transition.episode_id is not None}),
         transitions=len(transitions),
         state_dim=state_dim,
@@ -212,7 +234,10 @@ def load_trace_dataset(trace_dir: str | Path) -> tuple[list[Transition], TraceDa
         reward_mean=mean(rewards) if rewards else None,
         reward_min=min(rewards) if rewards else None,
         reward_max=max(rewards) if rewards else None,
+        required_files_present=required_files_present,
         missing_optional_fields=missing_optional_fields,
+        unavailable_fields=unavailable_fields,
+        approximation_warnings=approximation_warnings,
         reconstructed=reconstructed,
         notes=notes,
     )
