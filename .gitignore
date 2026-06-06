@@ -1,3 +1,4 @@
 __pycache__/
 log_folder/
 .venvmac
+outputs/phase1_traces/
