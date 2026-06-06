@@ -2,6 +2,7 @@ from environment import Environment
 from decision_makers import Agent, AllHorizontal, AllLocal, AllVertical,Random,SingleAgent,RoundRobin,RuleBased
 from lr_schedulers import constant,Linear
 from phase1_tracing import TraceRecorder
+from phase2_mechanisms import build_policy_map
 import numpy as np
 import argparse
 import torch
@@ -76,9 +77,17 @@ def main():
         'random': Random,
         'round_robin':RoundRobin,
         'rule_based':RuleBased,
-        "single":SingleAgent
+        "single":SingleAgent,
+        "HOODIE": Agent,
+        "RO": RoundRobin,
+        "FLC": RuleBased,
+        "VO": AllVertical,
+        "HO": AllHorizontal,
+        "BCO": SingleAgent,
+        "MLEO": RuleBased,
     }
     chosen_descision_maker = decision_makers_choice[hyperparameters['decision_makers']]
+    print("Baseline policy aliases:", build_policy_map())
 
     decision_makers = []
     

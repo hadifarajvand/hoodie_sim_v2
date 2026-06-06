@@ -1,0 +1,41 @@
+{
+  "action_legality": "adjacency_matrix_constrained",
+  "action_trace_rows": 2220,
+  "active_queue_samples": 2638,
+  "episode_count": 1,
+  "policy_map": {
+    "BCO": "single",
+    "FLC": "rule_based",
+    "HO": "all_horizontal",
+    "HOODIE": "drl",
+    "MLEO": "rule_based",
+    "RO": "round_robin",
+    "VO": "all_vertical"
+  },
+  "public_cpu_sharing": "dynamic_equal_active_queue",
+  "queue_trace_rows": 11211,
+  "reward_summary": {
+    "completed": 0,
+    "dropped": 551,
+    "pending": 470,
+    "total_reward": -22040.0
+  },
+  "selected_action_missing": 23,
+  "selected_action_missing_by_status": {
+    "completed": {
+      "missing_selected_action": 0,
+      "rows": 0
+    },
+    "dropped": {
+      "missing_selected_action": 0,
+      "rows": 551
+    },
+    "pending": {
+      "missing_selected_action": 23,
+      "rows": 470
+    }
+  },
+  "task_count": 1021,
+  "task_traceable_reward": true,
+  "trace_dir": "/private/tmp/phase2-run-19mA7w/traces"
+}

@@ -77,7 +77,7 @@ class Task():
         return 0
 
     def public_process(self,capacity,time):
-        computational_capacity =  capacity  * self.priotiry
+        computational_capacity = capacity
         task_processed = computational_capacity / self.computational_density
         self.remain -= task_processed
         if self.remain <=0:
