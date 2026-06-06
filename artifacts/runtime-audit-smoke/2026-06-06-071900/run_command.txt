@@ -1,0 +1,1 @@
+source .venvmac/bin/activate && python main.py --epochs 1 --log_folder artifacts/runtime-audit-smoke/2026-06-06-071900/log_folder

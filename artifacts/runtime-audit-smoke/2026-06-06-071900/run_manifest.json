@@ -1,0 +1,17 @@
+{
+  "branch": "100-hoodie-paper-base",
+  "latest_commit_sha": "dfa6be1cf12931ad6238c38ee8397649bbaec4cb",
+  "python_environment": ".venvmac",
+  "python_command": "source .venvmac/bin/activate && python main.py --epochs 1 --log_folder artifacts/runtime-audit-smoke/2026-06-06-071900/log_folder",
+  "exit_code": 0,
+  "run_folder": "artifacts/runtime-audit-smoke/2026-06-06-071900",
+  "files_created": [
+    "artifacts/runtime-audit-smoke/2026-06-06-071900/run_command.txt",
+    "artifacts/runtime-audit-smoke/2026-06-06-071900/run_stdout.txt",
+    "artifacts/runtime-audit-smoke/2026-06-06-071900/run_stderr.txt",
+    "artifacts/runtime-audit-smoke/2026-06-06-071900/exit_code.txt",
+    "artifacts/runtime-audit-smoke/2026-06-06-071900/log_folder/scheduler.pth"
+  ],
+  "timestamp": "2026-06-06-071900",
+  "note": "Smoke run evidence only. This is not paper-faithful validation."
+}
