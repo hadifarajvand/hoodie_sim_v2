@@ -1,0 +1,14 @@
+{
+  "algorithm": "dqn",
+  "approximation_warnings": [],
+  "artifact_paths": {
+    "checkpoint": "artifacts/phase3_training_smoke_real/phase3_model.chkpt",
+    "dataset_summary": "artifacts/phase3_training_smoke_real/dataset_summary.json",
+    "training_metrics": "artifacts/phase3_training_smoke_real/training_metrics.json"
+  },
+  "completed_work": [
+    "ran one trainer step against trace-derived transitions"
+  ],
+  "skipped_work": [],
+  "unavailable_fields": []
+}

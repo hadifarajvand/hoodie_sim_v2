@@ -1,0 +1,2 @@
+episode_id,total_tasks,completed_tasks,dropped_tasks,pending_tasks,average_latency,average_waiting_time,average_service_time,drop_ratio,average_queue_length,total_reward,mean_reward
+0,1015,0,487,528,7.517447657028913,2.4050387596899223,2.7693798449612403,0.4798029556650246,1.504072004808308,-553.7499389648438,-4.988738059997559

@@ -1,0 +1,1 @@
+{'cfg': {'algorithm': 'dqn', 'input_dim': 2, 'action_dim': 5, 'hidden_sizes': [64, 64], 'gamma': 0.99, 'learning_rate': 0.001, 'batch_size': 8, 'target_update_interval': 10, 'seed': 42}, 'backend_present': False, 'buffer_size': 0, 'gradient_steps': 0}

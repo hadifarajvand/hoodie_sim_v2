@@ -1,0 +1,7 @@
+{
+  "average_reward": 0.0,
+  "consumed_transitions": 8.0,
+  "epsilon": 0.9,
+  "gradient_steps": 1.0,
+  "loss": 0.0
+}

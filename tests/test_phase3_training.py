@@ -116,6 +116,34 @@ class Phase3TrainingTests(unittest.TestCase):
             self.assertTrue((out_dir / "phase3_training_report.json").exists())
             self.assertTrue((out_dir / "dataset_summary.json").exists())
 
+    def test_runtime_trace_smoke_loads_real_transitions(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            trace_dir = Path(tmp) / "runtime_trace"
+            log_dir = Path(tmp) / "logs"
+            smoke = subprocess.run(
+                [
+                    str(PYTHON),
+                    "main.py",
+                    "--epochs",
+                    "1",
+                    "--log_folder",
+                    str(log_dir),
+                    "--trace_output_dir",
+                    str(trace_dir),
+                ],
+                cwd=ROOT,
+                capture_output=True,
+                text=True,
+                check=False,
+            )
+            self.assertEqual(smoke.returncode, 0, msg=smoke.stderr)
+            transitions, summary = load_trace_dataset(trace_dir)
+            self.assertGreater(summary.episodes, 0)
+            self.assertGreater(summary.transitions, 0)
+            self.assertIsNotNone(summary.state_dim)
+            self.assertIsNotNone(summary.action_count)
+            self.assertTrue(transitions)
+
 
 if __name__ == "__main__":
     unittest.main()

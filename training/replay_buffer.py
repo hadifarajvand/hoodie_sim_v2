@@ -14,6 +14,7 @@ class Transition:
     reward: float
     next_state: np.ndarray
     done: bool
+    episode_id: int | None = None
     task_id: int | None = None
     step_index: int | None = None
     policy_name: str | None = None

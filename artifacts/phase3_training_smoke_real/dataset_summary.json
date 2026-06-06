@@ -1,0 +1,20 @@
+{
+  "action_count": 5,
+  "episodes": 1,
+  "missing_optional_fields": {
+    "baseline_name": 0,
+    "policy_name": 0,
+    "step_index": 0,
+    "task_id": 0
+  },
+  "notes": [
+    "reconstructed transitions from task lifecycle traces"
+  ],
+  "reconstructed": true,
+  "reward_max": 0.0,
+  "reward_mean": -0.172346716790167,
+  "reward_min": -1.225000023841858,
+  "state_dim": 2,
+  "trace_dir": "artifacts/phase3_trace_smoke",
+  "transitions": 3213
+}

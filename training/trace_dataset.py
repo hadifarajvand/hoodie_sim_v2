@@ -99,6 +99,7 @@ def _extract_transition(row: dict[str, Any]) -> Transition:
     action = int(row["action"])
     reward = float(row["reward"])
     done = bool(row["done"])
+    episode_id = int(row["episode_id"]) if row.get("episode_id") not in (None, "", "None") else None
     task_id = int(row["task_id"]) if row.get("task_id") not in (None, "", "None") else None
     step_index = int(row["step_index"]) if row.get("step_index") not in (None, "", "None") else None
     policy_name = row.get("policy_name") or row.get("baseline_name")
@@ -108,6 +109,7 @@ def _extract_transition(row: dict[str, Any]) -> Transition:
         reward=reward,
         next_state=next_state,
         done=done,
+        episode_id=episode_id,
         task_id=task_id,
         step_index=step_index,
         policy_name=policy_name,
@@ -156,6 +158,7 @@ def _reconstruct_from_task_traces(rows: list[dict[str, Any]]) -> list[Transition
                     reward=reward,
                     next_state=next_state,
                     done=row.get("final_status") in {"completed", "dropped"},
+                    episode_id=int(float(row["episode_id"])) if row.get("episode_id") not in (None, "", "None") else None,
                     task_id=task_id,
                     step_index=int(float(row.get("time") or row.get("step_index") or idx)),
                     policy_name=row.get("policy_name") or row.get("baseline_name"),
@@ -202,7 +205,7 @@ def load_trace_dataset(trace_dir: str | Path) -> tuple[list[Transition], TraceDa
     action_count = len(sorted({transition.action for transition in transitions})) if transitions else None
     summary = TraceDatasetSummary(
         trace_dir=str(trace_dir),
-        episodes=len({transition.step_index for transition in transitions if transition.step_index is not None}),
+        episodes=len({transition.episode_id for transition in transitions if transition.episode_id is not None}),
         transitions=len(transitions),
         state_dim=state_dim,
         action_count=action_count,
