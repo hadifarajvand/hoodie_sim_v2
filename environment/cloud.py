@@ -23,8 +23,8 @@ class Cloud:
         rewards = self.public_queue_manager.step()
         return rewards
     
-    def add_offloaded_tasks(self,offloaded_tasks):
-        self.public_queue_manager.add_tasks(offloaded_tasks)
+    def add_offloaded_tasks(self,offloaded_tasks, current_time=None):
+        self.public_queue_manager.add_tasks(offloaded_tasks, current_time=current_time)
 
     def get_features(self):
         return self.public_queue_manager.get_queue_lengths()

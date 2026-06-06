@@ -37,18 +37,20 @@ class Server():
     def get_waiting_times(self):
         return  self.processing_queue.get_waiting_time(),self.offloading_queue.get_waiting_time()
     
-    def add_offloaded_tasks(self,offloaded_tasks):
-        self.public_queue_manager.add_tasks(offloaded_tasks)
+    def add_offloaded_tasks(self,offloaded_tasks, current_time=None):
+        self.public_queue_manager.add_tasks(offloaded_tasks, current_time=current_time)
 
-    def step(self,action=None,local_task=None):
+    def step(self,action=None,local_task=None,current_time=None):
         if local_task:
             local_task.set_origin_server_id(self.id)
+            local_task.selected_action = action
+            local_task.processing_node = self.id if action == self.id else action
             if action ==self.id:  
-                self.processing_queue.add_task(local_task)
+                self.processing_queue.add_task(local_task, current_time=current_time)
             else:
                 target_server_id = action
                 local_task.set_target_server_id(target_server_id)
-                self.offloading_queue.add_task(local_task)
+                self.offloading_queue.add_task(local_task, current_time=current_time)
                 
         local_reward = self.processing_queue.step()
         transmited_task,offloaded_reward  = self.offloading_queue.step()

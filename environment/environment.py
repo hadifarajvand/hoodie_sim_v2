@@ -3,6 +3,8 @@ from .cloud import Cloud
 from .task_generator import TaskGenerator
 from .matchmaker import Matchmaker
 from utils import merge_dicts,dict_to_array,remove_diagonal_and_reshape
+from phase1_tracing import TraceRecorder
+from .task import Task
 import numpy as np
 import torch
 import math
@@ -28,15 +30,18 @@ class Environment():
                 computational_density_mins,
                 computational_density_maxs,
                 computational_density_distributions,
-                drop_penalty_mins,
-                drop_penalty_maxs,
-                drop_penalty_distributions,  
-                 number_of_clouds=1) -> None:
+                 drop_penalty_mins,
+                 drop_penalty_maxs,
+                 drop_penalty_distributions,
+                 number_of_clouds=1,
+                 trace_recorder:TraceRecorder|None=None) -> None:
         self.number_of_servers = number_of_servers
         self.number_of_clouds = number_of_clouds
         self.current_time = 0
         self.episode_time_end = episode_time +max(timeout_delay_maxs)
         self.connection_matrix=  connection_matrix
+        self.trace_recorder = trace_recorder
+        Task.trace_recorder = trace_recorder
         get_column = lambda m, i: [row[i] for row in m]
         self.task_generators = [TaskGenerator(id=i,
                                               episode_time=episode_time,
@@ -70,12 +75,15 @@ class Environment():
         self.cloud = Cloud(number_of_servers=number_of_servers,
                            computational_capacity=cloud_computational_capacity)
         
-        
+        previous_recorder = Task.trace_recorder
+        Task.trace_recorder = None
         self.number_of_task_features=  self.task_generators[0].generate().get_number_of_features()
+        Task.trace_recorder = previous_recorder
         self.number_of_server_features = self.servers[0].get_number_of_features()
         self.number_of_features = self.number_of_task_features + self.number_of_server_features
         self.static_frequency = static_frequency
         self.static_counter = 0
+        self.episode_id = 0
         
         self.max_reward = max(drop_penalty_maxs)
         self.max_waiting_time = max(timeout_delay_maxs)
@@ -97,6 +105,8 @@ class Environment():
             server.reset()
         self.cloud.reset()
         self.reset_transmitted_tasks()
+        if self.trace_recorder is not None:
+            self.trace_recorder.start_episode(self.episode_id)
         self.tasks= [t.step() for t in self.task_generators]
         
         observations = self.pack_observation()
@@ -186,8 +196,8 @@ class Environment():
         self.current_time +=1
         
         for s in self.servers:
-            s.add_offloaded_tasks(self.horisontal_transmitted_tasks[s.id])
-        self.cloud.add_offloaded_tasks(self.horisontal_transmitted_tasks[-1])
+            s.add_offloaded_tasks(self.horisontal_transmitted_tasks[s.id], current_time=self.current_time)
+        self.cloud.add_offloaded_tasks(self.horisontal_transmitted_tasks[-1], current_time=self.current_time)
         self.reset_transmitted_tasks()
         
         rewards = self.cloud.step()
@@ -195,7 +205,7 @@ class Environment():
         for server_id in range(self.number_of_servers):
             action = self.matchmakers[server_id].match_action(server_id,actions[server_id])
             self.add_action_info(action,server_id,self.tasks[server_id])
-            transmited_task, server_reward = self.servers[server_id].step(action,self.tasks[server_id])
+            transmited_task, server_reward = self.servers[server_id].step(action,self.tasks[server_id],current_time=self.current_time)
             rewards = merge_dicts(rewards,server_reward)
             if transmited_task:
                 origin_server_id = transmited_task.get_origin_server_id()
@@ -217,8 +227,79 @@ class Environment():
         info['rewards'] = rewards
         info['tasks_arrived'] = np.array(tasks_arrived)
         info['tasks_dropped'] = -np.ceil(rewards)
+        if self.trace_recorder is not None:
+            self._record_queue_traces()
         
         return observations,rewards, done, info
+
+    def _record_queue_traces(self):
+        if self.trace_recorder is None:
+            return
+        episode_id = self.episode_id
+        total_queue_length = 0.0
+        for server in self.servers:
+            q = server.processing_queue
+            self.trace_recorder.note_queue_trace(
+                episode_id=episode_id,
+                time=self.current_time,
+                node_id=server.id,
+                queue_type="private",
+                queue_length=q.get_trace_queue_length(),
+                arrivals=q.arrivals_this_step,
+                departures=q.departures_this_step,
+                drops=q.drops_this_step,
+                cpu_allocated=server.private_queue_computational_capacity,
+            )
+            total_queue_length += q.get_queue_length()
+            q.arrivals_this_step = 0
+            q.departures_this_step = 0
+            q.drops_this_step = 0
+            oq = server.offloading_queue
+            self.trace_recorder.note_queue_trace(
+                episode_id=episode_id,
+                time=self.current_time,
+                node_id=server.id,
+                queue_type="offloading",
+                queue_length=oq.get_trace_queue_length(),
+                arrivals=oq.arrivals_this_step,
+                departures=oq.departures_this_step,
+                drops=oq.drops_this_step,
+                cpu_allocated=server.public_queues_computational_capacity,
+            )
+            total_queue_length += oq.get_queue_length()
+            oq.arrivals_this_step = 0
+            oq.departures_this_step = 0
+            oq.drops_this_step = 0
+            for source_id, pq in server.public_queue_manager.public_queues.items():
+                self.trace_recorder.note_queue_trace(
+                    episode_id=episode_id,
+                    time=self.current_time,
+                    node_id=server.id,
+                    queue_type=f"public:{source_id}",
+                    queue_length=pq.get_trace_queue_length(),
+                    arrivals=pq.arrivals_this_step,
+                    departures=pq.departures_this_step,
+                    drops=pq.drops_this_step,
+                    cpu_allocated=server.public_queues_computational_capacity,
+                )
+                total_queue_length += pq.get_queue_length()
+                pq.arrivals_this_step = 0
+                pq.departures_this_step = 0
+                pq.drops_this_step = 0
+        cloud_queue_length = 0.0
+        for pq in self.cloud.public_queue_manager.public_queues.values():
+            cloud_queue_length += pq.get_trace_queue_length()
+        self.trace_recorder.note_queue_trace(
+            episode_id=episode_id,
+            time=self.current_time,
+            node_id=self.number_of_servers,
+            queue_type="cloud",
+            queue_length=cloud_queue_length,
+            arrivals=0,
+            departures=0,
+            drops=0,
+            cpu_allocated=self.cloud.computational_capacity,
+        )
         
     
     def get_server_dimensions(self,id):
@@ -246,6 +327,3 @@ class Environment():
         
         available_public_cpus = np.append(available_public_cpus, self.cloud.computational_capacity)
         return available_public_cpus
-        
-        
-        

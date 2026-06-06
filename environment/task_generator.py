@@ -54,14 +54,18 @@ class TaskGenerator():
         priotiry = self.priotiry_distributor.generate()
         computational_density = self.computational_density_distributor.generate()
         drop_penalty = self.drop_penalty_distributor.generate()
-        return Task(size=size,
+        task = Task(size=size,
                     arrival_time=self.current_time,
                     timeout_delay=timeout_delay,
                     priotiry=priotiry,
                     computational_density=computational_density,
                     drop_penalty=drop_penalty)
+        recorder = getattr(Task, "trace_recorder", None)
+        if recorder is not None:
+            recorder.note_task_arrival(task, episode_id=getattr(recorder, "_episode_id", None), source_node=self.id, arrival_time=self.current_time)
+        return task
     def get_number_of_features(self):
        return self.generate().get_number_of_features()
    
     def get_maxs(self):
-            return np.array([self.size_max])       
+            return np.array([self.size_max])

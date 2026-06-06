@@ -1,6 +1,7 @@
 from environment import Environment
 from decision_makers import Agent, AllHorizontal, AllLocal, AllVertical,Random,SingleAgent,RoundRobin,RuleBased
 from lr_schedulers import constant,Linear
+from phase1_tracing import TraceRecorder
 import numpy as np
 import argparse
 import torch
@@ -14,9 +15,11 @@ def main():
     parser.add_argument('--hyperparameters_file', type=str, default='hyperparameters/hyperparameters.json', help='Path to the hyperparameters file')
     parser.add_argument('--epochs', type=int, default=2, help='Device to use')
     parser.add_argument('--validate', type=bool, default=False, help='Device to use')
+    parser.add_argument('--trace_output_dir', type=str, default='outputs/phase1_traces', help='Path to trace output directory')
     args  = parser.parse_args()
 
     os.makedirs(args.log_folder, exist_ok=True)
+    trace_recorder = TraceRecorder()
     with open(args.hyperparameters_file) as f:
         hyperparameters = json.load(f)
             
@@ -44,7 +47,8 @@ def main():
         computational_density_distributions=hyperparameters['computational_density_distributions'],
         drop_penalty_mins=hyperparameters['drop_penalty_mins'],
         drop_penalty_maxs=hyperparameters['drop_penalty_maxs'],
-        drop_penalty_distributions=hyperparameters['drop_penalty_distributions']
+        drop_penalty_distributions=hyperparameters['drop_penalty_distributions'],
+        trace_recorder=trace_recorder
     )
     
     
@@ -132,6 +136,7 @@ def main():
             print(key ," : ",hyperparameters[key])
     for epoch in range(args.epochs):
         accumulated_rewards = []
+        env.episode_id = epoch
         observations,done, info = env.reset()
         local_observations,public_queues =observations
         while not done:
@@ -140,6 +145,17 @@ def main():
                 actions[i] = decision_makers[i].choose_action(local_observations[i],public_queues[i])
             observations,rewards,done,info = env.step(actions)
             local_observations_,public_queues_ =observations
+            for i in range(number_of_servers):
+                target_node = env.matchmakers[i].match_action(i, actions[i])
+                trace_recorder.note_action(
+                    episode_id=epoch,
+                    time=env.current_time,
+                    agent_id=i,
+                    observation_shape=np.shape(local_observations[i]),
+                    selected_action=int(actions[i]),
+                    target_node=int(target_node),
+                    reward_received=float(rewards[i]),
+                )
             if not args.validate:
                 for i in range(number_of_servers):
                         decision_makers[i].store_transitions(state = local_observations[i],
@@ -154,10 +170,12 @@ def main():
             accumulated_rewards.append(sum(rewards))
         
         print(f'Epoch {epoch} Accumulated rewards: {sum(accumulated_rewards)/len(accumulated_rewards)}')
+        trace_recorder.finalize_episode(epoch, total_reward=float(sum(accumulated_rewards)), mean_reward=float(sum(accumulated_rewards)/len(accumulated_rewards)) if accumulated_rewards else 0.0)
         if not args.validate:
             for decision_maker in decision_makers:
                 decision_maker.learn() 
                 decision_maker.reset_lstm_history()
+    trace_recorder.export(args.trace_output_dir)
 
                                 
                     
