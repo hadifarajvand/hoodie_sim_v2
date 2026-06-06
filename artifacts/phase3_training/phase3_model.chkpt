@@ -1,0 +1,10 @@
+{
+  "backend_present": false,
+  "buffer_size": 0,
+  "cfg": {
+    "algorithm": "dqn",
+    "note": "checkpoint emitted even though no transitions were available",
+    "seed": 42
+  },
+  "gradient_steps": 0
+}

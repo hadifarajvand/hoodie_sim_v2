@@ -1,0 +1,20 @@
+{
+  "action_count": null,
+  "episodes": 0,
+  "missing_optional_fields": {
+    "baseline_name": 101,
+    "policy_name": 101,
+    "step_index": 101,
+    "task_id": 1
+  },
+  "notes": [
+    "reconstructed transitions from task lifecycle traces"
+  ],
+  "reconstructed": true,
+  "reward_max": null,
+  "reward_mean": null,
+  "reward_min": null,
+  "state_dim": null,
+  "trace_dir": "artifacts/phase2_mechanism_repair",
+  "transitions": 0
+}

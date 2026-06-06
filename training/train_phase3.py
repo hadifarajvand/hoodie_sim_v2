@@ -55,18 +55,36 @@ def main() -> int:
             seed=args.seed,
         )
         trainer = DQNTrainer(trainer_cfg)
+        checkpoint_path = trainer.save(output_dir / "phase3_model.chkpt")
+        report["artifact_paths"]["checkpoint"] = checkpoint_path
         for transition in transitions[: max(1, min(len(transitions), args.batch_size))]:
             trainer.push(transition)
         metrics = trainer.train_step()
         if metrics is not None:
             report["completed_work"].append("ran one trainer step against trace-derived transitions")
-            report["artifact_paths"]["checkpoint"] = trainer.save(output_dir / "phase3_model.chkpt")
             report["artifact_paths"]["training_metrics"] = str(output_dir / "training_metrics.json")
             (output_dir / "training_metrics.json").write_text(json.dumps(metrics, indent=2, sort_keys=True))
         else:
             report["skipped_work"].append("insufficient transitions for a trainer step")
     else:
         report["skipped_work"].append("no transitions available")
+        report["artifact_paths"]["checkpoint"] = str(output_dir / "phase3_model.chkpt")
+        (output_dir / "phase3_model.chkpt").write_text(
+            json.dumps(
+                {
+                    "cfg": {
+                        "algorithm": args.algorithm,
+                        "seed": args.seed,
+                        "note": "checkpoint emitted even though no transitions were available",
+                    },
+                    "backend_present": False,
+                    "buffer_size": 0,
+                    "gradient_steps": 0,
+                },
+                indent=2,
+                sort_keys=True,
+            )
+        )
 
     if args.train_lstm:
         forecaster = LSTMForecaster(args.sequence_length, input_dim=1, hidden_dim=16, target=args.lstm_target, seed=args.seed)

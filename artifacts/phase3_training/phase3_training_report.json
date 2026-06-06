@@ -1,0 +1,13 @@
+{
+  "algorithm": "dqn",
+  "approximation_warnings": [],
+  "artifact_paths": {
+    "checkpoint": "artifacts/phase3_training/phase3_model.chkpt",
+    "dataset_summary": "artifacts/phase3_training/dataset_summary.json"
+  },
+  "completed_work": [],
+  "skipped_work": [
+    "no transitions available"
+  ],
+  "unavailable_fields": []
+}
