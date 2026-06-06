@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 from .task import Task
 from utils import Variabledistributor
 import numpy as np
@@ -54,12 +56,21 @@ class TaskGenerator():
         priotiry = self.priotiry_distributor.generate()
         computational_density = self.computational_density_distributor.generate()
         drop_penalty = self.drop_penalty_distributor.generate()
-        task = Task(size=size,
-                    arrival_time=self.current_time,
-                    timeout_delay=timeout_delay,
-                    priotiry=priotiry,
-                    computational_density=computational_density,
-                    drop_penalty=drop_penalty)
+        task = Task(
+            size=size,
+            arrival_time=self.current_time,
+            timeout_delay=timeout_delay,
+            priotiry=priotiry,
+            computational_density=computational_density,
+            drop_penalty=drop_penalty,
+            origin_server_id=self.id,
+            source_node_id=self.id,
+            service_id=self.id,
+            input_data_size=size,
+            processing_density=computational_density,
+            timeout=timeout_delay,
+        )
+        task.validate()
         recorder = getattr(Task, "trace_recorder", None)
         if recorder is not None:
             recorder.note_task_arrival(task, episode_id=getattr(recorder, "_episode_id", None), source_node=self.id, arrival_time=self.current_time)
