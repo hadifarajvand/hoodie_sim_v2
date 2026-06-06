@@ -1,0 +1,17 @@
+{
+  "branch": "100-hoodie-paper-base",
+  "latest_commit_sha": "26f84d41019c47e741194b36181d639580cfb4d4",
+  "timestamp": "2026-06-05-223708",
+  "python_command": "python3 main.py --epochs 1 --log_folder artifacts/runtime-audit-smoke/2026-06-05-223708/log_folder",
+  "exit_code": 1,
+  "passed": false,
+  "generated_output_files": [
+    "artifacts/runtime-audit-smoke/2026-06-05-223708/run_command.txt",
+    "artifacts/runtime-audit-smoke/2026-06-05-223708/run_stdout.txt",
+    "artifacts/runtime-audit-smoke/2026-06-05-223708/run_stderr.txt",
+    "artifacts/runtime-audit-smoke/2026-06-05-223708/exit_code.txt"
+  ],
+  "log_folder_created": false,
+  "log_folder_files": [],
+  "note": "Smoke run only. This is execution evidence plus gap analysis, not paper-faithful validation."
+}

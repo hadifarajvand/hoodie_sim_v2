@@ -1,0 +1,1 @@
+python3 main.py --epochs 1 --log_folder artifacts/runtime-audit-smoke/2026-06-05-223708/log_folder

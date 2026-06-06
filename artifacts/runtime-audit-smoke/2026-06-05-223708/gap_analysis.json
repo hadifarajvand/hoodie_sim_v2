@@ -1,0 +1,104 @@
+{
+  "run_summary": {
+    "branch": "100-hoodie-paper-base",
+    "exit_code": 1,
+    "result": "failed",
+    "failure_mode": "Import error before simulator startup: missing matplotlib dependency in utils/__init__.py"
+  },
+  "gap_categories": {
+    "repository_transfer_status": {
+      "status": "not paper-targeted",
+      "findings": [
+        "This branch contains the original HOODIE simulator stack with legacy top-level modules (environment/, decision_makers/, hyperparameters/, utils/).",
+        "The repository is not organized around the paper-faithful runtime core package requested by the 090-A target.",
+        "The implementation layout appears to be the legacy codebase, not the feature-scoped runtime rebuild."
+      ]
+    },
+    "runtime_lifecycle": {
+      "status": "incomplete",
+      "findings": [
+        "`environment/environment.py` uses `episode_time_end = episode_time + max(timeout_delay_maxs)`, so the episode extends beyond the nominal episode_time instead of an explicit 100 action + drain slot split.",
+        "There is no explicit drain phase or separate action-slot vs drain-slot runtime.",
+        "Completion/drop lifecycle is only implicit through queue/task methods and `info['tasks_dropped'] = -np.ceil(rewards)`; there is no explicit task lifecycle trace or delayed collection registry."
+      ]
+    },
+    "topology_and_action_legality": {
+      "status": "partial",
+      "findings": [
+        "`environment/matchmaker.py` maps action indices to `possible_actions = [local_id] + offloading_servers`, so legality is adjacency-based in the legacy sense.",
+        "The connection matrix is used for server-to-server offloading, but there is no explicit cloud node in the action matrix contract as required by the paper-faithful rebuild.",
+        "Horizontal self-offload is prevented by action mapping, but this is not expressed in a paper-contract topology mode."
+      ]
+    },
+    "queues": {
+      "status": "legacy_approximation",
+      "findings": [
+        "`environment/queues.py` contains private, offloading, and public queues, but the public queue shares capacity by priority weighting, not the paper's equal active-queue CPU split.",
+        "Timeout/drop handling exists, but the status model is not separated into explicit queue_exit_slot and final completion/drop events.",
+        "Public queue behavior is aggregated per supporting server rather than explicit source-specific public queue diagnostics."
+      ]
+    },
+    "reward_model": {
+      "status": "immediate_implicit",
+      "findings": [
+        "Rewards are returned from `Environment.step()` each timestep, so the current contract is immediate step reward aggregation rather than delayed event collection.",
+        "Reward provenance is not preserved back to an original task/action record.",
+        "`tasks_dropped` is inferred from `-np.ceil(rewards)` rather than counted through a dedicated drop tracker."
+      ]
+    },
+    "task_generation": {
+      "status": "partial",
+      "findings": [
+        "`environment/task_generator.py` does implement Bernoulli arrivals via `np.random.rand() > task_arrive_probability`.",
+        "Generated task features are size, timeout, priority, computational density, and drop penalty, but the visible agent state only exposes task size plus queue waiting times.",
+        "The runtime does not expose the paper-targeted task record fields or arrival diagnostics requested for 090-A."
+      ]
+    },
+    "state_model_and_lstm": {
+      "status": "legacy_drl",
+      "findings": [
+        "`decision_makers/agent.py` implements a DQN with LSTM history memory, so the LSTM is model memory inside the agent, not an auditable forecasting pipeline.",
+        "The state vector is built from task size and waiting times, with public queue lengths appended, but there is no exported historical load matrix.",
+        "No explicit load-history artifact export exists in the current codebase."
+      ]
+    },
+    "training_pipeline": {
+      "status": "present_but_not_paper_proof",
+      "findings": [
+        "The code contains DQN, target network, replay memory, epsilon schedule, and learning logic in `decision_makers/agent.py`.",
+        "That is training machinery, but not validation evidence for paper-faithful Figure 8/9/10/11 claims.",
+        "The current smoke run never reached training because the simulator failed on import."
+      ]
+    },
+    "official_baselines": {
+      "status": "unverified_and_partial",
+      "findings": [
+        "Available decision makers include `Agent`, `AllHorizontal`, `AllLocal`, `AllVertical`, `Random`, `RoundRobin`, `RuleBased`, and `SingleAgent`.",
+        "These can only be cautiously mapped to paper baselines, and only some are plausible proxies.",
+        "Official HOODIE, RO, FLC, VO, HO, BCO, and MLEO baselines are not explicitly implemented or validated as such."
+      ]
+    },
+    "validation_and_figures": {
+      "status": "insufficient",
+      "findings": [
+        "No 200-episode validation harness is visible in the executed path.",
+        "No figure-data export pipeline was exercised in the smoke run.",
+        "Figure 8/9/10/11 claims are not supportable from the current execution evidence."
+      ]
+    }
+  },
+  "top_5_gaps": [
+    "The simulator cannot start in this environment because `matplotlib` is missing from the Python environment imported by `utils/__init__.py`.",
+    "There is no explicit paper-faithful runtime split into 100 action slots plus drain slots.",
+    "Reward handling is immediate and implicit, not delayed and task-traceable.",
+    "Public queue CPU sharing is priority-weighted legacy logic, not equal sharing across active queues.",
+    "The LSTM is embedded as agent memory in DQN training, not an auditable forecasting/state pipeline with exported history."
+  ],
+  "conclusion": {
+    "what_ran_successfully_or_failed": "The existing HOODIE entrypoint failed immediately on import due to a missing `matplotlib` dependency.",
+    "what_evidence_was_generated": "A run command record, stdout/stderr capture, exit code file, manifest, and gap-analysis JSON/markdown under the timestamped runtime-audit-smoke folder.",
+    "what_is_currently_paper_aligned": "The legacy code has Bernoulli arrivals, private/offloading/public queues, adjacency-based action legality, and DQN/LSTM training machinery.",
+    "what_is_still_missing": "Paper-faithful runtime slot/drain separation, delayed reward collection, explicit queue lifecycle tracing, equal active public-queue CPU sharing, and auditable load-history artifacts.",
+    "recommended_next_implementation_phase": "Restore a runnable environment, then build the feature-090 paper-faithful runtime core with explicit slotting, traceable task records, delayed rewards, and validation artifacts before touching training claims."
+  }
+}

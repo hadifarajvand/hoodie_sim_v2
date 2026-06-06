@@ -1,0 +1,14 @@
+Traceback (most recent call last):
+  File "/Users/hadi/Documents/GitHub/hoodie_sim_v2/main.py", line 1, in <module>
+    from environment import Environment
+  File "/Users/hadi/Documents/GitHub/hoodie_sim_v2/environment/__init__.py", line 1, in <module>
+    from .environment import Environment
+  File "/Users/hadi/Documents/GitHub/hoodie_sim_v2/environment/environment.py", line 1, in <module>
+    from .server import Server
+  File "/Users/hadi/Documents/GitHub/hoodie_sim_v2/environment/server.py", line 2, in <module>
+    from .queues import ProcessingQueue,OffloadingQueue,PublicQueueManager
+  File "/Users/hadi/Documents/GitHub/hoodie_sim_v2/environment/queues.py", line 2, in <module>
+    from utils import merge_dicts
+  File "/Users/hadi/Documents/GitHub/hoodie_sim_v2/utils/__init__.py", line 2, in <module>
+    import matplotlib.pyplot as plt
+ModuleNotFoundError: No module named 'matplotlib'
