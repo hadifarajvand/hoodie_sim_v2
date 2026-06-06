@@ -11,6 +11,11 @@ def _require_non_negative_int(name: str, value: int) -> None:
         raise ValueError(f"{name} must be a non-negative integer")
 
 
+def _require_positive_int(name: str, value: int) -> None:
+    if not isinstance(value, int) or value <= 0:
+        raise ValueError(f"{name} must be a positive integer")
+
+
 def _require_positive_float(name: str, value: float) -> None:
     if not isinstance(value, (int, float)) or float(value) <= 0:
         raise ValueError(f"{name} must be a positive number")
@@ -91,7 +96,7 @@ class Task:
         _require_positive_float("input_data_size", raw_size)
         _require_positive_float("processing_density", raw_density)
         _require_non_negative_int("arrival_time", raw_arrival)
-        _require_non_negative_int("timeout", raw_timeout)
+        _require_positive_int("timeout", raw_timeout)
         if task_id is not None:
             _require_non_negative_int("task_id", int(task_id))
         if source_node_id is not None:
@@ -143,7 +148,7 @@ class Task:
         _require_positive_float("input_data_size", self.input_data_size)
         _require_positive_float("processing_density", self.processing_density)
         _require_non_negative_int("arrival_time", self.arrival_time)
-        _require_non_negative_int("timeout", self.timeout)
+        _require_positive_int("timeout", self.timeout)
         if self.absolute_deadline != self.arrival_time + self.timeout:
             raise ValueError("absolute_deadline must equal arrival_time + timeout")
         expected_cycles = self.input_data_size * self.processing_density

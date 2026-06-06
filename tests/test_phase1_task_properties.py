@@ -113,6 +113,7 @@ class Phase1TaskPropertyTests(unittest.TestCase):
         self.assertEqual(task_a.input_data_size, task_b.input_data_size)
         self.assertEqual(task_a.processing_density, task_b.processing_density)
         self.assertEqual(task_a.timeout, task_b.timeout)
+        self.assertEqual(task_a.absolute_deadline, task_b.absolute_deadline)
 
     def test_invalid_fields_are_rejected(self):
         with self.assertRaises(ValueError):
@@ -145,6 +146,34 @@ class Phase1TaskPropertyTests(unittest.TestCase):
                 processing_density=0.297,
                 timeout=-1,
             )
+        with self.assertRaises(ValueError):
+            Task(
+                size=2.0,
+                arrival_time=0,
+                timeout_delay=0,
+                computational_density=0.297,
+                input_data_size=2.0,
+                processing_density=0.297,
+                timeout=0,
+            )
+
+    def test_timeout_alias_fields_remain_consistent(self):
+        task = Task(
+            size=2.0,
+            arrival_time=3,
+            timeout_delay=7,
+            computational_density=0.297,
+            input_data_size=2.0,
+            processing_density=0.297,
+            timeout=7,
+            source_node_id=1,
+        )
+        self.assertEqual(task.timeout, 7)
+        self.assertEqual(task.timeout_delay, 7)
+        self.assertEqual(task.timeout_instance, 10)
+        self.assertEqual(task.absolute_deadline, 10)
+        self.assertEqual(task.origin_server_id, 1)
+        self.assertEqual(task.source_node_id, 1)
 
 
 if __name__ == "__main__":
