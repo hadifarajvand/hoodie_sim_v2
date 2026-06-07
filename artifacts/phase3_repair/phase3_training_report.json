@@ -1,0 +1,26 @@
+{
+  "algorithm": "dqn",
+  "approximation_warnings": [],
+  "artifact_paths": {
+    "dataset_summary": "artifacts/phase3_repair/dataset_summary.json",
+    "phase3_model": "artifacts/phase3_repair/phase3_model.chkpt",
+    "phase3_training_report": "artifacts/phase3_repair/phase3_training_report.json",
+    "training_metrics": "artifacts/phase3_repair/training_metrics.json"
+  },
+  "completed_work": [
+    "epoch 1: trained 993 minibatches"
+  ],
+  "figures_generated": false,
+  "notes": [
+    "This is trace-trained policy training, not final paper reproduction."
+  ],
+  "paper_claims_made": false,
+  "phase": "Phase 3.2 Full Training Pipeline",
+  "phase4_evaluation_performed": false,
+  "skipped_work": [],
+  "unavailable_fields": [
+    "eta_n",
+    "predicted_next_load"
+  ],
+  "validation_status": "passed"
+}

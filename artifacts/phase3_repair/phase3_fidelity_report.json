@@ -1,0 +1,109 @@
+{
+  "artifact_paths": {
+    "action_contract_gap_matrix": "/Users/hadi/Documents/GitHub/hoodie_sim_v2/artifacts/phase3_repair/action_contract_gap_matrix.csv",
+    "lstm_contract_gap_matrix": "/Users/hadi/Documents/GitHub/hoodie_sim_v2/artifacts/phase3_repair/lstm_contract_gap_matrix.csv",
+    "report_json": "/Users/hadi/Documents/GitHub/hoodie_sim_v2/artifacts/phase3_repair/phase3_fidelity_report.json",
+    "report_md": "/Users/hadi/Documents/GitHub/hoodie_sim_v2/artifacts/phase3_repair/phase3_fidelity_report.md",
+    "reward_contract_gap_matrix": "/Users/hadi/Documents/GitHub/hoodie_sim_v2/artifacts/phase3_repair/reward_contract_gap_matrix.csv",
+    "state_contract_gap_matrix": "/Users/hadi/Documents/GitHub/hoodie_sim_v2/artifacts/phase3_repair/state_contract_gap_matrix.csv",
+    "training_loop_gap_matrix": "/Users/hadi/Documents/GitHub/hoodie_sim_v2/artifacts/phase3_repair/training_loop_gap_matrix.csv"
+  },
+  "assumptions": [
+    "Current topology/action legality work from Phase 2 is accepted as the runtime baseline.",
+    "The only usable Figure 7 reference is the user-approved manual extraction registry, not a paper-recovered matrix.",
+    "No long simulations were run for this audit.",
+    "Runtime behavior was not modified by this audit script.",
+    "No paper-performance claim is being made."
+  ],
+  "audit_phase": "Phase 3.0",
+  "audit_status_by_dimension": {
+    "action": {
+      "counts": {
+        "FAIL": 0,
+        "MISSING": 0,
+        "PARTIAL": 1,
+        "PASS": 6
+      },
+      "overall_status": "PARTIAL"
+    },
+    "lstm": {
+      "counts": {
+        "FAIL": 2,
+        "MISSING": 1,
+        "PARTIAL": 2,
+        "PASS": 0
+      },
+      "overall_status": "FAIL"
+    },
+    "reward": {
+      "counts": {
+        "FAIL": 2,
+        "MISSING": 0,
+        "PARTIAL": 4,
+        "PASS": 0
+      },
+      "overall_status": "FAIL"
+    },
+    "state": {
+      "counts": {
+        "FAIL": 2,
+        "MISSING": 0,
+        "PARTIAL": 4,
+        "PASS": 1
+      },
+      "overall_status": "FAIL"
+    },
+    "training_loop": {
+      "counts": {
+        "FAIL": 2,
+        "MISSING": 0,
+        "PARTIAL": 1,
+        "PASS": 7
+      },
+      "overall_status": "FAIL"
+    }
+  },
+  "blocker_gaps": [
+    "Native paper-state vector is not produced at runtime.",
+    "Reward is not collected as delayed task-completion tuples.",
+    "LSTM does not implement W x (N+1) load forecasting.",
+    "Training does not consume paper-native delayed replay tuples."
+  ],
+  "branch": "100-hoodie-paper-base",
+  "files_inspected": [
+    "main.py",
+    "environment/environment.py",
+    "environment/server.py",
+    "environment/cloud.py",
+    "environment/queues.py",
+    "environment/task.py",
+    "environment/task_generator.py",
+    "environment/action_model.py",
+    "environment/matchmaker.py",
+    "phase1_tracing.py",
+    "phase2_mechanisms.py",
+    "training/trace_dataset.py",
+    "training/replay_buffer.py",
+    "training/lstm_forecaster.py",
+    "training/trainers.py",
+    "training/train_phase3.py",
+    "decision_makers/agent.py",
+    "decision_makers/dummies.py",
+    "hyperparameters/hyperparameters.json",
+    "specs/100-hoodie-paper-faithful-baseline/contracts/paper-runtime-contract.md",
+    "specs/100-hoodie-paper-faithful-baseline/contracts/paper-state-reward-contract.md",
+    "specs/100-hoodie-paper-faithful-baseline/contracts/paper-lstm-training-contract.md",
+    "specs/100-hoodie-paper-faithful-baseline/contracts/paper-topology-action-contract.md",
+    "specs/100-hoodie-paper-faithful-baseline/contracts/paper-evaluation-figures-contract.md",
+    "specs/100-hoodie-paper-faithful-baseline/checklists/system-model-ocr-122-747/system-model-checklist.md",
+    "resources/papers/hoodie/ocr/merged.tex"
+  ],
+  "non_blocker_gaps": [
+    "Phase 2 action legality and trace semantics are already explicit.",
+    "Checkpointing and smoke training exist, but they are not paper-grade proof.",
+    "Trace reconstruction can support audit, but it remains an approximation."
+  ],
+  "paper_performance_claims_made": false,
+  "recommended_next_phase": "Phase 3.1 paper-state and delayed-reward runtime contract repair",
+  "runtime_behavior_changed": false
+}

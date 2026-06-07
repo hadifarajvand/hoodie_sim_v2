@@ -1,0 +1,38 @@
+{
+  "action_count": 5,
+  "approximation_warnings": [],
+  "episodes": 1,
+  "missing_optional_fields": {
+    "baseline_name": 993,
+    "paper_state_L_t": 0,
+    "paper_state_eta_n": 993,
+    "paper_state_l_pub_n_prev": 0,
+    "paper_state_predicted_next_load": 993,
+    "paper_state_w_off_n": 0,
+    "paper_state_w_priv_n": 0,
+    "policy_name": 993,
+    "reward_delayed_task_id": 0,
+    "step_index": 993,
+    "task_id": 0
+  },
+  "notes": [
+    "reconstructed transitions from task lifecycle traces"
+  ],
+  "reconstructed": true,
+  "required_files_present": {
+    "action_trace.csv": true,
+    "episode_metrics.csv": true,
+    "queue_trace.csv": true,
+    "task_lifecycle.csv": true
+  },
+  "reward_max": 0.0,
+  "reward_mean": -19.57703927492447,
+  "reward_min": -40.0,
+  "source_trace_dir": "artifacts/phase3_trace_smoke",
+  "state_dim": 129,
+  "transitions": 993,
+  "unavailable_fields": [
+    "eta_n",
+    "predicted_next_load"
+  ]
+}

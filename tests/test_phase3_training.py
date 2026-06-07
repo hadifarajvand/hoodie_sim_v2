@@ -60,7 +60,7 @@ class Phase3TrainingTests(unittest.TestCase):
             summary_dict = summary_to_dict(summary)
             self.assertEqual(summary_dict["transitions"], len(transitions))
             self.assertTrue(summary_dict["reconstructed"])
-            self.assertEqual(summary_dict["state_dim"], 2)
+            self.assertEqual(summary_dict["state_dim"], len(transitions[0].state))
             self.assertEqual(summary_dict["action_count"], 2)
             self.assertTrue(summary_dict["required_files_present"]["task_lifecycle.csv"])
 
@@ -152,7 +152,7 @@ class Phase3TrainingTests(unittest.TestCase):
             checkpoint = json.loads((out_dir / "phase3_model.chkpt").read_text())
             self.assertEqual(checkpoint["algorithm"], "dqn")
             self.assertEqual(checkpoint["seed"], 42)
-            self.assertEqual(checkpoint["state_dim"], 2)
+            self.assertEqual(checkpoint["state_dim"], len(load_trace_dataset(trace_dir)[0][0].state))
             self.assertEqual(checkpoint["action_count"], 2)
             self.assertEqual(checkpoint["epochs_completed"], 2)
 

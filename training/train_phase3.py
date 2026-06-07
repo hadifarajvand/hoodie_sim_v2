@@ -70,6 +70,14 @@ def main() -> int:
     if not transitions:
         raise SystemExit("trace dataset did not produce any transitions")
 
+    lstm_input_dim = 1
+    if args.train_lstm:
+        candidate = getattr(transitions[0], "load_history", None)
+        if candidate is not None and getattr(candidate, "ndim", 0) >= 2 and candidate.shape[-1] > 0:
+            lstm_input_dim = int(candidate.shape[-1])
+        else:
+            lstm_input_dim = int(transitions[0].state.shape[0])
+
     cfg = TrainerConfig(
         algorithm=args.algorithm,
         input_dim=int(transitions[0].state.shape[0]),
@@ -147,12 +155,14 @@ def main() -> int:
     report["validation_status"] = "passed"
 
     if args.train_lstm:
-        forecaster = LSTMForecaster(args.sequence_length, input_dim=1, hidden_dim=16, target=args.lstm_target, seed=args.seed)
+        forecaster = LSTMForecaster(args.sequence_length, input_dim=lstm_input_dim, hidden_dim=16, target=args.lstm_target, seed=args.seed)
         rows = [
             {
                 "time": t.step_index if t.step_index is not None else idx,
+                "state": t.state.tolist(),
+                "load_history": t.load_history.tolist() if getattr(t, "load_history", None) is not None else None,
                 "latency": t.reward if args.lstm_target == "reward" else None,
-                "queue_length": float(np.linalg.norm(t.state)),
+                "queue_length": float(np.nansum(t.load_history[-1])) if getattr(t, "load_history", None) is not None and t.load_history.size else float(np.linalg.norm(t.state)),
                 "reward": t.reward,
             }
             for idx, t in enumerate(transitions)

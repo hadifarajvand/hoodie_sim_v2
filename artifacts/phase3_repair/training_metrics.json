@@ -1,0 +1,25 @@
+{
+  "algorithm": "dqn",
+  "batch_size": 1,
+  "checkpoint_epochs": [
+    1
+  ],
+  "completed_at": "current run",
+  "epochs": 1,
+  "final_checkpoint": "artifacts/phase3_repair/phase3_model.chkpt",
+  "final_loss": NaN,
+  "gamma": 0.99,
+  "learning_rate": 0.001,
+  "losses_by_epoch": [
+    {
+      "average_reward": -19.57703927492447,
+      "epoch": 1,
+      "gradient_steps": 993,
+      "loss": NaN,
+      "transitions_used": 993
+    }
+  ],
+  "mean_loss": NaN,
+  "seed": 7,
+  "transitions_used": 993
+}

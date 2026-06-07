@@ -54,6 +54,30 @@ class LSTMForecaster:
             torch.manual_seed(seed)
             self.model = _LSTMRegressor(input_dim, hidden_dim)
 
+    def _row_feature_vector(self, row: dict[str, Any]) -> list[float] | None:
+        if "load_history" in row and row["load_history"] not in (None, "", "None"):
+            try:
+                history = np.asarray(row["load_history"], dtype=np.float32)
+                if history.ndim >= 2:
+                    feature_vector = history[-1].reshape(-1)
+                else:
+                    feature_vector = history.reshape(-1)
+                if feature_vector.size == self.input_dim:
+                    return feature_vector.astype(np.float32).tolist()
+            except Exception:
+                pass
+        if "state" in row and row["state"] not in (None, "", "None"):
+            try:
+                state = np.asarray(row["state"], dtype=np.float32).reshape(-1)
+                if state.size == self.input_dim:
+                    return state.astype(np.float32).tolist()
+            except Exception:
+                pass
+        try:
+            return [float(row.get("time") or row.get("step_index") or 0.0)] * self.input_dim
+        except Exception:
+            return None
+
     def build_sequences(self, rows: list[dict[str, Any]]) -> tuple[np.ndarray, np.ndarray, str | None]:
         if self.target not in {"latency", "queue_length", "reward"}:
             return np.empty((0, self.sequence_length, self.input_dim), dtype=np.float32), np.empty((0,), dtype=np.float32), f"unsupported target {self.target}"
@@ -64,7 +88,10 @@ class LSTMForecaster:
             if target_value in (None, "", "None"):
                 continue
             try:
-                features.append([float(row.get("time") or row.get("step_index") or 0.0)] * self.input_dim)
+                feature_vector = self._row_feature_vector(row)
+                if feature_vector is None:
+                    continue
+                features.append(feature_vector)
                 values.append(float(target_value))
             except Exception:
                 continue

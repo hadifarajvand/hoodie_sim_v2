@@ -18,6 +18,22 @@ class Transition:
     task_id: int | None = None
     step_index: int | None = None
     policy_name: str | None = None
+    raw_action_id: int | None = None
+    first_stage_decision: str | None = None
+    destination_node_id: int | None = None
+    destination_type: str | None = None
+    is_valid: bool | None = None
+    invalid_reason: str | None = None
+    adjacency_allowed: bool | None = None
+    cloud_target: bool | None = None
+    d_n_1: int | None = None
+    d_nk_2: dict[int, int] | None = None
+    eta_n: float | None = None
+    w_priv_n: float | None = None
+    w_off_n: float | None = None
+    l_pub_n_prev: np.ndarray | None = None
+    load_history: np.ndarray | None = None
+    predicted_next_load: np.ndarray | None = None
 
     def validate(self) -> None:
         if self.state.shape != self.next_state.shape:
