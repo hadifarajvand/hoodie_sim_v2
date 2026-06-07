@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import unittest
+from unittest.mock import patch
 
 import numpy as np
 
@@ -156,6 +157,186 @@ class Phase1TaskPropertyTests(unittest.TestCase):
                 processing_density=0.297,
                 timeout=0,
             )
+
+    def test_generator_preconstruction_rejects_invalid_size_before_task_construction(self):
+        generator = TaskGenerator(
+            id=3,
+            episode_time=10,
+            task_arrive_probability=1.0,
+            size_min=1.0,
+            size_max=1.0,
+            size_distribution="constant",
+            timeout_delay_min=20,
+            timeout_delay_max=20,
+            timeout_delay_distribution="constant",
+            priotiry_min=1,
+            priotiry_max=1,
+            priotiry_distribution="constant",
+            computational_density_min=0.297,
+            computational_density_max=0.297,
+            computational_density_distribution="constant",
+            drop_penalty_min=40,
+            drop_penalty_max=40,
+            drop_penalty_distribution="constant",
+        )
+        generator.size_distributor.generate = lambda: 0
+        with patch("environment.task_generator.Task") as task_ctor:
+            with self.assertRaisesRegex(
+                ValueError,
+                r"TaskGenerator preconstruction validation failed for size: 0",
+            ):
+                generator.generate()
+            task_ctor.assert_not_called()
+
+    def test_generator_preconstruction_rejects_invalid_density_before_task_construction(self):
+        generator = TaskGenerator(
+            id=4,
+            episode_time=10,
+            task_arrive_probability=1.0,
+            size_min=2.0,
+            size_max=2.0,
+            size_distribution="constant",
+            timeout_delay_min=20,
+            timeout_delay_max=20,
+            timeout_delay_distribution="constant",
+            priotiry_min=1,
+            priotiry_max=1,
+            priotiry_distribution="constant",
+            computational_density_min=0.297,
+            computational_density_max=0.297,
+            computational_density_distribution="constant",
+            drop_penalty_min=40,
+            drop_penalty_max=40,
+            drop_penalty_distribution="constant",
+        )
+        generator.computational_density_distributor.generate = lambda: 0
+        with patch("environment.task_generator.Task") as task_ctor:
+            with self.assertRaisesRegex(
+                ValueError,
+                r"TaskGenerator preconstruction validation failed for computational_density: 0",
+            ):
+                generator.generate()
+            task_ctor.assert_not_called()
+
+    def test_generator_preconstruction_rejects_invalid_timeout_before_task_construction(self):
+        generator = TaskGenerator(
+            id=5,
+            episode_time=10,
+            task_arrive_probability=1.0,
+            size_min=2.0,
+            size_max=2.0,
+            size_distribution="constant",
+            timeout_delay_min=20,
+            timeout_delay_max=20,
+            timeout_delay_distribution="constant",
+            priotiry_min=1,
+            priotiry_max=1,
+            priotiry_distribution="constant",
+            computational_density_min=0.297,
+            computational_density_max=0.297,
+            computational_density_distribution="constant",
+            drop_penalty_min=40,
+            drop_penalty_max=40,
+            drop_penalty_distribution="constant",
+        )
+        generator.timeout_distributor.generate = lambda: 0
+        with patch("environment.task_generator.Task") as task_ctor:
+            with self.assertRaisesRegex(
+                ValueError,
+                r"TaskGenerator preconstruction validation failed for timeout_delay: 0",
+            ):
+                generator.generate()
+            task_ctor.assert_not_called()
+
+    def test_generator_preconstruction_rejects_negative_arrival_time_before_task_construction(self):
+        generator = TaskGenerator(
+            id=6,
+            episode_time=10,
+            task_arrive_probability=1.0,
+            size_min=2.0,
+            size_max=2.0,
+            size_distribution="constant",
+            timeout_delay_min=20,
+            timeout_delay_max=20,
+            timeout_delay_distribution="constant",
+            priotiry_min=1,
+            priotiry_max=1,
+            priotiry_distribution="constant",
+            computational_density_min=0.297,
+            computational_density_max=0.297,
+            computational_density_distribution="constant",
+            drop_penalty_min=40,
+            drop_penalty_max=40,
+            drop_penalty_distribution="constant",
+        )
+        generator.current_time = -1
+        with patch("environment.task_generator.Task") as task_ctor:
+            with self.assertRaisesRegex(
+                ValueError,
+                r"TaskGenerator preconstruction validation failed for arrival_time: -1",
+            ):
+                generator.generate()
+            task_ctor.assert_not_called()
+
+    def test_generator_preconstruction_rejects_invalid_drop_penalty_before_task_construction(self):
+        generator = TaskGenerator(
+            id=8,
+            episode_time=10,
+            task_arrive_probability=1.0,
+            size_min=2.0,
+            size_max=2.0,
+            size_distribution="constant",
+            timeout_delay_min=20,
+            timeout_delay_max=20,
+            timeout_delay_distribution="constant",
+            priotiry_min=1,
+            priotiry_max=1,
+            priotiry_distribution="constant",
+            computational_density_min=0.297,
+            computational_density_max=0.297,
+            computational_density_distribution="constant",
+            drop_penalty_min=40,
+            drop_penalty_max=40,
+            drop_penalty_distribution="constant",
+        )
+        generator.drop_penalty_distributor.generate = lambda: -1
+        with patch("environment.task_generator.Task") as task_ctor:
+            with self.assertRaisesRegex(
+                ValueError,
+                r"TaskGenerator preconstruction validation failed for drop_penalty: -1",
+            ):
+                generator.generate()
+            task_ctor.assert_not_called()
+
+    def test_generator_preconstruction_rejects_invalid_priority_before_task_construction(self):
+        generator = TaskGenerator(
+            id=9,
+            episode_time=10,
+            task_arrive_probability=1.0,
+            size_min=2.0,
+            size_max=2.0,
+            size_distribution="constant",
+            timeout_delay_min=20,
+            timeout_delay_max=20,
+            timeout_delay_distribution="constant",
+            priotiry_min=1,
+            priotiry_max=1,
+            priotiry_distribution="constant",
+            computational_density_min=0.297,
+            computational_density_max=0.297,
+            computational_density_distribution="constant",
+            drop_penalty_min=40,
+            drop_penalty_max=40,
+            drop_penalty_distribution="constant",
+        )
+        generator.priotiry_distributor.generate = lambda: -1
+        with patch("environment.task_generator.Task") as task_ctor:
+            with self.assertRaisesRegex(
+                ValueError,
+                r"TaskGenerator preconstruction validation failed for priority: -1",
+            ):
+                generator.generate()
+            task_ctor.assert_not_called()
 
     def test_timeout_alias_fields_remain_consistent(self):
         task = Task(

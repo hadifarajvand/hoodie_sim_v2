@@ -1,8 +1,35 @@
 from __future__ import annotations
 
+from numbers import Integral, Real
+
 from .task import Task
 from utils import Variabledistributor
 import numpy as np
+
+
+def _raise_preconstruction_validation_error(field_name, value, requirement):
+    raise ValueError(
+        f"TaskGenerator preconstruction validation failed for {field_name}: {value!r}. {requirement}"
+    )
+
+
+def _require_positive_number(field_name, value):
+    if isinstance(value, bool) or not isinstance(value, Real) or float(value) <= 0:
+        _raise_preconstruction_validation_error(field_name, value, "Expected a positive number.")
+
+
+def _is_integer_like(value):
+    return isinstance(value, Integral) or (isinstance(value, Real) and float(value).is_integer())
+
+
+def _require_positive_integer(field_name, value):
+    if isinstance(value, bool) or not _is_integer_like(value) or int(value) <= 0:
+        _raise_preconstruction_validation_error(field_name, value, "Expected a positive integer.")
+
+
+def _require_non_negative_integer(field_name, value):
+    if isinstance(value, bool) or not _is_integer_like(value) or int(value) < 0:
+        _raise_preconstruction_validation_error(field_name, value, "Expected a non-negative integer.")
 
 
 class TaskGenerator():
@@ -53,14 +80,22 @@ class TaskGenerator():
     def generate(self):
         size = self.size_distributor.generate()
         timeout_delay = self.timeout_distributor.generate()
-        priotiry = self.priotiry_distributor.generate()
+        priority = self.priotiry_distributor.generate()
         computational_density = self.computational_density_distributor.generate()
         drop_penalty = self.drop_penalty_distributor.generate()
+
+        _require_positive_number("size", size)
+        _require_positive_number("computational_density", computational_density)
+        _require_positive_integer("timeout_delay", timeout_delay)
+        _require_non_negative_integer("arrival_time", self.current_time)
+        _require_non_negative_integer("drop_penalty", drop_penalty)
+        _require_non_negative_integer("priority", priority)
+
         task = Task(
             size=size,
             arrival_time=self.current_time,
             timeout_delay=timeout_delay,
-            priotiry=priotiry,
+            priotiry=priority,
             computational_density=computational_density,
             drop_penalty=drop_penalty,
             origin_server_id=self.id,
