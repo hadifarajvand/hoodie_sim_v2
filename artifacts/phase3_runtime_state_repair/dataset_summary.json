@@ -1,0 +1,65 @@
+{
+  "action_count": 5,
+  "approximation_warnings": [
+    "next_state copied for terminal row episode=0 agent=0 time=110",
+    "next_state copied for terminal row episode=0 agent=1 time=110",
+    "next_state copied for terminal row episode=0 agent=10 time=110",
+    "next_state copied for terminal row episode=0 agent=11 time=110",
+    "next_state copied for terminal row episode=0 agent=12 time=110",
+    "next_state copied for terminal row episode=0 agent=13 time=110",
+    "next_state copied for terminal row episode=0 agent=14 time=110",
+    "next_state copied for terminal row episode=0 agent=15 time=110",
+    "next_state copied for terminal row episode=0 agent=16 time=110",
+    "next_state copied for terminal row episode=0 agent=17 time=110",
+    "next_state copied for terminal row episode=0 agent=18 time=110",
+    "next_state copied for terminal row episode=0 agent=19 time=110",
+    "next_state copied for terminal row episode=0 agent=2 time=110",
+    "next_state copied for terminal row episode=0 agent=3 time=110",
+    "next_state copied for terminal row episode=0 agent=4 time=110",
+    "next_state copied for terminal row episode=0 agent=5 time=110",
+    "next_state copied for terminal row episode=0 agent=6 time=110",
+    "next_state copied for terminal row episode=0 agent=7 time=110",
+    "next_state copied for terminal row episode=0 agent=8 time=110",
+    "next_state copied for terminal row episode=0 agent=9 time=110"
+  ],
+  "episodes": 1,
+  "load_history_source": "runtime_active_load_matrix",
+  "missing_optional_fields": {
+    "baseline_name": 0,
+    "paper_state_L_t": 0,
+    "paper_state_eta_n": 1257,
+    "paper_state_l_pub_n_prev": 0,
+    "paper_state_predicted_next_load": 0,
+    "paper_state_w_off_n": 0,
+    "paper_state_w_priv_n": 0,
+    "policy_name": 0,
+    "reward_delayed_task_id": 1257,
+    "step_index": 0,
+    "task_id": 0
+  },
+  "next_state_source": "runtime_paper_state_trace",
+  "notes": [
+    "reconstructed transitions from runtime paper_state_trace"
+  ],
+  "paper_lstm_forecast": false,
+  "paper_state_trace_present": true,
+  "predicted_next_load_method": "persistence_baseline",
+  "reconstructed": true,
+  "required_files_present": {
+    "action_trace.csv": true,
+    "episode_metrics.csv": true,
+    "queue_trace.csv": true,
+    "task_lifecycle.csv": true
+  },
+  "reward_max": -0.0,
+  "reward_mean": -0.24484234258599646,
+  "reward_min": -1.2999999523162842,
+  "source_trace_dir": "/private/tmp/phase3-runtime-state-smoke/traces",
+  "state_dim": 129,
+  "state_source": "runtime_paper_state_trace",
+  "transitions": 2220,
+  "unavailable_fields": [
+    "eta_n"
+  ],
+  "waiting_time_source": "runtime_queue_waiting_time"
+}

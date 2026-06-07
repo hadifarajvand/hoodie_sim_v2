@@ -1,0 +1,33 @@
+{
+  "artifact_paths": {
+    "dataset_summary": "artifacts/phase3_runtime_state_repair/dataset_summary.json",
+    "gap_closure_matrix": "artifacts/phase3_runtime_state_repair/gap_closure_matrix.csv",
+    "phase3_runtime_state_report": "artifacts/phase3_runtime_state_repair/phase3_runtime_state_report.json",
+    "state_source_contract": "artifacts/phase3_runtime_state_repair/state_source_contract.json"
+  },
+  "branch": "100-hoodie-paper-base",
+  "evidence": [
+    "paper_state_trace.csv exported at runtime",
+    "state_source=runtime_paper_state_trace",
+    "next_state_source=runtime_paper_state_trace",
+    "predicted_next_load_method=persistence_baseline"
+  ],
+  "next_required_step": "phase3.3 paper-faithful LSTM and reward timing repair",
+  "paper_performance_claims_made": false,
+  "phase": "Phase 3.2",
+  "previous_gaps": [
+    "next_state_not_copy",
+    "waiting_time_not_queue_length_proxy",
+    "active_load_matrix_not_queue_length_history"
+  ],
+  "remaining_limitations": [
+    "predicted_next_load uses a persistence baseline, not a trained LSTM",
+    "waiting-time fields are runtime estimates, not a paper-verified analytical derivation"
+  ],
+  "repair_status": {
+    "active_load_matrix_not_queue_length_history": "PARTIAL",
+    "next_state_not_copy": "CLOSED",
+    "waiting_time_not_queue_length_proxy": "PARTIAL"
+  },
+  "runtime_behavior_changed": false
+}

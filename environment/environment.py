@@ -9,6 +9,7 @@ from .task import Task
 import numpy as np
 import torch
 import math
+from collections import deque
 class Environment():
     def __init__(self, 
                  static_frequency,
@@ -35,14 +36,18 @@ class Environment():
                  drop_penalty_maxs,
                  drop_penalty_distributions,
                  number_of_clouds=1,
+                 paper_state_window=4,
                  trace_recorder:TraceRecorder|None=None) -> None:
         self.number_of_servers = number_of_servers
         self.number_of_clouds = number_of_clouds
+        self.paper_state_window = paper_state_window
         self.current_time = 0
         self.episode_time_end = episode_time +max(timeout_delay_maxs)
         self.connection_matrix=  connection_matrix
         self.topology = TopologyAdapter.from_connection_matrix(connection_matrix, cloud_node_id=number_of_servers)
         self.trace_recorder = trace_recorder
+        self.paper_state_history = [deque(maxlen=self.paper_state_window) for _ in range(self.number_of_servers)]
+        self.last_public_queue_vector = [np.full(self.number_of_servers + 1, np.nan, dtype=np.float32) for _ in range(self.number_of_servers)]
         Task.trace_recorder = trace_recorder
         get_column = lambda m, i: [row[i] for row in m]
         self.task_generators = [TaskGenerator(id=i,
@@ -109,10 +114,13 @@ class Environment():
             server.reset()
         self.cloud.reset()
         self.reset_transmitted_tasks()
+        self.paper_state_history = [deque(maxlen=self.paper_state_window) for _ in range(self.number_of_servers)]
+        self.last_public_queue_vector = [np.full(self.number_of_servers + 1, np.nan, dtype=np.float32) for _ in range(self.number_of_servers)]
         self.last_action_decisions = [None for _ in range(self.number_of_servers)]
         if self.trace_recorder is not None:
             self.trace_recorder.start_episode(self.episode_id)
         self.tasks= [t.step() for t in self.task_generators]
+        self._refresh_paper_state_history()
         
         observations = self.pack_observation()
         done = False
@@ -238,6 +246,85 @@ class Environment():
             self._record_queue_traces()
         
         return observations,rewards, done, info
+
+    def _compute_active_load_vector(self):
+        load = np.zeros(self.number_of_servers + 1, dtype=np.float32)
+        for server in self.servers:
+            load[server.id] = float(server.get_active_load())
+        load[self.number_of_servers] = float(self.cloud.get_active_load())
+        return load
+
+    def _refresh_paper_state_history(self):
+        active_load_vector = self._compute_active_load_vector()
+        public_queue_vector = np.full(self.number_of_servers + 1, np.nan, dtype=np.float32)
+        for server in self.servers:
+            public_queues = server.public_queue_manager.get_queue_lengths()
+            for source_id, queue_length in public_queues.items():
+                public_queue_vector[source_id] = float(queue_length)
+        cloud_queues = self.cloud.get_features()
+        for source_id, queue_length in cloud_queues.items():
+            public_queue_vector[source_id] = float(queue_length)
+        for agent_id in range(self.number_of_servers):
+            self.paper_state_history[agent_id].append(active_load_vector.copy())
+            self.last_public_queue_vector[agent_id] = public_queue_vector.copy()
+        return active_load_vector, public_queue_vector
+
+    def get_paper_state(self, agent_id: int):
+        task = self.tasks[agent_id]
+        server = self.servers[agent_id]
+        eta_n = None if task is None else float(task.get_size())
+        w_priv_n, w_off_n = server.get_waiting_times()
+        l_pub_n_prev = self.last_public_queue_vector[agent_id]
+        active_load_vector = self._compute_active_load_vector()
+        history = list(self.paper_state_history[agent_id])
+        while len(history) < self.paper_state_window:
+            history.insert(0, np.full(self.number_of_servers + 1, np.nan, dtype=np.float32))
+        L_t = np.asarray(history, dtype=np.float32)
+        predicted_next_load = active_load_vector.copy()
+        unavailable_fields = []
+        approximation_warnings = []
+        if eta_n is None:
+            unavailable_fields.append("eta_n")
+        if w_priv_n is None:
+            unavailable_fields.append("w_priv_n")
+        if w_off_n is None:
+            unavailable_fields.append("w_off_n")
+        if np.isnan(l_pub_n_prev).all():
+            unavailable_fields.append("l_pub_n_prev")
+        if L_t.size == 0:
+            unavailable_fields.append("L(t)")
+        approximation_warnings.append("predicted_next_load uses persistence_baseline")
+        state_vector = np.concatenate(
+            [
+                np.asarray([
+                    np.nan if eta_n is None else eta_n,
+                    np.nan if w_priv_n is None else float(w_priv_n),
+                    np.nan if w_off_n is None else float(w_off_n),
+                ], dtype=np.float32),
+                l_pub_n_prev.astype(np.float32).reshape(-1),
+                L_t.astype(np.float32).reshape(-1),
+                predicted_next_load.astype(np.float32).reshape(-1),
+            ]
+        )
+        return {
+            "episode_id": self.episode_id,
+            "time": self.current_time,
+            "agent_id": agent_id,
+            "task_id": None if task is None or task.is_empty() else task.task_id,
+            "eta_n": eta_n,
+            "w_priv_n": float(w_priv_n) if w_priv_n is not None else None,
+            "w_off_n": float(w_off_n) if w_off_n is not None else None,
+            "l_pub_n_prev": l_pub_n_prev,
+            "active_load_vector": active_load_vector,
+            "L_t": L_t,
+            "predicted_next_load": predicted_next_load,
+            "predicted_next_load_method": "persistence_baseline",
+            "paper_lstm_forecast": False,
+            "unavailable_fields": unavailable_fields,
+            "approximation_warnings": approximation_warnings,
+            "state_vector": state_vector,
+            "state_dim": int(state_vector.shape[0]),
+        }
 
     def _record_queue_traces(self):
         if self.trace_recorder is None:

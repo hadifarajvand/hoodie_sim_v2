@@ -149,8 +149,28 @@ def main():
         observations,done, info = env.reset()
         local_observations,public_queues =observations
         while not done:
+            step_time = env.current_time
             actions = np.zeros(number_of_servers, dtype=int)
             for i in range(number_of_servers):
+                paper_state = env.get_paper_state(i)
+                trace_recorder.note_paper_state(
+                    episode_id=paper_state["episode_id"],
+                    time=paper_state["time"],
+                    agent_id=i,
+                    task_id=paper_state["task_id"],
+                    eta_n=paper_state["eta_n"],
+                    w_priv_n=paper_state["w_priv_n"],
+                    w_off_n=paper_state["w_off_n"],
+                    l_pub_n_prev=paper_state["l_pub_n_prev"],
+                    active_load_vector=paper_state["active_load_vector"],
+                    load_history=paper_state["L_t"],
+                    predicted_next_load=paper_state["predicted_next_load"],
+                    predicted_next_load_method=paper_state["predicted_next_load_method"],
+                    paper_lstm_forecast=paper_state["paper_lstm_forecast"],
+                    unavailable_fields=paper_state["unavailable_fields"],
+                    approximation_warnings=paper_state["approximation_warnings"],
+                    state_vector=paper_state["state_vector"],
+                )
                 actions[i] = decision_makers[i].choose_action(local_observations[i],public_queues[i])
             observations,rewards,done,info = env.step(actions)
             local_observations_,public_queues_ =observations
@@ -159,7 +179,7 @@ def main():
                 target_node = action_decision.legacy_target_node_id if action_decision is not None else env.matchmakers[i].match_action(i, actions[i])
                 trace_recorder.note_action(
                     episode_id=epoch,
-                    time=env.current_time,
+                    time=step_time,
                     agent_id=i,
                     observation_shape=np.shape(local_observations[i]),
                     selected_action=int(actions[i]),

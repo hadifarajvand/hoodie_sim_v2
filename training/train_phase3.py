@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import argparse
+import csv
 import json
 from pathlib import Path
 
@@ -32,6 +33,76 @@ def _build_report(algorithm: str) -> dict[str, object]:
 
 def _write_json(path: Path, payload: dict[str, object]) -> None:
     path.write_text(json.dumps(payload, indent=2, sort_keys=True))
+
+
+def _write_runtime_state_artifacts(output_dir: Path, trace_dir: Path, summary: object) -> None:
+    summary_dict = summary_to_dict(summary)
+    report = {
+        "branch": "100-hoodie-paper-base",
+        "phase": "Phase 3.2",
+        "previous_gaps": [
+            "next_state_not_copy",
+            "waiting_time_not_queue_length_proxy",
+            "active_load_matrix_not_queue_length_history",
+        ],
+        "repair_status": {
+            "next_state_not_copy": "CLOSED" if summary_dict.get("paper_state_trace_present") else "OPEN",
+            "waiting_time_not_queue_length_proxy": "PARTIAL" if summary_dict.get("paper_state_trace_present") else "OPEN",
+            "active_load_matrix_not_queue_length_history": "PARTIAL" if summary_dict.get("paper_state_trace_present") else "OPEN",
+        },
+        "evidence": [
+            "paper_state_trace.csv exported at runtime",
+            f"state_source={summary_dict.get('state_source')}",
+            f"next_state_source={summary_dict.get('next_state_source')}",
+            f"predicted_next_load_method={summary_dict.get('predicted_next_load_method')}",
+        ],
+        "remaining_limitations": [
+            "predicted_next_load uses a persistence baseline, not a trained LSTM",
+            "waiting-time fields are runtime estimates, not a paper-verified analytical derivation",
+        ],
+        "next_required_step": "phase3.3 paper-faithful LSTM and reward timing repair",
+        "runtime_behavior_changed": False,
+        "paper_performance_claims_made": False,
+        "artifact_paths": {},
+    }
+    (output_dir / "phase3_runtime_state_report.json").write_text(json.dumps(report, indent=2, sort_keys=True))
+    lines = [
+        "# Phase 3.2 Runtime Paper State Repair",
+        "",
+        f"state_source: {summary_dict.get('state_source')}",
+        f"next_state_source: {summary_dict.get('next_state_source')}",
+        f"waiting_time_source: {summary_dict.get('waiting_time_source')}",
+        f"load_history_source: {summary_dict.get('load_history_source')}",
+        f"predicted_next_load_method: {summary_dict.get('predicted_next_load_method')}",
+        f"paper_lstm_forecast: {summary_dict.get('paper_lstm_forecast')}",
+    ]
+    (output_dir / "phase3_runtime_state_report.md").write_text("\n".join(lines))
+    contract = {
+        "next_state_not_copy": "closed" if summary_dict.get("paper_state_trace_present") else "open",
+        "waiting_time_not_queue_length_proxy": "partial" if summary_dict.get("paper_state_trace_present") else "open",
+        "active_load_matrix_not_queue_length_history": "partial" if summary_dict.get("paper_state_trace_present") else "open",
+    }
+    (output_dir / "state_source_contract.json").write_text(json.dumps(contract, indent=2, sort_keys=True))
+    gap_rows = [
+        ["previous_gap", "repair_status", "evidence", "remaining_limitation", "next_required_step"],
+        ["next_state_not_copy", contract["next_state_not_copy"].upper(), "next_state is paired from the next runtime paper state row", "terminal rows still copy state when no t+1 exists", "carry terminal bootstrap/episode-end handling"],
+        ["waiting_time_not_queue_length_proxy", contract["waiting_time_not_queue_length_proxy"].upper(), "waiting time is read from runtime queue waiting counters", "some queues still expose approximate counters only", "instrument exact queue timing if needed"],
+        ["active_load_matrix_not_queue_length_history", contract["active_load_matrix_not_queue_length_history"].upper(), "L_t is exported as active-load history", "persistence baseline forecast is still not an LSTM", "replace persistence with trained LSTM"],
+    ]
+    with (output_dir / "gap_closure_matrix.csv").open("w", newline="") as f:
+        writer = csv.writer(f)
+        writer.writerows(gap_rows)
+    paper_state_path = trace_dir / "paper_state_trace.csv"
+    if paper_state_path.exists():
+        sample_lines = paper_state_path.read_text().splitlines()[:5]
+        (output_dir / "sample_paper_state_trace.csv").write_text("\n".join(sample_lines) + "\n")
+    report["artifact_paths"] = {
+        "dataset_summary": str(output_dir / "dataset_summary.json"),
+        "phase3_runtime_state_report": str(output_dir / "phase3_runtime_state_report.json"),
+        "state_source_contract": str(output_dir / "state_source_contract.json"),
+        "gap_closure_matrix": str(output_dir / "gap_closure_matrix.csv"),
+    }
+    (output_dir / "phase3_runtime_state_report.json").write_text(json.dumps(report, indent=2, sort_keys=True))
 
 
 def main() -> int:
@@ -153,6 +224,9 @@ def main() -> int:
         }
     )
     report["validation_status"] = "passed"
+
+    if summary.paper_state_trace_present:
+        _write_runtime_state_artifacts(output_dir, Path(args.trace_dir), summary)
 
     if args.train_lstm:
         forecaster = LSTMForecaster(args.sequence_length, input_dim=lstm_input_dim, hidden_dim=16, target=args.lstm_target, seed=args.seed)

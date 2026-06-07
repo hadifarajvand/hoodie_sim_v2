@@ -78,6 +78,15 @@ class Server():
     def get_active_queues(self):
         active_queues  =self.public_queue_manager.get_active_queues()
         return active_queues
+
+    def get_active_load(self) -> int:
+        active = 0
+        if not self.processing_queue.current_task.is_empty():
+            active += 1
+        if not self.offloading_queue.current_task.is_empty():
+            active += 1
+        active += self.public_queue_manager.get_active_queues()
+        return active
     
     
     def get_supporting_servers(self):

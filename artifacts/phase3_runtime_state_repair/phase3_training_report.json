@@ -1,0 +1,46 @@
+{
+  "algorithm": "dqn",
+  "approximation_warnings": [
+    "next_state copied for terminal row episode=0 agent=0 time=110",
+    "next_state copied for terminal row episode=0 agent=1 time=110",
+    "next_state copied for terminal row episode=0 agent=10 time=110",
+    "next_state copied for terminal row episode=0 agent=11 time=110",
+    "next_state copied for terminal row episode=0 agent=12 time=110",
+    "next_state copied for terminal row episode=0 agent=13 time=110",
+    "next_state copied for terminal row episode=0 agent=14 time=110",
+    "next_state copied for terminal row episode=0 agent=15 time=110",
+    "next_state copied for terminal row episode=0 agent=16 time=110",
+    "next_state copied for terminal row episode=0 agent=17 time=110",
+    "next_state copied for terminal row episode=0 agent=18 time=110",
+    "next_state copied for terminal row episode=0 agent=19 time=110",
+    "next_state copied for terminal row episode=0 agent=2 time=110",
+    "next_state copied for terminal row episode=0 agent=3 time=110",
+    "next_state copied for terminal row episode=0 agent=4 time=110",
+    "next_state copied for terminal row episode=0 agent=5 time=110",
+    "next_state copied for terminal row episode=0 agent=6 time=110",
+    "next_state copied for terminal row episode=0 agent=7 time=110",
+    "next_state copied for terminal row episode=0 agent=8 time=110",
+    "next_state copied for terminal row episode=0 agent=9 time=110"
+  ],
+  "artifact_paths": {
+    "dataset_summary": "artifacts/phase3_runtime_state_repair/dataset_summary.json",
+    "phase3_model": "artifacts/phase3_runtime_state_repair/phase3_model.chkpt",
+    "phase3_training_report": "artifacts/phase3_runtime_state_repair/phase3_training_report.json",
+    "training_metrics": "artifacts/phase3_runtime_state_repair/training_metrics.json"
+  },
+  "completed_work": [
+    "epoch 1: trained 2220 minibatches"
+  ],
+  "figures_generated": false,
+  "notes": [
+    "This is trace-trained policy training, not final paper reproduction."
+  ],
+  "paper_claims_made": false,
+  "phase": "Phase 3.2 Full Training Pipeline",
+  "phase4_evaluation_performed": false,
+  "skipped_work": [],
+  "unavailable_fields": [
+    "eta_n"
+  ],
+  "validation_status": "passed"
+}

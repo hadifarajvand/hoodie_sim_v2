@@ -1,0 +1,8 @@
+# Phase 3.2 Runtime Paper State Repair
+
+state_source: runtime_paper_state_trace
+next_state_source: runtime_paper_state_trace
+waiting_time_source: runtime_queue_waiting_time
+load_history_source: runtime_active_load_matrix
+predicted_next_load_method: persistence_baseline
+paper_lstm_forecast: False

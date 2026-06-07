@@ -1,0 +1,4 @@
+previous_gap,repair_status,evidence,remaining_limitation,next_required_step
+next_state_not_copy,CLOSED,next_state is paired from the next runtime paper state row,terminal rows still copy state when no t+1 exists,carry terminal bootstrap/episode-end handling
+waiting_time_not_queue_length_proxy,PARTIAL,waiting time is read from runtime queue waiting counters,some queues still expose approximate counters only,instrument exact queue timing if needed
+active_load_matrix_not_queue_length_history,PARTIAL,L_t is exported as active-load history,persistence baseline forecast is still not an LSTM,replace persistence with trained LSTM

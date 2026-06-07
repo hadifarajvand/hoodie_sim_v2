@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import csv
 import json
+import ast
 from dataclasses import asdict, dataclass
 from pathlib import Path
 from statistics import mean
@@ -22,6 +23,13 @@ class TraceDatasetSummary:
     transitions: int
     state_dim: int | None
     action_count: int | None
+    paper_state_trace_present: bool
+    state_source: str | None
+    next_state_source: str | None
+    waiting_time_source: str | None
+    load_history_source: str | None
+    predicted_next_load_method: str | None
+    paper_lstm_forecast: bool | None
     reward_mean: float | None
     reward_min: float | None
     reward_max: float | None
@@ -99,6 +107,22 @@ def _load_any(path: Path) -> list[dict[str, Any]]:
     if path.suffix == ".csv":
         return _load_csv_file(path)
     return []
+
+
+def _load_json_array(value: Any) -> Any:
+    if value in (None, "", "None"):
+        return None
+    if isinstance(value, (list, dict)):
+        return value
+    if isinstance(value, str):
+        try:
+            return json.loads(value)
+        except Exception:
+            try:
+                return ast.literal_eval(value)
+            except Exception:
+                return None
+    return value
 
 
 def _as_array(value: Any) -> np.ndarray:
@@ -320,6 +344,120 @@ def _extract_transition(row: dict[str, Any]) -> Transition:
     )
 
 
+def _parse_paper_state_row(row: dict[str, Any]) -> dict[str, Any]:
+    state_vector = np.asarray(_load_json_array(row.get("state_vector_json")) or [], dtype=np.float32)
+    l_pub_n_prev = np.asarray(_load_json_array(row.get("l_pub_n_prev_json")) or [], dtype=np.float32)
+    active_load_vector = np.asarray(_load_json_array(row.get("active_load_vector_json")) or [], dtype=np.float32)
+    load_history = np.asarray(_load_json_array(row.get("L_t_json")) or [], dtype=np.float32)
+    predicted_next_load = _load_json_array(row.get("predicted_next_load_json"))
+    predicted_next_load_array = None if predicted_next_load is None else np.asarray(predicted_next_load, dtype=np.float32)
+    return {
+        "episode_id": _safe_int(row.get("episode_id")),
+        "time": _safe_int(row.get("time")),
+        "agent_id": _safe_int(row.get("agent_id")),
+        "task_id": _safe_int(row.get("task_id")),
+        "eta_n": _safe_float(row.get("eta_n")),
+        "w_priv_n": _safe_float(row.get("w_priv_n")),
+        "w_off_n": _safe_float(row.get("w_off_n")),
+        "l_pub_n_prev": l_pub_n_prev,
+        "active_load_vector": active_load_vector,
+        "load_history": load_history,
+        "predicted_next_load": predicted_next_load_array,
+        "predicted_next_load_method": row.get("predicted_next_load_method"),
+        "paper_lstm_forecast": str(row.get("paper_lstm_forecast")).lower() == "true",
+        "unavailable_fields": _load_json_array(row.get("unavailable_fields_json")) or [],
+        "approximation_warnings": _load_json_array(row.get("approximation_warnings_json")) or [],
+        "state": state_vector,
+    }
+
+
+def _build_transition_from_paper_state_rows(
+    paper_rows: list[dict[str, Any]],
+    action_rows: list[dict[str, Any]],
+) -> tuple[list[Transition], dict[str, Any]]:
+    parsed = [_parse_paper_state_row(row) for row in paper_rows]
+    parsed.sort(key=lambda row: (row["episode_id"] if row["episode_id"] is not None else -1, row["agent_id"] if row["agent_id"] is not None else -1, row["time"] if row["time"] is not None else -1))
+    action_rows_by_key: dict[tuple[Any, Any, Any], dict[str, Any]] = {}
+    for row in action_rows:
+        key = (_safe_int(row.get("episode_id")), _safe_int(row.get("time")), _safe_int(row.get("agent_id")))
+        action_rows_by_key[key] = row
+
+    transitions: list[Transition] = []
+    approximation_warnings: list[str] = []
+    for idx, row in enumerate(parsed):
+        next_row = next(
+            (
+                candidate
+                for candidate in parsed[idx + 1 :]
+                if candidate["episode_id"] == row["episode_id"] and candidate["agent_id"] == row["agent_id"] and candidate["time"] is not None and row["time"] is not None and candidate["time"] == row["time"] + 1
+            ),
+            None,
+        )
+        action_row = action_rows_by_key.get((row["episode_id"], row["time"], row["agent_id"]))
+        state = row["state"].astype(np.float32)
+        if next_row is not None:
+            next_state = next_row["state"].astype(np.float32)
+            done = False
+            next_state_source = "runtime_paper_state_trace"
+        else:
+            next_state = state.copy()
+            done = True
+            next_state_source = "terminal_copy"
+        reward = 0.0
+        selected_action = 0
+        if action_row is not None:
+            if action_row.get("reward_received") not in (None, "", "None"):
+                reward = float(action_row["reward_received"])
+            if action_row.get("selected_action") not in (None, "", "None"):
+                selected_action = int(float(action_row["selected_action"]))
+        transition = Transition(
+            state=state,
+            action=selected_action,
+            reward=reward,
+            next_state=next_state,
+            done=done,
+            episode_id=row["episode_id"],
+            task_id=row["task_id"],
+            step_index=row["time"],
+            policy_name=action_row.get("policy_name") if action_row else None,
+            raw_action_id=_safe_int(action_row.get("raw_action_id")) if action_row else None,
+            first_stage_decision=action_row.get("first_stage_decision") if action_row else None,
+            destination_node_id=_safe_int(action_row.get("destination_node_id")) if action_row and action_row.get("destination_node_id") not in (None, "", "None") else None,
+            destination_type=action_row.get("destination_type") if action_row else None,
+            is_valid=str(action_row.get("is_valid")).lower() == "true" if action_row and action_row.get("is_valid") not in (None, "", "None") else None,
+            invalid_reason=action_row.get("invalid_reason") if action_row else None,
+            adjacency_allowed=str(action_row.get("adjacency_allowed")).lower() == "true" if action_row and action_row.get("adjacency_allowed") not in (None, "", "None") else None,
+            cloud_target=str(action_row.get("cloud_target")).lower() == "true" if action_row and action_row.get("cloud_target") not in (None, "", "None") else None,
+            d_n_1=_safe_int(action_row.get("d_n_1")) if action_row else None,
+            d_nk_2=_load_json_array(action_row.get("d_nk_2")) if action_row and action_row.get("d_nk_2") not in (None, "", "None") else None,
+            eta_n=row["eta_n"],
+            w_priv_n=row["w_priv_n"],
+            w_off_n=row["w_off_n"],
+            l_pub_n_prev=row["l_pub_n_prev"],
+            load_history=row["load_history"],
+            predicted_next_load=row["predicted_next_load"],
+        )
+        transitions.append(transition)
+        if next_row is None:
+            approximation_warnings.append(f"next_state copied for terminal row episode={row['episode_id']} agent={row['agent_id']} time={row['time']}")
+
+    summary = {
+        "paper_state_trace_present": True,
+        "state_source": "runtime_paper_state_trace",
+        "next_state_source": "runtime_paper_state_trace",
+        "waiting_time_source": "runtime_queue_waiting_time",
+        "load_history_source": "runtime_active_load_matrix",
+        "predicted_next_load_method": parsed[0]["predicted_next_load_method"] if parsed else None,
+        "paper_lstm_forecast": parsed[0]["paper_lstm_forecast"] if parsed else None,
+        "approximation_warnings": approximation_warnings,
+        "state_dim": len(transitions[0].state) if transitions else None,
+        "action_count": max(t.action for t in transitions) + 1 if transitions else None,
+        "episodes": len({t.episode_id for t in transitions if t.episode_id is not None}),
+        "transitions": len(transitions),
+    }
+    return transitions, summary
+
+
 def _build_transition_from_task_row(
     row: dict[str, Any],
     action_row: dict[str, Any] | None,
@@ -520,18 +658,51 @@ def load_trace_dataset(trace_dir: str | Path) -> tuple[list[Transition], TraceDa
 
     transitions: list[Transition] = []
     reconstructed = False
-    task_rows = [row for row in rows if "final_status" in row]
-    if task_rows:
+    paper_state_rows = [row for row in rows if "state_vector_json" in row and "active_load_vector_json" in row]
+    state_source = None
+    next_state_source = None
+    waiting_time_source = None
+    load_history_source = None
+    predicted_next_load_method = None
+    paper_lstm_forecast = None
+
+    if paper_state_rows:
+        action_rows = [row for row in rows if "selected_action" in row and "reward_received" in row]
+        transitions, paper_summary = _build_transition_from_paper_state_rows(paper_state_rows, action_rows)
         reconstructed = True
-        transitions, notes, approximation_warnings, task_missing = _reconstruct_from_task_traces(rows)
-        missing_optional_fields.update(task_missing)
-        if not transitions:
-            raise ValueError("trace directory does not contain task traces with selected_action coverage")
-    elif rows and REQUIRED_FIELDS.issubset(rows[0].keys()):
-        for row in rows:
-            transitions.append(_extract_transition(row))
+        notes.append("reconstructed transitions from runtime paper_state_trace")
+        approximation_warnings.extend(paper_summary["approximation_warnings"])
+        state_source = paper_summary["state_source"]
+        next_state_source = paper_summary["next_state_source"]
+        waiting_time_source = paper_summary["waiting_time_source"]
+        load_history_source = paper_summary["load_history_source"]
+        predicted_next_load_method = paper_summary["predicted_next_load_method"]
+        paper_lstm_forecast = paper_summary["paper_lstm_forecast"]
     else:
-        raise ValueError("trace directory does not contain direct RL transitions or task traces")
+        task_rows = [row for row in rows if "final_status" in row]
+        if task_rows:
+            reconstructed = True
+            transitions, notes, approximation_warnings, task_missing = _reconstruct_from_task_traces(rows)
+            missing_optional_fields.update(task_missing)
+            if not transitions:
+                raise ValueError("trace directory does not contain task traces with selected_action coverage")
+            state_source = "legacy_lifecycle_reconstruction"
+            next_state_source = "legacy_state_copy"
+            waiting_time_source = "legacy_queue_length_proxy"
+            load_history_source = "legacy_queue_length_history"
+            predicted_next_load_method = "unavailable"
+            paper_lstm_forecast = False
+        elif rows and REQUIRED_FIELDS.issubset(rows[0].keys()):
+            for row in rows:
+                transitions.append(_extract_transition(row))
+            state_source = "direct_replay_buffer"
+            next_state_source = "direct_replay_buffer"
+            waiting_time_source = "direct_replay_buffer"
+            load_history_source = "direct_replay_buffer"
+            predicted_next_load_method = "unavailable"
+            paper_lstm_forecast = False
+        else:
+            raise ValueError("trace directory does not contain direct RL transitions or task traces")
 
     if not transitions:
         raise ValueError("trace directory did not produce any training transitions")
@@ -567,6 +738,13 @@ def load_trace_dataset(trace_dir: str | Path) -> tuple[list[Transition], TraceDa
         transitions=len(transitions),
         state_dim=state_dim,
         action_count=action_count,
+        paper_state_trace_present=bool(paper_state_rows),
+        state_source=state_source,
+        next_state_source=next_state_source,
+        waiting_time_source=waiting_time_source,
+        load_history_source=load_history_source,
+        predicted_next_load_method=predicted_next_load_method,
+        paper_lstm_forecast=paper_lstm_forecast,
         reward_mean=mean(rewards) if rewards else None,
         reward_min=min(rewards) if rewards else None,
         reward_max=max(rewards) if rewards else None,

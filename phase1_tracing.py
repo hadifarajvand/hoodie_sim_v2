@@ -7,6 +7,8 @@ from dataclasses import dataclass, asdict
 from pathlib import Path
 from typing import Any, Iterable
 
+import numpy as np
+
 
 @dataclass
 class TaskLifecycleRecord:
@@ -63,6 +65,27 @@ class ActionTraceRecord:
 
 
 @dataclass
+class PaperStateTraceRecord:
+    episode_id: int
+    time: int
+    agent_id: int
+    task_id: int | None
+    eta_n: float | None
+    w_priv_n: float | None
+    w_off_n: float | None
+    l_pub_n_prev_json: str
+    active_load_vector_json: str
+    L_t_json: str
+    predicted_next_load_json: str | None
+    predicted_next_load_method: str
+    paper_lstm_forecast: bool
+    unavailable_fields_json: str
+    approximation_warnings_json: str
+    state_vector_json: str
+    state_dim: int
+
+
+@dataclass
 class EpisodeMetricRecord:
     episode_id: int
     total_tasks: int
@@ -83,6 +106,7 @@ class TraceRecorder:
         self.task_records: dict[int, TaskLifecycleRecord] = {}
         self.queue_traces: list[QueueTraceRecord] = []
         self.action_traces: list[ActionTraceRecord] = []
+        self.paper_state_traces: list[PaperStateTraceRecord] = []
         self.episode_metrics: list[EpisodeMetricRecord] = []
         self._queue_length_history: dict[int, list[float]] = defaultdict(list)
         self._episode_id: int | None = None
@@ -213,6 +237,47 @@ class TraceRecorder:
             )
         )
 
+    def note_paper_state(
+        self,
+        episode_id: int,
+        time: int,
+        agent_id: int,
+        task_id: int | None,
+        eta_n: float | None,
+        w_priv_n: float | None,
+        w_off_n: float | None,
+        l_pub_n_prev: Any,
+        active_load_vector: Any,
+        load_history: Any,
+        predicted_next_load: Any | None,
+        predicted_next_load_method: str,
+        paper_lstm_forecast: bool,
+        unavailable_fields: list[str],
+        approximation_warnings: list[str],
+        state_vector: Any,
+    ) -> None:
+        self.paper_state_traces.append(
+            PaperStateTraceRecord(
+                episode_id=episode_id,
+                time=time,
+                agent_id=agent_id,
+                task_id=task_id,
+                eta_n=None if eta_n is None else float(eta_n),
+                w_priv_n=None if w_priv_n is None else float(w_priv_n),
+                w_off_n=None if w_off_n is None else float(w_off_n),
+                l_pub_n_prev_json=json.dumps(np.asarray(l_pub_n_prev).tolist()),
+                active_load_vector_json=json.dumps(np.asarray(active_load_vector).tolist()),
+                L_t_json=json.dumps(np.asarray(load_history).tolist()),
+                predicted_next_load_json=None if predicted_next_load is None else json.dumps(np.asarray(predicted_next_load).tolist()),
+                predicted_next_load_method=predicted_next_load_method,
+                paper_lstm_forecast=bool(paper_lstm_forecast),
+                unavailable_fields_json=json.dumps(list(unavailable_fields)),
+                approximation_warnings_json=json.dumps(list(approximation_warnings)),
+                state_vector_json=json.dumps(np.asarray(state_vector).tolist()),
+                state_dim=int(np.asarray(state_vector).reshape(-1).shape[0]),
+            )
+        )
+
     def note_queue_trace(
         self,
         episode_id: int,
@@ -275,6 +340,7 @@ class TraceRecorder:
         self._write_csv(output_dir / "task_lifecycle.csv", [asdict(r) for r in self.task_records.values()])
         self._write_csv(output_dir / "queue_trace.csv", [asdict(r) for r in self.queue_traces])
         self._write_csv(output_dir / "action_trace.csv", [asdict(r) for r in self.action_traces])
+        self._write_csv(output_dir / "paper_state_trace.csv", [asdict(r) for r in self.paper_state_traces])
         self._write_csv(output_dir / "episode_metrics.csv", [asdict(r) for r in self.episode_metrics])
 
     def _write_csv(self, path: Path, rows: list[dict[str, Any]]) -> None:
