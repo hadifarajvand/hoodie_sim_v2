@@ -2,6 +2,7 @@ from .server import Server
 from .cloud import Cloud
 from .task_generator import TaskGenerator
 from .matchmaker import Matchmaker
+from .action_model import TopologyAdapter
 from utils import merge_dicts,dict_to_array,remove_diagonal_and_reshape
 from phase1_tracing import TraceRecorder
 from .task import Task
@@ -40,6 +41,7 @@ class Environment():
         self.current_time = 0
         self.episode_time_end = episode_time +max(timeout_delay_maxs)
         self.connection_matrix=  connection_matrix
+        self.topology = TopologyAdapter.from_connection_matrix(connection_matrix, cloud_node_id=number_of_servers)
         self.trace_recorder = trace_recorder
         Task.trace_recorder = trace_recorder
         get_column = lambda m, i: [row[i] for row in m]
@@ -70,7 +72,9 @@ class Environment():
                         for i in range(number_of_servers)]
        
         self.matchmakers = [Matchmaker(id=s.id,
-                                       offloading_servers=s.get_offliading_servers())
+                                       offloading_servers=s.get_offliading_servers(),
+                                       cloud_id=self.number_of_servers,
+                                       topology=self.topology)
                             for s in self.servers]
         self.cloud = Cloud(number_of_servers=number_of_servers,
                            computational_capacity=cloud_computational_capacity)
@@ -105,6 +109,7 @@ class Environment():
             server.reset()
         self.cloud.reset()
         self.reset_transmitted_tasks()
+        self.last_action_decisions = [None for _ in range(self.number_of_servers)]
         if self.trace_recorder is not None:
             self.trace_recorder.start_episode(self.episode_id)
         self.tasks= [t.step() for t in self.task_generators]
@@ -203,7 +208,9 @@ class Environment():
         rewards = self.cloud.step()
         
         for server_id in range(self.number_of_servers):
-            action = self.matchmakers[server_id].match_action(server_id,actions[server_id])
+            action_decision = self.matchmakers[server_id].decode_action(server_id, actions[server_id], strict=True)
+            self.last_action_decisions[server_id] = action_decision
+            action = action_decision.legacy_target_node_id
             self.add_action_info(action,server_id,self.tasks[server_id])
             transmited_task, server_reward = self.servers[server_id].step(action,self.tasks[server_id],current_time=self.current_time)
             rewards = merge_dicts(rewards,server_reward)
@@ -309,7 +316,7 @@ class Environment():
         active_queues  =  active_queues[id]
         return (len(local_observations),
                 len(active_queues),
-                self.servers[id].get_number_of_actions()
+                self.matchmakers[id].get_number_of_actions()
         )
     def get_task_features(self):
         return self.task_generators[0].get_number_of_features()

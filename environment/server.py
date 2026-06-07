@@ -69,7 +69,7 @@ class Server():
         features,_  = self.get_features()
         return len(features)
     def get_number_of_actions(self):
-        return 1+len(self.offloading_servers)
+        return 2 + len(self.offloading_servers)
     
     def get_offliading_servers(self):
         return self.offloading_servers

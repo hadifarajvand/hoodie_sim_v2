@@ -155,7 +155,8 @@ def main():
             observations,rewards,done,info = env.step(actions)
             local_observations_,public_queues_ =observations
             for i in range(number_of_servers):
-                target_node = env.matchmakers[i].match_action(i, actions[i])
+                action_decision = env.last_action_decisions[i]
+                target_node = action_decision.legacy_target_node_id if action_decision is not None else env.matchmakers[i].match_action(i, actions[i])
                 trace_recorder.note_action(
                     episode_id=epoch,
                     time=env.current_time,
@@ -164,6 +165,15 @@ def main():
                     selected_action=int(actions[i]),
                     target_node=int(target_node),
                     reward_received=float(rewards[i]),
+                    first_stage_decision=None if action_decision is None else action_decision.first_stage_decision,
+                    destination_node_id=None if action_decision is None else action_decision.destination_node_id,
+                    destination_type=None if action_decision is None else action_decision.destination_type,
+                    is_valid=None if action_decision is None else action_decision.is_valid,
+                    invalid_reason=None if action_decision is None else action_decision.invalid_reason,
+                    adjacency_allowed=None if action_decision is None else action_decision.adjacency_allowed,
+                    cloud_target=None if action_decision is None else action_decision.cloud_target,
+                    d_n_1=None if action_decision is None else action_decision.d_n_1,
+                    d_nk_2=None if action_decision is None else action_decision.d_nk_2,
                 )
             if not args.validate:
                 for i in range(number_of_servers):

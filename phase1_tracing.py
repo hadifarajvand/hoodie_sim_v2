@@ -50,6 +50,16 @@ class ActionTraceRecord:
     selected_action: int
     target_node: int | None
     reward_received: float
+    raw_action_id: int | None = None
+    first_stage_decision: str | None = None
+    destination_node_id: int | None = None
+    destination_type: str | None = None
+    is_valid: bool | None = None
+    invalid_reason: str | None = None
+    adjacency_allowed: bool | None = None
+    cloud_target: bool | None = None
+    d_n_1: int | None = None
+    d_nk_2: dict[int, int] | None = None
 
 
 @dataclass
@@ -149,12 +159,38 @@ class TraceRecorder:
         selected_action: int,
         target_node: int | None,
         reward_received: float,
+        first_stage_decision: str | None = None,
+        destination_node_id: int | None = None,
+        destination_type: str | None = None,
+        is_valid: bool | None = None,
+        invalid_reason: str | None = None,
+        adjacency_allowed: bool | None = None,
+        cloud_target: bool | None = None,
+        d_n_1: int | None = None,
+        d_nk_2: dict[int, int] | None = None,
     ) -> None:
         for record in self.task_records.values():
             if record.episode_id == episode_id and record.source_node == agent_id and record.arrival_time == time:
                 record.selected_action = int(selected_action)
                 if target_node is not None and record.processing_node is None:
                     record.processing_node = int(target_node)
+        if first_stage_decision is None:
+            first_stage_decision = "local" if target_node == agent_id else "offload"
+        if destination_node_id is None:
+            destination_node_id = target_node
+        if destination_type is None:
+            if destination_node_id is None or destination_node_id == agent_id:
+                destination_type = "local"
+            else:
+                destination_type = "horizontal_edge"
+        if is_valid is None:
+            is_valid = True
+        if adjacency_allowed is None:
+            adjacency_allowed = destination_type != "invalid"
+        if cloud_target is None:
+            cloud_target = destination_type == "vertical_cloud"
+        if d_n_1 is None:
+            d_n_1 = 0 if first_stage_decision == "local" else 1
         self.action_traces.append(
             ActionTraceRecord(
                 episode_id=episode_id,
@@ -164,6 +200,16 @@ class TraceRecorder:
                 selected_action=int(selected_action),
                 target_node=None if target_node is None else int(target_node),
                 reward_received=float(reward_received),
+                raw_action_id=int(selected_action),
+                first_stage_decision=first_stage_decision,
+                destination_node_id=None if destination_node_id is None else int(destination_node_id),
+                destination_type=destination_type,
+                is_valid=bool(is_valid),
+                invalid_reason=invalid_reason,
+                adjacency_allowed=adjacency_allowed,
+                cloud_target=cloud_target,
+                d_n_1=d_n_1,
+                d_nk_2=d_nk_2,
             )
         )
 

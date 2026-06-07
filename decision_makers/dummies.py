@@ -18,6 +18,8 @@ class AllHorizontal(DescisionMakerBase):
         self.number_of_actions =number_of_actions
 
     def choose_action(self, *args, **kwargs):
+        if self.number_of_actions <= 2:
+            return 0
         return np.random.randint(1,self.number_of_actions - 1)
     
 class Random(DescisionMakerBase):
