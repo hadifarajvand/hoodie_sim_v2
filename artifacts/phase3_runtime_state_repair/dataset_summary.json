@@ -27,13 +27,13 @@
   "missing_optional_fields": {
     "baseline_name": 0,
     "paper_state_L_t": 0,
-    "paper_state_eta_n": 1257,
+    "paper_state_eta_n": 1245,
     "paper_state_l_pub_n_prev": 0,
     "paper_state_predicted_next_load": 0,
     "paper_state_w_off_n": 0,
     "paper_state_w_priv_n": 0,
     "policy_name": 0,
-    "reward_delayed_task_id": 1257,
+    "reward_delayed_task_id": 1245,
     "step_index": 0,
     "task_id": 0
   },
@@ -52,9 +52,9 @@
     "task_lifecycle.csv": true
   },
   "reward_max": -0.0,
-  "reward_mean": -0.24484234258599646,
-  "reward_min": -1.2999999523162842,
-  "source_trace_dir": "/private/tmp/phase3-runtime-state-smoke/traces",
+  "reward_mean": -0.2571171174446742,
+  "reward_min": -1.225000023841858,
+  "source_trace_dir": "/tmp/phase3-wt-smoke/traces",
   "state_dim": 129,
   "state_source": "runtime_paper_state_trace",
   "transitions": 2220,

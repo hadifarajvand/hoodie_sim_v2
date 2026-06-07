@@ -12,7 +12,7 @@
   "learning_rate": 0.001,
   "losses_by_epoch": [
     {
-      "average_reward": -0.2407094597296269,
+      "average_reward": -0.26547297316158674,
       "epoch": 1,
       "gradient_steps": 2220,
       "loss": NaN,

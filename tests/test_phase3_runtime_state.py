@@ -8,6 +8,7 @@ from pathlib import Path
 
 import numpy as np
 
+from environment.queues import OffloadingQueue, ProcessingQueue
 from training.trace_dataset import load_trace_dataset, summary_to_dict
 
 
@@ -42,6 +43,62 @@ def _write_paper_state_trace(trace_dir: Path) -> None:
 
 
 class Phase3RuntimeStateTests(unittest.TestCase):
+    def test_processing_queue_waiting_time_comes_from_remaining_work_not_queue_length(self):
+        queue = ProcessingQueue(0.5)
+        queue.add_task(
+            __import__("environment.task", fromlist=["Task"]).Task(
+                size=2,
+                arrival_time=0,
+                timeout_delay=10,
+                computational_density=1,
+                drop_penalty=1,
+                origin_server_id=0,
+                task_id=1,
+            ),
+            current_time=0,
+        )
+        queue.add_task(
+            __import__("environment.task", fromlist=["Task"]).Task(
+                size=2,
+                arrival_time=0,
+                timeout_delay=10,
+                computational_density=1,
+                drop_penalty=1,
+                origin_server_id=0,
+                task_id=2,
+            ),
+            current_time=0,
+        )
+        self.assertEqual(queue.get_queue_length(), 4)
+        self.assertEqual(queue.get_waiting_time(), 8)
+
+    def test_offloading_queue_waiting_time_comes_from_remaining_work_not_queue_length(self):
+        queue = OffloadingQueue({1: 1.0})
+        task1 = __import__("environment.task", fromlist=["Task"]).Task(
+            size=3,
+            arrival_time=0,
+            timeout_delay=10,
+            computational_density=1,
+            drop_penalty=1,
+            origin_server_id=0,
+            target_server_id=1,
+            task_id=1,
+        )
+        task2 = __import__("environment.task", fromlist=["Task"]).Task(
+            size=2,
+            arrival_time=0,
+            timeout_delay=10,
+            computational_density=1,
+            drop_penalty=1,
+            origin_server_id=0,
+            target_server_id=1,
+            task_id=2,
+        )
+        queue.add_task(task1, current_time=0)
+        queue.add_task(task2, current_time=0)
+        self.assertEqual(queue.get_queue_length(), 5)
+        self.assertEqual(queue.get_waiting_time(), 5)
+
     def test_runtime_state_trace_is_exported_and_used(self):
         with tempfile.TemporaryDirectory() as tmp:
             trace_dir = Path(tmp) / "runtime_trace"

@@ -68,10 +68,7 @@ class TaskQueue():
         return rewards
     
     def get_waiting_time(self):
-        try:
-            return self.waiting_time
-        except:
-            raise NotImplementedError("Waiting time is not implemented for this queue (Probably public queue)")
+        raise NotImplementedError("Waiting time is not implemented for this queue (Probably public queue)")
     def get_queue_length(self):
         return self.queue_length
 
@@ -97,6 +94,18 @@ class ProcessingQueue(TaskQueue):
         time_to_process_task = math.ceil(task.get_size()/process_per_time_period)
         timeout_time = max(0,task.get_relative_timeout()-self.waiting_time)
         self.waiting_time += min(timeout_time,time_to_process_task)
+
+    def _task_processing_time(self, task):
+        process_per_time_period = self.computational_capacity / task.get_density()
+        return math.ceil(task.get_remaining_size() / process_per_time_period)
+
+    def get_waiting_time(self):
+        if self.current_task.is_empty():
+            return 0
+        waiting = self._task_processing_time(self.current_task)
+        for task in list(self.queue.queue):
+            waiting += self._task_processing_time(task)
+        return waiting
         
     def add_task(self,task, current_time=None):
         super().add_task(task, current_time=self.current_time if current_time is None else current_time)
@@ -138,6 +147,19 @@ class OffloadingQueue(TaskQueue):
         time_to_transmit_task =  math.ceil(task.get_size()/ offloading_capacity)
         timeout_time = max(0,task.get_relative_timeout()- self.waiting_time)
         self.waiting_time += min(timeout_time,time_to_transmit_task)
+
+    def _task_transmission_time(self, task):
+        target_server_id = task.get_target_server_id()
+        offloading_capacity = self.offloading_capacities[target_server_id]
+        return math.ceil(task.get_remaining_size() / offloading_capacity)
+
+    def get_waiting_time(self):
+        if self.current_task.is_empty():
+            return 0
+        waiting = self._task_transmission_time(self.current_task)
+        for task in list(self.queue.queue):
+            waiting += self._task_transmission_time(task)
+        return waiting
         
     
     def add_task(self,task, current_time=None):
