@@ -1,0 +1,5 @@
+metric,value
+state_dim,129
+active_load_vector_length,21
+forecast_count,444000
+paper_lstm_forecast_false_count,444000

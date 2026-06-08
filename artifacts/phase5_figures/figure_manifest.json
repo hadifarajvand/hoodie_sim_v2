@@ -1,0 +1,17 @@
+{
+  "blockers": [],
+  "data_dir": "artifacts/phase5_figures/data",
+  "diagnostic_only": true,
+  "figure_dir": "artifacts/phase5_figures/figures",
+  "figures": {
+    "figure_10": "artifacts/phase5_figures/figures/figure_10_action_legality.png",
+    "figure_11": "artifacts/phase5_figures/figures/figure_11_state_lstm_readiness.png",
+    "figure_8": "artifacts/phase5_figures/figures/figure_8_episode_outcomes.png",
+    "figure_9": "artifacts/phase5_figures/figures/figure_9_latency_wait_service.png"
+  },
+  "input_artifact_dir": "artifacts/phase4_validation",
+  "paper_performance_claims_made": false,
+  "warnings": [
+    "predicted_next_load still uses persistence_baseline"
+  ]
+}
