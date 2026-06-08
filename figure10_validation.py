@@ -130,6 +130,10 @@ def _write_csv(path: Path, rows: list[dict[str, Any]]) -> None:
         writer.writerows(rows)
 
 
+def _log(message: str) -> None:
+    print(message, flush=True)
+
+
 def _detect_branch() -> str | None:
     try:
         result = subprocess.run(["git", "branch", "--show-current"], cwd=ROOT, capture_output=True, text=True, check=False)
@@ -342,8 +346,12 @@ def _run_main_for_policy(run_dir: Path, runtime_hyperparameters: dict[str, Any],
             "episode_log_interval": 10,
         },
     )
-    cmd = [str(PYTHON), "main.py", "--config", str(config_path), "--episodes", str(episodes), "--seed", str(seed)]
-    return subprocess.run(cmd, cwd=ROOT, capture_output=True, text=True, check=False)
+    cmd = [str(PYTHON), "main.py", "--config", str(config_path), "--epochs", str(episodes), "--seed", str(seed)]
+    result = subprocess.run(cmd, cwd=ROOT, capture_output=True, text=True, check=False)
+    (run_dir / "main_stdout.txt").write_text(result.stdout or "")
+    (run_dir / "main_stderr.txt").write_text(result.stderr or "")
+    (run_dir / "main_returncode.txt").write_text(str(result.returncode))
+    return result
 
 
 def _copy_hoodie_checkpoints(hoodie_checkpoint_dir: Path, log_dir: Path, number_of_servers: int) -> tuple[bool, list[str]]:
@@ -365,6 +373,9 @@ def _policy_run_summary(
     regime_id: str,
     run_id: str,
     trace_dir: Path | None,
+    trace_report: dict[str, Any] | None = None,
+    lifecycle_rows: list[dict[str, Any]] | None = None,
+    trace_episode_rows: list[dict[str, Any]] | None = None,
     validation_episodes: int,
     timeout_slots: int | None,
     timeout_sec: float | None,
@@ -408,10 +419,10 @@ def _policy_run_summary(
             ),
         }
 
-    trace_report = build_validation_report(trace_dir)
-    lifecycle_rows = load_trace_csv(trace_dir / "task_lifecycle.csv")
+    trace_report = trace_report or build_validation_report(trace_dir)
+    lifecycle_rows = lifecycle_rows if lifecycle_rows is not None else load_trace_csv(trace_dir / "task_lifecycle.csv")
     episode_metrics_rows = _episode_metrics_from_lifecycle(lifecycle_rows)
-    trace_episode_rows = load_trace_csv(trace_dir / "episode_metrics.csv")
+    trace_episode_rows = trace_episode_rows if trace_episode_rows is not None else load_trace_csv(trace_dir / "episode_metrics.csv")
     raw_rows: list[dict[str, Any]] = []
     policy_readiness_status = "ready"
     if policy_name == "HOODIE" and hoodie_checkpoint_status == "unavailable_not_trained":
@@ -515,8 +526,13 @@ def _policy_run_summary(
 def assess_figure10_readiness(summary: dict[str, Any]) -> dict[str, Any]:
     active_policy_set = summary.get("active_policy_set", [])
     expected_policy_set = summary.get("expected_policy_set", EXPECTED_POLICY_SET)
+    baseline_policy_set = summary.get("baseline_policy_set", [policy for policy in EXPECTED_POLICY_SET if policy != "HOODIE"])
     missing_policies = summary.get("missing_policies", [])
     unexpected_policies = summary.get("unexpected_policies", [])
+    baseline_missing_policies = [policy for policy in baseline_policy_set if policy not in active_policy_set]
+    baseline_unexpected_policies = [
+        policy for policy in active_policy_set if policy not in baseline_policy_set and policy != "HOODIE"
+    ]
     policy_class_map = summary.get("policy_class_map", {})
     hoodie_checkpoint_status = summary.get("hoodie_checkpoint_status", "unavailable_not_trained")
     mleo_contract_status_seen = summary.get("mleo_contract_status_seen", {})
@@ -529,13 +545,14 @@ def assess_figure10_readiness(summary: dict[str, Any]) -> dict[str, Any]:
         status == "paper_replay_pairing_ready" for status in delayed_reward_contract_status_seen
     )
     baseline_validation_ready = (
-        not missing_policies
-        and not unexpected_policies
+        not baseline_missing_policies
+        and not baseline_unexpected_policies
         and summary.get("non_hoodie_baselines_ready", False)
         and mleo_contract_status_ready
         and delayed_reward_contract_status_ready
         and (summary.get("validation_episode_count") == 200 or summary.get("test_mode", False))
         and summary.get("paper_performance_claims_made", False) is False
+        and not summary.get("no_metric_rows_generated", False)
     )
     figure10_data_ready = (
         baseline_validation_ready
@@ -550,12 +567,18 @@ def assess_figure10_readiness(summary: dict[str, Any]) -> dict[str, Any]:
         blocking_reasons.append(f"missing_policies={missing_policies}")
     if unexpected_policies:
         blocking_reasons.append(f"unexpected_policies={unexpected_policies}")
+    if baseline_missing_policies:
+        blocking_reasons.append(f"baseline_missing_policies={baseline_missing_policies}")
+    if baseline_unexpected_policies:
+        blocking_reasons.append(f"baseline_unexpected_policies={baseline_unexpected_policies}")
     if not summary.get("non_hoodie_baselines_ready", False):
         blocking_reasons.append("non_hoodie_baselines_ready=false")
     if not mleo_contract_status_ready:
         blocking_reasons.append("mleo_contract_status_ready=false")
     if not delayed_reward_contract_status_ready:
         blocking_reasons.append("delayed_reward_contract_status_ready=false")
+    if summary.get("no_metric_rows_generated", False):
+        blocking_reasons.append("no_metric_rows_generated")
     if hoodie_checkpoint_status != "present_and_loaded":
         blocking_reasons.append(f"hoodie_checkpoint_status={hoodie_checkpoint_status}")
     if summary.get("validation_episode_count") != 200 and not summary.get("test_mode", False):
@@ -565,8 +588,11 @@ def assess_figure10_readiness(summary: dict[str, Any]) -> dict[str, Any]:
     return {
         "active_policy_set": active_policy_set,
         "expected_policy_set": expected_policy_set,
+        "baseline_policy_set": baseline_policy_set,
         "missing_policies": missing_policies,
         "unexpected_policies": unexpected_policies,
+        "baseline_missing_policies": baseline_missing_policies,
+        "baseline_unexpected_policies": baseline_unexpected_policies,
         "policy_class_map": policy_class_map,
         "hoodie_checkpoint_status": hoodie_checkpoint_status,
         "mleo_required": True,
@@ -585,10 +611,24 @@ def run_figure10_validation(config: Figure10ValidationConfig) -> dict[str, Any]:
     contract = _load_contract(config.paper_contract_file)
     runtime_hyperparameters = json.loads(Path(config.hyperparameters_file).read_text())
     runtime_diagnostics = _validate_parameter_contract(runtime_hyperparameters, contract)
+    _log("=== Figure 10 Validation ===")
+    _log(f"  - run_id: {config.run_id}")
+    _log(f"  - output_dir: {output_dir}")
+    _log(f"  - episodes: {config.episodes}")
+    _log(f"  - seed: {config.seed}")
+    _log(f"  - policies: {config.policies}")
+    _log(f"  - test_mode: {config.test_mode}")
     if runtime_diagnostics and not config.test_mode:
-        print("Paper contract diagnostics:")
+        _log("=== 1. Paper Contract Diagnostics ===")
         for diag in runtime_diagnostics:
-            print(f"  - {diag['parameter']}: paper={diag['paper_value']} runtime={diag['runtime_value']} severity={diag['severity']}")
+            _log(f"  - {diag['parameter']}: paper={diag['paper_value']} runtime={diag['runtime_value']} severity={diag['severity']}")
+    elif runtime_diagnostics and config.test_mode:
+        _log("=== 1. Paper Contract Diagnostics (test mode) ===")
+        for diag in runtime_diagnostics:
+            _log(f"  - {diag['parameter']}: paper={diag['paper_value']} runtime={diag['runtime_value']} severity={diag['severity']}")
+    else:
+        _log("=== 1. Paper Contract Diagnostics ===")
+        _log("  - no parameter mismatches detected")
 
     run_id = config.run_id
     run_root = output_dir / "runs" / run_id
@@ -609,16 +649,19 @@ def run_figure10_validation(config: Figure10ValidationConfig) -> dict[str, Any]:
     delayed_reward_contract_status_seen: Counter[str] = Counter()
 
     for regime_id in REGIME_IDS:
+        _log(f"=== 2. Regime Start: {regime_id} ===")
         for policy_name in config.policies:
             policy_class = OFFICIAL_POLICY_CLASSES.get(policy_name)
             if policy_class is None:
                 policy_run_statuses[policy_name] = "invalid_policy_mapping"
+                _log(f"  - policy={policy_name}: invalid mapping, skipping")
                 continue
             if policy_name == "HOODIE":
                 checkpoint_dir = Path(config.hoodie_checkpoint_dir) if config.hoodie_checkpoint_dir else None
                 if checkpoint_dir is None or not checkpoint_dir.exists():
                     policy_run_statuses[policy_name] = "unavailable_not_trained"
                     hoodie_checkpoint_status = "unavailable_not_trained"
+                    _log(f"  - regime={regime_id} policy={policy_name}: checkpoint unavailable, skipping")
                     policy_details[policy_name] = {
                         "policy_name": policy_name,
                         "policy_class": _policy_class_name(policy_name),
@@ -641,10 +684,12 @@ def run_figure10_validation(config: Figure10ValidationConfig) -> dict[str, Any]:
                     }
                     continue
                 hoodie_loaded = True
+                _log(f"  - regime={regime_id} policy={policy_name}: checkpoint found, preparing run")
 
             regime_run_dir = run_root / regime_id / policy_name
             trace_dir = regime_run_dir / "traces"
             regime_run_dir.mkdir(parents=True, exist_ok=True)
+            _log(f"  - regime={regime_id} policy={policy_name}: writing runtime config to {regime_run_dir}")
 
             runtime_hp = _prepare_runtime_hyperparameters(
                 runtime_hyperparameters,
@@ -670,6 +715,7 @@ def run_figure10_validation(config: Figure10ValidationConfig) -> dict[str, Any]:
                     "step_log_interval": 10,
                 },
             )
+            _log(f"  - regime={regime_id} policy={policy_name}: launching main.py for {config.episodes} episodes")
 
             if policy_name == "HOODIE" and config.hoodie_checkpoint_dir:
                 log_dir = regime_run_dir / "logs"
@@ -678,6 +724,7 @@ def run_figure10_validation(config: Figure10ValidationConfig) -> dict[str, Any]:
                 if not checkpoint_ok:
                     policy_run_statuses[policy_name] = "unavailable_not_trained"
                     hoodie_checkpoint_status = "unavailable_not_trained"
+                    _log(f"  - regime={regime_id} policy={policy_name}: missing checkpoints {missing_checkpoints}, skipping")
                     policy_details[policy_name] = {
                         "policy_name": policy_name,
                         "policy_class": _policy_class_name(policy_name),
@@ -702,8 +749,14 @@ def run_figure10_validation(config: Figure10ValidationConfig) -> dict[str, Any]:
                 hoodie_checkpoint_status = "present_and_loaded"
 
             result = _run_main_for_policy(regime_run_dir, runtime_hp, config.episodes, config.seed, trace_dir)
+            _log(f"  - regime={regime_id} policy={policy_name}: main.py return code {result.returncode}")
             if result.returncode != 0:
                 policy_run_statuses[policy_name] = "run_failed"
+                stderr_tail = (result.stderr or "").strip().splitlines()[-20:]
+                warning = f"{policy_name}/{regime_id} subprocess failed rc={result.returncode}"
+                if stderr_tail:
+                    warning = f"{warning}; stderr_tail={stderr_tail}"
+                _log(f"  - regime={regime_id} policy={policy_name}: failed; stderr tail captured")
                 policy_details[policy_name] = {
                     "policy_name": policy_name,
                     "policy_class": _policy_class_name(policy_name),
@@ -712,6 +765,7 @@ def run_figure10_validation(config: Figure10ValidationConfig) -> dict[str, Any]:
                     "delayed_reward_contract_status": "missing",
                     "hoodie_checkpoint_status": hoodie_checkpoint_status if policy_name == "HOODIE" else "not_required",
                     "trace_dir": str(trace_dir),
+                    "warnings": [warning],
                     "notes_json": _build_notes_json(
                         regime_id=regime_id,
                         regime_source="paper_contract_or_unverified_runtime_override",
@@ -724,8 +778,10 @@ def run_figure10_validation(config: Figure10ValidationConfig) -> dict[str, Any]:
                         policy_readiness_status="run_failed",
                     ),
                 }
+                (regime_run_dir / "warnings.json").write_text(json.dumps([warning], indent=2))
                 continue
 
+            _log(f"  - regime={regime_id} policy={policy_name}: reading trace report")
             report = build_validation_report(trace_dir)
             policy_run_status = "ready"
             if runtime_diagnostics:
@@ -741,14 +797,23 @@ def run_figure10_validation(config: Figure10ValidationConfig) -> dict[str, Any]:
             delayed_reward_contract_status_seen[str(report.get("delayed_reward_contract_status"))] += 1
             lifecycle_rows = load_trace_csv(trace_dir / "task_lifecycle.csv")
             episode_rows = _episode_metrics_from_lifecycle(lifecycle_rows)
+            _log(
+                f"  - regime={regime_id} policy={policy_name}: lifecycle_rows={len(lifecycle_rows)} "
+                f"episodes={len(episode_rows)} mleo_status={report.get('mleo_contract_status')} "
+                f"delayed_reward_status={report.get('delayed_reward_contract_status')} readiness={policy_run_status}"
+            )
             if not episode_rows:
                 policy_run_status = "run_failed"
                 policy_run_statuses[policy_name] = policy_run_status
+                _log(f"  - regime={regime_id} policy={policy_name}: no episode rows generated, marking failed")
             policy_summary_rows, policy_summary, detail_row = _policy_run_summary(
                 policy_name=policy_name,
                 regime_id=regime_id,
                 run_id=run_id,
                 trace_dir=trace_dir,
+                trace_report=report,
+                lifecycle_rows=lifecycle_rows,
+                trace_episode_rows=load_trace_csv(trace_dir / "episode_metrics.csv"),
                 validation_episodes=config.episodes,
                 timeout_slots=_safe_int(runtime_hp.get("timeout_delay_mins", [None])[0]),
                 timeout_sec=contract.get("timeout_sec"),
@@ -756,6 +821,12 @@ def run_figure10_validation(config: Figure10ValidationConfig) -> dict[str, Any]:
                 hoodie_checkpoint_status=hoodie_checkpoint_status if policy_name == "HOODIE" else "not_required",
                 contract_diagnostics=runtime_diagnostics,
                 test_mode=config.test_mode,
+            )
+            _log(
+                f"  - regime={regime_id} policy={policy_name}: summary rows={len(policy_summary_rows)} "
+                f"episodes_completed={policy_summary.get('episodes_completed')} "
+                f"mean_delay={policy_summary.get('mean_average_computation_delay')} "
+                f"mean_drop_ratio={policy_summary.get('mean_drop_ratio')}"
             )
             for row in policy_summary_rows:
                 row["policy_readiness_status"] = policy_run_status
@@ -765,12 +836,17 @@ def run_figure10_validation(config: Figure10ValidationConfig) -> dict[str, Any]:
                 raw_rows.append(row)
             policy_summaries.setdefault(regime_id, {})[policy_name] = policy_summary
             policy_details[policy_name] = detail_row
+        _log(f"=== 2. Regime Complete: {regime_id} ===")
 
     policy_summary_json: dict[str, Any] = {"regimes": policy_summaries}
     if raw_rows:
         _write_csv(output_dir / "figure10_policy_metrics_raw.csv", raw_rows)
+        _log(f"=== 3. Raw Metrics Written ===")
+        _log(f"  - rows: {len(raw_rows)}")
     else:
         (output_dir / "figure10_policy_metrics_raw.csv").write_text("")
+        _log("=== 3. Raw Metrics Written ===")
+        _log("  - rows: 0")
 
     summary_rows: list[dict[str, Any]] = []
     for regime_id, policies in policy_summaries.items():
@@ -804,6 +880,7 @@ def run_figure10_validation(config: Figure10ValidationConfig) -> dict[str, Any]:
     readiness_input = {
         "active_policy_set": active_policy_set,
         "expected_policy_set": EXPECTED_POLICY_SET,
+        "baseline_policy_set": [policy for policy in EXPECTED_POLICY_SET if policy != "HOODIE"],
         "missing_policies": missing_policies,
         "unexpected_policies": unexpected_policies,
         "policy_class_map": policy_class_map,
@@ -817,6 +894,7 @@ def run_figure10_validation(config: Figure10ValidationConfig) -> dict[str, Any]:
         ),
         "paper_performance_claims_made": False,
         "test_mode": config.test_mode,
+        "no_metric_rows_generated": not raw_rows,
     }
     readiness = assess_figure10_readiness(readiness_input)
 
@@ -855,6 +933,7 @@ def run_figure10_validation(config: Figure10ValidationConfig) -> dict[str, Any]:
         "figure10_data_ready": readiness["figure10_data_ready"],
         "baseline_validation_ready": readiness["baseline_validation_ready"],
         "blocking_reasons": readiness["blocking_reasons"],
+        "no_metric_rows_generated": not raw_rows,
     }
 
     manifest = {
@@ -878,20 +957,30 @@ def run_figure10_validation(config: Figure10ValidationConfig) -> dict[str, Any]:
         "figure10_data_ready": readiness["figure10_data_ready"],
         "baseline_validation_ready": readiness["baseline_validation_ready"],
         "blocking_reasons": readiness["blocking_reasons"],
-        "warnings": [w for policies in policy_summaries.values() for policy in policies.values() for w in policy.get("warnings", [])],
+        "no_metric_rows_generated": not raw_rows,
+        "warnings": [
+            *[w for policies in policy_summaries.values() for policy in policies.values() for w in policy.get("warnings", [])],
+            *[w for detail in policy_details.values() for w in detail.get("warnings", [])],
+        ],
     }
 
     (output_dir / "figure10_policy_metrics_summary.json").write_text(json.dumps(figure10_policy_metrics_summary, indent=2, sort_keys=True))
     (output_dir / "figure10_policy_readiness.json").write_text(json.dumps(readiness, indent=2, sort_keys=True))
     (output_dir / "figure10_run_config_snapshot.json").write_text(json.dumps(config_snapshot, indent=2, sort_keys=True))
     (output_dir / "figure10_validation_manifest.json").write_text(json.dumps(manifest, indent=2, sort_keys=True))
+    _log("=== 4. Report Files Written ===")
+    _log(f"  - summary_json: {output_dir / 'figure10_policy_metrics_summary.json'}")
+    _log(f"  - readiness_json: {output_dir / 'figure10_policy_readiness.json'}")
+    _log(f"  - config_snapshot: {output_dir / 'figure10_run_config_snapshot.json'}")
+    _log(f"  - manifest_json: {output_dir / 'figure10_validation_manifest.json'}")
 
-    print(f"run_id: {run_id}")
-    print(f"output_dir: {output_dir}")
-    print(f"policies evaluated: {[p for p in config.policies if policy_run_statuses.get(p) != 'unavailable_not_trained']}")
-    print(f"policies skipped: {[p for p, s in policy_run_statuses.items() if s == 'unavailable_not_trained']}")
-    print(f"readiness status: {'ready' if readiness['figure10_data_ready'] else 'blocked'}")
-    print(f"blocking reasons: {readiness['blocking_reasons']}")
+    _log("=== 5. Validation Complete ===")
+    _log(f"run_id: {run_id}")
+    _log(f"output_dir: {output_dir}")
+    _log(f"policies evaluated: {[p for p in config.policies if policy_run_statuses.get(p) != 'unavailable_not_trained']}")
+    _log(f"policies skipped: {[p for p, s in policy_run_statuses.items() if s == 'unavailable_not_trained']}")
+    _log(f"readiness status: {'ready' if readiness['figure10_data_ready'] else 'blocked'}")
+    _log(f"blocking reasons: {readiness['blocking_reasons']}")
     return {
         "raw_rows": raw_rows,
         "summary": figure10_policy_metrics_summary,

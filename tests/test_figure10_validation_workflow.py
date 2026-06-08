@@ -1,5 +1,7 @@
 from __future__ import annotations
 
+import io
+from contextlib import redirect_stdout
 import csv
 import json
 import tempfile
@@ -278,6 +280,110 @@ class Figure10ValidationWorkflowTests(unittest.TestCase):
             self.assertEqual(result["readiness"]["hoodie_checkpoint_status"], "unavailable_not_trained")
             self.assertEqual(summary["registry"]["policy_run_statuses"]["HOODIE"], "unavailable_not_trained")
 
+    def test_baseline_only_ready_does_not_require_hoodie(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            tmp_path = Path(tmp)
+            hp_path = tmp_path / "hyperparameters.json"
+            _write_hyperparameters(hp_path)
+            out_dir = tmp_path / "figure10"
+
+            def fake_run(cmd, cwd=None, capture_output=None, text=None, check=None):
+                if "main.py" in cmd:
+                    config_path = Path(cmd[cmd.index("--config") + 1])
+                    config = {}
+                    for line in config_path.read_text().splitlines():
+                        if ":" in line:
+                            key, value = line.split(":", 1)
+                            config[key.strip()] = value.strip().strip('"')
+                    trace_dir = Path(config["trace_output_dir"])
+                    _write_fixture_trace(trace_dir, policy_name="RO")
+                    return __import__("subprocess").CompletedProcess(cmd, 0, stdout="ok", stderr="")
+                return __import__("subprocess").CompletedProcess(cmd, 0, stdout="", stderr="")
+
+            with patch("figure10_validation.subprocess.run", side_effect=fake_run):
+                result = __import__("figure10_validation").main(
+                    [
+                        "--output-dir",
+                        str(out_dir),
+                        "--episodes",
+                        "1",
+                        "--policies",
+                        "RO,FLC,VO,HO,BCO,MLEO",
+                        "--hyperparameters-file",
+                        str(hp_path),
+                        "--paper-contract",
+                        str(ROOT / "config" / "paper_table4_contract.json"),
+                        "--test-mode",
+                    ]
+                )
+            readiness = json.loads((out_dir / "figure10_policy_readiness.json").read_text())
+            summary = json.loads((out_dir / "figure10_policy_metrics_summary.json").read_text())
+            self.assertEqual(result, 0)
+            self.assertTrue(summary["summary_rows"])
+            self.assertTrue(readiness["baseline_validation_ready"])
+            self.assertFalse(readiness["figure10_data_ready"])
+            self.assertIn("HOODIE", readiness["missing_policies"])
+
+    def test_failed_subprocess_writes_logs_and_warning(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            tmp_path = Path(tmp)
+            hp_path = tmp_path / "hyperparameters.json"
+            _write_hyperparameters(hp_path)
+            out_dir = tmp_path / "figure10"
+
+            def fake_run(cmd, cwd=None, capture_output=None, text=None, check=None):
+                if "main.py" in cmd:
+                    return __import__("subprocess").CompletedProcess(cmd, 1, stdout="sim stdout", stderr="sim stderr tail")
+                return __import__("subprocess").CompletedProcess(cmd, 0, stdout="", stderr="")
+
+            runtime_hp = json.loads(hp_path.read_text())
+            runtime_hp["decision_makers"] = "RO"
+            run_dir = tmp_path / "run"
+            trace_dir = tmp_path / "trace"
+            with patch("figure10_validation.subprocess.run", side_effect=fake_run):
+                result = __import__("figure10_validation")._run_main_for_policy(run_dir, runtime_hp, 1, 123, trace_dir)
+            self.assertEqual(result.returncode, 1)
+            self.assertTrue((run_dir / "main_stdout.txt").exists())
+            self.assertTrue((run_dir / "main_stderr.txt").exists())
+            self.assertTrue((run_dir / "main_returncode.txt").exists())
+            self.assertIn("sim stderr tail", (run_dir / "main_stderr.txt").read_text())
+
+            def fake_run_fail(cmd, cwd=None, capture_output=None, text=None, check=None):
+                if "main.py" in cmd:
+                    config_path = Path(cmd[cmd.index("--config") + 1])
+                    config = {}
+                    for line in config_path.read_text().splitlines():
+                        if ":" in line:
+                            key, value = line.split(":", 1)
+                            config[key.strip()] = value.strip().strip('"')
+                    trace_dir = Path(config["trace_output_dir"])
+                    trace_dir.mkdir(parents=True, exist_ok=True)
+                    return __import__("subprocess").CompletedProcess(cmd, 1, stdout="sim stdout", stderr="sim stderr tail")
+                return __import__("subprocess").CompletedProcess(cmd, 0, stdout="", stderr="")
+
+            with patch("figure10_validation.subprocess.run", side_effect=fake_run_fail):
+                code = __import__("figure10_validation").main(
+                    [
+                        "--output-dir",
+                        str(out_dir),
+                        "--episodes",
+                        "1",
+                        "--policies",
+                        "RO,FLC,VO,HO,BCO,MLEO",
+                        "--hyperparameters-file",
+                        str(hp_path),
+                        "--paper-contract",
+                        str(ROOT / "config" / "paper_table4_contract.json"),
+                        "--test-mode",
+                    ]
+                )
+            readiness = json.loads((out_dir / "figure10_policy_readiness.json").read_text())
+            manifest = json.loads((out_dir / "figure10_validation_manifest.json").read_text())
+            self.assertEqual(code, 0)
+            self.assertIn("no_metric_rows_generated", readiness["blocking_reasons"])
+            self.assertTrue(manifest["warnings"])
+            self.assertIn("sim stderr tail", json.dumps(manifest["warnings"]))
+
     def test_average_delay_and_drop_ratio_use_lifecycle_data(self):
         with tempfile.TemporaryDirectory() as tmp:
             trace_dir = Path(tmp) / "trace"
@@ -325,6 +431,32 @@ class Figure10ValidationWorkflowTests(unittest.TestCase):
         self.assertFalse(readiness["figure10_data_ready"])
         self.assertIn("validation_episode_count=1", readiness["blocking_reasons"])
 
+    def test_no_plot_files_are_generated(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            tmp_path = Path(tmp)
+            hp_path = tmp_path / "hyperparameters.json"
+            _write_hyperparameters(hp_path)
+            out_dir = tmp_path / "figure10"
+
+            with patch("figure10_validation.subprocess.run", side_effect=_fake_run_factory(tmp_path)):
+                __import__("figure10_validation").main(
+                    [
+                        "--output-dir",
+                        str(out_dir),
+                        "--episodes",
+                        "1",
+                        "--policies",
+                        "RO,FLC,VO,HO,BCO,MLEO",
+                        "--hyperparameters-file",
+                        str(hp_path),
+                        "--paper-contract",
+                        str(ROOT / "config" / "paper_table4_contract.json"),
+                        "--test-mode",
+                    ]
+                )
+            self.assertFalse(list(out_dir.rglob("*.png")))
+            self.assertFalse(list(out_dir.rglob("*.pdf")))
+
     def test_runner_writes_required_outputs_and_no_plots(self):
         with tempfile.TemporaryDirectory() as tmp:
             tmp_path = Path(tmp)
@@ -356,6 +488,41 @@ class Figure10ValidationWorkflowTests(unittest.TestCase):
             self.assertFalse(list(out_dir.rglob("*.png")))
             self.assertFalse(list(out_dir.rglob("*.pdf")))
 
+    def test_runner_emits_critical_progress_logs(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            tmp_path = Path(tmp)
+            hp_path = tmp_path / "hyperparameters.json"
+            _write_hyperparameters(hp_path)
+            out_dir = tmp_path / "figure10"
+            config = Figure10ValidationConfig(
+                output_dir=str(out_dir),
+                episodes=1,
+                seed=42,
+                policies=["RO", "MLEO"],
+                paper_contract_file=str(ROOT / "config" / "paper_table4_contract.json"),
+                hyperparameters_file=str(hp_path),
+                config_file=None,
+                hoodie_checkpoint_dir=None,
+                test_mode=True,
+                run_id="test-run",
+                timestamp="2026-01-01T00:00:00Z",
+                branch="test",
+                commit="abc123",
+            )
+            buffer = io.StringIO()
+            with patch("figure10_validation.subprocess.run", side_effect=_fake_run_factory(tmp_path)):
+                with redirect_stdout(buffer):
+                    run_figure10_validation(config)
+            output = buffer.getvalue()
+            self.assertIn("=== Figure 10 Validation ===", output)
+            self.assertIn("=== 1. Paper Contract Diagnostics", output)
+            self.assertIn("=== 2. Regime Start: delay ===", output)
+            self.assertIn("regime=delay policy=RO: launching main.py", output)
+            self.assertIn("regime=delay policy=RO: reading trace report", output)
+            self.assertIn("=== 3. Raw Metrics Written ===", output)
+            self.assertIn("=== 4. Report Files Written ===", output)
+            self.assertIn("=== 5. Validation Complete ===", output)
+
     def test_run_main_for_policy_includes_seed_argument(self):
         with tempfile.TemporaryDirectory() as tmp:
             tmp_path = Path(tmp)
@@ -375,6 +542,8 @@ class Figure10ValidationWorkflowTests(unittest.TestCase):
             with patch("figure10_validation.subprocess.run", side_effect=fake_run):
                 __import__("figure10_validation")._run_main_for_policy(run_dir, runtime_hp, 1, 123, trace_dir)
             self.assertTrue(any("--seed" in cmd for cmd in recorded_cmds))
+            self.assertTrue(any("--epochs" in cmd for cmd in recorded_cmds))
+            self.assertFalse(any("--episodes" in cmd for cmd in recorded_cmds))
 
     def test_main_accepts_seed_argument(self):
         result = __import__("subprocess").run(
