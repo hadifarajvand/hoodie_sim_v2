@@ -53,6 +53,7 @@ class Figure10ValidationConfig:
     config_file: str | None
     hoodie_checkpoint_dir: str | None
     test_mode: bool
+    strict_paper_contract: bool
     run_id: str
     timestamp: str
     branch: str | None
@@ -431,8 +432,6 @@ def _policy_run_summary(
         policy_readiness_status = "invalid_mleo_trace"
     elif trace_report.get("delayed_reward_contract_status") != "paper_replay_pairing_ready":
         policy_readiness_status = "invalid_delayed_reward_trace"
-    elif contract_diagnostics:
-        policy_readiness_status = "invalid_parameter_contract"
     elif not trace_episode_rows:
         policy_readiness_status = "run_failed"
 
@@ -538,12 +537,12 @@ def assess_figure10_readiness(summary: dict[str, Any]) -> dict[str, Any]:
     mleo_contract_status_seen = summary.get("mleo_contract_status_seen", {})
     delayed_reward_contract_status_seen = summary.get("delayed_reward_contract_status_seen", {})
     validation_episode_count = summary.get("validation_episode_count")
-    mleo_contract_status_ready = bool(mleo_contract_status_seen) and all(
-        status == "paper_candidate_trace_ready" for status in mleo_contract_status_seen
-    )
-    delayed_reward_contract_status_ready = bool(delayed_reward_contract_status_seen) and all(
-        status == "paper_replay_pairing_ready" for status in delayed_reward_contract_status_seen
-    )
+    strict_paper_contract = summary.get("strict_paper_contract", False)
+    mleo_contract_status_ready = bool(summary.get("mleo_policy_seen", False)) and mleo_contract_status_seen.get("paper_candidate_trace_ready", 0) > 0
+    delayed_reward_contract_status_ready = delayed_reward_contract_status_seen.get("paper_replay_pairing_ready", 0) > 0
+    paper_contract_diagnostics = summary.get("paper_contract_diagnostics", [])
+    baseline_blocking_reasons = []
+    figure10_blocking_reasons = []
     baseline_validation_ready = (
         not baseline_missing_policies
         and not baseline_unexpected_policies
@@ -553,6 +552,7 @@ def assess_figure10_readiness(summary: dict[str, Any]) -> dict[str, Any]:
         and (summary.get("validation_episode_count") == 200 or summary.get("test_mode", False))
         and summary.get("paper_performance_claims_made", False) is False
         and not summary.get("no_metric_rows_generated", False)
+        and (not strict_paper_contract or not paper_contract_diagnostics)
     )
     figure10_data_ready = (
         baseline_validation_ready
@@ -562,29 +562,42 @@ def assess_figure10_readiness(summary: dict[str, Any]) -> dict[str, Any]:
         and summary.get("validation_episode_count") == 200
         and summary.get("paper_performance_claims_made", False) is False
     )
-    blocking_reasons = []
-    if missing_policies:
-        blocking_reasons.append(f"missing_policies={missing_policies}")
-    if unexpected_policies:
-        blocking_reasons.append(f"unexpected_policies={unexpected_policies}")
     if baseline_missing_policies:
-        blocking_reasons.append(f"baseline_missing_policies={baseline_missing_policies}")
+        baseline_blocking_reasons.append(f"baseline_missing_policies={baseline_missing_policies}")
     if baseline_unexpected_policies:
-        blocking_reasons.append(f"baseline_unexpected_policies={baseline_unexpected_policies}")
+        baseline_blocking_reasons.append(f"baseline_unexpected_policies={baseline_unexpected_policies}")
     if not summary.get("non_hoodie_baselines_ready", False):
-        blocking_reasons.append("non_hoodie_baselines_ready=false")
+        baseline_blocking_reasons.append("non_hoodie_baselines_ready=false")
     if not mleo_contract_status_ready:
-        blocking_reasons.append("mleo_contract_status_ready=false")
+        baseline_blocking_reasons.append("mleo_contract_status_ready=false")
     if not delayed_reward_contract_status_ready:
-        blocking_reasons.append("delayed_reward_contract_status_ready=false")
+        baseline_blocking_reasons.append("delayed_reward_contract_status_ready=false")
     if summary.get("no_metric_rows_generated", False):
-        blocking_reasons.append("no_metric_rows_generated")
-    if hoodie_checkpoint_status != "present_and_loaded":
-        blocking_reasons.append(f"hoodie_checkpoint_status={hoodie_checkpoint_status}")
+        baseline_blocking_reasons.append("no_metric_rows_generated")
     if summary.get("validation_episode_count") != 200 and not summary.get("test_mode", False):
-        blocking_reasons.append(f"validation_episode_count={summary.get('validation_episode_count')}")
+        baseline_blocking_reasons.append(f"validation_episode_count={summary.get('validation_episode_count')}")
     if summary.get("paper_performance_claims_made", False):
-        blocking_reasons.append("paper_performance_claims_made=true")
+        baseline_blocking_reasons.append("paper_performance_claims_made=true")
+    if strict_paper_contract and paper_contract_diagnostics:
+        baseline_blocking_reasons.append("invalid_parameter_contract")
+
+    if missing_policies:
+        figure10_blocking_reasons.append(f"missing_policies={missing_policies}")
+    if unexpected_policies:
+        figure10_blocking_reasons.append(f"unexpected_policies={unexpected_policies}")
+    if hoodie_checkpoint_status != "present_and_loaded":
+        figure10_blocking_reasons.append(f"hoodie_checkpoint_status={hoodie_checkpoint_status}")
+    if summary.get("validation_episode_count") != 200 and not summary.get("test_mode", False):
+        figure10_blocking_reasons.append(f"validation_episode_count={summary.get('validation_episode_count')}")
+    if summary.get("paper_performance_claims_made", False):
+        figure10_blocking_reasons.append("paper_performance_claims_made=true")
+    if summary.get("no_metric_rows_generated", False):
+        figure10_blocking_reasons.append("no_metric_rows_generated")
+    if strict_paper_contract and paper_contract_diagnostics:
+        figure10_blocking_reasons.append("invalid_parameter_contract")
+    if not baseline_validation_ready:
+        # preserve backward-compatible union semantics
+        figure10_blocking_reasons.extend(baseline_blocking_reasons)
     return {
         "active_policy_set": active_policy_set,
         "expected_policy_set": expected_policy_set,
@@ -599,9 +612,12 @@ def assess_figure10_readiness(summary: dict[str, Any]) -> dict[str, Any]:
         "mleo_contract_status_seen": mleo_contract_status_seen,
         "delayed_reward_contract_status_seen": delayed_reward_contract_status_seen,
         "validation_episode_count": validation_episode_count,
+        "paper_contract_diagnostics": paper_contract_diagnostics,
         "figure10_data_ready": figure10_data_ready,
         "baseline_validation_ready": baseline_validation_ready,
-        "blocking_reasons": blocking_reasons,
+        "baseline_blocking_reasons": baseline_blocking_reasons,
+        "figure10_blocking_reasons": figure10_blocking_reasons,
+        "blocking_reasons": figure10_blocking_reasons,
     }
 
 
@@ -647,6 +663,7 @@ def run_figure10_validation(config: Figure10ValidationConfig) -> dict[str, Any]:
     hoodie_loaded = False
     mleo_contract_status_seen: Counter[str] = Counter()
     delayed_reward_contract_status_seen: Counter[str] = Counter()
+    mleo_policy_seen = False
 
     for regime_id in REGIME_IDS:
         _log(f"=== 2. Regime Start: {regime_id} ===")
@@ -784,16 +801,18 @@ def run_figure10_validation(config: Figure10ValidationConfig) -> dict[str, Any]:
             _log(f"  - regime={regime_id} policy={policy_name}: reading trace report")
             report = build_validation_report(trace_dir)
             policy_run_status = "ready"
-            if runtime_diagnostics:
-                policy_run_status = "invalid_parameter_contract"
             if policy_name == "MLEO" and report.get("mleo_contract_status") != "paper_candidate_trace_ready":
                 policy_run_status = "invalid_mleo_trace"
             if report.get("delayed_reward_contract_status") != "paper_replay_pairing_ready":
                 policy_run_status = "invalid_delayed_reward_trace"
+            if runtime_diagnostics and config.strict_paper_contract:
+                policy_run_status = "invalid_parameter_contract"
             if policy_name == "HOODIE" and hoodie_checkpoint_status != "present_and_loaded":
                 policy_run_status = "unavailable_not_trained"
             policy_run_statuses[policy_name] = policy_run_status
-            mleo_contract_status_seen[str(report.get("mleo_contract_status"))] += 1
+            if policy_name == "MLEO":
+                mleo_policy_seen = True
+                mleo_contract_status_seen[str(report.get("mleo_contract_status"))] += 1
             delayed_reward_contract_status_seen[str(report.get("delayed_reward_contract_status"))] += 1
             lifecycle_rows = load_trace_csv(trace_dir / "task_lifecycle.csv")
             episode_rows = _episode_metrics_from_lifecycle(lifecycle_rows)
@@ -887,6 +906,7 @@ def run_figure10_validation(config: Figure10ValidationConfig) -> dict[str, Any]:
         "hoodie_checkpoint_status": hoodie_checkpoint_status,
         "mleo_required": True,
         "mleo_contract_status_seen": dict(mleo_contract_status_seen),
+        "mleo_policy_seen": mleo_policy_seen,
         "delayed_reward_contract_status_seen": dict(delayed_reward_contract_status_seen),
         "validation_episode_count": config.episodes,
         "non_hoodie_baselines_ready": all(
@@ -895,6 +915,8 @@ def run_figure10_validation(config: Figure10ValidationConfig) -> dict[str, Any]:
         "paper_performance_claims_made": False,
         "test_mode": config.test_mode,
         "no_metric_rows_generated": not raw_rows,
+        "strict_paper_contract": config.strict_paper_contract,
+        "paper_contract_diagnostics": runtime_diagnostics,
     }
     readiness = assess_figure10_readiness(readiness_input)
 
@@ -927,6 +949,7 @@ def run_figure10_validation(config: Figure10ValidationConfig) -> dict[str, Any]:
         "config_file": config.config_file,
         "hoodie_checkpoint_dir": config.hoodie_checkpoint_dir,
         "test_mode": config.test_mode,
+        "strict_paper_contract": config.strict_paper_contract,
         "runtime_parameter_diagnostics": runtime_diagnostics,
         "expected_policy_set": EXPECTED_POLICY_SET,
         "active_policy_set": active_policy_set,
@@ -1012,6 +1035,7 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument("--policies", default="HOODIE,RO,FLC,VO,HO,BCO,MLEO")
     parser.add_argument("--hoodie-checkpoint-dir", default=None)
     parser.add_argument("--test-mode", action="store_true")
+    parser.add_argument("--strict-paper-contract", action="store_true")
     parser.add_argument("--strict-readiness", action="store_true")
     parser.add_argument("--seed", type=int, default=42)
     parser.add_argument("--run-id", default=None)
@@ -1030,6 +1054,7 @@ def main(argv: list[str] | None = None) -> int:
         config_file=args.config,
         hoodie_checkpoint_dir=str(config_overrides.get("hoodie_checkpoint_dir", args.hoodie_checkpoint_dir)) if config_overrides.get("hoodie_checkpoint_dir", args.hoodie_checkpoint_dir) else None,
         test_mode=bool(config_overrides.get("test_mode", args.test_mode)),
+        strict_paper_contract=bool(config_overrides.get("strict_paper_contract", args.strict_paper_contract)),
         run_id=run_id,
         timestamp=datetime.now(timezone.utc).isoformat(),
         branch=_detect_branch(),

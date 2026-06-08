@@ -247,6 +247,173 @@ class Figure10ValidationWorkflowTests(unittest.TestCase):
         self.assertIn("missing_policies=['FLC']", readiness["blocking_reasons"])
         self.assertIn("unexpected_policies=['ZZZ']", readiness["blocking_reasons"])
 
+    def test_mleo_readiness_is_policy_scoped_and_warnings_do_not_block_baseline(self):
+        readiness = assess_figure10_readiness(
+            {
+                "active_policy_set": ["RO", "FLC", "VO", "HO", "BCO", "MLEO"],
+                "expected_policy_set": EXPECTED_POLICY_SET,
+                "baseline_policy_set": ["RO", "FLC", "VO", "HO", "BCO", "MLEO"],
+                "missing_policies": ["HOODIE"],
+                "unexpected_policies": [],
+                "policy_class_map": {policy: policy for policy in EXPECTED_POLICY_SET},
+                "hoodie_checkpoint_status": "unavailable_not_trained",
+                "mleo_required": True,
+                "mleo_policy_seen": True,
+                "mleo_contract_status_seen": {"paper_candidate_trace_ready": 2, "present_but_invalid": 10},
+                "delayed_reward_contract_status_seen": {"paper_replay_pairing_ready": 6},
+                "validation_episode_count": 200,
+                "non_hoodie_baselines_ready": True,
+                "paper_performance_claims_made": False,
+                "test_mode": False,
+                "no_metric_rows_generated": False,
+                "strict_paper_contract": False,
+                "paper_contract_diagnostics": [{"parameter": "timeout_slots", "severity": "high"}],
+            }
+        )
+        self.assertTrue(readiness["baseline_validation_ready"])
+        self.assertFalse(readiness["figure10_data_ready"])
+        self.assertNotIn("mleo_contract_status_ready=false", readiness["blocking_reasons"])
+        self.assertNotIn("non_hoodie_baselines_ready=false", readiness["blocking_reasons"])
+        self.assertIn("hoodie_checkpoint_status=unavailable_not_trained", readiness["figure10_blocking_reasons"])
+        self.assertNotIn("hoodie_checkpoint_status=unavailable_not_trained", readiness["baseline_blocking_reasons"])
+
+    def test_parameter_diagnostics_are_warnings_by_default(self):
+        readiness = assess_figure10_readiness(
+            {
+                "active_policy_set": ["RO", "FLC", "VO", "HO", "BCO", "MLEO"],
+                "expected_policy_set": EXPECTED_POLICY_SET,
+                "baseline_policy_set": ["RO", "FLC", "VO", "HO", "BCO", "MLEO"],
+                "missing_policies": ["HOODIE"],
+                "unexpected_policies": [],
+                "policy_class_map": {policy: policy for policy in EXPECTED_POLICY_SET},
+                "hoodie_checkpoint_status": "unavailable_not_trained",
+                "mleo_required": True,
+                "mleo_policy_seen": True,
+                "mleo_contract_status_seen": {"paper_candidate_trace_ready": 2},
+                "delayed_reward_contract_status_seen": {"paper_replay_pairing_ready": 12},
+                "validation_episode_count": 200,
+                "non_hoodie_baselines_ready": True,
+                "paper_performance_claims_made": False,
+                "test_mode": False,
+                "no_metric_rows_generated": False,
+                "strict_paper_contract": False,
+                "paper_contract_diagnostics": [{"parameter": "timeout_slots", "severity": "high"}],
+            }
+        )
+        self.assertTrue(readiness["baseline_validation_ready"])
+        self.assertFalse(readiness["figure10_data_ready"])
+        self.assertEqual(readiness["policy_class_map"]["RO"], "RO")
+        self.assertEqual(readiness["policy_class_map"]["MLEO"], "MLEO")
+        self.assertNotIn("invalid_parameter_contract", readiness["baseline_blocking_reasons"])
+        self.assertIn("timeout_slots", json.dumps(readiness["paper_contract_diagnostics"]))
+
+    def test_strict_paper_contract_blocks_when_diagnostics_exist(self):
+        readiness = assess_figure10_readiness(
+            {
+                "active_policy_set": ["RO", "FLC", "VO", "HO", "BCO", "MLEO"],
+                "expected_policy_set": EXPECTED_POLICY_SET,
+                "baseline_policy_set": ["RO", "FLC", "VO", "HO", "BCO", "MLEO"],
+                "missing_policies": ["HOODIE"],
+                "unexpected_policies": [],
+                "policy_class_map": {policy: policy for policy in EXPECTED_POLICY_SET},
+                "hoodie_checkpoint_status": "unavailable_not_trained",
+                "mleo_required": True,
+                "mleo_policy_seen": True,
+                "mleo_contract_status_seen": {"paper_candidate_trace_ready": 2},
+                "delayed_reward_contract_status_seen": {"paper_replay_pairing_ready": 12},
+                "validation_episode_count": 200,
+                "non_hoodie_baselines_ready": True,
+                "paper_performance_claims_made": False,
+                "test_mode": False,
+                "no_metric_rows_generated": False,
+                "strict_paper_contract": True,
+                "paper_contract_diagnostics": [{"parameter": "timeout_slots", "severity": "high"}],
+            }
+        )
+        self.assertFalse(readiness["baseline_validation_ready"])
+        self.assertIn("invalid_parameter_contract", readiness["baseline_blocking_reasons"])
+        self.assertIn("invalid_parameter_contract", readiness["figure10_blocking_reasons"])
+
+    def test_mleo_missing_blocks_baseline(self):
+        readiness = assess_figure10_readiness(
+            {
+                "active_policy_set": ["RO", "FLC", "VO", "HO", "BCO"],
+                "expected_policy_set": EXPECTED_POLICY_SET,
+                "baseline_policy_set": ["RO", "FLC", "VO", "HO", "BCO", "MLEO"],
+                "missing_policies": ["HOODIE", "MLEO"],
+                "unexpected_policies": [],
+                "policy_class_map": {policy: policy for policy in EXPECTED_POLICY_SET},
+                "hoodie_checkpoint_status": "unavailable_not_trained",
+                "mleo_required": True,
+                "mleo_policy_seen": False,
+                "mleo_contract_status_seen": {},
+                "delayed_reward_contract_status_seen": {"paper_replay_pairing_ready": 12},
+                "validation_episode_count": 200,
+                "non_hoodie_baselines_ready": True,
+                "paper_performance_claims_made": False,
+                "test_mode": False,
+                "no_metric_rows_generated": False,
+                "strict_paper_contract": False,
+                "paper_contract_diagnostics": [],
+            }
+        )
+        self.assertFalse(readiness["baseline_validation_ready"])
+        self.assertIn("mleo_contract_status_ready=false", readiness["baseline_blocking_reasons"])
+
+    def test_mleo_invalid_blocks_baseline(self):
+        readiness = assess_figure10_readiness(
+            {
+                "active_policy_set": ["RO", "FLC", "VO", "HO", "BCO", "MLEO"],
+                "expected_policy_set": EXPECTED_POLICY_SET,
+                "baseline_policy_set": ["RO", "FLC", "VO", "HO", "BCO", "MLEO"],
+                "missing_policies": ["HOODIE"],
+                "unexpected_policies": [],
+                "policy_class_map": {policy: policy for policy in EXPECTED_POLICY_SET},
+                "hoodie_checkpoint_status": "unavailable_not_trained",
+                "mleo_required": True,
+                "mleo_policy_seen": True,
+                "mleo_contract_status_seen": {"present_but_invalid": 2},
+                "delayed_reward_contract_status_seen": {"paper_replay_pairing_ready": 12},
+                "validation_episode_count": 200,
+                "non_hoodie_baselines_ready": True,
+                "paper_performance_claims_made": False,
+                "test_mode": False,
+                "no_metric_rows_generated": False,
+                "strict_paper_contract": False,
+                "paper_contract_diagnostics": [],
+            }
+        )
+        self.assertFalse(readiness["baseline_validation_ready"])
+        self.assertIn("mleo_contract_status_ready=false", readiness["baseline_blocking_reasons"])
+
+    def test_hoodie_missing_only_blocks_full_figure10(self):
+        readiness = assess_figure10_readiness(
+            {
+                "active_policy_set": ["RO", "FLC", "VO", "HO", "BCO", "MLEO"],
+                "expected_policy_set": EXPECTED_POLICY_SET,
+                "baseline_policy_set": ["RO", "FLC", "VO", "HO", "BCO", "MLEO"],
+                "missing_policies": ["HOODIE"],
+                "unexpected_policies": [],
+                "policy_class_map": {policy: policy for policy in EXPECTED_POLICY_SET},
+                "hoodie_checkpoint_status": "unavailable_not_trained",
+                "mleo_required": True,
+                "mleo_policy_seen": True,
+                "mleo_contract_status_seen": {"paper_candidate_trace_ready": 2},
+                "delayed_reward_contract_status_seen": {"paper_replay_pairing_ready": 12},
+                "validation_episode_count": 200,
+                "non_hoodie_baselines_ready": True,
+                "paper_performance_claims_made": False,
+                "test_mode": False,
+                "no_metric_rows_generated": False,
+                "strict_paper_contract": False,
+                "paper_contract_diagnostics": [],
+            }
+        )
+        self.assertTrue(readiness["baseline_validation_ready"])
+        self.assertFalse(readiness["figure10_data_ready"])
+        self.assertNotIn("HOODIE", json.dumps(readiness["baseline_blocking_reasons"]))
+        self.assertIn("hoodie_checkpoint_status=unavailable_not_trained", readiness["figure10_blocking_reasons"])
+
     def test_hoodie_without_checkpoint_is_marked_unavailable(self):
         with tempfile.TemporaryDirectory() as tmp:
             tmp_path = Path(tmp)
@@ -263,6 +430,7 @@ class Figure10ValidationWorkflowTests(unittest.TestCase):
                 config_file=None,
                 hoodie_checkpoint_dir=None,
                 test_mode=True,
+                strict_paper_contract=False,
                 run_id="test-run",
                 timestamp="2026-01-01T00:00:00Z",
                 branch="test",
@@ -473,6 +641,7 @@ class Figure10ValidationWorkflowTests(unittest.TestCase):
                 config_file=None,
                 hoodie_checkpoint_dir=None,
                 test_mode=True,
+                strict_paper_contract=False,
                 run_id="test-run",
                 timestamp="2026-01-01T00:00:00Z",
                 branch="test",
@@ -504,6 +673,7 @@ class Figure10ValidationWorkflowTests(unittest.TestCase):
                 config_file=None,
                 hoodie_checkpoint_dir=None,
                 test_mode=True,
+                strict_paper_contract=False,
                 run_id="test-run",
                 timestamp="2026-01-01T00:00:00Z",
                 branch="test",

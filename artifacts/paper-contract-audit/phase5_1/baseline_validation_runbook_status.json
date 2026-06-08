@@ -1,0 +1,11 @@
+{
+  "runbook_present": true,
+  "baseline_only_excludes_hoodie": true,
+  "full_command_requires_hoodie_checkpoint": true,
+  "smoke_command_present": true,
+  "post_run_inspection_present": true,
+  "git_hygiene_present": true,
+  "plots_introduced": false,
+  "validation_run_executed": false,
+  "paper_performance_claims_made": false
+}
