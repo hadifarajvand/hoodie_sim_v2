@@ -146,19 +146,30 @@ def write_validation_artifacts(trace_dir: str | Path, output_dir: str | Path) ->
     output_dir = Path(output_dir)
     output_dir.mkdir(parents=True, exist_ok=True)
     report = build_validation_report(trace_dir)
-    reward_events = [asdict(event) for event in infer_reward_events(trace_dir)]
+    trace_dir = Path(trace_dir)
+    mleo_path = trace_dir / "mleo_candidate_latency_trace.csv"
+    mleo_rows = load_trace_csv(mleo_path) if mleo_path.exists() else []
     (output_dir / "baseline_validation_report.json").write_text(json.dumps(report, indent=2, sort_keys=True))
     (output_dir / "active_policy_set.json").write_text(json.dumps(sorted(report["policy_map"].keys()), indent=2))
     (output_dir / "mleo_candidate_latency_samples.json").write_text(
         json.dumps(
             [
                 {
-                    "task_id": event["task_id"],
-                    "final_status": event["final_status"],
-                    "latency_sample": event["delay"],
+                    "episode_id": row.get("episode_id"),
+                    "time": row.get("time"),
+                    "task_id": row.get("task_id"),
+                    "source_agent": row.get("source_agent"),
+                    "raw_action_id": row.get("raw_action_id"),
+                    "destination_type": row.get("destination_type"),
+                    "destination_node_id": row.get("destination_node_id"),
+                    "is_selected": str(row.get("is_selected")).lower() == "true",
+                    "total_estimated_latency": _as_float(row.get("total_estimated_latency")),
+                    "deadline_slack_estimate": _as_float(row.get("deadline_slack_estimate")),
+                    "estimated_deadline_violation": str(row.get("estimated_deadline_violation")).lower() == "true",
+                    "estimator_version": row.get("estimator_version"),
+                    "approximation_warnings_json": row.get("approximation_warnings_json"),
                 }
-                for event in reward_events
-                if event["final_status"] in {"completed", "dropped"}
+                for row in mleo_rows
             ][:100],
             indent=2,
             sort_keys=True,

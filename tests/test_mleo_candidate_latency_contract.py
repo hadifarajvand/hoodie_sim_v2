@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import csv
+import json
 import tempfile
 from pathlib import Path
 import unittest
@@ -133,6 +134,38 @@ class MleoCandidateLatencyContractTests(unittest.TestCase):
             )
             report = build_validation_report(trace_dir)
             self.assertEqual(report["mleo_contract_status"], "paper_candidate_trace_ready")
+
+    def test_candidate_samples_are_trace_derived_and_empty_when_missing(self) -> None:
+        with tempfile.TemporaryDirectory() as tmpdir:
+            trace_dir = Path(tmpdir)
+            for name in ("task_lifecycle.csv", "queue_trace.csv", "action_trace.csv", "episode_metrics.csv"):
+                (trace_dir / name).write_text("episode_id,time,task_id\n1,0,1\n")
+            output_dir = trace_dir / "out"
+            from phase2_mechanisms import write_validation_artifacts
+
+            write_validation_artifacts(trace_dir, output_dir)
+            samples = json.loads((output_dir / "mleo_candidate_latency_samples.json").read_text())
+            self.assertEqual(samples, [])
+            self.assertTrue(all("final_status" not in row and "latency_sample" not in row for row in samples))
+
+        with tempfile.TemporaryDirectory() as tmpdir:
+            trace_dir = Path(tmpdir)
+            for name in ("task_lifecycle.csv", "queue_trace.csv", "action_trace.csv", "episode_metrics.csv"):
+                (trace_dir / name).write_text("episode_id,time,task_id\n1,0,1\n")
+            (trace_dir / "mleo_candidate_latency_trace.csv").write_text(
+                "episode_id,time,task_id,source_agent,raw_action_id,first_stage_decision,destination_type,destination_node_id,is_legal_candidate,is_selected,input_data_size,remaining_size,processing_density,required_cpu_cycles,arrival_time,absolute_deadline,timeout,private_wait_estimate,private_service_estimate,offloading_wait_estimate,transmission_estimate,public_wait_estimate,public_service_estimate,cloud_wait_estimate,cloud_service_estimate,total_estimated_latency,deadline_slack_estimate,estimated_deadline_violation,estimator_version,unavailable_fields_json,approximation_warnings_json\n"
+                "1,0,1,0,0,local,local,,True,True,1,1,1,1,0,5,5,0,1,,,,,,,1,4,False,v1,[],[]\n"
+            )
+            output_dir = trace_dir / "out"
+            from phase2_mechanisms import write_validation_artifacts
+
+            write_validation_artifacts(trace_dir, output_dir)
+            samples = json.loads((output_dir / "mleo_candidate_latency_samples.json").read_text())
+            self.assertEqual(len(samples), 1)
+            self.assertIn("total_estimated_latency", samples[0])
+            self.assertIn("approximation_warnings_json", samples[0])
+            self.assertNotIn("final_status", samples[0])
+            self.assertNotIn("latency_sample", samples[0])
 
 
 if __name__ == "__main__":
