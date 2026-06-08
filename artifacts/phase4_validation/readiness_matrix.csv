@@ -1,0 +1,18 @@
+criterion,expected,observed,status,evidence,next_action
+episodes_completed,200,200,PASS,200,
+episode_metrics_count,200,200,PASS,200,
+paper_state_trace_present,true,True,PASS,True,
+invalid_action_ratio,0,0.0,PASS,0.0,
+non_neighbor_offload_count,0,0,PASS,0,
+self_offload_violation_count,0,0,PASS,0,
+state_dim_stable,>2 and consistent,129..129,PASS,"(129, 129)",
+L_t_shape,W x (N+1),"[4, 21]",PASS,"[4, 21]",
+active_load_vector_length,N+1,21,PASS,21,
+predicted_next_load_length,N+1,21,PASS,21,
+predicted_next_load_method_reported,reported,{'persistence_baseline': 444000},PASS,{'persistence_baseline': 444000},
+paper_lstm_forecast_true_or_justified_false,true or justified false,444000,WARN,444000,replace baseline forecast with trained LSTM
+transitions,>0,444000,PASS,444000,
+state_source,runtime_paper_state_trace,runtime_paper_state_trace,PASS,runtime_paper_state_trace,
+next_state_source,runtime_paper_state_trace,runtime_paper_state_trace,PASS,runtime_paper_state_trace,
+nonterminal_next_state_copy_count,0,0,PASS,0,
+paper_performance_claims_made,false,False,PASS,False,

@@ -1,0 +1,19 @@
+{
+  "batch_size": 1,
+  "branch": "100-hoodie-paper-base",
+  "checkpoint_every": 1,
+  "commit": "3a32323",
+  "episodes": 200,
+  "fail_on_invalid_actions": false,
+  "fail_on_missing_paper_state": false,
+  "fail_on_non_lstm_forecast": false,
+  "keep_raw_traces": false,
+  "max_sample_rows": 25,
+  "mode": "full",
+  "output_dir": "artifacts/phase4_validation",
+  "raw_trace_dir": null,
+  "seed": 42,
+  "sequence_length": 1,
+  "timestamp": "2026-06-08T05:07:51.564440+00:00",
+  "train_after_run": true
+}

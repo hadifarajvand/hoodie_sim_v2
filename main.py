@@ -9,15 +9,101 @@ import torch
 import os
 import json
 import pickle 
+from pathlib import Path
+
+try:
+    import yaml
+except Exception:  # pragma: no cover
+    yaml = None
+
+
+def _load_config(path: str | None) -> dict:
+    if not path:
+        return {}
+    config_path = Path(path)
+    if not config_path.exists():
+        raise FileNotFoundError(f"config file not found: {path}")
+    if yaml is not None:
+        with config_path.open() as f:
+            data = yaml.safe_load(f) or {}
+        if not isinstance(data, dict):
+            raise ValueError("config.yml must contain a mapping")
+        return data
+    data: dict[str, object] = {}
+    for raw_line in config_path.read_text().splitlines():
+        line = raw_line.strip()
+        if not line or line.startswith("#"):
+            continue
+        if ":" not in line:
+            raise ValueError("config.yml must use key: value entries")
+        key, value = line.split(":", 1)
+        data[key.strip()] = value.strip()
+    return data
+
+
+def _coerce_args_from_config(parser, args, config):
+    for key, value in config.items():
+        if not hasattr(args, key):
+            continue
+        current = getattr(args, key)
+        if current != parser.get_default(key):
+            continue
+        setattr(args, key, value)
+    return args
+
+
+def _maybe_int(value, default):
+    try:
+        return int(value)
+    except Exception:
+        return default
+
+
+def _maybe_bool(value, default):
+    if isinstance(value, bool):
+        return value
+    if isinstance(value, str):
+        lowered = value.lower().strip()
+        if lowered in {"true", "yes", "1"}:
+            return True
+        if lowered in {"false", "no", "0"}:
+            return False
+    return default
+
+
+def select_torch_device() -> str:
+    return "cpu"
+
+
 def main():
-    device = 'cuda' if torch.cuda.is_available() else 'cpu'
+    device = select_torch_device()
     parser = argparse.ArgumentParser()
+    parser.add_argument('--config', type=str, default='config.yml', help='Path to run configuration file')
     parser.add_argument('--log_folder', type=str, default='log_folder', help='Path to the log folder')
     parser.add_argument('--hyperparameters_file', type=str, default='hyperparameters/hyperparameters.json', help='Path to the hyperparameters file')
     parser.add_argument('--epochs', type=int, default=2, help='Device to use')
     parser.add_argument('--validate', type=bool, default=False, help='Device to use')
     parser.add_argument('--trace_output_dir', type=str, default='outputs/phase1_traces', help='Path to trace output directory')
     args  = parser.parse_args()
+
+    config = _load_config(args.config)
+    if config:
+        args = _coerce_args_from_config(parser, args, config)
+        if "epochs" in config:
+            args.epochs = _maybe_int(config["epochs"], args.epochs)
+        if "validate" in config:
+            args.validate = _maybe_bool(config["validate"], args.validate)
+        if "log_folder" in config:
+            args.log_folder = str(config["log_folder"])
+        if "hyperparameters_file" in config:
+            args.hyperparameters_file = str(config["hyperparameters_file"])
+        if "trace_output_dir" in config:
+            args.trace_output_dir = str(config["trace_output_dir"])
+        step_log_interval = _maybe_int(config.get("step_log_interval", 10), 10)
+        episode_log_interval = _maybe_int(config.get("episode_log_interval", 10), 10)
+    else:
+        step_log_interval = 10
+        episode_log_interval = 10
 
     os.makedirs(args.log_folder, exist_ok=True)
     trace_recorder = TraceRecorder()
@@ -144,6 +230,8 @@ def main():
         if key != 'connection_matrix':
             print(key ," : ",hyperparameters[key])
     for epoch in range(args.epochs):
+        if epoch % episode_log_interval == 0:
+            print(f"[main] starting episode {epoch}/{args.epochs - 1}", flush=True)
         accumulated_rewards = []
         env.episode_id = epoch
         observations,done, info = env.reset()
@@ -207,9 +295,11 @@ def main():
                         
             local_observations,public_queues  = local_observations_,public_queues_
             accumulated_rewards.append(sum(rewards))
-        
+
         print(f'Epoch {epoch} Accumulated rewards: {sum(accumulated_rewards)/len(accumulated_rewards)}')
         trace_recorder.finalize_episode(epoch, total_reward=float(sum(accumulated_rewards)), mean_reward=float(sum(accumulated_rewards)/len(accumulated_rewards)) if accumulated_rewards else 0.0)
+        if (epoch + 1) % episode_log_interval == 0 or epoch == args.epochs - 1:
+            print(f"[main] finished episode {epoch}", flush=True)
         if not args.validate:
             for decision_maker in decision_makers:
                 decision_maker.learn() 

@@ -15,6 +15,11 @@ from typing import Any
 
 import numpy as np
 
+try:
+    import yaml
+except Exception:  # pragma: no cover
+    yaml = None
+
 from training.trace_dataset import load_trace_dataset, summary_to_dict
 
 
@@ -112,6 +117,25 @@ def _array_len(value: Any) -> int | None:
         return int(arr.reshape(-1).shape[0])
     except Exception:
         return None
+
+
+def _write_yaml(path: Path, data: dict[str, Any]) -> None:
+    path.parent.mkdir(parents=True, exist_ok=True)
+    if yaml is not None:
+        path.write_text(yaml.safe_dump(data, sort_keys=False))
+        return
+    lines: list[str] = []
+    for key, value in data.items():
+        if isinstance(value, bool):
+            rendered = "true" if value else "false"
+        elif isinstance(value, (int, float)):
+            rendered = str(value)
+        elif isinstance(value, list):
+            rendered = json.dumps(value)
+        else:
+            rendered = str(value)
+        lines.append(f"{key}: {rendered}")
+    path.write_text("\n".join(lines) + "\n")
 
 
 def _read_trace_files(trace_dir: Path) -> dict[str, list[dict[str, Any]]]:
@@ -328,6 +352,22 @@ def _write_csv(path: Path, rows: list[dict[str, Any]]) -> None:
         writer.writerows(rows)
 
 
+def _stream_subprocess(cmd: list[str], cwd: Path, title: str) -> int:
+    print(f"  - launching: {title}", flush=True)
+    process = subprocess.Popen(
+        cmd,
+        cwd=cwd,
+        stdout=subprocess.PIPE,
+        stderr=subprocess.STDOUT,
+        text=True,
+        bufsize=1,
+    )
+    assert process.stdout is not None
+    for line in process.stdout:
+        print(f"    {line.rstrip()}", flush=True)
+    return process.wait()
+
+
 def _build_report(trace_dir: Path, output_dir: Path, config: ValidationConfig) -> dict[str, Any]:
     trace_rows = _read_trace_files(trace_dir)
     blockers, warnings = _validate_trace_completeness(trace_rows, config.episodes)
@@ -461,23 +501,49 @@ def run_validation(config: ValidationConfig) -> dict[str, Any]:
     trace_dir = Path(config.raw_trace_dir) if config.raw_trace_dir else Path(tempfile.mkdtemp(prefix="phase4-validation-traces-"))
     trace_dir.mkdir(parents=True, exist_ok=True)
 
+    def banner(title: str) -> None:
+        print("", flush=True)
+        print(f"=== {title} ===", flush=True)
+
+    def log(message: str) -> None:
+        print(f"  - {message}", flush=True)
+
+    banner("Phase 4 Validation")
+    log(f"mode: {config.mode}")
+    log(f"episodes: {config.episodes}")
+    log(f"output dir: {output_dir}")
+    log(f"trace dir: {trace_dir}")
+
+    run_config_path = output_dir / "run_config.yml"
+    run_config = {
+        "config": str((ROOT / "config.yml").resolve()),
+        "log_folder": str(output_dir / "logs"),
+        "trace_output_dir": str(trace_dir),
+        "epochs": int(config.episodes),
+        "validate": True,
+        "step_log_interval": 10,
+        "episode_log_interval": 10,
+    }
+    _write_yaml(run_config_path, run_config)
+    log(f"run config written: {run_config_path}")
+
     main_cmd = [
         str(PYTHON),
         "main.py",
-        "--epochs",
-        str(config.episodes),
-        "--log_folder",
-        str(output_dir / "logs"),
-        "--trace_output_dir",
-        str(trace_dir),
-        "--validate",
-        "True",
+        "--config",
+        str(run_config_path),
     ]
-    sim = subprocess.run(main_cmd, cwd=ROOT, capture_output=True, text=True, check=False)
-    if sim.returncode != 0:
-        raise SystemExit(sim.stderr or sim.stdout or "simulation failed")
+    banner("1. Simulator Trace Generation")
+    log("starting main.py")
+    sim_code = _stream_subprocess(main_cmd, ROOT, "main.py")
+    if sim_code != 0:
+        raise SystemExit(f"simulation failed with exit code {sim_code}")
+    log("main.py completed successfully")
+    log("required trace files will be checked next")
 
     if config.train_after_run:
+        banner("2. Training Smoke")
+        log("starting training.train_phase3")
         train_cmd = [
             str(PYTHON),
             "-m",
@@ -497,20 +563,32 @@ def run_validation(config: ValidationConfig) -> dict[str, Any]:
             "--seed",
             str(config.seed),
         ]
-        train = subprocess.run(train_cmd, cwd=ROOT, capture_output=True, text=True, check=False)
-        if train.returncode != 0:
-            raise SystemExit(train.stderr or train.stdout or "training smoke failed")
+        train_code = _stream_subprocess(train_cmd, ROOT, "training.train_phase3")
+        if train_code != 0:
+            raise SystemExit(f"training smoke failed with exit code {train_code}")
+        log("training smoke completed successfully")
 
+    banner("3. Report Construction")
+    log("loading trace files")
     report, episode_summary_rows = _build_report(trace_dir, output_dir, config)
+    log("validation metrics calculated")
 
     if config.keep_raw_traces and config.raw_trace_dir:
+        banner("4. Raw Trace Preservation")
+        log("copying raw traces into artifact directory")
         kept_dir = output_dir / "raw_traces"
         kept_dir.mkdir(parents=True, exist_ok=True)
         for path in trace_dir.iterdir():
             if path.is_file():
                 shutil.copy2(path, kept_dir / path.name)
+        log("raw traces copied")
 
+    banner("5. Artifact Write")
+    log("writing JSON, CSV, and markdown summaries")
     _write_outputs(output_dir, config, report, episode_summary_rows)
+    log(f"validation_status: {report['validation_status']}")
+    log(f"ready_for_phase5_figures: {report['ready_for_phase5_figures']}")
+    banner("Phase 4 Validation Complete")
     return report
 
 

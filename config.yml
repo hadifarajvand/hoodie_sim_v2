@@ -1,0 +1,9 @@
+# Default run configuration for direct `main.py` execution.
+# Adjust these values before running the simulator directly.
+hyperparameters_file: hyperparameters/hyperparameters.json
+log_folder: artifacts/main_run/logs
+trace_output_dir: artifacts/main_run/traces
+epochs: 200
+validate: true
+step_log_interval: 10
+episode_log_interval: 10
