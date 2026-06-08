@@ -72,6 +72,13 @@ class TaskQueue():
     def get_queue_length(self):
         return self.queue_length
 
+    def get_pending_tasks(self):
+        tasks = []
+        if not self.current_task.is_empty():
+            tasks.append(self.current_task)
+        tasks.extend(list(self.queue.queue))
+        return tasks
+
     def get_trace_queue_length(self):
         total = 0.0
         if not self.current_task.is_empty():
@@ -204,6 +211,14 @@ class PublicQueue(TaskQueue):
             if recorder is not None:
                 recorder.note_service_end(self.current_task, episode_id=getattr(recorder, "_episode_id", None), time=self.current_time, node_id=self.node_id if self.node_id is not None else -1, queue_type=self.queue_type)
         return reward
+
+    def estimate_waiting_time(self, computational_capacity: float) -> int:
+        if self.is_empty():
+            return 0
+        waiting = 0
+        for task in self.get_pending_tasks():
+            waiting += math.ceil(task.get_remaining_size() * task.get_density() / computational_capacity)
+        return waiting
                     
 
 class PublicQueueManager():
@@ -270,3 +285,21 @@ class PublicQueueManager():
         for server_id in self.supporting_servers:
             queue_lengths[server_id] = self.public_queues[server_id].get_queue_length()
         return queue_lengths
+
+    def get_queue_snapshots(self):
+        snapshots = {}
+        for server_id in self.supporting_servers:
+            snapshots[server_id] = self.public_queues[server_id].get_pending_tasks()
+        return snapshots
+
+    def estimate_waiting_time(self, source_id, candidate_becomes_active: bool = False):
+        queue = self.public_queues[source_id]
+        if queue.is_empty():
+            return 0
+        active_queues = self.get_active_queues()
+        if candidate_becomes_active and queue.is_empty():
+            active_queues += 1
+        if active_queues == 0:
+            return 0
+        distributed_capacity = self.computational_capacity / active_queues
+        return queue.estimate_waiting_time(distributed_capacity)

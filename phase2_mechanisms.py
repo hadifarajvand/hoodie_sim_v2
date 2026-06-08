@@ -79,6 +79,25 @@ def build_validation_report(trace_dir: str | Path) -> dict[str, Any]:
     queue_rows = load_trace_csv(trace_dir / "queue_trace.csv")
     action_rows = load_trace_csv(trace_dir / "action_trace.csv")
     episode_rows = load_trace_csv(trace_dir / "episode_metrics.csv")
+    mleo_path = trace_dir / "mleo_candidate_latency_trace.csv"
+    mleo_exists = mleo_path.exists()
+    mleo_rows = load_trace_csv(mleo_path) if mleo_exists else []
+    mleo_selected_rows = sum(1 for row in mleo_rows if str(row.get("is_selected")).lower() == "true")
+    mleo_tasks = {}
+    for row in mleo_rows:
+        key = (row.get("episode_id"), row.get("task_id"))
+        task_bucket = mleo_tasks.setdefault(key, {"rows": 0, "selected": 0})
+        task_bucket["rows"] += 1
+        if str(row.get("is_selected")).lower() == "true":
+            task_bucket["selected"] += 1
+    mleo_tasks_with_candidates = sum(1 for bucket in mleo_tasks.values() if bucket["rows"] > 0)
+    mleo_tasks_with_exactly_one_selected_candidate = sum(1 for bucket in mleo_tasks.values() if bucket["selected"] == 1)
+    if not mleo_exists:
+        mleo_contract_status = "missing"
+    elif mleo_selected_rows == 0 or mleo_tasks_with_exactly_one_selected_candidate != mleo_tasks_with_candidates:
+        mleo_contract_status = "present_but_invalid"
+    else:
+        mleo_contract_status = "paper_candidate_trace_ready"
 
     active_policy_set = sorted(build_policy_map().keys())
     reward_events = infer_reward_events(trace_dir)
@@ -111,6 +130,12 @@ def build_validation_report(trace_dir: str | Path) -> dict[str, Any]:
             "total_reward": sum(e.reward for e in reward_events),
         },
         "policy_map": build_policy_map(),
+        "mleo_candidate_latency_trace_exists": mleo_exists,
+        "mleo_candidate_rows": len(mleo_rows),
+        "mleo_selected_rows": mleo_selected_rows,
+        "mleo_tasks_with_candidates": mleo_tasks_with_candidates,
+        "mleo_tasks_with_exactly_one_selected_candidate": mleo_tasks_with_exactly_one_selected_candidate,
+        "mleo_contract_status": mleo_contract_status,
         "task_traceable_reward": True,
         "public_cpu_sharing": "dynamic_equal_active_queue",
         "action_legality": "adjacency_matrix_constrained",

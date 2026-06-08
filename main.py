@@ -231,6 +231,13 @@ def main():
                 'local_cpu': hyperparameters['private_cpu_capacities'][i],
                 'foreign_cpus':foreign_cpus
             }
+        if hyperparameters['decision_makers'] == 'MLEO':
+            decision_maker_params = {
+                'number_of_actions': number_of_actions,
+                'env': env,
+                'source_id': i,
+                'matchmaker': env.matchmakers[i],
+            }
         
     
         decision_maker = chosen_descision_maker(**decision_maker_params)

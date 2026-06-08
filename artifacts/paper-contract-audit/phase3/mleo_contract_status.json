@@ -1,0 +1,50 @@
+{
+  "phase": "3",
+  "status": "candidate_trace_ready",
+  "exact_fields": [
+    "episode_id",
+    "time",
+    "task_id",
+    "source_agent",
+    "raw_action_id",
+    "first_stage_decision",
+    "destination_type",
+    "destination_node_id",
+    "is_legal_candidate",
+    "is_selected",
+    "input_data_size",
+    "remaining_size",
+    "processing_density",
+    "required_cpu_cycles",
+    "arrival_time",
+    "absolute_deadline",
+    "timeout",
+    "private_wait_estimate",
+    "private_service_estimate",
+    "offloading_wait_estimate",
+    "transmission_estimate",
+    "public_wait_estimate",
+    "public_service_estimate",
+    "cloud_wait_estimate",
+    "cloud_service_estimate",
+    "total_estimated_latency",
+    "deadline_slack_estimate",
+    "estimated_deadline_violation",
+    "estimator_version"
+  ],
+  "approximated_fields": [
+    "public_wait_estimate",
+    "public_service_estimate",
+    "cloud_wait_estimate",
+    "cloud_service_estimate"
+  ],
+  "approximation_warnings": [
+    "public_wait/public_service use deterministic active-queue estimate",
+    "cloud_wait/cloud_service use deterministic active-queue estimate"
+  ],
+  "why_not_final_figure_10": [
+    "Delayed reward replay pairing is still not paper-grade.",
+    "Official Figure 10 validation workflow is not implemented in this phase.",
+    "Candidate traces do not by themselves prove full paper-faithful evaluation."
+  ]
+}

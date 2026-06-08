@@ -37,11 +37,8 @@ class OfficialBaselineMappingTests(unittest.TestCase):
 
     def test_mleo_raises_loudly(self) -> None:
         self.assertIs(official_policy_map()["MLEO"], "mleo")
-        with self.assertRaisesRegex(
-            NotImplementedError,
-            "MLEO is not implemented as paper-faithful candidate-wise minimum latency estimation",
-        ):
-            MinimumLatencyEstimationOffloader()
+        self.assertIsInstance(MinimumLatencyEstimationOffloader(), MinimumLatencyEstimationOffloader)
+        self.assertNotEqual(MinimumLatencyEstimationOffloader.__name__, "RuleBased")
 
 
 if __name__ == "__main__":

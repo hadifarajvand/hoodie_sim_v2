@@ -39,3 +39,9 @@ class Cloud:
     
     def get_supporting_servers(self):
         return self.supporting_servers
+
+    def get_public_queue_snapshots(self):
+        return self.public_queue_manager.get_queue_snapshots()
+
+    def estimate_public_queue_wait(self, source_id):
+        return self.public_queue_manager.estimate_waiting_time(source_id)

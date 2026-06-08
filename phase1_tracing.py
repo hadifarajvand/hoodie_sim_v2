@@ -101,11 +101,47 @@ class EpisodeMetricRecord:
     mean_reward: float
 
 
+@dataclass
+class MleoCandidateLatencyRecord:
+    episode_id: int
+    time: int
+    task_id: int
+    source_agent: int
+    raw_action_id: int
+    first_stage_decision: str
+    destination_type: str
+    destination_node_id: int | None
+    is_legal_candidate: bool
+    is_selected: bool
+    input_data_size: float
+    remaining_size: float
+    processing_density: float
+    required_cpu_cycles: float
+    arrival_time: int
+    absolute_deadline: int
+    timeout: int
+    private_wait_estimate: float | None
+    private_service_estimate: float | None
+    offloading_wait_estimate: float | None
+    transmission_estimate: float | None
+    public_wait_estimate: float | None
+    public_service_estimate: float | None
+    cloud_wait_estimate: float | None
+    cloud_service_estimate: float | None
+    total_estimated_latency: float | None
+    deadline_slack_estimate: float | None
+    estimated_deadline_violation: bool | None
+    estimator_version: str
+    unavailable_fields_json: str
+    approximation_warnings_json: str
+
+
 class TraceRecorder:
     def __init__(self) -> None:
         self.task_records: dict[int, TaskLifecycleRecord] = {}
         self.queue_traces: list[QueueTraceRecord] = []
         self.action_traces: list[ActionTraceRecord] = []
+        self.mleo_candidate_latency_traces: list[MleoCandidateLatencyRecord] = []
         self.paper_state_traces: list[PaperStateTraceRecord] = []
         self.episode_metrics: list[EpisodeMetricRecord] = []
         self._queue_length_history: dict[int, list[float]] = defaultdict(list)
@@ -278,6 +314,76 @@ class TraceRecorder:
             )
         )
 
+    def note_mleo_candidate_latency(
+        self,
+        episode_id: int,
+        time: int,
+        task_id: int,
+        source_agent: int,
+        raw_action_id: int,
+        first_stage_decision: str,
+        destination_type: str,
+        destination_node_id: int | None,
+        is_legal_candidate: bool,
+        is_selected: bool,
+        input_data_size: float,
+        remaining_size: float,
+        processing_density: float,
+        required_cpu_cycles: float,
+        arrival_time: int,
+        absolute_deadline: int,
+        timeout: int,
+        private_wait_estimate: float | None,
+        private_service_estimate: float | None,
+        offloading_wait_estimate: float | None,
+        transmission_estimate: float | None,
+        public_wait_estimate: float | None,
+        public_service_estimate: float | None,
+        cloud_wait_estimate: float | None,
+        cloud_service_estimate: float | None,
+        total_estimated_latency: float | None,
+        deadline_slack_estimate: float | None,
+        estimated_deadline_violation: bool | None,
+        estimator_version: str,
+        unavailable_fields: list[str],
+        approximation_warnings: list[str],
+    ) -> None:
+        self.mleo_candidate_latency_traces.append(
+            MleoCandidateLatencyRecord(
+                episode_id=episode_id,
+                time=time,
+                task_id=task_id,
+                source_agent=source_agent,
+                raw_action_id=raw_action_id,
+                first_stage_decision=first_stage_decision,
+                destination_type=destination_type,
+                destination_node_id=destination_node_id,
+                is_legal_candidate=bool(is_legal_candidate),
+                is_selected=bool(is_selected),
+                input_data_size=float(input_data_size),
+                remaining_size=float(remaining_size),
+                processing_density=float(processing_density),
+                required_cpu_cycles=float(required_cpu_cycles),
+                arrival_time=int(arrival_time),
+                absolute_deadline=int(absolute_deadline),
+                timeout=int(timeout),
+                private_wait_estimate=private_wait_estimate,
+                private_service_estimate=private_service_estimate,
+                offloading_wait_estimate=offloading_wait_estimate,
+                transmission_estimate=transmission_estimate,
+                public_wait_estimate=public_wait_estimate,
+                public_service_estimate=public_service_estimate,
+                cloud_wait_estimate=cloud_wait_estimate,
+                cloud_service_estimate=cloud_service_estimate,
+                total_estimated_latency=total_estimated_latency,
+                deadline_slack_estimate=deadline_slack_estimate,
+                estimated_deadline_violation=estimated_deadline_violation,
+                estimator_version=estimator_version,
+                unavailable_fields_json=json.dumps(list(unavailable_fields)),
+                approximation_warnings_json=json.dumps(list(approximation_warnings)),
+            )
+        )
+
     def note_queue_trace(
         self,
         episode_id: int,
@@ -340,6 +446,7 @@ class TraceRecorder:
         self._write_csv(output_dir / "task_lifecycle.csv", [asdict(r) for r in self.task_records.values()])
         self._write_csv(output_dir / "queue_trace.csv", [asdict(r) for r in self.queue_traces])
         self._write_csv(output_dir / "action_trace.csv", [asdict(r) for r in self.action_traces])
+        self._write_csv(output_dir / "mleo_candidate_latency_trace.csv", [asdict(r) for r in self.mleo_candidate_latency_traces])
         self._write_csv(output_dir / "paper_state_trace.csv", [asdict(r) for r in self.paper_state_traces])
         self._write_csv(output_dir / "episode_metrics.csv", [asdict(r) for r in self.episode_metrics])
 
