@@ -1,0 +1,394 @@
+{
+  "L_t_shape": [
+    4,
+    21
+  ],
+  "action_count": 5,
+  "action_distribution_by_type": {
+    "horizontal_edge": 2707,
+    "local": 885,
+    "vertical_cloud": 848
+  },
+  "active_load_vector_length": 21,
+  "approximation_warning_counts": {
+    "predicted_next_load uses persistence_baseline": 4440
+  },
+  "approximation_warnings": [
+    "next_state copied for terminal row episode=0 agent=0 time=110",
+    "next_state copied for terminal row episode=0 agent=1 time=110",
+    "next_state copied for terminal row episode=0 agent=10 time=110",
+    "next_state copied for terminal row episode=0 agent=11 time=110",
+    "next_state copied for terminal row episode=0 agent=12 time=110",
+    "next_state copied for terminal row episode=0 agent=13 time=110",
+    "next_state copied for terminal row episode=0 agent=14 time=110",
+    "next_state copied for terminal row episode=0 agent=15 time=110",
+    "next_state copied for terminal row episode=0 agent=16 time=110",
+    "next_state copied for terminal row episode=0 agent=17 time=110",
+    "next_state copied for terminal row episode=0 agent=18 time=110",
+    "next_state copied for terminal row episode=0 agent=19 time=110",
+    "next_state copied for terminal row episode=0 agent=2 time=110",
+    "next_state copied for terminal row episode=0 agent=3 time=110",
+    "next_state copied for terminal row episode=0 agent=4 time=110",
+    "next_state copied for terminal row episode=0 agent=5 time=110",
+    "next_state copied for terminal row episode=0 agent=6 time=110",
+    "next_state copied for terminal row episode=0 agent=7 time=110",
+    "next_state copied for terminal row episode=0 agent=8 time=110",
+    "next_state copied for terminal row episode=0 agent=9 time=110",
+    "next_state copied for terminal row episode=1 agent=0 time=110",
+    "next_state copied for terminal row episode=1 agent=1 time=110",
+    "next_state copied for terminal row episode=1 agent=10 time=110",
+    "next_state copied for terminal row episode=1 agent=11 time=110",
+    "next_state copied for terminal row episode=1 agent=12 time=110",
+    "next_state copied for terminal row episode=1 agent=13 time=110",
+    "next_state copied for terminal row episode=1 agent=14 time=110",
+    "next_state copied for terminal row episode=1 agent=15 time=110",
+    "next_state copied for terminal row episode=1 agent=16 time=110",
+    "next_state copied for terminal row episode=1 agent=17 time=110",
+    "next_state copied for terminal row episode=1 agent=18 time=110",
+    "next_state copied for terminal row episode=1 agent=19 time=110",
+    "next_state copied for terminal row episode=1 agent=2 time=110",
+    "next_state copied for terminal row episode=1 agent=3 time=110",
+    "next_state copied for terminal row episode=1 agent=4 time=110",
+    "next_state copied for terminal row episode=1 agent=5 time=110",
+    "next_state copied for terminal row episode=1 agent=6 time=110",
+    "next_state copied for terminal row episode=1 agent=7 time=110",
+    "next_state copied for terminal row episode=1 agent=8 time=110",
+    "next_state copied for terminal row episode=1 agent=9 time=110"
+  ],
+  "artifact_paths": {
+    "episode_metrics_summary": "artifacts/phase4_validation_smoke/episode_metrics_summary.csv",
+    "phase4_validation_report": "artifacts/phase4_validation_smoke/phase4_validation_report.json",
+    "phase4_validation_report_md": "artifacts/phase4_validation_smoke/phase4_validation_report.md",
+    "policy_action_summary": "artifacts/phase4_validation_smoke/policy_action_summary.csv",
+    "readiness_matrix": "artifacts/phase4_validation_smoke/readiness_matrix.csv",
+    "state_lstm_summary": "artifacts/phase4_validation_smoke/state_lstm_summary.json",
+    "validation_config": "artifacts/phase4_validation_smoke/validation_config.json"
+  },
+  "average_latency": 7.87301282705657,
+  "average_queue_length": 1.6727914319115866,
+  "average_service_time": 2.6341485344362523,
+  "average_waiting_time": 2.5173966655534716,
+  "blockers": [
+    "episodes_completed",
+    "episode_metrics_count"
+  ],
+  "branch": "100-hoodie-paper-base",
+  "commit": "3a32323",
+  "completed_tasks": 0,
+  "completion_ratio": 0.0,
+  "criteria": [
+    {
+      "criterion": "episodes_completed",
+      "evidence": "2",
+      "expected": "200",
+      "next_action": "",
+      "observed": 2,
+      "status": "FAIL"
+    },
+    {
+      "criterion": "episode_metrics_count",
+      "evidence": "2",
+      "expected": "200",
+      "next_action": "",
+      "observed": 2,
+      "status": "FAIL"
+    },
+    {
+      "criterion": "paper_state_trace_present",
+      "evidence": "True",
+      "expected": "true",
+      "next_action": "",
+      "observed": true,
+      "status": "PASS"
+    },
+    {
+      "criterion": "invalid_action_ratio",
+      "evidence": "0.0",
+      "expected": "0",
+      "next_action": "",
+      "observed": 0.0,
+      "status": "PASS"
+    },
+    {
+      "criterion": "non_neighbor_offload_count",
+      "evidence": "0",
+      "expected": "0",
+      "next_action": "",
+      "observed": 0,
+      "status": "PASS"
+    },
+    {
+      "criterion": "self_offload_violation_count",
+      "evidence": "0",
+      "expected": "0",
+      "next_action": "",
+      "observed": 0,
+      "status": "PASS"
+    },
+    {
+      "criterion": "state_dim_stable",
+      "evidence": "(129, 129)",
+      "expected": ">2 and consistent",
+      "next_action": "",
+      "observed": "129..129",
+      "status": "PASS"
+    },
+    {
+      "criterion": "L_t_shape",
+      "evidence": "[4, 21]",
+      "expected": "W x (N+1)",
+      "next_action": "",
+      "observed": [
+        4,
+        21
+      ],
+      "status": "PASS"
+    },
+    {
+      "criterion": "active_load_vector_length",
+      "evidence": "21",
+      "expected": "N+1",
+      "next_action": "",
+      "observed": 21,
+      "status": "PASS"
+    },
+    {
+      "criterion": "predicted_next_load_length",
+      "evidence": "21",
+      "expected": "N+1",
+      "next_action": "",
+      "observed": 21,
+      "status": "PASS"
+    },
+    {
+      "criterion": "predicted_next_load_method_reported",
+      "evidence": "{'persistence_baseline': 4440}",
+      "expected": "reported",
+      "next_action": "",
+      "observed": {
+        "persistence_baseline": 4440
+      },
+      "status": "PASS"
+    },
+    {
+      "criterion": "paper_lstm_forecast_true_or_justified_false",
+      "evidence": "4440",
+      "expected": "true or justified false",
+      "next_action": "replace baseline forecast with trained LSTM",
+      "observed": 4440,
+      "status": "WARN"
+    },
+    {
+      "criterion": "transitions",
+      "evidence": "4440",
+      "expected": ">0",
+      "next_action": "",
+      "observed": 4440,
+      "status": "PASS"
+    },
+    {
+      "criterion": "state_source",
+      "evidence": "runtime_paper_state_trace",
+      "expected": "runtime_paper_state_trace",
+      "next_action": "",
+      "observed": "runtime_paper_state_trace",
+      "status": "PASS"
+    },
+    {
+      "criterion": "next_state_source",
+      "evidence": "runtime_paper_state_trace",
+      "expected": "runtime_paper_state_trace",
+      "next_action": "",
+      "observed": "runtime_paper_state_trace",
+      "status": "PASS"
+    },
+    {
+      "criterion": "nonterminal_next_state_copy_count",
+      "evidence": "0",
+      "expected": "0",
+      "next_action": "",
+      "observed": 0,
+      "status": "PASS"
+    },
+    {
+      "criterion": "paper_performance_claims_made",
+      "evidence": "False",
+      "expected": "false",
+      "next_action": "",
+      "observed": false,
+      "status": "PASS"
+    }
+  ],
+  "drop_ratio": 0.5596646942800789,
+  "dropped_tasks": 1135,
+  "episode_metrics_count": 2,
+  "episodes_completed": 2,
+  "episodes_requested": 2,
+  "expected_state_dim": 129,
+  "horizontal_action_count": 2707,
+  "invalid_action_ratio": 0.0,
+  "invalid_action_reasons": {
+    "": 4440
+  },
+  "invalid_actions": 0,
+  "load_history_source": "runtime_active_load_matrix",
+  "local_action_count": 885,
+  "mean_reward": -5.625225067138672,
+  "missing_selected_action_count": 0,
+  "mode": "smoke",
+  "next_state_source": "runtime_paper_state_trace",
+  "non_neighbor_offload_count": 0,
+  "nonterminal_next_state_copy_count": 0,
+  "paper_lstm_forecast": false,
+  "paper_lstm_forecast_false_count": 4440,
+  "paper_lstm_forecast_true_count": 0,
+  "paper_performance_claims_made": false,
+  "paper_state_rows": 4440,
+  "paper_state_trace_present": true,
+  "pending_tasks": 893,
+  "predicted_next_load_length": 21,
+  "predicted_next_load_method": "persistence_baseline",
+  "predicted_next_load_method_counts": {
+    "persistence_baseline": 4440
+  },
+  "ready_for_phase5_figures": false,
+  "replay_dataset_summary": {
+    "action_count": 5,
+    "approximation_warnings": [
+      "next_state copied for terminal row episode=0 agent=0 time=110",
+      "next_state copied for terminal row episode=0 agent=1 time=110",
+      "next_state copied for terminal row episode=0 agent=10 time=110",
+      "next_state copied for terminal row episode=0 agent=11 time=110",
+      "next_state copied for terminal row episode=0 agent=12 time=110",
+      "next_state copied for terminal row episode=0 agent=13 time=110",
+      "next_state copied for terminal row episode=0 agent=14 time=110",
+      "next_state copied for terminal row episode=0 agent=15 time=110",
+      "next_state copied for terminal row episode=0 agent=16 time=110",
+      "next_state copied for terminal row episode=0 agent=17 time=110",
+      "next_state copied for terminal row episode=0 agent=18 time=110",
+      "next_state copied for terminal row episode=0 agent=19 time=110",
+      "next_state copied for terminal row episode=0 agent=2 time=110",
+      "next_state copied for terminal row episode=0 agent=3 time=110",
+      "next_state copied for terminal row episode=0 agent=4 time=110",
+      "next_state copied for terminal row episode=0 agent=5 time=110",
+      "next_state copied for terminal row episode=0 agent=6 time=110",
+      "next_state copied for terminal row episode=0 agent=7 time=110",
+      "next_state copied for terminal row episode=0 agent=8 time=110",
+      "next_state copied for terminal row episode=0 agent=9 time=110",
+      "next_state copied for terminal row episode=1 agent=0 time=110",
+      "next_state copied for terminal row episode=1 agent=1 time=110",
+      "next_state copied for terminal row episode=1 agent=10 time=110",
+      "next_state copied for terminal row episode=1 agent=11 time=110",
+      "next_state copied for terminal row episode=1 agent=12 time=110",
+      "next_state copied for terminal row episode=1 agent=13 time=110",
+      "next_state copied for terminal row episode=1 agent=14 time=110",
+      "next_state copied for terminal row episode=1 agent=15 time=110",
+      "next_state copied for terminal row episode=1 agent=16 time=110",
+      "next_state copied for terminal row episode=1 agent=17 time=110",
+      "next_state copied for terminal row episode=1 agent=18 time=110",
+      "next_state copied for terminal row episode=1 agent=19 time=110",
+      "next_state copied for terminal row episode=1 agent=2 time=110",
+      "next_state copied for terminal row episode=1 agent=3 time=110",
+      "next_state copied for terminal row episode=1 agent=4 time=110",
+      "next_state copied for terminal row episode=1 agent=5 time=110",
+      "next_state copied for terminal row episode=1 agent=6 time=110",
+      "next_state copied for terminal row episode=1 agent=7 time=110",
+      "next_state copied for terminal row episode=1 agent=8 time=110",
+      "next_state copied for terminal row episode=1 agent=9 time=110"
+    ],
+    "episodes": 2,
+    "load_history_source": "runtime_active_load_matrix",
+    "missing_optional_fields": {
+      "baseline_name": 0,
+      "paper_state_L_t": 0,
+      "paper_state_eta_n": 2421,
+      "paper_state_l_pub_n_prev": 0,
+      "paper_state_predicted_next_load": 0,
+      "paper_state_w_off_n": 0,
+      "paper_state_w_priv_n": 0,
+      "policy_name": 0,
+      "reward_delayed_task_id": 2421,
+      "step_index": 0,
+      "task_id": 0
+    },
+    "next_state_source": "runtime_paper_state_trace",
+    "notes": [
+      "reconstructed transitions from runtime paper_state_trace"
+    ],
+    "paper_lstm_forecast": false,
+    "paper_state_trace_present": true,
+    "predicted_next_load_method": "persistence_baseline",
+    "reconstructed": true,
+    "required_files_present": {
+      "action_trace.csv": true,
+      "episode_metrics.csv": true,
+      "queue_trace.csv": true,
+      "task_lifecycle.csv": true
+    },
+    "reward_max": -0.0,
+    "reward_mean": -0.2812612616079482,
+    "reward_min": -1.274999976158142,
+    "source_trace_dir": "/var/folders/8v/vqxt9k4n0ssctz0xw16ztymr0000gn/T/phase4-validation-traces-thkzks7g",
+    "state_dim": 129,
+    "state_source": "runtime_paper_state_trace",
+    "transitions": 4440,
+    "unavailable_fields": [
+      "eta_n"
+    ],
+    "waiting_time_source": "runtime_queue_waiting_time"
+  },
+  "self_offload_violation_count": 0,
+  "state_dim": 129,
+  "state_dim_max": 129,
+  "state_dim_min": 129,
+  "state_dim_unique_values": [
+    129
+  ],
+  "state_lstm_summary": {
+    "L_t_shape": [
+      4,
+      21
+    ],
+    "active_load_vector_length": 21,
+    "approximation_warning_counts": {
+      "predicted_next_load uses persistence_baseline": 4440
+    },
+    "expected_state_dim": 129,
+    "nonterminal_next_state_copy_count": 0,
+    "paper_lstm_forecast_false_count": 4440,
+    "paper_lstm_forecast_true_count": 0,
+    "paper_state_rows": 4440,
+    "predicted_next_load_length": 21,
+    "predicted_next_load_method_counts": {
+      "persistence_baseline": 4440
+    },
+    "state_dim_max": 129,
+    "state_dim_min": 129,
+    "state_dim_unique_values": [
+      129
+    ],
+    "terminal_next_state_copy_count": 40,
+    "unavailable_fields_counts": {
+      "eta_n": 2421
+    }
+  },
+  "state_source": "runtime_paper_state_trace",
+  "terminal_next_state_copy_count": 40,
+  "total_actions": 4440,
+  "total_reward": -1248.7999267578125,
+  "total_tasks": 2028,
+  "transitions": 4440,
+  "unavailable_fields": [
+    "eta_n"
+  ],
+  "unavailable_fields_counts": {
+    "eta_n": 2421
+  },
+  "valid_actions": 4440,
+  "validation_status": "FAILED",
+  "vertical_cloud_action_count": 848,
+  "waiting_time_source": "runtime_queue_waiting_time",
+  "warnings": [
+    "paper_lstm_forecast_true_or_justified_false"
+  ]
+}

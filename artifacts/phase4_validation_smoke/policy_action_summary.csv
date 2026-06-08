@@ -1,0 +1,11 @@
+metric,value
+total_actions,4440
+valid_actions,4440
+invalid_actions,0
+invalid_action_ratio,0.0
+local_action_count,885
+horizontal_action_count,2707
+vertical_cloud_action_count,848
+missing_selected_action_count,0
+non_neighbor_offload_count,0
+self_offload_violation_count,0

@@ -1,0 +1,28 @@
+{
+  "L_t_shape": [
+    4,
+    21
+  ],
+  "active_load_vector_length": 21,
+  "approximation_warning_counts": {
+    "predicted_next_load uses persistence_baseline": 4440
+  },
+  "expected_state_dim": 129,
+  "nonterminal_next_state_copy_count": 0,
+  "paper_lstm_forecast_false_count": 4440,
+  "paper_lstm_forecast_true_count": 0,
+  "paper_state_rows": 4440,
+  "predicted_next_load_length": 21,
+  "predicted_next_load_method_counts": {
+    "persistence_baseline": 4440
+  },
+  "state_dim_max": 129,
+  "state_dim_min": 129,
+  "state_dim_unique_values": [
+    129
+  ],
+  "terminal_next_state_copy_count": 40,
+  "unavailable_fields_counts": {
+    "eta_n": 2421
+  }
+}
