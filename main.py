@@ -1,5 +1,17 @@
 from environment import Environment
-from decision_makers import Agent, AllHorizontal, AllLocal, AllVertical,Random,SingleAgent,RoundRobin,RuleBased
+from decision_makers import (
+    Agent,
+    AllHorizontal,
+    AllLocal,
+    AllVertical,
+    BalancedCyclicOffloader,
+    MinimumLatencyEstimationOffloader,
+    Random,
+    SingleAgent,
+    RoundRobin,
+    RuleBased,
+)
+from decision_makers.baselines import official_policy_map
 from lr_schedulers import constant,Linear
 from phase1_tracing import TraceRecorder
 from phase2_mechanisms import build_policy_map
@@ -155,25 +167,25 @@ def main():
     
     decision_makers = []
     
-    decision_makers_choice ={
-        'drl': Agent,
-        'all_horizontal': AllHorizontal,
-        'all_local': AllLocal,
-        'all_vertical': AllVertical,
-        'random': Random,
-        'round_robin':RoundRobin,
-        'rule_based':RuleBased,
-        "single":SingleAgent,
+    decision_makers_choice = {
+        "drl": Agent,
+        "all_horizontal": AllHorizontal,
+        "all_local": AllLocal,
+        "all_vertical": AllVertical,
+        "random": Random,
+        "round_robin": RoundRobin,
+        "rule_based": RuleBased,
+        "single": SingleAgent,
         "HOODIE": Agent,
-        "RO": RoundRobin,
-        "FLC": RuleBased,
+        "RO": Random,
+        "FLC": AllLocal,
         "VO": AllVertical,
         "HO": AllHorizontal,
-        "BCO": SingleAgent,
-        "MLEO": RuleBased,
+        "BCO": BalancedCyclicOffloader,
+        "MLEO": MinimumLatencyEstimationOffloader,
     }
     chosen_descision_maker = decision_makers_choice[hyperparameters['decision_makers']]
-    print("Baseline policy aliases:", build_policy_map())
+    print("Baseline policy aliases:", official_policy_map())
 
     decision_makers = []
     

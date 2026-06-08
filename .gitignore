@@ -2,3 +2,12 @@ __pycache__/
 log_folder/
 .venvmac
 outputs/phase1_traces/
+
+# Local/generated simulator artifacts
+.DS_Store
+artifacts/main_run/
+artifacts/**/traces/*.csv
+artifacts/**/logs/*.pth
+artifacts/**/logs/*.pt
+artifacts/**/logs/*.pkl
+artifacts/**/logs/*.pickle

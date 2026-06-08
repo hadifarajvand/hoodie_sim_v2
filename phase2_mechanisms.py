@@ -6,6 +6,8 @@ from dataclasses import dataclass, asdict
 from pathlib import Path
 from typing import Any
 
+from decision_makers.baselines import official_policy_map
+
 
 @dataclass(frozen=True)
 class RewardEvent:
@@ -68,15 +70,7 @@ def infer_reward_events(trace_dir: str | Path) -> list[RewardEvent]:
 
 
 def build_policy_map() -> dict[str, str]:
-    return {
-        "HOODIE": "drl",
-        "RO": "round_robin",
-        "FLC": "rule_based",
-        "VO": "all_vertical",
-        "HO": "all_horizontal",
-        "BCO": "single",
-        "MLEO": "rule_based",
-    }
+    return official_policy_map()
 
 
 def build_validation_report(trace_dir: str | Path) -> dict[str, Any]:
@@ -145,4 +139,3 @@ def write_validation_artifacts(trace_dir: str | Path, output_dir: str | Path) ->
             sort_keys=True,
         )
     )
-

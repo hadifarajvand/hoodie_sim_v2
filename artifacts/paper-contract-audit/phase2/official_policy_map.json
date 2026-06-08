@@ -1,0 +1,20 @@
+{
+  "active_policy_set": [
+    "HOODIE",
+    "RO",
+    "FLC",
+    "VO",
+    "HO",
+    "BCO",
+    "MLEO"
+  ],
+  "policy_map": {
+    "HOODIE": "Agent",
+    "RO": "Random",
+    "FLC": "AllLocal",
+    "VO": "AllVertical",
+    "HO": "AllHorizontal",
+    "BCO": "BalancedCyclicOffloader",
+    "MLEO": "MinimumLatencyEstimationOffloader"
+  }
+}

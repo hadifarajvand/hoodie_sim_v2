@@ -1,0 +1,32 @@
+{
+  "policy_map": {
+    "HOODIE": {
+      "class": "Agent",
+      "status": "paper_faithful"
+    },
+    "RO": {
+      "class": "Random",
+      "status": "paper_faithful"
+    },
+    "FLC": {
+      "class": "AllLocal",
+      "status": "paper_faithful"
+    },
+    "VO": {
+      "class": "AllVertical",
+      "status": "paper_faithful"
+    },
+    "HO": {
+      "class": "AllHorizontal",
+      "status": "paper_faithful"
+    },
+    "BCO": {
+      "class": "BalancedCyclicOffloader",
+      "status": "paper_faithful"
+    },
+    "MLEO": {
+      "class": "MinimumLatencyEstimationOffloader",
+      "status": "unverified"
+    }
+  }
+}
