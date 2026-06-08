@@ -97,6 +97,7 @@ def main():
     parser.add_argument('--epochs', type=int, default=2, help='Device to use')
     parser.add_argument('--validate', type=bool, default=False, help='Device to use')
     parser.add_argument('--trace_output_dir', type=str, default='outputs/phase1_traces', help='Path to trace output directory')
+    parser.add_argument('--seed', type=int, default=None, help='Optional random seed for reproducible validation runs')
     args  = parser.parse_args()
 
     config = _load_config(args.config)
@@ -112,11 +113,19 @@ def main():
             args.hyperparameters_file = str(config["hyperparameters_file"])
         if "trace_output_dir" in config:
             args.trace_output_dir = str(config["trace_output_dir"])
+        if "seed" in config and args.seed is None:
+            args.seed = _maybe_int(config["seed"], args.seed)
         step_log_interval = _maybe_int(config.get("step_log_interval", 10), 10)
         episode_log_interval = _maybe_int(config.get("episode_log_interval", 10), 10)
     else:
         step_log_interval = 10
         episode_log_interval = 10
+
+    if args.seed is not None:
+        np.random.seed(int(args.seed))
+        torch.manual_seed(int(args.seed))
+        # Static-frequency task injection still occurs inside Environment.reset(),
+        # but seeding here makes the surrounding validation run reproducible.
 
     os.makedirs(args.log_folder, exist_ok=True)
     trace_recorder = TraceRecorder()

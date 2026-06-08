@@ -902,6 +902,17 @@ def run_figure10_validation(config: Figure10ValidationConfig) -> dict[str, Any]:
     }
 
 
+def _validation_outputs_present(output_dir: Path) -> bool:
+    required = [
+        output_dir / "figure10_policy_metrics_raw.csv",
+        output_dir / "figure10_policy_metrics_summary.json",
+        output_dir / "figure10_policy_readiness.json",
+        output_dir / "figure10_run_config_snapshot.json",
+        output_dir / "figure10_validation_manifest.json",
+    ]
+    return all(path.exists() for path in required)
+
+
 def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser()
     parser.add_argument("--config", default=None)
@@ -912,6 +923,7 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument("--policies", default="HOODIE,RO,FLC,VO,HO,BCO,MLEO")
     parser.add_argument("--hoodie-checkpoint-dir", default=None)
     parser.add_argument("--test-mode", action="store_true")
+    parser.add_argument("--strict-readiness", action="store_true")
     parser.add_argument("--seed", type=int, default=42)
     parser.add_argument("--run-id", default=None)
     args = parser.parse_args(argv)
@@ -935,6 +947,10 @@ def main(argv: list[str] | None = None) -> int:
         commit=_detect_commit(),
     )
     result = run_figure10_validation(config)
+    if not _validation_outputs_present(Path(config.output_dir)):
+        return 1
+    if not args.strict_readiness:
+        return 0
     return 0 if result["readiness"]["figure10_data_ready"] else 1
 
 

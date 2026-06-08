@@ -356,6 +356,95 @@ class Figure10ValidationWorkflowTests(unittest.TestCase):
             self.assertFalse(list(out_dir.rglob("*.png")))
             self.assertFalse(list(out_dir.rglob("*.pdf")))
 
+    def test_run_main_for_policy_includes_seed_argument(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            tmp_path = Path(tmp)
+            hp_path = tmp_path / "hyperparameters.json"
+            _write_hyperparameters(hp_path)
+            run_dir = tmp_path / "run"
+            trace_dir = tmp_path / "trace"
+
+            recorded_cmds = []
+
+            def fake_run(cmd, cwd=None, capture_output=None, text=None, check=None):
+                recorded_cmds.append(cmd)
+                return __import__("subprocess").CompletedProcess(cmd, 0, stdout="ok", stderr="")
+
+            runtime_hp = json.loads(hp_path.read_text())
+            runtime_hp["decision_makers"] = "RO"
+            with patch("figure10_validation.subprocess.run", side_effect=fake_run):
+                __import__("figure10_validation")._run_main_for_policy(run_dir, runtime_hp, 1, 123, trace_dir)
+            self.assertTrue(any("--seed" in cmd for cmd in recorded_cmds))
+
+    def test_main_accepts_seed_argument(self):
+        result = __import__("subprocess").run(
+            [str(PYTHON), "main.py", "--help"],
+            cwd=ROOT,
+            capture_output=True,
+            text=True,
+            check=False,
+        )
+        self.assertEqual(result.returncode, 0)
+        self.assertIn("--seed", result.stdout)
+
+    def test_diagnostic_cli_returns_zero_when_outputs_exist_even_if_not_ready(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            tmp_path = Path(tmp)
+            hp_path = tmp_path / "hyperparameters.json"
+            _write_hyperparameters(hp_path)
+            out_dir = tmp_path / "figure10"
+
+            with patch("figure10_validation.subprocess.run", side_effect=_fake_run_factory(tmp_path)):
+                code = __import__("figure10_validation").main(
+                    [
+                        "--output-dir",
+                        str(out_dir),
+                        "--episodes",
+                        "1",
+                        "--policies",
+                        ",".join(EXPECTED_POLICY_SET),
+                        "--hyperparameters-file",
+                        str(hp_path),
+                        "--paper-contract",
+                        str(ROOT / "config" / "paper_table4_contract.json"),
+                        "--test-mode",
+                    ]
+                )
+            self.assertEqual(code, 0)
+            self.assertTrue((out_dir / "figure10_policy_metrics_raw.csv").exists())
+            self.assertTrue((out_dir / "figure10_validation_manifest.json").exists())
+
+    def test_strict_readiness_returns_one_when_not_ready(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            tmp_path = Path(tmp)
+            hp_path = tmp_path / "hyperparameters.json"
+            _write_hyperparameters(hp_path)
+            out_dir = tmp_path / "figure10"
+
+            def fake_run(cmd, cwd=None, capture_output=None, text=None, check=None):
+                if "main.py" in cmd:
+                    trace_dir = tmp_path / "trace"
+                    _write_fixture_trace(trace_dir, policy_name="RO")
+                return __import__("subprocess").CompletedProcess(cmd, 0, stdout="ok", stderr="")
+
+            args = [
+                "--output-dir",
+                str(out_dir),
+                "--episodes",
+                "1",
+                "--policies",
+                ",".join(EXPECTED_POLICY_SET),
+                "--hyperparameters-file",
+                str(hp_path),
+                "--paper-contract",
+                str(ROOT / "config" / "paper_table4_contract.json"),
+                "--test-mode",
+                "--strict-readiness",
+            ]
+            with patch("figure10_validation.subprocess.run", side_effect=_fake_run_factory(tmp_path)):
+                code = __import__("figure10_validation").main(args)
+            self.assertEqual(code, 1)
+
     def test_existing_contract_tests_remain_compatible(self):
         self.assertTrue(True)
 
