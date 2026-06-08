@@ -34,6 +34,7 @@ class Transition:
     l_pub_n_prev: np.ndarray | None = None
     load_history: np.ndarray | None = None
     predicted_next_load: np.ndarray | None = None
+    active_load_vector: np.ndarray | None = None
 
     def validate(self) -> None:
         if self.state.shape != self.next_state.shape:

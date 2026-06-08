@@ -56,6 +56,7 @@ class PaperStateRecord:
     w_priv_n: float | None
     w_off_n: float | None
     l_pub_n_prev: np.ndarray
+    active_load_vector: np.ndarray
     load_history: np.ndarray
     predicted_next_load: np.ndarray | None
     unavailable_fields: list[str]
@@ -278,6 +279,7 @@ def _build_paper_state(
 
     current_time = _safe_int(time_value)
     l_pub_n_prev = _build_public_vector(episode_id, current_time - 1 if current_time is not None else time_value, queue_rows_by_episode_time, node_count)
+    active_load_vector = _build_public_vector(episode_id, time_value, queue_rows_by_episode_time, node_count)
     load_history = _build_load_history(episode_id, time_value, queue_rows_by_episode_time, node_count, load_window=load_window)
 
     unavailable_fields = []
@@ -300,6 +302,7 @@ def _build_paper_state(
         w_priv_n=w_priv_n,
         w_off_n=w_off_n,
         l_pub_n_prev=l_pub_n_prev,
+        active_load_vector=active_load_vector,
         load_history=load_history,
         predicted_next_load=None,
         unavailable_fields=unavailable_fields,
@@ -434,6 +437,7 @@ def _build_transition_from_paper_state_rows(
             w_priv_n=row["w_priv_n"],
             w_off_n=row["w_off_n"],
             l_pub_n_prev=row["l_pub_n_prev"],
+            active_load_vector=row["active_load_vector"],
             load_history=row["load_history"],
             predicted_next_load=row["predicted_next_load"],
         )
@@ -568,6 +572,7 @@ def _build_transition_from_task_row(
         w_priv_n=state_rec.w_priv_n,
         w_off_n=state_rec.w_off_n,
         l_pub_n_prev=state_rec.l_pub_n_prev,
+        active_load_vector=state_rec.active_load_vector,
         load_history=state_rec.load_history,
         predicted_next_load=state_rec.predicted_next_load,
     )

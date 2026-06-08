@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from dataclasses import dataclass, asdict
+from dataclasses import dataclass
 from pathlib import Path
 from typing import Any
 
@@ -31,79 +31,78 @@ def _require_torch() -> None:
         raise RuntimeError("PyTorch is required for LSTM forecasting")
 
 
-class _LSTMRegressor(nn.Module):  # type: ignore[misc]
-    def __init__(self, input_dim: int, hidden_dim: int) -> None:
+class _LoadHistoryForecaster(nn.Module):  # type: ignore[misc]
+    def __init__(self, input_dim: int, hidden_dim: int, output_dim: int) -> None:
         super().__init__()
         self.lstm = nn.LSTM(input_dim, hidden_dim, batch_first=True)
-        self.head = nn.Linear(hidden_dim, 1)
+        self.head = nn.Linear(hidden_dim, output_dim)
 
     def forward(self, x):  # type: ignore[override]
         out, _ = self.lstm(x)
-        return self.head(out[:, -1, :]).squeeze(-1)
+        return self.head(out[:, -1, :])
 
 
 class LSTMForecaster:
-    def __init__(self, sequence_length: int, input_dim: int, hidden_dim: int, target: str, seed: int = 0) -> None:
+    def __init__(self, sequence_length: int, input_dim: int, hidden_dim: int, target: str, seed: int = 0, output_dim: int | None = None) -> None:
         self.sequence_length = sequence_length
         self.input_dim = input_dim
         self.hidden_dim = hidden_dim
+        self.output_dim = output_dim if output_dim is not None else input_dim
         self.target = target
         self.seed = seed
-        self.model: _LSTMRegressor | None = None
+        self.model: _LoadHistoryForecaster | None = None
         if torch is not None:
             torch.manual_seed(seed)
-            self.model = _LSTMRegressor(input_dim, hidden_dim)
+            self.model = _LoadHistoryForecaster(input_dim, hidden_dim, self.output_dim)
 
-    def _row_feature_vector(self, row: dict[str, Any]) -> list[float] | None:
-        if "load_history" in row and row["load_history"] not in (None, "", "None"):
-            try:
-                history = np.asarray(row["load_history"], dtype=np.float32)
-                if history.ndim >= 2:
-                    feature_vector = history[-1].reshape(-1)
-                else:
-                    feature_vector = history.reshape(-1)
-                if feature_vector.size == self.input_dim:
-                    return feature_vector.astype(np.float32).tolist()
-            except Exception:
-                pass
-        if "state" in row and row["state"] not in (None, "", "None"):
-            try:
-                state = np.asarray(row["state"], dtype=np.float32).reshape(-1)
-                if state.size == self.input_dim:
-                    return state.astype(np.float32).tolist()
-            except Exception:
-                pass
+    def _extract_history(self, row: dict[str, Any]) -> np.ndarray | None:
+        value = row.get("load_history")
+        if value in (None, "", "None"):
+            return None
         try:
-            return [float(row.get("time") or row.get("step_index") or 0.0)] * self.input_dim
+            history = np.asarray(value, dtype=np.float32)
         except Exception:
             return None
+        if history.ndim == 1:
+            history = history.reshape(1, -1)
+        if history.ndim < 2:
+            return None
+        last = history[-1].reshape(-1)
+        if last.size != self.input_dim:
+            return None
+        return last.astype(np.float32)
+
+    def _extract_target(self, row: dict[str, Any]) -> np.ndarray | None:
+        value = row.get("active_load_vector") or row.get("predicted_next_load")
+        if value in (None, "", "None"):
+            return None
+        try:
+            target = np.asarray(value, dtype=np.float32).reshape(-1)
+        except Exception:
+            return None
+        if target.size != self.output_dim:
+            return None
+        return target.astype(np.float32)
 
     def build_sequences(self, rows: list[dict[str, Any]]) -> tuple[np.ndarray, np.ndarray, str | None]:
-        if self.target not in {"latency", "queue_length", "reward"}:
-            return np.empty((0, self.sequence_length, self.input_dim), dtype=np.float32), np.empty((0,), dtype=np.float32), f"unsupported target {self.target}"
-        values: list[float] = []
-        features: list[list[float]] = []
+        histories: list[np.ndarray] = []
+        targets: list[np.ndarray] = []
         for row in rows:
-            target_value = row.get(self.target)
-            if target_value in (None, "", "None"):
+            history = self._extract_history(row)
+            target = self._extract_target(row)
+            if history is None or target is None:
                 continue
-            try:
-                feature_vector = self._row_feature_vector(row)
-                if feature_vector is None:
-                    continue
-                features.append(feature_vector)
-                values.append(float(target_value))
-            except Exception:
-                continue
-        if len(features) < self.sequence_length:
-            return np.empty((0, self.sequence_length, self.input_dim), dtype=np.float32), np.empty((0,), dtype=np.float32), f"not enough samples for target {self.target}"
+            histories.append(history)
+            targets.append(target)
+        if len(histories) < self.sequence_length:
+            return np.empty((0, self.sequence_length, self.input_dim), dtype=np.float32), np.empty((0, self.output_dim), dtype=np.float32), "not enough samples for load-history forecasting"
         sequences = []
-        targets = []
-        for idx in range(self.sequence_length - 1, len(features)):
-            window = features[idx - self.sequence_length + 1 : idx + 1]
+        out_targets = []
+        for idx in range(self.sequence_length - 1, len(histories)):
+            window = histories[idx - self.sequence_length + 1 : idx + 1]
             sequences.append(window)
-            targets.append(values[idx])
-        return np.asarray(sequences, dtype=np.float32), np.asarray(targets, dtype=np.float32), None
+            out_targets.append(targets[idx])
+        return np.asarray(sequences, dtype=np.float32), np.asarray(out_targets, dtype=np.float32), None
 
     def train(self, sequences: np.ndarray, targets: np.ndarray, epochs: int = 1, learning_rate: float = 1e-3) -> LSTMForecastResult:
         _require_torch()
@@ -127,11 +126,30 @@ class LSTMForecaster:
             mae = float(torch.mean(torch.abs(pred - y)).item())
         return LSTMForecastResult(self.target, len(sequences), mse, mae, False)
 
+    def predict(self, load_history: np.ndarray) -> np.ndarray:
+        if self.model is None:
+            raise RuntimeError("LSTM model is unavailable")
+        _require_torch()
+        if load_history.ndim == 1:
+            load_history = load_history.reshape(1, -1)
+        if load_history.shape[-1] != self.input_dim:
+            raise ValueError("load_history has incompatible feature dimension")
+        sequence = np.asarray(load_history, dtype=np.float32)
+        if sequence.shape[0] < self.sequence_length:
+            pad = np.full((self.sequence_length - sequence.shape[0], self.input_dim), np.nan, dtype=np.float32)
+            sequence = np.vstack([pad, sequence])
+        sequence = sequence[-self.sequence_length :]
+        sequence = np.nan_to_num(sequence, nan=0.0)
+        with torch.no_grad():
+            x = torch.as_tensor(sequence.reshape(1, self.sequence_length, self.input_dim), dtype=torch.float32)
+            pred = self.model(x).cpu().numpy().reshape(-1)
+        return pred.astype(np.float32)
+
     def save(self, path: str | Path) -> str:
         if self.model is None:
             raise RuntimeError("LSTM model is unavailable")
         path = str(path)
-        torch.save({"target": self.target, "state_dict": self.model.state_dict()}, path)
+        torch.save({"target": self.target, "input_dim": self.input_dim, "output_dim": self.output_dim, "state_dict": self.model.state_dict()}, path)
         return path
 
     def load(self, path: str | Path) -> None:

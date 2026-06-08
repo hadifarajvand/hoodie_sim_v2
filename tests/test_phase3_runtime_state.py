@@ -167,6 +167,8 @@ class Phase3RuntimeStateTests(unittest.TestCase):
                     "1",
                     "--checkpoint-every",
                     "1",
+                    "--sequence-length",
+                    "1",
                     "--seed",
                     "11",
                 ],
@@ -190,6 +192,15 @@ class Phase3RuntimeStateTests(unittest.TestCase):
             self.assertIn("next_state_not_copy", contract)
             self.assertIn("waiting_time_not_queue_length_proxy", contract)
             self.assertIn("active_load_matrix_not_queue_length_history", contract)
+            with (out_dir / "sample_paper_state_trace.csv").open() as f:
+                sample_rows = list(__import__("csv").DictReader(f))
+            self.assertTrue(sample_rows)
+            forecast = np.asarray(json.loads(sample_rows[0]["predicted_next_load_json"]), dtype=np.float32)
+            self.assertTrue(np.isfinite(forecast).all())
+            state_vector = np.asarray(json.loads(sample_rows[0]["state_vector_json"]), dtype=np.float32)
+            self.assertTrue(np.isfinite(state_vector[-forecast.size:]).all())
+            self.assertEqual(sample_rows[0]["predicted_next_load_method"], "lstm_forecast")
+            self.assertEqual(sample_rows[0]["paper_lstm_forecast"], "True")
 
 
 if __name__ == "__main__":
