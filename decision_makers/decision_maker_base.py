@@ -1,4 +1,5 @@
 class DescisionMakerBase():
+  supports_replay = False
   def __init__( self, *args, **kwargs):
     pass
   def store_model(self, *args, **kwargs):

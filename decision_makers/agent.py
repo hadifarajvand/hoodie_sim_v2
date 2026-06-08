@@ -82,6 +82,7 @@ class DeepQNetwork(nn.Module):
     
 
 class Agent(DescisionMakerBase):
+    supports_replay = True
     def __init__(   self,
                     id,
                     state_dimensions,

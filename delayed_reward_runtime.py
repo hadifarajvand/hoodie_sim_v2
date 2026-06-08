@@ -17,7 +17,7 @@ def process_delayed_reward_events(agents: list[Any], trace_recorder: Any, delaye
         if pending is not None and source_agent is not None and 0 <= int(source_agent) < len(agents):
             paired_count += 1
             agent = agents[int(source_agent)]
-            if hasattr(agent, "store_transitions"):
+            if bool(getattr(agent, "supports_replay", False)):
                 agent.store_transitions(
                     state=np.asarray(json.loads(pending.state_at_decision_json), dtype=np.float32),
                     lstm_state=np.asarray(json.loads(pending.lstm_state_at_decision_json), dtype=np.float32),

@@ -51,6 +51,8 @@ def build_env(trace_recorder: TraceRecorder | None = None, timeout: int = 5, siz
 
 
 class FakeAgent:
+    supports_replay = True
+
     def __init__(self) -> None:
         self.calls = []
 
@@ -59,6 +61,7 @@ class FakeAgent:
 
 
 class BaselinePolicy:
+    supports_replay = False
     pass
 
 
