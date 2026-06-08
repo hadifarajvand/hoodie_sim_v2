@@ -1,0 +1,21 @@
+{
+  "figure10_data_ready": false,
+  "baseline_validation_ready": false,
+  "blocking_reasons": [
+    "runtime parameter contract mismatches may block official 200-episode validation",
+    "HOODIE requires a trained checkpoint for official validation",
+    "plotting is intentionally out of scope for this phase"
+  ],
+  "metrics_computable": [
+    "average_computation_delay",
+    "drop_ratio",
+    "completed_tasks",
+    "dropped_tasks",
+    "pending_tasks"
+  ],
+  "mleo_readiness_check": "mleo_candidate_latency_trace.csv must exist and be classified as paper_candidate_trace_ready",
+  "delayed_reward_readiness_check": "pending_transition_trace.csv and delayed_reward_event_trace.csv must exist and be paired",
+  "paper_performance_claims_made": false,
+  "no_plotting": true,
+  "reproduction_command": "./.venvmac/bin/python scripts/run_figure10_validation.py --output-dir artifacts/figure10_validation/runs/<run_id> --episodes 200 --policies HOODIE,RO,FLC,VO,HO,BCO,MLEO"
+}
