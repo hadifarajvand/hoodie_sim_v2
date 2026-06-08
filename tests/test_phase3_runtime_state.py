@@ -110,6 +110,8 @@ class Phase3RuntimeStateTests(unittest.TestCase):
                     "main.py",
                     "--epochs",
                     "1",
+                    "--validate",
+                    "True",
                     "--log_folder",
                     str(log_dir),
                     "--trace_output_dir",
@@ -182,6 +184,7 @@ class Phase3RuntimeStateTests(unittest.TestCase):
                 "dataset_summary.json",
                 "phase3_runtime_state_report.json",
                 "phase3_runtime_state_report.md",
+                "paper_state_trace.csv",
                 "sample_paper_state_trace.csv",
                 "state_source_contract.json",
                 "gap_closure_matrix.csv",
@@ -201,6 +204,13 @@ class Phase3RuntimeStateTests(unittest.TestCase):
             self.assertTrue(np.isfinite(state_vector[-forecast.size:]).all())
             self.assertEqual(sample_rows[0]["predicted_next_load_method"], "lstm_forecast")
             self.assertEqual(sample_rows[0]["paper_lstm_forecast"], "True")
+            with (out_dir / "paper_state_trace.csv").open() as f:
+                full_rows = list(__import__("csv").DictReader(f))
+            self.assertTrue(full_rows)
+            full_forecast = np.asarray(json.loads(full_rows[0]["predicted_next_load_json"]), dtype=np.float32)
+            self.assertTrue(np.isfinite(full_forecast).all())
+            full_state = np.asarray(json.loads(full_rows[0]["state_vector_json"]), dtype=np.float32)
+            self.assertTrue(np.isfinite(full_state[-full_forecast.size:]).all())
 
 
 if __name__ == "__main__":

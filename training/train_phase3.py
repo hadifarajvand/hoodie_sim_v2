@@ -55,7 +55,13 @@ def _rebuild_state_vector(transition) -> np.ndarray:
     return np.concatenate(parts).astype(np.float32)
 
 
-def _write_runtime_state_artifacts(output_dir: Path, trace_dir: Path, summary: object, sample_rows: list[dict[str, object]] | None = None) -> None:
+def _write_runtime_state_artifacts(
+    output_dir: Path,
+    trace_dir: Path,
+    summary: object,
+    sample_rows: list[dict[str, object]] | None = None,
+    paper_state_rows: list[dict[str, object]] | None = None,
+) -> None:
     summary_dict = summary_to_dict(summary)
     report = {
         "branch": "100-hoodie-paper-base",
@@ -112,13 +118,22 @@ def _write_runtime_state_artifacts(output_dir: Path, trace_dir: Path, summary: o
     with (output_dir / "gap_closure_matrix.csv").open("w", newline="") as f:
         writer = csv.writer(f)
         writer.writerows(gap_rows)
+    if paper_state_rows is not None and paper_state_rows:
+        with (output_dir / "paper_state_trace.csv").open("w", newline="") as f:
+            writer = csv.DictWriter(f, fieldnames=list(paper_state_rows[0].keys()))
+            writer.writeheader()
+            writer.writerows(paper_state_rows)
+    else:
+        paper_state_path = trace_dir / "paper_state_trace.csv"
+        if paper_state_path.exists():
+            (output_dir / "paper_state_trace.csv").write_text(paper_state_path.read_text())
     if sample_rows is not None:
         with (output_dir / "sample_paper_state_trace.csv").open("w", newline="") as f:
             writer = csv.DictWriter(f, fieldnames=list(sample_rows[0].keys()))
             writer.writeheader()
             writer.writerows(sample_rows)
     else:
-        paper_state_path = trace_dir / "paper_state_trace.csv"
+        paper_state_path = output_dir / "paper_state_trace.csv"
         if paper_state_path.exists():
             sample_lines = paper_state_path.read_text().splitlines()[:5]
             (output_dir / "sample_paper_state_trace.csv").write_text("\n".join(sample_lines) + "\n")
@@ -258,6 +273,7 @@ def main() -> int:
     report["validation_status"] = "passed"
 
     sample_rows: list[dict[str, object]] | None = None
+    paper_state_rows: list[dict[str, object]] | None = None
     if summary.paper_state_trace_present:
         forecaster = LSTMForecaster(args.sequence_length, input_dim=lstm_input_dim, hidden_dim=16, target="load_history", seed=args.seed, output_dim=lstm_output_dim)
         rows = [
@@ -310,9 +326,32 @@ def main() -> int:
             lstm_checkpoint = forecaster.save(output_dir / "lstm_load_history.chkpt")
             report["artifact_paths"]["lstm_load_history"] = lstm_checkpoint
             report["approximation_warnings"].append("predicted_next_load uses trained LSTM forecaster")
+            paper_state_rows = [
+                {
+                    "episode_id": transition.episode_id,
+                    "time": transition.step_index,
+                    "agent_id": transition.task_id if transition.task_id is not None else idx,
+                    "task_id": transition.task_id,
+                    "eta_n": transition.eta_n,
+                    "w_priv_n": transition.w_priv_n,
+                    "w_off_n": transition.w_off_n,
+                    "l_pub_n_prev_json": json.dumps(np.asarray(transition.l_pub_n_prev).tolist()) if transition.l_pub_n_prev is not None else "[]",
+                    "active_load_vector_json": json.dumps(np.asarray(transition.active_load_vector).tolist()) if transition.active_load_vector is not None else "[]",
+                    "L_t_json": json.dumps(np.asarray(transition.load_history).tolist()) if transition.load_history is not None else "[]",
+                    "predicted_next_load_json": json.dumps(np.asarray(transition.predicted_next_load).tolist()) if transition.predicted_next_load is not None else "null",
+                    "predicted_next_load_method": "lstm_forecast",
+                    "paper_lstm_forecast": True,
+                    "unavailable_fields_json": json.dumps([]),
+                    "approximation_warnings_json": json.dumps(["trained_lstm_forecast"]),
+                    "state_vector_json": json.dumps(np.asarray(transition.state).tolist()),
+                    "state_dim": int(transition.state.shape[0]),
+                }
+                for idx, transition in enumerate(transitions)
+                if getattr(transition, "load_history", None) is not None and transition.load_history.size
+            ]
 
     if summary.paper_state_trace_present:
-        _write_runtime_state_artifacts(output_dir, Path(args.trace_dir), summary, sample_rows=sample_rows)
+        _write_runtime_state_artifacts(output_dir, Path(args.trace_dir), summary, sample_rows=sample_rows, paper_state_rows=paper_state_rows)
 
     report["artifact_paths"].update(
         {
