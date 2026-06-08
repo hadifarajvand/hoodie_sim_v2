@@ -1,8 +1,13 @@
 # Phase 4 Validation Review
 
+## Full Run Summary
+
 - Episodes requested: 200
 - Episodes completed: 200
 - Total tasks: 444000
+- Completed tasks: 244083
+- Dropped tasks: 0
+- Pending tasks: 199917
 - Invalid action ratio: 0.0
 - Non-neighbor offloads: 0
 - Self-offload violations: 0
@@ -14,6 +19,13 @@
 - State source: runtime_paper_state_trace
 - Next state source: runtime_paper_state_trace
 - ready_for_phase5_figures: false
+
+## Readiness Notes
+
+- `episodes_completed` and `episode_metrics_count` both reached 200.
+- The action legality checks passed with zero invalid actions.
+- The runtime paper-state contract is structurally complete.
+- LSTM forecast output remains a persistence baseline, so phase-5 figure readiness is not accepted.
 
 ## Blockers / Warnings
 
