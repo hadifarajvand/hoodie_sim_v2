@@ -1,0 +1,13 @@
+{
+  "phase": "4",
+  "status": "delayed_reward_pairing_ready",
+  "reward_timing_convention": "completion_minus_arrival",
+  "pending_transition_registered_in": "TraceRecorder.note_pending_transition() from main.py after action selection and env.step()",
+  "reward_event_resolved_in": "TraceRecorder.resolve_delayed_reward_candidates() and delayed_reward_runtime.process_delayed_reward_events()",
+  "replay_insertion_active_for_drl": true,
+  "unresolved_limitations": [
+    "Figure runners remain out of scope.",
+    "This phase traces and pairs delayed rewards, but it does not prove paper-grade training curves.",
+    "Training still depends on the broader runtime state contract and policy setup."
+  ]
+}

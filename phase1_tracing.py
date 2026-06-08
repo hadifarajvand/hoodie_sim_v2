@@ -28,6 +28,7 @@ class TaskLifecycleRecord:
     service_time: float | None = None
     final_status: str = "pending"
     drop_reason: str | None = None
+    drop_penalty: float | None = None
 
 
 @dataclass
@@ -102,6 +103,46 @@ class EpisodeMetricRecord:
 
 
 @dataclass
+class PendingTransitionTraceRecord:
+    task_id: int
+    episode_id: int | None
+    source_agent: int
+    arrival_time: int
+    decision_time: int
+    state_at_decision_json: str
+    lstm_state_at_decision_json: str
+    action_at_decision: int
+    selected_target_node: int | None
+    raw_action_id: int | None
+    first_stage_decision: str | None
+    destination_type: str | None
+    destination_node_id: int | None
+    immediate_next_state_after_action_json: str
+    immediate_next_lstm_state_after_action_json: str
+    created_by_policy: str | None
+    replay_pairing_status: str
+
+
+@dataclass
+class DelayedRewardEventRecord:
+    task_id: int
+    episode_id: int | None
+    source_agent: int
+    decision_time: int
+    final_status: str
+    completion_time: int | None
+    drop_time: int | None
+    delay: int | None
+    reward: float
+    drop_penalty: float | None
+    reward_reason: str
+    paired_transition_found: bool
+    replay_inserted: bool
+    replay_pairing_status: str
+    reward_timing_convention: str
+
+
+@dataclass
 class MleoCandidateLatencyRecord:
     episode_id: int
     time: int
@@ -141,9 +182,13 @@ class TraceRecorder:
         self.task_records: dict[int, TaskLifecycleRecord] = {}
         self.queue_traces: list[QueueTraceRecord] = []
         self.action_traces: list[ActionTraceRecord] = []
+        self.pending_transition_traces: list[PendingTransitionTraceRecord] = []
+        self.delayed_reward_event_traces: list[DelayedRewardEventRecord] = []
         self.mleo_candidate_latency_traces: list[MleoCandidateLatencyRecord] = []
         self.paper_state_traces: list[PaperStateTraceRecord] = []
         self.episode_metrics: list[EpisodeMetricRecord] = []
+        self.pending_transitions: dict[int, PendingTransitionTraceRecord] = {}
+        self._resolved_delayed_reward_task_ids: set[int] = set()
         self._queue_length_history: dict[int, list[float]] = defaultdict(list)
         self._episode_id: int | None = None
 
@@ -158,6 +203,7 @@ class TraceRecorder:
         record.episode_id = episode_id
         record.arrival_time = arrival_time
         record.source_node = source_node
+        record.drop_penalty = getattr(task, "drop_penalty", None)
 
     def note_queue_enter(
         self,
@@ -188,6 +234,8 @@ class TraceRecorder:
         record = self.ensure_task(task.task_id)
         record.episode_id = episode_id
         record.service_end_time = time
+        record.completion_time = time
+        record.final_status = "completed"
         if record.service_start_time is not None:
             record.service_time = max(0, time - record.service_start_time)
         if record.arrival_time is not None:
@@ -209,6 +257,48 @@ class TraceRecorder:
         task.drop_time = time
         task.final_status = "dropped"
         task.drop_reason = reason
+
+    def resolve_delayed_reward_candidates(self, episode_id: int) -> list[dict[str, Any]]:
+        from reward_contract import compute_delayed_reward
+
+        resolved: list[dict[str, Any]] = []
+        for record in self.task_records.values():
+            if record.episode_id != episode_id:
+                continue
+            if record.task_id in self._resolved_delayed_reward_task_ids:
+                continue
+            if record.final_status not in {"completed", "dropped"}:
+                continue
+            pending = self.pending_transitions.get(record.task_id)
+            paired = pending is not None
+            reward_computation = compute_delayed_reward(
+                final_status=record.final_status,
+                arrival_time=record.arrival_time,
+                completion_time=record.completion_time,
+                drop_penalty=float(record.drop_penalty if record.drop_penalty is not None else 40.0),
+            )
+            resolved.append(
+                {
+                    "task_id": record.task_id,
+                    "episode_id": record.episode_id,
+                    "source_agent": record.source_node,
+                    "decision_time": pending.decision_time if pending is not None else (record.queue_enter_time if record.queue_enter_time is not None else 0),
+                    "final_status": record.final_status,
+                    "completion_time": record.completion_time,
+                    "drop_time": record.drop_time,
+                    "delay": reward_computation.delay,
+                    "reward": reward_computation.reward,
+                    "drop_penalty": reward_computation.drop_penalty,
+                    "reward_reason": reward_computation.reward_reason,
+                    "paired_transition_found": paired,
+                    "replay_inserted": False,
+                    "replay_pairing_status": "paired" if paired else "unpaired",
+                    "reward_timing_convention": reward_computation.reward_timing_convention,
+                    "pending_transition": pending,
+                }
+            )
+            self._resolved_delayed_reward_task_ids.add(record.task_id)
+        return resolved
 
     def note_action(
         self,
@@ -270,6 +360,86 @@ class TraceRecorder:
                 cloud_target=cloud_target,
                 d_n_1=d_n_1,
                 d_nk_2=d_nk_2,
+            )
+        )
+
+    def note_pending_transition(
+        self,
+        task_id: int,
+        episode_id: int | None,
+        source_agent: int,
+        arrival_time: int,
+        decision_time: int,
+        state_at_decision: Any,
+        lstm_state_at_decision: Any,
+        action_at_decision: int,
+        selected_target_node: int | None,
+        raw_action_id: int | None,
+        first_stage_decision: str | None,
+        destination_type: str | None,
+        destination_node_id: int | None,
+        immediate_next_state_after_action: Any,
+        immediate_next_lstm_state_after_action: Any,
+        created_by_policy: str | None,
+        replay_pairing_status: str,
+    ) -> None:
+        record = PendingTransitionTraceRecord(
+            task_id=task_id,
+            episode_id=episode_id,
+            source_agent=source_agent,
+            arrival_time=arrival_time,
+            decision_time=decision_time,
+            state_at_decision_json=json.dumps(np.asarray(state_at_decision).tolist()),
+            lstm_state_at_decision_json=json.dumps(np.asarray(lstm_state_at_decision).tolist()),
+            action_at_decision=int(action_at_decision),
+            selected_target_node=selected_target_node,
+            raw_action_id=raw_action_id,
+            first_stage_decision=first_stage_decision,
+            destination_type=destination_type,
+            destination_node_id=destination_node_id,
+            immediate_next_state_after_action_json=json.dumps(np.asarray(immediate_next_state_after_action).tolist()),
+            immediate_next_lstm_state_after_action_json=json.dumps(np.asarray(immediate_next_lstm_state_after_action).tolist()),
+            created_by_policy=created_by_policy,
+            replay_pairing_status=replay_pairing_status,
+        )
+        self.pending_transition_traces.append(record)
+        self.pending_transitions[task_id] = record
+
+    def note_delayed_reward_event(
+        self,
+        task_id: int,
+        episode_id: int | None,
+        source_agent: int,
+        decision_time: int,
+        final_status: str,
+        completion_time: int | None,
+        drop_time: int | None,
+        delay: int | None,
+        reward: float,
+        drop_penalty: float | None,
+        reward_reason: str,
+        paired_transition_found: bool,
+        replay_inserted: bool,
+        replay_pairing_status: str,
+        reward_timing_convention: str,
+    ) -> None:
+        self.delayed_reward_event_traces.append(
+            DelayedRewardEventRecord(
+                task_id=task_id,
+                episode_id=episode_id,
+                source_agent=source_agent,
+                decision_time=decision_time,
+                final_status=final_status,
+                completion_time=completion_time,
+                drop_time=drop_time,
+                delay=delay,
+                reward=float(reward),
+                drop_penalty=drop_penalty,
+                reward_reason=reward_reason,
+                paired_transition_found=bool(paired_transition_found),
+                replay_inserted=bool(replay_inserted),
+                replay_pairing_status=replay_pairing_status,
+                reward_timing_convention=reward_timing_convention,
             )
         )
 
@@ -446,6 +616,8 @@ class TraceRecorder:
         self._write_csv(output_dir / "task_lifecycle.csv", [asdict(r) for r in self.task_records.values()])
         self._write_csv(output_dir / "queue_trace.csv", [asdict(r) for r in self.queue_traces])
         self._write_csv(output_dir / "action_trace.csv", [asdict(r) for r in self.action_traces])
+        self._write_csv(output_dir / "pending_transition_trace.csv", [asdict(r) for r in self.pending_transition_traces])
+        self._write_csv(output_dir / "delayed_reward_event_trace.csv", [asdict(r) for r in self.delayed_reward_event_traces])
         self._write_csv(output_dir / "mleo_candidate_latency_trace.csv", [asdict(r) for r in self.mleo_candidate_latency_traces])
         self._write_csv(output_dir / "paper_state_trace.csv", [asdict(r) for r in self.paper_state_traces])
         self._write_csv(output_dir / "episode_metrics.csv", [asdict(r) for r in self.episode_metrics])

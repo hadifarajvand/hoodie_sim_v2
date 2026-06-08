@@ -15,6 +15,7 @@ from decision_makers.baselines import official_policy_map
 from lr_schedulers import constant,Linear
 from phase1_tracing import TraceRecorder
 from phase2_mechanisms import build_policy_map
+from delayed_reward_runtime import process_delayed_reward_events
 import numpy as np
 import argparse
 import torch
@@ -302,15 +303,32 @@ def main():
                     d_n_1=None if action_decision is None else action_decision.d_n_1,
                     d_nk_2=None if action_decision is None else action_decision.d_nk_2,
                 )
+                current_task = env.tasks[i]
+                if current_task is not None and not current_task.is_empty():
+                    trace_recorder.note_pending_transition(
+                        task_id=int(current_task.task_id),
+                        episode_id=epoch,
+                        source_agent=i,
+                        arrival_time=int(current_task.arrival_time),
+                        decision_time=step_time,
+                        state_at_decision=local_observations[i],
+                        lstm_state_at_decision=public_queues[i],
+                        action_at_decision=int(actions[i]),
+                        selected_target_node=int(target_node),
+                        raw_action_id=None if action_decision is None else int(action_decision.raw_action_id),
+                        first_stage_decision=None if action_decision is None else action_decision.first_stage_decision,
+                        destination_type=None if action_decision is None else action_decision.destination_type,
+                        destination_node_id=None if action_decision is None else action_decision.destination_node_id,
+                        immediate_next_state_after_action=local_observations_[i],
+                        immediate_next_lstm_state_after_action=public_queues_[i],
+                        created_by_policy=type(decision_makers[i]).__name__,
+                        replay_pairing_status="pending",
+                    )
+            delayed_reward_events = trace_recorder.resolve_delayed_reward_candidates(epoch)
+            process_delayed_reward_events(decision_makers, trace_recorder, delayed_reward_events)
             if not args.validate:
                 for i in range(number_of_servers):
-                        decision_makers[i].store_transitions(state = local_observations[i],
-                                                    lstm_state=public_queues[i],
-                                                    action = actions[i],
-                                                    reward= rewards[i],
-                                                    new_state=local_observations_[i],
-                                                    new_lstm_state=public_queues_[i],
-                                                    done=done)
+                        pass
                         
             local_observations,public_queues  = local_observations_,public_queues_
             accumulated_rewards.append(sum(rewards))

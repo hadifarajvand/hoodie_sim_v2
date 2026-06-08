@@ -7,6 +7,7 @@ from pathlib import Path
 from typing import Any
 
 from decision_makers.baselines import official_policy_map
+from reward_contract import compute_delayed_reward
 
 
 @dataclass(frozen=True)
@@ -19,6 +20,7 @@ class RewardEvent:
     delay: int | None
     completion_time: int | None
     drop_time: int | None
+    reward_timing_convention: str
 
 
 def load_trace_csv(path: str | Path) -> list[dict[str, str]]:
@@ -47,23 +49,24 @@ def infer_reward_events(trace_dir: str | Path) -> list[RewardEvent]:
         completion_time = _as_int(row.get("completion_time"))
         drop_time = _as_int(row.get("drop_time"))
         arrival_time = _as_int(row.get("arrival_time"))
-        delay: int | None = None
-        reward = 0.0
-        if status == "completed" and completion_time is not None and arrival_time is not None:
-            delay = max(0, completion_time - arrival_time + 1)
-            reward = float(-delay)
-        elif status == "dropped":
-            reward = -40.0
+        drop_penalty = _as_float(row.get("drop_penalty")) or 40.0
+        reward_computation = compute_delayed_reward(
+            final_status=status,
+            arrival_time=arrival_time,
+            completion_time=completion_time,
+            drop_penalty=drop_penalty,
+        )
         events.append(
             RewardEvent(
                 task_id=int(float(row.get("task_id") or 0)),
                 episode_id=_as_int(row.get("episode_id")),
                 source_node=_as_int(row.get("source_node")),
                 final_status=status,
-                reward=reward,
-                delay=delay,
+                reward=reward_computation.reward,
+                delay=reward_computation.delay,
                 completion_time=completion_time,
                 drop_time=drop_time,
+                reward_timing_convention=reward_computation.reward_timing_convention,
             )
         )
     return events
@@ -79,6 +82,12 @@ def build_validation_report(trace_dir: str | Path) -> dict[str, Any]:
     queue_rows = load_trace_csv(trace_dir / "queue_trace.csv")
     action_rows = load_trace_csv(trace_dir / "action_trace.csv")
     episode_rows = load_trace_csv(trace_dir / "episode_metrics.csv")
+    pending_trace_path = trace_dir / "pending_transition_trace.csv"
+    delayed_reward_trace_path = trace_dir / "delayed_reward_event_trace.csv"
+    pending_exists = pending_trace_path.exists()
+    delayed_exists = delayed_reward_trace_path.exists()
+    pending_rows = load_trace_csv(pending_trace_path) if pending_exists else []
+    delayed_rows = load_trace_csv(delayed_reward_trace_path) if delayed_exists else []
     mleo_path = trace_dir / "mleo_candidate_latency_trace.csv"
     mleo_exists = mleo_path.exists()
     mleo_rows = load_trace_csv(mleo_path) if mleo_exists else []
@@ -98,6 +107,20 @@ def build_validation_report(trace_dir: str | Path) -> dict[str, Any]:
         mleo_contract_status = "present_but_invalid"
     else:
         mleo_contract_status = "paper_candidate_trace_ready"
+
+    reward_events_with_pairing = sum(1 for row in delayed_rows if str(row.get("paired_transition_found")).lower() == "true")
+    reward_events_without_pairing = sum(1 for row in delayed_rows if str(row.get("paired_transition_found")).lower() != "true")
+    replay_inserted_count = sum(1 for row in delayed_rows if str(row.get("replay_inserted")).lower() == "true")
+    if not pending_exists or not delayed_exists:
+        delayed_reward_contract_status = "missing"
+    elif not delayed_rows or not pending_rows:
+        delayed_reward_contract_status = "present_but_invalid"
+    elif reward_events_with_pairing == 0:
+        delayed_reward_contract_status = "trace_ready_not_replay_ready"
+    elif reward_events_with_pairing != replay_inserted_count and replay_inserted_count > 0:
+        delayed_reward_contract_status = "present_but_invalid"
+    else:
+        delayed_reward_contract_status = "paper_replay_pairing_ready"
 
     active_policy_set = sorted(build_policy_map().keys())
     reward_events = infer_reward_events(trace_dir)
@@ -136,6 +159,14 @@ def build_validation_report(trace_dir: str | Path) -> dict[str, Any]:
         "mleo_tasks_with_candidates": mleo_tasks_with_candidates,
         "mleo_tasks_with_exactly_one_selected_candidate": mleo_tasks_with_exactly_one_selected_candidate,
         "mleo_contract_status": mleo_contract_status,
+        "pending_transition_trace_exists": pending_exists,
+        "pending_transition_rows": len(pending_rows),
+        "delayed_reward_trace_exists": delayed_exists,
+        "delayed_reward_event_rows": len(delayed_rows),
+        "reward_events_with_pairing": reward_events_with_pairing,
+        "reward_events_without_pairing": reward_events_without_pairing,
+        "replay_inserted_count": replay_inserted_count,
+        "delayed_reward_contract_status": delayed_reward_contract_status,
         "task_traceable_reward": True,
         "public_cpu_sharing": "dynamic_equal_active_queue",
         "action_legality": "adjacency_matrix_constrained",

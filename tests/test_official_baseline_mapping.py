@@ -2,7 +2,7 @@ from __future__ import annotations
 
 import unittest
 
-from decision_makers import AllHorizontal, AllLocal, AllVertical, Random
+from decision_makers import AllHorizontal, AllLocal, AllVertical, Random, RuleBased
 from decision_makers.baselines import BalancedCyclicOffloader, MinimumLatencyEstimationOffloader, official_policy_map
 
 
@@ -35,10 +35,10 @@ class OfficialBaselineMappingTests(unittest.TestCase):
         actions = [policy.choose_action() for _ in range(4)]
         self.assertEqual(actions, [0, 5, 1, 2])
 
-    def test_mleo_raises_loudly(self) -> None:
+    def test_mleo_instantiates_and_is_not_rule_based(self) -> None:
         self.assertIs(official_policy_map()["MLEO"], "mleo")
         self.assertIsInstance(MinimumLatencyEstimationOffloader(), MinimumLatencyEstimationOffloader)
-        self.assertNotEqual(MinimumLatencyEstimationOffloader.__name__, "RuleBased")
+        self.assertNotIsInstance(MinimumLatencyEstimationOffloader(), RuleBased)
 
 
 if __name__ == "__main__":
