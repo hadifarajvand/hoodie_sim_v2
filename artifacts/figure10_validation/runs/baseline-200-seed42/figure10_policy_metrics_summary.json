@@ -1,0 +1,1210 @@
+{
+  "paper_contract_source": "resources/papers/hoodie/ocr/merged.tex",
+  "paper_performance_claims_made": false,
+  "policy_class_map": {
+    "BCO": "BalancedCyclicOffloader",
+    "FLC": "AllLocal",
+    "HO": "AllHorizontal",
+    "MLEO": "MinimumLatencyEstimationOffloader",
+    "RO": "Random",
+    "VO": "AllVertical"
+  },
+  "regimes": {
+    "delay": {
+      "BCO": {
+        "completed_tasks": 87800,
+        "delayed_reward_contract_status": "paper_replay_pairing_ready",
+        "dropped_tasks": 112120,
+        "episodes_completed": 200,
+        "episodes_requested": 200,
+        "hoodie_checkpoint_status": "not_required",
+        "mean_average_computation_delay": 4.984153806432594,
+        "mean_drop_ratio": 0.5605192931427554,
+        "mleo_contract_status": "present_but_invalid",
+        "pending_tasks": 10,
+        "policy_readiness_status": "invalid_parameter_contract",
+        "regime_source": "paper_contract_or_unverified_runtime_override",
+        "std_average_computation_delay": 0.08966697143164504,
+        "std_drop_ratio": 0.022506362605930495,
+        "total_tasks": 199930,
+        "trace_report": {
+          "action_legality": "adjacency_matrix_constrained",
+          "action_trace_rows": 444000,
+          "active_queue_samples": 524241,
+          "delayed_reward_contract_status": "paper_replay_pairing_ready",
+          "delayed_reward_event_rows": 199920,
+          "delayed_reward_trace_exists": true,
+          "episode_count": 200,
+          "mleo_candidate_latency_trace_exists": true,
+          "mleo_candidate_rows": 0,
+          "mleo_contract_status": "present_but_invalid",
+          "mleo_selected_rows": 0,
+          "mleo_tasks_with_candidates": 0,
+          "mleo_tasks_with_exactly_one_selected_candidate": 0,
+          "pending_transition_rows": 199920,
+          "pending_transition_trace_exists": true,
+          "policy_map": {
+            "BCO": "balanced_cyclic",
+            "FLC": "all_local",
+            "HO": "all_horizontal",
+            "HOODIE": "drl",
+            "MLEO": "mleo",
+            "RO": "random",
+            "VO": "all_vertical"
+          },
+          "public_cpu_sharing": "dynamic_equal_active_queue",
+          "queue_trace_rows": 2242200,
+          "replay_inserted_count": 0,
+          "reward_events_with_pairing": 199920,
+          "reward_events_without_pairing": 0,
+          "reward_summary": {
+            "completed": 87800,
+            "dropped": 112120,
+            "pending": 10,
+            "total_reward": -4922478.0
+          },
+          "selected_action_missing": 0,
+          "selected_action_missing_by_status": {
+            "completed": {
+              "missing_selected_action": 0,
+              "rows": 87800
+            },
+            "dropped": {
+              "missing_selected_action": 0,
+              "rows": 112120
+            },
+            "pending": {
+              "missing_selected_action": 0,
+              "rows": 10
+            }
+          },
+          "task_count": 199930,
+          "task_traceable_reward": true,
+          "trace_dir": "artifacts/figure10_validation/runs/baseline-200-seed42/runs/figure10-20260608T150047Z-seed42/delay/BCO/traces"
+        },
+        "warnings": [
+          "contract diagnostics: [{'parameter': 'timeout_slots', 'paper_value': 20, 'runtime_value': 10, 'unit': 'slots', 'conversion_formula': 'timeout_sec / delta_sec', 'severity': 'high'}, {'parameter': 'cloud_cpu_ghz', 'paper_value': 30.0, 'runtime_value': 3.0, 'unit': 'GHz', 'conversion_formula': 'direct', 'severity': 'high'}]",
+          "delayed_reward_contract_status=paper_replay_pairing_ready"
+        ]
+      },
+      "FLC": {
+        "completed_tasks": 129324,
+        "delayed_reward_contract_status": "paper_replay_pairing_ready",
+        "dropped_tasks": 70596,
+        "episodes_completed": 200,
+        "episodes_requested": 200,
+        "hoodie_checkpoint_status": "not_required",
+        "mean_average_computation_delay": 6.548222296683793,
+        "mean_drop_ratio": 0.35260294144049115,
+        "mleo_contract_status": "present_but_invalid",
+        "pending_tasks": 10,
+        "policy_readiness_status": "invalid_parameter_contract",
+        "regime_source": "paper_contract_or_unverified_runtime_override",
+        "std_average_computation_delay": 0.15996635458146022,
+        "std_drop_ratio": 0.02625495348811267,
+        "total_tasks": 199930,
+        "trace_report": {
+          "action_legality": "adjacency_matrix_constrained",
+          "action_trace_rows": 444000,
+          "active_queue_samples": 399747,
+          "delayed_reward_contract_status": "paper_replay_pairing_ready",
+          "delayed_reward_event_rows": 199920,
+          "delayed_reward_trace_exists": true,
+          "episode_count": 200,
+          "mleo_candidate_latency_trace_exists": true,
+          "mleo_candidate_rows": 0,
+          "mleo_contract_status": "present_but_invalid",
+          "mleo_selected_rows": 0,
+          "mleo_tasks_with_candidates": 0,
+          "mleo_tasks_with_exactly_one_selected_candidate": 0,
+          "pending_transition_rows": 199920,
+          "pending_transition_trace_exists": true,
+          "policy_map": {
+            "BCO": "balanced_cyclic",
+            "FLC": "all_local",
+            "HO": "all_horizontal",
+            "HOODIE": "drl",
+            "MLEO": "mleo",
+            "RO": "random",
+            "VO": "all_vertical"
+          },
+          "public_cpu_sharing": "dynamic_equal_active_queue",
+          "queue_trace_rows": 2242200,
+          "replay_inserted_count": 0,
+          "reward_events_with_pairing": 199920,
+          "reward_events_without_pairing": 0,
+          "reward_summary": {
+            "completed": 129324,
+            "dropped": 70596,
+            "pending": 10,
+            "total_reward": -3670485.0
+          },
+          "selected_action_missing": 0,
+          "selected_action_missing_by_status": {
+            "completed": {
+              "missing_selected_action": 0,
+              "rows": 129324
+            },
+            "dropped": {
+              "missing_selected_action": 0,
+              "rows": 70596
+            },
+            "pending": {
+              "missing_selected_action": 0,
+              "rows": 10
+            }
+          },
+          "task_count": 199930,
+          "task_traceable_reward": true,
+          "trace_dir": "artifacts/figure10_validation/runs/baseline-200-seed42/runs/figure10-20260608T150047Z-seed42/delay/FLC/traces"
+        },
+        "warnings": [
+          "contract diagnostics: [{'parameter': 'timeout_slots', 'paper_value': 20, 'runtime_value': 10, 'unit': 'slots', 'conversion_formula': 'timeout_sec / delta_sec', 'severity': 'high'}, {'parameter': 'cloud_cpu_ghz', 'paper_value': 30.0, 'runtime_value': 3.0, 'unit': 'GHz', 'conversion_formula': 'direct', 'severity': 'high'}]",
+          "delayed_reward_contract_status=paper_replay_pairing_ready"
+        ]
+      },
+      "HO": {
+        "completed_tasks": 14716,
+        "delayed_reward_contract_status": "paper_replay_pairing_ready",
+        "dropped_tasks": 185167,
+        "episodes_completed": 200,
+        "episodes_requested": 200,
+        "hoodie_checkpoint_status": "not_required",
+        "mean_average_computation_delay": 7.7288850287190165,
+        "mean_drop_ratio": 0.9262373791450342,
+        "mleo_contract_status": "present_but_invalid",
+        "pending_tasks": 10,
+        "policy_readiness_status": "invalid_parameter_contract",
+        "regime_source": "paper_contract_or_unverified_runtime_override",
+        "std_average_computation_delay": 0.16142900745477864,
+        "std_drop_ratio": 0.008857144569801991,
+        "total_tasks": 199893,
+        "trace_report": {
+          "action_legality": "adjacency_matrix_constrained",
+          "action_trace_rows": 444000,
+          "active_queue_samples": 460663,
+          "delayed_reward_contract_status": "paper_replay_pairing_ready",
+          "delayed_reward_event_rows": 199883,
+          "delayed_reward_trace_exists": true,
+          "episode_count": 200,
+          "mleo_candidate_latency_trace_exists": true,
+          "mleo_candidate_rows": 0,
+          "mleo_contract_status": "present_but_invalid",
+          "mleo_selected_rows": 0,
+          "mleo_tasks_with_candidates": 0,
+          "mleo_tasks_with_exactly_one_selected_candidate": 0,
+          "pending_transition_rows": 199883,
+          "pending_transition_trace_exists": true,
+          "policy_map": {
+            "BCO": "balanced_cyclic",
+            "FLC": "all_local",
+            "HO": "all_horizontal",
+            "HOODIE": "drl",
+            "MLEO": "mleo",
+            "RO": "random",
+            "VO": "all_vertical"
+          },
+          "public_cpu_sharing": "dynamic_equal_active_queue",
+          "queue_trace_rows": 2242200,
+          "replay_inserted_count": 0,
+          "reward_events_with_pairing": 199883,
+          "reward_events_without_pairing": 0,
+          "reward_summary": {
+            "completed": 14716,
+            "dropped": 185167,
+            "pending": 10,
+            "total_reward": -7520419.0
+          },
+          "selected_action_missing": 0,
+          "selected_action_missing_by_status": {
+            "completed": {
+              "missing_selected_action": 0,
+              "rows": 14716
+            },
+            "dropped": {
+              "missing_selected_action": 0,
+              "rows": 185167
+            },
+            "pending": {
+              "missing_selected_action": 0,
+              "rows": 10
+            }
+          },
+          "task_count": 199893,
+          "task_traceable_reward": true,
+          "trace_dir": "artifacts/figure10_validation/runs/baseline-200-seed42/runs/figure10-20260608T150047Z-seed42/delay/HO/traces"
+        },
+        "warnings": [
+          "contract diagnostics: [{'parameter': 'timeout_slots', 'paper_value': 20, 'runtime_value': 10, 'unit': 'slots', 'conversion_formula': 'timeout_sec / delta_sec', 'severity': 'high'}, {'parameter': 'cloud_cpu_ghz', 'paper_value': 30.0, 'runtime_value': 3.0, 'unit': 'GHz', 'conversion_formula': 'direct', 'severity': 'high'}]",
+          "delayed_reward_contract_status=paper_replay_pairing_ready"
+        ]
+      },
+      "MLEO": {
+        "completed_tasks": 198592,
+        "delayed_reward_contract_status": "paper_replay_pairing_ready",
+        "dropped_tasks": 1328,
+        "episodes_completed": 200,
+        "episodes_requested": 200,
+        "hoodie_checkpoint_status": "not_required",
+        "mean_average_computation_delay": 4.694039027754922,
+        "mean_drop_ratio": 0.006580018005353483,
+        "mleo_contract_status": "paper_candidate_trace_ready",
+        "pending_tasks": 10,
+        "policy_readiness_status": "invalid_parameter_contract",
+        "regime_source": "paper_contract_or_unverified_runtime_override",
+        "std_average_computation_delay": 0.19598187299944478,
+        "std_drop_ratio": 0.004755082554481806,
+        "total_tasks": 199930,
+        "trace_report": {
+          "action_legality": "adjacency_matrix_constrained",
+          "action_trace_rows": 444000,
+          "active_queue_samples": 410413,
+          "delayed_reward_contract_status": "paper_replay_pairing_ready",
+          "delayed_reward_event_rows": 199920,
+          "delayed_reward_trace_exists": true,
+          "episode_count": 200,
+          "mleo_candidate_latency_trace_exists": true,
+          "mleo_candidate_rows": 999600,
+          "mleo_contract_status": "paper_candidate_trace_ready",
+          "mleo_selected_rows": 199920,
+          "mleo_tasks_with_candidates": 199920,
+          "mleo_tasks_with_exactly_one_selected_candidate": 199920,
+          "pending_transition_rows": 199920,
+          "pending_transition_trace_exists": true,
+          "policy_map": {
+            "BCO": "balanced_cyclic",
+            "FLC": "all_local",
+            "HO": "all_horizontal",
+            "HOODIE": "drl",
+            "MLEO": "mleo",
+            "RO": "random",
+            "VO": "all_vertical"
+          },
+          "public_cpu_sharing": "dynamic_equal_active_queue",
+          "queue_trace_rows": 2242200,
+          "replay_inserted_count": 0,
+          "reward_events_with_pairing": 199920,
+          "reward_events_without_pairing": 0,
+          "reward_summary": {
+            "completed": 198592,
+            "dropped": 1328,
+            "pending": 10,
+            "total_reward": -985860.0
+          },
+          "selected_action_missing": 0,
+          "selected_action_missing_by_status": {
+            "completed": {
+              "missing_selected_action": 0,
+              "rows": 198592
+            },
+            "dropped": {
+              "missing_selected_action": 0,
+              "rows": 1328
+            },
+            "pending": {
+              "missing_selected_action": 0,
+              "rows": 10
+            }
+          },
+          "task_count": 199930,
+          "task_traceable_reward": true,
+          "trace_dir": "artifacts/figure10_validation/runs/baseline-200-seed42/runs/figure10-20260608T150047Z-seed42/delay/MLEO/traces"
+        },
+        "warnings": [
+          "contract diagnostics: [{'parameter': 'timeout_slots', 'paper_value': 20, 'runtime_value': 10, 'unit': 'slots', 'conversion_formula': 'timeout_sec / delta_sec', 'severity': 'high'}, {'parameter': 'cloud_cpu_ghz', 'paper_value': 30.0, 'runtime_value': 3.0, 'unit': 'GHz', 'conversion_formula': 'direct', 'severity': 'high'}]",
+          "mleo_contract_status=paper_candidate_trace_ready",
+          "delayed_reward_contract_status=paper_replay_pairing_ready"
+        ]
+      },
+      "RO": {
+        "completed_tasks": 91455,
+        "delayed_reward_contract_status": "paper_replay_pairing_ready",
+        "dropped_tasks": 108302,
+        "episodes_completed": 200,
+        "episodes_requested": 200,
+        "hoodie_checkpoint_status": "not_required",
+        "mean_average_computation_delay": 5.194205934840652,
+        "mean_drop_ratio": 0.5419426142301121,
+        "mleo_contract_status": "present_but_invalid",
+        "pending_tasks": 10,
+        "policy_readiness_status": "invalid_parameter_contract",
+        "regime_source": "paper_contract_or_unverified_runtime_override",
+        "std_average_computation_delay": 0.1061874976294317,
+        "std_drop_ratio": 0.026071840268248284,
+        "total_tasks": 199767,
+        "trace_report": {
+          "action_legality": "adjacency_matrix_constrained",
+          "action_trace_rows": 444000,
+          "active_queue_samples": 523973,
+          "delayed_reward_contract_status": "paper_replay_pairing_ready",
+          "delayed_reward_event_rows": 199757,
+          "delayed_reward_trace_exists": true,
+          "episode_count": 200,
+          "mleo_candidate_latency_trace_exists": true,
+          "mleo_candidate_rows": 0,
+          "mleo_contract_status": "present_but_invalid",
+          "mleo_selected_rows": 0,
+          "mleo_tasks_with_candidates": 0,
+          "mleo_tasks_with_exactly_one_selected_candidate": 0,
+          "pending_transition_rows": 199757,
+          "pending_transition_trace_exists": true,
+          "policy_map": {
+            "BCO": "balanced_cyclic",
+            "FLC": "all_local",
+            "HO": "all_horizontal",
+            "HOODIE": "drl",
+            "MLEO": "mleo",
+            "RO": "random",
+            "VO": "all_vertical"
+          },
+          "public_cpu_sharing": "dynamic_equal_active_queue",
+          "queue_trace_rows": 2242200,
+          "replay_inserted_count": 0,
+          "reward_events_with_pairing": 199757,
+          "reward_events_without_pairing": 0,
+          "reward_summary": {
+            "completed": 91455,
+            "dropped": 108302,
+            "pending": 10,
+            "total_reward": -4807070.0
+          },
+          "selected_action_missing": 0,
+          "selected_action_missing_by_status": {
+            "completed": {
+              "missing_selected_action": 0,
+              "rows": 91455
+            },
+            "dropped": {
+              "missing_selected_action": 0,
+              "rows": 108302
+            },
+            "pending": {
+              "missing_selected_action": 0,
+              "rows": 10
+            }
+          },
+          "task_count": 199767,
+          "task_traceable_reward": true,
+          "trace_dir": "artifacts/figure10_validation/runs/baseline-200-seed42/runs/figure10-20260608T150047Z-seed42/delay/RO/traces"
+        },
+        "warnings": [
+          "contract diagnostics: [{'parameter': 'timeout_slots', 'paper_value': 20, 'runtime_value': 10, 'unit': 'slots', 'conversion_formula': 'timeout_sec / delta_sec', 'severity': 'high'}, {'parameter': 'cloud_cpu_ghz', 'paper_value': 30.0, 'runtime_value': 3.0, 'unit': 'GHz', 'conversion_formula': 'direct', 'severity': 'high'}]",
+          "delayed_reward_contract_status=paper_replay_pairing_ready"
+        ]
+      },
+      "VO": {
+        "completed_tasks": 7728,
+        "delayed_reward_contract_status": "paper_replay_pairing_ready",
+        "dropped_tasks": 192192,
+        "episodes_completed": 200,
+        "episodes_requested": 200,
+        "hoodie_checkpoint_status": "not_required",
+        "mean_average_computation_delay": 7.506629807565539,
+        "mean_drop_ratio": 0.9612318677474155,
+        "mleo_contract_status": "present_but_invalid",
+        "pending_tasks": 10,
+        "policy_readiness_status": "invalid_parameter_contract",
+        "regime_source": "paper_contract_or_unverified_runtime_override",
+        "std_average_computation_delay": 0.2618091229738907,
+        "std_drop_ratio": 0.005861583826787274,
+        "total_tasks": 199930,
+        "trace_report": {
+          "action_legality": "adjacency_matrix_constrained",
+          "action_trace_rows": 444000,
+          "active_queue_samples": 279174,
+          "delayed_reward_contract_status": "paper_replay_pairing_ready",
+          "delayed_reward_event_rows": 199920,
+          "delayed_reward_trace_exists": true,
+          "episode_count": 200,
+          "mleo_candidate_latency_trace_exists": true,
+          "mleo_candidate_rows": 0,
+          "mleo_contract_status": "present_but_invalid",
+          "mleo_selected_rows": 0,
+          "mleo_tasks_with_candidates": 0,
+          "mleo_tasks_with_exactly_one_selected_candidate": 0,
+          "pending_transition_rows": 199920,
+          "pending_transition_trace_exists": true,
+          "policy_map": {
+            "BCO": "balanced_cyclic",
+            "FLC": "all_local",
+            "HO": "all_horizontal",
+            "HOODIE": "drl",
+            "MLEO": "mleo",
+            "RO": "random",
+            "VO": "all_vertical"
+          },
+          "public_cpu_sharing": "dynamic_equal_active_queue",
+          "queue_trace_rows": 2242200,
+          "replay_inserted_count": 0,
+          "reward_events_with_pairing": 199920,
+          "reward_events_without_pairing": 0,
+          "reward_summary": {
+            "completed": 7728,
+            "dropped": 192192,
+            "pending": 10,
+            "total_reward": -7745699.0
+          },
+          "selected_action_missing": 0,
+          "selected_action_missing_by_status": {
+            "completed": {
+              "missing_selected_action": 0,
+              "rows": 7728
+            },
+            "dropped": {
+              "missing_selected_action": 0,
+              "rows": 192192
+            },
+            "pending": {
+              "missing_selected_action": 0,
+              "rows": 10
+            }
+          },
+          "task_count": 199930,
+          "task_traceable_reward": true,
+          "trace_dir": "artifacts/figure10_validation/runs/baseline-200-seed42/runs/figure10-20260608T150047Z-seed42/delay/VO/traces"
+        },
+        "warnings": [
+          "contract diagnostics: [{'parameter': 'timeout_slots', 'paper_value': 20, 'runtime_value': 10, 'unit': 'slots', 'conversion_formula': 'timeout_sec / delta_sec', 'severity': 'high'}, {'parameter': 'cloud_cpu_ghz', 'paper_value': 30.0, 'runtime_value': 3.0, 'unit': 'GHz', 'conversion_formula': 'direct', 'severity': 'high'}]",
+          "delayed_reward_contract_status=paper_replay_pairing_ready"
+        ]
+      }
+    },
+    "drop_ratio": {
+      "BCO": {
+        "completed_tasks": 87800,
+        "delayed_reward_contract_status": "paper_replay_pairing_ready",
+        "dropped_tasks": 112120,
+        "episodes_completed": 200,
+        "episodes_requested": 200,
+        "hoodie_checkpoint_status": "not_required",
+        "mean_average_computation_delay": 4.984153806432594,
+        "mean_drop_ratio": 0.5605192931427554,
+        "mleo_contract_status": "present_but_invalid",
+        "pending_tasks": 10,
+        "policy_readiness_status": "invalid_parameter_contract",
+        "regime_source": "paper_contract_or_unverified_runtime_override",
+        "std_average_computation_delay": 0.08966697143164504,
+        "std_drop_ratio": 0.022506362605930495,
+        "total_tasks": 199930,
+        "trace_report": {
+          "action_legality": "adjacency_matrix_constrained",
+          "action_trace_rows": 444000,
+          "active_queue_samples": 524241,
+          "delayed_reward_contract_status": "paper_replay_pairing_ready",
+          "delayed_reward_event_rows": 199920,
+          "delayed_reward_trace_exists": true,
+          "episode_count": 200,
+          "mleo_candidate_latency_trace_exists": true,
+          "mleo_candidate_rows": 0,
+          "mleo_contract_status": "present_but_invalid",
+          "mleo_selected_rows": 0,
+          "mleo_tasks_with_candidates": 0,
+          "mleo_tasks_with_exactly_one_selected_candidate": 0,
+          "pending_transition_rows": 199920,
+          "pending_transition_trace_exists": true,
+          "policy_map": {
+            "BCO": "balanced_cyclic",
+            "FLC": "all_local",
+            "HO": "all_horizontal",
+            "HOODIE": "drl",
+            "MLEO": "mleo",
+            "RO": "random",
+            "VO": "all_vertical"
+          },
+          "public_cpu_sharing": "dynamic_equal_active_queue",
+          "queue_trace_rows": 2242200,
+          "replay_inserted_count": 0,
+          "reward_events_with_pairing": 199920,
+          "reward_events_without_pairing": 0,
+          "reward_summary": {
+            "completed": 87800,
+            "dropped": 112120,
+            "pending": 10,
+            "total_reward": -4922478.0
+          },
+          "selected_action_missing": 0,
+          "selected_action_missing_by_status": {
+            "completed": {
+              "missing_selected_action": 0,
+              "rows": 87800
+            },
+            "dropped": {
+              "missing_selected_action": 0,
+              "rows": 112120
+            },
+            "pending": {
+              "missing_selected_action": 0,
+              "rows": 10
+            }
+          },
+          "task_count": 199930,
+          "task_traceable_reward": true,
+          "trace_dir": "artifacts/figure10_validation/runs/baseline-200-seed42/runs/figure10-20260608T150047Z-seed42/drop_ratio/BCO/traces"
+        },
+        "warnings": [
+          "contract diagnostics: [{'parameter': 'timeout_slots', 'paper_value': 20, 'runtime_value': 10, 'unit': 'slots', 'conversion_formula': 'timeout_sec / delta_sec', 'severity': 'high'}, {'parameter': 'cloud_cpu_ghz', 'paper_value': 30.0, 'runtime_value': 3.0, 'unit': 'GHz', 'conversion_formula': 'direct', 'severity': 'high'}]",
+          "delayed_reward_contract_status=paper_replay_pairing_ready"
+        ]
+      },
+      "FLC": {
+        "completed_tasks": 129324,
+        "delayed_reward_contract_status": "paper_replay_pairing_ready",
+        "dropped_tasks": 70596,
+        "episodes_completed": 200,
+        "episodes_requested": 200,
+        "hoodie_checkpoint_status": "not_required",
+        "mean_average_computation_delay": 6.548222296683793,
+        "mean_drop_ratio": 0.35260294144049115,
+        "mleo_contract_status": "present_but_invalid",
+        "pending_tasks": 10,
+        "policy_readiness_status": "invalid_parameter_contract",
+        "regime_source": "paper_contract_or_unverified_runtime_override",
+        "std_average_computation_delay": 0.15996635458146022,
+        "std_drop_ratio": 0.02625495348811267,
+        "total_tasks": 199930,
+        "trace_report": {
+          "action_legality": "adjacency_matrix_constrained",
+          "action_trace_rows": 444000,
+          "active_queue_samples": 399747,
+          "delayed_reward_contract_status": "paper_replay_pairing_ready",
+          "delayed_reward_event_rows": 199920,
+          "delayed_reward_trace_exists": true,
+          "episode_count": 200,
+          "mleo_candidate_latency_trace_exists": true,
+          "mleo_candidate_rows": 0,
+          "mleo_contract_status": "present_but_invalid",
+          "mleo_selected_rows": 0,
+          "mleo_tasks_with_candidates": 0,
+          "mleo_tasks_with_exactly_one_selected_candidate": 0,
+          "pending_transition_rows": 199920,
+          "pending_transition_trace_exists": true,
+          "policy_map": {
+            "BCO": "balanced_cyclic",
+            "FLC": "all_local",
+            "HO": "all_horizontal",
+            "HOODIE": "drl",
+            "MLEO": "mleo",
+            "RO": "random",
+            "VO": "all_vertical"
+          },
+          "public_cpu_sharing": "dynamic_equal_active_queue",
+          "queue_trace_rows": 2242200,
+          "replay_inserted_count": 0,
+          "reward_events_with_pairing": 199920,
+          "reward_events_without_pairing": 0,
+          "reward_summary": {
+            "completed": 129324,
+            "dropped": 70596,
+            "pending": 10,
+            "total_reward": -3670485.0
+          },
+          "selected_action_missing": 0,
+          "selected_action_missing_by_status": {
+            "completed": {
+              "missing_selected_action": 0,
+              "rows": 129324
+            },
+            "dropped": {
+              "missing_selected_action": 0,
+              "rows": 70596
+            },
+            "pending": {
+              "missing_selected_action": 0,
+              "rows": 10
+            }
+          },
+          "task_count": 199930,
+          "task_traceable_reward": true,
+          "trace_dir": "artifacts/figure10_validation/runs/baseline-200-seed42/runs/figure10-20260608T150047Z-seed42/drop_ratio/FLC/traces"
+        },
+        "warnings": [
+          "contract diagnostics: [{'parameter': 'timeout_slots', 'paper_value': 20, 'runtime_value': 10, 'unit': 'slots', 'conversion_formula': 'timeout_sec / delta_sec', 'severity': 'high'}, {'parameter': 'cloud_cpu_ghz', 'paper_value': 30.0, 'runtime_value': 3.0, 'unit': 'GHz', 'conversion_formula': 'direct', 'severity': 'high'}]",
+          "delayed_reward_contract_status=paper_replay_pairing_ready"
+        ]
+      },
+      "HO": {
+        "completed_tasks": 14716,
+        "delayed_reward_contract_status": "paper_replay_pairing_ready",
+        "dropped_tasks": 185167,
+        "episodes_completed": 200,
+        "episodes_requested": 200,
+        "hoodie_checkpoint_status": "not_required",
+        "mean_average_computation_delay": 7.7288850287190165,
+        "mean_drop_ratio": 0.9262373791450342,
+        "mleo_contract_status": "present_but_invalid",
+        "pending_tasks": 10,
+        "policy_readiness_status": "invalid_parameter_contract",
+        "regime_source": "paper_contract_or_unverified_runtime_override",
+        "std_average_computation_delay": 0.16142900745477864,
+        "std_drop_ratio": 0.008857144569801991,
+        "total_tasks": 199893,
+        "trace_report": {
+          "action_legality": "adjacency_matrix_constrained",
+          "action_trace_rows": 444000,
+          "active_queue_samples": 460663,
+          "delayed_reward_contract_status": "paper_replay_pairing_ready",
+          "delayed_reward_event_rows": 199883,
+          "delayed_reward_trace_exists": true,
+          "episode_count": 200,
+          "mleo_candidate_latency_trace_exists": true,
+          "mleo_candidate_rows": 0,
+          "mleo_contract_status": "present_but_invalid",
+          "mleo_selected_rows": 0,
+          "mleo_tasks_with_candidates": 0,
+          "mleo_tasks_with_exactly_one_selected_candidate": 0,
+          "pending_transition_rows": 199883,
+          "pending_transition_trace_exists": true,
+          "policy_map": {
+            "BCO": "balanced_cyclic",
+            "FLC": "all_local",
+            "HO": "all_horizontal",
+            "HOODIE": "drl",
+            "MLEO": "mleo",
+            "RO": "random",
+            "VO": "all_vertical"
+          },
+          "public_cpu_sharing": "dynamic_equal_active_queue",
+          "queue_trace_rows": 2242200,
+          "replay_inserted_count": 0,
+          "reward_events_with_pairing": 199883,
+          "reward_events_without_pairing": 0,
+          "reward_summary": {
+            "completed": 14716,
+            "dropped": 185167,
+            "pending": 10,
+            "total_reward": -7520419.0
+          },
+          "selected_action_missing": 0,
+          "selected_action_missing_by_status": {
+            "completed": {
+              "missing_selected_action": 0,
+              "rows": 14716
+            },
+            "dropped": {
+              "missing_selected_action": 0,
+              "rows": 185167
+            },
+            "pending": {
+              "missing_selected_action": 0,
+              "rows": 10
+            }
+          },
+          "task_count": 199893,
+          "task_traceable_reward": true,
+          "trace_dir": "artifacts/figure10_validation/runs/baseline-200-seed42/runs/figure10-20260608T150047Z-seed42/drop_ratio/HO/traces"
+        },
+        "warnings": [
+          "contract diagnostics: [{'parameter': 'timeout_slots', 'paper_value': 20, 'runtime_value': 10, 'unit': 'slots', 'conversion_formula': 'timeout_sec / delta_sec', 'severity': 'high'}, {'parameter': 'cloud_cpu_ghz', 'paper_value': 30.0, 'runtime_value': 3.0, 'unit': 'GHz', 'conversion_formula': 'direct', 'severity': 'high'}]",
+          "delayed_reward_contract_status=paper_replay_pairing_ready"
+        ]
+      },
+      "MLEO": {
+        "completed_tasks": 198592,
+        "delayed_reward_contract_status": "paper_replay_pairing_ready",
+        "dropped_tasks": 1328,
+        "episodes_completed": 200,
+        "episodes_requested": 200,
+        "hoodie_checkpoint_status": "not_required",
+        "mean_average_computation_delay": 4.694039027754922,
+        "mean_drop_ratio": 0.006580018005353483,
+        "mleo_contract_status": "paper_candidate_trace_ready",
+        "pending_tasks": 10,
+        "policy_readiness_status": "invalid_parameter_contract",
+        "regime_source": "paper_contract_or_unverified_runtime_override",
+        "std_average_computation_delay": 0.19598187299944478,
+        "std_drop_ratio": 0.004755082554481806,
+        "total_tasks": 199930,
+        "trace_report": {
+          "action_legality": "adjacency_matrix_constrained",
+          "action_trace_rows": 444000,
+          "active_queue_samples": 410413,
+          "delayed_reward_contract_status": "paper_replay_pairing_ready",
+          "delayed_reward_event_rows": 199920,
+          "delayed_reward_trace_exists": true,
+          "episode_count": 200,
+          "mleo_candidate_latency_trace_exists": true,
+          "mleo_candidate_rows": 999600,
+          "mleo_contract_status": "paper_candidate_trace_ready",
+          "mleo_selected_rows": 199920,
+          "mleo_tasks_with_candidates": 199920,
+          "mleo_tasks_with_exactly_one_selected_candidate": 199920,
+          "pending_transition_rows": 199920,
+          "pending_transition_trace_exists": true,
+          "policy_map": {
+            "BCO": "balanced_cyclic",
+            "FLC": "all_local",
+            "HO": "all_horizontal",
+            "HOODIE": "drl",
+            "MLEO": "mleo",
+            "RO": "random",
+            "VO": "all_vertical"
+          },
+          "public_cpu_sharing": "dynamic_equal_active_queue",
+          "queue_trace_rows": 2242200,
+          "replay_inserted_count": 0,
+          "reward_events_with_pairing": 199920,
+          "reward_events_without_pairing": 0,
+          "reward_summary": {
+            "completed": 198592,
+            "dropped": 1328,
+            "pending": 10,
+            "total_reward": -985860.0
+          },
+          "selected_action_missing": 0,
+          "selected_action_missing_by_status": {
+            "completed": {
+              "missing_selected_action": 0,
+              "rows": 198592
+            },
+            "dropped": {
+              "missing_selected_action": 0,
+              "rows": 1328
+            },
+            "pending": {
+              "missing_selected_action": 0,
+              "rows": 10
+            }
+          },
+          "task_count": 199930,
+          "task_traceable_reward": true,
+          "trace_dir": "artifacts/figure10_validation/runs/baseline-200-seed42/runs/figure10-20260608T150047Z-seed42/drop_ratio/MLEO/traces"
+        },
+        "warnings": [
+          "contract diagnostics: [{'parameter': 'timeout_slots', 'paper_value': 20, 'runtime_value': 10, 'unit': 'slots', 'conversion_formula': 'timeout_sec / delta_sec', 'severity': 'high'}, {'parameter': 'cloud_cpu_ghz', 'paper_value': 30.0, 'runtime_value': 3.0, 'unit': 'GHz', 'conversion_formula': 'direct', 'severity': 'high'}]",
+          "mleo_contract_status=paper_candidate_trace_ready",
+          "delayed_reward_contract_status=paper_replay_pairing_ready"
+        ]
+      },
+      "RO": {
+        "completed_tasks": 91455,
+        "delayed_reward_contract_status": "paper_replay_pairing_ready",
+        "dropped_tasks": 108302,
+        "episodes_completed": 200,
+        "episodes_requested": 200,
+        "hoodie_checkpoint_status": "not_required",
+        "mean_average_computation_delay": 5.194205934840652,
+        "mean_drop_ratio": 0.5419426142301121,
+        "mleo_contract_status": "present_but_invalid",
+        "pending_tasks": 10,
+        "policy_readiness_status": "invalid_parameter_contract",
+        "regime_source": "paper_contract_or_unverified_runtime_override",
+        "std_average_computation_delay": 0.1061874976294317,
+        "std_drop_ratio": 0.026071840268248284,
+        "total_tasks": 199767,
+        "trace_report": {
+          "action_legality": "adjacency_matrix_constrained",
+          "action_trace_rows": 444000,
+          "active_queue_samples": 523973,
+          "delayed_reward_contract_status": "paper_replay_pairing_ready",
+          "delayed_reward_event_rows": 199757,
+          "delayed_reward_trace_exists": true,
+          "episode_count": 200,
+          "mleo_candidate_latency_trace_exists": true,
+          "mleo_candidate_rows": 0,
+          "mleo_contract_status": "present_but_invalid",
+          "mleo_selected_rows": 0,
+          "mleo_tasks_with_candidates": 0,
+          "mleo_tasks_with_exactly_one_selected_candidate": 0,
+          "pending_transition_rows": 199757,
+          "pending_transition_trace_exists": true,
+          "policy_map": {
+            "BCO": "balanced_cyclic",
+            "FLC": "all_local",
+            "HO": "all_horizontal",
+            "HOODIE": "drl",
+            "MLEO": "mleo",
+            "RO": "random",
+            "VO": "all_vertical"
+          },
+          "public_cpu_sharing": "dynamic_equal_active_queue",
+          "queue_trace_rows": 2242200,
+          "replay_inserted_count": 0,
+          "reward_events_with_pairing": 199757,
+          "reward_events_without_pairing": 0,
+          "reward_summary": {
+            "completed": 91455,
+            "dropped": 108302,
+            "pending": 10,
+            "total_reward": -4807070.0
+          },
+          "selected_action_missing": 0,
+          "selected_action_missing_by_status": {
+            "completed": {
+              "missing_selected_action": 0,
+              "rows": 91455
+            },
+            "dropped": {
+              "missing_selected_action": 0,
+              "rows": 108302
+            },
+            "pending": {
+              "missing_selected_action": 0,
+              "rows": 10
+            }
+          },
+          "task_count": 199767,
+          "task_traceable_reward": true,
+          "trace_dir": "artifacts/figure10_validation/runs/baseline-200-seed42/runs/figure10-20260608T150047Z-seed42/drop_ratio/RO/traces"
+        },
+        "warnings": [
+          "contract diagnostics: [{'parameter': 'timeout_slots', 'paper_value': 20, 'runtime_value': 10, 'unit': 'slots', 'conversion_formula': 'timeout_sec / delta_sec', 'severity': 'high'}, {'parameter': 'cloud_cpu_ghz', 'paper_value': 30.0, 'runtime_value': 3.0, 'unit': 'GHz', 'conversion_formula': 'direct', 'severity': 'high'}]",
+          "delayed_reward_contract_status=paper_replay_pairing_ready"
+        ]
+      },
+      "VO": {
+        "completed_tasks": 7728,
+        "delayed_reward_contract_status": "paper_replay_pairing_ready",
+        "dropped_tasks": 192192,
+        "episodes_completed": 200,
+        "episodes_requested": 200,
+        "hoodie_checkpoint_status": "not_required",
+        "mean_average_computation_delay": 7.506629807565539,
+        "mean_drop_ratio": 0.9612318677474155,
+        "mleo_contract_status": "present_but_invalid",
+        "pending_tasks": 10,
+        "policy_readiness_status": "invalid_parameter_contract",
+        "regime_source": "paper_contract_or_unverified_runtime_override",
+        "std_average_computation_delay": 0.2618091229738907,
+        "std_drop_ratio": 0.005861583826787274,
+        "total_tasks": 199930,
+        "trace_report": {
+          "action_legality": "adjacency_matrix_constrained",
+          "action_trace_rows": 444000,
+          "active_queue_samples": 279174,
+          "delayed_reward_contract_status": "paper_replay_pairing_ready",
+          "delayed_reward_event_rows": 199920,
+          "delayed_reward_trace_exists": true,
+          "episode_count": 200,
+          "mleo_candidate_latency_trace_exists": true,
+          "mleo_candidate_rows": 0,
+          "mleo_contract_status": "present_but_invalid",
+          "mleo_selected_rows": 0,
+          "mleo_tasks_with_candidates": 0,
+          "mleo_tasks_with_exactly_one_selected_candidate": 0,
+          "pending_transition_rows": 199920,
+          "pending_transition_trace_exists": true,
+          "policy_map": {
+            "BCO": "balanced_cyclic",
+            "FLC": "all_local",
+            "HO": "all_horizontal",
+            "HOODIE": "drl",
+            "MLEO": "mleo",
+            "RO": "random",
+            "VO": "all_vertical"
+          },
+          "public_cpu_sharing": "dynamic_equal_active_queue",
+          "queue_trace_rows": 2242200,
+          "replay_inserted_count": 0,
+          "reward_events_with_pairing": 199920,
+          "reward_events_without_pairing": 0,
+          "reward_summary": {
+            "completed": 7728,
+            "dropped": 192192,
+            "pending": 10,
+            "total_reward": -7745699.0
+          },
+          "selected_action_missing": 0,
+          "selected_action_missing_by_status": {
+            "completed": {
+              "missing_selected_action": 0,
+              "rows": 7728
+            },
+            "dropped": {
+              "missing_selected_action": 0,
+              "rows": 192192
+            },
+            "pending": {
+              "missing_selected_action": 0,
+              "rows": 10
+            }
+          },
+          "task_count": 199930,
+          "task_traceable_reward": true,
+          "trace_dir": "artifacts/figure10_validation/runs/baseline-200-seed42/runs/figure10-20260608T150047Z-seed42/drop_ratio/VO/traces"
+        },
+        "warnings": [
+          "contract diagnostics: [{'parameter': 'timeout_slots', 'paper_value': 20, 'runtime_value': 10, 'unit': 'slots', 'conversion_formula': 'timeout_sec / delta_sec', 'severity': 'high'}, {'parameter': 'cloud_cpu_ghz', 'paper_value': 30.0, 'runtime_value': 3.0, 'unit': 'GHz', 'conversion_formula': 'direct', 'severity': 'high'}]",
+          "delayed_reward_contract_status=paper_replay_pairing_ready"
+        ]
+      }
+    }
+  },
+  "registry": {
+    "active_policy_set": [
+      "RO",
+      "FLC",
+      "VO",
+      "HO",
+      "BCO",
+      "MLEO"
+    ],
+    "expected_policy_set": [
+      "HOODIE",
+      "RO",
+      "FLC",
+      "VO",
+      "HO",
+      "BCO",
+      "MLEO"
+    ],
+    "policy_run_statuses": {
+      "BCO": "invalid_parameter_contract",
+      "FLC": "invalid_parameter_contract",
+      "HO": "invalid_parameter_contract",
+      "MLEO": "invalid_parameter_contract",
+      "RO": "invalid_parameter_contract",
+      "VO": "invalid_parameter_contract"
+    }
+  },
+  "runtime_parameter_diagnostics": [
+    {
+      "conversion_formula": "timeout_sec / delta_sec",
+      "paper_value": 20,
+      "parameter": "timeout_slots",
+      "runtime_value": 10,
+      "severity": "high",
+      "unit": "slots"
+    },
+    {
+      "conversion_formula": "direct",
+      "paper_value": 30.0,
+      "parameter": "cloud_cpu_ghz",
+      "runtime_value": 3.0,
+      "severity": "high",
+      "unit": "GHz"
+    }
+  ],
+  "summary_rows": [
+    {
+      "completed_tasks": 91455,
+      "dropped_tasks": 108302,
+      "episodes_completed": 200,
+      "episodes_requested": 200,
+      "mean_average_computation_delay": 5.194205934840652,
+      "mean_drop_ratio": 0.5419426142301121,
+      "pending_tasks": 10,
+      "policy_name": "RO",
+      "policy_readiness_status": "invalid_parameter_contract",
+      "regime_id": "delay",
+      "std_average_computation_delay": 0.1061874976294317,
+      "std_drop_ratio": 0.026071840268248284,
+      "total_tasks": 199767,
+      "warnings": [
+        "contract diagnostics: [{'parameter': 'timeout_slots', 'paper_value': 20, 'runtime_value': 10, 'unit': 'slots', 'conversion_formula': 'timeout_sec / delta_sec', 'severity': 'high'}, {'parameter': 'cloud_cpu_ghz', 'paper_value': 30.0, 'runtime_value': 3.0, 'unit': 'GHz', 'conversion_formula': 'direct', 'severity': 'high'}]",
+        "delayed_reward_contract_status=paper_replay_pairing_ready"
+      ]
+    },
+    {
+      "completed_tasks": 129324,
+      "dropped_tasks": 70596,
+      "episodes_completed": 200,
+      "episodes_requested": 200,
+      "mean_average_computation_delay": 6.548222296683793,
+      "mean_drop_ratio": 0.35260294144049115,
+      "pending_tasks": 10,
+      "policy_name": "FLC",
+      "policy_readiness_status": "invalid_parameter_contract",
+      "regime_id": "delay",
+      "std_average_computation_delay": 0.15996635458146022,
+      "std_drop_ratio": 0.02625495348811267,
+      "total_tasks": 199930,
+      "warnings": [
+        "contract diagnostics: [{'parameter': 'timeout_slots', 'paper_value': 20, 'runtime_value': 10, 'unit': 'slots', 'conversion_formula': 'timeout_sec / delta_sec', 'severity': 'high'}, {'parameter': 'cloud_cpu_ghz', 'paper_value': 30.0, 'runtime_value': 3.0, 'unit': 'GHz', 'conversion_formula': 'direct', 'severity': 'high'}]",
+        "delayed_reward_contract_status=paper_replay_pairing_ready"
+      ]
+    },
+    {
+      "completed_tasks": 7728,
+      "dropped_tasks": 192192,
+      "episodes_completed": 200,
+      "episodes_requested": 200,
+      "mean_average_computation_delay": 7.506629807565539,
+      "mean_drop_ratio": 0.9612318677474155,
+      "pending_tasks": 10,
+      "policy_name": "VO",
+      "policy_readiness_status": "invalid_parameter_contract",
+      "regime_id": "delay",
+      "std_average_computation_delay": 0.2618091229738907,
+      "std_drop_ratio": 0.005861583826787274,
+      "total_tasks": 199930,
+      "warnings": [
+        "contract diagnostics: [{'parameter': 'timeout_slots', 'paper_value': 20, 'runtime_value': 10, 'unit': 'slots', 'conversion_formula': 'timeout_sec / delta_sec', 'severity': 'high'}, {'parameter': 'cloud_cpu_ghz', 'paper_value': 30.0, 'runtime_value': 3.0, 'unit': 'GHz', 'conversion_formula': 'direct', 'severity': 'high'}]",
+        "delayed_reward_contract_status=paper_replay_pairing_ready"
+      ]
+    },
+    {
+      "completed_tasks": 14716,
+      "dropped_tasks": 185167,
+      "episodes_completed": 200,
+      "episodes_requested": 200,
+      "mean_average_computation_delay": 7.7288850287190165,
+      "mean_drop_ratio": 0.9262373791450342,
+      "pending_tasks": 10,
+      "policy_name": "HO",
+      "policy_readiness_status": "invalid_parameter_contract",
+      "regime_id": "delay",
+      "std_average_computation_delay": 0.16142900745477864,
+      "std_drop_ratio": 0.008857144569801991,
+      "total_tasks": 199893,
+      "warnings": [
+        "contract diagnostics: [{'parameter': 'timeout_slots', 'paper_value': 20, 'runtime_value': 10, 'unit': 'slots', 'conversion_formula': 'timeout_sec / delta_sec', 'severity': 'high'}, {'parameter': 'cloud_cpu_ghz', 'paper_value': 30.0, 'runtime_value': 3.0, 'unit': 'GHz', 'conversion_formula': 'direct', 'severity': 'high'}]",
+        "delayed_reward_contract_status=paper_replay_pairing_ready"
+      ]
+    },
+    {
+      "completed_tasks": 87800,
+      "dropped_tasks": 112120,
+      "episodes_completed": 200,
+      "episodes_requested": 200,
+      "mean_average_computation_delay": 4.984153806432594,
+      "mean_drop_ratio": 0.5605192931427554,
+      "pending_tasks": 10,
+      "policy_name": "BCO",
+      "policy_readiness_status": "invalid_parameter_contract",
+      "regime_id": "delay",
+      "std_average_computation_delay": 0.08966697143164504,
+      "std_drop_ratio": 0.022506362605930495,
+      "total_tasks": 199930,
+      "warnings": [
+        "contract diagnostics: [{'parameter': 'timeout_slots', 'paper_value': 20, 'runtime_value': 10, 'unit': 'slots', 'conversion_formula': 'timeout_sec / delta_sec', 'severity': 'high'}, {'parameter': 'cloud_cpu_ghz', 'paper_value': 30.0, 'runtime_value': 3.0, 'unit': 'GHz', 'conversion_formula': 'direct', 'severity': 'high'}]",
+        "delayed_reward_contract_status=paper_replay_pairing_ready"
+      ]
+    },
+    {
+      "completed_tasks": 198592,
+      "dropped_tasks": 1328,
+      "episodes_completed": 200,
+      "episodes_requested": 200,
+      "mean_average_computation_delay": 4.694039027754922,
+      "mean_drop_ratio": 0.006580018005353483,
+      "pending_tasks": 10,
+      "policy_name": "MLEO",
+      "policy_readiness_status": "invalid_parameter_contract",
+      "regime_id": "delay",
+      "std_average_computation_delay": 0.19598187299944478,
+      "std_drop_ratio": 0.004755082554481806,
+      "total_tasks": 199930,
+      "warnings": [
+        "contract diagnostics: [{'parameter': 'timeout_slots', 'paper_value': 20, 'runtime_value': 10, 'unit': 'slots', 'conversion_formula': 'timeout_sec / delta_sec', 'severity': 'high'}, {'parameter': 'cloud_cpu_ghz', 'paper_value': 30.0, 'runtime_value': 3.0, 'unit': 'GHz', 'conversion_formula': 'direct', 'severity': 'high'}]",
+        "mleo_contract_status=paper_candidate_trace_ready",
+        "delayed_reward_contract_status=paper_replay_pairing_ready"
+      ]
+    },
+    {
+      "completed_tasks": 91455,
+      "dropped_tasks": 108302,
+      "episodes_completed": 200,
+      "episodes_requested": 200,
+      "mean_average_computation_delay": 5.194205934840652,
+      "mean_drop_ratio": 0.5419426142301121,
+      "pending_tasks": 10,
+      "policy_name": "RO",
+      "policy_readiness_status": "invalid_parameter_contract",
+      "regime_id": "drop_ratio",
+      "std_average_computation_delay": 0.1061874976294317,
+      "std_drop_ratio": 0.026071840268248284,
+      "total_tasks": 199767,
+      "warnings": [
+        "contract diagnostics: [{'parameter': 'timeout_slots', 'paper_value': 20, 'runtime_value': 10, 'unit': 'slots', 'conversion_formula': 'timeout_sec / delta_sec', 'severity': 'high'}, {'parameter': 'cloud_cpu_ghz', 'paper_value': 30.0, 'runtime_value': 3.0, 'unit': 'GHz', 'conversion_formula': 'direct', 'severity': 'high'}]",
+        "delayed_reward_contract_status=paper_replay_pairing_ready"
+      ]
+    },
+    {
+      "completed_tasks": 129324,
+      "dropped_tasks": 70596,
+      "episodes_completed": 200,
+      "episodes_requested": 200,
+      "mean_average_computation_delay": 6.548222296683793,
+      "mean_drop_ratio": 0.35260294144049115,
+      "pending_tasks": 10,
+      "policy_name": "FLC",
+      "policy_readiness_status": "invalid_parameter_contract",
+      "regime_id": "drop_ratio",
+      "std_average_computation_delay": 0.15996635458146022,
+      "std_drop_ratio": 0.02625495348811267,
+      "total_tasks": 199930,
+      "warnings": [
+        "contract diagnostics: [{'parameter': 'timeout_slots', 'paper_value': 20, 'runtime_value': 10, 'unit': 'slots', 'conversion_formula': 'timeout_sec / delta_sec', 'severity': 'high'}, {'parameter': 'cloud_cpu_ghz', 'paper_value': 30.0, 'runtime_value': 3.0, 'unit': 'GHz', 'conversion_formula': 'direct', 'severity': 'high'}]",
+        "delayed_reward_contract_status=paper_replay_pairing_ready"
+      ]
+    },
+    {
+      "completed_tasks": 7728,
+      "dropped_tasks": 192192,
+      "episodes_completed": 200,
+      "episodes_requested": 200,
+      "mean_average_computation_delay": 7.506629807565539,
+      "mean_drop_ratio": 0.9612318677474155,
+      "pending_tasks": 10,
+      "policy_name": "VO",
+      "policy_readiness_status": "invalid_parameter_contract",
+      "regime_id": "drop_ratio",
+      "std_average_computation_delay": 0.2618091229738907,
+      "std_drop_ratio": 0.005861583826787274,
+      "total_tasks": 199930,
+      "warnings": [
+        "contract diagnostics: [{'parameter': 'timeout_slots', 'paper_value': 20, 'runtime_value': 10, 'unit': 'slots', 'conversion_formula': 'timeout_sec / delta_sec', 'severity': 'high'}, {'parameter': 'cloud_cpu_ghz', 'paper_value': 30.0, 'runtime_value': 3.0, 'unit': 'GHz', 'conversion_formula': 'direct', 'severity': 'high'}]",
+        "delayed_reward_contract_status=paper_replay_pairing_ready"
+      ]
+    },
+    {
+      "completed_tasks": 14716,
+      "dropped_tasks": 185167,
+      "episodes_completed": 200,
+      "episodes_requested": 200,
+      "mean_average_computation_delay": 7.7288850287190165,
+      "mean_drop_ratio": 0.9262373791450342,
+      "pending_tasks": 10,
+      "policy_name": "HO",
+      "policy_readiness_status": "invalid_parameter_contract",
+      "regime_id": "drop_ratio",
+      "std_average_computation_delay": 0.16142900745477864,
+      "std_drop_ratio": 0.008857144569801991,
+      "total_tasks": 199893,
+      "warnings": [
+        "contract diagnostics: [{'parameter': 'timeout_slots', 'paper_value': 20, 'runtime_value': 10, 'unit': 'slots', 'conversion_formula': 'timeout_sec / delta_sec', 'severity': 'high'}, {'parameter': 'cloud_cpu_ghz', 'paper_value': 30.0, 'runtime_value': 3.0, 'unit': 'GHz', 'conversion_formula': 'direct', 'severity': 'high'}]",
+        "delayed_reward_contract_status=paper_replay_pairing_ready"
+      ]
+    },
+    {
+      "completed_tasks": 87800,
+      "dropped_tasks": 112120,
+      "episodes_completed": 200,
+      "episodes_requested": 200,
+      "mean_average_computation_delay": 4.984153806432594,
+      "mean_drop_ratio": 0.5605192931427554,
+      "pending_tasks": 10,
+      "policy_name": "BCO",
+      "policy_readiness_status": "invalid_parameter_contract",
+      "regime_id": "drop_ratio",
+      "std_average_computation_delay": 0.08966697143164504,
+      "std_drop_ratio": 0.022506362605930495,
+      "total_tasks": 199930,
+      "warnings": [
+        "contract diagnostics: [{'parameter': 'timeout_slots', 'paper_value': 20, 'runtime_value': 10, 'unit': 'slots', 'conversion_formula': 'timeout_sec / delta_sec', 'severity': 'high'}, {'parameter': 'cloud_cpu_ghz', 'paper_value': 30.0, 'runtime_value': 3.0, 'unit': 'GHz', 'conversion_formula': 'direct', 'severity': 'high'}]",
+        "delayed_reward_contract_status=paper_replay_pairing_ready"
+      ]
+    },
+    {
+      "completed_tasks": 198592,
+      "dropped_tasks": 1328,
+      "episodes_completed": 200,
+      "episodes_requested": 200,
+      "mean_average_computation_delay": 4.694039027754922,
+      "mean_drop_ratio": 0.006580018005353483,
+      "pending_tasks": 10,
+      "policy_name": "MLEO",
+      "policy_readiness_status": "invalid_parameter_contract",
+      "regime_id": "drop_ratio",
+      "std_average_computation_delay": 0.19598187299944478,
+      "std_drop_ratio": 0.004755082554481806,
+      "total_tasks": 199930,
+      "warnings": [
+        "contract diagnostics: [{'parameter': 'timeout_slots', 'paper_value': 20, 'runtime_value': 10, 'unit': 'slots', 'conversion_formula': 'timeout_sec / delta_sec', 'severity': 'high'}, {'parameter': 'cloud_cpu_ghz', 'paper_value': 30.0, 'runtime_value': 3.0, 'unit': 'GHz', 'conversion_formula': 'direct', 'severity': 'high'}]",
+        "mleo_contract_status=paper_candidate_trace_ready",
+        "delayed_reward_contract_status=paper_replay_pairing_ready"
+      ]
+    }
+  ],
+  "validation_episode_count": 200
+}

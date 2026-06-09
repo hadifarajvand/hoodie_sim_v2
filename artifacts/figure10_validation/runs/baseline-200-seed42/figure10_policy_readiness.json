@@ -1,0 +1,59 @@
+{
+  "active_policy_set": [
+    "RO",
+    "FLC",
+    "VO",
+    "HO",
+    "BCO",
+    "MLEO"
+  ],
+  "baseline_missing_policies": [],
+  "baseline_policy_set": [
+    "RO",
+    "FLC",
+    "VO",
+    "HO",
+    "BCO",
+    "MLEO"
+  ],
+  "baseline_unexpected_policies": [],
+  "baseline_validation_ready": false,
+  "blocking_reasons": [
+    "missing_policies=['HOODIE']",
+    "non_hoodie_baselines_ready=false",
+    "mleo_contract_status_ready=false",
+    "hoodie_checkpoint_status=unavailable_not_trained"
+  ],
+  "delayed_reward_contract_status_seen": {
+    "paper_replay_pairing_ready": 12
+  },
+  "expected_policy_set": [
+    "HOODIE",
+    "RO",
+    "FLC",
+    "VO",
+    "HO",
+    "BCO",
+    "MLEO"
+  ],
+  "figure10_data_ready": false,
+  "hoodie_checkpoint_status": "unavailable_not_trained",
+  "missing_policies": [
+    "HOODIE"
+  ],
+  "mleo_contract_status_seen": {
+    "paper_candidate_trace_ready": 2,
+    "present_but_invalid": 10
+  },
+  "mleo_required": true,
+  "policy_class_map": {
+    "BCO": "BalancedCyclicOffloader",
+    "FLC": "AllLocal",
+    "HO": "AllHorizontal",
+    "MLEO": "MinimumLatencyEstimationOffloader",
+    "RO": "Random",
+    "VO": "AllVertical"
+  },
+  "unexpected_policies": [],
+  "validation_episode_count": 200
+}

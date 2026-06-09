@@ -1,0 +1,63 @@
+{
+  "baseline_validation_ready": false,
+  "blocking_reasons": [
+    "missing_policies=['HOODIE']",
+    "non_hoodie_baselines_ready=false",
+    "mleo_contract_status_ready=false",
+    "hoodie_checkpoint_status=unavailable_not_trained"
+  ],
+  "diagnostic_only": true,
+  "figure10_data_ready": false,
+  "input_artifacts": {
+    "hyperparameters": "hyperparameters/hyperparameters.json",
+    "paper_contract": "config/paper_table4_contract.json"
+  },
+  "no_metric_rows_generated": false,
+  "output_dir": "artifacts/figure10_validation/runs/baseline-200-seed42",
+  "outputs": {
+    "config_snapshot": "artifacts/figure10_validation/runs/baseline-200-seed42/figure10_run_config_snapshot.json",
+    "manifest_json": "artifacts/figure10_validation/runs/baseline-200-seed42/figure10_validation_manifest.json",
+    "raw_csv": "artifacts/figure10_validation/runs/baseline-200-seed42/figure10_policy_metrics_raw.csv",
+    "readiness_json": "artifacts/figure10_validation/runs/baseline-200-seed42/figure10_policy_readiness.json",
+    "summary_json": "artifacts/figure10_validation/runs/baseline-200-seed42/figure10_policy_metrics_summary.json"
+  },
+  "paper_performance_claims_made": false,
+  "policies_evaluated": [
+    "RO",
+    "FLC",
+    "VO",
+    "HO",
+    "BCO",
+    "MLEO"
+  ],
+  "policies_skipped": [],
+  "run_id": "figure10-20260608T150047Z-seed42",
+  "warnings": [
+    "contract diagnostics: [{'parameter': 'timeout_slots', 'paper_value': 20, 'runtime_value': 10, 'unit': 'slots', 'conversion_formula': 'timeout_sec / delta_sec', 'severity': 'high'}, {'parameter': 'cloud_cpu_ghz', 'paper_value': 30.0, 'runtime_value': 3.0, 'unit': 'GHz', 'conversion_formula': 'direct', 'severity': 'high'}]",
+    "delayed_reward_contract_status=paper_replay_pairing_ready",
+    "contract diagnostics: [{'parameter': 'timeout_slots', 'paper_value': 20, 'runtime_value': 10, 'unit': 'slots', 'conversion_formula': 'timeout_sec / delta_sec', 'severity': 'high'}, {'parameter': 'cloud_cpu_ghz', 'paper_value': 30.0, 'runtime_value': 3.0, 'unit': 'GHz', 'conversion_formula': 'direct', 'severity': 'high'}]",
+    "delayed_reward_contract_status=paper_replay_pairing_ready",
+    "contract diagnostics: [{'parameter': 'timeout_slots', 'paper_value': 20, 'runtime_value': 10, 'unit': 'slots', 'conversion_formula': 'timeout_sec / delta_sec', 'severity': 'high'}, {'parameter': 'cloud_cpu_ghz', 'paper_value': 30.0, 'runtime_value': 3.0, 'unit': 'GHz', 'conversion_formula': 'direct', 'severity': 'high'}]",
+    "delayed_reward_contract_status=paper_replay_pairing_ready",
+    "contract diagnostics: [{'parameter': 'timeout_slots', 'paper_value': 20, 'runtime_value': 10, 'unit': 'slots', 'conversion_formula': 'timeout_sec / delta_sec', 'severity': 'high'}, {'parameter': 'cloud_cpu_ghz', 'paper_value': 30.0, 'runtime_value': 3.0, 'unit': 'GHz', 'conversion_formula': 'direct', 'severity': 'high'}]",
+    "delayed_reward_contract_status=paper_replay_pairing_ready",
+    "contract diagnostics: [{'parameter': 'timeout_slots', 'paper_value': 20, 'runtime_value': 10, 'unit': 'slots', 'conversion_formula': 'timeout_sec / delta_sec', 'severity': 'high'}, {'parameter': 'cloud_cpu_ghz', 'paper_value': 30.0, 'runtime_value': 3.0, 'unit': 'GHz', 'conversion_formula': 'direct', 'severity': 'high'}]",
+    "delayed_reward_contract_status=paper_replay_pairing_ready",
+    "contract diagnostics: [{'parameter': 'timeout_slots', 'paper_value': 20, 'runtime_value': 10, 'unit': 'slots', 'conversion_formula': 'timeout_sec / delta_sec', 'severity': 'high'}, {'parameter': 'cloud_cpu_ghz', 'paper_value': 30.0, 'runtime_value': 3.0, 'unit': 'GHz', 'conversion_formula': 'direct', 'severity': 'high'}]",
+    "mleo_contract_status=paper_candidate_trace_ready",
+    "delayed_reward_contract_status=paper_replay_pairing_ready",
+    "contract diagnostics: [{'parameter': 'timeout_slots', 'paper_value': 20, 'runtime_value': 10, 'unit': 'slots', 'conversion_formula': 'timeout_sec / delta_sec', 'severity': 'high'}, {'parameter': 'cloud_cpu_ghz', 'paper_value': 30.0, 'runtime_value': 3.0, 'unit': 'GHz', 'conversion_formula': 'direct', 'severity': 'high'}]",
+    "delayed_reward_contract_status=paper_replay_pairing_ready",
+    "contract diagnostics: [{'parameter': 'timeout_slots', 'paper_value': 20, 'runtime_value': 10, 'unit': 'slots', 'conversion_formula': 'timeout_sec / delta_sec', 'severity': 'high'}, {'parameter': 'cloud_cpu_ghz', 'paper_value': 30.0, 'runtime_value': 3.0, 'unit': 'GHz', 'conversion_formula': 'direct', 'severity': 'high'}]",
+    "delayed_reward_contract_status=paper_replay_pairing_ready",
+    "contract diagnostics: [{'parameter': 'timeout_slots', 'paper_value': 20, 'runtime_value': 10, 'unit': 'slots', 'conversion_formula': 'timeout_sec / delta_sec', 'severity': 'high'}, {'parameter': 'cloud_cpu_ghz', 'paper_value': 30.0, 'runtime_value': 3.0, 'unit': 'GHz', 'conversion_formula': 'direct', 'severity': 'high'}]",
+    "delayed_reward_contract_status=paper_replay_pairing_ready",
+    "contract diagnostics: [{'parameter': 'timeout_slots', 'paper_value': 20, 'runtime_value': 10, 'unit': 'slots', 'conversion_formula': 'timeout_sec / delta_sec', 'severity': 'high'}, {'parameter': 'cloud_cpu_ghz', 'paper_value': 30.0, 'runtime_value': 3.0, 'unit': 'GHz', 'conversion_formula': 'direct', 'severity': 'high'}]",
+    "delayed_reward_contract_status=paper_replay_pairing_ready",
+    "contract diagnostics: [{'parameter': 'timeout_slots', 'paper_value': 20, 'runtime_value': 10, 'unit': 'slots', 'conversion_formula': 'timeout_sec / delta_sec', 'severity': 'high'}, {'parameter': 'cloud_cpu_ghz', 'paper_value': 30.0, 'runtime_value': 3.0, 'unit': 'GHz', 'conversion_formula': 'direct', 'severity': 'high'}]",
+    "delayed_reward_contract_status=paper_replay_pairing_ready",
+    "contract diagnostics: [{'parameter': 'timeout_slots', 'paper_value': 20, 'runtime_value': 10, 'unit': 'slots', 'conversion_formula': 'timeout_sec / delta_sec', 'severity': 'high'}, {'parameter': 'cloud_cpu_ghz', 'paper_value': 30.0, 'runtime_value': 3.0, 'unit': 'GHz', 'conversion_formula': 'direct', 'severity': 'high'}]",
+    "mleo_contract_status=paper_candidate_trace_ready",
+    "delayed_reward_contract_status=paper_replay_pairing_ready"
+  ]
+}

@@ -1,0 +1,182 @@
+{
+  "baseline_validation_ready": false,
+  "figure10_data_ready": false,
+  "figure_claim": "not_full_official_figure10",
+  "hoodie_included": false,
+  "hoodie_reason": "trained HOODIE checkpoint unavailable",
+  "label": "baseline-validation-only",
+  "manifest_diagnostic_only": true,
+  "output_dir": "artifacts/figure10_validation/plots/baseline-200-seed42",
+  "output_files": {
+    "combined_png": "artifacts/figure10_validation/plots/baseline-200-seed42/figure10_baseline_combined.png",
+    "delay_png": "artifacts/figure10_validation/plots/baseline-200-seed42/figure10_baseline_delay.png",
+    "drop_ratio_png": "artifacts/figure10_validation/plots/baseline-200-seed42/figure10_baseline_drop_ratio.png",
+    "metadata_json": "artifacts/figure10_validation/plots/baseline-200-seed42/figure10_baseline_plot_metadata.json"
+  },
+  "paper_performance_claims_made": false,
+  "plot_scope": "baseline_validation_only",
+  "policies_plotted": [
+    "BCO",
+    "FLC",
+    "HO",
+    "MLEO",
+    "RO",
+    "VO"
+  ],
+  "readiness_snapshot": {
+    "active_policy_set": [
+      "RO",
+      "FLC",
+      "VO",
+      "HO",
+      "BCO",
+      "MLEO"
+    ],
+    "baseline_missing_policies": [],
+    "baseline_policy_set": [
+      "RO",
+      "FLC",
+      "VO",
+      "HO",
+      "BCO",
+      "MLEO"
+    ],
+    "baseline_unexpected_policies": [],
+    "baseline_validation_ready": false,
+    "blocking_reasons": [
+      "missing_policies=['HOODIE']",
+      "non_hoodie_baselines_ready=false",
+      "mleo_contract_status_ready=false",
+      "hoodie_checkpoint_status=unavailable_not_trained"
+    ],
+    "delayed_reward_contract_status_seen": {
+      "paper_replay_pairing_ready": 12
+    },
+    "expected_policy_set": [
+      "HOODIE",
+      "RO",
+      "FLC",
+      "VO",
+      "HO",
+      "BCO",
+      "MLEO"
+    ],
+    "figure10_data_ready": false,
+    "hoodie_checkpoint_status": "unavailable_not_trained",
+    "missing_policies": [
+      "HOODIE"
+    ],
+    "mleo_contract_status_seen": {
+      "paper_candidate_trace_ready": 2,
+      "present_but_invalid": 10
+    },
+    "mleo_required": true,
+    "policy_class_map": {
+      "BCO": "BalancedCyclicOffloader",
+      "FLC": "AllLocal",
+      "HO": "AllHorizontal",
+      "MLEO": "MinimumLatencyEstimationOffloader",
+      "RO": "Random",
+      "VO": "AllVertical"
+    },
+    "unexpected_policies": [],
+    "validation_episode_count": 200
+  },
+  "regimes_plotted": [
+    "delay",
+    "drop_ratio"
+  ],
+  "run_config_snapshot": {
+    "active_policy_set": [
+      "RO",
+      "FLC",
+      "VO",
+      "HO",
+      "BCO",
+      "MLEO"
+    ],
+    "baseline_validation_ready": false,
+    "blocking_reasons": [
+      "missing_policies=['HOODIE']",
+      "non_hoodie_baselines_ready=false",
+      "mleo_contract_status_ready=false",
+      "hoodie_checkpoint_status=unavailable_not_trained"
+    ],
+    "branch": "100-hoodie-paper-base",
+    "commit": "addc14e",
+    "config_file": null,
+    "episodes": 200,
+    "expected_policy_set": [
+      "HOODIE",
+      "RO",
+      "FLC",
+      "VO",
+      "HO",
+      "BCO",
+      "MLEO"
+    ],
+    "figure10_data_ready": false,
+    "hoodie_checkpoint_dir": null,
+    "hyperparameters_file": "hyperparameters/hyperparameters.json",
+    "no_metric_rows_generated": false,
+    "output_dir": "artifacts/figure10_validation/runs/baseline-200-seed42",
+    "paper_contract_file": "config/paper_table4_contract.json",
+    "policies": [
+      "RO",
+      "FLC",
+      "VO",
+      "HO",
+      "BCO",
+      "MLEO"
+    ],
+    "run_id": "figure10-20260608T150047Z-seed42",
+    "runtime_parameter_diagnostics": [
+      {
+        "conversion_formula": "timeout_sec / delta_sec",
+        "paper_value": 20,
+        "parameter": "timeout_slots",
+        "runtime_value": 10,
+        "severity": "high",
+        "unit": "slots"
+      },
+      {
+        "conversion_formula": "direct",
+        "paper_value": 30.0,
+        "parameter": "cloud_cpu_ghz",
+        "runtime_value": 3.0,
+        "severity": "high",
+        "unit": "GHz"
+      }
+    ],
+    "seed": 42,
+    "test_mode": false,
+    "timestamp": "2026-06-08T15:00:47.341327+00:00"
+  },
+  "runtime_parameter_diagnostics": [
+    {
+      "conversion_formula": "timeout_sec / delta_sec",
+      "paper_value": 20,
+      "parameter": "timeout_slots",
+      "runtime_value": 10,
+      "severity": "high",
+      "unit": "slots"
+    },
+    {
+      "conversion_formula": "direct",
+      "paper_value": 30.0,
+      "parameter": "cloud_cpu_ghz",
+      "runtime_value": 3.0,
+      "severity": "high",
+      "unit": "GHz"
+    }
+  ],
+  "simulation_rerun": false,
+  "source_files": {
+    "manifest_json": "artifacts/figure10_validation/runs/baseline-200-seed42/figure10_validation_manifest.json",
+    "readiness_json": "artifacts/figure10_validation/runs/baseline-200-seed42/figure10_policy_readiness.json",
+    "run_config_snapshot": "artifacts/figure10_validation/runs/baseline-200-seed42/figure10_run_config_snapshot.json",
+    "summary_json": "artifacts/figure10_validation/runs/baseline-200-seed42/figure10_policy_metrics_summary.json"
+  },
+  "source_input_dir": "artifacts/figure10_validation/runs/baseline-200-seed42",
+  "warning": "Runtime parameter diagnostics exist; this plot must not be presented as paper-faithful final reproduction."
+}
