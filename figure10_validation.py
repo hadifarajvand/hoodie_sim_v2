@@ -58,6 +58,7 @@ class Figure10ValidationConfig:
     timestamp: str
     branch: str | None
     commit: str | None
+    trace_level: str = "full"
 
 
 def _safe_float(value: Any) -> float | None:
@@ -317,13 +318,14 @@ def _build_notes_json(
     )
 
 
-def _prepare_runtime_hyperparameters(base_hyperparameters: dict[str, Any], policy_name: str, *, regime_id: str, contract: dict[str, Any], validation_episodes: int, test_mode: bool) -> dict[str, Any]:
+def _prepare_runtime_hyperparameters(base_hyperparameters: dict[str, Any], policy_name: str, *, regime_id: str, contract: dict[str, Any], validation_episodes: int, test_mode: bool, trace_level: str) -> dict[str, Any]:
     runtime = json.loads(json.dumps(base_hyperparameters))
     runtime["decision_makers"] = policy_name
     runtime["episodes"] = validation_episodes
     runtime["validate"] = True
     runtime["validation_regime_id"] = regime_id
     runtime["paper_contract_source"] = contract.get("source")
+    runtime["trace_level"] = trace_level
     if test_mode:
         runtime["validation_test_mode"] = True
     return runtime
@@ -345,6 +347,7 @@ def _run_main_for_policy(run_dir: Path, runtime_hyperparameters: dict[str, Any],
             "epochs": episodes,
             "validate": True,
             "episode_log_interval": 10,
+            "trace_level": runtime_hyperparameters.get("trace_level", "full"),
         },
     )
     cmd = [str(PYTHON), "main.py", "--config", str(config_path), "--epochs", str(episodes), "--seed", str(seed)]
@@ -538,6 +541,7 @@ def assess_figure10_readiness(summary: dict[str, Any]) -> dict[str, Any]:
     delayed_reward_contract_status_seen = summary.get("delayed_reward_contract_status_seen", {})
     validation_episode_count = summary.get("validation_episode_count")
     strict_paper_contract = summary.get("strict_paper_contract", False)
+    trace_level = summary.get("trace_level", "full")
     mleo_contract_status_ready = bool(summary.get("mleo_policy_seen", False)) and mleo_contract_status_seen.get("paper_candidate_trace_ready", 0) > 0
     delayed_reward_contract_status_ready = delayed_reward_contract_status_seen.get("paper_replay_pairing_ready", 0) > 0
     paper_contract_diagnostics = summary.get("paper_contract_diagnostics", [])
@@ -547,8 +551,8 @@ def assess_figure10_readiness(summary: dict[str, Any]) -> dict[str, Any]:
         not baseline_missing_policies
         and not baseline_unexpected_policies
         and summary.get("non_hoodie_baselines_ready", False)
-        and mleo_contract_status_ready
-        and delayed_reward_contract_status_ready
+        and (trace_level == "summary" or mleo_contract_status_ready)
+        and (trace_level == "summary" or delayed_reward_contract_status_ready)
         and (summary.get("validation_episode_count") == 200 or summary.get("test_mode", False))
         and summary.get("paper_performance_claims_made", False) is False
         and not summary.get("no_metric_rows_generated", False)
@@ -568,9 +572,9 @@ def assess_figure10_readiness(summary: dict[str, Any]) -> dict[str, Any]:
         baseline_blocking_reasons.append(f"baseline_unexpected_policies={baseline_unexpected_policies}")
     if not summary.get("non_hoodie_baselines_ready", False):
         baseline_blocking_reasons.append("non_hoodie_baselines_ready=false")
-    if not mleo_contract_status_ready:
+    if trace_level != "summary" and not mleo_contract_status_ready:
         baseline_blocking_reasons.append("mleo_contract_status_ready=false")
-    if not delayed_reward_contract_status_ready:
+    if trace_level != "summary" and not delayed_reward_contract_status_ready:
         baseline_blocking_reasons.append("delayed_reward_contract_status_ready=false")
     if summary.get("no_metric_rows_generated", False):
         baseline_blocking_reasons.append("no_metric_rows_generated")
@@ -715,6 +719,7 @@ def run_figure10_validation(config: Figure10ValidationConfig) -> dict[str, Any]:
                 contract=contract,
                 validation_episodes=config.episodes,
                 test_mode=config.test_mode,
+                trace_level=config.trace_level,
             )
             runtime_hp["decision_makers"] = policy_name
             runtime_hp_path = regime_run_dir / "hyperparameters.json"
@@ -801,9 +806,9 @@ def run_figure10_validation(config: Figure10ValidationConfig) -> dict[str, Any]:
             _log(f"  - regime={regime_id} policy={policy_name}: reading trace report")
             report = build_validation_report(trace_dir)
             policy_run_status = "ready"
-            if policy_name == "MLEO" and report.get("mleo_contract_status") != "paper_candidate_trace_ready":
+            if config.trace_level != "summary" and policy_name == "MLEO" and report.get("mleo_contract_status") != "paper_candidate_trace_ready":
                 policy_run_status = "invalid_mleo_trace"
-            if report.get("delayed_reward_contract_status") != "paper_replay_pairing_ready":
+            if config.trace_level != "summary" and report.get("delayed_reward_contract_status") != "paper_replay_pairing_ready":
                 policy_run_status = "invalid_delayed_reward_trace"
             if runtime_diagnostics and config.strict_paper_contract:
                 policy_run_status = "invalid_parameter_contract"
@@ -917,6 +922,7 @@ def run_figure10_validation(config: Figure10ValidationConfig) -> dict[str, Any]:
         "no_metric_rows_generated": not raw_rows,
         "strict_paper_contract": config.strict_paper_contract,
         "paper_contract_diagnostics": runtime_diagnostics,
+        "trace_level": config.trace_level,
     }
     readiness = assess_figure10_readiness(readiness_input)
 
@@ -1037,6 +1043,7 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument("--test-mode", action="store_true")
     parser.add_argument("--strict-paper-contract", action="store_true")
     parser.add_argument("--strict-readiness", action="store_true")
+    parser.add_argument("--trace-level", default="full", choices=("full", "summary"))
     parser.add_argument("--seed", type=int, default=42)
     parser.add_argument("--run-id", default=None)
     args = parser.parse_args(argv)
@@ -1055,6 +1062,7 @@ def main(argv: list[str] | None = None) -> int:
         hoodie_checkpoint_dir=str(config_overrides.get("hoodie_checkpoint_dir", args.hoodie_checkpoint_dir)) if config_overrides.get("hoodie_checkpoint_dir", args.hoodie_checkpoint_dir) else None,
         test_mode=bool(config_overrides.get("test_mode", args.test_mode)),
         strict_paper_contract=bool(config_overrides.get("strict_paper_contract", args.strict_paper_contract)),
+        trace_level=str(config_overrides.get("trace_level", args.trace_level)),
         run_id=run_id,
         timestamp=datetime.now(timezone.utc).isoformat(),
         branch=_detect_branch(),

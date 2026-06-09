@@ -1,0 +1,16 @@
+{
+  "baseline_only": true,
+  "hoodie_included": false,
+  "figure_claim": "not_full_official_figure10",
+  "simulation_run_by_phase": false,
+  "long_sweeps_run_by_codex": false,
+  "trace_level": "summary",
+  "sweep_groups": [
+    "task_arrival_probability",
+    "private_cpu_ghz",
+    "timeout_slots"
+  ],
+  "output_root": "artifacts/figure10_validation/sweeps/baseline-only/",
+  "config_root": "artifacts/figure10_validation/sweep_configs/baseline-only/",
+  "warning": "This phase only prepares baseline-only sweep commands and small configs; it does not run simulation."
+}

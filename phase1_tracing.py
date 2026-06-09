@@ -178,7 +178,8 @@ class MleoCandidateLatencyRecord:
 
 
 class TraceRecorder:
-    def __init__(self) -> None:
+    def __init__(self, trace_level: str = "full") -> None:
+        self.trace_level = trace_level
         self.task_records: dict[int, TaskLifecycleRecord] = {}
         self.queue_traces: list[QueueTraceRecord] = []
         self.action_traces: list[ActionTraceRecord] = []
@@ -462,27 +463,28 @@ class TraceRecorder:
         approximation_warnings: list[str],
         state_vector: Any,
     ) -> None:
-        self.paper_state_traces.append(
-            PaperStateTraceRecord(
-                episode_id=episode_id,
-                time=time,
-                agent_id=agent_id,
-                task_id=task_id,
-                eta_n=None if eta_n is None else float(eta_n),
-                w_priv_n=None if w_priv_n is None else float(w_priv_n),
-                w_off_n=None if w_off_n is None else float(w_off_n),
-                l_pub_n_prev_json=json.dumps(np.asarray(l_pub_n_prev).tolist()),
-                active_load_vector_json=json.dumps(np.asarray(active_load_vector).tolist()),
-                L_t_json=json.dumps(np.asarray(load_history).tolist()),
-                predicted_next_load_json=None if predicted_next_load is None else json.dumps(np.asarray(predicted_next_load).tolist()),
-                predicted_next_load_method=predicted_next_load_method,
-                paper_lstm_forecast=bool(paper_lstm_forecast),
-                unavailable_fields_json=json.dumps(list(unavailable_fields)),
-                approximation_warnings_json=json.dumps(list(approximation_warnings)),
-                state_vector_json=json.dumps(np.asarray(state_vector).tolist()),
-                state_dim=int(np.asarray(state_vector).reshape(-1).shape[0]),
+        if self.trace_level != "summary":
+            self.paper_state_traces.append(
+                PaperStateTraceRecord(
+                    episode_id=episode_id,
+                    time=time,
+                    agent_id=agent_id,
+                    task_id=task_id,
+                    eta_n=None if eta_n is None else float(eta_n),
+                    w_priv_n=None if w_priv_n is None else float(w_priv_n),
+                    w_off_n=None if w_off_n is None else float(w_off_n),
+                    l_pub_n_prev_json=json.dumps(np.asarray(l_pub_n_prev).tolist()),
+                    active_load_vector_json=json.dumps(np.asarray(active_load_vector).tolist()),
+                    L_t_json=json.dumps(np.asarray(load_history).tolist()),
+                    predicted_next_load_json=None if predicted_next_load is None else json.dumps(np.asarray(predicted_next_load).tolist()),
+                    predicted_next_load_method=predicted_next_load_method,
+                    paper_lstm_forecast=bool(paper_lstm_forecast),
+                    unavailable_fields_json=json.dumps(list(unavailable_fields)),
+                    approximation_warnings_json=json.dumps(list(approximation_warnings)),
+                    state_vector_json=json.dumps(np.asarray(state_vector).tolist()),
+                    state_dim=int(np.asarray(state_vector).reshape(-1).shape[0]),
+                )
             )
-        )
 
     def note_mleo_candidate_latency(
         self,
@@ -518,41 +520,42 @@ class TraceRecorder:
         unavailable_fields: list[str],
         approximation_warnings: list[str],
     ) -> None:
-        self.mleo_candidate_latency_traces.append(
-            MleoCandidateLatencyRecord(
-                episode_id=episode_id,
-                time=time,
-                task_id=task_id,
-                source_agent=source_agent,
-                raw_action_id=raw_action_id,
-                first_stage_decision=first_stage_decision,
-                destination_type=destination_type,
-                destination_node_id=destination_node_id,
-                is_legal_candidate=bool(is_legal_candidate),
-                is_selected=bool(is_selected),
-                input_data_size=float(input_data_size),
-                remaining_size=float(remaining_size),
-                processing_density=float(processing_density),
-                required_cpu_cycles=float(required_cpu_cycles),
-                arrival_time=int(arrival_time),
-                absolute_deadline=int(absolute_deadline),
-                timeout=int(timeout),
-                private_wait_estimate=private_wait_estimate,
-                private_service_estimate=private_service_estimate,
-                offloading_wait_estimate=offloading_wait_estimate,
-                transmission_estimate=transmission_estimate,
-                public_wait_estimate=public_wait_estimate,
-                public_service_estimate=public_service_estimate,
-                cloud_wait_estimate=cloud_wait_estimate,
-                cloud_service_estimate=cloud_service_estimate,
-                total_estimated_latency=total_estimated_latency,
-                deadline_slack_estimate=deadline_slack_estimate,
-                estimated_deadline_violation=estimated_deadline_violation,
-                estimator_version=estimator_version,
-                unavailable_fields_json=json.dumps(list(unavailable_fields)),
-                approximation_warnings_json=json.dumps(list(approximation_warnings)),
+        if self.trace_level != "summary":
+            self.mleo_candidate_latency_traces.append(
+                MleoCandidateLatencyRecord(
+                    episode_id=episode_id,
+                    time=time,
+                    task_id=task_id,
+                    source_agent=source_agent,
+                    raw_action_id=raw_action_id,
+                    first_stage_decision=first_stage_decision,
+                    destination_type=destination_type,
+                    destination_node_id=destination_node_id,
+                    is_legal_candidate=bool(is_legal_candidate),
+                    is_selected=bool(is_selected),
+                    input_data_size=float(input_data_size),
+                    remaining_size=float(remaining_size),
+                    processing_density=float(processing_density),
+                    required_cpu_cycles=float(required_cpu_cycles),
+                    arrival_time=int(arrival_time),
+                    absolute_deadline=int(absolute_deadline),
+                    timeout=int(timeout),
+                    private_wait_estimate=private_wait_estimate,
+                    private_service_estimate=private_service_estimate,
+                    offloading_wait_estimate=offloading_wait_estimate,
+                    transmission_estimate=transmission_estimate,
+                    public_wait_estimate=public_wait_estimate,
+                    public_service_estimate=public_service_estimate,
+                    cloud_wait_estimate=cloud_wait_estimate,
+                    cloud_service_estimate=cloud_service_estimate,
+                    total_estimated_latency=total_estimated_latency,
+                    deadline_slack_estimate=deadline_slack_estimate,
+                    estimated_deadline_violation=estimated_deadline_violation,
+                    estimator_version=estimator_version,
+                    unavailable_fields_json=json.dumps(list(unavailable_fields)),
+                    approximation_warnings_json=json.dumps(list(approximation_warnings)),
+                )
             )
-        )
 
     def note_queue_trace(
         self,
@@ -566,19 +569,20 @@ class TraceRecorder:
         drops: int = 0,
         cpu_allocated: float | None = None,
     ) -> None:
-        self.queue_traces.append(
-            QueueTraceRecord(
-                episode_id=episode_id,
-                time=time,
-                node_id=node_id,
-                queue_type=queue_type,
-                queue_length=float(queue_length),
-                arrivals=int(arrivals),
-                departures=int(departures),
-                drops=int(drops),
-                cpu_allocated=None if cpu_allocated is None else float(cpu_allocated),
+        if self.trace_level != "summary":
+            self.queue_traces.append(
+                QueueTraceRecord(
+                    episode_id=episode_id,
+                    time=time,
+                    node_id=node_id,
+                    queue_type=queue_type,
+                    queue_length=float(queue_length),
+                    arrivals=int(arrivals),
+                    departures=int(departures),
+                    drops=int(drops),
+                    cpu_allocated=None if cpu_allocated is None else float(cpu_allocated),
+                )
             )
-        )
         self._queue_length_history[episode_id].append(float(queue_length))
 
     def finalize_episode(self, episode_id: int, total_reward: float, mean_reward: float) -> EpisodeMetricRecord:
@@ -614,12 +618,14 @@ class TraceRecorder:
         output_dir = Path(output_dir)
         output_dir.mkdir(parents=True, exist_ok=True)
         self._write_csv(output_dir / "task_lifecycle.csv", [asdict(r) for r in self.task_records.values()])
-        self._write_csv(output_dir / "queue_trace.csv", [asdict(r) for r in self.queue_traces])
+        if self.trace_level != "summary":
+            self._write_csv(output_dir / "queue_trace.csv", [asdict(r) for r in self.queue_traces])
         self._write_csv(output_dir / "action_trace.csv", [asdict(r) for r in self.action_traces])
         self._write_csv(output_dir / "pending_transition_trace.csv", [asdict(r) for r in self.pending_transition_traces])
         self._write_csv(output_dir / "delayed_reward_event_trace.csv", [asdict(r) for r in self.delayed_reward_event_traces])
-        self._write_csv(output_dir / "mleo_candidate_latency_trace.csv", [asdict(r) for r in self.mleo_candidate_latency_traces])
-        self._write_csv(output_dir / "paper_state_trace.csv", [asdict(r) for r in self.paper_state_traces])
+        if self.trace_level != "summary":
+            self._write_csv(output_dir / "mleo_candidate_latency_trace.csv", [asdict(r) for r in self.mleo_candidate_latency_traces])
+            self._write_csv(output_dir / "paper_state_trace.csv", [asdict(r) for r in self.paper_state_traces])
         self._write_csv(output_dir / "episode_metrics.csv", [asdict(r) for r in self.episode_metrics])
 
     def _write_csv(self, path: Path, rows: list[dict[str, Any]]) -> None:

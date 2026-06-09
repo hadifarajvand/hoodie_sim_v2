@@ -28,6 +28,13 @@ def load_trace_csv(path: str | Path) -> list[dict[str, str]]:
         return list(csv.DictReader(f))
 
 
+def _load_optional_trace_csv(path: str | Path) -> list[dict[str, str]]:
+    path = Path(path)
+    if not path.exists():
+        return []
+    return load_trace_csv(path)
+
+
 def _as_int(value: str | None) -> int | None:
     if value in (None, "", "None"):
         return None
@@ -79,7 +86,7 @@ def build_policy_map() -> dict[str, str]:
 def build_validation_report(trace_dir: str | Path) -> dict[str, Any]:
     trace_dir = Path(trace_dir)
     lifecycle_rows = load_trace_csv(trace_dir / "task_lifecycle.csv")
-    queue_rows = load_trace_csv(trace_dir / "queue_trace.csv")
+    queue_rows = _load_optional_trace_csv(trace_dir / "queue_trace.csv")
     action_rows = load_trace_csv(trace_dir / "action_trace.csv")
     episode_rows = load_trace_csv(trace_dir / "episode_metrics.csv")
     pending_trace_path = trace_dir / "pending_transition_trace.csv"

@@ -11,5 +11,15 @@ artifacts/**/logs/*.pth
 artifacts/**/logs/*.pt
 artifacts/**/logs/*.pkl
 artifacts/**/logs/*.pickle
+artifacts/figure10_validation/runs/*/runs/
 artifacts/figure10_validation/runs/
 artifacts/figure10_validation/plots/
+artifacts/figure10_validation/sweeps/
+artifacts/figure10_validation/sweep_configs/
+paper_state_trace.csv
+queue_trace.csv
+mleo_candidate_latency_trace.csv
+*.pth
+*.pt
+*.pkl
+*.pickle

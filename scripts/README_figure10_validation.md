@@ -102,3 +102,23 @@ No simulation is rerun to generate it.
 The plot is derived from existing machine-readable validation outputs.
 
 Do not commit the generated PNG/SVG/PDF files or the generated plot metadata under `artifacts/figure10_validation/plots/`.
+
+## Baseline-only Figure 10 sweep preparation
+
+This prepares commands and small config files for manual baseline-only sweeps without running any simulation.
+
+```bash
+./.venvmac/bin/python scripts/prepare_figure10_baseline_sweeps.py
+```
+
+It prints manual commands for:
+- task arrival probability sweep
+- private/local CPU capacity sweep
+- timeout/deadline sweep
+
+All sweep commands are baseline-only and exclude `HOODIE`.
+The generated sweep configs set `trace_level: summary` so large traces stay disabled for sweep metric aggregation.
+These sweeps are diagnostic/baseline-review only and are not the full official HOODIE Figure 10 reproduction.
+
+Generated sweep configs live under `artifacts/figure10_validation/sweep_configs/baseline-only/`.
+Generated sweep outputs should live under `artifacts/figure10_validation/sweeps/baseline-only/` and remain ignored by git.

@@ -98,6 +98,7 @@ def main():
     parser.add_argument('--validate', type=bool, default=False, help='Device to use')
     parser.add_argument('--trace_output_dir', type=str, default='outputs/phase1_traces', help='Path to trace output directory')
     parser.add_argument('--seed', type=int, default=None, help='Optional random seed for reproducible validation runs')
+    parser.add_argument('--trace_level', type=str, default='full', choices=('full', 'summary'), help='Trace emission level')
     args  = parser.parse_args()
 
     config = _load_config(args.config)
@@ -113,6 +114,8 @@ def main():
             args.hyperparameters_file = str(config["hyperparameters_file"])
         if "trace_output_dir" in config:
             args.trace_output_dir = str(config["trace_output_dir"])
+        if "trace_level" in config:
+            args.trace_level = str(config["trace_level"])
         if "seed" in config and args.seed is None:
             args.seed = _maybe_int(config["seed"], args.seed)
         step_log_interval = _maybe_int(config.get("step_log_interval", 10), 10)
@@ -128,7 +131,7 @@ def main():
         # but seeding here makes the surrounding validation run reproducible.
 
     os.makedirs(args.log_folder, exist_ok=True)
-    trace_recorder = TraceRecorder()
+    trace_recorder = TraceRecorder(trace_level=args.trace_level)
     with open(args.hyperparameters_file) as f:
         hyperparameters = json.load(f)
             
