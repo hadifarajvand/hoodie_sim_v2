@@ -1,0 +1,85 @@
+{
+  "active_policy_set": [
+    "RO",
+    "FLC",
+    "VO",
+    "HO",
+    "BCO",
+    "MLEO"
+  ],
+  "baseline_blocking_reasons": [
+    "validation_episode_count=10"
+  ],
+  "baseline_missing_policies": [],
+  "baseline_policy_set": [
+    "RO",
+    "FLC",
+    "VO",
+    "HO",
+    "BCO",
+    "MLEO"
+  ],
+  "baseline_unexpected_policies": [],
+  "baseline_validation_ready": false,
+  "blocking_reasons": [
+    "missing_policies=['HOODIE']",
+    "hoodie_checkpoint_status=unavailable_not_trained",
+    "validation_episode_count=10",
+    "validation_episode_count=10"
+  ],
+  "delayed_reward_contract_status_seen": {
+    "paper_replay_pairing_ready": 12
+  },
+  "expected_policy_set": [
+    "HOODIE",
+    "RO",
+    "FLC",
+    "VO",
+    "HO",
+    "BCO",
+    "MLEO"
+  ],
+  "figure10_blocking_reasons": [
+    "missing_policies=['HOODIE']",
+    "hoodie_checkpoint_status=unavailable_not_trained",
+    "validation_episode_count=10",
+    "validation_episode_count=10"
+  ],
+  "figure10_data_ready": false,
+  "hoodie_checkpoint_status": "unavailable_not_trained",
+  "missing_policies": [
+    "HOODIE"
+  ],
+  "mleo_contract_status_seen": {
+    "missing": 2
+  },
+  "mleo_required": true,
+  "paper_contract_diagnostics": [
+    {
+      "conversion_formula": "timeout_sec / delta_sec",
+      "paper_value": 20,
+      "parameter": "timeout_slots",
+      "runtime_value": 10,
+      "severity": "high",
+      "unit": "slots"
+    },
+    {
+      "conversion_formula": "direct",
+      "paper_value": 30.0,
+      "parameter": "cloud_cpu_ghz",
+      "runtime_value": 3.0,
+      "severity": "high",
+      "unit": "GHz"
+    }
+  ],
+  "policy_class_map": {
+    "BCO": "BalancedCyclicOffloader",
+    "FLC": "AllLocal",
+    "HO": "AllHorizontal",
+    "MLEO": "MinimumLatencyEstimationOffloader",
+    "RO": "Random",
+    "VO": "AllVertical"
+  },
+  "unexpected_policies": [],
+  "validation_episode_count": 10
+}

@@ -1,0 +1,10 @@
+output_dir: "/Users/hadi/Documents/GitHub/hoodie_sim_v2/artifacts/figure10_validation/sweeps/smoke/task_arrival_probability/0.5"
+hyperparameters_file: "/Users/hadi/Documents/GitHub/hoodie_sim_v2/artifacts/figure10_validation/sweep_configs/smoke/task_arrival_probability/0.5/hyperparameters.json"
+paper_contract: "config/paper_table4_contract.json"
+episodes: 10
+policies: "RO,FLC,VO,HO,BCO,MLEO"
+seed: 42
+trace_level: "summary"
+test_mode: false
+strict_paper_contract: false
+strict_readiness: false

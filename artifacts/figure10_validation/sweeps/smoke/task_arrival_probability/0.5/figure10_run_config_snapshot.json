@@ -1,0 +1,67 @@
+{
+  "active_policy_set": [
+    "RO",
+    "FLC",
+    "VO",
+    "HO",
+    "BCO",
+    "MLEO"
+  ],
+  "baseline_validation_ready": false,
+  "blocking_reasons": [
+    "missing_policies=['HOODIE']",
+    "hoodie_checkpoint_status=unavailable_not_trained",
+    "validation_episode_count=10",
+    "validation_episode_count=10"
+  ],
+  "branch": "100-hoodie-paper-base",
+  "commit": "2f00eb4",
+  "config_file": "artifacts/figure10_validation/sweep_configs/smoke/task_arrival_probability/0.5/config.yml",
+  "episodes": 10,
+  "expected_policy_set": [
+    "HOODIE",
+    "RO",
+    "FLC",
+    "VO",
+    "HO",
+    "BCO",
+    "MLEO"
+  ],
+  "figure10_data_ready": false,
+  "hoodie_checkpoint_dir": null,
+  "hyperparameters_file": "/Users/hadi/Documents/GitHub/hoodie_sim_v2/artifacts/figure10_validation/sweep_configs/smoke/task_arrival_probability/0.5/hyperparameters.json",
+  "no_metric_rows_generated": false,
+  "output_dir": "/Users/hadi/Documents/GitHub/hoodie_sim_v2/artifacts/figure10_validation/sweeps/smoke/task_arrival_probability/0.5",
+  "paper_contract_file": "config/paper_table4_contract.json",
+  "policies": [
+    "RO",
+    "FLC",
+    "VO",
+    "HO",
+    "BCO",
+    "MLEO"
+  ],
+  "run_id": "figure10-20260609T131028Z-seed42",
+  "runtime_parameter_diagnostics": [
+    {
+      "conversion_formula": "timeout_sec / delta_sec",
+      "paper_value": 20,
+      "parameter": "timeout_slots",
+      "runtime_value": 10,
+      "severity": "high",
+      "unit": "slots"
+    },
+    {
+      "conversion_formula": "direct",
+      "paper_value": 30.0,
+      "parameter": "cloud_cpu_ghz",
+      "runtime_value": 3.0,
+      "severity": "high",
+      "unit": "GHz"
+    }
+  ],
+  "seed": 42,
+  "strict_paper_contract": false,
+  "test_mode": false,
+  "timestamp": "2026-06-09T13:10:28.822278+00:00"
+}
