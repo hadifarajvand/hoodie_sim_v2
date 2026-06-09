@@ -84,3 +84,21 @@ find artifacts/figure10_validation/runs -type f \( -name "*.png" -o -name "*.pdf
 - plot files
 - `.DS_Store`
 
+## Baseline-only Figure 10 plotting
+
+Use the existing baseline validation output directory to generate diagnostic plots without rerunning simulation.
+
+```bash
+./.venvmac/bin/python scripts/plot_figure10_from_validation.py \
+  --input-dir artifacts/figure10_validation/runs/baseline-200-seed42 \
+  --output-dir artifacts/figure10_validation/plots/baseline-200-seed42 \
+  --label baseline-validation-only
+```
+
+This plot is generated from the baseline validation run only. It is not the full official HOODIE Figure 10 reproduction because HOODIE is unavailable/not trained in this run.
+
+The plot compares only baseline policies: `RO`, `FLC`, `VO`, `HO`, `BCO`, `MLEO`.
+No simulation is rerun to generate it.
+The plot is derived from existing machine-readable validation outputs.
+
+Do not commit the generated PNG/SVG/PDF files or the generated plot metadata under `artifacts/figure10_validation/plots/`.

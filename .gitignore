@@ -12,3 +12,4 @@ artifacts/**/logs/*.pt
 artifacts/**/logs/*.pkl
 artifacts/**/logs/*.pickle
 artifacts/figure10_validation/runs/
+artifacts/figure10_validation/plots/

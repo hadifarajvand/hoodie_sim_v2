@@ -1,0 +1,11 @@
+{
+  "plot_scope": "baseline_validation_only",
+  "figure_claim": "not_full_official_figure10",
+  "hoodie_included": false,
+  "hoodie_reason": "trained HOODIE checkpoint unavailable",
+  "simulation_rerun": false,
+  "source_input_dir": "artifacts/figure10_validation/runs/baseline-200-seed42",
+  "policies_plotted": ["RO", "FLC", "VO", "HO", "BCO", "MLEO"],
+  "regimes_plotted": ["delay", "drop_ratio"],
+  "warning": "Runtime parameter diagnostics exist; this plot must not be presented as paper-faithful final reproduction."
+}
