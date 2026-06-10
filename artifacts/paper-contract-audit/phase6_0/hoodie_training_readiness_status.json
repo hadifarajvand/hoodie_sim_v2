@@ -1,0 +1,35 @@
+{
+  "phase": "6.0",
+  "scope": "hoodie_training_readiness_audit",
+  "simulation_rerun": false,
+  "training_run": false,
+  "checkpoint_created": false,
+  "official_figure_claims_made": false,
+  "overall_status": "partially_ready",
+  "overall_status": "blocked",
+  "figure8_status": "partially_ready",
+  "figure9_status": "blocked",
+  "figure10_official_status": "blocked",
+  "figure11_status": "blocked",
+  "training_entrypoint": "training/train_phase3.py",
+  "hoodie_policy_class": "decision_makers.agent.Agent",
+  "checkpoint_support": true,
+  "checkpoint_load_support": true,
+  "checkpoint_required_for_official_validation": true,
+  "lstm_support_detected": true,
+  "lstm_ablation_support_detected": true,
+  "reward_logging_support": true,
+  "action_distribution_logging_support": false,
+  "large_artifact_risk": "medium",
+  "blockers": [
+    "missing_trained_hoodie_checkpoint",
+    "checkpoint_format_mismatch_between_trainer_and_runtime",
+    "paper-faithful_LSTM_not_verified",
+    "missing_action_distribution_logging"
+  ],
+  "warnings": [
+    "training produces large artifacts; follow artifact hosting guidance",
+    "trainer JSON-style checkpoints are not a direct drop-in for Agent torch.load"
+  ],
+  "recommended_next_phase": "add checkpoint interoperability and action-distribution logging"
+}
