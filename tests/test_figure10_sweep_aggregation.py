@@ -60,6 +60,10 @@ def test_aggregator_creates_outputs(tmp_path):
     assert meta['simulation_rerun'] is False
     assert meta['paper_performance_claims_made'] is False
     assert 'HOODIE' not in meta['policies_plotted']
+    # row-level hoodie_included must be False for all aggregated baseline rows
+    summary = json.loads(Path(res['json']).read_text())
+    for r in summary.get('rows', []):
+        assert r.get('hoodie_included') is False
 
 
 def test_strict_fails_on_missing_value(tmp_path):

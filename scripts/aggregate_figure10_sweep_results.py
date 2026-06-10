@@ -108,7 +108,8 @@ def aggregate(input_root: Path, output_dir: Path, sweep_name: str, label: str, s
                     'pending_tasks': pending_tasks,
                     'baseline_validation_ready': readiness.get('baseline_validation_ready', False),
                     'figure10_data_ready': readiness.get('figure10_data_ready', False),
-                    'hoodie_included': 'HOODIE' in readiness.get('active_policy_set', []) or 'HOODIE' in readiness.get('missing_policies', []),
+                    # derive row-level hoodie inclusion only from the active policy set
+                    'hoodie_included': 'HOODIE' in readiness.get('active_policy_set', []),
                     'figure_claim': 'not_full_official_figure10',
                     'label': label,
                 }

@@ -17,7 +17,7 @@
       "pending_tasks": 2,
       "baseline_validation_ready": false,
       "figure10_data_ready": false,
-      "hoodie_included": true,
+      "hoodie_included": false,
       "figure_claim": "not_full_official_figure10",
       "label": "smoke-10ep-baseline-only"
     },
@@ -38,7 +38,7 @@
       "pending_tasks": 2,
       "baseline_validation_ready": false,
       "figure10_data_ready": false,
-      "hoodie_included": true,
+      "hoodie_included": false,
       "figure_claim": "not_full_official_figure10",
       "label": "smoke-10ep-baseline-only"
     },
@@ -59,7 +59,7 @@
       "pending_tasks": 2,
       "baseline_validation_ready": false,
       "figure10_data_ready": false,
-      "hoodie_included": true,
+      "hoodie_included": false,
       "figure_claim": "not_full_official_figure10",
       "label": "smoke-10ep-baseline-only"
     },
@@ -80,7 +80,7 @@
       "pending_tasks": 2,
       "baseline_validation_ready": false,
       "figure10_data_ready": false,
-      "hoodie_included": true,
+      "hoodie_included": false,
       "figure_claim": "not_full_official_figure10",
       "label": "smoke-10ep-baseline-only"
     },
@@ -101,7 +101,7 @@
       "pending_tasks": 2,
       "baseline_validation_ready": false,
       "figure10_data_ready": false,
-      "hoodie_included": true,
+      "hoodie_included": false,
       "figure_claim": "not_full_official_figure10",
       "label": "smoke-10ep-baseline-only"
     },
@@ -122,7 +122,7 @@
       "pending_tasks": 2,
       "baseline_validation_ready": false,
       "figure10_data_ready": false,
-      "hoodie_included": true,
+      "hoodie_included": false,
       "figure_claim": "not_full_official_figure10",
       "label": "smoke-10ep-baseline-only"
     },
@@ -143,7 +143,7 @@
       "pending_tasks": 2,
       "baseline_validation_ready": false,
       "figure10_data_ready": false,
-      "hoodie_included": true,
+      "hoodie_included": false,
       "figure_claim": "not_full_official_figure10",
       "label": "smoke-10ep-baseline-only"
     },
@@ -164,7 +164,7 @@
       "pending_tasks": 2,
       "baseline_validation_ready": false,
       "figure10_data_ready": false,
-      "hoodie_included": true,
+      "hoodie_included": false,
       "figure_claim": "not_full_official_figure10",
       "label": "smoke-10ep-baseline-only"
     },
@@ -185,7 +185,7 @@
       "pending_tasks": 2,
       "baseline_validation_ready": false,
       "figure10_data_ready": false,
-      "hoodie_included": true,
+      "hoodie_included": false,
       "figure_claim": "not_full_official_figure10",
       "label": "smoke-10ep-baseline-only"
     },
@@ -206,7 +206,7 @@
       "pending_tasks": 2,
       "baseline_validation_ready": false,
       "figure10_data_ready": false,
-      "hoodie_included": true,
+      "hoodie_included": false,
       "figure_claim": "not_full_official_figure10",
       "label": "smoke-10ep-baseline-only"
     },
@@ -227,7 +227,7 @@
       "pending_tasks": 2,
       "baseline_validation_ready": false,
       "figure10_data_ready": false,
-      "hoodie_included": true,
+      "hoodie_included": false,
       "figure_claim": "not_full_official_figure10",
       "label": "smoke-10ep-baseline-only"
     },
@@ -248,7 +248,7 @@
       "pending_tasks": 2,
       "baseline_validation_ready": false,
       "figure10_data_ready": false,
-      "hoodie_included": true,
+      "hoodie_included": false,
       "figure_claim": "not_full_official_figure10",
       "label": "smoke-10ep-baseline-only"
     },
@@ -269,7 +269,7 @@
       "pending_tasks": 5,
       "baseline_validation_ready": false,
       "figure10_data_ready": false,
-      "hoodie_included": true,
+      "hoodie_included": false,
       "figure_claim": "not_full_official_figure10",
       "label": "smoke-10ep-baseline-only"
     },
@@ -290,7 +290,7 @@
       "pending_tasks": 5,
       "baseline_validation_ready": false,
       "figure10_data_ready": false,
-      "hoodie_included": true,
+      "hoodie_included": false,
       "figure_claim": "not_full_official_figure10",
       "label": "smoke-10ep-baseline-only"
     },
@@ -311,7 +311,7 @@
       "pending_tasks": 5,
       "baseline_validation_ready": false,
       "figure10_data_ready": false,
-      "hoodie_included": true,
+      "hoodie_included": false,
       "figure_claim": "not_full_official_figure10",
       "label": "smoke-10ep-baseline-only"
     },
@@ -332,7 +332,7 @@
       "pending_tasks": 5,
       "baseline_validation_ready": false,
       "figure10_data_ready": false,
-      "hoodie_included": true,
+      "hoodie_included": false,
       "figure_claim": "not_full_official_figure10",
       "label": "smoke-10ep-baseline-only"
     },
@@ -353,7 +353,7 @@
       "pending_tasks": 5,
       "baseline_validation_ready": false,
       "figure10_data_ready": false,
-      "hoodie_included": true,
+      "hoodie_included": false,
       "figure_claim": "not_full_official_figure10",
       "label": "smoke-10ep-baseline-only"
     },
@@ -374,7 +374,7 @@
       "pending_tasks": 5,
       "baseline_validation_ready": false,
       "figure10_data_ready": false,
-      "hoodie_included": true,
+      "hoodie_included": false,
       "figure_claim": "not_full_official_figure10",
       "label": "smoke-10ep-baseline-only"
     },
@@ -395,7 +395,7 @@
       "pending_tasks": 5,
       "baseline_validation_ready": false,
       "figure10_data_ready": false,
-      "hoodie_included": true,
+      "hoodie_included": false,
       "figure_claim": "not_full_official_figure10",
       "label": "smoke-10ep-baseline-only"
     },
@@ -416,7 +416,7 @@
       "pending_tasks": 5,
       "baseline_validation_ready": false,
       "figure10_data_ready": false,
-      "hoodie_included": true,
+      "hoodie_included": false,
       "figure_claim": "not_full_official_figure10",
       "label": "smoke-10ep-baseline-only"
     },
@@ -437,7 +437,7 @@
       "pending_tasks": 5,
       "baseline_validation_ready": false,
       "figure10_data_ready": false,
-      "hoodie_included": true,
+      "hoodie_included": false,
       "figure_claim": "not_full_official_figure10",
       "label": "smoke-10ep-baseline-only"
     },
@@ -458,7 +458,7 @@
       "pending_tasks": 5,
       "baseline_validation_ready": false,
       "figure10_data_ready": false,
-      "hoodie_included": true,
+      "hoodie_included": false,
       "figure_claim": "not_full_official_figure10",
       "label": "smoke-10ep-baseline-only"
     },
@@ -479,7 +479,7 @@
       "pending_tasks": 5,
       "baseline_validation_ready": false,
       "figure10_data_ready": false,
-      "hoodie_included": true,
+      "hoodie_included": false,
       "figure_claim": "not_full_official_figure10",
       "label": "smoke-10ep-baseline-only"
     },
@@ -500,7 +500,7 @@
       "pending_tasks": 5,
       "baseline_validation_ready": false,
       "figure10_data_ready": false,
-      "hoodie_included": true,
+      "hoodie_included": false,
       "figure_claim": "not_full_official_figure10",
       "label": "smoke-10ep-baseline-only"
     },
@@ -521,7 +521,7 @@
       "pending_tasks": 8,
       "baseline_validation_ready": false,
       "figure10_data_ready": false,
-      "hoodie_included": true,
+      "hoodie_included": false,
       "figure_claim": "not_full_official_figure10",
       "label": "smoke-10ep-baseline-only"
     },
@@ -542,7 +542,7 @@
       "pending_tasks": 8,
       "baseline_validation_ready": false,
       "figure10_data_ready": false,
-      "hoodie_included": true,
+      "hoodie_included": false,
       "figure_claim": "not_full_official_figure10",
       "label": "smoke-10ep-baseline-only"
     },
@@ -563,7 +563,7 @@
       "pending_tasks": 8,
       "baseline_validation_ready": false,
       "figure10_data_ready": false,
-      "hoodie_included": true,
+      "hoodie_included": false,
       "figure_claim": "not_full_official_figure10",
       "label": "smoke-10ep-baseline-only"
     },
@@ -584,7 +584,7 @@
       "pending_tasks": 8,
       "baseline_validation_ready": false,
       "figure10_data_ready": false,
-      "hoodie_included": true,
+      "hoodie_included": false,
       "figure_claim": "not_full_official_figure10",
       "label": "smoke-10ep-baseline-only"
     },
@@ -605,7 +605,7 @@
       "pending_tasks": 8,
       "baseline_validation_ready": false,
       "figure10_data_ready": false,
-      "hoodie_included": true,
+      "hoodie_included": false,
       "figure_claim": "not_full_official_figure10",
       "label": "smoke-10ep-baseline-only"
     },
@@ -626,7 +626,7 @@
       "pending_tasks": 8,
       "baseline_validation_ready": false,
       "figure10_data_ready": false,
-      "hoodie_included": true,
+      "hoodie_included": false,
       "figure_claim": "not_full_official_figure10",
       "label": "smoke-10ep-baseline-only"
     },
@@ -647,7 +647,7 @@
       "pending_tasks": 8,
       "baseline_validation_ready": false,
       "figure10_data_ready": false,
-      "hoodie_included": true,
+      "hoodie_included": false,
       "figure_claim": "not_full_official_figure10",
       "label": "smoke-10ep-baseline-only"
     },
@@ -668,7 +668,7 @@
       "pending_tasks": 8,
       "baseline_validation_ready": false,
       "figure10_data_ready": false,
-      "hoodie_included": true,
+      "hoodie_included": false,
       "figure_claim": "not_full_official_figure10",
       "label": "smoke-10ep-baseline-only"
     },
@@ -689,7 +689,7 @@
       "pending_tasks": 8,
       "baseline_validation_ready": false,
       "figure10_data_ready": false,
-      "hoodie_included": true,
+      "hoodie_included": false,
       "figure_claim": "not_full_official_figure10",
       "label": "smoke-10ep-baseline-only"
     },
@@ -710,7 +710,7 @@
       "pending_tasks": 8,
       "baseline_validation_ready": false,
       "figure10_data_ready": false,
-      "hoodie_included": true,
+      "hoodie_included": false,
       "figure_claim": "not_full_official_figure10",
       "label": "smoke-10ep-baseline-only"
     },
@@ -731,7 +731,7 @@
       "pending_tasks": 8,
       "baseline_validation_ready": false,
       "figure10_data_ready": false,
-      "hoodie_included": true,
+      "hoodie_included": false,
       "figure_claim": "not_full_official_figure10",
       "label": "smoke-10ep-baseline-only"
     },
@@ -752,7 +752,7 @@
       "pending_tasks": 8,
       "baseline_validation_ready": false,
       "figure10_data_ready": false,
-      "hoodie_included": true,
+      "hoodie_included": false,
       "figure_claim": "not_full_official_figure10",
       "label": "smoke-10ep-baseline-only"
     },
@@ -773,7 +773,7 @@
       "pending_tasks": 10,
       "baseline_validation_ready": false,
       "figure10_data_ready": false,
-      "hoodie_included": true,
+      "hoodie_included": false,
       "figure_claim": "not_full_official_figure10",
       "label": "smoke-10ep-baseline-only"
     },
@@ -794,7 +794,7 @@
       "pending_tasks": 10,
       "baseline_validation_ready": false,
       "figure10_data_ready": false,
-      "hoodie_included": true,
+      "hoodie_included": false,
       "figure_claim": "not_full_official_figure10",
       "label": "smoke-10ep-baseline-only"
     },
@@ -815,7 +815,7 @@
       "pending_tasks": 10,
       "baseline_validation_ready": false,
       "figure10_data_ready": false,
-      "hoodie_included": true,
+      "hoodie_included": false,
       "figure_claim": "not_full_official_figure10",
       "label": "smoke-10ep-baseline-only"
     },
@@ -836,7 +836,7 @@
       "pending_tasks": 10,
       "baseline_validation_ready": false,
       "figure10_data_ready": false,
-      "hoodie_included": true,
+      "hoodie_included": false,
       "figure_claim": "not_full_official_figure10",
       "label": "smoke-10ep-baseline-only"
     },
@@ -857,7 +857,7 @@
       "pending_tasks": 10,
       "baseline_validation_ready": false,
       "figure10_data_ready": false,
-      "hoodie_included": true,
+      "hoodie_included": false,
       "figure_claim": "not_full_official_figure10",
       "label": "smoke-10ep-baseline-only"
     },
@@ -878,7 +878,7 @@
       "pending_tasks": 10,
       "baseline_validation_ready": false,
       "figure10_data_ready": false,
-      "hoodie_included": true,
+      "hoodie_included": false,
       "figure_claim": "not_full_official_figure10",
       "label": "smoke-10ep-baseline-only"
     },
@@ -899,7 +899,7 @@
       "pending_tasks": 10,
       "baseline_validation_ready": false,
       "figure10_data_ready": false,
-      "hoodie_included": true,
+      "hoodie_included": false,
       "figure_claim": "not_full_official_figure10",
       "label": "smoke-10ep-baseline-only"
     },
@@ -920,7 +920,7 @@
       "pending_tasks": 10,
       "baseline_validation_ready": false,
       "figure10_data_ready": false,
-      "hoodie_included": true,
+      "hoodie_included": false,
       "figure_claim": "not_full_official_figure10",
       "label": "smoke-10ep-baseline-only"
     },
@@ -941,7 +941,7 @@
       "pending_tasks": 10,
       "baseline_validation_ready": false,
       "figure10_data_ready": false,
-      "hoodie_included": true,
+      "hoodie_included": false,
       "figure_claim": "not_full_official_figure10",
       "label": "smoke-10ep-baseline-only"
     },
@@ -962,7 +962,7 @@
       "pending_tasks": 10,
       "baseline_validation_ready": false,
       "figure10_data_ready": false,
-      "hoodie_included": true,
+      "hoodie_included": false,
       "figure_claim": "not_full_official_figure10",
       "label": "smoke-10ep-baseline-only"
     },
@@ -983,7 +983,7 @@
       "pending_tasks": 10,
       "baseline_validation_ready": false,
       "figure10_data_ready": false,
-      "hoodie_included": true,
+      "hoodie_included": false,
       "figure_claim": "not_full_official_figure10",
       "label": "smoke-10ep-baseline-only"
     },
@@ -1004,7 +1004,7 @@
       "pending_tasks": 10,
       "baseline_validation_ready": false,
       "figure10_data_ready": false,
-      "hoodie_included": true,
+      "hoodie_included": false,
       "figure_claim": "not_full_official_figure10",
       "label": "smoke-10ep-baseline-only"
     },
@@ -1025,7 +1025,7 @@
       "pending_tasks": 10,
       "baseline_validation_ready": false,
       "figure10_data_ready": false,
-      "hoodie_included": true,
+      "hoodie_included": false,
       "figure_claim": "not_full_official_figure10",
       "label": "smoke-10ep-baseline-only"
     },
@@ -1046,7 +1046,7 @@
       "pending_tasks": 10,
       "baseline_validation_ready": false,
       "figure10_data_ready": false,
-      "hoodie_included": true,
+      "hoodie_included": false,
       "figure_claim": "not_full_official_figure10",
       "label": "smoke-10ep-baseline-only"
     },
@@ -1067,7 +1067,7 @@
       "pending_tasks": 10,
       "baseline_validation_ready": false,
       "figure10_data_ready": false,
-      "hoodie_included": true,
+      "hoodie_included": false,
       "figure_claim": "not_full_official_figure10",
       "label": "smoke-10ep-baseline-only"
     },
@@ -1088,7 +1088,7 @@
       "pending_tasks": 10,
       "baseline_validation_ready": false,
       "figure10_data_ready": false,
-      "hoodie_included": true,
+      "hoodie_included": false,
       "figure_claim": "not_full_official_figure10",
       "label": "smoke-10ep-baseline-only"
     },
@@ -1109,7 +1109,7 @@
       "pending_tasks": 10,
       "baseline_validation_ready": false,
       "figure10_data_ready": false,
-      "hoodie_included": true,
+      "hoodie_included": false,
       "figure_claim": "not_full_official_figure10",
       "label": "smoke-10ep-baseline-only"
     },
@@ -1130,7 +1130,7 @@
       "pending_tasks": 10,
       "baseline_validation_ready": false,
       "figure10_data_ready": false,
-      "hoodie_included": true,
+      "hoodie_included": false,
       "figure_claim": "not_full_official_figure10",
       "label": "smoke-10ep-baseline-only"
     },
@@ -1151,7 +1151,7 @@
       "pending_tasks": 10,
       "baseline_validation_ready": false,
       "figure10_data_ready": false,
-      "hoodie_included": true,
+      "hoodie_included": false,
       "figure_claim": "not_full_official_figure10",
       "label": "smoke-10ep-baseline-only"
     },
@@ -1172,7 +1172,7 @@
       "pending_tasks": 10,
       "baseline_validation_ready": false,
       "figure10_data_ready": false,
-      "hoodie_included": true,
+      "hoodie_included": false,
       "figure_claim": "not_full_official_figure10",
       "label": "smoke-10ep-baseline-only"
     },
@@ -1193,7 +1193,7 @@
       "pending_tasks": 10,
       "baseline_validation_ready": false,
       "figure10_data_ready": false,
-      "hoodie_included": true,
+      "hoodie_included": false,
       "figure_claim": "not_full_official_figure10",
       "label": "smoke-10ep-baseline-only"
     },
@@ -1214,7 +1214,7 @@
       "pending_tasks": 10,
       "baseline_validation_ready": false,
       "figure10_data_ready": false,
-      "hoodie_included": true,
+      "hoodie_included": false,
       "figure_claim": "not_full_official_figure10",
       "label": "smoke-10ep-baseline-only"
     },
@@ -1235,7 +1235,7 @@
       "pending_tasks": 10,
       "baseline_validation_ready": false,
       "figure10_data_ready": false,
-      "hoodie_included": true,
+      "hoodie_included": false,
       "figure_claim": "not_full_official_figure10",
       "label": "smoke-10ep-baseline-only"
     },
@@ -1256,7 +1256,7 @@
       "pending_tasks": 10,
       "baseline_validation_ready": false,
       "figure10_data_ready": false,
-      "hoodie_included": true,
+      "hoodie_included": false,
       "figure_claim": "not_full_official_figure10",
       "label": "smoke-10ep-baseline-only"
     },
@@ -1277,7 +1277,7 @@
       "pending_tasks": 12,
       "baseline_validation_ready": false,
       "figure10_data_ready": false,
-      "hoodie_included": true,
+      "hoodie_included": false,
       "figure_claim": "not_full_official_figure10",
       "label": "smoke-10ep-baseline-only"
     },
@@ -1298,7 +1298,7 @@
       "pending_tasks": 12,
       "baseline_validation_ready": false,
       "figure10_data_ready": false,
-      "hoodie_included": true,
+      "hoodie_included": false,
       "figure_claim": "not_full_official_figure10",
       "label": "smoke-10ep-baseline-only"
     },
@@ -1319,7 +1319,7 @@
       "pending_tasks": 12,
       "baseline_validation_ready": false,
       "figure10_data_ready": false,
-      "hoodie_included": true,
+      "hoodie_included": false,
       "figure_claim": "not_full_official_figure10",
       "label": "smoke-10ep-baseline-only"
     },
@@ -1340,7 +1340,7 @@
       "pending_tasks": 12,
       "baseline_validation_ready": false,
       "figure10_data_ready": false,
-      "hoodie_included": true,
+      "hoodie_included": false,
       "figure_claim": "not_full_official_figure10",
       "label": "smoke-10ep-baseline-only"
     },
@@ -1361,7 +1361,7 @@
       "pending_tasks": 12,
       "baseline_validation_ready": false,
       "figure10_data_ready": false,
-      "hoodie_included": true,
+      "hoodie_included": false,
       "figure_claim": "not_full_official_figure10",
       "label": "smoke-10ep-baseline-only"
     },
@@ -1382,7 +1382,7 @@
       "pending_tasks": 12,
       "baseline_validation_ready": false,
       "figure10_data_ready": false,
-      "hoodie_included": true,
+      "hoodie_included": false,
       "figure_claim": "not_full_official_figure10",
       "label": "smoke-10ep-baseline-only"
     },
@@ -1403,7 +1403,7 @@
       "pending_tasks": 12,
       "baseline_validation_ready": false,
       "figure10_data_ready": false,
-      "hoodie_included": true,
+      "hoodie_included": false,
       "figure_claim": "not_full_official_figure10",
       "label": "smoke-10ep-baseline-only"
     },
@@ -1424,7 +1424,7 @@
       "pending_tasks": 12,
       "baseline_validation_ready": false,
       "figure10_data_ready": false,
-      "hoodie_included": true,
+      "hoodie_included": false,
       "figure_claim": "not_full_official_figure10",
       "label": "smoke-10ep-baseline-only"
     },
@@ -1445,7 +1445,7 @@
       "pending_tasks": 12,
       "baseline_validation_ready": false,
       "figure10_data_ready": false,
-      "hoodie_included": true,
+      "hoodie_included": false,
       "figure_claim": "not_full_official_figure10",
       "label": "smoke-10ep-baseline-only"
     },
@@ -1466,7 +1466,7 @@
       "pending_tasks": 12,
       "baseline_validation_ready": false,
       "figure10_data_ready": false,
-      "hoodie_included": true,
+      "hoodie_included": false,
       "figure_claim": "not_full_official_figure10",
       "label": "smoke-10ep-baseline-only"
     },
@@ -1487,7 +1487,7 @@
       "pending_tasks": 12,
       "baseline_validation_ready": false,
       "figure10_data_ready": false,
-      "hoodie_included": true,
+      "hoodie_included": false,
       "figure_claim": "not_full_official_figure10",
       "label": "smoke-10ep-baseline-only"
     },
@@ -1508,7 +1508,7 @@
       "pending_tasks": 12,
       "baseline_validation_ready": false,
       "figure10_data_ready": false,
-      "hoodie_included": true,
+      "hoodie_included": false,
       "figure_claim": "not_full_official_figure10",
       "label": "smoke-10ep-baseline-only"
     },
@@ -1529,7 +1529,7 @@
       "pending_tasks": 14,
       "baseline_validation_ready": false,
       "figure10_data_ready": false,
-      "hoodie_included": true,
+      "hoodie_included": false,
       "figure_claim": "not_full_official_figure10",
       "label": "smoke-10ep-baseline-only"
     },
@@ -1550,7 +1550,7 @@
       "pending_tasks": 14,
       "baseline_validation_ready": false,
       "figure10_data_ready": false,
-      "hoodie_included": true,
+      "hoodie_included": false,
       "figure_claim": "not_full_official_figure10",
       "label": "smoke-10ep-baseline-only"
     },
@@ -1571,7 +1571,7 @@
       "pending_tasks": 14,
       "baseline_validation_ready": false,
       "figure10_data_ready": false,
-      "hoodie_included": true,
+      "hoodie_included": false,
       "figure_claim": "not_full_official_figure10",
       "label": "smoke-10ep-baseline-only"
     },
@@ -1592,7 +1592,7 @@
       "pending_tasks": 14,
       "baseline_validation_ready": false,
       "figure10_data_ready": false,
-      "hoodie_included": true,
+      "hoodie_included": false,
       "figure_claim": "not_full_official_figure10",
       "label": "smoke-10ep-baseline-only"
     },
@@ -1613,7 +1613,7 @@
       "pending_tasks": 14,
       "baseline_validation_ready": false,
       "figure10_data_ready": false,
-      "hoodie_included": true,
+      "hoodie_included": false,
       "figure_claim": "not_full_official_figure10",
       "label": "smoke-10ep-baseline-only"
     },
@@ -1634,7 +1634,7 @@
       "pending_tasks": 14,
       "baseline_validation_ready": false,
       "figure10_data_ready": false,
-      "hoodie_included": true,
+      "hoodie_included": false,
       "figure_claim": "not_full_official_figure10",
       "label": "smoke-10ep-baseline-only"
     },
@@ -1655,7 +1655,7 @@
       "pending_tasks": 14,
       "baseline_validation_ready": false,
       "figure10_data_ready": false,
-      "hoodie_included": true,
+      "hoodie_included": false,
       "figure_claim": "not_full_official_figure10",
       "label": "smoke-10ep-baseline-only"
     },
@@ -1676,7 +1676,7 @@
       "pending_tasks": 14,
       "baseline_validation_ready": false,
       "figure10_data_ready": false,
-      "hoodie_included": true,
+      "hoodie_included": false,
       "figure_claim": "not_full_official_figure10",
       "label": "smoke-10ep-baseline-only"
     },
@@ -1697,7 +1697,7 @@
       "pending_tasks": 14,
       "baseline_validation_ready": false,
       "figure10_data_ready": false,
-      "hoodie_included": true,
+      "hoodie_included": false,
       "figure_claim": "not_full_official_figure10",
       "label": "smoke-10ep-baseline-only"
     },
@@ -1718,7 +1718,7 @@
       "pending_tasks": 14,
       "baseline_validation_ready": false,
       "figure10_data_ready": false,
-      "hoodie_included": true,
+      "hoodie_included": false,
       "figure_claim": "not_full_official_figure10",
       "label": "smoke-10ep-baseline-only"
     },
@@ -1739,7 +1739,7 @@
       "pending_tasks": 14,
       "baseline_validation_ready": false,
       "figure10_data_ready": false,
-      "hoodie_included": true,
+      "hoodie_included": false,
       "figure_claim": "not_full_official_figure10",
       "label": "smoke-10ep-baseline-only"
     },
@@ -1760,7 +1760,7 @@
       "pending_tasks": 14,
       "baseline_validation_ready": false,
       "figure10_data_ready": false,
-      "hoodie_included": true,
+      "hoodie_included": false,
       "figure_claim": "not_full_official_figure10",
       "label": "smoke-10ep-baseline-only"
     },
@@ -1781,7 +1781,7 @@
       "pending_tasks": 15,
       "baseline_validation_ready": false,
       "figure10_data_ready": false,
-      "hoodie_included": true,
+      "hoodie_included": false,
       "figure_claim": "not_full_official_figure10",
       "label": "smoke-10ep-baseline-only"
     },
@@ -1802,7 +1802,7 @@
       "pending_tasks": 15,
       "baseline_validation_ready": false,
       "figure10_data_ready": false,
-      "hoodie_included": true,
+      "hoodie_included": false,
       "figure_claim": "not_full_official_figure10",
       "label": "smoke-10ep-baseline-only"
     },
@@ -1823,7 +1823,7 @@
       "pending_tasks": 15,
       "baseline_validation_ready": false,
       "figure10_data_ready": false,
-      "hoodie_included": true,
+      "hoodie_included": false,
       "figure_claim": "not_full_official_figure10",
       "label": "smoke-10ep-baseline-only"
     },
@@ -1844,7 +1844,7 @@
       "pending_tasks": 15,
       "baseline_validation_ready": false,
       "figure10_data_ready": false,
-      "hoodie_included": true,
+      "hoodie_included": false,
       "figure_claim": "not_full_official_figure10",
       "label": "smoke-10ep-baseline-only"
     },
@@ -1865,7 +1865,7 @@
       "pending_tasks": 15,
       "baseline_validation_ready": false,
       "figure10_data_ready": false,
-      "hoodie_included": true,
+      "hoodie_included": false,
       "figure_claim": "not_full_official_figure10",
       "label": "smoke-10ep-baseline-only"
     },
@@ -1886,7 +1886,7 @@
       "pending_tasks": 15,
       "baseline_validation_ready": false,
       "figure10_data_ready": false,
-      "hoodie_included": true,
+      "hoodie_included": false,
       "figure_claim": "not_full_official_figure10",
       "label": "smoke-10ep-baseline-only"
     },
@@ -1907,7 +1907,7 @@
       "pending_tasks": 15,
       "baseline_validation_ready": false,
       "figure10_data_ready": false,
-      "hoodie_included": true,
+      "hoodie_included": false,
       "figure_claim": "not_full_official_figure10",
       "label": "smoke-10ep-baseline-only"
     },
@@ -1928,7 +1928,7 @@
       "pending_tasks": 15,
       "baseline_validation_ready": false,
       "figure10_data_ready": false,
-      "hoodie_included": true,
+      "hoodie_included": false,
       "figure_claim": "not_full_official_figure10",
       "label": "smoke-10ep-baseline-only"
     },
@@ -1949,7 +1949,7 @@
       "pending_tasks": 15,
       "baseline_validation_ready": false,
       "figure10_data_ready": false,
-      "hoodie_included": true,
+      "hoodie_included": false,
       "figure_claim": "not_full_official_figure10",
       "label": "smoke-10ep-baseline-only"
     },
@@ -1970,7 +1970,7 @@
       "pending_tasks": 15,
       "baseline_validation_ready": false,
       "figure10_data_ready": false,
-      "hoodie_included": true,
+      "hoodie_included": false,
       "figure_claim": "not_full_official_figure10",
       "label": "smoke-10ep-baseline-only"
     },
@@ -1991,7 +1991,7 @@
       "pending_tasks": 15,
       "baseline_validation_ready": false,
       "figure10_data_ready": false,
-      "hoodie_included": true,
+      "hoodie_included": false,
       "figure_claim": "not_full_official_figure10",
       "label": "smoke-10ep-baseline-only"
     },
@@ -2012,7 +2012,7 @@
       "pending_tasks": 15,
       "baseline_validation_ready": false,
       "figure10_data_ready": false,
-      "hoodie_included": true,
+      "hoodie_included": false,
       "figure_claim": "not_full_official_figure10",
       "label": "smoke-10ep-baseline-only"
     },
@@ -2033,7 +2033,7 @@
       "pending_tasks": 18,
       "baseline_validation_ready": false,
       "figure10_data_ready": false,
-      "hoodie_included": true,
+      "hoodie_included": false,
       "figure_claim": "not_full_official_figure10",
       "label": "smoke-10ep-baseline-only"
     },
@@ -2054,7 +2054,7 @@
       "pending_tasks": 18,
       "baseline_validation_ready": false,
       "figure10_data_ready": false,
-      "hoodie_included": true,
+      "hoodie_included": false,
       "figure_claim": "not_full_official_figure10",
       "label": "smoke-10ep-baseline-only"
     },
@@ -2075,7 +2075,7 @@
       "pending_tasks": 18,
       "baseline_validation_ready": false,
       "figure10_data_ready": false,
-      "hoodie_included": true,
+      "hoodie_included": false,
       "figure_claim": "not_full_official_figure10",
       "label": "smoke-10ep-baseline-only"
     },
@@ -2096,7 +2096,7 @@
       "pending_tasks": 18,
       "baseline_validation_ready": false,
       "figure10_data_ready": false,
-      "hoodie_included": true,
+      "hoodie_included": false,
       "figure_claim": "not_full_official_figure10",
       "label": "smoke-10ep-baseline-only"
     },
@@ -2117,7 +2117,7 @@
       "pending_tasks": 18,
       "baseline_validation_ready": false,
       "figure10_data_ready": false,
-      "hoodie_included": true,
+      "hoodie_included": false,
       "figure_claim": "not_full_official_figure10",
       "label": "smoke-10ep-baseline-only"
     },
@@ -2138,7 +2138,7 @@
       "pending_tasks": 18,
       "baseline_validation_ready": false,
       "figure10_data_ready": false,
-      "hoodie_included": true,
+      "hoodie_included": false,
       "figure_claim": "not_full_official_figure10",
       "label": "smoke-10ep-baseline-only"
     },
@@ -2159,7 +2159,7 @@
       "pending_tasks": 18,
       "baseline_validation_ready": false,
       "figure10_data_ready": false,
-      "hoodie_included": true,
+      "hoodie_included": false,
       "figure_claim": "not_full_official_figure10",
       "label": "smoke-10ep-baseline-only"
     },
@@ -2180,7 +2180,7 @@
       "pending_tasks": 18,
       "baseline_validation_ready": false,
       "figure10_data_ready": false,
-      "hoodie_included": true,
+      "hoodie_included": false,
       "figure_claim": "not_full_official_figure10",
       "label": "smoke-10ep-baseline-only"
     },
@@ -2201,7 +2201,7 @@
       "pending_tasks": 18,
       "baseline_validation_ready": false,
       "figure10_data_ready": false,
-      "hoodie_included": true,
+      "hoodie_included": false,
       "figure_claim": "not_full_official_figure10",
       "label": "smoke-10ep-baseline-only"
     },
@@ -2222,7 +2222,7 @@
       "pending_tasks": 18,
       "baseline_validation_ready": false,
       "figure10_data_ready": false,
-      "hoodie_included": true,
+      "hoodie_included": false,
       "figure_claim": "not_full_official_figure10",
       "label": "smoke-10ep-baseline-only"
     },
@@ -2243,7 +2243,7 @@
       "pending_tasks": 18,
       "baseline_validation_ready": false,
       "figure10_data_ready": false,
-      "hoodie_included": true,
+      "hoodie_included": false,
       "figure_claim": "not_full_official_figure10",
       "label": "smoke-10ep-baseline-only"
     },
@@ -2264,7 +2264,7 @@
       "pending_tasks": 18,
       "baseline_validation_ready": false,
       "figure10_data_ready": false,
-      "hoodie_included": true,
+      "hoodie_included": false,
       "figure_claim": "not_full_official_figure10",
       "label": "smoke-10ep-baseline-only"
     }
