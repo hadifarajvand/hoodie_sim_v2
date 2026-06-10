@@ -132,6 +132,17 @@ def _write_csv(path: Path, rows: list[dict[str, Any]]) -> None:
         writer.writerows(rows)
 
 
+def _dedupe_reasons(reasons: list[str]) -> list[str]:
+    """Return a deduplicated list preserving first-seen order."""
+    seen = set()
+    out: list[str] = []
+    for r in reasons:
+        if r not in seen:
+            seen.add(r)
+            out.append(r)
+    return out
+
+
 def _log(message: str) -> None:
     print(message, flush=True)
 
@@ -602,6 +613,13 @@ def assess_figure10_readiness(summary: dict[str, Any]) -> dict[str, Any]:
     if not baseline_validation_ready:
         # preserve backward-compatible union semantics
         figure10_blocking_reasons.extend(baseline_blocking_reasons)
+
+    # Deduplicate cosmetic duplicates while preserving backward-compatible
+    # separate lists for baseline vs full figure10 blockers.
+    baseline_blocking_reasons = _dedupe_reasons(baseline_blocking_reasons)
+    figure10_blocking_reasons = _dedupe_reasons(figure10_blocking_reasons)
+    blocking_reasons = _dedupe_reasons(list(figure10_blocking_reasons))
+
     return {
         "active_policy_set": active_policy_set,
         "expected_policy_set": expected_policy_set,
@@ -621,7 +639,7 @@ def assess_figure10_readiness(summary: dict[str, Any]) -> dict[str, Any]:
         "baseline_validation_ready": baseline_validation_ready,
         "baseline_blocking_reasons": baseline_blocking_reasons,
         "figure10_blocking_reasons": figure10_blocking_reasons,
-        "blocking_reasons": figure10_blocking_reasons,
+        "blocking_reasons": blocking_reasons,
     }
 
 

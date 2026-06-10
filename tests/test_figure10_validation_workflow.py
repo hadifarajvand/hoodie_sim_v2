@@ -599,6 +599,32 @@ class Figure10ValidationWorkflowTests(unittest.TestCase):
         self.assertFalse(readiness["figure10_data_ready"])
         self.assertIn("validation_episode_count=1", readiness["blocking_reasons"])
 
+    def test_blocking_reasons_are_deduplicated(self):
+        # When baseline blockers are copied into figure10_blocking_reasons we
+        # previously could see duplicated strings (e.g. validation_episode_count=10).
+        readiness = assess_figure10_readiness(
+            {
+                "active_policy_set": ["RO", "FLC", "VO", "HO", "BCO", "MLEO"],
+                "expected_policy_set": EXPECTED_POLICY_SET,
+                "missing_policies": [],
+                "unexpected_policies": [],
+                "policy_class_map": {policy: policy for policy in EXPECTED_POLICY_SET},
+                "hoodie_checkpoint_status": "unavailable_not_trained",
+                "mleo_required": True,
+                "mleo_contract_status_seen": {"paper_candidate_trace_ready": 1},
+                "delayed_reward_contract_status_seen": {"paper_replay_pairing_ready": 1},
+                "validation_episode_count": 10,
+                "non_hoodie_baselines_ready": False,
+                "paper_performance_claims_made": False,
+                "test_mode": False,
+            }
+        )
+        # Ensure duplicates are removed in all returned lists
+        reason = "validation_episode_count=10"
+        self.assertEqual(readiness["baseline_blocking_reasons"].count(reason), 1)
+        self.assertEqual(readiness["figure10_blocking_reasons"].count(reason), 1)
+        self.assertEqual(readiness["blocking_reasons"].count(reason), 1)
+
     def test_no_plot_files_are_generated(self):
         with tempfile.TemporaryDirectory() as tmp:
             tmp_path = Path(tmp)
