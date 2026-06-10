@@ -13,11 +13,11 @@ Next steps: do NOT run training now. The next implementation phase should be che
 
 ## Current readiness status
 
-- overall: partially_ready
-- figure8 (training/convergence): partially_ready — training pipeline exists (trace-trained DQN trainer and checkpoints) but paper-scale training and monitored convergence runs are not present.
-- figure9 (parameter sweeps & action distributions): partially_ready — action distribution logging exists and figure-generation helpers exist, but HOODIE checkpoints and full-scale sweeps are not present.
-- figure10 official (HOODIE + baselines with trained checkpoint): blocked — missing trained HOODIE checkpoint.
-- figure11 (LSTM ablation): partially_ready — LSTM code exists and ablation is possible via configuration, but paper-faithful LSTM forecast implementation is incomplete per docs.
+- overall: blocked
+- figure8: partially_ready
+- figure9: blocked
+- figure10 official: blocked
+- figure11: blocked
 
 ## Blockers for Figure 8
 
@@ -82,6 +82,8 @@ Next steps: do NOT run training now. The next implementation phase should be che
 - Action distribution: phase/plotting scripts and `phase5_generate_figures.py` expect and produce `figure_10_action_distribution.csv` (tests exist to validate generation).
 - LSTM ablation logging: LSTM checkpoints and forecaster artifacts are written by training scripts (forecaster.save). Ablation can be reproduced by configuring zero LSTM layers or disabling sequence components.
 
+Note: existing plotting helpers or CSV-generators do not suffice for paper-grade Figure 9 without validated HOODIE action-distribution logging from checkpointed evaluation/sweeps. `action_distribution_logging_support` is false in the status JSON and Figure 9 is therefore blocked.
+
 ## Artifact hygiene findings
 
 - `.gitignore` covers `*.pth`, `*.pt`, `*.pkl`, `*.pickle`, and the smoke sweep `artifacts/figure10_validation/sweeps/` paths. Good hygiene mitigations are present.
@@ -129,13 +131,13 @@ Next steps: do NOT run training now. The next implementation phase should be che
 5. Is reward logging sufficient for convergence plots?
    - Yes: trainers produce epoch-level loss and average_reward; `training_metrics.json` is written.
 6. Is action distribution logging sufficient for Figure 9?
-   - Yes: plotting helpers and `figure_10_action_distribution.csv` generation paths/tests exist.
+   - No. Existing plotting/helpers are not enough; paper-grade Figure 9 is blocked until HOODIE action distribution is logged and validated during checkpointed evaluation/sweeps.
 7. Is LSTM ablation supported for Figure 11?
-   - Partially: LSTM code exists and can be disabled/enabled via configuration (zero lstm layers or train flags), but paper-faithful LSTM forecast requires verification.
+   - Not yet for paper-grade reproduction. LSTM support is detected, but Figure 11 is blocked until a verified with-LSTM vs without-LSTM ablation protocol exists.
 8. Is official Figure 10 still blocked by missing checkpoint?
    - Yes.
 9. Safest next implementation phase?
-   - Implement/verify paper-faithful LSTM, add checkpoint metadata sidecars, and run controlled small-scale training validation smoke before scaling.
+   - Phase 6.1 — checkpoint interoperability and action-distribution logging readiness.
 
 ## Detailed evidence (file → symbol → finding → readiness impact)
 
