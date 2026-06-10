@@ -1,0 +1,38 @@
+{
+  "plot_scope": "smoke_sweep_baseline_only",
+  "figure_claim": "not_full_official_figure10",
+  "sweep_name": "task_arrival_probability",
+  "episode_count": 10,
+  "hoodie_included": false,
+  "policies_plotted": [
+    "RO",
+    "FLC",
+    "VO",
+    "HO",
+    "BCO",
+    "MLEO"
+  ],
+  "source_input_root": "artifacts/figure10_validation/sweeps/smoke/task_arrival_probability",
+  "output_dir": "artifacts/figure10_validation/plots/smoke/task_arrival_probability",
+  "values_found": [
+    0.1,
+    0.2,
+    0.3,
+    0.4,
+    0.5,
+    0.6,
+    0.7,
+    0.8,
+    0.9
+  ],
+  "missing_values": [],
+  "validation_status": {
+    "missing_values": [],
+    "missing_regimes": {},
+    "missing_policies": {},
+    "episodes_mismatch": []
+  },
+  "simulation_rerun": false,
+  "paper_performance_claims_made": false,
+  "warning": "Smoke sweep plots are for workflow validation only and must not be used as final paper reproduction."
+}

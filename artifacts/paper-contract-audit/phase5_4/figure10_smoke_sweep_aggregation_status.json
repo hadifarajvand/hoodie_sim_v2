@@ -1,0 +1,9 @@
+{
+  "phase": "5.4",
+  "scope": "figure10_smoke_sweep_aggregation",
+  "aggregates_smoke_only": true,
+  "simulations_run": false,
+  "hoodie_trained": false,
+  "hoodie_included": false,
+  "notes": "Aggregates local 10-episode smoke sweep results for workflow validation only. Do not commit local sweep outputs."
+}
