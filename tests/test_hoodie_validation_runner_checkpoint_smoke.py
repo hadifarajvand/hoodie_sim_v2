@@ -176,6 +176,40 @@ def test_tiny_checkpoint_stages_to_runner_layout(tmp_path):
         assert "True" in info.stdout
 
 
+def test_copy_hoodie_checkpoints_copies_sidecars(tmp_path):
+    pytest.importorskip("torch")
+    from figure10_validation import _copy_hoodie_checkpoints
+
+    source = tmp_path / "source"
+    log_dir = tmp_path / "logs"
+    source.mkdir()
+    p = source / "agent_0.pth"
+    _create_tiny_checkpoint(tmp_path)
+    # reuse the generated tiny checkpoint payload by copying it into the source dir
+    tiny = tmp_path / "ckpt" / "agent_0.pth"
+    tiny_meta = tmp_path / "ckpt" / "agent_0.pth.meta.json"
+    p.write_bytes(tiny.read_bytes())
+    (source / "agent_0.pth.meta.json").write_bytes(tiny_meta.read_bytes())
+    ok, missing = _copy_hoodie_checkpoints(source, log_dir, 1)
+    assert ok is True, missing
+    assert (log_dir / "agent_0.pth").exists()
+    assert (log_dir / "agent_0.pth.meta.json").exists()
+
+
+def test_copy_hoodie_checkpoints_reports_missing_sidecar(tmp_path):
+    pytest.importorskip("torch")
+    from figure10_validation import _copy_hoodie_checkpoints
+
+    source = tmp_path / "source"
+    log_dir = tmp_path / "logs"
+    source.mkdir()
+    p = source / "agent_0.pth"
+    p.write_text("not a checkpoint")
+    ok, missing = _copy_hoodie_checkpoints(source, log_dir, 1)
+    assert ok is False
+    assert str(source / "agent_0.pth.meta.json") in missing
+
+
 def test_tampered_metadata_official_claim_true_fails_and_reports_blocker(tmp_path):
     checkpoint_dir = _create_tiny_checkpoint(tmp_path)
     meta_path = checkpoint_dir / "agent_0.pth.meta.json"

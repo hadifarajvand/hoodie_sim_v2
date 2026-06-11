@@ -374,11 +374,17 @@ def _copy_hoodie_checkpoints(hoodie_checkpoint_dir: Path, log_dir: Path, number_
     for idx in range(number_of_servers):
         src = hoodie_checkpoint_dir / f"agent_{idx}.pth"
         dst = log_dir / f"agent_{idx}.pth"
+        src_meta = hoodie_checkpoint_dir / f"agent_{idx}.pth.meta.json"
+        dst_meta = log_dir / f"agent_{idx}.pth.meta.json"
         if not src.exists():
             missing.append(str(src))
             continue
         dst.parent.mkdir(parents=True, exist_ok=True)
         shutil.copy2(src, dst)
+        if src_meta.exists():
+            shutil.copy2(src_meta, dst_meta)
+        else:
+            missing.append(str(src_meta))
     return (len(missing) == 0, missing)
 
 

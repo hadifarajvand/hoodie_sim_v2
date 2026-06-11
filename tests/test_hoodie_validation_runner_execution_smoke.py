@@ -204,7 +204,13 @@ def test_successful_controlled_execution_smoke(tmp_path):
     assert (out / "figure10_runner" / "figure10_run_config_snapshot.json").exists()
     assert (out / "figure10_runner" / "figure10_validation_manifest.json").exists()
     for regime in ("delay", "drop_ratio"):
-        assert (out / "figure10_runner" / "runs" / "phase6_7_runner_execution_smoke" / regime / "HOODIE" / "main_returncode.txt").exists()
+        regime_dir = out / "figure10_runner" / "runs" / "phase6_7_runner_execution_smoke" / regime / "HOODIE"
+        log_dir = regime_dir / "logs"
+        assert (regime_dir / "main_returncode.txt").exists()
+        assert (regime_dir / "main_stdout.txt").exists()
+        assert (log_dir / "agent_0.pth").exists()
+        assert (log_dir / "agent_0.pth.meta.json").exists()
+        assert "model weights loaded" in (regime_dir / "main_stdout.txt").read_text()
     after = _repo_forbidden_snapshot()
     assert before == after
 
@@ -291,3 +297,42 @@ def test_unexpected_official_readiness_true_adds_blocker(tmp_path, monkeypatch):
     report = json.loads((out / "validation_runner_execution_smoke_report.json").read_text())
     assert "unexpected_official_readiness_true_in_smoke" in report["blockers"]
     assert result["manifest"]["blockers"]
+
+
+def test_missing_source_sidecar_keeps_runner_outputs_non_official_and_reports_failure(tmp_path, monkeypatch):
+    pytest.importorskip("torch")
+    import scripts.run_hoodie_validation_runner_execution_smoke as smoke
+    from subprocess import CompletedProcess
+
+    out = tmp_path / "out"
+
+    def fake_runner(*, output_dir, checkpoint_dir, episodes, seed, run_id, hyperparameters_file):
+        _fake_runner_outputs(output_dir, run_id, figure10_data_ready=False, delay_rc=0, drop_rc=0)
+        for regime in ("delay", "drop_ratio"):
+            log_dir = output_dir / "figure10_runner" / "runs" / run_id / regime / "HOODIE" / "logs"
+            log_dir.mkdir(parents=True, exist_ok=True)
+            (log_dir / "agent_0.pth").write_text("checkpoint")
+            meta = log_dir / "agent_0.pth.meta.json"
+            if meta.exists():
+                meta.unlink()
+        return CompletedProcess(args=["figure10_validation.py"], returncode=1, stdout="fail", stderr="fail")
+
+    monkeypatch.setattr(smoke, "_run_figure10_runner", fake_runner)
+    result = smoke.run_smoke(
+        argparse.Namespace(
+            output_dir=str(out),
+            allow_controlled_runner_execution_smoke=True,
+            episodes=1,
+            seed=42,
+            run_id="phase6_7_runner_execution_smoke",
+            allow_runtime_fixture_checkpoints=True,
+            policies="HOODIE",
+        )
+    )
+    report = json.loads((out / "validation_runner_execution_smoke_report.json").read_text())
+    assert "figure10_runner_execution_failed" in report["blockers"]
+    for regime in ("delay", "drop_ratio"):
+        log_dir = out / "figure10_runner" / "runs" / "phase6_7_runner_execution_smoke" / regime / "HOODIE" / "logs"
+        assert (log_dir / "agent_0.pth").exists()
+        assert not (log_dir / "agent_0.pth.meta.json").exists()
+    assert result["report"]["official_claim_allowed"] is False

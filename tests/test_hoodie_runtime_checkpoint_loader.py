@@ -264,6 +264,18 @@ def test_agent_load_model_supports_both_formats(tmp_path):
     assert agent.last_checkpoint_load_report["loadable"] is True
 
 
+def test_agent_load_model_keeps_module_and_reports_missing_sidecar(tmp_path):
+    pytest.importorskip("torch")
+    full_ckpt = tmp_path / "full_missing_meta.pth"
+    _make_full_model_checkpoint(full_ckpt)
+    agent = _make_agent(tmp_path, full_ckpt)
+    import torch
+
+    assert isinstance(agent.Q_eval_network, torch.nn.Module)
+    assert agent.last_checkpoint_load_report["runtime_loadable"] is False
+    assert "metadata_missing" in agent.last_checkpoint_load_report["blockers"]
+
+
 def test_agent_load_model_keeps_initial_network_on_corrupt_checkpoint(tmp_path):
     pytest.importorskip("torch")
     ckpt = tmp_path / "bad.pth"
