@@ -79,6 +79,9 @@ def test_agent_count_zero_exits_non_zero(tmp_path):
 
 
 def test_output_inside_repo_is_refused_or_unsupported(tmp_path):
+    repo_output = ROOT / "artifacts/paper-contract-audit/phase6_5/repo_output.json"
+    if repo_output.exists():
+        repo_output.unlink()
     result = _run(
         [
             "scripts/check_hoodie_validation_runner_checkpoint_integration.py",
@@ -94,6 +97,7 @@ def test_output_inside_repo_is_refused_or_unsupported(tmp_path):
         ]
     )
     assert result.returncode != 0
+    assert not repo_output.exists()
 
 
 def test_tiny_checkpoint_preflight_report(tmp_path):
@@ -131,11 +135,13 @@ def test_tiny_checkpoint_preflight_report(tmp_path):
     assert "metadata_validation" in agent
     assert "runtime_compatible_for_preflight" in agent
     assert "blockers" in agent
+    assert agent["runtime_compatible_for_preflight"] is True
 
 
 def test_missing_sidecar_produces_blocker(tmp_path):
     checkpoint_dir = _create_tiny_checkpoint(tmp_path)
     (checkpoint_dir / "agent_0.pth.meta.json").unlink()
+    out = tmp_path / "validation_runner_preflight.json"
     result = _run(
         [
             "scripts/check_hoodie_validation_runner_checkpoint_integration.py",
@@ -147,9 +153,16 @@ def test_missing_sidecar_produces_blocker(tmp_path):
             "1",
             "--allow-preflight",
             "--allow-tiny-checkpoint-dir",
+            "--output",
+            str(out),
         ]
     )
     assert result.returncode != 0
+    report = json.loads(out.read_text())
+    agent = report["checkpoint_agent_summaries"][0]
+    assert "missing_metadata_sidecar: agent_0" in agent["blockers"]
+    assert "missing_metadata_sidecar: agent_0" in report["blockers"] or "missing_metadata_sidecar" in report["checkpoint_dir_assessment"].get("issues", [])
+    assert agent["runtime_compatible_for_preflight"] is False
 
 
 def test_tampered_metadata_official_claim_true_produces_blocker(tmp_path):
@@ -158,6 +171,7 @@ def test_tampered_metadata_official_claim_true_produces_blocker(tmp_path):
     meta = json.loads(meta_path.read_text())
     meta["official_claim_allowed"] = True
     meta_path.write_text(json.dumps(meta, indent=2, sort_keys=True))
+    out = tmp_path / "validation_runner_preflight.json"
     result = _run(
         [
             "scripts/check_hoodie_validation_runner_checkpoint_integration.py",
@@ -169,9 +183,17 @@ def test_tampered_metadata_official_claim_true_produces_blocker(tmp_path):
             "1",
             "--allow-preflight",
             "--allow-tiny-checkpoint-dir",
+            "--output",
+            str(out),
         ]
     )
     assert result.returncode != 0
+    report = json.loads(out.read_text())
+    agent = report["checkpoint_agent_summaries"][0]
+    assert "metadata_official_claim_allowed_true" in report["blockers"]
+    assert "metadata_official_claim_allowed_true" in agent["blockers"]
+    assert agent["metadata_validation"]["official_claim_allowed"] is True
+    assert agent["runtime_compatible_for_preflight"] is False
 
 
 def test_trainer_json_checkpoint_is_not_accepted(tmp_path):
@@ -189,6 +211,7 @@ def test_trainer_json_checkpoint_is_not_accepted(tmp_path):
             sort_keys=True,
         )
     )
+    out = tmp_path / "validation_runner_preflight.json"
     result = _run(
         [
             "scripts/check_hoodie_validation_runner_checkpoint_integration.py",
@@ -200,9 +223,57 @@ def test_trainer_json_checkpoint_is_not_accepted(tmp_path):
             "1",
             "--allow-preflight",
             "--allow-tiny-checkpoint-dir",
+            "--output",
+            str(out),
         ]
     )
     assert result.returncode != 0
+    report = json.loads(out.read_text())
+    agent = report["checkpoint_agent_summaries"][0]
+    assert (
+        "trainer_json_checkpoint_not_accepted" in report["blockers"]
+        or "metadata_checkpoint_format_invalid" in report["blockers"]
+    )
+    assert agent["runtime_compatible_for_preflight"] is False
+
+
+def test_corrupt_pth_with_valid_metadata_is_not_runtime_compatible(tmp_path):
+    checkpoint_dir = tmp_path / "corrupt"
+    checkpoint_dir.mkdir()
+    (checkpoint_dir / "agent_0.pth").write_text("not a torch checkpoint")
+    (checkpoint_dir / "agent_0.pth.meta.json").write_text(
+        json.dumps(
+            {
+                "policy_name": "HOODIE",
+                "checkpoint_format": "pytorch_state_dict_file",
+                "official_claim_allowed": False,
+            },
+            indent=2,
+            sort_keys=True,
+        )
+    )
+    out = tmp_path / "validation_runner_preflight.json"
+    result = _run(
+        [
+            "scripts/check_hoodie_validation_runner_checkpoint_integration.py",
+            "--paper-contract",
+            "config/paper_table4_contract.json",
+            "--checkpoint-dir",
+            str(checkpoint_dir),
+            "--agent-count",
+            "1",
+            "--allow-preflight",
+            "--allow-tiny-checkpoint-dir",
+            "--output",
+            str(out),
+        ]
+    )
+    assert result.returncode != 0
+    report = json.loads(out.read_text())
+    agent = report["checkpoint_agent_summaries"][0]
+    assert agent["runtime_compatible_for_preflight"] is False
+    assert "checkpoint_not_loadable: agent_0" in agent["blockers"]
+    assert "checkpoint_not_loadable: agent_0" in report["blockers"]
 
 
 def test_no_forbidden_artifacts_created_outside_tmp_path(tmp_path):

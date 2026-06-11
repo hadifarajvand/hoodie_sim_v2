@@ -69,10 +69,6 @@ def run_preflight(args: argparse.Namespace) -> dict[str, Any]:
     paper_contract_path = _resolve_path(args.paper_contract)
     checkpoint_dir = _resolve_path(args.checkpoint_dir)
     output_path = _resolve_path(args.output) if args.output else None
-    if output_path is not None and _repo_relative(output_path):
-        blockers.append("repo_output_refused")
-    if args.output:
-        output_path.parent.mkdir(parents=True, exist_ok=True)
 
     figure10_static_contract = _static_figure10_contract()
     contract = _load_json(paper_contract_path)
@@ -112,7 +108,9 @@ def run_preflight(args: argparse.Namespace) -> dict[str, Any]:
         else:
             torch_inspection = {"loadable": False, "error": "missing", "warnings": []}
         summary["torch_inspection"] = torch_inspection
-        if torch_inspection.get("loadable"):
+        if torch_inspection.get("loadable") is not True:
+            agent_blockers.append(f"checkpoint_not_loadable: agent_{agent_index}")
+        else:
             payload = None
             try:
                 import torch
@@ -141,7 +139,7 @@ def run_preflight(args: argparse.Namespace) -> dict[str, Any]:
             )
         if agent_blockers:
             blockers.extend(b for b in agent_blockers if b not in blockers)
-        if not agent_blockers and checkpoint_path.exists() and metadata_path.exists():
+        if not agent_blockers and checkpoint_path.exists() and metadata_path.exists() and torch_inspection.get("loadable") is True:
             summary["runtime_compatible_for_preflight"] = True
         checkpoint_agent_summaries.append(summary)
 
@@ -203,6 +201,8 @@ def main() -> int:
         raise SystemExit("missing --allow-preflight")
     if args.agent_count <= 0:
         raise SystemExit("invalid agent_count")
+    if args.output and _repo_relative(_resolve_path(args.output)):
+        raise SystemExit("repo output refused")
     report = run_preflight(args)
     return 1 if report.get("blockers") else 0
 

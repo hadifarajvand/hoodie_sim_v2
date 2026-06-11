@@ -257,13 +257,14 @@ def test_tampered_metadata_official_claim_is_detected(tmp_path):
     meta = json.loads(meta_path.read_text())
     meta["official_claim_allowed"] = True
     meta_path.write_text(json.dumps(meta, indent=2, sort_keys=True))
+    out = tmp_path / "eval"
     result = _run(
         [
             "scripts/run_hoodie_checkpointed_evaluation_smoke.py",
             "--checkpoint-dir",
             str(checkpoint_dir),
             "--output-dir",
-            str(tmp_path / "eval"),
+            str(out),
             "--agent-count",
             "1",
             "--evaluation-steps",
@@ -274,6 +275,11 @@ def test_tampered_metadata_official_claim_is_detected(tmp_path):
         ]
     )
     assert result.returncode != 0
+    manifest = json.loads((out / "checkpointed_evaluation_manifest.json").read_text())
+    agents = manifest["runtime_inspection_summary"]["agents"]
+    assert len(agents) == 1
+    assert "metadata_official_claim_allowed_true" in agents[0]["blockers"]
+    assert "metadata_official_claim_allowed_true" in manifest["blockers"]
 
 
 def test_no_forbidden_artifacts_created_outside_tmp_path(tmp_path):
