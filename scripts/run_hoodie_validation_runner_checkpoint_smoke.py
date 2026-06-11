@@ -104,12 +104,22 @@ def _stage_run_layout(output_dir: Path, run_id: str, checkpoint_dir: Path, agent
                     "blockers": _validate_metadata(metadata),
                 }
             summary_blockers: list[str] = []
-            if not source_torch_inspection.get("loadable"):
-                summary_blockers.append(f"checkpoint_not_loadable: agent_{agent_index}")
+            if not source_checkpoint_path.exists():
+                summary_blockers.append(f"source_checkpoint_missing: agent_{agent_index}")
+            elif not source_torch_inspection.get("loadable"):
+                summary_blockers.append(f"source_checkpoint_not_loadable: agent_{agent_index}")
+            if not staged_checkpoint_path.exists():
+                summary_blockers.append(f"staged_checkpoint_missing: agent_{agent_index}")
+            elif not staged_torch_inspection.get("loadable"):
+                summary_blockers.append(f"staged_checkpoint_not_loadable: agent_{agent_index}")
+            if not source_metadata_path.exists() or not staged_metadata_path.exists():
+                summary_blockers.append(f"staged_metadata_sidecar_missing: agent_{agent_index}")
             summary_blockers.extend([b for b in metadata_validation["blockers"] if b not in summary_blockers])
             runner_layout_ready_for_smoke = (
                 source_torch_inspection.get("loadable") is True
+                and staged_checkpoint_path.exists()
                 and staged_torch_inspection.get("loadable") is True
+                and staged_metadata_path.exists()
                 and not metadata_validation["blockers"]
             )
             if not runner_layout_ready_for_smoke:
@@ -176,9 +186,14 @@ def _stage_run_layout(output_dir: Path, run_id: str, checkpoint_dir: Path, agent
         "figure10_claim": False,
         "figure11_claim": False,
         "runner_layout_created": True,
-        "staged_checkpoint_count": len([s for s in staged_checkpoint_summaries if s["staged_checkpoint_path"]]),
-        "staged_sidecar_count": len([s for s in staged_checkpoint_summaries if s["staged_metadata_path"]]),
-        "all_staged_checkpoints_loadable": all(s["staged_torch_inspection"].get("loadable") for s in staged_checkpoint_summaries),
+        "staged_checkpoint_count": len([s for s in staged_checkpoint_summaries if Path(s["staged_checkpoint_path"]).exists()]),
+        "staged_sidecar_count": len([s for s in staged_checkpoint_summaries if Path(s["staged_metadata_path"]).exists()]),
+        "all_staged_checkpoints_loadable": bool(
+            staged_checkpoint_summaries
+            and not blockers
+            and all(Path(s["staged_checkpoint_path"]).exists() for s in staged_checkpoint_summaries)
+            and all(s["staged_torch_inspection"].get("loadable") for s in staged_checkpoint_summaries)
+        ),
         "blockers": blockers,
         "warnings": warnings,
     }
@@ -209,23 +224,6 @@ def main() -> int:
         raise SystemExit("repo output refused")
     if not checkpoint_dir.exists():
         raise SystemExit("checkpoint dir missing")
-
-    from training.hoodie_checkpoint_interop import inspect_runtime_torch_checkpoint
-
-    for agent_index in range(args.agent_count):
-        checkpoint_path = checkpoint_dir / f"agent_{agent_index}.pth"
-        meta_path = checkpoint_dir / f"agent_{agent_index}.pth.meta.json"
-        if not checkpoint_path.exists():
-            raise SystemExit(f"missing checkpoint: agent_{agent_index}")
-        if not meta_path.exists():
-            raise SystemExit(f"missing metadata sidecar: agent_{agent_index}")
-        torch_info = inspect_runtime_torch_checkpoint(checkpoint_path)
-        if torch_info.get("loadable") is not True:
-            raise SystemExit(f"checkpoint_not_loadable: agent_{agent_index}")
-        metadata = _load_json(meta_path)
-        blockers = _validate_metadata(metadata)
-        if blockers:
-            raise SystemExit(", ".join(blockers))
 
     result = _stage_run_layout(output_dir, args.run_id, checkpoint_dir, args.agent_count)
     output_dir.mkdir(parents=True, exist_ok=True)

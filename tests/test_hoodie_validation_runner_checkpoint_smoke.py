@@ -152,6 +152,9 @@ def test_tiny_checkpoint_stages_to_runner_layout(tmp_path):
     assert report["official_claim_allowed"] is False
     assert report["figure10_claim"] is False
     assert len(manifest["staged_checkpoint_summaries"]) == 2
+    assert report["staged_checkpoint_count"] == 2
+    assert report["staged_sidecar_count"] == 2
+    assert report["all_staged_checkpoints_loadable"] is True
     delay_log = out / "runs" / "phase6_6_runner_smoke" / "delay" / "HOODIE" / "logs"
     drop_log = out / "runs" / "phase6_6_runner_smoke" / "drop_ratio" / "HOODIE" / "logs"
     for log_dir in [delay_log, drop_log]:
@@ -194,6 +197,19 @@ def test_tampered_metadata_official_claim_true_fails_and_reports_blocker(tmp_pat
         ]
     )
     assert result.returncode != 0
+    manifest = json.loads((out / "validation_runner_checkpoint_smoke_manifest.json").read_text())
+    report = json.loads((out / "validation_runner_checkpoint_smoke_report.json").read_text())
+    assert any(
+        "metadata_official_claim_allowed_true" in summary["blockers"]
+        for summary in manifest["staged_checkpoint_summaries"]
+    )
+    assert "metadata_official_claim_allowed_true" in manifest["blockers"]
+    assert "metadata_official_claim_allowed_true" in report["blockers"]
+    assert not any(
+        summary["runner_layout_ready_for_smoke"] for summary in manifest["staged_checkpoint_summaries"]
+    )
+    assert manifest["figure10_claim"] is False
+    assert report["figure10_claim"] is False
 
 
 def test_corrupt_checkpoint_exits_non_zero_and_not_layout_ready(tmp_path):
@@ -226,6 +242,13 @@ def test_corrupt_checkpoint_exits_non_zero_and_not_layout_ready(tmp_path):
         ]
     )
     assert result.returncode != 0
+    manifest = json.loads((out / "validation_runner_checkpoint_smoke_manifest.json").read_text())
+    report = json.loads((out / "validation_runner_checkpoint_smoke_report.json").read_text())
+    assert manifest["staged_checkpoint_summaries"][0]["runner_layout_ready_for_smoke"] is False
+    assert "source_checkpoint_not_loadable: agent_0" in manifest["staged_checkpoint_summaries"][0]["blockers"]
+    assert "source_checkpoint_not_loadable: agent_0" in manifest["blockers"]
+    assert "source_checkpoint_not_loadable: agent_0" in report["blockers"]
+    assert report["all_staged_checkpoints_loadable"] is False
 
 
 def test_trainer_json_checkpoint_is_refused(tmp_path):
@@ -258,6 +281,46 @@ def test_trainer_json_checkpoint_is_refused(tmp_path):
         ]
     )
     assert result.returncode != 0
+    manifest = json.loads((out / "validation_runner_checkpoint_smoke_manifest.json").read_text())
+    report = json.loads((out / "validation_runner_checkpoint_smoke_report.json").read_text())
+    assert manifest["staged_checkpoint_summaries"][0]["runner_layout_ready_for_smoke"] is False
+    assert any(
+        blocker in manifest["staged_checkpoint_summaries"][0]["blockers"]
+        for blocker in {"trainer_json_checkpoint_not_accepted", "metadata_checkpoint_format_invalid", "source_checkpoint_not_loadable: agent_0"}
+    )
+    assert any(
+        blocker in manifest["blockers"]
+        for blocker in {"trainer_json_checkpoint_not_accepted", "metadata_checkpoint_format_invalid", "source_checkpoint_not_loadable: agent_0"}
+    )
+    assert report["all_staged_checkpoints_loadable"] is False
+
+
+def test_staged_checkpoint_not_loadable_is_reported(tmp_path):
+    checkpoint_dir = _create_tiny_checkpoint(tmp_path)
+    out = tmp_path / "runner"
+
+    import scripts.run_hoodie_validation_runner_checkpoint_smoke as smoke
+
+    original_copy = smoke._copy_sidecars
+
+    def corrupt_stage_sidecars(source_checkpoint_dir, staged_log_dir, agent_count):
+        copied = original_copy(source_checkpoint_dir, staged_log_dir, agent_count)
+        staged_file = staged_log_dir / "agent_0.pth"
+        staged_file.write_text("not a checkpoint after copy")
+        return copied
+
+    smoke._copy_sidecars = corrupt_stage_sidecars
+    try:
+        result = smoke._stage_run_layout(out, "phase6_6_runner_smoke", checkpoint_dir, 1)
+    finally:
+        smoke._copy_sidecars = original_copy
+    assert result["report"]["all_staged_checkpoints_loadable"] is False
+    manifest = result["manifest"]
+    report = result["report"]
+    assert "staged_checkpoint_not_loadable: agent_0" in manifest["staged_checkpoint_summaries"][0]["blockers"]
+    assert "staged_checkpoint_not_loadable: agent_0" in manifest["blockers"]
+    assert "staged_checkpoint_not_loadable: agent_0" in report["blockers"]
+    assert report["all_staged_checkpoints_loadable"] is False
 
 
 def test_no_forbidden_artifacts_created_outside_tmp_path(tmp_path):
