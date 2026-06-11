@@ -55,6 +55,8 @@ def build_report(paper_contract: Path, agent_count: int) -> dict[str, Any]:
     invalid_agent_count = agent_count <= 0
     expected_checkpoint_files = [] if invalid_agent_count else _expected_checkpoint_names(agent_count)
     expected_metadata_files = [] if invalid_agent_count else _expected_metadata_names(agent_count)
+    if invalid_agent_count:
+        blockers.append("invalid_agent_count")
     try:
         contract = _load_json(paper_contract)
     except Exception as exc:
@@ -70,7 +72,7 @@ def build_report(paper_contract: Path, agent_count: int) -> dict[str, Any]:
             "gitignore_protection_status": {},
             "git_commit": _git_output(["rev-parse", "HEAD"]),
             "branch": _git_output(["rev-parse", "--abbrev-ref", "HEAD"]),
-            "blockers": [f"paper_contract_load_failed: {exc}"],
+            "blockers": blockers + [f"paper_contract_load_failed: {exc}"],
             "invalid_agent_count": invalid_agent_count,
             "warnings": [],
             "ready_for_tiny_smoke": False,
@@ -84,9 +86,6 @@ def build_report(paper_contract: Path, agent_count: int) -> dict[str, Any]:
     protocol_doc = ROOT / "artifacts/paper-contract-audit/phase6_2/hoodie_runtime_checkpoint_training_protocol.md"
     if not protocol_doc.exists():
         blockers.append("protocol_document_missing")
-    if invalid_agent_count:
-        blockers.append("invalid_agent_count")
-
     if contract.get("number_of_eas") != agent_count:
         warnings.append(f"agent_count_mismatch: contract={contract.get('number_of_eas')} requested={agent_count}")
 
