@@ -209,7 +209,7 @@ def main():
 
         decision_maker_params ={'number_of_actions': number_of_actions} 
         
-        if hyperparameters['decision_makers'] == 'drl':
+        if hyperparameters['decision_makers'] in {'drl', 'HOODIE'}:
             decision_maker_params = {
                 'id': i,
                 'state_dimensions': state_dimensions,
