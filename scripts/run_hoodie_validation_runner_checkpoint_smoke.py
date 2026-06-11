@@ -168,6 +168,7 @@ def _stage_run_layout(output_dir: Path, run_id: str, checkpoint_dir: Path, agent
         "full_training_run": False,
         "simulation_rerun": False,
         "validation_run": False,
+        "training_run": False,
         "checkpoint_created": False,
         "official_claim_allowed": False,
         "figure8_claim": False,
