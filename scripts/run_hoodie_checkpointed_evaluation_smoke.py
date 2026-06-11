@@ -100,6 +100,27 @@ def _validate_checkpoint_metadata(metadata: dict[str, Any]) -> list[str]:
     return blockers
 
 
+def _agent_runtime_summary(
+    *,
+    agent_index: int,
+    checkpoint_path: Path,
+    metadata_path: Path,
+    torch_inspection: dict[str, Any] | None = None,
+    metadata_validation: dict[str, Any] | None = None,
+    model_reconstruction: dict[str, Any] | None = None,
+    blockers: list[str] | None = None,
+) -> dict[str, Any]:
+    return {
+        "agent_index": agent_index,
+        "checkpoint_path": str(checkpoint_path),
+        "metadata_path": str(metadata_path),
+        "torch_inspection": torch_inspection or {},
+        "metadata_validation": metadata_validation or {},
+        "model_reconstruction": model_reconstruction or {},
+        "blockers": blockers or [],
+    }
+
+
 def _action_records_for_agent(
     model,
     *,
@@ -223,33 +244,71 @@ def run_smoke(args: argparse.Namespace) -> dict[str, Any]:
     for agent_index in range(args.agent_count):
         checkpoint_path = checkpoint_dir / f"agent_{agent_index}.pth"
         meta_path = checkpoint_dir / f"agent_{agent_index}.pth.meta.json"
+        agent_blockers: list[str] = []
+        agent_summary = _agent_runtime_summary(
+            agent_index=agent_index,
+            checkpoint_path=checkpoint_path,
+            metadata_path=meta_path,
+        )
         if not checkpoint_path.exists():
-            blockers.append(f"missing_checkpoint: agent_{agent_index}")
+            agent_blockers.append(f"missing_checkpoint: agent_{agent_index}")
+            blockers.extend(agent_blockers)
+            runtime_inspection_summary["agents"].append(agent_summary | {"blockers": agent_blockers})
             continue
         if not meta_path.exists():
-            blockers.append(f"missing_metadata_sidecar: agent_{agent_index}")
+            agent_blockers.append(f"missing_metadata_sidecar: agent_{agent_index}")
+            blockers.extend(agent_blockers)
+            runtime_inspection_summary["agents"].append(agent_summary | {"blockers": agent_blockers})
             continue
         payload_info = inspect_runtime_torch_checkpoint(checkpoint_path)
-        runtime_inspection_summary["agents"].append(payload_info)
+        metadata = _load_json(meta_path)
+        metadata_validation_blockers = _validate_checkpoint_metadata(metadata)
+        metadata_validation = {
+            "policy_name": metadata.get("policy_name"),
+            "checkpoint_format": metadata.get("checkpoint_format"),
+            "official_claim_allowed": metadata.get("official_claim_allowed", False),
+            "blockers": list(metadata_validation_blockers),
+        }
+        agent_summary["torch_inspection"] = payload_info
+        agent_summary["metadata_validation"] = metadata_validation
         if not payload_info.get("loadable"):
-            blockers.append(f"checkpoint_not_loadable: agent_{agent_index}")
+            agent_blockers.append(f"checkpoint_not_loadable: agent_{agent_index}")
+            agent_summary["blockers"] = agent_blockers
+            blockers.extend(agent_blockers)
+            runtime_inspection_summary["agents"].append(agent_summary)
             continue
         payload = torch.load(str(checkpoint_path), map_location="cpu")
         if not isinstance(payload, dict):
-            blockers.append(f"checkpoint_payload_not_mapping: agent_{agent_index}")
+            agent_blockers.append(f"checkpoint_payload_not_mapping: agent_{agent_index}")
+            agent_summary["blockers"] = agent_blockers
+            blockers.extend(agent_blockers)
+            runtime_inspection_summary["agents"].append(agent_summary)
             continue
         if payload.get("state_dict") is None:
-            blockers.append(f"missing_state_dict: agent_{agent_index}")
+            agent_blockers.append(f"missing_state_dict: agent_{agent_index}")
+            agent_summary["blockers"] = agent_blockers
+            blockers.extend(agent_blockers)
+            runtime_inspection_summary["agents"].append(agent_summary)
             continue
         if payload.get("model_class") != "DeepQNetwork":
-            blockers.append(f"invalid_model_class: agent_{agent_index}")
+            agent_blockers.append(f"invalid_model_class: agent_{agent_index}")
+            agent_summary["blockers"] = agent_blockers
+            blockers.extend(agent_blockers)
+            runtime_inspection_summary["agents"].append(agent_summary)
             continue
-        metadata = _load_json(meta_path)
-        blockers.extend(_validate_checkpoint_metadata(metadata))
-        if blockers:
+        if metadata_validation_blockers:
+            if "metadata_official_claim_allowed_true" in metadata_validation_blockers:
+                agent_blockers.append("metadata_official_claim_allowed_true")
+            agent_blockers.extend([b for b in metadata_validation_blockers if b not in agent_blockers])
+        if agent_blockers:
+            agent_summary["blockers"] = agent_blockers
+            blockers.extend(agent_blockers)
+            runtime_inspection_summary["agents"].append(agent_summary)
             continue
         model, inspection = _load_deepqnetwork_from_payload(payload, checkpoint_path)
-        runtime_inspection_summary["agents"].append(inspection)
+        agent_summary["model_reconstruction"] = inspection
+        agent_summary["blockers"] = agent_blockers
+        runtime_inspection_summary["agents"].append(agent_summary)
         state_dim = int(payload["state_dim"])
         lstm_input_shape = int(payload["lstm_input_shape"])
         action_records.extend(

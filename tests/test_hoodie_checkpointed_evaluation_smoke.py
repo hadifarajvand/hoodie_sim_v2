@@ -198,6 +198,37 @@ def test_action_distribution_outputs_are_non_official(tmp_path):
     assert report["official_claim_allowed"] is False
 
 
+def test_runtime_inspection_summary_agents_are_normalized(tmp_path):
+    checkpoint_dir = _create_tiny_checkpoint(tmp_path)
+    out = tmp_path / "eval"
+    result = _run(
+        [
+            "scripts/run_hoodie_checkpointed_evaluation_smoke.py",
+            "--checkpoint-dir",
+            str(checkpoint_dir),
+            "--output-dir",
+            str(out),
+            "--agent-count",
+            "1",
+            "--evaluation-steps",
+            "3",
+            "--seed",
+            "42",
+            "--allow-evaluation-smoke",
+        ]
+    )
+    assert result.returncode == 0, result.stderr
+    manifest = json.loads((out / "checkpointed_evaluation_manifest.json").read_text())
+    agents = manifest["runtime_inspection_summary"]["agents"]
+    assert len(agents) == 1
+    agent = agents[0]
+    assert "torch_inspection" in agent
+    assert "model_reconstruction" in agent
+    assert "metadata_validation" in agent
+    assert "blockers" in agent
+    assert agent["agent_index"] == 0
+
+
 def test_missing_sidecar_detected_as_blocker(tmp_path):
     checkpoint_dir = _create_tiny_checkpoint(tmp_path)
     (checkpoint_dir / "agent_0.pth.meta.json").unlink()

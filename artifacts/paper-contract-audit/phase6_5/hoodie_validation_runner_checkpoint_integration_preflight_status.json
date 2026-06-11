@@ -1,0 +1,40 @@
+{
+  "phase": "6.5",
+  "scope": "hoodie_validation_runner_checkpoint_integration_preflight",
+  "official_training_run": false,
+  "full_training_run": false,
+  "paper_training_run": false,
+  "simulation_rerun": false,
+  "validation_run": false,
+  "official_figure_claims_made": false,
+  "checkpoint_created": false,
+  "checkpoint_artifact_committed": false,
+  "model_artifact_committed": false,
+  "phase64_runtime_inspection_summary_normalized": true,
+  "validation_runner_checkpoint_preflight_defined": true,
+  "validation_runner_integration_executed": false,
+  "runner_checkpoint_connection_points_checked": true,
+  "stage0_preflight_ready": true,
+  "stage1_tiny_smoke_ready": true,
+  "stage2_checkpointed_evaluation_wiring_ready": true,
+  "stage3_validation_runner_checkpoint_preflight_ready": true,
+  "stage4_controlled_validation_runner_integration_ready": false,
+  "stage5_paper_grade_training_ready": false,
+  "figure8_status": "blocked",
+  "figure9_status": "blocked",
+  "figure10_official_status": "blocked",
+  "figure11_status": "blocked",
+  "official_claim_allowed": false,
+  "blockers": [
+    "validation_runner_checkpoint_execution_not_integrated",
+    "no_real_hoodie_full_training_run",
+    "no_official_200_episode_validation_run",
+    "no_real_paper_scenario_action_distribution_run",
+    "no_figure_reproduction_claim_allowed"
+  ],
+  "warnings": [
+    "preflight_may_use_tiny_non_official_checkpoint_dir",
+    "runner_integration_is_static_or_preflight_only"
+  ],
+  "recommended_next_phase": "Phase 6.6 - HOODIE validation runner checkpoint integration smoke"
+}
