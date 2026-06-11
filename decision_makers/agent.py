@@ -7,6 +7,7 @@ import numpy as np
 import pickle
 from collections import deque
 import os 
+from pathlib import Path
 from .decision_maker_base import DescisionMakerBase
 import sys
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
@@ -207,13 +208,35 @@ class Agent(DescisionMakerBase):
     def load_model(self,checkpoint_folder=None):
         if not checkpoint_folder:
             checkpoint_folder = self.checkpoint_folder
+        self.last_checkpoint_load_report = {
+            "checkpoint_path": checkpoint_folder,
+            "loadable": False,
+            "format": None,
+            "model_class": None,
+            "blockers": [],
+        }
         try:
             if os.path.isfile(checkpoint_folder):
-                self.Q_eval_network = torch.load(checkpoint_folder,map_location=self.device)
-                print('model weights loaded')
+                from training.hoodie_runtime_checkpoint_loader import load_hoodie_checkpoint_with_metadata
+
+                model, report = load_hoodie_checkpoint_with_metadata(Path(checkpoint_folder), map_location=self.device)
+                self.last_checkpoint_load_report = report
+                if report.get("runtime_loadable") and model is not None:
+                    self.Q_eval_network = model.to(self.device)
+                    self.Q_eval_network.eval()
+                    print('model weights loaded')
+                else:
+                    print('An error occurred while loading the model weights:', ', '.join(report.get("blockers", [])) or "unknown")
             else:
                 print('weights folder not found')
         except Exception as e:
+            self.last_checkpoint_load_report = {
+                "checkpoint_path": checkpoint_folder,
+                "loadable": False,
+                "format": None,
+                "model_class": None,
+                "blockers": [str(e)],
+            }
             print('An error occurred while loading the model weights:', str(e)) 
     
     def store_model(self,path=None):
