@@ -1,0 +1,24 @@
+{
+  "phase": "6.1",
+  "scope": "checkpoint_interoperability_and_action_distribution_readiness",
+  "simulation_rerun": false,
+  "training_run": false,
+  "checkpoint_created": false,
+  "model_artifact_created": false,
+  "official_figure_claims_made": false,
+  "checkpoint_interop_status": "partially_ready",
+  "action_distribution_logging_status": "partially_ready",
+  "figure8_status": "blocked",
+  "figure9_status": "partially_ready",
+  "figure10_official_status": "blocked",
+  "figure11_status": "blocked",
+  "trainer_json_runtime_compatible": false,
+  "runtime_checkpoint_metadata_required": true,
+  "action_distribution_outputs_supported": true,
+  "blockers": [
+    "no_verified_runtime_compatible_hoodie_checkpoint",
+    "action-distribution_logging_not_validated_on_real_checkpoint"
+  ],
+  "warnings": [],
+  "recommended_next_phase": "Run controlled validation of checkpoint interoperability and exercise action-distribution logging on a verified checkpoint under Phase 6.1 protocol"
+}
