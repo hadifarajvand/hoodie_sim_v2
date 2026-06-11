@@ -52,6 +52,9 @@ def _expected_metadata_names(agent_count: int) -> list[str]:
 def build_report(paper_contract: Path, agent_count: int) -> dict[str, Any]:
     blockers: list[str] = []
     warnings: list[str] = []
+    invalid_agent_count = agent_count <= 0
+    expected_checkpoint_files = [] if invalid_agent_count else _expected_checkpoint_names(agent_count)
+    expected_metadata_files = [] if invalid_agent_count else _expected_metadata_names(agent_count)
     try:
         contract = _load_json(paper_contract)
     except Exception as exc:
@@ -62,10 +65,13 @@ def build_report(paper_contract: Path, agent_count: int) -> dict[str, Any]:
             "model_artifact_created": False,
             "paper_contract_loaded": False,
             "expected_agent_count": agent_count,
-            "expected_checkpoint_files": _expected_checkpoint_names(agent_count),
-            "expected_metadata_files": _expected_metadata_names(agent_count),
+            "expected_checkpoint_files": expected_checkpoint_files,
+            "expected_metadata_files": expected_metadata_files,
             "gitignore_protection_status": {},
+            "git_commit": _git_output(["rev-parse", "HEAD"]),
+            "branch": _git_output(["rev-parse", "--abbrev-ref", "HEAD"]),
             "blockers": [f"paper_contract_load_failed: {exc}"],
+            "invalid_agent_count": invalid_agent_count,
             "warnings": [],
             "ready_for_tiny_smoke": False,
         }
@@ -78,6 +84,8 @@ def build_report(paper_contract: Path, agent_count: int) -> dict[str, Any]:
     protocol_doc = ROOT / "artifacts/paper-contract-audit/phase6_2/hoodie_runtime_checkpoint_training_protocol.md"
     if not protocol_doc.exists():
         blockers.append("protocol_document_missing")
+    if invalid_agent_count:
+        blockers.append("invalid_agent_count")
 
     if contract.get("number_of_eas") != agent_count:
         warnings.append(f"agent_count_mismatch: contract={contract.get('number_of_eas')} requested={agent_count}")
@@ -92,14 +100,15 @@ def build_report(paper_contract: Path, agent_count: int) -> dict[str, Any]:
         "model_artifact_created": False,
         "paper_contract_loaded": True,
         "expected_agent_count": agent_count,
-        "expected_checkpoint_files": _expected_checkpoint_names(agent_count),
-        "expected_metadata_files": _expected_metadata_names(agent_count),
+        "expected_checkpoint_files": expected_checkpoint_files,
+        "expected_metadata_files": expected_metadata_files,
         "gitignore_protection_status": gitignore_status,
         "git_commit": git_commit,
         "branch": branch,
         "blockers": blockers,
         "warnings": warnings,
-        "ready_for_tiny_smoke": len(blockers) == 0,
+        "invalid_agent_count": invalid_agent_count,
+        "ready_for_tiny_smoke": (len(blockers) == 0) and not invalid_agent_count,
         "paper_contract_summary": {
             "delta_sec": contract.get("delta_sec"),
             "action_slots": contract.get("action_slots"),
