@@ -1033,7 +1033,7 @@ def test_action_distribution_ratio_sum_invalid_sets_blocker(tmp_path):
     distribution["local_ratio"] = 0.6
     distribution["horizontal_ratio"] = 0.2
     distribution["vertical_ratio"] = 0.1
-    distribution["unknown_ratio"] = 0.1
+    distribution["unknown_ratio"] = 0.0
     _write_json(distribution_path, distribution)
     blockers = smoke._validate_action_distribution_outputs(
         action_dir,
