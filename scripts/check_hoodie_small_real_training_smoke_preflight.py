@@ -43,16 +43,21 @@ def _inspect_main_py() -> dict[str, Any]:
             "--trace_output_dir",
             "--seed",
             "--trace_level",
+            "--export_trained_checkpoints",
+            "--checkpoint_export_dir",
+            "--checkpoint_export_format",
+            "--allow_training_checkpoint_export",
+            "--checkpoint_export_manifest",
         ]
     }
     training_path_detected = "if not args.validate" in text and "decision_maker.learn()" in text and "reset_lstm_history()" in text
-    checkpoint_export_detected = "store_model(" in text or "torch.save(" in text and "checkpoint_folder" in text
+    checkpoint_export_detected = "--export_trained_checkpoints" in text and "--checkpoint_export_dir" in text and "export_training_checkpoints" in text
     return {
         "path": str(path),
         "cli_flags": cli_flags,
         "training_path_detected": training_path_detected,
         "checkpoint_export_detected": checkpoint_export_detected,
-        "exports_checkpoint_after_training": "store_model(" in text or "torch.save(" in text,
+        "exports_checkpoint_after_training": "export_training_checkpoints" in text,
         "tree": tree,
     }
 
@@ -80,11 +85,26 @@ def _inspect_loader_py() -> dict[str, Any]:
     }
 
 
+def _inspect_export_module() -> dict[str, Any]:
+    path = ROOT / "training" / "hoodie_training_checkpoint_export.py"
+    source = path.read_text()
+    return {
+        "path": str(path),
+        "module_exists": path.exists(),
+        "build_training_checkpoint_metadata_detected": "def build_training_checkpoint_metadata" in source,
+        "export_agent_runtime_checkpoint_detected": "def export_agent_runtime_checkpoint" in source,
+        "export_training_checkpoints_detected": "def export_training_checkpoints" in source,
+        "meta_json_detected": ".meta.json" in source,
+        "official_claim_allowed_detected": "official_claim_allowed" in source,
+    }
+
+
 def compute_small_real_training_readiness(
     *,
     main_info: dict[str, Any],
     agent_info: dict[str, Any],
     loader_info: dict[str, Any],
+    export_info: dict[str, Any],
 ) -> dict[str, Any]:
     cli_flags = main_info["cli_flags"]
     main_py_cli_detected = all(cli_flags.values())
@@ -92,6 +112,14 @@ def compute_small_real_training_readiness(
     main_py_checkpoint_export_detected = bool(main_info["checkpoint_export_detected"])
     agent_store_model_detected = bool(agent_info["store_model_detected"])
     agent_unified_loader_detected = bool(agent_info["unified_loader_detected"])
+    export_module_detected = bool(export_info["module_exists"])
+    export_metadata_detected = bool(
+        export_info["build_training_checkpoint_metadata_detected"]
+        and export_info["export_agent_runtime_checkpoint_detected"]
+        and export_info["export_training_checkpoints_detected"]
+        and export_info["meta_json_detected"]
+        and export_info["official_claim_allowed_detected"]
+    )
 
     runtime_loader_ready = all(
         [
@@ -116,8 +144,12 @@ def compute_small_real_training_readiness(
             main_py_training_path_detected,
         ]
     )
-    checkpoint_export_ready = bool(main_py_checkpoint_export_detected)
-    metadata_sidecar_ready = False
+    checkpoint_export_ready = bool(
+        main_py_checkpoint_export_detected
+        and export_module_detected
+        and export_info["export_training_checkpoints_detected"]
+    )
+    metadata_sidecar_ready = bool(export_metadata_detected)
     small_real_training_execution_ready = all(
         [
             runtime_loader_ready,
@@ -130,8 +162,6 @@ def compute_small_real_training_readiness(
 
     blockers = [
         "small_real_training_execution_not_run",
-        "training_checkpoint_export_missing" if not checkpoint_export_ready else None,
-        "training_checkpoint_metadata_sidecar_missing" if not metadata_sidecar_ready else None,
         "paper_grade_training_not_run",
         "official_200_episode_validation_not_run",
         "official_figure_reproduction_not_run",
@@ -146,6 +176,10 @@ def compute_small_real_training_readiness(
         blockers.append("agent_store_model_missing")
     if not bounded_training_config_ready:
         blockers.append("bounded_training_guard_missing")
+    if not checkpoint_export_ready:
+        blockers.append("training_checkpoint_export_missing")
+    if not metadata_sidecar_ready:
+        blockers.append("training_checkpoint_metadata_sidecar_missing")
     blockers = [b for b in dict.fromkeys(blockers) if b is not None]
 
     return {
@@ -172,6 +206,8 @@ def compute_small_real_training_readiness(
         "main_py_checkpoint_export_detected": main_py_checkpoint_export_detected,
         "agent_store_model_detected": agent_store_model_detected,
         "agent_unified_loader_detected": agent_unified_loader_detected,
+        "export_module_detected": export_module_detected,
+        "export_metadata_detected": export_metadata_detected,
         "runtime_loader_ready": runtime_loader_ready,
         "safe_output_routing_ready": safe_output_routing_ready,
         "bounded_training_config_ready": bounded_training_config_ready,
@@ -199,8 +235,6 @@ def compute_small_real_training_readiness(
         "blockers": blockers,
         "warnings": [
             "preflight_only_no_training_executed",
-            "future_phase_must_add_checkpoint_export_if_missing",
-            "future_phase_must_write_metadata_sidecars_if_missing",
             "small_training_smoke_is_not_paper_training",
             "figure10_remains_blocked",
         ],
@@ -211,6 +245,13 @@ def run_preflight(args: argparse.Namespace) -> dict[str, Any]:
     main_info = _inspect_main_py()
     agent_info = _inspect_agent_py()
     loader_info = _inspect_loader_py()
+    export_info = _inspect_export_module()
+    readiness = compute_small_real_training_readiness(
+        main_info=main_info,
+        agent_info=agent_info,
+        loader_info=loader_info,
+        export_info=export_info,
+    )
     report = {
         "phase": "6.10",
         "scope": "hoodie_small_real_training_smoke_preflight",
@@ -233,12 +274,18 @@ def run_preflight(args: argparse.Namespace) -> dict[str, Any]:
         "requested_episode_time": args.episode_time,
         "expected_agent_count": args.expected_agent_count,
         "seed": args.seed,
-        **{k: v for k, v in compute_small_real_training_readiness(main_info=main_info, agent_info=agent_info, loader_info=loader_info).items()},
+        **{k: v for k, v in readiness.items()},
         "main_py_cli_detected": main_info["cli_flags"] and all(main_info["cli_flags"].values()),
         "main_py_training_path_detected": main_info["training_path_detected"],
         "main_py_checkpoint_export_detected": main_info["checkpoint_export_detected"],
         "agent_store_model_detected": agent_info["store_model_detected"],
         "agent_unified_loader_detected": agent_info["unified_loader_detected"],
+        "export_module_detected": export_info["module_exists"],
+        "export_metadata_detected": export_info["build_training_checkpoint_metadata_detected"]
+        and export_info["export_agent_runtime_checkpoint_detected"]
+        and export_info["export_training_checkpoints_detected"]
+        and export_info["meta_json_detected"]
+        and export_info["official_claim_allowed_detected"],
         "runtime_loader_ready": all(
             [
                 loader_info["full_model_supported"],
@@ -262,9 +309,34 @@ def run_preflight(args: argparse.Namespace) -> dict[str, Any]:
                 main_info["training_path_detected"],
             ]
         ),
-        "checkpoint_export_ready": bool(main_info["checkpoint_export_detected"]),
-        "metadata_sidecar_ready": False,
-        "small_real_training_execution_ready": False,
+        "checkpoint_export_ready": bool(
+            main_info["checkpoint_export_detected"] and export_info["module_exists"] and export_info["export_training_checkpoints_detected"]
+        ),
+        "metadata_sidecar_ready": bool(
+            export_info["build_training_checkpoint_metadata_detected"]
+            and export_info["export_agent_runtime_checkpoint_detected"]
+            and export_info["export_training_checkpoints_detected"]
+            and export_info["meta_json_detected"]
+            and export_info["official_claim_allowed_detected"]
+        ),
+        "small_real_training_execution_ready": bool(
+            main_info["training_path_detected"]
+            and main_info["checkpoint_export_detected"]
+            and export_info["module_exists"]
+            and export_info["export_training_checkpoints_detected"]
+            and export_info["build_training_checkpoint_metadata_detected"]
+            and export_info["export_agent_runtime_checkpoint_detected"]
+            and export_info["meta_json_detected"]
+            and export_info["official_claim_allowed_detected"]
+            and all(
+                [
+                    loader_info["full_model_supported"],
+                    loader_info["state_dict_payload_supported"],
+                    loader_info["trainer_json_rejected"],
+                    agent_info["unified_loader_detected"],
+                ]
+            )
+        ),
         "proposed_next_phase_command_preview": [
             "./.venvmac/bin/python",
             "scripts/run_hoodie_small_real_training_smoke.py",
@@ -283,21 +355,8 @@ def run_preflight(args: argparse.Namespace) -> dict[str, Any]:
             "write_runtime_checkpoint_and_metadata_sidecar_after_training",
             "ensure_trained_checkpoint_uses_runtime_loader_compatible_format",
         ],
-        "blockers": [
-            "small_real_training_execution_not_run",
-            "training_checkpoint_export_missing",
-            "training_checkpoint_metadata_sidecar_missing",
-            "paper_grade_training_not_run",
-            "official_200_episode_validation_not_run",
-            "official_figure_reproduction_not_run",
-        ],
-        "warnings": [
-            "preflight_only_no_training_executed",
-            "future_phase_must_add_checkpoint_export_if_missing",
-            "future_phase_must_write_metadata_sidecars_if_missing",
-            "small_training_smoke_is_not_paper_training",
-            "figure10_remains_blocked",
-        ],
+        "blockers": readiness["blockers"],
+        "warnings": readiness["warnings"],
     }
     return report
 

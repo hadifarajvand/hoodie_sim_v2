@@ -88,6 +88,25 @@ def select_torch_device() -> str:
     return "cpu"
 
 
+def _repo_root() -> Path:
+    return Path(__file__).resolve().parent
+
+
+def _resolve_path(value: str | None) -> Path | None:
+    if value is None:
+        return None
+    path = Path(value)
+    return path if path.is_absolute() else (Path.cwd() / path).resolve()
+
+
+def _repo_relative(path: Path) -> bool:
+    try:
+        path.resolve().relative_to(_repo_root().resolve())
+        return True
+    except Exception:
+        return False
+
+
 def main():
     device = select_torch_device()
     parser = argparse.ArgumentParser()
@@ -99,6 +118,11 @@ def main():
     parser.add_argument('--trace_output_dir', type=str, default='outputs/phase1_traces', help='Path to trace output directory')
     parser.add_argument('--seed', type=int, default=None, help='Optional random seed for reproducible validation runs')
     parser.add_argument('--trace_level', type=str, default='full', choices=('full', 'summary'), help='Trace emission level')
+    parser.add_argument('--export_trained_checkpoints', action='store_true', default=False)
+    parser.add_argument('--checkpoint_export_dir', type=str, default=None)
+    parser.add_argument('--checkpoint_export_format', type=str, default='pytorch_model_file', choices=('pytorch_model_file',))
+    parser.add_argument('--allow_training_checkpoint_export', action='store_true', default=False)
+    parser.add_argument('--checkpoint_export_manifest', type=str, default=None)
     args  = parser.parse_args()
 
     config = _load_config(args.config)
@@ -129,6 +153,17 @@ def main():
         torch.manual_seed(int(args.seed))
         # Static-frequency task injection still occurs inside Environment.reset(),
         # but seeding here makes the surrounding validation run reproducible.
+
+    checkpoint_export_dir = _resolve_path(args.checkpoint_export_dir)
+    checkpoint_export_manifest = _resolve_path(args.checkpoint_export_manifest)
+    if args.export_trained_checkpoints and not args.allow_training_checkpoint_export:
+        raise SystemExit("--allow_training_checkpoint_export is required when --export_trained_checkpoints is set")
+    if args.export_trained_checkpoints and args.validate:
+        raise SystemExit("checkpoint export is not allowed during validation runs")
+    if checkpoint_export_dir is not None and _repo_relative(checkpoint_export_dir):
+        raise SystemExit("repo checkpoint export dir refused")
+    if checkpoint_export_manifest is not None and _repo_relative(checkpoint_export_manifest):
+        raise SystemExit("repo checkpoint export manifest refused")
 
     os.makedirs(args.log_folder, exist_ok=True)
     trace_recorder = TraceRecorder(trace_level=args.trace_level)
@@ -371,6 +406,50 @@ def main():
                 decision_maker.learn() 
                 decision_maker.reset_lstm_history()
     trace_recorder.export(args.trace_output_dir)
+    if args.export_trained_checkpoints:
+        from training.hoodie_training_checkpoint_export import export_training_checkpoints
+
+        if checkpoint_export_dir is None:
+            raise SystemExit("--checkpoint_export_dir is required when --export_trained_checkpoints is set")
+        export_report = export_training_checkpoints(
+            decision_makers,
+            checkpoint_export_dir,
+            run_id=Path(args.log_folder).name,
+            seed=int(args.seed) if args.seed is not None else 0,
+            episode_count=int(args.epochs),
+            training_step_count=int(args.epochs),
+            phase="6.11",
+            checkpoint_format=args.checkpoint_export_format,
+        )
+        if checkpoint_export_manifest is not None:
+            checkpoint_export_manifest.parent.mkdir(parents=True, exist_ok=True)
+            with checkpoint_export_manifest.open("w") as f:
+                json.dump(
+                    {
+                        "phase": "6.11",
+                        "scope": "hoodie_small_real_training_smoke_export_path",
+                        "export_path_defined": True,
+                        "main_py_training_execution_run": True,
+                        "official_training_run": False,
+                        "full_training_run": False,
+                        "paper_training_run": False,
+                        "paper_grade_5000_episode_training_run": False,
+                        "official_200_episode_validation_run": False,
+                        "official_figure_claims_made": False,
+                        "official_claim_allowed": False,
+                        "checkpoint_export_dir": str(checkpoint_export_dir),
+                        "checkpoint_export_format": args.checkpoint_export_format,
+                        "agent_count": len(decision_makers),
+                        "checkpoint_artifact_committed": False,
+                        "model_artifact_committed": False,
+                        "agent_reports": export_report["agent_reports"],
+                        "blockers": export_report["blockers"],
+                        "warnings": export_report["warnings"],
+                    },
+                    f,
+                    indent=2,
+                    sort_keys=True,
+                )
 
                                 
                     

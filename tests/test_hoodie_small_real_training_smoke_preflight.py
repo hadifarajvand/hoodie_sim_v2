@@ -154,14 +154,16 @@ def test_successful_preflight_writes_report(tmp_path):
     assert report["main_py_training_path_detected"] is True
     assert report["agent_store_model_detected"] is True
     assert report["agent_unified_loader_detected"] is True
+    assert report["export_module_detected"] is True
+    assert report["export_metadata_detected"] is True
     assert report["runtime_loader_ready"] is True
     assert report["safe_output_routing_ready"] is True
     assert report["bounded_training_config_ready"] is True
-    assert report["checkpoint_export_ready"] is False
-    assert report["metadata_sidecar_ready"] is False
-    assert report["small_real_training_execution_ready"] is False
-    assert "training_checkpoint_export_missing" in report["blockers"]
-    assert "training_checkpoint_metadata_sidecar_missing" in report["blockers"]
+    assert report["checkpoint_export_ready"] is True
+    assert report["metadata_sidecar_ready"] is True
+    assert report["small_real_training_execution_ready"] is True
+    assert "training_checkpoint_export_missing" not in report["blockers"]
+    assert "training_checkpoint_metadata_sidecar_missing" not in report["blockers"]
     assert any(item in report["warnings"] for item in ["preflight_only_no_training_executed", "figure10_remains_blocked"])
     assert report["proposed_next_phase_command_preview"]
     after = _repo_forbidden_snapshot()
@@ -171,7 +173,7 @@ def test_successful_preflight_writes_report(tmp_path):
 def test_readiness_helper_requires_export_and_metadata():
     import scripts.check_hoodie_small_real_training_smoke_preflight as preflight
 
-    result = preflight.compute_small_real_training_readiness(
+    ready_result = preflight.compute_small_real_training_readiness(
         main_info={
             "cli_flags": {flag: True for flag in ["--config", "--log_folder", "--hyperparameters_file", "--epochs", "--validate", "--trace_output_dir", "--seed", "--trace_level"]},
             "training_path_detected": True,
@@ -186,11 +188,46 @@ def test_readiness_helper_requires_export_and_metadata():
             "state_dict_payload_supported": True,
             "trainer_json_rejected": True,
         },
+        export_info={
+            "module_exists": True,
+            "build_training_checkpoint_metadata_detected": True,
+            "export_agent_runtime_checkpoint_detected": True,
+            "export_training_checkpoints_detected": True,
+            "meta_json_detected": True,
+            "official_claim_allowed_detected": True,
+        },
     )
-    assert result["small_real_training_execution_ready"] is False
-    assert result["checkpoint_export_ready"] is True
-    assert result["metadata_sidecar_ready"] is False
-    assert "training_checkpoint_metadata_sidecar_missing" in result["blockers"]
+    missing_metadata_result = preflight.compute_small_real_training_readiness(
+        main_info={
+            "cli_flags": {flag: True for flag in ["--config", "--log_folder", "--hyperparameters_file", "--epochs", "--validate", "--trace_output_dir", "--seed", "--trace_level"]},
+            "training_path_detected": True,
+            "checkpoint_export_detected": True,
+        },
+        agent_info={
+            "store_model_detected": True,
+            "unified_loader_detected": True,
+        },
+        loader_info={
+            "full_model_supported": True,
+            "state_dict_payload_supported": True,
+            "trainer_json_rejected": True,
+        },
+        export_info={
+            "module_exists": True,
+            "build_training_checkpoint_metadata_detected": True,
+            "export_agent_runtime_checkpoint_detected": True,
+            "export_training_checkpoints_detected": True,
+            "meta_json_detected": False,
+            "official_claim_allowed_detected": False,
+        },
+    )
+    assert ready_result["small_real_training_execution_ready"] is True
+    assert ready_result["checkpoint_export_ready"] is True
+    assert ready_result["metadata_sidecar_ready"] is True
+    assert "training_checkpoint_metadata_sidecar_missing" not in ready_result["blockers"]
+    assert missing_metadata_result["small_real_training_execution_ready"] is False
+    assert missing_metadata_result["metadata_sidecar_ready"] is False
+    assert "training_checkpoint_metadata_sidecar_missing" in missing_metadata_result["blockers"]
 
 
 def test_no_generated_artifacts_outside_tmp_path(tmp_path):
