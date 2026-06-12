@@ -97,6 +97,18 @@ def _load_raw_metrics_rows(raw_path: Path) -> list[dict[str, str]]:
     return list(csv.DictReader(text.splitlines()))
 
 
+def _find_action_records_source(metrics_dir: Path) -> tuple[Path | None, str]:
+    candidates = [
+        metrics_dir / "wiring_smoke" / "action_records.json",
+        metrics_dir / "wiring_smoke" / "evaluation_runner" / "action_records.json",
+    ]
+    candidates.extend(sorted(metrics_dir.glob("wiring_smoke/evaluation_runner/runs/**/action_records.json")))
+    for candidate in candidates:
+        if candidate.exists():
+            return candidate, "real_phase6_14_action_records"
+    return None, "synthetic_phase6_15_wiring_probe"
+
+
 def _category_for_row(row: dict[str, str], index: int) -> str:
     regime = row.get("regime_id", "")
     if regime == "delay":
@@ -283,25 +295,65 @@ def run_smoke(args: argparse.Namespace) -> dict[str, Any]:
         and metrics_manifest.get("paper_reproduction_claim") is False
         and metrics_manifest.get("readiness_figure10_data_ready") is False
     )
+    if not metrics_success:
+        blockers.append("metrics_hardening_failed")
+        if metrics_manifest.get("metrics_consistency_valid") is not True:
+            blockers.append("metrics_hardening_consistency_invalid")
+        if metrics_manifest.get("raw_metrics_policy_scope_valid") is not True:
+            blockers.append("metrics_hardening_raw_policy_scope_invalid")
+        if metrics_manifest.get("raw_metrics_regime_scope_valid") is not True:
+            blockers.append("metrics_hardening_raw_regime_scope_invalid")
+        if metrics_manifest.get("raw_metrics_numeric_contract_valid") is not True:
+            blockers.append("metrics_hardening_numeric_contract_invalid")
+        if metrics_manifest.get("raw_metrics_notes_json_valid") is not True:
+            blockers.append("metrics_hardening_notes_json_invalid")
+        if metrics_manifest.get("summary_metrics_schema_valid") is not True:
+            blockers.append("metrics_hardening_summary_schema_invalid")
+        if metrics_manifest.get("readiness_schema_valid") is not True:
+            blockers.append("metrics_hardening_readiness_schema_invalid")
+        if metrics_manifest.get("manifest_schema_valid") is not True:
+            blockers.append("metrics_hardening_manifest_schema_invalid")
+        if metrics_manifest.get("official_claim_allowed") is True:
+            blockers.append("metrics_hardening_official_claim_violation")
+        if metrics_manifest.get("paper_reproduction_claim") is True:
+            blockers.append("metrics_hardening_paper_reproduction_claim_violation")
 
     rows = _load_raw_metrics_rows(raw_metrics_path)
     if not rows:
         blockers.append("action_records_missing")
+    source_path, source_kind = _find_action_records_source(metrics_dir)
     records: list[dict[str, Any]] = []
-    if rows:
+    action_records_source = source_kind
+    synthetic_action_records_used = source_kind == "synthetic_phase6_15_wiring_probe"
+    real_action_records_used = source_kind == "real_phase6_14_action_records"
+    if source_path is not None:
+        try:
+            loaded = _load_json(source_path)
+        except Exception:
+            blockers.append("action_records_schema_missing_fields")
+            loaded = None
+        if isinstance(loaded, list):
+            records = loaded
+        elif loaded is not None:
+            blockers.append("action_records_schema_missing_fields")
+    elif rows:
         try:
             records = _build_action_records(rows, args.run_id, args.allow_unknown_actions_for_diagnostic)
         except ValueError as exc:
             blockers.append(str(exc))
+        synthetic_action_records_used = True
+        real_action_records_used = False
 
     records_valid = False
     counts = {"local": 0, "horizontal": 0, "vertical": 0, "unknown": 0}
     if records:
         records_valid, record_blockers, counts = _validate_action_records(records, allow_unknown_actions_for_diagnostic=args.allow_unknown_actions_for_diagnostic)
         blockers.extend(record_blockers)
+    elif source_path is not None:
+        blockers.append("action_records_empty")
 
     action_files_present = False
-    if records_valid:
+    if metrics_success and records_valid:
         _write_json(records_path, records)
         outputs = write_action_distribution_outputs(records, action_dir, label=args.run_id, policy_name="HOODIE")
         contract_summary = {
@@ -315,6 +367,10 @@ def run_smoke(args: argparse.Namespace) -> dict[str, Any]:
             "action_distribution_metadata_path": str(metadata_path),
             "allowed_unknown_actions_for_diagnostic": args.allow_unknown_actions_for_diagnostic,
             "policy_name": "HOODIE",
+            "action_records_source": action_records_source,
+            "action_records_source_path": str(source_path) if source_path else None,
+            "synthetic_action_records_used": synthetic_action_records_used,
+            "real_action_records_used": real_action_records_used,
             "figure9_data_ready": False,
             "figure10_data_ready": False,
             "official_claim_allowed": False,
@@ -335,16 +391,19 @@ def run_smoke(args: argparse.Namespace) -> dict[str, Any]:
             blockers.append("action_records_empty")
         if any(not isinstance(record, dict) for record in action_records):
             blockers.append("action_records_schema_missing_fields")
+        required_keys = {"run_id", "regime_id", "policy_name", "agent_index", "evaluation_step", "source", "diagnostic_only", "official_figure_claim", "paper_reproduction_claim"}
+        if any(not required_keys.issubset(record.keys()) for record in action_records if isinstance(record, dict)):
+            blockers.append("action_records_schema_missing_fields")
         if any(record.get("policy_name") != "HOODIE" for record in action_records):
             blockers.append("action_record_policy_scope_invalid")
         if any(record.get("regime_id") not in {"delay", "drop_ratio"} for record in action_records):
             blockers.append("action_record_regime_scope_invalid")
+        if any(not any(field in record for field in ["action_type", "action_name", "action_category", "offload_type", "decision", "selected_action", "policy_action", "target_tier"]) for record in action_records):
+            blockers.append("action_record_category_missing")
         if any(record.get("official_figure_claim") is True for record in action_records):
             blockers.append("action_record_official_claim_violation")
         if any(record.get("paper_reproduction_claim") is True for record in action_records):
             blockers.append("action_record_paper_reproduction_claim_violation")
-        if any("selected_action" not in record and "action_category" not in record for record in action_records):
-            blockers.append("action_record_category_missing")
         if any(record.get("selected_action") not in {"local", "horizontal", "vertical"} and record.get("action_category") not in {"local", "horizontal", "vertical"} for record in action_records):
             blockers.append("action_record_numeric_only_unmapped")
         if any(row.get("policy_name") != "HOODIE" for row in csv_rows):
@@ -373,7 +432,7 @@ def run_smoke(args: argparse.Namespace) -> dict[str, Any]:
             blockers.append("action_distribution_metadata_invalid")
         if metadata.get("policy_name") != "HOODIE":
             blockers.append("action_distribution_metadata_invalid")
-        action_files_present = not blockers
+        action_files_present = all(path.exists() for path in (records_path, csv_path, json_path, metadata_path, contract_summary_path)) and not blockers
 
     manifest = {
         "phase": "6.15",
@@ -399,6 +458,10 @@ def run_smoke(args: argparse.Namespace) -> dict[str, Any]:
         "action_records_explicit_category_valid": records_valid,
         "action_records_policy_scope_valid": all(r.get("policy_name") == "HOODIE" for r in records) if records else False,
         "action_records_regime_scope_valid": all(r.get("regime_id") in {"delay", "drop_ratio"} for r in records) if records else False,
+        "action_records_source": action_records_source,
+        "action_records_source_path": str(source_path) if source_path else None,
+        "synthetic_action_records_used": synthetic_action_records_used,
+        "real_action_records_used": real_action_records_used,
         "action_distribution_files_present": action_files_present,
         "action_distribution_csv_valid": action_files_present,
         "action_distribution_json_valid": action_files_present,

@@ -55,7 +55,14 @@ def _write_json(path: Path, data: dict[str, object]) -> None:
     path.write_text(json.dumps(data, indent=2, sort_keys=True))
 
 
-def _write_metrics_hardening_tree(output_dir: Path, *, figure10_data_ready: bool = False, diagnostics: dict[str, object] | None = None) -> None:
+def _write_metrics_hardening_tree(
+    output_dir: Path,
+    *,
+    figure10_data_ready: bool = False,
+    diagnostics: dict[str, object] | None = None,
+    write_manifest: bool = True,
+    write_report: bool = True,
+) -> None:
     metrics = output_dir / "metrics_hardening"
     wiring = metrics / "wiring_smoke"
     runner = wiring / "evaluation_runner"
@@ -138,8 +145,10 @@ def _write_metrics_hardening_tree(output_dir: Path, *, figure10_data_ready: bool
     _write_json(runner / "figure10_policy_readiness.json", {"validation_episode_count": 1, "active_policy_set": ["HOODIE"], "figure10_data_ready": figure10_data_ready})
     _write_json(runner / "figure10_validation_manifest.json", {"diagnostic_only": True, "figure10_data_ready": figure10_data_ready, **(diagnostics or {})})
     _write_json(runner / "figure10_run_config_snapshot.json", {"trace_level": "summary"})
-    _write_json(metrics / "hoodie_smoke_checkpoint_evaluation_metrics_hardening_manifest.json", {"metrics_consistency_valid": True, "raw_metrics_policy_scope_valid": True, "raw_metrics_regime_scope_valid": True, "raw_metrics_numeric_contract_valid": True, "raw_metrics_notes_json_valid": True, "summary_metrics_schema_valid": True, "readiness_schema_valid": True, "manifest_schema_valid": True, "official_claim_allowed": False, "paper_reproduction_claim": False, "readiness_figure10_data_ready": figure10_data_ready})
-    _write_json(metrics / "hoodie_smoke_checkpoint_evaluation_metrics_hardening_report.json", {"metrics_hardening_run": True, "wiring_smoke_completed": True, "metrics_files_present": True, "raw_metrics_schema_valid": True, "raw_metrics_numeric_contract_valid": True, "raw_metrics_notes_json_valid": True, "metrics_consistency_valid": True, "figure10_data_ready": figure10_data_ready, "official_claim_allowed": False, "paper_reproduction_claim": False, "blockers": []})
+    if write_manifest:
+        _write_json(metrics / "hoodie_smoke_checkpoint_evaluation_metrics_hardening_manifest.json", {"metrics_consistency_valid": True, "raw_metrics_policy_scope_valid": True, "raw_metrics_regime_scope_valid": True, "raw_metrics_numeric_contract_valid": True, "raw_metrics_notes_json_valid": True, "summary_metrics_schema_valid": True, "readiness_schema_valid": True, "manifest_schema_valid": True, "official_claim_allowed": False, "paper_reproduction_claim": False, "readiness_figure10_data_ready": figure10_data_ready})
+    if write_report:
+        _write_json(metrics / "hoodie_smoke_checkpoint_evaluation_metrics_hardening_report.json", {"metrics_hardening_run": True, "wiring_smoke_completed": True, "metrics_files_present": True, "raw_metrics_schema_valid": True, "raw_metrics_numeric_contract_valid": True, "raw_metrics_notes_json_valid": True, "metrics_consistency_valid": True, "figure10_data_ready": figure10_data_ready, "official_claim_allowed": False, "paper_reproduction_claim": False, "blockers": []})
 
 
 def _run_smoke(output_dir: Path, *, allow_unknown_actions_for_diagnostic: bool = False, figure10_data_ready: bool = False, diagnostics: dict[str, object] | None = None):
@@ -313,6 +322,9 @@ def test_successful_wiring_hardening_runs_only_in_tmp_path(tmp_path):
     assert result["report"]["figure10_data_ready"] is False
     assert result["report"]["official_claim_allowed"] is False
     assert result["report"]["paper_reproduction_claim"] is False
+    assert result["manifest"]["action_records_source"] == "synthetic_phase6_15_wiring_probe"
+    assert result["manifest"]["synthetic_action_records_used"] is True
+    assert result["manifest"]["real_action_records_used"] is False
     out = tmp_path / "out"
     action_dir = out / "action_distribution"
     records = json.loads((action_dir / "action_records.json").read_text())
@@ -340,7 +352,531 @@ def test_successful_wiring_hardening_runs_only_in_tmp_path(tmp_path):
     assert before == _repo_forbidden_snapshot()
 
 
-def test_numeric_only_action_record_is_blocked(tmp_path):
+def test_metrics_hardening_returncode_nonzero_sets_blocker(tmp_path):
+    import scripts.run_hoodie_paper_scenario_action_distribution_wiring_hardening as smoke
+
+    def fake_run_metrics_hardening(**kwargs):
+        return subprocess.CompletedProcess(args=["metrics"], returncode=1, stdout="", stderr="")
+
+    smoke._run_metrics_hardening = fake_run_metrics_hardening
+    result = smoke.run_smoke(
+        argparse.Namespace(
+            output_dir=str(tmp_path / "out"),
+            training_epochs=1,
+            training_episode_time=3,
+            validation_episodes=1,
+            seed=42,
+            run_id="phase6_15_paper_scenario_action_distribution_wiring_hardening",
+            expected_agent_count=20,
+            trace_level="summary",
+            allow_paper_scenario_action_distribution_wiring_hardening=True,
+            allow_smoke_checkpoint_evaluation_metrics_hardening=True,
+            allow_trained_checkpoint_evaluation_wiring_smoke=True,
+            allow_bounded_training_smoke=True,
+            allow_figure10_validation_test_mode=True,
+            allow_main_py_training_execution=True,
+            allow_training_checkpoint_export=True,
+            allow_unknown_actions_for_diagnostic=False,
+            policies="HOODIE",
+        )
+    )
+    assert "metrics_hardening_failed" in result["report"]["blockers"]
+
+
+def test_metrics_hardening_manifest_missing_sets_blocker(tmp_path):
+    import scripts.run_hoodie_paper_scenario_action_distribution_wiring_hardening as smoke
+
+    def fake_run_metrics_hardening(**kwargs):
+        _write_metrics_hardening_tree(kwargs["output_dir"], write_manifest=False)
+        return subprocess.CompletedProcess(args=["metrics"], returncode=0, stdout="", stderr="")
+
+    smoke._run_metrics_hardening = fake_run_metrics_hardening
+    result = smoke.run_smoke(
+        argparse.Namespace(
+            output_dir=str(tmp_path / "out"),
+            training_epochs=1,
+            training_episode_time=3,
+            validation_episodes=1,
+            seed=42,
+            run_id="phase6_15_paper_scenario_action_distribution_wiring_hardening",
+            expected_agent_count=20,
+            trace_level="summary",
+            allow_paper_scenario_action_distribution_wiring_hardening=True,
+            allow_smoke_checkpoint_evaluation_metrics_hardening=True,
+            allow_trained_checkpoint_evaluation_wiring_smoke=True,
+            allow_bounded_training_smoke=True,
+            allow_figure10_validation_test_mode=True,
+            allow_main_py_training_execution=True,
+            allow_training_checkpoint_export=True,
+            allow_unknown_actions_for_diagnostic=False,
+            policies="HOODIE",
+        )
+    )
+    assert "metrics_hardening_manifest_missing" in result["report"]["blockers"]
+
+
+def test_metrics_hardening_report_missing_sets_blocker(tmp_path):
+    import scripts.run_hoodie_paper_scenario_action_distribution_wiring_hardening as smoke
+
+    def fake_run_metrics_hardening(**kwargs):
+        _write_metrics_hardening_tree(kwargs["output_dir"], write_report=False)
+        return subprocess.CompletedProcess(args=["metrics"], returncode=0, stdout="", stderr="")
+
+    smoke._run_metrics_hardening = fake_run_metrics_hardening
+    result = smoke.run_smoke(
+        argparse.Namespace(
+            output_dir=str(tmp_path / "out"),
+            training_epochs=1,
+            training_episode_time=3,
+            validation_episodes=1,
+            seed=42,
+            run_id="phase6_15_paper_scenario_action_distribution_wiring_hardening",
+            expected_agent_count=20,
+            trace_level="summary",
+            allow_paper_scenario_action_distribution_wiring_hardening=True,
+            allow_smoke_checkpoint_evaluation_metrics_hardening=True,
+            allow_trained_checkpoint_evaluation_wiring_smoke=True,
+            allow_bounded_training_smoke=True,
+            allow_figure10_validation_test_mode=True,
+            allow_main_py_training_execution=True,
+            allow_training_checkpoint_export=True,
+            allow_unknown_actions_for_diagnostic=False,
+            policies="HOODIE",
+        )
+    )
+    assert "metrics_hardening_report_missing" in result["report"]["blockers"]
+
+
+def test_metrics_hardening_consistency_false_sets_blocker(tmp_path):
+    import scripts.run_hoodie_paper_scenario_action_distribution_wiring_hardening as smoke
+
+    def fake_run_metrics_hardening(**kwargs):
+        _write_metrics_hardening_tree(kwargs["output_dir"], diagnostics={"metrics_consistency_valid": False})
+        metrics = Path(kwargs["output_dir"]) / "metrics_hardening"
+        _write_json(metrics / "hoodie_smoke_checkpoint_evaluation_metrics_hardening_manifest.json", {"metrics_consistency_valid": False, "raw_metrics_policy_scope_valid": True, "raw_metrics_regime_scope_valid": True, "raw_metrics_numeric_contract_valid": True, "raw_metrics_notes_json_valid": True, "summary_metrics_schema_valid": True, "readiness_schema_valid": True, "manifest_schema_valid": True, "official_claim_allowed": False, "paper_reproduction_claim": False, "readiness_figure10_data_ready": False})
+        return subprocess.CompletedProcess(args=["metrics"], returncode=0, stdout="", stderr="")
+
+    smoke._run_metrics_hardening = fake_run_metrics_hardening
+    result = smoke.run_smoke(
+        argparse.Namespace(
+            output_dir=str(tmp_path / "out"),
+            training_epochs=1,
+            training_episode_time=3,
+            validation_episodes=1,
+            seed=42,
+            run_id="phase6_15_paper_scenario_action_distribution_wiring_hardening",
+            expected_agent_count=20,
+            trace_level="summary",
+            allow_paper_scenario_action_distribution_wiring_hardening=True,
+            allow_smoke_checkpoint_evaluation_metrics_hardening=True,
+            allow_trained_checkpoint_evaluation_wiring_smoke=True,
+            allow_bounded_training_smoke=True,
+            allow_figure10_validation_test_mode=True,
+            allow_main_py_training_execution=True,
+            allow_training_checkpoint_export=True,
+            allow_unknown_actions_for_diagnostic=False,
+            policies="HOODIE",
+        )
+    )
+    assert "metrics_hardening_consistency_invalid" in result["report"]["blockers"]
+    assert result["manifest"]["action_distribution_wiring_ready"] is False
+
+
+def test_metrics_hardening_policy_scope_false_sets_blocker(tmp_path):
+    import scripts.run_hoodie_paper_scenario_action_distribution_wiring_hardening as smoke
+
+    def fake_run_metrics_hardening(**kwargs):
+        _write_metrics_hardening_tree(kwargs["output_dir"])
+        metrics = Path(kwargs["output_dir"]) / "metrics_hardening"
+        _write_json(metrics / "hoodie_smoke_checkpoint_evaluation_metrics_hardening_manifest.json", {"metrics_consistency_valid": True, "raw_metrics_policy_scope_valid": False, "raw_metrics_regime_scope_valid": True, "raw_metrics_numeric_contract_valid": True, "raw_metrics_notes_json_valid": True, "summary_metrics_schema_valid": True, "readiness_schema_valid": True, "manifest_schema_valid": True, "official_claim_allowed": False, "paper_reproduction_claim": False, "readiness_figure10_data_ready": False})
+        return subprocess.CompletedProcess(args=["metrics"], returncode=0, stdout="", stderr="")
+
+    smoke._run_metrics_hardening = fake_run_metrics_hardening
+    result = smoke.run_smoke(
+        argparse.Namespace(
+            output_dir=str(tmp_path / "out"),
+            training_epochs=1,
+            training_episode_time=3,
+            validation_episodes=1,
+            seed=42,
+            run_id="phase6_15_paper_scenario_action_distribution_wiring_hardening",
+            expected_agent_count=20,
+            trace_level="summary",
+            allow_paper_scenario_action_distribution_wiring_hardening=True,
+            allow_smoke_checkpoint_evaluation_metrics_hardening=True,
+            allow_trained_checkpoint_evaluation_wiring_smoke=True,
+            allow_bounded_training_smoke=True,
+            allow_figure10_validation_test_mode=True,
+            allow_main_py_training_execution=True,
+            allow_training_checkpoint_export=True,
+            allow_unknown_actions_for_diagnostic=False,
+            policies="HOODIE",
+        )
+    )
+    assert "metrics_hardening_raw_policy_scope_invalid" in result["report"]["blockers"]
+
+
+def test_figure10_data_ready_true_sets_blocker(tmp_path):
+    import scripts.run_hoodie_paper_scenario_action_distribution_wiring_hardening as smoke
+
+    def fake_run_metrics_hardening(**kwargs):
+        _write_metrics_hardening_tree(kwargs["output_dir"], figure10_data_ready=True)
+        return subprocess.CompletedProcess(args=["metrics"], returncode=0, stdout="", stderr="")
+
+    smoke._run_metrics_hardening = fake_run_metrics_hardening
+    result = smoke.run_smoke(
+        argparse.Namespace(
+            output_dir=str(tmp_path / "out"),
+            training_epochs=1,
+            training_episode_time=3,
+            validation_episodes=1,
+            seed=42,
+            run_id="phase6_15_paper_scenario_action_distribution_wiring_hardening",
+            expected_agent_count=20,
+            trace_level="summary",
+            allow_paper_scenario_action_distribution_wiring_hardening=True,
+            allow_smoke_checkpoint_evaluation_metrics_hardening=True,
+            allow_trained_checkpoint_evaluation_wiring_smoke=True,
+            allow_bounded_training_smoke=True,
+            allow_figure10_validation_test_mode=True,
+            allow_main_py_training_execution=True,
+            allow_training_checkpoint_export=True,
+            allow_unknown_actions_for_diagnostic=False,
+            policies="HOODIE",
+        )
+    )
+    assert "metrics_hardening_figure10_data_ready_true" in result["report"]["blockers"] or "unexpected_figure10_data_ready_true" in result["report"]["blockers"]
+
+
+def test_real_action_records_json_is_used_when_present(tmp_path):
+    import scripts.run_hoodie_paper_scenario_action_distribution_wiring_hardening as smoke
+
+    def fake_run_metrics_hardening(**kwargs):
+        _write_metrics_hardening_tree(kwargs["output_dir"])
+        action_root = Path(kwargs["output_dir"]) / "metrics_hardening" / "wiring_smoke"
+        real = action_root / "evaluation_runner" / "action_records.json"
+        _write_json(
+            real,
+            [
+                {
+                    "run_id": "phase6_14_smoke_checkpoint_evaluation_metrics_hardening",
+                    "regime_id": "delay",
+                    "policy_name": "HOODIE",
+                    "agent_index": 0,
+                    "evaluation_step": 0,
+                    "action_category": "local",
+                    "selected_action": "local",
+                    "source": "real",
+                    "diagnostic_only": True,
+                    "official_figure_claim": False,
+                    "paper_reproduction_claim": False,
+                }
+            ],
+        )
+        return subprocess.CompletedProcess(args=["metrics"], returncode=0, stdout="", stderr="")
+
+    smoke._run_metrics_hardening = fake_run_metrics_hardening
+    result = smoke.run_smoke(
+        argparse.Namespace(
+            output_dir=str(tmp_path / "out"),
+            training_epochs=1,
+            training_episode_time=3,
+            validation_episodes=1,
+            seed=42,
+            run_id="phase6_15_paper_scenario_action_distribution_wiring_hardening",
+            expected_agent_count=20,
+            trace_level="summary",
+            allow_paper_scenario_action_distribution_wiring_hardening=True,
+            allow_smoke_checkpoint_evaluation_metrics_hardening=True,
+            allow_trained_checkpoint_evaluation_wiring_smoke=True,
+            allow_bounded_training_smoke=True,
+            allow_figure10_validation_test_mode=True,
+            allow_main_py_training_execution=True,
+            allow_training_checkpoint_export=True,
+            allow_unknown_actions_for_diagnostic=False,
+            policies="HOODIE",
+        )
+    )
+    assert result["manifest"]["real_action_records_used"] is True
+    assert result["manifest"]["synthetic_action_records_used"] is False
+    assert "evaluation_runner/action_records.json" in result["manifest"]["action_records_source_path"]
+
+
+def test_invalid_real_action_records_does_not_fallback_to_synthetic(tmp_path):
+    import scripts.run_hoodie_paper_scenario_action_distribution_wiring_hardening as smoke
+
+    def fake_run_metrics_hardening(**kwargs):
+        _write_metrics_hardening_tree(kwargs["output_dir"])
+        real = Path(kwargs["output_dir"]) / "metrics_hardening" / "wiring_smoke" / "evaluation_runner" / "action_records.json"
+        _write_json(real, [{"run_id": "phase6_14_smoke_checkpoint_evaluation_metrics_hardening"}])
+        return subprocess.CompletedProcess(args=["metrics"], returncode=0, stdout="", stderr="")
+
+    smoke._run_metrics_hardening = fake_run_metrics_hardening
+    result = smoke.run_smoke(
+        argparse.Namespace(
+            output_dir=str(tmp_path / "out"),
+            training_epochs=1,
+            training_episode_time=3,
+            validation_episodes=1,
+            seed=42,
+            run_id="phase6_15_paper_scenario_action_distribution_wiring_hardening",
+            expected_agent_count=20,
+            trace_level="summary",
+            allow_paper_scenario_action_distribution_wiring_hardening=True,
+            allow_smoke_checkpoint_evaluation_metrics_hardening=True,
+            allow_trained_checkpoint_evaluation_wiring_smoke=True,
+            allow_bounded_training_smoke=True,
+            allow_figure10_validation_test_mode=True,
+            allow_main_py_training_execution=True,
+            allow_training_checkpoint_export=True,
+            allow_unknown_actions_for_diagnostic=False,
+            policies="HOODIE",
+        )
+    )
+    assert result["manifest"]["synthetic_action_records_used"] is False
+    assert "action_records_schema_missing_fields" in result["report"]["blockers"]
+
+
+def test_missing_action_records_uses_synthetic_probe_marked_diagnostic(tmp_path):
+    import scripts.run_hoodie_paper_scenario_action_distribution_wiring_hardening as smoke
+
+    def fake_run_metrics_hardening(**kwargs):
+        _write_metrics_hardening_tree(kwargs["output_dir"])
+        return subprocess.CompletedProcess(args=["metrics"], returncode=0, stdout="", stderr="")
+
+    smoke._run_metrics_hardening = fake_run_metrics_hardening
+    result = smoke.run_smoke(
+        argparse.Namespace(
+            output_dir=str(tmp_path / "out"),
+            training_epochs=1,
+            training_episode_time=3,
+            validation_episodes=1,
+            seed=42,
+            run_id="phase6_15_paper_scenario_action_distribution_wiring_hardening",
+            expected_agent_count=20,
+            trace_level="summary",
+            allow_paper_scenario_action_distribution_wiring_hardening=True,
+            allow_smoke_checkpoint_evaluation_metrics_hardening=True,
+            allow_trained_checkpoint_evaluation_wiring_smoke=True,
+            allow_bounded_training_smoke=True,
+            allow_figure10_validation_test_mode=True,
+            allow_main_py_training_execution=True,
+            allow_training_checkpoint_export=True,
+            allow_unknown_actions_for_diagnostic=False,
+            policies="HOODIE",
+        )
+    )
+    assert result["manifest"]["synthetic_action_records_used"] is True
+    assert result["manifest"]["action_records_source"] == "synthetic_phase6_15_wiring_probe"
+    assert "synthetic_action_records_used_for_wiring_only" in result["report"]["warnings"]
+
+
+def test_action_records_empty_sets_blocker(tmp_path):
+    import scripts.run_hoodie_paper_scenario_action_distribution_wiring_hardening as smoke
+
+    def fake_run_metrics_hardening(**kwargs):
+        _write_metrics_hardening_tree(kwargs["output_dir"])
+        action = Path(kwargs["output_dir"]) / "metrics_hardening" / "wiring_smoke" / "evaluation_runner" / "action_records.json"
+        _write_json(action, [])
+        return subprocess.CompletedProcess(args=["metrics"], returncode=0, stdout="", stderr="")
+
+    smoke._run_metrics_hardening = fake_run_metrics_hardening
+    result = smoke.run_smoke(
+        argparse.Namespace(
+            output_dir=str(tmp_path / "out"),
+            training_epochs=1,
+            training_episode_time=3,
+            validation_episodes=1,
+            seed=42,
+            run_id="phase6_15_paper_scenario_action_distribution_wiring_hardening",
+            expected_agent_count=20,
+            trace_level="summary",
+            allow_paper_scenario_action_distribution_wiring_hardening=True,
+            allow_smoke_checkpoint_evaluation_metrics_hardening=True,
+            allow_trained_checkpoint_evaluation_wiring_smoke=True,
+            allow_bounded_training_smoke=True,
+            allow_figure10_validation_test_mode=True,
+            allow_main_py_training_execution=True,
+            allow_training_checkpoint_export=True,
+            allow_unknown_actions_for_diagnostic=False,
+            policies="HOODIE",
+        )
+    )
+    assert "action_records_empty" in result["report"]["blockers"]
+
+
+def test_action_record_missing_required_schema_fields_sets_blocker(tmp_path):
+    import scripts.run_hoodie_paper_scenario_action_distribution_wiring_hardening as smoke
+
+    def fake_run_metrics_hardening(**kwargs):
+        _write_metrics_hardening_tree(kwargs["output_dir"])
+        action = Path(kwargs["output_dir"]) / "metrics_hardening" / "wiring_smoke" / "evaluation_runner" / "action_records.json"
+        _write_json(action, [{"run_id": "phase6_14_smoke_checkpoint_evaluation_metrics_hardening"}])
+        return subprocess.CompletedProcess(args=["metrics"], returncode=0, stdout="", stderr="")
+
+    smoke._run_metrics_hardening = fake_run_metrics_hardening
+    result = smoke.run_smoke(
+        argparse.Namespace(
+            output_dir=str(tmp_path / "out"),
+            training_epochs=1,
+            training_episode_time=3,
+            validation_episodes=1,
+            seed=42,
+            run_id="phase6_15_paper_scenario_action_distribution_wiring_hardening",
+            expected_agent_count=20,
+            trace_level="summary",
+            allow_paper_scenario_action_distribution_wiring_hardening=True,
+            allow_smoke_checkpoint_evaluation_metrics_hardening=True,
+            allow_trained_checkpoint_evaluation_wiring_smoke=True,
+            allow_bounded_training_smoke=True,
+            allow_figure10_validation_test_mode=True,
+            allow_main_py_training_execution=True,
+            allow_training_checkpoint_export=True,
+            allow_unknown_actions_for_diagnostic=False,
+            policies="HOODIE",
+        )
+    )
+    assert "action_records_schema_missing_fields" in result["report"]["blockers"]
+
+
+def test_action_record_missing_category_sets_blocker(tmp_path):
+    import scripts.run_hoodie_paper_scenario_action_distribution_wiring_hardening as smoke
+
+    def fake_run_metrics_hardening(**kwargs):
+        _write_metrics_hardening_tree(kwargs["output_dir"])
+        action = Path(kwargs["output_dir"]) / "metrics_hardening" / "wiring_smoke" / "evaluation_runner" / "action_records.json"
+        _write_json(action, [
+            {
+                "run_id": "phase6_14_smoke_checkpoint_evaluation_metrics_hardening",
+                "regime_id": "delay",
+                "policy_name": "HOODIE",
+                "agent_index": 0,
+                "evaluation_step": 0,
+                "source": "real",
+                "diagnostic_only": True,
+                "official_figure_claim": False,
+                "paper_reproduction_claim": False,
+            }
+        ])
+        return subprocess.CompletedProcess(args=["metrics"], returncode=0, stdout="", stderr="")
+
+    smoke._run_metrics_hardening = fake_run_metrics_hardening
+    result = smoke.run_smoke(
+        argparse.Namespace(
+            output_dir=str(tmp_path / "out"),
+            training_epochs=1,
+            training_episode_time=3,
+            validation_episodes=1,
+            seed=42,
+            run_id="phase6_15_paper_scenario_action_distribution_wiring_hardening",
+            expected_agent_count=20,
+            trace_level="summary",
+            allow_paper_scenario_action_distribution_wiring_hardening=True,
+            allow_smoke_checkpoint_evaluation_metrics_hardening=True,
+            allow_trained_checkpoint_evaluation_wiring_smoke=True,
+            allow_bounded_training_smoke=True,
+            allow_figure10_validation_test_mode=True,
+            allow_main_py_training_execution=True,
+            allow_training_checkpoint_export=True,
+            allow_unknown_actions_for_diagnostic=False,
+            policies="HOODIE",
+        )
+    )
+    assert "action_record_category_missing" in result["report"]["blockers"]
+
+
+def test_action_record_numeric_only_sets_blocker(tmp_path):
+    import scripts.run_hoodie_paper_scenario_action_distribution_wiring_hardening as smoke
+
+    def fake_run_metrics_hardening(**kwargs):
+        _write_metrics_hardening_tree(kwargs["output_dir"])
+        action = Path(kwargs["output_dir"]) / "metrics_hardening" / "wiring_smoke" / "evaluation_runner" / "action_records.json"
+        _write_json(action, [
+            {
+                "run_id": "phase6_14_smoke_checkpoint_evaluation_metrics_hardening",
+                "regime_id": "delay",
+                "policy_name": "HOODIE",
+                "agent_index": 0,
+                "evaluation_step": 0,
+                "source": "real",
+                "diagnostic_only": True,
+                "official_figure_claim": False,
+                "paper_reproduction_claim": False,
+                "selected_action": 0,
+            }
+        ])
+        return subprocess.CompletedProcess(args=["metrics"], returncode=0, stdout="", stderr="")
+
+    smoke._run_metrics_hardening = fake_run_metrics_hardening
+    result = smoke.run_smoke(
+        argparse.Namespace(
+            output_dir=str(tmp_path / "out"),
+            training_epochs=1,
+            training_episode_time=3,
+            validation_episodes=1,
+            seed=42,
+            run_id="phase6_15_paper_scenario_action_distribution_wiring_hardening",
+            expected_agent_count=20,
+            trace_level="summary",
+            allow_paper_scenario_action_distribution_wiring_hardening=True,
+            allow_smoke_checkpoint_evaluation_metrics_hardening=True,
+            allow_trained_checkpoint_evaluation_wiring_smoke=True,
+            allow_bounded_training_smoke=True,
+            allow_figure10_validation_test_mode=True,
+            allow_main_py_training_execution=True,
+            allow_training_checkpoint_export=True,
+            allow_unknown_actions_for_diagnostic=False,
+            policies="HOODIE",
+        )
+    )
+    assert "action_record_numeric_only_unmapped" in result["report"]["blockers"]
+
+
+def test_action_record_unknown_category_sets_blocker(tmp_path):
+    import scripts.run_hoodie_paper_scenario_action_distribution_wiring_hardening as smoke
+
+    def fake_run_metrics_hardening(**kwargs):
+        _write_metrics_hardening_tree(kwargs["output_dir"])
+        action = Path(kwargs["output_dir"]) / "metrics_hardening" / "wiring_smoke" / "evaluation_runner" / "action_records.json"
+        _write_json(action, [
+            {
+                "run_id": "phase6_14_smoke_checkpoint_evaluation_metrics_hardening",
+                "regime_id": "delay",
+                "policy_name": "HOODIE",
+                "agent_index": 0,
+                "evaluation_step": 0,
+                "source": "real",
+                "diagnostic_only": True,
+                "official_figure_claim": False,
+                "paper_reproduction_claim": False,
+                "selected_action": "unknown",
+            }
+        ])
+        return subprocess.CompletedProcess(args=["metrics"], returncode=0, stdout="", stderr="")
+
+    smoke._run_metrics_hardening = fake_run_metrics_hardening
+    result = smoke.run_smoke(
+        argparse.Namespace(
+            output_dir=str(tmp_path / "out"),
+            training_epochs=1,
+            training_episode_time=3,
+            validation_episodes=1,
+            seed=42,
+            run_id="phase6_15_paper_scenario_action_distribution_wiring_hardening",
+            expected_agent_count=20,
+            trace_level="summary",
+            allow_paper_scenario_action_distribution_wiring_hardening=True,
+            allow_smoke_checkpoint_evaluation_metrics_hardening=True,
+            allow_trained_checkpoint_evaluation_wiring_smoke=True,
+            allow_bounded_training_smoke=True,
+            allow_figure10_validation_test_mode=True,
+            allow_main_py_training_execution=True,
+            allow_training_checkpoint_export=True,
+            allow_unknown_actions_for_diagnostic=False,
+            policies="HOODIE",
+        )
+    )
+    assert "unknown_actions_present" in result["report"]["blockers"] or "action_record_unknown_category" in result["report"]["blockers"]
     import scripts.run_hoodie_paper_scenario_action_distribution_wiring_hardening as smoke
 
     def fake_run_metrics_hardening(**kwargs):
