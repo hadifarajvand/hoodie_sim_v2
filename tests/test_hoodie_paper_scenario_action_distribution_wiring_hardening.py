@@ -975,6 +975,108 @@ def test_unknown_actions_are_blocked_without_diagnostic_flag(tmp_path):
     assert "unknown_actions_present" in result["manifest"]["blockers"] or "action_distribution_unknown_count_not_allowed" in result["manifest"]["blockers"]
 
 
+def test_action_distribution_csv_missing_sets_blocker(tmp_path):
+    import scripts.run_hoodie_paper_scenario_action_distribution_wiring_hardening as smoke
+
+    _run_smoke(tmp_path / "out")
+    action_dir = tmp_path / "out" / "action_distribution"
+    (action_dir / "hoodie_action_distribution.csv").unlink()
+    blockers = smoke._validate_action_distribution_outputs(
+        action_dir,
+        json.loads((action_dir / "action_records.json").read_text()),
+        allow_unknown_actions_for_diagnostic=False,
+    )
+    assert "action_distribution_file_missing" in blockers or "action_distribution_csv_invalid" in blockers
+
+
+def test_action_distribution_json_count_mismatch_sets_blocker(tmp_path):
+    import scripts.run_hoodie_paper_scenario_action_distribution_wiring_hardening as smoke
+
+    _run_smoke(tmp_path / "out")
+    action_dir = tmp_path / "out" / "action_distribution"
+    distribution_path = action_dir / "hoodie_action_distribution.json"
+    distribution = json.loads(distribution_path.read_text())
+    distribution["total_actions"] = distribution["total_actions"] + 1
+    _write_json(distribution_path, distribution)
+    blockers = smoke._validate_action_distribution_outputs(
+        action_dir,
+        json.loads((action_dir / "action_records.json").read_text()),
+        allow_unknown_actions_for_diagnostic=False,
+    )
+    assert "action_distribution_count_mismatch" in blockers
+
+
+def test_action_distribution_ratio_invalid_sets_blocker(tmp_path):
+    import scripts.run_hoodie_paper_scenario_action_distribution_wiring_hardening as smoke
+
+    _run_smoke(tmp_path / "out")
+    action_dir = tmp_path / "out" / "action_distribution"
+    distribution_path = action_dir / "hoodie_action_distribution.json"
+    distribution = json.loads(distribution_path.read_text())
+    distribution["local_ratio"] = 1.5
+    _write_json(distribution_path, distribution)
+    blockers = smoke._validate_action_distribution_outputs(
+        action_dir,
+        json.loads((action_dir / "action_records.json").read_text()),
+        allow_unknown_actions_for_diagnostic=False,
+    )
+    assert "action_distribution_ratio_invalid" in blockers
+
+
+def test_action_distribution_ratio_sum_invalid_sets_blocker(tmp_path):
+    import scripts.run_hoodie_paper_scenario_action_distribution_wiring_hardening as smoke
+
+    _run_smoke(tmp_path / "out")
+    action_dir = tmp_path / "out" / "action_distribution"
+    distribution_path = action_dir / "hoodie_action_distribution.json"
+    distribution = json.loads(distribution_path.read_text())
+    distribution["local_ratio"] = 0.6
+    distribution["horizontal_ratio"] = 0.2
+    distribution["vertical_ratio"] = 0.1
+    distribution["unknown_ratio"] = 0.1
+    _write_json(distribution_path, distribution)
+    blockers = smoke._validate_action_distribution_outputs(
+        action_dir,
+        json.loads((action_dir / "action_records.json").read_text()),
+        allow_unknown_actions_for_diagnostic=False,
+    )
+    assert "action_distribution_ratio_sum_invalid" in blockers
+
+
+def test_action_distribution_metadata_official_claim_sets_blocker(tmp_path):
+    import scripts.run_hoodie_paper_scenario_action_distribution_wiring_hardening as smoke
+
+    _run_smoke(tmp_path / "out")
+    action_dir = tmp_path / "out" / "action_distribution"
+    metadata_path = action_dir / "hoodie_action_distribution_metadata.json"
+    metadata = json.loads(metadata_path.read_text())
+    metadata["official_claim_allowed"] = True
+    _write_json(metadata_path, metadata)
+    blockers = smoke._validate_action_distribution_outputs(
+        action_dir,
+        json.loads((action_dir / "action_records.json").read_text()),
+        allow_unknown_actions_for_diagnostic=False,
+    )
+    assert "action_distribution_official_claim_violation" in blockers
+
+
+def test_action_distribution_metadata_paper_reproduction_sets_blocker(tmp_path):
+    import scripts.run_hoodie_paper_scenario_action_distribution_wiring_hardening as smoke
+
+    _run_smoke(tmp_path / "out")
+    action_dir = tmp_path / "out" / "action_distribution"
+    metadata_path = action_dir / "hoodie_action_distribution_metadata.json"
+    metadata = json.loads(metadata_path.read_text())
+    metadata["paper_reproduction_claim"] = True
+    _write_json(metadata_path, metadata)
+    blockers = smoke._validate_action_distribution_outputs(
+        action_dir,
+        json.loads((action_dir / "action_records.json").read_text()),
+        allow_unknown_actions_for_diagnostic=False,
+    )
+    assert "action_distribution_paper_reproduction_claim_violation" in blockers
+
+
 def test_no_generated_artifacts_outside_tmp_path(tmp_path):
     before = _repo_forbidden_snapshot()
     after = _repo_forbidden_snapshot()

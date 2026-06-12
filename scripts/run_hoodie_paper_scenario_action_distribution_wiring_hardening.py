@@ -200,6 +200,77 @@ def _validate_action_records(
     return len(blockers) == 0, list(dict.fromkeys(blockers)), dict(counts)
 
 
+def _validate_action_distribution_outputs(
+    action_dir: Path,
+    action_records: list[dict[str, Any]],
+    *,
+    allow_unknown_actions_for_diagnostic: bool,
+) -> list[str]:
+    blockers: list[str] = []
+    records_path = action_dir / "action_records.json"
+    csv_path = action_dir / "hoodie_action_distribution.csv"
+    json_path = action_dir / "hoodie_action_distribution.json"
+    metadata_path = action_dir / "hoodie_action_distribution_metadata.json"
+    contract_summary_path = action_dir / "hoodie_action_distribution_contract_summary.json"
+    paths = (records_path, csv_path, json_path, metadata_path, contract_summary_path)
+    if not all(path.exists() for path in paths):
+        blockers.append("action_distribution_file_missing")
+        return list(dict.fromkeys(blockers))
+    try:
+        csv_rows = list(csv.DictReader(csv_path.read_text().splitlines()))
+    except Exception:
+        blockers.append("action_distribution_csv_invalid")
+        csv_rows = []
+    try:
+        action_distribution = _load_json(json_path)
+    except Exception:
+        blockers.append("action_distribution_json_invalid")
+        action_distribution = {}
+    try:
+        metadata = _load_json(metadata_path)
+    except Exception:
+        blockers.append("action_distribution_metadata_invalid")
+        metadata = {}
+    try:
+        contract_summary = _load_json(contract_summary_path)
+    except Exception:
+        blockers.append("action_distribution_metadata_invalid")
+        contract_summary = {}
+    if csv_rows and any(row.get("policy_name") != "HOODIE" for row in csv_rows):
+        blockers.append("action_distribution_csv_invalid")
+    if csv_rows and set(row.get("category") for row in csv_rows) != {"local", "horizontal", "vertical", "unknown"}:
+        blockers.append("action_distribution_csv_invalid")
+    if action_distribution.get("policy_name") != "HOODIE":
+        blockers.append("action_distribution_json_invalid")
+    if action_distribution.get("total_actions") != len(action_records):
+        blockers.append("action_distribution_count_mismatch")
+    if action_distribution.get("unknown_count", 0) > 0 and not allow_unknown_actions_for_diagnostic:
+        blockers.append("action_distribution_unknown_count_not_allowed")
+    total_actions = action_distribution.get("total_actions", 0)
+    if total_actions > 0:
+        ratios = [
+            action_distribution.get("local_ratio", 0.0),
+            action_distribution.get("horizontal_ratio", 0.0),
+            action_distribution.get("vertical_ratio", 0.0),
+            action_distribution.get("unknown_ratio", 0.0),
+        ]
+        if any((not isinstance(r, (int, float))) or r < 0.0 or r > 1.0 for r in ratios):
+            blockers.append("action_distribution_ratio_invalid")
+        if abs(sum(ratios) - 1.0) > 1e-9:
+            blockers.append("action_distribution_ratio_sum_invalid")
+    if metadata.get("official_figure_claim") is True or metadata.get("official_claim_allowed") is True:
+        blockers.append("action_distribution_official_claim_violation")
+    if metadata.get("paper_reproduction_claim") is True:
+        blockers.append("action_distribution_paper_reproduction_claim_violation")
+    if metadata.get("source") not in {"checkpointed_evaluation_or_synthetic_test", "phase6_15_action_distribution_wiring_probe"}:
+        blockers.append("action_distribution_metadata_invalid")
+    if metadata.get("policy_name") != "HOODIE":
+        blockers.append("action_distribution_metadata_invalid")
+    if contract_summary.get("figure9_data_ready") is not False or contract_summary.get("figure10_data_ready") is not False:
+        blockers.append("action_distribution_metadata_invalid")
+    return list(dict.fromkeys(blockers))
+
+
 def run_smoke(args: argparse.Namespace) -> dict[str, Any]:
     output_dir = _resolve_path(args.output_dir)
     if _repo_relative(output_dir):
@@ -384,54 +455,15 @@ def run_smoke(args: argparse.Namespace) -> dict[str, Any]:
 
     if action_files_present:
         action_records = _load_json(records_path)
+        blockers.extend(
+            _validate_action_distribution_outputs(
+                action_dir,
+                action_records,
+                allow_unknown_actions_for_diagnostic=args.allow_unknown_actions_for_diagnostic,
+            )
+        )
         action_distribution = _load_json(json_path)
         metadata = _load_json(metadata_path)
-        csv_rows = list(csv.DictReader(csv_path.read_text().splitlines()))
-        if not action_records:
-            blockers.append("action_records_empty")
-        if any(not isinstance(record, dict) for record in action_records):
-            blockers.append("action_records_schema_missing_fields")
-        required_keys = {"run_id", "regime_id", "policy_name", "agent_index", "evaluation_step", "source", "diagnostic_only", "official_figure_claim", "paper_reproduction_claim"}
-        if any(not required_keys.issubset(record.keys()) for record in action_records if isinstance(record, dict)):
-            blockers.append("action_records_schema_missing_fields")
-        if any(record.get("policy_name") != "HOODIE" for record in action_records):
-            blockers.append("action_record_policy_scope_invalid")
-        if any(record.get("regime_id") not in {"delay", "drop_ratio"} for record in action_records):
-            blockers.append("action_record_regime_scope_invalid")
-        if any(not any(field in record for field in ["action_type", "action_name", "action_category", "offload_type", "decision", "selected_action", "policy_action", "target_tier"]) for record in action_records):
-            blockers.append("action_record_category_missing")
-        if any(record.get("official_figure_claim") is True for record in action_records):
-            blockers.append("action_record_official_claim_violation")
-        if any(record.get("paper_reproduction_claim") is True for record in action_records):
-            blockers.append("action_record_paper_reproduction_claim_violation")
-        if any(record.get("selected_action") not in {"local", "horizontal", "vertical"} and record.get("action_category") not in {"local", "horizontal", "vertical"} for record in action_records):
-            blockers.append("action_record_numeric_only_unmapped")
-        if any(row.get("policy_name") != "HOODIE" for row in csv_rows):
-            blockers.append("action_distribution_csv_invalid")
-        if set(row.get("category") for row in csv_rows) != {"local", "horizontal", "vertical", "unknown"}:
-            blockers.append("action_distribution_csv_invalid")
-        if action_distribution.get("policy_name") != "HOODIE":
-            blockers.append("action_distribution_json_invalid")
-        if action_distribution.get("total_actions") != len(action_records):
-            blockers.append("action_distribution_count_mismatch")
-        if action_distribution.get("unknown_count", 0) > 0 and not args.allow_unknown_actions_for_diagnostic:
-            blockers.append("action_distribution_unknown_count_not_allowed")
-        total_actions = action_distribution.get("total_actions", 0)
-        if total_actions > 0:
-            ratios = [action_distribution.get("local_ratio", 0.0), action_distribution.get("horizontal_ratio", 0.0), action_distribution.get("vertical_ratio", 0.0), action_distribution.get("unknown_ratio", 0.0)]
-            if any((not isinstance(r, (int, float))) or r < 0.0 or r > 1.0 for r in ratios):
-                blockers.append("action_distribution_ratio_invalid")
-            ratio_sum = sum(ratios)
-            if abs(ratio_sum - 1.0) > 1e-9:
-                blockers.append("action_distribution_ratio_sum_invalid")
-        if metadata.get("official_figure_claim") is True or metadata.get("official_claim_allowed") is True:
-            blockers.append("action_distribution_official_claim_violation")
-        if metadata.get("paper_reproduction_claim") is True:
-            blockers.append("action_distribution_paper_reproduction_claim_violation")
-        if metadata.get("source") not in {"checkpointed_evaluation_or_synthetic_test", "phase6_15_action_distribution_wiring_probe"}:
-            blockers.append("action_distribution_metadata_invalid")
-        if metadata.get("policy_name") != "HOODIE":
-            blockers.append("action_distribution_metadata_invalid")
         action_files_present = all(path.exists() for path in (records_path, csv_path, json_path, metadata_path, contract_summary_path)) and not blockers
 
     manifest = {
