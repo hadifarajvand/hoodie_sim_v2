@@ -1,0 +1,26 @@
+{
+  "phase": "7.0",
+  "scope": "hoodie_base_paper_metric_experiment",
+  "metric_output_generation_defined": true,
+  "official_reproduction_claim_allowed": false,
+  "deadline_aware_extension_enabled": false,
+  "qos_extension_enabled": false,
+  "queueing_extension_enabled": false,
+  "contribution_enabled": false,
+  "target_outputs": [
+    "average_delay",
+    "drop_ratio",
+    "action_distribution",
+    "raw_csv",
+    "summary_csv",
+    "summary_json",
+    "plots",
+    "run_report"
+  ],
+  "target_sweeps": [
+    "task_arrival_probability",
+    "local_cpu_capacity",
+    "task_timeout"
+  ],
+  "recommended_next_phase": "Phase 7.1 - Medium-run base-paper metric output generation"
+}
