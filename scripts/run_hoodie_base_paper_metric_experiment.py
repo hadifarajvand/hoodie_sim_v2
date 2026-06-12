@@ -25,7 +25,7 @@ os.environ.setdefault("MPLCONFIGDIR", str(Path(tempfile.gettempdir()) / "hoodie_
 os.environ.setdefault("XDG_CACHE_HOME", str(Path(tempfile.gettempdir()) / "hoodie_xdg_cache"))
 os.environ.setdefault("TORCH_FORCE_NO_WEIGHTS_ONLY_LOAD", "1")
 
-from figure10_validation import EXPECTED_POLICY_SET
+from figure10_validation import EXPECTED_POLICY_SET, Figure10ValidationConfig, run_figure10_validation
 
 
 QUICK_SWEEPS = {
@@ -320,6 +320,194 @@ def _count_actions(trace_dir: Path) -> dict[str, int]:
     return dict(counts)
 
 
+def _count_actions_for_episode(trace_dir: Path, episode_id: int | None) -> dict[str, int]:
+    counts = Counter({"local": 0, "horizontal": 0, "vertical": 0, "unknown": 0})
+    if episode_id is None:
+        return dict(counts)
+    path = trace_dir / "task_lifecycle.csv"
+    if not path.exists():
+        return dict(counts)
+    rows = list(csv.DictReader(path.read_text().splitlines()))
+    for row in rows:
+        try:
+            row_episode_id = int(float(row.get("episode_id")))
+        except Exception:
+            continue
+        if row_episode_id != episode_id:
+            continue
+        raw = str(row.get("selected_action", "")).strip().lower()
+        if raw in {"0", "0.0", "local"}:
+            counts["local"] += 1
+        elif raw in {"1", "1.0", "horizontal"}:
+            counts["horizontal"] += 1
+        elif raw in {"2", "2.0", "vertical"}:
+            counts["vertical"] += 1
+        else:
+            counts["unknown"] += 1
+    return dict(counts)
+
+
+def _safe_json_notes(raw_notes: str | None) -> dict[str, Any]:
+    if raw_notes in (None, "", "None"):
+        return {}
+    try:
+        parsed = json.loads(raw_notes)
+    except Exception:
+        return {"notes_parse_error": True, "notes_raw": raw_notes}
+    return parsed if isinstance(parsed, dict) else {"notes_value": parsed}
+
+
+def _validation_output_paths(run_dir: Path) -> dict[str, Path]:
+    return {
+        "raw_csv": run_dir / "figure10_policy_metrics_raw.csv",
+        "summary_json": run_dir / "figure10_policy_metrics_summary.json",
+        "readiness_json": run_dir / "figure10_policy_readiness.json",
+        "config_snapshot": run_dir / "figure10_run_config_snapshot.json",
+        "manifest_json": run_dir / "figure10_validation_manifest.json",
+    }
+
+
+def _run_validation_sweep(
+    *,
+    output_dir: Path,
+    runtime_hp_path: Path,
+    episode_count: int,
+    seed: int,
+    run_id: str,
+    policies: list[str],
+    hoodie_checkpoint_dir: Path | None,
+    trace_level: str = "summary",
+) -> dict[str, Any]:
+    config = Figure10ValidationConfig(
+        output_dir=str(output_dir),
+        episodes=episode_count,
+        seed=seed,
+        policies=policies,
+        paper_contract_file=str(ROOT / "config" / "paper_table4_contract.json"),
+        hyperparameters_file=str(runtime_hp_path),
+        config_file=None,
+        hoodie_checkpoint_dir=str(hoodie_checkpoint_dir) if hoodie_checkpoint_dir is not None else None,
+        test_mode=True,
+        strict_paper_contract=False,
+        trace_level=trace_level,
+        run_id=run_id,
+        timestamp="2026-01-01T00:00:00+00:00",
+        branch=None,
+        commit=None,
+    )
+    result = run_figure10_validation(config)
+    return {"config": config, "result": result, "paths": _validation_output_paths(output_dir)}
+
+
+def _parse_validation_rows(
+    *,
+    validation_rows: list[dict[str, Any]],
+    sweep_name: str,
+    sweep_value: Any,
+    sweep_parameter: str,
+    run_id: str,
+    mode: str,
+    seed: int,
+    metric_source: str,
+) -> list[dict[str, Any]]:
+    parsed_rows: list[dict[str, Any]] = []
+    for row in validation_rows:
+        trace_dir = Path(str(row.get("trace_dir", ""))) if row.get("trace_dir") else None
+        episode_raw = row.get("episode_id")
+        try:
+            episode_id = int(float(episode_raw))
+        except Exception:
+            episode_id = None
+        action_counts = _count_actions_for_episode(trace_dir, episode_id) if trace_dir is not None else {"local": 0, "horizontal": 0, "vertical": 0, "unknown": 0}
+        total_action_count = max(1, sum(action_counts.values()))
+        notes = _safe_json_notes(row.get("notes_json"))
+        notes.update(
+            {
+                "source": metric_source,
+                "simulator_derived": True,
+                "synthetic_metric_profile": False,
+                "official_paper_reproduction": False,
+                "exact_figure_reproduction_claim": False,
+                "sweep_name": sweep_name,
+                "sweep_value": sweep_value,
+            }
+        )
+        if row.get("policy_name") == "HOODIE":
+            notes.setdefault("hoodie_checkpoint_source", "runtime_fixture_untrained")
+            notes.setdefault("trained_checkpoint", False)
+            notes.setdefault("official_claim_allowed", False)
+            notes.setdefault("paper_reproduction_claim", False)
+        parsed_rows.append(
+            {
+                "run_id": run_id,
+                "mode": mode,
+                "sweep_name": sweep_name,
+                "sweep_parameter": sweep_parameter,
+                "sweep_value": sweep_value,
+                "policy_name": row.get("policy_name"),
+                "episode_id": episode_id if episode_id is not None else episode_raw,
+                "seed": seed,
+                "total_tasks": row.get("task_count"),
+                "completed_tasks": row.get("completed_tasks"),
+                "dropped_tasks": row.get("dropped_tasks"),
+                "pending_tasks": row.get("pending_tasks"),
+                "average_delay": row.get("average_computation_delay"),
+                "drop_ratio": row.get("drop_ratio"),
+                "mean_reward": row.get("mean_reward"),
+                "total_reward": row.get("total_reward"),
+                "local_action_count": int(action_counts["local"]),
+                "horizontal_action_count": int(action_counts["horizontal"]),
+                "vertical_action_count": int(action_counts["vertical"]),
+                "unknown_action_count": int(action_counts["unknown"]),
+                "local_action_ratio": round(action_counts["local"] / total_action_count, 4),
+                "horizontal_action_ratio": round(action_counts["horizontal"] / total_action_count, 4),
+                "vertical_action_ratio": round(action_counts["vertical"] / total_action_count, 4),
+                "unknown_action_ratio": round(action_counts["unknown"] / total_action_count, 4),
+                "source_trace_dir": str(trace_dir) if trace_dir is not None else "",
+                "policy_status": row.get("policy_readiness_status") or row.get("policy_status", "completed"),
+                "notes_json": json.dumps(notes, sort_keys=True),
+            }
+        )
+    return parsed_rows
+
+
+def _aggregate_summary_rows(raw_rows: list[dict[str, Any]]) -> list[dict[str, Any]]:
+    grouped: dict[tuple[str, str, str], list[dict[str, Any]]] = defaultdict(list)
+    for row in raw_rows:
+        grouped[(str(row["sweep_name"]), str(row["sweep_value"]), str(row["policy_name"]))].append(row)
+    summary_rows: list[dict[str, Any]] = []
+    for (sweep_name, sweep_value, policy_name), rows in sorted(grouped.items(), key=lambda item: (item[0][0], float(item[0][1]), item[0][2])):
+        avg_delays = [float(r["average_delay"]) for r in rows if r["average_delay"] not in ("", None)]
+        drop_ratios = [float(r["drop_ratio"]) for r in rows if r["drop_ratio"] not in ("", None)]
+        local_values = [float(r["local_action_ratio"]) for r in rows]
+        horizontal_values = [float(r["horizontal_action_ratio"]) for r in rows]
+        vertical_values = [float(r["vertical_action_ratio"]) for r in rows]
+        unknown_values = [float(r["unknown_action_ratio"]) for r in rows]
+        summary_rows.append(
+            {
+                "sweep_name": sweep_name,
+                "sweep_value": sweep_value,
+                "policy_name": policy_name,
+                "episodes_completed": len(rows),
+                "mean_average_delay": round(mean(avg_delays), 4) if avg_delays else None,
+                "std_average_delay": round(pstdev(avg_delays), 4) if len(avg_delays) > 1 else 0.0 if avg_delays else None,
+                "mean_drop_ratio": round(mean(drop_ratios), 4) if drop_ratios else None,
+                "std_drop_ratio": round(pstdev(drop_ratios), 4) if len(drop_ratios) > 1 else 0.0 if drop_ratios else None,
+                "total_tasks": sum(int(float(r["total_tasks"])) for r in rows if r["total_tasks"] not in ("", None)),
+                "completed_tasks": sum(int(float(r["completed_tasks"])) for r in rows if r["completed_tasks"] not in ("", None)),
+                "dropped_tasks": sum(int(float(r["dropped_tasks"])) for r in rows if r["dropped_tasks"] not in ("", None)),
+                "pending_tasks": sum(int(float(r["pending_tasks"])) for r in rows if r["pending_tasks"] not in ("", None)),
+                "mean_local_action_ratio": round(mean(local_values), 4) if local_values else None,
+                "mean_horizontal_action_ratio": round(mean(horizontal_values), 4) if horizontal_values else None,
+                "mean_vertical_action_ratio": round(mean(vertical_values), 4) if vertical_values else None,
+                "mean_unknown_action_ratio": round(mean(unknown_values), 4) if unknown_values else None,
+                "policy_status": rows[0]["policy_status"],
+                "warnings": [],
+            }
+        )
+    return summary_rows
+
+
 def _summary_stats(values: list[float]) -> tuple[float | None, float | None]:
     if not values:
         return None, None
@@ -391,6 +579,9 @@ def _build_report_and_manifest(
     summary_json_path: Path,
     plots_dir: Path,
     report_path: Path,
+    metric_source: str,
+    simulator_derived_metrics: bool,
+    synthetic_metric_profile_used: bool,
     figure9_style_output_available: bool,
     figure10_style_output_available: bool,
     figure11_style_output_available: bool,
@@ -407,6 +598,9 @@ def _build_report_and_manifest(
         "qos_extension": False,
         "queueing_extension": False,
         "contribution_enabled": False,
+        "metric_source": metric_source,
+        "simulator_derived_metrics": simulator_derived_metrics,
+        "synthetic_metric_profile_used": synthetic_metric_profile_used,
         "mode": args.mode,
         "episodes": args.episodes,
         "seed": args.seed,
@@ -430,6 +624,9 @@ def _build_report_and_manifest(
         "mode": args.mode,
         "episodes": args.episodes,
         "seed": args.seed,
+        "metric_source": metric_source,
+        "simulator_derived_metrics": simulator_derived_metrics,
+        "synthetic_metric_profile_used": synthetic_metric_profile_used,
         "requested_policies": args.policies.split(","),
         "completed_policies": completed_policies,
         "failed_or_unavailable_policies": failed_or_unavailable_policies,
@@ -478,12 +675,12 @@ def run_experiment(args: argparse.Namespace) -> dict[str, Any]:
     completed_policies: set[str] = set()
     failed_or_unavailable_policies: set[str] = set()
     all_raw_rows: list[dict[str, Any]] = []
-    all_summary_rows: list[dict[str, Any]] = []
     sweep_names_completed: list[str] = []
     warnings: list[str] = ["non_official_reproduction_oriented_experiment_output"]
     blockers: list[str] = []
     figure9_rows: list[dict[str, Any]] = []
     figure10_available = False
+    metric_source = "figure10_validation_runner"
 
     for sweep_name, sweep_values in sweep_plan.items():
         sweep_names_completed.append(sweep_name)
@@ -493,32 +690,61 @@ def run_experiment(args: argparse.Namespace) -> dict[str, Any]:
             runtime_hp, adapter_note = _apply_sweep(base_hp, sweep_name, sweep_value)
             runtime_hp_path = sweep_output_dir / "hyperparameters.json"
             _write_json(runtime_hp_path, runtime_hp)
+            validation = _run_validation_sweep(
+                output_dir=sweep_output_dir,
+                runtime_hp_path=runtime_hp_path,
+                episode_count=args.episodes,
+                seed=args.seed,
+                run_id=args.run_id,
+                policies=requested_policies,
+                hoodie_checkpoint_dir=runtime_fixture_checkpoint_dir if "HOODIE" in requested_policies else None,
+            )
+            result = validation["result"]
+            paths = validation["paths"]
+            policy_run_statuses = result["summary"].get("registry", {}).get("policy_run_statuses", {})
+            output_present = all(path.exists() for path in paths.values())
+            if not output_present:
+                blockers.append("validation_output_missing")
+                warnings.append(f"validation outputs missing for {sweep_name}:{sweep_value}")
+                continue
+            raw_validation_rows = list(csv.DictReader(paths["raw_csv"].read_text().splitlines()))
+            if not raw_validation_rows:
+                blockers.append("no_validation_rows_produced")
+                warnings.append(f"no validation rows produced for {sweep_name}:{sweep_value}")
+                continue
             for policy_name in requested_policies:
-                if policy_name not in EXPECTED_POLICY_SET:
-                    failed_or_unavailable_policies.add(policy_name)
-                    continue
-                try:
-                    policy_rows, summary_row, detail_row = _synthesise_policy_rows(
-                        run_id=args.run_id,
-                        mode=args.mode,
-                        seed=args.seed,
-                        sweep_name=sweep_name,
-                        sweep_value=sweep_value,
-                        policy_name=policy_name,
-                        episodes=args.episodes,
-                        episode_time=args.episode_time,
-                    )
-                except Exception as exc:
+                policy_status = policy_run_statuses.get(policy_name)
+                if policy_status != "ready":
                     failed_or_unavailable_policies.add(policy_name)
                     blockers.append(f"policy_unavailable_or_failed:{policy_name}")
-                    warnings.append(f"{policy_name} unavailable_or_failed: {exc}")
                     continue
+                completed_policies.add(policy_name)
                 if policy_name == "HOODIE":
                     figure10_available = True
-                    figure9_rows.append(summary_row)
-                completed_policies.add(policy_name)
-                all_raw_rows.extend(policy_rows)
-                all_summary_rows.append(summary_row)
+            eligible_rows = []
+            for row in raw_validation_rows:
+                policy_name = str(row.get("policy_name"))
+                if policy_name not in requested_policies:
+                    continue
+                if policy_run_statuses.get(policy_name) != "ready":
+                    continue
+                eligible_rows.append(row)
+            if "HOODIE" in requested_policies and policy_run_statuses.get("HOODIE") != "ready":
+                blockers.append("hoodie_policy_failed")
+                warnings.append(f"HOODIE policy not ready for sweep {sweep_name}:{sweep_value}")
+            parsed_rows = _parse_validation_rows(
+                validation_rows=eligible_rows,
+                sweep_name=sweep_name,
+                sweep_value=sweep_value,
+                sweep_parameter=sweep_name.replace("_sweep", ""),
+                run_id=args.run_id,
+                mode=args.mode,
+                seed=args.seed,
+                metric_source=metric_source,
+            )
+            all_raw_rows.extend(parsed_rows)
+            if any(row["policy_name"] == "HOODIE" for row in parsed_rows):
+                figure9_rows.extend([row for row in _aggregate_summary_rows(parsed_rows) if row["policy_name"] == "HOODIE"])
 
     raw_metrics_path = paper_output_dir / "base_paper_metrics_raw.csv"
     summary_csv_path = paper_output_dir / "base_paper_metrics_summary.csv"
@@ -528,6 +754,7 @@ def run_experiment(args: argparse.Namespace) -> dict[str, Any]:
 
     if not all_raw_rows:
         blockers.append("no_metrics_produced")
+    summary_rows = _aggregate_summary_rows(all_raw_rows)
     raw_fieldnames = [
         "run_id",
         "mode",
@@ -569,30 +796,28 @@ def run_experiment(args: argparse.Namespace) -> dict[str, Any]:
                 "policy_name": row.get("policy_name"),
                 "episode_id": row.get("episode_id"),
                 "seed": args.seed,
-                "total_tasks": row.get("task_count"),
+                "total_tasks": row.get("total_tasks"),
                 "completed_tasks": row.get("completed_tasks"),
                 "dropped_tasks": row.get("dropped_tasks"),
                 "pending_tasks": row.get("pending_tasks"),
-                "average_delay": row.get("average_computation_delay"),
+                "average_delay": row.get("average_delay"),
                 "drop_ratio": row.get("drop_ratio"),
                 "mean_reward": row.get("mean_reward"),
                 "total_reward": row.get("total_reward"),
-                "local_action_count": 0,
-                "horizontal_action_count": 0,
-                "vertical_action_count": 0,
-                "unknown_action_count": 0,
-                "local_action_ratio": 0.0,
-                "horizontal_action_ratio": 0.0,
-                "vertical_action_ratio": 0.0,
-                "unknown_action_ratio": 0.0,
-                "source_trace_dir": row.get("trace_dir"),
+                "local_action_count": row.get("local_action_count"),
+                "horizontal_action_count": row.get("horizontal_action_count"),
+                "vertical_action_count": row.get("vertical_action_count"),
+                "unknown_action_count": row.get("unknown_action_count"),
+                "local_action_ratio": row.get("local_action_ratio"),
+                "horizontal_action_ratio": row.get("horizontal_action_ratio"),
+                "vertical_action_ratio": row.get("vertical_action_ratio"),
+                "unknown_action_ratio": row.get("unknown_action_ratio"),
+                "source_trace_dir": row.get("source_trace_dir"),
                 "policy_status": row.get("policy_status", "completed"),
                 "notes_json": row.get("notes_json"),
             }
         )
     _write_csv(raw_metrics_path, csv_rows, raw_fieldnames)
-
-    summary_rows = sorted(all_summary_rows, key=lambda r: (str(r["sweep_name"]), float(r["sweep_value"]), str(r["policy_name"])))
     summary_fieldnames = [
         "sweep_name",
         "sweep_value",
@@ -614,7 +839,7 @@ def run_experiment(args: argparse.Namespace) -> dict[str, Any]:
         "warnings",
     ]
     _write_csv(summary_csv_path, summary_rows, summary_fieldnames)
-    _write_json(summary_json_path, {"summary_rows": summary_rows, "requested_policies": requested_policies, "completed_policies": sorted(completed_policies)})
+    _write_json(summary_json_path, {"summary_rows": summary_rows, "requested_policies": requested_policies, "completed_policies": sorted(completed_policies), "metric_source": metric_source, "simulator_derived_metrics": True, "synthetic_metric_profile_used": False})
 
     _plot_line(summary_rows, "task_arrival_probability_sweep", "mean_average_delay", plots_dir / "delay_vs_task_arrival_probability.png", "HOODIE-style delay vs task arrival probability - non-official run")
     _plot_line(summary_rows, "task_arrival_probability_sweep", "mean_drop_ratio", plots_dir / "drop_ratio_vs_task_arrival_probability.png", "HOODIE-style drop ratio vs task arrival probability - non-official run")
@@ -638,6 +863,9 @@ def run_experiment(args: argparse.Namespace) -> dict[str, Any]:
         summary_json_path=summary_json_path,
         plots_dir=plots_dir,
         report_path=report_path,
+        metric_source=metric_source,
+        simulator_derived_metrics=True,
+        synthetic_metric_profile_used=False,
         figure9_style_output_available=figure9_style_available,
         figure10_style_output_available=figure10_style_available,
         figure11_style_output_available=figure11_style_available,
@@ -656,6 +884,7 @@ def run_experiment(args: argparse.Namespace) -> dict[str, Any]:
         f"- completed_policies: {', '.join(sorted(completed_policies)) if completed_policies else 'none'}",
         f"- failed_or_unavailable_policies: {', '.join(sorted(failed_or_unavailable_policies)) if failed_or_unavailable_policies else 'none'}",
         f"- sweeps_completed: {', '.join(sweep_names_completed)}",
+        f"- metric_source: {metric_source}",
         f"- raw_metrics_path: {raw_metrics_path}",
         f"- summary_csv_path: {summary_csv_path}",
         f"- summary_json_path: {summary_json_path}",
@@ -669,7 +898,7 @@ def run_experiment(args: argparse.Namespace) -> dict[str, Any]:
         "## Limitations",
         "- Deadline-aware/QoS/queueing extensions are disabled in this phase.",
         "- Unavailable policies are recorded rather than aborting the whole experiment.",
-        "- Figure 10 style output is non-official and sweep-dependent.",
+        "- Figure 10 style output is non-official and derived from simulator execution.",
     ]
     report_path.write_text("\n".join(report_md) + "\n")
     manifest["report_path"] = str(report_path)

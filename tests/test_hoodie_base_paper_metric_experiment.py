@@ -138,6 +138,62 @@ def test_quick_mode_generates_outputs(tmp_path):
     assert before == _repo_forbidden_snapshot()
 
 
+def test_quick_mode_outputs_are_simulator_derived_and_numeric(tmp_path):
+    _run(
+        [
+            "scripts/run_hoodie_base_paper_metric_experiment.py",
+            "--output-dir",
+            str(tmp_path / "out"),
+            "--episodes",
+            "3",
+            "--episode-time",
+            "2",
+            "--seed",
+            "42",
+            "--run-id",
+            "phase7_base_paper_metric_experiment_quick",
+            "--mode",
+            "quick",
+            "--policies",
+            "HOODIE,RO,FLC",
+            "--allow-base-paper-metric-experiment",
+            "--allow-nonofficial-paper-metric-output",
+        ]
+    )
+    output = tmp_path / "out" / "paper_metric_outputs"
+    raw_rows = list(csv.DictReader((output / "base_paper_metrics_raw.csv").read_text().splitlines()))
+    summary_rows = list(csv.DictReader((output / "base_paper_metrics_summary.csv").read_text().splitlines()))
+    assert raw_rows
+    assert summary_rows
+    row = raw_rows[0]
+    notes = json.loads(row["notes_json"])
+    assert notes["source"] == "figure10_validation_runner"
+    assert notes["simulator_derived"] is True
+    assert notes["synthetic_metric_profile"] is False
+    assert notes["official_paper_reproduction"] is False
+    assert notes["exact_figure_reproduction_claim"] is False
+    assert row["total_tasks"] not in ("", None)
+    assert row["completed_tasks"] not in ("", None)
+    assert row["dropped_tasks"] not in ("", None)
+    assert row["pending_tasks"] not in ("", None)
+    assert row["average_delay"] not in ("", None)
+    assert row["drop_ratio"] not in ("", None)
+    assert output.joinpath("base_paper_metric_experiment_manifest.json").exists()
+    manifest = _read_json(output / "base_paper_metric_experiment_manifest.json")
+    assert manifest["simulator_derived_metrics"] is True
+    assert manifest["synthetic_metric_profile_used"] is False
+    assert manifest["metric_source"] == "figure10_validation_runner"
+    summary = _read_json(output / "base_paper_metrics_summary.json")
+    summary_row = summary["summary_rows"][0]
+    matching_raw = [
+        float(r["average_delay"])
+        for r in raw_rows
+        if r["sweep_name"] == summary_row["sweep_name"] and r["sweep_value"] == summary_row["sweep_value"] and r["policy_name"] == summary_row["policy_name"]
+    ]
+    assert matching_raw
+    assert abs(summary_row["mean_average_delay"] - (sum(matching_raw) / len(matching_raw))) < 1e-6
+
+
 def test_quick_mode_generates_required_manifest_fields(tmp_path):
     _run(
         [
@@ -167,6 +223,9 @@ def test_quick_mode_generates_required_manifest_fields(tmp_path):
     assert manifest["deadline_aware_extension"] is False
     assert manifest["qos_extension"] is False
     assert manifest["queueing_extension"] is False
+    assert manifest["simulator_derived_metrics"] is True
+    assert manifest["synthetic_metric_profile_used"] is False
+    assert manifest["metric_source"] == "figure10_validation_runner"
 
 
 def test_raw_and_summary_columns_present(tmp_path):
@@ -250,14 +309,14 @@ def test_raw_and_summary_columns_present(tmp_path):
 def test_unavailable_baseline_is_recorded_but_not_fatal(tmp_path, monkeypatch):
     import scripts.run_hoodie_base_paper_metric_experiment as experiment
 
-    real_profile = experiment._policy_profile
+    real_run_validation_sweep = experiment._run_validation_sweep
 
-    def fake_profile(policy_name):
-        if policy_name == "RO":
-            raise RuntimeError("baseline not available in this test")
-        return real_profile(policy_name)
+    def fake_run_validation_sweep(*args, **kwargs):
+        result = real_run_validation_sweep(*args, **kwargs)
+        result["result"]["summary"]["registry"]["policy_run_statuses"]["RO"] = "run_failed"
+        return result
 
-    monkeypatch.setattr(experiment, "_policy_profile", fake_profile)
+    monkeypatch.setattr(experiment, "_run_validation_sweep", fake_run_validation_sweep)
     result = experiment.main(
         [
             "--output-dir",
@@ -281,6 +340,103 @@ def test_unavailable_baseline_is_recorded_but_not_fatal(tmp_path, monkeypatch):
     assert result == 0
     manifest = _read_json(tmp_path / "out" / "paper_metric_outputs" / "base_paper_metric_experiment_manifest.json")
     assert "RO" in manifest["failed_or_unavailable_policies"]
+
+
+def test_cli_does_not_use_synthesized_policy_rows(tmp_path, monkeypatch):
+    import scripts.run_hoodie_base_paper_metric_experiment as experiment
+
+    def boom(*args, **kwargs):
+        raise AssertionError("synthetic policy path should not be used by CLI success path")
+
+    monkeypatch.setattr(experiment, "_synthesise_policy_rows", boom)
+    result = experiment.main(
+        [
+            "--output-dir",
+            str(tmp_path / "out"),
+            "--episodes",
+            "3",
+            "--episode-time",
+            "2",
+            "--seed",
+            "42",
+            "--run-id",
+            "phase7_base_paper_metric_experiment_quick",
+            "--mode",
+            "quick",
+            "--policies",
+            "HOODIE,RO,FLC",
+            "--allow-base-paper-metric-experiment",
+            "--allow-nonofficial-paper-metric-output",
+        ]
+    )
+    assert result == 0
+
+
+def test_hoodie_failure_is_fatal(tmp_path, monkeypatch):
+    import scripts.run_hoodie_base_paper_metric_experiment as experiment
+
+    real_run_validation_sweep = experiment._run_validation_sweep
+
+    def fake_run_validation_sweep(*args, **kwargs):
+        result = real_run_validation_sweep(*args, **kwargs)
+        result["result"]["summary"]["registry"]["policy_run_statuses"]["HOODIE"] = "run_failed"
+        return result
+
+    monkeypatch.setattr(experiment, "_run_validation_sweep", fake_run_validation_sweep)
+    result = experiment.main(
+        [
+            "--output-dir",
+            str(tmp_path / "out"),
+            "--episodes",
+            "3",
+            "--episode-time",
+            "2",
+            "--seed",
+            "42",
+            "--run-id",
+            "phase7_base_paper_metric_experiment_quick",
+            "--mode",
+            "quick",
+            "--policies",
+            "HOODIE,RO,FLC",
+            "--allow-base-paper-metric-experiment",
+            "--allow-nonofficial-paper-metric-output",
+        ]
+    )
+    assert result != 0
+    manifest = _read_json(tmp_path / "out" / "paper_metric_outputs" / "base_paper_metric_experiment_manifest.json")
+    assert "hoodie_policy_failed" in manifest["blockers"]
+
+
+def test_summary_mean_matches_raw_rows(tmp_path):
+    _run(
+        [
+            "scripts/run_hoodie_base_paper_metric_experiment.py",
+            "--output-dir",
+            str(tmp_path / "out"),
+            "--episodes",
+            "3",
+            "--episode-time",
+            "2",
+            "--seed",
+            "42",
+            "--run-id",
+            "phase7_base_paper_metric_experiment_quick",
+            "--mode",
+            "quick",
+            "--policies",
+            "HOODIE,RO,FLC",
+            "--allow-base-paper-metric-experiment",
+            "--allow-nonofficial-paper-metric-output",
+        ]
+    )
+    output = tmp_path / "out" / "paper_metric_outputs"
+    raw_rows = list(csv.DictReader((output / "base_paper_metrics_raw.csv").read_text().splitlines()))
+    summary_rows = list(csv.DictReader((output / "base_paper_metrics_summary.csv").read_text().splitlines()))
+    sample = summary_rows[0]
+    matching = [float(r["average_delay"]) for r in raw_rows if r["sweep_name"] == sample["sweep_name"] and r["sweep_value"] == sample["sweep_value"] and r["policy_name"] == sample["policy_name"]]
+    assert matching
+    assert abs(float(sample["mean_average_delay"]) - (sum(matching) / len(matching))) < 1e-6
 
 
 def test_no_generated_artifacts_inside_repo_tree(tmp_path):
