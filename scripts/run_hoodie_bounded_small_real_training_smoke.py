@@ -180,9 +180,32 @@ def _verify_trained_checkpoints(checkpoint_dir: Path, agent_count: int) -> tuple
 
     for agent_index in range(agent_count):
         checkpoint_path = checkpoint_dir / f"agent_{agent_index}.pth"
+        metadata_path = checkpoint_path.with_name(checkpoint_path.name + ".meta.json")
+        if not checkpoint_path.exists():
+            all_ok = False
+            blocker = f"checkpoint_missing: agent_{agent_index}"
+            blockers.append(blocker)
+            reports.append(
+                {
+                    "checkpoint_path": str(checkpoint_path),
+                    "metadata_path": str(metadata_path),
+                    "runtime_loadable": False,
+                    "blockers": [blocker],
+                }
+            )
+            rejected_formats.add("missing")
+            continue
+        if not metadata_path.exists():
+            all_ok = False
+            sidecar_blocker = f"metadata_sidecar_missing: agent_{agent_index}"
+            blockers.append(sidecar_blocker)
         model, report = load_hoodie_checkpoint_with_metadata(checkpoint_path, map_location="cpu")
+        if not metadata_path.exists():
+            report.setdefault("blockers", []).append(f"metadata_sidecar_missing: agent_{agent_index}")
         reports.append(report)
         accepted_formats.add(str(report.get("checkpoint_report", {}).get("format") or "unknown"))
+        if not metadata_path.exists() and "metadata_missing" not in report.get("blockers", []):
+            report.setdefault("blockers", []).append("metadata_sidecar_missing")
         if not report.get("runtime_loadable"):
             all_ok = False
             blockers.append(f"generated_checkpoint_not_runtime_loadable: agent_{agent_index}")
@@ -257,11 +280,17 @@ def run_smoke(args: argparse.Namespace) -> dict[str, Any]:
     load_model_report: dict[str, Any] = {}
     expected_agent_count = int(args.expected_agent_count)
     export_manifest = _load_json(export_manifest_path) if export_manifest_path.exists() else {}
+    blockers: list[str] = []
 
     all_runtime_loadable = False
     if main_result.returncode == 0 and trained_checkpoint_dir.exists():
         all_runtime_loadable, trained_checkpoint_load_reports, accepted_formats, rejected_formats = _verify_trained_checkpoints(
             trained_checkpoint_dir, expected_agent_count
+        )
+        blockers.extend(
+            blocker
+            for report in trained_checkpoint_load_reports
+            for blocker in report.get("blockers", [])
         )
         try:
             scheduler_file = main_logs_dir / "scheduler.pth"
@@ -288,7 +317,6 @@ def run_smoke(args: argparse.Namespace) -> dict[str, Any]:
     ]:
         if (output_dir / "figure10_runner" / name).exists():
             figure10_runner_outputs_present = True
-    blockers: list[str] = []
     warnings = [
         "bounded_small_real_training_smoke_only",
         "generated_checkpoints_are_tmp_only",
@@ -296,7 +324,7 @@ def run_smoke(args: argparse.Namespace) -> dict[str, Any]:
     if main_result.returncode != 0:
         blockers.append("main_py_failed")
     if not export_manifest_path.exists():
-        blockers.append("training_checkpoint_export_manifest_missing")
+        blockers.append("training_export_manifest_missing")
     if not trained_checkpoint_dir.exists():
         blockers.append("trained_checkpoint_dir_missing")
     if not all_runtime_loadable:
@@ -317,7 +345,9 @@ def run_smoke(args: argparse.Namespace) -> dict[str, Any]:
         "main_py_called_by": "run_hoodie_bounded_small_real_training_smoke.py",
         "main_py_training_execution_run": True,
         "training_execution_run": True,
-        "simulation_rerun": False,
+        "simulation_rerun": True,
+        "simulation_rerun_in_smoke_only": True,
+        "simulation_rerun_scope": "bounded_small_real_training_smoke_only",
         "official_training_run": False,
         "full_training_run": False,
         "paper_training_run": False,
@@ -370,7 +400,9 @@ def run_smoke(args: argparse.Namespace) -> dict[str, Any]:
         "main_py_called_by": "run_hoodie_bounded_small_real_training_smoke.py",
         "main_py_training_execution_run": True,
         "training_execution_run": True,
-        "simulation_rerun": False,
+        "simulation_rerun": True,
+        "simulation_rerun_in_smoke_only": True,
+        "simulation_rerun_scope": "bounded_small_real_training_smoke_only",
         "official_training_run": False,
         "full_training_run": False,
         "paper_training_run": False,

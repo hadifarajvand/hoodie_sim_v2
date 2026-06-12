@@ -196,7 +196,9 @@ def test_successful_smoke_runs_and_exports_runtime_checkpoints(tmp_path):
     assert manifest["main_py_called"] is True
     assert manifest["main_py_training_execution_run"] is True
     assert manifest["training_execution_run"] is True
-    assert manifest["simulation_rerun"] is False
+    assert manifest["simulation_rerun"] is True
+    assert manifest["simulation_rerun_in_smoke_only"] is True
+    assert manifest["simulation_rerun_scope"] == "bounded_small_real_training_smoke_only"
     assert manifest["official_training_run"] is False
     assert manifest["full_training_run"] is False
     assert manifest["paper_training_run"] is False
@@ -213,6 +215,9 @@ def test_successful_smoke_runs_and_exports_runtime_checkpoints(tmp_path):
     assert report["bounded_small_real_training_smoke_run"] is True
     assert report["main_py_called"] is True
     assert report["training_execution_run"] is True
+    assert report["simulation_rerun"] is True
+    assert report["simulation_rerun_in_smoke_only"] is True
+    assert report["simulation_rerun_scope"] == "bounded_small_real_training_smoke_only"
     assert report["official_training_run"] is False
     assert report["full_training_run"] is False
     assert report["paper_training_run"] is False
@@ -281,3 +286,165 @@ def test_successful_smoke_runs_and_exports_runtime_checkpoints(tmp_path):
     after = _repo_forbidden_snapshot()
     assert before == after
 
+
+def test_missing_export_manifest_reports_blocker(tmp_path, monkeypatch):
+    import scripts.run_hoodie_bounded_small_real_training_smoke as smoke
+    from subprocess import CompletedProcess
+
+    out = tmp_path / "out"
+
+    def fake_main(*, output_dir, seed, epochs, trace_level, hyperparameters_file, config_file):
+        output_dir = Path(output_dir)
+        (output_dir / "main_logs").mkdir(parents=True, exist_ok=True)
+        (output_dir / "traces").mkdir(parents=True, exist_ok=True)
+        (output_dir / "trained_checkpoints").mkdir(parents=True, exist_ok=True)
+        (output_dir / "main_stdout.txt").write_text("model weights loaded")
+        (output_dir / "main_stderr.txt").write_text("")
+        (output_dir / "main_returncode.txt").write_text("0")
+        return CompletedProcess(args=["main.py"], returncode=0, stdout="ok", stderr="")
+
+    monkeypatch.setattr(smoke, "_run_main_training", fake_main)
+    result = smoke.run_smoke(
+        argparse.Namespace(
+            output_dir=str(out),
+            epochs=1,
+            episode_time=3,
+            seed=42,
+            run_id="phase6_12_bounded_small_real_training_smoke",
+            expected_agent_count=20,
+            trace_level="summary",
+            checkpoint_format="pytorch_model_file",
+            allow_bounded_small_real_training_smoke=True,
+            allow_main_py_training_execution=True,
+            allow_training_checkpoint_export=True,
+        )
+    )
+    report = json.loads((out / "hoodie_bounded_small_real_training_smoke_report.json").read_text())
+    assert result["report"]["blockers"] or result["manifest"]["blockers"]
+    assert "training_export_manifest_missing" in report["blockers"]
+
+
+def test_missing_sidecar_reports_explicit_blocker(tmp_path, monkeypatch):
+    import scripts.run_hoodie_bounded_small_real_training_smoke as smoke
+    from subprocess import CompletedProcess
+
+    out = tmp_path / "out"
+
+    def fake_main(*, output_dir, seed, epochs, trace_level, hyperparameters_file, config_file):
+        output_dir = Path(output_dir)
+        export_dir = output_dir / "trained_checkpoints"
+        export_dir.mkdir(parents=True, exist_ok=True)
+        (output_dir / "main_logs").mkdir(parents=True, exist_ok=True)
+        (output_dir / "traces").mkdir(parents=True, exist_ok=True)
+        (output_dir / "main_stdout.txt").write_text("model weights loaded")
+        (output_dir / "main_stderr.txt").write_text("")
+        (output_dir / "main_returncode.txt").write_text("0")
+        (output_dir / "hoodie_small_real_training_export_manifest.json").write_text("{}")
+        (export_dir / "agent_0.pth").write_text("not a real checkpoint")
+        return CompletedProcess(args=["main.py"], returncode=0, stdout="ok", stderr="")
+
+    monkeypatch.setattr(smoke, "_run_main_training", fake_main)
+    result = smoke.run_smoke(
+        argparse.Namespace(
+            output_dir=str(out),
+            epochs=1,
+            episode_time=3,
+            seed=42,
+            run_id="phase6_12_bounded_small_real_training_smoke",
+            expected_agent_count=1,
+            trace_level="summary",
+            checkpoint_format="pytorch_model_file",
+            allow_bounded_small_real_training_smoke=True,
+            allow_main_py_training_execution=True,
+            allow_training_checkpoint_export=True,
+        )
+    )
+    report = json.loads((out / "hoodie_bounded_small_real_training_smoke_report.json").read_text())
+    assert result["report"]["blockers"] or result["manifest"]["blockers"]
+    assert "metadata_sidecar_missing: agent_0" in report["blockers"]
+
+
+def test_runtime_loader_failure_reports_explicit_blocker(tmp_path, monkeypatch):
+    import scripts.run_hoodie_bounded_small_real_training_smoke as smoke
+    from subprocess import CompletedProcess
+
+    out = tmp_path / "out"
+
+    def fake_main(*, output_dir, seed, epochs, trace_level, hyperparameters_file, config_file):
+        output_dir = Path(output_dir)
+        export_dir = output_dir / "trained_checkpoints"
+        export_dir.mkdir(parents=True, exist_ok=True)
+        (output_dir / "main_logs").mkdir(parents=True, exist_ok=True)
+        (output_dir / "traces").mkdir(parents=True, exist_ok=True)
+        (output_dir / "main_stdout.txt").write_text("model weights loaded")
+        (output_dir / "main_stderr.txt").write_text("")
+        (output_dir / "main_returncode.txt").write_text("0")
+        (output_dir / "hoodie_small_real_training_export_manifest.json").write_text("{}")
+        (export_dir / "agent_0.pth").write_text("not a checkpoint")
+        (export_dir / "agent_0.pth.meta.json").write_text("{}")
+        return CompletedProcess(args=["main.py"], returncode=0, stdout="ok", stderr="")
+
+    monkeypatch.setattr(smoke, "_run_main_training", fake_main)
+    result = smoke.run_smoke(
+        argparse.Namespace(
+            output_dir=str(out),
+            epochs=1,
+            episode_time=3,
+            seed=42,
+            run_id="phase6_12_bounded_small_real_training_smoke",
+            expected_agent_count=1,
+            trace_level="summary",
+            checkpoint_format="pytorch_model_file",
+            allow_bounded_small_real_training_smoke=True,
+            allow_main_py_training_execution=True,
+            allow_training_checkpoint_export=True,
+        )
+    )
+    report = json.loads((out / "hoodie_bounded_small_real_training_smoke_report.json").read_text())
+    assert result["report"]["blockers"] or result["manifest"]["blockers"]
+    assert any(
+        blocker in report["blockers"]
+        for blocker in ["generated_checkpoint_not_runtime_loadable", "checkpoint_not_runtime_loadable"]
+    )
+
+
+def test_agent_load_model_failure_reports_blocker(tmp_path, monkeypatch):
+    import scripts.run_hoodie_bounded_small_real_training_smoke as smoke
+    from subprocess import CompletedProcess
+
+    out = tmp_path / "out"
+
+    def fake_main(*, output_dir, seed, epochs, trace_level, hyperparameters_file, config_file):
+        output_dir = Path(output_dir)
+        export_dir = output_dir / "trained_checkpoints"
+        export_dir.mkdir(parents=True, exist_ok=True)
+        (output_dir / "main_logs").mkdir(parents=True, exist_ok=True)
+        (output_dir / "traces").mkdir(parents=True, exist_ok=True)
+        (output_dir / "main_stdout.txt").write_text("model weights loaded")
+        (output_dir / "main_stderr.txt").write_text("")
+        (output_dir / "main_returncode.txt").write_text("0")
+        (output_dir / "hoodie_small_real_training_export_manifest.json").write_text("{}")
+        (export_dir / "agent_0.pth").write_text("not a checkpoint")
+        (export_dir / "agent_0.pth.meta.json").write_text("{}")
+        return CompletedProcess(args=["main.py"], returncode=0, stdout="ok", stderr="")
+
+    monkeypatch.setattr(smoke, "_run_main_training", fake_main)
+    monkeypatch.setattr(smoke, "_verify_agent_load_model", lambda *args, **kwargs: (False, {"runtime_loadable": False}))
+    result = smoke.run_smoke(
+        argparse.Namespace(
+            output_dir=str(out),
+            epochs=1,
+            episode_time=3,
+            seed=42,
+            run_id="phase6_12_bounded_small_real_training_smoke",
+            expected_agent_count=1,
+            trace_level="summary",
+            checkpoint_format="pytorch_model_file",
+            allow_bounded_small_real_training_smoke=True,
+            allow_main_py_training_execution=True,
+            allow_training_checkpoint_export=True,
+        )
+    )
+    report = json.loads((out / "hoodie_bounded_small_real_training_smoke_report.json").read_text())
+    assert result["report"]["blockers"] or result["manifest"]["blockers"]
+    assert "agent_load_model_verification_failed" in report["blockers"]

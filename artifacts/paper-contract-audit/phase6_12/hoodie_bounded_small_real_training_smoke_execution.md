@@ -2,11 +2,15 @@ Phase 6.12 adds a bounded small real-training smoke execution for HOODIE.
 
 This phase runs `main.py` in non-validation training mode with a tiny bounded configuration, routes all generated outputs outside the repository, and exports runtime-compatible checkpoints through the Phase 6.11 export path.
 
+The smoke includes a bounded simulation/training rerun only in the temporary smoke workspace. It is not official simulation.
+The smoke simulation rerun flag is `true` only for this bounded smoke scope, and `official_simulation_rerun` remains false.
+
 It does not run paper-grade training.
 It does not run 5000-episode training.
 It does not run official 200-episode Figure 10 validation.
 It does not reproduce Figure 8, Figure 9, Figure 10, or Figure 11.
 It does not make any official paper claim.
+The smoke simulation rerun scope is `bounded_small_real_training_smoke_only`.
 
 The smoke verifies that exported checkpoints and metadata sidecars are loadable through the Phase 6.8 runtime loader and that `Agent.load_model` accepts the generated runtime checkpoint format.
 
