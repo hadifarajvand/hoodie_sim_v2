@@ -413,6 +413,151 @@ def test_runner_stdout_without_load_message_is_reported(tmp_path, monkeypatch):
     assert result["report"]["official_claim_allowed"] is False
 
 
+def test_cli_returns_non_zero_when_runner_failure_creates_blockers(tmp_path, monkeypatch):
+    pytest.importorskip("torch")
+    import scripts.run_hoodie_controlled_trained_checkpoint_loading_smoke as smoke
+    from subprocess import CompletedProcess
+
+    out = tmp_path / "out"
+
+    def fake_runner(*, output_dir, checkpoint_dir, episodes, seed, run_id, hyperparameters_file):
+        runner_output = output_dir / "figure10_runner"
+        runner_output.mkdir(parents=True, exist_ok=True)
+        (runner_output / "figure10_policy_metrics_raw.csv").write_text("x\n1\n")
+        (runner_output / "figure10_policy_metrics_summary.json").write_text("{}")
+        (runner_output / "figure10_policy_readiness.json").write_text(json.dumps({"figure10_data_ready": False}))
+        (runner_output / "figure10_run_config_snapshot.json").write_text("{}")
+        (runner_output / "figure10_validation_manifest.json").write_text("{}")
+        for regime in ("delay", "drop_ratio"):
+            regime_dir = runner_output / "runs" / run_id / regime / "HOODIE"
+            regime_dir.mkdir(parents=True, exist_ok=True)
+            (regime_dir / "main_returncode.txt").write_text("1")
+            (regime_dir / "main_stdout.txt").write_text("model weights loaded")
+            (regime_dir / "main_stderr.txt").write_text("boom")
+            log_dir = regime_dir / "logs"
+            log_dir.mkdir(parents=True, exist_ok=True)
+            (log_dir / "agent_0.pth").write_text("checkpoint")
+            (log_dir / "agent_0.pth.meta.json").write_text("{}")
+        return CompletedProcess(args=["figure10_validation.py"], returncode=1, stdout="boom", stderr="boom")
+
+    monkeypatch.setattr(smoke, "_run_figure10_runner", fake_runner)
+    monkeypatch.setattr(
+        sys,
+        "argv",
+        [
+            "scripts/run_hoodie_controlled_trained_checkpoint_loading_smoke.py",
+            "--output-dir",
+            str(out),
+            "--episodes",
+            "1",
+            "--synthetic-steps",
+            "1",
+            "--seed",
+            "42",
+            "--run-id",
+            "phase6_9_controlled_trained_checkpoint_smoke",
+            "--allow-controlled-trained-checkpoint-smoke",
+            "--allow-synthetic-training-step",
+        ],
+    )
+    assert smoke.main() == 1
+    report = json.loads((out / "controlled_trained_checkpoint_loading_smoke_report.json").read_text())
+    assert "figure10_runner_execution_failed" in report["blockers"]
+
+
+def test_cli_returns_non_zero_when_stdout_lacks_model_weights_loaded(tmp_path, monkeypatch):
+    pytest.importorskip("torch")
+    import scripts.run_hoodie_controlled_trained_checkpoint_loading_smoke as smoke
+    from subprocess import CompletedProcess
+
+    out = tmp_path / "out"
+
+    def fake_runner(*, output_dir, checkpoint_dir, episodes, seed, run_id, hyperparameters_file):
+        runner_output = output_dir / "figure10_runner"
+        runner_output.mkdir(parents=True, exist_ok=True)
+        (runner_output / "figure10_policy_metrics_raw.csv").write_text("x\n1\n")
+        (runner_output / "figure10_policy_metrics_summary.json").write_text("{}")
+        (runner_output / "figure10_policy_readiness.json").write_text(json.dumps({"figure10_data_ready": False}))
+        (runner_output / "figure10_run_config_snapshot.json").write_text("{}")
+        (runner_output / "figure10_validation_manifest.json").write_text("{}")
+        for regime in ("delay", "drop_ratio"):
+            regime_dir = runner_output / "runs" / run_id / regime / "HOODIE"
+            regime_dir.mkdir(parents=True, exist_ok=True)
+            (regime_dir / "main_returncode.txt").write_text("0")
+            (regime_dir / "main_stdout.txt").write_text("loaded but not via exact message")
+            (regime_dir / "main_stderr.txt").write_text("")
+            log_dir = regime_dir / "logs"
+            log_dir.mkdir(parents=True, exist_ok=True)
+            (log_dir / "agent_0.pth").write_text("checkpoint")
+            (log_dir / "agent_0.pth.meta.json").write_text("{}")
+        return CompletedProcess(args=["figure10_validation.py"], returncode=0, stdout="ok", stderr="")
+
+    monkeypatch.setattr(smoke, "_run_figure10_runner", fake_runner)
+    monkeypatch.setattr(
+        sys,
+        "argv",
+        [
+            "scripts/run_hoodie_controlled_trained_checkpoint_loading_smoke.py",
+            "--output-dir",
+            str(out),
+            "--episodes",
+            "1",
+            "--synthetic-steps",
+            "1",
+            "--seed",
+            "42",
+            "--run-id",
+            "phase6_9_controlled_trained_checkpoint_smoke",
+            "--allow-controlled-trained-checkpoint-smoke",
+            "--allow-synthetic-training-step",
+        ],
+    )
+    assert smoke.main() == 1
+    report = json.loads((out / "controlled_trained_checkpoint_loading_smoke_report.json").read_text())
+    assert "runner_checkpoint_load_not_observed" in report["blockers"]
+
+
+def test_synthetic_steps_two_are_reflected_everywhere(tmp_path):
+    pytest.importorskip("torch")
+    import torch
+    from training.hoodie_runtime_checkpoint_loader import load_hoodie_checkpoint_with_metadata
+
+    out = tmp_path / "out"
+    result = _run(
+        [
+            "scripts/run_hoodie_controlled_trained_checkpoint_loading_smoke.py",
+            "--output-dir",
+            str(out),
+            "--episodes",
+            "1",
+            "--synthetic-steps",
+            "2",
+            "--seed",
+            "42",
+            "--run-id",
+            "phase6_9_controlled_trained_checkpoint_smoke",
+            "--allow-controlled-trained-checkpoint-smoke",
+            "--allow-synthetic-training-step",
+            "--checkpoint-format",
+            "pytorch_state_dict_payload",
+        ]
+    )
+    assert result.returncode == 0, result.stderr
+    manifest = json.loads((out / "controlled_trained_checkpoint_loading_smoke_manifest.json").read_text())
+    report = json.loads((out / "controlled_trained_checkpoint_loading_smoke_report.json").read_text())
+    checkpoint_dir = out / "controlled_trained_checkpoints"
+    metadata = json.loads((checkpoint_dir / "agent_0.pth.meta.json").read_text())
+    model, load_report = load_hoodie_checkpoint_with_metadata(checkpoint_dir / "agent_0.pth")
+    assert manifest["synthetic_training_step_count"] == 2
+    assert metadata["synthetic_training_step_count"] == 2
+    assert model is not None
+    assert load_report["runtime_loadable"] is True
+    assert load_report["checkpoint_report"]["format"] == "pytorch_state_dict_payload"
+    payload = torch.load(checkpoint_dir / "agent_0.pth", map_location="cpu")
+    assert payload["synthetic_steps"] == 2
+    assert len(report["loss_values"][0]) == 2
+
+
 def test_no_generated_artifacts_outside_tmp_path(tmp_path):
     before = _repo_forbidden_snapshot()
     out = tmp_path / "out"

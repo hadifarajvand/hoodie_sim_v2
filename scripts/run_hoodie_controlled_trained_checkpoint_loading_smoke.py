@@ -105,7 +105,7 @@ def _run_tiny_optimizer_step(
         "dueling": True,
         "dropout_rate": 0.0,
         "seed": seed,
-        "synthetic_steps": 1,
+        "synthetic_steps": synthetic_steps,
     }, loss_values
 
 
@@ -190,7 +190,7 @@ def _build_controlled_trained_checkpoints(
                 "agent_count": agent_count,
                 "state_dim": state_dim,
                 "action_count": action_count,
-                "synthetic_training_step_count": 1,
+                "synthetic_training_step_count": synthetic_steps,
                 "controlled_training_smoke": True,
                 "trained_checkpoint": True,
                 "trained_checkpoint_scope": "synthetic_controlled_smoke_only",
@@ -561,7 +561,11 @@ def main() -> int:
     output_dir = _resolve_path(args.output_dir)
     if _repo_relative(output_dir):
         raise SystemExit("repo output refused")
-    run_smoke(args)
+    result = run_smoke(args)
+    manifest_blockers = result["manifest"].get("blockers", [])
+    report_blockers = result["report"].get("blockers", [])
+    if manifest_blockers or report_blockers:
+        return 1
     return 0
 
 
