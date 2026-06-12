@@ -46,3 +46,18 @@ def test_main_export_manifest_is_optional_and_external():
     source = _main_source()
     assert "--checkpoint_export_manifest" in source
     assert "checkpoint_export_manifest.parent.mkdir" in source
+
+
+def test_main_fails_when_export_report_has_blockers():
+    source = _main_source()
+    assert "training checkpoint export failed" in source
+    assert "export_report[\"blockers\"]" in source
+    assert "all_checkpoints_written" in source
+    assert "all_metadata_written" in source
+
+
+def test_main_manifest_written_before_export_failure_check():
+    source = _main_source()
+    manifest_index = source.index("checkpoint_export_manifest.parent.mkdir")
+    failure_index = source.index("training checkpoint export failed")
+    assert manifest_index < failure_index

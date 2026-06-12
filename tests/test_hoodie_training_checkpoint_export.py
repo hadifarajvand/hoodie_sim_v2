@@ -186,6 +186,29 @@ def test_export_rejects_official_claim_true(tmp_path):
     assert "official_claim_violation" in report["blockers"]
 
 
+def test_export_training_checkpoints_bad_agent_reports_blockers(tmp_path):
+    from training.hoodie_training_checkpoint_export import export_training_checkpoints
+
+    class BadAgent:
+        state_dimensions = 6
+        number_of_actions = 3
+
+    report = export_training_checkpoints([BadAgent()], tmp_path / "export", run_id="phase6_11", seed=42, episode_count=1, training_step_count=1)
+    assert report["all_checkpoints_written"] is False
+    assert report["all_metadata_written"] is False
+    assert "not_all_checkpoints_written" in report["blockers"]
+    assert any(blocker.endswith("checkpoint_write_failed") for blocker in report["blockers"])
+
+
+def test_export_training_checkpoints_no_agents_reports_blocker(tmp_path):
+    from training.hoodie_training_checkpoint_export import export_training_checkpoints
+
+    report = export_training_checkpoints([], tmp_path / "export", run_id="phase6_11", seed=42, episode_count=1, training_step_count=1)
+    assert report["all_checkpoints_written"] is False
+    assert report["all_metadata_written"] is False
+    assert "no_agents_to_export" in report["blockers"]
+
+
 def test_export_training_checkpoints_multiple_agents(tmp_path):
     pytest.importorskip("torch")
     from training.hoodie_training_checkpoint_export import export_training_checkpoints

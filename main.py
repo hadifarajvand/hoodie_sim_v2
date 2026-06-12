@@ -450,6 +450,15 @@ def main():
                     indent=2,
                     sort_keys=True,
                 )
+        if (
+            export_report["blockers"]
+            or not export_report["all_checkpoints_written"]
+            or not export_report["all_metadata_written"]
+        ):
+            raise SystemExit(
+                "training checkpoint export failed: "
+                + ", ".join(export_report["blockers"] or ["export_incomplete"])
+            )
 
                                 
                     

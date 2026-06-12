@@ -177,8 +177,9 @@ def export_training_checkpoints(
         }
     output_dir.mkdir(parents=True, exist_ok=True)
     agent_reports = []
-    all_checkpoints_written = True
-    all_metadata_written = True
+    all_checkpoints_written = bool(agents)
+    all_metadata_written = bool(agents)
+    blockers: list[str] = []
     for agent_index, agent in enumerate(agents):
         checkpoint_path = output_dir / f"agent_{agent_index}.pth"
         metadata = build_training_checkpoint_metadata(
@@ -196,8 +197,17 @@ def export_training_checkpoints(
         )
         report = export_agent_runtime_checkpoint(agent, checkpoint_path, metadata, checkpoint_format=checkpoint_format)
         agent_reports.append(report)
+        for blocker in report.get("blockers", []):
+            blockers.append(f"agent_{agent_index}:{blocker}")
         all_checkpoints_written = all_checkpoints_written and bool(report["checkpoint_written"])
         all_metadata_written = all_metadata_written and bool(report["metadata_written"])
+    if not agents:
+        blockers.append("no_agents_to_export")
+    if not all_checkpoints_written:
+        blockers.append("not_all_checkpoints_written")
+    if not all_metadata_written:
+        blockers.append("not_all_metadata_written")
+    blockers = list(dict.fromkeys(blockers))
     return {
         "export_run": True,
         "checkpoint_created": all_checkpoints_written,
@@ -208,6 +218,6 @@ def export_training_checkpoints(
         "all_metadata_written": all_metadata_written,
         "official_claim_allowed": False,
         "agent_reports": agent_reports,
-        "blockers": [],
+        "blockers": blockers,
         "warnings": [],
     }
