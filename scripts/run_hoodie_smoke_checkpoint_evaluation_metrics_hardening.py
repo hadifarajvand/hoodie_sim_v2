@@ -127,38 +127,68 @@ def _validate_raw_metrics(raw_path: Path, output_dir: Path) -> tuple[bool, dict[
         blockers.append("raw_metrics_unexpected_policy_set")
     if regime_set != ["delay", "drop_ratio"]:
         blockers.append("raw_metrics_unexpected_regime_set")
-    if any(int(row["validation_episode_count"]) != 1 for row in rows):
-        blockers.append("raw_metrics_unexpected_validation_episode_count")
-    if any(int(row["episode_id"]) < 0 for row in rows):
-        blockers.append("raw_metrics_invalid_episode_id")
-    if any(int(row["task_count"]) < 0 for row in rows):
-        blockers.append("raw_metrics_invalid_task_count")
     for row in rows:
-        task_count = int(row["task_count"])
-        completed = int(row["completed_tasks"])
-        dropped = int(row["dropped_tasks"])
-        pending = int(row["pending_tasks"])
-        if completed + dropped + pending != task_count:
-            blockers.append("raw_metrics_task_count_inconsistent")
-            break
-        drop_ratio = float(row["drop_ratio"])
-        if drop_ratio < 0.0 or drop_ratio > 1.0:
+        try:
+            if int(row["validation_episode_count"]) != 1:
+                blockers.append("raw_metrics_unexpected_validation_episode_count")
+        except Exception:
+            blockers.append("raw_metrics_unexpected_validation_episode_count")
+        try:
+            if int(row["episode_id"]) < 0:
+                blockers.append("raw_metrics_invalid_episode_id")
+        except Exception:
+            blockers.append("raw_metrics_invalid_episode_id")
+        try:
+            if int(row["task_count"]) < 0:
+                blockers.append("raw_metrics_invalid_task_count")
+        except Exception:
+            blockers.append("raw_metrics_invalid_task_count")
+        try:
+            task_count = int(row["task_count"])
+            completed = int(row["completed_tasks"])
+            dropped = int(row["dropped_tasks"])
+            pending = int(row["pending_tasks"])
+            if completed + dropped + pending != task_count:
+                blockers.append("raw_metrics_task_count_inconsistent")
+        except Exception:
+            blockers.append("raw_metrics_invalid_task_count")
+        try:
+            drop_ratio = float(row["drop_ratio"])
+            if drop_ratio < 0.0 or drop_ratio > 1.0:
+                blockers.append("raw_metrics_invalid_drop_ratio")
+        except Exception:
             blockers.append("raw_metrics_invalid_drop_ratio")
-        if row["average_computation_delay"] not in ("", "None", None):
-            if float(row["average_computation_delay"]) < 0:
-                blockers.append("raw_metrics_invalid_delay")
-        if row["mean_reward"] not in ("", "None", None):
-            float(row["mean_reward"])
-        if row["total_reward"] not in ("", "None", None):
-            float(row["total_reward"])
-        trace_dir = Path(row["trace_dir"])
-        if not trace_dir.exists():
+        try:
+            if row["average_computation_delay"] not in ("", "None", None):
+                if float(row["average_computation_delay"]) < 0:
+                    blockers.append("raw_metrics_invalid_delay")
+        except Exception:
+            blockers.append("raw_metrics_invalid_delay")
+        try:
+            if row["mean_reward"] not in ("", "None", None):
+                float(row["mean_reward"])
+        except Exception:
+            blockers.append("raw_metrics_invalid_reward")
+        try:
+            if row["total_reward"] not in ("", "None", None):
+                float(row["total_reward"])
+        except Exception:
+            blockers.append("raw_metrics_invalid_reward")
+        try:
+            trace_dir = Path(row["trace_dir"])
+            if not trace_dir.exists():
+                blockers.append("raw_metrics_trace_dir_missing")
+            try:
+                trace_dir.resolve().relative_to(output_dir.resolve())
+            except Exception:
+                blockers.append("raw_metrics_trace_dir_outside_output_dir")
+        except Exception:
             blockers.append("raw_metrics_trace_dir_missing")
         try:
-            trace_dir.resolve().relative_to(output_dir.resolve())
+            notes = json.loads(row["notes_json"])
         except Exception:
-            blockers.append("raw_metrics_trace_dir_outside_output_dir")
-        notes = json.loads(row["notes_json"])
+            blockers.append("raw_metrics_notes_json_invalid")
+            continue
         required_notes = {"regime_id", "regime_source", "average_computation_delay_denominator", "drop_ratio_denominator", "policy_readiness_status", "pending_tasks_visible"}
         if not required_notes.issubset(notes.keys()):
             blockers.append("raw_metrics_notes_json_missing_required_fields")
@@ -215,6 +245,12 @@ def _validate_manifest(manifest_path: Path) -> tuple[bool, dict[str, Any], list[
         blockers.append("validation_manifest_schema_invalid")
     if manifest.get("figure10_data_ready") is True:
         blockers.append("unexpected_figure10_data_ready_true")
+    if manifest.get("official_claim_allowed") is True:
+        blockers.append("official_claim_violation")
+    if manifest.get("official_figure_claim") is True:
+        blockers.append("official_claim_violation")
+    if manifest.get("paper_reproduction_claim") is True:
+        blockers.append("paper_reproduction_claim_violation")
     if manifest.get("paper_performance_claims_made") is True:
         blockers.append("official_claim_violation")
     return len(blockers) == 0, manifest, blockers
@@ -318,13 +354,15 @@ def run_smoke(args: argparse.Namespace) -> dict[str, Any]:
     blockers.extend(summary_blockers)
     blockers.extend(readiness_blockers)
     blockers.extend(manifest_blockers)
-    if raw_metrics_path.exists() is False or summary_path.exists() is False or readiness_path.exists() is False or validation_manifest_path.exists() is False:
+    if raw_metrics_path.exists() is False or summary_path.exists() is False or readiness_path.exists() is False or validation_manifest_path.exists() is False or config_snapshot_path.exists() is False:
         blockers.append("metric_file_missing")
+    if config_snapshot_path.exists() is False:
+        blockers.append("config_snapshot_missing")
     if readiness.get("figure10_data_ready") is True:
         blockers.append("unexpected_figure10_data_ready_true")
-    if validation_manifest.get("paper_performance_claims_made") is True:
+    if validation_manifest.get("paper_reproduction_claim") is True:
         blockers.append("paper_reproduction_claim_violation")
-    if validation_manifest.get("official_claim_allowed") is True:
+    if validation_manifest.get("official_claim_allowed") is True or validation_manifest.get("official_figure_claim") is True or validation_manifest.get("paper_performance_claims_made") is True:
         blockers.append("official_claim_violation")
     if validation_manifest.get("strict_readiness", False) is True:
         blockers.append("strict_readiness_used")
@@ -355,7 +393,7 @@ def run_smoke(args: argparse.Namespace) -> dict[str, Any]:
         "simulation_rerun": True,
         "simulation_rerun_scope": "bounded_training_plus_test_mode_metrics_hardening_smoke_only",
         "official_simulation_rerun": False,
-        "metrics_files_present": raw_metrics_path.exists() and summary_path.exists() and readiness_path.exists() and validation_manifest_path.exists(),
+        "metrics_files_present": raw_metrics_path.exists() and summary_path.exists() and readiness_path.exists() and validation_manifest_path.exists() and config_snapshot_path.exists(),
         "raw_metrics_schema_valid": metrics_ok,
         "raw_metrics_rows_present": bool(raw_metrics.get("row_count", 0)),
         "raw_metrics_policy_scope_valid": raw_metrics.get("policy_set") == ["HOODIE"],
@@ -366,7 +404,22 @@ def run_smoke(args: argparse.Namespace) -> dict[str, Any]:
         "readiness_schema_valid": readiness_ok,
         "manifest_schema_valid": manifest_ok,
         "metrics_consistency_valid": metrics_ok and summary_ok and readiness_ok and manifest_ok,
-        "non_official_guard_valid": True,
+        "non_official_guard_valid": not (
+            bool(readiness.get("figure10_data_ready", False))
+            or bool(validation_manifest.get("figure10_data_ready", False))
+            or bool(validation_manifest.get("official_claim_allowed", False))
+            or bool(validation_manifest.get("official_figure_claim", False))
+            or bool(validation_manifest.get("paper_reproduction_claim", False))
+            or bool(validation_manifest.get("paper_performance_claims_made", False))
+            or any(
+                blocker in {
+                    "official_claim_violation",
+                    "paper_reproduction_claim_violation",
+                    "unexpected_figure10_data_ready_true",
+                }
+                for blocker in blockers
+            )
+        ),
         "raw_row_count": raw_metrics.get("row_count", 0),
         "raw_policy_set": raw_metrics.get("policy_set", []),
         "raw_regime_set": raw_metrics.get("regime_set", []),

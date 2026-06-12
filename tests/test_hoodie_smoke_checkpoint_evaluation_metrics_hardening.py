@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import argparse
 import csv
 import json
 import shutil
@@ -100,7 +101,15 @@ def _training_smoke_result(output_dir: Path, *, include_export_manifest: bool = 
     }
 
 
-def _write_metrics_file(output_dir: Path, *, raw_rows: list[dict[str, object]], summary: dict[str, object] | None = None, readiness: dict[str, object] | None = None, manifest: dict[str, object] | None = None):
+def _write_metrics_file(
+    output_dir: Path,
+    *,
+    raw_rows: list[dict[str, object]],
+    summary: dict[str, object] | None = None,
+    readiness: dict[str, object] | None = None,
+    manifest: dict[str, object] | None = None,
+    config_snapshot: dict[str, object] | None = None,
+):
     runner = output_dir / "wiring_smoke" / "evaluation_runner"
     runner.mkdir(parents=True, exist_ok=True)
     raw_path = runner / "figure10_policy_metrics_raw.csv"
@@ -117,7 +126,8 @@ def _write_metrics_file(output_dir: Path, *, raw_rows: list[dict[str, object]], 
         (runner / "figure10_policy_readiness.json").write_text(json.dumps(readiness, indent=2, sort_keys=True))
     if manifest is not None:
         (runner / "figure10_validation_manifest.json").write_text(json.dumps(manifest, indent=2, sort_keys=True))
-    (runner / "figure10_run_config_snapshot.json").write_text(json.dumps({"trace_level": "summary"}, indent=2, sort_keys=True))
+    if config_snapshot is not None:
+        (runner / "figure10_run_config_snapshot.json").write_text(json.dumps(config_snapshot, indent=2, sort_keys=True))
 
 
 def _valid_raw_rows(output_dir: Path):
@@ -311,6 +321,8 @@ def test_successful_metrics_hardening_smoke_runs_only_in_tmp_path(tmp_path):
     assert manifest["readiness_figure10_data_ready"] is False
     assert manifest["official_claim_allowed"] is False
     assert manifest["paper_reproduction_claim"] is False
+    assert manifest["metrics_files_present"] is True
+    assert manifest["config_snapshot_path"].endswith("figure10_run_config_snapshot.json")
     assert report["metrics_hardening_run"] is True
     assert report["wiring_smoke_completed"] is True
     assert report["metrics_files_present"] is True
@@ -688,6 +700,293 @@ def test_paper_reproduction_true_sets_blocker(tmp_path, monkeypatch):
     assert smoke.main() == 1
     report = _load_json(tmp_path / "out" / "hoodie_smoke_checkpoint_evaluation_metrics_hardening_report.json")
     assert "paper_reproduction_claim_violation" in report["blockers"]
+
+
+def test_real_invalid_notes_json_sets_blocker(tmp_path, monkeypatch):
+    import scripts.run_hoodie_smoke_checkpoint_evaluation_metrics_hardening as smoke
+
+    def fake_run_wiring_smoke(**kwargs):
+        out = kwargs["output_dir"]
+        rows = _valid_raw_rows(out)
+        rows[0]["notes_json"] = "{bad-json"
+        _write_metrics_file(
+            out,
+            raw_rows=rows,
+            summary={"registry": {"active_policy_set": ["HOODIE"]}, "validation_episode_count": 1, "figure10_data_ready": False, "no_metric_rows_generated": False},
+            readiness={"validation_episode_count": 1, "active_policy_set": ["HOODIE"], "figure10_data_ready": False},
+            manifest={"diagnostic_only": True, "figure10_data_ready": False},
+            config_snapshot={"trace_level": "summary"},
+        )
+        return subprocess.CompletedProcess(args=["wiring"], returncode=0, stdout="", stderr="")
+
+    monkeypatch.setattr(smoke, "_run_wiring_smoke", fake_run_wiring_smoke)
+    result = smoke.run_smoke(
+        argparse.Namespace(
+            output_dir=str(tmp_path / "out"),
+            training_epochs=1,
+            training_episode_time=3,
+            validation_episodes=1,
+            seed=42,
+            run_id="phase6_14_smoke_checkpoint_evaluation_metrics_hardening",
+            expected_agent_count=20,
+            trace_level="summary",
+            allow_smoke_checkpoint_evaluation_metrics_hardening=True,
+            allow_trained_checkpoint_evaluation_wiring_smoke=True,
+            allow_bounded_training_smoke=True,
+            allow_figure10_validation_test_mode=True,
+            allow_main_py_training_execution=True,
+            allow_training_checkpoint_export=True,
+            policies="HOODIE",
+        )
+    )
+    assert "raw_metrics_notes_json_invalid" in result["manifest"]["blockers"]
+    assert "raw_metrics_notes_json_invalid" in result["report"]["blockers"]
+
+
+def test_real_invalid_numeric_fields_set_blockers(tmp_path, monkeypatch):
+    import scripts.run_hoodie_smoke_checkpoint_evaluation_metrics_hardening as smoke
+
+    def fake_run_wiring_smoke(**kwargs):
+        out = kwargs["output_dir"]
+        rows = _valid_raw_rows(out)
+        rows[0]["drop_ratio"] = "not-a-number"
+        rows[0]["task_count"] = "bad"
+        rows[0]["average_computation_delay"] = "-1"
+        rows[0]["mean_reward"] = "bad"
+        _write_metrics_file(
+            out,
+            raw_rows=rows,
+            summary={"registry": {"active_policy_set": ["HOODIE"]}, "validation_episode_count": 1, "figure10_data_ready": False, "no_metric_rows_generated": False},
+            readiness={"validation_episode_count": 1, "active_policy_set": ["HOODIE"], "figure10_data_ready": False},
+            manifest={"diagnostic_only": True, "figure10_data_ready": False},
+            config_snapshot={"trace_level": "summary"},
+        )
+        return subprocess.CompletedProcess(args=["wiring"], returncode=0, stdout="", stderr="")
+
+    monkeypatch.setattr(smoke, "_run_wiring_smoke", fake_run_wiring_smoke)
+    result = smoke.run_smoke(
+        argparse.Namespace(
+            output_dir=str(tmp_path / "out"),
+            training_epochs=1,
+            training_episode_time=3,
+            validation_episodes=1,
+            seed=42,
+            run_id="phase6_14_smoke_checkpoint_evaluation_metrics_hardening",
+            expected_agent_count=20,
+            trace_level="summary",
+            allow_smoke_checkpoint_evaluation_metrics_hardening=True,
+            allow_trained_checkpoint_evaluation_wiring_smoke=True,
+            allow_bounded_training_smoke=True,
+            allow_figure10_validation_test_mode=True,
+            allow_main_py_training_execution=True,
+            allow_training_checkpoint_export=True,
+            policies="HOODIE",
+        )
+    )
+    blockers = result["manifest"]["blockers"]
+    assert "raw_metrics_invalid_drop_ratio" in blockers
+    assert "raw_metrics_invalid_task_count" in blockers
+    assert "raw_metrics_invalid_delay" in blockers
+    assert "raw_metrics_invalid_reward" in blockers
+
+
+def test_real_paper_reproduction_claim_true_sets_blocker(tmp_path, monkeypatch):
+    import scripts.run_hoodie_smoke_checkpoint_evaluation_metrics_hardening as smoke
+
+    def fake_run_wiring_smoke(**kwargs):
+        out = kwargs["output_dir"]
+        _write_metrics_file(
+            out,
+            raw_rows=_valid_raw_rows(out),
+            summary={"registry": {"active_policy_set": ["HOODIE"]}, "validation_episode_count": 1, "figure10_data_ready": False, "no_metric_rows_generated": False},
+            readiness={"validation_episode_count": 1, "active_policy_set": ["HOODIE"], "figure10_data_ready": False},
+            manifest={"diagnostic_only": True, "figure10_data_ready": False, "paper_reproduction_claim": True},
+            config_snapshot={"trace_level": "summary"},
+        )
+        return subprocess.CompletedProcess(args=["wiring"], returncode=0, stdout="", stderr="")
+
+    monkeypatch.setattr(smoke, "_run_wiring_smoke", fake_run_wiring_smoke)
+    result = smoke.run_smoke(
+        argparse.Namespace(
+            output_dir=str(tmp_path / "out"),
+            training_epochs=1,
+            training_episode_time=3,
+            validation_episodes=1,
+            seed=42,
+            run_id="phase6_14_smoke_checkpoint_evaluation_metrics_hardening",
+            expected_agent_count=20,
+            trace_level="summary",
+            allow_smoke_checkpoint_evaluation_metrics_hardening=True,
+            allow_trained_checkpoint_evaluation_wiring_smoke=True,
+            allow_bounded_training_smoke=True,
+            allow_figure10_validation_test_mode=True,
+            allow_main_py_training_execution=True,
+            allow_training_checkpoint_export=True,
+            policies="HOODIE",
+        )
+    )
+    assert "paper_reproduction_claim_violation" in result["manifest"]["blockers"]
+    assert "paper_reproduction_claim_violation" in result["report"]["blockers"]
+    assert result["manifest"]["non_official_guard_valid"] is False
+
+
+def test_real_official_claim_allowed_true_sets_blocker(tmp_path, monkeypatch):
+    import scripts.run_hoodie_smoke_checkpoint_evaluation_metrics_hardening as smoke
+
+    def fake_run_wiring_smoke(**kwargs):
+        out = kwargs["output_dir"]
+        _write_metrics_file(
+            out,
+            raw_rows=_valid_raw_rows(out),
+            summary={"registry": {"active_policy_set": ["HOODIE"]}, "validation_episode_count": 1, "figure10_data_ready": False, "no_metric_rows_generated": False},
+            readiness={"validation_episode_count": 1, "active_policy_set": ["HOODIE"], "figure10_data_ready": False},
+            manifest={"diagnostic_only": True, "figure10_data_ready": False, "official_claim_allowed": True},
+            config_snapshot={"trace_level": "summary"},
+        )
+        return subprocess.CompletedProcess(args=["wiring"], returncode=0, stdout="", stderr="")
+
+    monkeypatch.setattr(smoke, "_run_wiring_smoke", fake_run_wiring_smoke)
+    result = smoke.run_smoke(
+        argparse.Namespace(
+            output_dir=str(tmp_path / "out"),
+            training_epochs=1,
+            training_episode_time=3,
+            validation_episodes=1,
+            seed=42,
+            run_id="phase6_14_smoke_checkpoint_evaluation_metrics_hardening",
+            expected_agent_count=20,
+            trace_level="summary",
+            allow_smoke_checkpoint_evaluation_metrics_hardening=True,
+            allow_trained_checkpoint_evaluation_wiring_smoke=True,
+            allow_bounded_training_smoke=True,
+            allow_figure10_validation_test_mode=True,
+            allow_main_py_training_execution=True,
+            allow_training_checkpoint_export=True,
+            policies="HOODIE",
+        )
+    )
+    assert "official_claim_violation" in result["manifest"]["blockers"]
+    assert "official_claim_violation" in result["report"]["blockers"]
+    assert result["manifest"]["non_official_guard_valid"] is False
+
+
+def test_real_official_figure_claim_true_sets_blocker(tmp_path, monkeypatch):
+    import scripts.run_hoodie_smoke_checkpoint_evaluation_metrics_hardening as smoke
+
+    def fake_run_wiring_smoke(**kwargs):
+        out = kwargs["output_dir"]
+        _write_metrics_file(
+            out,
+            raw_rows=_valid_raw_rows(out),
+            summary={"registry": {"active_policy_set": ["HOODIE"]}, "validation_episode_count": 1, "figure10_data_ready": False, "no_metric_rows_generated": False},
+            readiness={"validation_episode_count": 1, "active_policy_set": ["HOODIE"], "figure10_data_ready": False},
+            manifest={"diagnostic_only": True, "figure10_data_ready": False, "official_figure_claim": True},
+            config_snapshot={"trace_level": "summary"},
+        )
+        return subprocess.CompletedProcess(args=["wiring"], returncode=0, stdout="", stderr="")
+
+    monkeypatch.setattr(smoke, "_run_wiring_smoke", fake_run_wiring_smoke)
+    result = smoke.run_smoke(
+        argparse.Namespace(
+            output_dir=str(tmp_path / "out"),
+            training_epochs=1,
+            training_episode_time=3,
+            validation_episodes=1,
+            seed=42,
+            run_id="phase6_14_smoke_checkpoint_evaluation_metrics_hardening",
+            expected_agent_count=20,
+            trace_level="summary",
+            allow_smoke_checkpoint_evaluation_metrics_hardening=True,
+            allow_trained_checkpoint_evaluation_wiring_smoke=True,
+            allow_bounded_training_smoke=True,
+            allow_figure10_validation_test_mode=True,
+            allow_main_py_training_execution=True,
+            allow_training_checkpoint_export=True,
+            policies="HOODIE",
+        )
+    )
+    assert "official_claim_violation" in result["manifest"]["blockers"]
+    assert "official_claim_violation" in result["report"]["blockers"]
+    assert result["manifest"]["non_official_guard_valid"] is False
+
+
+def test_missing_config_snapshot_sets_blocker(tmp_path, monkeypatch):
+    import scripts.run_hoodie_smoke_checkpoint_evaluation_metrics_hardening as smoke
+
+    def fake_run_wiring_smoke(**kwargs):
+        out = kwargs["output_dir"]
+        _write_metrics_file(
+            out,
+            raw_rows=_valid_raw_rows(out),
+            summary={"registry": {"active_policy_set": ["HOODIE"]}, "validation_episode_count": 1, "figure10_data_ready": False, "no_metric_rows_generated": False},
+            readiness={"validation_episode_count": 1, "active_policy_set": ["HOODIE"], "figure10_data_ready": False},
+            manifest={"diagnostic_only": True, "figure10_data_ready": False},
+            config_snapshot=None,
+        )
+        return subprocess.CompletedProcess(args=["wiring"], returncode=0, stdout="", stderr="")
+
+    monkeypatch.setattr(smoke, "_run_wiring_smoke", fake_run_wiring_smoke)
+    result = smoke.run_smoke(
+        argparse.Namespace(
+            output_dir=str(tmp_path / "out"),
+            training_epochs=1,
+            training_episode_time=3,
+            validation_episodes=1,
+            seed=42,
+            run_id="phase6_14_smoke_checkpoint_evaluation_metrics_hardening",
+            expected_agent_count=20,
+            trace_level="summary",
+            allow_smoke_checkpoint_evaluation_metrics_hardening=True,
+            allow_trained_checkpoint_evaluation_wiring_smoke=True,
+            allow_bounded_training_smoke=True,
+            allow_figure10_validation_test_mode=True,
+            allow_main_py_training_execution=True,
+            allow_training_checkpoint_export=True,
+            policies="HOODIE",
+        )
+    )
+    assert "metric_file_missing" in result["manifest"]["blockers"]
+    assert "config_snapshot_missing" in result["manifest"]["blockers"]
+    assert result["manifest"]["metrics_files_present"] is False
+    assert result["report"]["metrics_files_present"] is False
+
+
+def test_non_official_guard_valid_false_when_claim_fields_true(tmp_path, monkeypatch):
+    import scripts.run_hoodie_smoke_checkpoint_evaluation_metrics_hardening as smoke
+
+    def fake_run_wiring_smoke(**kwargs):
+        out = kwargs["output_dir"]
+        _write_metrics_file(
+            out,
+            raw_rows=_valid_raw_rows(out),
+            summary={"registry": {"active_policy_set": ["HOODIE"]}, "validation_episode_count": 1, "figure10_data_ready": False, "no_metric_rows_generated": False},
+            readiness={"validation_episode_count": 1, "active_policy_set": ["HOODIE"], "figure10_data_ready": False},
+            manifest={"diagnostic_only": True, "figure10_data_ready": False, "official_figure_claim": True},
+            config_snapshot={"trace_level": "summary"},
+        )
+        return subprocess.CompletedProcess(args=["wiring"], returncode=0, stdout="", stderr="")
+
+    monkeypatch.setattr(smoke, "_run_wiring_smoke", fake_run_wiring_smoke)
+    result = smoke.run_smoke(
+        argparse.Namespace(
+            output_dir=str(tmp_path / "out"),
+            training_epochs=1,
+            training_episode_time=3,
+            validation_episodes=1,
+            seed=42,
+            run_id="phase6_14_smoke_checkpoint_evaluation_metrics_hardening",
+            expected_agent_count=20,
+            trace_level="summary",
+            allow_smoke_checkpoint_evaluation_metrics_hardening=True,
+            allow_trained_checkpoint_evaluation_wiring_smoke=True,
+            allow_bounded_training_smoke=True,
+            allow_figure10_validation_test_mode=True,
+            allow_main_py_training_execution=True,
+            allow_training_checkpoint_export=True,
+            policies="HOODIE",
+        )
+    )
+    assert result["manifest"]["non_official_guard_valid"] is False
 
 
 def test_no_generated_artifacts_outside_tmp_path(tmp_path):
