@@ -1,0 +1,16 @@
+{
+  "phase": "7.3",
+  "scope": "sweep_parameter_sensitivity",
+  "task_arrival_probability_sensitive": true,
+  "local_cpu_capacity_sensitive": false,
+  "task_timeout_sensitive": true,
+  "local_cpu_capacity_flat_in_phase7_1": true,
+  "likely_root_cause": "The local CPU sweep is wired into private_cpu_capacities and consumed by the environment, but the current experiment setup does not exercise it strongly enough to move the aggregate metrics; the flat curve is most consistent with simulator/experiment insensitivity rather than a broken config handoff.",
+  "requires_code_fix": false,
+  "requires_phase7_1_rerun": false,
+  "official_paper_reproduction": false,
+  "contribution_enabled": false,
+  "deadline_aware_extension": false,
+  "qos_extension": false,
+  "queueing_extension": false
+}
