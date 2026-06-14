@@ -49,6 +49,8 @@ class Environment():
         self.paper_state_history = [deque(maxlen=self.paper_state_window) for _ in range(self.number_of_servers)]
         self.last_public_queue_vector = [np.full(self.number_of_servers + 1, np.nan, dtype=np.float32) for _ in range(self.number_of_servers)]
         self.last_paper_queue_arrivals = [0 for _ in range(self.number_of_servers + self.number_of_clouds)]
+        self.last_paper_private_arrivals = [0 for _ in range(self.number_of_servers)]
+        self.last_paper_offloaded_arrivals = [0 for _ in range(self.number_of_servers + self.number_of_clouds)]
         Task.trace_recorder = trace_recorder
         get_column = lambda m, i: [row[i] for row in m]
         self.task_generators = [TaskGenerator(id=i,
@@ -74,7 +76,9 @@ class Environment():
                                 private_queue_computational_capacity=  private_cpu_capacities[i],
                                 public_queues_computational_capacity= public_cpu_capacities[i],
                                 outbound_connections=  self.connection_matrix[i],
-                                inbound_connections=get_column(self.connection_matrix,i)) 
+                                inbound_connections=get_column(self.connection_matrix,i),
+                                cloud_node_id=self.number_of_servers,
+                                cloud_offloading_capacity=cloud_computational_capacity) 
                         for i in range(number_of_servers)]
        
         self.matchmakers = [Matchmaker(id=s.id,
@@ -118,6 +122,8 @@ class Environment():
         self.paper_state_history = [deque(maxlen=self.paper_state_window) for _ in range(self.number_of_servers)]
         self.last_public_queue_vector = [np.full(self.number_of_servers + 1, np.nan, dtype=np.float32) for _ in range(self.number_of_servers)]
         self.last_paper_queue_arrivals = [0 for _ in range(self.number_of_servers + self.number_of_clouds)]
+        self.last_paper_private_arrivals = [0 for _ in range(self.number_of_servers)]
+        self.last_paper_offloaded_arrivals = [0 for _ in range(self.number_of_servers + self.number_of_clouds)]
         self.last_action_decisions = [None for _ in range(self.number_of_servers)]
         if self.trace_recorder is not None:
             self.trace_recorder.start_episode(self.episode_id)
@@ -214,9 +220,15 @@ class Environment():
             s.add_offloaded_tasks(self.horisontal_transmitted_tasks[s.id], current_time=self.current_time)
         self.cloud.add_offloaded_tasks(self.horisontal_transmitted_tasks[-1], current_time=self.current_time)
         self.last_paper_queue_arrivals = [0 for _ in range(self.number_of_servers + self.number_of_clouds)]
+        self.last_paper_private_arrivals = [0 for _ in range(self.number_of_servers)]
+        self.last_paper_offloaded_arrivals = [0 for _ in range(self.number_of_servers + self.number_of_clouds)]
         for server_id in range(self.number_of_servers):
-            self.last_paper_queue_arrivals[server_id] = int(tasks_arrived[server_id]) + len(self.horisontal_transmitted_tasks[server_id])
-        self.last_paper_queue_arrivals[-1] = len(self.horisontal_transmitted_tasks[-1])
+            incoming_offloaded = len(self.horisontal_transmitted_tasks[server_id])
+            self.last_paper_offloaded_arrivals[server_id] = incoming_offloaded
+            self.last_paper_queue_arrivals[server_id] += incoming_offloaded
+        cloud_incoming_offloaded = len(self.horisontal_transmitted_tasks[-1])
+        self.last_paper_offloaded_arrivals[-1] = cloud_incoming_offloaded
+        self.last_paper_queue_arrivals[-1] += cloud_incoming_offloaded
         self.reset_transmitted_tasks()
         
         rewards = self.cloud.step()
@@ -226,6 +238,9 @@ class Environment():
             self.last_action_decisions[server_id] = action_decision
             action = action_decision.legacy_target_node_id
             self.add_action_info(action,server_id,self.tasks[server_id])
+            if self.tasks[server_id] is not None and action_decision.first_stage_decision == "local":
+                self.last_paper_private_arrivals[server_id] += 1
+                self.last_paper_queue_arrivals[server_id] += 1
             transmited_task, server_reward = self.servers[server_id].step(action,self.tasks[server_id],current_time=self.current_time)
             rewards = merge_dicts(rewards,server_reward)
             if transmited_task:
@@ -340,7 +355,8 @@ class Environment():
         episode_id = self.episode_id
         total_queue_length = 0.0
         for server in self.servers:
-            node_u_n_t = int(self.last_paper_queue_arrivals[server.id]) if server.id < len(self.last_paper_queue_arrivals) else None
+            private_u_n_t = int(self.last_paper_private_arrivals[server.id]) if server.id < len(self.last_paper_private_arrivals) else None
+            offloaded_u_n_t = int(self.last_paper_offloaded_arrivals[server.id]) if server.id < len(self.last_paper_offloaded_arrivals) else None
             q = server.processing_queue
             self.trace_recorder.note_queue_trace(
                 episode_id=episode_id,
@@ -348,7 +364,7 @@ class Environment():
                 node_id=server.id,
                 queue_type="private",
                 queue_length=q.get_trace_queue_length(),
-                paper_u_n_t=node_u_n_t,
+                paper_u_n_t=private_u_n_t,
                 arrivals=q.arrivals_this_step,
                 departures=q.departures_this_step,
                 drops=q.drops_this_step,
@@ -365,7 +381,7 @@ class Environment():
                 node_id=server.id,
                 queue_type="offloading",
                 queue_length=oq.get_trace_queue_length(),
-                paper_u_n_t=node_u_n_t,
+                paper_u_n_t=0,
                 arrivals=oq.arrivals_this_step,
                 departures=oq.departures_this_step,
                 drops=oq.drops_this_step,
@@ -382,7 +398,7 @@ class Environment():
                     node_id=server.id,
                     queue_type=f"public:{source_id}",
                     queue_length=pq.get_trace_queue_length(),
-                    paper_u_n_t=node_u_n_t,
+                    paper_u_n_t=offloaded_u_n_t,
                     arrivals=pq.arrivals_this_step,
                     departures=pq.departures_this_step,
                     drops=pq.drops_this_step,
@@ -401,8 +417,8 @@ class Environment():
             node_id=self.number_of_servers,
             queue_type="cloud",
             queue_length=cloud_queue_length,
-            paper_u_n_t=int(self.last_paper_queue_arrivals[-1]) if self.last_paper_queue_arrivals else None,
-            arrivals=int(self.last_paper_queue_arrivals[-1]) if self.last_paper_queue_arrivals else 0,
+            paper_u_n_t=int(self.last_paper_offloaded_arrivals[-1]) if self.last_paper_offloaded_arrivals else None,
+            arrivals=int(self.last_paper_offloaded_arrivals[-1]) if self.last_paper_offloaded_arrivals else 0,
             departures=0,
             drops=0,
             cpu_allocated=self.cloud.computational_capacity,

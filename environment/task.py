@@ -197,6 +197,11 @@ class Task:
         return 0, task_processed
 
     def transmit(self, offloading_capacity):
+        if self.target_server_id is None:
+            destination = self.routing_metadata.get("paper_destination_node_id")
+            if destination is None:
+                raise ValueError("offloaded task is missing a resolved destination")
+            self.target_server_id = int(destination)
         self.remain -= offloading_capacity
         if self.remain <= 0:
             transmitted_task = Task(

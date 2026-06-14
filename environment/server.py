@@ -8,7 +8,9 @@ class Server():
                  private_queue_computational_capacity :float,
                  public_queues_computational_capacity :float,
                  outbound_connections,
-                 inbound_connections):
+                 inbound_connections,
+                 cloud_node_id: int | None = None,
+                 cloud_offloading_capacity: float | None = None):
         self.id=id
         self.private_queue_computational_capacity = private_queue_computational_capacity
         self.public_queues_computational_capacity = public_queues_computational_capacity
@@ -19,6 +21,8 @@ class Server():
         outbound_connections = np.array(outbound_connections)
         self.offloading_servers = np.where(outbound_connections!=0)[0]
         self.offloading_capacities = {s:outbound_connections[s] for s in self.offloading_servers}
+        if cloud_node_id is not None and cloud_offloading_capacity is not None:
+            self.offloading_capacities[int(cloud_node_id)] = float(cloud_offloading_capacity)
         self.offloading_queue = OffloadingQueue(offloading_capacities = self.offloading_capacities)
 
         inbound_connections = np.array(inbound_connections)
@@ -44,12 +48,13 @@ class Server():
         if local_task:
             local_task.set_origin_server_id(self.id)
             local_task.selected_action = action
-            local_task.processing_node = self.id if action == self.id else action
+            local_task.processing_node = self.id if action == self.id else None
             if action ==self.id:  
                 self.processing_queue.add_task(local_task, current_time=current_time)
             else:
-                target_server_id = action
-                local_task.set_target_server_id(target_server_id)
+                local_task.routing_metadata["paper_destination_node_id"] = int(action)
+                local_task.routing_metadata["dm2_timing"] = "offloading_queue_exit"
+                local_task.routing_metadata["requires_separate_dm2_at_offloading_queue_exit"] = False
                 self.offloading_queue.add_task(local_task, current_time=current_time)
                 
         local_reward = self.processing_queue.step()

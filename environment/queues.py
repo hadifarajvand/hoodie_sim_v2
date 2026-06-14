@@ -149,16 +149,25 @@ class OffloadingQueue(TaskQueue):
         self.waiting_time =0
     
     def update_waiting_time(self, task):
-        target_server_id = task.get_target_server_id()
+        target_server_id = self._resolve_target_server_id(task)
         offloading_capacity = self.offloading_capacities[target_server_id]
         time_to_transmit_task =  math.ceil(task.get_size()/ offloading_capacity)
         timeout_time = max(0,task.get_relative_timeout()- self.waiting_time)
         self.waiting_time += min(timeout_time,time_to_transmit_task)
 
     def _task_transmission_time(self, task):
-        target_server_id = task.get_target_server_id()
+        target_server_id = self._resolve_target_server_id(task)
         offloading_capacity = self.offloading_capacities[target_server_id]
         return math.ceil(task.get_remaining_size() / offloading_capacity)
+
+    def _resolve_target_server_id(self, task):
+        target_server_id = task.get_target_server_id()
+        if target_server_id is not None:
+            return target_server_id
+        destination = task.routing_metadata.get("paper_destination_node_id")
+        if destination is None:
+            raise ValueError("offloading task is missing a paper destination")
+        return int(destination)
 
     def get_waiting_time(self):
         if self.current_task.is_empty():
@@ -182,11 +191,16 @@ class OffloadingQueue(TaskQueue):
             return transmited_task,reward
 
         target_server_id = self.current_task.get_target_server_id()
+        if target_server_id is None:
+            target_server_id = self._resolve_target_server_id(self.current_task)
+            self.current_task.set_target_server_id(target_server_id)
         offloading_capacity = self.offloading_capacities[target_server_id]
         recorder = getattr(Task, "trace_recorder", None)
         if recorder is not None and self.current_task.service_start_time is None:
             self.current_task.service_start_time = self.current_time
             recorder.note_service_start(self.current_task, episode_id=getattr(recorder, "_episode_id", None), time=self.current_time, node_id=self.node_id if self.node_id is not None else -1, queue_type=self.queue_type)
+        self.current_task.routing_metadata["dm2_timing"] = "offloading_queue_exit"
+        self.current_task.routing_metadata["requires_separate_dm2_at_offloading_queue_exit"] = False
         transmited_task = self.current_task.transmit(offloading_capacity)
         if transmited_task is not None:
             self.departures_this_step += 1

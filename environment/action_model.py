@@ -165,8 +165,8 @@ class TwoStageActionModel:
                 d_nk_2={int(destination): 1},
                 paper_destination_nodes=paper_destination_nodes,
                 paper_d_nk_2=self._paper_destination_vector(source, destination),
-                dm2_timing="collapsed_at_arrival",
-                requires_separate_dm2_at_offloading_queue_exit=True,
+                dm2_timing="offloading_queue_exit",
+                requires_separate_dm2_at_offloading_queue_exit=False,
             )
             self.validate_paper_action_contract(action)
             actions.append(action)
@@ -185,8 +185,8 @@ class TwoStageActionModel:
             d_nk_2={int(self.topology.cloud_node_id): 1},
             paper_destination_nodes=paper_destination_nodes,
             paper_d_nk_2=self._paper_destination_vector(source, self.topology.cloud_node_id),
-            dm2_timing="collapsed_at_arrival",
-            requires_separate_dm2_at_offloading_queue_exit=True,
+            dm2_timing="offloading_queue_exit",
+            requires_separate_dm2_at_offloading_queue_exit=False,
         )
         self.validate_paper_action_contract(cloud_action)
         actions.append(cloud_action)

@@ -359,9 +359,9 @@ class TraceRecorder:
         if d_n_1 is None:
             d_n_1 = 1 if first_stage_decision == "local" else 0
         if dm2_timing is None:
-            dm2_timing = "not_applicable" if first_stage_decision == "local" else "collapsed_at_arrival"
+            dm2_timing = "not_applicable" if first_stage_decision == "local" else "offloading_queue_exit"
         if requires_separate_dm2_at_offloading_queue_exit is None:
-            requires_separate_dm2_at_offloading_queue_exit = first_stage_decision != "local"
+            requires_separate_dm2_at_offloading_queue_exit = False
         self.action_traces.append(
             ActionTraceRecord(
                 episode_id=episode_id,
