@@ -88,6 +88,12 @@ def select_torch_device() -> str:
     return "cpu"
 
 
+def _select_action_for_slot(decision_maker, observation, lstm_state, x_n_t: int, placeholder_action: int = 0) -> tuple[int, bool]:
+    if not x_n_t:
+        return int(placeholder_action), False
+    return int(decision_maker.choose_action(observation, lstm_state)), True
+
+
 def _repo_root() -> Path:
     return Path(__file__).resolve().parent
 
@@ -313,6 +319,7 @@ def main():
                     episode_id=paper_state["episode_id"],
                     time=paper_state["time"],
                     agent_id=i,
+                    x_n_t=int(paper_state["x_n_t"]),
                     task_id=paper_state["task_id"],
                     eta_n=paper_state["eta_n"],
                     w_priv_n=paper_state["w_priv_n"],
@@ -328,7 +335,8 @@ def main():
                     state_vector=paper_state["state_vector"],
                 )
                 current_task = env.tasks[i]
-                if current_task is not None and not current_task.is_empty():
+                x_n_t = 1 if current_task is not None and not current_task.is_empty() else 0
+                if x_n_t:
                     pending_transition_inputs.append(
                         {
                             "task_id": int(current_task.task_id),
@@ -341,30 +349,40 @@ def main():
                             "created_by_policy": type(decision_makers[i]).__name__,
                         }
                     )
-                actions[i] = decision_makers[i].choose_action(local_observations[i],public_queues[i])
+                actions[i], _ = _select_action_for_slot(
+                    decision_makers[i],
+                    local_observations[i],
+                    public_queues[i],
+                    x_n_t,
+                    placeholder_action=0,
+                )
             observations,rewards,done,info = env.step(actions)
             local_observations_,public_queues_ =observations
             for i in range(number_of_servers):
                 action_decision = env.last_action_decisions[i]
                 target_node = action_decision.legacy_target_node_id if action_decision is not None else env.matchmakers[i].match_action(i, actions[i])
-                trace_recorder.note_action(
-                    episode_id=epoch,
-                    time=step_time,
-                    agent_id=i,
-                    observation_shape=np.shape(local_observations[i]),
-                    selected_action=int(actions[i]),
-                    target_node=int(target_node),
-                    reward_received=float(rewards[i]),
-                    first_stage_decision=None if action_decision is None else action_decision.first_stage_decision,
-                    destination_node_id=None if action_decision is None else action_decision.destination_node_id,
-                    destination_type=None if action_decision is None else action_decision.destination_type,
-                    is_valid=None if action_decision is None else action_decision.is_valid,
-                    invalid_reason=None if action_decision is None else action_decision.invalid_reason,
-                    adjacency_allowed=None if action_decision is None else action_decision.adjacency_allowed,
-                    cloud_target=None if action_decision is None else action_decision.cloud_target,
-                    d_n_1=None if action_decision is None else action_decision.d_n_1,
-                    d_nk_2=None if action_decision is None else action_decision.d_nk_2,
-                )
+                current_task = env.tasks[i]
+                x_n_t = 1 if current_task is not None and not current_task.is_empty() else 0
+                if x_n_t:
+                    trace_recorder.note_action(
+                        episode_id=epoch,
+                        time=step_time,
+                        agent_id=i,
+                        x_n_t=x_n_t,
+                        observation_shape=np.shape(local_observations[i]),
+                        selected_action=int(actions[i]),
+                        target_node=int(target_node),
+                        reward_received=float(rewards[i]),
+                        first_stage_decision=None if action_decision is None else action_decision.first_stage_decision,
+                        destination_node_id=None if action_decision is None else action_decision.destination_node_id,
+                        destination_type=None if action_decision is None else action_decision.destination_type,
+                        is_valid=None if action_decision is None else action_decision.is_valid,
+                        invalid_reason=None if action_decision is None else action_decision.invalid_reason,
+                        adjacency_allowed=None if action_decision is None else action_decision.adjacency_allowed,
+                        cloud_target=None if action_decision is None else action_decision.cloud_target,
+                        d_n_1=None if action_decision is None else action_decision.d_n_1,
+                        d_nk_2=None if action_decision is None else action_decision.d_nk_2,
+                    )
             for entry in pending_transition_inputs:
                 source_agent = entry["source_agent"]
                 action_decision = env.last_action_decisions[source_agent]

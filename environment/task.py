@@ -40,6 +40,7 @@ class Task:
     required_cpu_cycles: float | None = None
     arrival_time: int | None = None
     timeout: int | None = None
+    deadline_slot: int | None = None
     absolute_deadline: int | None = None
     routing_metadata: dict[str, Any] = field(default_factory=dict)
     target_server_id: int | None = None
@@ -116,8 +117,9 @@ class Task:
         self.arrival_time = raw_arrival
         self.timeout = raw_timeout
         self.timeout_delay = raw_timeout  # legacy alias
-        self.absolute_deadline = raw_arrival + raw_timeout
-        self.timeout_instance = self.absolute_deadline  # legacy alias
+        self.deadline_slot = raw_arrival + raw_timeout - 1
+        self.absolute_deadline = self.deadline_slot
+        self.timeout_instance = self.deadline_slot  # legacy alias
         self.service_id = service_id
         self.service_type_id = service_id  # optional convenience alias
         self.source_node_id = source_node_id if source_node_id is not None else origin_server_id
@@ -149,8 +151,8 @@ class Task:
         _require_positive_float("processing_density", self.processing_density)
         _require_non_negative_int("arrival_time", self.arrival_time)
         _require_positive_int("timeout", self.timeout)
-        if self.absolute_deadline != self.arrival_time + self.timeout:
-            raise ValueError("absolute_deadline must equal arrival_time + timeout")
+        if self.deadline_slot != self.arrival_time + self.timeout - 1:
+            raise ValueError("deadline_slot must equal arrival_time + timeout - 1")
         expected_cycles = self.input_data_size * self.processing_density
         if not np.isclose(self.required_cpu_cycles, expected_cycles):
             raise ValueError("required_cpu_cycles must equal input_data_size * processing_density")

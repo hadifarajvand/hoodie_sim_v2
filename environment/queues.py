@@ -36,7 +36,7 @@ class TaskQueue():
         return self.queue.empty() and self.current_task.is_empty() 
     
     def current_task_is_timed_out(self)->bool:
-        return self.current_time >= self.current_task.get_timeout()
+        return self.current_time > self.current_task.get_timeout()
 
     def get_first_non_empty_element(self) ->int:
         self.current_time +=1

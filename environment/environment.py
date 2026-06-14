@@ -272,6 +272,7 @@ class Environment():
     def get_paper_state(self, agent_id: int):
         task = self.tasks[agent_id]
         server = self.servers[agent_id]
+        x_n_t = 0 if task is None or task.is_empty() else 1
         eta_n = None if task is None else float(task.get_size())
         w_priv_n, w_off_n = server.get_waiting_times()
         l_pub_n_prev = self.last_public_queue_vector[agent_id]
@@ -310,6 +311,7 @@ class Environment():
             "episode_id": self.episode_id,
             "time": self.current_time,
             "agent_id": agent_id,
+            "x_n_t": x_n_t,
             "task_id": None if task is None or task.is_empty() else task.task_id,
             "eta_n": eta_n,
             "w_priv_n": float(w_priv_n) if w_priv_n is not None else None,

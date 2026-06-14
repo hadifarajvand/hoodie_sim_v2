@@ -32,6 +32,14 @@ def _require_non_negative_integer(field_name, value):
         _raise_preconstruction_validation_error(field_name, value, "Expected a non-negative integer.")
 
 
+class _DiscreteChoiceDistributor:
+    def __init__(self, support):
+        self.support = list(support)
+
+    def generate(self):
+        return float(np.random.choice(self.support))
+
+
 class TaskGenerator():
     def __init__(self,
                 id,
@@ -51,11 +59,14 @@ class TaskGenerator():
                 computational_density_distribution,
                 drop_penalty_min,   
                 drop_penalty_max,
-                drop_penalty_distribution,):
+                drop_penalty_distribution,
+                size_values=None,):
         self.id = id
         self.episode_time= episode_time
         self.task_arrive_probability = task_arrive_probability
-        self.size_distributor =Variabledistributor(size_min,size_max,size_distribution)
+        self.size_support = self._build_size_support(size_min, size_max, size_distribution, size_values=size_values)
+        self.size_distribution = size_distribution
+        self.size_distributor = _DiscreteChoiceDistributor(self.size_support)
         self.timeout_distributor =Variabledistributor(timeout_delay_min,timeout_delay_max,timeout_delay_distribution)
         self.priotiry_distributor =Variabledistributor(priotiry_min,priotiry_max,priotiry_distribution)
         self.computational_density_distributor =Variabledistributor(computational_density_min,computational_density_max,computational_density_distribution)
@@ -66,6 +77,17 @@ class TaskGenerator():
         self.priotiry_max = priotiry_max
         self.computational_density_max = computational_density_max
         self.drop_penalty_max = drop_penalty_max
+
+    def _build_size_support(self, size_min, size_max, size_distribution, size_values=None):
+        if size_values is not None:
+            support = [float(value) for value in size_values]
+        elif size_distribution == "choice":
+            support = [float(value) for value in np.arange(float(size_min), float(size_max) + 0.0001, 1.0)]
+        else:
+            support = [round(float(value), 1) for value in np.arange(float(size_min), float(size_max) + 0.0001, 0.1)]
+        if not support:
+            raise ValueError("task size support must not be empty")
+        return support
         
     def reset(self):
         self.current_time = -1
@@ -78,13 +100,15 @@ class TaskGenerator():
         return None
    
     def generate(self):
-        size = self.size_distributor.generate()
+        size = float(self.size_distributor.generate())
         timeout_delay = self.timeout_distributor.generate()
         priority = self.priotiry_distributor.generate()
         computational_density = self.computational_density_distributor.generate()
         drop_penalty = self.drop_penalty_distributor.generate()
 
         _require_positive_number("size", size)
+        if round(float(size), 1) not in {round(float(v), 1) for v in self.size_support}:
+            raise ValueError("generated size must belong to H")
         _require_positive_number("computational_density", computational_density)
         _require_positive_integer("timeout_delay", timeout_delay)
         _require_non_negative_integer("arrival_time", self.current_time)

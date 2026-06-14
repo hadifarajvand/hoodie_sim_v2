@@ -105,6 +105,7 @@ class Phase2ActionModelTests(unittest.TestCase):
             episode_id=0,
             time=1,
             agent_id=1,
+            x_n_t=1,
             observation_shape=[2, 3],
             selected_action=3,
             target_node=4,

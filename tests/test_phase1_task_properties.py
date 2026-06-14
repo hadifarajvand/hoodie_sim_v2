@@ -47,7 +47,8 @@ class Phase1TaskPropertyTests(unittest.TestCase):
         self.assertAlmostEqual(task.required_cpu_cycles, 2.0 * 0.297)
         self.assertEqual(task.arrival_time, 0)
         self.assertEqual(task.timeout, 20)
-        self.assertEqual(task.absolute_deadline, 20)
+        self.assertEqual(task.deadline_slot, 19)
+        self.assertEqual(task.absolute_deadline, 19)
         self.assertEqual(task.routing_metadata, {})
 
     def test_required_cpu_cycles_matches_paper_formula(self):
@@ -63,7 +64,8 @@ class Phase1TaskPropertyTests(unittest.TestCase):
             source_node_id=2,
         )
         self.assertAlmostEqual(task.required_cpu_cycles, 3.5 * 0.297)
-        self.assertEqual(task.absolute_deadline, 24)
+        self.assertEqual(task.deadline_slot, 23)
+        self.assertEqual(task.absolute_deadline, 23)
 
     def test_task_generation_reproducible_under_fixed_seed(self):
         generator_a = TaskGenerator(
@@ -351,8 +353,8 @@ class Phase1TaskPropertyTests(unittest.TestCase):
         )
         self.assertEqual(task.timeout, 7)
         self.assertEqual(task.timeout_delay, 7)
-        self.assertEqual(task.timeout_instance, 10)
-        self.assertEqual(task.absolute_deadline, 10)
+        self.assertEqual(task.timeout_instance, 9)
+        self.assertEqual(task.absolute_deadline, 9)
         self.assertEqual(task.origin_server_id, 1)
         self.assertEqual(task.source_node_id, 1)
 

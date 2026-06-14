@@ -14,6 +14,7 @@ import numpy as np
 class TaskLifecycleRecord:
     task_id: int
     episode_id: int | None = None
+    x_n_t: int | None = None
     arrival_time: int | None = None
     source_node: int | None = None
     queue_enter_time: int | None = None
@@ -49,6 +50,7 @@ class ActionTraceRecord:
     episode_id: int
     time: int
     agent_id: int
+    x_n_t: int
     observation_shape: list[int]
     selected_action: int
     target_node: int | None
@@ -70,6 +72,7 @@ class PaperStateTraceRecord:
     episode_id: int
     time: int
     agent_id: int
+    x_n_t: int
     task_id: int | None
     eta_n: float | None
     w_priv_n: float | None
@@ -202,6 +205,7 @@ class TraceRecorder:
     def note_task_arrival(self, task: Any, episode_id: int, source_node: int, arrival_time: int) -> None:
         record = self.ensure_task(task.task_id)
         record.episode_id = episode_id
+        record.x_n_t = 1
         record.arrival_time = arrival_time
         record.source_node = source_node
         record.drop_penalty = getattr(task, "drop_penalty", None)
@@ -306,6 +310,7 @@ class TraceRecorder:
         episode_id: int,
         time: int,
         agent_id: int,
+        x_n_t: int,
         observation_shape: Iterable[int],
         selected_action: int,
         target_node: int | None,
@@ -347,6 +352,7 @@ class TraceRecorder:
                 episode_id=episode_id,
                 time=time,
                 agent_id=agent_id,
+                x_n_t=int(x_n_t),
                 observation_shape=list(observation_shape),
                 selected_action=int(selected_action),
                 target_node=None if target_node is None else int(target_node),
@@ -449,6 +455,7 @@ class TraceRecorder:
         episode_id: int,
         time: int,
         agent_id: int,
+        x_n_t: int,
         task_id: int | None,
         eta_n: float | None,
         w_priv_n: float | None,
@@ -469,6 +476,7 @@ class TraceRecorder:
                     episode_id=episode_id,
                     time=time,
                     agent_id=agent_id,
+                    x_n_t=int(x_n_t),
                     task_id=task_id,
                     eta_n=None if eta_n is None else float(eta_n),
                     w_priv_n=None if w_priv_n is None else float(w_priv_n),
