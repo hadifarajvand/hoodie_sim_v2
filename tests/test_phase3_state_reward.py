@@ -41,8 +41,8 @@ def _write_trace_fixture(trace_dir: Path) -> None:
     )
     (trace_dir / "action_trace.csv").write_text(
         "episode_id,time,agent_id,observation_shape,selected_action,target_node,reward_received,raw_action_id,first_stage_decision,destination_node_id,destination_type,is_valid,invalid_reason,adjacency_allowed,cloud_target,d_n_1,d_nk_2\n"
-        "0,0,0,\"[3, 5]\",1,1,-3,1,offload,1,horizontal_edge,True,,True,False,1,\"{\\\"1\\\": 1}\"\n"
-        "0,1,1,\"[3, 5]\",2,2,-40,2,offload,2,vertical_cloud,True,,True,True,1,\"{\\\"2\\\": 1}\"\n"
+        "0,0,0,\"[3, 5]\",1,1,-3,1,offload,1,horizontal_edge,True,,True,False,0,\"{\\\"1\\\": 1}\"\n"
+        "0,1,1,\"[3, 5]\",2,2,-40,2,offload,2,vertical_cloud,True,,True,True,0,\"{\\\"2\\\": 1}\"\n"
     )
     (trace_dir / "episode_metrics.csv").write_text(
         "episode_id,total_tasks,completed_tasks,dropped_tasks,pending_tasks,average_latency,average_waiting_time,average_service_time,drop_ratio,average_queue_length,total_reward,mean_reward\n"
@@ -77,7 +77,7 @@ class Phase3StateRewardTests(unittest.TestCase):
             self.assertEqual(dropped.reward, -40.0)
             self.assertEqual(dropped.destination_type, "vertical_cloud")
             self.assertTrue(dropped.cloud_target)
-            self.assertEqual(dropped.d_n_1, 1)
+            self.assertEqual(dropped.d_n_1, 0)
             self.assertEqual(dropped.d_nk_2, {2: 1})
 
     def test_replay_tuple_contains_phase2_action_fields(self):

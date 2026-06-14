@@ -30,6 +30,10 @@ class TwoStageAction:
     cloud_target: bool
     d_n_1: int
     d_nk_2: dict[int, int]
+    paper_destination_nodes: tuple[int, ...]
+    paper_d_nk_2: tuple[int, ...]
+    dm2_timing: str
+    requires_separate_dm2_at_offloading_queue_exit: bool
 
     @property
     def legacy_target_node_id(self) -> int:
@@ -86,10 +90,44 @@ class TwoStageActionModel:
     def __init__(self, topology: TopologyAdapter) -> None:
         self.topology = topology
 
+    def paper_destination_nodes(self, source_node_id: int) -> tuple[int, ...]:
+        source = _as_int(source_node_id, "source_node_id")
+        if source < 0 or source >= self.topology.number_of_edge_nodes:
+            raise ValueError(f"source_node_id must be within [0, {self.topology.number_of_edge_nodes - 1}], got {source}")
+        return tuple([node for node in range(self.topology.number_of_edge_nodes) if node != source] + [self.topology.cloud_node_id])
+
+    def _paper_destination_vector(self, source_node_id: int, destination_node_id: int | None) -> tuple[int, ...]:
+        nodes = self.paper_destination_nodes(source_node_id)
+        vector = [0] * len(nodes)
+        if destination_node_id is None:
+            return tuple(vector)
+        destination = _as_int(destination_node_id, "destination_node_id")
+        if destination not in nodes:
+            raise ValueError(
+                f"destination_node_id {destination} is not representable in the paper-facing destination vector for source_node_id {source_node_id}"
+            )
+        vector[nodes.index(destination)] = 1
+        return tuple(vector)
+
+    def validate_paper_action_contract(self, action: TwoStageAction) -> None:
+        paper_sum = sum(int(value) for value in action.paper_d_nk_2)
+        if action.d_n_1 == 1:
+            if paper_sum != 0:
+                raise ValueError("local/private actions must map to an all-zero paper destination vector")
+        elif action.d_n_1 == 0:
+            if paper_sum != 1:
+                raise ValueError("offload actions must map to exactly one active paper destination")
+        else:
+            raise ValueError(f"invalid d_n_1 polarity {action.d_n_1!r}")
+        if paper_sum > 1:
+            raise ValueError("paper destination vector must activate at most one destination")
+
     def build_action_space(self, source_node_id: int) -> list[TwoStageAction]:
         source = _as_int(source_node_id, "source_node_id")
         if source < 0 or source >= self.topology.number_of_edge_nodes:
             raise ValueError(f"source_node_id must be within [0, {self.topology.number_of_edge_nodes - 1}], got {source}")
+
+        paper_destination_nodes = self.paper_destination_nodes(source)
 
         actions = [
             TwoStageAction(
@@ -102,43 +140,56 @@ class TwoStageActionModel:
                 invalid_reason=None,
                 adjacency_allowed=True,
                 cloud_target=False,
-                d_n_1=0,
+                d_n_1=1,
                 d_nk_2={},
+                paper_destination_nodes=paper_destination_nodes,
+                paper_d_nk_2=self._paper_destination_vector(source, None),
+                dm2_timing="not_applicable",
+                requires_separate_dm2_at_offloading_queue_exit=False,
             )
         ]
+        self.validate_paper_action_contract(actions[0])
 
         for index, destination in enumerate(self.topology.horizontal_neighbors(source), start=1):
-            actions.append(
-                TwoStageAction(
-                    raw_action_id=index,
-                    source_node_id=source,
-                    first_stage_decision="offload",
-                    destination_node_id=destination,
-                    destination_type="horizontal_edge",
-                    is_valid=True,
-                    invalid_reason=None,
-                    adjacency_allowed=True,
-                    cloud_target=False,
-                    d_n_1=1,
-                    d_nk_2={int(destination): 1},
-                )
-            )
-
-        actions.append(
-            TwoStageAction(
-                raw_action_id=len(actions),
+            action = TwoStageAction(
+                raw_action_id=index,
                 source_node_id=source,
                 first_stage_decision="offload",
-                destination_node_id=self.topology.cloud_node_id,
-                destination_type="vertical_cloud",
+                destination_node_id=destination,
+                destination_type="horizontal_edge",
                 is_valid=True,
                 invalid_reason=None,
                 adjacency_allowed=True,
-                cloud_target=True,
-                d_n_1=1,
-                d_nk_2={int(self.topology.cloud_node_id): 1},
+                cloud_target=False,
+                d_n_1=0,
+                d_nk_2={int(destination): 1},
+                paper_destination_nodes=paper_destination_nodes,
+                paper_d_nk_2=self._paper_destination_vector(source, destination),
+                dm2_timing="collapsed_at_arrival",
+                requires_separate_dm2_at_offloading_queue_exit=True,
             )
+            self.validate_paper_action_contract(action)
+            actions.append(action)
+
+        cloud_action = TwoStageAction(
+            raw_action_id=len(actions),
+            source_node_id=source,
+            first_stage_decision="offload",
+            destination_node_id=self.topology.cloud_node_id,
+            destination_type="vertical_cloud",
+            is_valid=True,
+            invalid_reason=None,
+            adjacency_allowed=True,
+            cloud_target=True,
+            d_n_1=0,
+            d_nk_2={int(self.topology.cloud_node_id): 1},
+            paper_destination_nodes=paper_destination_nodes,
+            paper_d_nk_2=self._paper_destination_vector(source, self.topology.cloud_node_id),
+            dm2_timing="collapsed_at_arrival",
+            requires_separate_dm2_at_offloading_queue_exit=True,
         )
+        self.validate_paper_action_contract(cloud_action)
+        actions.append(cloud_action)
         return actions
 
     def action_count(self, source_node_id: int) -> int:
@@ -245,6 +296,10 @@ class TwoStageActionModel:
             cloud_target=False,
             d_n_1=-1,
             d_nk_2={},
+            paper_destination_nodes=self.paper_destination_nodes(source_node_id),
+            paper_d_nk_2=tuple(),
+            dm2_timing="not_applicable",
+            requires_separate_dm2_at_offloading_queue_exit=False,
         )
         if strict:
             raise ValueError(

@@ -389,6 +389,11 @@ def main():
                         cloud_target=None if action_decision is None else action_decision.cloud_target,
                         d_n_1=None if action_decision is None else action_decision.d_n_1,
                         d_nk_2=None if action_decision is None else action_decision.d_nk_2,
+                        paper_destination_nodes=None if action_decision is None else action_decision.paper_destination_nodes,
+                        paper_d_nk_2=None if action_decision is None else action_decision.paper_d_nk_2,
+                        dm2_timing=None if action_decision is None else action_decision.dm2_timing,
+                        requires_separate_dm2_at_offloading_queue_exit=None if action_decision is None else action_decision.requires_separate_dm2_at_offloading_queue_exit,
+                        paper_u_n_t=None if not hasattr(env, "last_paper_queue_arrivals") else int(env.last_paper_queue_arrivals[i]),
                     )
             for entry in pending_transition_inputs:
                 source_agent = entry["source_agent"]

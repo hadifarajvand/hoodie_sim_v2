@@ -544,7 +544,7 @@ def _build_transition_from_task_row(
     if cloud_target is None:
         cloud_target = destination_type == "vertical_cloud"
     if d_n_1 is None:
-        d_n_1 = 0 if first_stage_decision == "local" else 1
+        d_n_1 = 1 if first_stage_decision == "local" else 0
     if d_nk_2 is None:
         d_nk_2 = {} if first_stage_decision == "local" else {int(destination_node_id): 1} if destination_node_id is not None else {}
 

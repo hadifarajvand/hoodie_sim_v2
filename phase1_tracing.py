@@ -39,6 +39,7 @@ class QueueTraceRecord:
     node_id: int
     queue_type: str
     queue_length: float
+    paper_u_n_t: int | None = None
     arrivals: int = 0
     departures: int = 0
     drops: int = 0
@@ -65,6 +66,11 @@ class ActionTraceRecord:
     cloud_target: bool | None = None
     d_n_1: int | None = None
     d_nk_2: dict[int, int] | None = None
+    paper_destination_nodes: tuple[int, ...] | None = None
+    paper_d_nk_2: tuple[int, ...] | None = None
+    dm2_timing: str | None = None
+    requires_separate_dm2_at_offloading_queue_exit: bool | None = None
+    paper_u_n_t: int | None = None
 
 
 @dataclass
@@ -324,6 +330,11 @@ class TraceRecorder:
         cloud_target: bool | None = None,
         d_n_1: int | None = None,
         d_nk_2: dict[int, int] | None = None,
+        paper_destination_nodes: Iterable[int] | None = None,
+        paper_d_nk_2: Iterable[int] | None = None,
+        dm2_timing: str | None = None,
+        requires_separate_dm2_at_offloading_queue_exit: bool | None = None,
+        paper_u_n_t: int | None = None,
     ) -> None:
         for record in self.task_records.values():
             if record.episode_id == episode_id and record.source_node == agent_id and record.arrival_time == time:
@@ -346,7 +357,11 @@ class TraceRecorder:
         if cloud_target is None:
             cloud_target = destination_type == "vertical_cloud"
         if d_n_1 is None:
-            d_n_1 = 0 if first_stage_decision == "local" else 1
+            d_n_1 = 1 if first_stage_decision == "local" else 0
+        if dm2_timing is None:
+            dm2_timing = "not_applicable" if first_stage_decision == "local" else "collapsed_at_arrival"
+        if requires_separate_dm2_at_offloading_queue_exit is None:
+            requires_separate_dm2_at_offloading_queue_exit = first_stage_decision != "local"
         self.action_traces.append(
             ActionTraceRecord(
                 episode_id=episode_id,
@@ -367,6 +382,11 @@ class TraceRecorder:
                 cloud_target=cloud_target,
                 d_n_1=d_n_1,
                 d_nk_2=d_nk_2,
+                paper_destination_nodes=None if paper_destination_nodes is None else tuple(int(value) for value in paper_destination_nodes),
+                paper_d_nk_2=None if paper_d_nk_2 is None else tuple(int(value) for value in paper_d_nk_2),
+                dm2_timing=dm2_timing,
+                requires_separate_dm2_at_offloading_queue_exit=requires_separate_dm2_at_offloading_queue_exit,
+                paper_u_n_t=paper_u_n_t,
             )
         )
 
@@ -572,6 +592,7 @@ class TraceRecorder:
         node_id: int,
         queue_type: str,
         queue_length: float,
+        paper_u_n_t: int | None = None,
         arrivals: int = 0,
         departures: int = 0,
         drops: int = 0,
@@ -585,6 +606,7 @@ class TraceRecorder:
                     node_id=node_id,
                     queue_type=queue_type,
                     queue_length=float(queue_length),
+                    paper_u_n_t=paper_u_n_t,
                     arrivals=int(arrivals),
                     departures=int(departures),
                     drops=int(drops),
