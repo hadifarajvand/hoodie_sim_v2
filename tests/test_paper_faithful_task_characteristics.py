@@ -9,7 +9,7 @@ from environment.environment import Environment
 from environment.task import Task
 from environment.task_generator import TaskGenerator
 from environment.queues import ProcessingQueue
-from main import _select_action_for_slot
+from main import _select_action_for_slot, _should_record_action_trace
 from phase1_tracing import TraceRecorder
 
 
@@ -31,6 +31,17 @@ class PaperFaithfulTaskCharacteristicTests(unittest.TestCase):
         action, made = _select_action_for_slot(_FailingPolicy(), np.zeros(2), np.zeros(2), x_n_t=0)
         self.assertEqual(action, 0)
         self.assertFalse(made)
+
+    def test_action_trace_decision_uses_decision_time_indicator_only(self):
+        class _DummyPolicy:
+            def choose_action(self, *args, **kwargs):
+                return 1
+
+        self.assertTrue(_should_record_action_trace(1))
+        self.assertFalse(_should_record_action_trace(0))
+        action, made = _select_action_for_slot(_DummyPolicy(), np.zeros(2), np.zeros(2), x_n_t=1)
+        self.assertEqual(action, 1)
+        self.assertTrue(made)
 
     def test_no_task_arrival_exposes_zero_indicator_in_paper_state(self):
         hp = _base_hyperparameters()

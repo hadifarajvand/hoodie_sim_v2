@@ -94,6 +94,10 @@ def _select_action_for_slot(decision_maker, observation, lstm_state, x_n_t: int,
     return int(decision_maker.choose_action(observation, lstm_state)), True
 
 
+def _should_record_action_trace(decision_x_n_t: int) -> bool:
+    return int(decision_x_n_t) == 1
+
+
 def _repo_root() -> Path:
     return Path(__file__).resolve().parent
 
@@ -313,8 +317,14 @@ def main():
             step_time = env.current_time
             actions = np.zeros(number_of_servers, dtype=int)
             pending_transition_inputs = []
+            decision_x_n_t = np.zeros(number_of_servers, dtype=int)
+            decision_task_ids = [None for _ in range(number_of_servers)]
+            decision_is_real = [False for _ in range(number_of_servers)]
             for i in range(number_of_servers):
                 paper_state = env.get_paper_state(i)
+                decision_x_n_t[i] = int(paper_state["x_n_t"])
+                decision_task_ids[i] = paper_state["task_id"]
+                decision_is_real[i] = bool(decision_x_n_t[i])
                 trace_recorder.note_paper_state(
                     episode_id=paper_state["episode_id"],
                     time=paper_state["time"],
@@ -335,8 +345,7 @@ def main():
                     state_vector=paper_state["state_vector"],
                 )
                 current_task = env.tasks[i]
-                x_n_t = 1 if current_task is not None and not current_task.is_empty() else 0
-                if x_n_t:
+                if decision_is_real[i] and current_task is not None and not current_task.is_empty():
                     pending_transition_inputs.append(
                         {
                             "task_id": int(current_task.task_id),
@@ -353,7 +362,7 @@ def main():
                     decision_makers[i],
                     local_observations[i],
                     public_queues[i],
-                    x_n_t,
+                    decision_x_n_t[i],
                     placeholder_action=0,
                 )
             observations,rewards,done,info = env.step(actions)
@@ -361,14 +370,12 @@ def main():
             for i in range(number_of_servers):
                 action_decision = env.last_action_decisions[i]
                 target_node = action_decision.legacy_target_node_id if action_decision is not None else env.matchmakers[i].match_action(i, actions[i])
-                current_task = env.tasks[i]
-                x_n_t = 1 if current_task is not None and not current_task.is_empty() else 0
-                if x_n_t:
+                if _should_record_action_trace(decision_x_n_t[i]):
                     trace_recorder.note_action(
                         episode_id=epoch,
                         time=step_time,
                         agent_id=i,
-                        x_n_t=x_n_t,
+                        x_n_t=int(decision_x_n_t[i]),
                         observation_shape=np.shape(local_observations[i]),
                         selected_action=int(actions[i]),
                         target_node=int(target_node),
