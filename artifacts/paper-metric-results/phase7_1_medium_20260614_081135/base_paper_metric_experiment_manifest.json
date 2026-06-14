@@ -1,0 +1,53 @@
+{
+  "base_paper_metric_experiment_run": true,
+  "blockers": [],
+  "completed_policies": [
+    "BCO",
+    "FLC",
+    "HO",
+    "HOODIE",
+    "MLEO",
+    "RO",
+    "VO"
+  ],
+  "contribution_enabled": false,
+  "deadline_aware_extension": false,
+  "episodes": 30,
+  "exact_figure_reproduction_claim": false,
+  "failed_or_unavailable_policies": [],
+  "figure10_style_output_available": true,
+  "figure11_style_output_available": false,
+  "figure9_style_output_available": true,
+  "metric_source": "figure10_validation_runner",
+  "mode": "medium",
+  "official_paper_reproduction": false,
+  "phase": "7.0",
+  "plots_dir": "/Users/hadi/Documents/GitHub/hoodie_sim_v2_runs/phase7_1/phase7_1_medium_20260614_081135/paper_metric_outputs/plots",
+  "qos_extension": false,
+  "queueing_extension": false,
+  "raw_metrics_path": "/Users/hadi/Documents/GitHub/hoodie_sim_v2_runs/phase7_1/phase7_1_medium_20260614_081135/paper_metric_outputs/base_paper_metrics_raw.csv",
+  "report_path": "/Users/hadi/Documents/GitHub/hoodie_sim_v2_runs/phase7_1/phase7_1_medium_20260614_081135/paper_metric_outputs/base_paper_metric_experiment_report.md",
+  "requested_policies": [
+    "HOODIE",
+    "RO",
+    "FLC",
+    "VO",
+    "HO",
+    "BCO",
+    "MLEO"
+  ],
+  "scope": "hoodie_base_paper_metric_experiment",
+  "seed": 42,
+  "simulator_derived_metrics": true,
+  "summary_csv_path": "/Users/hadi/Documents/GitHub/hoodie_sim_v2_runs/phase7_1/phase7_1_medium_20260614_081135/paper_metric_outputs/base_paper_metrics_summary.csv",
+  "summary_json_path": "/Users/hadi/Documents/GitHub/hoodie_sim_v2_runs/phase7_1/phase7_1_medium_20260614_081135/paper_metric_outputs/base_paper_metrics_summary.json",
+  "sweeps_completed": [
+    "task_arrival_probability_sweep",
+    "local_cpu_capacity_sweep",
+    "task_timeout_sweep"
+  ],
+  "synthetic_metric_profile_used": false,
+  "warnings": [
+    "non_official_reproduction_oriented_experiment_output"
+  ]
+}
