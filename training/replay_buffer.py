@@ -35,14 +35,38 @@ class Transition:
     load_history: np.ndarray | None = None
     predicted_next_load: np.ndarray | None = None
     active_load_vector: np.ndarray | None = None
+    reward_source: str | None = None
+    reward_reason: str | None = None
+    reward_timing_convention: str | None = None
+    paired_transition_found: bool | None = None
+    replay_pairing_status: str | None = None
+    state_source: str | None = None
+    next_state_source: str | None = None
 
     def validate(self) -> None:
         if self.state.shape != self.next_state.shape:
             raise ValueError("state and next_state must have identical shapes")
         if self.state.ndim != 1:
             raise ValueError("state must be a 1D vector")
+        if self.next_state.ndim != 1:
+            raise ValueError("next_state must be a 1D vector")
         if not isinstance(self.action, int):
             raise TypeError("action must be an int")
+        if not isinstance(self.done, bool):
+            raise TypeError("done must be a bool")
+        if not np.all(np.isfinite(self.state)):
+            raise ValueError("state must contain only finite values")
+        if not np.all(np.isfinite(self.next_state)):
+            raise ValueError("next_state must contain only finite values")
+        if not np.isfinite(self.reward):
+            raise ValueError("reward must be finite")
+        for field_name in ("l_pub_n_prev", "load_history", "active_load_vector", "predicted_next_load"):
+            value = getattr(self, field_name)
+            if value is None:
+                continue
+            array = np.asarray(value)
+            if not np.all(np.isfinite(array)):
+                raise ValueError(f"{field_name} must contain only finite values")
 
 
 class ReplayBuffer:

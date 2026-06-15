@@ -33,6 +33,15 @@ class TraceDatasetSummary:
     reward_mean: float | None
     reward_min: float | None
     reward_max: float | None
+    transitions_validated: int
+    invalid_transitions: int
+    reward_source_counts: dict[str, int]
+    state_source_counts: dict[str, int]
+    next_state_source_counts: dict[str, int]
+    missing_action_rows: int
+    delayed_reward_matches: int
+    delayed_reward_missing_matches: int
+    terminal_copies: int
     required_files_present: dict[str, bool]
     missing_optional_fields: dict[str, int]
     unavailable_fields: list[str]
@@ -158,6 +167,21 @@ def _safe_int(value: Any) -> int | None:
         return None
 
 
+def _safe_bool(value: Any) -> bool | None:
+    if value in (None, "", "None"):
+        return None
+    if isinstance(value, bool):
+        return value
+    if isinstance(value, (int, float)):
+        return bool(value)
+    text = str(value).strip().lower()
+    if text in {"true", "1", "yes"}:
+        return True
+    if text in {"false", "0", "no"}:
+        return False
+    return None
+
+
 def _time_key(episode_id: Any, time_value: Any) -> tuple[Any, Any]:
     return _safe_int(episode_id), _safe_int(time_value)
 
@@ -196,6 +220,23 @@ def _infer_reward(task_row: dict[str, Any]) -> float:
             drop_penalty=drop_penalty,
         ).reward
     )
+
+
+def _load_delayed_reward_events(rows: list[dict[str, Any]]) -> dict[int, dict[str, Any]]:
+    delayed_reward_rows = [
+        row
+        for row in rows
+        if "reward_timing_convention" in row and "paired_transition_found" in row and _safe_int(row.get("task_id")) is not None
+    ]
+    return {
+        _safe_int(row.get("task_id")): row
+        for row in delayed_reward_rows
+        if _safe_int(row.get("task_id")) is not None
+    }
+
+
+def _row_bool(row: dict[str, Any], key: str) -> bool | None:
+    return _safe_bool(row.get(key))
 
 
 def _extract_node_count(queue_rows: list[dict[str, Any]]) -> int | None:
@@ -370,7 +411,9 @@ def _extract_transition(row: dict[str, Any]) -> Transition:
     next_state = _as_array(row["next_state"])
     action = int(row["action"])
     reward = float(row["reward"])
-    done = bool(row["done"])
+    done = _safe_bool(row["done"])
+    if done is None:
+        raise ValueError("done must be a boolean value")
     episode_id = _safe_int(row.get("episode_id"))
     task_id = _safe_int(row.get("task_id"))
     step_index = _safe_int(row.get("step_index"))
@@ -385,6 +428,9 @@ def _extract_transition(row: dict[str, Any]) -> Transition:
         task_id=task_id,
         step_index=step_index,
         policy_name=policy_name,
+        reward_source="direct_replay_buffer",
+        state_source="direct_replay_buffer",
+        next_state_source="direct_replay_buffer",
     )
 
 
@@ -429,6 +475,10 @@ def _build_transition_from_paper_state_rows(
 
     transitions: list[Transition] = []
     approximation_warnings: list[str] = []
+    missing_action_rows = 0
+    delayed_reward_matches = 0
+    delayed_reward_missing_matches = 0
+    terminal_copies = 0
     for idx, row in enumerate(parsed):
         next_row = next(
             (
@@ -448,16 +498,39 @@ def _build_transition_from_paper_state_rows(
             next_state = state.copy()
             done = True
             next_state_source = "terminal_copy"
+            terminal_copies += 1
         reward = 0.0
+        reward_source = "non_final_default"
+        reward_reason = None
+        reward_timing_convention = None
+        paired_transition_found = None
+        replay_pairing_status = None
         selected_action = 0
         if action_row is not None:
             if action_row.get("reward_received") not in (None, "", "None"):
                 reward = float(action_row["reward_received"])
+                reward_source = "action_trace_immediate"
+                reward_reason = action_row.get("reward_reason")
+                reward_timing_convention = action_row.get("reward_timing_convention")
             if action_row.get("selected_action") not in (None, "", "None"):
                 selected_action = int(float(action_row["selected_action"]))
+        else:
+            missing_action_rows += 1
         delayed_reward_row = None if delayed_reward_by_task_id is None else delayed_reward_by_task_id.get(_safe_int(row.get("task_id")) or -1)
         if delayed_reward_row is not None:
             reward = float(delayed_reward_row.get("reward", reward))
+            reward_source = "delayed_reward_event_trace"
+            reward_reason = delayed_reward_row.get("reward_reason")
+            reward_timing_convention = delayed_reward_row.get("reward_timing_convention")
+            paired_transition_found = _safe_bool(delayed_reward_row.get("paired_transition_found"))
+            replay_pairing_status = delayed_reward_row.get("replay_pairing_status")
+            delayed_reward_matches += 1
+        elif done:
+            delayed_reward_missing_matches += 1
+            if row.get("final_status") not in (None, "", "pending"):
+                approximation_warnings.append(
+                    f"missing delayed reward event for task_id={row.get('task_id')} final_status={row.get('final_status')}"
+                )
         transition = Transition(
             state=state,
             action=selected_action,
@@ -485,6 +558,13 @@ def _build_transition_from_paper_state_rows(
             active_load_vector=row["active_load_vector"],
             load_history=row["load_history"],
             predicted_next_load=row["predicted_next_load"],
+            reward_source=reward_source,
+            reward_reason=reward_reason,
+            reward_timing_convention=reward_timing_convention,
+            paired_transition_found=paired_transition_found,
+            replay_pairing_status=replay_pairing_status,
+            state_source="runtime_paper_state_trace",
+            next_state_source=next_state_source,
         )
         transitions.append(transition)
         if next_row is None:
@@ -503,6 +583,20 @@ def _build_transition_from_paper_state_rows(
         "action_count": max(t.action for t in transitions) + 1 if transitions else None,
         "episodes": len({t.episode_id for t in transitions if t.episode_id is not None}),
         "transitions": len(transitions),
+        "reward_source_counts": {
+            "delayed_reward_event_trace": delayed_reward_matches,
+            "action_trace_immediate": sum(1 for t in transitions if t.reward_source == "action_trace_immediate"),
+            "non_final_default": sum(1 for t in transitions if t.reward_source == "non_final_default"),
+        },
+        "state_source_counts": {"runtime_paper_state_trace": len(transitions)},
+        "next_state_source_counts": {
+            "runtime_paper_state_trace": sum(1 for t in transitions if t.next_state_source == "runtime_paper_state_trace"),
+            "terminal_copy": sum(1 for t in transitions if t.next_state_source == "terminal_copy"),
+        },
+        "missing_action_rows": missing_action_rows,
+        "delayed_reward_matches": delayed_reward_matches,
+        "delayed_reward_missing_matches": delayed_reward_missing_matches,
+        "terminal_copies": terminal_copies,
     }
     return transitions, summary
 
@@ -527,12 +621,22 @@ def _build_transition_from_task_row(
     if state_rec.predicted_next_load is not None:
         state_parts.append(state_rec.predicted_next_load.astype(np.float32).reshape(-1))
     elif node_count is not None:
-        state_parts.append(np.full(node_count + 1, np.nan, dtype=np.float32))
+        state_parts.append(np.zeros(node_count + 1, dtype=np.float32))
     state = np.concatenate(state_parts).astype(np.float32)
     next_state = state.copy()
 
+    reward_source = "task_lifecycle_contract"
+    reward_reason = None
+    reward_timing_convention = None
+    paired_transition_found = None
+    replay_pairing_status = None
     if delayed_reward_row is not None and delayed_reward_row.get("reward") not in (None, "", "None"):
         reward = float(delayed_reward_row["reward"])
+        reward_source = "delayed_reward_event_trace"
+        reward_reason = delayed_reward_row.get("reward_reason")
+        reward_timing_convention = delayed_reward_row.get("reward_timing_convention")
+        paired_transition_found = _safe_bool(delayed_reward_row.get("paired_transition_found"))
+        replay_pairing_status = delayed_reward_row.get("replay_pairing_status")
     else:
         reward = _infer_reward(row)
     if action_row is not None and action_row.get("reward_received") not in (None, "", "None"):
@@ -624,6 +728,13 @@ def _build_transition_from_task_row(
         active_load_vector=state_rec.active_load_vector,
         load_history=state_rec.load_history,
         predicted_next_load=state_rec.predicted_next_load,
+        reward_source=reward_source,
+        reward_reason=reward_reason,
+        reward_timing_convention=reward_timing_convention,
+        paired_transition_found=paired_transition_found,
+        replay_pairing_status=replay_pairing_status,
+        state_source="legacy_lifecycle_reconstruction",
+        next_state_source="legacy_state_copy",
     )
 
 
@@ -681,6 +792,9 @@ def _reconstruct_from_task_traces(rows: list[dict[str, Any]]) -> tuple[list[Tran
             delayed_reward_row=delayed_reward_rows.get(_safe_int(row.get("task_id"))),
         )
         transitions.append(transition)
+        approximation_warnings.append(
+            f"next_state copied for lifecycle fallback task_id={row.get('task_id')} episode_id={episode_id}"
+        )
         for key in missing_optional_fields:
             if row.get(key) in (None, "", "None"):
                 missing_optional_fields[key] += 1
@@ -719,18 +833,21 @@ def load_trace_dataset(trace_dir: str | Path) -> tuple[list[Transition], TraceDa
     transitions: list[Transition] = []
     reconstructed = False
     paper_state_rows = [row for row in rows if "state_vector_json" in row and "active_load_vector_json" in row]
-    delayed_reward_rows = [row for row in rows if "reward_timing_convention" in row and "paired_transition_found" in row]
-    delayed_reward_by_task_id = {
-        _safe_int(row.get("task_id")): row
-        for row in delayed_reward_rows
-        if _safe_int(row.get("task_id")) is not None
-    }
+    delayed_reward_by_task_id = _load_delayed_reward_events(rows)
+    delayed_reward_rows = list(delayed_reward_by_task_id.values())
     state_source = None
     next_state_source = None
     waiting_time_source = None
     load_history_source = None
     predicted_next_load_method = None
     paper_lstm_forecast = None
+    reward_source_counts = {"delayed_reward_event_trace": 0, "task_lifecycle_contract": 0, "action_trace_immediate": 0, "non_final_default": 0}
+    state_source_counts = {}
+    next_state_source_counts = {}
+    missing_action_rows = 0
+    delayed_reward_matches = 0
+    delayed_reward_missing_matches = 0
+    terminal_copies = 0
 
     if paper_state_rows:
         action_rows = [row for row in rows if "selected_action" in row and "reward_received" in row]
@@ -739,6 +856,8 @@ def load_trace_dataset(trace_dir: str | Path) -> tuple[list[Transition], TraceDa
         notes.append("reconstructed transitions from runtime paper_state_trace")
         if delayed_reward_rows:
             notes.append("used delayed_reward_event_trace for reward reconstruction")
+        else:
+            approximation_warnings.append("delayed_reward_event_trace unavailable; reward reconstruction may fall back to runtime action data")
         approximation_warnings.extend(paper_summary["approximation_warnings"])
         state_source = paper_summary["state_source"]
         next_state_source = paper_summary["next_state_source"]
@@ -746,6 +865,8 @@ def load_trace_dataset(trace_dir: str | Path) -> tuple[list[Transition], TraceDa
         load_history_source = paper_summary["load_history_source"]
         predicted_next_load_method = paper_summary["predicted_next_load_method"]
         paper_lstm_forecast = paper_summary["paper_lstm_forecast"]
+        missing_action_rows = paper_summary.get("missing_action_rows", missing_action_rows)
+        terminal_copies = paper_summary.get("terminal_copies", terminal_copies)
     else:
         task_rows = [row for row in rows if "final_status" in row]
         if task_rows:
@@ -762,6 +883,8 @@ def load_trace_dataset(trace_dir: str | Path) -> tuple[list[Transition], TraceDa
             paper_lstm_forecast = False
             if delayed_reward_rows:
                 notes.append("used delayed_reward_event_trace for reward reconstruction")
+            else:
+                approximation_warnings.append("delayed_reward_event_trace unavailable; lifecycle fallback used compute_delayed_reward")
         elif rows and REQUIRED_FIELDS.issubset(rows[0].keys()):
             for row in rows:
                 transitions.append(_extract_transition(row))
@@ -798,6 +921,19 @@ def load_trace_dataset(trace_dir: str | Path) -> tuple[list[Transition], TraceDa
             unavailable_fields.append("predicted_next_load")
         if transition.task_id is None:
             missing_optional_fields["reward_delayed_task_id"] += 1
+        if transition.reward_source is not None:
+            reward_source_counts.setdefault(transition.reward_source, 0)
+            reward_source_counts[transition.reward_source] += 1
+        if transition.state_source is not None:
+            state_source_counts.setdefault(transition.state_source, 0)
+            state_source_counts[transition.state_source] += 1
+        if transition.next_state_source is not None:
+            next_state_source_counts.setdefault(transition.next_state_source, 0)
+            next_state_source_counts[transition.next_state_source] += 1
+
+    delayed_reward_matches = reward_source_counts.get("delayed_reward_event_trace", delayed_reward_matches)
+    delayed_reward_missing_matches = max(0, sum(1 for transition in transitions if transition.done) - delayed_reward_matches)
+    terminal_copies = next_state_source_counts.get("terminal_copy", terminal_copies)
 
     rewards = [transition.reward for transition in transitions]
     state_dim = len(transitions[0].state) if transitions else None
@@ -818,6 +954,15 @@ def load_trace_dataset(trace_dir: str | Path) -> tuple[list[Transition], TraceDa
         reward_mean=mean(rewards) if rewards else None,
         reward_min=min(rewards) if rewards else None,
         reward_max=max(rewards) if rewards else None,
+        transitions_validated=len(transitions),
+        invalid_transitions=0,
+        reward_source_counts=reward_source_counts,
+        state_source_counts=state_source_counts or ({"direct_replay_buffer": len(transitions)} if not paper_state_rows else {}),
+        next_state_source_counts=next_state_source_counts or ({"direct_replay_buffer": len(transitions)} if not paper_state_rows else {}),
+        missing_action_rows=missing_action_rows,
+        delayed_reward_matches=delayed_reward_matches,
+        delayed_reward_missing_matches=delayed_reward_missing_matches,
+        terminal_copies=terminal_copies,
         required_files_present=required_files_present,
         missing_optional_fields=missing_optional_fields,
         unavailable_fields=sorted(set(unavailable_fields)),

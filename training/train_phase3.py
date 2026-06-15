@@ -217,7 +217,12 @@ def main() -> int:
     for epoch in range(1, args.epochs + 1):
         rng.shuffle(transition_indices)
         for index in transition_indices:
-            trainer.push(transitions[int(index)])
+            transition = transitions[int(index)]
+            try:
+                transition.validate()
+            except Exception as exc:
+                raise SystemExit(f"invalid training transition at index {int(index)}: {exc}") from exc
+            trainer.push(transition)
         epoch_losses: list[float] = []
         epoch_rewards: list[float] = []
         updates = max(1, len(transitions) // max(1, args.batch_size))
