@@ -65,6 +65,13 @@ class TaskQueue():
                 self.current_task.routing_metadata["paper_off_final_status"] = "dropped"
                 self.current_task.paper_psi_off = self.current_task.deadline_slot
                 self.current_task.paper_off_final_status = "dropped"
+            if self.queue_type == "public":
+                self.current_task.routing_metadata["paper_psi_pub"] = self.current_task.deadline_slot
+                self.current_task.routing_metadata["paper_public_final_status"] = "dropped"
+                self.current_task.routing_metadata["paper_l_pub_after"] = float(self.queue_length)
+                self.current_task.paper_psi_pub = self.current_task.deadline_slot
+                self.current_task.paper_public_final_status = "dropped"
+                self.current_task.paper_l_pub_after = float(self.queue_length)
             self.drops_this_step += 1
             recorder = getattr(Task, "trace_recorder", None)
             if recorder is not None:
@@ -384,19 +391,72 @@ class PublicQueue(TaskQueue):
     def __init__(self, node_id=None, source_id=None):
         super().__init__(queue_type="public", node_id=node_id)
         self.source_id = source_id
-    def step(self,computational_capacity):
+        self._task_enter_snapshot: dict[int, dict[str, float | int | None]] = {}
+
+    def _record_paper_public_enqueue(self, task, current_time: int) -> None:
+        l_pub_before = float(self.queue_length)
+        l_pub_after = float(self.queue_length + task.get_size())
+        task.routing_metadata["paper_u_pub"] = 1
+        task.routing_metadata["paper_eta_pub"] = float(task.get_size())
+        task.routing_metadata["paper_l_pub_before"] = l_pub_before
+        task.routing_metadata["paper_l_pub_after"] = l_pub_after
+        task.routing_metadata["paper_public_queue_source_id"] = int(self.source_id) if self.source_id is not None else None
+        task.routing_metadata["paper_public_queue_node_id"] = int(self.node_id) if self.node_id is not None else None
+        task.routing_metadata["paper_public_queue_enter_time"] = current_time
+        task.routing_metadata["paper_public_start_slot"] = None
+        task.routing_metadata["paper_public_service_capacity_share"] = None
+        task.routing_metadata["paper_public_active_queue_count"] = None
+        task.routing_metadata["paper_public_processed_bits"] = 0.0
+        task.routing_metadata["paper_psi_pub"] = None
+        task.routing_metadata["paper_public_deadline_slot"] = task.deadline_slot
+        task.routing_metadata["paper_public_final_status"] = "scheduled"
+        task.paper_u_pub = 1
+        task.paper_eta_pub = float(task.get_size())
+        task.paper_l_pub_before = l_pub_before
+        task.paper_l_pub_after = l_pub_after
+        task.paper_public_queue_source_id = int(self.source_id) if self.source_id is not None else None
+        task.paper_public_queue_node_id = int(self.node_id) if self.node_id is not None else None
+        task.paper_public_queue_enter_time = current_time
+        task.paper_public_start_slot = None
+        task.paper_public_service_capacity_share = None
+        task.paper_public_active_queue_count = None
+        task.paper_public_processed_bits = 0.0
+        task.paper_psi_pub = None
+        task.paper_public_deadline_slot = task.deadline_slot
+        task.paper_public_final_status = "scheduled"
+
+    def add_task(self, task: Task, current_time: int | None = None) -> None:
+        enqueue_time = self.current_time if current_time is None else current_time
+        self._record_paper_public_enqueue(task, enqueue_time)
+        super().add_task(task, current_time=enqueue_time)
+
+    def step(self,computational_capacity, active_queue_count: int | None = None):
         reward = 0
         if self.current_task.is_empty():
             return reward
         recorder = getattr(Task, "trace_recorder", None)
+        if active_queue_count is not None:
+            self.current_task.paper_public_active_queue_count = int(active_queue_count)
+        self.current_task.paper_public_service_capacity_share = float(computational_capacity)
         if recorder is not None and self.current_task.service_start_time is None:
             self.current_task.service_start_time = self.current_time
+            self.current_task.paper_public_start_slot = self.current_time
             recorder.note_service_start(self.current_task, episode_id=getattr(recorder, "_episode_id", None), time=self.current_time, node_id=self.node_id if self.node_id is not None else -1, queue_type=self.queue_type)
         reward, task_processed = self.current_task.public_process(computational_capacity,self.current_time)
+        self.current_task.paper_public_processed_bits = float((self.current_task.paper_public_processed_bits or 0.0) + float(task_processed))
         self.queue_length -= task_processed
+        self.current_task.paper_l_pub_after = float(self.queue_length)
+        self.current_task.routing_metadata["paper_public_active_queue_count"] = self.current_task.paper_public_active_queue_count
+        self.current_task.routing_metadata["paper_public_service_capacity_share"] = self.current_task.paper_public_service_capacity_share
+        self.current_task.routing_metadata["paper_public_processed_bits"] = self.current_task.paper_public_processed_bits
+        self.current_task.routing_metadata["paper_l_pub_after"] = self.current_task.paper_l_pub_after
         if self.current_task.is_empty():
             self.departures_this_step += 1
             if recorder is not None:
+                self.current_task.paper_public_final_status = "completed"
+                self.current_task.routing_metadata["paper_public_final_status"] = "completed"
+                self.current_task.paper_psi_pub = self.current_time
+                self.current_task.routing_metadata["paper_psi_pub"] = self.current_time
                 recorder.note_service_end(self.current_task, episode_id=getattr(recorder, "_episode_id", None), time=self.current_time, node_id=self.node_id if self.node_id is not None else -1, queue_type=self.queue_type)
         return reward
 
@@ -455,14 +515,14 @@ class PublicQueueManager():
 
         finished_rewards = {}
         active_queues= self.get_active_queues()
-        total_priority = self.get_priorities()
         if active_queues!=0:
             distributed_computational_capacity = self.computational_capacity/active_queues
         else:
             distributed_computational_capacity = 0
        
         for server_id in self.supporting_servers:
-            finished_rewards[server_id]= self.public_queues[server_id].step(distributed_computational_capacity)
+            queue = self.public_queues[server_id]
+            finished_rewards[server_id]= queue.step(distributed_computational_capacity, active_queue_count=active_queues)
          
         rewards = merge_dicts(drop_rewards,finished_rewards)
         return rewards
@@ -479,6 +539,15 @@ class PublicQueueManager():
         for server_id in self.supporting_servers:
             snapshots[server_id] = self.public_queues[server_id].get_pending_tasks()
         return snapshots
+
+    def get_paper_queue_lengths(self, total_sources: int | None = None):
+        if total_sources is None:
+            total_sources = max(self.supporting_servers) + 1 if len(self.supporting_servers) else 0
+        lengths = [0.0 for _ in range(total_sources)]
+        for source_id, queue in self.public_queues.items():
+            if source_id < total_sources:
+                lengths[source_id] = float(queue.get_queue_length())
+        return lengths
 
     def estimate_waiting_time(self, source_id, candidate_becomes_active: bool = False):
         queue = self.public_queues[source_id]

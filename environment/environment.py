@@ -48,7 +48,7 @@ class Environment():
         self.topology = TopologyAdapter.from_connection_matrix(connection_matrix, cloud_node_id=number_of_servers)
         self.trace_recorder = trace_recorder
         self.paper_state_history = [deque(maxlen=self.paper_state_window) for _ in range(self.number_of_servers)]
-        self.last_public_queue_vector = [np.full(self.number_of_servers + 1, np.nan, dtype=np.float32) for _ in range(self.number_of_servers)]
+        self.last_public_queue_vector = [np.zeros(self.number_of_servers + 1, dtype=np.float32) for _ in range(self.number_of_servers)]
         self.last_paper_queue_arrivals = [0 for _ in range(self.number_of_servers + self.number_of_clouds)]
         self.last_paper_private_arrivals = [0 for _ in range(self.number_of_servers)]
         self.last_paper_offloaded_arrivals = [0 for _ in range(self.number_of_servers + self.number_of_clouds)]
@@ -123,7 +123,7 @@ class Environment():
         self.cloud.reset()
         self.reset_transmitted_tasks()
         self.paper_state_history = [deque(maxlen=self.paper_state_window) for _ in range(self.number_of_servers)]
-        self.last_public_queue_vector = [np.full(self.number_of_servers + 1, np.nan, dtype=np.float32) for _ in range(self.number_of_servers)]
+        self.last_public_queue_vector = [np.zeros(self.number_of_servers + 1, dtype=np.float32) for _ in range(self.number_of_servers)]
         self.last_paper_queue_arrivals = [0 for _ in range(self.number_of_servers + self.number_of_clouds)]
         self.last_paper_private_arrivals = [0 for _ in range(self.number_of_servers)]
         self.last_paper_offloaded_arrivals = [0 for _ in range(self.number_of_servers + self.number_of_clouds)]
@@ -282,13 +282,13 @@ class Environment():
 
     def _refresh_paper_state_history(self):
         active_load_vector = self._compute_active_load_vector()
-        public_queue_vector = np.full(self.number_of_servers + 1, np.nan, dtype=np.float32)
+        public_queue_vector = np.zeros(self.number_of_servers + 1, dtype=np.float32)
         for server in self.servers:
-            public_queues = server.public_queue_manager.get_queue_lengths()
-            for source_id, queue_length in public_queues.items():
+            public_queues = server.public_queue_manager.get_paper_queue_lengths(total_sources=self.number_of_servers + 1)
+            for source_id, queue_length in enumerate(public_queues):
                 public_queue_vector[source_id] = float(queue_length)
-        cloud_queues = self.cloud.get_features()
-        for source_id, queue_length in cloud_queues.items():
+        cloud_queues = self.cloud.public_queue_manager.get_paper_queue_lengths(total_sources=self.number_of_servers + 1)
+        for source_id, queue_length in enumerate(cloud_queues):
             public_queue_vector[source_id] = float(queue_length)
         for agent_id in range(self.number_of_servers):
             self.paper_state_history[agent_id].append(active_load_vector.copy())
@@ -316,8 +316,6 @@ class Environment():
             unavailable_fields.append("w_priv_n")
         if w_off_n is None:
             unavailable_fields.append("w_off_n")
-        if np.isnan(l_pub_n_prev).all():
-            unavailable_fields.append("l_pub_n_prev")
         if L_t.size == 0:
             unavailable_fields.append("L(t)")
         approximation_warnings.append("predicted_next_load uses persistence_baseline")
@@ -362,6 +360,8 @@ class Environment():
         for server in self.servers:
             private_u_n_t = int(self.last_paper_private_arrivals[server.id]) if server.id < len(self.last_paper_private_arrivals) else None
             offloaded_u_n_t = int(self.last_paper_offloaded_arrivals[server.id]) if server.id < len(self.last_paper_offloaded_arrivals) else None
+            active_public_queues = server.public_queue_manager.get_active_queues()
+            public_capacity_share = (server.public_queues_computational_capacity / active_public_queues) if active_public_queues else 0
             q = server.processing_queue
             self.trace_recorder.note_queue_trace(
                 episode_id=episode_id,
@@ -407,7 +407,11 @@ class Environment():
                     arrivals=pq.arrivals_this_step,
                     departures=pq.departures_this_step,
                     drops=pq.drops_this_step,
-                    cpu_allocated=server.public_queues_computational_capacity,
+                    cpu_allocated=public_capacity_share,
+                    paper_public_queue_source_id=source_id,
+                    paper_public_queue_node_id=server.id,
+                    paper_public_active_queue_count=active_public_queues,
+                    paper_public_service_capacity_share=public_capacity_share,
                 )
                 total_queue_length += pq.get_queue_length()
                 pq.arrivals_this_step = 0

@@ -45,6 +45,20 @@ class TaskLifecycleRecord:
     paper_off_rate_value: float | None = None
     paper_off_destination_node_id: int | None = None
     paper_off_final_status: str | None = None
+    paper_u_pub: int | None = None
+    paper_eta_pub: float | None = None
+    paper_l_pub_before: float | None = None
+    paper_l_pub_after: float | None = None
+    paper_public_queue_source_id: int | None = None
+    paper_public_queue_node_id: int | None = None
+    paper_public_queue_enter_time: int | None = None
+    paper_public_start_slot: int | None = None
+    paper_public_service_capacity_share: float | None = None
+    paper_public_active_queue_count: int | None = None
+    paper_public_processed_bits: float | None = None
+    paper_psi_pub: int | None = None
+    paper_public_deadline_slot: int | None = None
+    paper_public_final_status: str | None = None
 
 
 @dataclass
@@ -55,6 +69,10 @@ class QueueTraceRecord:
     queue_type: str
     queue_length: float
     paper_u_n_t: int | None = None
+    paper_public_queue_source_id: int | None = None
+    paper_public_queue_node_id: int | None = None
+    paper_public_active_queue_count: int | None = None
+    paper_public_service_capacity_share: float | None = None
     arrivals: int = 0
     departures: int = 0
     drops: int = 0
@@ -261,6 +279,20 @@ class TraceRecorder:
         record.paper_off_rate_value = getattr(task, "paper_off_rate_value", record.paper_off_rate_value)
         record.paper_off_destination_node_id = getattr(task, "paper_off_destination_node_id", record.paper_off_destination_node_id)
         record.paper_off_final_status = getattr(task, "paper_off_final_status", record.paper_off_final_status)
+        record.paper_u_pub = getattr(task, "paper_u_pub", record.paper_u_pub)
+        record.paper_eta_pub = getattr(task, "paper_eta_pub", record.paper_eta_pub)
+        record.paper_l_pub_before = getattr(task, "paper_l_pub_before", record.paper_l_pub_before)
+        record.paper_l_pub_after = getattr(task, "paper_l_pub_after", record.paper_l_pub_after)
+        record.paper_public_queue_source_id = getattr(task, "paper_public_queue_source_id", record.paper_public_queue_source_id)
+        record.paper_public_queue_node_id = getattr(task, "paper_public_queue_node_id", record.paper_public_queue_node_id)
+        record.paper_public_queue_enter_time = getattr(task, "paper_public_queue_enter_time", record.paper_public_queue_enter_time)
+        record.paper_public_start_slot = getattr(task, "paper_public_start_slot", record.paper_public_start_slot)
+        record.paper_public_service_capacity_share = getattr(task, "paper_public_service_capacity_share", record.paper_public_service_capacity_share)
+        record.paper_public_active_queue_count = getattr(task, "paper_public_active_queue_count", record.paper_public_active_queue_count)
+        record.paper_public_processed_bits = getattr(task, "paper_public_processed_bits", record.paper_public_processed_bits)
+        record.paper_psi_pub = getattr(task, "paper_psi_pub", record.paper_psi_pub)
+        record.paper_public_deadline_slot = getattr(task, "paper_public_deadline_slot", record.paper_public_deadline_slot)
+        record.paper_public_final_status = getattr(task, "paper_public_final_status", record.paper_public_final_status)
         task.queue_enter_time = record.queue_enter_time
 
     def note_service_start(self, task: Any, episode_id: int, time: int, node_id: int, queue_type: str) -> None:
@@ -270,6 +302,20 @@ class TraceRecorder:
             record.service_start_time = time
         if record.processing_node is None:
             record.processing_node = node_id
+        record.paper_u_pub = getattr(task, "paper_u_pub", record.paper_u_pub)
+        record.paper_eta_pub = getattr(task, "paper_eta_pub", record.paper_eta_pub)
+        record.paper_l_pub_before = getattr(task, "paper_l_pub_before", record.paper_l_pub_before)
+        record.paper_l_pub_after = getattr(task, "paper_l_pub_after", record.paper_l_pub_after)
+        record.paper_public_queue_source_id = getattr(task, "paper_public_queue_source_id", record.paper_public_queue_source_id)
+        record.paper_public_queue_node_id = getattr(task, "paper_public_queue_node_id", record.paper_public_queue_node_id)
+        record.paper_public_queue_enter_time = getattr(task, "paper_public_queue_enter_time", record.paper_public_queue_enter_time)
+        record.paper_public_start_slot = getattr(task, "paper_public_start_slot", record.paper_public_start_slot)
+        record.paper_public_service_capacity_share = getattr(task, "paper_public_service_capacity_share", record.paper_public_service_capacity_share)
+        record.paper_public_active_queue_count = getattr(task, "paper_public_active_queue_count", record.paper_public_active_queue_count)
+        record.paper_public_processed_bits = getattr(task, "paper_public_processed_bits", record.paper_public_processed_bits)
+        record.paper_psi_pub = getattr(task, "paper_psi_pub", record.paper_psi_pub)
+        record.paper_public_deadline_slot = getattr(task, "paper_public_deadline_slot", record.paper_public_deadline_slot)
+        record.paper_public_final_status = getattr(task, "paper_public_final_status", record.paper_public_final_status)
         task.service_start_time = record.service_start_time
 
     def note_service_end(self, task: Any, episode_id: int, time: int, node_id: int, queue_type: str) -> None:
@@ -296,6 +342,20 @@ class TraceRecorder:
         record.paper_off_rate_value = getattr(task, "paper_off_rate_value", record.paper_off_rate_value)
         record.paper_off_destination_node_id = getattr(task, "paper_off_destination_node_id", record.paper_off_destination_node_id)
         record.paper_off_final_status = getattr(task, "paper_off_final_status", record.paper_off_final_status)
+        record.paper_u_pub = getattr(task, "paper_u_pub", record.paper_u_pub)
+        record.paper_eta_pub = getattr(task, "paper_eta_pub", record.paper_eta_pub)
+        record.paper_l_pub_before = getattr(task, "paper_l_pub_before", record.paper_l_pub_before)
+        record.paper_l_pub_after = getattr(task, "paper_l_pub_after", record.paper_l_pub_after)
+        record.paper_public_queue_source_id = getattr(task, "paper_public_queue_source_id", record.paper_public_queue_source_id)
+        record.paper_public_queue_node_id = getattr(task, "paper_public_queue_node_id", record.paper_public_queue_node_id)
+        record.paper_public_queue_enter_time = getattr(task, "paper_public_queue_enter_time", record.paper_public_queue_enter_time)
+        record.paper_public_start_slot = getattr(task, "paper_public_start_slot", record.paper_public_start_slot)
+        record.paper_public_service_capacity_share = getattr(task, "paper_public_service_capacity_share", record.paper_public_service_capacity_share)
+        record.paper_public_active_queue_count = getattr(task, "paper_public_active_queue_count", record.paper_public_active_queue_count)
+        record.paper_public_processed_bits = getattr(task, "paper_public_processed_bits", record.paper_public_processed_bits)
+        record.paper_psi_pub = getattr(task, "paper_psi_pub", record.paper_psi_pub)
+        record.paper_public_deadline_slot = getattr(task, "paper_public_deadline_slot", record.paper_public_deadline_slot)
+        record.paper_public_final_status = getattr(task, "paper_public_final_status", record.paper_public_final_status)
         task.service_end_time = time
         task.completion_time = time
         task.final_status = "completed"
@@ -320,6 +380,20 @@ class TraceRecorder:
         record.paper_off_rate_value = getattr(task, "paper_off_rate_value", record.paper_off_rate_value)
         record.paper_off_destination_node_id = getattr(task, "paper_off_destination_node_id", record.paper_off_destination_node_id)
         record.paper_off_final_status = getattr(task, "paper_off_final_status", record.paper_off_final_status)
+        record.paper_u_pub = getattr(task, "paper_u_pub", record.paper_u_pub)
+        record.paper_eta_pub = getattr(task, "paper_eta_pub", record.paper_eta_pub)
+        record.paper_l_pub_before = getattr(task, "paper_l_pub_before", record.paper_l_pub_before)
+        record.paper_l_pub_after = getattr(task, "paper_l_pub_after", record.paper_l_pub_after)
+        record.paper_public_queue_source_id = getattr(task, "paper_public_queue_source_id", record.paper_public_queue_source_id)
+        record.paper_public_queue_node_id = getattr(task, "paper_public_queue_node_id", record.paper_public_queue_node_id)
+        record.paper_public_queue_enter_time = getattr(task, "paper_public_queue_enter_time", record.paper_public_queue_enter_time)
+        record.paper_public_start_slot = getattr(task, "paper_public_start_slot", record.paper_public_start_slot)
+        record.paper_public_service_capacity_share = getattr(task, "paper_public_service_capacity_share", record.paper_public_service_capacity_share)
+        record.paper_public_active_queue_count = getattr(task, "paper_public_active_queue_count", record.paper_public_active_queue_count)
+        record.paper_public_processed_bits = getattr(task, "paper_public_processed_bits", record.paper_public_processed_bits)
+        record.paper_psi_pub = getattr(task, "paper_psi_pub", record.paper_psi_pub)
+        record.paper_public_deadline_slot = getattr(task, "paper_public_deadline_slot", record.paper_public_deadline_slot)
+        record.paper_public_final_status = getattr(task, "paper_public_final_status", record.paper_public_final_status)
         task.drop_time = time
         task.final_status = "dropped"
         task.drop_reason = reason
@@ -667,6 +741,10 @@ class TraceRecorder:
         queue_type: str,
         queue_length: float,
         paper_u_n_t: int | None = None,
+        paper_public_queue_source_id: int | None = None,
+        paper_public_queue_node_id: int | None = None,
+        paper_public_active_queue_count: int | None = None,
+        paper_public_service_capacity_share: float | None = None,
         arrivals: int = 0,
         departures: int = 0,
         drops: int = 0,
@@ -681,6 +759,10 @@ class TraceRecorder:
                     queue_type=queue_type,
                     queue_length=float(queue_length),
                     paper_u_n_t=paper_u_n_t,
+                    paper_public_queue_source_id=paper_public_queue_source_id,
+                    paper_public_queue_node_id=paper_public_queue_node_id,
+                    paper_public_active_queue_count=paper_public_active_queue_count,
+                    paper_public_service_capacity_share=paper_public_service_capacity_share,
                     arrivals=int(arrivals),
                     departures=int(departures),
                     drops=int(drops),

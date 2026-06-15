@@ -78,6 +78,20 @@ class Task:
     paper_off_destination_node_id: int | None = None
     paper_off_final_status: str | None = None
     paper_off_scheduled_history_recorded: bool | None = None
+    paper_u_pub: int | None = None
+    paper_eta_pub: float | None = None
+    paper_l_pub_before: float | None = None
+    paper_l_pub_after: float | None = None
+    paper_public_queue_source_id: int | None = None
+    paper_public_queue_node_id: int | None = None
+    paper_public_queue_enter_time: int | None = None
+    paper_public_start_slot: int | None = None
+    paper_public_service_capacity_share: float | None = None
+    paper_public_active_queue_count: int | None = None
+    paper_public_processed_bits: float | None = None
+    paper_psi_pub: int | None = None
+    paper_public_deadline_slot: int | None = None
+    paper_public_final_status: str | None = None
 
     def __init__(
         self,
@@ -175,6 +189,20 @@ class Task:
         self.paper_off_destination_node_id = None
         self.paper_off_final_status = None
         self.paper_off_scheduled_history_recorded = None
+        self.paper_u_pub = None
+        self.paper_eta_pub = None
+        self.paper_l_pub_before = None
+        self.paper_l_pub_after = None
+        self.paper_public_queue_source_id = None
+        self.paper_public_queue_node_id = None
+        self.paper_public_queue_enter_time = None
+        self.paper_public_start_slot = None
+        self.paper_public_service_capacity_share = None
+        self.paper_public_active_queue_count = None
+        self.paper_public_processed_bits = None
+        self.paper_psi_pub = None
+        self.paper_public_deadline_slot = None
+        self.paper_public_final_status = None
 
     def validate(self) -> None:
         if self.empty:
@@ -358,6 +386,20 @@ class Task:
         copied.paper_off_destination_node_id = self.paper_off_destination_node_id
         copied.paper_off_final_status = self.paper_off_final_status
         copied.paper_off_scheduled_history_recorded = self.paper_off_scheduled_history_recorded
+        copied.paper_u_pub = self.paper_u_pub
+        copied.paper_eta_pub = self.paper_eta_pub
+        copied.paper_l_pub_before = self.paper_l_pub_before
+        copied.paper_l_pub_after = self.paper_l_pub_after
+        copied.paper_public_queue_source_id = self.paper_public_queue_source_id
+        copied.paper_public_queue_node_id = self.paper_public_queue_node_id
+        copied.paper_public_queue_enter_time = self.paper_public_queue_enter_time
+        copied.paper_public_start_slot = self.paper_public_start_slot
+        copied.paper_public_service_capacity_share = self.paper_public_service_capacity_share
+        copied.paper_public_active_queue_count = self.paper_public_active_queue_count
+        copied.paper_public_processed_bits = self.paper_public_processed_bits
+        copied.paper_psi_pub = self.paper_psi_pub
+        copied.paper_public_deadline_slot = self.paper_public_deadline_slot
+        copied.paper_public_final_status = self.paper_public_final_status
         return copied
 
     def get_features(self):

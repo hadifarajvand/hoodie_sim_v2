@@ -9,9 +9,10 @@ import numpy as np
 
 from environment.environment import Environment
 from environment.action_model import TopologyAdapter, TwoStageActionModel
+from environment.cloud import Cloud
 from environment.matchmaker import Matchmaker
 from environment.server import Server
-from environment.queues import OffloadingQueue, ProcessingQueue
+from environment.queues import OffloadingQueue, ProcessingQueue, PublicQueueManager
 from environment.task import Task
 from phase1_tracing import TraceRecorder
 
@@ -883,6 +884,145 @@ class Phase2ActionModelTests(unittest.TestCase):
         self.assertEqual(transmitted_task.routing_metadata["paper_destination_node_id"], 2)
         self.assertEqual(transmitted_task.routing_metadata["paper_d_nk_2"], [0, 1, 0])
         self.assertFalse(transmitted_task.routing_metadata["dm2_pending"])
+
+    def test_public_queue_manager_source_indexed_routing_and_stable_vector(self):
+        manager = PublicQueueManager(id=0, computational_capacity=6.0, supporting_servers=np.array([1, 2]))
+        task = Task(
+            size=1.0,
+            arrival_time=0,
+            timeout_delay=10,
+            priotiry=1,
+            computational_density=0.297,
+            drop_penalty=40,
+            origin_server_id=1,
+            target_server_id=0,
+            task_id=140,
+        )
+        manager.add_tasks([task], current_time=0)
+        self.assertEqual(manager.public_queues[1].current_task.task_id, 140)
+        self.assertEqual(manager.get_paper_queue_lengths(total_sources=3), [0.0, 1.0, 0.0])
+        cloud = Cloud(number_of_servers=3, computational_capacity=6.0)
+        self.assertEqual(len(cloud.public_queue_manager.public_queues), 3)
+
+    def test_public_queue_manager_records_capacity_share_fifo_completion_and_delayed_reward(self):
+        recorder = TraceRecorder(trace_level="full")
+        recorder.start_episode(0)
+        Task.trace_recorder = recorder
+        manager = PublicQueueManager(id=0, computational_capacity=4.0, supporting_servers=np.array([1, 2]))
+        first = Task(
+            size=10.0,
+            arrival_time=0,
+            timeout_delay=10,
+            priotiry=1,
+            computational_density=0.297,
+            drop_penalty=40,
+            origin_server_id=1,
+            target_server_id=0,
+            task_id=141,
+        )
+        second = Task(
+            size=1.0,
+            arrival_time=0,
+            timeout_delay=10,
+            priotiry=1,
+            computational_density=0.297,
+            drop_penalty=40,
+            origin_server_id=1,
+            target_server_id=0,
+            task_id=142,
+        )
+        other = Task(
+            size=10.0,
+            arrival_time=0,
+            timeout_delay=10,
+            priotiry=1,
+            computational_density=0.297,
+            drop_penalty=40,
+            origin_server_id=2,
+            target_server_id=0,
+            task_id=143,
+        )
+        manager.add_tasks([first, second, other], current_time=0)
+        self.assertEqual(manager.public_queues[1].get_pending_tasks()[0].task_id, 141)
+        self.assertEqual(manager.public_queues[2].get_pending_tasks()[0].task_id, 143)
+        self.assertEqual(recorder.resolve_delayed_reward_candidates(0), [])
+
+        manager.step()
+        first_record = recorder.task_records[141]
+        self.assertEqual(first_record.paper_public_queue_source_id, 1)
+        self.assertEqual(first_record.paper_public_queue_node_id, 0)
+        self.assertEqual(first_record.paper_public_active_queue_count, 2)
+        self.assertEqual(first_record.paper_public_service_capacity_share, 2.0)
+        self.assertEqual(first_record.paper_public_final_status, "scheduled")
+        self.assertIsNone(first_record.completion_time)
+        self.assertIsNone(recorder.task_records[142].completion_time)
+        self.assertEqual(manager.public_queues[1].queue.qsize(), 1)
+        self.assertEqual(manager.public_queues[1].queue.queue[0].task_id, 142)
+        self.assertEqual(recorder.resolve_delayed_reward_candidates(0), [])
+
+        manager.step()
+        events = recorder.resolve_delayed_reward_candidates(0)
+        self.assertTrue(events)
+        self.assertEqual(recorder.task_records[141].final_status, "completed")
+        self.assertEqual(recorder.task_records[141].paper_public_final_status, "completed")
+        self.assertEqual(recorder.task_records[141].paper_psi_pub, recorder.task_records[141].completion_time)
+
+        with tempfile.TemporaryDirectory() as tmp:
+            trace_dir = Path(tmp) / "trace"
+            recorder.export(trace_dir)
+            with (trace_dir / "task_lifecycle.csv").open(newline="") as f:
+                rows = list(csv.DictReader(f))
+            row = next(row for row in rows if row["task_id"] == "141")
+            for field in [
+                "paper_u_pub",
+                "paper_eta_pub",
+                "paper_l_pub_before",
+                "paper_l_pub_after",
+                "paper_public_queue_source_id",
+                "paper_public_queue_node_id",
+                "paper_public_queue_enter_time",
+                "paper_public_start_slot",
+                "paper_public_service_capacity_share",
+                "paper_public_active_queue_count",
+                "paper_public_processed_bits",
+                "paper_psi_pub",
+                "paper_public_deadline_slot",
+                "paper_public_final_status",
+            ]:
+                self.assertIn(field, row)
+            self.assertEqual(row["paper_public_final_status"], "completed")
+            self.assertEqual(row["paper_psi_pub"], row["completion_time"])
+            self.assertEqual(row["paper_public_active_queue_count"], "2")
+
+    def test_public_queue_timeout_records_deadline_slot_and_public_trace_fields(self):
+        recorder = TraceRecorder(trace_level="full")
+        recorder.start_episode(0)
+        Task.trace_recorder = recorder
+        manager = PublicQueueManager(id=0, computational_capacity=1.0, supporting_servers=np.array([1]))
+        task = Task(
+            size=1.0,
+            arrival_time=0,
+            timeout_delay=1,
+            priotiry=1,
+            computational_density=0.297,
+            drop_penalty=40,
+            origin_server_id=1,
+            target_server_id=0,
+            task_id=144,
+        )
+        manager.add_tasks([task], current_time=0)
+        manager.step()
+        record = recorder.task_records[144]
+        self.assertEqual(record.paper_psi_pub, record.paper_public_deadline_slot)
+        self.assertEqual(record.paper_public_final_status, "dropped")
+        with tempfile.TemporaryDirectory() as tmp:
+            trace_dir = Path(tmp) / "trace"
+            recorder.export(trace_dir)
+            with (trace_dir / "task_lifecycle.csv").open(newline="") as f:
+                rows = list(csv.DictReader(f))
+            row = next(row for row in rows if row["task_id"] == "144")
+            self.assertEqual(row["paper_public_final_status"], "dropped")
+            self.assertEqual(row["paper_psi_pub"], row["paper_public_deadline_slot"])
 
 
 if __name__ == "__main__":
