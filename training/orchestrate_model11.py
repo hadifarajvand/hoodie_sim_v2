@@ -101,7 +101,16 @@ def _run_train_phase3_subprocess(
     return subprocess.run(cmd, check=False, capture_output=True, text=True)
 
 
-def validate_training_artifacts(training_dir: str | Path) -> dict[str, Any]:
+def _missing_keys(payload: dict[str, Any] | None, required_keys: list[str]) -> list[str]:
+    if payload is None:
+        return required_keys
+    return [key for key in required_keys if key not in payload]
+
+
+def validate_training_artifacts(
+    training_dir: str | Path,
+    expected_algorithm: str | None = None,
+) -> dict[str, Any]:
     training_dir = Path(training_dir)
     checked = {
         "dataset_summary.json": training_dir / "dataset_summary.json",
@@ -129,21 +138,75 @@ def validate_training_artifacts(training_dir: str | Path) -> dict[str, Any]:
             training_report = json.loads((training_dir / "phase3_training_report.json").read_text())
         except Exception:
             invalid.append("phase3_training_report.json")
-    report_contract_passed = bool(
+    dataset_summary_required = [
+        "transitions",
+        "state_dim",
+        "action_count",
+        "reward_source_counts",
+        "state_source_counts",
+        "next_state_source_counts",
+    ]
+    training_metrics_required = [
+        "algorithm",
+        "epochs",
+        "batch_size",
+        "transitions_used",
+        "final_checkpoint",
+    ]
+    training_report_required = [
+        "algorithm",
+        "q_model_type",
+        "model_architecture",
+        "paper_claims_made",
+        "phase4_evaluation_performed",
+    ]
+    dataset_summary_missing = _missing_keys(dataset_summary, dataset_summary_required)
+    training_metrics_missing = _missing_keys(training_metrics, training_metrics_required)
+    training_report_missing = _missing_keys(training_report, training_report_required)
+    if dataset_summary_missing:
+        invalid.append(f"dataset_summary.json: missing keys {dataset_summary_missing}")
+    if training_metrics_missing:
+        invalid.append(f"training_metrics.json: missing keys {training_metrics_missing}")
+    if training_report_missing:
+        invalid.append(f"phase3_training_report.json: missing keys {training_report_missing}")
+    if expected_algorithm is not None:
+        if training_report and training_report.get("algorithm") != expected_algorithm:
+            invalid.append(
+                f"phase3_training_report.json: algorithm mismatch expected {expected_algorithm!r} observed {training_report.get('algorithm')!r}"
+            )
+        if training_metrics and training_metrics.get("algorithm") != expected_algorithm:
+            invalid.append(
+                f"training_metrics.json: algorithm mismatch expected {expected_algorithm!r} observed {training_metrics.get('algorithm')!r}"
+            )
+    dataset_summary_contract_passed = not dataset_summary_missing and dataset_summary is not None
+    training_metrics_contract_passed = not training_metrics_missing and training_metrics is not None
+    training_report_contract_passed = bool(
         training_report
+        and not training_report_missing
         and training_report.get("paper_claims_made") is False
         and training_report.get("phase4_evaluation_performed") is False
         and training_report.get("algorithm") is not None
         and training_report.get("q_model_type") is not None
         and training_report.get("model_architecture") is not None
     )
+    if expected_algorithm is not None and training_report is not None:
+        training_report_contract_passed = training_report_contract_passed and training_report.get("algorithm") == expected_algorithm
+    if expected_algorithm is not None and training_metrics is not None:
+        training_metrics_contract_passed = training_metrics_contract_passed and training_metrics.get("algorithm") == expected_algorithm
+    report_contract_passed = training_report_contract_passed
     artifact_validation_status = "passed" if not missing and not invalid and report_contract_passed else "failed"
     report = {
         "artifact_validation_status": artifact_validation_status,
         "checked_artifacts": list(checked.keys()),
         "missing_artifacts": missing,
         "invalid_artifacts": invalid,
+        "dataset_summary_contract_passed": dataset_summary_contract_passed,
+        "training_metrics_contract_passed": training_metrics_contract_passed,
+        "training_report_contract_passed": training_report_contract_passed,
         "report_contract_passed": report_contract_passed,
+        "expected_algorithm": expected_algorithm,
+        "observed_algorithm_from_report": training_report.get("algorithm") if training_report else None,
+        "observed_algorithm_from_metrics": training_metrics.get("algorithm") if training_metrics else None,
         "paper_claims_made": False,
     }
     _write_json(training_dir / "artifact_validation_report.json", report)
@@ -269,7 +332,7 @@ def orchestrate(
     )
     if result.returncode != 0:
         raise SystemExit(result.stderr.strip() or result.stdout.strip() or "training subprocess failed")
-    validation_result = validate_training_artifacts(training_dir)
+    validation_result = validate_training_artifacts(training_dir, expected_algorithm=algorithm)
     summary = build_offline_evaluation_summary(trace_dir, training_dir, validation_result)
     manifest = {
         "model": "Model 11 — End-to-End Runtime / Training / Evaluation Orchestration Contract",

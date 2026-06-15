@@ -384,3 +384,149 @@ def test_artifact_validation_catches_missing_artifact(tmp_path: Path) -> None:
         assert False, "expected validation failure"
     except ValueError as exc:
         assert "phase3_model.chkpt" in str(exc)
+
+
+def test_artifact_validation_catches_missing_dataset_summary_keys(tmp_path: Path) -> None:
+    training_dir = tmp_path / "training"
+    training_dir.mkdir()
+    (training_dir / "dataset_summary.json").write_text(
+        json.dumps(
+            {
+                "transitions": 1,
+                "state_dim": 4,
+                "action_count": 2,
+                "state_source_counts": {},
+                "next_state_source_counts": {},
+            }
+        )
+    )
+    (training_dir / "training_metrics.json").write_text(
+        json.dumps(
+            {
+                "algorithm": "dqn",
+                "epochs": 1,
+                "batch_size": 1,
+                "transitions_used": 1,
+                "final_checkpoint": "phase3_model.chkpt",
+            }
+        )
+    )
+    (training_dir / "phase3_training_report.json").write_text(
+        json.dumps(
+            {
+                "algorithm": "dqn",
+                "q_model_type": "mlp",
+                "model_architecture": "mlp",
+                "paper_claims_made": False,
+                "phase4_evaluation_performed": False,
+            }
+        )
+    )
+    (training_dir / "phase3_model.chkpt").write_text("chkpt")
+    try:
+        validate_training_artifacts(training_dir, expected_algorithm="dqn")
+        assert False, "expected validation failure"
+    except ValueError as exc:
+        assert "dataset_summary.json" in str(exc)
+    report = json.loads((training_dir / "artifact_validation_report.json").read_text())
+    assert report["artifact_validation_status"] == "failed"
+    assert report["dataset_summary_contract_passed"] is False
+    assert any("dataset_summary.json" in item for item in report["invalid_artifacts"])
+
+
+def test_artifact_validation_catches_missing_training_metrics_keys(tmp_path: Path) -> None:
+    training_dir = tmp_path / "training"
+    training_dir.mkdir()
+    (training_dir / "dataset_summary.json").write_text(
+        json.dumps(
+            {
+                "transitions": 1,
+                "state_dim": 4,
+                "action_count": 2,
+                "reward_source_counts": {},
+                "state_source_counts": {},
+                "next_state_source_counts": {},
+            }
+        )
+    )
+    (training_dir / "training_metrics.json").write_text(
+        json.dumps(
+            {
+                "algorithm": "dqn",
+                "epochs": 1,
+                "batch_size": 1,
+                "transitions_used": 1,
+            }
+        )
+    )
+    (training_dir / "phase3_training_report.json").write_text(
+        json.dumps(
+            {
+                "algorithm": "dqn",
+                "q_model_type": "mlp",
+                "model_architecture": "mlp",
+                "paper_claims_made": False,
+                "phase4_evaluation_performed": False,
+            }
+        )
+    )
+    (training_dir / "phase3_model.chkpt").write_text("chkpt")
+    try:
+        validate_training_artifacts(training_dir, expected_algorithm="dqn")
+        assert False, "expected validation failure"
+    except ValueError as exc:
+        assert "training_metrics.json" in str(exc)
+    report = json.loads((training_dir / "artifact_validation_report.json").read_text())
+    assert report["artifact_validation_status"] == "failed"
+    assert report["training_metrics_contract_passed"] is False
+    assert any("training_metrics.json" in item for item in report["invalid_artifacts"])
+
+
+def test_artifact_validation_catches_algorithm_mismatch(tmp_path: Path) -> None:
+    training_dir = tmp_path / "training"
+    training_dir.mkdir()
+    (training_dir / "dataset_summary.json").write_text(
+        json.dumps(
+            {
+                "transitions": 1,
+                "state_dim": 4,
+                "action_count": 2,
+                "reward_source_counts": {},
+                "state_source_counts": {},
+                "next_state_source_counts": {},
+            }
+        )
+    )
+    (training_dir / "training_metrics.json").write_text(
+        json.dumps(
+            {
+                "algorithm": "dqn",
+                "epochs": 1,
+                "batch_size": 1,
+                "transitions_used": 1,
+                "final_checkpoint": "phase3_model.chkpt",
+            }
+        )
+    )
+    (training_dir / "phase3_training_report.json").write_text(
+        json.dumps(
+            {
+                "algorithm": "dqn",
+                "q_model_type": "mlp",
+                "model_architecture": "mlp",
+                "paper_claims_made": False,
+                "phase4_evaluation_performed": False,
+            }
+        )
+    )
+    (training_dir / "phase3_model.chkpt").write_text("chkpt")
+    try:
+        validate_training_artifacts(training_dir, expected_algorithm="ddqn")
+        assert False, "expected validation failure"
+    except ValueError as exc:
+        assert "algorithm mismatch" in str(exc)
+    report = json.loads((training_dir / "artifact_validation_report.json").read_text())
+    assert report["artifact_validation_status"] == "failed"
+    assert report["expected_algorithm"] == "ddqn"
+    assert report["observed_algorithm_from_report"] == "dqn"
+    assert report["observed_algorithm_from_metrics"] == "dqn"
