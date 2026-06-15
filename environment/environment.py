@@ -255,8 +255,9 @@ class Environment():
                     self.actions[server_id]['horisontal'] += 1
                 self.horisontal_transmitted_tasks[target_server_id].append(transmited_task) 
 
-        self.tasks= [t.step() for t in self.task_generators]     
-               
+        self.tasks= [t.step() for t in self.task_generators]
+        self._refresh_paper_state_history()
+
         observations = self.pack_observation()
         rewards  = dict_to_array(rewards,self.number_of_servers)
         rewards = self.scale_rewards(rewards)
@@ -269,6 +270,7 @@ class Environment():
         info['tasks_arrived'] = np.array(tasks_arrived)
         info['tasks_dropped'] = -np.ceil(rewards)
         if self.trace_recorder is not None:
+            self._record_paper_state_traces()
             self._record_queue_traces()
         
         return observations,rewards, done, info
@@ -280,20 +282,50 @@ class Environment():
         load[self.number_of_servers] = float(self.cloud.get_active_load())
         return load
 
+    def _build_source_specific_public_queue_vector(self, source_id: int) -> np.ndarray:
+        vector = np.zeros(self.number_of_servers + 1, dtype=np.float32)
+        for destination_id, server in enumerate(self.servers):
+            if destination_id == source_id:
+                continue
+            public_queue = server.public_queue_manager.public_queues.get(source_id)
+            if public_queue is not None:
+                vector[destination_id] = float(public_queue.get_queue_length())
+        cloud_queue = self.cloud.public_queue_manager.public_queues.get(source_id)
+        if cloud_queue is not None:
+            vector[self.number_of_servers] = float(cloud_queue.get_queue_length())
+        return vector
+
     def _refresh_paper_state_history(self):
         active_load_vector = self._compute_active_load_vector()
-        public_queue_vector = np.zeros(self.number_of_servers + 1, dtype=np.float32)
-        for server in self.servers:
-            public_queues = server.public_queue_manager.get_paper_queue_lengths(total_sources=self.number_of_servers + 1)
-            for source_id, queue_length in enumerate(public_queues):
-                public_queue_vector[source_id] = float(queue_length)
-        cloud_queues = self.cloud.public_queue_manager.get_paper_queue_lengths(total_sources=self.number_of_servers + 1)
-        for source_id, queue_length in enumerate(cloud_queues):
-            public_queue_vector[source_id] = float(queue_length)
         for agent_id in range(self.number_of_servers):
             self.paper_state_history[agent_id].append(active_load_vector.copy())
-            self.last_public_queue_vector[agent_id] = public_queue_vector.copy()
-        return active_load_vector, public_queue_vector
+            self.last_public_queue_vector[agent_id] = self._build_source_specific_public_queue_vector(agent_id)
+        return active_load_vector, [vector.copy() for vector in self.last_public_queue_vector]
+
+    def _record_paper_state_traces(self):
+        if self.trace_recorder is None:
+            return
+        for agent_id in range(self.number_of_servers):
+            state = self.get_paper_state(agent_id)
+            self.trace_recorder.note_paper_state(
+                episode_id=state["episode_id"],
+                time=state["time"],
+                agent_id=state["agent_id"],
+                x_n_t=state["x_n_t"],
+                task_id=state["task_id"],
+                eta_n=state["eta_n"],
+                w_priv_n=state["w_priv_n"],
+                w_off_n=state["w_off_n"],
+                l_pub_n_prev=state["l_pub_n_prev"],
+                active_load_vector=state["active_load_vector"],
+                load_history=state["L_t"],
+                predicted_next_load=state["predicted_next_load"],
+                predicted_next_load_method=state["predicted_next_load_method"],
+                paper_lstm_forecast=state["paper_lstm_forecast"],
+                unavailable_fields=state["unavailable_fields"],
+                approximation_warnings=state["approximation_warnings"],
+                state_vector=state["state_vector"],
+            )
 
     def get_paper_state(self, agent_id: int):
         task = self.tasks[agent_id]

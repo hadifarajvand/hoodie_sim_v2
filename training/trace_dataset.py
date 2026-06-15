@@ -198,7 +198,9 @@ def _extract_node_count(queue_rows: list[dict[str, Any]]) -> int | None:
         {
             _safe_int(row.get("node_id"))
             for row in queue_rows
-            if _safe_int(row.get("node_id")) is not None and str(row.get("queue_type")) != "cloud"
+            if _safe_int(row.get("node_id")) is not None
+            and not str(row.get("queue_type") or "").startswith("cloud_public:")
+            and str(row.get("queue_type")) != "cloud"
         }
     )
     if not node_ids:
@@ -206,7 +208,8 @@ def _extract_node_count(queue_rows: list[dict[str, Any]]) -> int | None:
     return max(node_ids) + 1
 
 
-def _build_public_vector(
+def _build_public_vector_for_source(
+    source_id: Any,
     episode_id: Any,
     time_value: Any,
     queue_rows_by_episode_time: dict[tuple[Any, Any], list[dict[str, Any]]],
@@ -214,7 +217,8 @@ def _build_public_vector(
 ) -> np.ndarray:
     if node_count is None:
         return np.asarray([], dtype=np.float32)
-    vector = np.full(node_count + 1, np.nan, dtype=np.float32)
+    source_id = _safe_int(source_id)
+    vector = np.zeros(node_count + 1, dtype=np.float32)
     rows = queue_rows_by_episode_time.get(_time_key(episode_id, time_value), [])
     for row in rows:
         node_id = _safe_int(row.get("node_id"))
@@ -223,10 +227,18 @@ def _build_public_vector(
         queue_type = str(row.get("queue_type") or "")
         if queue_type in {"private", "offloading"}:
             continue
-        if queue_type.startswith("public:") or queue_type == "cloud":
+        if queue_type == f"public:{source_id}" and node_id != source_id:
             queue_length = _safe_float(row.get("queue_length"))
             if queue_length is not None:
-                vector[node_id] = np.nansum([vector[node_id], queue_length]) if not np.isnan(vector[node_id]) else queue_length
+                vector[node_id] = queue_length
+        elif queue_type == f"cloud_public:{source_id}" and node_id == node_count:
+            queue_length = _safe_float(row.get("queue_length"))
+            if queue_length is not None:
+                vector[node_id] = queue_length
+        elif queue_type == "cloud" and node_id == node_count:
+            queue_length = _safe_float(row.get("queue_length"))
+            if queue_length is not None and np.isclose(vector[node_id], 0.0):
+                vector[node_id] = queue_length
     return vector
 
 
@@ -243,7 +255,7 @@ def _build_load_history(
     current_time = _safe_int(time_value)
     episode_times = sorted({t for ep, t in queue_rows_by_episode_time if ep == _safe_int(episode_id) and t is not None and (current_time is None or t <= current_time)})
     for t in episode_times[-load_window:]:
-        row_vector = np.full(node_count + 1, np.nan, dtype=np.float32)
+        row_vector = np.zeros(node_count + 1, dtype=np.float32)
         rows = queue_rows_by_episode_time.get(_time_key(episode_id, t), [])
         for row in rows:
             node_id = _safe_int(row.get("node_id"))
@@ -252,11 +264,35 @@ def _build_load_history(
             queue_length = _safe_float(row.get("queue_length"))
             if queue_length is None:
                 continue
-            row_vector[node_id] = np.nansum([row_vector[node_id], queue_length]) if not np.isnan(row_vector[node_id]) else queue_length
+            row_vector[node_id] += queue_length
         history.append(row_vector)
     while len(history) < load_window:
-        history.insert(0, np.full(node_count + 1, np.nan, dtype=np.float32))
+        history.insert(0, np.zeros(node_count + 1, dtype=np.float32))
     return np.asarray(history, dtype=np.float32)
+
+
+def _build_active_load_vector(
+    episode_id: Any,
+    time_value: Any,
+    queue_rows_by_episode_time: dict[tuple[Any, Any], list[dict[str, Any]]],
+    node_count: int | None,
+) -> np.ndarray:
+    if node_count is None:
+        return np.asarray([], dtype=np.float32)
+    vector = np.zeros(node_count + 1, dtype=np.float32)
+    rows = queue_rows_by_episode_time.get(_time_key(episode_id, time_value), [])
+    for row in rows:
+        node_id = _safe_int(row.get("node_id"))
+        if node_id is None or node_id > node_count:
+            continue
+        queue_type = str(row.get("queue_type") or "")
+        if queue_type in {"private", "offloading"}:
+            continue
+        queue_length = _safe_float(row.get("queue_length"))
+        if queue_length is None:
+            continue
+        vector[node_id] += queue_length
+    return vector
 
 
 def _build_paper_state(
@@ -278,8 +314,8 @@ def _build_paper_state(
     w_off_n = _safe_float(offloading_row.get("queue_length")) if offloading_row is not None else None
 
     current_time = _safe_int(time_value)
-    l_pub_n_prev = _build_public_vector(episode_id, current_time - 1 if current_time is not None else time_value, queue_rows_by_episode_time, node_count)
-    active_load_vector = _build_public_vector(episode_id, time_value, queue_rows_by_episode_time, node_count)
+    l_pub_n_prev = _build_public_vector_for_source(source_node, episode_id, current_time - 1 if current_time is not None else time_value, queue_rows_by_episode_time, node_count)
+    active_load_vector = _build_active_load_vector(episode_id, time_value, queue_rows_by_episode_time, node_count)
     load_history = _build_load_history(episode_id, time_value, queue_rows_by_episode_time, node_count, load_window=load_window)
 
     unavailable_fields = []
