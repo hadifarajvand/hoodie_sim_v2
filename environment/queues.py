@@ -168,12 +168,12 @@ class ProcessingQueue(TaskQueue):
         if self.current_task.is_empty():
             self.departures_this_step += 1
             recorder = getattr(Task, "trace_recorder", None)
+            self.current_task.routing_metadata["paper_private_final_status"] = "completed"
+            self.current_task.paper_private_final_status = "completed"
+            self.current_task.routing_metadata["paper_private_service_time"] = self.current_task.routing_metadata.get("paper_private_service_time", self.current_task.service_time)
+            self.current_task.paper_private_service_time = self.current_task.routing_metadata["paper_private_service_time"]
             if recorder is not None:
                 recorder.note_service_end(self.current_task, episode_id=getattr(recorder, "_episode_id", None), time=self.current_time, node_id=self.node_id if self.node_id is not None else -1, queue_type=self.queue_type)
-            self.current_task.routing_metadata["paper_private_service_time"] = self.current_task.service_time
-            self.current_task.routing_metadata["paper_private_final_status"] = "completed"
-            self.current_task.paper_private_service_time = self.current_task.service_time
-            self.current_task.paper_private_final_status = "completed"
             self.paper_latest_private_completion_slot = self.current_time
         return rewards
     

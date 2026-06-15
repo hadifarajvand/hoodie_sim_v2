@@ -342,11 +342,14 @@ class Phase2ActionModelTests(unittest.TestCase):
         task = Task(size=1.0, arrival_time=0, timeout_delay=20, computational_density=0.297, drop_penalty=40, origin_server_id=1, task_id=41)
         queue.add_task(task, current_time=0)
         scheduled = queue.current_task.routing_metadata["paper_psi_priv"]
+        scheduled_service = queue.current_task.routing_metadata["paper_private_service_time"]
         queue.step()
         self.assertEqual(queue.paper_latest_private_completion_slot, 1)
         self.assertEqual(queue.current_task.routing_metadata["paper_psi_priv"], scheduled)
         self.assertEqual(queue.current_task.routing_metadata["paper_private_final_status"], "completed")
         self.assertEqual(queue.current_task.routing_metadata["paper_private_queue_enter_time"], 0)
+        self.assertEqual(queue.current_task.routing_metadata["paper_private_service_time"], scheduled_service)
+        self.assertNotEqual(queue.current_task.routing_metadata["paper_private_service_time"], queue.current_task.service_time)
 
     def test_timed_out_private_task_records_deadline_slot_as_paper_psi_priv(self):
         queue = ProcessingQueue(1.0)
