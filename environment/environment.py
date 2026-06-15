@@ -305,7 +305,7 @@ class Environment():
         active_load_vector = self._compute_active_load_vector()
         history = list(self.paper_state_history[agent_id])
         while len(history) < self.paper_state_window:
-            history.insert(0, np.full(self.number_of_servers + 1, np.nan, dtype=np.float32))
+            history.insert(0, np.zeros(self.number_of_servers + 1, dtype=np.float32))
         L_t = np.asarray(history, dtype=np.float32)
         predicted_next_load = active_load_vector.copy()
         unavailable_fields = []
@@ -316,8 +316,6 @@ class Environment():
             unavailable_fields.append("w_priv_n")
         if w_off_n is None:
             unavailable_fields.append("w_off_n")
-        if L_t.size == 0:
-            unavailable_fields.append("L(t)")
         approximation_warnings.append("predicted_next_load uses persistence_baseline")
         state_vector = np.concatenate(
             [
@@ -412,26 +410,39 @@ class Environment():
                     paper_public_queue_node_id=server.id,
                     paper_public_active_queue_count=active_public_queues,
                     paper_public_service_capacity_share=public_capacity_share,
+                    paper_m_pub=float(getattr(pq.current_task, "paper_m_pub", 0.0)) if not pq.current_task.is_empty() else 0.0,
                 )
                 total_queue_length += pq.get_queue_length()
                 pq.arrivals_this_step = 0
                 pq.departures_this_step = 0
                 pq.drops_this_step = 0
         cloud_queue_length = 0.0
-        for pq in self.cloud.public_queue_manager.public_queues.values():
+        cloud_active_queues = self.cloud.public_queue_manager.get_active_queues()
+        cloud_public_capacity_share = (self.cloud.computational_capacity / cloud_active_queues) if cloud_active_queues else 0
+        cloud_offloaded_u_n_t = int(self.last_paper_offloaded_arrivals[-1]) if self.last_paper_offloaded_arrivals else None
+        for source_id, pq in self.cloud.public_queue_manager.public_queues.items():
             cloud_queue_length += pq.get_trace_queue_length()
-        self.trace_recorder.note_queue_trace(
-            episode_id=episode_id,
-            time=self.current_time,
-            node_id=self.number_of_servers,
-            queue_type="cloud",
-            queue_length=cloud_queue_length,
-            paper_u_n_t=int(self.last_paper_offloaded_arrivals[-1]) if self.last_paper_offloaded_arrivals else None,
-            arrivals=int(self.last_paper_offloaded_arrivals[-1]) if self.last_paper_offloaded_arrivals else 0,
-            departures=0,
-            drops=0,
-            cpu_allocated=self.cloud.computational_capacity,
-        )
+            self.trace_recorder.note_queue_trace(
+                episode_id=episode_id,
+                time=self.current_time,
+                node_id=self.number_of_servers,
+                queue_type=f"cloud_public:{source_id}",
+                queue_length=pq.get_trace_queue_length(),
+                paper_u_n_t=cloud_offloaded_u_n_t,
+                arrivals=pq.arrivals_this_step,
+                departures=pq.departures_this_step,
+                drops=pq.drops_this_step,
+                cpu_allocated=cloud_public_capacity_share,
+                paper_public_queue_source_id=source_id,
+                paper_public_queue_node_id=self.number_of_servers,
+                paper_public_active_queue_count=cloud_active_queues,
+                paper_public_service_capacity_share=cloud_public_capacity_share,
+                paper_m_pub=float(getattr(pq.current_task, "paper_m_pub", 0.0)) if not pq.current_task.is_empty() else 0.0,
+            )
+            total_queue_length += pq.get_queue_length()
+            pq.arrivals_this_step = 0
+            pq.departures_this_step = 0
+            pq.drops_this_step = 0
         
     
     def get_server_dimensions(self,id):

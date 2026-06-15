@@ -82,6 +82,7 @@ class Task:
     paper_eta_pub: float | None = None
     paper_l_pub_before: float | None = None
     paper_l_pub_after: float | None = None
+    paper_l_pub: float | None = None
     paper_public_queue_source_id: int | None = None
     paper_public_queue_node_id: int | None = None
     paper_public_queue_enter_time: int | None = None
@@ -89,6 +90,8 @@ class Task:
     paper_public_service_capacity_share: float | None = None
     paper_public_active_queue_count: int | None = None
     paper_public_processed_bits: float | None = None
+    paper_m_pub: float | None = None
+    paper_psi_tilde_pub: int | None = None
     paper_psi_pub: int | None = None
     paper_public_deadline_slot: int | None = None
     paper_public_final_status: str | None = None
@@ -193,6 +196,7 @@ class Task:
         self.paper_eta_pub = None
         self.paper_l_pub_before = None
         self.paper_l_pub_after = None
+        self.paper_l_pub = None
         self.paper_public_queue_source_id = None
         self.paper_public_queue_node_id = None
         self.paper_public_queue_enter_time = None
@@ -200,6 +204,8 @@ class Task:
         self.paper_public_service_capacity_share = None
         self.paper_public_active_queue_count = None
         self.paper_public_processed_bits = None
+        self.paper_m_pub = None
+        self.paper_psi_tilde_pub = None
         self.paper_psi_pub = None
         self.paper_public_deadline_slot = None
         self.paper_public_final_status = None
@@ -251,6 +257,12 @@ class Task:
         computational_capacity = capacity
         task_processed = computational_capacity / self.computational_density
         self.remain -= task_processed
+        self.paper_m_pub = float(task_processed if self.remain > 0 else task_processed + self.remain)
+        if self.paper_public_processed_bits is None:
+            self.paper_public_processed_bits = 0.0
+        self.paper_public_processed_bits = float(self.paper_public_processed_bits + self.paper_m_pub)
+        self.routing_metadata["paper_m_pub"] = self.paper_m_pub
+        self.routing_metadata["paper_public_processed_bits"] = self.paper_public_processed_bits
         if self.remain <= 0:
             task_processed += self.remain
             return self.finish_task(time), task_processed
@@ -390,6 +402,7 @@ class Task:
         copied.paper_eta_pub = self.paper_eta_pub
         copied.paper_l_pub_before = self.paper_l_pub_before
         copied.paper_l_pub_after = self.paper_l_pub_after
+        copied.paper_l_pub = self.paper_l_pub
         copied.paper_public_queue_source_id = self.paper_public_queue_source_id
         copied.paper_public_queue_node_id = self.paper_public_queue_node_id
         copied.paper_public_queue_enter_time = self.paper_public_queue_enter_time
@@ -397,6 +410,8 @@ class Task:
         copied.paper_public_service_capacity_share = self.paper_public_service_capacity_share
         copied.paper_public_active_queue_count = self.paper_public_active_queue_count
         copied.paper_public_processed_bits = self.paper_public_processed_bits
+        copied.paper_m_pub = self.paper_m_pub
+        copied.paper_psi_tilde_pub = self.paper_psi_tilde_pub
         copied.paper_psi_pub = self.paper_psi_pub
         copied.paper_public_deadline_slot = self.paper_public_deadline_slot
         copied.paper_public_final_status = self.paper_public_final_status

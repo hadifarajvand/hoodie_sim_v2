@@ -49,6 +49,7 @@ class TaskLifecycleRecord:
     paper_eta_pub: float | None = None
     paper_l_pub_before: float | None = None
     paper_l_pub_after: float | None = None
+    paper_l_pub: float | None = None
     paper_public_queue_source_id: int | None = None
     paper_public_queue_node_id: int | None = None
     paper_public_queue_enter_time: int | None = None
@@ -56,6 +57,8 @@ class TaskLifecycleRecord:
     paper_public_service_capacity_share: float | None = None
     paper_public_active_queue_count: int | None = None
     paper_public_processed_bits: float | None = None
+    paper_m_pub: float | None = None
+    paper_psi_tilde_pub: int | None = None
     paper_psi_pub: int | None = None
     paper_public_deadline_slot: int | None = None
     paper_public_final_status: str | None = None
@@ -73,6 +76,7 @@ class QueueTraceRecord:
     paper_public_queue_node_id: int | None = None
     paper_public_active_queue_count: int | None = None
     paper_public_service_capacity_share: float | None = None
+    paper_m_pub: float | None = None
     arrivals: int = 0
     departures: int = 0
     drops: int = 0
@@ -283,6 +287,7 @@ class TraceRecorder:
         record.paper_eta_pub = getattr(task, "paper_eta_pub", record.paper_eta_pub)
         record.paper_l_pub_before = getattr(task, "paper_l_pub_before", record.paper_l_pub_before)
         record.paper_l_pub_after = getattr(task, "paper_l_pub_after", record.paper_l_pub_after)
+        record.paper_l_pub = getattr(task, "paper_l_pub", record.paper_l_pub)
         record.paper_public_queue_source_id = getattr(task, "paper_public_queue_source_id", record.paper_public_queue_source_id)
         record.paper_public_queue_node_id = getattr(task, "paper_public_queue_node_id", record.paper_public_queue_node_id)
         record.paper_public_queue_enter_time = getattr(task, "paper_public_queue_enter_time", record.paper_public_queue_enter_time)
@@ -290,6 +295,8 @@ class TraceRecorder:
         record.paper_public_service_capacity_share = getattr(task, "paper_public_service_capacity_share", record.paper_public_service_capacity_share)
         record.paper_public_active_queue_count = getattr(task, "paper_public_active_queue_count", record.paper_public_active_queue_count)
         record.paper_public_processed_bits = getattr(task, "paper_public_processed_bits", record.paper_public_processed_bits)
+        record.paper_m_pub = getattr(task, "paper_m_pub", record.paper_m_pub)
+        record.paper_psi_tilde_pub = getattr(task, "paper_psi_tilde_pub", record.paper_psi_tilde_pub)
         record.paper_psi_pub = getattr(task, "paper_psi_pub", record.paper_psi_pub)
         record.paper_public_deadline_slot = getattr(task, "paper_public_deadline_slot", record.paper_public_deadline_slot)
         record.paper_public_final_status = getattr(task, "paper_public_final_status", record.paper_public_final_status)
@@ -306,6 +313,7 @@ class TraceRecorder:
         record.paper_eta_pub = getattr(task, "paper_eta_pub", record.paper_eta_pub)
         record.paper_l_pub_before = getattr(task, "paper_l_pub_before", record.paper_l_pub_before)
         record.paper_l_pub_after = getattr(task, "paper_l_pub_after", record.paper_l_pub_after)
+        record.paper_l_pub = getattr(task, "paper_l_pub", record.paper_l_pub)
         record.paper_public_queue_source_id = getattr(task, "paper_public_queue_source_id", record.paper_public_queue_source_id)
         record.paper_public_queue_node_id = getattr(task, "paper_public_queue_node_id", record.paper_public_queue_node_id)
         record.paper_public_queue_enter_time = getattr(task, "paper_public_queue_enter_time", record.paper_public_queue_enter_time)
@@ -313,6 +321,8 @@ class TraceRecorder:
         record.paper_public_service_capacity_share = getattr(task, "paper_public_service_capacity_share", record.paper_public_service_capacity_share)
         record.paper_public_active_queue_count = getattr(task, "paper_public_active_queue_count", record.paper_public_active_queue_count)
         record.paper_public_processed_bits = getattr(task, "paper_public_processed_bits", record.paper_public_processed_bits)
+        record.paper_m_pub = getattr(task, "paper_m_pub", record.paper_m_pub)
+        record.paper_psi_tilde_pub = getattr(task, "paper_psi_tilde_pub", record.paper_psi_tilde_pub)
         record.paper_psi_pub = getattr(task, "paper_psi_pub", record.paper_psi_pub)
         record.paper_public_deadline_slot = getattr(task, "paper_public_deadline_slot", record.paper_public_deadline_slot)
         record.paper_public_final_status = getattr(task, "paper_public_final_status", record.paper_public_final_status)
@@ -346,6 +356,7 @@ class TraceRecorder:
         record.paper_eta_pub = getattr(task, "paper_eta_pub", record.paper_eta_pub)
         record.paper_l_pub_before = getattr(task, "paper_l_pub_before", record.paper_l_pub_before)
         record.paper_l_pub_after = getattr(task, "paper_l_pub_after", record.paper_l_pub_after)
+        record.paper_l_pub = getattr(task, "paper_l_pub", record.paper_l_pub)
         record.paper_public_queue_source_id = getattr(task, "paper_public_queue_source_id", record.paper_public_queue_source_id)
         record.paper_public_queue_node_id = getattr(task, "paper_public_queue_node_id", record.paper_public_queue_node_id)
         record.paper_public_queue_enter_time = getattr(task, "paper_public_queue_enter_time", record.paper_public_queue_enter_time)
@@ -353,6 +364,8 @@ class TraceRecorder:
         record.paper_public_service_capacity_share = getattr(task, "paper_public_service_capacity_share", record.paper_public_service_capacity_share)
         record.paper_public_active_queue_count = getattr(task, "paper_public_active_queue_count", record.paper_public_active_queue_count)
         record.paper_public_processed_bits = getattr(task, "paper_public_processed_bits", record.paper_public_processed_bits)
+        record.paper_m_pub = getattr(task, "paper_m_pub", record.paper_m_pub)
+        record.paper_psi_tilde_pub = getattr(task, "paper_psi_tilde_pub", record.paper_psi_tilde_pub)
         record.paper_psi_pub = getattr(task, "paper_psi_pub", record.paper_psi_pub)
         record.paper_public_deadline_slot = getattr(task, "paper_public_deadline_slot", record.paper_public_deadline_slot)
         record.paper_public_final_status = getattr(task, "paper_public_final_status", record.paper_public_final_status)
@@ -384,6 +397,7 @@ class TraceRecorder:
         record.paper_eta_pub = getattr(task, "paper_eta_pub", record.paper_eta_pub)
         record.paper_l_pub_before = getattr(task, "paper_l_pub_before", record.paper_l_pub_before)
         record.paper_l_pub_after = getattr(task, "paper_l_pub_after", record.paper_l_pub_after)
+        record.paper_l_pub = getattr(task, "paper_l_pub", record.paper_l_pub)
         record.paper_public_queue_source_id = getattr(task, "paper_public_queue_source_id", record.paper_public_queue_source_id)
         record.paper_public_queue_node_id = getattr(task, "paper_public_queue_node_id", record.paper_public_queue_node_id)
         record.paper_public_queue_enter_time = getattr(task, "paper_public_queue_enter_time", record.paper_public_queue_enter_time)
@@ -391,6 +405,8 @@ class TraceRecorder:
         record.paper_public_service_capacity_share = getattr(task, "paper_public_service_capacity_share", record.paper_public_service_capacity_share)
         record.paper_public_active_queue_count = getattr(task, "paper_public_active_queue_count", record.paper_public_active_queue_count)
         record.paper_public_processed_bits = getattr(task, "paper_public_processed_bits", record.paper_public_processed_bits)
+        record.paper_m_pub = getattr(task, "paper_m_pub", record.paper_m_pub)
+        record.paper_psi_tilde_pub = getattr(task, "paper_psi_tilde_pub", record.paper_psi_tilde_pub)
         record.paper_psi_pub = getattr(task, "paper_psi_pub", record.paper_psi_pub)
         record.paper_public_deadline_slot = getattr(task, "paper_public_deadline_slot", record.paper_public_deadline_slot)
         record.paper_public_final_status = getattr(task, "paper_public_final_status", record.paper_public_final_status)
@@ -745,6 +761,7 @@ class TraceRecorder:
         paper_public_queue_node_id: int | None = None,
         paper_public_active_queue_count: int | None = None,
         paper_public_service_capacity_share: float | None = None,
+        paper_m_pub: float | None = None,
         arrivals: int = 0,
         departures: int = 0,
         drops: int = 0,
@@ -763,6 +780,7 @@ class TraceRecorder:
                     paper_public_queue_node_id=paper_public_queue_node_id,
                     paper_public_active_queue_count=paper_public_active_queue_count,
                     paper_public_service_capacity_share=paper_public_service_capacity_share,
+                    paper_m_pub=paper_m_pub,
                     arrivals=int(arrivals),
                     departures=int(departures),
                     drops=int(drops),

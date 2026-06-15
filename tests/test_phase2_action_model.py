@@ -311,7 +311,7 @@ class Phase2ActionModelTests(unittest.TestCase):
         cloud_env.step(np.asarray([1, 0], dtype=int))
         self.assertEqual(cloud_env.last_paper_queue_arrivals, [0, 0, 1])
         cloud_rows = {(row.time, row.node_id, row.queue_type): row for row in cloud_recorder.queue_traces}
-        self.assertEqual(cloud_rows[(2, 2, "cloud")].paper_u_n_t, 1)
+        self.assertEqual(cloud_rows[(2, 2, "cloud_public:0")].paper_u_n_t, 1)
 
     def test_private_queue_fifos_tasks_in_arrival_order(self):
         queue = ProcessingQueue(1.0)
