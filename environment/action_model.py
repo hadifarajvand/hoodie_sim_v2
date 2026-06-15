@@ -158,30 +158,8 @@ class TwoStageActionModel:
             )
         ]
         self.validate_paper_action_contract(actions[0])
-
-        for index, destination in enumerate(self.topology.horizontal_neighbors(source), start=1):
-            action = TwoStageAction(
-                raw_action_id=index,
-                source_node_id=source,
-                first_stage_decision="offload",
-                destination_node_id=None,
-                destination_type="offload_pending",
-                is_valid=True,
-                invalid_reason=None,
-                adjacency_allowed=True,
-                cloud_target=False,
-                d_n_1=0,
-                d_nk_2={},
-                paper_destination_nodes=paper_destination_nodes,
-                paper_d_nk_2=self._paper_destination_vector(source, None),
-                dm2_timing="offloading_queue_exit",
-                requires_separate_dm2_at_offloading_queue_exit=True,
-            )
-            self.validate_paper_action_contract(action)
-            actions.append(action)
-
-        cloud_action = TwoStageAction(
-            raw_action_id=len(actions),
+        offload_action = TwoStageAction(
+            raw_action_id=1,
             source_node_id=source,
             first_stage_decision="offload",
             destination_node_id=None,
@@ -197,8 +175,8 @@ class TwoStageActionModel:
             dm2_timing="offloading_queue_exit",
             requires_separate_dm2_at_offloading_queue_exit=True,
         )
-        self.validate_paper_action_contract(cloud_action)
-        actions.append(cloud_action)
+        self.validate_paper_action_contract(offload_action)
+        actions.append(offload_action)
         return actions
 
     def resolve_dm2_destination(self, source_node_id: int, raw_action_id: int, *, strict: bool = True) -> int:
@@ -274,38 +252,27 @@ class TwoStageActionModel:
         if first_stage_decision != "offload":
             return self._invalid_action(source, 0, f"unknown first_stage_decision {first_stage_decision!r}", strict)
 
-        if destination_node_ids is not None:
-            if len(destination_node_ids) != 1:
-                return self._invalid_action(
-                    source,
-                    0,
-                    "offload actions must specify exactly one destination",
-                    strict,
-                )
-            destination_node_id = destination_node_ids[0]
-
         action_space = self.build_action_space(source)
-        if destination_node_id is None:
-            return action_space[1] if len(action_space) > 1 else self._invalid_action(
-                source,
-                0,
-                "offload actions require at least one DM2 destination candidate",
-                strict,
-            )
-
-        destination = _as_int(destination_node_id, "destination_node_id")
-        if destination == source:
-            return self._invalid_action(source, 0, "self-offload is not allowed", strict)
-        dm2_destinations = self.dm2_destination_nodes(source)
-        if destination not in dm2_destinations:
+        if destination_node_ids is not None and len(destination_node_ids) not in (0, 1):
             return self._invalid_action(
                 source,
                 0,
-                f"destination_node_id {destination} is not a legal DM2 destination for source_node_id {source}",
+                "offload actions must specify at most one destination placeholder",
                 strict,
             )
-        destination_index = dm2_destinations.index(destination) + 1
-        return action_space[destination_index]
+        if destination_node_id is not None:
+            destination = _as_int(destination_node_id, "destination_node_id")
+            if destination == source:
+                return self._invalid_action(source, 0, "self-offload is not allowed", strict)
+            dm2_destinations = self.dm2_destination_nodes(source)
+            if destination not in dm2_destinations:
+                return self._invalid_action(
+                    source,
+                    0,
+                    f"destination_node_id {destination} is not a legal DM2 destination for source_node_id {source}",
+                    strict,
+                )
+        return action_space[1]
 
     def _invalid_action(self, source_node_id: int, raw_action_id: object, reason: str, strict: bool) -> TwoStageAction:
         action = TwoStageAction(

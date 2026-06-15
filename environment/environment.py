@@ -135,6 +135,7 @@ class Environment():
         info = {}
         self.actions  =[{
                 'local':0,
+                'offload_pending':0,
                 'horisontal':0,
                 'cloud':0
             }
@@ -200,10 +201,8 @@ class Environment():
         if task:
             if action_decision is not None and action_decision.first_stage_decision == "local":
                 self.actions[server_id]['local'] +=1
-            elif action_decision is not None and action_decision.cloud_target:
-                self.actions[server_id]['cloud'] +=1
             else:
-                self.actions[server_id]['horisontal'] +=1
+                self.actions[server_id]['offload_pending'] +=1
     def step(self,actions):
 
 
@@ -247,7 +246,10 @@ class Environment():
                 origin_server_id = transmited_task.get_origin_server_id()
                 assert origin_server_id == server_id
                 target_server_id = transmited_task.get_target_server_id()
-                
+                if target_server_id == self.number_of_servers:
+                    self.actions[server_id]['cloud'] += 1
+                else:
+                    self.actions[server_id]['horisontal'] += 1
                 self.horisontal_transmitted_tasks[target_server_id].append(transmited_task) 
 
         self.tasks= [t.step() for t in self.task_generators]     

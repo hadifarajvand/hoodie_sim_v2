@@ -93,19 +93,20 @@ class Phase2ActionModelTests(unittest.TestCase):
         self.assertEqual(action.d_n_1, 0)
         self.assertEqual(action.paper_d_nk_2, (0, 0, 0, 0))
         self.assertTrue(action.requires_separate_dm2_at_offloading_queue_exit)
+        self.assertFalse(hasattr(action, "dm2_action_id"))
 
     def test_invalid_multiple_destinations_for_offload(self):
         action = self.model.validate_explicit_choice(1, "offload", destination_node_ids=[0, 2])
         self.assertFalse(action.is_valid)
-        self.assertIn("exactly one destination", action.invalid_reason)
+        self.assertIn("at most one destination placeholder", action.invalid_reason)
 
     def test_action_space_generation(self):
         action_space = self.model.build_action_space(1)
-        self.assertEqual(len(action_space), 4)
-        self.assertEqual([a.destination_type for a in action_space], ["local", "offload_pending", "offload_pending", "offload_pending"])
-        self.assertEqual([a.destination_node_id for a in action_space], [None, None, None, None])
+        self.assertEqual(len(action_space), 2)
+        self.assertEqual([a.destination_type for a in action_space], ["local", "offload_pending"])
+        self.assertEqual([a.destination_node_id for a in action_space], [None, None])
         self.assertEqual(action_space[0].raw_action_id, 0)
-        self.assertEqual(action_space[-1].raw_action_id, 3)
+        self.assertEqual(action_space[-1].raw_action_id, 1)
         self.assertTrue(all(len(a.paper_destination_nodes) == 4 for a in action_space))
         self.assertTrue(all(sum(a.paper_d_nk_2) == 0 for a in action_space))
         self.assertNotIn(1, [a.destination_node_id for a in action_space if a.destination_type == "offload_pending"])
@@ -121,7 +122,7 @@ class Phase2ActionModelTests(unittest.TestCase):
 
     def test_legacy_compatibility_and_invalid_raw_action_rejection(self):
         self.assertEqual(self.matchmaker.match_action(1, 0), 1)
-        self.assertEqual(self.matchmaker.match_action(1, 3), 1)
+        self.assertEqual(self.matchmaker.match_action(1, 1), 1)
         with self.assertRaisesRegex(ValueError, "outside the valid action space"):
             self.matchmaker.match_action(1, 99)
 
@@ -319,11 +320,44 @@ class Phase2ActionModelTests(unittest.TestCase):
         self.assertIsNone(server.offloading_queue.current_task.get_target_server_id())
         transmitted_task, _ = server.offloading_queue.step()
         self.assertIsNotNone(transmitted_task)
-        self.assertEqual(transmitted_task.get_target_server_id(), 2)
-        self.assertEqual(transmitted_task.routing_metadata["paper_destination_node_id"], 2)
-        self.assertEqual(transmitted_task.routing_metadata["paper_d_nk_2"], [0, 1, 0])
+        self.assertEqual(transmitted_task.get_target_server_id(), 0)
+        self.assertEqual(transmitted_task.routing_metadata["paper_destination_node_id"], 0)
+        self.assertEqual(transmitted_task.routing_metadata["paper_d_nk_2"], [1, 0, 0])
         self.assertEqual(transmitted_task.routing_metadata["dm2_timing"], "offloading_queue_exit")
         self.assertFalse(transmitted_task.routing_metadata["dm2_pending"])
+
+    def test_cloud_dm2_destination_counts_as_cloud_not_horizontal(self):
+        env = Environment(
+            static_frequency=0,
+            number_of_servers=2,
+            private_cpu_capacities=[1, 1],
+            public_cpu_capacities=[1, 1],
+            connection_matrix=np.array([[0, 1], [1, 0]]),
+            cloud_computational_capacity=1,
+            episode_time=2,
+            task_arrive_probabilities=[1.0, 0.0],
+            task_size_mins=[1.0, 1.0],
+            task_size_maxs=[1.0, 1.0],
+            task_size_distributions=["constant", "constant"],
+            timeout_delay_mins=[10, 10],
+            timeout_delay_maxs=[10, 10],
+            timeout_delay_distributions=["constant", "constant"],
+            priotiry_mins=[1, 1],
+            priotiry_maxs=[1, 1],
+            priotiry_distributions=["constant", "constant"],
+            computational_density_mins=[0.297, 0.297],
+            computational_density_maxs=[0.297, 0.297],
+            computational_density_distributions=["constant", "constant"],
+            drop_penalty_mins=[40, 40],
+            drop_penalty_maxs=[40, 40],
+            drop_penalty_distributions=["constant", "constant"],
+        )
+        env.reset()
+        env.servers[0].offloading_queue.resolve_dm2_destination = lambda task: env.number_of_servers
+        env.step(np.asarray([1, 0], dtype=int))
+        env.step(np.asarray([1, 0], dtype=int))
+        self.assertGreaterEqual(env.actions[0]["cloud"], 1)
+        self.assertEqual(env.actions[0]["horisontal"], 0)
 
 
 if __name__ == "__main__":

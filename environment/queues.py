@@ -160,23 +160,23 @@ class OffloadingQueue(TaskQueue):
         offloading_capacity = self.offloading_capacities[target_server_id]
         return math.ceil(task.get_remaining_size() / offloading_capacity)
 
+    def resolve_dm2_destination(self, task):
+        return self._resolve_target_server_id(task)
+
     def _resolve_target_server_id(self, task):
         target_server_id = task.get_target_server_id()
         if target_server_id is not None:
             return target_server_id
         destination = task.routing_metadata.get("paper_destination_node_id")
         if destination is None:
-            dm2_action_id = task.routing_metadata.get("dm2_action_id")
             dm2_destination_nodes = task.routing_metadata.get("dm2_destination_nodes")
             if dm2_destination_nodes is None:
                 dm2_destination_nodes = sorted(self.offloading_capacities.keys())
             if not dm2_destination_nodes:
                 raise ValueError("offloading task is missing a paper destination")
-            if dm2_action_id is None:
+            destination = task.routing_metadata.get("dm2_destination_node_id")
+            if destination is None:
                 destination = dm2_destination_nodes[0]
-            else:
-                candidate_index = max(0, int(dm2_action_id) - 1)
-                destination = dm2_destination_nodes[candidate_index % len(dm2_destination_nodes)]
         return int(destination)
 
     def get_waiting_time(self):
@@ -202,7 +202,7 @@ class OffloadingQueue(TaskQueue):
 
         target_server_id = self.current_task.get_target_server_id()
         if target_server_id is None:
-            target_server_id = self._resolve_target_server_id(self.current_task)
+            target_server_id = self.resolve_dm2_destination(self.current_task)
             self.current_task.set_target_server_id(target_server_id)
         offloading_capacity = self.offloading_capacities[target_server_id]
         recorder = getattr(Task, "trace_recorder", None)

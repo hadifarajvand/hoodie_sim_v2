@@ -51,11 +51,9 @@ class Server():
             local_task.set_origin_server_id(self.id)
             local_task.selected_action = action_decision.raw_action_id if action_decision is not None else action
             local_task.processing_node = self.id if action_decision is None or action_decision.first_stage_decision == "local" else None
-            if action_decision is None or action_decision.first_stage_decision == "local":  
+            if action_decision is None or action_decision.first_stage_decision == "local":
                 self.processing_queue.add_task(local_task, current_time=current_time)
             else:
-                local_task.routing_metadata["dm2_action_id"] = int(action_decision.raw_action_id)
-                local_task.routing_metadata["dm2_destination_nodes"] = sorted(int(node) for node in self.offloading_capacities.keys())
                 local_task.routing_metadata["paper_destination_nodes"] = list(action_decision.paper_destination_nodes)
                 local_task.routing_metadata["paper_d_nk_2"] = [0 for _ in action_decision.paper_d_nk_2]
                 local_task.routing_metadata["paper_destination_node_id"] = None
