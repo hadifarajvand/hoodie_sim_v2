@@ -215,6 +215,7 @@ class OffloadingQueue(TaskQueue):
         task.routing_metadata["paper_off_rate_value"] = None
         task.routing_metadata["paper_off_destination_node_id"] = None
         task.routing_metadata["paper_off_final_status"] = "scheduled"
+        task.routing_metadata["paper_off_scheduled_history_recorded"] = False
         task.paper_w_off = paper_w_off
         task.paper_off_queue_enter_time = current_time
         task.paper_off_deadline_slot = task.deadline_slot
@@ -224,6 +225,7 @@ class OffloadingQueue(TaskQueue):
         task.paper_off_rate_value = None
         task.paper_off_destination_node_id = None
         task.paper_off_final_status = "scheduled"
+        task.paper_off_scheduled_history_recorded = False
     
     def update_waiting_time(self, task):
         target_server_id = task.get_target_server_id()
@@ -317,6 +319,13 @@ class OffloadingQueue(TaskQueue):
         )
         self.current_task.routing_metadata["paper_psi_off"] = paper_psi_off
         self.current_task.routing_metadata["paper_off_final_status"] = "in_transmission"
+        if not self.current_task.routing_metadata.get("paper_off_scheduled_history_recorded", False):
+            self.paper_latest_offloading_scheduled_completion_slot = max(
+                self.paper_latest_offloading_scheduled_completion_slot,
+                int(paper_psi_off),
+            )
+            self.current_task.routing_metadata["paper_off_scheduled_history_recorded"] = True
+            self.current_task.paper_off_scheduled_history_recorded = True
         paper_destination_nodes = self.current_task.routing_metadata.get("paper_destination_nodes")
         if not paper_destination_nodes:
             paper_destination_nodes = tuple(sorted(self.offloading_capacities.keys()))
@@ -334,10 +343,6 @@ class OffloadingQueue(TaskQueue):
                 self.current_task.routing_metadata["paper_d_nk_2"] = resolved_vector
         transmited_task = self.current_task.transmit(offloading_capacity)
         if transmited_task is not None:
-            self.paper_latest_offloading_scheduled_completion_slot = max(
-                self.paper_latest_offloading_scheduled_completion_slot,
-                int(paper_psi_off),
-            )
             self.current_task.routing_metadata["paper_off_final_status"] = "transmitted"
             self.current_task.paper_off_final_status = "transmitted"
             transmited_task.routing_metadata["paper_w_off"] = paper_w_off
@@ -358,6 +363,17 @@ class OffloadingQueue(TaskQueue):
             transmited_task.paper_off_rate_value = float(offloading_capacity)
             transmited_task.paper_off_destination_node_id = int(target_server_id)
             transmited_task.paper_off_final_status = "transmitted"
+            transmited_task.paper_off_scheduled_history_recorded = True
+            transmited_task.routing_metadata["paper_off_scheduled_history_recorded"] = True
+            recorder = getattr(Task, "trace_recorder", None)
+            if recorder is not None:
+                recorder.note_service_end(
+                    transmited_task,
+                    episode_id=getattr(recorder, "_episode_id", None),
+                    time=self.current_time,
+                    node_id=self.node_id if self.node_id is not None else -1,
+                    queue_type=self.queue_type,
+                )
             self.departures_this_step += 1
         else:
             self.current_task.routing_metadata["paper_off_final_status"] = "in_transmission"

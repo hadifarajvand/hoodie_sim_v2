@@ -541,6 +541,70 @@ class Phase2ActionModelTests(unittest.TestCase):
         self.assertEqual(transmitted_task.routing_metadata["paper_off_destination_node_id"], 4)
         self.assertNotEqual(transmitted_task.routing_metadata["paper_off_rate_value"], 1.0)
 
+    def test_offloading_queue_updates_scheduled_history_immediately_after_dm2_resolution(self):
+        queue = OffloadingQueue({0: 1.0, 2: 1.0, 4: 10.0})
+        first = Task(
+            size=3.0,
+            arrival_time=0,
+            timeout_delay=20,
+            priotiry=1,
+            computational_density=0.297,
+            drop_penalty=40,
+            origin_server_id=1,
+            task_id=94,
+        )
+        first.routing_metadata["dm2_pending"] = True
+        first.routing_metadata["paper_destination_nodes"] = [0, 2, 4]
+        first.routing_metadata["paper_destination_node_id"] = None
+        first.routing_metadata["paper_d_nk_2"] = [0, 0, 0]
+        queue.add_task(first, current_time=0)
+        queue.resolve_dm2_destination = lambda task: 2
+        queue.step()
+        first_psi = queue.current_task.routing_metadata["paper_psi_off"]
+        self.assertIsNotNone(first_psi)
+        self.assertEqual(queue.paper_latest_offloading_scheduled_completion_slot, first_psi)
+
+        second = Task(
+            size=1.0,
+            arrival_time=1,
+            timeout_delay=20,
+            priotiry=1,
+            computational_density=0.297,
+            drop_penalty=40,
+            origin_server_id=1,
+            task_id=95,
+        )
+        second.routing_metadata["dm2_pending"] = True
+        second.routing_metadata["paper_destination_nodes"] = [0, 2, 4]
+        second.routing_metadata["paper_destination_node_id"] = None
+        second.routing_metadata["paper_d_nk_2"] = [0, 0, 0]
+        queue.add_task(second, current_time=1)
+        self.assertEqual(second.routing_metadata["paper_w_off"], max(0, first_psi - 1 + 1))
+
+    def test_offloading_queue_does_not_reupdate_scheduled_history_for_same_multi_slot_task(self):
+        queue = OffloadingQueue({0: 1.0, 2: 1.0, 4: 10.0})
+        task = Task(
+            size=3.0,
+            arrival_time=0,
+            timeout_delay=20,
+            priotiry=1,
+            computational_density=0.297,
+            drop_penalty=40,
+            origin_server_id=1,
+            task_id=96,
+        )
+        task.routing_metadata["dm2_pending"] = True
+        task.routing_metadata["paper_destination_nodes"] = [0, 2, 4]
+        task.routing_metadata["paper_destination_node_id"] = None
+        task.routing_metadata["paper_d_nk_2"] = [0, 0, 0]
+        queue.add_task(task, current_time=0)
+        queue.resolve_dm2_destination = lambda task: 2
+        queue.step()
+        first_history = queue.paper_latest_offloading_scheduled_completion_slot
+        queue.step()
+        self.assertEqual(queue.paper_latest_offloading_scheduled_completion_slot, first_history)
+        self.assertTrue(queue.current_task.paper_off_scheduled_history_recorded)
+
     def test_timed_out_offloading_task_records_deadline_slot_as_paper_psi_off(self):
         queue = OffloadingQueue({0: 1.0, 2: 2.0, 4: 10.0})
         task = Task(
@@ -559,6 +623,61 @@ class Phase2ActionModelTests(unittest.TestCase):
         queue.step()
         self.assertEqual(queue.current_task.routing_metadata["paper_psi_off"], queue.current_task.deadline_slot)
         self.assertEqual(queue.current_task.routing_metadata["paper_off_final_status"], "dropped")
+
+    def test_offloading_queue_in_transmission_status_remains_until_transmit_completes(self):
+        queue = OffloadingQueue({0: 1.0, 2: 1.0, 4: 10.0})
+        task = Task(
+            size=3.0,
+            arrival_time=0,
+            timeout_delay=20,
+            priotiry=1,
+            computational_density=0.297,
+            drop_penalty=40,
+            origin_server_id=1,
+            task_id=97,
+        )
+        task.routing_metadata["dm2_pending"] = True
+        task.routing_metadata["paper_destination_nodes"] = [0, 2, 4]
+        task.routing_metadata["paper_destination_node_id"] = None
+        task.routing_metadata["paper_d_nk_2"] = [0, 0, 0]
+        queue.add_task(task, current_time=0)
+        queue.resolve_dm2_destination = lambda task: 2
+        transmited_task, _ = queue.step()
+        self.assertIsNone(transmited_task)
+        self.assertEqual(queue.current_task.paper_off_final_status, "in_transmission")
+
+    def test_offloading_queue_transmission_completion_sets_transmitted_status_and_trace(self):
+        recorder = TraceRecorder(trace_level="full")
+        recorder.start_episode(0)
+        queue = OffloadingQueue({0: 1.0, 2: 2.0, 4: 10.0})
+        Task.trace_recorder = recorder
+        task = Task(
+            size=1.0,
+            arrival_time=0,
+            timeout_delay=10,
+            priotiry=1,
+            computational_density=0.297,
+            drop_penalty=40,
+            origin_server_id=1,
+            task_id=98,
+        )
+        task.routing_metadata["dm2_pending"] = True
+        task.routing_metadata["paper_destination_nodes"] = [0, 2, 4]
+        task.routing_metadata["paper_destination_node_id"] = None
+        task.routing_metadata["paper_d_nk_2"] = [0, 0, 0]
+        queue.add_task(task, current_time=0)
+        queue.resolve_dm2_destination = lambda task: 2
+        transmitted_task, _ = queue.step()
+        self.assertIsNotNone(transmitted_task)
+        self.assertEqual(transmitted_task.paper_off_final_status, "transmitted")
+        with tempfile.TemporaryDirectory() as tmp:
+            trace_dir = Path(tmp) / "trace"
+            recorder.export(trace_dir)
+            with (trace_dir / "task_lifecycle.csv").open(newline="") as f:
+                rows = list(csv.DictReader(f))
+            row = next(row for row in rows if row["task_id"] == "98")
+            self.assertEqual(row["paper_off_final_status"], "transmitted")
+            self.assertEqual(row["paper_psi_off"], str(transmitted_task.paper_psi_off))
 
     def test_vertical_offloading_rate_is_configurable_in_environment(self):
         env = Environment(

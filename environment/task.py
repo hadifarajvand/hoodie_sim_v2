@@ -77,6 +77,7 @@ class Task:
     paper_off_rate_value: float | None = None
     paper_off_destination_node_id: int | None = None
     paper_off_final_status: str | None = None
+    paper_off_scheduled_history_recorded: bool | None = None
 
     def __init__(
         self,
@@ -173,6 +174,7 @@ class Task:
         self.paper_off_rate_value = None
         self.paper_off_destination_node_id = None
         self.paper_off_final_status = None
+        self.paper_off_scheduled_history_recorded = None
 
     def validate(self) -> None:
         if self.empty:
@@ -263,6 +265,7 @@ class Task:
             transmitted_task.paper_off_rate_value = self.paper_off_rate_value
             transmitted_task.paper_off_destination_node_id = self.paper_off_destination_node_id
             transmitted_task.paper_off_final_status = self.paper_off_final_status
+            transmitted_task.paper_off_scheduled_history_recorded = self.paper_off_scheduled_history_recorded
             self.empty = True
             return transmitted_task
         return None
@@ -354,6 +357,7 @@ class Task:
         copied.paper_off_rate_value = self.paper_off_rate_value
         copied.paper_off_destination_node_id = self.paper_off_destination_node_id
         copied.paper_off_final_status = self.paper_off_final_status
+        copied.paper_off_scheduled_history_recorded = self.paper_off_scheduled_history_recorded
         return copied
 
     def get_features(self):
