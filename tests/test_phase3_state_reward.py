@@ -68,7 +68,7 @@ class Phase3StateRewardTests(unittest.TestCase):
             self.assertEqual(completed.first_stage_decision, "offload")
             self.assertEqual(completed.destination_type, "horizontal_edge")
             self.assertTrue(completed.is_valid)
-            self.assertAlmostEqual(completed.reward, -4.0)
+            self.assertAlmostEqual(completed.reward, -3.0)
             self.assertTrue(np.isfinite(completed.state).any())
             self.assertIsNotNone(completed.l_pub_n_prev)
             self.assertIsNotNone(completed.load_history)

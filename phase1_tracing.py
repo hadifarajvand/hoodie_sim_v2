@@ -798,6 +798,11 @@ class TraceRecorder:
         latencies = [r.latency for r in records if r.latency is not None]
         waits = [r.waiting_time for r in records if r.waiting_time is not None]
         service_times = [r.service_time for r in records if r.service_time is not None]
+        reward_events = [event for event in self.delayed_reward_event_traces if event.episode_id == episode_id]
+        finalized_reward_events = [event for event in reward_events if event.final_status in {"completed", "dropped"}]
+        if finalized_reward_events:
+            total_reward = float(sum(event.reward for event in finalized_reward_events))
+            mean_reward = float(total_reward / len(finalized_reward_events))
         avg_queue_length = None
         if episode_id in self._queue_length_history and self._queue_length_history[episode_id]:
             avg_queue_length = sum(self._queue_length_history[episode_id]) / len(self._queue_length_history[episode_id])

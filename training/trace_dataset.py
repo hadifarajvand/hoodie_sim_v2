@@ -182,15 +182,20 @@ def _group_action_rows(rows: list[dict[str, Any]]) -> dict[tuple[Any, Any, Any],
 
 
 def _infer_reward(task_row: dict[str, Any]) -> float:
+    from reward_contract import compute_delayed_reward
+
     status = str(task_row.get("final_status") or "pending")
     arrival_time = _safe_int(task_row.get("arrival_time"))
     completion_time = _safe_int(task_row.get("completion_time"))
-    if status == "completed" and arrival_time is not None and completion_time is not None:
-        delay = max(0, completion_time - arrival_time + 1)
-        return float(-delay)
-    if status == "dropped":
-        return -40.0
-    return 0.0
+    drop_penalty = _safe_float(task_row.get("drop_penalty")) or 40.0
+    return float(
+        compute_delayed_reward(
+            final_status=status,
+            arrival_time=arrival_time,
+            completion_time=completion_time,
+            drop_penalty=drop_penalty,
+        ).reward
+    )
 
 
 def _extract_node_count(queue_rows: list[dict[str, Any]]) -> int | None:
@@ -413,6 +418,7 @@ def _parse_paper_state_row(row: dict[str, Any]) -> dict[str, Any]:
 def _build_transition_from_paper_state_rows(
     paper_rows: list[dict[str, Any]],
     action_rows: list[dict[str, Any]],
+    delayed_reward_by_task_id: dict[int, dict[str, Any]] | None = None,
 ) -> tuple[list[Transition], dict[str, Any]]:
     parsed = [_parse_paper_state_row(row) for row in paper_rows]
     parsed.sort(key=lambda row: (row["episode_id"] if row["episode_id"] is not None else -1, row["agent_id"] if row["agent_id"] is not None else -1, row["time"] if row["time"] is not None else -1))
@@ -449,6 +455,9 @@ def _build_transition_from_paper_state_rows(
                 reward = float(action_row["reward_received"])
             if action_row.get("selected_action") not in (None, "", "None"):
                 selected_action = int(float(action_row["selected_action"]))
+        delayed_reward_row = None if delayed_reward_by_task_id is None else delayed_reward_by_task_id.get(_safe_int(row.get("task_id")) or -1)
+        if delayed_reward_row is not None:
+            reward = float(delayed_reward_row.get("reward", reward))
         transition = Transition(
             state=state,
             action=selected_action,
@@ -504,6 +513,7 @@ def _build_transition_from_task_row(
     queue_rows_by_episode_time: dict[tuple[Any, Any], list[dict[str, Any]]],
     node_count: int | None,
     load_window: int = 4,
+    delayed_reward_row: dict[str, Any] | None = None,
 ) -> Transition:
     state_rec = _build_paper_state(row, queue_rows_by_episode_time, node_count=node_count, load_window=load_window)
     eta = np.nan if state_rec.eta_n is None else state_rec.eta_n
@@ -521,7 +531,10 @@ def _build_transition_from_task_row(
     state = np.concatenate(state_parts).astype(np.float32)
     next_state = state.copy()
 
-    reward = _infer_reward(row)
+    if delayed_reward_row is not None and delayed_reward_row.get("reward") not in (None, "", "None"):
+        reward = float(delayed_reward_row["reward"])
+    else:
+        reward = _infer_reward(row)
     if action_row is not None and action_row.get("reward_received") not in (None, "", "None"):
         # Keep delayed lifecycle reward as primary source, but surface the runtime
         # reward row when it matches the lifecycle value. This is a traceability aid,
@@ -633,6 +646,11 @@ def _reconstruct_from_task_traces(rows: list[dict[str, Any]]) -> tuple[list[Tran
     task_rows = [row for row in rows if "final_status" in row]
     if not task_rows:
         raise ValueError("trace directory does not contain task traces")
+    delayed_reward_rows = {
+        _safe_int(row.get("task_id")): row
+        for row in rows
+        if "reward" in row and "reward_timing_convention" in row and _safe_int(row.get("task_id")) is not None
+    }
 
     for row in task_rows:
         if row.get("selected_action") in (None, "", "None"):
@@ -660,6 +678,7 @@ def _reconstruct_from_task_traces(rows: list[dict[str, Any]]) -> tuple[list[Tran
             action_row,
             queue_rows_by_episode_time,
             node_count=node_count,
+            delayed_reward_row=delayed_reward_rows.get(_safe_int(row.get("task_id"))),
         )
         transitions.append(transition)
         for key in missing_optional_fields:
@@ -700,6 +719,12 @@ def load_trace_dataset(trace_dir: str | Path) -> tuple[list[Transition], TraceDa
     transitions: list[Transition] = []
     reconstructed = False
     paper_state_rows = [row for row in rows if "state_vector_json" in row and "active_load_vector_json" in row]
+    delayed_reward_rows = [row for row in rows if "reward_timing_convention" in row and "paired_transition_found" in row]
+    delayed_reward_by_task_id = {
+        _safe_int(row.get("task_id")): row
+        for row in delayed_reward_rows
+        if _safe_int(row.get("task_id")) is not None
+    }
     state_source = None
     next_state_source = None
     waiting_time_source = None
@@ -709,9 +734,11 @@ def load_trace_dataset(trace_dir: str | Path) -> tuple[list[Transition], TraceDa
 
     if paper_state_rows:
         action_rows = [row for row in rows if "selected_action" in row and "reward_received" in row]
-        transitions, paper_summary = _build_transition_from_paper_state_rows(paper_state_rows, action_rows)
+        transitions, paper_summary = _build_transition_from_paper_state_rows(paper_state_rows, action_rows, delayed_reward_by_task_id=delayed_reward_by_task_id)
         reconstructed = True
         notes.append("reconstructed transitions from runtime paper_state_trace")
+        if delayed_reward_rows:
+            notes.append("used delayed_reward_event_trace for reward reconstruction")
         approximation_warnings.extend(paper_summary["approximation_warnings"])
         state_source = paper_summary["state_source"]
         next_state_source = paper_summary["next_state_source"]
@@ -733,6 +760,8 @@ def load_trace_dataset(trace_dir: str | Path) -> tuple[list[Transition], TraceDa
             load_history_source = "legacy_queue_length_history"
             predicted_next_load_method = "unavailable"
             paper_lstm_forecast = False
+            if delayed_reward_rows:
+                notes.append("used delayed_reward_event_trace for reward reconstruction")
         elif rows and REQUIRED_FIELDS.issubset(rows[0].keys()):
             for row in rows:
                 transitions.append(_extract_transition(row))
