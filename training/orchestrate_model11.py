@@ -9,6 +9,7 @@ from dataclasses import asdict
 from pathlib import Path
 from typing import Any
 
+from environment.paper_horizon import PAPER_ACTION_SLOTS, PAPER_DRAIN_SLOTS, PAPER_TOTAL_SLOTS
 from .trace_dataset import load_trace_dataset, summary_to_dict
 
 
@@ -44,17 +45,40 @@ def preflight_runtime_trace(trace_dir: str | Path, output_dir: str | Path) -> di
         "queue_trace_present": (trace_dir / "queue_trace.csv").exists(),
         "action_trace_present": (trace_dir / "action_trace.csv").exists(),
         "episode_metrics_present": (trace_dir / "episode_metrics.csv").exists(),
+        "run_horizon_report_present": (trace_dir / "run_horizon_report.json").exists(),
+        "run_horizon_report_path": str(trace_dir / "run_horizon_report.json") if (trace_dir / "run_horizon_report.json").exists() else None,
         "preflight_status": "failed" if missing_required_files else "passed",
         "warnings": [],
         "paper_claims_made": False,
         "simulation_executed": False,
+        "paper_action_slots": None,
+        "paper_drain_slots": None,
+        "paper_total_slots": None,
+        "horizon_contract_passed": None,
     }
     if not report["paper_state_trace_present"]:
         report["warnings"].append("paper_state_trace.csv missing; state_source degraded")
     if not report["delayed_reward_event_trace_present"]:
         report["warnings"].append("delayed_reward_event_trace.csv missing; reward_source degraded")
+    horizon_report_path = trace_dir / "run_horizon_report.json"
+    if horizon_report_path.exists():
+        try:
+            horizon_report = json.loads(horizon_report_path.read_text())
+        except Exception as exc:
+            report["warnings"].append(f"run_horizon_report.json invalid: {exc}")
+            raise ValueError("invalid run_horizon_report.json")
+        report["paper_action_slots"] = horizon_report.get("paper_action_slots", PAPER_ACTION_SLOTS)
+        report["paper_drain_slots"] = horizon_report.get("paper_drain_slots", PAPER_DRAIN_SLOTS)
+        report["paper_total_slots"] = horizon_report.get("paper_total_slots", PAPER_TOTAL_SLOTS)
+        report["horizon_contract_passed"] = horizon_report.get("horizon_contract_passed")
+        if report["horizon_contract_passed"] is False:
+            report["warnings"].append("run_horizon_report.json indicates horizon contract failed")
+    else:
+        report["warnings"].append("run_horizon_report.json missing; paper horizon not validated for this trace")
     output_dir.mkdir(parents=True, exist_ok=True)
     _write_json(output_dir / "preflight_runtime_trace_report.json", report)
+    if report["horizon_contract_passed"] is False:
+        raise ValueError("paper horizon contract failed")
     if missing_required_files:
         raise ValueError(f"missing required trace files: {missing_required_files}")
     return report
@@ -351,6 +375,11 @@ def orchestrate(
         "training_metrics_path": str(training_dir / "training_metrics.json"),
         "phase3_training_report_path": str(training_dir / "phase3_training_report.json"),
         "final_checkpoint_path": str(training_dir / "phase3_model.chkpt"),
+        "run_horizon_report_path": preflight.get("run_horizon_report_path"),
+        "paper_action_slots": preflight.get("paper_action_slots"),
+        "paper_drain_slots": preflight.get("paper_drain_slots"),
+        "paper_total_slots": preflight.get("paper_total_slots"),
+        "horizon_contract_passed": preflight.get("horizon_contract_passed"),
         "lstm_artifacts": {},
         "paper_claims_made": False,
         "simulation_executed": False,

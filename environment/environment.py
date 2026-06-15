@@ -3,6 +3,7 @@ from .cloud import Cloud
 from .task_generator import TaskGenerator
 from .matchmaker import Matchmaker
 from .action_model import TopologyAdapter
+from .paper_horizon import PAPER_TOTAL_SLOTS, slot_phase
 from utils import merge_dicts,dict_to_array,remove_diagonal_and_reshape
 from phase1_tracing import TraceRecorder
 from .task import Task
@@ -207,12 +208,11 @@ class Environment():
             else:
                 self.actions[server_id]['offload_pending'] +=1
     def step(self,actions):
-
-
+        current_slot_phase = slot_phase(self.current_time)
         tasks_arrived = [0 if t is None else 1 for t in self.tasks]
         
         assert len(actions) == self.number_of_servers
-        if self.current_time >=self.episode_time_end:
+        if self.current_time >= min(self.episode_time_end, PAPER_TOTAL_SLOTS):
             done = True
         else:
             done = False
@@ -255,7 +255,10 @@ class Environment():
                     self.actions[server_id]['horisontal'] += 1
                 self.horisontal_transmitted_tasks[target_server_id].append(transmited_task) 
 
-        self.tasks= [t.step() for t in self.task_generators]
+        if current_slot_phase == "action":
+            self.tasks= [t.step() for t in self.task_generators]
+        else:
+            self.tasks = [None for _ in self.task_generators]
         self._refresh_paper_state_history()
 
         observations = self.pack_observation()

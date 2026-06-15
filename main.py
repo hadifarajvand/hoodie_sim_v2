@@ -1,4 +1,5 @@
 from environment import Environment
+from environment.paper_horizon import PAPER_ACTION_SLOTS, PAPER_DRAIN_SLOTS, PAPER_TOTAL_SLOTS, slot_phase
 from decision_makers import (
     Agent,
     AllHorizontal,
@@ -315,11 +316,23 @@ def main():
         local_observations,public_queues =observations
         while not done:
             step_time = env.current_time
+            current_slot_phase = slot_phase(step_time)
+            decision_allowed = current_slot_phase == "action"
             actions = np.zeros(number_of_servers, dtype=int)
             pending_transition_inputs = []
             decision_x_n_t = np.zeros(number_of_servers, dtype=int)
             decision_task_ids = [None for _ in range(number_of_servers)]
             decision_is_real = [False for _ in range(number_of_servers)]
+            if trace_recorder is not None:
+                trace_recorder.note_run_horizon_trace(
+                    episode_id=epoch,
+                    time=step_time,
+                    slot_phase=current_slot_phase,
+                    paper_action_slot=current_slot_phase == "action",
+                    paper_drain_slot=current_slot_phase == "drain",
+                    task_generation_allowed=current_slot_phase == "action",
+                    decision_allowed=decision_allowed,
+                )
             for i in range(number_of_servers):
                 paper_state = env.get_paper_state(i)
                 decision_x_n_t[i] = int(paper_state["x_n_t"])
@@ -344,27 +357,28 @@ def main():
                     approximation_warnings=paper_state["approximation_warnings"],
                     state_vector=paper_state["state_vector"],
                 )
-                current_task = env.tasks[i]
-                if decision_is_real[i] and current_task is not None and not current_task.is_empty():
-                    pending_transition_inputs.append(
-                        {
-                            "task_id": int(current_task.task_id),
-                            "episode_id": epoch,
-                            "source_agent": i,
-                            "arrival_time": int(current_task.arrival_time),
-                            "decision_time": step_time,
-                            "state_at_decision": np.asarray(local_observations[i], dtype=np.float32).copy(),
-                            "lstm_state_at_decision": np.asarray(public_queues[i], dtype=np.float32).copy(),
-                            "created_by_policy": type(decision_makers[i]).__name__,
-                        }
+                if decision_allowed:
+                    current_task = env.tasks[i]
+                    if decision_is_real[i] and current_task is not None and not current_task.is_empty():
+                        pending_transition_inputs.append(
+                            {
+                                "task_id": int(current_task.task_id),
+                                "episode_id": epoch,
+                                "source_agent": i,
+                                "arrival_time": int(current_task.arrival_time),
+                                "decision_time": step_time,
+                                "state_at_decision": np.asarray(local_observations[i], dtype=np.float32).copy(),
+                                "lstm_state_at_decision": np.asarray(public_queues[i], dtype=np.float32).copy(),
+                                "created_by_policy": type(decision_makers[i]).__name__,
+                            }
+                        )
+                    actions[i], _ = _select_action_for_slot(
+                        decision_makers[i],
+                        local_observations[i],
+                        public_queues[i],
+                        decision_x_n_t[i],
+                        placeholder_action=0,
                     )
-                actions[i], _ = _select_action_for_slot(
-                    decision_makers[i],
-                    local_observations[i],
-                    public_queues[i],
-                    decision_x_n_t[i],
-                    placeholder_action=0,
-                )
             observations,rewards,done,info = env.step(actions)
             local_observations_,public_queues_ =observations
             for i in range(number_of_servers):
@@ -372,7 +386,7 @@ def main():
                 target_node = None
                 if action_decision is not None and action_decision.first_stage_decision == "local":
                     target_node = i
-                if _should_record_action_trace(decision_x_n_t[i]):
+                if decision_allowed and _should_record_action_trace(decision_x_n_t[i]):
                     trace_recorder.note_action(
                         episode_id=epoch,
                         time=step_time,
@@ -398,29 +412,30 @@ def main():
                         paper_u_n_t=None if not hasattr(env, "last_paper_queue_arrivals") else int(env.last_paper_queue_arrivals[i]),
                         dm2_pending=None if action_decision is None else bool(action_decision.first_stage_decision != "local"),
                     )
-            for entry in pending_transition_inputs:
-                source_agent = entry["source_agent"]
-                action_decision = env.last_action_decisions[source_agent]
-                target_node = source_agent if action_decision is not None and action_decision.first_stage_decision == "local" else None
-                trace_recorder.note_pending_transition(
-                    task_id=entry["task_id"],
-                    episode_id=entry["episode_id"],
-                    source_agent=source_agent,
-                    arrival_time=entry["arrival_time"],
-                    decision_time=entry["decision_time"],
-                    state_at_decision=entry["state_at_decision"],
-                    lstm_state_at_decision=entry["lstm_state_at_decision"],
-                    action_at_decision=int(actions[source_agent]),
-                    selected_target_node=None if target_node is None else int(target_node),
-                    raw_action_id=None if action_decision is None else int(action_decision.raw_action_id),
-                    first_stage_decision=None if action_decision is None else action_decision.first_stage_decision,
-                    destination_type=None if action_decision is None else action_decision.destination_type,
-                    destination_node_id=None if action_decision is None else action_decision.destination_node_id,
-                    immediate_next_state_after_action=local_observations_[source_agent],
-                    immediate_next_lstm_state_after_action=public_queues_[source_agent],
-                    created_by_policy=entry["created_by_policy"],
-                    replay_pairing_status="pending",
-                )
+            if decision_allowed:
+                for entry in pending_transition_inputs:
+                    source_agent = entry["source_agent"]
+                    action_decision = env.last_action_decisions[source_agent]
+                    target_node = source_agent if action_decision is not None and action_decision.first_stage_decision == "local" else None
+                    trace_recorder.note_pending_transition(
+                        task_id=entry["task_id"],
+                        episode_id=entry["episode_id"],
+                        source_agent=source_agent,
+                        arrival_time=entry["arrival_time"],
+                        decision_time=entry["decision_time"],
+                        state_at_decision=entry["state_at_decision"],
+                        lstm_state_at_decision=entry["lstm_state_at_decision"],
+                        action_at_decision=int(actions[source_agent]),
+                        selected_target_node=None if target_node is None else int(target_node),
+                        raw_action_id=None if action_decision is None else int(action_decision.raw_action_id),
+                        first_stage_decision=None if action_decision is None else action_decision.first_stage_decision,
+                        destination_type=None if action_decision is None else action_decision.destination_type,
+                        destination_node_id=None if action_decision is None else action_decision.destination_node_id,
+                        immediate_next_state_after_action=local_observations_[source_agent],
+                        immediate_next_lstm_state_after_action=public_queues_[source_agent],
+                        created_by_policy=entry["created_by_policy"],
+                        replay_pairing_status="pending",
+                    )
             delayed_reward_events = trace_recorder.resolve_delayed_reward_candidates(epoch)
             process_delayed_reward_events(decision_makers, trace_recorder, delayed_reward_events)
             if not args.validate:

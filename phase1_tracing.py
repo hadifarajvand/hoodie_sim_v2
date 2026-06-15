@@ -84,6 +84,17 @@ class QueueTraceRecord:
 
 
 @dataclass
+class RunHorizonTraceRecord:
+    episode_id: int
+    time: int
+    slot_phase: str
+    paper_action_slot: bool
+    paper_drain_slot: bool
+    task_generation_allowed: bool
+    decision_allowed: bool
+
+
+@dataclass
 class ActionTraceRecord:
     episode_id: int
     time: int
@@ -235,6 +246,7 @@ class TraceRecorder:
         self.mleo_candidate_latency_traces: list[MleoCandidateLatencyRecord] = []
         self.paper_state_traces: list[PaperStateTraceRecord] = []
         self.episode_metrics: list[EpisodeMetricRecord] = []
+        self.run_horizon_traces: list[RunHorizonTraceRecord] = []
         self.pending_transitions: dict[int, PendingTransitionTraceRecord] = {}
         self._resolved_delayed_reward_task_ids: set[int] = set()
         self._queue_length_history: dict[int, list[float]] = defaultdict(list)
@@ -806,6 +818,28 @@ class TraceRecorder:
             )
         self._queue_length_history[episode_id].append(float(queue_length))
 
+    def note_run_horizon_trace(
+        self,
+        episode_id: int,
+        time: int,
+        slot_phase: str,
+        paper_action_slot: bool,
+        paper_drain_slot: bool,
+        task_generation_allowed: bool,
+        decision_allowed: bool,
+    ) -> None:
+        self.run_horizon_traces.append(
+            RunHorizonTraceRecord(
+                episode_id=int(episode_id),
+                time=int(time),
+                slot_phase=slot_phase,
+                paper_action_slot=bool(paper_action_slot),
+                paper_drain_slot=bool(paper_drain_slot),
+                task_generation_allowed=bool(task_generation_allowed),
+                decision_allowed=bool(decision_allowed),
+            )
+        )
+
     def finalize_episode(self, episode_id: int, total_reward: float, mean_reward: float) -> EpisodeMetricRecord:
         records = [r for r in self.task_records.values() if r.episode_id == episode_id]
         total_tasks = len(records)
@@ -849,6 +883,7 @@ class TraceRecorder:
         self._write_csv(output_dir / "action_trace.csv", [asdict(r) for r in self.action_traces])
         self._write_csv(output_dir / "pending_transition_trace.csv", [asdict(r) for r in self.pending_transition_traces])
         self._write_csv(output_dir / "delayed_reward_event_trace.csv", [asdict(r) for r in self.delayed_reward_event_traces])
+        self._write_csv(output_dir / "run_horizon_trace.csv", [asdict(r) for r in self.run_horizon_traces])
         if self.trace_level != "summary":
             self._write_csv(output_dir / "mleo_candidate_latency_trace.csv", [asdict(r) for r in self.mleo_candidate_latency_traces])
             self._write_csv(output_dir / "paper_state_trace.csv", [asdict(r) for r in self.paper_state_traces])
