@@ -196,11 +196,11 @@ class Environment():
             
         return local_observations,active_queues
     
-    def add_action_info(self,action,server_id,task):
+    def add_action_info(self,action,server_id,task, action_decision=None):
         if task:
-            if action ==server_id:
+            if action_decision is not None and action_decision.first_stage_decision == "local":
                 self.actions[server_id]['local'] +=1
-            elif action == self.number_of_servers:
+            elif action_decision is not None and action_decision.cloud_target:
                 self.actions[server_id]['cloud'] +=1
             else:
                 self.actions[server_id]['horisontal'] +=1
@@ -236,12 +236,12 @@ class Environment():
         for server_id in range(self.number_of_servers):
             action_decision = self.matchmakers[server_id].decode_action(server_id, actions[server_id], strict=True)
             self.last_action_decisions[server_id] = action_decision
-            action = action_decision.legacy_target_node_id
-            self.add_action_info(action,server_id,self.tasks[server_id])
+            action = action_decision.raw_action_id
+            self.add_action_info(action,server_id,self.tasks[server_id], action_decision=action_decision)
             if self.tasks[server_id] is not None and action_decision.first_stage_decision == "local":
                 self.last_paper_private_arrivals[server_id] += 1
                 self.last_paper_queue_arrivals[server_id] += 1
-            transmited_task, server_reward = self.servers[server_id].step(action,self.tasks[server_id],current_time=self.current_time)
+            transmited_task, server_reward = self.servers[server_id].step(action_decision,self.tasks[server_id],current_time=self.current_time)
             rewards = merge_dicts(rewards,server_reward)
             if transmited_task:
                 origin_server_id = transmited_task.get_origin_server_id()

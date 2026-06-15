@@ -96,6 +96,12 @@ class TwoStageActionModel:
             raise ValueError(f"source_node_id must be within [0, {self.topology.number_of_edge_nodes - 1}], got {source}")
         return tuple([node for node in range(self.topology.number_of_edge_nodes) if node != source] + [self.topology.cloud_node_id])
 
+    def dm2_destination_nodes(self, source_node_id: int) -> tuple[int, ...]:
+        source = _as_int(source_node_id, "source_node_id")
+        if source < 0 or source >= self.topology.number_of_edge_nodes:
+            raise ValueError(f"source_node_id must be within [0, {self.topology.number_of_edge_nodes - 1}], got {source}")
+        return tuple(self.topology.horizontal_neighbors(source) + [self.topology.cloud_node_id])
+
     def _paper_destination_vector(self, source_node_id: int, destination_node_id: int | None) -> tuple[int, ...]:
         nodes = self.paper_destination_nodes(source_node_id)
         vector = [0] * len(nodes)
@@ -115,7 +121,10 @@ class TwoStageActionModel:
             if paper_sum != 0:
                 raise ValueError("local/private actions must map to an all-zero paper destination vector")
         elif action.d_n_1 == 0:
-            if paper_sum != 1:
+            if action.requires_separate_dm2_at_offloading_queue_exit:
+                if paper_sum != 0:
+                    raise ValueError("pending DM2 offload actions must keep an all-zero paper destination vector until queue exit")
+            elif paper_sum != 1:
                 raise ValueError("offload actions must map to exactly one active paper destination")
         else:
             raise ValueError(f"invalid d_n_1 polarity {action.d_n_1!r}")
@@ -155,18 +164,18 @@ class TwoStageActionModel:
                 raw_action_id=index,
                 source_node_id=source,
                 first_stage_decision="offload",
-                destination_node_id=destination,
-                destination_type="horizontal_edge",
+                destination_node_id=None,
+                destination_type="offload_pending",
                 is_valid=True,
                 invalid_reason=None,
                 adjacency_allowed=True,
                 cloud_target=False,
                 d_n_1=0,
-                d_nk_2={int(destination): 1},
+                d_nk_2={},
                 paper_destination_nodes=paper_destination_nodes,
-                paper_d_nk_2=self._paper_destination_vector(source, destination),
+                paper_d_nk_2=self._paper_destination_vector(source, None),
                 dm2_timing="offloading_queue_exit",
-                requires_separate_dm2_at_offloading_queue_exit=False,
+                requires_separate_dm2_at_offloading_queue_exit=True,
             )
             self.validate_paper_action_contract(action)
             actions.append(action)
@@ -175,22 +184,39 @@ class TwoStageActionModel:
             raw_action_id=len(actions),
             source_node_id=source,
             first_stage_decision="offload",
-            destination_node_id=self.topology.cloud_node_id,
-            destination_type="vertical_cloud",
+            destination_node_id=None,
+            destination_type="offload_pending",
             is_valid=True,
             invalid_reason=None,
             adjacency_allowed=True,
-            cloud_target=True,
+            cloud_target=False,
             d_n_1=0,
-            d_nk_2={int(self.topology.cloud_node_id): 1},
+            d_nk_2={},
             paper_destination_nodes=paper_destination_nodes,
-            paper_d_nk_2=self._paper_destination_vector(source, self.topology.cloud_node_id),
+            paper_d_nk_2=self._paper_destination_vector(source, None),
             dm2_timing="offloading_queue_exit",
-            requires_separate_dm2_at_offloading_queue_exit=False,
+            requires_separate_dm2_at_offloading_queue_exit=True,
         )
         self.validate_paper_action_contract(cloud_action)
         actions.append(cloud_action)
         return actions
+
+    def resolve_dm2_destination(self, source_node_id: int, raw_action_id: int, *, strict: bool = True) -> int:
+        source = _as_int(source_node_id, "source_node_id")
+        raw = _as_int(raw_action_id, "raw_action_id")
+        if raw <= 0:
+            if strict:
+                raise ValueError("DM2 resolution requires a positive offload raw action id")
+            return source
+        destinations = self.dm2_destination_nodes(source)
+        candidate_index = raw - 1
+        if candidate_index < 0 or candidate_index >= len(destinations):
+            if strict:
+                raise ValueError(
+                    f"raw_action_id {raw} is outside the valid DM2 destination space [1, {len(destinations)}] for source_node_id {source}"
+                )
+            return destinations[0]
+        return int(destinations[candidate_index])
 
     def action_count(self, source_node_id: int) -> int:
         return len(self.build_action_space(source_node_id))
@@ -258,30 +284,28 @@ class TwoStageActionModel:
                 )
             destination_node_id = destination_node_ids[0]
 
+        action_space = self.build_action_space(source)
         if destination_node_id is None:
-            return self._invalid_action(
+            return action_space[1] if len(action_space) > 1 else self._invalid_action(
                 source,
                 0,
-                "offload actions must specify exactly one destination",
+                "offload actions require at least one DM2 destination candidate",
                 strict,
             )
 
         destination = _as_int(destination_node_id, "destination_node_id")
         if destination == source:
             return self._invalid_action(source, 0, "self-offload is not allowed", strict)
-        if destination == self.topology.cloud_node_id:
-            return self.build_action_space(source)[-1]
-        if self.topology.is_horizontal_allowed(source, destination):
-            action_space = self.build_action_space(source)
-            for action in action_space[1:-1]:
-                if action.destination_node_id == destination:
-                    return action
-        return self._invalid_action(
-            source,
-            0,
-            f"destination_node_id {destination} is not a legal neighbor for source_node_id {source}",
-            strict,
-        )
+        dm2_destinations = self.dm2_destination_nodes(source)
+        if destination not in dm2_destinations:
+            return self._invalid_action(
+                source,
+                0,
+                f"destination_node_id {destination} is not a legal DM2 destination for source_node_id {source}",
+                strict,
+            )
+        destination_index = dm2_destinations.index(destination) + 1
+        return action_space[destination_index]
 
     def _invalid_action(self, source_node_id: int, raw_action_id: object, reason: str, strict: bool) -> TwoStageAction:
         action = TwoStageAction(

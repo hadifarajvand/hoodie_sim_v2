@@ -369,7 +369,9 @@ def main():
             local_observations_,public_queues_ =observations
             for i in range(number_of_servers):
                 action_decision = env.last_action_decisions[i]
-                target_node = action_decision.legacy_target_node_id if action_decision is not None else env.matchmakers[i].match_action(i, actions[i])
+                target_node = None
+                if action_decision is not None and action_decision.first_stage_decision == "local":
+                    target_node = i
                 if _should_record_action_trace(decision_x_n_t[i]):
                     trace_recorder.note_action(
                         episode_id=epoch,
@@ -378,7 +380,7 @@ def main():
                         x_n_t=int(decision_x_n_t[i]),
                         observation_shape=np.shape(local_observations[i]),
                         selected_action=int(actions[i]),
-                        target_node=int(target_node),
+                        target_node=None if target_node is None else int(target_node),
                         reward_received=float(rewards[i]),
                         first_stage_decision=None if action_decision is None else action_decision.first_stage_decision,
                         destination_node_id=None if action_decision is None else action_decision.destination_node_id,
@@ -394,11 +396,12 @@ def main():
                         dm2_timing=None if action_decision is None else action_decision.dm2_timing,
                         requires_separate_dm2_at_offloading_queue_exit=None if action_decision is None else action_decision.requires_separate_dm2_at_offloading_queue_exit,
                         paper_u_n_t=None if not hasattr(env, "last_paper_queue_arrivals") else int(env.last_paper_queue_arrivals[i]),
+                        dm2_pending=None if action_decision is None else bool(action_decision.first_stage_decision != "local"),
                     )
             for entry in pending_transition_inputs:
                 source_agent = entry["source_agent"]
                 action_decision = env.last_action_decisions[source_agent]
-                target_node = action_decision.legacy_target_node_id if action_decision is not None else env.matchmakers[source_agent].match_action(source_agent, actions[source_agent])
+                target_node = source_agent if action_decision is not None and action_decision.first_stage_decision == "local" else None
                 trace_recorder.note_pending_transition(
                     task_id=entry["task_id"],
                     episode_id=entry["episode_id"],
@@ -408,7 +411,7 @@ def main():
                     state_at_decision=entry["state_at_decision"],
                     lstm_state_at_decision=entry["lstm_state_at_decision"],
                     action_at_decision=int(actions[source_agent]),
-                    selected_target_node=int(target_node),
+                    selected_target_node=None if target_node is None else int(target_node),
                     raw_action_id=None if action_decision is None else int(action_decision.raw_action_id),
                     first_stage_decision=None if action_decision is None else action_decision.first_stage_decision,
                     destination_type=None if action_decision is None else action_decision.destination_type,

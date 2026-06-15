@@ -1,5 +1,6 @@
 import numpy as np
 from .queues import ProcessingQueue,OffloadingQueue,PublicQueueManager
+from .action_model import TwoStageAction
 
 
 class Server():
@@ -45,16 +46,22 @@ class Server():
         self.public_queue_manager.add_tasks(offloaded_tasks, current_time=current_time)
 
     def step(self,action=None,local_task=None,current_time=None):
+        action_decision: TwoStageAction | None = action if isinstance(action, TwoStageAction) else None
         if local_task:
             local_task.set_origin_server_id(self.id)
-            local_task.selected_action = action
-            local_task.processing_node = self.id if action == self.id else None
-            if action ==self.id:  
+            local_task.selected_action = action_decision.raw_action_id if action_decision is not None else action
+            local_task.processing_node = self.id if action_decision is None or action_decision.first_stage_decision == "local" else None
+            if action_decision is None or action_decision.first_stage_decision == "local":  
                 self.processing_queue.add_task(local_task, current_time=current_time)
             else:
-                local_task.routing_metadata["paper_destination_node_id"] = int(action)
+                local_task.routing_metadata["dm2_action_id"] = int(action_decision.raw_action_id)
+                local_task.routing_metadata["dm2_destination_nodes"] = sorted(int(node) for node in self.offloading_capacities.keys())
+                local_task.routing_metadata["paper_destination_nodes"] = list(action_decision.paper_destination_nodes)
+                local_task.routing_metadata["paper_d_nk_2"] = [0 for _ in action_decision.paper_d_nk_2]
+                local_task.routing_metadata["paper_destination_node_id"] = None
+                local_task.routing_metadata["dm2_pending"] = True
                 local_task.routing_metadata["dm2_timing"] = "offloading_queue_exit"
-                local_task.routing_metadata["requires_separate_dm2_at_offloading_queue_exit"] = False
+                local_task.routing_metadata["requires_separate_dm2_at_offloading_queue_exit"] = True
                 self.offloading_queue.add_task(local_task, current_time=current_time)
                 
         local_reward = self.processing_queue.step()

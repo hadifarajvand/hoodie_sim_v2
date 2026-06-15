@@ -166,7 +166,17 @@ class OffloadingQueue(TaskQueue):
             return target_server_id
         destination = task.routing_metadata.get("paper_destination_node_id")
         if destination is None:
-            raise ValueError("offloading task is missing a paper destination")
+            dm2_action_id = task.routing_metadata.get("dm2_action_id")
+            dm2_destination_nodes = task.routing_metadata.get("dm2_destination_nodes")
+            if dm2_destination_nodes is None:
+                dm2_destination_nodes = sorted(self.offloading_capacities.keys())
+            if not dm2_destination_nodes:
+                raise ValueError("offloading task is missing a paper destination")
+            if dm2_action_id is None:
+                destination = dm2_destination_nodes[0]
+            else:
+                candidate_index = max(0, int(dm2_action_id) - 1)
+                destination = dm2_destination_nodes[candidate_index % len(dm2_destination_nodes)]
         return int(destination)
 
     def get_waiting_time(self):
@@ -201,6 +211,20 @@ class OffloadingQueue(TaskQueue):
             recorder.note_service_start(self.current_task, episode_id=getattr(recorder, "_episode_id", None), time=self.current_time, node_id=self.node_id if self.node_id is not None else -1, queue_type=self.queue_type)
         self.current_task.routing_metadata["dm2_timing"] = "offloading_queue_exit"
         self.current_task.routing_metadata["requires_separate_dm2_at_offloading_queue_exit"] = False
+        self.current_task.routing_metadata["dm2_pending"] = False
+        self.current_task.routing_metadata["paper_destination_node_id"] = int(target_server_id)
+        paper_destination_nodes = self.current_task.routing_metadata.get("paper_destination_nodes")
+        if isinstance(paper_destination_nodes, list):
+            paper_destination_nodes = tuple(paper_destination_nodes)
+        if paper_destination_nodes:
+            resolved_vector = [0 for _ in paper_destination_nodes]
+            try:
+                resolved_index = list(paper_destination_nodes).index(int(target_server_id))
+            except ValueError:
+                resolved_index = None
+            if resolved_index is not None:
+                resolved_vector[resolved_index] = 1
+                self.current_task.routing_metadata["paper_d_nk_2"] = resolved_vector
         transmited_task = self.current_task.transmit(offloading_capacity)
         if transmited_task is not None:
             self.departures_this_step += 1

@@ -71,6 +71,7 @@ class ActionTraceRecord:
     dm2_timing: str | None = None
     requires_separate_dm2_at_offloading_queue_exit: bool | None = None
     paper_u_n_t: int | None = None
+    dm2_pending: bool | None = None
 
 
 @dataclass
@@ -335,6 +336,7 @@ class TraceRecorder:
         dm2_timing: str | None = None,
         requires_separate_dm2_at_offloading_queue_exit: bool | None = None,
         paper_u_n_t: int | None = None,
+        dm2_pending: bool | None = None,
     ) -> None:
         for record in self.task_records.values():
             if record.episode_id == episode_id and record.source_node == agent_id and record.arrival_time == time:
@@ -361,7 +363,9 @@ class TraceRecorder:
         if dm2_timing is None:
             dm2_timing = "not_applicable" if first_stage_decision == "local" else "offloading_queue_exit"
         if requires_separate_dm2_at_offloading_queue_exit is None:
-            requires_separate_dm2_at_offloading_queue_exit = False
+            requires_separate_dm2_at_offloading_queue_exit = first_stage_decision != "local" and dm2_timing == "offloading_queue_exit"
+        if dm2_pending is None:
+            dm2_pending = first_stage_decision != "local" and dm2_timing == "offloading_queue_exit"
         self.action_traces.append(
             ActionTraceRecord(
                 episode_id=episode_id,
@@ -387,6 +391,7 @@ class TraceRecorder:
                 dm2_timing=dm2_timing,
                 requires_separate_dm2_at_offloading_queue_exit=requires_separate_dm2_at_offloading_queue_exit,
                 paper_u_n_t=paper_u_n_t,
+                dm2_pending=dm2_pending,
             )
         )
 
