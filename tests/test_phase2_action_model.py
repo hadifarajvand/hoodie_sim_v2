@@ -321,19 +321,32 @@ class Phase2ActionModelTests(unittest.TestCase):
 
     def test_paper_w_priv_matches_latest_previous_completion_slot_formula(self):
         queue = ProcessingQueue(1.0)
-        queue.paper_latest_private_completion_slot = 10
+        queue.paper_latest_private_scheduled_completion_slot = 10
         task = Task(size=1.0, arrival_time=5, timeout_delay=10, computational_density=0.297, drop_penalty=40, origin_server_id=1, task_id=31)
         queue.add_task(task, current_time=5)
         self.assertEqual(task.routing_metadata["paper_w_priv"], 6)
+        self.assertEqual(task.routing_metadata["paper_psi_priv"], min(5 + 6 + 1 - 1, task.deadline_slot))
+
+    def test_two_local_tasks_use_scheduled_private_completion_history(self):
+        queue = ProcessingQueue(1.0)
+        first = Task(size=1.0, arrival_time=0, timeout_delay=20, computational_density=0.297, drop_penalty=40, origin_server_id=1, task_id=32)
+        second = Task(size=1.0, arrival_time=1, timeout_delay=20, computational_density=0.297, drop_penalty=40, origin_server_id=1, task_id=33)
+        queue.add_task(first, current_time=0)
+        first_scheduled = first.routing_metadata["paper_psi_priv"]
+        queue.add_task(second, current_time=1)
+        self.assertEqual(second.routing_metadata["paper_w_priv"], max(0, first_scheduled - 1 + 1))
+        self.assertGreaterEqual(queue.paper_latest_private_scheduled_completion_slot, second.routing_metadata["paper_psi_priv"])
 
     def test_successful_private_task_records_paper_psi_priv_completion_slot(self):
         queue = ProcessingQueue(1.0)
-        task = Task(size=1.0, arrival_time=0, timeout_delay=10, computational_density=0.297, drop_penalty=40, origin_server_id=1, task_id=41)
+        task = Task(size=1.0, arrival_time=0, timeout_delay=20, computational_density=0.297, drop_penalty=40, origin_server_id=1, task_id=41)
         queue.add_task(task, current_time=0)
+        scheduled = queue.current_task.routing_metadata["paper_psi_priv"]
         queue.step()
         self.assertEqual(queue.paper_latest_private_completion_slot, 1)
-        self.assertEqual(queue.current_task.routing_metadata["paper_psi_priv"], 1)
+        self.assertEqual(queue.current_task.routing_metadata["paper_psi_priv"], scheduled)
         self.assertEqual(queue.current_task.routing_metadata["paper_private_final_status"], "completed")
+        self.assertEqual(queue.current_task.routing_metadata["paper_private_queue_enter_time"], 0)
 
     def test_timed_out_private_task_records_deadline_slot_as_paper_psi_priv(self):
         queue = ProcessingQueue(1.0)
@@ -347,6 +360,32 @@ class Phase2ActionModelTests(unittest.TestCase):
     def test_no_private_task_at_slot_has_no_private_completion_slot(self):
         queue = ProcessingQueue(1.0)
         self.assertEqual(queue.paper_latest_private_completion_slot, -1)
+        self.assertEqual(queue.paper_latest_private_scheduled_completion_slot, -1)
+
+    def test_private_trace_contains_paper_private_fields(self):
+        recorder = TraceRecorder(trace_level="full")
+        recorder.start_episode(0)
+        queue = ProcessingQueue(1.0)
+        Task.trace_recorder = recorder
+        task = Task(size=1.0, arrival_time=0, timeout_delay=3, computational_density=0.297, drop_penalty=40, origin_server_id=1, task_id=61)
+        queue.add_task(task, current_time=0)
+        queue.step()
+        with tempfile.TemporaryDirectory() as tmp:
+            trace_dir = Path(tmp) / "trace"
+            recorder.export(trace_dir)
+            with (trace_dir / "task_lifecycle.csv").open(newline="") as f:
+                rows = list(csv.DictReader(f))
+            self.assertTrue(rows)
+            row = rows[0]
+            for field in [
+                "paper_w_priv",
+                "paper_psi_priv",
+                "paper_private_queue_enter_time",
+                "paper_private_service_time",
+                "paper_private_deadline_slot",
+                "paper_private_final_status",
+            ]:
+                self.assertIn(field, row)
 
     def test_dm2_destination_is_resolved_at_offloading_queue_exit(self):
         server = Server(

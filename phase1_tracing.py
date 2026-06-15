@@ -30,6 +30,12 @@ class TaskLifecycleRecord:
     final_status: str = "pending"
     drop_reason: str | None = None
     drop_penalty: float | None = None
+    paper_w_priv: int | None = None
+    paper_psi_priv: int | None = None
+    paper_private_queue_enter_time: int | None = None
+    paper_private_service_time: int | None = None
+    paper_private_deadline_slot: int | None = None
+    paper_private_final_status: str | None = None
 
 
 @dataclass
@@ -231,6 +237,12 @@ class TraceRecorder:
             record.queue_enter_time = time
         if record.processing_node is None:
             record.processing_node = node_id
+        record.paper_w_priv = getattr(task, "paper_w_priv", record.paper_w_priv)
+        record.paper_psi_priv = getattr(task, "paper_psi_priv", record.paper_psi_priv)
+        record.paper_private_queue_enter_time = getattr(task, "paper_private_queue_enter_time", record.paper_private_queue_enter_time)
+        record.paper_private_service_time = getattr(task, "paper_private_service_time", record.paper_private_service_time)
+        record.paper_private_deadline_slot = getattr(task, "paper_private_deadline_slot", record.paper_private_deadline_slot)
+        record.paper_private_final_status = getattr(task, "paper_private_final_status", record.paper_private_final_status)
         task.queue_enter_time = record.queue_enter_time
 
     def note_service_start(self, task: Any, episode_id: int, time: int, node_id: int, queue_type: str) -> None:
@@ -254,6 +266,9 @@ class TraceRecorder:
             record.latency = max(0, time - record.arrival_time)
             if record.service_start_time is not None:
                 record.waiting_time = max(0, record.service_start_time - record.arrival_time)
+        record.paper_psi_priv = getattr(task, "paper_psi_priv", record.paper_psi_priv)
+        record.paper_private_service_time = getattr(task, "paper_private_service_time", record.paper_private_service_time)
+        record.paper_private_final_status = getattr(task, "paper_private_final_status", "completed")
         task.service_end_time = time
         task.completion_time = time
         task.final_status = "completed"
@@ -266,6 +281,9 @@ class TraceRecorder:
         record.drop_reason = reason
         if record.arrival_time is not None:
             record.latency = max(0, time - record.arrival_time)
+        record.paper_psi_priv = getattr(task, "paper_psi_priv", record.paper_psi_priv)
+        record.paper_private_service_time = getattr(task, "paper_private_service_time", record.paper_private_service_time)
+        record.paper_private_final_status = getattr(task, "paper_private_final_status", "dropped")
         task.drop_time = time
         task.final_status = "dropped"
         task.drop_reason = reason

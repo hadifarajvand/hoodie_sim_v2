@@ -62,6 +62,12 @@ class Task:
     final_status: str = "pending"
     drop_reason: str | None = None
     empty: bool = False
+    paper_w_priv: int | None = None
+    paper_psi_priv: int | None = None
+    paper_private_queue_enter_time: int | None = None
+    paper_private_service_time: int | None = None
+    paper_private_deadline_slot: int | None = None
+    paper_private_final_status: str | None = None
 
     def __init__(
         self,
@@ -143,6 +149,12 @@ class Task:
         self.final_status = "pending"
         self.drop_reason = None
         self.empty = False
+        self.paper_w_priv = None
+        self.paper_psi_priv = None
+        self.paper_private_queue_enter_time = None
+        self.paper_private_service_time = None
+        self.paper_private_deadline_slot = None
+        self.paper_private_final_status = None
 
     def validate(self) -> None:
         if self.empty:
@@ -300,6 +312,12 @@ class Task:
         copied.final_status = self.final_status
         copied.drop_reason = self.drop_reason
         copied.empty = self.empty
+        copied.paper_w_priv = self.paper_w_priv
+        copied.paper_psi_priv = self.paper_psi_priv
+        copied.paper_private_queue_enter_time = self.paper_private_queue_enter_time
+        copied.paper_private_service_time = self.paper_private_service_time
+        copied.paper_private_deadline_slot = self.paper_private_deadline_slot
+        copied.paper_private_final_status = self.paper_private_final_status
         return copied
 
     def get_features(self):
