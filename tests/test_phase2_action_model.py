@@ -11,7 +11,7 @@ from environment.environment import Environment
 from environment.action_model import TopologyAdapter, TwoStageActionModel
 from environment.matchmaker import Matchmaker
 from environment.server import Server
-from environment.queues import ProcessingQueue
+from environment.queues import OffloadingQueue, ProcessingQueue
 from environment.task import Task
 from phase1_tracing import TraceRecorder
 
@@ -67,10 +67,11 @@ class Phase2ActionModelTests(unittest.TestCase):
             cloud_node_id=4,
             cloud_offloading_capacity=1,
         )
-        task = Task(size=1.0, arrival_time=0, timeout_delay=10, computational_density=0.297, drop_penalty=40, origin_server_id=1, task_id=12)
+        task = Task(size=2.0, arrival_time=0, timeout_delay=10, computational_density=0.297, drop_penalty=40, origin_server_id=1, task_id=12)
         action = self.model.validate_explicit_choice(1, "offload")
         server.step(action, task, current_time=0)
         self.assertTrue(server.processing_queue.current_task.is_empty())
+        self.assertFalse(server.offloading_queue.current_task.is_empty())
 
     def test_valid_horizontal_action(self):
         action = self.model.validate_explicit_choice(1, "offload", destination_node_id=2)
@@ -420,6 +421,8 @@ class Phase2ActionModelTests(unittest.TestCase):
 
         server.offloading_queue.add_task(task, current_time=0)
         self.assertIsNone(server.offloading_queue.current_task.get_target_server_id())
+        self.assertEqual(server.offloading_queue.current_task.paper_w_off, 0)
+        self.assertEqual(server.offloading_queue.current_task.paper_off_final_status, "scheduled")
         transmitted_task, _ = server.offloading_queue.step()
         self.assertIsNotNone(transmitted_task)
         self.assertEqual(transmitted_task.get_target_server_id(), 0)
@@ -427,6 +430,10 @@ class Phase2ActionModelTests(unittest.TestCase):
         self.assertEqual(transmitted_task.routing_metadata["paper_d_nk_2"], [1, 0, 0])
         self.assertEqual(transmitted_task.routing_metadata["dm2_timing"], "offloading_queue_exit")
         self.assertFalse(transmitted_task.routing_metadata["dm2_pending"])
+        self.assertEqual(transmitted_task.routing_metadata["paper_off_rate_type"], "horizontal")
+        self.assertEqual(transmitted_task.routing_metadata["paper_off_rate_value"], 1.0)
+        self.assertEqual(transmitted_task.routing_metadata["paper_off_final_status"], "transmitted")
+        self.assertEqual(transmitted_task.paper_psi_off, transmitted_task.routing_metadata["paper_psi_off"])
 
     def test_cloud_dm2_destination_counts_as_cloud_not_horizontal(self):
         env = Environment(
@@ -460,6 +467,134 @@ class Phase2ActionModelTests(unittest.TestCase):
         env.step(np.asarray([1, 0], dtype=int))
         self.assertGreaterEqual(env.actions[0]["cloud"], 1)
         self.assertEqual(env.actions[0]["horisontal"], 0)
+
+    def test_offloading_queue_enqueue_keeps_destination_pending_and_records_wait(self):
+        queue = OffloadingQueue({0: 1.0, 2: 2.0, 4: 10.0})
+        task = Task(
+            size=2.0,
+            arrival_time=0,
+            timeout_delay=10,
+            priotiry=1,
+            computational_density=0.297,
+            drop_penalty=40,
+            origin_server_id=1,
+            task_id=88,
+        )
+        task.routing_metadata["dm2_pending"] = True
+        task.routing_metadata["paper_destination_node_id"] = None
+        task.routing_metadata["paper_d_nk_2"] = [0, 0, 0]
+        queue.add_task(task, current_time=3)
+        self.assertIsNone(queue.current_task.get_target_server_id())
+        self.assertIsNone(queue.current_task.routing_metadata["paper_destination_node_id"])
+        self.assertTrue(queue.current_task.routing_metadata["dm2_pending"])
+        self.assertEqual(queue.current_task.routing_metadata["paper_w_off"], 0)
+        self.assertEqual(queue.current_task.routing_metadata["paper_off_rate_type"], None)
+        self.assertEqual(queue.current_task.routing_metadata["paper_off_final_status"], "scheduled")
+
+    def test_offloading_queue_step_records_horizontal_and_vertical_rate_metadata(self):
+        horizontal_queue = OffloadingQueue({0: 1.0, 2: 2.0, 4: 10.0})
+        horizontal_task = Task(
+            size=1.0,
+            arrival_time=0,
+            timeout_delay=10,
+            priotiry=1,
+            computational_density=0.297,
+            drop_penalty=40,
+            origin_server_id=1,
+            task_id=89,
+        )
+        horizontal_task.routing_metadata["dm2_pending"] = True
+        horizontal_task.routing_metadata["paper_destination_nodes"] = [0, 2, 4]
+        horizontal_task.routing_metadata["paper_destination_node_id"] = None
+        horizontal_task.routing_metadata["paper_d_nk_2"] = [0, 0, 0]
+        horizontal_queue.add_task(horizontal_task, current_time=0)
+        horizontal_queue.resolve_dm2_destination = lambda task: 2
+        transmitted_task, _ = horizontal_queue.step()
+        self.assertEqual(transmitted_task.routing_metadata["paper_off_rate_type"], "horizontal")
+        self.assertEqual(transmitted_task.routing_metadata["paper_off_rate_value"], 2.0)
+        self.assertEqual(transmitted_task.routing_metadata["paper_off_destination_node_id"], 2)
+
+        vertical_queue = OffloadingQueue({0: 1.0, 2: 2.0, 4: 10.0})
+        vertical_task = Task(
+            size=1.0,
+            arrival_time=0,
+            timeout_delay=10,
+            priotiry=1,
+            computational_density=0.297,
+            drop_penalty=40,
+            origin_server_id=1,
+            task_id=90,
+        )
+        vertical_task.routing_metadata["dm2_pending"] = True
+        vertical_task.routing_metadata["paper_destination_nodes"] = [0, 2, 4]
+        vertical_task.routing_metadata["paper_destination_node_id"] = None
+        vertical_task.routing_metadata["paper_d_nk_2"] = [0, 0, 0]
+        vertical_queue.add_task(vertical_task, current_time=0)
+        vertical_queue.resolve_dm2_destination = lambda task: 4
+        transmitted_task, _ = vertical_queue.step()
+        self.assertEqual(transmitted_task.routing_metadata["paper_off_rate_type"], "vertical")
+        self.assertEqual(transmitted_task.routing_metadata["paper_off_rate_value"], 10.0)
+        self.assertEqual(transmitted_task.routing_metadata["paper_off_destination_node_id"], 4)
+        self.assertNotEqual(transmitted_task.routing_metadata["paper_off_rate_value"], 1.0)
+
+    def test_timed_out_offloading_task_records_deadline_slot_as_paper_psi_off(self):
+        queue = OffloadingQueue({0: 1.0, 2: 2.0, 4: 10.0})
+        task = Task(
+            size=1.0,
+            arrival_time=0,
+            timeout_delay=1,
+            priotiry=1,
+            computational_density=0.297,
+            drop_penalty=40,
+            origin_server_id=1,
+            task_id=91,
+        )
+        task.routing_metadata["dm2_pending"] = True
+        queue.add_task(task, current_time=0)
+        queue.current_time = 1
+        queue.step()
+        self.assertEqual(queue.current_task.routing_metadata["paper_psi_off"], queue.current_task.deadline_slot)
+        self.assertEqual(queue.current_task.routing_metadata["paper_off_final_status"], "dropped")
+
+    def test_offloading_trace_contains_paper_off_fields(self):
+        recorder = TraceRecorder(trace_level="full")
+        recorder.start_episode(0)
+        queue = OffloadingQueue({0: 1.0, 2: 2.0, 4: 10.0})
+        Task.trace_recorder = recorder
+        task = Task(
+            size=1.0,
+            arrival_time=0,
+            timeout_delay=10,
+            priotiry=1,
+            computational_density=0.297,
+            drop_penalty=40,
+            origin_server_id=1,
+            task_id=92,
+        )
+        task.routing_metadata["dm2_pending"] = True
+        task.routing_metadata["paper_destination_nodes"] = [0, 2, 4]
+        queue.add_task(task, current_time=0)
+        queue.resolve_dm2_destination = lambda task: 2
+        queue.step()
+        with tempfile.TemporaryDirectory() as tmp:
+            trace_dir = Path(tmp) / "trace"
+            recorder.export(trace_dir)
+            with (trace_dir / "task_lifecycle.csv").open(newline="") as f:
+                rows = list(csv.DictReader(f))
+            self.assertTrue(rows)
+            row = rows[0]
+            for field in [
+                "paper_w_off",
+                "paper_psi_off",
+                "paper_off_queue_enter_time",
+                "paper_off_transmission_time",
+                "paper_off_deadline_slot",
+                "paper_off_rate_type",
+                "paper_off_rate_value",
+                "paper_off_destination_node_id",
+                "paper_off_final_status",
+            ]:
+                self.assertIn(field, row)
 
     def test_offloading_queue_add_task_does_not_resolve_dm2_destination(self):
         server = Server(

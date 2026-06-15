@@ -68,6 +68,15 @@ class Task:
     paper_private_service_time: int | None = None
     paper_private_deadline_slot: int | None = None
     paper_private_final_status: str | None = None
+    paper_w_off: int | None = None
+    paper_psi_off: int | None = None
+    paper_off_queue_enter_time: int | None = None
+    paper_off_transmission_time: int | None = None
+    paper_off_deadline_slot: int | None = None
+    paper_off_rate_type: str | None = None
+    paper_off_rate_value: float | None = None
+    paper_off_destination_node_id: int | None = None
+    paper_off_final_status: str | None = None
 
     def __init__(
         self,
@@ -155,6 +164,15 @@ class Task:
         self.paper_private_service_time = None
         self.paper_private_deadline_slot = None
         self.paper_private_final_status = None
+        self.paper_w_off = None
+        self.paper_psi_off = None
+        self.paper_off_queue_enter_time = None
+        self.paper_off_transmission_time = None
+        self.paper_off_deadline_slot = None
+        self.paper_off_rate_type = None
+        self.paper_off_rate_value = None
+        self.paper_off_destination_node_id = None
+        self.paper_off_final_status = None
 
     def validate(self) -> None:
         if self.empty:
@@ -236,6 +254,15 @@ class Task:
             transmitted_task.queue_enter_time = self.queue_enter_time
             transmitted_task.service_start_time = self.service_start_time
             transmitted_task.processing_node = self.processing_node
+            transmitted_task.paper_w_off = self.paper_w_off
+            transmitted_task.paper_psi_off = self.paper_psi_off
+            transmitted_task.paper_off_queue_enter_time = self.paper_off_queue_enter_time
+            transmitted_task.paper_off_transmission_time = self.paper_off_transmission_time
+            transmitted_task.paper_off_deadline_slot = self.paper_off_deadline_slot
+            transmitted_task.paper_off_rate_type = self.paper_off_rate_type
+            transmitted_task.paper_off_rate_value = self.paper_off_rate_value
+            transmitted_task.paper_off_destination_node_id = self.paper_off_destination_node_id
+            transmitted_task.paper_off_final_status = self.paper_off_final_status
             self.empty = True
             return transmitted_task
         return None
@@ -318,6 +345,15 @@ class Task:
         copied.paper_private_service_time = self.paper_private_service_time
         copied.paper_private_deadline_slot = self.paper_private_deadline_slot
         copied.paper_private_final_status = self.paper_private_final_status
+        copied.paper_w_off = self.paper_w_off
+        copied.paper_psi_off = self.paper_psi_off
+        copied.paper_off_queue_enter_time = self.paper_off_queue_enter_time
+        copied.paper_off_transmission_time = self.paper_off_transmission_time
+        copied.paper_off_deadline_slot = self.paper_off_deadline_slot
+        copied.paper_off_rate_type = self.paper_off_rate_type
+        copied.paper_off_rate_value = self.paper_off_rate_value
+        copied.paper_off_destination_node_id = self.paper_off_destination_node_id
+        copied.paper_off_final_status = self.paper_off_final_status
         return copied
 
     def get_features(self):

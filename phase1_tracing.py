@@ -36,6 +36,15 @@ class TaskLifecycleRecord:
     paper_private_service_time: int | None = None
     paper_private_deadline_slot: int | None = None
     paper_private_final_status: str | None = None
+    paper_w_off: int | None = None
+    paper_psi_off: int | None = None
+    paper_off_queue_enter_time: int | None = None
+    paper_off_transmission_time: int | None = None
+    paper_off_deadline_slot: int | None = None
+    paper_off_rate_type: str | None = None
+    paper_off_rate_value: float | None = None
+    paper_off_destination_node_id: int | None = None
+    paper_off_final_status: str | None = None
 
 
 @dataclass
@@ -243,6 +252,15 @@ class TraceRecorder:
         record.paper_private_service_time = getattr(task, "paper_private_service_time", record.paper_private_service_time)
         record.paper_private_deadline_slot = getattr(task, "paper_private_deadline_slot", record.paper_private_deadline_slot)
         record.paper_private_final_status = getattr(task, "paper_private_final_status", record.paper_private_final_status)
+        record.paper_w_off = getattr(task, "paper_w_off", record.paper_w_off)
+        record.paper_psi_off = getattr(task, "paper_psi_off", record.paper_psi_off)
+        record.paper_off_queue_enter_time = getattr(task, "paper_off_queue_enter_time", record.paper_off_queue_enter_time)
+        record.paper_off_transmission_time = getattr(task, "paper_off_transmission_time", record.paper_off_transmission_time)
+        record.paper_off_deadline_slot = getattr(task, "paper_off_deadline_slot", record.paper_off_deadline_slot)
+        record.paper_off_rate_type = getattr(task, "paper_off_rate_type", record.paper_off_rate_type)
+        record.paper_off_rate_value = getattr(task, "paper_off_rate_value", record.paper_off_rate_value)
+        record.paper_off_destination_node_id = getattr(task, "paper_off_destination_node_id", record.paper_off_destination_node_id)
+        record.paper_off_final_status = getattr(task, "paper_off_final_status", record.paper_off_final_status)
         task.queue_enter_time = record.queue_enter_time
 
     def note_service_start(self, task: Any, episode_id: int, time: int, node_id: int, queue_type: str) -> None:
@@ -269,6 +287,15 @@ class TraceRecorder:
         record.paper_psi_priv = getattr(task, "paper_psi_priv", record.paper_psi_priv)
         record.paper_private_service_time = getattr(task, "paper_private_service_time", record.paper_private_service_time)
         record.paper_private_final_status = getattr(task, "paper_private_final_status", "completed")
+        record.paper_w_off = getattr(task, "paper_w_off", record.paper_w_off)
+        record.paper_psi_off = getattr(task, "paper_psi_off", record.paper_psi_off)
+        record.paper_off_queue_enter_time = getattr(task, "paper_off_queue_enter_time", record.paper_off_queue_enter_time)
+        record.paper_off_transmission_time = getattr(task, "paper_off_transmission_time", record.paper_off_transmission_time)
+        record.paper_off_deadline_slot = getattr(task, "paper_off_deadline_slot", record.paper_off_deadline_slot)
+        record.paper_off_rate_type = getattr(task, "paper_off_rate_type", record.paper_off_rate_type)
+        record.paper_off_rate_value = getattr(task, "paper_off_rate_value", record.paper_off_rate_value)
+        record.paper_off_destination_node_id = getattr(task, "paper_off_destination_node_id", record.paper_off_destination_node_id)
+        record.paper_off_final_status = getattr(task, "paper_off_final_status", record.paper_off_final_status)
         task.service_end_time = time
         task.completion_time = time
         task.final_status = "completed"
@@ -284,6 +311,15 @@ class TraceRecorder:
         record.paper_psi_priv = getattr(task, "paper_psi_priv", record.paper_psi_priv)
         record.paper_private_service_time = getattr(task, "paper_private_service_time", record.paper_private_service_time)
         record.paper_private_final_status = getattr(task, "paper_private_final_status", "dropped")
+        record.paper_w_off = getattr(task, "paper_w_off", record.paper_w_off)
+        record.paper_psi_off = getattr(task, "paper_psi_off", record.paper_psi_off)
+        record.paper_off_queue_enter_time = getattr(task, "paper_off_queue_enter_time", record.paper_off_queue_enter_time)
+        record.paper_off_transmission_time = getattr(task, "paper_off_transmission_time", record.paper_off_transmission_time)
+        record.paper_off_deadline_slot = getattr(task, "paper_off_deadline_slot", record.paper_off_deadline_slot)
+        record.paper_off_rate_type = getattr(task, "paper_off_rate_type", record.paper_off_rate_type)
+        record.paper_off_rate_value = getattr(task, "paper_off_rate_value", record.paper_off_rate_value)
+        record.paper_off_destination_node_id = getattr(task, "paper_off_destination_node_id", record.paper_off_destination_node_id)
+        record.paper_off_final_status = getattr(task, "paper_off_final_status", record.paper_off_final_status)
         task.drop_time = time
         task.final_status = "dropped"
         task.drop_reason = reason
