@@ -91,8 +91,18 @@ class TaskQueue():
             else:
                 self.current_task = self.queue.get()
                 recorder = getattr(Task, "trace_recorder", None)
-                if recorder is not None and self.current_task.service_start_time is None:
+                if self.queue_type == "public" and self.current_task.service_start_time is None:
                     self.current_task.service_start_time = self.current_time
+                    self.current_task.paper_public_start_slot = self.current_time
+                    self.current_task.paper_psi_tilde_pub = self.current_time
+                    self.current_task.routing_metadata["paper_public_start_slot"] = self.current_time
+                    self.current_task.routing_metadata["paper_psi_tilde_pub"] = self.current_time
+                if recorder is not None and self.current_task.service_start_time == self.current_time:
+                    self.current_task.service_start_time = self.current_time
+                    self.current_task.paper_public_start_slot = self.current_time
+                    self.current_task.paper_psi_tilde_pub = self.current_time
+                    self.current_task.routing_metadata["paper_public_start_slot"] = self.current_time
+                    self.current_task.routing_metadata["paper_psi_tilde_pub"] = self.current_time
                     recorder.note_service_start(self.current_task, episode_id=getattr(recorder, "_episode_id", None), time=self.current_time, node_id=self.node_id if self.node_id is not None else -1, queue_type=self.queue_type)
         return rewards
     

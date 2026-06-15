@@ -154,6 +154,46 @@ class Model5PublicQueueModelTests(unittest.TestCase):
         finally:
             Task.trace_recorder = previous_recorder
 
+    def test_public_promotion_after_timeout_records_paper_start_metadata(self):
+        recorder = TraceRecorder(trace_level="full")
+        recorder.start_episode(0)
+        Task.trace_recorder = recorder
+        manager = PublicQueueManager(id=0, computational_capacity=1.0, supporting_servers=np.array([1]))
+        first = Task(
+            size=1.0,
+            arrival_time=0,
+            timeout_delay=1,
+            computational_density=0.297,
+            drop_penalty=40,
+            origin_server_id=1,
+            target_server_id=0,
+            task_id=86,
+        )
+        second = Task(
+            size=1.0,
+            arrival_time=0,
+            timeout_delay=10,
+            computational_density=0.297,
+            drop_penalty=40,
+            origin_server_id=1,
+            target_server_id=0,
+            task_id=87,
+        )
+        manager.add_tasks([first, second], current_time=0)
+        manager.public_queues[1].current_time = 0
+        manager.public_queues[1].get_first_non_empty_element()
+        manager.public_queues[1].step(1.0, active_queue_count=1)
+        manager.public_queues[1].current_time = 1
+        manager.public_queues[1].get_first_non_empty_element()
+
+        promoted = manager.public_queues[1].current_task
+        self.assertEqual(promoted.task_id, 87)
+        self.assertIsNotNone(promoted.service_start_time)
+        self.assertIsNotNone(promoted.paper_public_start_slot)
+        self.assertIsNotNone(promoted.paper_psi_tilde_pub)
+        self.assertIsNotNone(promoted.routing_metadata["paper_public_start_slot"])
+        self.assertIsNotNone(promoted.routing_metadata["paper_psi_tilde_pub"])
+
     def test_public_state_vector_uses_zero_for_unsupported_queues(self):
         env = Environment(
             static_frequency=0,
