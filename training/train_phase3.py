@@ -35,6 +35,28 @@ def _write_json(path: Path, payload: dict[str, object]) -> None:
     path.write_text(json.dumps(payload, indent=2, sort_keys=True))
 
 
+def _load_paper_state_rows(trace_dir: Path) -> list[dict[str, object]]:
+    paper_state_path = trace_dir / "paper_state_trace.csv"
+    if not paper_state_path.exists():
+        return []
+    with paper_state_path.open(newline="") as f:
+        return list(csv.DictReader(f))
+
+
+def _vector_from_json_row(row: dict[str, object], key: str) -> np.ndarray | None:
+    raw = row.get(key)
+    if raw in (None, "", "None"):
+        return None
+    try:
+        value = json.loads(str(raw))
+    except Exception:
+        return None
+    array = np.asarray(value, dtype=np.float32)
+    if array.ndim != 1 or not np.all(np.isfinite(array)):
+        return None
+    return array
+
+
 def _rebuild_state_vector(transition) -> np.ndarray:
     parts = [
         np.asarray(
@@ -158,7 +180,7 @@ def main() -> int:
     parser.add_argument("--seed", type=int, default=42)
     parser.add_argument("--checkpoint-every", type=int, default=5)
     parser.add_argument("--train-lstm", action="store_true")
-    parser.add_argument("--lstm-target", choices=["latency", "queue_length", "reward"], default="latency")
+    parser.add_argument("--lstm-target", choices=["active_load_vector"], default="active_load_vector")
     parser.add_argument("--sequence-length", type=int, default=4)
     args = parser.parse_args()
 
@@ -174,6 +196,12 @@ def main() -> int:
     report = _build_report(args.algorithm)
     report["artifact_paths"] = {"dataset_summary": str(dataset_summary_path)}
     report["validation_status"] = "passed" if transitions else "failed"
+    report["lstm_forecast_requested"] = bool(args.train_lstm)
+    report["lstm_forecast_status"] = "skipped"
+    report["predicted_next_load_method"] = "persistence_baseline"
+    report["paper_lstm_forecast"] = False
+    report["lstm_target"] = "active_load_vector"
+    report["paper_claims_made"] = False
     if summary.approximation_warnings:
         report["approximation_warnings"] = list(summary.approximation_warnings)
     if summary.unavailable_fields:
@@ -181,20 +209,6 @@ def main() -> int:
 
     if not transitions:
         raise SystemExit("trace dataset did not produce any transitions")
-
-    lstm_input_dim = 1
-    lstm_output_dim = 1
-    if summary.paper_state_trace_present:
-        candidate_history = getattr(transitions[0], "load_history", None)
-        candidate_target = getattr(transitions[0], "active_load_vector", None)
-        if candidate_history is not None and getattr(candidate_history, "ndim", 0) >= 2 and candidate_history.shape[-1] > 0:
-            lstm_input_dim = int(candidate_history.shape[-1])
-        else:
-            lstm_input_dim = int(transitions[0].state.shape[0])
-        if candidate_target is not None and getattr(candidate_target, "shape", None) is not None and len(candidate_target.shape) > 0:
-            lstm_output_dim = int(candidate_target.shape[-1])
-        else:
-            lstm_output_dim = lstm_input_dim
 
     cfg = TrainerConfig(
         algorithm=args.algorithm,
@@ -284,81 +298,72 @@ def main() -> int:
 
     sample_rows: list[dict[str, object]] | None = None
     paper_state_rows: list[dict[str, object]] | None = None
-    if summary.paper_state_trace_present:
-        forecaster = LSTMForecaster(args.sequence_length, input_dim=lstm_input_dim, hidden_dim=16, target="load_history", seed=args.seed, output_dim=lstm_output_dim)
-        rows = [
-            {
-                "time": t.step_index if t.step_index is not None else idx,
-                "load_history": t.load_history.tolist() if getattr(t, "load_history", None) is not None else None,
-                "active_load_vector": t.active_load_vector.tolist() if getattr(t, "active_load_vector", None) is not None else None,
-            }
-            for idx, t in enumerate(transitions)
-        ]
-        seq_x, seq_y, reason = forecaster.build_sequences(rows)
-        if reason is not None:
-            report["skipped_work"].append(f"LSTM target {args.lstm_target}: {reason}")
-            report["approximation_warnings"].append(reason)
+    forecast_artifact_rows: list[dict[str, object]] | None = None
+    paper_state_rows_raw = _load_paper_state_rows(Path(args.trace_dir))
+    if args.train_lstm:
+        if not summary.paper_state_trace_present or not paper_state_rows_raw:
+            report["lstm_forecast_status"] = "skipped_insufficient_data"
+            report["lstm_reason"] = "paper_state_trace unavailable"
+            report["skipped_work"].append("LSTM forecast skipped: paper_state_trace unavailable")
         else:
-            lstm_result = forecaster.train(seq_x, seq_y, epochs=1, learning_rate=args.learning_rate)
-            forecast_count = 0
-            for transition in transitions:
-                if getattr(transition, "load_history", None) is None or transition.load_history.size == 0:
+            active_rows = []
+            for row in paper_state_rows_raw:
+                vector = _vector_from_json_row(row, "active_load_vector_json")
+                if vector is None:
                     continue
-                object.__setattr__(transition, "predicted_next_load", forecaster.predict(transition.load_history))
-                object.__setattr__(transition, "state", _rebuild_state_vector(transition))
-                forecast_count += 1
-            sample_rows = []
-            for idx, transition in enumerate(transitions[:10]):
-                sample_rows.append(
-                    {
-                        "episode_id": transition.episode_id,
-                        "time": transition.step_index,
-                        "agent_id": transition.task_id if transition.task_id is not None else idx,
-                        "task_id": transition.task_id,
-                        "eta_n": transition.eta_n,
-                        "w_priv_n": transition.w_priv_n,
-                        "w_off_n": transition.w_off_n,
-                        "l_pub_n_prev_json": json.dumps(np.asarray(transition.l_pub_n_prev).tolist()) if transition.l_pub_n_prev is not None else "[]",
-                        "active_load_vector_json": json.dumps(np.asarray(transition.active_load_vector).tolist()) if transition.active_load_vector is not None else "[]",
-                        "L_t_json": json.dumps(np.asarray(transition.load_history).tolist()) if transition.load_history is not None else "[]",
-                        "predicted_next_load_json": json.dumps(np.asarray(transition.predicted_next_load).tolist()) if transition.predicted_next_load is not None else "null",
-                        "predicted_next_load_method": "lstm_forecast",
-                        "paper_lstm_forecast": True,
-                        "unavailable_fields_json": json.dumps([]),
-                        "approximation_warnings_json": json.dumps(["trained_lstm_forecast"]),
-                        "state_vector_json": json.dumps(np.asarray(transition.state).tolist()),
-                        "state_dim": int(transition.state.shape[0]),
-                    }
+                normalized_row = dict(row)
+                normalized_row["active_load_vector"] = vector
+                active_rows.append(normalized_row)
+            lstm_input_dim = int(active_rows[0]["active_load_vector"].shape[0]) if active_rows else 1
+            forecaster = LSTMForecaster(args.sequence_length, input_dim=lstm_input_dim, hidden_dim=16, target=args.lstm_target, seed=args.seed, output_dim=lstm_input_dim)
+            seq_x, seq_y, reason = forecaster.build_sequences(active_rows)
+            if reason is not None or len(seq_x) == 0:
+                report["lstm_forecast_status"] = "skipped_insufficient_data"
+                report["lstm_reason"] = reason or "not enough active_load_vector samples"
+                report["skipped_work"].append(f"LSTM forecast skipped: {report['lstm_reason']}")
+                report["approximation_warnings"].append("persistence_baseline retained because LSTM training had insufficient data")
+            else:
+                lstm_result = forecaster.train(seq_x, seq_y, epochs=1, learning_rate=args.learning_rate)
+                report["lstm_forecast_status"] = "trained"
+                report["lstm_sequences"] = lstm_result.sequences
+                report["lstm_mse"] = lstm_result.mse
+                report["lstm_mae"] = lstm_result.mae
+                report["lstm_target"] = lstm_result.target
+                report["predicted_next_load_method"] = lstm_result.forecast_method or "trained_lstm"
+                report["paper_lstm_forecast"] = bool(lstm_result.paper_lstm_forecast)
+                report["completed_work"].append(
+                    f"LSTM target active_load_vector: sequences={lstm_result.sequences}, mse={lstm_result.mse}, mae={lstm_result.mae}"
                 )
-            report["completed_work"].append(
-                f"LSTM target load_history: sequences={lstm_result.sequences}, mse={lstm_result.mse}, mae={lstm_result.mae}, forecasts={forecast_count}"
-            )
-            lstm_checkpoint = forecaster.save(output_dir / "lstm_load_history.chkpt")
-            report["artifact_paths"]["lstm_load_history"] = lstm_checkpoint
-            report["approximation_warnings"].append("predicted_next_load uses trained LSTM forecaster")
-            paper_state_rows = [
-                {
-                    "episode_id": transition.episode_id,
-                    "time": transition.step_index,
-                    "agent_id": transition.task_id if transition.task_id is not None else idx,
-                    "task_id": transition.task_id,
-                    "eta_n": transition.eta_n,
-                    "w_priv_n": transition.w_priv_n,
-                    "w_off_n": transition.w_off_n,
-                    "l_pub_n_prev_json": json.dumps(np.asarray(transition.l_pub_n_prev).tolist()) if transition.l_pub_n_prev is not None else "[]",
-                    "active_load_vector_json": json.dumps(np.asarray(transition.active_load_vector).tolist()) if transition.active_load_vector is not None else "[]",
-                    "L_t_json": json.dumps(np.asarray(transition.load_history).tolist()) if transition.load_history is not None else "[]",
-                    "predicted_next_load_json": json.dumps(np.asarray(transition.predicted_next_load).tolist()) if transition.predicted_next_load is not None else "null",
-                    "predicted_next_load_method": "lstm_forecast",
-                    "paper_lstm_forecast": True,
-                    "unavailable_fields_json": json.dumps([]),
-                    "approximation_warnings_json": json.dumps(["trained_lstm_forecast"]),
-                    "state_vector_json": json.dumps(np.asarray(transition.state).tolist()),
-                    "state_dim": int(transition.state.shape[0]),
-                }
-                for idx, transition in enumerate(transitions)
-                if getattr(transition, "load_history", None) is not None and transition.load_history.size
-            ]
+                lstm_checkpoint = forecaster.save(output_dir / "lstm_active_load_vector.chkpt")
+                report["artifact_paths"]["lstm_active_load_vector"] = lstm_checkpoint
+                report["approximation_warnings"].append("trained_lstm_forecast_artifact is non-official and reproduction-oriented only")
+                forecast_artifact_rows = []
+                for row in active_rows:
+                    enriched = dict(row)
+                    history = _vector_from_json_row(row, "L_t_json")
+                    if history is None:
+                        history = np.asarray([row["active_load_vector"]], dtype=np.float32)
+                    predicted = forecaster.predict(history)
+                    enriched["predicted_next_load_json"] = json.dumps(predicted.tolist())
+                    enriched["predicted_next_load_method"] = "trained_lstm"
+                    enriched["paper_lstm_forecast"] = True
+                    warnings = list(json.loads(row.get("approximation_warnings_json") or "[]"))
+                    warnings.append("trained_lstm_forecast_artifact")
+                    enriched["approximation_warnings_json"] = json.dumps(warnings)
+                    forecast_artifact_rows.append(enriched)
+                forecast_path = output_dir / "paper_state_trace_lstm_forecast.csv"
+                if forecast_artifact_rows:
+                    with forecast_path.open("w", newline="") as f:
+                        writer = csv.DictWriter(f, fieldnames=list(forecast_artifact_rows[0].keys()))
+                        writer.writeheader()
+                        writer.writerows(forecast_artifact_rows)
+                report["artifact_paths"]["paper_state_trace_lstm_forecast"] = str(forecast_path)
+                sample_rows = forecast_artifact_rows[:10]
+    else:
+        report["lstm_forecast_status"] = "skipped"
+        report["lstm_reason"] = "explicitly disabled by CLI"
+        report["skipped_work"].append("LSTM forecast skipped intentionally because --train-lstm was not passed")
+        report["approximation_warnings"].append("persistence_baseline retained because --train-lstm was not passed")
 
     if summary.paper_state_trace_present:
         _write_runtime_state_artifacts(output_dir, Path(args.trace_dir), summary, sample_rows=sample_rows, paper_state_rows=paper_state_rows)
