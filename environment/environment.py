@@ -37,6 +37,7 @@ class Environment():
                  drop_penalty_distributions,
                  number_of_clouds=1,
                  paper_state_window=4,
+                 vertical_offloading_rate: float = 10.0,
                  trace_recorder:TraceRecorder|None=None) -> None:
         self.number_of_servers = number_of_servers
         self.number_of_clouds = number_of_clouds
@@ -72,14 +73,15 @@ class Environment():
                                                 drop_penalty_max = drop_penalty_maxs[i],
                                                 drop_penalty_distribution = drop_penalty_distributions[i])
                                 for i in range(number_of_servers)]         
-        self.vertical_offloading_rate = 10.0
+        self.vertical_offloading_rate = float(vertical_offloading_rate)
         self.servers = [Server( id=i,
                                 private_queue_computational_capacity=  private_cpu_capacities[i],
                                 public_queues_computational_capacity= public_cpu_capacities[i],
                                 outbound_connections=  self.connection_matrix[i],
                                 inbound_connections=get_column(self.connection_matrix,i),
                                 cloud_node_id=self.number_of_servers,
-                                cloud_offloading_capacity=self.vertical_offloading_rate) 
+                                cloud_offloading_capacity=cloud_computational_capacity,
+                                vertical_offloading_rate=self.vertical_offloading_rate) 
                         for i in range(number_of_servers)]
        
         self.matchmakers = [Matchmaker(id=s.id,

@@ -488,8 +488,11 @@ class Phase2ActionModelTests(unittest.TestCase):
         self.assertIsNone(queue.current_task.routing_metadata["paper_destination_node_id"])
         self.assertTrue(queue.current_task.routing_metadata["dm2_pending"])
         self.assertEqual(queue.current_task.routing_metadata["paper_w_off"], 0)
+        self.assertIsNone(queue.current_task.routing_metadata["paper_psi_off"])
+        self.assertEqual(queue.paper_latest_offloading_scheduled_completion_slot, -1)
         self.assertEqual(queue.current_task.routing_metadata["paper_off_rate_type"], None)
         self.assertEqual(queue.current_task.routing_metadata["paper_off_final_status"], "scheduled")
+        self.assertNotEqual(queue.current_task.routing_metadata["paper_off_final_status"], "transmitted")
 
     def test_offloading_queue_step_records_horizontal_and_vertical_rate_metadata(self):
         horizontal_queue = OffloadingQueue({0: 1.0, 2: 2.0, 4: 10.0})
@@ -513,6 +516,7 @@ class Phase2ActionModelTests(unittest.TestCase):
         self.assertEqual(transmitted_task.routing_metadata["paper_off_rate_type"], "horizontal")
         self.assertEqual(transmitted_task.routing_metadata["paper_off_rate_value"], 2.0)
         self.assertEqual(transmitted_task.routing_metadata["paper_off_destination_node_id"], 2)
+        self.assertEqual(transmitted_task.paper_off_final_status, "transmitted")
 
         vertical_queue = OffloadingQueue({0: 1.0, 2: 2.0, 4: 10.0})
         vertical_task = Task(
@@ -555,6 +559,68 @@ class Phase2ActionModelTests(unittest.TestCase):
         queue.step()
         self.assertEqual(queue.current_task.routing_metadata["paper_psi_off"], queue.current_task.deadline_slot)
         self.assertEqual(queue.current_task.routing_metadata["paper_off_final_status"], "dropped")
+
+    def test_vertical_offloading_rate_is_configurable_in_environment(self):
+        env = Environment(
+            static_frequency=0,
+            number_of_servers=2,
+            private_cpu_capacities=[1, 1],
+            public_cpu_capacities=[1, 1],
+            connection_matrix=np.array([[0, 1], [1, 0]]),
+            cloud_computational_capacity=3,
+            episode_time=2,
+            task_arrive_probabilities=[1.0, 0.0],
+            task_size_mins=[1.0, 1.0],
+            task_size_maxs=[1.0, 1.0],
+            task_size_distributions=["constant", "constant"],
+            timeout_delay_mins=[10, 10],
+            timeout_delay_maxs=[10, 10],
+            timeout_delay_distributions=["constant", "constant"],
+            priotiry_mins=[1, 1],
+            priotiry_maxs=[1, 1],
+            priotiry_distributions=["constant", "constant"],
+            computational_density_mins=[0.297, 0.297],
+            computational_density_maxs=[0.297, 0.297],
+            computational_density_distributions=["constant", "constant"],
+            drop_penalty_mins=[40, 40],
+            drop_penalty_maxs=[40, 40],
+            drop_penalty_distributions=["constant", "constant"],
+            vertical_offloading_rate=7.0,
+        )
+        self.assertEqual(env.vertical_offloading_rate, 7.0)
+        self.assertEqual(env.servers[0].offloading_queue.vertical_offloading_rate, 7.0)
+
+    def test_vertical_offload_uses_r_v_not_cloud_cpu_capacity(self):
+        server = Server(
+            id=1,
+            private_queue_computational_capacity=1,
+            public_queues_computational_capacity=1,
+            outbound_connections=np.array([1, 0, 1, 0]),
+            inbound_connections=np.array([1, 0, 1, 0]),
+            cloud_node_id=4,
+            cloud_offloading_capacity=3,
+            vertical_offloading_rate=10.0,
+        )
+        task = Task(
+            size=1.0,
+            arrival_time=0,
+            timeout_delay=10,
+            priotiry=1,
+            computational_density=0.297,
+            drop_penalty=40,
+            origin_server_id=1,
+            task_id=93,
+        )
+        task.routing_metadata["dm2_pending"] = True
+        task.routing_metadata["paper_destination_nodes"] = [0, 2, 4]
+        task.routing_metadata["paper_destination_node_id"] = None
+        task.routing_metadata["paper_d_nk_2"] = [0, 0, 0]
+        server.offloading_queue.add_task(task, current_time=0)
+        server.offloading_queue.resolve_dm2_destination = lambda task: 4
+        transmitted_task, _ = server.offloading_queue.step()
+        self.assertEqual(transmitted_task.routing_metadata["paper_off_rate_type"], "vertical")
+        self.assertEqual(transmitted_task.routing_metadata["paper_off_rate_value"], 10.0)
+        self.assertNotEqual(transmitted_task.routing_metadata["paper_off_rate_value"], 3)
 
     def test_offloading_trace_contains_paper_off_fields(self):
         recorder = TraceRecorder(trace_level="full")

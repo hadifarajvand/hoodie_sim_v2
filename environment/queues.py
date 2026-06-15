@@ -206,18 +206,11 @@ class OffloadingQueue(TaskQueue):
 
     def _record_paper_off_enqueue(self, task, current_time: int) -> None:
         paper_w_off = self._paper_off_wait(current_time)
-        provisional_rate = max(self.offloading_capacities.values()) if self.offloading_capacities else 0.0
-        provisional_transmission_time = math.ceil(task.get_size() / provisional_rate) if provisional_rate > 0 else 0
-        paper_psi_off = (
-            current_time + paper_w_off + provisional_transmission_time - 1
-            if provisional_transmission_time > 0
-            else None
-        )
         task.routing_metadata["paper_w_off"] = paper_w_off
         task.routing_metadata["paper_off_queue_enter_time"] = current_time
         task.routing_metadata["paper_off_deadline_slot"] = task.deadline_slot
         task.routing_metadata["paper_off_transmission_time"] = None
-        task.routing_metadata["paper_psi_off"] = paper_psi_off
+        task.routing_metadata["paper_psi_off"] = None
         task.routing_metadata["paper_off_rate_type"] = None
         task.routing_metadata["paper_off_rate_value"] = None
         task.routing_metadata["paper_off_destination_node_id"] = None
@@ -226,16 +219,11 @@ class OffloadingQueue(TaskQueue):
         task.paper_off_queue_enter_time = current_time
         task.paper_off_deadline_slot = task.deadline_slot
         task.paper_off_transmission_time = None
-        task.paper_psi_off = paper_psi_off
+        task.paper_psi_off = None
         task.paper_off_rate_type = None
         task.paper_off_rate_value = None
         task.paper_off_destination_node_id = None
         task.paper_off_final_status = "scheduled"
-        if paper_psi_off is not None:
-            self.paper_latest_offloading_scheduled_completion_slot = max(
-                self.paper_latest_offloading_scheduled_completion_slot,
-                int(paper_psi_off),
-            )
     
     def update_waiting_time(self, task):
         target_server_id = task.get_target_server_id()
@@ -328,7 +316,7 @@ class OffloadingQueue(TaskQueue):
             self.current_task.deadline_slot,
         )
         self.current_task.routing_metadata["paper_psi_off"] = paper_psi_off
-        self.current_task.routing_metadata["paper_off_final_status"] = "transmitted"
+        self.current_task.routing_metadata["paper_off_final_status"] = "in_transmission"
         paper_destination_nodes = self.current_task.routing_metadata.get("paper_destination_nodes")
         if not paper_destination_nodes:
             paper_destination_nodes = tuple(sorted(self.offloading_capacities.keys()))
@@ -344,12 +332,14 @@ class OffloadingQueue(TaskQueue):
             if resolved_index is not None:
                 resolved_vector[resolved_index] = 1
                 self.current_task.routing_metadata["paper_d_nk_2"] = resolved_vector
-        self.paper_latest_offloading_scheduled_completion_slot = max(
-            self.paper_latest_offloading_scheduled_completion_slot,
-            int(self.current_task.routing_metadata.get("paper_psi_off", self.current_time)),
-        )
         transmited_task = self.current_task.transmit(offloading_capacity)
         if transmited_task is not None:
+            self.paper_latest_offloading_scheduled_completion_slot = max(
+                self.paper_latest_offloading_scheduled_completion_slot,
+                int(paper_psi_off),
+            )
+            self.current_task.routing_metadata["paper_off_final_status"] = "transmitted"
+            self.current_task.paper_off_final_status = "transmitted"
             transmited_task.routing_metadata["paper_w_off"] = paper_w_off
             transmited_task.routing_metadata["paper_psi_off"] = paper_psi_off
             transmited_task.routing_metadata["paper_off_queue_enter_time"] = self.current_task.routing_metadata.get("paper_off_queue_enter_time")
@@ -369,6 +359,9 @@ class OffloadingQueue(TaskQueue):
             transmited_task.paper_off_destination_node_id = int(target_server_id)
             transmited_task.paper_off_final_status = "transmitted"
             self.departures_this_step += 1
+        else:
+            self.current_task.routing_metadata["paper_off_final_status"] = "in_transmission"
+            self.current_task.paper_off_final_status = "in_transmission"
         return transmited_task,reward
     
 class PublicQueue(TaskQueue):

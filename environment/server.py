@@ -11,7 +11,8 @@ class Server():
                  outbound_connections,
                  inbound_connections,
                  cloud_node_id: int | None = None,
-                 cloud_offloading_capacity: float | None = None):
+                 cloud_offloading_capacity: float | None = None,
+                 vertical_offloading_rate: float | None = None):
         self.id=id
         self.private_queue_computational_capacity = private_queue_computational_capacity
         self.public_queues_computational_capacity = public_queues_computational_capacity
@@ -22,9 +23,10 @@ class Server():
         outbound_connections = np.array(outbound_connections)
         self.offloading_servers = np.where(outbound_connections!=0)[0]
         self.offloading_capacities = {s:outbound_connections[s] for s in self.offloading_servers}
-        if cloud_node_id is not None and cloud_offloading_capacity is not None:
-            self.offloading_capacities[int(cloud_node_id)] = float(cloud_offloading_capacity)
-        self.offloading_queue = OffloadingQueue(offloading_capacities = self.offloading_capacities)
+        vertical_rate = float(vertical_offloading_rate) if vertical_offloading_rate is not None else (float(cloud_offloading_capacity) if cloud_offloading_capacity is not None else None)
+        if cloud_node_id is not None and vertical_rate is not None:
+            self.offloading_capacities[int(cloud_node_id)] = vertical_rate
+        self.offloading_queue = OffloadingQueue(offloading_capacities = self.offloading_capacities, vertical_offloading_rate=vertical_rate)
 
         inbound_connections = np.array(inbound_connections)
         self.supporting_servers =  np.where(inbound_connections!=0)[0]
