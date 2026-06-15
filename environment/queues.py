@@ -53,6 +53,13 @@ class TaskQueue():
         while self.current_task_is_timed_out():
             self.queue_length -= self.current_task.get_remaining_size()
             rewards += self.current_task.drop_task(drop_time=self.current_time, reason="timeout")
+            if self.queue_type == "private":
+                self.current_task.routing_metadata["paper_psi_priv"] = self.current_task.deadline_slot
+                self.current_task.routing_metadata["paper_private_service_time"] = self.current_task.service_time
+                self.current_task.routing_metadata["paper_private_final_status"] = "dropped"
+                self.current_task.paper_psi_priv = self.current_task.deadline_slot
+                self.current_task.paper_private_service_time = self.current_task.service_time
+                self.current_task.paper_private_final_status = "dropped"
             self.drops_this_step += 1
             recorder = getattr(Task, "trace_recorder", None)
             if recorder is not None:
@@ -92,10 +99,30 @@ class ProcessingQueue(TaskQueue):
         super().__init__(queue_type="private")
         self.computational_capacity = computational_capacity
         self.waiting_time =0
+        self.paper_latest_private_completion_slot = -1
     def reset(self):
         super().reset()
         self.waiting_time =0      
-    
+        self.paper_latest_private_completion_slot = -1
+
+    def _paper_private_wait(self, current_time: int) -> int:
+        return max(0, self.paper_latest_private_completion_slot - current_time + 1)
+
+    def _record_paper_private_enqueue(self, task, current_time: int) -> None:
+        paper_w_priv = self._paper_private_wait(current_time)
+        task.routing_metadata["paper_w_priv"] = paper_w_priv
+        task.routing_metadata["paper_private_queue_enter_time"] = current_time
+        task.routing_metadata["paper_private_deadline_slot"] = task.deadline_slot
+        task.routing_metadata["paper_private_service_time"] = None
+        task.routing_metadata["paper_psi_priv"] = 0
+        task.routing_metadata["paper_private_final_status"] = "pending"
+        task.paper_w_priv = paper_w_priv
+        task.paper_private_queue_enter_time = current_time
+        task.paper_private_deadline_slot = task.deadline_slot
+        task.paper_private_service_time = None
+        task.paper_psi_priv = 0
+        task.paper_private_final_status = "pending"
+
     def update_waiting_time(self,task):
         process_per_time_period = self.computational_capacity / task.get_density()
         time_to_process_task = math.ceil(task.get_size()/process_per_time_period)
@@ -115,7 +142,9 @@ class ProcessingQueue(TaskQueue):
         return waiting
         
     def add_task(self,task, current_time=None):
-        super().add_task(task, current_time=self.current_time if current_time is None else current_time)
+        enqueue_time = self.current_time if current_time is None else current_time
+        self._record_paper_private_enqueue(task, enqueue_time)
+        super().add_task(task, current_time=enqueue_time)
         self.update_waiting_time(task)
         
         
@@ -135,6 +164,13 @@ class ProcessingQueue(TaskQueue):
             recorder = getattr(Task, "trace_recorder", None)
             if recorder is not None:
                 recorder.note_service_end(self.current_task, episode_id=getattr(recorder, "_episode_id", None), time=self.current_time, node_id=self.node_id if self.node_id is not None else -1, queue_type=self.queue_type)
+            self.paper_latest_private_completion_slot = self.current_time
+            self.current_task.routing_metadata["paper_psi_priv"] = self.current_time
+            self.current_task.routing_metadata["paper_private_service_time"] = self.current_task.service_time
+            self.current_task.routing_metadata["paper_private_final_status"] = "completed"
+            self.current_task.paper_psi_priv = self.current_time
+            self.current_task.paper_private_service_time = self.current_task.service_time
+            self.current_task.paper_private_final_status = "completed"
         return rewards
     
     

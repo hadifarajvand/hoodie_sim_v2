@@ -11,6 +11,7 @@ from environment.environment import Environment
 from environment.action_model import TopologyAdapter, TwoStageActionModel
 from environment.matchmaker import Matchmaker
 from environment.server import Server
+from environment.queues import ProcessingQueue
 from environment.task import Task
 from phase1_tracing import TraceRecorder
 
@@ -48,6 +49,28 @@ class Phase2ActionModelTests(unittest.TestCase):
         self.assertEqual(action.paper_d_nk_2, (0, 0, 0, 0))
         self.assertEqual(action.dm2_timing, "not_applicable")
         self.assertFalse(action.requires_separate_dm2_at_offloading_queue_exit)
+
+    def test_local_action_inserts_task_into_private_queue(self):
+        queue = ProcessingQueue(1.0)
+        task = Task(size=1.0, arrival_time=0, timeout_delay=10, computational_density=0.297, drop_penalty=40, origin_server_id=1, task_id=11)
+        queue.add_task(task, current_time=0)
+        self.assertFalse(queue.current_task.is_empty())
+        self.assertEqual(queue.current_task.task_id, 11)
+
+    def test_offload_action_does_not_insert_task_into_private_queue(self):
+        server = Server(
+            id=1,
+            private_queue_computational_capacity=1,
+            public_queues_computational_capacity=1,
+            outbound_connections=np.array([1, 0, 1, 0]),
+            inbound_connections=np.array([1, 0, 1, 0]),
+            cloud_node_id=4,
+            cloud_offloading_capacity=1,
+        )
+        task = Task(size=1.0, arrival_time=0, timeout_delay=10, computational_density=0.297, drop_penalty=40, origin_server_id=1, task_id=12)
+        action = self.model.validate_explicit_choice(1, "offload")
+        server.step(action, task, current_time=0)
+        self.assertTrue(server.processing_queue.current_task.is_empty())
 
     def test_valid_horizontal_action(self):
         action = self.model.validate_explicit_choice(1, "offload", destination_node_id=2)
@@ -287,6 +310,43 @@ class Phase2ActionModelTests(unittest.TestCase):
         self.assertEqual(cloud_env.last_paper_queue_arrivals, [0, 0, 1])
         cloud_rows = {(row.time, row.node_id, row.queue_type): row for row in cloud_recorder.queue_traces}
         self.assertEqual(cloud_rows[(2, 2, "cloud")].paper_u_n_t, 1)
+
+    def test_private_queue_fifos_tasks_in_arrival_order(self):
+        queue = ProcessingQueue(1.0)
+        task_a = Task(size=1.0, arrival_time=0, timeout_delay=10, computational_density=0.297, drop_penalty=40, origin_server_id=1, task_id=21)
+        task_b = Task(size=1.0, arrival_time=1, timeout_delay=10, computational_density=0.297, drop_penalty=40, origin_server_id=1, task_id=22)
+        queue.add_task(task_a, current_time=0)
+        queue.add_task(task_b, current_time=1)
+        self.assertEqual([task.task_id for task in queue.get_pending_tasks()], [21, 22])
+
+    def test_paper_w_priv_matches_latest_previous_completion_slot_formula(self):
+        queue = ProcessingQueue(1.0)
+        queue.paper_latest_private_completion_slot = 10
+        task = Task(size=1.0, arrival_time=5, timeout_delay=10, computational_density=0.297, drop_penalty=40, origin_server_id=1, task_id=31)
+        queue.add_task(task, current_time=5)
+        self.assertEqual(task.routing_metadata["paper_w_priv"], 6)
+
+    def test_successful_private_task_records_paper_psi_priv_completion_slot(self):
+        queue = ProcessingQueue(1.0)
+        task = Task(size=1.0, arrival_time=0, timeout_delay=10, computational_density=0.297, drop_penalty=40, origin_server_id=1, task_id=41)
+        queue.add_task(task, current_time=0)
+        queue.step()
+        self.assertEqual(queue.paper_latest_private_completion_slot, 1)
+        self.assertEqual(queue.current_task.routing_metadata["paper_psi_priv"], 1)
+        self.assertEqual(queue.current_task.routing_metadata["paper_private_final_status"], "completed")
+
+    def test_timed_out_private_task_records_deadline_slot_as_paper_psi_priv(self):
+        queue = ProcessingQueue(1.0)
+        task = Task(size=1.0, arrival_time=0, timeout_delay=1, computational_density=0.297, drop_penalty=40, origin_server_id=1, task_id=51)
+        queue.add_task(task, current_time=0)
+        queue.current_time = 1
+        queue.step()
+        self.assertEqual(queue.current_task.routing_metadata["paper_psi_priv"], queue.current_task.deadline_slot)
+        self.assertEqual(queue.current_task.routing_metadata["paper_private_final_status"], "dropped")
+
+    def test_no_private_task_at_slot_has_no_private_completion_slot(self):
+        queue = ProcessingQueue(1.0)
+        self.assertEqual(queue.paper_latest_private_completion_slot, -1)
 
     def test_dm2_destination_is_resolved_at_offloading_queue_exit(self):
         server = Server(
