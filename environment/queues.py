@@ -149,15 +149,29 @@ class OffloadingQueue(TaskQueue):
         self.waiting_time =0
     
     def update_waiting_time(self, task):
-        target_server_id = self._resolve_target_server_id(task)
-        offloading_capacity = self.offloading_capacities[target_server_id]
+        target_server_id = task.get_target_server_id()
+        if target_server_id is None:
+            if task.routing_metadata.get("dm2_pending"):
+                offloading_capacity = max(self.offloading_capacities.values())
+            else:
+                target_server_id = self._resolve_target_server_id(task)
+                offloading_capacity = self.offloading_capacities[target_server_id]
+        else:
+            offloading_capacity = self.offloading_capacities[target_server_id]
         time_to_transmit_task =  math.ceil(task.get_size()/ offloading_capacity)
         timeout_time = max(0,task.get_relative_timeout()- self.waiting_time)
         self.waiting_time += min(timeout_time,time_to_transmit_task)
 
     def _task_transmission_time(self, task):
-        target_server_id = self._resolve_target_server_id(task)
-        offloading_capacity = self.offloading_capacities[target_server_id]
+        target_server_id = task.get_target_server_id()
+        if target_server_id is None:
+            if task.routing_metadata.get("dm2_pending"):
+                offloading_capacity = max(self.offloading_capacities.values())
+            else:
+                target_server_id = self._resolve_target_server_id(task)
+                offloading_capacity = self.offloading_capacities[target_server_id]
+        else:
+            offloading_capacity = self.offloading_capacities[target_server_id]
         return math.ceil(task.get_remaining_size() / offloading_capacity)
 
     def resolve_dm2_destination(self, task):
@@ -214,6 +228,9 @@ class OffloadingQueue(TaskQueue):
         self.current_task.routing_metadata["dm2_pending"] = False
         self.current_task.routing_metadata["paper_destination_node_id"] = int(target_server_id)
         paper_destination_nodes = self.current_task.routing_metadata.get("paper_destination_nodes")
+        if not paper_destination_nodes:
+            paper_destination_nodes = tuple(sorted(self.offloading_capacities.keys()))
+            self.current_task.routing_metadata["paper_destination_nodes"] = list(paper_destination_nodes)
         if isinstance(paper_destination_nodes, list):
             paper_destination_nodes = tuple(paper_destination_nodes)
         if paper_destination_nodes:

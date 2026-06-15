@@ -359,6 +359,75 @@ class Phase2ActionModelTests(unittest.TestCase):
         self.assertGreaterEqual(env.actions[0]["cloud"], 1)
         self.assertEqual(env.actions[0]["horisontal"], 0)
 
+    def test_offloading_queue_add_task_does_not_resolve_dm2_destination(self):
+        server = Server(
+            id=1,
+            private_queue_computational_capacity=1,
+            public_queues_computational_capacity=1,
+            outbound_connections=np.array([1, 0, 1, 0]),
+            inbound_connections=np.array([1, 0, 1, 0]),
+            cloud_node_id=4,
+            cloud_offloading_capacity=1,
+        )
+        task = Task(
+            size=1.0,
+            arrival_time=0,
+            timeout_delay=10,
+            priotiry=1,
+            computational_density=0.297,
+            drop_penalty=40,
+            origin_server_id=1,
+            task_id=100,
+        )
+        task.routing_metadata["dm2_pending"] = True
+        task.routing_metadata["paper_destination_node_id"] = None
+        task.routing_metadata["paper_d_nk_2"] = [0, 0, 0]
+
+        called = {"resolve": 0}
+
+        def _spy(task_arg):
+            called["resolve"] += 1
+            return 0
+
+        server.offloading_queue.resolve_dm2_destination = _spy
+        server.offloading_queue.add_task(task, current_time=0)
+        self.assertEqual(called["resolve"], 0)
+        self.assertIsNone(server.offloading_queue.current_task.get_target_server_id())
+        self.assertIsNone(server.offloading_queue.current_task.routing_metadata["paper_destination_node_id"])
+        self.assertTrue(server.offloading_queue.current_task.routing_metadata["dm2_pending"])
+        self.assertEqual(server.offloading_queue.current_task.routing_metadata["paper_d_nk_2"], [0, 0, 0])
+
+    def test_offloading_queue_step_resolves_dm2_destination(self):
+        server = Server(
+            id=1,
+            private_queue_computational_capacity=1,
+            public_queues_computational_capacity=1,
+            outbound_connections=np.array([1, 0, 1, 0]),
+            inbound_connections=np.array([1, 0, 1, 0]),
+            cloud_node_id=4,
+            cloud_offloading_capacity=1,
+        )
+        task = Task(
+            size=1.0,
+            arrival_time=0,
+            timeout_delay=10,
+            priotiry=1,
+            computational_density=0.297,
+            drop_penalty=40,
+            origin_server_id=1,
+            task_id=101,
+        )
+        task.routing_metadata["dm2_pending"] = True
+        task.routing_metadata["paper_destination_node_id"] = None
+        task.routing_metadata["paper_d_nk_2"] = [0, 0, 0]
+        server.offloading_queue.resolve_dm2_destination = lambda task_arg: 2
+        server.offloading_queue.add_task(task, current_time=0)
+        transmitted_task, _ = server.offloading_queue.step()
+        self.assertIsNotNone(transmitted_task.get_target_server_id())
+        self.assertEqual(transmitted_task.routing_metadata["paper_destination_node_id"], 2)
+        self.assertEqual(transmitted_task.routing_metadata["paper_d_nk_2"], [0, 1, 0])
+        self.assertFalse(transmitted_task.routing_metadata["dm2_pending"])
+
 
 if __name__ == "__main__":
     unittest.main()
