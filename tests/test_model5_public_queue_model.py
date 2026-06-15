@@ -90,6 +90,70 @@ class Model5PublicQueueModelTests(unittest.TestCase):
             self.assertEqual(row["paper_psi_pub"], row["paper_public_deadline_slot"])
             self.assertIn("paper_m_pub", row)
 
+    def test_successful_public_completion_keeps_paper_m_pub_zero(self):
+        recorder = TraceRecorder(trace_level="full")
+        recorder.start_episode(0)
+        Task.trace_recorder = recorder
+        manager = PublicQueueManager(id=0, computational_capacity=10.0, supporting_servers=np.array([1]))
+        task = Task(
+            size=1.0,
+            arrival_time=0,
+            timeout_delay=10,
+            computational_density=0.297,
+            drop_penalty=40,
+            origin_server_id=1,
+            target_server_id=0,
+            task_id=84,
+        )
+        manager.add_tasks([task], current_time=0)
+        manager.public_queues[1].current_time = 0
+        manager.public_queues[1].step(10.0, active_queue_count=1)
+
+        record = recorder.task_records[84]
+        self.assertEqual(record.paper_public_final_status, "completed")
+        self.assertIsNotNone(record.paper_psi_pub)
+        self.assertIsNotNone(record.paper_psi_tilde_pub)
+        self.assertGreater(record.paper_public_processed_bits, 0.0)
+        self.assertEqual(record.paper_m_pub, 0.0)
+
+        with tempfile.TemporaryDirectory() as tmp:
+            trace_dir = Path(tmp) / "trace"
+            recorder.export(trace_dir)
+            with (trace_dir / "task_lifecycle.csv").open(newline="") as f:
+                rows = list(csv.DictReader(f))
+            row = next(row for row in rows if row["task_id"] == "84")
+            self.assertEqual(row["paper_public_final_status"], "completed")
+            self.assertEqual(float(row["paper_m_pub"]), 0.0)
+
+    def test_public_runtime_fields_are_populated_without_trace_recorder(self):
+        previous_recorder = Task.trace_recorder
+        Task.trace_recorder = None
+        try:
+            manager = PublicQueueManager(id=0, computational_capacity=10.0, supporting_servers=np.array([1]))
+            task = Task(
+                size=1.0,
+                arrival_time=0,
+                timeout_delay=10,
+                computational_density=0.297,
+                drop_penalty=40,
+                origin_server_id=1,
+                target_server_id=0,
+                task_id=85,
+            )
+            manager.add_tasks([task], current_time=0)
+            manager.public_queues[1].current_time = 0
+            manager.public_queues[1].step(10.0, active_queue_count=1)
+
+            current = manager.public_queues[1].current_task
+            self.assertIsNotNone(current.service_start_time)
+            self.assertIsNotNone(current.paper_public_start_slot)
+            self.assertIsNotNone(current.paper_psi_tilde_pub)
+            self.assertIsNotNone(current.paper_psi_pub)
+            self.assertEqual(current.paper_public_final_status, "completed")
+            self.assertEqual(current.paper_m_pub, 0.0)
+        finally:
+            Task.trace_recorder = previous_recorder
+
     def test_public_state_vector_uses_zero_for_unsupported_queues(self):
         env = Environment(
             static_frequency=0,

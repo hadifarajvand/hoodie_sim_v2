@@ -257,16 +257,19 @@ class Task:
         computational_capacity = capacity
         task_processed = computational_capacity / self.computational_density
         self.remain -= task_processed
-        self.paper_m_pub = float(task_processed if self.remain > 0 else task_processed + self.remain)
+        actual_processed_bits = float(task_processed if self.remain > 0 else task_processed + self.remain)
         if self.paper_public_processed_bits is None:
             self.paper_public_processed_bits = 0.0
-        self.paper_public_processed_bits = float(self.paper_public_processed_bits + self.paper_m_pub)
+        self.paper_public_processed_bits = float(self.paper_public_processed_bits + actual_processed_bits)
+        self.paper_m_pub = 0.0
         self.routing_metadata["paper_m_pub"] = self.paper_m_pub
         self.routing_metadata["paper_public_processed_bits"] = self.paper_public_processed_bits
         if self.remain <= 0:
             task_processed += self.remain
-            return self.finish_task(time), task_processed
-        return 0, task_processed
+            self.routing_metadata["paper_public_processed_bits"] = self.paper_public_processed_bits
+            self.routing_metadata["paper_m_pub"] = self.paper_m_pub
+            return self.finish_task(time), actual_processed_bits
+        return 0, actual_processed_bits
 
     def transmit(self, offloading_capacity):
         if self.target_server_id is None:
