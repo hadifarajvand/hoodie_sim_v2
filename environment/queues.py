@@ -367,7 +367,7 @@ class OffloadingQueue(TaskQueue):
             transmited_task.routing_metadata["paper_off_scheduled_history_recorded"] = True
             recorder = getattr(Task, "trace_recorder", None)
             if recorder is not None:
-                recorder.note_service_end(
+                recorder.note_offloading_stage_end(
                     transmited_task,
                     episode_id=getattr(recorder, "_episode_id", None),
                     time=self.current_time,

@@ -678,6 +678,40 @@ class Phase2ActionModelTests(unittest.TestCase):
             row = next(row for row in rows if row["task_id"] == "98")
             self.assertEqual(row["paper_off_final_status"], "transmitted")
             self.assertEqual(row["paper_psi_off"], str(transmitted_task.paper_psi_off))
+            self.assertNotEqual(row["final_status"], "completed")
+
+    def test_offloading_transmission_does_not_mark_task_completed_before_public_queue(self):
+        recorder = TraceRecorder(trace_level="full")
+        recorder.start_episode(0)
+        Task.trace_recorder = recorder
+        queue = OffloadingQueue({0: 1.0, 2: 2.0, 4: 10.0})
+        task = Task(
+            size=1.0,
+            arrival_time=0,
+            timeout_delay=10,
+            priotiry=1,
+            computational_density=0.297,
+            drop_penalty=40,
+            origin_server_id=1,
+            task_id=99,
+        )
+        task.routing_metadata["dm2_pending"] = True
+        task.routing_metadata["paper_destination_nodes"] = [0, 2, 4]
+        task.routing_metadata["paper_destination_node_id"] = None
+        task.routing_metadata["paper_d_nk_2"] = [0, 0, 0]
+        queue.add_task(task, current_time=0)
+        queue.resolve_dm2_destination = lambda task: 2
+        transmitted_task, _ = queue.step()
+        self.assertIsNotNone(transmitted_task)
+        record = recorder.task_records[99]
+        self.assertEqual(record.paper_off_final_status, "transmitted")
+        self.assertEqual(record.final_status, "pending")
+        events = recorder.resolve_delayed_reward_candidates(0)
+        self.assertEqual(events, [])
+        recorder.note_service_end(transmitted_task, episode_id=0, time=3, node_id=2, queue_type="public")
+        events = recorder.resolve_delayed_reward_candidates(0)
+        self.assertEqual(len(events), 1)
+        self.assertEqual(recorder.task_records[99].final_status, "completed")
 
     def test_vertical_offloading_rate_is_configurable_in_environment(self):
         env = Environment(

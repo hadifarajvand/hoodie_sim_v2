@@ -324,6 +324,21 @@ class TraceRecorder:
         task.final_status = "dropped"
         task.drop_reason = reason
 
+    def note_offloading_stage_end(self, task: Any, episode_id: int, time: int, node_id: int, queue_type: str) -> None:
+        record = self.ensure_task(task.task_id)
+        record.episode_id = episode_id
+        record.processing_node = node_id if record.processing_node is None else record.processing_node
+        record.paper_w_off = getattr(task, "paper_w_off", record.paper_w_off)
+        record.paper_psi_off = getattr(task, "paper_psi_off", record.paper_psi_off)
+        record.paper_off_queue_enter_time = getattr(task, "paper_off_queue_enter_time", record.paper_off_queue_enter_time)
+        record.paper_off_transmission_time = getattr(task, "paper_off_transmission_time", record.paper_off_transmission_time)
+        record.paper_off_deadline_slot = getattr(task, "paper_off_deadline_slot", record.paper_off_deadline_slot)
+        record.paper_off_rate_type = getattr(task, "paper_off_rate_type", record.paper_off_rate_type)
+        record.paper_off_rate_value = getattr(task, "paper_off_rate_value", record.paper_off_rate_value)
+        record.paper_off_destination_node_id = getattr(task, "paper_off_destination_node_id", record.paper_off_destination_node_id)
+        record.paper_off_final_status = "transmitted"
+        task.paper_off_final_status = "transmitted"
+
     def resolve_delayed_reward_candidates(self, episode_id: int) -> list[dict[str, Any]]:
         from reward_contract import compute_delayed_reward
 
