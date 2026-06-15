@@ -208,6 +208,11 @@ def main() -> int:
         seed=args.seed,
     )
     trainer = DQNTrainer(cfg)
+    report["algorithm"] = cfg.algorithm
+    report["q_model_type"] = trainer.policy_net.q_model_type
+    report["model_architecture"] = trainer.policy_net.architecture
+    report["paper_claims_made"] = False
+    report["phase4_evaluation_performed"] = False
     metrics_by_epoch: list[dict[str, object]] = []
     checkpoint_epochs: list[int] = []
 
