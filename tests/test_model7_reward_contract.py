@@ -105,9 +105,29 @@ class Model7RewardContractTests(unittest.TestCase):
         self.assertTrue(events[0]["paired_transition_found"])
         self.assertEqual(events[0]["replay_pairing_status"], "paired")
         self.assertEqual(events[0]["reward"], -4.0)
+        self.assertEqual(len(recorder.delayed_reward_event_traces), 1)
+        persisted = recorder.delayed_reward_event_traces[0]
+        self.assertEqual(persisted.task_id, 99)
+        self.assertEqual(persisted.reward, -4.0)
+        self.assertEqual(persisted.reward_timing_convention, "completion_minus_arrival")
+        self.assertTrue(persisted.paired_transition_found)
         repeat = recorder.resolve_delayed_reward_candidates(0)
         self.assertEqual(repeat, [])
-        self.assertEqual(len(recorder.delayed_reward_event_traces), 0)
+        self.assertEqual(len(recorder.delayed_reward_event_traces), 1)
+
+        with tempfile.TemporaryDirectory() as tmp:
+            trace_dir = Path(tmp)
+            recorder.export(trace_dir)
+            path = trace_dir / "delayed_reward_event_trace.csv"
+            self.assertTrue(path.exists())
+            with path.open(newline="") as f:
+                rows = list(csv.DictReader(f))
+            self.assertEqual(len(rows), 1)
+            row = rows[0]
+            self.assertEqual(row["task_id"], "99")
+            self.assertEqual(float(row["reward"]), -4.0)
+            self.assertEqual(row["replay_pairing_status"], "paired")
+            self.assertEqual(row["reward_timing_convention"], "completion_minus_arrival")
 
     def test_episode_metrics_from_lifecycle_and_rewards(self):
         recorder = TraceRecorder()

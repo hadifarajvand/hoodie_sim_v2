@@ -468,6 +468,23 @@ class TraceRecorder:
                     "pending_transition": pending,
                 }
             )
+            self.note_delayed_reward_event(
+                task_id=record.task_id,
+                episode_id=record.episode_id,
+                source_agent=record.source_node if record.source_node is not None else -1,
+                decision_time=pending.decision_time if pending is not None else (record.queue_enter_time if record.queue_enter_time is not None else 0),
+                final_status=record.final_status,
+                completion_time=record.completion_time,
+                drop_time=record.drop_time,
+                delay=reward_computation.delay,
+                reward=reward_computation.reward,
+                drop_penalty=reward_computation.drop_penalty,
+                reward_reason=reward_computation.reward_reason,
+                paired_transition_found=paired,
+                replay_inserted=False,
+                replay_pairing_status="paired" if paired else "unpaired",
+                reward_timing_convention=reward_computation.reward_timing_convention,
+            )
             self._resolved_delayed_reward_task_ids.add(record.task_id)
         return resolved
 
