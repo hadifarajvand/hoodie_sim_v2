@@ -10,6 +10,7 @@ from pathlib import Path
 from typing import Any
 
 from environment.paper_horizon import PAPER_ACTION_SLOTS, PAPER_DRAIN_SLOTS, PAPER_TOTAL_SLOTS
+from evaluation.paper_metrics import write_paper_facing_metrics_report
 from .trace_dataset import load_trace_dataset, summary_to_dict
 
 
@@ -358,6 +359,11 @@ def orchestrate(
         raise SystemExit(result.stderr.strip() or result.stdout.strip() or "training subprocess failed")
     validation_result = validate_training_artifacts(training_dir, expected_algorithm=algorithm)
     summary = build_offline_evaluation_summary(trace_dir, training_dir, validation_result)
+    paper_metrics_report = write_paper_facing_metrics_report(trace_dir, output_path=output_dir / "paper_facing_metrics_report.json")
+    if paper_metrics_report.get("status") == "failed" or paper_metrics_report.get("validation_errors"):
+        raise ValueError(
+            f"paper-facing metrics validation failed: status={paper_metrics_report.get('status')} errors={paper_metrics_report.get('validation_errors')}"
+        )
     manifest = {
         "model": "Model 11 — End-to-End Runtime / Training / Evaluation Orchestration Contract",
         "status": "passed",
@@ -380,6 +386,9 @@ def orchestrate(
         "paper_drain_slots": preflight.get("paper_drain_slots"),
         "paper_total_slots": preflight.get("paper_total_slots"),
         "horizon_contract_passed": preflight.get("horizon_contract_passed"),
+        "paper_facing_metrics_report_path": str(output_dir / "paper_facing_metrics_report.json"),
+        "paper_facing_metrics_status": paper_metrics_report.get("status"),
+        "paper_facing_metrics_validation_errors_count": len(paper_metrics_report.get("validation_errors", [])),
         "lstm_artifacts": {},
         "paper_claims_made": False,
         "simulation_executed": False,
@@ -398,6 +407,7 @@ def orchestrate(
         "preflight": preflight,
         "artifact_validation": validation_result["report"],
         "offline_evaluation_summary": summary,
+        "paper_facing_metrics_report": paper_metrics_report,
         "manifest": manifest,
     }
 

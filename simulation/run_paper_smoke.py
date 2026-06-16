@@ -16,6 +16,7 @@ from environment.paper_horizon import (
     build_run_horizon_report,
     slot_phase,
 )
+from evaluation.paper_metrics import write_paper_facing_metrics_report
 from phase1_tracing import TraceRecorder
 from training.orchestrate_model11 import orchestrate
 
@@ -168,6 +169,11 @@ def run_paper_smoke(
     _write_json(trace_dir / "run_horizon_report.json", horizon_report)
     if not horizon_report.get("horizon_contract_passed"):
         raise ValueError("paper horizon contract failed during smoke execution")
+    paper_metrics_report = write_paper_facing_metrics_report(trace_dir, output_path=trace_dir / "paper_facing_metrics_report.json")
+    if paper_metrics_report.get("status") == "failed" or paper_metrics_report.get("validation_errors"):
+        raise ValueError(
+            f"paper-facing metrics validation failed: status={paper_metrics_report.get('status')} errors={paper_metrics_report.get('validation_errors')}"
+        )
 
     orchestration_status = "skipped"
     orchestration_manifest_path = None
@@ -210,6 +216,9 @@ def run_paper_smoke(
         "trace_dir": str(trace_dir),
         "run_horizon_report_path": str(trace_dir / "run_horizon_report.json"),
         "horizon_contract_passed": bool(horizon_report.get("horizon_contract_passed")),
+        "paper_facing_metrics_report_path": str(trace_dir / "paper_facing_metrics_report.json"),
+        "paper_facing_metrics_status": paper_metrics_report.get("status"),
+        "paper_facing_metrics_validation_errors_count": len(paper_metrics_report.get("validation_errors", [])),
         "orchestration_requested": bool(orchestrate_training),
         "orchestration_status": orchestration_status,
         "orchestration_manifest_path": orchestration_manifest_path,
