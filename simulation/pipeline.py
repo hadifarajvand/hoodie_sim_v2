@@ -2,14 +2,25 @@ from __future__ import annotations
 
 import csv
 import hashlib
-import heapq
 import json
 import math
+import statistics
 from dataclasses import asdict, dataclass, field
 from pathlib import Path
 from typing import Any
 
 import numpy as np
+
+
+def _write_csv(path: Path, rows: list[dict[str, Any]]) -> None:
+    path.parent.mkdir(parents=True, exist_ok=True)
+    if not rows:
+        path.write_text("")
+        return
+    with path.open("w", newline="") as f:
+        writer = csv.DictWriter(f, fieldnames=list(rows[0].keys()))
+        writer.writeheader()
+        writer.writerows(rows)
 
 
 @dataclass(frozen=True)
@@ -268,6 +279,252 @@ class DeterministicSimulator:
     def event_hash(self) -> str:
         payload = json.dumps([e.to_dict() for e in self.events], sort_keys=True, separators=(",", ":"))
         return hashlib.sha256(payload.encode("utf-8")).hexdigest()
+
+
+@dataclass(frozen=True)
+class ExperimentScenario:
+    name: str
+    arrival_probability: float
+    seed_start: int
+    seed_count: int
+    config_overrides: dict[str, Any] = field(default_factory=dict)
+
+
+def _mean(values: list[float]) -> float | None:
+    return float(statistics.mean(values)) if values else None
+
+
+def _variance(values: list[float]) -> float | None:
+    return float(statistics.pvariance(values)) if values else None
+
+
+def _stddev(values: list[float]) -> float | None:
+    return float(statistics.pstdev(values)) if values else None
+
+
+def _confidence_interval_95(values: list[float]) -> tuple[float | None, float | None]:
+    if not values:
+        return None, None
+    mu = float(statistics.mean(values))
+    if len(values) == 1:
+        return mu, mu
+    sd = float(statistics.stdev(values))
+    half = 1.96 * sd / math.sqrt(len(values))
+    return float(mu - half), float(mu + half)
+
+
+def _copy_config(base: PipelineConfig, **overrides: Any) -> PipelineConfig:
+    payload = base.to_dict()
+    payload.update(overrides)
+    return PipelineConfig(**payload)
+
+
+def _baseline_config(base: PipelineConfig, policy: str) -> PipelineConfig:
+    mode = "paper_faithful"
+    cfg = _copy_config(base, mode=mode)
+    return cfg
+
+
+def _policy_transform(result: dict[str, Any], policy: str) -> dict[str, Any]:
+    transformed = json.loads(json.dumps(result))
+    if policy == "fifo_only":
+        for task in transformed.get("events", []):
+            if task["event_type"] == "TASK_ENQUEUE":
+                task["metadata"]["reason"] = "fifo_only_local"
+    return transformed
+
+
+def run_single_experiment(config: PipelineConfig, policy: str) -> dict[str, Any]:
+    simulator = DeterministicSimulator(config)
+    result = simulator.run()
+    workload_signature = hashlib.sha256(
+        json.dumps(
+            {
+                "seed": config.seed,
+                "arrival_probability": config.arrival_probability,
+                "task_size_range": config.task_size_range,
+                "processing_density_range": config.processing_density_range,
+                "num_edge_nodes": config.num_edge_nodes,
+                "horizon": config.horizon,
+            },
+            sort_keys=True,
+            default=str,
+        ).encode("utf-8")
+    ).hexdigest()
+    resource_signature = hashlib.sha256(
+        json.dumps(
+            {
+                "num_edge_nodes": config.num_edge_nodes,
+                "edge_capacity": config.edge_capacity,
+                "cloud_capacity": config.cloud_capacity,
+                "queue_threshold": config.queue_threshold,
+                "topography": config.topography,
+            },
+            sort_keys=True,
+            default=str,
+        ).encode("utf-8")
+    ).hexdigest()
+    result["policy"] = policy
+    result["seed"] = config.seed
+    result["scenario"] = config.run_id
+    result["config_hash"] = hashlib.sha256(json.dumps(config.to_dict(), sort_keys=True, default=str).encode("utf-8")).hexdigest()
+    result["workload_signature"] = workload_signature
+    result["resource_signature"] = resource_signature
+    return _policy_transform(result, policy)
+
+
+def build_scenarios(base: PipelineConfig, seed_count: int = 20) -> list[ExperimentScenario]:
+    return [
+        ExperimentScenario("low", 0.2, base.seed, seed_count, {"phase": 5}),
+        ExperimentScenario("medium", 0.5, base.seed + 1000, seed_count, {"phase": 5}),
+        ExperimentScenario("high", 0.8, base.seed + 2000, seed_count, {"phase": 5}),
+    ]
+
+
+def summarize_numeric(values: list[float]) -> dict[str, float | None]:
+    return {
+        "mean": _mean(values),
+        "variance": _variance(values),
+        "stddev": _stddev(values),
+    }
+
+
+def aggregate_results(rows: list[dict[str, Any]]) -> dict[str, Any]:
+    grouped: dict[tuple[str, str], list[dict[str, Any]]] = {}
+    for row in rows:
+        key = (row["scenario"], row["policy"])
+        grouped.setdefault(key, []).append(row)
+
+    summary_rows: list[dict[str, Any]] = []
+    for (scenario, policy), values in sorted(grouped.items()):
+        latencies = [float(v["metrics"]["average_latency"]) for v in values if v["metrics"]["average_latency"] is not None]
+        waits = [float(v["metrics"]["average_waiting_time"]) for v in values if v["metrics"]["average_waiting_time"] is not None]
+        services = [float(v["metrics"]["average_service_time"]) for v in values if v["metrics"]["average_service_time"] is not None]
+        local_ratio = [float(v["metrics"]["offloading_breakdown"]["local"]) / max(1, sum(v["metrics"]["offloading_breakdown"].values())) for v in values]
+        neighbor_ratio = [float(v["metrics"]["offloading_breakdown"]["neighbor"]) / max(1, sum(v["metrics"]["offloading_breakdown"].values())) for v in values]
+        cloud_ratio = [float(v["metrics"]["offloading_breakdown"]["cloud"]) / max(1, sum(v["metrics"]["offloading_breakdown"].values())) for v in values]
+        util_means = [sum(v["metrics"]["utilization"].values()) / len(v["metrics"]["utilization"]) for v in values]
+        summary_rows.append(
+            {
+                "scenario": scenario,
+                "policy": policy,
+                "runs": len(values),
+                "latency_mean": _mean(latencies),
+                "latency_variance": _variance(latencies),
+                "latency_stddev": _stddev(latencies),
+                "latency_ci95_low": _confidence_interval_95(latencies)[0],
+                "latency_ci95_high": _confidence_interval_95(latencies)[1],
+                "waiting_mean": _mean(waits),
+                "waiting_variance": _variance(waits),
+                "service_mean": _mean(services),
+                "service_variance": _variance(services),
+                "offloading_local_mean": _mean(local_ratio),
+                "offloading_neighbor_mean": _mean(neighbor_ratio),
+                "offloading_cloud_mean": _mean(cloud_ratio),
+                "utilization_mean": _mean(util_means),
+                "utilization_variance": _variance(util_means),
+                "utilization_stddev": _stddev(util_means),
+            }
+        )
+    return {
+        "rows": summary_rows,
+        "config_count": len({row["scenario"] for row in rows}),
+        "run_count": len(rows),
+    }
+
+
+def generate_paper_tables(summary_rows: list[dict[str, Any]]) -> dict[str, list[dict[str, Any]]]:
+    latency_rows = []
+    offloading_rows = []
+    utilization_rows = []
+    for row in summary_rows:
+        latency_rows.append(
+            {
+                "scenario": row["scenario"],
+                "policy": row["policy"],
+                "latency_mean": row["latency_mean"],
+                "latency_stddev": row["latency_stddev"],
+                "latency_ci95_low": row["latency_ci95_low"],
+                "latency_ci95_high": row["latency_ci95_high"],
+            }
+        )
+        offloading_rows.append(
+            {
+                "scenario": row["scenario"],
+                "policy": row["policy"],
+                "local_offloading": row["offloading_local_mean"],
+                "neighbor_offloading": row["offloading_neighbor_mean"],
+                "cloud_offloading": row["offloading_cloud_mean"],
+            }
+        )
+        utilization_rows.append(
+            {
+                "scenario": row["scenario"],
+                "policy": row["policy"],
+                "utilization_mean": row["utilization_mean"],
+                "utilization_stddev": row["utilization_stddev"],
+            }
+        )
+    return {"latency": latency_rows, "offloading": offloading_rows, "utilization": utilization_rows}
+
+
+def run_experiment_suite(base_config: PipelineConfig, output_dir: str | Path, runs_per_config: int = 20) -> dict[str, Any]:
+    if runs_per_config < 20:
+        raise ValueError("runs_per_config must be at least 20")
+    output_dir = Path(output_dir)
+    output_dir.mkdir(parents=True, exist_ok=True)
+    scenarios = build_scenarios(base_config, seed_count=runs_per_config)
+    policies = ["fifo_only", "random_routing", "heuristic_routing"]
+    rows: list[dict[str, Any]] = []
+    for scenario in scenarios:
+        for policy in policies:
+            for run_idx in range(runs_per_config):
+                seed = scenario.seed_start + run_idx
+                cfg = _copy_config(
+                    base_config,
+                    run_id=f"{scenario.name}_{policy}_{run_idx}",
+                    seed=seed,
+                    arrival_probability=scenario.arrival_probability,
+                    **scenario.config_overrides,
+                )
+                if policy == "fifo_only":
+                    cfg = _copy_config(cfg, phase=0)
+                elif policy == "random_routing":
+                    cfg = _copy_config(cfg, phase=1)
+                else:
+                    cfg = _copy_config(cfg, phase=2)
+                result = run_single_experiment(cfg, policy)
+                rows.append(
+                    {
+                        "scenario": scenario.name,
+                        "policy": policy,
+                        "run_index": run_idx,
+                        "seed": seed,
+                        "config_hash": result["config_hash"],
+                        "workload_signature": result["workload_signature"],
+                        "resource_signature": result["resource_signature"],
+                        "event_hash": result["event_hash"],
+                        "policy_label": policy,
+                        "metrics": result["metrics"],
+                    }
+                )
+    summary = aggregate_results(rows)
+    tables = generate_paper_tables(summary["rows"])
+    exp_dir = output_dir / "experiment_suite"
+    exp_dir.mkdir(parents=True, exist_ok=True)
+    (exp_dir / "raw_results.json").write_text(json.dumps(rows, indent=2, sort_keys=True))
+    (exp_dir / "summary.json").write_text(json.dumps(summary, indent=2, sort_keys=True))
+    for name, table_rows in tables.items():
+        _write_csv(exp_dir / f"{name}_comparison_table.csv", table_rows)
+        (exp_dir / f"{name}_comparison_table.json").write_text(json.dumps(table_rows, indent=2, sort_keys=True))
+    try:
+        from evaluation.evaluation_pipeline import run_evaluation_pipeline
+
+        evaluation_report = run_evaluation_pipeline(exp_dir, exp_dir / "evaluation")
+    except Exception as exc:
+        evaluation_report = {"status": "failed", "error": str(exc)}
+    (exp_dir / "final_experiment_report.json").write_text(json.dumps({"summary": summary, "evaluation": evaluation_report}, indent=2, sort_keys=True))
+    return {"raw_results": rows, "summary": summary, "tables": tables, "evaluation": evaluation_report, "output_dir": str(exp_dir)}
 
 
 def write_artifacts(output_dir: str | Path, result: dict[str, Any]) -> dict[str, str]:
