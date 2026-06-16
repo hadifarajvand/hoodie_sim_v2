@@ -5,6 +5,7 @@ from .euls_core import (
     TaskArrivalSpec,
 )
 from .event_system import EventType, SimulationEvent
+from .execution_engine import DeterministicSimulationEngine
 from .logger import TraceLogger
 from .queue_manager import QueueManager
 from .replay_engine import NonDeterministicExecutionError, ReplayEngine
@@ -12,6 +13,7 @@ from .replay_engine import NonDeterministicExecutionError, ReplayEngine
 __all__ = [
     "ActionDecision",
     "EventType",
+    "DeterministicSimulationEngine",
     "NonDeterministicExecutionError",
     "QueueManager",
     "ReplayEngine",

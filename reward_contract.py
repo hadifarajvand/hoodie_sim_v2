@@ -44,3 +44,9 @@ def compute_delayed_reward(
         drop_penalty=None,
         reward_reason=final_status,
     )
+
+
+def compute_mrs_reward(*, arrival_time: int, completion_time: int, deadline: int, alpha: float = 1.0, beta: float = 5.0) -> float:
+    latency = float(completion_time - arrival_time)
+    violation = 1.0 if completion_time > deadline else 0.0
+    return float(-(alpha * latency) - (beta * violation))

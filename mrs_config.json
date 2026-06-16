@@ -1,0 +1,26 @@
+{
+  "state": ["d_i", "l_i", "q_local", "q_edge", "q_cloud", "b_local", "b_edge", "b_cloud", "net_le", "net_ec"],
+  "actions": {
+    "0": "local",
+    "1": "edge",
+    "2": "cloud"
+  },
+  "queue_policy": "FIFO",
+  "reward": {
+    "alpha": 1.0,
+    "beta": 5.0
+  },
+  "network": {
+    "net_le": 1.0,
+    "net_ec": 2.0
+  },
+  "service_rates": {
+    "local": 1.0,
+    "edge": 1.5,
+    "cloud": 2.0
+  },
+  "arrival_process": {
+    "type": "poisson",
+    "lambda": 1.0
+  }
+}
