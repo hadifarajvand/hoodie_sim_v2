@@ -1,0 +1,23 @@
+{
+  "arrival_probability": 0.5,
+  "cloud_capacity": 2.0,
+  "edge_capacity": 1.0,
+  "horizon": 110,
+  "mode": "paper_faithful",
+  "num_edge_nodes": 3,
+  "phase": 5,
+  "processing_density_range": [
+    1.0,
+    2.0
+  ],
+  "queue_threshold": 2,
+  "run_id": "hoodie_reproduction",
+  "seed": 7,
+  "smoke_only": false,
+  "task_count": 120,
+  "task_size_range": [
+    1,
+    4
+  ],
+  "topography": []
+}

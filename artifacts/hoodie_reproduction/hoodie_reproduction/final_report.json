@@ -1,0 +1,27 @@
+{
+  "arrival_probability": 0.5,
+  "artifacts": {
+    "config": "artifacts/hoodie_reproduction/hoodie_reproduction/config.json",
+    "metrics": "artifacts/hoodie_reproduction/hoodie_reproduction/metrics.json",
+    "offloading": "artifacts/hoodie_reproduction/hoodie_reproduction/plots/offloading.svg",
+    "queue_evolution": "artifacts/hoodie_reproduction/hoodie_reproduction/plots/queue_evolution.svg",
+    "state": "artifacts/hoodie_reproduction/hoodie_reproduction/state.json",
+    "trace": "artifacts/hoodie_reproduction/hoodie_reproduction/trace.json",
+    "utilization": "artifacts/hoodie_reproduction/hoodie_reproduction/plots/utilization.svg"
+  },
+  "branch": "100-hoodie-paper-base",
+  "commit": "366bac9e499d21b271546f34b4cc8f218a66596b",
+  "config_hash": "929fda2c0e15fa381a2f73da29ca99ad75b29f09e813aaec46e93c7004febad3",
+  "event_hash": "40510e66cf7ab0eec64caedf36162143adbe358307b0380841a7502622617b39",
+  "notes": [
+    "This pipeline is baseline/heuristic only.",
+    "No RL, DRL, LSTM, or learning-based policy is used."
+  ],
+  "num_edge_nodes": 3,
+  "paper_faithful": true,
+  "phase": 5,
+  "policy": "FIFO or deterministic heuristic",
+  "runtime_mode": "paper_faithful",
+  "seed": 7,
+  "task_count": 120
+}

@@ -1,0 +1,8 @@
+# HOODIE Reproduction Pipeline Report
+
+branch: 100-hoodie-paper-base
+runtime_mode: paper_faithful
+phase: 5
+config_hash: 929fda2c0e15fa381a2f73da29ca99ad75b29f09e813aaec46e93c7004febad3
+seed: 7
+event_hash: 40510e66cf7ab0eec64caedf36162143adbe358307b0380841a7502622617b39
