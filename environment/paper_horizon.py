@@ -102,10 +102,8 @@ def build_run_horizon_report(trace_dir: str | Path) -> dict[str, Any]:
     queue_rows = _read_csv(trace_dir / "queue_trace.csv")
     delayed_reward_rows = _read_csv(trace_dir / "delayed_reward_event_trace.csv")
 
-    all_times = set()
-    for rows in (horizon_rows, task_rows, action_rows, queue_rows, delayed_reward_rows):
-        all_times.update(_time_values_from_rows(rows))
-    observed_total_slots = max(all_times) + 1 if all_times else PAPER_TOTAL_SLOTS
+    horizon_times = [value for value in (_safe_int(row.get("time")) for row in horizon_rows) if value is not None]
+    observed_total_slots = len(horizon_rows) if horizon_rows else (max(horizon_times) + 1 if horizon_times else PAPER_TOTAL_SLOTS)
     observed_action_slots = sum(1 for row in horizon_rows if str(row.get("slot_phase")) == "action") if horizon_rows else min(observed_total_slots, PAPER_ACTION_SLOTS)
     observed_drain_slots = sum(1 for row in horizon_rows if str(row.get("slot_phase")) == "drain") if horizon_rows else max(0, observed_total_slots - PAPER_ACTION_SLOTS)
 

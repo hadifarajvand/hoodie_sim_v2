@@ -435,12 +435,18 @@ def _extract_transition(row: dict[str, Any]) -> Transition:
 
 
 def _parse_paper_state_row(row: dict[str, Any]) -> dict[str, Any]:
-    state_vector = np.asarray(_load_json_array(row.get("state_vector_json")) or [], dtype=np.float32)
-    l_pub_n_prev = np.asarray(_load_json_array(row.get("l_pub_n_prev_json")) or [], dtype=np.float32)
-    active_load_vector = np.asarray(_load_json_array(row.get("active_load_vector_json")) or [], dtype=np.float32)
-    load_history = np.asarray(_load_json_array(row.get("L_t_json")) or [], dtype=np.float32)
+    def _finite_array(value: Any) -> np.ndarray:
+        array = np.asarray(_load_json_array(value) or [], dtype=np.float32)
+        if array.size:
+            array = np.nan_to_num(array, nan=0.0, posinf=0.0, neginf=0.0)
+        return array
+
+    state_vector = _finite_array(row.get("state_vector_json"))
+    l_pub_n_prev = _finite_array(row.get("l_pub_n_prev_json"))
+    active_load_vector = _finite_array(row.get("active_load_vector_json"))
+    load_history = _finite_array(row.get("L_t_json"))
     predicted_next_load = _load_json_array(row.get("predicted_next_load_json"))
-    predicted_next_load_array = None if predicted_next_load is None else np.asarray(predicted_next_load, dtype=np.float32)
+    predicted_next_load_array = None if predicted_next_load is None else np.nan_to_num(np.asarray(predicted_next_load, dtype=np.float32), nan=0.0, posinf=0.0, neginf=0.0)
     return {
         "episode_id": _safe_int(row.get("episode_id")),
         "time": _safe_int(row.get("time")),
