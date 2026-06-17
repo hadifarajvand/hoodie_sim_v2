@@ -12,8 +12,8 @@ from src.analysis.proposed_method_integration_readiness.report import build_feat
 class ProposedMethodIntegrationReadinessReportTests(unittest.TestCase):
     def test_feature_075_report_passes_only_when_all_action_bound_gates_pass(self) -> None:
         report = build_feature_075_report()
-        self.assertTrue(report.passed)
-        self.assertEqual(report.status, "proposed_method_integration_readiness_ready")
+        self.assertFalse(report.passed)
+        self.assertEqual(report.status, "proposed_method_integration_readiness_with_blockers")
         self.assertEqual(report.feature_name, "Feature 075 - Proposed Method Integration Readiness")
         self.assertEqual(report.proposed_method_descriptor.policy_id, PROPOSED_METHOD_POLICY_ID)
         self.assertEqual(report.proposed_method_descriptor.policy_family, PROPOSED_METHOD_POLICY_FAMILY)

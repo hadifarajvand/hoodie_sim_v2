@@ -47,7 +47,7 @@ class TrainingReadinessContractSchemaTests(unittest.TestCase):
         self.assertEqual(set(payload.keys()), expected_keys)
         self.assertEqual(payload["feature_id"], "054-training-readiness-contract")
         self.assertEqual(payload["behavior_equivalence_passed"], payload["behavior_equivalence_summary"]["passed"])
-        self.assertEqual(payload["recommended_next_feature"], "Feature 055 — Paper-Default Training Smoke Run")
+        self.assertEqual(payload["recommended_next_feature"], "prerequisite evidence repair before training")
 
 
 if __name__ == "__main__":

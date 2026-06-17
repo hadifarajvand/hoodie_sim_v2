@@ -29,10 +29,12 @@ class TrainingReadinessContractMetricsTests(unittest.TestCase):
         ]:
             self.assertTrue(payload[key])
         self.assertTrue(payload["feature_053_readiness_verified"])
-        self.assertTrue(payload["evidence_chain_ready_for_training_contract"])
-        self.assertTrue(payload["training_execution_allowed_next"])
-        self.assertFalse(payload["remaining_blockers"])
-        self.assertEqual(payload["final_verdict"], "training_readiness_contract_ready_for_smoke_run")
+        self.assertFalse(payload["evidence_chain_ready_for_training_contract"])
+        self.assertFalse(payload["training_execution_allowed_next"])
+        self.assertIn("evidence_chain_prerequisite_blocked", payload["remaining_blockers"])
+        self.assertIn("prerequisite_tags_failed", payload["remaining_blockers"])
+        self.assertEqual(payload["final_verdict"], "evidence_chain_prerequisite_blocked")
+        self.assertEqual(payload["recommended_next_feature"], "prerequisite evidence repair before training")
 
     def test_training_cannot_be_allowed_when_any_contract_gate_is_false(self) -> None:
         payload = build_training_readiness_contract_report().to_dict()

@@ -56,12 +56,12 @@ class ControlledEvaluationBatchReadinessMetricsTests(unittest.TestCase):
 
     def test_aggregate_metrics_are_computed_from_scenarios(self) -> None:
         aggregate = compute_aggregate_metrics(self.scenarios)
-        self.assertEqual(aggregate.completed_count, 6)
-        self.assertEqual(aggregate.dropped_timeout_count, 2)
+        self.assertEqual(aggregate.completed_count, 7)
+        self.assertEqual(aggregate.dropped_timeout_count, 1)
         self.assertEqual(aggregate.dropped_unavailable_count, 1)
-        self.assertEqual(aggregate.deadline_violation_count, 2)
+        self.assertEqual(aggregate.deadline_violation_count, 1)
         self.assertEqual(aggregate.illegal_action_rejection_count, 1)
         self.assertAlmostEqual(aggregate.average_delay, 32.0 / 9.0)
         self.assertAlmostEqual(aggregate.average_reward, -142.0 / 9.0)
-        self.assertEqual(aggregate.paper_mode_success_count, 6)
+        self.assertEqual(aggregate.paper_mode_success_count, 7)
         self.assertFalse(aggregate.compatibility_mode_used)

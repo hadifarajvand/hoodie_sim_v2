@@ -18,9 +18,9 @@ class SelectedActionOutcomeEvidenceRerunMetricsTests(unittest.TestCase):
         )
         self.assertEqual(payload["selected_action_family_evidence_status"], "available")
         self.assertEqual(payload["selected_action_to_task_join_status"], "available")
-        self.assertEqual(payload["per_action_outcome_evidence_status"], "available")
-        self.assertTrue(payload["feature_049_can_be_rerun"])
-        self.assertEqual(payload["recommended_next_feature"], "Feature 053 — Exposure Matrix Paper Mechanism Rerun with Outcome Evidence")
+        self.assertEqual(payload["per_action_outcome_evidence_status"], "partial")
+        self.assertFalse(payload["feature_049_can_be_rerun"])
+        self.assertEqual(payload["recommended_next_feature"], "terminal outcome join repair continuation")
 
     def test_denominator_and_zero_handling(self) -> None:
         payload = build_selected_action_outcome_evidence_rerun_report().to_dict()

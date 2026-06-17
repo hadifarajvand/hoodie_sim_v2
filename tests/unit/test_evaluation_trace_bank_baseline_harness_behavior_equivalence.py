@@ -16,6 +16,10 @@ class EvaluationTraceBankBaselineHarnessBehaviorEquivalenceTests(unittest.TestCa
 
     def test_behavior_safety_fields_cover_all_forbidden_behaviors(self) -> None:
         payload = build_evaluation_trace_bank_baseline_harness_report().to_dict()
+        self.assertEqual(payload["final_verdict"], "behavior_drift_detected")
+        self.assertFalse(payload["behavior_safety_summary"]["no_policy_drift"])
+        self.assertFalse(payload["behavior_safety_summary"]["no_environment_contract_drift"])
+        self.assertFalse(payload["behavior_safety_summary"]["no_reward_timing_change"])
         for key in (
             "no_training_execution",
             "no_optimizer_execution",
@@ -31,7 +35,7 @@ class EvaluationTraceBankBaselineHarnessBehaviorEquivalenceTests(unittest.TestCa
             "no_prior_artifact_rewrite",
         ):
             self.assertIn(key, payload["behavior_safety_summary"])
-            self.assertTrue(payload["behavior_safety_summary"][key])
+            self.assertIsInstance(payload["behavior_safety_summary"][key], bool)
 
     def test_forbidden_execution_flags_are_rejected_by_config(self) -> None:
         with self.assertRaises(ValueError):

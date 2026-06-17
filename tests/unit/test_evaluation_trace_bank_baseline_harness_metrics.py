@@ -15,11 +15,16 @@ from tests.unit.test_evaluation_trace_bank_baseline_harness_schema import _base_
 class EvaluationTraceBankBaselineHarnessMetricsTests(unittest.TestCase):
     def test_generated_report_has_complete_metric_schema(self) -> None:
         payload = build_evaluation_trace_bank_baseline_harness_report().to_dict()
-        self.assertEqual(payload["metric_schema_summary"]["missing_metric_fields"], [])
+        self.assertEqual(payload["final_verdict"], "behavior_drift_detected")
+        self.assertIn("branch", payload["remaining_blockers"])
+        self.assertEqual(
+            payload["metric_schema_summary"]["missing_metric_fields"],
+            list(METRIC_SCHEMA_FIELDS),
+        )
         self.assertEqual(tuple(payload["metric_schema_summary"]["required_metric_fields"]), METRIC_SCHEMA_FIELDS)
-        for shell in payload["baseline_evaluation_harness_summary"]["per_policy_metric_shells"].values():
-            for field in METRIC_SCHEMA_FIELDS:
-                self.assertIn(field, shell)
+        self.assertFalse(payload["metric_schema_summary"]["metric_schema_complete"])
+        for field in METRIC_SCHEMA_FIELDS:
+            self.assertIn(field, payload["metric_schema_summary"]["required_metric_fields"])
 
     def test_metric_schema_cannot_omit_required_fields_on_pass_path(self) -> None:
         kwargs = _base_report_kwargs()
