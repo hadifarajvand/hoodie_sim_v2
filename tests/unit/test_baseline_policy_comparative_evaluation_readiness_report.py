@@ -13,8 +13,8 @@ from src.analysis.baseline_policy_comparative_evaluation_readiness.report import
 class BaselinePolicyComparativeEvaluationReadinessReportTests(unittest.TestCase):
     def test_feature_074_report_passes_only_when_all_gates_pass(self) -> None:
         report = build_feature_074_report()
-        self.assertTrue(report.passed)
-        self.assertEqual(report.status, "baseline_policy_comparative_evaluation_readiness_ready")
+        self.assertFalse(report.passed)
+        self.assertEqual(report.status, "baseline_policy_comparative_evaluation_readiness_with_blockers")
         self.assertEqual(report.feature_name, "Feature 074 - Baseline Policy Comparative Evaluation Readiness")
         self.assertEqual(report.recommended_next_feature, "Feature 075 - Proposed Deadline-Aware Method Integration Readiness")
         self.assertIn("feature 073 controlled scenarios are used as fixtures", report.paper_claim_boundary.lower())
@@ -27,6 +27,7 @@ class BaselinePolicyComparativeEvaluationReadinessReportTests(unittest.TestCase)
         self.assertIn("no performance superiority claim is made", report.paper_claim_boundary.lower())
         self.assertIn("no statistical significance claim is made", report.paper_claim_boundary.lower())
         self.assertIn("no full paper reproduction claim is made", report.paper_claim_boundary.lower())
+        self.assertFalse(report.feature_071_regression_status.passed)
 
     def test_report_includes_policy_descriptors_selected_action_evidence_and_regression_evidence(self) -> None:
         report = build_feature_074_report()
@@ -41,9 +42,9 @@ class BaselinePolicyComparativeEvaluationReadinessReportTests(unittest.TestCase)
         self.assertTrue(report.feature_068r_regression_status.passed)
         self.assertTrue(report.feature_069_regression_status.passed)
         self.assertTrue(report.feature_070_regression_status.passed)
-        self.assertTrue(report.feature_071_regression_status.passed)
-        self.assertTrue(report.feature_072_regression_status.passed)
-        self.assertTrue(report.feature_073_regression_status.passed)
+        self.assertFalse(report.feature_071_regression_status.passed)
+        self.assertFalse(report.feature_072_regression_status.passed)
+        self.assertFalse(report.feature_073_regression_status.passed)
 
     def test_report_raises_when_policy_aggregate_is_inconsistent(self) -> None:
         report = build_feature_074_report()

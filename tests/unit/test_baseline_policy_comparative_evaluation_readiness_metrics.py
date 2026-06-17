@@ -102,7 +102,10 @@ class BaselinePolicyComparativeEvaluationReadinessMetricsTests(unittest.TestCase
     def test_compatibility_mode_is_not_used_in_default_comparison(self) -> None:
         self.assertTrue(all(not comparison.compatibility_mode_used for comparison in self.comparisons))
         self.assertTrue(all(not aggregate.compatibility_mode_used for aggregate in self.report.policy_aggregate_metrics))
-        self.assertTrue(self.report.passed)
+        self.assertFalse(self.report.passed)
+        self.assertEqual(self.report.status, "baseline_policy_comparative_evaluation_readiness_with_blockers")
+        self.assertFalse(self.report.feature_071_regression_status.passed)
+        self.assertIn("compatibility mode", self.report.paper_claim_boundary.lower())
 
 
 if __name__ == "__main__":

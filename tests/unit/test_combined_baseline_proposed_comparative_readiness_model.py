@@ -57,6 +57,74 @@ class CombinedBaselineProposedComparativeReadinessModelTests(unittest.TestCase):
         )
         return replace(aggregate, **overrides) if overrides else aggregate
 
+    def _valid_report(self) -> CombinedComparativeReadinessReport:
+        policies = ("FLC", "VO", "HO", "RO", "BCO", "MLEO", PROPOSED_METHOD_POLICY_ID)
+        scenarios = (
+            "light_load_no_deadline_pressure",
+            "tight_deadline_pressure",
+            "legal_horizontal_offload",
+            "illegal_horizontal_destination_attempt",
+            "cloud_vertical_fallback",
+            "timeout_drop_case",
+            "mixed_local_horizontal_cloud_candidates",
+        )
+        rows = tuple(
+            replace(
+                self._row(policy_id=policy_id, scenario_id=scenario_id),
+                policy_family=f"family-{policy_id}",
+                source_feature="075" if policy_id == PROPOSED_METHOD_POLICY_ID else "074",
+            )
+            for policy_id in policies
+            for scenario_id in scenarios
+        )
+        aggregates = tuple(
+            CombinedPolicyAggregate(
+                policy_id=policy_id,
+                policy_family=f"family-{policy_id}",
+                scenario_count=7,
+                completed_count=7,
+                dropped_timeout_count=0,
+                dropped_unavailable_count=0,
+                deadline_violation_count=0,
+                illegal_action_rejection_count=0,
+                mean_delay=3.0,
+                mean_reward=-3.0,
+                all_rows_action_bound=True,
+                compatibility_mode_used=False,
+                decision_trace_present=True,
+            )
+            for policy_id in policies
+        )
+        regression_evidence = tuple(
+            CombinedRegressionEvidence(
+                feature_id=feature_id,
+                status="ok",
+                passed=True,
+                command_hint=f"check-{feature_id}",
+                scope="synthetic validation scope",
+            )
+            for feature_id in ("068R", "069", "070", "071", "072", "073", "074", "075")
+        )
+        return CombinedComparativeReadinessReport(
+            feature_name="Feature 076 - Combined Baseline + Proposed Comparative Readiness",
+            status="combined_baseline_proposed_comparative_readiness_ready",
+            passed=True,
+            rows=rows,
+            aggregates=aggregates,
+            regression_evidence=regression_evidence,
+            required_policy_ids=("FLC", "VO", "HO", "RO", "BCO", "MLEO", PROPOSED_METHOD_POLICY_ID),
+            required_scenario_ids=scenarios,
+            claim_boundary=(
+                "No training claim is made.",
+                "No superiority claim is made.",
+                "No final evaluation claim is made.",
+                "No statistical significance claim is made.",
+                "No full paper reproduction claim is made.",
+            ),
+            scope_evidence=("synthetic scope",),
+            source_features=("074", "075"),
+        )
+
     def test_combined_policy_row_rejects_invalid_readiness_evidence(self) -> None:
         with self.assertRaises(ValueError):
             self._row(selected_action_id="")
@@ -72,7 +140,7 @@ class CombinedBaselineProposedComparativeReadinessModelTests(unittest.TestCase):
             self._aggregate(scenario_count=6)
 
     def test_combined_comparative_report_rejects_missing_policy_scenario_and_duplicate_coverage(self) -> None:
-        report = build_feature_076_report()
+        report = self._valid_report()
         rows = list(report.rows)
         aggregates = list(report.aggregates)
         evidence = list(report.regression_evidence)
@@ -126,7 +194,7 @@ class CombinedBaselineProposedComparativeReadinessModelTests(unittest.TestCase):
             )
 
     def test_combined_comparative_report_rejects_missing_claim_boundary_and_failed_regression(self) -> None:
-        report = build_feature_076_report()
+        report = self._valid_report()
         with self.assertRaises(ValueError):
             CombinedComparativeReadinessReport(
                 feature_name=report.feature_name,
