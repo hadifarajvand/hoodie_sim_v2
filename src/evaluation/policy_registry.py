@@ -6,6 +6,7 @@ from typing import Callable
 from src.policies import (
     AdaptiveOffloadingPolicy,
     BalancedCooperationOffloadingPolicy,
+    DALShadowPolicy,
     FullLocalComputingPolicy,
     HorizontalOffloadingPolicy,
     MinimumLatencyEstimateOffloadingPolicy,
@@ -36,6 +37,7 @@ def _policy_aliases() -> dict[str, str]:
         "MINIMUM_LATENCY_ESTIMATE_OFFLOADING": "MLEO",
         "ADAPTIVE_OFFLOADING": "ADAPTIVE",
         "HOODIE": "ADAPTIVE",
+        "DAL_ADVISORY_SHADOW": "DAL_SHADOW",
     }
 
 
@@ -50,6 +52,8 @@ class PolicyRegistry:
         factories = _policy_factories()
         normalized = name.strip().upper().replace("-", "_")
         canonical = _policy_aliases().get(normalized, normalized)
+        if canonical == "DAL_SHADOW":
+            return DALShadowPolicy()
         if canonical not in factories:
             supported = ", ".join(sorted(factories))
             aliases = ", ".join(sorted(_policy_aliases()))
