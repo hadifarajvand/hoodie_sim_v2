@@ -18,6 +18,7 @@ from .offload_trace_schema import OFFLOAD_LIFECYCLE_EVENTS
 from .link_rate_config import LinkRateConfig, compute_transmission_delay, mbits_to_bits
 from .private_queue import PrivateQueue
 from .public_queue import PublicQueue
+from src.dal.advisory import build_dal_advisory_payload
 from .reward_timing import emit_delayed_reward, reward_for_terminal_task
 from .runtime_model import SharedRuntimeParameters, advance_shared_runtime
 from .lifecycle_trace import LifecycleTraceConfig, LifecycleTraceRecorder
@@ -178,6 +179,9 @@ class HoodieGymEnvironment:
         legal["vertical"] = True
         legal["offload_vertical"] = True
         return legal
+
+    def dal_advisory(self, task: Task | None = None) -> dict[str, Any]:
+        return build_dal_advisory_payload(self, task or self._current_task)
 
     def step(self, action: str | None) -> tuple[dict[str, Any], float, bool, bool, dict[str, Any]]:
         if self.trace is None:
