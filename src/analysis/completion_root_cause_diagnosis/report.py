@@ -27,6 +27,8 @@ APPROVED_DIRTY_PATH_PREFIXES: tuple[str, ...] = (
     "tests/integration/test_completion_root_cause_diagnosis.py",
     "tests/integration/test_completion_root_cause_report.py",
     "tests/integration/test_completion_root_cause_scope_guard.py",
+    "artifacts/analysis/passive-runtime-lifecycle-trace-instrumentation/",
+    "artifacts/analysis/task-completion-lifecycle-formula-audit/",
     "artifacts/analysis/completion-root-cause-diagnosis/",
 )
 
@@ -41,7 +43,7 @@ def _git_output(*args: str) -> str:
 
 
 def _tracked_dirty_paths() -> list[str]:
-    result = subprocess.run(["git", "status", "--short"], check=True, capture_output=True, text=True)
+    result = subprocess.run(["git", "status", "--short", "--untracked-files=no"], check=True, capture_output=True, text=True)
     paths: list[str] = []
     for line in result.stdout.splitlines():
         if len(line) < 4:

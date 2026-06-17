@@ -10,7 +10,33 @@ from src.analysis.completion_root_cause_diagnosis.runner import build_completion
 class CompletionRootCauseSchemaTests(unittest.TestCase):
     @classmethod
     def setUpClass(cls) -> None:
-        cls.report = run_completion_root_cause_diagnosis()
+        from src.analysis.completion_root_cause_diagnosis import runner as runner_module
+
+        fake_prereq_tags = [
+            {"name": "branch", "verified": True, "details": "mocked for schema test"},
+            {"name": "not_main", "verified": True, "details": "mocked for schema test"},
+            {"name": "main_equals_origin_main", "verified": True, "details": "mocked for schema test"},
+            {"name": "main_equals_feature_044", "verified": True, "details": "mocked for schema test"},
+            {"name": "prerequisite_diff_empty", "verified": True, "details": "mocked for schema test"},
+            {"name": "pointer_not_staged", "verified": True, "details": "mocked for schema test"},
+            {"name": "pointer_not_in_main_head", "verified": True, "details": "mocked for schema test"},
+            {"name": "no_unrelated_dirty_files", "verified": True, "details": "mocked for schema test"},
+        ]
+        fake_prior_gates = [{"feature": feature, "name": name, "verified": True, "details": f"{feature} mocked"} for feature, name in [
+            ("037", "baseline revalidation"),
+            ("038", "training foundation"),
+            ("039", "paper HOODIE network"),
+            ("040", "smoke training"),
+            ("041", "full-training campaign gate"),
+            ("042", "paper default terminal exposure"),
+            ("043", "task completion lifecycle audit"),
+            ("044", "passive runtime lifecycle trace instrumentation"),
+        ]]
+
+        with mock.patch.object(runner_module, "build_prerequisite_tags_verified", return_value=fake_prereq_tags), mock.patch.object(
+            runner_module, "collect_prior_feature_gates_verified", return_value=fake_prior_gates
+        ):
+            cls.report = run_completion_root_cause_diagnosis()
 
     def test_config_defaults_match_paper_default_runtime(self) -> None:
         config = CompletionRootCauseConfig()
