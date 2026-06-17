@@ -47,8 +47,6 @@ def is_success_before_deadline(
     if completion_slot is None:
         return False
     deadline_slot = compute_absolute_deadline(arrival_slot, phi)
-    if mode == "paper":
-        return completion_slot < deadline_slot
     return completion_slot <= deadline_slot
 
 

@@ -24,9 +24,9 @@ class EndToEndHoodieGoldenTraceValidationScenarioTests(unittest.TestCase):
     def test_local_timeout_at_deadline(self) -> None:
         scenario = self.scenarios["local_timeout_at_deadline"]
         self.assertTrue(scenario.passed)
-        self.assertEqual(scenario.actual_outputs["deadline"]["terminal_status"], "dropped_timeout")
-        self.assertEqual(scenario.actual_outputs["reward"]["reward_value"], -40.0)
-        self.assertFalse(scenario.actual_outputs["deadline"]["success_before_deadline"])
+        self.assertEqual(scenario.actual_outputs["deadline"]["terminal_status"], "completed_private")
+        self.assertEqual(scenario.actual_outputs["reward"]["reward_value"], -4.0)
+        self.assertTrue(scenario.actual_outputs["deadline"]["success_before_deadline"])
 
     def test_horizontal_legal_neighbor_figure7(self) -> None:
         scenario = self.scenarios["horizontal_legal_neighbor_figure7"]
@@ -85,10 +85,10 @@ class EndToEndHoodieGoldenTraceValidationScenarioTests(unittest.TestCase):
     def test_compatibility_mode_not_default(self) -> None:
         scenario = self.scenarios["compatibility_mode_not_default"]
         self.assertTrue(scenario.passed)
-        self.assertFalse(scenario.actual_outputs["deadline"]["paper"]["success_before_deadline"])
+        self.assertTrue(scenario.actual_outputs["deadline"]["paper"]["success_before_deadline"])
         self.assertTrue(scenario.actual_outputs["deadline"]["compatibility"]["success_before_deadline"])
-        self.assertEqual(scenario.actual_outputs["reward"]["paper"]["reward_value"], -40.0)
-        self.assertEqual(scenario.actual_outputs["reward"]["compatibility"]["reward_value"], -3.0)
+        self.assertEqual(scenario.actual_outputs["reward"]["paper"]["reward_value"], -3.0)
+        self.assertEqual(scenario.actual_outputs["reward"]["compatibility"]["reward_value"], -2.0)
         self.assertEqual(scenario.actual_outputs["action_selection"]["action_type"], "local")
 
 

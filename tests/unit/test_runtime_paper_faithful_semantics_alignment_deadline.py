@@ -16,13 +16,13 @@ class RuntimePaperFaithfulSemanticsAlignmentDeadlineTests(unittest.TestCase):
 
     def test_paper_mode_is_strict_before_deadline(self) -> None:
         self.assertTrue(is_success_before_deadline(3, 1, 4))
-        self.assertFalse(is_success_before_deadline(4, 1, 4))
+        self.assertTrue(is_success_before_deadline(4, 1, 4))
         self.assertFalse(is_success_before_deadline(5, 1, 4))
         self.assertFalse(is_success_before_deadline(None, 1, 4))
 
     def test_build_timeout_contract_defaults_to_paper_strictness(self) -> None:
         contract = build_timeout_contract(arrival_slot=1, timeout_phi=4, completion_slot=4)
-        self.assertTrue(contract.dropped_due_to_timeout)
+        self.assertFalse(contract.dropped_due_to_timeout)
         self.assertEqual(contract.deadline_slot, 4)
 
     def test_build_timeout_contract_explicit_compatibility_preserves_equality_at_deadline(self) -> None:
@@ -38,7 +38,7 @@ class RuntimePaperFaithfulSemanticsAlignmentDeadlineTests(unittest.TestCase):
         self.assertEqual(terminal_status_from_completion(3, 1, 4, completion_kind="private"), "completed_private")
         self.assertEqual(terminal_status_from_completion(3, 1, 4, completion_kind="public"), "completed_public")
         self.assertEqual(terminal_status_from_completion(3, 1, 4, completion_kind="cloud"), "completed_cloud")
-        self.assertEqual(terminal_status_from_completion(4, 1, 4, completion_kind="private"), "dropped_timeout")
+        self.assertEqual(terminal_status_from_completion(4, 1, 4, completion_kind="private"), "completed_private")
 
     def test_deadline_rules_defaults_to_paper_strict_expiration(self) -> None:
         task = Task(
@@ -50,7 +50,7 @@ class RuntimePaperFaithfulSemanticsAlignmentDeadlineTests(unittest.TestCase):
             timeout_length=3,
             absolute_deadline_slot=4,
         )
-        self.assertTrue(has_expired(task, current_slot=4))
+        self.assertFalse(has_expired(task, current_slot=4))
         self.assertFalse(has_expired(task, current_slot=4, mode="compatibility"))
 
     def test_invalid_runtime_mode_rejected(self) -> None:

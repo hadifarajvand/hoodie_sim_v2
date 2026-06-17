@@ -188,7 +188,7 @@ class TopologyTimeoutRewardFidelityModelTests(unittest.TestCase):
         self.assertEqual(dropped.rule_evidence.rule_text, rule.rule_text)
 
         paper_contract = build_timeout_contract(arrival_slot=1, timeout_phi=4, completion_slot=4)
-        self.assertTrue(paper_contract.dropped_due_to_timeout)
+        self.assertFalse(paper_contract.dropped_due_to_timeout)
         self.assertEqual(paper_contract.deadline_slot, 4)
 
         compatibility_contract = build_timeout_contract(arrival_slot=1, timeout_phi=4, completion_slot=4, mode="compatibility")

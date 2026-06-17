@@ -37,7 +37,7 @@ class RewardEquationTerminalRewardContractSignTest(unittest.TestCase):
             reward_emitted=True,
         )
 
-        self.assertEqual(reward_for_terminal_task(completed), -3.0)
+        self.assertEqual(reward_for_terminal_task(completed), -4.0)
         self.assertEqual(reward_for_terminal_task(dropped), -40.0)
 
     def test_no_task_slot_emits_nan_reward_and_does_not_pollute_metrics(self) -> None:

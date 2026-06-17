@@ -29,6 +29,7 @@ class PublicCloudCapacitySharingUnitTests(unittest.TestCase):
 
     def test_single_public_queue_gets_full_edge_capacity(self) -> None:
         env = self._environment()
+        env.current_slot = 1
         queue = PublicQueue(host_node_id="2", source_agent_id="1")
         task = self._task(1, source_agent_id=1, cycles_remaining=0.2)
         queue.enqueue(task, slot=0)
@@ -43,6 +44,7 @@ class PublicCloudCapacitySharingUnitTests(unittest.TestCase):
 
     def test_two_public_queues_same_host_share_edge_capacity_equally(self) -> None:
         env = self._environment()
+        env.current_slot = 1
         queue_a = PublicQueue(host_node_id="2", source_agent_id="1")
         queue_b = PublicQueue(host_node_id="2", source_agent_id="3")
         task_a = self._task(1, source_agent_id=1, cycles_remaining=0.2)
@@ -60,6 +62,7 @@ class PublicCloudCapacitySharingUnitTests(unittest.TestCase):
 
     def test_two_public_queues_different_hosts_do_not_share_capacity(self) -> None:
         env = self._environment()
+        env.current_slot = 1
         queue_a = PublicQueue(host_node_id="2", source_agent_id="1")
         queue_b = PublicQueue(host_node_id="3", source_agent_id="3")
         queue_a.enqueue(self._task(1, source_agent_id=1, cycles_remaining=0.2), slot=0)
@@ -74,6 +77,7 @@ class PublicCloudCapacitySharingUnitTests(unittest.TestCase):
 
     def test_two_cloud_queues_share_global_cloud_capacity_equally(self) -> None:
         env = self._environment()
+        env.current_slot = 1
         queue_a = PublicQueue(host_node_id="cloud", source_agent_id="1")
         queue_b = PublicQueue(host_node_id="cloud", source_agent_id="3")
         queue_a.enqueue(self._task(1, source_agent_id=1, cycles_remaining=0.2), slot=0)
@@ -89,6 +93,7 @@ class PublicCloudCapacitySharingUnitTests(unittest.TestCase):
 
     def test_total_public_host_consumption_does_not_exceed_edge_capacity(self) -> None:
         env = self._environment()
+        env.current_slot = 1
         queue_a = PublicQueue(host_node_id="2", source_agent_id="1")
         queue_b = PublicQueue(host_node_id="2", source_agent_id="3")
         queue_a.enqueue(self._task(1, source_agent_id=1, cycles_remaining=0.2), slot=0)
@@ -103,6 +108,7 @@ class PublicCloudCapacitySharingUnitTests(unittest.TestCase):
 
     def test_total_cloud_consumption_does_not_exceed_cloud_capacity(self) -> None:
         env = self._environment()
+        env.current_slot = 1
         queue_a = PublicQueue(host_node_id="cloud", source_agent_id="1")
         queue_b = PublicQueue(host_node_id="cloud", source_agent_id="3")
         queue_a.enqueue(self._task(1, source_agent_id=1, cycles_remaining=0.2), slot=0)
@@ -118,6 +124,7 @@ class PublicCloudCapacitySharingUnitTests(unittest.TestCase):
     def test_capacity_sharing_order_is_deterministic(self) -> None:
         def build_finalized_task_ids() -> list[int]:
             env = self._environment()
+            env.current_slot = 1
             queue_a = PublicQueue(host_node_id="2", source_agent_id="3")
             queue_b = PublicQueue(host_node_id="2", source_agent_id="1")
             queue_c = PublicQueue(host_node_id="cloud", source_agent_id="2")

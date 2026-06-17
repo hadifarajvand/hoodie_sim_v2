@@ -39,27 +39,48 @@ class MechanismRepairTimeoutDropUnitTest(unittest.TestCase):
         return env
 
     def test_timeout_boundary_drops_in_public_environment_step(self) -> None:
-        trace = self._timeout_trace(timeout_slot=1)
+        trace = self._timeout_trace(timeout_slot=0)
         env = self._environment(trace)
 
         _obs0, reward0, terminated0, truncated0, info0 = env.step("local")
         _obs1, reward1, terminated1, truncated1, info1 = env.step(None)
+        _obs2, reward2, terminated2, truncated2, info2 = env.step(None)
 
         self.assertEqual(info1["finalized_tasks"][0]["terminal_outcome"], "dropped")
         self.assertEqual(info1["finalized_tasks"][0]["completion_slot"], 1)
         self.assertEqual(reward0, 0.0)
-        self.assertLess(reward1, 0.0)
+        self.assertEqual(reward1, 0.0)
+        self.assertLess(reward2, 0.0)
         self.assertFalse(terminated0)
         self.assertFalse(truncated0)
-        self.assertTrue(terminated1)
+        self.assertFalse(terminated1)
         self.assertFalse(truncated1)
-        self.assertTrue(info1["terminated"])
+        self.assertTrue(terminated2)
+        self.assertFalse(truncated2)
+        self.assertFalse(info1["terminated"])
         self.assertFalse(info1["truncated"])
-        self.assertEqual(info1["metrics"]["dropped"], 1.0)
-        self.assertEqual(info1["metrics"]["completed"], 0.0)
+        self.assertTrue(info2["terminated"])
+        self.assertFalse(info2["truncated"])
+        self.assertEqual(info2["metrics"]["dropped"], 1.0)
+        self.assertEqual(info2["metrics"]["completed"], 0.0)
 
     def test_local_completion_still_works_for_non_timeout_case(self) -> None:
-        trace = self._timeout_trace(task_id=2, timeout_slot=5)
+        trace = EvaluationTrace(
+            trace_id="timeout-drop-2",
+            seed=104,
+            tasks=(
+                TraceTaskBlueprint(
+                    task_id=2,
+                    source_agent_id=1,
+                    arrival_slot=0,
+                    size=0.2,
+                    processing_density=1.0,
+                    timeout_length=5,
+                    absolute_deadline_slot=5,
+                ),
+            ),
+            metadata={"mode": "deterministic_seed", "trace_id": "timeout-drop-2", "seed": "104"},
+        )
         env = self._environment(trace)
 
         _obs0, reward0, _terminated0, _truncated0, _info0 = env.step("local")

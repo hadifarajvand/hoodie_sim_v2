@@ -44,25 +44,30 @@ class EnvironmentLifecycleRepairUnitTest(unittest.TestCase):
         )
 
     def test_local_compute_completes_before_timeout_when_deadline_allows(self) -> None:
-        env = self._environment(self._single_task_trace(task_id=11, arrival_slot=0, timeout_slot=5, size=84.0, density=2.0))
+        env = self._environment(self._single_task_trace(task_id=11, arrival_slot=0, timeout_slot=5, size=0.2, density=1.0))
 
         _obs, reward, terminated, truncated, info = env.step("local")
 
-        self.assertEqual(info["finalized_tasks"][0]["terminal_outcome"], "completed")
-        self.assertEqual(info["finalized_tasks"][0]["completion_slot"], 0)
+        self.assertEqual(info["finalized_tasks"], [])
+        _obs1, reward1, terminated1, truncated1, info1 = env.step(None)
+        self.assertEqual(info1["finalized_tasks"][0]["terminal_outcome"], "completed")
+        self.assertEqual(info1["finalized_tasks"][0]["completion_slot"], 0)
         self.assertFalse(truncated)
-        self.assertTrue(terminated)
-        self.assertEqual(info["metrics"]["completed"], 1.0)
-        self.assertEqual(info["metrics"]["dropped"], 0.0)
+        self.assertFalse(terminated)
+        self.assertTrue(terminated1)
+        self.assertFalse(truncated1)
+        self.assertEqual(info1["metrics"]["completed"], 1.0)
+        self.assertEqual(info1["metrics"]["dropped"], 0.0)
         self.assertEqual(reward, 0.0)
+        self.assertLess(reward1, 0.0)
 
     def test_deterministic_same_slot_ordering_is_stable_across_repeated_runs(self) -> None:
         trace = EvaluationTrace(
             trace_id="deterministic-ordering",
             seed=106,
             tasks=(
-                TraceTaskBlueprint(task_id=2, source_agent_id=1, arrival_slot=0, size=20.0, processing_density=2.0, timeout_length=5, absolute_deadline_slot=5),
-                TraceTaskBlueprint(task_id=1, source_agent_id=1, arrival_slot=0, size=22.0, processing_density=2.0, timeout_length=5, absolute_deadline_slot=5),
+                TraceTaskBlueprint(task_id=2, source_agent_id=1, arrival_slot=0, size=0.2, processing_density=1.0, timeout_length=5, absolute_deadline_slot=5),
+                TraceTaskBlueprint(task_id=1, source_agent_id=1, arrival_slot=0, size=0.2, processing_density=1.0, timeout_length=5, absolute_deadline_slot=5),
             ),
             metadata={"mode": "deterministic_seed", "trace_id": "deterministic-ordering", "seed": "106"},
         )

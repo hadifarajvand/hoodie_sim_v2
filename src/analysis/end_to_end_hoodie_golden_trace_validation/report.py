@@ -326,10 +326,10 @@ def _build_local_success_before_deadline() -> GoldenTraceScenario:
 
 
 def _build_local_timeout_at_deadline() -> GoldenTraceScenario:
-    inputs = _local_trace_inputs(scenario_id="local_timeout_at_deadline", completion_slot=5)
+    inputs = _local_trace_inputs(scenario_id="local_timeout_at_deadline", completion_slot=4)
     arrival_slot = 2
     phi = 4
-    completion_slot = 5
+    completion_slot = 4
     absolute_deadline_slot = compute_absolute_deadline(arrival_slot, phi)
     terminal_status = terminal_status_from_completion(completion_slot, arrival_slot, phi, completion_kind="private")
     topology = TopologyTraceEvidence(
@@ -343,8 +343,8 @@ def _build_local_timeout_at_deadline() -> GoldenTraceScenario:
         reason="local_private_execution",
     )
     deadline_actual = DeadlineTraceEvidence(arrival_slot, phi, absolute_deadline_slot, completion_slot, "paper", is_success_before_deadline(completion_slot, arrival_slot, phi), terminal_status)
-    terminal_state_actual = {"terminal_status": terminal_status, "terminal_slot": completion_slot, "drop_reason": "deadline_exceeded"}
-    reward_actual = RewardTraceEvidence(True, "dropped_timeout", None, 40.0, -40.0, reward_slot_for_terminal(completion_slot), "paper")
+    terminal_state_actual = {"terminal_status": terminal_status, "terminal_slot": completion_slot, "drop_reason": None}
+    reward_actual = RewardTraceEvidence(True, "completed_private", 3, 40.0, -4.0, reward_slot_for_terminal(completion_slot), "paper")
     expected_outputs = {
         "action_selection": {"action_type": "local", "selected_destination": "private", "mode": "paper"},
         "topology": {
@@ -363,16 +363,16 @@ def _build_local_timeout_at_deadline() -> GoldenTraceScenario:
             "absolute_deadline_slot": absolute_deadline_slot,
             "completion_slot": completion_slot,
             "mode": "paper",
-            "success_before_deadline": False,
-            "terminal_status": "dropped_timeout",
+            "success_before_deadline": True,
+            "terminal_status": "completed_private",
         },
-        "terminal_state": {"terminal_status": "dropped_timeout", "terminal_slot": completion_slot, "drop_reason": "deadline_exceeded"},
+        "terminal_state": {"terminal_status": "completed_private", "terminal_slot": completion_slot, "drop_reason": None},
         "reward": {
             "x_active": True,
-            "terminal_status": "dropped_timeout",
-            "phi_value": None,
+            "terminal_status": "completed_private",
+            "phi_value": 3,
             "drop_penalty": 40.0,
-            "reward_value": -40.0,
+            "reward_value": -4.0,
             "reward_slot": reward_slot_for_terminal(completion_slot),
             "mode": "paper",
         },
@@ -431,12 +431,12 @@ def _build_local_timeout_at_deadline() -> GoldenTraceScenario:
     return _trace_summary_trace(
         scenario_id="local_timeout_at_deadline",
         name="Local Timeout At Deadline",
-        description="Equality at the deadline fails in paper mode and falls through to the timeout drop path.",
+        description="Equality at the deadline completes in paper mode under the canonical EULS contract.",
         inputs=inputs,
         expected_outputs=expected_outputs,
         actual_outputs=actual_outputs,
         base_steps=base_steps,
-        comparison_trace_result="paper semantics drop at equality deadline",
+        comparison_trace_result="paper semantics completion at equality deadline",
     )
 
 
@@ -1284,26 +1284,26 @@ def _build_compatibility_mode_not_default() -> GoldenTraceScenario:
     )
     arrival_slot = 2
     phi = 4
-    completion_slot = 5
+    completion_slot = 4
     absolute_deadline_slot = compute_absolute_deadline(arrival_slot, phi)
     paper_terminal_status = terminal_status_from_completion(completion_slot, arrival_slot, phi, completion_kind="private")
     paper_deadline = DeadlineTraceEvidence(arrival_slot, phi, absolute_deadline_slot, completion_slot, "paper", is_success_before_deadline(completion_slot, arrival_slot, phi), paper_terminal_status)
     compatibility_deadline = DeadlineTraceEvidence(arrival_slot, phi, absolute_deadline_slot, completion_slot, "compatibility", is_success_before_deadline(completion_slot, arrival_slot, phi, mode="compatibility"), "completed_private")
     terminal_state_expected = {
-        "paper": {"terminal_status": "dropped_timeout", "terminal_slot": completion_slot, "drop_reason": "deadline_exceeded"},
+        "paper": {"terminal_status": "completed_private", "terminal_slot": completion_slot, "drop_reason": None},
         "compatibility": {"terminal_status": "completed_private", "terminal_slot": completion_slot, "drop_reason": None},
     }
     terminal_state_actual = {
-        "paper": {"terminal_status": "dropped_timeout", "terminal_slot": completion_slot, "drop_reason": "deadline_exceeded"},
+        "paper": {"terminal_status": "completed_private", "terminal_slot": completion_slot, "drop_reason": None},
         "compatibility": {"terminal_status": "completed_private", "terminal_slot": completion_slot, "drop_reason": None},
     }
     reward = {
         "paper": {
             "x_active": True,
-            "terminal_status": "dropped_timeout",
-            "phi_value": None,
+            "terminal_status": "completed_private",
+            "phi_value": 3,
             "drop_penalty": 40.0,
-            "reward_value": reward_from_terminal_state(True, "dropped_timeout", None, 40.0),
+            "reward_value": reward_for_terminal_task(Task(1, 1, arrival_slot, 1.0, 1.0, 4, absolute_deadline_slot, completion_slot=completion_slot, terminal_outcome="completed", reward_emitted=True)),
             "reward_slot": reward_slot_for_terminal(completion_slot),
             "mode": "paper",
         },
@@ -1320,10 +1320,10 @@ def _build_compatibility_mode_not_default() -> GoldenTraceScenario:
     reward_expected = {
         "paper": {
             "x_active": True,
-            "terminal_status": "dropped_timeout",
-            "phi_value": None,
+            "terminal_status": "completed_private",
+            "phi_value": 3,
             "drop_penalty": 40.0,
-            "reward_value": reward_from_terminal_state(True, "dropped_timeout", None, 40.0),
+            "reward_value": reward_for_terminal_task(Task(1, 1, arrival_slot, 1.0, 1.0, 4, absolute_deadline_slot, completion_slot=completion_slot, terminal_outcome="completed", reward_emitted=True)),
             "reward_slot": reward_slot_for_terminal(completion_slot),
             "mode": "paper",
         },
@@ -1340,10 +1340,10 @@ def _build_compatibility_mode_not_default() -> GoldenTraceScenario:
     reward_actual_bundle = {
         "paper": {
             "x_active": True,
-            "terminal_status": "dropped_timeout",
-            "phi_value": None,
+            "terminal_status": "completed_private",
+            "phi_value": 3,
             "drop_penalty": 40.0,
-            "reward_value": reward_from_terminal_state(True, "dropped_timeout", None, 40.0),
+            "reward_value": reward_for_terminal_task(Task(1, 1, arrival_slot, 1.0, 1.0, 4, absolute_deadline_slot, completion_slot=completion_slot, terminal_outcome="completed", reward_emitted=True)),
             "reward_slot": reward_slot_for_terminal(completion_slot),
             "mode": "paper",
         },

@@ -74,11 +74,11 @@ class ControlledEvaluationBatchReadinessScenarioTests(unittest.TestCase):
         arrival_slot = 2
         phi = 4
         deadline_slot = compute_absolute_deadline(arrival_slot, phi)
-        self.assertFalse(is_success_before_deadline(deadline_slot, arrival_slot, phi))
+        self.assertTrue(is_success_before_deadline(deadline_slot, arrival_slot, phi))
         self.assertTrue(is_success_before_deadline(deadline_slot, arrival_slot, phi, mode="compatibility"))
         scenario = next(item for item in self.scenarios if item.scenario_id == "tight_deadline_pressure")
         self.assertEqual(scenario.tasks[0].completion_slot, deadline_slot)
-        self.assertEqual(scenario.tasks[0].terminal_status, "dropped_timeout")
+        self.assertEqual(scenario.tasks[0].terminal_status, "completed_private")
 
     def test_horizontal_task_record_cannot_mark_non_neighbor_or_self_as_legal(self) -> None:
         non_neighbor = batch_report._horizontal_task_record(

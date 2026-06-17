@@ -13,7 +13,9 @@ class OffloadNextSlotTests(unittest.TestCase):
         engine = SlotEngine(current_slot=5)
         queue = OffloadingQueue(owner_node_id="ea1", resolved_destination="ea2")
         public_queue = PublicQueue(host_node_id="ea2", source_agent_id="ea1")
-        task = Task(1, 1, 0, 10, 1, 3, 3)
+        task = Task(1, 1, 0, 0.001, 1, 3, 3)
+        task.metadata["transmission_started_at"] = 5
+        task.metadata["transmission_delay_slots"] = 1
 
         queue.enqueue(task, slot=5)
 
