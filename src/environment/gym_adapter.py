@@ -205,6 +205,7 @@ class HoodieGymEnvironment:
                 observation=self.observe_flat(current_task),
                 legal_action_mask=legal_action_mask,
                 trace_history=(self.trace.trace_id,),
+                dal_advisory=self.dal_advisory(current_task),
             )
             selected_action = select_legal_action(context, action)
             current_task.metadata["selected_action_family"] = self._selected_action_family(selected_action)
