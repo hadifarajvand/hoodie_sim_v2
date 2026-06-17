@@ -62,6 +62,7 @@ class HoodieGymEnvironment:
     _active_tasks: dict[int, Task] = field(default_factory=dict)
     _history: list[StepTraceRecord] = field(default_factory=list)
     _trace_ledgers: dict[int, OffloadTraceLedger] = field(default_factory=dict)
+    _pending_terminal_tasks: list[Task] = field(default_factory=list)
     _metrics: dict[str, float] = field(default_factory=lambda: {"completed": 0.0, "dropped": 0.0, "reward": 0.0})
     _drain_mode: bool = False
 
@@ -76,6 +77,7 @@ class HoodieGymEnvironment:
         self._active_tasks.clear()
         self._history.clear()
         self._trace_ledgers.clear()
+        self._pending_terminal_tasks.clear()
         self._metrics = {"completed": 0.0, "dropped": 0.0, "reward": 0.0}
         self._drain_mode = False
         self.engine.current_slot = 0
@@ -183,6 +185,12 @@ class HoodieGymEnvironment:
         finalized_tasks: list[Task] = []
         current_task = self._current_task
         selected_action_emitted = False
+        finalized_pending_task_ids: set[int] = set()
+        if self._pending_terminal_tasks:
+            pending_finalized = self._finalize_pending_terminal_tasks()
+            finalized_tasks.extend(pending_finalized)
+            finalized_pending_task_ids.update(task.task_id for task in pending_finalized)
+            reward += sum(reward_for_terminal_task(task) for task in pending_finalized)
         if current_task is not None:
             if action is None:
                 raise ValueError("An action is required while a task is pending")
@@ -214,16 +222,26 @@ class HoodieGymEnvironment:
 
         finalized_tasks.extend(self._progress_offloading_queues())
         finalized_tasks.extend(self._progress_execution_queues())
+        immediate_tasks: list[Task] = []
         for task in finalized_tasks:
-            finalize_task_runtime_state_with_parameters(task, self.current_slot, self.runtime_parameters)
-            emit_delayed_reward(task)
-            task_reward = reward_for_terminal_task(task)
-            reward += task_reward
-            self._record_outcome(task, task_reward)
+            if task.task_id in finalized_pending_task_ids:
+                continue
+            if task.completion_slot is None:
+                continue
+            if task.terminal_outcome is not None:
+                task_reward = reward_for_terminal_task(task)
+                reward += task_reward
+                self._record_outcome(task, task_reward)
+            else:
+                self._pending_terminal_tasks.append(task)
+                immediate_tasks.append(task)
+        if immediate_tasks:
+            finalized_tasks = [task for task in finalized_tasks if task not in immediate_tasks]
 
         if (
             not selected_action_emitted
             and not finalized_tasks
+            and not self._pending_terminal_tasks
             and current_task is None
             and self.queue_load == 0
         ):
@@ -433,6 +451,8 @@ class HoodieGymEnvironment:
                 if not queue.tasks:
                     continue
                 task = queue.tasks[0]
+                if queue.current_head_entered_at == self.current_slot:
+                    continue
                 task.metadata["capacity_sharing_host"] = host_node_id
                 task.metadata["capacity_sharing_active_heads"] = len(active_heads)
                 task.metadata["capacity_sharing_capacity_pool"] = capacity_pool
@@ -619,7 +639,8 @@ class HoodieGymEnvironment:
     def _is_terminated(self) -> bool:
         has_future_arrivals = any(self._pending_arrivals.values())
         has_queued_work = self.queue_load > 0
-        return not has_future_arrivals and not has_queued_work and self._current_task is None
+        has_pending_terminal_tasks = bool(self._pending_terminal_tasks)
+        return not has_future_arrivals and not has_queued_work and not has_pending_terminal_tasks and self._current_task is None
 
     def _build_info(
         self,
@@ -658,6 +679,18 @@ class HoodieGymEnvironment:
             if finalized_tasks
             else [],
         }
+
+    def _finalize_pending_terminal_tasks(self) -> list[Task]:
+        finalized_tasks: list[Task] = []
+        pending = list(self._pending_terminal_tasks)
+        self._pending_terminal_tasks.clear()
+        for task in pending:
+            finalize_task_runtime_state_with_parameters(task, self.current_slot, self.runtime_parameters)
+            emit_delayed_reward(task)
+            task_reward = reward_for_terminal_task(task)
+            self._record_outcome(task, task_reward)
+            finalized_tasks.append(task)
+        return finalized_tasks
 
     def _record_execution_progress(
         self,

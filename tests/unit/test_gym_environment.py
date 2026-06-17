@@ -135,7 +135,7 @@ class GymEnvironmentTests(unittest.TestCase):
         _obs, _reward0, terminated0, truncated0, _info0 = env.step("local")
         _obs, _reward1, terminated1, truncated1, info1 = env.step(None)
 
-        self.assertTrue(terminated0)
+        self.assertFalse(terminated0)
         self.assertFalse(truncated0)
         self.assertTrue(terminated1)
         self.assertFalse(truncated1)
@@ -174,12 +174,23 @@ class GymEnvironmentTests(unittest.TestCase):
             runtime_parameters=SharedRuntimeParameters(runtime_variant="constant_service"),
             compute_config=ComputeConfig(cpu_capacity_per_slot_agent=64.0, cpu_capacity_per_slot_edge=64.0, cpu_capacity_per_slot_cloud=64.0),
         )
-        env.reset(seed=5)
-        _obs, _reward, _terminated, _truncated, info = env.step("local")
+        single_trace = self._single_task_trace(task_id=5, timeout_length=5, absolute_deadline_slot=5)
+        env.trace = single_trace
+        env._pending_arrivals = {0: [single_trace.tasks[0]]}  # type: ignore[assignment]
+        env.current_slot = 0
+        env._current_task = env._load_current_task()
+        _obs, reward0, terminated0, truncated0, info0 = env.step("local")
+        _obs, reward1, terminated1, truncated1, info1 = env.step(None)
 
-        self.assertEqual(info["queue_load"], 1)
-        self.assertEqual(info["finalized_tasks"], [])
-        self.assertIsNotNone(env.current_task)
+        self.assertEqual(reward0, 0.0)
+        self.assertFalse(terminated0)
+        self.assertFalse(truncated0)
+        self.assertEqual(info0["queue_load"], 0)
+        self.assertTrue(info1["finalized_tasks"])
+        self.assertEqual(info1["finalized_tasks"][0]["resolved_destination"], "self")
+        self.assertEqual(info1["queue_load"], 0)
+        self.assertTrue(terminated1)
+        self.assertFalse(truncated1)
 
     def test_horizontal_offload_path(self) -> None:
         topology = TopologyGraph(node_ids=("1", "2", "cloud"), legal_adjacency={"1": ("2", "cloud")})
@@ -203,8 +214,26 @@ class GymEnvironmentTests(unittest.TestCase):
 
     def test_public_queue_admission_after_offload(self) -> None:
         topology = TopologyGraph(node_ids=("1", "2"), legal_adjacency={"1": ("2",)})
-        env = self._env(topology=topology)
-        env.trace = self._single_task_trace(task_id=11)
+        env = self._env(
+            topology=topology,
+            compute_config=ComputeConfig(cpu_capacity_per_slot_agent=64.0, cpu_capacity_per_slot_edge=1.0, cpu_capacity_per_slot_cloud=1.0),
+        )
+        env.trace = EvaluationTrace(
+            trace_id="single-task-11-public",
+            seed=11,
+            tasks=(
+                TraceTaskBlueprint(
+                    task_id=11,
+                    source_agent_id=1,
+                    arrival_slot=0,
+                    size=2.0,
+                    processing_density=1.0,
+                    timeout_length=5,
+                    absolute_deadline_slot=5,
+                ),
+            ),
+            metadata={"mode": "deterministic_seed", "trace_id": "single-task-11-public", "seed": "11"},
+        )
         env._pending_arrivals = {0: [env.trace.tasks[0]]}  # type: ignore[assignment]
         env.current_slot = 0
         env._current_task = env._load_current_task()
@@ -212,8 +241,8 @@ class GymEnvironmentTests(unittest.TestCase):
         env.step(None)
 
         self.assertIn(("2", "1"), env._public_queues)
-        self.assertEqual(env._public_queues[("2", "1")].host_node_id, "2")
-        self.assertEqual(env._public_queues[("2", "1")].source_agent_id, "1")
+        self.assertEqual(len(env._public_queues[("2", "1")].tasks), 1)
+        self.assertEqual(env._public_queues[("2", "1")].tasks[0].queue_state, "public_queue")
 
     def test_same_slot_arrivals_are_not_stranded(self) -> None:
         env = self._env(
@@ -251,9 +280,9 @@ class GymEnvironmentTests(unittest.TestCase):
         _obs, reward0, _terminated0, _truncated0, info0 = env.step("local")
         _obs, reward1, terminated1, _truncated1, info1 = env.step(None)
 
-        self.assertLess(reward0, 0.0)
-        self.assertTrue(any(task["terminal_outcome"] == "completed" for task in info0["finalized_tasks"]))
-        self.assertTrue(reward1 != reward0)
+        self.assertEqual(reward0, 0.0)
+        self.assertLess(reward1, 0.0)
+        self.assertTrue(any(task["terminal_outcome"] == "completed" for task in info1["finalized_tasks"]))
         self.assertTrue(terminated1)
 
     def test_delayed_reward_after_drop(self) -> None:
@@ -269,9 +298,9 @@ class GymEnvironmentTests(unittest.TestCase):
         _obs, reward0, _terminated0, _truncated0, _info0 = env.step("local")
         _obs, reward1, _terminated1, _truncated1, info1 = env.step("local")
 
-        self.assertLess(reward0, 0.0)
-        self.assertTrue(any(task["terminal_outcome"] == "dropped" for task in _info0["finalized_tasks"]))
-        self.assertTrue(reward1 != reward0)
+        self.assertEqual(reward0, 0.0)
+        self.assertLess(reward1, 0.0)
+        self.assertTrue(any(task["terminal_outcome"] == "dropped" for task in info1["finalized_tasks"]))
 
     def test_fractional_paper_values_survive_runtime_observation(self) -> None:
         from src.environment.traffic_config import TrafficConfig
