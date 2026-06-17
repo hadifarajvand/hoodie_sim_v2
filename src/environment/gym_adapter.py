@@ -10,6 +10,7 @@ from src.policies.policy_interface import PolicyContext
 
 from .environment import apply_policy_action, finalize_task_runtime_state_with_parameters
 from .compute_config import ComputeConfig
+from .deadline_rules import has_expired
 from .execution_helper import step_execution
 from .offload_trace_ledger import OffloadTraceLedger
 from .offloading_queue import OffloadingQueue
@@ -185,11 +186,11 @@ class HoodieGymEnvironment:
         finalized_tasks: list[Task] = []
         current_task = self._current_task
         selected_action_emitted = False
-        finalized_pending_task_ids: set[int] = set()
+        staged_terminal_task_ids: set[int] = set()
         if self._pending_terminal_tasks:
             pending_finalized = self._finalize_pending_terminal_tasks()
             finalized_tasks.extend(pending_finalized)
-            finalized_pending_task_ids.update(task.task_id for task in pending_finalized)
+            staged_terminal_task_ids.update(task.task_id for task in pending_finalized)
             reward += sum(reward_for_terminal_task(task) for task in pending_finalized)
         if current_task is not None:
             if action is None:
@@ -220,11 +221,14 @@ class HoodieGymEnvironment:
             self._current_task = None
             selected_action_emitted = True
 
+        swept_tasks = self._sweep_expired_queue_heads()
+        finalized_tasks.extend(swept_tasks)
+        staged_terminal_task_ids.update(task.task_id for task in swept_tasks)
         finalized_tasks.extend(self._progress_offloading_queues())
         finalized_tasks.extend(self._progress_execution_queues())
         immediate_tasks: list[Task] = []
         for task in finalized_tasks:
-            if task.task_id in finalized_pending_task_ids:
+            if task.task_id in staged_terminal_task_ids:
                 continue
             if task.completion_slot is None:
                 continue
@@ -495,6 +499,45 @@ class HoodieGymEnvironment:
                 )
                 finalized.append(finalized_task)
         return finalized
+
+    def _sweep_expired_queue_heads(self) -> list[Task]:
+        finalized: list[Task] = []
+        for queue in list(self._private_queues.values()):
+            finalized.extend(self._drop_expired_head(queue, "private"))
+        for queue in list(self._offloading_queues.values()):
+            finalized.extend(self._drop_expired_head(queue, "offloading"))
+        for queue in list(self._public_queues.values()):
+            finalized.extend(self._drop_expired_head(queue, "public"))
+        return finalized
+
+    def _drop_expired_head(self, queue: PrivateQueue | OffloadingQueue | PublicQueue, queue_type: str) -> list[Task]:
+        if not queue.tasks:
+            return []
+        task = queue.tasks[0]
+        if not has_expired(task, self.current_slot):
+            return []
+        dropped = queue.dequeue()
+        if dropped.terminal_outcome is None:
+            dropped.terminal_outcome = "dropped"
+        dropped.drop_flag = True
+        dropped.completion_slot = self.current_slot
+        dropped.metadata["queue_type"] = queue_type
+        dropped.metadata.setdefault("host_node_id", getattr(queue, "owner_node_id", getattr(queue, "host_node_id", None)))
+        if dropped.selected_action in {"horizontal", "offload_horizontal"}:
+            dropped.metadata.setdefault("host_node_id", getattr(queue, "host_node_id", None))
+        ledger = self._trace_ledgers.setdefault(dropped.task_id, OffloadTraceLedger())
+        ledger.emit("dropped_timeout")
+        self._pending_terminal_tasks.append(dropped)
+        self._record_trace_event(
+            "deadline_reached",
+            dropped,
+            queue_type=queue_type,
+            host_node_id=dropped.metadata.get("host_node_id"),
+            destination=dropped.resolved_destination,
+            terminal_outcome=dropped.terminal_outcome,
+            trace_source_component="environment",
+        )
+        return [dropped]
 
     def _shared_queue_sort_key(self, queue: PublicQueue) -> tuple[int, int, str, str]:
         head = queue.tasks[0] if queue.tasks else None

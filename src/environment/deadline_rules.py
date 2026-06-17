@@ -13,5 +13,5 @@ def _validate_mode(mode: str) -> None:
 def has_expired(task: Task, current_slot: int, mode: str = "paper") -> bool:
     _validate_mode(mode)
     if mode == "paper":
-        return current_slot >= task.absolute_deadline_slot
+        return current_slot > task.absolute_deadline_slot
     return current_slot > task.absolute_deadline_slot
