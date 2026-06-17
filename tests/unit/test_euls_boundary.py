@@ -5,8 +5,8 @@ from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[2]))
 
-from euls.boundary import EULSBoundaryContract
-from euls.kernel import EULSKernel
+from src.euls.boundary import EULSBoundaryContract
+from src.euls.kernel import EULSKernel
 from src.environment.gym_adapter import HoodieGymEnvironment
 
 
@@ -31,7 +31,7 @@ def test_reset_delegates_and_returns_same_shape():
 
 def test_step_delegates_standard_tuple():
     env = _environment()
-    kernel = EULSKernel(env)
+    kernel = EULSKernel(_environment())
     env.reset(seed=3)
     kernel.reset(seed=3)
     env_obs, env_reward, env_terminated, env_truncated, env_info = env.step("local")
