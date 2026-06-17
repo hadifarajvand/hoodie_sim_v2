@@ -1,5 +1,7 @@
 # hoodie_sim_v2
 
+سلام
+
 ## Tracking Policy
 
 - Keep source, configs, specs, docs, and approved reference artifacts in git.
