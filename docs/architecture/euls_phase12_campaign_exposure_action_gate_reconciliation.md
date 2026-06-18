@@ -69,6 +69,7 @@ Phase 12 touches only analysis/report test alignment and local validation hygien
 ## Remaining limitations
 
 - The repository still contains local-only generated artifacts that should not be committed.
+- A local-only `.specify/feature.json` pointer fixture was created to satisfy the paper-mechanism exposure schema tests and is intentionally left untracked.
 - Phase 12 does not claim training readiness or figure-generation readiness.
 - Phase 12 does not run training or optimizer steps.
 - Phase 12 does not generate Figures 8–11.
