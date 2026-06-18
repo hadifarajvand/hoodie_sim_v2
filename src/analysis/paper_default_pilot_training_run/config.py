@@ -6,6 +6,7 @@ from typing import Any
 
 FEATURE_ID = "057-paper-default-pilot-training-run"
 BRANCH_NAME = "057-paper-default-pilot-training-run"
+PILOT_BASELINE_BRANCH = "056-target-update-replay-validation"
 OUTPUT_DIR = Path("artifacts/analysis/paper-default-pilot-training-run")
 REPORT_JSON = OUTPUT_DIR / "paper-default-pilot-training-run-report.json"
 REPORT_MD = OUTPUT_DIR / "paper-default-pilot-training-run-report.md"

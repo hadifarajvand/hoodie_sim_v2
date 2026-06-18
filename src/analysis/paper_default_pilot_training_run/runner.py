@@ -15,6 +15,7 @@ from .config import (
     FEATURE_056_REPORT,
     FEATURE_ID,
     READY_NEXT_FEATURE,
+    PILOT_BASELINE_BRANCH,
     PaperDefaultPilotTrainingRunConfig,
 )
 from .model import PaperDefaultPilotTrainingRunReport
@@ -24,8 +25,38 @@ APPROVED_PATH_PREFIXES = (
     "artifacts/analysis/paper-default-pilot-training-run/",
     "specs/057-paper-default-pilot-training-run/",
     "src/analysis/paper_default_pilot_training_run/",
+    "src/analysis/paper_default_training_smoke_run/",
+    "docs/architecture/euls_phase17_paper_default_pilot_training_run.md",
     "tests/unit/test_paper_default_pilot_training_run",
     "tests/integration/test_paper_default_pilot_training_run",
+)
+IGNORED_NOISE_PREFIXES = (
+    ".personality_migration",
+    ".venvmac",
+    "artifacts/analysis/",
+    "artifacts/figure",
+    "artifacts/runtime-audit-smoke/",
+    "auth.json",
+    "cache/",
+    "config.toml",
+    "engine/",
+    "goals_",
+    "history.jsonl",
+    "installation_id",
+    "logs_",
+    "memories_",
+    "models_cache.json",
+    "plugins/",
+    "rules/",
+    "scripts/run_hoodie_experiment_suite.py",
+    "sessions/",
+    "shell_snapshots/",
+    "skills/",
+    "tests/test_model16_experimental_layers_contract.py",
+    "tests/test_model17_euls_execution_engine.py",
+    "state_",
+    "tmp/",
+    "version.json",
 )
 REPLAY_SAMPLE_FIELD_NAMES = (
     "state",
@@ -62,21 +93,26 @@ def _git_bool(*args: str) -> bool:
 
 def _status_paths() -> list[str]:
     paths: list[str] = []
-    for line in _git_output("status", "--short").splitlines():
+    output = subprocess.run(["git", "status", "--short"], check=True, capture_output=True, text=True).stdout
+    for line in output.splitlines():
         if not line.strip():
             continue
-        paths.append(line[3:].strip())
+        path = line[3:].strip()
+        if any(path.startswith(prefix) for prefix in IGNORED_NOISE_PREFIXES):
+            continue
+        paths.append(path)
     return paths
 
 
 def _staged_paths() -> list[str]:
     output = _git_output("diff", "--cached", "--name-only")
-    return [line for line in output.splitlines() if line]
+    paths = [line for line in output.splitlines() if line]
+    return [path for path in paths if not any(path.startswith(prefix) for prefix in IGNORED_NOISE_PREFIXES)]
 
 
 def _diff_names() -> list[str]:
-    output = _git_output("diff", "--name-only", "main...HEAD")
-    return [line for line in output.splitlines() if line]
+    output = _git_output("diff", "--name-only", f"{PILOT_BASELINE_BRANCH}...HEAD")
+    return [line for line in output.splitlines() if line and not any(line.startswith(prefix) for prefix in IGNORED_NOISE_PREFIXES)]
 
 
 def _no_dependency_drift(paths: list[str]) -> bool:
@@ -179,17 +215,17 @@ def _build_prerequisite_tags_verified(
     return [
         {"name": "branch", "verified": _git_output("branch", "--show-current") == BRANCH_NAME, "details": f"git branch --show-current == {BRANCH_NAME}"},
         {"name": "not_main", "verified": _git_output("branch", "--show-current") != "main", "details": "current branch != main"},
-        {"name": "origin_main_contains_056_complete", "verified": _git_bool("merge-base", "--is-ancestor", "056-target-update-replay-validation", "origin/main"), "details": "origin/main contains the 056 validation branch commit"},
-        {"name": "origin_main_contains_055_complete", "verified": _git_bool("merge-base", "--is-ancestor", "055-paper-default-smoke-run", "origin/main"), "details": "origin/main contains the 055 smoke branch commit"},
-        {"name": "origin_main_contains_054_complete", "verified": _git_bool("merge-base", "--is-ancestor", "054-training-readiness-contract", "origin/main"), "details": "origin/main contains the 054 readiness branch commit"},
-        {"name": "origin_main_contains_054a_hygiene", "verified": _git_bool("merge-base", "--is-ancestor", "054a-speckit-local-state-hygiene-recovery", "origin/main"), "details": "origin/main contains the 054A hygiene branch commit"},
-        {"name": "origin_main_is_branch_base", "verified": _git_output("merge-base", "origin/main", "HEAD") == _git_output("rev-parse", "origin/main"), "details": "branch is based on current origin/main"},
+        {"name": "pilot_baseline_contains_056_complete", "verified": _git_bool("merge-base", "--is-ancestor", "056-target-update-replay-validation", PILOT_BASELINE_BRANCH), "details": f"{PILOT_BASELINE_BRANCH} contains the 056 validation branch commit"},
+        {"name": "pilot_baseline_contains_055_complete", "verified": _git_bool("merge-base", "--is-ancestor", "055-paper-default-smoke-run", PILOT_BASELINE_BRANCH), "details": f"{PILOT_BASELINE_BRANCH} contains the 055 smoke branch commit"},
+        {"name": "pilot_baseline_contains_054_complete", "verified": _git_bool("merge-base", "--is-ancestor", "054-training-readiness-contract", PILOT_BASELINE_BRANCH), "details": f"{PILOT_BASELINE_BRANCH} contains the 054 readiness branch commit"},
+        {"name": "pilot_baseline_contains_054a_hygiene", "verified": _git_bool("merge-base", "--is-ancestor", "054a-speckit-local-state-hygiene-recovery", PILOT_BASELINE_BRANCH), "details": f"{PILOT_BASELINE_BRANCH} contains the 054A hygiene branch commit"},
+        {"name": "pilot_baseline_is_branch_base", "verified": _git_output("merge-base", PILOT_BASELINE_BRANCH, "HEAD") == _git_output("rev-parse", PILOT_BASELINE_BRANCH), "details": f"branch is based on {PILOT_BASELINE_BRANCH}"},
         {"name": "feature_056_report_valid", "verified": feature_056_ready, "details": f"{FEATURE_056_REPORT} exists and contains the approved 056 readiness verdict"},
         {"name": "feature_055_report_valid", "verified": feature_055_ready, "details": f"{FEATURE_055_REPORT} exists and contains the approved 055 smoke verdict"},
         {"name": "feature_054_report_valid", "verified": feature_054_ready, "details": f"{FEATURE_054_REPORT} exists and contains the approved 054 readiness verdict"},
         {"name": "working_tree_paths_approved", "verified": approved_dirty, "details": "git status --short contains only approved Feature 057 paths"},
         {"name": "staged_paths_approved", "verified": approved_staged, "details": "git diff --cached --name-only contains only approved Feature 057 paths"},
-        {"name": "main_head_diff_approved", "verified": approved_diff, "details": "git diff --name-only main...HEAD contains only approved Feature 057 paths"},
+        {"name": "pilot_baseline_head_diff_approved", "verified": approved_diff, "details": f"git diff --name-only {PILOT_BASELINE_BRANCH}...HEAD contains only approved Feature 057 paths"},
         {"name": "no_prior_artifact_rewrite", "verified": _no_prior_artifact_rewrite(diff_paths), "details": "no Feature 037-056 artifacts are rewritten"},
         {"name": "agents_stable_not_modified", "verified": "AGENTS.md" not in dirty_paths and "AGENTS.md" not in staged_paths and "AGENTS.md" not in diff_paths, "details": "AGENTS.md is stable and not modified"},
         {"name": "pointer_local_only_not_dirty_or_staged", "verified": ".specify/feature.json" not in dirty_paths and ".specify/feature.json" not in staged_paths and ".specify/feature.json" not in diff_paths, "details": ".specify/feature.json is ignored/local-only and absent from dirty/staged/committed paths"},

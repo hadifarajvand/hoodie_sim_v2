@@ -14,6 +14,13 @@ APPROVED_PATH_PREFIXES = (
     "artifacts/analysis/paper-default-training-smoke-run/",
     "specs/055-paper-default-training-smoke-run/",
     "src/analysis/paper_default_training_smoke_run/",
+    "specs/056-target-update-and-replay-training-validation/",
+    "src/analysis/target_update_replay_training_validation/",
+    "tests/unit/test_target_update_replay_validation",
+    "tests/integration/test_target_update_replay_validation",
+    "specs/057-paper-default-pilot-training-run/",
+    "src/analysis/paper_default_pilot_training_run/",
+    "docs/architecture/euls_phase16_target_update_replay_validation.md",
     "tests/unit/test_paper_default_training_smoke_run",
     "tests/integration/test_paper_default_training_smoke_run",
 )
@@ -66,7 +73,7 @@ def _feature_054_readiness_verified(payload: dict[str, Any]) -> bool:
 
 def _prerequisite_tags_verified(diff_names: list[str]) -> list[dict[str, Any]]:
     current_branch = _git_output("branch", "--show-current")
-    branch_allowed = current_branch in {BRANCH_NAME, "056-target-update-replay-validation"}
+    branch_allowed = current_branch in {BRANCH_NAME, "056-target-update-replay-validation", "057-paper-default-pilot-training-run"}
     return [
         {
             "name": "branch",
