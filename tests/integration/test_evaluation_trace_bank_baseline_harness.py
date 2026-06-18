@@ -33,6 +33,7 @@ class EvaluationTraceBankBaselineHarnessIntegrationTests(unittest.TestCase):
         separation = payload["train_eval_separation_summary"]
         self.assertTrue(separation["training_trace_bank_exists"])
         self.assertTrue(separation["evaluation_trace_bank_exists"])
+        self.assertNotEqual(separation["training_trace_bank_id"], separation["evaluation_trace_bank_id"])
         self.assertEqual(separation["overlap_trace_ids"], [])
         self.assertTrue(separation["train_eval_trace_banks_disjoint"])
         self.assertFalse(separation["evaluation_on_training_traces"])

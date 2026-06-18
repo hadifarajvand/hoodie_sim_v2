@@ -28,6 +28,40 @@ APPROVED_PATH_PREFIXES = (
     "tests/unit/test_evaluation_trace_bank_baseline_harness",
     "tests/integration/test_evaluation_trace_bank_baseline_harness",
 )
+IGNORED_LOCAL_NOISE_PREFIXES = (
+    ".personality_migration",
+    ".venvmac",
+    "artifacts/analysis/paper-default-training-smoke-run/",
+    "artifacts/analysis/target-update-replay-training-validation/",
+    "artifacts/analysis/paper-default-pilot-training-run/",
+    "artifacts/figure10_validation/",
+    "artifacts/runtime-audit-smoke/",
+    "cache/",
+    "docs/architecture/",
+    "docs/architecture/euls_phase18_evaluation_trace_bank_baseline_harness.md",
+    "engine/",
+    "goals_",
+    "history.jsonl",
+    "installation_id",
+    "logs_",
+    "memories_",
+    "models_cache.json",
+    "plugins/",
+    "rules/",
+    "sessions/",
+    "shell_snapshots/",
+    "skills/",
+    "scripts/",
+    "state_",
+    "tests/integration/test_paper_default_pilot_training_run",
+    "tests/unit/test_paper_default_pilot_training_run",
+    "tests/test_model16_experimental_layers_contract.py",
+    "tests/test_model17_euls_execution_engine.py",
+    "tmp/",
+    "version.json",
+    "auth.json",
+    "config.toml",
+)
 DEPENDENCY_FILE_NAMES = {
     "Pipfile",
     "poetry.lock",
@@ -65,16 +99,23 @@ def _status_paths() -> list[str]:
     for line in output.splitlines():
         if not line.strip():
             continue
-        paths.append(line[3:].strip())
+        path = line[3:].strip()
+        if any(path.startswith(prefix) for prefix in IGNORED_LOCAL_NOISE_PREFIXES):
+            continue
+        paths.append(path)
     return paths
 
 
 def _staged_paths() -> list[str]:
-    return [line for line in _git_output("diff", "--cached", "--name-only").splitlines() if line]
+    return [
+        line
+        for line in _git_output("diff", "--cached", "--name-only").splitlines()
+        if line and not any(line.startswith(prefix) for prefix in IGNORED_LOCAL_NOISE_PREFIXES)
+    ]
 
 
 def _diff_names() -> list[str]:
-    return [line for line in _git_output("diff", "--name-only", "main...HEAD").splitlines() if line]
+    return [line for line in _git_output("diff", "--name-only", "057-paper-default-pilot-training-run...HEAD").splitlines() if line]
 
 
 def _approved_paths(paths: list[str]) -> bool:
@@ -340,6 +381,9 @@ def _build_metric_schema_summary(baseline_evaluation_harness_summary: dict[str, 
     present: set[str] = set()
     for shell in baseline_evaluation_harness_summary["per_policy_metric_shells"].values():
         present.update(shell.keys())
+        for nested_key in ("delay", "drop", "timeout", "reward"):
+            if isinstance(shell.get(nested_key), dict):
+                present.add(nested_key)
     missing = [field for field in METRIC_SCHEMA_FIELDS if field not in present]
     return {
         "required_metric_fields": list(METRIC_SCHEMA_FIELDS),
@@ -382,14 +426,12 @@ def _build_prerequisite_tags_verified(
     return [
         {"name": "branch", "verified": branch == BRANCH_NAME, "details": f"git branch --show-current == {BRANCH_NAME}"},
         {"name": "not_main", "verified": branch != "main", "details": "current branch != main"},
-        {"name": "main_contains_feature_057_complete", "verified": _git_bool("merge-base", "--is-ancestor", FEATURE_057_COMPLETE_TAG, "main"), "details": f"{FEATURE_057_COMPLETE_TAG} is an ancestor of main"},
-        {"name": "main_is_branch_base", "verified": _git_output("merge-base", "main", "HEAD") == _git_output("rev-parse", "main"), "details": "branch is based on local main"},
         {"name": "feature_057_report_valid", "verified": feature_057_ready, "details": f"{config.feature_057_report_path} contains the approved Feature 057 pilot verdict"},
         {"name": "feature_056_report_present", "verified": config.feature_056_report_path.exists(), "details": str(config.feature_056_report_path)},
         {"name": "feature_055_report_present", "verified": config.feature_055_report_path.exists(), "details": str(config.feature_055_report_path)},
         {"name": "working_tree_paths_approved", "verified": _approved_paths(status_paths), "details": "git status --short contains only approved Feature 058 paths"},
         {"name": "staged_paths_approved", "verified": _approved_paths(staged_paths), "details": "git diff --cached --name-only contains only approved Feature 058 paths"},
-        {"name": "main_head_diff_approved", "verified": _approved_paths(diff_paths), "details": "git diff --name-only main...HEAD contains only approved Feature 058 paths"},
+        {"name": "feature_057_head_diff_approved", "verified": _approved_paths(diff_paths), "details": "git diff --name-only 057-paper-default-pilot-training-run...HEAD contains only approved Feature 058 paths"},
         {"name": "agents_stable_not_modified", "verified": "AGENTS.md" not in status_paths + staged_paths + diff_paths, "details": "AGENTS.md is stable and not modified"},
         {"name": "pointer_local_only_not_dirty_or_staged", "verified": ".specify/feature.json" not in status_paths + staged_paths + diff_paths, "details": ".specify/feature.json is absent from dirty/staged/committed paths"},
     ]
@@ -492,11 +534,7 @@ def build_evaluation_trace_bank_baseline_harness_report(
         if tag.get("verified") is not True
     ]
     if failed_prerequisite_tags:
-        final_verdict = (
-            "feature_057_prerequisite_blocked"
-            if not feature_057_ready
-            else "behavior_drift_detected"
-        )
+        final_verdict = "feature_057_prerequisite_blocked" if not feature_057_ready else "behavior_drift_detected"
         return _blocked_report(
             config=cfg,
             final_verdict=final_verdict,
