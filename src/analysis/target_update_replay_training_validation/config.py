@@ -6,6 +6,7 @@ from typing import Any
 
 FEATURE_ID = "056-target-update-and-replay-training-validation"
 BRANCH_NAME = "056-target-update-replay-validation"
+SMOKE_BASELINE_BRANCH = "055-paper-default-smoke-run"
 OUTPUT_DIR = Path("artifacts/analysis/target-update-replay-training-validation")
 REPORT_JSON = OUTPUT_DIR / "target-update-replay-validation-report.json"
 REPORT_MD = OUTPUT_DIR / "target-update-replay-validation-report.md"

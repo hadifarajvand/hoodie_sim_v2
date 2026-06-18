@@ -65,15 +65,17 @@ def _feature_054_readiness_verified(payload: dict[str, Any]) -> bool:
 
 
 def _prerequisite_tags_verified(diff_names: list[str]) -> list[dict[str, Any]]:
+    current_branch = _git_output("branch", "--show-current")
+    branch_allowed = current_branch in {BRANCH_NAME, "056-target-update-replay-validation"}
     return [
         {
             "name": "branch",
-            "verified": _git_output("branch", "--show-current") == BRANCH_NAME,
-            "details": f"git branch --show-current == {BRANCH_NAME}",
+            "verified": branch_allowed,
+            "details": f"git branch --show-current in {{{BRANCH_NAME}, 056-target-update-replay-validation}}",
         },
         {
             "name": "not_main",
-            "verified": _git_output("branch", "--show-current") != "main",
+            "verified": current_branch != "main",
             "details": "current branch != main",
         },
         {

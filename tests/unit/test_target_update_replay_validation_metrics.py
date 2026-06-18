@@ -34,7 +34,6 @@ class TargetUpdateReplayValidationMetricsTests(unittest.TestCase):
             self.assertFalse(_feature_055_smoke_verified(mutated), msg=field_name)
 
     def test_passing_path_validates_replay_optimizer_target_and_metadata_contracts(self) -> None:
-        self.skipTest("training-scope: Feature 056 passing-path validation requires the Feature 056 pass-state branch and is excluded from EULS-focused replay validation")
         payload = build_target_update_replay_validation_report().to_dict()
         self.assertTrue(payload["feature_055_smoke_verified"])
         self.assertTrue(payload["replay_insertion_validated"])
