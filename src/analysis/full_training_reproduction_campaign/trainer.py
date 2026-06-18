@@ -253,6 +253,9 @@ class DDQNTrainer:
             if truncated and (env.current_task is not None or info.get("queue_load", 0) > 0):
                 pending_at_horizon_count += 1
                 terminal_reason = "pending_at_horizon"
+                reward_available = False
+                reward_value = 0.0
+                terminal = False
 
             if current_task is not None:
                 transition = ReplayTransition(

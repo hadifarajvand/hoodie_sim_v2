@@ -30,11 +30,11 @@ class PaperDefaultTrainingSmokeRunSchemaTests(unittest.TestCase):
         self.assertEqual(set(payload), expected_keys)
         self.assertEqual(payload["feature_id"], "055-paper-default-training-smoke-run")
         self.assertTrue(payload["feature_054_readiness_verified"])
-        self.assertFalse(payload["live_environment_training_used"])
+        self.assertTrue(payload["live_environment_training_used"])
         self.assertFalse(payload["fixture_training_used"])
-        self.assertEqual(payload["recommended_next_feature"], "paper-default training smoke repair")
-        self.assertEqual(payload["final_verdict"], "paper_default_training_smoke_blocked")
-        self.assertIn("prerequisite_tags_failed", payload["remaining_blockers"])
+        self.assertEqual(payload["recommended_next_feature"], "Feature 056 — Target Update and Replay Training Validation")
+        self.assertEqual(payload["final_verdict"], "paper_default_training_smoke_passed")
+        self.assertFalse(payload["remaining_blockers"])
 
 
 if __name__ == "__main__":

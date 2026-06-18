@@ -6,7 +6,7 @@ import json
 import subprocess
 from typing import Any
 
-from .config import BRANCH_NAME, FEATURE_054A_COMPLETE_TAG, FEATURE_054_COMPLETE_TAG, FEATURE_ID, READY_NEXT_FEATURE, PaperDefaultTrainingSmokeConfig
+from .config import BRANCH_NAME, FEATURE_054A_COMPLETE_TAG, FEATURE_054_COMPLETE_TAG, FEATURE_ID, READY_NEXT_FEATURE, SMOKE_BASELINE_BRANCH, PaperDefaultTrainingSmokeConfig
 from .model import PaperDefaultTrainingSmokeReport
 from .report import write_paper_default_training_smoke_report
 
@@ -32,7 +32,7 @@ def _git_bool(*args: str) -> bool:
 
 
 def _diff_names() -> list[str]:
-    output = _git_output("diff", "--name-only", "main...HEAD")
+    output = _git_output("diff", "--name-only", f"{SMOKE_BASELINE_BRANCH}...HEAD")
     return [line for line in output.splitlines() if line]
 
 
@@ -87,14 +87,14 @@ def _prerequisite_tags_verified(diff_names: list[str]) -> list[dict[str, Any]]:
             "details": f"main contains {FEATURE_054A_COMPLETE_TAG[:-3]}",
         },
         {
-            "name": "main_is_branch_base",
-            "verified": _git_output("merge-base", "main", "HEAD") == _git_output("rev-parse", "main"),
-            "details": "branch is based on current main",
+            "name": "smoke_baseline_is_branch_base",
+            "verified": _git_output("merge-base", SMOKE_BASELINE_BRANCH, "HEAD") == _git_output("rev-parse", SMOKE_BASELINE_BRANCH),
+            "details": f"branch is based on {SMOKE_BASELINE_BRANCH}",
         },
         {
             "name": "approved_paths_only",
             "verified": all(any(path.startswith(prefix) for prefix in APPROVED_PATH_PREFIXES) for path in diff_names),
-            "details": "main...HEAD diff contains only approved Feature 055 paths",
+            "details": f"{SMOKE_BASELINE_BRANCH}...HEAD diff contains only approved Feature 055 paths",
         },
         {
             "name": "no_prior_artifact_rewrite",

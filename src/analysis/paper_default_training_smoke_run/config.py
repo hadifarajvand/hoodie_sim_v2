@@ -8,6 +8,7 @@ from src.analysis.full_training_reproduction_campaign.config import CampaignConf
 
 FEATURE_ID = "055-paper-default-training-smoke-run"
 BRANCH_NAME = "055-paper-default-smoke-run"
+SMOKE_BASELINE_BRANCH = "phase/013-pre-training-readiness-audit"
 OUTPUT_DIR = Path("artifacts/analysis/paper-default-training-smoke-run")
 REPORT_JSON = OUTPUT_DIR / "paper-default-training-smoke-run-report.json"
 REPORT_MD = OUTPUT_DIR / "paper-default-training-smoke-run-report.md"
