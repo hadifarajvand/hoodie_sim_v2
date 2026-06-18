@@ -15,14 +15,11 @@ from tests.unit.test_evaluation_trace_bank_baseline_harness_schema import _base_
 class EvaluationTraceBankBaselineHarnessMetricsTests(unittest.TestCase):
     def test_generated_report_has_complete_metric_schema(self) -> None:
         payload = build_evaluation_trace_bank_baseline_harness_report().to_dict()
-        self.assertEqual(payload["final_verdict"], "behavior_drift_detected")
-        self.assertIn("branch", payload["remaining_blockers"])
-        self.assertEqual(
-            payload["metric_schema_summary"]["missing_metric_fields"],
-            list(METRIC_SCHEMA_FIELDS),
-        )
+        self.assertEqual(payload["final_verdict"], "evaluation_trace_bank_baseline_harness_ready")
+        self.assertEqual(payload["remaining_blockers"], [])
+        self.assertEqual(payload["metric_schema_summary"]["missing_metric_fields"], [])
         self.assertEqual(tuple(payload["metric_schema_summary"]["required_metric_fields"]), METRIC_SCHEMA_FIELDS)
-        self.assertFalse(payload["metric_schema_summary"]["metric_schema_complete"])
+        self.assertTrue(payload["metric_schema_summary"]["metric_schema_complete"])
         for field in METRIC_SCHEMA_FIELDS:
             self.assertIn(field, payload["metric_schema_summary"]["required_metric_fields"])
 

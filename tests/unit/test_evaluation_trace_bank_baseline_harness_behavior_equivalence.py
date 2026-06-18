@@ -16,10 +16,10 @@ class EvaluationTraceBankBaselineHarnessBehaviorEquivalenceTests(unittest.TestCa
 
     def test_behavior_safety_fields_cover_all_forbidden_behaviors(self) -> None:
         payload = build_evaluation_trace_bank_baseline_harness_report().to_dict()
-        self.assertEqual(payload["final_verdict"], "behavior_drift_detected")
-        self.assertFalse(payload["behavior_safety_summary"]["no_policy_drift"])
-        self.assertFalse(payload["behavior_safety_summary"]["no_environment_contract_drift"])
-        self.assertFalse(payload["behavior_safety_summary"]["no_reward_timing_change"])
+        self.assertEqual(payload["final_verdict"], "evaluation_trace_bank_baseline_harness_ready")
+        self.assertTrue(payload["behavior_safety_summary"]["no_policy_drift"])
+        self.assertTrue(payload["behavior_safety_summary"]["no_environment_contract_drift"])
+        self.assertTrue(payload["behavior_safety_summary"]["no_reward_timing_change"])
         for key in (
             "no_training_execution",
             "no_optimizer_execution",
