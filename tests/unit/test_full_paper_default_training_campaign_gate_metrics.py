@@ -13,23 +13,9 @@ class FullPaperDefaultTrainingCampaignGateMetricsTests(unittest.TestCase):
         payload = build_full_paper_default_training_campaign_gate_report().to_dict()
         metrics = payload["metric_collection_contract_summary"]
         self.assertEqual(tuple(metrics["required_metric_fields"]), METRIC_COLLECTION_FIELDS)
-        self.assertEqual(
-            metrics["missing_metric_fields"],
-            [
-                "delay",
-                "drop",
-                "timeout",
-                "reward",
-                "action_distribution",
-                "local_action_count",
-                "horizontal_action_count",
-                "vertical_action_count",
-                "per_episode_summary",
-                "train_eval_separation",
-                "baseline_policy_metrics",
-            ],
-        )
-        self.assertFalse(metrics["metric_collection_contract_complete"])
+        self.assertEqual(metrics["present_metric_fields"], list(METRIC_COLLECTION_FIELDS))
+        self.assertEqual(metrics["missing_metric_fields"], [])
+        self.assertTrue(metrics["metric_collection_contract_complete"])
 
     def test_metric_collection_contract_cannot_omit_required_fields_on_pass_path(self) -> None:
         kwargs = _base_report_kwargs()
@@ -41,14 +27,17 @@ class FullPaperDefaultTrainingCampaignGateMetricsTests(unittest.TestCase):
 
     def test_campaign_scope_and_resource_controls_are_present(self) -> None:
         payload = build_full_paper_default_training_campaign_gate_report().to_dict()
-        self.assertFalse(payload["campaign_scope_summary"]["campaign_scale_is_explicit"])
-        self.assertFalse(payload["resource_control_summary"]["resource_control_complete"])
+        self.assertTrue(payload["campaign_scope_summary"]["campaign_scale_is_explicit"])
+        self.assertTrue(payload["resource_control_summary"]["resource_control_complete"])
         self.assertTrue(payload["resource_control_summary"]["no_uncontrolled_loop"])
-        self.assertEqual(payload["resource_control_summary"]["max_episode_or_run_budget"], {})
+        self.assertEqual(
+            payload["resource_control_summary"]["max_episode_or_run_budget"],
+            {"training_episode_count": 1000, "evaluation_episode_count": 100, "baseline_evaluation_episode_count": 100},
+        )
 
     def test_artifact_and_checkpoint_contracts_are_present(self) -> None:
         payload = build_full_paper_default_training_campaign_gate_report().to_dict()
-        self.assertFalse(payload["artifact_output_contract_summary"]["artifact_output_contract_complete"])
+        self.assertTrue(payload["artifact_output_contract_summary"]["artifact_output_contract_complete"])
         self.assertTrue(payload["checkpoint_contract_summary"]["checkpoint_contract_complete"])
         self.assertTrue(payload["checkpoint_contract_summary"]["metadata_required"])
         self.assertTrue(payload["checkpoint_contract_summary"]["trace_bank_ids_required"])

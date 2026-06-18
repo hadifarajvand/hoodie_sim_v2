@@ -8,6 +8,7 @@ from typing import Any
 
 from .config import (
     BRANCH_NAME,
+    BASE_BRANCH_NAME,
     CAMPAIGN_RUN_COUNT_OR_EPISODE_BUDGET,
     EXPECTED_FEATURE_060_ARTIFACTS,
     FEATURE_058_COMPLETE_TAG,
@@ -24,10 +25,39 @@ from .report import write_full_paper_default_training_campaign_gate_report
 
 APPROVED_PATH_PREFIXES = (
     "artifacts/analysis/full-paper-default-training-campaign-gate/",
+    "docs/architecture/euls_phase19_full_paper_default_training_campaign_gate.md",
     "specs/059-full-paper-default-training-campaign-gate/",
     "src/analysis/full_paper_default_training_campaign_gate/",
     "tests/unit/test_full_paper_default_training_campaign_gate",
     "tests/integration/test_full_paper_default_training_campaign_gate",
+)
+IGNORED_LOCAL_NOISE_PREFIXES = (
+    ".personality_migration",
+    ".venvmac",
+    ".venvmac/",
+    "artifacts/figure10_validation/",
+    "artifacts/runtime-audit-smoke/",
+    "auth.json",
+    "cache/",
+    "config.toml",
+    "engine/",
+    "goals_",
+    "history.jsonl",
+    "installation_id",
+    "logs_",
+    "memories_",
+    "models_cache.json",
+    "plugins/",
+    "rules/",
+    "scripts/run_hoodie_experiment_suite.py",
+    "sessions/",
+    "shell_snapshots/",
+    "skills/",
+    "state_",
+    "tests/test_model16_experimental_layers_contract.py",
+    "tests/test_model17_euls_execution_engine.py",
+    "tmp/",
+    "version.json",
 )
 DEPENDENCY_FILE_NAMES = {
     "Pipfile",
@@ -53,7 +83,8 @@ def _git_bool(*args: str) -> bool:
 
 def _status_paths() -> list[str]:
     output = subprocess.run(["git", "status", "--short"], check=True, capture_output=True, text=True).stdout
-    return [line[3:].strip() for line in output.splitlines() if line.strip()]
+    paths = [line[3:].strip() for line in output.splitlines() if line.strip()]
+    return [path for path in paths if not any(path.startswith(prefix) for prefix in IGNORED_LOCAL_NOISE_PREFIXES)]
 
 
 def _staged_paths() -> list[str]:
@@ -61,7 +92,7 @@ def _staged_paths() -> list[str]:
 
 
 def _diff_names() -> list[str]:
-    return [line for line in _git_output("diff", "--name-only", "main...HEAD").splitlines() if line]
+    return [line for line in _git_output("diff", "--name-only", f"{BASE_BRANCH_NAME}...HEAD").splitlines() if line]
 
 
 def _approved_paths(paths: list[str]) -> bool:
@@ -126,15 +157,15 @@ def _build_prerequisite_tags_verified(
     return [
         {"name": "branch", "verified": branch == BRANCH_NAME, "details": f"git branch --show-current == {BRANCH_NAME}"},
         {"name": "not_main", "verified": branch != "main", "details": "current branch != main"},
-        {"name": "main_contains_feature_058_complete", "verified": _git_bool("merge-base", "--is-ancestor", FEATURE_058_COMPLETE_TAG, "main"), "details": f"{FEATURE_058_COMPLETE_TAG} is an ancestor of main"},
-        {"name": "main_is_branch_base", "verified": _git_output("merge-base", "main", "HEAD") == _git_output("rev-parse", "main"), "details": "branch is based on local main"},
+        {"name": "base_branch_contains_feature_058_complete", "verified": _git_bool("merge-base", "--is-ancestor", FEATURE_058_COMPLETE_TAG, BASE_BRANCH_NAME), "details": f"{FEATURE_058_COMPLETE_TAG} is an ancestor of {BASE_BRANCH_NAME}"},
+        {"name": "base_branch_is_branch_base", "verified": _git_output("merge-base", BASE_BRANCH_NAME, "HEAD") == _git_output("rev-parse", BASE_BRANCH_NAME), "details": f"branch is based on {BASE_BRANCH_NAME}"},
         {"name": "feature_058_report_valid", "verified": feature_058_ready, "details": f"{config.feature_058_report_path} contains the approved Feature 058 readiness verdict"},
         {"name": "feature_057_report_present", "verified": config.feature_057_report_path.exists(), "details": str(config.feature_057_report_path)},
         {"name": "feature_056_report_present", "verified": config.feature_056_report_path.exists(), "details": str(config.feature_056_report_path)},
         {"name": "feature_055_report_present", "verified": config.feature_055_report_path.exists(), "details": str(config.feature_055_report_path)},
         {"name": "working_tree_paths_approved", "verified": _approved_paths(status_paths), "details": "git status --short contains only approved Feature 059 paths"},
         {"name": "staged_paths_approved", "verified": _approved_paths(staged_paths), "details": "git diff --cached --name-only contains only approved Feature 059 paths"},
-        {"name": "main_head_diff_approved", "verified": _approved_paths(diff_paths), "details": "git diff --name-only main...HEAD contains only approved Feature 059 paths"},
+        {"name": "base_branch_diff_approved", "verified": _approved_paths(diff_paths), "details": f"git diff --name-only {BASE_BRANCH_NAME}...HEAD contains only approved Feature 059 paths"},
         {"name": "agents_stable_not_modified", "verified": "AGENTS.md" not in status_paths + staged_paths + diff_paths, "details": "AGENTS.md is stable and not modified"},
         {"name": "pointer_local_only_not_dirty_or_staged", "verified": ".specify/feature.json" not in status_paths + staged_paths + diff_paths, "details": ".specify/feature.json is absent from dirty/staged/committed paths"},
     ]

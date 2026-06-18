@@ -6,6 +6,7 @@ from typing import Any
 
 FEATURE_ID = "059-full-paper-default-training-campaign-gate"
 BRANCH_NAME = "059-full-paper-default-training-campaign-gate"
+BASE_BRANCH_NAME = "origin/058-evaluation-trace-bank-baseline-harness-hardening"
 READY_NEXT_FEATURE = "Feature 060 — Full Paper-Default Training Campaign Execution"
 
 OUTPUT_DIR = Path("artifacts/analysis/full-paper-default-training-campaign-gate")

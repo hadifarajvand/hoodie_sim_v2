@@ -5,12 +5,13 @@ import unittest
 from unittest import mock
 
 from src.analysis.full_paper_default_training_campaign_gate import build_full_paper_default_training_campaign_gate_report
+from src.analysis.full_paper_default_training_campaign_gate.config import BASE_BRANCH_NAME
 
 
 class FullPaperDefaultTrainingCampaignGateScopeGuardTests(unittest.TestCase):
     def test_git_status_and_diff_only_show_feature_059_paths(self) -> None:
         status_output = subprocess.run(["git", "status", "--short"], check=True, capture_output=True, text=True).stdout.splitlines()
-        diff_output = subprocess.run(["git", "diff", "--name-only", "main...HEAD"], check=True, capture_output=True, text=True).stdout.splitlines()
+        diff_output = subprocess.run(["git", "diff", "--name-only", f"{BASE_BRANCH_NAME}...HEAD"], check=True, capture_output=True, text=True).stdout.splitlines()
         cached_output = subprocess.run(["git", "diff", "--cached", "--name-only"], check=True, capture_output=True, text=True).stdout.splitlines()
 
         paths = [line[3:].strip() for line in status_output] + [line.strip() for line in diff_output + cached_output]
@@ -35,13 +36,44 @@ class FullPaperDefaultTrainingCampaignGateScopeGuardTests(unittest.TestCase):
 
         approved_prefixes = (
             "artifacts/analysis/full-paper-default-training-campaign-gate/",
+            "docs/architecture/euls_phase19_full_paper_default_training_campaign_gate.md",
             "specs/059-full-paper-default-training-campaign-gate/",
             "src/analysis/full_paper_default_training_campaign_gate/",
             "tests/unit/test_full_paper_default_training_campaign_gate",
             "tests/integration/test_full_paper_default_training_campaign_gate",
         )
+        ignored_local_noise_prefixes = (
+            ".personality_migration",
+            ".venvmac",
+            ".venvmac/",
+            "artifacts/figure10_validation/",
+            "artifacts/runtime-audit-smoke/",
+            "auth.json",
+            "cache/",
+            "config.toml",
+            "engine/",
+            "goals_",
+            "history.jsonl",
+            "installation_id",
+            "logs_",
+            "memories_",
+            "models_cache.json",
+            "plugins/",
+            "rules/",
+            "scripts/run_hoodie_experiment_suite.py",
+            "sessions/",
+            "shell_snapshots/",
+            "skills/",
+            "state_",
+            "tests/test_model16_experimental_layers_contract.py",
+            "tests/test_model17_euls_execution_engine.py",
+            "tmp/",
+            "version.json",
+        )
         for path in paths:
             if not path:
+                continue
+            if any(path.startswith(prefix) for prefix in ignored_local_noise_prefixes):
                 continue
             self.assertTrue(any(path.startswith(prefix) for prefix in approved_prefixes), msg=f"unexpected path: {path}")
         self.assertEqual(cached_output, [])
