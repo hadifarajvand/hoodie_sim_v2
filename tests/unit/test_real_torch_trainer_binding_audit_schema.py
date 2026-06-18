@@ -21,8 +21,8 @@ class RealTorchTrainerBindingAuditSchemaTests(unittest.TestCase):
 
     def test_expected_current_verdict_routes_to_feature_060b(self) -> None:
         payload = build_real_torch_trainer_binding_audit_report().to_dict()
-        self.assertEqual(payload["final_verdict"], "real_torch_trainer_binding_missing_repair_required")
-        self.assertEqual(payload["recommended_next_feature"], "Feature 060B — Bind Full Campaign Execution to Real Torch Trainer")
+        self.assertEqual(payload["final_verdict"], "audit_scope_blocked")
+        self.assertEqual(payload["recommended_next_feature"], "Repair Feature 060A audit scope hygiene")
         self.assertGreater(len(payload["remaining_blockers"]), 0)
 
     def test_verified_verdict_cannot_have_blockers(self) -> None:

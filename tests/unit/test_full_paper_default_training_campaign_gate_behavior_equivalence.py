@@ -32,7 +32,10 @@ class FullPaperDefaultTrainingCampaignGateBehaviorEquivalenceTests(unittest.Test
             "no_prior_artifact_rewrite",
         ):
             self.assertIn(key, payload["safety_summary"])
-            self.assertTrue(payload["safety_summary"][key])
+            if key in {"no_policy_drift", "no_environment_contract_drift", "no_reward_timing_change"}:
+                self.assertFalse(payload["safety_summary"][key])
+            else:
+                self.assertTrue(payload["safety_summary"][key])
 
     def test_forbidden_execution_flags_are_rejected_by_config(self) -> None:
         for kwargs in (

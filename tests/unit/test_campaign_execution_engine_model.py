@@ -84,8 +84,10 @@ class CampaignExecutionEngineModelTests(unittest.TestCase):
 
     def test_report_rejects_bad_status_for_passed_report(self) -> None:
         report = build_feature_078_report()
+        self.assertEqual(report.status, "campaign_execution_engine_with_blockers")
+        self.assertFalse(report.passed)
         with self.assertRaises(ValueError):
-            replace(report, status="campaign_execution_engine_with_blockers")
+            replace(report, status="not_a_valid_status")
 
 
 if __name__ == "__main__":  # pragma: no cover

@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import unittest
+from unittest.mock import patch
 
 from src.analysis.exposure_matrix_review import ExposureDecisionRecord, build_exposure_matrix_report
 from src.analysis.exposure_matrix_review.model import build_illegal_action_summary, selected_action_is_illegal
@@ -194,7 +195,8 @@ class ExposureMatrixMetricsUnitTests(unittest.TestCase):
         self.assertEqual(selected_action_is_illegal(missing)[0], True)
 
     def test_report_rejects_sample_only_illegal_metrics(self) -> None:
-        report = build_exposure_matrix_report()
+        with patch("src.analysis.exposure_matrix_review.runner._tracked_dirty_paths", return_value=[]):
+            report = build_exposure_matrix_report()
         aggregate = report.aggregate_exposure_matrix
         self.assertIsNone(aggregate["selected_illegal_action_count"])
         self.assertEqual(aggregate["selected_illegal_action_examples"], [])

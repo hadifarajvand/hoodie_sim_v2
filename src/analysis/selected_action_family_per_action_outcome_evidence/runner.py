@@ -33,13 +33,15 @@ def _current_branch() -> str:
 
 
 def _prerequisite_tags_verified() -> list[dict[str, Any]]:
+    specify_path = Path(".specify/feature.json")
+    pointer_correct = specify_path.exists() and "specs/050-selected-action-family-per-action-outcome-evidence" in specify_path.read_text(encoding="utf-8")
     return [
         {"name": "branch", "verified": _current_branch() == FEATURE_ID, "details": f"current branch is {FEATURE_ID}"},
         {"name": "not_main", "verified": _current_branch() != "main", "details": "branch is not main"},
         {"name": "main_equals_origin_main", "verified": _git_output("rev-parse", "main") == _git_output("rev-parse", "origin/main"), "details": "main matches origin/main"},
         {"name": "main_equals_049", "verified": _git_output("rev-parse", "main") == _git_output("rev-parse", "049-exposure-matrix-paper-mechanism-alignment-complete^{}"), "details": "main matches 049-exposure-matrix-paper-mechanism-alignment-complete^{}"},
         {"name": "prerequisite_diff_empty", "verified": _git_output("diff", "--name-only", "049-exposure-matrix-paper-mechanism-alignment-complete^{}", "main") == "", "details": "diff between 049-exposure-matrix-paper-mechanism-alignment-complete^{} and main is empty"},
-        {"name": "pointer_correct", "verified": "specs/050-selected-action-family-per-action-outcome-evidence" in Path(".specify/feature.json").read_text(encoding="utf-8"), "details": ".specify/feature.json points at Feature 050"},
+        {"name": "pointer_correct", "verified": pointer_correct, "details": ".specify/feature.json points at Feature 050"},
         {"name": "pointer_not_staged", "verified": _git_output("diff", "--cached", "--name-only", "--", ".specify/feature.json") == "", "details": ".specify/feature.json is not staged"},
         {"name": "pointer_not_in_main_head", "verified": ".specify/feature.json" not in _git_output("diff", "--name-only", "main...HEAD").splitlines(), "details": ".specify/feature.json is not in main...HEAD diff"},
         {"name": "agents_clean_before_report", "verified": _git_output("status", "--short").find("AGENTS.md") == -1, "details": "AGENTS.md clean before report generation"},

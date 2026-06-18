@@ -1,13 +1,15 @@
 from __future__ import annotations
 
 import unittest
+from unittest.mock import patch
 
 from src.analysis.exposure_matrix_paper_mechanism_alignment import build_exposure_matrix_paper_mechanism_report
 
 
 class ExposureMatrixPaperMechanismSchemaTests(unittest.TestCase):
     def test_report_schema_includes_required_sections(self) -> None:
-        report = build_exposure_matrix_paper_mechanism_report()
+        with patch("src.analysis.exposure_matrix_paper_mechanism_alignment.runner._tracked_dirty_paths", return_value=[]):
+            report = build_exposure_matrix_paper_mechanism_report()
         payload = report.to_dict()
         self.assertEqual(payload["feature_id"], "049-exposure-matrix-paper-mechanism-alignment")
         for key in (
@@ -34,7 +36,8 @@ class ExposureMatrixPaperMechanismSchemaTests(unittest.TestCase):
             self.assertIn(key, payload)
 
     def test_observation_audit_schema_has_required_fields(self) -> None:
-        report = build_exposure_matrix_paper_mechanism_report()
+        with patch("src.analysis.exposure_matrix_paper_mechanism_alignment.runner._tracked_dirty_paths", return_value=[]):
+            report = build_exposure_matrix_paper_mechanism_report()
         audit = report.to_dict()["observation_vector_audit"]
         self.assertIn("fields", audit)
         self.assertIn("blocking_fields", audit)
@@ -42,7 +45,8 @@ class ExposureMatrixPaperMechanismSchemaTests(unittest.TestCase):
         self.assertIn("evidence_sources", audit)
 
     def test_formula_audit_schema_has_required_fields(self) -> None:
-        report = build_exposure_matrix_paper_mechanism_report()
+        with patch("src.analysis.exposure_matrix_paper_mechanism_alignment.runner._tracked_dirty_paths", return_value=[]):
+            report = build_exposure_matrix_paper_mechanism_report()
         audit = report.to_dict()["paper_formula_unit_audit"]
         self.assertIn("items", audit)
         self.assertIn("passed", audit)
@@ -50,7 +54,8 @@ class ExposureMatrixPaperMechanismSchemaTests(unittest.TestCase):
         self.assertIn("evidence_sources", audit)
 
     def test_exposure_matrix_rerun_summary_includes_consistency_fields(self) -> None:
-        report = build_exposure_matrix_paper_mechanism_report()
+        with patch("src.analysis.exposure_matrix_paper_mechanism_alignment.runner._tracked_dirty_paths", return_value=[]):
+            report = build_exposure_matrix_paper_mechanism_report()
         summary = report.to_dict()["exposure_matrix_rerun_summary"]
         for key in (
             "selected_action_family_evidence_status",

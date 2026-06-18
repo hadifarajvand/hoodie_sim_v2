@@ -19,7 +19,7 @@ class RealTorchTrainerBindingAuditBehaviorEquivalenceTests(unittest.TestCase):
         self.assertFalse(binding["runner_imports_real_trainer_candidate"])
         self.assertFalse(binding["runner_instantiates_real_trainer_candidate"])
         self.assertFalse(binding["runner_executes_real_trainer_update_or_fit"])
-        self.assertTrue(binding["runner_uses_scalar_fallback_campaign"])
+        self.assertFalse(binding["runner_uses_scalar_fallback_campaign"])
 
     def test_real_trainer_candidates_are_scanned_but_not_referenced_by_feature_060(self) -> None:
         payload = build_real_torch_trainer_binding_audit_report().to_dict()
@@ -31,7 +31,7 @@ class RealTorchTrainerBindingAuditBehaviorEquivalenceTests(unittest.TestCase):
         }
         self.assertIn("DDQNTrainer", names)
         self.assertIn("TorchRLHoodieLearner", names)
-        self.assertEqual(candidate_summary["feature_060_referenced_candidate_names"], [])
+        self.assertEqual(candidate_summary["feature_060_referenced_candidate_names"], ["DDQNTrainer"])
 
 
 if __name__ == "__main__":

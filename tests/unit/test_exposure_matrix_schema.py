@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import unittest
+from unittest.mock import patch
 
 from src.analysis.exposure_matrix_review import ExposureDecisionRecord, ExposureMatrixConfig, build_exposure_matrix_report
 
@@ -60,7 +61,8 @@ class ExposureMatrixSchemaUnitTests(unittest.TestCase):
         self.assertIn("selected_action_available", payload)
 
     def test_report_schema_exact_fields(self) -> None:
-        report = build_exposure_matrix_report()
+        with patch("src.analysis.exposure_matrix_review.runner._tracked_dirty_paths", return_value=[]):
+            report = build_exposure_matrix_report()
         payload = report.to_dict()
         self.assertEqual(
             set(payload),

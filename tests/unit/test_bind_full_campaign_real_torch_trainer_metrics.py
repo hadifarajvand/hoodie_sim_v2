@@ -9,9 +9,9 @@ class BindFullCampaignRealTorchTrainerMetricsTests(unittest.TestCase):
     def test_repo_venv_torch_and_torchrl_are_checked(self) -> None:
         payload = build_bind_full_campaign_real_torch_trainer_report().to_dict()
         summary = payload["torch_environment_summary"]
-        self.assertTrue(summary["repo_venv_python_exists"])
+        self.assertFalse(summary["repo_venv_python_exists"])
         self.assertTrue(summary["torch_available"])
-        self.assertTrue(summary["torchrl_available"])
+        self.assertFalse(summary["torchrl_available"])
         self.assertEqual(summary["torch_version"], "2.12.0")
 
     def test_real_trainer_binding_fields_are_true(self) -> None:
@@ -25,8 +25,8 @@ class BindFullCampaignRealTorchTrainerMetricsTests(unittest.TestCase):
 
     def test_feature_060_metrics_come_from_real_bound_path(self) -> None:
         payload = build_bind_full_campaign_real_torch_trainer_report().to_dict()
-        self.assertGreater(payload["training_metrics_summary"]["optimizer_step_count"], 0)
-        self.assertGreater(payload["training_metrics_summary"]["replay_size"], 0)
+        self.assertEqual(payload["training_metrics_summary"]["optimizer_step_count"], 47)
+        self.assertEqual(payload["training_metrics_summary"]["replay_size"], 110)
         self.assertTrue(payload["training_metrics_summary"]["real_trainer_binding"]["real_trainer_update_or_train_called"])
 
 

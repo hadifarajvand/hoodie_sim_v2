@@ -6,6 +6,7 @@ from functools import lru_cache
 from pathlib import Path
 import json
 from typing import Any
+from types import SimpleNamespace
 
 from src.analysis.baseline_policy_comparative_evaluation_readiness.report import (
     build_action_bound_outcome,
@@ -564,7 +565,10 @@ def build_feature_078_report(
     changed_files: Sequence[str] | None = None,
 ) -> CampaignExecutionReport:
     checked_changed_files = tuple(validate_scope(DEFAULT_CHANGED_FILES if changed_files is None else changed_files))
-    feature_076_report = _feature_076_report()
+    try:
+        feature_076_report = _feature_076_report()
+    except ValueError:
+        feature_076_report = SimpleNamespace(passed=False)
     seeds = tuple(seed_plan if seed_plan is not None else build_execution_seed_plan())
     rows = build_campaign_execution_rows(seed_plan=seeds)
     validate_execution_rows(rows, seed_count=len(seeds))

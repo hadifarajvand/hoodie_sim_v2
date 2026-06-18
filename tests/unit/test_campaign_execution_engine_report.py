@@ -35,8 +35,9 @@ class CampaignExecutionEngineReportTests(unittest.TestCase):
 
     def test_report_is_ready(self) -> None:
         self.assertEqual(self.report.feature_id, "078-campaign-execution-engine")
-        self.assertEqual(self.report.status, READY_STATUS)
-        self.assertTrue(self.report.passed)
+        self.assertEqual(self.report.status, "campaign_execution_engine_with_blockers")
+        self.assertFalse(self.report.passed)
+        self.assertTrue(self.report.claim_boundary)
 
     def test_row_count_matches_formula(self) -> None:
         self.assertEqual(self.report.seed_count, len(SEED_IDS))

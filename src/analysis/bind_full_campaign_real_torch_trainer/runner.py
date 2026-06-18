@@ -3,6 +3,7 @@ from __future__ import annotations
 import argparse
 import json
 import subprocess
+import sys
 from pathlib import Path
 from typing import Any
 
@@ -64,9 +65,10 @@ def _forbidden(paths: list[str]) -> list[str]:
 
 
 def _torch_environment_summary(config: BindFullCampaignRealTorchTrainerConfig) -> dict[str, Any]:
+    python_executable = config.repo_venv_python if config.repo_venv_python.exists() else Path(sys.executable)
     probe = subprocess.run(
         [
-            str(config.repo_venv_python),
+            str(python_executable),
             "-c",
             "import importlib.util, torch; print(torch.__version__); print(importlib.util.find_spec('torchrl') is not None)",
         ],
@@ -76,7 +78,7 @@ def _torch_environment_summary(config: BindFullCampaignRealTorchTrainerConfig) -
     )
     lines = [line.strip() for line in probe.stdout.splitlines()]
     return {
-        "repo_venv_python": str(config.repo_venv_python),
+        "repo_venv_python": str(python_executable),
         "repo_venv_python_exists": config.repo_venv_python.exists(),
         "torch_available": probe.returncode == 0 and bool(lines),
         "torchrl_available": len(lines) > 1 and lines[1] == "True",

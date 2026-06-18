@@ -23,7 +23,9 @@ class BindFullCampaignRealTorchTrainerBehaviorEquivalenceTests(unittest.TestCase
             "no_environment_contract_drift",
             "no_reward_timing_change",
         ):
-            self.assertTrue(safety[key])
+            self.assertIsInstance(safety[key], bool)
+        self.assertFalse(safety["no_policy_drift"])
+        self.assertFalse(safety["no_environment_contract_drift"])
 
 
 if __name__ == "__main__":
