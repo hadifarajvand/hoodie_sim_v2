@@ -1,0 +1,246 @@
+\documentclass{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amsfonts,amssymb}
+\usepackage{algorithm}
+\usepackage{algorithmic}
+\usepackage{array}
+\usepackage{graphicx}
+\usepackage{url}
+\usepackage{cite}
+\usepackage{verbatim}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{0.7em}
+
+\begin{document}
+
+\title{DA-HOODIE: Deadline-Aware Hybrid Offloading via Effective Remaining Time in Cloud--Edge Continuum}
+\author{Farzad Farajvand}
+\date{}
+\maketitle
+
+\begin{abstract}
+Cloud--Edge Continuum systems support latency-sensitive and computation-intensive IoT workloads by combining local edge execution, horizontal edge-to-edge offloading, and vertical edge-to-cloud offloading. The baseline HOODIE framework provides a distributed deep reinforcement learning solution for hybrid task offloading and evaluates task delay and task drop ratio under dynamic traffic. However, its queue handling and decision flow do not explicitly use task urgency as an active service discipline before deadline violation occurs. This limitation can increase the probability that urgent tasks remain behind less critical tasks in private, public, or offloading queues. To address this gap, this work proposes DA-HOODIE, a deadline-aware extension of HOODIE based on Effective Remaining Time (ERT). ERT estimates the feasible time remaining for each task under candidate execution destinations and is used to guide three control mechanisms: deadline-aware queue scheduling, deadline-aware candidate selection, and deadline-aware reward feedback. The objective is to reduce task drop ratio and deadline violation while preserving HOODIE's decentralized hybrid offloading structure. The proposed method is evaluated through task drop ratio, average delay, deadline violation rate, queue waiting time by urgency class, urgent task success ratio, and offloading distribution.
+\end{abstract}
+
+\noindent\textbf{Keywords---} Cloud--Edge Continuum, Hybrid Offloading, Deadline-Aware Scheduling, Deep Reinforcement Learning, Task Drop Ratio
+
+\section{Introduction}
+\label{sec:introduction}
+
+Cloud--Edge Continuum (CEC) computing integrates cloud data centers, distributed edge nodes, and IoT devices into a unified execution environment. This architecture is suitable for delay-sensitive applications because computation can be performed near the data source while still allowing access to high-capacity cloud resources. In practical CEC deployments, each task may be processed locally, offloaded horizontally to another edge node, or offloaded vertically to the cloud.
+
+Hybrid offloading improves resource utilization, but it also makes task placement more complex. Edge nodes have limited processing capacity, queue lengths change over time, and network conditions affect offloading delay. Under heavy traffic, some tasks may miss their deadlines and be dropped. Therefore, reducing task drop ratio requires not only deciding where to execute a task, but also deciding which queued task should be served first and which candidate destination remains feasible before the deadline.
+
+HOODIE is used as the baseline framework because it supports distributed DRL-based hybrid offloading in the Cloud--Edge Continuum. It models local, horizontal, and vertical offloading decisions and evaluates both task delay and task drop ratio. Nevertheless, the baseline queue discipline is not explicitly deadline-aware. This work extends HOODIE by introducing DA-HOODIE, where deadline urgency is injected into the queue scheduling, candidate selection, and reward feedback stages.
+
+The main contributions of this work are as follows:
+\begin{itemize}
+    \item A deadline-aware extension of HOODIE is formulated for hybrid task offloading in CEC.
+    \item Effective Remaining Time (ERT) is introduced as the central urgency indicator for task-level decision support.
+    \item A deadline-aware queue scheduling mechanism is proposed to prioritize tasks with higher deadline risk.
+    \item A deadline-aware candidate selection mechanism filters or penalizes execution destinations that are unlikely to complete a task before its deadline.
+    \item A deadline-aware reward feedback mechanism is defined to guide learning toward lower task drop ratio and fewer deadline violations.
+\end{itemize}
+
+\section{Related Work}
+\label{sec:related_work}
+
+Task offloading in edge and cloud-edge environments has been studied through heuristic, centralized learning, and distributed learning approaches. Heuristic methods are often simple and interpretable, but they may not adapt well to dynamic traffic and heterogeneous queue states. Centralized learning approaches can exploit global system information, but they may introduce communication overhead and scalability issues.
+
+Distributed DRL-based offloading methods address part of this limitation by allowing each edge node to learn local decisions from its observable state. HOODIE belongs to this category and is particularly relevant because it supports hybrid task flows, including local execution, horizontal edge-to-edge offloading, and vertical edge-to-cloud offloading. It also considers delay and task drop ratio as performance indicators.
+
+Deadline-aware scheduling and queue management represent a complementary research direction. Classical deadline-aware policies such as Earliest Deadline First (EDF) and Least Slack Time First (LSTF) show that service order can strongly affect deadline satisfaction. However, in hybrid offloading, queue scheduling and destination selection are coupled: a task may be urgent, but a candidate destination may still be infeasible if its queue or communication delay is too high.
+
+DA-HOODIE combines these directions by preserving HOODIE's distributed hybrid offloading structure while adding explicit deadline-awareness through ERT. The proposed method does not replace HOODIE's CEC model; instead, it introduces an urgency-aware decision layer around the existing queue and offloading process.
+
+\section{System Model}
+\label{sec:system_model}
+
+This section preserves the baseline HOODIE system assumptions required for DA-HOODIE. The retained components include the IoT--Edge--Cloud architecture, local task execution, horizontal edge-to-edge offloading, vertical edge-to-cloud offloading, distributed edge agents, edge controllers, and queue-based task management.
+
+\subsection{IoT--Edge--Cloud Architecture}
+\label{subsec:iot_edge_cloud_architecture}
+
+Let $\mathcal{N}=\{1,2,\ldots,N\}$ denote the set of Edge Agents (EAs), and let $c$ denote the cloud node. The set of available computing nodes is
+\begin{equation}
+    \mathcal{K}=\mathcal{N}\cup\{c\}.
+\end{equation}
+Each IoT area is associated with an EA that receives computational tasks from IoT devices. After a task arrives, the responsible EA may choose local execution, horizontal offloading to another EA, or vertical offloading to the cloud.
+
+\subsection{Hybrid Offloading Model}
+\label{subsec:hybrid_offloading_model}
+
+The DA-HOODIE model keeps the hybrid offloading action space of HOODIE. For a task generated at EA $n$, the action may be represented as
+\begin{equation}
+    a_i \in \{\mathrm{local},\mathrm{edge},\mathrm{cloud}\},
+\end{equation}
+where local execution refers to processing at the originating EA, edge offloading refers to horizontal offloading, and cloud offloading refers to vertical offloading.
+
+\subsection{Queue Model}
+\label{subsec:queue_model}
+
+Each EA maintains queues for local and offloaded tasks. The baseline queue structure is retained, but DA-HOODIE modifies the service discipline. Instead of treating all queued tasks with the same urgency, DA-HOODIE assigns higher service priority to tasks with higher deadline risk.
+
+\section{Problem Formulation}
+\label{sec:problem_formulation}
+
+This section formulates the deadline-aware hybrid offloading problem in terms of task arrival time, deadline, completion time, deadline violation, drop condition, and optimization objective.
+
+\subsection{Task Definition}
+\label{subsec:task_definition}
+
+A computational task is defined as
+\begin{equation}
+    \tau_i=(a_i,d_i,l_i,\rho_i),
+\end{equation}
+where $a_i$ denotes the arrival time, $d_i$ denotes the absolute deadline, $l_i$ denotes the task input size, and $\rho_i$ denotes the required CPU cycles per bit. The computational workload of $\tau_i$ is
+\begin{equation}
+    w_i=l_i\rho_i.
+\end{equation}
+
+\subsection{Completion Time and Deadline Violation}
+\label{subsec:completion_time_deadline_violation}
+
+Let $C_i$ denote the completion time of task $\tau_i$. The task satisfies its deadline if
+\begin{equation}
+    C_i \leq d_i.
+\end{equation}
+The deadline violation indicator is
+\begin{equation}
+    v_i=
+    \begin{cases}
+    0, & C_i \leq d_i,\\
+    1, & C_i>d_i.
+    \end{cases}
+\end{equation}
+
+\subsection{Drop Condition}
+\label{subsec:drop_condition}
+
+A task is dropped when it cannot be completed before its deadline or when all candidate destinations are infeasible under the current system state. The drop indicator is
+\begin{equation}
+    \delta_i=
+    \begin{cases}
+    0, & \text{if } \tau_i \text{ is completed before its deadline},\\
+    1, & \text{otherwise}.
+    \end{cases}
+\end{equation}
+
+\subsection{Objective Function}
+\label{subsec:objective_function}
+
+The primary objective of DA-HOODIE is to minimize task drop ratio:
+\begin{equation}
+    \min \; \frac{1}{|\mathcal{T}|}\sum_{\tau_i\in\mathcal{T}}\delta_i,
+\end{equation}
+where $\mathcal{T}$ denotes the set of generated tasks. A delay-aware extension may be expressed as
+\begin{equation}
+    \min \; \alpha \frac{1}{|\mathcal{T}|}\sum_{\tau_i\in\mathcal{T}}\delta_i
+    +(1-\alpha)\frac{1}{|\mathcal{T}|}\sum_{\tau_i\in\mathcal{T}}(C_i-a_i),
+\end{equation}
+where $\alpha\in[0,1]$ controls the relative importance of task dropping and completion delay.
+
+\section{Proposed Method}
+\label{sec:proposed_method}
+
+The proposed DA-HOODIE method introduces deadline-aware control into the HOODIE hybrid offloading pipeline. The method is built around ERT and three mechanisms: deadline-aware queue scheduling, deadline-aware candidate selection, and deadline-aware reward feedback.
+
+\subsection{Effective Remaining Time}
+\label{subsec:effective_remaining_time}
+
+For task $\tau_i$ and candidate node $k\in\mathcal{K}$, Effective Remaining Time (ERT) is defined as
+\begin{equation}
+    \mathrm{ERT}_{i,k}(t)=d_i-t-\widehat{T}^{\mathrm{comp}}_{i,k}(t),
+\end{equation}
+where $\widehat{T}^{\mathrm{comp}}_{i,k}(t)$ is the estimated completion time if $\tau_i$ is assigned to node $k$ at time $t$. A lower ERT value indicates higher deadline risk. If $\mathrm{ERT}_{i,k}(t)<0$, node $k$ is considered infeasible for the task.
+
+\subsection{Deadline-Aware Queue Scheduling}
+\label{subsec:deadline_aware_queue_scheduling}
+
+DA-HOODIE replaces ordinary FIFO service priority with a deadline-aware priority mechanism. For each queued task, the scheduler estimates remaining feasible time and assigns service priority according to deadline urgency. A generic urgency score is
+\begin{equation}
+    U_i(t)=\frac{1}{\epsilon+\min_{k\in\mathcal{K}}\max(\mathrm{ERT}_{i,k}(t),0)},
+\end{equation}
+where $\epsilon$ is a small positive constant used to avoid division by zero. A higher value of $U_i(t)$ indicates a higher scheduling priority.
+
+\subsection{Deadline-Aware Candidate Selection}
+\label{subsec:deadline_aware_candidate_selection}
+
+After selecting a task from the queue, DA-HOODIE evaluates local, horizontal, and cloud candidates. A candidate node is feasible only if
+\begin{equation}
+    \widehat{C}_{i,k}(t)\leq d_i.
+\end{equation}
+Among feasible candidates, the selected destination should reduce deadline violation risk while considering delay and queue congestion.
+
+\subsection{Deadline-Aware Reward Feedback}
+\label{subsec:deadline_aware_reward_feedback}
+
+The reward feedback is modified to explicitly penalize deadline violations and dropped tasks:
+\begin{equation}
+    r_i=
+    \begin{cases}
+    -\lambda_D(C_i-a_i), & C_i\leq d_i,\\
+    -\lambda_D(C_i-a_i)-\lambda_V, & C_i>d_i,\\
+    -\lambda_{drop}, & \delta_i=1,
+    \end{cases}
+\end{equation}
+where $\lambda_D$ is the delay penalty coefficient, $\lambda_V$ is the deadline violation penalty, and $\lambda_{drop}$ is the drop penalty.
+
+\section{Algorithm}
+\label{sec:algorithm}
+
+The following algorithm summarizes the DA-HOODIE decision process in an IEEE-style algorithmic structure.
+
+\begin{algorithm}[t]
+\caption{DA-HOODIE Deadline-Aware Hybrid Offloading}
+\label{alg:da_hoodie}
+\begin{algorithmic}[1]
+\STATE Initialize edge agents, queues, candidate nodes, and learning parameters.
+\FOR{each decision epoch $t$}
+    \FOR{each edge agent $n\in\mathcal{N}$}
+        \STATE Observe local queue state $Q_n(t)$ and newly arrived tasks.
+        \FOR{each queued task $\tau_i\in Q_n(t)$}
+            \STATE Estimate completion time for local execution, horizontal offloading, and cloud offloading.
+            \STATE Compute $\mathrm{ERT}_{i,k}(t)$ for each candidate node $k\in\mathcal{K}$.
+            \STATE Assign a deadline-aware urgency score to $\tau_i$.
+        \ENDFOR
+        \STATE Select the highest-priority task using deadline-aware queue scheduling.
+        \STATE Remove infeasible candidate nodes with negative ERT or estimated deadline violation.
+        \STATE Select the execution candidate that minimizes deadline violation and drop risk.
+        \STATE Execute the selected local, horizontal, or cloud offloading action.
+        \STATE Observe completion time, deadline violation, or task drop event.
+        \STATE Compute deadline-aware reward feedback.
+        \STATE Update the learning policy using the observed transition and reward.
+    \ENDFOR
+\ENDFOR
+\end{algorithmic}
+\end{algorithm}
+
+\section{Simulation Setup}
+\label{sec:simulation_setup}
+
+The simulation setup will follow the baseline HOODIE environment where possible to ensure fair comparison. The retained parameters include the number of edge agents, task arrival probability, task size range, processing density, edge and cloud CPU capacities, horizontal and vertical data rates, and task deadline settings.
+
+\subsection{Baselines}
+\label{subsec:baselines}
+
+The baseline methods will include HOODIE, full local computing, vertical offloading, horizontal offloading, random offloading, balanced cyclic offloading, and latency-estimation-based offloading where applicable.
+
+\subsection{Evaluation Metrics}
+\label{subsec:evaluation_metrics}
+
+The evaluation metrics include task drop ratio, average task delay, deadline violation rate, queue waiting time by urgency class, urgent task success ratio, and offloading distribution across local, edge, and cloud destinations.
+
+\section{Results and Discussion}
+\label{sec:results_discussion}
+
+This section is intentionally left as a placeholder until simulation results are available. The final discussion will report whether DA-HOODIE reduces task drop ratio and deadline violation compared with HOODIE and other baselines under the same experimental settings.
+
+\section{Conclusion}
+\label{sec:conclusion}
+
+This work proposes DA-HOODIE as a deadline-aware extension of HOODIE for hybrid task offloading in the Cloud--Edge Continuum. The method introduces ERT as a task urgency measure and applies it to queue scheduling, candidate selection, and reward feedback. The current formulation is designed to support future simulation-based evaluation without making premature claims about empirical superiority before results are obtained.
+
+
+
+\end{document}
