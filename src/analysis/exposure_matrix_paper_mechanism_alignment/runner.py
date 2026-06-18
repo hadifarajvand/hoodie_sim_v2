@@ -126,13 +126,15 @@ def _validate_prerequisites() -> tuple[dict[str, Any], dict[str, Any], dict[str,
 
 def _prerequisite_tags() -> list[dict[str, Any]]:
     dirty = _validate_dirty_paths()
+    specify_path = Path(".specify/feature.json")
+    pointer_correct = specify_path.exists() and "specs/049-exposure-matrix-paper-mechanism-alignment" in specify_path.read_text(encoding="utf-8")
     return [
         {"name": "branch", "verified": _git_output("branch", "--show-current") == FEATURE_ID, "details": f"current branch is {FEATURE_ID}"},
         {"name": "not_main", "verified": _git_output("branch", "--show-current") != "main", "details": "branch is not main"},
         {"name": "main_equals_origin_main", "verified": _git_output("rev-parse", "main") == _git_output("rev-parse", "origin/main"), "details": "main matches origin/main"},
         {"name": "main_equals_feature_048", "verified": _git_output("rev-parse", "main") == _git_output("rev-parse", "048-legality-evidence-expansion-complete^{}"), "details": "main matches 048-legality-evidence-expansion-complete^{}"},
         {"name": "prerequisite_diff_empty", "verified": _git_output("diff", "--name-only", "048-legality-evidence-expansion-complete^{}", "main") == "", "details": "diff between 048-legality-evidence-expansion-complete^{} and main is empty"},
-        {"name": "pointer_correct", "verified": Path(".specify/feature.json").read_text(encoding="utf-8").find("specs/049-exposure-matrix-paper-mechanism-alignment") >= 0, "details": ".specify/feature.json points at Feature 049"},
+        {"name": "pointer_correct", "verified": pointer_correct, "details": ".specify/feature.json points at Feature 049 when present"},
         {"name": "pointer_not_staged", "verified": _git_output("diff", "--cached", "--name-only", "--", ".specify/feature.json") == "", "details": ".specify/feature.json is not staged"},
         {"name": "pointer_not_in_main_head", "verified": ".specify/feature.json" not in _git_output("diff", "--name-only", "main...HEAD").splitlines(), "details": ".specify/feature.json is not in main...HEAD diff"},
         {"name": "agents_clean_before_report", "verified": not any(path == "AGENTS.md" or path.endswith("/AGENTS.md") for path in dirty), "details": "AGENTS.md clean before report generation"},
