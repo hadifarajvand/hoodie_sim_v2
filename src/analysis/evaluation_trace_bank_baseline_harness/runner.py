@@ -31,6 +31,7 @@ APPROVED_PATH_PREFIXES = (
 APPROVED_BRANCH_NAMES = (
     BRANCH_NAME,
     f"{BRANCH_NAME}-fixed",
+    f"{BRANCH_NAME}-hardening",
 )
 IGNORED_LOCAL_NOISE_PREFIXES = (
     ".personality_migration",

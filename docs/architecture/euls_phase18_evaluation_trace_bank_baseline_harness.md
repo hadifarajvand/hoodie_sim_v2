@@ -7,7 +7,7 @@ Feature 058 defines a deterministic evaluation trace bank and a baseline evaluat
 ## Starting branch
 
 - Starting branch: `057-paper-default-pilot-training-run`
-- Feature branch: `058-evaluation-trace-bank-baseline-harness`
+- Feature branch: `058-evaluation-trace-bank-baseline-harness-fixed`
 
 ## Feature 057 prerequisite status
 
