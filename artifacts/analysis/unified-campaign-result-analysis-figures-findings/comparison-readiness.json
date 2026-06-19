@@ -1,0 +1,16 @@
+{
+  "baseline_policy_count": 3,
+  "baseline_superiority_claim_made": false,
+  "comparison_ready": true,
+  "comparison_scope": "comparison readiness only; performance superiority not claimed",
+  "descriptive_comparisons_available": [
+    "training_action_distribution",
+    "baseline_policy_action_distribution",
+    "budget_integrity",
+    "metric_availability",
+    "artifact_completeness"
+  ],
+  "paper_reproduction_claim_made": false,
+  "performance_claim": false,
+  "performance_superiority_claim_made": false
+}

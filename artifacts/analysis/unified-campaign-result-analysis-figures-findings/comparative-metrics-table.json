@@ -1,0 +1,46 @@
+{
+  "notes": "Descriptive table for thesis/report use; no paper reproduction or superiority claim.",
+  "performance_claim": false,
+  "rows": [
+    {
+      "claim": "integrity",
+      "metric": "training_episode_count",
+      "value": 1000
+    },
+    {
+      "claim": "integrity",
+      "metric": "evaluation_episode_count",
+      "value": 100
+    },
+    {
+      "claim": "integrity",
+      "metric": "baseline_evaluation_episode_count",
+      "value": 100
+    },
+    {
+      "claim": "integrity",
+      "metric": "replay_size",
+      "value": 110000
+    },
+    {
+      "claim": "execution evidence",
+      "metric": "optimizer_step_count",
+      "value": 2670
+    },
+    {
+      "claim": "baseline execution evidence, not superiority",
+      "metric": "baseline_fixed-horizontal_episode_count",
+      "value": 100
+    },
+    {
+      "claim": "baseline execution evidence, not superiority",
+      "metric": "baseline_local-only_episode_count",
+      "value": 100
+    },
+    {
+      "claim": "baseline execution evidence, not superiority",
+      "metric": "baseline_random-legal_episode_count",
+      "value": 100
+    }
+  ]
+}
