@@ -1,6 +1,7 @@
 {
   "action_distribution": {
-    "horizontal": 39000,
+    "horizontal": 38000,
+    "invalid_or_noop_action_count": 0,
     "local": 33000,
     "vertical": 39000
   },

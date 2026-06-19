@@ -6,7 +6,7 @@ from unittest import mock
 from src.analysis.full_paper_default_training_campaign_execution import build_full_paper_default_training_campaign_execution_report
 from src.analysis.full_paper_default_training_campaign_execution.config import FullPaperDefaultTrainingCampaignExecutionConfig
 from src.analysis.full_paper_default_training_campaign_execution.model import FullPaperDefaultTrainingCampaignExecutionReport
-from tests.unit.test_full_paper_default_training_campaign_execution_schema import _base_report_kwargs
+from tests.unit.test_full_paper_default_training_campaign_execution_schema import _base_report_kwargs, _baseline_metrics
 
 
 class FullPaperDefaultTrainingCampaignExecutionBehaviorEquivalenceTests(unittest.TestCase):
@@ -63,7 +63,7 @@ class FullPaperDefaultTrainingCampaignExecutionBehaviorEquivalenceTests(unittest
             "target_sync_count": 1,
             "loss_values": [1.0],
             "loss_is_finite": True,
-            "action_distribution": {"local": 1, "horizontal": 1, "vertical": 1},
+            "action_distribution": {"local": 109998, "horizontal": 1, "vertical": 1, "invalid_or_noop_action_count": 0},
             "reward_summary": {"reward_count": 1},
             "evaluation": {
                 "evaluation_episode_count": 100,
@@ -82,7 +82,9 @@ class FullPaperDefaultTrainingCampaignExecutionBehaviorEquivalenceTests(unittest
                 "baseline_policy_names": ["local-only", "random-legal", "fixed-horizontal"],
                 "evaluated_policy_count": 3,
                 "actual_baseline_evaluation_episode_count": 100,
-                "baseline_metric_shells": {"local-only": {"reward": {"value": None}}},
+                "per_policy_metrics": _baseline_metrics(),
+                "baseline_metric_shells": _baseline_metrics(),
+                "baseline_metrics_real_execution": True,
                 "no_baseline_superiority_claim": True,
             },
             "evaluation_trace_bank_summary": {"evaluation_trace_bank_id": "feature-058-evaluation-trace-bank"},

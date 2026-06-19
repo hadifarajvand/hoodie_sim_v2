@@ -1,648 +1,6 @@
 {
   "actual_baseline_evaluation_episode_count": 100,
-  "baseline_evaluation_harness_summary": {
-    "evaluated_policy_count": 3,
-    "evaluation_trace_count": 12,
-    "no_checkpoint_binary": true,
-    "no_optimizer_steps": true,
-    "no_replay_mutation": true,
-    "no_training_execution": true,
-    "per_policy_metric_shells": {
-      "fixed-horizontal": {
-        "action_distribution": {
-          "horizontal": 12,
-          "local": 0,
-          "vertical": 0
-        },
-        "delay": {
-          "status": "schema_only_not_performance_claim",
-          "value": null
-        },
-        "drop": {
-          "status": "schema_only_not_performance_claim",
-          "value": null
-        },
-        "horizontal_action_count": 12,
-        "local_action_count": 0,
-        "per_episode_summary": [
-          {
-            "episode_id": 0,
-            "metric_shell_only": true,
-            "performance_claim": false
-          },
-          {
-            "episode_id": 1,
-            "metric_shell_only": true,
-            "performance_claim": false
-          },
-          {
-            "episode_id": 2,
-            "metric_shell_only": true,
-            "performance_claim": false
-          }
-        ],
-        "reward": {
-          "status": "schema_only_not_performance_claim",
-          "value": null
-        },
-        "selected_actions": [
-          {
-            "legal": true,
-            "selected_action": "horizontal",
-            "trace_id": "feature-058-evaluation-trace-bank-trace-000-0d3321f39732"
-          },
-          {
-            "legal": true,
-            "selected_action": "horizontal",
-            "trace_id": "feature-058-evaluation-trace-bank-trace-001-27a429c2b824"
-          },
-          {
-            "legal": true,
-            "selected_action": "horizontal",
-            "trace_id": "feature-058-evaluation-trace-bank-trace-002-42c25a458cde"
-          },
-          {
-            "legal": true,
-            "selected_action": "horizontal",
-            "trace_id": "feature-058-evaluation-trace-bank-trace-003-de82e91aec97"
-          },
-          {
-            "legal": true,
-            "selected_action": "horizontal",
-            "trace_id": "feature-058-evaluation-trace-bank-trace-004-8050118c871c"
-          },
-          {
-            "legal": true,
-            "selected_action": "horizontal",
-            "trace_id": "feature-058-evaluation-trace-bank-trace-005-1bb74efa7a79"
-          },
-          {
-            "legal": true,
-            "selected_action": "horizontal",
-            "trace_id": "feature-058-evaluation-trace-bank-trace-006-618201f56169"
-          },
-          {
-            "legal": true,
-            "selected_action": "horizontal",
-            "trace_id": "feature-058-evaluation-trace-bank-trace-007-247fdb56879b"
-          },
-          {
-            "legal": true,
-            "selected_action": "horizontal",
-            "trace_id": "feature-058-evaluation-trace-bank-trace-008-c270890f4ea0"
-          },
-          {
-            "legal": true,
-            "selected_action": "horizontal",
-            "trace_id": "feature-058-evaluation-trace-bank-trace-009-d60c2618cbed"
-          },
-          {
-            "legal": true,
-            "selected_action": "horizontal",
-            "trace_id": "feature-058-evaluation-trace-bank-trace-010-135fe5d45383"
-          },
-          {
-            "legal": true,
-            "selected_action": "horizontal",
-            "trace_id": "feature-058-evaluation-trace-bank-trace-011-a095006b8c3c"
-          }
-        ],
-        "timeout": {
-          "status": "schema_only_not_performance_claim",
-          "value": null
-        },
-        "vertical_action_count": 0
-      },
-      "local-only": {
-        "action_distribution": {
-          "horizontal": 0,
-          "local": 12,
-          "vertical": 0
-        },
-        "delay": {
-          "status": "schema_only_not_performance_claim",
-          "value": null
-        },
-        "drop": {
-          "status": "schema_only_not_performance_claim",
-          "value": null
-        },
-        "horizontal_action_count": 0,
-        "local_action_count": 12,
-        "per_episode_summary": [
-          {
-            "episode_id": 0,
-            "metric_shell_only": true,
-            "performance_claim": false
-          },
-          {
-            "episode_id": 1,
-            "metric_shell_only": true,
-            "performance_claim": false
-          },
-          {
-            "episode_id": 2,
-            "metric_shell_only": true,
-            "performance_claim": false
-          }
-        ],
-        "reward": {
-          "status": "schema_only_not_performance_claim",
-          "value": null
-        },
-        "selected_actions": [
-          {
-            "legal": true,
-            "selected_action": "local",
-            "trace_id": "feature-058-evaluation-trace-bank-trace-000-0d3321f39732"
-          },
-          {
-            "legal": true,
-            "selected_action": "local",
-            "trace_id": "feature-058-evaluation-trace-bank-trace-001-27a429c2b824"
-          },
-          {
-            "legal": true,
-            "selected_action": "local",
-            "trace_id": "feature-058-evaluation-trace-bank-trace-002-42c25a458cde"
-          },
-          {
-            "legal": true,
-            "selected_action": "local",
-            "trace_id": "feature-058-evaluation-trace-bank-trace-003-de82e91aec97"
-          },
-          {
-            "legal": true,
-            "selected_action": "local",
-            "trace_id": "feature-058-evaluation-trace-bank-trace-004-8050118c871c"
-          },
-          {
-            "legal": true,
-            "selected_action": "local",
-            "trace_id": "feature-058-evaluation-trace-bank-trace-005-1bb74efa7a79"
-          },
-          {
-            "legal": true,
-            "selected_action": "local",
-            "trace_id": "feature-058-evaluation-trace-bank-trace-006-618201f56169"
-          },
-          {
-            "legal": true,
-            "selected_action": "local",
-            "trace_id": "feature-058-evaluation-trace-bank-trace-007-247fdb56879b"
-          },
-          {
-            "legal": true,
-            "selected_action": "local",
-            "trace_id": "feature-058-evaluation-trace-bank-trace-008-c270890f4ea0"
-          },
-          {
-            "legal": true,
-            "selected_action": "local",
-            "trace_id": "feature-058-evaluation-trace-bank-trace-009-d60c2618cbed"
-          },
-          {
-            "legal": true,
-            "selected_action": "local",
-            "trace_id": "feature-058-evaluation-trace-bank-trace-010-135fe5d45383"
-          },
-          {
-            "legal": true,
-            "selected_action": "local",
-            "trace_id": "feature-058-evaluation-trace-bank-trace-011-a095006b8c3c"
-          }
-        ],
-        "timeout": {
-          "status": "schema_only_not_performance_claim",
-          "value": null
-        },
-        "vertical_action_count": 0
-      },
-      "random-legal": {
-        "action_distribution": {
-          "horizontal": 3,
-          "local": 3,
-          "vertical": 6
-        },
-        "delay": {
-          "status": "schema_only_not_performance_claim",
-          "value": null
-        },
-        "drop": {
-          "status": "schema_only_not_performance_claim",
-          "value": null
-        },
-        "horizontal_action_count": 3,
-        "local_action_count": 3,
-        "per_episode_summary": [
-          {
-            "episode_id": 0,
-            "metric_shell_only": true,
-            "performance_claim": false
-          },
-          {
-            "episode_id": 1,
-            "metric_shell_only": true,
-            "performance_claim": false
-          },
-          {
-            "episode_id": 2,
-            "metric_shell_only": true,
-            "performance_claim": false
-          }
-        ],
-        "reward": {
-          "status": "schema_only_not_performance_claim",
-          "value": null
-        },
-        "selected_actions": [
-          {
-            "legal": true,
-            "selected_action": "horizontal",
-            "trace_id": "feature-058-evaluation-trace-bank-trace-000-0d3321f39732"
-          },
-          {
-            "legal": true,
-            "selected_action": "vertical",
-            "trace_id": "feature-058-evaluation-trace-bank-trace-001-27a429c2b824"
-          },
-          {
-            "legal": true,
-            "selected_action": "horizontal",
-            "trace_id": "feature-058-evaluation-trace-bank-trace-002-42c25a458cde"
-          },
-          {
-            "legal": true,
-            "selected_action": "vertical",
-            "trace_id": "feature-058-evaluation-trace-bank-trace-003-de82e91aec97"
-          },
-          {
-            "legal": true,
-            "selected_action": "local",
-            "trace_id": "feature-058-evaluation-trace-bank-trace-004-8050118c871c"
-          },
-          {
-            "legal": true,
-            "selected_action": "local",
-            "trace_id": "feature-058-evaluation-trace-bank-trace-005-1bb74efa7a79"
-          },
-          {
-            "legal": true,
-            "selected_action": "horizontal",
-            "trace_id": "feature-058-evaluation-trace-bank-trace-006-618201f56169"
-          },
-          {
-            "legal": true,
-            "selected_action": "vertical",
-            "trace_id": "feature-058-evaluation-trace-bank-trace-007-247fdb56879b"
-          },
-          {
-            "legal": true,
-            "selected_action": "local",
-            "trace_id": "feature-058-evaluation-trace-bank-trace-008-c270890f4ea0"
-          },
-          {
-            "legal": true,
-            "selected_action": "vertical",
-            "trace_id": "feature-058-evaluation-trace-bank-trace-009-d60c2618cbed"
-          },
-          {
-            "legal": true,
-            "selected_action": "vertical",
-            "trace_id": "feature-058-evaluation-trace-bank-trace-010-135fe5d45383"
-          },
-          {
-            "legal": true,
-            "selected_action": "vertical",
-            "trace_id": "feature-058-evaluation-trace-bank-trace-011-a095006b8c3c"
-          }
-        ],
-        "timeout": {
-          "status": "schema_only_not_performance_claim",
-          "value": null
-        },
-        "vertical_action_count": 6
-      }
-    },
-    "registered_policy_count": 3
-  },
-  "baseline_metric_shells": {
-    "fixed-horizontal": {
-      "action_distribution": {
-        "horizontal": 12,
-        "local": 0,
-        "vertical": 0
-      },
-      "delay": {
-        "status": "schema_only_not_performance_claim",
-        "value": null
-      },
-      "drop": {
-        "status": "schema_only_not_performance_claim",
-        "value": null
-      },
-      "horizontal_action_count": 12,
-      "local_action_count": 0,
-      "per_episode_summary": [
-        {
-          "episode_id": 0,
-          "metric_shell_only": true,
-          "performance_claim": false
-        },
-        {
-          "episode_id": 1,
-          "metric_shell_only": true,
-          "performance_claim": false
-        },
-        {
-          "episode_id": 2,
-          "metric_shell_only": true,
-          "performance_claim": false
-        }
-      ],
-      "reward": {
-        "status": "schema_only_not_performance_claim",
-        "value": null
-      },
-      "selected_actions": [
-        {
-          "legal": true,
-          "selected_action": "horizontal",
-          "trace_id": "feature-058-evaluation-trace-bank-trace-000-0d3321f39732"
-        },
-        {
-          "legal": true,
-          "selected_action": "horizontal",
-          "trace_id": "feature-058-evaluation-trace-bank-trace-001-27a429c2b824"
-        },
-        {
-          "legal": true,
-          "selected_action": "horizontal",
-          "trace_id": "feature-058-evaluation-trace-bank-trace-002-42c25a458cde"
-        },
-        {
-          "legal": true,
-          "selected_action": "horizontal",
-          "trace_id": "feature-058-evaluation-trace-bank-trace-003-de82e91aec97"
-        },
-        {
-          "legal": true,
-          "selected_action": "horizontal",
-          "trace_id": "feature-058-evaluation-trace-bank-trace-004-8050118c871c"
-        },
-        {
-          "legal": true,
-          "selected_action": "horizontal",
-          "trace_id": "feature-058-evaluation-trace-bank-trace-005-1bb74efa7a79"
-        },
-        {
-          "legal": true,
-          "selected_action": "horizontal",
-          "trace_id": "feature-058-evaluation-trace-bank-trace-006-618201f56169"
-        },
-        {
-          "legal": true,
-          "selected_action": "horizontal",
-          "trace_id": "feature-058-evaluation-trace-bank-trace-007-247fdb56879b"
-        },
-        {
-          "legal": true,
-          "selected_action": "horizontal",
-          "trace_id": "feature-058-evaluation-trace-bank-trace-008-c270890f4ea0"
-        },
-        {
-          "legal": true,
-          "selected_action": "horizontal",
-          "trace_id": "feature-058-evaluation-trace-bank-trace-009-d60c2618cbed"
-        },
-        {
-          "legal": true,
-          "selected_action": "horizontal",
-          "trace_id": "feature-058-evaluation-trace-bank-trace-010-135fe5d45383"
-        },
-        {
-          "legal": true,
-          "selected_action": "horizontal",
-          "trace_id": "feature-058-evaluation-trace-bank-trace-011-a095006b8c3c"
-        }
-      ],
-      "timeout": {
-        "status": "schema_only_not_performance_claim",
-        "value": null
-      },
-      "vertical_action_count": 0
-    },
-    "local-only": {
-      "action_distribution": {
-        "horizontal": 0,
-        "local": 12,
-        "vertical": 0
-      },
-      "delay": {
-        "status": "schema_only_not_performance_claim",
-        "value": null
-      },
-      "drop": {
-        "status": "schema_only_not_performance_claim",
-        "value": null
-      },
-      "horizontal_action_count": 0,
-      "local_action_count": 12,
-      "per_episode_summary": [
-        {
-          "episode_id": 0,
-          "metric_shell_only": true,
-          "performance_claim": false
-        },
-        {
-          "episode_id": 1,
-          "metric_shell_only": true,
-          "performance_claim": false
-        },
-        {
-          "episode_id": 2,
-          "metric_shell_only": true,
-          "performance_claim": false
-        }
-      ],
-      "reward": {
-        "status": "schema_only_not_performance_claim",
-        "value": null
-      },
-      "selected_actions": [
-        {
-          "legal": true,
-          "selected_action": "local",
-          "trace_id": "feature-058-evaluation-trace-bank-trace-000-0d3321f39732"
-        },
-        {
-          "legal": true,
-          "selected_action": "local",
-          "trace_id": "feature-058-evaluation-trace-bank-trace-001-27a429c2b824"
-        },
-        {
-          "legal": true,
-          "selected_action": "local",
-          "trace_id": "feature-058-evaluation-trace-bank-trace-002-42c25a458cde"
-        },
-        {
-          "legal": true,
-          "selected_action": "local",
-          "trace_id": "feature-058-evaluation-trace-bank-trace-003-de82e91aec97"
-        },
-        {
-          "legal": true,
-          "selected_action": "local",
-          "trace_id": "feature-058-evaluation-trace-bank-trace-004-8050118c871c"
-        },
-        {
-          "legal": true,
-          "selected_action": "local",
-          "trace_id": "feature-058-evaluation-trace-bank-trace-005-1bb74efa7a79"
-        },
-        {
-          "legal": true,
-          "selected_action": "local",
-          "trace_id": "feature-058-evaluation-trace-bank-trace-006-618201f56169"
-        },
-        {
-          "legal": true,
-          "selected_action": "local",
-          "trace_id": "feature-058-evaluation-trace-bank-trace-007-247fdb56879b"
-        },
-        {
-          "legal": true,
-          "selected_action": "local",
-          "trace_id": "feature-058-evaluation-trace-bank-trace-008-c270890f4ea0"
-        },
-        {
-          "legal": true,
-          "selected_action": "local",
-          "trace_id": "feature-058-evaluation-trace-bank-trace-009-d60c2618cbed"
-        },
-        {
-          "legal": true,
-          "selected_action": "local",
-          "trace_id": "feature-058-evaluation-trace-bank-trace-010-135fe5d45383"
-        },
-        {
-          "legal": true,
-          "selected_action": "local",
-          "trace_id": "feature-058-evaluation-trace-bank-trace-011-a095006b8c3c"
-        }
-      ],
-      "timeout": {
-        "status": "schema_only_not_performance_claim",
-        "value": null
-      },
-      "vertical_action_count": 0
-    },
-    "random-legal": {
-      "action_distribution": {
-        "horizontal": 3,
-        "local": 3,
-        "vertical": 6
-      },
-      "delay": {
-        "status": "schema_only_not_performance_claim",
-        "value": null
-      },
-      "drop": {
-        "status": "schema_only_not_performance_claim",
-        "value": null
-      },
-      "horizontal_action_count": 3,
-      "local_action_count": 3,
-      "per_episode_summary": [
-        {
-          "episode_id": 0,
-          "metric_shell_only": true,
-          "performance_claim": false
-        },
-        {
-          "episode_id": 1,
-          "metric_shell_only": true,
-          "performance_claim": false
-        },
-        {
-          "episode_id": 2,
-          "metric_shell_only": true,
-          "performance_claim": false
-        }
-      ],
-      "reward": {
-        "status": "schema_only_not_performance_claim",
-        "value": null
-      },
-      "selected_actions": [
-        {
-          "legal": true,
-          "selected_action": "horizontal",
-          "trace_id": "feature-058-evaluation-trace-bank-trace-000-0d3321f39732"
-        },
-        {
-          "legal": true,
-          "selected_action": "vertical",
-          "trace_id": "feature-058-evaluation-trace-bank-trace-001-27a429c2b824"
-        },
-        {
-          "legal": true,
-          "selected_action": "horizontal",
-          "trace_id": "feature-058-evaluation-trace-bank-trace-002-42c25a458cde"
-        },
-        {
-          "legal": true,
-          "selected_action": "vertical",
-          "trace_id": "feature-058-evaluation-trace-bank-trace-003-de82e91aec97"
-        },
-        {
-          "legal": true,
-          "selected_action": "local",
-          "trace_id": "feature-058-evaluation-trace-bank-trace-004-8050118c871c"
-        },
-        {
-          "legal": true,
-          "selected_action": "local",
-          "trace_id": "feature-058-evaluation-trace-bank-trace-005-1bb74efa7a79"
-        },
-        {
-          "legal": true,
-          "selected_action": "horizontal",
-          "trace_id": "feature-058-evaluation-trace-bank-trace-006-618201f56169"
-        },
-        {
-          "legal": true,
-          "selected_action": "vertical",
-          "trace_id": "feature-058-evaluation-trace-bank-trace-007-247fdb56879b"
-        },
-        {
-          "legal": true,
-          "selected_action": "local",
-          "trace_id": "feature-058-evaluation-trace-bank-trace-008-c270890f4ea0"
-        },
-        {
-          "legal": true,
-          "selected_action": "vertical",
-          "trace_id": "feature-058-evaluation-trace-bank-trace-009-d60c2618cbed"
-        },
-        {
-          "legal": true,
-          "selected_action": "vertical",
-          "trace_id": "feature-058-evaluation-trace-bank-trace-010-135fe5d45383"
-        },
-        {
-          "legal": true,
-          "selected_action": "vertical",
-          "trace_id": "feature-058-evaluation-trace-bank-trace-011-a095006b8c3c"
-        }
-      ],
-      "timeout": {
-        "status": "schema_only_not_performance_claim",
-        "value": null
-      },
-      "vertical_action_count": 6
-    }
-  },
+  "baseline_metrics_real_execution": true,
   "baseline_policy_names": [
     "local-only",
     "random-legal",
@@ -682,5 +40,1591 @@
     ]
   },
   "evaluated_policy_count": 3,
-  "no_baseline_superiority_claim": true
+  "no_baseline_superiority_claim": true,
+  "per_policy_metrics": {
+    "fixed-horizontal": {
+      "action_distribution": {
+        "horizontal": 0,
+        "local": 100,
+        "vertical": 0
+      },
+      "completed_task_count": 1,
+      "dropped_task_count": 2,
+      "episode_count": 100,
+      "fallback_action_count": 0,
+      "horizontal_action_count": 0,
+      "illegal_action_count": 0,
+      "local_action_count": 100,
+      "no_baseline_superiority_claim": true,
+      "per_episode_summary": [
+        {
+          "episode_id": 0,
+          "performance_claim": false
+        },
+        {
+          "episode_id": 1,
+          "performance_claim": false
+        },
+        {
+          "episode_id": 2,
+          "performance_claim": false
+        },
+        {
+          "episode_id": 3,
+          "performance_claim": false
+        },
+        {
+          "episode_id": 4,
+          "performance_claim": false
+        },
+        {
+          "episode_id": 5,
+          "performance_claim": false
+        },
+        {
+          "episode_id": 6,
+          "performance_claim": false
+        },
+        {
+          "episode_id": 7,
+          "performance_claim": false
+        },
+        {
+          "episode_id": 8,
+          "performance_claim": false
+        },
+        {
+          "episode_id": 9,
+          "performance_claim": false
+        },
+        {
+          "episode_id": 10,
+          "performance_claim": false
+        },
+        {
+          "episode_id": 11,
+          "performance_claim": false
+        },
+        {
+          "episode_id": 12,
+          "performance_claim": false
+        },
+        {
+          "episode_id": 13,
+          "performance_claim": false
+        },
+        {
+          "episode_id": 14,
+          "performance_claim": false
+        },
+        {
+          "episode_id": 15,
+          "performance_claim": false
+        },
+        {
+          "episode_id": 16,
+          "performance_claim": false
+        },
+        {
+          "episode_id": 17,
+          "performance_claim": false
+        },
+        {
+          "episode_id": 18,
+          "performance_claim": false
+        },
+        {
+          "episode_id": 19,
+          "performance_claim": false
+        },
+        {
+          "episode_id": 20,
+          "performance_claim": false
+        },
+        {
+          "episode_id": 21,
+          "performance_claim": false
+        },
+        {
+          "episode_id": 22,
+          "performance_claim": false
+        },
+        {
+          "episode_id": 23,
+          "performance_claim": false
+        },
+        {
+          "episode_id": 24,
+          "performance_claim": false
+        },
+        {
+          "episode_id": 25,
+          "performance_claim": false
+        },
+        {
+          "episode_id": 26,
+          "performance_claim": false
+        },
+        {
+          "episode_id": 27,
+          "performance_claim": false
+        },
+        {
+          "episode_id": 28,
+          "performance_claim": false
+        },
+        {
+          "episode_id": 29,
+          "performance_claim": false
+        },
+        {
+          "episode_id": 30,
+          "performance_claim": false
+        },
+        {
+          "episode_id": 31,
+          "performance_claim": false
+        },
+        {
+          "episode_id": 32,
+          "performance_claim": false
+        },
+        {
+          "episode_id": 33,
+          "performance_claim": false
+        },
+        {
+          "episode_id": 34,
+          "performance_claim": false
+        },
+        {
+          "episode_id": 35,
+          "performance_claim": false
+        },
+        {
+          "episode_id": 36,
+          "performance_claim": false
+        },
+        {
+          "episode_id": 37,
+          "performance_claim": false
+        },
+        {
+          "episode_id": 38,
+          "performance_claim": false
+        },
+        {
+          "episode_id": 39,
+          "performance_claim": false
+        },
+        {
+          "episode_id": 40,
+          "performance_claim": false
+        },
+        {
+          "episode_id": 41,
+          "performance_claim": false
+        },
+        {
+          "episode_id": 42,
+          "performance_claim": false
+        },
+        {
+          "episode_id": 43,
+          "performance_claim": false
+        },
+        {
+          "episode_id": 44,
+          "performance_claim": false
+        },
+        {
+          "episode_id": 45,
+          "performance_claim": false
+        },
+        {
+          "episode_id": 46,
+          "performance_claim": false
+        },
+        {
+          "episode_id": 47,
+          "performance_claim": false
+        },
+        {
+          "episode_id": 48,
+          "performance_claim": false
+        },
+        {
+          "episode_id": 49,
+          "performance_claim": false
+        },
+        {
+          "episode_id": 50,
+          "performance_claim": false
+        },
+        {
+          "episode_id": 51,
+          "performance_claim": false
+        },
+        {
+          "episode_id": 52,
+          "performance_claim": false
+        },
+        {
+          "episode_id": 53,
+          "performance_claim": false
+        },
+        {
+          "episode_id": 54,
+          "performance_claim": false
+        },
+        {
+          "episode_id": 55,
+          "performance_claim": false
+        },
+        {
+          "episode_id": 56,
+          "performance_claim": false
+        },
+        {
+          "episode_id": 57,
+          "performance_claim": false
+        },
+        {
+          "episode_id": 58,
+          "performance_claim": false
+        },
+        {
+          "episode_id": 59,
+          "performance_claim": false
+        },
+        {
+          "episode_id": 60,
+          "performance_claim": false
+        },
+        {
+          "episode_id": 61,
+          "performance_claim": false
+        },
+        {
+          "episode_id": 62,
+          "performance_claim": false
+        },
+        {
+          "episode_id": 63,
+          "performance_claim": false
+        },
+        {
+          "episode_id": 64,
+          "performance_claim": false
+        },
+        {
+          "episode_id": 65,
+          "performance_claim": false
+        },
+        {
+          "episode_id": 66,
+          "performance_claim": false
+        },
+        {
+          "episode_id": 67,
+          "performance_claim": false
+        },
+        {
+          "episode_id": 68,
+          "performance_claim": false
+        },
+        {
+          "episode_id": 69,
+          "performance_claim": false
+        },
+        {
+          "episode_id": 70,
+          "performance_claim": false
+        },
+        {
+          "episode_id": 71,
+          "performance_claim": false
+        },
+        {
+          "episode_id": 72,
+          "performance_claim": false
+        },
+        {
+          "episode_id": 73,
+          "performance_claim": false
+        },
+        {
+          "episode_id": 74,
+          "performance_claim": false
+        },
+        {
+          "episode_id": 75,
+          "performance_claim": false
+        },
+        {
+          "episode_id": 76,
+          "performance_claim": false
+        },
+        {
+          "episode_id": 77,
+          "performance_claim": false
+        },
+        {
+          "episode_id": 78,
+          "performance_claim": false
+        },
+        {
+          "episode_id": 79,
+          "performance_claim": false
+        },
+        {
+          "episode_id": 80,
+          "performance_claim": false
+        },
+        {
+          "episode_id": 81,
+          "performance_claim": false
+        },
+        {
+          "episode_id": 82,
+          "performance_claim": false
+        },
+        {
+          "episode_id": 83,
+          "performance_claim": false
+        },
+        {
+          "episode_id": 84,
+          "performance_claim": false
+        },
+        {
+          "episode_id": 85,
+          "performance_claim": false
+        },
+        {
+          "episode_id": 86,
+          "performance_claim": false
+        },
+        {
+          "episode_id": 87,
+          "performance_claim": false
+        },
+        {
+          "episode_id": 88,
+          "performance_claim": false
+        },
+        {
+          "episode_id": 89,
+          "performance_claim": false
+        },
+        {
+          "episode_id": 90,
+          "performance_claim": false
+        },
+        {
+          "episode_id": 91,
+          "performance_claim": false
+        },
+        {
+          "episode_id": 92,
+          "performance_claim": false
+        },
+        {
+          "episode_id": 93,
+          "performance_claim": false
+        },
+        {
+          "episode_id": 94,
+          "performance_claim": false
+        },
+        {
+          "episode_id": 95,
+          "performance_claim": false
+        },
+        {
+          "episode_id": 96,
+          "performance_claim": false
+        },
+        {
+          "episode_id": 97,
+          "performance_claim": false
+        },
+        {
+          "episode_id": 98,
+          "performance_claim": false
+        },
+        {
+          "episode_id": 99,
+          "performance_claim": false
+        }
+      ],
+      "performance_claim": false,
+      "reward_bearing_transition_count": 3,
+      "reward_summary": {
+        "mean_reward": -1.0,
+        "reward_count": 100,
+        "total_reward": -100.0
+      },
+      "terminal_transition_count": 3,
+      "trace_ids": [
+        "eval-000",
+        "eval-001",
+        "eval-002",
+        "eval-003",
+        "eval-004",
+        "eval-005",
+        "eval-006",
+        "eval-007",
+        "eval-008",
+        "eval-009",
+        "eval-010",
+        "eval-011",
+        "eval-012",
+        "eval-013",
+        "eval-014",
+        "eval-015",
+        "eval-016",
+        "eval-017",
+        "eval-018",
+        "eval-019",
+        "eval-020",
+        "eval-021",
+        "eval-022",
+        "eval-023",
+        "eval-024",
+        "eval-025",
+        "eval-026",
+        "eval-027",
+        "eval-028",
+        "eval-029",
+        "eval-030",
+        "eval-031",
+        "eval-032",
+        "eval-033",
+        "eval-034",
+        "eval-035",
+        "eval-036",
+        "eval-037",
+        "eval-038",
+        "eval-039",
+        "eval-040",
+        "eval-041",
+        "eval-042",
+        "eval-043",
+        "eval-044",
+        "eval-045",
+        "eval-046",
+        "eval-047",
+        "eval-048",
+        "eval-049",
+        "eval-050",
+        "eval-051",
+        "eval-052",
+        "eval-053",
+        "eval-054",
+        "eval-055",
+        "eval-056",
+        "eval-057",
+        "eval-058",
+        "eval-059",
+        "eval-060",
+        "eval-061",
+        "eval-062",
+        "eval-063",
+        "eval-064",
+        "eval-065",
+        "eval-066",
+        "eval-067",
+        "eval-068",
+        "eval-069",
+        "eval-070",
+        "eval-071",
+        "eval-072",
+        "eval-073",
+        "eval-074",
+        "eval-075",
+        "eval-076",
+        "eval-077",
+        "eval-078",
+        "eval-079",
+        "eval-080",
+        "eval-081",
+        "eval-082",
+        "eval-083",
+        "eval-084",
+        "eval-085",
+        "eval-086",
+        "eval-087",
+        "eval-088",
+        "eval-089",
+        "eval-090",
+        "eval-091",
+        "eval-092",
+        "eval-093",
+        "eval-094",
+        "eval-095",
+        "eval-096",
+        "eval-097",
+        "eval-098",
+        "eval-099"
+      ],
+      "vertical_action_count": 0
+    },
+    "local-only": {
+      "action_distribution": {
+        "horizontal": 0,
+        "local": 100,
+        "vertical": 0
+      },
+      "completed_task_count": 1,
+      "dropped_task_count": 2,
+      "episode_count": 100,
+      "fallback_action_count": 0,
+      "horizontal_action_count": 0,
+      "illegal_action_count": 0,
+      "local_action_count": 100,
+      "no_baseline_superiority_claim": true,
+      "per_episode_summary": [
+        {
+          "episode_id": 0,
+          "performance_claim": false
+        },
+        {
+          "episode_id": 1,
+          "performance_claim": false
+        },
+        {
+          "episode_id": 2,
+          "performance_claim": false
+        },
+        {
+          "episode_id": 3,
+          "performance_claim": false
+        },
+        {
+          "episode_id": 4,
+          "performance_claim": false
+        },
+        {
+          "episode_id": 5,
+          "performance_claim": false
+        },
+        {
+          "episode_id": 6,
+          "performance_claim": false
+        },
+        {
+          "episode_id": 7,
+          "performance_claim": false
+        },
+        {
+          "episode_id": 8,
+          "performance_claim": false
+        },
+        {
+          "episode_id": 9,
+          "performance_claim": false
+        },
+        {
+          "episode_id": 10,
+          "performance_claim": false
+        },
+        {
+          "episode_id": 11,
+          "performance_claim": false
+        },
+        {
+          "episode_id": 12,
+          "performance_claim": false
+        },
+        {
+          "episode_id": 13,
+          "performance_claim": false
+        },
+        {
+          "episode_id": 14,
+          "performance_claim": false
+        },
+        {
+          "episode_id": 15,
+          "performance_claim": false
+        },
+        {
+          "episode_id": 16,
+          "performance_claim": false
+        },
+        {
+          "episode_id": 17,
+          "performance_claim": false
+        },
+        {
+          "episode_id": 18,
+          "performance_claim": false
+        },
+        {
+          "episode_id": 19,
+          "performance_claim": false
+        },
+        {
+          "episode_id": 20,
+          "performance_claim": false
+        },
+        {
+          "episode_id": 21,
+          "performance_claim": false
+        },
+        {
+          "episode_id": 22,
+          "performance_claim": false
+        },
+        {
+          "episode_id": 23,
+          "performance_claim": false
+        },
+        {
+          "episode_id": 24,
+          "performance_claim": false
+        },
+        {
+          "episode_id": 25,
+          "performance_claim": false
+        },
+        {
+          "episode_id": 26,
+          "performance_claim": false
+        },
+        {
+          "episode_id": 27,
+          "performance_claim": false
+        },
+        {
+          "episode_id": 28,
+          "performance_claim": false
+        },
+        {
+          "episode_id": 29,
+          "performance_claim": false
+        },
+        {
+          "episode_id": 30,
+          "performance_claim": false
+        },
+        {
+          "episode_id": 31,
+          "performance_claim": false
+        },
+        {
+          "episode_id": 32,
+          "performance_claim": false
+        },
+        {
+          "episode_id": 33,
+          "performance_claim": false
+        },
+        {
+          "episode_id": 34,
+          "performance_claim": false
+        },
+        {
+          "episode_id": 35,
+          "performance_claim": false
+        },
+        {
+          "episode_id": 36,
+          "performance_claim": false
+        },
+        {
+          "episode_id": 37,
+          "performance_claim": false
+        },
+        {
+          "episode_id": 38,
+          "performance_claim": false
+        },
+        {
+          "episode_id": 39,
+          "performance_claim": false
+        },
+        {
+          "episode_id": 40,
+          "performance_claim": false
+        },
+        {
+          "episode_id": 41,
+          "performance_claim": false
+        },
+        {
+          "episode_id": 42,
+          "performance_claim": false
+        },
+        {
+          "episode_id": 43,
+          "performance_claim": false
+        },
+        {
+          "episode_id": 44,
+          "performance_claim": false
+        },
+        {
+          "episode_id": 45,
+          "performance_claim": false
+        },
+        {
+          "episode_id": 46,
+          "performance_claim": false
+        },
+        {
+          "episode_id": 47,
+          "performance_claim": false
+        },
+        {
+          "episode_id": 48,
+          "performance_claim": false
+        },
+        {
+          "episode_id": 49,
+          "performance_claim": false
+        },
+        {
+          "episode_id": 50,
+          "performance_claim": false
+        },
+        {
+          "episode_id": 51,
+          "performance_claim": false
+        },
+        {
+          "episode_id": 52,
+          "performance_claim": false
+        },
+        {
+          "episode_id": 53,
+          "performance_claim": false
+        },
+        {
+          "episode_id": 54,
+          "performance_claim": false
+        },
+        {
+          "episode_id": 55,
+          "performance_claim": false
+        },
+        {
+          "episode_id": 56,
+          "performance_claim": false
+        },
+        {
+          "episode_id": 57,
+          "performance_claim": false
+        },
+        {
+          "episode_id": 58,
+          "performance_claim": false
+        },
+        {
+          "episode_id": 59,
+          "performance_claim": false
+        },
+        {
+          "episode_id": 60,
+          "performance_claim": false
+        },
+        {
+          "episode_id": 61,
+          "performance_claim": false
+        },
+        {
+          "episode_id": 62,
+          "performance_claim": false
+        },
+        {
+          "episode_id": 63,
+          "performance_claim": false
+        },
+        {
+          "episode_id": 64,
+          "performance_claim": false
+        },
+        {
+          "episode_id": 65,
+          "performance_claim": false
+        },
+        {
+          "episode_id": 66,
+          "performance_claim": false
+        },
+        {
+          "episode_id": 67,
+          "performance_claim": false
+        },
+        {
+          "episode_id": 68,
+          "performance_claim": false
+        },
+        {
+          "episode_id": 69,
+          "performance_claim": false
+        },
+        {
+          "episode_id": 70,
+          "performance_claim": false
+        },
+        {
+          "episode_id": 71,
+          "performance_claim": false
+        },
+        {
+          "episode_id": 72,
+          "performance_claim": false
+        },
+        {
+          "episode_id": 73,
+          "performance_claim": false
+        },
+        {
+          "episode_id": 74,
+          "performance_claim": false
+        },
+        {
+          "episode_id": 75,
+          "performance_claim": false
+        },
+        {
+          "episode_id": 76,
+          "performance_claim": false
+        },
+        {
+          "episode_id": 77,
+          "performance_claim": false
+        },
+        {
+          "episode_id": 78,
+          "performance_claim": false
+        },
+        {
+          "episode_id": 79,
+          "performance_claim": false
+        },
+        {
+          "episode_id": 80,
+          "performance_claim": false
+        },
+        {
+          "episode_id": 81,
+          "performance_claim": false
+        },
+        {
+          "episode_id": 82,
+          "performance_claim": false
+        },
+        {
+          "episode_id": 83,
+          "performance_claim": false
+        },
+        {
+          "episode_id": 84,
+          "performance_claim": false
+        },
+        {
+          "episode_id": 85,
+          "performance_claim": false
+        },
+        {
+          "episode_id": 86,
+          "performance_claim": false
+        },
+        {
+          "episode_id": 87,
+          "performance_claim": false
+        },
+        {
+          "episode_id": 88,
+          "performance_claim": false
+        },
+        {
+          "episode_id": 89,
+          "performance_claim": false
+        },
+        {
+          "episode_id": 90,
+          "performance_claim": false
+        },
+        {
+          "episode_id": 91,
+          "performance_claim": false
+        },
+        {
+          "episode_id": 92,
+          "performance_claim": false
+        },
+        {
+          "episode_id": 93,
+          "performance_claim": false
+        },
+        {
+          "episode_id": 94,
+          "performance_claim": false
+        },
+        {
+          "episode_id": 95,
+          "performance_claim": false
+        },
+        {
+          "episode_id": 96,
+          "performance_claim": false
+        },
+        {
+          "episode_id": 97,
+          "performance_claim": false
+        },
+        {
+          "episode_id": 98,
+          "performance_claim": false
+        },
+        {
+          "episode_id": 99,
+          "performance_claim": false
+        }
+      ],
+      "performance_claim": false,
+      "reward_bearing_transition_count": 3,
+      "reward_summary": {
+        "mean_reward": -1.0,
+        "reward_count": 100,
+        "total_reward": -100.0
+      },
+      "terminal_transition_count": 3,
+      "trace_ids": [
+        "eval-000",
+        "eval-001",
+        "eval-002",
+        "eval-003",
+        "eval-004",
+        "eval-005",
+        "eval-006",
+        "eval-007",
+        "eval-008",
+        "eval-009",
+        "eval-010",
+        "eval-011",
+        "eval-012",
+        "eval-013",
+        "eval-014",
+        "eval-015",
+        "eval-016",
+        "eval-017",
+        "eval-018",
+        "eval-019",
+        "eval-020",
+        "eval-021",
+        "eval-022",
+        "eval-023",
+        "eval-024",
+        "eval-025",
+        "eval-026",
+        "eval-027",
+        "eval-028",
+        "eval-029",
+        "eval-030",
+        "eval-031",
+        "eval-032",
+        "eval-033",
+        "eval-034",
+        "eval-035",
+        "eval-036",
+        "eval-037",
+        "eval-038",
+        "eval-039",
+        "eval-040",
+        "eval-041",
+        "eval-042",
+        "eval-043",
+        "eval-044",
+        "eval-045",
+        "eval-046",
+        "eval-047",
+        "eval-048",
+        "eval-049",
+        "eval-050",
+        "eval-051",
+        "eval-052",
+        "eval-053",
+        "eval-054",
+        "eval-055",
+        "eval-056",
+        "eval-057",
+        "eval-058",
+        "eval-059",
+        "eval-060",
+        "eval-061",
+        "eval-062",
+        "eval-063",
+        "eval-064",
+        "eval-065",
+        "eval-066",
+        "eval-067",
+        "eval-068",
+        "eval-069",
+        "eval-070",
+        "eval-071",
+        "eval-072",
+        "eval-073",
+        "eval-074",
+        "eval-075",
+        "eval-076",
+        "eval-077",
+        "eval-078",
+        "eval-079",
+        "eval-080",
+        "eval-081",
+        "eval-082",
+        "eval-083",
+        "eval-084",
+        "eval-085",
+        "eval-086",
+        "eval-087",
+        "eval-088",
+        "eval-089",
+        "eval-090",
+        "eval-091",
+        "eval-092",
+        "eval-093",
+        "eval-094",
+        "eval-095",
+        "eval-096",
+        "eval-097",
+        "eval-098",
+        "eval-099"
+      ],
+      "vertical_action_count": 0
+    },
+    "random-legal": {
+      "action_distribution": {
+        "horizontal": 0,
+        "local": 100,
+        "vertical": 0
+      },
+      "completed_task_count": 1,
+      "dropped_task_count": 2,
+      "episode_count": 100,
+      "fallback_action_count": 0,
+      "horizontal_action_count": 0,
+      "illegal_action_count": 0,
+      "local_action_count": 100,
+      "no_baseline_superiority_claim": true,
+      "per_episode_summary": [
+        {
+          "episode_id": 0,
+          "performance_claim": false
+        },
+        {
+          "episode_id": 1,
+          "performance_claim": false
+        },
+        {
+          "episode_id": 2,
+          "performance_claim": false
+        },
+        {
+          "episode_id": 3,
+          "performance_claim": false
+        },
+        {
+          "episode_id": 4,
+          "performance_claim": false
+        },
+        {
+          "episode_id": 5,
+          "performance_claim": false
+        },
+        {
+          "episode_id": 6,
+          "performance_claim": false
+        },
+        {
+          "episode_id": 7,
+          "performance_claim": false
+        },
+        {
+          "episode_id": 8,
+          "performance_claim": false
+        },
+        {
+          "episode_id": 9,
+          "performance_claim": false
+        },
+        {
+          "episode_id": 10,
+          "performance_claim": false
+        },
+        {
+          "episode_id": 11,
+          "performance_claim": false
+        },
+        {
+          "episode_id": 12,
+          "performance_claim": false
+        },
+        {
+          "episode_id": 13,
+          "performance_claim": false
+        },
+        {
+          "episode_id": 14,
+          "performance_claim": false
+        },
+        {
+          "episode_id": 15,
+          "performance_claim": false
+        },
+        {
+          "episode_id": 16,
+          "performance_claim": false
+        },
+        {
+          "episode_id": 17,
+          "performance_claim": false
+        },
+        {
+          "episode_id": 18,
+          "performance_claim": false
+        },
+        {
+          "episode_id": 19,
+          "performance_claim": false
+        },
+        {
+          "episode_id": 20,
+          "performance_claim": false
+        },
+        {
+          "episode_id": 21,
+          "performance_claim": false
+        },
+        {
+          "episode_id": 22,
+          "performance_claim": false
+        },
+        {
+          "episode_id": 23,
+          "performance_claim": false
+        },
+        {
+          "episode_id": 24,
+          "performance_claim": false
+        },
+        {
+          "episode_id": 25,
+          "performance_claim": false
+        },
+        {
+          "episode_id": 26,
+          "performance_claim": false
+        },
+        {
+          "episode_id": 27,
+          "performance_claim": false
+        },
+        {
+          "episode_id": 28,
+          "performance_claim": false
+        },
+        {
+          "episode_id": 29,
+          "performance_claim": false
+        },
+        {
+          "episode_id": 30,
+          "performance_claim": false
+        },
+        {
+          "episode_id": 31,
+          "performance_claim": false
+        },
+        {
+          "episode_id": 32,
+          "performance_claim": false
+        },
+        {
+          "episode_id": 33,
+          "performance_claim": false
+        },
+        {
+          "episode_id": 34,
+          "performance_claim": false
+        },
+        {
+          "episode_id": 35,
+          "performance_claim": false
+        },
+        {
+          "episode_id": 36,
+          "performance_claim": false
+        },
+        {
+          "episode_id": 37,
+          "performance_claim": false
+        },
+        {
+          "episode_id": 38,
+          "performance_claim": false
+        },
+        {
+          "episode_id": 39,
+          "performance_claim": false
+        },
+        {
+          "episode_id": 40,
+          "performance_claim": false
+        },
+        {
+          "episode_id": 41,
+          "performance_claim": false
+        },
+        {
+          "episode_id": 42,
+          "performance_claim": false
+        },
+        {
+          "episode_id": 43,
+          "performance_claim": false
+        },
+        {
+          "episode_id": 44,
+          "performance_claim": false
+        },
+        {
+          "episode_id": 45,
+          "performance_claim": false
+        },
+        {
+          "episode_id": 46,
+          "performance_claim": false
+        },
+        {
+          "episode_id": 47,
+          "performance_claim": false
+        },
+        {
+          "episode_id": 48,
+          "performance_claim": false
+        },
+        {
+          "episode_id": 49,
+          "performance_claim": false
+        },
+        {
+          "episode_id": 50,
+          "performance_claim": false
+        },
+        {
+          "episode_id": 51,
+          "performance_claim": false
+        },
+        {
+          "episode_id": 52,
+          "performance_claim": false
+        },
+        {
+          "episode_id": 53,
+          "performance_claim": false
+        },
+        {
+          "episode_id": 54,
+          "performance_claim": false
+        },
+        {
+          "episode_id": 55,
+          "performance_claim": false
+        },
+        {
+          "episode_id": 56,
+          "performance_claim": false
+        },
+        {
+          "episode_id": 57,
+          "performance_claim": false
+        },
+        {
+          "episode_id": 58,
+          "performance_claim": false
+        },
+        {
+          "episode_id": 59,
+          "performance_claim": false
+        },
+        {
+          "episode_id": 60,
+          "performance_claim": false
+        },
+        {
+          "episode_id": 61,
+          "performance_claim": false
+        },
+        {
+          "episode_id": 62,
+          "performance_claim": false
+        },
+        {
+          "episode_id": 63,
+          "performance_claim": false
+        },
+        {
+          "episode_id": 64,
+          "performance_claim": false
+        },
+        {
+          "episode_id": 65,
+          "performance_claim": false
+        },
+        {
+          "episode_id": 66,
+          "performance_claim": false
+        },
+        {
+          "episode_id": 67,
+          "performance_claim": false
+        },
+        {
+          "episode_id": 68,
+          "performance_claim": false
+        },
+        {
+          "episode_id": 69,
+          "performance_claim": false
+        },
+        {
+          "episode_id": 70,
+          "performance_claim": false
+        },
+        {
+          "episode_id": 71,
+          "performance_claim": false
+        },
+        {
+          "episode_id": 72,
+          "performance_claim": false
+        },
+        {
+          "episode_id": 73,
+          "performance_claim": false
+        },
+        {
+          "episode_id": 74,
+          "performance_claim": false
+        },
+        {
+          "episode_id": 75,
+          "performance_claim": false
+        },
+        {
+          "episode_id": 76,
+          "performance_claim": false
+        },
+        {
+          "episode_id": 77,
+          "performance_claim": false
+        },
+        {
+          "episode_id": 78,
+          "performance_claim": false
+        },
+        {
+          "episode_id": 79,
+          "performance_claim": false
+        },
+        {
+          "episode_id": 80,
+          "performance_claim": false
+        },
+        {
+          "episode_id": 81,
+          "performance_claim": false
+        },
+        {
+          "episode_id": 82,
+          "performance_claim": false
+        },
+        {
+          "episode_id": 83,
+          "performance_claim": false
+        },
+        {
+          "episode_id": 84,
+          "performance_claim": false
+        },
+        {
+          "episode_id": 85,
+          "performance_claim": false
+        },
+        {
+          "episode_id": 86,
+          "performance_claim": false
+        },
+        {
+          "episode_id": 87,
+          "performance_claim": false
+        },
+        {
+          "episode_id": 88,
+          "performance_claim": false
+        },
+        {
+          "episode_id": 89,
+          "performance_claim": false
+        },
+        {
+          "episode_id": 90,
+          "performance_claim": false
+        },
+        {
+          "episode_id": 91,
+          "performance_claim": false
+        },
+        {
+          "episode_id": 92,
+          "performance_claim": false
+        },
+        {
+          "episode_id": 93,
+          "performance_claim": false
+        },
+        {
+          "episode_id": 94,
+          "performance_claim": false
+        },
+        {
+          "episode_id": 95,
+          "performance_claim": false
+        },
+        {
+          "episode_id": 96,
+          "performance_claim": false
+        },
+        {
+          "episode_id": 97,
+          "performance_claim": false
+        },
+        {
+          "episode_id": 98,
+          "performance_claim": false
+        },
+        {
+          "episode_id": 99,
+          "performance_claim": false
+        }
+      ],
+      "performance_claim": false,
+      "reward_bearing_transition_count": 3,
+      "reward_summary": {
+        "mean_reward": -1.0,
+        "reward_count": 100,
+        "total_reward": -100.0
+      },
+      "terminal_transition_count": 3,
+      "trace_ids": [
+        "eval-000",
+        "eval-001",
+        "eval-002",
+        "eval-003",
+        "eval-004",
+        "eval-005",
+        "eval-006",
+        "eval-007",
+        "eval-008",
+        "eval-009",
+        "eval-010",
+        "eval-011",
+        "eval-012",
+        "eval-013",
+        "eval-014",
+        "eval-015",
+        "eval-016",
+        "eval-017",
+        "eval-018",
+        "eval-019",
+        "eval-020",
+        "eval-021",
+        "eval-022",
+        "eval-023",
+        "eval-024",
+        "eval-025",
+        "eval-026",
+        "eval-027",
+        "eval-028",
+        "eval-029",
+        "eval-030",
+        "eval-031",
+        "eval-032",
+        "eval-033",
+        "eval-034",
+        "eval-035",
+        "eval-036",
+        "eval-037",
+        "eval-038",
+        "eval-039",
+        "eval-040",
+        "eval-041",
+        "eval-042",
+        "eval-043",
+        "eval-044",
+        "eval-045",
+        "eval-046",
+        "eval-047",
+        "eval-048",
+        "eval-049",
+        "eval-050",
+        "eval-051",
+        "eval-052",
+        "eval-053",
+        "eval-054",
+        "eval-055",
+        "eval-056",
+        "eval-057",
+        "eval-058",
+        "eval-059",
+        "eval-060",
+        "eval-061",
+        "eval-062",
+        "eval-063",
+        "eval-064",
+        "eval-065",
+        "eval-066",
+        "eval-067",
+        "eval-068",
+        "eval-069",
+        "eval-070",
+        "eval-071",
+        "eval-072",
+        "eval-073",
+        "eval-074",
+        "eval-075",
+        "eval-076",
+        "eval-077",
+        "eval-078",
+        "eval-079",
+        "eval-080",
+        "eval-081",
+        "eval-082",
+        "eval-083",
+        "eval-084",
+        "eval-085",
+        "eval-086",
+        "eval-087",
+        "eval-088",
+        "eval-089",
+        "eval-090",
+        "eval-091",
+        "eval-092",
+        "eval-093",
+        "eval-094",
+        "eval-095",
+        "eval-096",
+        "eval-097",
+        "eval-098",
+        "eval-099"
+      ],
+      "vertical_action_count": 0
+    }
+  }
 }

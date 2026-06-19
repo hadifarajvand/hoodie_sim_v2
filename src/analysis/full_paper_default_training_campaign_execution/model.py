@@ -118,6 +118,9 @@ class FullPaperDefaultTrainingCampaignExecutionReport:
                 "local_action_count",
                 "horizontal_action_count",
                 "vertical_action_count",
+                "invalid_or_noop_action_count",
+                "action_count_total",
+                "action_accounting_reconciled",
             ),
         )
         _required_keys(
@@ -142,7 +145,10 @@ class FullPaperDefaultTrainingCampaignExecutionReport:
             (
                 "baseline_policy_names",
                 "evaluated_policy_count",
+                "actual_baseline_evaluation_episode_count",
+                "per_policy_metrics",
                 "baseline_metric_shells",
+                "baseline_metrics_real_execution",
                 "no_baseline_superiority_claim",
             ),
         )
@@ -186,11 +192,22 @@ class FullPaperDefaultTrainingCampaignExecutionReport:
         )
         _required_keys(self.safety_summary, "safety_summary", SAFETY_FIELDS)
 
+        configured_budget = dict(self.campaign_execution_summary.get("configured_budget", {}))
+        expected_training_episode_count = int(configured_budget.get("training_episode_count", 0))
+        expected_evaluation_episode_count = int(configured_budget.get("evaluation_episode_count", 0))
+        expected_baseline_episode_count = int(configured_budget.get("baseline_evaluation_episode_count", 0))
+        expected_episode_length = int(configured_budget.get("episode_length", 110))
+        actual_training_episode_count = int(self.campaign_execution_summary.get("actual_training_episode_count", 0))
+        actual_evaluation_episode_count = int(self.campaign_execution_summary.get("actual_evaluation_episode_count", 0))
+        actual_baseline_episode_count = int(self.campaign_execution_summary.get("actual_baseline_evaluation_episode_count", 0))
         campaign_execution_ready = (
-            bool(self.campaign_execution_summary.get("configured_budget"))
-            and int(self.campaign_execution_summary.get("actual_training_episode_count", 0)) > 0
-            and int(self.campaign_execution_summary.get("actual_evaluation_episode_count", 0)) > 0
-            and int(self.campaign_execution_summary.get("actual_baseline_evaluation_episode_count", 0)) > 0
+            expected_training_episode_count == 1000
+            and expected_evaluation_episode_count == 100
+            and expected_baseline_episode_count == 100
+            and expected_episode_length == 110
+            and actual_training_episode_count == expected_training_episode_count
+            and actual_evaluation_episode_count == expected_evaluation_episode_count
+            and actual_baseline_episode_count == expected_baseline_episode_count
             and bool(self.campaign_execution_summary.get("training_trace_bank_id"))
             and bool(self.campaign_execution_summary.get("evaluation_trace_bank_id"))
             and bool(self.campaign_execution_summary.get("baseline_harness_id"))
@@ -198,19 +215,29 @@ class FullPaperDefaultTrainingCampaignExecutionReport:
             and self.campaign_execution_summary.get("execution_completed") is True
             and bool(self.campaign_execution_summary.get("controlled_output_directory"))
             and self.campaign_execution_summary.get("actual_budget_is_full_campaign") is True
+            and self.campaign_execution_summary.get("actual_budget_is_reduced_for_local_validation") is False
             and self.campaign_execution_summary.get("real_trainer_used") is True
             and bool(self.campaign_execution_summary.get("real_trainer_class"))
             and bool(self.campaign_execution_summary.get("trainer_method_called"))
             and self.campaign_execution_summary.get("full_campaign_executed") is True
         )
+        replay_size = int(self.training_metrics_summary.get("replay_size", 0))
+        training_action_distribution = dict(self.training_metrics_summary.get("action_distribution", {}))
+        training_action_count_sum = sum(
+            int(training_action_distribution.get(action, 0))
+            for action in ("local", "horizontal", "vertical", "invalid_or_noop_action_count")
+        )
         training_metrics_ready = (
             int(self.training_metrics_summary.get("optimizer_step_count", 0)) > 0
-            and int(self.training_metrics_summary.get("replay_size", 0)) > 0
+            and replay_size > 0
             and int(self.training_metrics_summary.get("loss_count", 0)) > 0
             and self.training_metrics_summary.get("loss_finite") is True
             and bool(self.training_metrics_summary.get("reward_summary"))
             and bool(self.training_metrics_summary.get("target_update_summary"))
-            and bool(self.training_metrics_summary.get("action_distribution"))
+            and bool(training_action_distribution)
+            and training_action_count_sum == replay_size
+            and int(self.training_metrics_summary.get("action_count_total", -1)) == replay_size
+            and self.training_metrics_summary.get("action_accounting_reconciled") is True
         )
         evaluation_metrics_ready = (
             bool(self.evaluation_metrics_summary.get("evaluation_trace_bank_id"))
@@ -219,10 +246,25 @@ class FullPaperDefaultTrainingCampaignExecutionReport:
             and self.evaluation_metrics_summary.get("no_paper_reproduction_claim") is True
             and self.evaluation_metrics_summary.get("no_performance_superiority_claim") is True
         )
+        per_policy_metrics = dict(self.baseline_evaluation_summary.get("per_policy_metrics", {}))
+        per_policy_episode_counts_ready = all(
+            int(metrics.get("episode_count", 0)) == actual_baseline_episode_count
+            for metrics in per_policy_metrics.values()
+        )
+        per_policy_real_metrics_ready = all(
+            metrics.get("metric_shell_only") is False
+            and metrics.get("performance_claim") is False
+            and metrics.get("no_baseline_superiority_claim") is True
+            for metrics in per_policy_metrics.values()
+        )
         baseline_evaluation_ready = (
             len(self.baseline_evaluation_summary.get("baseline_policy_names", [])) > 0
             and int(self.baseline_evaluation_summary.get("evaluated_policy_count", 0)) == len(self.baseline_evaluation_summary.get("baseline_policy_names", []))
-            and int(self.baseline_evaluation_summary.get("actual_baseline_evaluation_episode_count", 0)) > 0
+            and int(self.baseline_evaluation_summary.get("actual_baseline_evaluation_episode_count", 0)) == actual_baseline_episode_count == expected_baseline_episode_count
+            and bool(per_policy_metrics)
+            and per_policy_episode_counts_ready
+            and per_policy_real_metrics_ready
+            and self.baseline_evaluation_summary.get("baseline_metrics_real_execution") is True
             and bool(self.baseline_evaluation_summary.get("baseline_metric_shells"))
             and self.baseline_evaluation_summary.get("no_baseline_superiority_claim") is True
         )

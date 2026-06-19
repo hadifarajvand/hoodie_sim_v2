@@ -5,7 +5,7 @@ from unittest import mock
 
 from src.analysis.full_paper_default_training_campaign_execution import build_full_paper_default_training_campaign_execution_report
 from src.analysis.full_paper_default_training_campaign_execution.model import FullPaperDefaultTrainingCampaignExecutionReport
-from tests.unit.test_full_paper_default_training_campaign_execution_schema import _base_report_kwargs
+from tests.unit.test_full_paper_default_training_campaign_execution_schema import _base_report_kwargs, _baseline_metrics
 
 
 def _mock_execution() -> dict[str, object]:
@@ -25,7 +25,7 @@ def _mock_execution() -> dict[str, object]:
         "target_sync_count": 1,
         "loss_values": [24.95241355895996],
         "loss_is_finite": True,
-        "action_distribution": {"local": 33000, "horizontal": 39000, "vertical": 39000},
+        "action_distribution": {"local": 33000, "horizontal": 38000, "vertical": 39000, "invalid_or_noop_action_count": 0},
         "reward_summary": {"reward_count": 1000, "reward_available_count": 1000, "total_reward": -2000.0, "mean_reward": -2.0, "pending_at_horizon_count": 0},
         "evaluation": {
             "evaluation_episode_count": 100,
@@ -44,11 +44,9 @@ def _mock_execution() -> dict[str, object]:
             "baseline_policy_names": ["local-only", "random-legal", "fixed-horizontal"],
             "evaluated_policy_count": 3,
             "actual_baseline_evaluation_episode_count": 100,
-            "baseline_metric_shells": {
-                "local-only": {"reward": {"value": None}},
-                "random-legal": {"reward": {"value": None}},
-                "fixed-horizontal": {"reward": {"value": None}},
-            },
+            "per_policy_metrics": _baseline_metrics(),
+            "baseline_metric_shells": _baseline_metrics(),
+            "baseline_metrics_real_execution": True,
             "no_baseline_superiority_claim": True,
         },
         "evaluation_trace_bank_summary": {
@@ -95,11 +93,19 @@ class FullPaperDefaultTrainingCampaignExecutionMetricsTests(unittest.TestCase):
         self.assertEqual(payload["recommended_next_feature"], "Feature 061 — Campaign Result Integrity and Comparison Readiness Audit")
         self.assertEqual(payload["training_metrics_summary"]["optimizer_step_count"], 2670)
         self.assertEqual(payload["training_metrics_summary"]["replay_size"], 110000)
+        self.assertEqual(sum(payload["training_metrics_summary"]["action_distribution"].values()), 110000)
+        self.assertTrue(payload["training_metrics_summary"]["action_accounting_reconciled"])
         self.assertEqual(payload["training_metrics_summary"]["loss_count"], 1)
         self.assertTrue(payload["training_metrics_summary"]["loss_finite"])
         self.assertEqual(payload["evaluation_metrics_summary"]["evaluation_episode_count"], 100)
         self.assertTrue(payload["evaluation_metrics_summary"]["metric_schema_coverage"]["metric_schema_complete"])
         self.assertEqual(payload["baseline_evaluation_summary"]["evaluated_policy_count"], 3)
+        self.assertTrue(payload["baseline_evaluation_summary"]["baseline_metrics_real_execution"])
+        for metrics in payload["baseline_evaluation_summary"]["per_policy_metrics"].values():
+            self.assertEqual(metrics["episode_count"], 100)
+            self.assertFalse(metrics["metric_shell_only"])
+            self.assertFalse(metrics["performance_claim"])
+            self.assertTrue(metrics["no_baseline_superiority_claim"])
         self.assertEqual(payload["campaign_execution_summary"]["actual_training_episode_count"], 1000)
         self.assertEqual(payload["campaign_execution_summary"]["actual_evaluation_episode_count"], 100)
         self.assertEqual(payload["campaign_execution_summary"]["actual_baseline_evaluation_episode_count"], 100)

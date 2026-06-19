@@ -23,327 +23,3789 @@
     "baseline_metric_shells": {
       "fixed-horizontal": {
         "action_distribution": {
-          "horizontal": 12,
-          "local": 0,
+          "horizontal": 0,
+          "local": 100,
           "vertical": 0
         },
-        "delay": {
-          "status": "schema_only_not_performance_claim",
-          "value": null
-        },
-        "drop": {
-          "status": "schema_only_not_performance_claim",
-          "value": null
-        },
-        "horizontal_action_count": 12,
-        "local_action_count": 0,
+        "completed_task_count": 1,
+        "dropped_task_count": 2,
+        "episode_count": 100,
+        "fallback_action_count": 0,
+        "horizontal_action_count": 0,
+        "illegal_action_count": 0,
+        "local_action_count": 100,
+        "metric_shell_only": false,
+        "no_baseline_superiority_claim": true,
         "per_episode_summary": [
           {
             "episode_id": 0,
-            "metric_shell_only": true,
+            "metric_shell_only": false,
             "performance_claim": false
           },
           {
             "episode_id": 1,
-            "metric_shell_only": true,
+            "metric_shell_only": false,
             "performance_claim": false
           },
           {
             "episode_id": 2,
-            "metric_shell_only": true,
+            "metric_shell_only": false,
+            "performance_claim": false
+          },
+          {
+            "episode_id": 3,
+            "metric_shell_only": false,
+            "performance_claim": false
+          },
+          {
+            "episode_id": 4,
+            "metric_shell_only": false,
+            "performance_claim": false
+          },
+          {
+            "episode_id": 5,
+            "metric_shell_only": false,
+            "performance_claim": false
+          },
+          {
+            "episode_id": 6,
+            "metric_shell_only": false,
+            "performance_claim": false
+          },
+          {
+            "episode_id": 7,
+            "metric_shell_only": false,
+            "performance_claim": false
+          },
+          {
+            "episode_id": 8,
+            "metric_shell_only": false,
+            "performance_claim": false
+          },
+          {
+            "episode_id": 9,
+            "metric_shell_only": false,
+            "performance_claim": false
+          },
+          {
+            "episode_id": 10,
+            "metric_shell_only": false,
+            "performance_claim": false
+          },
+          {
+            "episode_id": 11,
+            "metric_shell_only": false,
+            "performance_claim": false
+          },
+          {
+            "episode_id": 12,
+            "metric_shell_only": false,
+            "performance_claim": false
+          },
+          {
+            "episode_id": 13,
+            "metric_shell_only": false,
+            "performance_claim": false
+          },
+          {
+            "episode_id": 14,
+            "metric_shell_only": false,
+            "performance_claim": false
+          },
+          {
+            "episode_id": 15,
+            "metric_shell_only": false,
+            "performance_claim": false
+          },
+          {
+            "episode_id": 16,
+            "metric_shell_only": false,
+            "performance_claim": false
+          },
+          {
+            "episode_id": 17,
+            "metric_shell_only": false,
+            "performance_claim": false
+          },
+          {
+            "episode_id": 18,
+            "metric_shell_only": false,
+            "performance_claim": false
+          },
+          {
+            "episode_id": 19,
+            "metric_shell_only": false,
+            "performance_claim": false
+          },
+          {
+            "episode_id": 20,
+            "metric_shell_only": false,
+            "performance_claim": false
+          },
+          {
+            "episode_id": 21,
+            "metric_shell_only": false,
+            "performance_claim": false
+          },
+          {
+            "episode_id": 22,
+            "metric_shell_only": false,
+            "performance_claim": false
+          },
+          {
+            "episode_id": 23,
+            "metric_shell_only": false,
+            "performance_claim": false
+          },
+          {
+            "episode_id": 24,
+            "metric_shell_only": false,
+            "performance_claim": false
+          },
+          {
+            "episode_id": 25,
+            "metric_shell_only": false,
+            "performance_claim": false
+          },
+          {
+            "episode_id": 26,
+            "metric_shell_only": false,
+            "performance_claim": false
+          },
+          {
+            "episode_id": 27,
+            "metric_shell_only": false,
+            "performance_claim": false
+          },
+          {
+            "episode_id": 28,
+            "metric_shell_only": false,
+            "performance_claim": false
+          },
+          {
+            "episode_id": 29,
+            "metric_shell_only": false,
+            "performance_claim": false
+          },
+          {
+            "episode_id": 30,
+            "metric_shell_only": false,
+            "performance_claim": false
+          },
+          {
+            "episode_id": 31,
+            "metric_shell_only": false,
+            "performance_claim": false
+          },
+          {
+            "episode_id": 32,
+            "metric_shell_only": false,
+            "performance_claim": false
+          },
+          {
+            "episode_id": 33,
+            "metric_shell_only": false,
+            "performance_claim": false
+          },
+          {
+            "episode_id": 34,
+            "metric_shell_only": false,
+            "performance_claim": false
+          },
+          {
+            "episode_id": 35,
+            "metric_shell_only": false,
+            "performance_claim": false
+          },
+          {
+            "episode_id": 36,
+            "metric_shell_only": false,
+            "performance_claim": false
+          },
+          {
+            "episode_id": 37,
+            "metric_shell_only": false,
+            "performance_claim": false
+          },
+          {
+            "episode_id": 38,
+            "metric_shell_only": false,
+            "performance_claim": false
+          },
+          {
+            "episode_id": 39,
+            "metric_shell_only": false,
+            "performance_claim": false
+          },
+          {
+            "episode_id": 40,
+            "metric_shell_only": false,
+            "performance_claim": false
+          },
+          {
+            "episode_id": 41,
+            "metric_shell_only": false,
+            "performance_claim": false
+          },
+          {
+            "episode_id": 42,
+            "metric_shell_only": false,
+            "performance_claim": false
+          },
+          {
+            "episode_id": 43,
+            "metric_shell_only": false,
+            "performance_claim": false
+          },
+          {
+            "episode_id": 44,
+            "metric_shell_only": false,
+            "performance_claim": false
+          },
+          {
+            "episode_id": 45,
+            "metric_shell_only": false,
+            "performance_claim": false
+          },
+          {
+            "episode_id": 46,
+            "metric_shell_only": false,
+            "performance_claim": false
+          },
+          {
+            "episode_id": 47,
+            "metric_shell_only": false,
+            "performance_claim": false
+          },
+          {
+            "episode_id": 48,
+            "metric_shell_only": false,
+            "performance_claim": false
+          },
+          {
+            "episode_id": 49,
+            "metric_shell_only": false,
+            "performance_claim": false
+          },
+          {
+            "episode_id": 50,
+            "metric_shell_only": false,
+            "performance_claim": false
+          },
+          {
+            "episode_id": 51,
+            "metric_shell_only": false,
+            "performance_claim": false
+          },
+          {
+            "episode_id": 52,
+            "metric_shell_only": false,
+            "performance_claim": false
+          },
+          {
+            "episode_id": 53,
+            "metric_shell_only": false,
+            "performance_claim": false
+          },
+          {
+            "episode_id": 54,
+            "metric_shell_only": false,
+            "performance_claim": false
+          },
+          {
+            "episode_id": 55,
+            "metric_shell_only": false,
+            "performance_claim": false
+          },
+          {
+            "episode_id": 56,
+            "metric_shell_only": false,
+            "performance_claim": false
+          },
+          {
+            "episode_id": 57,
+            "metric_shell_only": false,
+            "performance_claim": false
+          },
+          {
+            "episode_id": 58,
+            "metric_shell_only": false,
+            "performance_claim": false
+          },
+          {
+            "episode_id": 59,
+            "metric_shell_only": false,
+            "performance_claim": false
+          },
+          {
+            "episode_id": 60,
+            "metric_shell_only": false,
+            "performance_claim": false
+          },
+          {
+            "episode_id": 61,
+            "metric_shell_only": false,
+            "performance_claim": false
+          },
+          {
+            "episode_id": 62,
+            "metric_shell_only": false,
+            "performance_claim": false
+          },
+          {
+            "episode_id": 63,
+            "metric_shell_only": false,
+            "performance_claim": false
+          },
+          {
+            "episode_id": 64,
+            "metric_shell_only": false,
+            "performance_claim": false
+          },
+          {
+            "episode_id": 65,
+            "metric_shell_only": false,
+            "performance_claim": false
+          },
+          {
+            "episode_id": 66,
+            "metric_shell_only": false,
+            "performance_claim": false
+          },
+          {
+            "episode_id": 67,
+            "metric_shell_only": false,
+            "performance_claim": false
+          },
+          {
+            "episode_id": 68,
+            "metric_shell_only": false,
+            "performance_claim": false
+          },
+          {
+            "episode_id": 69,
+            "metric_shell_only": false,
+            "performance_claim": false
+          },
+          {
+            "episode_id": 70,
+            "metric_shell_only": false,
+            "performance_claim": false
+          },
+          {
+            "episode_id": 71,
+            "metric_shell_only": false,
+            "performance_claim": false
+          },
+          {
+            "episode_id": 72,
+            "metric_shell_only": false,
+            "performance_claim": false
+          },
+          {
+            "episode_id": 73,
+            "metric_shell_only": false,
+            "performance_claim": false
+          },
+          {
+            "episode_id": 74,
+            "metric_shell_only": false,
+            "performance_claim": false
+          },
+          {
+            "episode_id": 75,
+            "metric_shell_only": false,
+            "performance_claim": false
+          },
+          {
+            "episode_id": 76,
+            "metric_shell_only": false,
+            "performance_claim": false
+          },
+          {
+            "episode_id": 77,
+            "metric_shell_only": false,
+            "performance_claim": false
+          },
+          {
+            "episode_id": 78,
+            "metric_shell_only": false,
+            "performance_claim": false
+          },
+          {
+            "episode_id": 79,
+            "metric_shell_only": false,
+            "performance_claim": false
+          },
+          {
+            "episode_id": 80,
+            "metric_shell_only": false,
+            "performance_claim": false
+          },
+          {
+            "episode_id": 81,
+            "metric_shell_only": false,
+            "performance_claim": false
+          },
+          {
+            "episode_id": 82,
+            "metric_shell_only": false,
+            "performance_claim": false
+          },
+          {
+            "episode_id": 83,
+            "metric_shell_only": false,
+            "performance_claim": false
+          },
+          {
+            "episode_id": 84,
+            "metric_shell_only": false,
+            "performance_claim": false
+          },
+          {
+            "episode_id": 85,
+            "metric_shell_only": false,
+            "performance_claim": false
+          },
+          {
+            "episode_id": 86,
+            "metric_shell_only": false,
+            "performance_claim": false
+          },
+          {
+            "episode_id": 87,
+            "metric_shell_only": false,
+            "performance_claim": false
+          },
+          {
+            "episode_id": 88,
+            "metric_shell_only": false,
+            "performance_claim": false
+          },
+          {
+            "episode_id": 89,
+            "metric_shell_only": false,
+            "performance_claim": false
+          },
+          {
+            "episode_id": 90,
+            "metric_shell_only": false,
+            "performance_claim": false
+          },
+          {
+            "episode_id": 91,
+            "metric_shell_only": false,
+            "performance_claim": false
+          },
+          {
+            "episode_id": 92,
+            "metric_shell_only": false,
+            "performance_claim": false
+          },
+          {
+            "episode_id": 93,
+            "metric_shell_only": false,
+            "performance_claim": false
+          },
+          {
+            "episode_id": 94,
+            "metric_shell_only": false,
+            "performance_claim": false
+          },
+          {
+            "episode_id": 95,
+            "metric_shell_only": false,
+            "performance_claim": false
+          },
+          {
+            "episode_id": 96,
+            "metric_shell_only": false,
+            "performance_claim": false
+          },
+          {
+            "episode_id": 97,
+            "metric_shell_only": false,
+            "performance_claim": false
+          },
+          {
+            "episode_id": 98,
+            "metric_shell_only": false,
+            "performance_claim": false
+          },
+          {
+            "episode_id": 99,
+            "metric_shell_only": false,
             "performance_claim": false
           }
         ],
-        "reward": {
-          "status": "schema_only_not_performance_claim",
-          "value": null
+        "performance_claim": false,
+        "reward_bearing_transition_count": 3,
+        "reward_summary": {
+          "mean_reward": -1.0,
+          "reward_count": 100,
+          "total_reward": -100.0
         },
-        "selected_actions": [
-          {
-            "legal": true,
-            "selected_action": "horizontal",
-            "trace_id": "feature-058-evaluation-trace-bank-trace-000-0d3321f39732"
-          },
-          {
-            "legal": true,
-            "selected_action": "horizontal",
-            "trace_id": "feature-058-evaluation-trace-bank-trace-001-27a429c2b824"
-          },
-          {
-            "legal": true,
-            "selected_action": "horizontal",
-            "trace_id": "feature-058-evaluation-trace-bank-trace-002-42c25a458cde"
-          },
-          {
-            "legal": true,
-            "selected_action": "horizontal",
-            "trace_id": "feature-058-evaluation-trace-bank-trace-003-de82e91aec97"
-          },
-          {
-            "legal": true,
-            "selected_action": "horizontal",
-            "trace_id": "feature-058-evaluation-trace-bank-trace-004-8050118c871c"
-          },
-          {
-            "legal": true,
-            "selected_action": "horizontal",
-            "trace_id": "feature-058-evaluation-trace-bank-trace-005-1bb74efa7a79"
-          },
-          {
-            "legal": true,
-            "selected_action": "horizontal",
-            "trace_id": "feature-058-evaluation-trace-bank-trace-006-618201f56169"
-          },
-          {
-            "legal": true,
-            "selected_action": "horizontal",
-            "trace_id": "feature-058-evaluation-trace-bank-trace-007-247fdb56879b"
-          },
-          {
-            "legal": true,
-            "selected_action": "horizontal",
-            "trace_id": "feature-058-evaluation-trace-bank-trace-008-c270890f4ea0"
-          },
-          {
-            "legal": true,
-            "selected_action": "horizontal",
-            "trace_id": "feature-058-evaluation-trace-bank-trace-009-d60c2618cbed"
-          },
-          {
-            "legal": true,
-            "selected_action": "horizontal",
-            "trace_id": "feature-058-evaluation-trace-bank-trace-010-135fe5d45383"
-          },
-          {
-            "legal": true,
-            "selected_action": "horizontal",
-            "trace_id": "feature-058-evaluation-trace-bank-trace-011-a095006b8c3c"
-          }
+        "terminal_transition_count": 3,
+        "trace_ids": [
+          "eval-000",
+          "eval-001",
+          "eval-002",
+          "eval-003",
+          "eval-004",
+          "eval-005",
+          "eval-006",
+          "eval-007",
+          "eval-008",
+          "eval-009",
+          "eval-010",
+          "eval-011",
+          "eval-012",
+          "eval-013",
+          "eval-014",
+          "eval-015",
+          "eval-016",
+          "eval-017",
+          "eval-018",
+          "eval-019",
+          "eval-020",
+          "eval-021",
+          "eval-022",
+          "eval-023",
+          "eval-024",
+          "eval-025",
+          "eval-026",
+          "eval-027",
+          "eval-028",
+          "eval-029",
+          "eval-030",
+          "eval-031",
+          "eval-032",
+          "eval-033",
+          "eval-034",
+          "eval-035",
+          "eval-036",
+          "eval-037",
+          "eval-038",
+          "eval-039",
+          "eval-040",
+          "eval-041",
+          "eval-042",
+          "eval-043",
+          "eval-044",
+          "eval-045",
+          "eval-046",
+          "eval-047",
+          "eval-048",
+          "eval-049",
+          "eval-050",
+          "eval-051",
+          "eval-052",
+          "eval-053",
+          "eval-054",
+          "eval-055",
+          "eval-056",
+          "eval-057",
+          "eval-058",
+          "eval-059",
+          "eval-060",
+          "eval-061",
+          "eval-062",
+          "eval-063",
+          "eval-064",
+          "eval-065",
+          "eval-066",
+          "eval-067",
+          "eval-068",
+          "eval-069",
+          "eval-070",
+          "eval-071",
+          "eval-072",
+          "eval-073",
+          "eval-074",
+          "eval-075",
+          "eval-076",
+          "eval-077",
+          "eval-078",
+          "eval-079",
+          "eval-080",
+          "eval-081",
+          "eval-082",
+          "eval-083",
+          "eval-084",
+          "eval-085",
+          "eval-086",
+          "eval-087",
+          "eval-088",
+          "eval-089",
+          "eval-090",
+          "eval-091",
+          "eval-092",
+          "eval-093",
+          "eval-094",
+          "eval-095",
+          "eval-096",
+          "eval-097",
+          "eval-098",
+          "eval-099"
         ],
-        "timeout": {
-          "status": "schema_only_not_performance_claim",
-          "value": null
-        },
         "vertical_action_count": 0
       },
       "local-only": {
         "action_distribution": {
           "horizontal": 0,
-          "local": 12,
+          "local": 100,
           "vertical": 0
         },
-        "delay": {
-          "status": "schema_only_not_performance_claim",
-          "value": null
-        },
-        "drop": {
-          "status": "schema_only_not_performance_claim",
-          "value": null
-        },
+        "completed_task_count": 1,
+        "dropped_task_count": 2,
+        "episode_count": 100,
+        "fallback_action_count": 0,
         "horizontal_action_count": 0,
-        "local_action_count": 12,
+        "illegal_action_count": 0,
+        "local_action_count": 100,
+        "metric_shell_only": false,
+        "no_baseline_superiority_claim": true,
         "per_episode_summary": [
           {
             "episode_id": 0,
-            "metric_shell_only": true,
+            "metric_shell_only": false,
             "performance_claim": false
           },
           {
             "episode_id": 1,
-            "metric_shell_only": true,
+            "metric_shell_only": false,
             "performance_claim": false
           },
           {
             "episode_id": 2,
-            "metric_shell_only": true,
+            "metric_shell_only": false,
+            "performance_claim": false
+          },
+          {
+            "episode_id": 3,
+            "metric_shell_only": false,
+            "performance_claim": false
+          },
+          {
+            "episode_id": 4,
+            "metric_shell_only": false,
+            "performance_claim": false
+          },
+          {
+            "episode_id": 5,
+            "metric_shell_only": false,
+            "performance_claim": false
+          },
+          {
+            "episode_id": 6,
+            "metric_shell_only": false,
+            "performance_claim": false
+          },
+          {
+            "episode_id": 7,
+            "metric_shell_only": false,
+            "performance_claim": false
+          },
+          {
+            "episode_id": 8,
+            "metric_shell_only": false,
+            "performance_claim": false
+          },
+          {
+            "episode_id": 9,
+            "metric_shell_only": false,
+            "performance_claim": false
+          },
+          {
+            "episode_id": 10,
+            "metric_shell_only": false,
+            "performance_claim": false
+          },
+          {
+            "episode_id": 11,
+            "metric_shell_only": false,
+            "performance_claim": false
+          },
+          {
+            "episode_id": 12,
+            "metric_shell_only": false,
+            "performance_claim": false
+          },
+          {
+            "episode_id": 13,
+            "metric_shell_only": false,
+            "performance_claim": false
+          },
+          {
+            "episode_id": 14,
+            "metric_shell_only": false,
+            "performance_claim": false
+          },
+          {
+            "episode_id": 15,
+            "metric_shell_only": false,
+            "performance_claim": false
+          },
+          {
+            "episode_id": 16,
+            "metric_shell_only": false,
+            "performance_claim": false
+          },
+          {
+            "episode_id": 17,
+            "metric_shell_only": false,
+            "performance_claim": false
+          },
+          {
+            "episode_id": 18,
+            "metric_shell_only": false,
+            "performance_claim": false
+          },
+          {
+            "episode_id": 19,
+            "metric_shell_only": false,
+            "performance_claim": false
+          },
+          {
+            "episode_id": 20,
+            "metric_shell_only": false,
+            "performance_claim": false
+          },
+          {
+            "episode_id": 21,
+            "metric_shell_only": false,
+            "performance_claim": false
+          },
+          {
+            "episode_id": 22,
+            "metric_shell_only": false,
+            "performance_claim": false
+          },
+          {
+            "episode_id": 23,
+            "metric_shell_only": false,
+            "performance_claim": false
+          },
+          {
+            "episode_id": 24,
+            "metric_shell_only": false,
+            "performance_claim": false
+          },
+          {
+            "episode_id": 25,
+            "metric_shell_only": false,
+            "performance_claim": false
+          },
+          {
+            "episode_id": 26,
+            "metric_shell_only": false,
+            "performance_claim": false
+          },
+          {
+            "episode_id": 27,
+            "metric_shell_only": false,
+            "performance_claim": false
+          },
+          {
+            "episode_id": 28,
+            "metric_shell_only": false,
+            "performance_claim": false
+          },
+          {
+            "episode_id": 29,
+            "metric_shell_only": false,
+            "performance_claim": false
+          },
+          {
+            "episode_id": 30,
+            "metric_shell_only": false,
+            "performance_claim": false
+          },
+          {
+            "episode_id": 31,
+            "metric_shell_only": false,
+            "performance_claim": false
+          },
+          {
+            "episode_id": 32,
+            "metric_shell_only": false,
+            "performance_claim": false
+          },
+          {
+            "episode_id": 33,
+            "metric_shell_only": false,
+            "performance_claim": false
+          },
+          {
+            "episode_id": 34,
+            "metric_shell_only": false,
+            "performance_claim": false
+          },
+          {
+            "episode_id": 35,
+            "metric_shell_only": false,
+            "performance_claim": false
+          },
+          {
+            "episode_id": 36,
+            "metric_shell_only": false,
+            "performance_claim": false
+          },
+          {
+            "episode_id": 37,
+            "metric_shell_only": false,
+            "performance_claim": false
+          },
+          {
+            "episode_id": 38,
+            "metric_shell_only": false,
+            "performance_claim": false
+          },
+          {
+            "episode_id": 39,
+            "metric_shell_only": false,
+            "performance_claim": false
+          },
+          {
+            "episode_id": 40,
+            "metric_shell_only": false,
+            "performance_claim": false
+          },
+          {
+            "episode_id": 41,
+            "metric_shell_only": false,
+            "performance_claim": false
+          },
+          {
+            "episode_id": 42,
+            "metric_shell_only": false,
+            "performance_claim": false
+          },
+          {
+            "episode_id": 43,
+            "metric_shell_only": false,
+            "performance_claim": false
+          },
+          {
+            "episode_id": 44,
+            "metric_shell_only": false,
+            "performance_claim": false
+          },
+          {
+            "episode_id": 45,
+            "metric_shell_only": false,
+            "performance_claim": false
+          },
+          {
+            "episode_id": 46,
+            "metric_shell_only": false,
+            "performance_claim": false
+          },
+          {
+            "episode_id": 47,
+            "metric_shell_only": false,
+            "performance_claim": false
+          },
+          {
+            "episode_id": 48,
+            "metric_shell_only": false,
+            "performance_claim": false
+          },
+          {
+            "episode_id": 49,
+            "metric_shell_only": false,
+            "performance_claim": false
+          },
+          {
+            "episode_id": 50,
+            "metric_shell_only": false,
+            "performance_claim": false
+          },
+          {
+            "episode_id": 51,
+            "metric_shell_only": false,
+            "performance_claim": false
+          },
+          {
+            "episode_id": 52,
+            "metric_shell_only": false,
+            "performance_claim": false
+          },
+          {
+            "episode_id": 53,
+            "metric_shell_only": false,
+            "performance_claim": false
+          },
+          {
+            "episode_id": 54,
+            "metric_shell_only": false,
+            "performance_claim": false
+          },
+          {
+            "episode_id": 55,
+            "metric_shell_only": false,
+            "performance_claim": false
+          },
+          {
+            "episode_id": 56,
+            "metric_shell_only": false,
+            "performance_claim": false
+          },
+          {
+            "episode_id": 57,
+            "metric_shell_only": false,
+            "performance_claim": false
+          },
+          {
+            "episode_id": 58,
+            "metric_shell_only": false,
+            "performance_claim": false
+          },
+          {
+            "episode_id": 59,
+            "metric_shell_only": false,
+            "performance_claim": false
+          },
+          {
+            "episode_id": 60,
+            "metric_shell_only": false,
+            "performance_claim": false
+          },
+          {
+            "episode_id": 61,
+            "metric_shell_only": false,
+            "performance_claim": false
+          },
+          {
+            "episode_id": 62,
+            "metric_shell_only": false,
+            "performance_claim": false
+          },
+          {
+            "episode_id": 63,
+            "metric_shell_only": false,
+            "performance_claim": false
+          },
+          {
+            "episode_id": 64,
+            "metric_shell_only": false,
+            "performance_claim": false
+          },
+          {
+            "episode_id": 65,
+            "metric_shell_only": false,
+            "performance_claim": false
+          },
+          {
+            "episode_id": 66,
+            "metric_shell_only": false,
+            "performance_claim": false
+          },
+          {
+            "episode_id": 67,
+            "metric_shell_only": false,
+            "performance_claim": false
+          },
+          {
+            "episode_id": 68,
+            "metric_shell_only": false,
+            "performance_claim": false
+          },
+          {
+            "episode_id": 69,
+            "metric_shell_only": false,
+            "performance_claim": false
+          },
+          {
+            "episode_id": 70,
+            "metric_shell_only": false,
+            "performance_claim": false
+          },
+          {
+            "episode_id": 71,
+            "metric_shell_only": false,
+            "performance_claim": false
+          },
+          {
+            "episode_id": 72,
+            "metric_shell_only": false,
+            "performance_claim": false
+          },
+          {
+            "episode_id": 73,
+            "metric_shell_only": false,
+            "performance_claim": false
+          },
+          {
+            "episode_id": 74,
+            "metric_shell_only": false,
+            "performance_claim": false
+          },
+          {
+            "episode_id": 75,
+            "metric_shell_only": false,
+            "performance_claim": false
+          },
+          {
+            "episode_id": 76,
+            "metric_shell_only": false,
+            "performance_claim": false
+          },
+          {
+            "episode_id": 77,
+            "metric_shell_only": false,
+            "performance_claim": false
+          },
+          {
+            "episode_id": 78,
+            "metric_shell_only": false,
+            "performance_claim": false
+          },
+          {
+            "episode_id": 79,
+            "metric_shell_only": false,
+            "performance_claim": false
+          },
+          {
+            "episode_id": 80,
+            "metric_shell_only": false,
+            "performance_claim": false
+          },
+          {
+            "episode_id": 81,
+            "metric_shell_only": false,
+            "performance_claim": false
+          },
+          {
+            "episode_id": 82,
+            "metric_shell_only": false,
+            "performance_claim": false
+          },
+          {
+            "episode_id": 83,
+            "metric_shell_only": false,
+            "performance_claim": false
+          },
+          {
+            "episode_id": 84,
+            "metric_shell_only": false,
+            "performance_claim": false
+          },
+          {
+            "episode_id": 85,
+            "metric_shell_only": false,
+            "performance_claim": false
+          },
+          {
+            "episode_id": 86,
+            "metric_shell_only": false,
+            "performance_claim": false
+          },
+          {
+            "episode_id": 87,
+            "metric_shell_only": false,
+            "performance_claim": false
+          },
+          {
+            "episode_id": 88,
+            "metric_shell_only": false,
+            "performance_claim": false
+          },
+          {
+            "episode_id": 89,
+            "metric_shell_only": false,
+            "performance_claim": false
+          },
+          {
+            "episode_id": 90,
+            "metric_shell_only": false,
+            "performance_claim": false
+          },
+          {
+            "episode_id": 91,
+            "metric_shell_only": false,
+            "performance_claim": false
+          },
+          {
+            "episode_id": 92,
+            "metric_shell_only": false,
+            "performance_claim": false
+          },
+          {
+            "episode_id": 93,
+            "metric_shell_only": false,
+            "performance_claim": false
+          },
+          {
+            "episode_id": 94,
+            "metric_shell_only": false,
+            "performance_claim": false
+          },
+          {
+            "episode_id": 95,
+            "metric_shell_only": false,
+            "performance_claim": false
+          },
+          {
+            "episode_id": 96,
+            "metric_shell_only": false,
+            "performance_claim": false
+          },
+          {
+            "episode_id": 97,
+            "metric_shell_only": false,
+            "performance_claim": false
+          },
+          {
+            "episode_id": 98,
+            "metric_shell_only": false,
+            "performance_claim": false
+          },
+          {
+            "episode_id": 99,
+            "metric_shell_only": false,
             "performance_claim": false
           }
         ],
-        "reward": {
-          "status": "schema_only_not_performance_claim",
-          "value": null
+        "performance_claim": false,
+        "reward_bearing_transition_count": 3,
+        "reward_summary": {
+          "mean_reward": -1.0,
+          "reward_count": 100,
+          "total_reward": -100.0
         },
-        "selected_actions": [
-          {
-            "legal": true,
-            "selected_action": "local",
-            "trace_id": "feature-058-evaluation-trace-bank-trace-000-0d3321f39732"
-          },
-          {
-            "legal": true,
-            "selected_action": "local",
-            "trace_id": "feature-058-evaluation-trace-bank-trace-001-27a429c2b824"
-          },
-          {
-            "legal": true,
-            "selected_action": "local",
-            "trace_id": "feature-058-evaluation-trace-bank-trace-002-42c25a458cde"
-          },
-          {
-            "legal": true,
-            "selected_action": "local",
-            "trace_id": "feature-058-evaluation-trace-bank-trace-003-de82e91aec97"
-          },
-          {
-            "legal": true,
-            "selected_action": "local",
-            "trace_id": "feature-058-evaluation-trace-bank-trace-004-8050118c871c"
-          },
-          {
-            "legal": true,
-            "selected_action": "local",
-            "trace_id": "feature-058-evaluation-trace-bank-trace-005-1bb74efa7a79"
-          },
-          {
-            "legal": true,
-            "selected_action": "local",
-            "trace_id": "feature-058-evaluation-trace-bank-trace-006-618201f56169"
-          },
-          {
-            "legal": true,
-            "selected_action": "local",
-            "trace_id": "feature-058-evaluation-trace-bank-trace-007-247fdb56879b"
-          },
-          {
-            "legal": true,
-            "selected_action": "local",
-            "trace_id": "feature-058-evaluation-trace-bank-trace-008-c270890f4ea0"
-          },
-          {
-            "legal": true,
-            "selected_action": "local",
-            "trace_id": "feature-058-evaluation-trace-bank-trace-009-d60c2618cbed"
-          },
-          {
-            "legal": true,
-            "selected_action": "local",
-            "trace_id": "feature-058-evaluation-trace-bank-trace-010-135fe5d45383"
-          },
-          {
-            "legal": true,
-            "selected_action": "local",
-            "trace_id": "feature-058-evaluation-trace-bank-trace-011-a095006b8c3c"
-          }
+        "terminal_transition_count": 3,
+        "trace_ids": [
+          "eval-000",
+          "eval-001",
+          "eval-002",
+          "eval-003",
+          "eval-004",
+          "eval-005",
+          "eval-006",
+          "eval-007",
+          "eval-008",
+          "eval-009",
+          "eval-010",
+          "eval-011",
+          "eval-012",
+          "eval-013",
+          "eval-014",
+          "eval-015",
+          "eval-016",
+          "eval-017",
+          "eval-018",
+          "eval-019",
+          "eval-020",
+          "eval-021",
+          "eval-022",
+          "eval-023",
+          "eval-024",
+          "eval-025",
+          "eval-026",
+          "eval-027",
+          "eval-028",
+          "eval-029",
+          "eval-030",
+          "eval-031",
+          "eval-032",
+          "eval-033",
+          "eval-034",
+          "eval-035",
+          "eval-036",
+          "eval-037",
+          "eval-038",
+          "eval-039",
+          "eval-040",
+          "eval-041",
+          "eval-042",
+          "eval-043",
+          "eval-044",
+          "eval-045",
+          "eval-046",
+          "eval-047",
+          "eval-048",
+          "eval-049",
+          "eval-050",
+          "eval-051",
+          "eval-052",
+          "eval-053",
+          "eval-054",
+          "eval-055",
+          "eval-056",
+          "eval-057",
+          "eval-058",
+          "eval-059",
+          "eval-060",
+          "eval-061",
+          "eval-062",
+          "eval-063",
+          "eval-064",
+          "eval-065",
+          "eval-066",
+          "eval-067",
+          "eval-068",
+          "eval-069",
+          "eval-070",
+          "eval-071",
+          "eval-072",
+          "eval-073",
+          "eval-074",
+          "eval-075",
+          "eval-076",
+          "eval-077",
+          "eval-078",
+          "eval-079",
+          "eval-080",
+          "eval-081",
+          "eval-082",
+          "eval-083",
+          "eval-084",
+          "eval-085",
+          "eval-086",
+          "eval-087",
+          "eval-088",
+          "eval-089",
+          "eval-090",
+          "eval-091",
+          "eval-092",
+          "eval-093",
+          "eval-094",
+          "eval-095",
+          "eval-096",
+          "eval-097",
+          "eval-098",
+          "eval-099"
         ],
-        "timeout": {
-          "status": "schema_only_not_performance_claim",
-          "value": null
-        },
         "vertical_action_count": 0
       },
       "random-legal": {
         "action_distribution": {
-          "horizontal": 3,
-          "local": 3,
-          "vertical": 6
+          "horizontal": 0,
+          "local": 100,
+          "vertical": 0
         },
-        "delay": {
-          "status": "schema_only_not_performance_claim",
-          "value": null
-        },
-        "drop": {
-          "status": "schema_only_not_performance_claim",
-          "value": null
-        },
-        "horizontal_action_count": 3,
-        "local_action_count": 3,
+        "completed_task_count": 1,
+        "dropped_task_count": 2,
+        "episode_count": 100,
+        "fallback_action_count": 0,
+        "horizontal_action_count": 0,
+        "illegal_action_count": 0,
+        "local_action_count": 100,
+        "metric_shell_only": false,
+        "no_baseline_superiority_claim": true,
         "per_episode_summary": [
           {
             "episode_id": 0,
-            "metric_shell_only": true,
+            "metric_shell_only": false,
             "performance_claim": false
           },
           {
             "episode_id": 1,
-            "metric_shell_only": true,
+            "metric_shell_only": false,
             "performance_claim": false
           },
           {
             "episode_id": 2,
-            "metric_shell_only": true,
+            "metric_shell_only": false,
+            "performance_claim": false
+          },
+          {
+            "episode_id": 3,
+            "metric_shell_only": false,
+            "performance_claim": false
+          },
+          {
+            "episode_id": 4,
+            "metric_shell_only": false,
+            "performance_claim": false
+          },
+          {
+            "episode_id": 5,
+            "metric_shell_only": false,
+            "performance_claim": false
+          },
+          {
+            "episode_id": 6,
+            "metric_shell_only": false,
+            "performance_claim": false
+          },
+          {
+            "episode_id": 7,
+            "metric_shell_only": false,
+            "performance_claim": false
+          },
+          {
+            "episode_id": 8,
+            "metric_shell_only": false,
+            "performance_claim": false
+          },
+          {
+            "episode_id": 9,
+            "metric_shell_only": false,
+            "performance_claim": false
+          },
+          {
+            "episode_id": 10,
+            "metric_shell_only": false,
+            "performance_claim": false
+          },
+          {
+            "episode_id": 11,
+            "metric_shell_only": false,
+            "performance_claim": false
+          },
+          {
+            "episode_id": 12,
+            "metric_shell_only": false,
+            "performance_claim": false
+          },
+          {
+            "episode_id": 13,
+            "metric_shell_only": false,
+            "performance_claim": false
+          },
+          {
+            "episode_id": 14,
+            "metric_shell_only": false,
+            "performance_claim": false
+          },
+          {
+            "episode_id": 15,
+            "metric_shell_only": false,
+            "performance_claim": false
+          },
+          {
+            "episode_id": 16,
+            "metric_shell_only": false,
+            "performance_claim": false
+          },
+          {
+            "episode_id": 17,
+            "metric_shell_only": false,
+            "performance_claim": false
+          },
+          {
+            "episode_id": 18,
+            "metric_shell_only": false,
+            "performance_claim": false
+          },
+          {
+            "episode_id": 19,
+            "metric_shell_only": false,
+            "performance_claim": false
+          },
+          {
+            "episode_id": 20,
+            "metric_shell_only": false,
+            "performance_claim": false
+          },
+          {
+            "episode_id": 21,
+            "metric_shell_only": false,
+            "performance_claim": false
+          },
+          {
+            "episode_id": 22,
+            "metric_shell_only": false,
+            "performance_claim": false
+          },
+          {
+            "episode_id": 23,
+            "metric_shell_only": false,
+            "performance_claim": false
+          },
+          {
+            "episode_id": 24,
+            "metric_shell_only": false,
+            "performance_claim": false
+          },
+          {
+            "episode_id": 25,
+            "metric_shell_only": false,
+            "performance_claim": false
+          },
+          {
+            "episode_id": 26,
+            "metric_shell_only": false,
+            "performance_claim": false
+          },
+          {
+            "episode_id": 27,
+            "metric_shell_only": false,
+            "performance_claim": false
+          },
+          {
+            "episode_id": 28,
+            "metric_shell_only": false,
+            "performance_claim": false
+          },
+          {
+            "episode_id": 29,
+            "metric_shell_only": false,
+            "performance_claim": false
+          },
+          {
+            "episode_id": 30,
+            "metric_shell_only": false,
+            "performance_claim": false
+          },
+          {
+            "episode_id": 31,
+            "metric_shell_only": false,
+            "performance_claim": false
+          },
+          {
+            "episode_id": 32,
+            "metric_shell_only": false,
+            "performance_claim": false
+          },
+          {
+            "episode_id": 33,
+            "metric_shell_only": false,
+            "performance_claim": false
+          },
+          {
+            "episode_id": 34,
+            "metric_shell_only": false,
+            "performance_claim": false
+          },
+          {
+            "episode_id": 35,
+            "metric_shell_only": false,
+            "performance_claim": false
+          },
+          {
+            "episode_id": 36,
+            "metric_shell_only": false,
+            "performance_claim": false
+          },
+          {
+            "episode_id": 37,
+            "metric_shell_only": false,
+            "performance_claim": false
+          },
+          {
+            "episode_id": 38,
+            "metric_shell_only": false,
+            "performance_claim": false
+          },
+          {
+            "episode_id": 39,
+            "metric_shell_only": false,
+            "performance_claim": false
+          },
+          {
+            "episode_id": 40,
+            "metric_shell_only": false,
+            "performance_claim": false
+          },
+          {
+            "episode_id": 41,
+            "metric_shell_only": false,
+            "performance_claim": false
+          },
+          {
+            "episode_id": 42,
+            "metric_shell_only": false,
+            "performance_claim": false
+          },
+          {
+            "episode_id": 43,
+            "metric_shell_only": false,
+            "performance_claim": false
+          },
+          {
+            "episode_id": 44,
+            "metric_shell_only": false,
+            "performance_claim": false
+          },
+          {
+            "episode_id": 45,
+            "metric_shell_only": false,
+            "performance_claim": false
+          },
+          {
+            "episode_id": 46,
+            "metric_shell_only": false,
+            "performance_claim": false
+          },
+          {
+            "episode_id": 47,
+            "metric_shell_only": false,
+            "performance_claim": false
+          },
+          {
+            "episode_id": 48,
+            "metric_shell_only": false,
+            "performance_claim": false
+          },
+          {
+            "episode_id": 49,
+            "metric_shell_only": false,
+            "performance_claim": false
+          },
+          {
+            "episode_id": 50,
+            "metric_shell_only": false,
+            "performance_claim": false
+          },
+          {
+            "episode_id": 51,
+            "metric_shell_only": false,
+            "performance_claim": false
+          },
+          {
+            "episode_id": 52,
+            "metric_shell_only": false,
+            "performance_claim": false
+          },
+          {
+            "episode_id": 53,
+            "metric_shell_only": false,
+            "performance_claim": false
+          },
+          {
+            "episode_id": 54,
+            "metric_shell_only": false,
+            "performance_claim": false
+          },
+          {
+            "episode_id": 55,
+            "metric_shell_only": false,
+            "performance_claim": false
+          },
+          {
+            "episode_id": 56,
+            "metric_shell_only": false,
+            "performance_claim": false
+          },
+          {
+            "episode_id": 57,
+            "metric_shell_only": false,
+            "performance_claim": false
+          },
+          {
+            "episode_id": 58,
+            "metric_shell_only": false,
+            "performance_claim": false
+          },
+          {
+            "episode_id": 59,
+            "metric_shell_only": false,
+            "performance_claim": false
+          },
+          {
+            "episode_id": 60,
+            "metric_shell_only": false,
+            "performance_claim": false
+          },
+          {
+            "episode_id": 61,
+            "metric_shell_only": false,
+            "performance_claim": false
+          },
+          {
+            "episode_id": 62,
+            "metric_shell_only": false,
+            "performance_claim": false
+          },
+          {
+            "episode_id": 63,
+            "metric_shell_only": false,
+            "performance_claim": false
+          },
+          {
+            "episode_id": 64,
+            "metric_shell_only": false,
+            "performance_claim": false
+          },
+          {
+            "episode_id": 65,
+            "metric_shell_only": false,
+            "performance_claim": false
+          },
+          {
+            "episode_id": 66,
+            "metric_shell_only": false,
+            "performance_claim": false
+          },
+          {
+            "episode_id": 67,
+            "metric_shell_only": false,
+            "performance_claim": false
+          },
+          {
+            "episode_id": 68,
+            "metric_shell_only": false,
+            "performance_claim": false
+          },
+          {
+            "episode_id": 69,
+            "metric_shell_only": false,
+            "performance_claim": false
+          },
+          {
+            "episode_id": 70,
+            "metric_shell_only": false,
+            "performance_claim": false
+          },
+          {
+            "episode_id": 71,
+            "metric_shell_only": false,
+            "performance_claim": false
+          },
+          {
+            "episode_id": 72,
+            "metric_shell_only": false,
+            "performance_claim": false
+          },
+          {
+            "episode_id": 73,
+            "metric_shell_only": false,
+            "performance_claim": false
+          },
+          {
+            "episode_id": 74,
+            "metric_shell_only": false,
+            "performance_claim": false
+          },
+          {
+            "episode_id": 75,
+            "metric_shell_only": false,
+            "performance_claim": false
+          },
+          {
+            "episode_id": 76,
+            "metric_shell_only": false,
+            "performance_claim": false
+          },
+          {
+            "episode_id": 77,
+            "metric_shell_only": false,
+            "performance_claim": false
+          },
+          {
+            "episode_id": 78,
+            "metric_shell_only": false,
+            "performance_claim": false
+          },
+          {
+            "episode_id": 79,
+            "metric_shell_only": false,
+            "performance_claim": false
+          },
+          {
+            "episode_id": 80,
+            "metric_shell_only": false,
+            "performance_claim": false
+          },
+          {
+            "episode_id": 81,
+            "metric_shell_only": false,
+            "performance_claim": false
+          },
+          {
+            "episode_id": 82,
+            "metric_shell_only": false,
+            "performance_claim": false
+          },
+          {
+            "episode_id": 83,
+            "metric_shell_only": false,
+            "performance_claim": false
+          },
+          {
+            "episode_id": 84,
+            "metric_shell_only": false,
+            "performance_claim": false
+          },
+          {
+            "episode_id": 85,
+            "metric_shell_only": false,
+            "performance_claim": false
+          },
+          {
+            "episode_id": 86,
+            "metric_shell_only": false,
+            "performance_claim": false
+          },
+          {
+            "episode_id": 87,
+            "metric_shell_only": false,
+            "performance_claim": false
+          },
+          {
+            "episode_id": 88,
+            "metric_shell_only": false,
+            "performance_claim": false
+          },
+          {
+            "episode_id": 89,
+            "metric_shell_only": false,
+            "performance_claim": false
+          },
+          {
+            "episode_id": 90,
+            "metric_shell_only": false,
+            "performance_claim": false
+          },
+          {
+            "episode_id": 91,
+            "metric_shell_only": false,
+            "performance_claim": false
+          },
+          {
+            "episode_id": 92,
+            "metric_shell_only": false,
+            "performance_claim": false
+          },
+          {
+            "episode_id": 93,
+            "metric_shell_only": false,
+            "performance_claim": false
+          },
+          {
+            "episode_id": 94,
+            "metric_shell_only": false,
+            "performance_claim": false
+          },
+          {
+            "episode_id": 95,
+            "metric_shell_only": false,
+            "performance_claim": false
+          },
+          {
+            "episode_id": 96,
+            "metric_shell_only": false,
+            "performance_claim": false
+          },
+          {
+            "episode_id": 97,
+            "metric_shell_only": false,
+            "performance_claim": false
+          },
+          {
+            "episode_id": 98,
+            "metric_shell_only": false,
+            "performance_claim": false
+          },
+          {
+            "episode_id": 99,
+            "metric_shell_only": false,
             "performance_claim": false
           }
         ],
-        "reward": {
-          "status": "schema_only_not_performance_claim",
-          "value": null
+        "performance_claim": false,
+        "reward_bearing_transition_count": 3,
+        "reward_summary": {
+          "mean_reward": -1.0,
+          "reward_count": 100,
+          "total_reward": -100.0
         },
-        "selected_actions": [
-          {
-            "legal": true,
-            "selected_action": "horizontal",
-            "trace_id": "feature-058-evaluation-trace-bank-trace-000-0d3321f39732"
-          },
-          {
-            "legal": true,
-            "selected_action": "vertical",
-            "trace_id": "feature-058-evaluation-trace-bank-trace-001-27a429c2b824"
-          },
-          {
-            "legal": true,
-            "selected_action": "horizontal",
-            "trace_id": "feature-058-evaluation-trace-bank-trace-002-42c25a458cde"
-          },
-          {
-            "legal": true,
-            "selected_action": "vertical",
-            "trace_id": "feature-058-evaluation-trace-bank-trace-003-de82e91aec97"
-          },
-          {
-            "legal": true,
-            "selected_action": "local",
-            "trace_id": "feature-058-evaluation-trace-bank-trace-004-8050118c871c"
-          },
-          {
-            "legal": true,
-            "selected_action": "local",
-            "trace_id": "feature-058-evaluation-trace-bank-trace-005-1bb74efa7a79"
-          },
-          {
-            "legal": true,
-            "selected_action": "horizontal",
-            "trace_id": "feature-058-evaluation-trace-bank-trace-006-618201f56169"
-          },
-          {
-            "legal": true,
-            "selected_action": "vertical",
-            "trace_id": "feature-058-evaluation-trace-bank-trace-007-247fdb56879b"
-          },
-          {
-            "legal": true,
-            "selected_action": "local",
-            "trace_id": "feature-058-evaluation-trace-bank-trace-008-c270890f4ea0"
-          },
-          {
-            "legal": true,
-            "selected_action": "vertical",
-            "trace_id": "feature-058-evaluation-trace-bank-trace-009-d60c2618cbed"
-          },
-          {
-            "legal": true,
-            "selected_action": "vertical",
-            "trace_id": "feature-058-evaluation-trace-bank-trace-010-135fe5d45383"
-          },
-          {
-            "legal": true,
-            "selected_action": "vertical",
-            "trace_id": "feature-058-evaluation-trace-bank-trace-011-a095006b8c3c"
-          }
+        "terminal_transition_count": 3,
+        "trace_ids": [
+          "eval-000",
+          "eval-001",
+          "eval-002",
+          "eval-003",
+          "eval-004",
+          "eval-005",
+          "eval-006",
+          "eval-007",
+          "eval-008",
+          "eval-009",
+          "eval-010",
+          "eval-011",
+          "eval-012",
+          "eval-013",
+          "eval-014",
+          "eval-015",
+          "eval-016",
+          "eval-017",
+          "eval-018",
+          "eval-019",
+          "eval-020",
+          "eval-021",
+          "eval-022",
+          "eval-023",
+          "eval-024",
+          "eval-025",
+          "eval-026",
+          "eval-027",
+          "eval-028",
+          "eval-029",
+          "eval-030",
+          "eval-031",
+          "eval-032",
+          "eval-033",
+          "eval-034",
+          "eval-035",
+          "eval-036",
+          "eval-037",
+          "eval-038",
+          "eval-039",
+          "eval-040",
+          "eval-041",
+          "eval-042",
+          "eval-043",
+          "eval-044",
+          "eval-045",
+          "eval-046",
+          "eval-047",
+          "eval-048",
+          "eval-049",
+          "eval-050",
+          "eval-051",
+          "eval-052",
+          "eval-053",
+          "eval-054",
+          "eval-055",
+          "eval-056",
+          "eval-057",
+          "eval-058",
+          "eval-059",
+          "eval-060",
+          "eval-061",
+          "eval-062",
+          "eval-063",
+          "eval-064",
+          "eval-065",
+          "eval-066",
+          "eval-067",
+          "eval-068",
+          "eval-069",
+          "eval-070",
+          "eval-071",
+          "eval-072",
+          "eval-073",
+          "eval-074",
+          "eval-075",
+          "eval-076",
+          "eval-077",
+          "eval-078",
+          "eval-079",
+          "eval-080",
+          "eval-081",
+          "eval-082",
+          "eval-083",
+          "eval-084",
+          "eval-085",
+          "eval-086",
+          "eval-087",
+          "eval-088",
+          "eval-089",
+          "eval-090",
+          "eval-091",
+          "eval-092",
+          "eval-093",
+          "eval-094",
+          "eval-095",
+          "eval-096",
+          "eval-097",
+          "eval-098",
+          "eval-099"
         ],
-        "timeout": {
-          "status": "schema_only_not_performance_claim",
-          "value": null
-        },
-        "vertical_action_count": 6
+        "vertical_action_count": 0
       }
     },
+    "baseline_metrics_real_execution": true,
     "baseline_policy_names": [
       "local-only",
       "random-legal",
       "fixed-horizontal"
     ],
     "evaluated_policy_count": 3,
-    "no_baseline_superiority_claim": true
+    "no_baseline_superiority_claim": true,
+    "per_policy_metrics": {
+      "fixed-horizontal": {
+        "action_distribution": {
+          "horizontal": 0,
+          "local": 100,
+          "vertical": 0
+        },
+        "completed_task_count": 1,
+        "dropped_task_count": 2,
+        "episode_count": 100,
+        "fallback_action_count": 0,
+        "horizontal_action_count": 0,
+        "illegal_action_count": 0,
+        "local_action_count": 100,
+        "metric_shell_only": false,
+        "no_baseline_superiority_claim": true,
+        "per_episode_summary": [
+          {
+            "episode_id": 0,
+            "metric_shell_only": false,
+            "performance_claim": false
+          },
+          {
+            "episode_id": 1,
+            "metric_shell_only": false,
+            "performance_claim": false
+          },
+          {
+            "episode_id": 2,
+            "metric_shell_only": false,
+            "performance_claim": false
+          },
+          {
+            "episode_id": 3,
+            "metric_shell_only": false,
+            "performance_claim": false
+          },
+          {
+            "episode_id": 4,
+            "metric_shell_only": false,
+            "performance_claim": false
+          },
+          {
+            "episode_id": 5,
+            "metric_shell_only": false,
+            "performance_claim": false
+          },
+          {
+            "episode_id": 6,
+            "metric_shell_only": false,
+            "performance_claim": false
+          },
+          {
+            "episode_id": 7,
+            "metric_shell_only": false,
+            "performance_claim": false
+          },
+          {
+            "episode_id": 8,
+            "metric_shell_only": false,
+            "performance_claim": false
+          },
+          {
+            "episode_id": 9,
+            "metric_shell_only": false,
+            "performance_claim": false
+          },
+          {
+            "episode_id": 10,
+            "metric_shell_only": false,
+            "performance_claim": false
+          },
+          {
+            "episode_id": 11,
+            "metric_shell_only": false,
+            "performance_claim": false
+          },
+          {
+            "episode_id": 12,
+            "metric_shell_only": false,
+            "performance_claim": false
+          },
+          {
+            "episode_id": 13,
+            "metric_shell_only": false,
+            "performance_claim": false
+          },
+          {
+            "episode_id": 14,
+            "metric_shell_only": false,
+            "performance_claim": false
+          },
+          {
+            "episode_id": 15,
+            "metric_shell_only": false,
+            "performance_claim": false
+          },
+          {
+            "episode_id": 16,
+            "metric_shell_only": false,
+            "performance_claim": false
+          },
+          {
+            "episode_id": 17,
+            "metric_shell_only": false,
+            "performance_claim": false
+          },
+          {
+            "episode_id": 18,
+            "metric_shell_only": false,
+            "performance_claim": false
+          },
+          {
+            "episode_id": 19,
+            "metric_shell_only": false,
+            "performance_claim": false
+          },
+          {
+            "episode_id": 20,
+            "metric_shell_only": false,
+            "performance_claim": false
+          },
+          {
+            "episode_id": 21,
+            "metric_shell_only": false,
+            "performance_claim": false
+          },
+          {
+            "episode_id": 22,
+            "metric_shell_only": false,
+            "performance_claim": false
+          },
+          {
+            "episode_id": 23,
+            "metric_shell_only": false,
+            "performance_claim": false
+          },
+          {
+            "episode_id": 24,
+            "metric_shell_only": false,
+            "performance_claim": false
+          },
+          {
+            "episode_id": 25,
+            "metric_shell_only": false,
+            "performance_claim": false
+          },
+          {
+            "episode_id": 26,
+            "metric_shell_only": false,
+            "performance_claim": false
+          },
+          {
+            "episode_id": 27,
+            "metric_shell_only": false,
+            "performance_claim": false
+          },
+          {
+            "episode_id": 28,
+            "metric_shell_only": false,
+            "performance_claim": false
+          },
+          {
+            "episode_id": 29,
+            "metric_shell_only": false,
+            "performance_claim": false
+          },
+          {
+            "episode_id": 30,
+            "metric_shell_only": false,
+            "performance_claim": false
+          },
+          {
+            "episode_id": 31,
+            "metric_shell_only": false,
+            "performance_claim": false
+          },
+          {
+            "episode_id": 32,
+            "metric_shell_only": false,
+            "performance_claim": false
+          },
+          {
+            "episode_id": 33,
+            "metric_shell_only": false,
+            "performance_claim": false
+          },
+          {
+            "episode_id": 34,
+            "metric_shell_only": false,
+            "performance_claim": false
+          },
+          {
+            "episode_id": 35,
+            "metric_shell_only": false,
+            "performance_claim": false
+          },
+          {
+            "episode_id": 36,
+            "metric_shell_only": false,
+            "performance_claim": false
+          },
+          {
+            "episode_id": 37,
+            "metric_shell_only": false,
+            "performance_claim": false
+          },
+          {
+            "episode_id": 38,
+            "metric_shell_only": false,
+            "performance_claim": false
+          },
+          {
+            "episode_id": 39,
+            "metric_shell_only": false,
+            "performance_claim": false
+          },
+          {
+            "episode_id": 40,
+            "metric_shell_only": false,
+            "performance_claim": false
+          },
+          {
+            "episode_id": 41,
+            "metric_shell_only": false,
+            "performance_claim": false
+          },
+          {
+            "episode_id": 42,
+            "metric_shell_only": false,
+            "performance_claim": false
+          },
+          {
+            "episode_id": 43,
+            "metric_shell_only": false,
+            "performance_claim": false
+          },
+          {
+            "episode_id": 44,
+            "metric_shell_only": false,
+            "performance_claim": false
+          },
+          {
+            "episode_id": 45,
+            "metric_shell_only": false,
+            "performance_claim": false
+          },
+          {
+            "episode_id": 46,
+            "metric_shell_only": false,
+            "performance_claim": false
+          },
+          {
+            "episode_id": 47,
+            "metric_shell_only": false,
+            "performance_claim": false
+          },
+          {
+            "episode_id": 48,
+            "metric_shell_only": false,
+            "performance_claim": false
+          },
+          {
+            "episode_id": 49,
+            "metric_shell_only": false,
+            "performance_claim": false
+          },
+          {
+            "episode_id": 50,
+            "metric_shell_only": false,
+            "performance_claim": false
+          },
+          {
+            "episode_id": 51,
+            "metric_shell_only": false,
+            "performance_claim": false
+          },
+          {
+            "episode_id": 52,
+            "metric_shell_only": false,
+            "performance_claim": false
+          },
+          {
+            "episode_id": 53,
+            "metric_shell_only": false,
+            "performance_claim": false
+          },
+          {
+            "episode_id": 54,
+            "metric_shell_only": false,
+            "performance_claim": false
+          },
+          {
+            "episode_id": 55,
+            "metric_shell_only": false,
+            "performance_claim": false
+          },
+          {
+            "episode_id": 56,
+            "metric_shell_only": false,
+            "performance_claim": false
+          },
+          {
+            "episode_id": 57,
+            "metric_shell_only": false,
+            "performance_claim": false
+          },
+          {
+            "episode_id": 58,
+            "metric_shell_only": false,
+            "performance_claim": false
+          },
+          {
+            "episode_id": 59,
+            "metric_shell_only": false,
+            "performance_claim": false
+          },
+          {
+            "episode_id": 60,
+            "metric_shell_only": false,
+            "performance_claim": false
+          },
+          {
+            "episode_id": 61,
+            "metric_shell_only": false,
+            "performance_claim": false
+          },
+          {
+            "episode_id": 62,
+            "metric_shell_only": false,
+            "performance_claim": false
+          },
+          {
+            "episode_id": 63,
+            "metric_shell_only": false,
+            "performance_claim": false
+          },
+          {
+            "episode_id": 64,
+            "metric_shell_only": false,
+            "performance_claim": false
+          },
+          {
+            "episode_id": 65,
+            "metric_shell_only": false,
+            "performance_claim": false
+          },
+          {
+            "episode_id": 66,
+            "metric_shell_only": false,
+            "performance_claim": false
+          },
+          {
+            "episode_id": 67,
+            "metric_shell_only": false,
+            "performance_claim": false
+          },
+          {
+            "episode_id": 68,
+            "metric_shell_only": false,
+            "performance_claim": false
+          },
+          {
+            "episode_id": 69,
+            "metric_shell_only": false,
+            "performance_claim": false
+          },
+          {
+            "episode_id": 70,
+            "metric_shell_only": false,
+            "performance_claim": false
+          },
+          {
+            "episode_id": 71,
+            "metric_shell_only": false,
+            "performance_claim": false
+          },
+          {
+            "episode_id": 72,
+            "metric_shell_only": false,
+            "performance_claim": false
+          },
+          {
+            "episode_id": 73,
+            "metric_shell_only": false,
+            "performance_claim": false
+          },
+          {
+            "episode_id": 74,
+            "metric_shell_only": false,
+            "performance_claim": false
+          },
+          {
+            "episode_id": 75,
+            "metric_shell_only": false,
+            "performance_claim": false
+          },
+          {
+            "episode_id": 76,
+            "metric_shell_only": false,
+            "performance_claim": false
+          },
+          {
+            "episode_id": 77,
+            "metric_shell_only": false,
+            "performance_claim": false
+          },
+          {
+            "episode_id": 78,
+            "metric_shell_only": false,
+            "performance_claim": false
+          },
+          {
+            "episode_id": 79,
+            "metric_shell_only": false,
+            "performance_claim": false
+          },
+          {
+            "episode_id": 80,
+            "metric_shell_only": false,
+            "performance_claim": false
+          },
+          {
+            "episode_id": 81,
+            "metric_shell_only": false,
+            "performance_claim": false
+          },
+          {
+            "episode_id": 82,
+            "metric_shell_only": false,
+            "performance_claim": false
+          },
+          {
+            "episode_id": 83,
+            "metric_shell_only": false,
+            "performance_claim": false
+          },
+          {
+            "episode_id": 84,
+            "metric_shell_only": false,
+            "performance_claim": false
+          },
+          {
+            "episode_id": 85,
+            "metric_shell_only": false,
+            "performance_claim": false
+          },
+          {
+            "episode_id": 86,
+            "metric_shell_only": false,
+            "performance_claim": false
+          },
+          {
+            "episode_id": 87,
+            "metric_shell_only": false,
+            "performance_claim": false
+          },
+          {
+            "episode_id": 88,
+            "metric_shell_only": false,
+            "performance_claim": false
+          },
+          {
+            "episode_id": 89,
+            "metric_shell_only": false,
+            "performance_claim": false
+          },
+          {
+            "episode_id": 90,
+            "metric_shell_only": false,
+            "performance_claim": false
+          },
+          {
+            "episode_id": 91,
+            "metric_shell_only": false,
+            "performance_claim": false
+          },
+          {
+            "episode_id": 92,
+            "metric_shell_only": false,
+            "performance_claim": false
+          },
+          {
+            "episode_id": 93,
+            "metric_shell_only": false,
+            "performance_claim": false
+          },
+          {
+            "episode_id": 94,
+            "metric_shell_only": false,
+            "performance_claim": false
+          },
+          {
+            "episode_id": 95,
+            "metric_shell_only": false,
+            "performance_claim": false
+          },
+          {
+            "episode_id": 96,
+            "metric_shell_only": false,
+            "performance_claim": false
+          },
+          {
+            "episode_id": 97,
+            "metric_shell_only": false,
+            "performance_claim": false
+          },
+          {
+            "episode_id": 98,
+            "metric_shell_only": false,
+            "performance_claim": false
+          },
+          {
+            "episode_id": 99,
+            "metric_shell_only": false,
+            "performance_claim": false
+          }
+        ],
+        "performance_claim": false,
+        "reward_bearing_transition_count": 3,
+        "reward_summary": {
+          "mean_reward": -1.0,
+          "reward_count": 100,
+          "total_reward": -100.0
+        },
+        "terminal_transition_count": 3,
+        "trace_ids": [
+          "eval-000",
+          "eval-001",
+          "eval-002",
+          "eval-003",
+          "eval-004",
+          "eval-005",
+          "eval-006",
+          "eval-007",
+          "eval-008",
+          "eval-009",
+          "eval-010",
+          "eval-011",
+          "eval-012",
+          "eval-013",
+          "eval-014",
+          "eval-015",
+          "eval-016",
+          "eval-017",
+          "eval-018",
+          "eval-019",
+          "eval-020",
+          "eval-021",
+          "eval-022",
+          "eval-023",
+          "eval-024",
+          "eval-025",
+          "eval-026",
+          "eval-027",
+          "eval-028",
+          "eval-029",
+          "eval-030",
+          "eval-031",
+          "eval-032",
+          "eval-033",
+          "eval-034",
+          "eval-035",
+          "eval-036",
+          "eval-037",
+          "eval-038",
+          "eval-039",
+          "eval-040",
+          "eval-041",
+          "eval-042",
+          "eval-043",
+          "eval-044",
+          "eval-045",
+          "eval-046",
+          "eval-047",
+          "eval-048",
+          "eval-049",
+          "eval-050",
+          "eval-051",
+          "eval-052",
+          "eval-053",
+          "eval-054",
+          "eval-055",
+          "eval-056",
+          "eval-057",
+          "eval-058",
+          "eval-059",
+          "eval-060",
+          "eval-061",
+          "eval-062",
+          "eval-063",
+          "eval-064",
+          "eval-065",
+          "eval-066",
+          "eval-067",
+          "eval-068",
+          "eval-069",
+          "eval-070",
+          "eval-071",
+          "eval-072",
+          "eval-073",
+          "eval-074",
+          "eval-075",
+          "eval-076",
+          "eval-077",
+          "eval-078",
+          "eval-079",
+          "eval-080",
+          "eval-081",
+          "eval-082",
+          "eval-083",
+          "eval-084",
+          "eval-085",
+          "eval-086",
+          "eval-087",
+          "eval-088",
+          "eval-089",
+          "eval-090",
+          "eval-091",
+          "eval-092",
+          "eval-093",
+          "eval-094",
+          "eval-095",
+          "eval-096",
+          "eval-097",
+          "eval-098",
+          "eval-099"
+        ],
+        "vertical_action_count": 0
+      },
+      "local-only": {
+        "action_distribution": {
+          "horizontal": 0,
+          "local": 100,
+          "vertical": 0
+        },
+        "completed_task_count": 1,
+        "dropped_task_count": 2,
+        "episode_count": 100,
+        "fallback_action_count": 0,
+        "horizontal_action_count": 0,
+        "illegal_action_count": 0,
+        "local_action_count": 100,
+        "metric_shell_only": false,
+        "no_baseline_superiority_claim": true,
+        "per_episode_summary": [
+          {
+            "episode_id": 0,
+            "metric_shell_only": false,
+            "performance_claim": false
+          },
+          {
+            "episode_id": 1,
+            "metric_shell_only": false,
+            "performance_claim": false
+          },
+          {
+            "episode_id": 2,
+            "metric_shell_only": false,
+            "performance_claim": false
+          },
+          {
+            "episode_id": 3,
+            "metric_shell_only": false,
+            "performance_claim": false
+          },
+          {
+            "episode_id": 4,
+            "metric_shell_only": false,
+            "performance_claim": false
+          },
+          {
+            "episode_id": 5,
+            "metric_shell_only": false,
+            "performance_claim": false
+          },
+          {
+            "episode_id": 6,
+            "metric_shell_only": false,
+            "performance_claim": false
+          },
+          {
+            "episode_id": 7,
+            "metric_shell_only": false,
+            "performance_claim": false
+          },
+          {
+            "episode_id": 8,
+            "metric_shell_only": false,
+            "performance_claim": false
+          },
+          {
+            "episode_id": 9,
+            "metric_shell_only": false,
+            "performance_claim": false
+          },
+          {
+            "episode_id": 10,
+            "metric_shell_only": false,
+            "performance_claim": false
+          },
+          {
+            "episode_id": 11,
+            "metric_shell_only": false,
+            "performance_claim": false
+          },
+          {
+            "episode_id": 12,
+            "metric_shell_only": false,
+            "performance_claim": false
+          },
+          {
+            "episode_id": 13,
+            "metric_shell_only": false,
+            "performance_claim": false
+          },
+          {
+            "episode_id": 14,
+            "metric_shell_only": false,
+            "performance_claim": false
+          },
+          {
+            "episode_id": 15,
+            "metric_shell_only": false,
+            "performance_claim": false
+          },
+          {
+            "episode_id": 16,
+            "metric_shell_only": false,
+            "performance_claim": false
+          },
+          {
+            "episode_id": 17,
+            "metric_shell_only": false,
+            "performance_claim": false
+          },
+          {
+            "episode_id": 18,
+            "metric_shell_only": false,
+            "performance_claim": false
+          },
+          {
+            "episode_id": 19,
+            "metric_shell_only": false,
+            "performance_claim": false
+          },
+          {
+            "episode_id": 20,
+            "metric_shell_only": false,
+            "performance_claim": false
+          },
+          {
+            "episode_id": 21,
+            "metric_shell_only": false,
+            "performance_claim": false
+          },
+          {
+            "episode_id": 22,
+            "metric_shell_only": false,
+            "performance_claim": false
+          },
+          {
+            "episode_id": 23,
+            "metric_shell_only": false,
+            "performance_claim": false
+          },
+          {
+            "episode_id": 24,
+            "metric_shell_only": false,
+            "performance_claim": false
+          },
+          {
+            "episode_id": 25,
+            "metric_shell_only": false,
+            "performance_claim": false
+          },
+          {
+            "episode_id": 26,
+            "metric_shell_only": false,
+            "performance_claim": false
+          },
+          {
+            "episode_id": 27,
+            "metric_shell_only": false,
+            "performance_claim": false
+          },
+          {
+            "episode_id": 28,
+            "metric_shell_only": false,
+            "performance_claim": false
+          },
+          {
+            "episode_id": 29,
+            "metric_shell_only": false,
+            "performance_claim": false
+          },
+          {
+            "episode_id": 30,
+            "metric_shell_only": false,
+            "performance_claim": false
+          },
+          {
+            "episode_id": 31,
+            "metric_shell_only": false,
+            "performance_claim": false
+          },
+          {
+            "episode_id": 32,
+            "metric_shell_only": false,
+            "performance_claim": false
+          },
+          {
+            "episode_id": 33,
+            "metric_shell_only": false,
+            "performance_claim": false
+          },
+          {
+            "episode_id": 34,
+            "metric_shell_only": false,
+            "performance_claim": false
+          },
+          {
+            "episode_id": 35,
+            "metric_shell_only": false,
+            "performance_claim": false
+          },
+          {
+            "episode_id": 36,
+            "metric_shell_only": false,
+            "performance_claim": false
+          },
+          {
+            "episode_id": 37,
+            "metric_shell_only": false,
+            "performance_claim": false
+          },
+          {
+            "episode_id": 38,
+            "metric_shell_only": false,
+            "performance_claim": false
+          },
+          {
+            "episode_id": 39,
+            "metric_shell_only": false,
+            "performance_claim": false
+          },
+          {
+            "episode_id": 40,
+            "metric_shell_only": false,
+            "performance_claim": false
+          },
+          {
+            "episode_id": 41,
+            "metric_shell_only": false,
+            "performance_claim": false
+          },
+          {
+            "episode_id": 42,
+            "metric_shell_only": false,
+            "performance_claim": false
+          },
+          {
+            "episode_id": 43,
+            "metric_shell_only": false,
+            "performance_claim": false
+          },
+          {
+            "episode_id": 44,
+            "metric_shell_only": false,
+            "performance_claim": false
+          },
+          {
+            "episode_id": 45,
+            "metric_shell_only": false,
+            "performance_claim": false
+          },
+          {
+            "episode_id": 46,
+            "metric_shell_only": false,
+            "performance_claim": false
+          },
+          {
+            "episode_id": 47,
+            "metric_shell_only": false,
+            "performance_claim": false
+          },
+          {
+            "episode_id": 48,
+            "metric_shell_only": false,
+            "performance_claim": false
+          },
+          {
+            "episode_id": 49,
+            "metric_shell_only": false,
+            "performance_claim": false
+          },
+          {
+            "episode_id": 50,
+            "metric_shell_only": false,
+            "performance_claim": false
+          },
+          {
+            "episode_id": 51,
+            "metric_shell_only": false,
+            "performance_claim": false
+          },
+          {
+            "episode_id": 52,
+            "metric_shell_only": false,
+            "performance_claim": false
+          },
+          {
+            "episode_id": 53,
+            "metric_shell_only": false,
+            "performance_claim": false
+          },
+          {
+            "episode_id": 54,
+            "metric_shell_only": false,
+            "performance_claim": false
+          },
+          {
+            "episode_id": 55,
+            "metric_shell_only": false,
+            "performance_claim": false
+          },
+          {
+            "episode_id": 56,
+            "metric_shell_only": false,
+            "performance_claim": false
+          },
+          {
+            "episode_id": 57,
+            "metric_shell_only": false,
+            "performance_claim": false
+          },
+          {
+            "episode_id": 58,
+            "metric_shell_only": false,
+            "performance_claim": false
+          },
+          {
+            "episode_id": 59,
+            "metric_shell_only": false,
+            "performance_claim": false
+          },
+          {
+            "episode_id": 60,
+            "metric_shell_only": false,
+            "performance_claim": false
+          },
+          {
+            "episode_id": 61,
+            "metric_shell_only": false,
+            "performance_claim": false
+          },
+          {
+            "episode_id": 62,
+            "metric_shell_only": false,
+            "performance_claim": false
+          },
+          {
+            "episode_id": 63,
+            "metric_shell_only": false,
+            "performance_claim": false
+          },
+          {
+            "episode_id": 64,
+            "metric_shell_only": false,
+            "performance_claim": false
+          },
+          {
+            "episode_id": 65,
+            "metric_shell_only": false,
+            "performance_claim": false
+          },
+          {
+            "episode_id": 66,
+            "metric_shell_only": false,
+            "performance_claim": false
+          },
+          {
+            "episode_id": 67,
+            "metric_shell_only": false,
+            "performance_claim": false
+          },
+          {
+            "episode_id": 68,
+            "metric_shell_only": false,
+            "performance_claim": false
+          },
+          {
+            "episode_id": 69,
+            "metric_shell_only": false,
+            "performance_claim": false
+          },
+          {
+            "episode_id": 70,
+            "metric_shell_only": false,
+            "performance_claim": false
+          },
+          {
+            "episode_id": 71,
+            "metric_shell_only": false,
+            "performance_claim": false
+          },
+          {
+            "episode_id": 72,
+            "metric_shell_only": false,
+            "performance_claim": false
+          },
+          {
+            "episode_id": 73,
+            "metric_shell_only": false,
+            "performance_claim": false
+          },
+          {
+            "episode_id": 74,
+            "metric_shell_only": false,
+            "performance_claim": false
+          },
+          {
+            "episode_id": 75,
+            "metric_shell_only": false,
+            "performance_claim": false
+          },
+          {
+            "episode_id": 76,
+            "metric_shell_only": false,
+            "performance_claim": false
+          },
+          {
+            "episode_id": 77,
+            "metric_shell_only": false,
+            "performance_claim": false
+          },
+          {
+            "episode_id": 78,
+            "metric_shell_only": false,
+            "performance_claim": false
+          },
+          {
+            "episode_id": 79,
+            "metric_shell_only": false,
+            "performance_claim": false
+          },
+          {
+            "episode_id": 80,
+            "metric_shell_only": false,
+            "performance_claim": false
+          },
+          {
+            "episode_id": 81,
+            "metric_shell_only": false,
+            "performance_claim": false
+          },
+          {
+            "episode_id": 82,
+            "metric_shell_only": false,
+            "performance_claim": false
+          },
+          {
+            "episode_id": 83,
+            "metric_shell_only": false,
+            "performance_claim": false
+          },
+          {
+            "episode_id": 84,
+            "metric_shell_only": false,
+            "performance_claim": false
+          },
+          {
+            "episode_id": 85,
+            "metric_shell_only": false,
+            "performance_claim": false
+          },
+          {
+            "episode_id": 86,
+            "metric_shell_only": false,
+            "performance_claim": false
+          },
+          {
+            "episode_id": 87,
+            "metric_shell_only": false,
+            "performance_claim": false
+          },
+          {
+            "episode_id": 88,
+            "metric_shell_only": false,
+            "performance_claim": false
+          },
+          {
+            "episode_id": 89,
+            "metric_shell_only": false,
+            "performance_claim": false
+          },
+          {
+            "episode_id": 90,
+            "metric_shell_only": false,
+            "performance_claim": false
+          },
+          {
+            "episode_id": 91,
+            "metric_shell_only": false,
+            "performance_claim": false
+          },
+          {
+            "episode_id": 92,
+            "metric_shell_only": false,
+            "performance_claim": false
+          },
+          {
+            "episode_id": 93,
+            "metric_shell_only": false,
+            "performance_claim": false
+          },
+          {
+            "episode_id": 94,
+            "metric_shell_only": false,
+            "performance_claim": false
+          },
+          {
+            "episode_id": 95,
+            "metric_shell_only": false,
+            "performance_claim": false
+          },
+          {
+            "episode_id": 96,
+            "metric_shell_only": false,
+            "performance_claim": false
+          },
+          {
+            "episode_id": 97,
+            "metric_shell_only": false,
+            "performance_claim": false
+          },
+          {
+            "episode_id": 98,
+            "metric_shell_only": false,
+            "performance_claim": false
+          },
+          {
+            "episode_id": 99,
+            "metric_shell_only": false,
+            "performance_claim": false
+          }
+        ],
+        "performance_claim": false,
+        "reward_bearing_transition_count": 3,
+        "reward_summary": {
+          "mean_reward": -1.0,
+          "reward_count": 100,
+          "total_reward": -100.0
+        },
+        "terminal_transition_count": 3,
+        "trace_ids": [
+          "eval-000",
+          "eval-001",
+          "eval-002",
+          "eval-003",
+          "eval-004",
+          "eval-005",
+          "eval-006",
+          "eval-007",
+          "eval-008",
+          "eval-009",
+          "eval-010",
+          "eval-011",
+          "eval-012",
+          "eval-013",
+          "eval-014",
+          "eval-015",
+          "eval-016",
+          "eval-017",
+          "eval-018",
+          "eval-019",
+          "eval-020",
+          "eval-021",
+          "eval-022",
+          "eval-023",
+          "eval-024",
+          "eval-025",
+          "eval-026",
+          "eval-027",
+          "eval-028",
+          "eval-029",
+          "eval-030",
+          "eval-031",
+          "eval-032",
+          "eval-033",
+          "eval-034",
+          "eval-035",
+          "eval-036",
+          "eval-037",
+          "eval-038",
+          "eval-039",
+          "eval-040",
+          "eval-041",
+          "eval-042",
+          "eval-043",
+          "eval-044",
+          "eval-045",
+          "eval-046",
+          "eval-047",
+          "eval-048",
+          "eval-049",
+          "eval-050",
+          "eval-051",
+          "eval-052",
+          "eval-053",
+          "eval-054",
+          "eval-055",
+          "eval-056",
+          "eval-057",
+          "eval-058",
+          "eval-059",
+          "eval-060",
+          "eval-061",
+          "eval-062",
+          "eval-063",
+          "eval-064",
+          "eval-065",
+          "eval-066",
+          "eval-067",
+          "eval-068",
+          "eval-069",
+          "eval-070",
+          "eval-071",
+          "eval-072",
+          "eval-073",
+          "eval-074",
+          "eval-075",
+          "eval-076",
+          "eval-077",
+          "eval-078",
+          "eval-079",
+          "eval-080",
+          "eval-081",
+          "eval-082",
+          "eval-083",
+          "eval-084",
+          "eval-085",
+          "eval-086",
+          "eval-087",
+          "eval-088",
+          "eval-089",
+          "eval-090",
+          "eval-091",
+          "eval-092",
+          "eval-093",
+          "eval-094",
+          "eval-095",
+          "eval-096",
+          "eval-097",
+          "eval-098",
+          "eval-099"
+        ],
+        "vertical_action_count": 0
+      },
+      "random-legal": {
+        "action_distribution": {
+          "horizontal": 0,
+          "local": 100,
+          "vertical": 0
+        },
+        "completed_task_count": 1,
+        "dropped_task_count": 2,
+        "episode_count": 100,
+        "fallback_action_count": 0,
+        "horizontal_action_count": 0,
+        "illegal_action_count": 0,
+        "local_action_count": 100,
+        "metric_shell_only": false,
+        "no_baseline_superiority_claim": true,
+        "per_episode_summary": [
+          {
+            "episode_id": 0,
+            "metric_shell_only": false,
+            "performance_claim": false
+          },
+          {
+            "episode_id": 1,
+            "metric_shell_only": false,
+            "performance_claim": false
+          },
+          {
+            "episode_id": 2,
+            "metric_shell_only": false,
+            "performance_claim": false
+          },
+          {
+            "episode_id": 3,
+            "metric_shell_only": false,
+            "performance_claim": false
+          },
+          {
+            "episode_id": 4,
+            "metric_shell_only": false,
+            "performance_claim": false
+          },
+          {
+            "episode_id": 5,
+            "metric_shell_only": false,
+            "performance_claim": false
+          },
+          {
+            "episode_id": 6,
+            "metric_shell_only": false,
+            "performance_claim": false
+          },
+          {
+            "episode_id": 7,
+            "metric_shell_only": false,
+            "performance_claim": false
+          },
+          {
+            "episode_id": 8,
+            "metric_shell_only": false,
+            "performance_claim": false
+          },
+          {
+            "episode_id": 9,
+            "metric_shell_only": false,
+            "performance_claim": false
+          },
+          {
+            "episode_id": 10,
+            "metric_shell_only": false,
+            "performance_claim": false
+          },
+          {
+            "episode_id": 11,
+            "metric_shell_only": false,
+            "performance_claim": false
+          },
+          {
+            "episode_id": 12,
+            "metric_shell_only": false,
+            "performance_claim": false
+          },
+          {
+            "episode_id": 13,
+            "metric_shell_only": false,
+            "performance_claim": false
+          },
+          {
+            "episode_id": 14,
+            "metric_shell_only": false,
+            "performance_claim": false
+          },
+          {
+            "episode_id": 15,
+            "metric_shell_only": false,
+            "performance_claim": false
+          },
+          {
+            "episode_id": 16,
+            "metric_shell_only": false,
+            "performance_claim": false
+          },
+          {
+            "episode_id": 17,
+            "metric_shell_only": false,
+            "performance_claim": false
+          },
+          {
+            "episode_id": 18,
+            "metric_shell_only": false,
+            "performance_claim": false
+          },
+          {
+            "episode_id": 19,
+            "metric_shell_only": false,
+            "performance_claim": false
+          },
+          {
+            "episode_id": 20,
+            "metric_shell_only": false,
+            "performance_claim": false
+          },
+          {
+            "episode_id": 21,
+            "metric_shell_only": false,
+            "performance_claim": false
+          },
+          {
+            "episode_id": 22,
+            "metric_shell_only": false,
+            "performance_claim": false
+          },
+          {
+            "episode_id": 23,
+            "metric_shell_only": false,
+            "performance_claim": false
+          },
+          {
+            "episode_id": 24,
+            "metric_shell_only": false,
+            "performance_claim": false
+          },
+          {
+            "episode_id": 25,
+            "metric_shell_only": false,
+            "performance_claim": false
+          },
+          {
+            "episode_id": 26,
+            "metric_shell_only": false,
+            "performance_claim": false
+          },
+          {
+            "episode_id": 27,
+            "metric_shell_only": false,
+            "performance_claim": false
+          },
+          {
+            "episode_id": 28,
+            "metric_shell_only": false,
+            "performance_claim": false
+          },
+          {
+            "episode_id": 29,
+            "metric_shell_only": false,
+            "performance_claim": false
+          },
+          {
+            "episode_id": 30,
+            "metric_shell_only": false,
+            "performance_claim": false
+          },
+          {
+            "episode_id": 31,
+            "metric_shell_only": false,
+            "performance_claim": false
+          },
+          {
+            "episode_id": 32,
+            "metric_shell_only": false,
+            "performance_claim": false
+          },
+          {
+            "episode_id": 33,
+            "metric_shell_only": false,
+            "performance_claim": false
+          },
+          {
+            "episode_id": 34,
+            "metric_shell_only": false,
+            "performance_claim": false
+          },
+          {
+            "episode_id": 35,
+            "metric_shell_only": false,
+            "performance_claim": false
+          },
+          {
+            "episode_id": 36,
+            "metric_shell_only": false,
+            "performance_claim": false
+          },
+          {
+            "episode_id": 37,
+            "metric_shell_only": false,
+            "performance_claim": false
+          },
+          {
+            "episode_id": 38,
+            "metric_shell_only": false,
+            "performance_claim": false
+          },
+          {
+            "episode_id": 39,
+            "metric_shell_only": false,
+            "performance_claim": false
+          },
+          {
+            "episode_id": 40,
+            "metric_shell_only": false,
+            "performance_claim": false
+          },
+          {
+            "episode_id": 41,
+            "metric_shell_only": false,
+            "performance_claim": false
+          },
+          {
+            "episode_id": 42,
+            "metric_shell_only": false,
+            "performance_claim": false
+          },
+          {
+            "episode_id": 43,
+            "metric_shell_only": false,
+            "performance_claim": false
+          },
+          {
+            "episode_id": 44,
+            "metric_shell_only": false,
+            "performance_claim": false
+          },
+          {
+            "episode_id": 45,
+            "metric_shell_only": false,
+            "performance_claim": false
+          },
+          {
+            "episode_id": 46,
+            "metric_shell_only": false,
+            "performance_claim": false
+          },
+          {
+            "episode_id": 47,
+            "metric_shell_only": false,
+            "performance_claim": false
+          },
+          {
+            "episode_id": 48,
+            "metric_shell_only": false,
+            "performance_claim": false
+          },
+          {
+            "episode_id": 49,
+            "metric_shell_only": false,
+            "performance_claim": false
+          },
+          {
+            "episode_id": 50,
+            "metric_shell_only": false,
+            "performance_claim": false
+          },
+          {
+            "episode_id": 51,
+            "metric_shell_only": false,
+            "performance_claim": false
+          },
+          {
+            "episode_id": 52,
+            "metric_shell_only": false,
+            "performance_claim": false
+          },
+          {
+            "episode_id": 53,
+            "metric_shell_only": false,
+            "performance_claim": false
+          },
+          {
+            "episode_id": 54,
+            "metric_shell_only": false,
+            "performance_claim": false
+          },
+          {
+            "episode_id": 55,
+            "metric_shell_only": false,
+            "performance_claim": false
+          },
+          {
+            "episode_id": 56,
+            "metric_shell_only": false,
+            "performance_claim": false
+          },
+          {
+            "episode_id": 57,
+            "metric_shell_only": false,
+            "performance_claim": false
+          },
+          {
+            "episode_id": 58,
+            "metric_shell_only": false,
+            "performance_claim": false
+          },
+          {
+            "episode_id": 59,
+            "metric_shell_only": false,
+            "performance_claim": false
+          },
+          {
+            "episode_id": 60,
+            "metric_shell_only": false,
+            "performance_claim": false
+          },
+          {
+            "episode_id": 61,
+            "metric_shell_only": false,
+            "performance_claim": false
+          },
+          {
+            "episode_id": 62,
+            "metric_shell_only": false,
+            "performance_claim": false
+          },
+          {
+            "episode_id": 63,
+            "metric_shell_only": false,
+            "performance_claim": false
+          },
+          {
+            "episode_id": 64,
+            "metric_shell_only": false,
+            "performance_claim": false
+          },
+          {
+            "episode_id": 65,
+            "metric_shell_only": false,
+            "performance_claim": false
+          },
+          {
+            "episode_id": 66,
+            "metric_shell_only": false,
+            "performance_claim": false
+          },
+          {
+            "episode_id": 67,
+            "metric_shell_only": false,
+            "performance_claim": false
+          },
+          {
+            "episode_id": 68,
+            "metric_shell_only": false,
+            "performance_claim": false
+          },
+          {
+            "episode_id": 69,
+            "metric_shell_only": false,
+            "performance_claim": false
+          },
+          {
+            "episode_id": 70,
+            "metric_shell_only": false,
+            "performance_claim": false
+          },
+          {
+            "episode_id": 71,
+            "metric_shell_only": false,
+            "performance_claim": false
+          },
+          {
+            "episode_id": 72,
+            "metric_shell_only": false,
+            "performance_claim": false
+          },
+          {
+            "episode_id": 73,
+            "metric_shell_only": false,
+            "performance_claim": false
+          },
+          {
+            "episode_id": 74,
+            "metric_shell_only": false,
+            "performance_claim": false
+          },
+          {
+            "episode_id": 75,
+            "metric_shell_only": false,
+            "performance_claim": false
+          },
+          {
+            "episode_id": 76,
+            "metric_shell_only": false,
+            "performance_claim": false
+          },
+          {
+            "episode_id": 77,
+            "metric_shell_only": false,
+            "performance_claim": false
+          },
+          {
+            "episode_id": 78,
+            "metric_shell_only": false,
+            "performance_claim": false
+          },
+          {
+            "episode_id": 79,
+            "metric_shell_only": false,
+            "performance_claim": false
+          },
+          {
+            "episode_id": 80,
+            "metric_shell_only": false,
+            "performance_claim": false
+          },
+          {
+            "episode_id": 81,
+            "metric_shell_only": false,
+            "performance_claim": false
+          },
+          {
+            "episode_id": 82,
+            "metric_shell_only": false,
+            "performance_claim": false
+          },
+          {
+            "episode_id": 83,
+            "metric_shell_only": false,
+            "performance_claim": false
+          },
+          {
+            "episode_id": 84,
+            "metric_shell_only": false,
+            "performance_claim": false
+          },
+          {
+            "episode_id": 85,
+            "metric_shell_only": false,
+            "performance_claim": false
+          },
+          {
+            "episode_id": 86,
+            "metric_shell_only": false,
+            "performance_claim": false
+          },
+          {
+            "episode_id": 87,
+            "metric_shell_only": false,
+            "performance_claim": false
+          },
+          {
+            "episode_id": 88,
+            "metric_shell_only": false,
+            "performance_claim": false
+          },
+          {
+            "episode_id": 89,
+            "metric_shell_only": false,
+            "performance_claim": false
+          },
+          {
+            "episode_id": 90,
+            "metric_shell_only": false,
+            "performance_claim": false
+          },
+          {
+            "episode_id": 91,
+            "metric_shell_only": false,
+            "performance_claim": false
+          },
+          {
+            "episode_id": 92,
+            "metric_shell_only": false,
+            "performance_claim": false
+          },
+          {
+            "episode_id": 93,
+            "metric_shell_only": false,
+            "performance_claim": false
+          },
+          {
+            "episode_id": 94,
+            "metric_shell_only": false,
+            "performance_claim": false
+          },
+          {
+            "episode_id": 95,
+            "metric_shell_only": false,
+            "performance_claim": false
+          },
+          {
+            "episode_id": 96,
+            "metric_shell_only": false,
+            "performance_claim": false
+          },
+          {
+            "episode_id": 97,
+            "metric_shell_only": false,
+            "performance_claim": false
+          },
+          {
+            "episode_id": 98,
+            "metric_shell_only": false,
+            "performance_claim": false
+          },
+          {
+            "episode_id": 99,
+            "metric_shell_only": false,
+            "performance_claim": false
+          }
+        ],
+        "performance_claim": false,
+        "reward_bearing_transition_count": 3,
+        "reward_summary": {
+          "mean_reward": -1.0,
+          "reward_count": 100,
+          "total_reward": -100.0
+        },
+        "terminal_transition_count": 3,
+        "trace_ids": [
+          "eval-000",
+          "eval-001",
+          "eval-002",
+          "eval-003",
+          "eval-004",
+          "eval-005",
+          "eval-006",
+          "eval-007",
+          "eval-008",
+          "eval-009",
+          "eval-010",
+          "eval-011",
+          "eval-012",
+          "eval-013",
+          "eval-014",
+          "eval-015",
+          "eval-016",
+          "eval-017",
+          "eval-018",
+          "eval-019",
+          "eval-020",
+          "eval-021",
+          "eval-022",
+          "eval-023",
+          "eval-024",
+          "eval-025",
+          "eval-026",
+          "eval-027",
+          "eval-028",
+          "eval-029",
+          "eval-030",
+          "eval-031",
+          "eval-032",
+          "eval-033",
+          "eval-034",
+          "eval-035",
+          "eval-036",
+          "eval-037",
+          "eval-038",
+          "eval-039",
+          "eval-040",
+          "eval-041",
+          "eval-042",
+          "eval-043",
+          "eval-044",
+          "eval-045",
+          "eval-046",
+          "eval-047",
+          "eval-048",
+          "eval-049",
+          "eval-050",
+          "eval-051",
+          "eval-052",
+          "eval-053",
+          "eval-054",
+          "eval-055",
+          "eval-056",
+          "eval-057",
+          "eval-058",
+          "eval-059",
+          "eval-060",
+          "eval-061",
+          "eval-062",
+          "eval-063",
+          "eval-064",
+          "eval-065",
+          "eval-066",
+          "eval-067",
+          "eval-068",
+          "eval-069",
+          "eval-070",
+          "eval-071",
+          "eval-072",
+          "eval-073",
+          "eval-074",
+          "eval-075",
+          "eval-076",
+          "eval-077",
+          "eval-078",
+          "eval-079",
+          "eval-080",
+          "eval-081",
+          "eval-082",
+          "eval-083",
+          "eval-084",
+          "eval-085",
+          "eval-086",
+          "eval-087",
+          "eval-088",
+          "eval-089",
+          "eval-090",
+          "eval-091",
+          "eval-092",
+          "eval-093",
+          "eval-094",
+          "eval-095",
+          "eval-096",
+          "eval-097",
+          "eval-098",
+          "eval-099"
+        ],
+        "vertical_action_count": 0
+      }
+    }
   },
   "campaign_execution_summary": {
     "actual_baseline_evaluation_episode_count": 100,
@@ -419,7 +3881,8 @@
   },
   "evaluation_metrics_summary": {
     "action_distribution": {
-      "horizontal": 39000,
+      "horizontal": 38000,
+      "invalid_or_noop_action_count": 0,
       "local": 33000,
       "vertical": 39000
     },
@@ -691,12 +4154,16 @@
     "no_uncontrolled_campaign_loop": true
   },
   "training_metrics_summary": {
+    "action_accounting_reconciled": true,
+    "action_count_total": 110000,
     "action_distribution": {
-      "horizontal": 39000,
+      "horizontal": 38000,
+      "invalid_or_noop_action_count": 0,
       "local": 33000,
       "vertical": 39000
     },
-    "horizontal_action_count": 39000,
+    "horizontal_action_count": 38000,
+    "invalid_or_noop_action_count": 0,
     "local_action_count": 33000,
     "loss_count": 1,
     "loss_finite": true,

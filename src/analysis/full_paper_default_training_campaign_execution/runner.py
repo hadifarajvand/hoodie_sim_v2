@@ -3,18 +3,19 @@ from __future__ import annotations
 import argparse
 import json
 import math
+import random
 import subprocess
 import sys
 from pathlib import Path
 from typing import Any
 
-from src.analysis.evaluation_trace_bank_baseline_harness import build_evaluation_trace_bank_baseline_harness_report
+from src.analysis.evaluation_trace_bank_baseline_harness import build_baseline_policy_registry, build_evaluation_trace_bank_baseline_harness_report
 from src.analysis.full_training_reproduction_campaign.config import (
     CampaignConfig,
     READINESS_MANUAL_APPROVAL_APPROVED,
 )
 from src.analysis.full_training_reproduction_campaign.readiness import run_campaign_readiness_probe
-from src.analysis.full_training_reproduction_campaign.trainer import DDQNTrainer
+from src.analysis.full_training_reproduction_campaign.trainer import DDQNTrainer, _build_environment
 
 from .config import (
     BRANCH_NAME,
@@ -85,6 +86,7 @@ ACTION_INDEX_TO_NAME = {
     1: "horizontal",
     2: "vertical",
 }
+BASELINE_ACTIONS = ("local", "horizontal", "vertical")
 
 
 def _load_json(path: Path) -> dict[str, Any]:
@@ -254,22 +256,33 @@ def _repo_venv_python() -> str:
 
 
 def _action_distribution(replay_transitions: list[dict[str, Any]]) -> dict[str, int]:
-    counts = {"local": 0, "horizontal": 0, "vertical": 0}
+    counts = {"local": 0, "horizontal": 0, "vertical": 0, "invalid_or_noop_action_count": 0}
     for transition in replay_transitions:
-        action_name = str(transition["action"])
-        if action_name is not None:
+        raw_action = transition["action"] if isinstance(transition, dict) else getattr(transition, "action", None)
+        action_name = ACTION_INDEX_TO_NAME.get(raw_action) if isinstance(raw_action, int) else str(raw_action) if raw_action is not None else None
+        if action_name in ("local", "horizontal", "vertical"):
             counts[action_name] += 1
+        else:
+            counts["invalid_or_noop_action_count"] += 1
     return counts
 
 
 def _reward_summary(replay_transitions: list[dict[str, Any]]) -> dict[str, Any]:
-    reward_values = [float(transition["reward"]) for transition in replay_transitions if transition["reward_available"]]
+    reward_values = [
+        float(transition["reward"] if isinstance(transition, dict) else getattr(transition, "reward"))
+        for transition in replay_transitions
+        if (transition["reward_available"] if isinstance(transition, dict) else getattr(transition, "reward_available"))
+    ]
     return {
         "reward_count": len(reward_values),
         "reward_available_count": len(reward_values),
         "total_reward": float(sum(reward_values)) if reward_values else 0.0,
         "mean_reward": float(sum(reward_values) / len(reward_values)) if reward_values else 0.0,
-        "pending_at_horizon_count": sum(1 for transition in replay_transitions if transition["pending_at_horizon"]),
+        "pending_at_horizon_count": sum(
+            1
+            for transition in replay_transitions
+            if (transition["pending_at_horizon"] if isinstance(transition, dict) else getattr(transition, "pending_at_horizon"))
+        ),
     }
 
 
@@ -281,6 +294,196 @@ def _configure_campaign() -> CampaignConfig:
     )
     config.full_campaign_budget = 1000
     return config
+
+
+def _first_legal_action(legal_action_mask: dict[str, bool]) -> str | None:
+    for action in BASELINE_ACTIONS:
+        if legal_action_mask.get(action, False):
+            return action
+    return None
+
+
+def _select_feature_060_baseline_action(
+    *,
+    policy: dict[str, Any],
+    legal_action_mask: dict[str, bool],
+    seed: int,
+    episode_id: int,
+    step_id: int,
+) -> tuple[str | None, bool]:
+    name = str(policy["name"])
+    preferred_action: str | None
+    if name == "local-only":
+        preferred_action = "local"
+    elif name == "fixed-horizontal":
+        preferred_action = "horizontal"
+    elif name == "random-legal":
+        legal_actions = [action for action in BASELINE_ACTIONS if legal_action_mask.get(action, False)]
+        preferred_action = random.Random(seed + episode_id * 1000 + step_id).choice(legal_actions) if legal_actions else None
+    else:
+        raise ValueError(f"unknown baseline policy: {name}")
+
+    if preferred_action is not None and legal_action_mask.get(preferred_action, False):
+        return preferred_action, True
+    return _first_legal_action(legal_action_mask), False
+
+
+def _run_single_baseline_policy(
+    *,
+    campaign_config: CampaignConfig,
+    policy: dict[str, Any],
+    evaluation_trace_bank_summary: dict[str, Any],
+    episode_count: int,
+    episode_length: int,
+) -> dict[str, Any]:
+    seed = int(evaluation_trace_bank_summary.get("seed_bundle", {}).get("baseline_policy_seed", campaign_config.seed_bundle.evaluation_trace_generation_seed + 6058))
+    trace_identities = list(evaluation_trace_bank_summary.get("trace_identities", []))
+    action_distribution = {"local": 0, "horizontal": 0, "vertical": 0}
+    rewards: list[float] = []
+    per_episode_summary: list[dict[str, Any]] = []
+    trace_ids: list[str] = []
+    selected_actions: list[dict[str, Any]] = []
+    completed_task_count = 0
+    dropped_task_count = 0
+    terminal_transition_count = 0
+    reward_bearing_transition_count = 0
+    illegal_action_count = 0
+    fallback_action_count = 0
+
+    for episode_id in range(episode_count):
+        episode_seed = campaign_config.seed_bundle.evaluation_trace_generation_seed + episode_id
+        env = _build_environment(campaign_config, episode_length=episode_length, seed=episode_seed)
+        env.reset(seed=episode_seed)
+        episode_reward = 0.0
+        episode_action_distribution = {"local": 0, "horizontal": 0, "vertical": 0}
+        episode_terminal_count = 0
+        episode_reward_bearing_count = 0
+        step_id = 0
+        while True:
+            current_task = env.current_task
+            if current_task is None:
+                action = None
+                legal = True
+            else:
+                observation = env.observe_flat(current_task)
+                legal_action_mask = dict(observation.get("legal_action_mask", {}))
+                action, legal = _select_feature_060_baseline_action(
+                    policy=policy,
+                    legal_action_mask=legal_action_mask,
+                    seed=seed,
+                    episode_id=episode_id,
+                    step_id=step_id,
+                )
+                if action is not None:
+                    action_distribution[action] += 1
+                    episode_action_distribution[action] += 1
+                    selected_actions.append(
+                        {
+                            "episode_id": episode_id,
+                            "step_id": step_id,
+                            "selected_action": action,
+                            "legal": bool(legal_action_mask.get(action, False)),
+                        }
+                    )
+                if not legal:
+                    fallback_action_count += 1
+                if action is not None and not legal_action_mask.get(action, False):
+                    illegal_action_count += 1
+
+            _, reward, terminated, truncated, info = env.step(action)
+            finalized_tasks = info.get("finalized_tasks", [])
+            if finalized_tasks:
+                terminal_transition_count += 1
+                reward_bearing_transition_count += 1
+                episode_terminal_count += 1
+                episode_reward_bearing_count += 1
+                completed_task_count += sum(1 for task in finalized_tasks if task.get("terminal_outcome") == "completed")
+                dropped_task_count += sum(1 for task in finalized_tasks if task.get("terminal_outcome") == "dropped")
+                episode_reward += 0.0 if isinstance(reward, float) and math.isnan(reward) else float(reward)
+            if terminated or truncated:
+                break
+            step_id += 1
+
+        rewards.append(episode_reward)
+        trace_id = trace_identities[episode_id % len(trace_identities)] if trace_identities else f"feature-060-baseline-eval-{episode_id:03d}"
+        trace_ids.append(trace_id)
+        per_episode_summary.append(
+            {
+                "episode_id": episode_id,
+                "trace_id": trace_id,
+                "metric_shell_only": False,
+                "performance_claim": False,
+                "reward": episode_reward,
+                "terminal_transition_count": episode_terminal_count,
+                "reward_bearing_transition_count": episode_reward_bearing_count,
+                "action_distribution": episode_action_distribution,
+            }
+        )
+
+    return {
+        "episode_count": episode_count,
+        "metric_shell_only": False,
+        "performance_claim": False,
+        "trace_ids": trace_ids,
+        "selected_actions": selected_actions,
+        "action_distribution": action_distribution,
+        "local_action_count": action_distribution["local"],
+        "horizontal_action_count": action_distribution["horizontal"],
+        "vertical_action_count": action_distribution["vertical"],
+        "reward_summary": {
+            "reward_count": len(rewards),
+            "total_reward": float(sum(rewards)),
+            "mean_reward": float(sum(rewards) / max(len(rewards), 1)),
+        },
+        "completed_task_count": completed_task_count,
+        "dropped_task_count": dropped_task_count,
+        "terminal_transition_count": terminal_transition_count,
+        "reward_bearing_transition_count": reward_bearing_transition_count,
+        "illegal_action_count": illegal_action_count,
+        "fallback_action_count": fallback_action_count,
+        "delay": {"value": None, "status": "not_claimed_in_feature_060"},
+        "drop": {"count": dropped_task_count},
+        "timeout": {"value": None, "status": "not_claimed_in_feature_060"},
+        "reward": {
+            "mean_reward": float(sum(rewards) / max(len(rewards), 1)),
+            "reward_bearing_transition_count": reward_bearing_transition_count,
+        },
+        "per_episode_summary": per_episode_summary,
+        "no_baseline_superiority_claim": True,
+    }
+
+
+def _run_full_baseline_evaluation(
+    *,
+    campaign_config: CampaignConfig,
+    feature_058_payload: dict[str, Any],
+    actual_episode_count: int,
+    episode_length: int,
+) -> dict[str, Any]:
+    evaluation_trace_bank_summary = dict(feature_058_payload.get("evaluation_trace_bank_summary", {}))
+    baseline_policy_registry_summary = build_baseline_policy_registry(evaluation_trace_bank_summary)
+    per_policy_metrics = {
+        str(policy["name"]): _run_single_baseline_policy(
+            campaign_config=campaign_config,
+            policy=policy,
+            evaluation_trace_bank_summary=evaluation_trace_bank_summary,
+            episode_count=actual_episode_count,
+            episode_length=episode_length,
+        )
+        for policy in baseline_policy_registry_summary["policies"]
+    }
+    return {
+        "baseline_policy_names": list(baseline_policy_registry_summary["registered_policy_names"]),
+        "evaluated_policy_count": len(per_policy_metrics),
+        "actual_baseline_evaluation_episode_count": actual_episode_count,
+        "per_policy_metrics": per_policy_metrics,
+        "baseline_metric_shells": per_policy_metrics,
+        "baseline_registry_summary": baseline_policy_registry_summary,
+        "evaluation_trace_bank_id": evaluation_trace_bank_summary.get("evaluation_trace_bank_id"),
+        "evaluation_trace_count": int(evaluation_trace_bank_summary.get("evaluation_trace_count", 0)),
+        "no_baseline_superiority_claim": True,
+        "baseline_metrics_real_execution": True,
+    }
 
 
 def _run_controlled_campaign(config: FullPaperDefaultTrainingCampaignExecutionConfig, feature_059_payload: dict[str, Any]) -> dict[str, Any]:
@@ -303,10 +506,11 @@ def _run_controlled_campaign(config: FullPaperDefaultTrainingCampaignExecutionCo
     replay_transitions = trainer.replay_buffer.as_list()
     baseline_harness_report = build_evaluation_trace_bank_baseline_harness_report()
     baseline_harness_summary = baseline_harness_report.to_dict()
-    baseline_evaluation_summary = dict(baseline_harness_summary["baseline_evaluation_harness_summary"])
-    baseline_evaluation_summary["actual_baseline_evaluation_episode_count"] = config.actual_baseline_evaluation_episode_count
-    baseline_evaluation_summary["baseline_policy_names"] = list(
-        baseline_harness_summary["baseline_policy_registry_summary"]["registered_policy_names"]
+    baseline_evaluation_summary = _run_full_baseline_evaluation(
+        campaign_config=campaign_config,
+        feature_058_payload=baseline_harness_summary,
+        actual_episode_count=config.actual_baseline_evaluation_episode_count,
+        episode_length=config.actual_episode_length,
     )
     evaluation_trace_bank_summary = dict(baseline_harness_summary["evaluation_trace_bank_summary"])
     evaluation_trace_bank_summary["evaluation_trace_count"] = config.actual_evaluation_episode_count
@@ -344,11 +548,13 @@ def _run_controlled_campaign(config: FullPaperDefaultTrainingCampaignExecutionCo
 
 def _build_training_metrics(execution: dict[str, Any]) -> dict[str, Any]:
     action_distribution = dict(execution["action_distribution"])
+    replay_size = int(execution["replay_size"])
+    action_count_total = sum(int(action_distribution.get(action, 0)) for action in ("local", "horizontal", "vertical", "invalid_or_noop_action_count"))
     loss_values = list(execution["loss_values"])
     loss_finite = bool(execution.get("loss_is_finite")) and bool(loss_values) and all(math.isfinite(float(loss)) for loss in loss_values)
     return {
         "optimizer_step_count": int(execution["optimizer_step_count"]),
-        "replay_size": int(execution["replay_size"]),
+        "replay_size": replay_size,
         "loss_count": len(loss_values),
         "loss_finite": loss_finite,
         "loss_summary": {
@@ -366,6 +572,9 @@ def _build_training_metrics(execution: dict[str, Any]) -> dict[str, Any]:
         "local_action_count": action_distribution["local"],
         "horizontal_action_count": action_distribution["horizontal"],
         "vertical_action_count": action_distribution["vertical"],
+        "invalid_or_noop_action_count": action_distribution.get("invalid_or_noop_action_count", 0),
+        "action_count_total": action_count_total,
+        "action_accounting_reconciled": action_count_total == replay_size,
         "real_trainer_binding": dict(execution["binding_evidence"]),
     }
 
@@ -405,29 +614,23 @@ def _build_evaluation_metrics(execution: dict[str, Any], feature_058_payload: di
 
 
 def _build_baseline_evaluation(feature_058_payload: dict[str, Any], actual_episode_count: int) -> dict[str, Any]:
-    registry = feature_058_payload.get("baseline_policy_registry_summary", {})
-    harness = feature_058_payload.get("baseline_evaluation_harness_summary", {})
-    names = list(registry.get("registered_policy_names", []))
-    shells = dict(harness.get("per_policy_metric_shells", {}))
-    return {
-        "baseline_policy_names": names,
-        "evaluated_policy_count": len(shells),
-        "actual_baseline_evaluation_episode_count": actual_episode_count,
-        "baseline_metric_shells": shells,
-        "no_baseline_superiority_claim": True,
-    }
+    raise RuntimeError("Feature 060 baseline evaluation must come from _run_full_baseline_evaluation")
 
 
 def _build_baseline_evaluation_metrics(baseline_evaluation_summary: dict[str, Any], feature_058_payload: dict[str, Any]) -> dict[str, Any]:
     registry = feature_058_payload.get("baseline_policy_registry_summary", {})
-    harness = feature_058_payload.get("baseline_evaluation_harness_summary", {})
+    per_policy_metrics = json.loads(json.dumps(dict(baseline_evaluation_summary.get("per_policy_metrics", {}))))
+    for metrics in per_policy_metrics.values():
+        metrics.pop("metric_shell_only", None)
+        for episode in metrics.get("per_episode_summary", []):
+            episode.pop("metric_shell_only", None)
     return {
         "baseline_policy_registry_summary": dict(registry),
-        "baseline_evaluation_harness_summary": dict(harness),
         "baseline_policy_names": list(baseline_evaluation_summary.get("baseline_policy_names", [])),
         "evaluated_policy_count": int(baseline_evaluation_summary.get("evaluated_policy_count", 0)),
         "actual_baseline_evaluation_episode_count": int(baseline_evaluation_summary.get("actual_baseline_evaluation_episode_count", 0)),
-        "baseline_metric_shells": dict(baseline_evaluation_summary.get("baseline_metric_shells", {})),
+        "per_policy_metrics": per_policy_metrics,
+        "baseline_metrics_real_execution": bool(baseline_evaluation_summary.get("baseline_metrics_real_execution")),
         "no_baseline_superiority_claim": True,
     }
 
@@ -560,6 +763,9 @@ def _empty_report(
             "local_action_count": 0,
             "horizontal_action_count": 0,
             "vertical_action_count": 0,
+            "invalid_or_noop_action_count": 0,
+            "action_count_total": 0,
+            "action_accounting_reconciled": False,
         },
         evaluation_metrics_summary={
             "evaluation_trace_bank_id": "",
@@ -576,7 +782,10 @@ def _empty_report(
         baseline_evaluation_summary={
             "baseline_policy_names": [],
             "evaluated_policy_count": 0,
+            "actual_baseline_evaluation_episode_count": 0,
+            "per_policy_metrics": {},
             "baseline_metric_shells": {},
+            "baseline_metrics_real_execution": False,
             "no_baseline_superiority_claim": True,
         },
         checkpoint_metadata_summary={
@@ -678,7 +887,7 @@ def build_full_paper_default_training_campaign_execution_report(
     execution = _run_controlled_campaign(cfg, feature_059_payload)
     training_metrics = _build_training_metrics(execution)
     evaluation_metrics = _build_evaluation_metrics(execution, feature_058_payload)
-    baseline_evaluation = _build_baseline_evaluation(feature_058_payload, cfg.actual_baseline_evaluation_episode_count)
+    baseline_evaluation = dict(execution["baseline_evaluation_summary"])
     baseline_evaluation_metrics = _build_baseline_evaluation_metrics(baseline_evaluation, feature_058_payload)
     checkpoint_payload = _checkpoint_payload(execution, feature_058_payload)
 
@@ -730,11 +939,29 @@ def build_full_paper_default_training_campaign_execution_report(
     blockers: list[str] = []
     if not campaign_summary["execution_completed"]:
         blockers.append("campaign_execution_blocked")
-    if not (training_metrics["optimizer_step_count"] > 0 and training_metrics["replay_size"] > 0 and training_metrics["loss_count"] > 0 and training_metrics["loss_finite"]):
+    if not (
+        training_metrics["optimizer_step_count"] > 0
+        and training_metrics["replay_size"] > 0
+        and training_metrics["loss_count"] > 0
+        and training_metrics["loss_finite"]
+        and training_metrics["action_accounting_reconciled"]
+    ):
         blockers.append("training_metrics_blocked")
     if not evaluation_metrics["metric_schema_coverage"]["metric_schema_complete"] or evaluation_metrics["evaluation_episode_count"] <= 0:
         blockers.append("evaluation_metrics_blocked")
-    if baseline_evaluation["evaluated_policy_count"] <= 0 or not baseline_evaluation["baseline_metric_shells"]:
+    baseline_metrics = dict(baseline_evaluation.get("per_policy_metrics", {}))
+    baseline_real = bool(baseline_evaluation.get("baseline_metrics_real_execution"))
+    baseline_episode_count = int(baseline_evaluation.get("actual_baseline_evaluation_episode_count", 0))
+    baseline_metrics_ready = (
+        baseline_evaluation["evaluated_policy_count"] > 0
+        and bool(baseline_metrics)
+        and baseline_real
+        and baseline_episode_count == cfg.actual_baseline_evaluation_episode_count
+        and all(int(metrics.get("episode_count", 0)) == baseline_episode_count for metrics in baseline_metrics.values())
+        and not any(bool(metrics.get("metric_shell_only")) for metrics in baseline_metrics.values())
+        and baseline_evaluation.get("no_baseline_superiority_claim") is True
+    )
+    if not baseline_metrics_ready:
         blockers.append("baseline_evaluation_blocked")
     if not checkpoint_summary["metadata_artifact_exists"]:
         blockers.append("checkpoint_metadata_blocked")

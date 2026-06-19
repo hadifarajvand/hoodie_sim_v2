@@ -1,10 +1,14 @@
 {
+  "action_accounting_reconciled": true,
+  "action_count_total": 110000,
   "action_distribution": {
-    "horizontal": 39000,
+    "horizontal": 38000,
+    "invalid_or_noop_action_count": 0,
     "local": 33000,
     "vertical": 39000
   },
-  "horizontal_action_count": 39000,
+  "horizontal_action_count": 38000,
+  "invalid_or_noop_action_count": 0,
   "local_action_count": 33000,
   "loss_count": 1,
   "loss_finite": true,

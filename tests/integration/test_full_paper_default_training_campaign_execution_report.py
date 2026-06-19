@@ -6,6 +6,7 @@ import unittest
 from unittest import mock
 
 from src.analysis.full_paper_default_training_campaign_execution import generate_full_paper_default_training_campaign_execution_artifacts
+from tests.unit.test_full_paper_default_training_campaign_execution_schema import _baseline_metrics
 
 
 def _mock_execution() -> dict[str, object]:
@@ -20,7 +21,7 @@ def _mock_execution() -> dict[str, object]:
         "target_sync_count": 1,
         "loss_values": [24.95241355895996],
         "loss_is_finite": True,
-        "action_distribution": {"local": 33000, "horizontal": 39000, "vertical": 39000},
+        "action_distribution": {"local": 33000, "horizontal": 38000, "vertical": 39000, "invalid_or_noop_action_count": 0},
         "reward_summary": {"reward_count": 1000, "reward_available_count": 1000, "total_reward": -2000.0, "mean_reward": -2.0, "pending_at_horizon_count": 0},
         "evaluation": {
             "evaluation_episode_count": 100,
@@ -39,7 +40,9 @@ def _mock_execution() -> dict[str, object]:
             "baseline_policy_names": ["local-only", "random-legal", "fixed-horizontal"],
             "evaluated_policy_count": 3,
             "actual_baseline_evaluation_episode_count": 100,
-            "baseline_metric_shells": {"local-only": {"reward": {"value": None}}},
+            "per_policy_metrics": _baseline_metrics(),
+            "baseline_metric_shells": _baseline_metrics(),
+            "baseline_metrics_real_execution": True,
             "no_baseline_superiority_claim": True,
         },
         "evaluation_trace_bank_summary": {"evaluation_trace_bank_id": "feature-058-evaluation-trace-bank"},
@@ -81,6 +84,11 @@ class FullPaperDefaultTrainingCampaignExecutionReportIntegrationTests(unittest.T
         self.assertEqual(payload["feature_id"], report.feature_id)
         self.assertEqual(payload["final_verdict"], "full_paper_default_training_campaign_execution_passed")
         self.assertEqual(payload["remaining_blockers"], [])
+        baseline_payload = json.loads(Path("artifacts/analysis/full-paper-default-training-campaign-execution/baseline-evaluation-metrics.json").read_text(encoding="utf-8"))
+        self.assertTrue(baseline_payload["baseline_metrics_real_execution"])
+        for metrics in baseline_payload["per_policy_metrics"].values():
+            self.assertEqual(metrics["episode_count"], 100)
+        self.assertNotIn("metric_shell_only", json.dumps(baseline_payload))
 
     def test_markdown_report_mentions_required_sections(self) -> None:
         with mock.patch("src.analysis.full_paper_default_training_campaign_execution.runner._status_paths", return_value=[]), \
