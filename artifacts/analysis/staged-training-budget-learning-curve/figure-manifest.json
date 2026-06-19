@@ -1,0 +1,12 @@
+{
+  "figure_count": 5,
+  "figure_directory": "artifacts/analysis/staged-training-budget-learning-curve/figures",
+  "figure_files": [
+    "figure_01_eval_reward_by_training_budget.png",
+    "figure_02_replay_size_and_optimizer_steps_by_budget.png",
+    "figure_03_action_distribution_by_training_budget.png",
+    "figure_04_loss_by_training_budget.png",
+    "figure_05_comparison_readiness_by_budget.png"
+  ],
+  "figures_generated": true
+}

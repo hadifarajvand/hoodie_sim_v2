@@ -1,0 +1,43 @@
+{
+  "baseline_reference_artifact_path": "artifacts/analysis/full-paper-default-training-campaign-execution/baseline-evaluation-metrics.json",
+  "baseline_reference_reused": true,
+  "baseline_reference_summary": {
+    "actual_baseline_evaluation_episode_count": 100,
+    "artifact_path": "artifacts/analysis/full-paper-default-training-campaign-execution/baseline-evaluation-metrics.json",
+    "available": true,
+    "baseline_metrics_real_execution": true,
+    "baseline_policy_episode_counts": {
+      "fixed-horizontal": 100,
+      "local-only": 100,
+      "random-legal": 100
+    },
+    "baseline_policy_names": [
+      "local-only",
+      "random-legal",
+      "fixed-horizontal"
+    ],
+    "evaluated_policy_count": 3,
+    "no_baseline_superiority_claim": true
+  },
+  "checkpoint_budgets": [
+    100,
+    150,
+    200,
+    500
+  ],
+  "comparison_ready": true,
+  "descriptive_only": true,
+  "episode_length": 110,
+  "evaluation_episode_count_per_checkpoint": 100,
+  "no_baseline_superiority_claim": true,
+  "no_paper_reproduction_claim": true,
+  "no_performance_superiority_claim": true,
+  "ready_checkpoint_budgets": [
+    100,
+    150,
+    200,
+    500
+  ],
+  "training_mode": "cumulative_staged",
+  "unready_checkpoint_budgets": []
+}

@@ -1,0 +1,59 @@
+{
+  "baseline_reference_reused": true,
+  "comparison_ready": true,
+  "comparison_scope": "comparison readiness and descriptive trend analysis only",
+  "rows": [
+    {
+      "action_accounting_reconciled": true,
+      "action_count_total": 10000,
+      "claim_safety_passed": true,
+      "comparison_ready": true,
+      "cumulative_training_episode_count": 100,
+      "evaluation_mean_reward": -4181.2,
+      "last_loss": 983.4915771484375,
+      "loss_count": 10937,
+      "optimizer_step_count": 10937,
+      "replay_size": 10000,
+      "training_budget": 100
+    },
+    {
+      "action_accounting_reconciled": true,
+      "action_count_total": 10000,
+      "claim_safety_passed": true,
+      "comparison_ready": true,
+      "cumulative_training_episode_count": 150,
+      "evaluation_mean_reward": -4181.2,
+      "last_loss": 767.7593383789062,
+      "loss_count": 16437,
+      "optimizer_step_count": 16437,
+      "replay_size": 10000,
+      "training_budget": 150
+    },
+    {
+      "action_accounting_reconciled": true,
+      "action_count_total": 10000,
+      "claim_safety_passed": true,
+      "comparison_ready": true,
+      "cumulative_training_episode_count": 200,
+      "evaluation_mean_reward": -4181.2,
+      "last_loss": 780.3190307617188,
+      "loss_count": 21937,
+      "optimizer_step_count": 21937,
+      "replay_size": 10000,
+      "training_budget": 200
+    },
+    {
+      "action_accounting_reconciled": true,
+      "action_count_total": 10000,
+      "claim_safety_passed": true,
+      "comparison_ready": true,
+      "cumulative_training_episode_count": 500,
+      "evaluation_mean_reward": -4181.2,
+      "last_loss": 916.686279296875,
+      "loss_count": 54937,
+      "optimizer_step_count": 54937,
+      "replay_size": 10000,
+      "training_budget": 500
+    }
+  ]
+}
