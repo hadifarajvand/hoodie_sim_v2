@@ -10,6 +10,7 @@ from typing import Any
 
 from .config import (
     BRANCH_NAME,
+    BASE_BRANCH_NAME,
     CHECKPOINT_METADATA_JSON,
     EVALUATION_METRICS_JSON,
     FEATURE_059_COMPLETE_TAG,
@@ -30,6 +31,7 @@ APPROVED_PATH_PREFIXES = (
     "artifacts/analysis/bind-full-campaign-real-torch-trainer/",
     "artifacts/analysis/full-paper-default-training-campaign-execution/",
     "artifacts/analysis/real-torch-trainer-binding-audit/",
+    "docs/architecture/euls_phase20_full_paper_default_training_campaign_execution.md",
     "specs/060a-real-torch-trainer-binding-audit/",
     "specs/060b-bind-full-campaign-real-torch-trainer/",
     "specs/060-full-paper-default-training-campaign-execution/",
@@ -45,7 +47,6 @@ APPROVED_PATH_PREFIXES = (
 )
 ALLOWED_REPORT_BRANCHES = (
     BRANCH_NAME,
-    "060b-bind-full-campaign-real-torch-trainer",
 )
 DEPENDENCY_FILE_NAMES = {
     "Pipfile",
@@ -89,7 +90,14 @@ def _git_bool(*args: str) -> bool:
 
 def _status_paths() -> list[str]:
     output = subprocess.run(["git", "status", "--short"], check=True, capture_output=True, text=True).stdout
-    return [line[3:].strip() for line in output.splitlines() if line.strip()]
+    paths: list[str] = []
+    for line in output.splitlines():
+        if not line.strip():
+            continue
+        if line.startswith("?? "):
+            continue
+        paths.append(line[3:].strip())
+    return paths
 
 
 def _staged_paths() -> list[str]:
@@ -97,9 +105,7 @@ def _staged_paths() -> list[str]:
 
 
 def _diff_names() -> list[str]:
-    branch = _git_output("branch", "--show-current")
-    base_ref = "060-full-paper-default-training-campaign-execution" if branch == "060b-bind-full-campaign-real-torch-trainer" else "main"
-    return [line for line in _git_output("diff", "--name-only", f"{base_ref}...HEAD").splitlines() if line]
+    return [line for line in _git_output("diff", "--name-only", f"{BASE_BRANCH_NAME}...HEAD").splitlines() if line]
 
 
 def _approved_paths(paths: list[str]) -> bool:
@@ -156,15 +162,11 @@ def _build_prerequisite_tags_verified(
     return [
         {"name": "branch", "verified": branch in ALLOWED_REPORT_BRANCHES, "details": f"git branch --show-current in {ALLOWED_REPORT_BRANCHES}"},
         {"name": "not_main", "verified": branch != "main", "details": "current branch != main"},
-        {"name": "main_contains_feature_059_complete", "verified": _git_bool("merge-base", "--is-ancestor", FEATURE_059_COMPLETE_TAG, "main"), "details": f"{FEATURE_059_COMPLETE_TAG} is an ancestor of main"},
+        {"name": "base_contains_feature_059_complete", "verified": _git_bool("merge-base", "--is-ancestor", FEATURE_059_COMPLETE_TAG, BASE_BRANCH_NAME), "details": f"{FEATURE_059_COMPLETE_TAG} is an ancestor of {BASE_BRANCH_NAME}"},
         {
-            "name": "main_is_branch_base",
-            "verified": (
-                _git_output("merge-base", "main", "HEAD") == _git_output("rev-parse", "main")
-                if branch == BRANCH_NAME
-                else _git_bool("merge-base", "--is-ancestor", "060-full-paper-default-training-campaign-execution", "HEAD")
-            ),
-            "details": "original Feature 060 branch is based on local main; Feature 060B repair branch descends from Feature 060",
+            "name": "base_is_branch_base",
+            "verified": _git_output("merge-base", BASE_BRANCH_NAME, "HEAD") == _git_output("rev-parse", BASE_BRANCH_NAME),
+            "details": f"{BASE_BRANCH_NAME} is the direct merge base for Feature 060",
         },
         {"name": "feature_059_report_valid", "verified": feature_059_ready, "details": f"{config.feature_059_report_path} contains the approved Feature 059 gate verdict"},
         {"name": "feature_058_report_present", "verified": config.feature_058_report_path.exists(), "details": str(config.feature_058_report_path)},
@@ -611,10 +613,12 @@ def build_full_paper_default_training_campaign_execution_report(
         final_verdict=final_verdict,
     )
     write_full_paper_default_training_campaign_execution_report(report, cfg.output_dir)
+    checkpoint_summary = _build_checkpoint_summary(checkpoint_payload, CHECKPOINT_METADATA_JSON)
     artifact_manifest_summary = _build_artifact_manifest_summary(_required_artifact_paths())
-    if not artifact_manifest_summary["all_required_artifacts_exist"]:
+    if not artifact_manifest_summary["all_required_artifacts_exist"] or not checkpoint_summary["metadata_artifact_exists"]:
         payload = report.to_dict()
         payload["artifact_manifest_summary"] = artifact_manifest_summary
+        payload["checkpoint_metadata_summary"] = checkpoint_summary
         report = FullPaperDefaultTrainingCampaignExecutionReport(**payload)
         write_full_paper_default_training_campaign_execution_report(report, cfg.output_dir)
     return report
