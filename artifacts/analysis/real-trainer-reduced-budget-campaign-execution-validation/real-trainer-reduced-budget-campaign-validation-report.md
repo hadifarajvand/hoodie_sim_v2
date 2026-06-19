@@ -1,0 +1,197 @@
+# Real Trainer Reduced-Budget Campaign Execution Validation Report
+
+- feature_id: `060a-real-trainer-reduced-budget-campaign-execution-validation`
+- final_verdict: `real_trainer_reduced_budget_campaign_validation_passed`
+- recommended_next_feature: `Feature 060 — Full Paper-Default Training Campaign Execution`
+
+## Reduced Budget Execution Summary
+{
+  "actual_budget_is_reduced_for_validation": true,
+  "actual_reduced_budget": {
+    "actual_episode_length": 110,
+    "baseline_evaluation_episode_count": 1,
+    "evaluation_episode_count": 3,
+    "training_episode_count": 1
+  },
+  "baseline_contract_checked": true,
+  "checkpoint_metadata_written": true,
+  "configured_full_campaign_budget": {
+    "baseline_evaluation_episode_count": 100,
+    "evaluation_episode_count": 100,
+    "training_episode_count": 1000
+  },
+  "evaluation_metrics_generated": true,
+  "full_campaign_executed": false,
+  "loss_finite": true,
+  "optimizer_steps_executed": true,
+  "real_trainer_class": "src.analysis.full_training_reproduction_campaign.trainer.DDQNTrainer",
+  "real_trainer_used": true,
+  "replay_populated": true,
+  "run_manifest_written": true,
+  "trainer_method_called": "DDQNTrainer.run_pilot"
+}
+
+## Training Metrics Summary
+{
+  "action_distribution": {
+    "horizontal": 0,
+    "local": 0,
+    "vertical": 0
+  },
+  "loss_count": 1,
+  "loss_finite": true,
+  "loss_summary": {
+    "all_losses_finite": true,
+    "max_loss": 2701.25732421875,
+    "mean_loss": 2701.25732421875,
+    "min_loss": 2701.25732421875
+  },
+  "optimizer_step_count": 47,
+  "real_trainer_binding": {
+    "real_trainer_class": "src.analysis.full_training_reproduction_campaign.trainer.DDQNTrainer",
+    "real_trainer_import_used": true,
+    "real_trainer_instantiated": true,
+    "real_trainer_update_or_train_called": true,
+    "torch_import_used": true,
+    "trainer_method_called": "DDQNTrainer.run_pilot"
+  },
+  "replay_size": 110,
+  "reward_summary": {
+    "delayed_reward_contract_preserved": true,
+    "pending_at_horizon_preserved": true,
+    "reward_available_count": 110,
+    "reward_count": 110
+  },
+  "target_update_summary": {
+    "target_sync_count": 0,
+    "target_update_frequency": 2000,
+    "target_update_unit": "optimizer_step"
+  }
+}
+
+## Evaluation Metrics Summary
+{
+  "completed_task_count": 0,
+  "dropped_task_count": 632,
+  "evaluation_episode_count": 3,
+  "evaluation_on_training_traces": false,
+  "evaluation_trace_bank_id": "full-training-eval-bank",
+  "feature_058_baseline_contract": {
+    "baseline_harness_ready": false,
+    "baseline_registry_ready": true,
+    "metric_schema_complete": true
+  },
+  "mean_reward": -4173.333333333333,
+  "reward_bearing_transition_count": 286,
+  "terminal_transition_count": 286,
+  "trace_bank_disjoint": true,
+  "trace_bank_ids": {
+    "evaluation": "full-training-eval-bank",
+    "training": "full-training-train-bank"
+  }
+}
+
+## Baseline Contract Summary
+{
+  "baseline_harness_ready": true,
+  "baseline_policy_count": 3,
+  "baseline_policy_names": [
+    "local-only",
+    "random-legal",
+    "fixed-horizontal"
+  ],
+  "baseline_registry_ready": true,
+  "evaluation_trace_count": 12,
+  "feature_058_harness_verified": true,
+  "metric_schema_complete": true
+}
+
+## Checkpoint Metadata Summary
+{
+  "checkpoint_metadata": {
+    "config_hash": "4f812d8b985f34ca616aacf6b66016306ab83e0a50e90bf46ca39249bf4ef83a",
+    "eval_trace_bank_id": "full-training-eval-bank",
+    "feature_id": "041-full-training-reproduction-campaign",
+    "full_campaign_enabled": false,
+    "optimizer_step_count": 47,
+    "replay_size": 110,
+    "seed_bundle": {
+      "action_exploration_seed": 53,
+      "evaluation_trace_generation_seed": 43,
+      "model_initialization_seed": 19,
+      "python_seed": 59,
+      "readiness_probe_seed": 31,
+      "replay_sampling_seed": 47,
+      "torch_seed": 61,
+      "training_trace_generation_seed": 41
+    },
+    "stage": "pilot_training",
+    "target_update_unit": "optimizer_step",
+    "train_trace_bank_id": "full-training-train-bank"
+  },
+  "checkpoint_schema_valid": true,
+  "metadata_artifact_exists": true,
+  "replay_metadata": {
+    "replay_size": 110,
+    "source": "DDQNTrainer.replay_buffer"
+  },
+  "seed_bundle": {
+    "action_exploration_seed": 53,
+    "evaluation_trace_generation_seed": 43,
+    "model_initialization_seed": 19,
+    "python_seed": 59,
+    "readiness_probe_seed": 31,
+    "replay_sampling_seed": 47,
+    "torch_seed": 61,
+    "training_trace_generation_seed": 41
+  },
+  "target_update_metadata": {
+    "config_hash": "4f812d8b985f34ca616aacf6b66016306ab83e0a50e90bf46ca39249bf4ef83a",
+    "eval_trace_bank_id": "full-training-eval-bank",
+    "optimizer_step_count": 47,
+    "target_update_unit": "optimizer_step",
+    "train_trace_bank_id": "full-training-train-bank"
+  }
+}
+
+## Artifact Manifest Summary
+{
+  "all_required_artifacts_exist": true,
+  "checkpoint_metadata_json": "artifacts/analysis/real-trainer-reduced-budget-campaign-execution-validation/checkpoint-metadata.json",
+  "evaluation_metrics_json": "artifacts/analysis/real-trainer-reduced-budget-campaign-execution-validation/evaluation-metrics.json",
+  "real_campaign_json_report": "artifacts/analysis/real-trainer-reduced-budget-campaign-execution-validation/real-trainer-reduced-budget-campaign-validation-report.json",
+  "real_campaign_markdown_report": "artifacts/analysis/real-trainer-reduced-budget-campaign-execution-validation/real-trainer-reduced-budget-campaign-validation-report.md",
+  "run_manifest_json": "artifacts/analysis/real-trainer-reduced-budget-campaign-execution-validation/run-manifest.json",
+  "training_metrics_json": "artifacts/analysis/real-trainer-reduced-budget-campaign-execution-validation/training-metrics.json"
+}
+
+## Resource Control Summary
+{
+  "actual_budget_is_reduced_for_validation": true,
+  "actual_reduced_budget": {
+    "baseline_evaluation_episode_count": 1,
+    "evaluation_episode_count": 3,
+    "training_episode_count": 1
+  },
+  "configured_full_campaign_budget": {
+    "baseline_evaluation_episode_count": 100,
+    "evaluation_episode_count": 100,
+    "training_episode_count": 1000
+  },
+  "output_directory": "artifacts/analysis/real-trainer-reduced-budget-campaign-execution-validation",
+  "resource_control_complete": true
+}
+
+## Safety Summary
+{
+  "no_baseline_superiority_claim": true,
+  "no_dependency_drift": true,
+  "no_environment_contract_drift": true,
+  "no_full_campaign_execution": true,
+  "no_paper_reproduction_claim": true,
+  "no_performance_superiority_claim": true,
+  "no_policy_drift": true,
+  "no_prior_artifact_rewrite": true,
+  "no_reward_timing_change": true,
+  "no_uncontrolled_campaign_loop": true
+}

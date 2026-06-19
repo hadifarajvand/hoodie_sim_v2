@@ -1,0 +1,46 @@
+{
+  "checkpoint_metadata": {
+    "config_hash": "4f812d8b985f34ca616aacf6b66016306ab83e0a50e90bf46ca39249bf4ef83a",
+    "eval_trace_bank_id": "full-training-eval-bank",
+    "feature_id": "041-full-training-reproduction-campaign",
+    "full_campaign_enabled": false,
+    "optimizer_step_count": 47,
+    "replay_size": 110,
+    "seed_bundle": {
+      "action_exploration_seed": 53,
+      "evaluation_trace_generation_seed": 43,
+      "model_initialization_seed": 19,
+      "python_seed": 59,
+      "readiness_probe_seed": 31,
+      "replay_sampling_seed": 47,
+      "torch_seed": 61,
+      "training_trace_generation_seed": 41
+    },
+    "stage": "pilot_training",
+    "target_update_unit": "optimizer_step",
+    "train_trace_bank_id": "full-training-train-bank"
+  },
+  "checkpoint_schema_valid": true,
+  "metadata_artifact_exists": true,
+  "replay_metadata": {
+    "replay_size": 110,
+    "source": "DDQNTrainer.replay_buffer"
+  },
+  "seed_bundle": {
+    "action_exploration_seed": 53,
+    "evaluation_trace_generation_seed": 43,
+    "model_initialization_seed": 19,
+    "python_seed": 59,
+    "readiness_probe_seed": 31,
+    "replay_sampling_seed": 47,
+    "torch_seed": 61,
+    "training_trace_generation_seed": 41
+  },
+  "target_update_metadata": {
+    "config_hash": "4f812d8b985f34ca616aacf6b66016306ab83e0a50e90bf46ca39249bf4ef83a",
+    "eval_trace_bank_id": "full-training-eval-bank",
+    "optimizer_step_count": 47,
+    "target_update_unit": "optimizer_step",
+    "train_trace_bank_id": "full-training-train-bank"
+  }
+}

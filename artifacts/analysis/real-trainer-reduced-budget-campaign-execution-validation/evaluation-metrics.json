@@ -1,0 +1,20 @@
+{
+  "completed_task_count": 0,
+  "dropped_task_count": 632,
+  "evaluation_episode_count": 3,
+  "evaluation_on_training_traces": false,
+  "evaluation_trace_bank_id": "full-training-eval-bank",
+  "feature_058_baseline_contract": {
+    "baseline_harness_ready": false,
+    "baseline_registry_ready": true,
+    "metric_schema_complete": true
+  },
+  "mean_reward": -4173.333333333333,
+  "reward_bearing_transition_count": 286,
+  "terminal_transition_count": 286,
+  "trace_bank_disjoint": true,
+  "trace_bank_ids": {
+    "evaluation": "full-training-eval-bank",
+    "training": "full-training-train-bank"
+  }
+}

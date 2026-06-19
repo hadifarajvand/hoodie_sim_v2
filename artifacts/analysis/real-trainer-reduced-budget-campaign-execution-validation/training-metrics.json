@@ -1,0 +1,36 @@
+{
+  "action_distribution": {
+    "horizontal": 0,
+    "local": 0,
+    "vertical": 0
+  },
+  "loss_count": 1,
+  "loss_finite": true,
+  "loss_summary": {
+    "all_losses_finite": true,
+    "max_loss": 2701.25732421875,
+    "mean_loss": 2701.25732421875,
+    "min_loss": 2701.25732421875
+  },
+  "optimizer_step_count": 47,
+  "real_trainer_binding": {
+    "real_trainer_class": "src.analysis.full_training_reproduction_campaign.trainer.DDQNTrainer",
+    "real_trainer_import_used": true,
+    "real_trainer_instantiated": true,
+    "real_trainer_update_or_train_called": true,
+    "torch_import_used": true,
+    "trainer_method_called": "DDQNTrainer.run_pilot"
+  },
+  "replay_size": 110,
+  "reward_summary": {
+    "delayed_reward_contract_preserved": true,
+    "pending_at_horizon_preserved": true,
+    "reward_available_count": 110,
+    "reward_count": 110
+  },
+  "target_update_summary": {
+    "target_sync_count": 0,
+    "target_update_frequency": 2000,
+    "target_update_unit": "optimizer_step"
+  }
+}
