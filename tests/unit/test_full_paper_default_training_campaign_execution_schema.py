@@ -11,19 +11,34 @@ def _base_report_kwargs() -> dict[str, object]:
         "prerequisite_tags_verified": [
             {"name": "branch", "verified": True, "details": "branch"},
             {"name": "feature_059_report_valid", "verified": True, "details": "059"},
+            {"name": "feature_060a_report_valid", "verified": True, "details": "060a"},
+            {"name": "feature_058_report_present", "verified": True, "details": "058"},
+            {"name": "feature_057_report_present", "verified": True, "details": "057"},
         ],
         "feature_059_gate_verified": True,
+        "feature_060a_validation_verified": True,
+        "feature_058_harness_verified": True,
         "campaign_execution_summary": {
-            "configured_budget": {"training_episode_count": 1000, "evaluation_episode_count": 100},
-            "actual_training_episode_count": 1,
-            "actual_evaluation_episode_count": 1,
-            "actual_baseline_evaluation_episode_count": 1,
+            "configured_budget": {
+                "training_episode_count": 1000,
+                "evaluation_episode_count": 100,
+                "baseline_evaluation_episode_count": 100,
+                "episode_length": 110,
+            },
+            "actual_training_episode_count": 1000,
+            "actual_evaluation_episode_count": 100,
+            "actual_baseline_evaluation_episode_count": 100,
             "training_trace_bank_id": "full-training-train-bank",
             "evaluation_trace_bank_id": "feature-058-evaluation-trace-bank",
             "baseline_harness_id": "feature-058-baseline-evaluation-harness",
             "seed_bundle": {"training_trace_generation_seed": 41},
             "execution_completed": True,
             "controlled_output_directory": "artifacts/analysis/full-paper-default-training-campaign-execution",
+            "actual_budget_is_full_campaign": True,
+            "real_trainer_used": True,
+            "real_trainer_class": "src.analysis.full_training_reproduction_campaign.trainer.DDQNTrainer",
+            "trainer_method_called": "DDQNTrainer.run_full_candidate",
+            "full_campaign_executed": True,
         },
         "training_metrics_summary": {
             "optimizer_step_count": 47,
@@ -39,19 +54,20 @@ def _base_report_kwargs() -> dict[str, object]:
         },
         "evaluation_metrics_summary": {
             "evaluation_trace_bank_id": "feature-058-evaluation-trace-bank",
-            "evaluation_episode_count": 1,
+            "evaluation_episode_count": 100,
             "metric_schema_coverage": {"metric_schema_complete": True},
-            "delay": {"value": None},
+            "delay": {"value": None, "status": "not_claimed_in_feature_060"},
             "drop": {"count": 1},
-            "timeout": {"value": None},
-            "reward": {"mean_reward": 0.1},
+            "timeout": {"value": None, "status": "not_claimed_in_feature_060"},
+            "reward": {"mean_reward": 0.1, "reward_bearing_transition_count": 1},
             "action_distribution": {"local": None, "horizontal": None, "vertical": None},
             "no_paper_reproduction_claim": True,
             "no_performance_superiority_claim": True,
         },
         "baseline_evaluation_summary": {
-            "baseline_policy_names": ["local-only"],
-            "evaluated_policy_count": 1,
+            "baseline_policy_names": ["local-only", "random-legal", "fixed-horizontal"],
+            "evaluated_policy_count": 3,
+            "actual_baseline_evaluation_episode_count": 100,
             "baseline_metric_shells": {"local-only": {"reward": {"value": None}}},
             "no_baseline_superiority_claim": True,
         },
@@ -68,13 +84,14 @@ def _base_report_kwargs() -> dict[str, object]:
             "full_campaign_markdown_report": "report.md",
             "training_metrics_json": "training-metrics.json",
             "evaluation_metrics_json": "evaluation-metrics.json",
+            "baseline_evaluation_metrics_json": "baseline-evaluation-metrics.json",
             "checkpoint_metadata_json": "checkpoint-metadata.json",
             "run_manifest_json": "run-manifest.json",
             "all_required_artifacts_exist": True,
         },
         "resource_control_summary": {
             "configured_budget": {"training_episode_count": 1000},
-            "actual_executed_budget": {"training_episode_count": 1},
+            "actual_executed_budget": {"training_episode_count": 1000},
             "controlled_output_directory": "artifacts/analysis/full-paper-default-training-campaign-execution",
             "timeout_runtime_budget": {"max_wall_clock_minutes": 240},
             "no_uncontrolled_campaign_loop": True,
@@ -103,6 +120,7 @@ class FullPaperDefaultTrainingCampaignExecutionSchemaTests(unittest.TestCase):
         payload = report.to_dict()
         self.assertEqual(payload["feature_id"], "060-full-paper-default-training-campaign-execution")
         self.assertEqual(payload["final_verdict"], "full_paper_default_training_campaign_execution_passed")
+        self.assertEqual(payload["recommended_next_feature"], "Feature 061 — Campaign Result Integrity and Comparison Readiness Audit")
 
     def test_report_rejects_pass_with_blockers(self) -> None:
         kwargs = _base_report_kwargs()

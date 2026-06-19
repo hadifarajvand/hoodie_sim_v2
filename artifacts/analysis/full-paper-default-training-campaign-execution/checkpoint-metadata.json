@@ -6,23 +6,18 @@
   },
   "feature_id": "060-full-paper-default-training-campaign-execution",
   "full_campaign_enabled": true,
-  "optimizer_step_count": 47,
+  "optimizer_step_count": 2670,
   "real_trainer_binding": {
+    "full_campaign_block_reason": null,
+    "full_campaign_executed": true,
     "real_trainer_class": "src.analysis.full_training_reproduction_campaign.trainer.DDQNTrainer",
     "real_trainer_import_used": true,
     "real_trainer_instantiated": true,
-    "real_trainer_method_called": "DDQNTrainer.run_pilot",
-    "real_trainer_update_or_train_called": true,
-    "scalar_fallback_drives_campaign_claim": false,
-    "torch_import_used": true,
-    "torch_version": "2.12.0",
-    "torchrl_available": true
+    "real_trainer_method_called": "DDQNTrainer.run_full_candidate",
+    "torch_import_used": true
   },
-  "replay_size": 110,
+  "replay_size": 110000,
   "seed_bundle": {
-    "baseline_policy_seed": 6101,
-    "evaluation_trace_generation_seed": 43,
-    "trace_identity_seed": 5843,
     "training_trace_generation_seed": 41
   },
   "stage": "full_paper_default_training_campaign_execution",

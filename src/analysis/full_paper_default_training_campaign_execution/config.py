@@ -5,7 +5,7 @@ from pathlib import Path
 from typing import Any
 
 FEATURE_ID = "060-full-paper-default-training-campaign-execution"
-BRANCH_NAME = "060-full-paper-default-training-campaign-execution"
+BRANCH_NAME = "060-full-paper-default-training-campaign-execution-v2"
 READY_NEXT_FEATURE = "Feature 061 — Campaign Result Integrity and Comparison Readiness Audit"
 
 OUTPUT_DIR = Path("artifacts/analysis/full-paper-default-training-campaign-execution")
@@ -13,17 +13,19 @@ REPORT_JSON = OUTPUT_DIR / "full-paper-default-training-campaign-report.json"
 REPORT_MD = OUTPUT_DIR / "full-paper-default-training-campaign-report.md"
 TRAINING_METRICS_JSON = OUTPUT_DIR / "training-metrics.json"
 EVALUATION_METRICS_JSON = OUTPUT_DIR / "evaluation-metrics.json"
+BASELINE_EVALUATION_METRICS_JSON = OUTPUT_DIR / "baseline-evaluation-metrics.json"
 CHECKPOINT_METADATA_JSON = OUTPUT_DIR / "checkpoint-metadata.json"
 RUN_MANIFEST_JSON = OUTPUT_DIR / "run-manifest.json"
 
 FEATURE_059_REPORT = Path("artifacts/analysis/full-paper-default-training-campaign-gate/full-paper-default-training-campaign-gate-report.json")
 FEATURE_058_REPORT = Path("artifacts/analysis/evaluation-trace-bank-baseline-harness/evaluation-trace-bank-baseline-harness-report.json")
 FEATURE_057_REPORT = Path("artifacts/analysis/paper-default-pilot-training-run/paper-default-pilot-training-run-report.json")
+FEATURE_060A_REPORT = Path("artifacts/analysis/real-trainer-reduced-budget-campaign-execution-validation/real-trainer-reduced-budget-campaign-validation-report.json")
 FEATURE_059_COMPLETE_TAG = "059-full-paper-default-training-campaign-gate-complete"
 
-ACTUAL_TRAINING_EPISODE_COUNT = 1
-ACTUAL_EVALUATION_EPISODE_COUNT = 1
-ACTUAL_BASELINE_EVALUATION_EPISODE_COUNT = 1
+ACTUAL_TRAINING_EPISODE_COUNT = 1000
+ACTUAL_EVALUATION_EPISODE_COUNT = 100
+ACTUAL_BASELINE_EVALUATION_EPISODE_COUNT = 100
 ACTUAL_EPISODE_LENGTH = 110
 SAFETY_FIELDS = (
     "no_paper_reproduction_claim",
@@ -44,6 +46,7 @@ class FullPaperDefaultTrainingCampaignExecutionConfig:
     feature_059_report_path: Path = FEATURE_059_REPORT
     feature_058_report_path: Path = FEATURE_058_REPORT
     feature_057_report_path: Path = FEATURE_057_REPORT
+    feature_060a_report_path: Path = FEATURE_060A_REPORT
     output_dir: Path = OUTPUT_DIR
     actual_training_episode_count: int = ACTUAL_TRAINING_EPISODE_COUNT
     actual_evaluation_episode_count: int = ACTUAL_EVALUATION_EPISODE_COUNT
@@ -84,6 +87,7 @@ class FullPaperDefaultTrainingCampaignExecutionConfig:
             "feature_059_report_path": str(self.feature_059_report_path),
             "feature_058_report_path": str(self.feature_058_report_path),
             "feature_057_report_path": str(self.feature_057_report_path),
+            "feature_060a_report_path": str(self.feature_060a_report_path),
             "output_dir": str(self.output_dir),
             "actual_training_episode_count": self.actual_training_episode_count,
             "actual_evaluation_episode_count": self.actual_evaluation_episode_count,

@@ -54,6 +54,8 @@ class FullPaperDefaultTrainingCampaignExecutionReport:
     feature_id: str
     prerequisite_tags_verified: list[dict[str, Any]]
     feature_059_gate_verified: bool
+    feature_060a_validation_verified: bool
+    feature_058_harness_verified: bool
     campaign_execution_summary: dict[str, Any]
     training_metrics_summary: dict[str, Any]
     evaluation_metrics_summary: dict[str, Any]
@@ -78,6 +80,8 @@ class FullPaperDefaultTrainingCampaignExecutionReport:
             for entry in self.prerequisite_tags_verified
         )
         feature_059_gate_verified = _ensure_bool(self.feature_059_gate_verified, "feature_059_gate_verified")
+        feature_060a_validation_verified = _ensure_bool(self.feature_060a_validation_verified, "feature_060a_validation_verified")
+        feature_058_harness_verified = _ensure_bool(self.feature_058_harness_verified, "feature_058_harness_verified")
 
         _required_keys(
             self.campaign_execution_summary,
@@ -93,6 +97,11 @@ class FullPaperDefaultTrainingCampaignExecutionReport:
                 "seed_bundle",
                 "execution_completed",
                 "controlled_output_directory",
+                "actual_budget_is_full_campaign",
+                "real_trainer_used",
+                "real_trainer_class",
+                "trainer_method_called",
+                "full_campaign_executed",
             ),
         )
         _required_keys(
@@ -157,6 +166,7 @@ class FullPaperDefaultTrainingCampaignExecutionReport:
                 "full_campaign_markdown_report",
                 "training_metrics_json",
                 "evaluation_metrics_json",
+                "baseline_evaluation_metrics_json",
                 "checkpoint_metadata_json",
                 "run_manifest_json",
                 "all_required_artifacts_exist",
@@ -187,6 +197,11 @@ class FullPaperDefaultTrainingCampaignExecutionReport:
             and bool(self.campaign_execution_summary.get("seed_bundle"))
             and self.campaign_execution_summary.get("execution_completed") is True
             and bool(self.campaign_execution_summary.get("controlled_output_directory"))
+            and self.campaign_execution_summary.get("actual_budget_is_full_campaign") is True
+            and self.campaign_execution_summary.get("real_trainer_used") is True
+            and bool(self.campaign_execution_summary.get("real_trainer_class"))
+            and bool(self.campaign_execution_summary.get("trainer_method_called"))
+            and self.campaign_execution_summary.get("full_campaign_executed") is True
         )
         training_metrics_ready = (
             int(self.training_metrics_summary.get("optimizer_step_count", 0)) > 0
@@ -207,6 +222,7 @@ class FullPaperDefaultTrainingCampaignExecutionReport:
         baseline_evaluation_ready = (
             len(self.baseline_evaluation_summary.get("baseline_policy_names", [])) > 0
             and int(self.baseline_evaluation_summary.get("evaluated_policy_count", 0)) == len(self.baseline_evaluation_summary.get("baseline_policy_names", []))
+            and int(self.baseline_evaluation_summary.get("actual_baseline_evaluation_episode_count", 0)) > 0
             and bool(self.baseline_evaluation_summary.get("baseline_metric_shells"))
             and self.baseline_evaluation_summary.get("no_baseline_superiority_claim") is True
         )
@@ -232,6 +248,8 @@ class FullPaperDefaultTrainingCampaignExecutionReport:
         ready = (
             prerequisite_tags_ready
             and feature_059_gate_verified
+            and feature_060a_validation_verified
+            and feature_058_harness_verified
             and campaign_execution_ready
             and training_metrics_ready
             and evaluation_metrics_ready

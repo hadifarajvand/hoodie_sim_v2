@@ -1,10 +1,11 @@
 {
   "actual_executed_budget": {
-    "baseline_evaluation_episode_count": 1,
-    "evaluation_episode_count": 3,
-    "training_episode_count": 1
+    "baseline_evaluation_episode_count": 100,
+    "evaluation_episode_count": 100,
+    "training_episode_count": 1000
   },
   "artifacts": {
+    "baseline_evaluation_metrics_json": "artifacts/analysis/full-paper-default-training-campaign-execution/baseline-evaluation-metrics.json",
     "checkpoint_metadata_json": "artifacts/analysis/full-paper-default-training-campaign-execution/checkpoint-metadata.json",
     "evaluation_metrics_json": "artifacts/analysis/full-paper-default-training-campaign-execution/evaluation-metrics.json",
     "full_campaign_json_report": "artifacts/analysis/full-paper-default-training-campaign-execution/full-paper-default-training-campaign-report.json",

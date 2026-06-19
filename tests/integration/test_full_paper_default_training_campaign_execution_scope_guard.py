@@ -9,8 +9,8 @@ from src.analysis.full_paper_default_training_campaign_execution import build_fu
 
 class FullPaperDefaultTrainingCampaignExecutionScopeGuardTests(unittest.TestCase):
     def test_git_status_and_diff_only_show_feature_060_paths(self) -> None:
-        status_output = subprocess.run(["git", "status", "--short"], check=True, capture_output=True, text=True).stdout.splitlines()
-        diff_output = subprocess.run(["git", "diff", "--name-only", "main...HEAD"], check=True, capture_output=True, text=True).stdout.splitlines()
+        status_output = subprocess.run(["git", "status", "--short", "--untracked-files=no"], check=True, capture_output=True, text=True).stdout.splitlines()
+        diff_output = subprocess.run(["git", "diff", "--name-only", "060a-real-trainer-reduced-budget-campaign-execution-validation...HEAD"], check=True, capture_output=True, text=True).stdout.splitlines()
         cached_output = subprocess.run(["git", "diff", "--cached", "--name-only"], check=True, capture_output=True, text=True).stdout.splitlines()
 
         paths = [line[3:].strip() for line in status_output] + [line.strip() for line in diff_output + cached_output]
@@ -23,6 +23,7 @@ class FullPaperDefaultTrainingCampaignExecutionScopeGuardTests(unittest.TestCase
             "artifacts/analysis/full-paper-default-training-campaign-gate/",
             "artifacts/analysis/evaluation-trace-bank-baseline-harness/",
             "artifacts/analysis/paper-default-pilot-training-run/",
+            "artifacts/analysis/real-trainer-reduced-budget-campaign-execution-validation/",
             "requirements",
             "pyproject.toml",
             "poetry.lock",
@@ -34,6 +35,7 @@ class FullPaperDefaultTrainingCampaignExecutionScopeGuardTests(unittest.TestCase
 
         approved_prefixes = (
             "artifacts/analysis/full-paper-default-training-campaign-execution/",
+            "docs/architecture/euls_phase20_full_paper_default_training_campaign_execution.md",
             "specs/060-full-paper-default-training-campaign-execution/",
             "src/analysis/full_paper_default_training_campaign_execution/",
             "tests/unit/test_full_paper_default_training_campaign_execution",

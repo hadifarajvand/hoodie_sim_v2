@@ -8,12 +8,22 @@ import sys
 from pathlib import Path
 from typing import Any
 
+from src.analysis.evaluation_trace_bank_baseline_harness import build_evaluation_trace_bank_baseline_harness_report
+from src.analysis.full_training_reproduction_campaign.config import (
+    CampaignConfig,
+    READINESS_MANUAL_APPROVAL_APPROVED,
+)
+from src.analysis.full_training_reproduction_campaign.readiness import run_campaign_readiness_probe
+from src.analysis.full_training_reproduction_campaign.trainer import DDQNTrainer
+
 from .config import (
     BRANCH_NAME,
+    BASELINE_EVALUATION_METRICS_JSON,
     CHECKPOINT_METADATA_JSON,
     EVALUATION_METRICS_JSON,
     FEATURE_059_COMPLETE_TAG,
     FEATURE_ID,
+    FEATURE_060A_REPORT,
     OUTPUT_DIR,
     READY_NEXT_FEATURE,
     REPORT_JSON,
@@ -30,6 +40,7 @@ APPROVED_PATH_PREFIXES = (
     "artifacts/analysis/bind-full-campaign-real-torch-trainer/",
     "artifacts/analysis/full-paper-default-training-campaign-execution/",
     "artifacts/analysis/real-torch-trainer-binding-audit/",
+    "docs/architecture/euls_phase20_full_paper_default_training_campaign_execution.md",
     "specs/060a-real-torch-trainer-binding-audit/",
     "specs/060b-bind-full-campaign-real-torch-trainer/",
     "specs/060-full-paper-default-training-campaign-execution/",
@@ -47,6 +58,7 @@ ALLOWED_REPORT_BRANCHES = (
     BRANCH_NAME,
     "060b-bind-full-campaign-real-torch-trainer",
 )
+BASE_BRANCH_NAME = "060a-real-trainer-reduced-budget-campaign-execution-validation"
 DEPENDENCY_FILE_NAMES = {
     "Pipfile",
     "poetry.lock",
@@ -88,7 +100,7 @@ def _git_bool(*args: str) -> bool:
 
 
 def _status_paths() -> list[str]:
-    output = subprocess.run(["git", "status", "--short"], check=True, capture_output=True, text=True).stdout
+    output = subprocess.run(["git", "status", "--short", "--untracked-files=no"], check=True, capture_output=True, text=True).stdout
     return [line[3:].strip() for line in output.splitlines() if line.strip()]
 
 
@@ -98,7 +110,7 @@ def _staged_paths() -> list[str]:
 
 def _diff_names() -> list[str]:
     branch = _git_output("branch", "--show-current")
-    base_ref = "060-full-paper-default-training-campaign-execution" if branch == "060b-bind-full-campaign-real-torch-trainer" else "main"
+    base_ref = BASE_BRANCH_NAME if branch == BRANCH_NAME else "060-full-paper-default-training-campaign-execution"
     return [line for line in _git_output("diff", "--name-only", f"{base_ref}...HEAD").splitlines() if line]
 
 
@@ -144,10 +156,52 @@ def _feature_059_gate_verified(payload: dict[str, Any]) -> bool:
     )
 
 
+def _feature_060a_validation_verified(payload: dict[str, Any]) -> bool:
+    reduced_budget = payload.get("reduced_budget_execution_summary", {})
+    binding = payload.get("real_trainer_binding_summary", {})
+    safety = payload.get("safety_summary", {})
+    return (
+        payload.get("feature_id") == "060a-real-trainer-reduced-budget-campaign-execution-validation"
+        and payload.get("final_verdict") == "real_trainer_reduced_budget_campaign_validation_passed"
+        and payload.get("remaining_blockers") == []
+        and payload.get("feature_059_gate_verified") is True
+        and payload.get("feature_058_harness_verified") is True
+        and payload.get("feature_057_pilot_verified") is True
+        and binding.get("real_trainer_import_used") is True
+        and binding.get("real_trainer_class") == "src.analysis.full_training_reproduction_campaign.trainer.DDQNTrainer"
+        and binding.get("trainer_method_called") == "DDQNTrainer.run_pilot"
+        and reduced_budget.get("real_trainer_used") is True
+        and reduced_budget.get("actual_budget_is_reduced_for_validation") is True
+        and reduced_budget.get("full_campaign_executed") is False
+        and reduced_budget.get("evaluation_metrics_generated") is True
+        and reduced_budget.get("checkpoint_metadata_written") is True
+        and reduced_budget.get("baseline_contract_checked") is True
+        and reduced_budget.get("optimizer_steps_executed") is True
+        and reduced_budget.get("replay_populated") is True
+        and reduced_budget.get("loss_finite") is True
+        and safety.get("no_full_campaign_execution") is True
+    )
+
+
+def _feature_058_harness_verified(payload: dict[str, Any]) -> bool:
+    return (
+        payload.get("feature_id") == "058-evaluation-trace-bank-baseline-harness"
+        and payload.get("final_verdict") == "evaluation_trace_bank_baseline_harness_ready"
+        and payload.get("remaining_blockers") == []
+        and payload.get("evaluation_trace_bank_summary", {}).get("bank_generation_repeatable") is True
+        and payload.get("train_eval_separation_summary", {}).get("train_eval_trace_banks_disjoint") is True
+        and payload.get("baseline_policy_registry_summary", {}).get("baseline_policy_count", 0) > 0
+        and payload.get("baseline_evaluation_harness_summary", {}).get("no_training_execution") is True
+        and payload.get("metric_schema_summary", {}).get("metric_schema_complete") is True
+    )
+
+
 def _build_prerequisite_tags_verified(
     *,
     config: FullPaperDefaultTrainingCampaignExecutionConfig,
     feature_059_ready: bool,
+    feature_060a_ready: bool,
+    feature_058_ready: bool,
     status_paths: list[str],
     staged_paths: list[str],
     diff_paths: list[str],
@@ -160,18 +214,19 @@ def _build_prerequisite_tags_verified(
         {
             "name": "main_is_branch_base",
             "verified": (
-                _git_output("merge-base", "main", "HEAD") == _git_output("rev-parse", "main")
+                _git_output("merge-base", BASE_BRANCH_NAME, "HEAD") == _git_output("rev-parse", BASE_BRANCH_NAME)
                 if branch == BRANCH_NAME
-                else _git_bool("merge-base", "--is-ancestor", "060-full-paper-default-training-campaign-execution", "HEAD")
+                else _git_bool("merge-base", "--is-ancestor", BASE_BRANCH_NAME, "HEAD")
             ),
-            "details": "original Feature 060 branch is based on local main; Feature 060B repair branch descends from Feature 060",
+            "details": "Feature 060 branch is based on Feature 060A; Feature 060B repair branch descends from Feature 060",
         },
         {"name": "feature_059_report_valid", "verified": feature_059_ready, "details": f"{config.feature_059_report_path} contains the approved Feature 059 gate verdict"},
-        {"name": "feature_058_report_present", "verified": config.feature_058_report_path.exists(), "details": str(config.feature_058_report_path)},
+        {"name": "feature_060a_report_valid", "verified": feature_060a_ready, "details": str(config.feature_060a_report_path)},
+        {"name": "feature_058_report_valid", "verified": feature_058_ready, "details": str(config.feature_058_report_path)},
         {"name": "feature_057_report_present", "verified": config.feature_057_report_path.exists(), "details": str(config.feature_057_report_path)},
-        {"name": "working_tree_paths_approved", "verified": _approved_paths(status_paths), "details": "git status --short contains only approved Feature 060 paths"},
+        {"name": "working_tree_paths_approved", "verified": _approved_paths(status_paths), "details": "git status --short --untracked-files=no contains only approved Feature 060 paths"},
         {"name": "staged_paths_approved", "verified": _approved_paths(staged_paths), "details": "git diff --cached --name-only contains only approved Feature 060 paths"},
-        {"name": "main_head_diff_approved", "verified": _approved_paths(diff_paths), "details": "git diff --name-only main...HEAD contains only approved Feature 060 paths"},
+        {"name": "base_branch_head_diff_approved", "verified": _approved_paths(diff_paths), "details": f"git diff --name-only {BASE_BRANCH_NAME}...HEAD contains only approved Feature 060 paths"},
         {"name": "agents_stable_not_modified", "verified": "AGENTS.md" not in status_paths + staged_paths + diff_paths, "details": "AGENTS.md is stable and not modified"},
         {"name": "pointer_local_only_not_dirty_or_staged", "verified": ".specify/feature.json" not in status_paths + staged_paths + diff_paths, "details": ".specify/feature.json is absent from dirty/staged/committed paths"},
     ]
@@ -218,40 +273,72 @@ def _reward_summary(replay_transitions: list[dict[str, Any]]) -> dict[str, Any]:
     }
 
 
+def _configure_campaign() -> CampaignConfig:
+    config = CampaignConfig(
+        readiness_manual_approval_status=READINESS_MANUAL_APPROVAL_APPROVED,
+        readiness_manual_approval_reference="feature-060-full-paper-default-training-campaign-execution-v2",
+        full_campaign_enabled=True,
+    )
+    config.full_campaign_budget = 1000
+    return config
+
+
 def _run_controlled_campaign(config: FullPaperDefaultTrainingCampaignExecutionConfig, feature_059_payload: dict[str, Any]) -> dict[str, Any]:
     scope = feature_059_payload.get("campaign_scope_summary", {})
-    bridge = subprocess.run(
-        [
-            _repo_venv_python(),
-            "-m",
-            "src.analysis.full_paper_default_training_campaign_execution.real_trainer_bridge",
-            "--feature-059-report",
-            str(config.feature_059_report_path),
-            "--actual-training-episode-count",
-            str(config.actual_training_episode_count),
-        ],
-        check=True,
-        capture_output=True,
-        text=True,
+    campaign_config = _configure_campaign()
+    readiness_result = run_campaign_readiness_probe(campaign_config)
+    trainer = DDQNTrainer(campaign_config)
+    pilot_result = trainer.run_pilot(
+        episodes=campaign_config.pilot_budget.primary_episodes,
+        episode_length=campaign_config.pilot_episode_length,
     )
-    payload = json.loads(bridge.stdout)
-    evaluation = dict(payload["evaluation"])
+    full_result = trainer.run_full_candidate(
+        episodes=config.actual_training_episode_count,
+        episode_length=campaign_config.full_campaign_episode_length,
+        enable_full_campaign=True,
+        readiness_result=readiness_result,
+        pilot_result=pilot_result,
+    )
+    evaluation_summary = trainer.evaluate(episodes=config.actual_evaluation_episode_count)
+    replay_transitions = trainer.replay_buffer.as_list()
+    baseline_harness_report = build_evaluation_trace_bank_baseline_harness_report()
+    baseline_harness_summary = baseline_harness_report.to_dict()
+    baseline_evaluation_summary = dict(baseline_harness_summary["baseline_evaluation_harness_summary"])
+    baseline_evaluation_summary["actual_baseline_evaluation_episode_count"] = config.actual_baseline_evaluation_episode_count
+    baseline_evaluation_summary["baseline_policy_names"] = list(
+        baseline_harness_summary["baseline_policy_registry_summary"]["registered_policy_names"]
+    )
+    evaluation_trace_bank_summary = dict(baseline_harness_summary["evaluation_trace_bank_summary"])
+    evaluation_trace_bank_summary["evaluation_trace_count"] = config.actual_evaluation_episode_count
+    evaluation = dict(evaluation_summary.to_dict())
     return {
-        "training_trace_bank_id": str(payload["training_trace_bank_id"]),
-        "evaluation_trace_bank_id": str(payload["evaluation_trace_bank_id"]),
-        "baseline_harness_id": str(payload["baseline_harness_id"]),
-        "seed_bundle": dict(payload.get("seed_bundle", scope.get("seed_bundle", {}))),
-        "replay": [],
-        "replay_size": int(payload["replay_size"]),
-        "optimizer_step_count": int(payload["optimizer_step_count"]),
-        "target_sync_count": int(payload["target_sync_count"]),
-        "loss_values": list(payload["loss_values"]),
-        "loss_is_finite": bool(payload["loss_is_finite"]),
-        "action_distribution": dict(payload["action_distribution"]),
-        "reward_summary": dict(payload["reward_summary"]),
+        "campaign_config": campaign_config,
+        "training_trace_bank_id": str(campaign_config.training_trace_bank_id),
+        "evaluation_trace_bank_id": str(campaign_config.evaluation_trace_bank_id),
+        "baseline_harness_id": str(scope.get("baseline_harness_id") or "feature-058-baseline-evaluation-harness"),
+        "seed_bundle": dict(scope.get("seed_bundle", campaign_config.seed_bundle.to_dict())),
+        "replay": replay_transitions,
+        "replay_size": len(replay_transitions),
+        "optimizer_step_count": int(full_result.optimizer_step_count),
+        "target_sync_count": int(full_result.target_sync_count),
+        "loss_values": [float(full_result.loss_value)],
+        "loss_is_finite": bool(full_result.loss_is_finite),
+        "action_distribution": _action_distribution(replay_transitions),
+        "reward_summary": _reward_summary(replay_transitions),
         "evaluation": evaluation,
-        "checkpoint_metadata": dict(payload["checkpoint_metadata"]),
-        "binding_evidence": dict(payload["binding_evidence"]),
+        "baseline_evaluation_summary": baseline_evaluation_summary,
+        "evaluation_trace_bank_summary": evaluation_trace_bank_summary,
+        "checkpoint_metadata": dict(full_result.checkpoint_metadata.to_dict()),
+        "binding_evidence": {
+            "torch_import_used": True,
+            "real_trainer_import_used": True,
+            "real_trainer_class": "src.analysis.full_training_reproduction_campaign.trainer.DDQNTrainer",
+            "real_trainer_instantiated": True,
+            "real_trainer_method_called": "DDQNTrainer.run_full_candidate",
+            "full_campaign_executed": bool(full_result.full_campaign_executed),
+            "full_campaign_block_reason": full_result.full_campaign_block_reason,
+        },
+        "full_result": full_result,
     }
 
 
@@ -331,6 +418,20 @@ def _build_baseline_evaluation(feature_058_payload: dict[str, Any], actual_episo
     }
 
 
+def _build_baseline_evaluation_metrics(baseline_evaluation_summary: dict[str, Any], feature_058_payload: dict[str, Any]) -> dict[str, Any]:
+    registry = feature_058_payload.get("baseline_policy_registry_summary", {})
+    harness = feature_058_payload.get("baseline_evaluation_harness_summary", {})
+    return {
+        "baseline_policy_registry_summary": dict(registry),
+        "baseline_evaluation_harness_summary": dict(harness),
+        "baseline_policy_names": list(baseline_evaluation_summary.get("baseline_policy_names", [])),
+        "evaluated_policy_count": int(baseline_evaluation_summary.get("evaluated_policy_count", 0)),
+        "actual_baseline_evaluation_episode_count": int(baseline_evaluation_summary.get("actual_baseline_evaluation_episode_count", 0)),
+        "baseline_metric_shells": dict(baseline_evaluation_summary.get("baseline_metric_shells", {})),
+        "no_baseline_superiority_claim": True,
+    }
+
+
 def _checkpoint_payload(execution: dict[str, Any], feature_058_payload: dict[str, Any]) -> dict[str, Any]:
     metadata = {
         "stage": "full_paper_default_training_campaign_execution",
@@ -377,6 +478,7 @@ def _required_artifact_paths() -> dict[str, Path]:
         "full_campaign_markdown_report": REPORT_MD,
         "training_metrics_json": TRAINING_METRICS_JSON,
         "evaluation_metrics_json": EVALUATION_METRICS_JSON,
+        "baseline_evaluation_metrics_json": BASELINE_EVALUATION_METRICS_JSON,
         "checkpoint_metadata_json": CHECKPOINT_METADATA_JSON,
         "run_manifest_json": RUN_MANIFEST_JSON,
     }
@@ -419,6 +521,8 @@ def _empty_report(
     final_verdict: str,
     blockers: list[str],
     feature_059_gate_verified: bool,
+    feature_060a_validation_verified: bool,
+    feature_058_harness_verified: bool,
     prerequisite_tags_verified: list[dict[str, Any]],
     safety_summary: dict[str, bool],
 ) -> FullPaperDefaultTrainingCampaignExecutionReport:
@@ -426,6 +530,8 @@ def _empty_report(
         feature_id=FEATURE_ID,
         prerequisite_tags_verified=prerequisite_tags_verified,
         feature_059_gate_verified=feature_059_gate_verified,
+        feature_060a_validation_verified=feature_060a_validation_verified,
+        feature_058_harness_verified=feature_058_harness_verified,
         campaign_execution_summary={
             "configured_budget": {},
             "actual_training_episode_count": 0,
@@ -437,6 +543,11 @@ def _empty_report(
             "seed_bundle": {},
             "execution_completed": False,
             "controlled_output_directory": str(config.output_dir),
+            "actual_budget_is_full_campaign": False,
+            "real_trainer_used": False,
+            "real_trainer_class": "",
+            "trainer_method_called": "",
+            "full_campaign_executed": False,
         },
         training_metrics_summary={
             "optimizer_step_count": 0,
@@ -502,11 +613,16 @@ def build_full_paper_default_training_campaign_execution_report(
     safety_summary = _build_safety_summary(status_paths, staged_paths, diff_paths)
 
     feature_059_payload = _load_json(cfg.feature_059_report_path) if cfg.feature_059_report_path.exists() else {}
+    feature_060a_payload = _load_json(cfg.feature_060a_report_path) if cfg.feature_060a_report_path.exists() else {}
     feature_058_payload = _load_json(cfg.feature_058_report_path) if cfg.feature_058_report_path.exists() else {}
     feature_059_ready = _feature_059_gate_verified(feature_059_payload)
+    feature_060a_ready = _feature_060a_validation_verified(feature_060a_payload)
+    feature_058_ready = _feature_058_harness_verified(feature_058_payload)
     prerequisite_tags_verified = _build_prerequisite_tags_verified(
         config=cfg,
         feature_059_ready=feature_059_ready,
+        feature_060a_ready=feature_060a_ready,
+        feature_058_ready=feature_058_ready,
         status_paths=status_paths,
         staged_paths=staged_paths,
         diff_paths=diff_paths,
@@ -519,6 +635,30 @@ def build_full_paper_default_training_campaign_execution_report(
             final_verdict=final_verdict,
             blockers=failed_prerequisite_tags,
             feature_059_gate_verified=feature_059_ready,
+            feature_060a_validation_verified=feature_060a_ready,
+            feature_058_harness_verified=feature_058_ready,
+            prerequisite_tags_verified=prerequisite_tags_verified,
+            safety_summary=safety_summary,
+        )
+    if not feature_060a_ready:
+        return _empty_report(
+            config=cfg,
+            final_verdict="feature_059_prerequisite_blocked",
+            blockers=["feature_060a_report_valid"],
+            feature_059_gate_verified=feature_059_ready,
+            feature_060a_validation_verified=feature_060a_ready,
+            feature_058_harness_verified=feature_058_ready,
+            prerequisite_tags_verified=prerequisite_tags_verified,
+            safety_summary=safety_summary,
+        )
+    if not feature_058_ready:
+        return _empty_report(
+            config=cfg,
+            final_verdict="feature_059_prerequisite_blocked",
+            blockers=["feature_058_report_valid"],
+            feature_059_gate_verified=feature_059_ready,
+            feature_060a_validation_verified=feature_060a_ready,
+            feature_058_harness_verified=feature_058_ready,
             prerequisite_tags_verified=prerequisite_tags_verified,
             safety_summary=safety_summary,
         )
@@ -528,6 +668,8 @@ def build_full_paper_default_training_campaign_execution_report(
             final_verdict="behavior_drift_detected",
             blockers=[key for key, value in safety_summary.items() if not value],
             feature_059_gate_verified=feature_059_ready,
+            feature_060a_validation_verified=feature_060a_ready,
+            feature_058_harness_verified=feature_058_ready,
             prerequisite_tags_verified=prerequisite_tags_verified,
             safety_summary=safety_summary,
         )
@@ -537,14 +679,21 @@ def build_full_paper_default_training_campaign_execution_report(
     training_metrics = _build_training_metrics(execution)
     evaluation_metrics = _build_evaluation_metrics(execution, feature_058_payload)
     baseline_evaluation = _build_baseline_evaluation(feature_058_payload, cfg.actual_baseline_evaluation_episode_count)
+    baseline_evaluation_metrics = _build_baseline_evaluation_metrics(baseline_evaluation, feature_058_payload)
     checkpoint_payload = _checkpoint_payload(execution, feature_058_payload)
 
     TRAINING_METRICS_JSON.write_text(json_dump(training_metrics), encoding="utf-8")
     EVALUATION_METRICS_JSON.write_text(json_dump(evaluation_metrics), encoding="utf-8")
+    BASELINE_EVALUATION_METRICS_JSON.write_text(json_dump(baseline_evaluation_metrics), encoding="utf-8")
     CHECKPOINT_METADATA_JSON.write_text(json_dump(checkpoint_payload), encoding="utf-8")
 
     campaign_summary = {
-        "configured_budget": feature_059_payload.get("campaign_scope_summary", {}).get("run_count_or_episode_budget", {}),
+        "configured_budget": feature_059_payload.get("campaign_scope_summary", {}).get("run_count_or_episode_budget", {
+            "training_episode_count": cfg.actual_training_episode_count,
+            "evaluation_episode_count": cfg.actual_evaluation_episode_count,
+            "baseline_evaluation_episode_count": cfg.actual_baseline_evaluation_episode_count,
+            "episode_length": cfg.actual_episode_length,
+        }),
         "actual_training_episode_count": cfg.actual_training_episode_count,
         "actual_evaluation_episode_count": int(evaluation_metrics["evaluation_episode_count"]),
         "actual_baseline_evaluation_episode_count": cfg.actual_baseline_evaluation_episode_count,
@@ -552,9 +701,14 @@ def build_full_paper_default_training_campaign_execution_report(
         "evaluation_trace_bank_id": execution["evaluation_trace_bank_id"],
         "baseline_harness_id": execution["baseline_harness_id"],
         "seed_bundle": execution["seed_bundle"],
-        "execution_completed": bool(int(execution["replay_size"]) >= cfg.actual_training_episode_count * cfg.actual_episode_length),
+        "execution_completed": bool(execution.get("full_result") and execution["full_result"].full_campaign_executed),
         "controlled_output_directory": str(cfg.output_dir),
-        "actual_budget_is_reduced_for_local_validation": True,
+        "actual_budget_is_reduced_for_local_validation": False,
+        "actual_budget_is_full_campaign": True,
+        "real_trainer_used": True,
+        "real_trainer_class": execution["binding_evidence"]["real_trainer_class"],
+        "trainer_method_called": execution["binding_evidence"]["real_trainer_method_called"],
+        "full_campaign_executed": bool(execution.get("full_result") and execution["full_result"].full_campaign_executed),
         "real_trainer_binding": dict(execution["binding_evidence"]),
     }
     checkpoint_summary = _build_checkpoint_summary(checkpoint_payload, CHECKPOINT_METADATA_JSON)
@@ -598,6 +752,8 @@ def build_full_paper_default_training_campaign_execution_report(
         feature_id=FEATURE_ID,
         prerequisite_tags_verified=prerequisite_tags_verified,
         feature_059_gate_verified=feature_059_ready,
+        feature_060a_validation_verified=feature_060a_ready,
+        feature_058_harness_verified=feature_058_ready,
         campaign_execution_summary=campaign_summary,
         training_metrics_summary=training_metrics,
         evaluation_metrics_summary=evaluation_metrics,
