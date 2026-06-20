@@ -1,0 +1,10 @@
+{
+  "figure_count": 3,
+  "figure_directory": "artifacts/analysis/final-review-release-gate-batch/figures",
+  "figure_files": [
+    "figure_01_reward_stability_gate.png",
+    "figure_02_vertical_action_collapse_gate.png",
+    "figure_03_replay_cap_gate.png"
+  ],
+  "figures_generated": true
+}

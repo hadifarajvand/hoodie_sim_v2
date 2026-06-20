@@ -1,0 +1,20 @@
+{
+  "baseline_metrics_available": true,
+  "comparison_ready": true,
+  "completed_task_count_available": true,
+  "delay_metric_available": false,
+  "drop_count_available": true,
+  "evidence_notes": [
+    "Feature 060 metric schema is complete, but delay and timeout are explicitly not claimed.",
+    "Feature 063 checkpoints only provide descriptive reward/action counts and do not supply delay or QoS-style metrics.",
+    "Comparison readiness is descriptive only, not a thesis-result signal."
+  ],
+  "missing_or_null_metrics": [
+    "delay",
+    "timeout"
+  ],
+  "reward_available": true,
+  "thesis_level_sufficient": false,
+  "timeout_metric_available": false,
+  "train_eval_separation_available": true
+}

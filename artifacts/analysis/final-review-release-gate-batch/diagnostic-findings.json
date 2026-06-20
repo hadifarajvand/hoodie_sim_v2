@@ -1,0 +1,59 @@
+{
+  "evaluation_reward_static_across_budget": true,
+  "evaluation_signal_sufficient_for_claims": false,
+  "feature_060_prerequisite_verified": true,
+  "feature_062_prerequisite_verified": true,
+  "feature_063_prerequisite_verified": true,
+  "questions": {
+    "q1_reward_static": {
+      "answer": "The checkpoint mean reward is exactly -4181.2 at every budget, while the evaluation trace bank stays disjoint and fixed. The evidence supports a deterministic evaluation path on the same evaluation bank, not a meaningful reward trend.",
+      "evidence": [
+        "Feature 063 evaluation mean reward is -4181.2 at 100, 150, 200, and 500 episodes.",
+        "Feature 063 evaluation traces are disjoint from training traces and reuse the same evaluation bank.",
+        "Feature 060 evaluation metrics are schema-complete, but delay and timeout are explicitly not claimed there."
+      ],
+      "question": "Why did evaluation mean reward remain constant across 100/150/200/500?",
+      "uncertainty": "The artifacts do not let us distinguish a pure evaluator limitation from a reward extraction bug with certainty."
+    },
+    "q2_action_drift": {
+      "answer": "The 500-episode checkpoint is 100% vertical actions. That looks like a policy collapse or a reward incentive artifact, not an action legality problem, because invalid or noop actions remain zero.",
+      "evidence": [
+        "The vertical share rises from 30.52% at 100 episodes to 100% at 500 episodes.",
+        "Invalid or noop actions remain at 0 across all checkpoints, so illegality is not the explanation."
+      ],
+      "question": "Why did the policy/action distribution drift toward vertical-only by 500 episodes?",
+      "uncertainty": "The current artifacts do not prove whether this is expected convergence or a degenerate collapse; both remain plausible."
+    },
+    "q3_replay_cap": {
+      "answer": "Yes. The trainer config enforces a replay capacity of 10000 and the observed replay size is 10000 at every checkpoint. That cap is expected, but it is also a likely bottleneck for much longer training because the buffer is already saturated.",
+      "evidence": [
+        "CampaignConfig.replay_memory_capacity validates to 10000.",
+        "DDQNTrainer instantiates ReplayBuffer(capacity=self.config.replay_memory_capacity, ...).",
+        "Every Feature 063 checkpoint reports replay_size = 10000."
+      ],
+      "question": "Is replay_size capped at 10000, and is that expected or a hidden bottleneck?",
+      "uncertainty": "The cap is explicit, so it is not hidden; the bottleneck concern is an inference about longer runs."
+    },
+    "q4_signal_sufficient": {
+      "answer": "No. The current signal is descriptive and comparison-ready, but it lacks claimed delay and timeout metrics and does not show a changing evaluation reward. That is not enough for thesis-level claims.",
+      "evidence": [
+        "Feature 060 metric schema is complete, but delay and timeout are explicitly not claimed.",
+        "Feature 063 checkpoints only provide descriptive reward/action counts and do not supply delay or QoS-style metrics.",
+        "Comparison readiness is descriptive only, not a thesis-result signal."
+      ],
+      "question": "Is the current reward/evaluation signal sufficient for thesis-level result claims?",
+      "uncertainty": "None of the available artifacts justify a stronger claim."
+    },
+    "q5_next_step": {
+      "answer": "Audit and fix reward/evaluation design first. Larger training would mostly amplify the same signal problem and the same action-collapse behavior.",
+      "evidence": [
+        "Do not spend on larger training yet. The evaluation reward is static across the staged budgets, the 500-episode policy collapses to vertical actions, and the current evaluation signal is not rich enough for thesis-level claims."
+      ],
+      "question": "Should we run larger training next, or audit/fix reward/evaluation design first?",
+      "uncertainty": "Running larger training before fixing the signal would be a spend, not a diagnosis."
+    }
+  },
+  "recommended_next_action": "audit_reward_and_evaluation_design_before_more_training",
+  "replay_size_cap_detected": true,
+  "vertical_action_collapse_detected": true
+}

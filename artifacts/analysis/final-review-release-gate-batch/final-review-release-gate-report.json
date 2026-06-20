@@ -1,0 +1,434 @@
+{
+  "action_collapse_review": {
+    "action_distributions": {
+      "100": {
+        "horizontal": 3741,
+        "invalid_or_noop_action_count": 0,
+        "local": 3207,
+        "vertical": 3052
+      },
+      "150": {
+        "horizontal": 2206,
+        "invalid_or_noop_action_count": 0,
+        "local": 2531,
+        "vertical": 5263
+      },
+      "200": {
+        "horizontal": 181,
+        "invalid_or_noop_action_count": 0,
+        "local": 875,
+        "vertical": 8944
+      },
+      "500": {
+        "horizontal": 0,
+        "invalid_or_noop_action_count": 0,
+        "local": 0,
+        "vertical": 10000
+      }
+    },
+    "checkpoint_budgets": [
+      100,
+      150,
+      200,
+      500
+    ],
+    "dominant_action": "vertical",
+    "evidence_notes": [
+      "The vertical share rises from 30.52% at 100 episodes to 100% at 500 episodes.",
+      "Invalid or noop actions remain at 0 across all checkpoints, so illegality is not the explanation."
+    ],
+    "possible_causes": [
+      "expected_policy_convergence",
+      "degenerate_policy_collapse",
+      "reward_incentive_artifact",
+      "evaluation_training_mismatch"
+    ],
+    "vertical_action_collapse_detected": true,
+    "vertical_share_by_budget": {
+      "100": 0.3052,
+      "150": 0.5263,
+      "200": 0.8944,
+      "500": 1.0
+    }
+  },
+  "artifact_completeness_summary": {
+    "feature_063_final_exports_exist": true
+  },
+  "base_branch_name": "063-staged-training-budget-learning-curve",
+  "branch_name": "064-final-review-release-gate-batch",
+  "checkpoint_budgets": [
+    100,
+    150,
+    200,
+    500
+  ],
+  "claim_boundary_review_summary": {
+    "no_baseline_superiority_claim": true,
+    "no_paper_reproduction_claim": true,
+    "no_performance_superiority_claim": true
+  },
+  "claim_safety_status": {
+    "baseline_superiority_claim_made": false,
+    "claim_safety_passed": true,
+    "paper_reproduction_claim_made": false,
+    "performance_superiority_claim_made": false
+  },
+  "diagnostic_findings": {
+    "evaluation_reward_static_across_budget": true,
+    "evaluation_signal_sufficient_for_claims": false,
+    "feature_060_prerequisite_verified": true,
+    "feature_062_prerequisite_verified": true,
+    "feature_063_prerequisite_verified": true,
+    "questions": {
+      "q1_reward_static": {
+        "answer": "The checkpoint mean reward is exactly -4181.2 at every budget, while the evaluation trace bank stays disjoint and fixed. The evidence supports a deterministic evaluation path on the same evaluation bank, not a meaningful reward trend.",
+        "evidence": [
+          "Feature 063 evaluation mean reward is -4181.2 at 100, 150, 200, and 500 episodes.",
+          "Feature 063 evaluation traces are disjoint from training traces and reuse the same evaluation bank.",
+          "Feature 060 evaluation metrics are schema-complete, but delay and timeout are explicitly not claimed there."
+        ],
+        "question": "Why did evaluation mean reward remain constant across 100/150/200/500?",
+        "uncertainty": "The artifacts do not let us distinguish a pure evaluator limitation from a reward extraction bug with certainty."
+      },
+      "q2_action_drift": {
+        "answer": "The 500-episode checkpoint is 100% vertical actions. That looks like a policy collapse or a reward incentive artifact, not an action legality problem, because invalid or noop actions remain zero.",
+        "evidence": [
+          "The vertical share rises from 30.52% at 100 episodes to 100% at 500 episodes.",
+          "Invalid or noop actions remain at 0 across all checkpoints, so illegality is not the explanation."
+        ],
+        "question": "Why did the policy/action distribution drift toward vertical-only by 500 episodes?",
+        "uncertainty": "The current artifacts do not prove whether this is expected convergence or a degenerate collapse; both remain plausible."
+      },
+      "q3_replay_cap": {
+        "answer": "Yes. The trainer config enforces a replay capacity of 10000 and the observed replay size is 10000 at every checkpoint. That cap is expected, but it is also a likely bottleneck for much longer training because the buffer is already saturated.",
+        "evidence": [
+          "CampaignConfig.replay_memory_capacity validates to 10000.",
+          "DDQNTrainer instantiates ReplayBuffer(capacity=self.config.replay_memory_capacity, ...).",
+          "Every Feature 063 checkpoint reports replay_size = 10000."
+        ],
+        "question": "Is replay_size capped at 10000, and is that expected or a hidden bottleneck?",
+        "uncertainty": "The cap is explicit, so it is not hidden; the bottleneck concern is an inference about longer runs."
+      },
+      "q4_signal_sufficient": {
+        "answer": "No. The current signal is descriptive and comparison-ready, but it lacks claimed delay and timeout metrics and does not show a changing evaluation reward. That is not enough for thesis-level claims.",
+        "evidence": [
+          "Feature 060 metric schema is complete, but delay and timeout are explicitly not claimed.",
+          "Feature 063 checkpoints only provide descriptive reward/action counts and do not supply delay or QoS-style metrics.",
+          "Comparison readiness is descriptive only, not a thesis-result signal."
+        ],
+        "question": "Is the current reward/evaluation signal sufficient for thesis-level result claims?",
+        "uncertainty": "None of the available artifacts justify a stronger claim."
+      },
+      "q5_next_step": {
+        "answer": "Audit and fix reward/evaluation design first. Larger training would mostly amplify the same signal problem and the same action-collapse behavior.",
+        "evidence": [
+          "Do not spend on larger training yet. The evaluation reward is static across the staged budgets, the 500-episode policy collapses to vertical actions, and the current evaluation signal is not rich enough for thesis-level claims."
+        ],
+        "question": "Should we run larger training next, or audit/fix reward/evaluation design first?",
+        "uncertainty": "Running larger training before fixing the signal would be a spend, not a diagnosis."
+      }
+    },
+    "recommended_next_action": "audit_reward_and_evaluation_design_before_more_training",
+    "replay_size_cap_detected": true,
+    "vertical_action_collapse_detected": true
+  },
+  "episode_length": 110,
+  "evaluation_episode_count_per_checkpoint": 100,
+  "evaluation_signal_review": {
+    "baseline_metrics_available": true,
+    "comparison_ready": true,
+    "completed_task_count_available": true,
+    "delay_metric_available": false,
+    "drop_count_available": true,
+    "evidence_notes": [
+      "Feature 060 metric schema is complete, but delay and timeout are explicitly not claimed.",
+      "Feature 063 checkpoints only provide descriptive reward/action counts and do not supply delay or QoS-style metrics.",
+      "Comparison readiness is descriptive only, not a thesis-result signal."
+    ],
+    "missing_or_null_metrics": [
+      "delay",
+      "timeout"
+    ],
+    "reward_available": true,
+    "thesis_level_sufficient": false,
+    "timeout_metric_available": false,
+    "train_eval_separation_available": true
+  },
+  "feature_060_prerequisite_verified": true,
+  "feature_062_prerequisite_verified": true,
+  "feature_063_prerequisite_verified": true,
+  "feature_063_verified": true,
+  "feature_id": "064-final-review-release-gate-batch",
+  "figure_manifest": {
+    "figure_count": 3,
+    "figure_directory": "artifacts/analysis/final-review-release-gate-batch/figures",
+    "figure_files": [
+      "figure_01_reward_stability_gate.png",
+      "figure_02_vertical_action_collapse_gate.png",
+      "figure_03_replay_cap_gate.png"
+    ],
+    "figures_generated": true
+  },
+  "final_verdict": "final_review_release_gate_blocked",
+  "handoff_summary": {
+    "next_action": "audit_reward_and_evaluation_design_before_more_training",
+    "next_work_recommendation": "Release tag creation or thesis/paper writing workflow"
+  },
+  "next_action_decision": {
+    "decision_reason": "Do not spend on larger training yet. The evaluation reward is static across the staged budgets, the 500-episode policy collapses to vertical actions, and the current evaluation signal is not rich enough for thesis-level claims.",
+    "recommended_next_action": "audit_reward_and_evaluation_design_before_more_training",
+    "should_audit_reward_and_evaluation_design_first": true,
+    "should_fix_action_collapse_first": true,
+    "should_fix_replay_capacity_or_reporting_first": false,
+    "should_run_larger_training_next": false
+  },
+  "prerequisite_artifacts": {
+    "feature_060_baseline_evaluation_metrics": {
+      "exists": true,
+      "path": "artifacts/analysis/full-paper-default-training-campaign-execution/baseline-evaluation-metrics.json",
+      "verified": true
+    },
+    "feature_060_evaluation_metrics": {
+      "exists": true,
+      "path": "artifacts/analysis/full-paper-default-training-campaign-execution/evaluation-metrics.json",
+      "verified": true
+    },
+    "feature_060_report": {
+      "details": "Feature 060 report, training metrics, evaluation metrics, and baseline evaluation metrics validated",
+      "exists": true,
+      "path": "artifacts/analysis/full-paper-default-training-campaign-execution/full-paper-default-training-campaign-report.json",
+      "verified": true
+    },
+    "feature_060_training_metrics": {
+      "exists": true,
+      "path": "artifacts/analysis/full-paper-default-training-campaign-execution/training-metrics.json",
+      "verified": true
+    },
+    "feature_062_comparison_readiness": {
+      "exists": true,
+      "path": "artifacts/analysis/unified-campaign-result-analysis-figures-findings/comparison-readiness.json",
+      "verified": true
+    },
+    "feature_062_final_findings": {
+      "exists": true,
+      "path": "artifacts/analysis/unified-campaign-result-analysis-figures-findings/final-experimental-findings.md",
+      "verified": true
+    },
+    "feature_062_report": {
+      "details": "Feature 062 comparison-readiness and findings validated",
+      "exists": true,
+      "path": "artifacts/analysis/unified-campaign-result-analysis-figures-findings/unified-campaign-result-analysis-report.json",
+      "verified": true
+    },
+    "feature_063_checkpoint_metrics": {
+      "exists": true,
+      "path": "artifacts/analysis/staged-training-budget-learning-curve/checkpoint-metrics.json",
+      "verified": true
+    },
+    "feature_063_comparison_readiness": {
+      "exists": true,
+      "path": "artifacts/analysis/staged-training-budget-learning-curve/comparison-readiness.json",
+      "verified": true
+    },
+    "feature_063_report": {
+      "details": "Feature 063 checkpoint metrics, comparison readiness, and staged comparative table validated",
+      "exists": true,
+      "path": "artifacts/analysis/staged-training-budget-learning-curve/staged-training-budget-learning-curve-report.json",
+      "verified": true
+    },
+    "feature_063_staged_comparative_table": {
+      "exists": true,
+      "path": "artifacts/analysis/staged-training-budget-learning-curve/staged-comparative-table.json",
+      "verified": true
+    }
+  },
+  "prerequisite_tags_verified": [
+    {
+      "details": "current branch matches the Feature 064 branch",
+      "name": "branch",
+      "verified": true
+    },
+    {
+      "details": "current branch is not main",
+      "name": "not_main",
+      "verified": true
+    },
+    {
+      "details": "Feature 060 committed artifacts are valid",
+      "name": "feature_060_report_valid",
+      "verified": true
+    },
+    {
+      "details": "Feature 062 committed artifacts are valid",
+      "name": "feature_062_report_valid",
+      "verified": true
+    },
+    {
+      "details": "Feature 063 committed artifacts are valid",
+      "name": "feature_063_report_valid",
+      "verified": true
+    },
+    {
+      "details": "working tree paths stay inside the approved scope",
+      "name": "working_tree_paths_approved",
+      "verified": true
+    },
+    {
+      "details": "staged paths stay inside the approved scope",
+      "name": "staged_paths_approved",
+      "verified": true
+    },
+    {
+      "details": "base-branch diff stays inside the approved scope",
+      "name": "base_branch_head_diff_approved",
+      "verified": true
+    }
+  ],
+  "recommended_next_action": "audit_reward_and_evaluation_design_before_more_training",
+  "recommended_next_feature": "Release tag creation or thesis/paper writing workflow",
+  "remaining_blockers": [
+    "evaluation_reward_static_blocker",
+    "vertical_action_collapse_blocker",
+    "evaluation_signal_insufficient_for_claims"
+  ],
+  "replay_buffer_review": {
+    "cap_type": "configured_cap",
+    "evidence_notes": [
+      "CampaignConfig.replay_memory_capacity validates to 10000.",
+      "DDQNTrainer instantiates ReplayBuffer(capacity=self.config.replay_memory_capacity, ...).",
+      "Every Feature 063 checkpoint reports replay_size = 10000."
+    ],
+    "is_cap_blocking_larger_training": true,
+    "is_cap_expected": true,
+    "observed_replay_size_by_checkpoint": {
+      "100": 10000,
+      "150": 10000,
+      "200": 10000,
+      "500": 10000
+    },
+    "replay_buffer_capacity": 10000,
+    "replay_size_cap_detected": true
+  },
+  "repository_state_audit_summary": {
+    "base_branch_head_diff_approved": true,
+    "release_evidence_mapped_to_source": true,
+    "staged_paths_approved": true,
+    "working_tree_paths_approved": true
+  },
+  "reward_stability_review": {
+    "checkpoint_budgets": [
+      100,
+      150,
+      200,
+      500
+    ],
+    "deterministic_evaluation_path": true,
+    "evaluation_mean_rewards": {
+      "100": -4181.2,
+      "150": -4181.2,
+      "200": -4181.2,
+      "500": -4181.2
+    },
+    "evaluation_reward_static_across_budget": true,
+    "evidence_notes": [
+      "Feature 063 evaluation mean reward is -4181.2 at 100, 150, 200, and 500 episodes.",
+      "Feature 063 evaluation traces are disjoint from training traces and reuse the same evaluation bank.",
+      "Feature 060 evaluation metrics are schema-complete, but delay and timeout are explicitly not claimed there."
+    ],
+    "likely_causes": [
+      "same_evaluation_trace_bank",
+      "deterministic_evaluation_path",
+      "policy_not_affecting_evaluation_reward",
+      "environment_or_evaluator_design_limitation"
+    ],
+    "policy_not_affecting_evaluation_reward": true,
+    "same_evaluation_trace_bank": true
+  },
+  "safety_summary": {
+    "no_baseline_superiority_claim": true,
+    "no_dependency_drift": true,
+    "no_environment_contract_drift": true,
+    "no_paper_reproduction_claim": true,
+    "no_performance_superiority_claim": true,
+    "no_policy_drift": true,
+    "no_prior_artifact_rewrite": true,
+    "no_release_tag_created": true,
+    "no_reward_timing_change": true,
+    "no_uncontrolled_campaign_loop": true
+  },
+  "scope_guard_summary": {
+    "approved_paths_detected": [
+      "specs/064-final-review-release-gate-batch/data-model.md",
+      "specs/064-final-review-release-gate-batch/plan.md",
+      "specs/064-final-review-release-gate-batch/quickstart.md",
+      "specs/064-final-review-release-gate-batch/research.md",
+      "specs/064-final-review-release-gate-batch/spec.md",
+      "specs/064-final-review-release-gate-batch/tasks.md",
+      "src/analysis/final_review_release_gate_batch/__init__.py",
+      "src/analysis/final_review_release_gate_batch/config.py",
+      "src/analysis/final_review_release_gate_batch/model.py",
+      "src/analysis/final_review_release_gate_batch/report.py",
+      "src/analysis/final_review_release_gate_batch/runner.py",
+      "tests/integration/test_final_review_release_gate_batch.py",
+      "tests/integration/test_final_review_release_gate_batch_report.py",
+      "tests/integration/test_final_review_release_gate_batch_scope_guard.py",
+      "tests/unit/test_final_review_release_gate_batch_schema.py"
+    ],
+    "base_branch_diff": {
+      "approved": true,
+      "approved_paths_detected": [],
+      "forbidden_paths_detected": [],
+      "paths": []
+    },
+    "base_branch_head_diff_approved": true,
+    "forbidden_paths_detected": [],
+    "staged": {
+      "approved": true,
+      "approved_paths_detected": [],
+      "forbidden_paths_detected": [],
+      "paths": []
+    },
+    "staged_paths_approved": true,
+    "working_tree": {
+      "approved": true,
+      "approved_paths_detected": [
+        "specs/064-final-review-release-gate-batch/data-model.md",
+        "specs/064-final-review-release-gate-batch/plan.md",
+        "specs/064-final-review-release-gate-batch/quickstart.md",
+        "specs/064-final-review-release-gate-batch/research.md",
+        "specs/064-final-review-release-gate-batch/spec.md",
+        "specs/064-final-review-release-gate-batch/tasks.md",
+        "src/analysis/final_review_release_gate_batch/__init__.py",
+        "src/analysis/final_review_release_gate_batch/config.py",
+        "src/analysis/final_review_release_gate_batch/model.py",
+        "src/analysis/final_review_release_gate_batch/report.py",
+        "src/analysis/final_review_release_gate_batch/runner.py",
+        "tests/integration/test_final_review_release_gate_batch.py",
+        "tests/integration/test_final_review_release_gate_batch_report.py",
+        "tests/integration/test_final_review_release_gate_batch_scope_guard.py",
+        "tests/unit/test_final_review_release_gate_batch_schema.py"
+      ],
+      "forbidden_paths_detected": [],
+      "paths": [
+        "specs/064-final-review-release-gate-batch/data-model.md",
+        "specs/064-final-review-release-gate-batch/plan.md",
+        "specs/064-final-review-release-gate-batch/quickstart.md",
+        "specs/064-final-review-release-gate-batch/research.md",
+        "specs/064-final-review-release-gate-batch/spec.md",
+        "specs/064-final-review-release-gate-batch/tasks.md",
+        "src/analysis/final_review_release_gate_batch/__init__.py",
+        "src/analysis/final_review_release_gate_batch/config.py",
+        "src/analysis/final_review_release_gate_batch/model.py",
+        "src/analysis/final_review_release_gate_batch/report.py",
+        "src/analysis/final_review_release_gate_batch/runner.py",
+        "tests/integration/test_final_review_release_gate_batch.py",
+        "tests/integration/test_final_review_release_gate_batch_report.py",
+        "tests/integration/test_final_review_release_gate_batch_scope_guard.py",
+        "tests/unit/test_final_review_release_gate_batch_schema.py"
+      ]
+    },
+    "working_tree_paths_approved": true
+  },
+  "training_5000_run": false,
+  "training_rerun_from_scratch": false
+}

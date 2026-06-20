@@ -1,0 +1,52 @@
+{
+  "action_distributions": {
+    "100": {
+      "horizontal": 3741,
+      "invalid_or_noop_action_count": 0,
+      "local": 3207,
+      "vertical": 3052
+    },
+    "150": {
+      "horizontal": 2206,
+      "invalid_or_noop_action_count": 0,
+      "local": 2531,
+      "vertical": 5263
+    },
+    "200": {
+      "horizontal": 181,
+      "invalid_or_noop_action_count": 0,
+      "local": 875,
+      "vertical": 8944
+    },
+    "500": {
+      "horizontal": 0,
+      "invalid_or_noop_action_count": 0,
+      "local": 0,
+      "vertical": 10000
+    }
+  },
+  "checkpoint_budgets": [
+    100,
+    150,
+    200,
+    500
+  ],
+  "dominant_action": "vertical",
+  "evidence_notes": [
+    "The vertical share rises from 30.52% at 100 episodes to 100% at 500 episodes.",
+    "Invalid or noop actions remain at 0 across all checkpoints, so illegality is not the explanation."
+  ],
+  "possible_causes": [
+    "expected_policy_convergence",
+    "degenerate_policy_collapse",
+    "reward_incentive_artifact",
+    "evaluation_training_mismatch"
+  ],
+  "vertical_action_collapse_detected": true,
+  "vertical_share_by_budget": {
+    "100": 0.3052,
+    "150": 0.5263,
+    "200": 0.8944,
+    "500": 1.0
+  }
+}

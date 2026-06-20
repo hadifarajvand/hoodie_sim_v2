@@ -1,57 +1,32 @@
 from __future__ import annotations
 
-import subprocess
-import unittest
-from unittest import mock
-
-from src.analysis.final_review_release_gate_batch import build_final_review_release_gate_batch_report
+from src.analysis.final_review_release_gate_batch.runner import _path_classification, _status_paths
 
 
-class FinalReviewReleaseGateBatchScopeGuardTests(unittest.TestCase):
-    def test_git_status_and_diff_only_show_feature_064_paths(self) -> None:
-        status_output = subprocess.run(["git", "status", "--short"], check=True, capture_output=True, text=True).stdout.splitlines()
-        diff_output = subprocess.run(["git", "diff", "--name-only", "main...HEAD"], check=True, capture_output=True, text=True).stdout.splitlines()
-        cached_output = subprocess.run(["git", "diff", "--cached", "--name-only"], check=True, capture_output=True, text=True).stdout.splitlines()
-        paths = [line[3:].strip() for line in status_output] + [line.strip() for line in diff_output + cached_output]
-        forbidden_prefixes = (
-            ".specify/feature.json",
-            "AGENTS.md",
-            ".gitignore",
-            "src/environment/",
-            "src/policies/",
-            "artifacts/analysis/results-export-reproducibility-documentation-batch/",
-            "artifacts/analysis/multi-seed-campaign-ablation-batch/",
-            "artifacts/analysis/campaign-integrity-evaluation-comparison-batch/",
-            "artifacts/analysis/full-paper-default-training-campaign-execution/",
-            "requirements",
-            "pyproject.toml",
-            "poetry.lock",
-            "uv.lock",
-        )
-        approved_prefixes = (
-            "artifacts/analysis/final-review-release-gate-batch/",
-            "specs/064-final-review-release-gate-batch/",
-            "src/analysis/final_review_release_gate_batch/",
-            "tests/unit/test_final_review_release_gate_batch",
-            "tests/integration/test_final_review_release_gate_batch",
-        )
-        for path in paths:
-            for forbidden in forbidden_prefixes:
-                self.assertFalse(path.startswith(forbidden), msg=f"forbidden path present: {path}")
-            if path:
-                self.assertTrue(any(path.startswith(prefix) for prefix in approved_prefixes), msg=f"unexpected path: {path}")
+def test_scope_guard_recognizes_allowed_and_forbidden_paths() -> None:
+    allowed = [
+        "src/analysis/final_review_release_gate_batch/runner.py",
+        "tests/unit/test_final_review_release_gate_batch_schema.py",
+    ]
+    forbidden = [
+        "src/environment/runtime_model.py",
+        "src/policies/something.py",
+        "requirements.txt",
+    ]
 
-    def test_report_blocks_forbidden_dirty_paths(self) -> None:
-        import src.analysis.final_review_release_gate_batch.runner as runner
-
-        with mock.patch.object(runner, "_status_paths", return_value=["src/policies/example.py"]):
-            with mock.patch.object(runner, "_staged_paths", return_value=[]):
-                with mock.patch.object(runner, "_diff_paths", return_value=[]):
-                    payload = build_final_review_release_gate_batch_report().to_dict()
-        self.assertEqual(payload["final_verdict"], "behavior_drift_detected")
-        self.assertIn("behavior_drift_detected", payload["remaining_blockers"])
-        self.assertFalse(payload["safety_summary"]["no_policy_drift"])
+    assert _path_classification(allowed)["approved"] is True
+    assert _path_classification(forbidden)["approved"] is False
 
 
-if __name__ == "__main__":
-    unittest.main()
+def test_current_worktree_changes_stay_inside_the_feature_scope() -> None:
+    paths = _status_paths()
+    assert paths
+    assert all(
+        path.startswith("specs/064-final-review-release-gate-batch/")
+        or path.startswith("src/analysis/final_review_release_gate_batch/")
+        or path.startswith("tests/unit/test_final_review_release_gate_batch")
+        or path.startswith("tests/integration/test_final_review_release_gate_batch")
+        or path.startswith("docs/architecture/euls_phase23_final_review_release_gate_batch.md")
+        or path.startswith("artifacts/analysis/final-review-release-gate-batch/")
+        for path in paths
+    )

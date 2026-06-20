@@ -1,120 +1,53 @@
-# Feature 064 — Final Review and Release Gate Batch
+# Feature Specification: Feature 064 - Final Review and Release Gate Batch
 
-## Batch rule
+**Feature Branch**: `[064-final-review-release-gate-batch]`
+**Created**: 2026-06-20
+**Status**: Draft
+**Input**: User description: "Feature 064 Final Review and Release Gate Batch"
 
-This feature batches the final release control items into one implementation feature.
+## User Scenarios & Testing *(mandatory)*
 
-Covered items:
+### User Story 1 - Diagnostic release gate
 
-1. Final Repository State Audit
-2. Final Artifact Completeness Gate
-3. Final Claim Boundary Review
-4. Release Tag Readiness Package
-5. Final Handoff and Next-Work Recommendation
+As an analyst, I can review the committed outputs from Features 060, 062, and 063 so I can decide whether the project is ready for larger training or whether reward/evaluation design must be audited first.
 
-## Purpose
+**Why this priority**: This gate prevents the team from wasting another long training run when the current signal is already suspect.
 
-Perform the final release gate for the implemented HOODIE-style simulation/mechanism pipeline. This feature must validate that the repository is ready for a release tag or final handoff without adding new experiments, changing prior artifacts, inflating claims, or rerunning training.
+**Independent Test**: Run the feature and verify the report answers the five diagnostic questions with artifact-backed evidence and a single next-action decision.
 
-## Required prior inputs
+### User Story 2 - Claim-safe release decision
 
-- `artifacts/analysis/results-export-reproducibility-documentation-batch/results-export-reproducibility-documentation-batch-report.json`
-- `artifacts/analysis/results-export-reproducibility-documentation-batch/final-experiment-integrity-audit.json`
-- `artifacts/analysis/results-export-reproducibility-documentation-batch/results-table-export.csv`
-- `artifacts/analysis/results-export-reproducibility-documentation-batch/results-table-export.md`
-- `artifacts/analysis/results-export-reproducibility-documentation-batch/figure-data-export.json`
-- `artifacts/analysis/results-export-reproducibility-documentation-batch/reproducibility-package.md`
-- `artifacts/analysis/results-export-reproducibility-documentation-batch/final-mechanism-documentation.md`
-- `artifacts/analysis/results-export-reproducibility-documentation-batch/final-artifact-index.json`
+As a reviewer, I can see a blocked or ready verdict that never exceeds the evidence available in the prior artifacts.
 
-## Required output artifacts
+**Why this priority**: A release gate that overclaims is useless.
 
-- `artifacts/analysis/final-review-release-gate-batch/final-review-release-gate-batch-report.json`
-- `artifacts/analysis/final-review-release-gate-batch/final-review-release-gate-batch-report.md`
-- `artifacts/analysis/final-review-release-gate-batch/final-repository-state-audit.json`
-- `artifacts/analysis/final-review-release-gate-batch/final-artifact-completeness-gate.json`
-- `artifacts/analysis/final-review-release-gate-batch/final-claim-boundary-review.json`
-- `artifacts/analysis/final-review-release-gate-batch/release-tag-readiness-package.md`
-- `artifacts/analysis/final-review-release-gate-batch/final-handoff-and-next-work.md`
+**Independent Test**: Run the feature and verify the report does not claim paper reproduction, performance superiority, or baseline superiority.
 
-## Required report decisions
+### Edge Cases
 
-Required top-level fields:
+- What happens when a required prior artifact is missing? The feature must stop and report a blocked verdict.
+- What happens when the evidence shows reward is static and the policy collapses? The report must recommend a diagnostic or fix path before larger training.
+- What happens when the replay buffer is capped by configuration? The report must identify the cap as expected and note whether it is a potential bottleneck.
 
-- `feature_id`
-- `batch_items_covered`
-- `prerequisite_tags_verified`
-- `feature_063_verified`
-- `repository_state_audit_summary`
-- `artifact_completeness_summary`
-- `claim_boundary_review_summary`
-- `release_tag_readiness_summary`
-- `handoff_summary`
-- `safety_summary`
-- `remaining_blockers`
-- `recommended_next_feature`
-- `final_verdict`
+## Requirements *(mandatory)*
 
-## Passing behavior
+### Functional Requirements
 
-Passing requires:
+- **FR-001**: The feature MUST read and validate the accepted Feature 060, 062, and 063 artifacts.
+- **FR-002**: The feature MUST answer the five diagnostic questions stated in the feature prompt using repo evidence only.
+- **FR-003**: The feature MUST detect whether evaluation mean reward is static across the 100/150/200/500 checkpoint sweep.
+- **FR-004**: The feature MUST detect whether the 500-episode checkpoint is dominated by one action, especially vertical.
+- **FR-005**: The feature MUST inspect the real trainer and replay configuration to determine whether `replay_size = 10000` is an expected cap.
+- **FR-006**: The feature MUST assess whether the current reward/evaluation signal is sufficient for thesis-level claims.
+- **FR-007**: The feature MUST recommend exactly one next action and MUST not recommend 5000 training unless the evidence justifies it.
+- **FR-008**: The feature MUST generate the required JSON and Markdown artifacts under `artifacts/analysis/final-review-release-gate-batch/`.
+- **FR-009**: The feature MUST not modify the environment, DAL, policy, replay, reward, or prior analysis logic.
+- **FR-010**: The feature MUST not claim paper reproduction, performance superiority, or baseline superiority.
 
-- Feature 063 final verdict is `results_export_reproducibility_documentation_batch_passed`
-- Feature 063 reports `remaining_blockers = []`
-- all final export artifacts from Feature 063 exist
-- repository release gate verifies only committed source-backed evidence
-- release tag recommendation is explicit but no tag is created in this feature
-- final handoff lists supported results, unsupported claims, known limitations, and recommended next work
-- no training rerun
-- no new experiment execution
-- no prior Feature 037–063 artifact rewrites
-- no paper reproduction claim
-- no unsupported superiority claim
-- no dependency, policy, environment, or reward-timing drift
+## Success Criteria *(mandatory)*
 
-## Allowed final verdicts
-
-- `final_review_release_gate_batch_passed`
-- `feature_063_prerequisite_blocked`
-- `repository_state_audit_blocked`
-- `artifact_completeness_blocked`
-- `claim_boundary_review_blocked`
-- `release_tag_readiness_blocked`
-- `handoff_blocked`
-- `behavior_drift_detected`
-
-## Routing
-
-If all gates pass:
-
-- `final_verdict = final_review_release_gate_batch_passed`
-- `recommended_next_feature = Release tag creation or thesis/paper writing workflow`
-- `remaining_blockers = []`
-
-If any gate fails, blockers must name the exact failed gate and route to repair.
-
-## Hard scope
-
-Allowed:
-
-- final repository state audit
-- final artifact completeness gate
-- final claim boundary review
-- release tag readiness package
-- final handoff and next-work recommendation
-- release report artifacts and tests
-
-Forbidden:
-
-- creating the release tag inside this feature
-- rerunning training campaigns
-- adding new experiment outputs
-- modifying prior Feature 037–063 artifacts
-- paper reproduction claim
-- unsupported superiority claim
-- dependency changes
-- policy drift
-- environment semantic changes
-- reward timing changes
-- `.specify/feature.json` committed diff
-- `AGENTS.md` rewrite
+- **SC-001**: The report names the final verdict as either blocked or ready.
+- **SC-002**: The report answers all five diagnostic questions with evidence-backed summaries.
+- **SC-003**: The report includes the required next-action decision.
+- **SC-004**: The report remains claim-safe and descriptive only.
+- **SC-005**: The generated artifacts exist and are internally consistent.

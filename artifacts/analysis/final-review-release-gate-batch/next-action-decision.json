@@ -1,0 +1,8 @@
+{
+  "decision_reason": "Do not spend on larger training yet. The evaluation reward is static across the staged budgets, the 500-episode policy collapses to vertical actions, and the current evaluation signal is not rich enough for thesis-level claims.",
+  "recommended_next_action": "audit_reward_and_evaluation_design_before_more_training",
+  "should_audit_reward_and_evaluation_design_first": true,
+  "should_fix_action_collapse_first": true,
+  "should_fix_replay_capacity_or_reporting_first": false,
+  "should_run_larger_training_next": false
+}

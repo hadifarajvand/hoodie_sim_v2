@@ -1,0 +1,18 @@
+{
+  "cap_type": "configured_cap",
+  "evidence_notes": [
+    "CampaignConfig.replay_memory_capacity validates to 10000.",
+    "DDQNTrainer instantiates ReplayBuffer(capacity=self.config.replay_memory_capacity, ...).",
+    "Every Feature 063 checkpoint reports replay_size = 10000."
+  ],
+  "is_cap_blocking_larger_training": true,
+  "is_cap_expected": true,
+  "observed_replay_size_by_checkpoint": {
+    "100": 10000,
+    "150": 10000,
+    "200": 10000,
+    "500": 10000
+  },
+  "replay_buffer_capacity": 10000,
+  "replay_size_cap_detected": true
+}

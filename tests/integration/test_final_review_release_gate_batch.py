@@ -1,27 +1,41 @@
 from __future__ import annotations
 
-import json
-import unittest
+from pathlib import Path
 
-from src.analysis.final_review_release_gate_batch import generate_final_review_release_gate_batch_artifacts
 from src.analysis.final_review_release_gate_batch.config import (
-    ARTIFACT_COMPLETENESS_JSON,
-    CLAIM_BOUNDARY_JSON,
-    HANDOFF_MD,
-    REPOSITORY_STATE_AUDIT_JSON,
-    RELEASE_TAG_READINESS_MD,
+    ACTION_COLLAPSE_REVIEW_JSON,
+    DIAGNOSTIC_FINDINGS_JSON,
+    EVALUATION_SIGNAL_REVIEW_JSON,
+    FIGURES_DIR,
+    FIGURE_MANIFEST_JSON,
+    FINAL_REVIEW_SUMMARY_MD,
+    NEXT_ACTION_DECISION_JSON,
+    OUTPUT_DIR,
+    REPLAY_BUFFER_REVIEW_JSON,
+    REPORT_JSON,
+    REPORT_MD,
+    REWARD_STABILITY_REVIEW_JSON,
 )
+from src.analysis.final_review_release_gate_batch.runner import main
 
 
-class FinalReviewReleaseGateBatchIntegrationTests(unittest.TestCase):
-    def test_artifacts_are_written(self) -> None:
-        report, json_path, md_path = generate_final_review_release_gate_batch_artifacts()
-        self.assertTrue(json_path.exists())
-        self.assertTrue(md_path.exists())
-        for path in [REPOSITORY_STATE_AUDIT_JSON, ARTIFACT_COMPLETENESS_JSON, CLAIM_BOUNDARY_JSON, RELEASE_TAG_READINESS_MD, HANDOFF_MD]:
-            self.assertTrue(path.exists())
-        self.assertEqual(json.loads(json_path.read_text(encoding="utf-8")), report.to_dict())
+def test_gate_command_materializes_required_artifacts() -> None:
+    assert main(["--json"]) == 0
 
-
-if __name__ == "__main__":
-    unittest.main()
+    required_paths = [
+        REPORT_JSON,
+        REPORT_MD,
+        DIAGNOSTIC_FINDINGS_JSON,
+        REWARD_STABILITY_REVIEW_JSON,
+        ACTION_COLLAPSE_REVIEW_JSON,
+        REPLAY_BUFFER_REVIEW_JSON,
+        EVALUATION_SIGNAL_REVIEW_JSON,
+        NEXT_ACTION_DECISION_JSON,
+        FINAL_REVIEW_SUMMARY_MD,
+        FIGURE_MANIFEST_JSON,
+        FIGURES_DIR / "figure_01_reward_stability_gate.png",
+        FIGURES_DIR / "figure_02_vertical_action_collapse_gate.png",
+        FIGURES_DIR / "figure_03_replay_cap_gate.png",
+    ]
+    assert all(path.exists() for path in required_paths)
+    assert OUTPUT_DIR.exists()

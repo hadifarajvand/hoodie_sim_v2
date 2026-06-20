@@ -1,10 +1,10 @@
 from __future__ import annotations
 
-import json
 from pathlib import Path
+import json
 from typing import Any
 
-from .config import OUTPUT_DIR, REPORT_JSON, REPORT_MD
+from .config import FINAL_REVIEW_SUMMARY_MD, OUTPUT_DIR, REPORT_JSON, REPORT_MD
 from .model import FinalReviewReleaseGateBatchReport
 
 
@@ -19,38 +19,74 @@ def _render_markdown(payload: dict[str, Any]) -> str:
             "",
             f"- feature_id: `{payload['feature_id']}`",
             f"- final_verdict: `{payload['final_verdict']}`",
-            f"- recommended_next_feature: `{payload['recommended_next_feature']}`",
+            f"- recommended_next_action: `{payload['recommended_next_action']}`",
             "",
-            "## Repository State Audit Summary",
-            json_dump(payload["repository_state_audit_summary"]).strip(),
+            "## Diagnostic Findings",
+            json_dump(payload["diagnostic_findings"]).strip(),
             "",
-            "## Artifact Completeness Summary",
-            json_dump(payload["artifact_completeness_summary"]).strip(),
+            "## Reward Stability Review",
+            json_dump(payload["reward_stability_review"]).strip(),
             "",
-            "## Claim Boundary Review Summary",
-            json_dump(payload["claim_boundary_review_summary"]).strip(),
+            "## Action Collapse Review",
+            json_dump(payload["action_collapse_review"]).strip(),
             "",
-            "## Release Tag Readiness Summary",
-            json_dump(payload["release_tag_readiness_summary"]).strip(),
+            "## Replay Buffer Review",
+            json_dump(payload["replay_buffer_review"]).strip(),
             "",
-            "## Handoff Summary",
-            json_dump(payload["handoff_summary"]).strip(),
+            "## Evaluation Signal Review",
+            json_dump(payload["evaluation_signal_review"]).strip(),
             "",
-            "## Safety Summary",
-            json_dump(payload["safety_summary"]).strip(),
+            "## Next Action Decision",
+            json_dump(payload["next_action_decision"]).strip(),
+            "",
+            "## Claim Safety Status",
+            json_dump(payload["claim_safety_status"]).strip(),
+            "",
+            "## Figure Manifest",
+            json_dump(payload["figure_manifest"]).strip(),
             "",
             "## Remaining Blockers",
             json_dump(payload["remaining_blockers"]).strip(),
         ]
-    ) + "\n"
+    )
 
 
-def write_final_review_release_gate_batch_report(report: FinalReviewReleaseGateBatchReport, output_dir: Path | str | None = None) -> tuple[Path, Path]:
+def render_final_review_summary_markdown(payload: dict[str, Any]) -> str:
+    lines = [
+        "# Final Review Summary",
+        "",
+        f"- final_verdict: `{payload['final_verdict']}`",
+        f"- recommended_next_action: `{payload['recommended_next_action']}`",
+        f"- evaluation_reward_static_across_budget: `{payload['diagnostic_findings']['evaluation_reward_static_across_budget']}`",
+        f"- vertical_action_collapse_detected: `{payload['diagnostic_findings']['vertical_action_collapse_detected']}`",
+        f"- replay_size_cap_detected: `{payload['diagnostic_findings']['replay_size_cap_detected']}`",
+        f"- evaluation_signal_sufficient_for_claims: `{payload['diagnostic_findings']['evaluation_signal_sufficient_for_claims']}`",
+        "",
+        "## Question Answers",
+    ]
+    for question_key, question_payload in payload["diagnostic_findings"]["questions"].items():
+        lines.append(f"- {question_key}: {question_payload.get('answer')}")
+    lines.extend(
+        [
+            "",
+            "## Claim Safety",
+            json_dump(payload["claim_safety_status"]).strip(),
+        ]
+    )
+    return "\n".join(lines) + "\n"
+
+
+def write_final_review_release_gate_batch_report(
+    report: FinalReviewReleaseGateBatchReport,
+    output_dir: Path | str | None = None,
+) -> tuple[Path, Path, Path]:
     target_dir = Path(output_dir) if output_dir is not None else OUTPUT_DIR
     target_dir.mkdir(parents=True, exist_ok=True)
     payload = report.to_dict()
     json_path = target_dir / REPORT_JSON.name
     md_path = target_dir / REPORT_MD.name
+    summary_path = target_dir / FINAL_REVIEW_SUMMARY_MD.name
     json_path.write_text(json_dump(payload), encoding="utf-8")
     md_path.write_text(_render_markdown(payload), encoding="utf-8")
-    return json_path, md_path
+    summary_path.write_text(render_final_review_summary_markdown(payload), encoding="utf-8")
+    return json_path, md_path, summary_path

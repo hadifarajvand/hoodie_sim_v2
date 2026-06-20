@@ -1,0 +1,29 @@
+{
+  "checkpoint_budgets": [
+    100,
+    150,
+    200,
+    500
+  ],
+  "deterministic_evaluation_path": true,
+  "evaluation_mean_rewards": {
+    "100": -4181.2,
+    "150": -4181.2,
+    "200": -4181.2,
+    "500": -4181.2
+  },
+  "evaluation_reward_static_across_budget": true,
+  "evidence_notes": [
+    "Feature 063 evaluation mean reward is -4181.2 at 100, 150, 200, and 500 episodes.",
+    "Feature 063 evaluation traces are disjoint from training traces and reuse the same evaluation bank.",
+    "Feature 060 evaluation metrics are schema-complete, but delay and timeout are explicitly not claimed there."
+  ],
+  "likely_causes": [
+    "same_evaluation_trace_bank",
+    "deterministic_evaluation_path",
+    "policy_not_affecting_evaluation_reward",
+    "environment_or_evaluator_design_limitation"
+  ],
+  "policy_not_affecting_evaluation_reward": true,
+  "same_evaluation_trace_bank": true
+}

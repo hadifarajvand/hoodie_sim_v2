@@ -1,53 +1,30 @@
-# Quickstart: Feature 064
+# Quickstart: Feature 064 - Final Review and Release Gate Batch
 
-## Run implementation validation
-
-```bash
-python3 -m unittest \
-  tests.unit.test_final_review_release_gate_batch_schema \
-  tests.unit.test_final_review_release_gate_batch_metrics \
-  tests.unit.test_final_review_release_gate_batch_behavior_equivalence \
-  tests.integration.test_final_review_release_gate_batch \
-  tests.integration.test_final_review_release_gate_batch_report \
-  tests.integration.test_final_review_release_gate_batch_scope_guard
-
-python3 -m src.analysis.final_review_release_gate_batch
-```
-
-## Inspect report
+## Run the feature
 
 ```bash
-python3 - <<'PY'
-import json
-p = 'artifacts/analysis/final-review-release-gate-batch/final-review-release-gate-batch-report.json'
-d = json.load(open(p))
-print('feature_063_verified =', d.get('feature_063_verified'))
-print('batch_items_covered =', d.get('batch_items_covered'))
-print('repository_state_audit_summary =', d.get('repository_state_audit_summary'))
-print('artifact_completeness_summary =', d.get('artifact_completeness_summary'))
-print('claim_boundary_review_summary =', d.get('claim_boundary_review_summary'))
-print('release_tag_readiness_summary =', d.get('release_tag_readiness_summary'))
-print('handoff_summary =', d.get('handoff_summary'))
-print('safety_summary =', d.get('safety_summary'))
-print('remaining_blockers =', d.get('remaining_blockers'))
-print('final_verdict =', d.get('final_verdict'))
-print('recommended_next_feature =', d.get('recommended_next_feature'))
-PY
+PY=/Users/hadi/Documents/GitHub/hoodie_sim_v2/.venvmac/bin/python
+$PY -m src.analysis.final_review_release_gate_batch.runner --json
 ```
 
-## Expected passing result
-
-```text
-final_verdict = final_review_release_gate_batch_passed
-recommended_next_feature = Release tag creation or thesis/paper writing workflow
-remaining_blockers = []
-```
-
-## Required git proof
+## Run the focused tests
 
 ```bash
-git status --short
-git diff --name-only main...HEAD
-git diff --stat main...HEAD
-git diff --cached --name-only
+$PY -m pytest tests/unit -vv -k "final_review_release_gate_batch"
+$PY -m pytest tests/integration -vv -k "final_review_release_gate_batch"
 ```
+
+## Expected artifacts
+
+- `artifacts/analysis/final-review-release-gate-batch/final-review-release-gate-report.json`
+- `artifacts/analysis/final-review-release-gate-batch/final-review-release-gate-report.md`
+- `artifacts/analysis/final-review-release-gate-batch/diagnostic-findings.json`
+- `artifacts/analysis/final-review-release-gate-batch/reward-stability-review.json`
+- `artifacts/analysis/final-review-release-gate-batch/action-collapse-review.json`
+- `artifacts/analysis/final-review-release-gate-batch/replay-buffer-review.json`
+- `artifacts/analysis/final-review-release-gate-batch/evaluation-signal-review.json`
+- `artifacts/analysis/final-review-release-gate-batch/next-action-decision.json`
+- `artifacts/analysis/final-review-release-gate-batch/final-review-summary.md`
+- `artifacts/analysis/final-review-release-gate-batch/figures/figure_01_reward_stability_gate.png`
+- `artifacts/analysis/final-review-release-gate-batch/figures/figure_02_vertical_action_collapse_gate.png`
+- `artifacts/analysis/final-review-release-gate-batch/figures/figure_03_replay_cap_gate.png`
