@@ -1,0 +1,47 @@
+{
+  "by_checkpoint": [
+    {
+      "event_type_counts": {
+        "deadline_expired": 100,
+        "deadline_reached": 100,
+        "reward_emitted": 100,
+        "task_dropped": 100
+      },
+      "lifecycle_only_event_count": 100,
+      "pending_event_count": 0,
+      "reward_event_count": 100,
+      "terminal_outcome_event_count": 100,
+      "training_budget": 50
+    },
+    {
+      "event_type_counts": {
+        "deadline_expired": 100,
+        "deadline_reached": 100,
+        "reward_emitted": 100,
+        "task_dropped": 100
+      },
+      "lifecycle_only_event_count": 100,
+      "pending_event_count": 0,
+      "reward_event_count": 100,
+      "terminal_outcome_event_count": 100,
+      "training_budget": 100
+    }
+  ],
+  "checkpoint_budgets": [
+    50,
+    100
+  ],
+  "overall": {
+    "event_type_counts": {
+      "deadline_expired": 200,
+      "deadline_reached": 200,
+      "reward_emitted": 200,
+      "task_dropped": 200
+    },
+    "lifecycle_only_event_count": 200,
+    "pending_event_count": 0,
+    "reward_event_count": 200,
+    "terminal_outcome_event_count": 200
+  },
+  "sample_events": []
+}

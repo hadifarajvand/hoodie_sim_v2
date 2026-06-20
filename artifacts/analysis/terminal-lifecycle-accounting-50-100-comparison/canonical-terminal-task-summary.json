@@ -1,0 +1,84 @@
+{
+  "by_checkpoint": [
+    {
+      "overall": {
+        "canonical_completion_count": 0,
+        "canonical_completion_ratio": 0.0,
+        "canonical_deadline_violation_ratio": 1.0,
+        "canonical_drop_count": 100,
+        "canonical_drop_ratio": 1.0,
+        "canonical_mean_completion_latency_slots": null,
+        "canonical_mean_drop_latency_slots": 4.0,
+        "canonical_mean_terminal_latency_slots": 4.0,
+        "canonical_pending_count": 0,
+        "canonical_pending_ratio": 0.0,
+        "canonical_reward_per_decision": -1.0,
+        "canonical_reward_per_task": -1.0,
+        "canonical_task_count": 100,
+        "canonical_task_reward_count": 100,
+        "canonical_task_reward_total": -100.0,
+        "canonical_tasks_per_decision": 1.0,
+        "canonical_terminal_task_count": 100,
+        "canonical_unknown_count": 0,
+        "double_count_detected": false,
+        "duplicate_reward_event_count": 0,
+        "duplicate_terminal_event_count": 0,
+        "raw_event_reward_count": 100,
+        "raw_event_reward_total": -100.0,
+        "raw_reward_emission_count": 100,
+        "raw_terminal_event_count": 100,
+        "raw_vs_canonical_reward_delta": 0.0
+      },
+      "training_budget": 50
+    },
+    {
+      "overall": {
+        "canonical_completion_count": 0,
+        "canonical_completion_ratio": 0.0,
+        "canonical_deadline_violation_ratio": 1.0,
+        "canonical_drop_count": 100,
+        "canonical_drop_ratio": 1.0,
+        "canonical_mean_completion_latency_slots": null,
+        "canonical_mean_drop_latency_slots": 4.0,
+        "canonical_mean_terminal_latency_slots": 4.0,
+        "canonical_pending_count": 0,
+        "canonical_pending_ratio": 0.0,
+        "canonical_reward_per_decision": -1.0,
+        "canonical_reward_per_task": -1.0,
+        "canonical_task_count": 100,
+        "canonical_task_reward_count": 100,
+        "canonical_task_reward_total": -100.0,
+        "canonical_tasks_per_decision": 1.0,
+        "canonical_terminal_task_count": 100,
+        "canonical_unknown_count": 0,
+        "double_count_detected": false,
+        "duplicate_reward_event_count": 0,
+        "duplicate_terminal_event_count": 0,
+        "raw_event_reward_count": 100,
+        "raw_event_reward_total": -100.0,
+        "raw_reward_emission_count": 100,
+        "raw_terminal_event_count": 100,
+        "raw_vs_canonical_reward_delta": 0.0
+      },
+      "training_budget": 100
+    }
+  ],
+  "checkpoint_budgets": [
+    50,
+    100
+  ],
+  "overall": {
+    "canonical_completion_count": 0,
+    "canonical_drop_count": 200,
+    "canonical_pending_count": 0,
+    "canonical_task_count": 200,
+    "canonical_task_reward_count": 200,
+    "canonical_task_reward_total": -200.0,
+    "canonical_terminal_task_count": 200,
+    "canonical_unknown_count": 0,
+    "raw_reward_event_count": 200,
+    "raw_terminal_event_count": 200,
+    "raw_vs_canonical_reward_delta": 0.0
+  },
+  "sample_task_outcomes": []
+}

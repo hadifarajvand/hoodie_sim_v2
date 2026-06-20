@@ -1,0 +1,12 @@
+{
+  "figure_count": 5,
+  "figure_directory": "artifacts/analysis/terminal-lifecycle-accounting-50-100-comparison/figures",
+  "figure_files": [
+    "figure_01_terminal_event_reconciliation_50_vs_100.png",
+    "figure_02_completion_drop_pending_50_vs_100.png",
+    "figure_03_reward_reconciliation_50_vs_100.png",
+    "figure_04_policy_effect_50_vs_100.png",
+    "figure_05_completion_path_event_counts.png"
+  ],
+  "figures_generated": true
+}

@@ -1,0 +1,151 @@
+{
+  "checkpoint_comparison": {
+    "by_checkpoint": [
+      {
+        "completed_count": 0,
+        "completion_path_audit": {
+          "completed_canonical_task_count": 0,
+          "deadline_expired_event_count": 100,
+          "deadline_reached_event_count": 100,
+          "deadline_reached_then_task_dropped_duplicate_detected": true,
+          "execution_completed_but_no_task_completed_detected": false,
+          "execution_completed_event_count": 0,
+          "pending_at_horizon_count": 0,
+          "reward_emitted_event_count": 100,
+          "reward_emitted_without_terminal_outcome_detected": false,
+          "task_completed_but_no_reward_detected": false,
+          "task_completed_event_count": 0,
+          "task_dropped_event_count": 100,
+          "terminal_outcome_without_reward_detected": false
+        },
+        "cumulative_training_episode_count": 50,
+        "dropped_count": 100,
+        "duplicate_reward_event_count": 0,
+        "duplicate_terminal_event_count": 0,
+        "evaluation_action_distribution": {
+          "horizontal": 5,
+          "local": 5,
+          "vertical": 90
+        },
+        "evaluation_decision_count": 100,
+        "mean_reward": -100.0,
+        "mean_terminal_latency_slots": 4.0,
+        "pending_count": 0,
+        "raw_vs_canonical_reward_delta": 0.0,
+        "reward_event_coverage_ratio": 1.0,
+        "reward_per_decision": -1.0,
+        "reward_per_task": -1.0,
+        "reward_reconciled": true,
+        "terminal_event_coverage_ratio": 1.0,
+        "terminal_reconciled": true,
+        "training_budget": 50
+      },
+      {
+        "completed_count": 0,
+        "completion_path_audit": {
+          "completed_canonical_task_count": 0,
+          "deadline_expired_event_count": 100,
+          "deadline_reached_event_count": 100,
+          "deadline_reached_then_task_dropped_duplicate_detected": true,
+          "execution_completed_but_no_task_completed_detected": false,
+          "execution_completed_event_count": 0,
+          "pending_at_horizon_count": 0,
+          "reward_emitted_event_count": 100,
+          "reward_emitted_without_terminal_outcome_detected": false,
+          "task_completed_but_no_reward_detected": false,
+          "task_completed_event_count": 0,
+          "task_dropped_event_count": 100,
+          "terminal_outcome_without_reward_detected": false
+        },
+        "cumulative_training_episode_count": 100,
+        "dropped_count": 100,
+        "duplicate_reward_event_count": 0,
+        "duplicate_terminal_event_count": 0,
+        "evaluation_action_distribution": {
+          "horizontal": 0,
+          "local": 0,
+          "vertical": 100
+        },
+        "evaluation_decision_count": 100,
+        "mean_reward": -100.0,
+        "mean_terminal_latency_slots": 4.0,
+        "pending_count": 0,
+        "raw_vs_canonical_reward_delta": 0.0,
+        "reward_event_coverage_ratio": 1.0,
+        "reward_per_decision": -1.0,
+        "reward_per_task": -1.0,
+        "reward_reconciled": true,
+        "terminal_event_coverage_ratio": 1.0,
+        "terminal_reconciled": true,
+        "training_budget": 100
+      }
+    ],
+    "checkpoint_budgets": [
+      50,
+      100
+    ],
+    "comparison": {
+      "action_distribution_changed": true,
+      "budget_pair": [
+        50,
+        100
+      ],
+      "completed_count_delta": 0,
+      "dropped_count_delta": 0,
+      "mean_reward_delta": 0.0,
+      "pending_count_delta": 0,
+      "raw_vs_canonical_reward_delta_change": 0.0,
+      "reward_event_coverage_delta": 0.0,
+      "reward_per_decision_delta": 0.0,
+      "reward_per_task_delta": 0.0,
+      "terminal_event_coverage_delta": 0.0
+    }
+  },
+  "comparison": {
+    "action_distribution_changed": true,
+    "budget_pair": [
+      50,
+      100
+    ],
+    "candidate_100_action_distribution": {
+      "horizontal": 0,
+      "local": 0,
+      "vertical": 100
+    },
+    "candidate_100_completion_count": 0,
+    "candidate_100_drop_count": 100,
+    "candidate_100_mean_reward": -100.0,
+    "candidate_100_raw_vs_canonical_reward_delta": 0.0,
+    "candidate_100_reward_event_coverage_ratio": 1.0,
+    "candidate_100_terminal_event_coverage_ratio": 1.0,
+    "candidate_50_action_distribution": {
+      "horizontal": 5,
+      "local": 5,
+      "vertical": 90
+    },
+    "candidate_50_completion_count": 0,
+    "candidate_50_drop_count": 100,
+    "candidate_50_mean_reward": -100.0,
+    "candidate_50_raw_vs_canonical_reward_delta": 0.0,
+    "candidate_50_reward_event_coverage_ratio": 1.0,
+    "candidate_50_terminal_event_coverage_ratio": 1.0,
+    "candidate_action_distribution_changed_by_budget": true,
+    "completed_count_delta": 0,
+    "dropped_count_delta": 0,
+    "mean_reward_delta": 0.0,
+    "pending_count_delta": 0,
+    "raw_vs_canonical_reward_delta_change": 0.0,
+    "reward_event_coverage_delta": 0.0,
+    "reward_per_decision_delta": 0.0,
+    "reward_per_task_delta": 0.0,
+    "terminal_event_coverage_delta": 0.0
+  },
+  "policy_effect_summary": {
+    "candidate_policy_vertical_collapse_in_evaluation": true,
+    "candidate_policy_vertical_collapse_in_training_replay_window": true,
+    "evaluation_action_distribution_static_across_budget": false,
+    "evaluation_reward_static_after_terminal_repair": true,
+    "policy_affects_reward": "false",
+    "policy_affects_terminal_outcomes": "false"
+  }
+}

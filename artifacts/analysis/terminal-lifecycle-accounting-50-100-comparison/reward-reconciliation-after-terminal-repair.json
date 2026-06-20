@@ -1,0 +1,45 @@
+{
+  "by_checkpoint": [
+    {
+      "canonical_task_reward_count": 100,
+      "canonical_task_reward_total": -100.0,
+      "checkpoint_budget": 50,
+      "raw_event_reward_count": 100,
+      "raw_event_reward_total": -100.0,
+      "raw_reward_event_recovery_blocked": false,
+      "raw_vs_canonical_reward_delta": 0.0,
+      "reward_reconciled": true,
+      "reward_reconciliation_tolerance": 1e-09,
+      "terminal_event_recovery_blocked": false,
+      "training_budget": 50
+    },
+    {
+      "canonical_task_reward_count": 100,
+      "canonical_task_reward_total": -100.0,
+      "checkpoint_budget": 100,
+      "raw_event_reward_count": 100,
+      "raw_event_reward_total": -100.0,
+      "raw_reward_event_recovery_blocked": false,
+      "raw_vs_canonical_reward_delta": 0.0,
+      "reward_reconciled": true,
+      "reward_reconciliation_tolerance": 1e-09,
+      "terminal_event_recovery_blocked": false,
+      "training_budget": 100
+    }
+  ],
+  "checkpoint_budgets": [
+    50,
+    100
+  ],
+  "overall": {
+    "canonical_task_reward_count": 200,
+    "canonical_task_reward_total": -200.0,
+    "raw_event_reward_count": 200,
+    "raw_event_reward_total": -200.0,
+    "raw_reward_event_recovery_blocked": false,
+    "raw_vs_canonical_reward_delta": 0.0,
+    "reward_reconciled": true,
+    "reward_reconciliation_tolerance": 1e-09,
+    "terminal_event_recovery_blocked": false
+  }
+}

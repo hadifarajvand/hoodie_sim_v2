@@ -1,0 +1,7 @@
+{
+  "decision_reason": "All examined policies still fail to complete tasks, so the completion path remains the next diagnostic target.",
+  "evidence_notes": [
+    "zero_completion_across_policies=true"
+  ],
+  "recommended_next_action": "fix_completion_path_next"
+}
