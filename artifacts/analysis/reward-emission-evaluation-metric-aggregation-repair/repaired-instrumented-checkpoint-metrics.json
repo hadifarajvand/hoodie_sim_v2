@@ -1,0 +1,4502 @@
+[
+  {
+    "action_accounting_reconciled": true,
+    "action_count_total": 60,
+    "action_distribution": {
+      "horizontal": 20,
+      "local": 10,
+      "vertical": 30
+    },
+    "canonical_task_level_metrics": {
+      "canonical_completion_count": 1,
+      "canonical_completion_ratio": 0.3333333333333333,
+      "canonical_deadline_violation_ratio": 0.3333333333333333,
+      "canonical_drop_count": 1,
+      "canonical_drop_ratio": 0.3333333333333333,
+      "canonical_mean_completion_latency_slots": 4.0,
+      "canonical_mean_drop_latency_slots": 4.0,
+      "canonical_mean_terminal_latency_slots": 4.0,
+      "canonical_pending_count": 1,
+      "canonical_pending_ratio": 0.3333333333333333,
+      "canonical_reward_count": 2,
+      "canonical_reward_per_decision": -14.666666666666666,
+      "canonical_reward_per_task": -14.666666666666666,
+      "canonical_task_count": 3,
+      "canonical_task_mean_reward": -22.0,
+      "canonical_task_reward_count": 2,
+      "canonical_task_reward_total": -44.0,
+      "canonical_tasks_per_decision": 1.0,
+      "canonical_terminal_task_count": 2,
+      "canonical_unknown_count": 0,
+      "completed_count": 1,
+      "completion_reward_count": 1,
+      "double_count_detected": true,
+      "drop_penalty_count": 1,
+      "dropped_count": 1,
+      "duplicate_reward_event_count": 0,
+      "duplicate_terminal_event_count": 1,
+      "mean_reward": 0.0,
+      "pending_at_horizon_count": 1,
+      "raw_event_reward_count": 2,
+      "raw_event_reward_total": -44.0,
+      "raw_reward_emission_count": 2,
+      "raw_reward_event_count": 2,
+      "raw_terminal_event_count": 3,
+      "raw_vs_canonical_reward_delta": 0.0,
+      "reward_bearing_transition_count": 2,
+      "terminal_transition_count": 2,
+      "total_reward": -44.0,
+      "unknown_count": 0
+    },
+    "claim_safety_status": {
+      "baseline_superiority_claim_made": false,
+      "claim_safety_passed": true,
+      "paper_reproduction_claim_made": false,
+      "performance_superiority_claim_made": false
+    },
+    "comparison_ready": true,
+    "completed_task_count": 1,
+    "cumulative_training_action_distribution": {
+      "horizontal": 20,
+      "local": 10,
+      "vertical": 30
+    },
+    "cumulative_training_episode_count": 100,
+    "dropped_task_count": 1,
+    "episode_length": 110,
+    "evaluation_action_by_episode_id": {
+      "0": {
+        "decision_count": 3
+      }
+    },
+    "evaluation_action_by_trace_id": {
+      "trace-0": {
+        "decision_count": 3
+      }
+    },
+    "evaluation_action_distribution": {
+      "horizontal": 1,
+      "local": 1,
+      "vertical": 1
+    },
+    "evaluation_action_sequence_sample": [
+      {
+        "episode_id": 0,
+        "selected_action": "vertical",
+        "task_id": 1,
+        "trace_id": "trace-0"
+      }
+    ],
+    "evaluation_decision_count": 3,
+    "evaluation_episode_count": 100,
+    "evaluation_legal_action_mask_distribution": {
+      "local=1|horizontal=1|vertical=1": 3
+    },
+    "evaluation_policy_result": {
+      "candidate_policy_vertical_share": 0.3333333333333333,
+      "canonical_reward_decomposition": {
+        "canonical_task_mean_reward_by_action": {
+          "horizontal": 0.0,
+          "local": 0.0,
+          "vertical": -22.0
+        },
+        "canonical_task_reward_count_by_action": {
+          "horizontal": 0,
+          "local": 0,
+          "vertical": 2
+        },
+        "canonical_task_reward_total_by_action": {
+          "horizontal": 0.0,
+          "local": 0.0,
+          "vertical": -44.0
+        },
+        "completion_reward_count_by_action": {
+          "horizontal": 0,
+          "local": 0,
+          "vertical": 1
+        },
+        "drop_penalty_count_by_action": {
+          "horizontal": 0,
+          "local": 0,
+          "vertical": 1
+        },
+        "nan_reward_count": 0,
+        "raw_event_reward_count_by_action": {
+          "horizontal": 0,
+          "local": 0,
+          "vertical": 2
+        },
+        "raw_event_reward_total_by_action": {
+          "horizontal": 0.0,
+          "local": 0.0,
+          "vertical": -44.0
+        },
+        "raw_vs_canonical_reward_delta_by_action": {
+          "horizontal": 0.0,
+          "local": 0.0,
+          "vertical": 0.0
+        },
+        "raw_vs_canonical_reward_delta_total": 0.0,
+        "reward_available_count": 2,
+        "reward_by_action": {
+          "horizontal": 0.0,
+          "local": 0.0,
+          "vertical": -44.0
+        },
+        "reward_by_action_and_terminal_outcome": {
+          "horizontal": {
+            "completed": {
+              "canonical_task_mean_reward": 0.0,
+              "canonical_task_reward_count": 0,
+              "canonical_task_reward_total": 0.0,
+              "count": 0,
+              "mean_reward": 0.0,
+              "raw_event_reward_count": 0,
+              "raw_event_reward_total": 0.0,
+              "raw_vs_canonical_reward_delta": 0.0,
+              "total_reward": 0.0
+            },
+            "dropped": {
+              "canonical_task_mean_reward": 0.0,
+              "canonical_task_reward_count": 0,
+              "canonical_task_reward_total": 0.0,
+              "count": 0,
+              "mean_reward": 0.0,
+              "raw_event_reward_count": 0,
+              "raw_event_reward_total": 0.0,
+              "raw_vs_canonical_reward_delta": 0.0,
+              "total_reward": 0.0
+            }
+          },
+          "local": {
+            "completed": {
+              "canonical_task_mean_reward": 0.0,
+              "canonical_task_reward_count": 0,
+              "canonical_task_reward_total": 0.0,
+              "count": 0,
+              "mean_reward": 0.0,
+              "raw_event_reward_count": 0,
+              "raw_event_reward_total": 0.0,
+              "raw_vs_canonical_reward_delta": 0.0,
+              "total_reward": 0.0
+            },
+            "dropped": {
+              "canonical_task_mean_reward": 0.0,
+              "canonical_task_reward_count": 0,
+              "canonical_task_reward_total": 0.0,
+              "count": 0,
+              "mean_reward": 0.0,
+              "raw_event_reward_count": 0,
+              "raw_event_reward_total": 0.0,
+              "raw_vs_canonical_reward_delta": 0.0,
+              "total_reward": 0.0
+            }
+          },
+          "vertical": {
+            "completed": {
+              "canonical_task_mean_reward": -4.0,
+              "canonical_task_reward_count": 1,
+              "canonical_task_reward_total": -4.0,
+              "count": 1,
+              "mean_reward": -4.0,
+              "raw_event_reward_count": 1,
+              "raw_event_reward_total": -4.0,
+              "raw_vs_canonical_reward_delta": 0.0,
+              "total_reward": -4.0
+            },
+            "dropped": {
+              "canonical_task_mean_reward": -40.0,
+              "canonical_task_reward_count": 1,
+              "canonical_task_reward_total": -40.0,
+              "count": 1,
+              "mean_reward": -40.0,
+              "raw_event_reward_count": 1,
+              "raw_event_reward_total": -40.0,
+              "raw_vs_canonical_reward_delta": 0.0,
+              "total_reward": -40.0
+            }
+          }
+        },
+        "reward_by_terminal_outcome": {
+          "completed": -4.0,
+          "dropped": -40.0
+        },
+        "zero_reward_count": 0
+      },
+      "canonical_task_outcome_summary": {
+        "by_action": {
+          "horizontal": {
+            "canonical_completion_ratio": 0.0,
+            "canonical_deadline_violation_ratio": 0.0,
+            "canonical_drop_ratio": 0.0,
+            "canonical_pending_ratio": 1.0,
+            "canonical_reward_count": 0,
+            "canonical_reward_total": 0.0,
+            "canonical_task_count": 1,
+            "canonical_task_mean_reward": 0.0,
+            "canonical_terminal_task_count": 0,
+            "completed_count": 0,
+            "completion_reward_count": 0,
+            "decision_count": 1,
+            "double_count_detected": false,
+            "drop_penalty_count": 0,
+            "dropped_count": 0,
+            "duplicate_reward_event_count": 0,
+            "duplicate_terminal_event_count": 0,
+            "mean_completion_latency_slots": null,
+            "mean_drop_latency_slots": null,
+            "mean_reward": 0.0,
+            "mean_terminal_latency_slots": null,
+            "pending_at_horizon_count": 1,
+            "raw_event_reward_count": 0,
+            "raw_event_reward_total": 0.0,
+            "raw_reward_emission_count": 0,
+            "raw_terminal_event_count": 0,
+            "raw_vs_canonical_reward_delta": 0.0,
+            "reward_bearing_transition_count": 0,
+            "terminal_transition_count": 0,
+            "total_reward": 0.0,
+            "unknown_count": 0
+          },
+          "local": {
+            "canonical_completion_ratio": 0.0,
+            "canonical_deadline_violation_ratio": 0.0,
+            "canonical_drop_ratio": 0.0,
+            "canonical_pending_ratio": 0.0,
+            "canonical_reward_count": 0,
+            "canonical_reward_total": 0.0,
+            "canonical_task_count": 0,
+            "canonical_task_mean_reward": 0.0,
+            "canonical_terminal_task_count": 0,
+            "completed_count": 0,
+            "completion_reward_count": 0,
+            "decision_count": 0,
+            "double_count_detected": false,
+            "drop_penalty_count": 0,
+            "dropped_count": 0,
+            "duplicate_reward_event_count": 0,
+            "duplicate_terminal_event_count": 0,
+            "mean_completion_latency_slots": null,
+            "mean_drop_latency_slots": null,
+            "mean_reward": 0.0,
+            "mean_terminal_latency_slots": null,
+            "pending_at_horizon_count": 0,
+            "raw_event_reward_count": 0,
+            "raw_event_reward_total": 0.0,
+            "raw_reward_emission_count": 0,
+            "raw_terminal_event_count": 0,
+            "raw_vs_canonical_reward_delta": 0.0,
+            "reward_bearing_transition_count": 0,
+            "terminal_transition_count": 0,
+            "total_reward": 0.0,
+            "unknown_count": 0
+          },
+          "vertical": {
+            "canonical_completion_ratio": 0.5,
+            "canonical_deadline_violation_ratio": 0.5,
+            "canonical_drop_ratio": 0.5,
+            "canonical_pending_ratio": 0.0,
+            "canonical_reward_count": 2,
+            "canonical_reward_total": -44.0,
+            "canonical_task_count": 2,
+            "canonical_task_mean_reward": -22.0,
+            "canonical_terminal_task_count": 2,
+            "completed_count": 1,
+            "completion_reward_count": 1,
+            "decision_count": 2,
+            "double_count_detected": true,
+            "drop_penalty_count": 1,
+            "dropped_count": 1,
+            "duplicate_reward_event_count": 0,
+            "duplicate_terminal_event_count": 1,
+            "mean_completion_latency_slots": 4.0,
+            "mean_drop_latency_slots": 4.0,
+            "mean_reward": -22.0,
+            "mean_terminal_latency_slots": 4.0,
+            "pending_at_horizon_count": 0,
+            "raw_event_reward_count": 2,
+            "raw_event_reward_total": -44.0,
+            "raw_reward_emission_count": 2,
+            "raw_terminal_event_count": 3,
+            "raw_vs_canonical_reward_delta": 0.0,
+            "reward_bearing_transition_count": 2,
+            "terminal_transition_count": 2,
+            "total_reward": -44.0,
+            "unknown_count": 0
+          }
+        },
+        "checkpoint_budget": 100,
+        "overall": {
+          "canonical_completion_count": 1,
+          "canonical_completion_ratio": 0.3333333333333333,
+          "canonical_deadline_violation_ratio": 0.3333333333333333,
+          "canonical_drop_count": 1,
+          "canonical_drop_ratio": 0.3333333333333333,
+          "canonical_mean_completion_latency_slots": 4.0,
+          "canonical_mean_drop_latency_slots": 4.0,
+          "canonical_mean_terminal_latency_slots": 4.0,
+          "canonical_pending_count": 1,
+          "canonical_pending_ratio": 0.3333333333333333,
+          "canonical_reward_count": 2,
+          "canonical_reward_per_decision": -14.666666666666666,
+          "canonical_reward_per_task": -14.666666666666666,
+          "canonical_task_count": 3,
+          "canonical_task_mean_reward": -22.0,
+          "canonical_task_reward_count": 2,
+          "canonical_task_reward_total": -44.0,
+          "canonical_tasks_per_decision": 1.0,
+          "canonical_terminal_task_count": 2,
+          "canonical_unknown_count": 0,
+          "completed_count": 1,
+          "completion_reward_count": 1,
+          "double_count_detected": true,
+          "drop_penalty_count": 1,
+          "dropped_count": 1,
+          "duplicate_reward_event_count": 0,
+          "duplicate_terminal_event_count": 1,
+          "mean_reward": 0.0,
+          "pending_at_horizon_count": 1,
+          "raw_event_reward_count": 2,
+          "raw_event_reward_total": -44.0,
+          "raw_reward_emission_count": 2,
+          "raw_reward_event_count": 2,
+          "raw_terminal_event_count": 3,
+          "raw_vs_canonical_reward_delta": 0.0,
+          "reward_bearing_transition_count": 2,
+          "terminal_transition_count": 2,
+          "total_reward": -44.0,
+          "unknown_count": 0
+        },
+        "reward_coverage": {
+          "raw_reward_event_count": 2,
+          "raw_terminal_event_count": 3,
+          "reward_available_count": 2
+        }
+      },
+      "canonical_task_reward_total": -44.0,
+      "checkpoint_budget": 100,
+      "completed_count": 1,
+      "decision_records_summary": {
+        "decision_count": 3,
+        "evaluation_action_distribution_source": "evaluation_episodes",
+        "sample_records": [
+          {
+            "episode_id": 0,
+            "selected_action": "vertical",
+            "task_id": 1,
+            "trace_id": "trace-0"
+          }
+        ]
+      },
+      "dropped_count": 1,
+      "episode_length": 110,
+      "episode_reward_totals": [
+        -44.0
+      ],
+      "episode_summaries": [
+        {
+          "canonical_reward_total": -44.0,
+          "completion_count": 1,
+          "decision_count": 3,
+          "drop_count": 1,
+          "episode_id": 0,
+          "pending_count": 1,
+          "raw_reward_event_count": 2,
+          "raw_reward_total": -44.0,
+          "reward_recovered": true,
+          "terminal_task_count": 2,
+          "trace_id": "trace-0",
+          "unknown_count": 0
+        }
+      ],
+      "evaluation_action_by_episode_id": {
+        "0": {
+          "decision_count": 3
+        }
+      },
+      "evaluation_action_by_trace_id": {
+        "trace-0": {
+          "decision_count": 3
+        }
+      },
+      "evaluation_action_distribution": {
+        "horizontal": 1,
+        "local": 1,
+        "vertical": 1
+      },
+      "evaluation_action_distribution_source": "evaluation_episodes",
+      "evaluation_action_sequence_sample": [
+        {
+          "episode_id": 0,
+          "selected_action": "vertical",
+          "task_id": 1,
+          "trace_id": "trace-0"
+        }
+      ],
+      "evaluation_decision_count": 3,
+      "evaluation_episode_count": 100,
+      "evaluation_legal_action_mask_distribution": {
+        "local=1|horizontal=1|vertical=1": 3
+      },
+      "evaluation_reward_summary": {
+        "candidate_reproduction_supported": true,
+        "canonical_task_count": 3,
+        "canonical_task_reward_count": 2,
+        "canonical_task_reward_total": -44.0,
+        "canonical_terminal_task_count": 2,
+        "checkpoint_budget": 100,
+        "completed_task_count": 1,
+        "dropped_task_count": 1,
+        "duplicate_reward_event_count": 0,
+        "duplicate_terminal_event_count": 1,
+        "evaluation_episode_count": 100,
+        "evaluation_on_training_traces": false,
+        "mean_reward": -44.0,
+        "pending_at_horizon_count": 1,
+        "raw_event_reward_count": 2,
+        "raw_event_reward_total": -44.0,
+        "raw_reward_emission_count": 2,
+        "raw_reward_event_recovery_blocked": false,
+        "raw_terminal_event_count": 3,
+        "raw_vs_canonical_reward_delta": 0.0,
+        "reward_available_count": 2,
+        "reward_bearing_transition_count": 2,
+        "reward_reconciled": true,
+        "same_evaluation_trace_bank": true,
+        "terminal_event_recovery_blocked": false,
+        "terminal_transition_count": 2,
+        "trace_bank_disjoint": true,
+        "trace_bank_ids": {
+          "evaluation": "eval-bank",
+          "training": "train-bank"
+        },
+        "trace_ids": [
+          "trace-0"
+        ],
+        "unknown_task_count": 0
+      },
+      "evaluation_trace_bank_id": "eval-bank",
+      "paper_aligned_diagnostic_metrics": {
+        "canonical_completion_ratio": 0.3333333333333333,
+        "canonical_deadline_violation_ratio": 0.3333333333333333,
+        "canonical_drop_ratio": 0.3333333333333333,
+        "canonical_mean_completion_latency_slots": 4.0,
+        "canonical_mean_drop_latency_slots": 4.0,
+        "canonical_mean_terminal_latency_slots": 4.0,
+        "canonical_pending_ratio": 0.3333333333333333,
+        "canonical_reward_per_decision": -14.666666666666666,
+        "canonical_reward_per_task": -14.666666666666666,
+        "canonical_tasks_per_decision": 1.0,
+        "raw_reward_event_coverage_ratio": 1.0,
+        "reward_reconciliation_status": "passed",
+        "terminal_event_coverage_ratio": 1.5,
+        "training_budget": 100
+      },
+      "pending_at_horizon_count": 1,
+      "per_action_outcome_summary": {
+        "horizontal": {
+          "canonical_completion_ratio": 0.0,
+          "canonical_deadline_violation_ratio": 0.0,
+          "canonical_drop_ratio": 0.0,
+          "canonical_pending_ratio": 1.0,
+          "canonical_reward_count": 0,
+          "canonical_reward_total": 0.0,
+          "canonical_task_count": 1,
+          "canonical_task_mean_reward": 0.0,
+          "canonical_terminal_task_count": 0,
+          "completed_count": 0,
+          "completion_reward_count": 0,
+          "decision_count": 1,
+          "double_count_detected": false,
+          "drop_penalty_count": 0,
+          "dropped_count": 0,
+          "duplicate_reward_event_count": 0,
+          "duplicate_terminal_event_count": 0,
+          "mean_completion_latency_slots": null,
+          "mean_drop_latency_slots": null,
+          "mean_reward": 0.0,
+          "mean_terminal_latency_slots": null,
+          "pending_at_horizon_count": 1,
+          "raw_event_reward_count": 0,
+          "raw_event_reward_total": 0.0,
+          "raw_reward_emission_count": 0,
+          "raw_terminal_event_count": 0,
+          "raw_vs_canonical_reward_delta": 0.0,
+          "reward_bearing_transition_count": 0,
+          "terminal_transition_count": 0,
+          "total_reward": 0.0,
+          "unknown_count": 0
+        },
+        "local": {
+          "canonical_completion_ratio": 0.0,
+          "canonical_deadline_violation_ratio": 0.0,
+          "canonical_drop_ratio": 0.0,
+          "canonical_pending_ratio": 0.0,
+          "canonical_reward_count": 0,
+          "canonical_reward_total": 0.0,
+          "canonical_task_count": 0,
+          "canonical_task_mean_reward": 0.0,
+          "canonical_terminal_task_count": 0,
+          "completed_count": 0,
+          "completion_reward_count": 0,
+          "decision_count": 0,
+          "double_count_detected": false,
+          "drop_penalty_count": 0,
+          "dropped_count": 0,
+          "duplicate_reward_event_count": 0,
+          "duplicate_terminal_event_count": 0,
+          "mean_completion_latency_slots": null,
+          "mean_drop_latency_slots": null,
+          "mean_reward": 0.0,
+          "mean_terminal_latency_slots": null,
+          "pending_at_horizon_count": 0,
+          "raw_event_reward_count": 0,
+          "raw_event_reward_total": 0.0,
+          "raw_reward_emission_count": 0,
+          "raw_terminal_event_count": 0,
+          "raw_vs_canonical_reward_delta": 0.0,
+          "reward_bearing_transition_count": 0,
+          "terminal_transition_count": 0,
+          "total_reward": 0.0,
+          "unknown_count": 0
+        },
+        "vertical": {
+          "canonical_completion_ratio": 0.5,
+          "canonical_deadline_violation_ratio": 0.5,
+          "canonical_drop_ratio": 0.5,
+          "canonical_pending_ratio": 0.0,
+          "canonical_reward_count": 2,
+          "canonical_reward_total": -44.0,
+          "canonical_task_count": 2,
+          "canonical_task_mean_reward": -22.0,
+          "canonical_terminal_task_count": 2,
+          "completed_count": 1,
+          "completion_reward_count": 1,
+          "decision_count": 2,
+          "double_count_detected": true,
+          "drop_penalty_count": 1,
+          "dropped_count": 1,
+          "duplicate_reward_event_count": 0,
+          "duplicate_terminal_event_count": 1,
+          "mean_completion_latency_slots": 4.0,
+          "mean_drop_latency_slots": 4.0,
+          "mean_reward": -22.0,
+          "mean_terminal_latency_slots": 4.0,
+          "pending_at_horizon_count": 0,
+          "raw_event_reward_count": 2,
+          "raw_event_reward_total": -44.0,
+          "raw_reward_emission_count": 2,
+          "raw_terminal_event_count": 3,
+          "raw_vs_canonical_reward_delta": 0.0,
+          "reward_bearing_transition_count": 2,
+          "terminal_transition_count": 2,
+          "total_reward": -44.0,
+          "unknown_count": 0
+        }
+      },
+      "policy_kind": "candidate",
+      "policy_name": "candidate_policy_at_100",
+      "raw_event_reward_total": -44.0,
+      "raw_lifecycle_terminal_event_count": 3,
+      "raw_reward_event_count": 2,
+      "raw_reward_event_recovery_blocked": false,
+      "raw_reward_total": -44.0,
+      "raw_terminal_event_count": 3,
+      "raw_vs_canonical_reward_reconciliation": {
+        "canonical_task_count": 3,
+        "canonical_task_reward_count": 2,
+        "canonical_task_reward_total": -44.0,
+        "canonical_terminal_task_count": 2,
+        "checkpoint_budget": 100,
+        "duplicate_reward_event_count": 0,
+        "duplicate_terminal_event_count": 1,
+        "raw_event_reward_count": 2,
+        "raw_event_reward_total": -44.0,
+        "raw_reward_event_recovery_blocked": false,
+        "raw_terminal_event_count": 3,
+        "raw_vs_canonical_reward_delta": 0.0,
+        "reward_reconciled": true,
+        "terminal_event_recovery_blocked": false
+      },
+      "reward_event_records": {
+        "raw_reward_event_recovery_blocked": false,
+        "record_count": 2,
+        "reward_available_count": 2,
+        "sample_records": [
+          {
+            "episode_id": 0,
+            "raw_reward": -40.0,
+            "task_id": 1,
+            "trace_id": "trace-0"
+          }
+        ]
+      },
+      "reward_reconciled": true,
+      "reward_reconciliation_status": "passed",
+      "reward_reconciliation_tolerance": 1e-09,
+      "same_evaluation_trace_bank": true,
+      "task_records": {
+        "trace-1:0:1": {
+          "arrival_slot": 0,
+          "canonical_reward": -40.0,
+          "completion_or_drop_slot": 3,
+          "decision_record": {
+            "selected_action": "vertical"
+          },
+          "episode_id": 0,
+          "finalized_records": [
+            {
+              "arrival_slot": 0,
+              "completion_slot": 3,
+              "terminal_outcome": "dropped"
+            }
+          ],
+          "first_decision_slot": 0,
+          "latency_slots": 4,
+          "pending_evidence": false,
+          "raw_reward_event_count": 1,
+          "raw_reward_total": -40.0,
+          "raw_terminal_event_count": 2,
+          "reward_event_records": [
+            {
+              "raw_reward": -40.0,
+              "reward_available": true
+            }
+          ],
+          "selected_action": "vertical",
+          "task_id": 1,
+          "terminal_event_records": [
+            {
+              "slot": 3,
+              "terminal_outcome": "dropped"
+            }
+          ],
+          "terminal_outcome": "dropped",
+          "terminal_slot": 3,
+          "trace_id": "trace-1"
+        },
+        "trace-1:0:2": {
+          "arrival_slot": 1,
+          "canonical_reward": -4.0,
+          "completion_or_drop_slot": 4,
+          "decision_record": {
+            "selected_action": "vertical"
+          },
+          "episode_id": 0,
+          "finalized_records": [
+            {
+              "arrival_slot": 1,
+              "completion_slot": 4,
+              "terminal_outcome": "completed"
+            }
+          ],
+          "first_decision_slot": 1,
+          "latency_slots": 4,
+          "pending_evidence": false,
+          "raw_reward_event_count": 1,
+          "raw_reward_total": -4.0,
+          "raw_terminal_event_count": 1,
+          "reward_event_records": [
+            {
+              "raw_reward": -4.0,
+              "reward_available": true
+            }
+          ],
+          "selected_action": "vertical",
+          "task_id": 2,
+          "terminal_event_records": [
+            {
+              "slot": 4,
+              "terminal_outcome": "completed"
+            }
+          ],
+          "terminal_outcome": "completed",
+          "terminal_slot": 4,
+          "trace_id": "trace-1"
+        },
+        "trace-1:0:3": {
+          "arrival_slot": 2,
+          "canonical_reward": 0.0,
+          "completion_or_drop_slot": null,
+          "decision_record": {
+            "selected_action": "horizontal"
+          },
+          "episode_id": 0,
+          "finalized_records": [],
+          "first_decision_slot": 2,
+          "latency_slots": null,
+          "pending_evidence": true,
+          "raw_reward_event_count": 0,
+          "raw_reward_total": 0.0,
+          "raw_terminal_event_count": 0,
+          "reward_event_records": [],
+          "selected_action": "horizontal",
+          "task_id": 3,
+          "terminal_event_records": [
+            {
+              "slot": 5,
+              "terminal_outcome": "pending_at_horizon"
+            }
+          ],
+          "terminal_outcome": "pending_at_horizon",
+          "terminal_slot": 5,
+          "trace_id": "trace-1"
+        }
+      },
+      "terminal_event_records": {
+        "record_count": 3,
+        "recovered_from_finalized_tasks": true,
+        "sample_records": [
+          {
+            "episode_id": 0,
+            "task_id": 1,
+            "trace_id": "trace-0"
+          }
+        ]
+      },
+      "terminal_event_recovery_blocked": false,
+      "unknown_count": 0
+    },
+    "evaluation_reward_summary": {
+      "candidate_reproduction_supported": true,
+      "canonical_task_count": 3,
+      "canonical_task_reward_count": 2,
+      "canonical_task_reward_total": -44.0,
+      "canonical_terminal_task_count": 2,
+      "checkpoint_budget": 100,
+      "completed_task_count": 1,
+      "dropped_task_count": 1,
+      "duplicate_reward_event_count": 0,
+      "duplicate_terminal_event_count": 1,
+      "evaluation_episode_count": 100,
+      "evaluation_on_training_traces": false,
+      "mean_reward": -44.0,
+      "pending_at_horizon_count": 1,
+      "raw_event_reward_count": 2,
+      "raw_event_reward_total": -44.0,
+      "raw_reward_emission_count": 2,
+      "raw_reward_event_recovery_blocked": false,
+      "raw_terminal_event_count": 3,
+      "raw_vs_canonical_reward_delta": 0.0,
+      "reward_available_count": 2,
+      "reward_bearing_transition_count": 2,
+      "reward_reconciled": true,
+      "same_evaluation_trace_bank": true,
+      "terminal_event_recovery_blocked": false,
+      "terminal_transition_count": 2,
+      "trace_bank_disjoint": true,
+      "trace_bank_ids": {
+        "evaluation": "eval-bank",
+        "training": "train-bank"
+      },
+      "trace_ids": [
+        "trace-0"
+      ],
+      "unknown_task_count": 0
+    },
+    "event_level_metrics": {
+      "raw_event_reward_count": 2,
+      "raw_event_reward_total": -44.0,
+      "raw_reward_emission_count": 2,
+      "raw_reward_event_recovery_blocked": false,
+      "raw_terminal_event_count": 3,
+      "terminal_event_recovery_blocked": false
+    },
+    "last_loss": 2.0,
+    "loss_count": 6,
+    "loss_finite": true,
+    "optimizer_step_count": 101,
+    "paper_aligned_diagnostic_metrics": {
+      "canonical_completion_ratio": 0.3333333333333333,
+      "canonical_deadline_violation_ratio": 0.3333333333333333,
+      "canonical_drop_ratio": 0.3333333333333333,
+      "canonical_mean_completion_latency_slots": 4.0,
+      "canonical_mean_drop_latency_slots": 4.0,
+      "canonical_mean_terminal_latency_slots": 4.0,
+      "canonical_pending_ratio": 0.3333333333333333,
+      "canonical_reward_per_decision": -14.666666666666666,
+      "canonical_reward_per_task": -14.666666666666666,
+      "canonical_tasks_per_decision": 1.0,
+      "raw_reward_event_coverage_ratio": 1.0,
+      "reward_reconciliation_status": "passed",
+      "terminal_event_coverage_ratio": 1.5,
+      "training_budget": 100
+    },
+    "pending_at_horizon_count": 1,
+    "per_action_outcome_summary": {
+      "horizontal": {
+        "canonical_completion_ratio": 0.0,
+        "canonical_deadline_violation_ratio": 0.0,
+        "canonical_drop_ratio": 0.0,
+        "canonical_pending_ratio": 1.0,
+        "canonical_reward_count": 0,
+        "canonical_reward_total": 0.0,
+        "canonical_task_count": 1,
+        "canonical_task_mean_reward": 0.0,
+        "canonical_terminal_task_count": 0,
+        "completed_count": 0,
+        "completion_reward_count": 0,
+        "decision_count": 1,
+        "double_count_detected": false,
+        "drop_penalty_count": 0,
+        "dropped_count": 0,
+        "duplicate_reward_event_count": 0,
+        "duplicate_terminal_event_count": 0,
+        "mean_completion_latency_slots": null,
+        "mean_drop_latency_slots": null,
+        "mean_reward": 0.0,
+        "mean_terminal_latency_slots": null,
+        "pending_at_horizon_count": 1,
+        "raw_event_reward_count": 0,
+        "raw_event_reward_total": 0.0,
+        "raw_reward_emission_count": 0,
+        "raw_terminal_event_count": 0,
+        "raw_vs_canonical_reward_delta": 0.0,
+        "reward_bearing_transition_count": 0,
+        "terminal_transition_count": 0,
+        "total_reward": 0.0,
+        "unknown_count": 0
+      },
+      "local": {
+        "canonical_completion_ratio": 0.0,
+        "canonical_deadline_violation_ratio": 0.0,
+        "canonical_drop_ratio": 0.0,
+        "canonical_pending_ratio": 0.0,
+        "canonical_reward_count": 0,
+        "canonical_reward_total": 0.0,
+        "canonical_task_count": 0,
+        "canonical_task_mean_reward": 0.0,
+        "canonical_terminal_task_count": 0,
+        "completed_count": 0,
+        "completion_reward_count": 0,
+        "decision_count": 0,
+        "double_count_detected": false,
+        "drop_penalty_count": 0,
+        "dropped_count": 0,
+        "duplicate_reward_event_count": 0,
+        "duplicate_terminal_event_count": 0,
+        "mean_completion_latency_slots": null,
+        "mean_drop_latency_slots": null,
+        "mean_reward": 0.0,
+        "mean_terminal_latency_slots": null,
+        "pending_at_horizon_count": 0,
+        "raw_event_reward_count": 0,
+        "raw_event_reward_total": 0.0,
+        "raw_reward_emission_count": 0,
+        "raw_terminal_event_count": 0,
+        "raw_vs_canonical_reward_delta": 0.0,
+        "reward_bearing_transition_count": 0,
+        "terminal_transition_count": 0,
+        "total_reward": 0.0,
+        "unknown_count": 0
+      },
+      "vertical": {
+        "canonical_completion_ratio": 0.5,
+        "canonical_deadline_violation_ratio": 0.5,
+        "canonical_drop_ratio": 0.5,
+        "canonical_pending_ratio": 0.0,
+        "canonical_reward_count": 2,
+        "canonical_reward_total": -44.0,
+        "canonical_task_count": 2,
+        "canonical_task_mean_reward": -22.0,
+        "canonical_terminal_task_count": 2,
+        "completed_count": 1,
+        "completion_reward_count": 1,
+        "decision_count": 2,
+        "double_count_detected": true,
+        "drop_penalty_count": 1,
+        "dropped_count": 1,
+        "duplicate_reward_event_count": 0,
+        "duplicate_terminal_event_count": 1,
+        "mean_completion_latency_slots": 4.0,
+        "mean_drop_latency_slots": 4.0,
+        "mean_reward": -22.0,
+        "mean_terminal_latency_slots": 4.0,
+        "pending_at_horizon_count": 0,
+        "raw_event_reward_count": 2,
+        "raw_event_reward_total": -44.0,
+        "raw_reward_emission_count": 2,
+        "raw_terminal_event_count": 3,
+        "raw_vs_canonical_reward_delta": 0.0,
+        "reward_bearing_transition_count": 2,
+        "terminal_transition_count": 2,
+        "total_reward": -44.0,
+        "unknown_count": 0
+      }
+    },
+    "raw_vs_canonical_metric_comparison": {
+      "canonical_task_count": 3,
+      "canonical_task_reward_count": 2,
+      "canonical_task_reward_total": -44.0,
+      "canonical_terminal_task_count": 2,
+      "checkpoint_budget": 100,
+      "duplicate_reward_event_count": 0,
+      "duplicate_terminal_event_count": 1,
+      "raw_event_reward_count": 2,
+      "raw_event_reward_total": -44.0,
+      "raw_reward_event_recovery_blocked": false,
+      "raw_terminal_event_count": 3,
+      "raw_vs_canonical_reward_delta": 0.0,
+      "reward_reconciled": true,
+      "terminal_event_recovery_blocked": false
+    },
+    "replay_size": 10000,
+    "replay_window_action_distribution": {
+      "horizontal": 0,
+      "local": 0,
+      "vertical": 10000
+    },
+    "replay_window_capacity": 10000,
+    "replay_window_interpretation_warning": true,
+    "replay_window_is_full_training_history": false,
+    "reward_decomposition": {
+      "canonical_task_mean_reward_by_action": {
+        "horizontal": 0.0,
+        "local": 0.0,
+        "vertical": -22.0
+      },
+      "canonical_task_reward_count_by_action": {
+        "horizontal": 0,
+        "local": 0,
+        "vertical": 2
+      },
+      "canonical_task_reward_total_by_action": {
+        "horizontal": 0.0,
+        "local": 0.0,
+        "vertical": -44.0
+      },
+      "completion_reward_count_by_action": {
+        "horizontal": 0,
+        "local": 0,
+        "vertical": 1
+      },
+      "drop_penalty_count_by_action": {
+        "horizontal": 0,
+        "local": 0,
+        "vertical": 1
+      },
+      "nan_reward_count": 0,
+      "raw_event_reward_count_by_action": {
+        "horizontal": 0,
+        "local": 0,
+        "vertical": 2
+      },
+      "raw_event_reward_total_by_action": {
+        "horizontal": 0.0,
+        "local": 0.0,
+        "vertical": -44.0
+      },
+      "raw_vs_canonical_reward_delta_by_action": {
+        "horizontal": 0.0,
+        "local": 0.0,
+        "vertical": 0.0
+      },
+      "raw_vs_canonical_reward_delta_total": 0.0,
+      "reward_available_count": 2,
+      "reward_by_action": {
+        "horizontal": 0.0,
+        "local": 0.0,
+        "vertical": -44.0
+      },
+      "reward_by_action_and_terminal_outcome": {
+        "horizontal": {
+          "completed": {
+            "canonical_task_mean_reward": 0.0,
+            "canonical_task_reward_count": 0,
+            "canonical_task_reward_total": 0.0,
+            "count": 0,
+            "mean_reward": 0.0,
+            "raw_event_reward_count": 0,
+            "raw_event_reward_total": 0.0,
+            "raw_vs_canonical_reward_delta": 0.0,
+            "total_reward": 0.0
+          },
+          "dropped": {
+            "canonical_task_mean_reward": 0.0,
+            "canonical_task_reward_count": 0,
+            "canonical_task_reward_total": 0.0,
+            "count": 0,
+            "mean_reward": 0.0,
+            "raw_event_reward_count": 0,
+            "raw_event_reward_total": 0.0,
+            "raw_vs_canonical_reward_delta": 0.0,
+            "total_reward": 0.0
+          }
+        },
+        "local": {
+          "completed": {
+            "canonical_task_mean_reward": 0.0,
+            "canonical_task_reward_count": 0,
+            "canonical_task_reward_total": 0.0,
+            "count": 0,
+            "mean_reward": 0.0,
+            "raw_event_reward_count": 0,
+            "raw_event_reward_total": 0.0,
+            "raw_vs_canonical_reward_delta": 0.0,
+            "total_reward": 0.0
+          },
+          "dropped": {
+            "canonical_task_mean_reward": 0.0,
+            "canonical_task_reward_count": 0,
+            "canonical_task_reward_total": 0.0,
+            "count": 0,
+            "mean_reward": 0.0,
+            "raw_event_reward_count": 0,
+            "raw_event_reward_total": 0.0,
+            "raw_vs_canonical_reward_delta": 0.0,
+            "total_reward": 0.0
+          }
+        },
+        "vertical": {
+          "completed": {
+            "canonical_task_mean_reward": -4.0,
+            "canonical_task_reward_count": 1,
+            "canonical_task_reward_total": -4.0,
+            "count": 1,
+            "mean_reward": -4.0,
+            "raw_event_reward_count": 1,
+            "raw_event_reward_total": -4.0,
+            "raw_vs_canonical_reward_delta": 0.0,
+            "total_reward": -4.0
+          },
+          "dropped": {
+            "canonical_task_mean_reward": -40.0,
+            "canonical_task_reward_count": 1,
+            "canonical_task_reward_total": -40.0,
+            "count": 1,
+            "mean_reward": -40.0,
+            "raw_event_reward_count": 1,
+            "raw_event_reward_total": -40.0,
+            "raw_vs_canonical_reward_delta": 0.0,
+            "total_reward": -40.0
+          }
+        }
+      },
+      "reward_by_terminal_outcome": {
+        "completed": -4.0,
+        "dropped": -40.0
+      },
+      "zero_reward_count": 0
+    },
+    "reward_summary": {
+      "mean_reward": -1.0,
+      "pending_at_horizon_count": 0,
+      "reward_count": 100,
+      "total_reward": -100.0
+    },
+    "training_budget": 100,
+    "training_state": {
+      "cumulative_training_action_distribution": {
+        "horizontal": 20,
+        "local": 10,
+        "vertical": 30
+      },
+      "cumulative_training_episode_count": 100,
+      "last_loss": 2.0,
+      "loss_count": 6,
+      "loss_finite": true,
+      "optimizer_step_count": 101,
+      "replay_size": 10000,
+      "replay_window_action_distribution": {
+        "horizontal": 0,
+        "local": 0,
+        "vertical": 10000
+      },
+      "replay_window_capacity": 10000,
+      "replay_window_interpretation_warning": true,
+      "replay_window_is_full_training_history": false,
+      "reward_summary": {
+        "mean_reward": -1.0,
+        "pending_at_horizon_count": 0,
+        "reward_count": 100,
+        "total_reward": -100.0
+      },
+      "training_action_sequence_sample": [
+        {
+          "action": "vertical",
+          "episode_id": 0,
+          "legal_action_mask": {
+            "local": true
+          },
+          "step_id": 0
+        }
+      ],
+      "training_budget": 100
+    }
+  },
+  {
+    "action_accounting_reconciled": true,
+    "action_count_total": 60,
+    "action_distribution": {
+      "horizontal": 20,
+      "local": 10,
+      "vertical": 30
+    },
+    "canonical_task_level_metrics": {
+      "canonical_completion_count": 1,
+      "canonical_completion_ratio": 0.3333333333333333,
+      "canonical_deadline_violation_ratio": 0.3333333333333333,
+      "canonical_drop_count": 1,
+      "canonical_drop_ratio": 0.3333333333333333,
+      "canonical_mean_completion_latency_slots": 4.0,
+      "canonical_mean_drop_latency_slots": 4.0,
+      "canonical_mean_terminal_latency_slots": 4.0,
+      "canonical_pending_count": 1,
+      "canonical_pending_ratio": 0.3333333333333333,
+      "canonical_reward_count": 2,
+      "canonical_reward_per_decision": -14.666666666666666,
+      "canonical_reward_per_task": -14.666666666666666,
+      "canonical_task_count": 3,
+      "canonical_task_mean_reward": -22.0,
+      "canonical_task_reward_count": 2,
+      "canonical_task_reward_total": -44.0,
+      "canonical_tasks_per_decision": 1.0,
+      "canonical_terminal_task_count": 2,
+      "canonical_unknown_count": 0,
+      "completed_count": 1,
+      "completion_reward_count": 1,
+      "double_count_detected": true,
+      "drop_penalty_count": 1,
+      "dropped_count": 1,
+      "duplicate_reward_event_count": 0,
+      "duplicate_terminal_event_count": 1,
+      "mean_reward": 0.0,
+      "pending_at_horizon_count": 1,
+      "raw_event_reward_count": 2,
+      "raw_event_reward_total": -44.0,
+      "raw_reward_emission_count": 2,
+      "raw_reward_event_count": 2,
+      "raw_terminal_event_count": 3,
+      "raw_vs_canonical_reward_delta": 0.0,
+      "reward_bearing_transition_count": 2,
+      "terminal_transition_count": 2,
+      "total_reward": -44.0,
+      "unknown_count": 0
+    },
+    "claim_safety_status": {
+      "baseline_superiority_claim_made": false,
+      "claim_safety_passed": true,
+      "paper_reproduction_claim_made": false,
+      "performance_superiority_claim_made": false
+    },
+    "comparison_ready": true,
+    "completed_task_count": 1,
+    "cumulative_training_action_distribution": {
+      "horizontal": 20,
+      "local": 10,
+      "vertical": 30
+    },
+    "cumulative_training_episode_count": 150,
+    "dropped_task_count": 1,
+    "episode_length": 110,
+    "evaluation_action_by_episode_id": {
+      "0": {
+        "decision_count": 3
+      }
+    },
+    "evaluation_action_by_trace_id": {
+      "trace-0": {
+        "decision_count": 3
+      }
+    },
+    "evaluation_action_distribution": {
+      "horizontal": 1,
+      "local": 1,
+      "vertical": 1
+    },
+    "evaluation_action_sequence_sample": [
+      {
+        "episode_id": 0,
+        "selected_action": "vertical",
+        "task_id": 1,
+        "trace_id": "trace-0"
+      }
+    ],
+    "evaluation_decision_count": 3,
+    "evaluation_episode_count": 100,
+    "evaluation_legal_action_mask_distribution": {
+      "local=1|horizontal=1|vertical=1": 3
+    },
+    "evaluation_policy_result": {
+      "candidate_policy_vertical_share": 0.3333333333333333,
+      "canonical_reward_decomposition": {
+        "canonical_task_mean_reward_by_action": {
+          "horizontal": 0.0,
+          "local": 0.0,
+          "vertical": -22.0
+        },
+        "canonical_task_reward_count_by_action": {
+          "horizontal": 0,
+          "local": 0,
+          "vertical": 2
+        },
+        "canonical_task_reward_total_by_action": {
+          "horizontal": 0.0,
+          "local": 0.0,
+          "vertical": -44.0
+        },
+        "completion_reward_count_by_action": {
+          "horizontal": 0,
+          "local": 0,
+          "vertical": 1
+        },
+        "drop_penalty_count_by_action": {
+          "horizontal": 0,
+          "local": 0,
+          "vertical": 1
+        },
+        "nan_reward_count": 0,
+        "raw_event_reward_count_by_action": {
+          "horizontal": 0,
+          "local": 0,
+          "vertical": 2
+        },
+        "raw_event_reward_total_by_action": {
+          "horizontal": 0.0,
+          "local": 0.0,
+          "vertical": -44.0
+        },
+        "raw_vs_canonical_reward_delta_by_action": {
+          "horizontal": 0.0,
+          "local": 0.0,
+          "vertical": 0.0
+        },
+        "raw_vs_canonical_reward_delta_total": 0.0,
+        "reward_available_count": 2,
+        "reward_by_action": {
+          "horizontal": 0.0,
+          "local": 0.0,
+          "vertical": -44.0
+        },
+        "reward_by_action_and_terminal_outcome": {
+          "horizontal": {
+            "completed": {
+              "canonical_task_mean_reward": 0.0,
+              "canonical_task_reward_count": 0,
+              "canonical_task_reward_total": 0.0,
+              "count": 0,
+              "mean_reward": 0.0,
+              "raw_event_reward_count": 0,
+              "raw_event_reward_total": 0.0,
+              "raw_vs_canonical_reward_delta": 0.0,
+              "total_reward": 0.0
+            },
+            "dropped": {
+              "canonical_task_mean_reward": 0.0,
+              "canonical_task_reward_count": 0,
+              "canonical_task_reward_total": 0.0,
+              "count": 0,
+              "mean_reward": 0.0,
+              "raw_event_reward_count": 0,
+              "raw_event_reward_total": 0.0,
+              "raw_vs_canonical_reward_delta": 0.0,
+              "total_reward": 0.0
+            }
+          },
+          "local": {
+            "completed": {
+              "canonical_task_mean_reward": 0.0,
+              "canonical_task_reward_count": 0,
+              "canonical_task_reward_total": 0.0,
+              "count": 0,
+              "mean_reward": 0.0,
+              "raw_event_reward_count": 0,
+              "raw_event_reward_total": 0.0,
+              "raw_vs_canonical_reward_delta": 0.0,
+              "total_reward": 0.0
+            },
+            "dropped": {
+              "canonical_task_mean_reward": 0.0,
+              "canonical_task_reward_count": 0,
+              "canonical_task_reward_total": 0.0,
+              "count": 0,
+              "mean_reward": 0.0,
+              "raw_event_reward_count": 0,
+              "raw_event_reward_total": 0.0,
+              "raw_vs_canonical_reward_delta": 0.0,
+              "total_reward": 0.0
+            }
+          },
+          "vertical": {
+            "completed": {
+              "canonical_task_mean_reward": -4.0,
+              "canonical_task_reward_count": 1,
+              "canonical_task_reward_total": -4.0,
+              "count": 1,
+              "mean_reward": -4.0,
+              "raw_event_reward_count": 1,
+              "raw_event_reward_total": -4.0,
+              "raw_vs_canonical_reward_delta": 0.0,
+              "total_reward": -4.0
+            },
+            "dropped": {
+              "canonical_task_mean_reward": -40.0,
+              "canonical_task_reward_count": 1,
+              "canonical_task_reward_total": -40.0,
+              "count": 1,
+              "mean_reward": -40.0,
+              "raw_event_reward_count": 1,
+              "raw_event_reward_total": -40.0,
+              "raw_vs_canonical_reward_delta": 0.0,
+              "total_reward": -40.0
+            }
+          }
+        },
+        "reward_by_terminal_outcome": {
+          "completed": -4.0,
+          "dropped": -40.0
+        },
+        "zero_reward_count": 0
+      },
+      "canonical_task_outcome_summary": {
+        "by_action": {
+          "horizontal": {
+            "canonical_completion_ratio": 0.0,
+            "canonical_deadline_violation_ratio": 0.0,
+            "canonical_drop_ratio": 0.0,
+            "canonical_pending_ratio": 1.0,
+            "canonical_reward_count": 0,
+            "canonical_reward_total": 0.0,
+            "canonical_task_count": 1,
+            "canonical_task_mean_reward": 0.0,
+            "canonical_terminal_task_count": 0,
+            "completed_count": 0,
+            "completion_reward_count": 0,
+            "decision_count": 1,
+            "double_count_detected": false,
+            "drop_penalty_count": 0,
+            "dropped_count": 0,
+            "duplicate_reward_event_count": 0,
+            "duplicate_terminal_event_count": 0,
+            "mean_completion_latency_slots": null,
+            "mean_drop_latency_slots": null,
+            "mean_reward": 0.0,
+            "mean_terminal_latency_slots": null,
+            "pending_at_horizon_count": 1,
+            "raw_event_reward_count": 0,
+            "raw_event_reward_total": 0.0,
+            "raw_reward_emission_count": 0,
+            "raw_terminal_event_count": 0,
+            "raw_vs_canonical_reward_delta": 0.0,
+            "reward_bearing_transition_count": 0,
+            "terminal_transition_count": 0,
+            "total_reward": 0.0,
+            "unknown_count": 0
+          },
+          "local": {
+            "canonical_completion_ratio": 0.0,
+            "canonical_deadline_violation_ratio": 0.0,
+            "canonical_drop_ratio": 0.0,
+            "canonical_pending_ratio": 0.0,
+            "canonical_reward_count": 0,
+            "canonical_reward_total": 0.0,
+            "canonical_task_count": 0,
+            "canonical_task_mean_reward": 0.0,
+            "canonical_terminal_task_count": 0,
+            "completed_count": 0,
+            "completion_reward_count": 0,
+            "decision_count": 0,
+            "double_count_detected": false,
+            "drop_penalty_count": 0,
+            "dropped_count": 0,
+            "duplicate_reward_event_count": 0,
+            "duplicate_terminal_event_count": 0,
+            "mean_completion_latency_slots": null,
+            "mean_drop_latency_slots": null,
+            "mean_reward": 0.0,
+            "mean_terminal_latency_slots": null,
+            "pending_at_horizon_count": 0,
+            "raw_event_reward_count": 0,
+            "raw_event_reward_total": 0.0,
+            "raw_reward_emission_count": 0,
+            "raw_terminal_event_count": 0,
+            "raw_vs_canonical_reward_delta": 0.0,
+            "reward_bearing_transition_count": 0,
+            "terminal_transition_count": 0,
+            "total_reward": 0.0,
+            "unknown_count": 0
+          },
+          "vertical": {
+            "canonical_completion_ratio": 0.5,
+            "canonical_deadline_violation_ratio": 0.5,
+            "canonical_drop_ratio": 0.5,
+            "canonical_pending_ratio": 0.0,
+            "canonical_reward_count": 2,
+            "canonical_reward_total": -44.0,
+            "canonical_task_count": 2,
+            "canonical_task_mean_reward": -22.0,
+            "canonical_terminal_task_count": 2,
+            "completed_count": 1,
+            "completion_reward_count": 1,
+            "decision_count": 2,
+            "double_count_detected": true,
+            "drop_penalty_count": 1,
+            "dropped_count": 1,
+            "duplicate_reward_event_count": 0,
+            "duplicate_terminal_event_count": 1,
+            "mean_completion_latency_slots": 4.0,
+            "mean_drop_latency_slots": 4.0,
+            "mean_reward": -22.0,
+            "mean_terminal_latency_slots": 4.0,
+            "pending_at_horizon_count": 0,
+            "raw_event_reward_count": 2,
+            "raw_event_reward_total": -44.0,
+            "raw_reward_emission_count": 2,
+            "raw_terminal_event_count": 3,
+            "raw_vs_canonical_reward_delta": 0.0,
+            "reward_bearing_transition_count": 2,
+            "terminal_transition_count": 2,
+            "total_reward": -44.0,
+            "unknown_count": 0
+          }
+        },
+        "checkpoint_budget": 150,
+        "overall": {
+          "canonical_completion_count": 1,
+          "canonical_completion_ratio": 0.3333333333333333,
+          "canonical_deadline_violation_ratio": 0.3333333333333333,
+          "canonical_drop_count": 1,
+          "canonical_drop_ratio": 0.3333333333333333,
+          "canonical_mean_completion_latency_slots": 4.0,
+          "canonical_mean_drop_latency_slots": 4.0,
+          "canonical_mean_terminal_latency_slots": 4.0,
+          "canonical_pending_count": 1,
+          "canonical_pending_ratio": 0.3333333333333333,
+          "canonical_reward_count": 2,
+          "canonical_reward_per_decision": -14.666666666666666,
+          "canonical_reward_per_task": -14.666666666666666,
+          "canonical_task_count": 3,
+          "canonical_task_mean_reward": -22.0,
+          "canonical_task_reward_count": 2,
+          "canonical_task_reward_total": -44.0,
+          "canonical_tasks_per_decision": 1.0,
+          "canonical_terminal_task_count": 2,
+          "canonical_unknown_count": 0,
+          "completed_count": 1,
+          "completion_reward_count": 1,
+          "double_count_detected": true,
+          "drop_penalty_count": 1,
+          "dropped_count": 1,
+          "duplicate_reward_event_count": 0,
+          "duplicate_terminal_event_count": 1,
+          "mean_reward": 0.0,
+          "pending_at_horizon_count": 1,
+          "raw_event_reward_count": 2,
+          "raw_event_reward_total": -44.0,
+          "raw_reward_emission_count": 2,
+          "raw_reward_event_count": 2,
+          "raw_terminal_event_count": 3,
+          "raw_vs_canonical_reward_delta": 0.0,
+          "reward_bearing_transition_count": 2,
+          "terminal_transition_count": 2,
+          "total_reward": -44.0,
+          "unknown_count": 0
+        },
+        "reward_coverage": {
+          "raw_reward_event_count": 2,
+          "raw_terminal_event_count": 3,
+          "reward_available_count": 2
+        }
+      },
+      "canonical_task_reward_total": -44.0,
+      "checkpoint_budget": 150,
+      "completed_count": 1,
+      "decision_records_summary": {
+        "decision_count": 3,
+        "evaluation_action_distribution_source": "evaluation_episodes",
+        "sample_records": [
+          {
+            "episode_id": 0,
+            "selected_action": "vertical",
+            "task_id": 1,
+            "trace_id": "trace-0"
+          }
+        ]
+      },
+      "dropped_count": 1,
+      "episode_length": 110,
+      "episode_reward_totals": [
+        -44.0
+      ],
+      "episode_summaries": [
+        {
+          "canonical_reward_total": -44.0,
+          "completion_count": 1,
+          "decision_count": 3,
+          "drop_count": 1,
+          "episode_id": 0,
+          "pending_count": 1,
+          "raw_reward_event_count": 2,
+          "raw_reward_total": -44.0,
+          "reward_recovered": true,
+          "terminal_task_count": 2,
+          "trace_id": "trace-0",
+          "unknown_count": 0
+        }
+      ],
+      "evaluation_action_by_episode_id": {
+        "0": {
+          "decision_count": 3
+        }
+      },
+      "evaluation_action_by_trace_id": {
+        "trace-0": {
+          "decision_count": 3
+        }
+      },
+      "evaluation_action_distribution": {
+        "horizontal": 1,
+        "local": 1,
+        "vertical": 1
+      },
+      "evaluation_action_distribution_source": "evaluation_episodes",
+      "evaluation_action_sequence_sample": [
+        {
+          "episode_id": 0,
+          "selected_action": "vertical",
+          "task_id": 1,
+          "trace_id": "trace-0"
+        }
+      ],
+      "evaluation_decision_count": 3,
+      "evaluation_episode_count": 100,
+      "evaluation_legal_action_mask_distribution": {
+        "local=1|horizontal=1|vertical=1": 3
+      },
+      "evaluation_reward_summary": {
+        "candidate_reproduction_supported": true,
+        "canonical_task_count": 3,
+        "canonical_task_reward_count": 2,
+        "canonical_task_reward_total": -44.0,
+        "canonical_terminal_task_count": 2,
+        "checkpoint_budget": 150,
+        "completed_task_count": 1,
+        "dropped_task_count": 1,
+        "duplicate_reward_event_count": 0,
+        "duplicate_terminal_event_count": 1,
+        "evaluation_episode_count": 100,
+        "evaluation_on_training_traces": false,
+        "mean_reward": -44.0,
+        "pending_at_horizon_count": 1,
+        "raw_event_reward_count": 2,
+        "raw_event_reward_total": -44.0,
+        "raw_reward_emission_count": 2,
+        "raw_reward_event_recovery_blocked": false,
+        "raw_terminal_event_count": 3,
+        "raw_vs_canonical_reward_delta": 0.0,
+        "reward_available_count": 2,
+        "reward_bearing_transition_count": 2,
+        "reward_reconciled": true,
+        "same_evaluation_trace_bank": true,
+        "terminal_event_recovery_blocked": false,
+        "terminal_transition_count": 2,
+        "trace_bank_disjoint": true,
+        "trace_bank_ids": {
+          "evaluation": "eval-bank",
+          "training": "train-bank"
+        },
+        "trace_ids": [
+          "trace-0"
+        ],
+        "unknown_task_count": 0
+      },
+      "evaluation_trace_bank_id": "eval-bank",
+      "paper_aligned_diagnostic_metrics": {
+        "canonical_completion_ratio": 0.3333333333333333,
+        "canonical_deadline_violation_ratio": 0.3333333333333333,
+        "canonical_drop_ratio": 0.3333333333333333,
+        "canonical_mean_completion_latency_slots": 4.0,
+        "canonical_mean_drop_latency_slots": 4.0,
+        "canonical_mean_terminal_latency_slots": 4.0,
+        "canonical_pending_ratio": 0.3333333333333333,
+        "canonical_reward_per_decision": -14.666666666666666,
+        "canonical_reward_per_task": -14.666666666666666,
+        "canonical_tasks_per_decision": 1.0,
+        "raw_reward_event_coverage_ratio": 1.0,
+        "reward_reconciliation_status": "passed",
+        "terminal_event_coverage_ratio": 1.5,
+        "training_budget": 150
+      },
+      "pending_at_horizon_count": 1,
+      "per_action_outcome_summary": {
+        "horizontal": {
+          "canonical_completion_ratio": 0.0,
+          "canonical_deadline_violation_ratio": 0.0,
+          "canonical_drop_ratio": 0.0,
+          "canonical_pending_ratio": 1.0,
+          "canonical_reward_count": 0,
+          "canonical_reward_total": 0.0,
+          "canonical_task_count": 1,
+          "canonical_task_mean_reward": 0.0,
+          "canonical_terminal_task_count": 0,
+          "completed_count": 0,
+          "completion_reward_count": 0,
+          "decision_count": 1,
+          "double_count_detected": false,
+          "drop_penalty_count": 0,
+          "dropped_count": 0,
+          "duplicate_reward_event_count": 0,
+          "duplicate_terminal_event_count": 0,
+          "mean_completion_latency_slots": null,
+          "mean_drop_latency_slots": null,
+          "mean_reward": 0.0,
+          "mean_terminal_latency_slots": null,
+          "pending_at_horizon_count": 1,
+          "raw_event_reward_count": 0,
+          "raw_event_reward_total": 0.0,
+          "raw_reward_emission_count": 0,
+          "raw_terminal_event_count": 0,
+          "raw_vs_canonical_reward_delta": 0.0,
+          "reward_bearing_transition_count": 0,
+          "terminal_transition_count": 0,
+          "total_reward": 0.0,
+          "unknown_count": 0
+        },
+        "local": {
+          "canonical_completion_ratio": 0.0,
+          "canonical_deadline_violation_ratio": 0.0,
+          "canonical_drop_ratio": 0.0,
+          "canonical_pending_ratio": 0.0,
+          "canonical_reward_count": 0,
+          "canonical_reward_total": 0.0,
+          "canonical_task_count": 0,
+          "canonical_task_mean_reward": 0.0,
+          "canonical_terminal_task_count": 0,
+          "completed_count": 0,
+          "completion_reward_count": 0,
+          "decision_count": 0,
+          "double_count_detected": false,
+          "drop_penalty_count": 0,
+          "dropped_count": 0,
+          "duplicate_reward_event_count": 0,
+          "duplicate_terminal_event_count": 0,
+          "mean_completion_latency_slots": null,
+          "mean_drop_latency_slots": null,
+          "mean_reward": 0.0,
+          "mean_terminal_latency_slots": null,
+          "pending_at_horizon_count": 0,
+          "raw_event_reward_count": 0,
+          "raw_event_reward_total": 0.0,
+          "raw_reward_emission_count": 0,
+          "raw_terminal_event_count": 0,
+          "raw_vs_canonical_reward_delta": 0.0,
+          "reward_bearing_transition_count": 0,
+          "terminal_transition_count": 0,
+          "total_reward": 0.0,
+          "unknown_count": 0
+        },
+        "vertical": {
+          "canonical_completion_ratio": 0.5,
+          "canonical_deadline_violation_ratio": 0.5,
+          "canonical_drop_ratio": 0.5,
+          "canonical_pending_ratio": 0.0,
+          "canonical_reward_count": 2,
+          "canonical_reward_total": -44.0,
+          "canonical_task_count": 2,
+          "canonical_task_mean_reward": -22.0,
+          "canonical_terminal_task_count": 2,
+          "completed_count": 1,
+          "completion_reward_count": 1,
+          "decision_count": 2,
+          "double_count_detected": true,
+          "drop_penalty_count": 1,
+          "dropped_count": 1,
+          "duplicate_reward_event_count": 0,
+          "duplicate_terminal_event_count": 1,
+          "mean_completion_latency_slots": 4.0,
+          "mean_drop_latency_slots": 4.0,
+          "mean_reward": -22.0,
+          "mean_terminal_latency_slots": 4.0,
+          "pending_at_horizon_count": 0,
+          "raw_event_reward_count": 2,
+          "raw_event_reward_total": -44.0,
+          "raw_reward_emission_count": 2,
+          "raw_terminal_event_count": 3,
+          "raw_vs_canonical_reward_delta": 0.0,
+          "reward_bearing_transition_count": 2,
+          "terminal_transition_count": 2,
+          "total_reward": -44.0,
+          "unknown_count": 0
+        }
+      },
+      "policy_kind": "candidate",
+      "policy_name": "candidate_policy_at_150",
+      "raw_event_reward_total": -44.0,
+      "raw_lifecycle_terminal_event_count": 3,
+      "raw_reward_event_count": 2,
+      "raw_reward_event_recovery_blocked": false,
+      "raw_reward_total": -44.0,
+      "raw_terminal_event_count": 3,
+      "raw_vs_canonical_reward_reconciliation": {
+        "canonical_task_count": 3,
+        "canonical_task_reward_count": 2,
+        "canonical_task_reward_total": -44.0,
+        "canonical_terminal_task_count": 2,
+        "checkpoint_budget": 150,
+        "duplicate_reward_event_count": 0,
+        "duplicate_terminal_event_count": 1,
+        "raw_event_reward_count": 2,
+        "raw_event_reward_total": -44.0,
+        "raw_reward_event_recovery_blocked": false,
+        "raw_terminal_event_count": 3,
+        "raw_vs_canonical_reward_delta": 0.0,
+        "reward_reconciled": true,
+        "terminal_event_recovery_blocked": false
+      },
+      "reward_event_records": {
+        "raw_reward_event_recovery_blocked": false,
+        "record_count": 2,
+        "reward_available_count": 2,
+        "sample_records": [
+          {
+            "episode_id": 0,
+            "raw_reward": -40.0,
+            "task_id": 1,
+            "trace_id": "trace-0"
+          }
+        ]
+      },
+      "reward_reconciled": true,
+      "reward_reconciliation_status": "passed",
+      "reward_reconciliation_tolerance": 1e-09,
+      "same_evaluation_trace_bank": true,
+      "task_records": {
+        "trace-1:0:1": {
+          "arrival_slot": 0,
+          "canonical_reward": -40.0,
+          "completion_or_drop_slot": 3,
+          "decision_record": {
+            "selected_action": "vertical"
+          },
+          "episode_id": 0,
+          "finalized_records": [
+            {
+              "arrival_slot": 0,
+              "completion_slot": 3,
+              "terminal_outcome": "dropped"
+            }
+          ],
+          "first_decision_slot": 0,
+          "latency_slots": 4,
+          "pending_evidence": false,
+          "raw_reward_event_count": 1,
+          "raw_reward_total": -40.0,
+          "raw_terminal_event_count": 2,
+          "reward_event_records": [
+            {
+              "raw_reward": -40.0,
+              "reward_available": true
+            }
+          ],
+          "selected_action": "vertical",
+          "task_id": 1,
+          "terminal_event_records": [
+            {
+              "slot": 3,
+              "terminal_outcome": "dropped"
+            }
+          ],
+          "terminal_outcome": "dropped",
+          "terminal_slot": 3,
+          "trace_id": "trace-1"
+        },
+        "trace-1:0:2": {
+          "arrival_slot": 1,
+          "canonical_reward": -4.0,
+          "completion_or_drop_slot": 4,
+          "decision_record": {
+            "selected_action": "vertical"
+          },
+          "episode_id": 0,
+          "finalized_records": [
+            {
+              "arrival_slot": 1,
+              "completion_slot": 4,
+              "terminal_outcome": "completed"
+            }
+          ],
+          "first_decision_slot": 1,
+          "latency_slots": 4,
+          "pending_evidence": false,
+          "raw_reward_event_count": 1,
+          "raw_reward_total": -4.0,
+          "raw_terminal_event_count": 1,
+          "reward_event_records": [
+            {
+              "raw_reward": -4.0,
+              "reward_available": true
+            }
+          ],
+          "selected_action": "vertical",
+          "task_id": 2,
+          "terminal_event_records": [
+            {
+              "slot": 4,
+              "terminal_outcome": "completed"
+            }
+          ],
+          "terminal_outcome": "completed",
+          "terminal_slot": 4,
+          "trace_id": "trace-1"
+        },
+        "trace-1:0:3": {
+          "arrival_slot": 2,
+          "canonical_reward": 0.0,
+          "completion_or_drop_slot": null,
+          "decision_record": {
+            "selected_action": "horizontal"
+          },
+          "episode_id": 0,
+          "finalized_records": [],
+          "first_decision_slot": 2,
+          "latency_slots": null,
+          "pending_evidence": true,
+          "raw_reward_event_count": 0,
+          "raw_reward_total": 0.0,
+          "raw_terminal_event_count": 0,
+          "reward_event_records": [],
+          "selected_action": "horizontal",
+          "task_id": 3,
+          "terminal_event_records": [
+            {
+              "slot": 5,
+              "terminal_outcome": "pending_at_horizon"
+            }
+          ],
+          "terminal_outcome": "pending_at_horizon",
+          "terminal_slot": 5,
+          "trace_id": "trace-1"
+        }
+      },
+      "terminal_event_records": {
+        "record_count": 3,
+        "recovered_from_finalized_tasks": true,
+        "sample_records": [
+          {
+            "episode_id": 0,
+            "task_id": 1,
+            "trace_id": "trace-0"
+          }
+        ]
+      },
+      "terminal_event_recovery_blocked": false,
+      "unknown_count": 0
+    },
+    "evaluation_reward_summary": {
+      "candidate_reproduction_supported": true,
+      "canonical_task_count": 3,
+      "canonical_task_reward_count": 2,
+      "canonical_task_reward_total": -44.0,
+      "canonical_terminal_task_count": 2,
+      "checkpoint_budget": 150,
+      "completed_task_count": 1,
+      "dropped_task_count": 1,
+      "duplicate_reward_event_count": 0,
+      "duplicate_terminal_event_count": 1,
+      "evaluation_episode_count": 100,
+      "evaluation_on_training_traces": false,
+      "mean_reward": -44.0,
+      "pending_at_horizon_count": 1,
+      "raw_event_reward_count": 2,
+      "raw_event_reward_total": -44.0,
+      "raw_reward_emission_count": 2,
+      "raw_reward_event_recovery_blocked": false,
+      "raw_terminal_event_count": 3,
+      "raw_vs_canonical_reward_delta": 0.0,
+      "reward_available_count": 2,
+      "reward_bearing_transition_count": 2,
+      "reward_reconciled": true,
+      "same_evaluation_trace_bank": true,
+      "terminal_event_recovery_blocked": false,
+      "terminal_transition_count": 2,
+      "trace_bank_disjoint": true,
+      "trace_bank_ids": {
+        "evaluation": "eval-bank",
+        "training": "train-bank"
+      },
+      "trace_ids": [
+        "trace-0"
+      ],
+      "unknown_task_count": 0
+    },
+    "event_level_metrics": {
+      "raw_event_reward_count": 2,
+      "raw_event_reward_total": -44.0,
+      "raw_reward_emission_count": 2,
+      "raw_reward_event_recovery_blocked": false,
+      "raw_terminal_event_count": 3,
+      "terminal_event_recovery_blocked": false
+    },
+    "last_loss": 3.0,
+    "loss_count": 7,
+    "loss_finite": true,
+    "optimizer_step_count": 102,
+    "paper_aligned_diagnostic_metrics": {
+      "canonical_completion_ratio": 0.3333333333333333,
+      "canonical_deadline_violation_ratio": 0.3333333333333333,
+      "canonical_drop_ratio": 0.3333333333333333,
+      "canonical_mean_completion_latency_slots": 4.0,
+      "canonical_mean_drop_latency_slots": 4.0,
+      "canonical_mean_terminal_latency_slots": 4.0,
+      "canonical_pending_ratio": 0.3333333333333333,
+      "canonical_reward_per_decision": -14.666666666666666,
+      "canonical_reward_per_task": -14.666666666666666,
+      "canonical_tasks_per_decision": 1.0,
+      "raw_reward_event_coverage_ratio": 1.0,
+      "reward_reconciliation_status": "passed",
+      "terminal_event_coverage_ratio": 1.5,
+      "training_budget": 150
+    },
+    "pending_at_horizon_count": 1,
+    "per_action_outcome_summary": {
+      "horizontal": {
+        "canonical_completion_ratio": 0.0,
+        "canonical_deadline_violation_ratio": 0.0,
+        "canonical_drop_ratio": 0.0,
+        "canonical_pending_ratio": 1.0,
+        "canonical_reward_count": 0,
+        "canonical_reward_total": 0.0,
+        "canonical_task_count": 1,
+        "canonical_task_mean_reward": 0.0,
+        "canonical_terminal_task_count": 0,
+        "completed_count": 0,
+        "completion_reward_count": 0,
+        "decision_count": 1,
+        "double_count_detected": false,
+        "drop_penalty_count": 0,
+        "dropped_count": 0,
+        "duplicate_reward_event_count": 0,
+        "duplicate_terminal_event_count": 0,
+        "mean_completion_latency_slots": null,
+        "mean_drop_latency_slots": null,
+        "mean_reward": 0.0,
+        "mean_terminal_latency_slots": null,
+        "pending_at_horizon_count": 1,
+        "raw_event_reward_count": 0,
+        "raw_event_reward_total": 0.0,
+        "raw_reward_emission_count": 0,
+        "raw_terminal_event_count": 0,
+        "raw_vs_canonical_reward_delta": 0.0,
+        "reward_bearing_transition_count": 0,
+        "terminal_transition_count": 0,
+        "total_reward": 0.0,
+        "unknown_count": 0
+      },
+      "local": {
+        "canonical_completion_ratio": 0.0,
+        "canonical_deadline_violation_ratio": 0.0,
+        "canonical_drop_ratio": 0.0,
+        "canonical_pending_ratio": 0.0,
+        "canonical_reward_count": 0,
+        "canonical_reward_total": 0.0,
+        "canonical_task_count": 0,
+        "canonical_task_mean_reward": 0.0,
+        "canonical_terminal_task_count": 0,
+        "completed_count": 0,
+        "completion_reward_count": 0,
+        "decision_count": 0,
+        "double_count_detected": false,
+        "drop_penalty_count": 0,
+        "dropped_count": 0,
+        "duplicate_reward_event_count": 0,
+        "duplicate_terminal_event_count": 0,
+        "mean_completion_latency_slots": null,
+        "mean_drop_latency_slots": null,
+        "mean_reward": 0.0,
+        "mean_terminal_latency_slots": null,
+        "pending_at_horizon_count": 0,
+        "raw_event_reward_count": 0,
+        "raw_event_reward_total": 0.0,
+        "raw_reward_emission_count": 0,
+        "raw_terminal_event_count": 0,
+        "raw_vs_canonical_reward_delta": 0.0,
+        "reward_bearing_transition_count": 0,
+        "terminal_transition_count": 0,
+        "total_reward": 0.0,
+        "unknown_count": 0
+      },
+      "vertical": {
+        "canonical_completion_ratio": 0.5,
+        "canonical_deadline_violation_ratio": 0.5,
+        "canonical_drop_ratio": 0.5,
+        "canonical_pending_ratio": 0.0,
+        "canonical_reward_count": 2,
+        "canonical_reward_total": -44.0,
+        "canonical_task_count": 2,
+        "canonical_task_mean_reward": -22.0,
+        "canonical_terminal_task_count": 2,
+        "completed_count": 1,
+        "completion_reward_count": 1,
+        "decision_count": 2,
+        "double_count_detected": true,
+        "drop_penalty_count": 1,
+        "dropped_count": 1,
+        "duplicate_reward_event_count": 0,
+        "duplicate_terminal_event_count": 1,
+        "mean_completion_latency_slots": 4.0,
+        "mean_drop_latency_slots": 4.0,
+        "mean_reward": -22.0,
+        "mean_terminal_latency_slots": 4.0,
+        "pending_at_horizon_count": 0,
+        "raw_event_reward_count": 2,
+        "raw_event_reward_total": -44.0,
+        "raw_reward_emission_count": 2,
+        "raw_terminal_event_count": 3,
+        "raw_vs_canonical_reward_delta": 0.0,
+        "reward_bearing_transition_count": 2,
+        "terminal_transition_count": 2,
+        "total_reward": -44.0,
+        "unknown_count": 0
+      }
+    },
+    "raw_vs_canonical_metric_comparison": {
+      "canonical_task_count": 3,
+      "canonical_task_reward_count": 2,
+      "canonical_task_reward_total": -44.0,
+      "canonical_terminal_task_count": 2,
+      "checkpoint_budget": 150,
+      "duplicate_reward_event_count": 0,
+      "duplicate_terminal_event_count": 1,
+      "raw_event_reward_count": 2,
+      "raw_event_reward_total": -44.0,
+      "raw_reward_event_recovery_blocked": false,
+      "raw_terminal_event_count": 3,
+      "raw_vs_canonical_reward_delta": 0.0,
+      "reward_reconciled": true,
+      "terminal_event_recovery_blocked": false
+    },
+    "replay_size": 10000,
+    "replay_window_action_distribution": {
+      "horizontal": 0,
+      "local": 0,
+      "vertical": 10000
+    },
+    "replay_window_capacity": 10000,
+    "replay_window_interpretation_warning": true,
+    "replay_window_is_full_training_history": false,
+    "reward_decomposition": {
+      "canonical_task_mean_reward_by_action": {
+        "horizontal": 0.0,
+        "local": 0.0,
+        "vertical": -22.0
+      },
+      "canonical_task_reward_count_by_action": {
+        "horizontal": 0,
+        "local": 0,
+        "vertical": 2
+      },
+      "canonical_task_reward_total_by_action": {
+        "horizontal": 0.0,
+        "local": 0.0,
+        "vertical": -44.0
+      },
+      "completion_reward_count_by_action": {
+        "horizontal": 0,
+        "local": 0,
+        "vertical": 1
+      },
+      "drop_penalty_count_by_action": {
+        "horizontal": 0,
+        "local": 0,
+        "vertical": 1
+      },
+      "nan_reward_count": 0,
+      "raw_event_reward_count_by_action": {
+        "horizontal": 0,
+        "local": 0,
+        "vertical": 2
+      },
+      "raw_event_reward_total_by_action": {
+        "horizontal": 0.0,
+        "local": 0.0,
+        "vertical": -44.0
+      },
+      "raw_vs_canonical_reward_delta_by_action": {
+        "horizontal": 0.0,
+        "local": 0.0,
+        "vertical": 0.0
+      },
+      "raw_vs_canonical_reward_delta_total": 0.0,
+      "reward_available_count": 2,
+      "reward_by_action": {
+        "horizontal": 0.0,
+        "local": 0.0,
+        "vertical": -44.0
+      },
+      "reward_by_action_and_terminal_outcome": {
+        "horizontal": {
+          "completed": {
+            "canonical_task_mean_reward": 0.0,
+            "canonical_task_reward_count": 0,
+            "canonical_task_reward_total": 0.0,
+            "count": 0,
+            "mean_reward": 0.0,
+            "raw_event_reward_count": 0,
+            "raw_event_reward_total": 0.0,
+            "raw_vs_canonical_reward_delta": 0.0,
+            "total_reward": 0.0
+          },
+          "dropped": {
+            "canonical_task_mean_reward": 0.0,
+            "canonical_task_reward_count": 0,
+            "canonical_task_reward_total": 0.0,
+            "count": 0,
+            "mean_reward": 0.0,
+            "raw_event_reward_count": 0,
+            "raw_event_reward_total": 0.0,
+            "raw_vs_canonical_reward_delta": 0.0,
+            "total_reward": 0.0
+          }
+        },
+        "local": {
+          "completed": {
+            "canonical_task_mean_reward": 0.0,
+            "canonical_task_reward_count": 0,
+            "canonical_task_reward_total": 0.0,
+            "count": 0,
+            "mean_reward": 0.0,
+            "raw_event_reward_count": 0,
+            "raw_event_reward_total": 0.0,
+            "raw_vs_canonical_reward_delta": 0.0,
+            "total_reward": 0.0
+          },
+          "dropped": {
+            "canonical_task_mean_reward": 0.0,
+            "canonical_task_reward_count": 0,
+            "canonical_task_reward_total": 0.0,
+            "count": 0,
+            "mean_reward": 0.0,
+            "raw_event_reward_count": 0,
+            "raw_event_reward_total": 0.0,
+            "raw_vs_canonical_reward_delta": 0.0,
+            "total_reward": 0.0
+          }
+        },
+        "vertical": {
+          "completed": {
+            "canonical_task_mean_reward": -4.0,
+            "canonical_task_reward_count": 1,
+            "canonical_task_reward_total": -4.0,
+            "count": 1,
+            "mean_reward": -4.0,
+            "raw_event_reward_count": 1,
+            "raw_event_reward_total": -4.0,
+            "raw_vs_canonical_reward_delta": 0.0,
+            "total_reward": -4.0
+          },
+          "dropped": {
+            "canonical_task_mean_reward": -40.0,
+            "canonical_task_reward_count": 1,
+            "canonical_task_reward_total": -40.0,
+            "count": 1,
+            "mean_reward": -40.0,
+            "raw_event_reward_count": 1,
+            "raw_event_reward_total": -40.0,
+            "raw_vs_canonical_reward_delta": 0.0,
+            "total_reward": -40.0
+          }
+        }
+      },
+      "reward_by_terminal_outcome": {
+        "completed": -4.0,
+        "dropped": -40.0
+      },
+      "zero_reward_count": 0
+    },
+    "reward_summary": {
+      "mean_reward": -1.0,
+      "pending_at_horizon_count": 0,
+      "reward_count": 100,
+      "total_reward": -100.0
+    },
+    "training_budget": 150,
+    "training_state": {
+      "cumulative_training_action_distribution": {
+        "horizontal": 20,
+        "local": 10,
+        "vertical": 30
+      },
+      "cumulative_training_episode_count": 150,
+      "last_loss": 3.0,
+      "loss_count": 7,
+      "loss_finite": true,
+      "optimizer_step_count": 102,
+      "replay_size": 10000,
+      "replay_window_action_distribution": {
+        "horizontal": 0,
+        "local": 0,
+        "vertical": 10000
+      },
+      "replay_window_capacity": 10000,
+      "replay_window_interpretation_warning": true,
+      "replay_window_is_full_training_history": false,
+      "reward_summary": {
+        "mean_reward": -1.0,
+        "pending_at_horizon_count": 0,
+        "reward_count": 100,
+        "total_reward": -100.0
+      },
+      "training_action_sequence_sample": [
+        {
+          "action": "vertical",
+          "episode_id": 0,
+          "legal_action_mask": {
+            "local": true
+          },
+          "step_id": 0
+        }
+      ],
+      "training_budget": 150
+    }
+  },
+  {
+    "action_accounting_reconciled": true,
+    "action_count_total": 60,
+    "action_distribution": {
+      "horizontal": 20,
+      "local": 10,
+      "vertical": 30
+    },
+    "canonical_task_level_metrics": {
+      "canonical_completion_count": 1,
+      "canonical_completion_ratio": 0.3333333333333333,
+      "canonical_deadline_violation_ratio": 0.3333333333333333,
+      "canonical_drop_count": 1,
+      "canonical_drop_ratio": 0.3333333333333333,
+      "canonical_mean_completion_latency_slots": 4.0,
+      "canonical_mean_drop_latency_slots": 4.0,
+      "canonical_mean_terminal_latency_slots": 4.0,
+      "canonical_pending_count": 1,
+      "canonical_pending_ratio": 0.3333333333333333,
+      "canonical_reward_count": 2,
+      "canonical_reward_per_decision": -14.666666666666666,
+      "canonical_reward_per_task": -14.666666666666666,
+      "canonical_task_count": 3,
+      "canonical_task_mean_reward": -22.0,
+      "canonical_task_reward_count": 2,
+      "canonical_task_reward_total": -44.0,
+      "canonical_tasks_per_decision": 1.0,
+      "canonical_terminal_task_count": 2,
+      "canonical_unknown_count": 0,
+      "completed_count": 1,
+      "completion_reward_count": 1,
+      "double_count_detected": true,
+      "drop_penalty_count": 1,
+      "dropped_count": 1,
+      "duplicate_reward_event_count": 0,
+      "duplicate_terminal_event_count": 1,
+      "mean_reward": 0.0,
+      "pending_at_horizon_count": 1,
+      "raw_event_reward_count": 2,
+      "raw_event_reward_total": -44.0,
+      "raw_reward_emission_count": 2,
+      "raw_reward_event_count": 2,
+      "raw_terminal_event_count": 3,
+      "raw_vs_canonical_reward_delta": 0.0,
+      "reward_bearing_transition_count": 2,
+      "terminal_transition_count": 2,
+      "total_reward": -44.0,
+      "unknown_count": 0
+    },
+    "claim_safety_status": {
+      "baseline_superiority_claim_made": false,
+      "claim_safety_passed": true,
+      "paper_reproduction_claim_made": false,
+      "performance_superiority_claim_made": false
+    },
+    "comparison_ready": true,
+    "completed_task_count": 1,
+    "cumulative_training_action_distribution": {
+      "horizontal": 20,
+      "local": 10,
+      "vertical": 30
+    },
+    "cumulative_training_episode_count": 200,
+    "dropped_task_count": 1,
+    "episode_length": 110,
+    "evaluation_action_by_episode_id": {
+      "0": {
+        "decision_count": 3
+      }
+    },
+    "evaluation_action_by_trace_id": {
+      "trace-0": {
+        "decision_count": 3
+      }
+    },
+    "evaluation_action_distribution": {
+      "horizontal": 1,
+      "local": 1,
+      "vertical": 1
+    },
+    "evaluation_action_sequence_sample": [
+      {
+        "episode_id": 0,
+        "selected_action": "vertical",
+        "task_id": 1,
+        "trace_id": "trace-0"
+      }
+    ],
+    "evaluation_decision_count": 3,
+    "evaluation_episode_count": 100,
+    "evaluation_legal_action_mask_distribution": {
+      "local=1|horizontal=1|vertical=1": 3
+    },
+    "evaluation_policy_result": {
+      "candidate_policy_vertical_share": 0.3333333333333333,
+      "canonical_reward_decomposition": {
+        "canonical_task_mean_reward_by_action": {
+          "horizontal": 0.0,
+          "local": 0.0,
+          "vertical": -22.0
+        },
+        "canonical_task_reward_count_by_action": {
+          "horizontal": 0,
+          "local": 0,
+          "vertical": 2
+        },
+        "canonical_task_reward_total_by_action": {
+          "horizontal": 0.0,
+          "local": 0.0,
+          "vertical": -44.0
+        },
+        "completion_reward_count_by_action": {
+          "horizontal": 0,
+          "local": 0,
+          "vertical": 1
+        },
+        "drop_penalty_count_by_action": {
+          "horizontal": 0,
+          "local": 0,
+          "vertical": 1
+        },
+        "nan_reward_count": 0,
+        "raw_event_reward_count_by_action": {
+          "horizontal": 0,
+          "local": 0,
+          "vertical": 2
+        },
+        "raw_event_reward_total_by_action": {
+          "horizontal": 0.0,
+          "local": 0.0,
+          "vertical": -44.0
+        },
+        "raw_vs_canonical_reward_delta_by_action": {
+          "horizontal": 0.0,
+          "local": 0.0,
+          "vertical": 0.0
+        },
+        "raw_vs_canonical_reward_delta_total": 0.0,
+        "reward_available_count": 2,
+        "reward_by_action": {
+          "horizontal": 0.0,
+          "local": 0.0,
+          "vertical": -44.0
+        },
+        "reward_by_action_and_terminal_outcome": {
+          "horizontal": {
+            "completed": {
+              "canonical_task_mean_reward": 0.0,
+              "canonical_task_reward_count": 0,
+              "canonical_task_reward_total": 0.0,
+              "count": 0,
+              "mean_reward": 0.0,
+              "raw_event_reward_count": 0,
+              "raw_event_reward_total": 0.0,
+              "raw_vs_canonical_reward_delta": 0.0,
+              "total_reward": 0.0
+            },
+            "dropped": {
+              "canonical_task_mean_reward": 0.0,
+              "canonical_task_reward_count": 0,
+              "canonical_task_reward_total": 0.0,
+              "count": 0,
+              "mean_reward": 0.0,
+              "raw_event_reward_count": 0,
+              "raw_event_reward_total": 0.0,
+              "raw_vs_canonical_reward_delta": 0.0,
+              "total_reward": 0.0
+            }
+          },
+          "local": {
+            "completed": {
+              "canonical_task_mean_reward": 0.0,
+              "canonical_task_reward_count": 0,
+              "canonical_task_reward_total": 0.0,
+              "count": 0,
+              "mean_reward": 0.0,
+              "raw_event_reward_count": 0,
+              "raw_event_reward_total": 0.0,
+              "raw_vs_canonical_reward_delta": 0.0,
+              "total_reward": 0.0
+            },
+            "dropped": {
+              "canonical_task_mean_reward": 0.0,
+              "canonical_task_reward_count": 0,
+              "canonical_task_reward_total": 0.0,
+              "count": 0,
+              "mean_reward": 0.0,
+              "raw_event_reward_count": 0,
+              "raw_event_reward_total": 0.0,
+              "raw_vs_canonical_reward_delta": 0.0,
+              "total_reward": 0.0
+            }
+          },
+          "vertical": {
+            "completed": {
+              "canonical_task_mean_reward": -4.0,
+              "canonical_task_reward_count": 1,
+              "canonical_task_reward_total": -4.0,
+              "count": 1,
+              "mean_reward": -4.0,
+              "raw_event_reward_count": 1,
+              "raw_event_reward_total": -4.0,
+              "raw_vs_canonical_reward_delta": 0.0,
+              "total_reward": -4.0
+            },
+            "dropped": {
+              "canonical_task_mean_reward": -40.0,
+              "canonical_task_reward_count": 1,
+              "canonical_task_reward_total": -40.0,
+              "count": 1,
+              "mean_reward": -40.0,
+              "raw_event_reward_count": 1,
+              "raw_event_reward_total": -40.0,
+              "raw_vs_canonical_reward_delta": 0.0,
+              "total_reward": -40.0
+            }
+          }
+        },
+        "reward_by_terminal_outcome": {
+          "completed": -4.0,
+          "dropped": -40.0
+        },
+        "zero_reward_count": 0
+      },
+      "canonical_task_outcome_summary": {
+        "by_action": {
+          "horizontal": {
+            "canonical_completion_ratio": 0.0,
+            "canonical_deadline_violation_ratio": 0.0,
+            "canonical_drop_ratio": 0.0,
+            "canonical_pending_ratio": 1.0,
+            "canonical_reward_count": 0,
+            "canonical_reward_total": 0.0,
+            "canonical_task_count": 1,
+            "canonical_task_mean_reward": 0.0,
+            "canonical_terminal_task_count": 0,
+            "completed_count": 0,
+            "completion_reward_count": 0,
+            "decision_count": 1,
+            "double_count_detected": false,
+            "drop_penalty_count": 0,
+            "dropped_count": 0,
+            "duplicate_reward_event_count": 0,
+            "duplicate_terminal_event_count": 0,
+            "mean_completion_latency_slots": null,
+            "mean_drop_latency_slots": null,
+            "mean_reward": 0.0,
+            "mean_terminal_latency_slots": null,
+            "pending_at_horizon_count": 1,
+            "raw_event_reward_count": 0,
+            "raw_event_reward_total": 0.0,
+            "raw_reward_emission_count": 0,
+            "raw_terminal_event_count": 0,
+            "raw_vs_canonical_reward_delta": 0.0,
+            "reward_bearing_transition_count": 0,
+            "terminal_transition_count": 0,
+            "total_reward": 0.0,
+            "unknown_count": 0
+          },
+          "local": {
+            "canonical_completion_ratio": 0.0,
+            "canonical_deadline_violation_ratio": 0.0,
+            "canonical_drop_ratio": 0.0,
+            "canonical_pending_ratio": 0.0,
+            "canonical_reward_count": 0,
+            "canonical_reward_total": 0.0,
+            "canonical_task_count": 0,
+            "canonical_task_mean_reward": 0.0,
+            "canonical_terminal_task_count": 0,
+            "completed_count": 0,
+            "completion_reward_count": 0,
+            "decision_count": 0,
+            "double_count_detected": false,
+            "drop_penalty_count": 0,
+            "dropped_count": 0,
+            "duplicate_reward_event_count": 0,
+            "duplicate_terminal_event_count": 0,
+            "mean_completion_latency_slots": null,
+            "mean_drop_latency_slots": null,
+            "mean_reward": 0.0,
+            "mean_terminal_latency_slots": null,
+            "pending_at_horizon_count": 0,
+            "raw_event_reward_count": 0,
+            "raw_event_reward_total": 0.0,
+            "raw_reward_emission_count": 0,
+            "raw_terminal_event_count": 0,
+            "raw_vs_canonical_reward_delta": 0.0,
+            "reward_bearing_transition_count": 0,
+            "terminal_transition_count": 0,
+            "total_reward": 0.0,
+            "unknown_count": 0
+          },
+          "vertical": {
+            "canonical_completion_ratio": 0.5,
+            "canonical_deadline_violation_ratio": 0.5,
+            "canonical_drop_ratio": 0.5,
+            "canonical_pending_ratio": 0.0,
+            "canonical_reward_count": 2,
+            "canonical_reward_total": -44.0,
+            "canonical_task_count": 2,
+            "canonical_task_mean_reward": -22.0,
+            "canonical_terminal_task_count": 2,
+            "completed_count": 1,
+            "completion_reward_count": 1,
+            "decision_count": 2,
+            "double_count_detected": true,
+            "drop_penalty_count": 1,
+            "dropped_count": 1,
+            "duplicate_reward_event_count": 0,
+            "duplicate_terminal_event_count": 1,
+            "mean_completion_latency_slots": 4.0,
+            "mean_drop_latency_slots": 4.0,
+            "mean_reward": -22.0,
+            "mean_terminal_latency_slots": 4.0,
+            "pending_at_horizon_count": 0,
+            "raw_event_reward_count": 2,
+            "raw_event_reward_total": -44.0,
+            "raw_reward_emission_count": 2,
+            "raw_terminal_event_count": 3,
+            "raw_vs_canonical_reward_delta": 0.0,
+            "reward_bearing_transition_count": 2,
+            "terminal_transition_count": 2,
+            "total_reward": -44.0,
+            "unknown_count": 0
+          }
+        },
+        "checkpoint_budget": 200,
+        "overall": {
+          "canonical_completion_count": 1,
+          "canonical_completion_ratio": 0.3333333333333333,
+          "canonical_deadline_violation_ratio": 0.3333333333333333,
+          "canonical_drop_count": 1,
+          "canonical_drop_ratio": 0.3333333333333333,
+          "canonical_mean_completion_latency_slots": 4.0,
+          "canonical_mean_drop_latency_slots": 4.0,
+          "canonical_mean_terminal_latency_slots": 4.0,
+          "canonical_pending_count": 1,
+          "canonical_pending_ratio": 0.3333333333333333,
+          "canonical_reward_count": 2,
+          "canonical_reward_per_decision": -14.666666666666666,
+          "canonical_reward_per_task": -14.666666666666666,
+          "canonical_task_count": 3,
+          "canonical_task_mean_reward": -22.0,
+          "canonical_task_reward_count": 2,
+          "canonical_task_reward_total": -44.0,
+          "canonical_tasks_per_decision": 1.0,
+          "canonical_terminal_task_count": 2,
+          "canonical_unknown_count": 0,
+          "completed_count": 1,
+          "completion_reward_count": 1,
+          "double_count_detected": true,
+          "drop_penalty_count": 1,
+          "dropped_count": 1,
+          "duplicate_reward_event_count": 0,
+          "duplicate_terminal_event_count": 1,
+          "mean_reward": 0.0,
+          "pending_at_horizon_count": 1,
+          "raw_event_reward_count": 2,
+          "raw_event_reward_total": -44.0,
+          "raw_reward_emission_count": 2,
+          "raw_reward_event_count": 2,
+          "raw_terminal_event_count": 3,
+          "raw_vs_canonical_reward_delta": 0.0,
+          "reward_bearing_transition_count": 2,
+          "terminal_transition_count": 2,
+          "total_reward": -44.0,
+          "unknown_count": 0
+        },
+        "reward_coverage": {
+          "raw_reward_event_count": 2,
+          "raw_terminal_event_count": 3,
+          "reward_available_count": 2
+        }
+      },
+      "canonical_task_reward_total": -44.0,
+      "checkpoint_budget": 200,
+      "completed_count": 1,
+      "decision_records_summary": {
+        "decision_count": 3,
+        "evaluation_action_distribution_source": "evaluation_episodes",
+        "sample_records": [
+          {
+            "episode_id": 0,
+            "selected_action": "vertical",
+            "task_id": 1,
+            "trace_id": "trace-0"
+          }
+        ]
+      },
+      "dropped_count": 1,
+      "episode_length": 110,
+      "episode_reward_totals": [
+        -44.0
+      ],
+      "episode_summaries": [
+        {
+          "canonical_reward_total": -44.0,
+          "completion_count": 1,
+          "decision_count": 3,
+          "drop_count": 1,
+          "episode_id": 0,
+          "pending_count": 1,
+          "raw_reward_event_count": 2,
+          "raw_reward_total": -44.0,
+          "reward_recovered": true,
+          "terminal_task_count": 2,
+          "trace_id": "trace-0",
+          "unknown_count": 0
+        }
+      ],
+      "evaluation_action_by_episode_id": {
+        "0": {
+          "decision_count": 3
+        }
+      },
+      "evaluation_action_by_trace_id": {
+        "trace-0": {
+          "decision_count": 3
+        }
+      },
+      "evaluation_action_distribution": {
+        "horizontal": 1,
+        "local": 1,
+        "vertical": 1
+      },
+      "evaluation_action_distribution_source": "evaluation_episodes",
+      "evaluation_action_sequence_sample": [
+        {
+          "episode_id": 0,
+          "selected_action": "vertical",
+          "task_id": 1,
+          "trace_id": "trace-0"
+        }
+      ],
+      "evaluation_decision_count": 3,
+      "evaluation_episode_count": 100,
+      "evaluation_legal_action_mask_distribution": {
+        "local=1|horizontal=1|vertical=1": 3
+      },
+      "evaluation_reward_summary": {
+        "candidate_reproduction_supported": true,
+        "canonical_task_count": 3,
+        "canonical_task_reward_count": 2,
+        "canonical_task_reward_total": -44.0,
+        "canonical_terminal_task_count": 2,
+        "checkpoint_budget": 200,
+        "completed_task_count": 1,
+        "dropped_task_count": 1,
+        "duplicate_reward_event_count": 0,
+        "duplicate_terminal_event_count": 1,
+        "evaluation_episode_count": 100,
+        "evaluation_on_training_traces": false,
+        "mean_reward": -44.0,
+        "pending_at_horizon_count": 1,
+        "raw_event_reward_count": 2,
+        "raw_event_reward_total": -44.0,
+        "raw_reward_emission_count": 2,
+        "raw_reward_event_recovery_blocked": false,
+        "raw_terminal_event_count": 3,
+        "raw_vs_canonical_reward_delta": 0.0,
+        "reward_available_count": 2,
+        "reward_bearing_transition_count": 2,
+        "reward_reconciled": true,
+        "same_evaluation_trace_bank": true,
+        "terminal_event_recovery_blocked": false,
+        "terminal_transition_count": 2,
+        "trace_bank_disjoint": true,
+        "trace_bank_ids": {
+          "evaluation": "eval-bank",
+          "training": "train-bank"
+        },
+        "trace_ids": [
+          "trace-0"
+        ],
+        "unknown_task_count": 0
+      },
+      "evaluation_trace_bank_id": "eval-bank",
+      "paper_aligned_diagnostic_metrics": {
+        "canonical_completion_ratio": 0.3333333333333333,
+        "canonical_deadline_violation_ratio": 0.3333333333333333,
+        "canonical_drop_ratio": 0.3333333333333333,
+        "canonical_mean_completion_latency_slots": 4.0,
+        "canonical_mean_drop_latency_slots": 4.0,
+        "canonical_mean_terminal_latency_slots": 4.0,
+        "canonical_pending_ratio": 0.3333333333333333,
+        "canonical_reward_per_decision": -14.666666666666666,
+        "canonical_reward_per_task": -14.666666666666666,
+        "canonical_tasks_per_decision": 1.0,
+        "raw_reward_event_coverage_ratio": 1.0,
+        "reward_reconciliation_status": "passed",
+        "terminal_event_coverage_ratio": 1.5,
+        "training_budget": 200
+      },
+      "pending_at_horizon_count": 1,
+      "per_action_outcome_summary": {
+        "horizontal": {
+          "canonical_completion_ratio": 0.0,
+          "canonical_deadline_violation_ratio": 0.0,
+          "canonical_drop_ratio": 0.0,
+          "canonical_pending_ratio": 1.0,
+          "canonical_reward_count": 0,
+          "canonical_reward_total": 0.0,
+          "canonical_task_count": 1,
+          "canonical_task_mean_reward": 0.0,
+          "canonical_terminal_task_count": 0,
+          "completed_count": 0,
+          "completion_reward_count": 0,
+          "decision_count": 1,
+          "double_count_detected": false,
+          "drop_penalty_count": 0,
+          "dropped_count": 0,
+          "duplicate_reward_event_count": 0,
+          "duplicate_terminal_event_count": 0,
+          "mean_completion_latency_slots": null,
+          "mean_drop_latency_slots": null,
+          "mean_reward": 0.0,
+          "mean_terminal_latency_slots": null,
+          "pending_at_horizon_count": 1,
+          "raw_event_reward_count": 0,
+          "raw_event_reward_total": 0.0,
+          "raw_reward_emission_count": 0,
+          "raw_terminal_event_count": 0,
+          "raw_vs_canonical_reward_delta": 0.0,
+          "reward_bearing_transition_count": 0,
+          "terminal_transition_count": 0,
+          "total_reward": 0.0,
+          "unknown_count": 0
+        },
+        "local": {
+          "canonical_completion_ratio": 0.0,
+          "canonical_deadline_violation_ratio": 0.0,
+          "canonical_drop_ratio": 0.0,
+          "canonical_pending_ratio": 0.0,
+          "canonical_reward_count": 0,
+          "canonical_reward_total": 0.0,
+          "canonical_task_count": 0,
+          "canonical_task_mean_reward": 0.0,
+          "canonical_terminal_task_count": 0,
+          "completed_count": 0,
+          "completion_reward_count": 0,
+          "decision_count": 0,
+          "double_count_detected": false,
+          "drop_penalty_count": 0,
+          "dropped_count": 0,
+          "duplicate_reward_event_count": 0,
+          "duplicate_terminal_event_count": 0,
+          "mean_completion_latency_slots": null,
+          "mean_drop_latency_slots": null,
+          "mean_reward": 0.0,
+          "mean_terminal_latency_slots": null,
+          "pending_at_horizon_count": 0,
+          "raw_event_reward_count": 0,
+          "raw_event_reward_total": 0.0,
+          "raw_reward_emission_count": 0,
+          "raw_terminal_event_count": 0,
+          "raw_vs_canonical_reward_delta": 0.0,
+          "reward_bearing_transition_count": 0,
+          "terminal_transition_count": 0,
+          "total_reward": 0.0,
+          "unknown_count": 0
+        },
+        "vertical": {
+          "canonical_completion_ratio": 0.5,
+          "canonical_deadline_violation_ratio": 0.5,
+          "canonical_drop_ratio": 0.5,
+          "canonical_pending_ratio": 0.0,
+          "canonical_reward_count": 2,
+          "canonical_reward_total": -44.0,
+          "canonical_task_count": 2,
+          "canonical_task_mean_reward": -22.0,
+          "canonical_terminal_task_count": 2,
+          "completed_count": 1,
+          "completion_reward_count": 1,
+          "decision_count": 2,
+          "double_count_detected": true,
+          "drop_penalty_count": 1,
+          "dropped_count": 1,
+          "duplicate_reward_event_count": 0,
+          "duplicate_terminal_event_count": 1,
+          "mean_completion_latency_slots": 4.0,
+          "mean_drop_latency_slots": 4.0,
+          "mean_reward": -22.0,
+          "mean_terminal_latency_slots": 4.0,
+          "pending_at_horizon_count": 0,
+          "raw_event_reward_count": 2,
+          "raw_event_reward_total": -44.0,
+          "raw_reward_emission_count": 2,
+          "raw_terminal_event_count": 3,
+          "raw_vs_canonical_reward_delta": 0.0,
+          "reward_bearing_transition_count": 2,
+          "terminal_transition_count": 2,
+          "total_reward": -44.0,
+          "unknown_count": 0
+        }
+      },
+      "policy_kind": "candidate",
+      "policy_name": "candidate_policy_at_200",
+      "raw_event_reward_total": -44.0,
+      "raw_lifecycle_terminal_event_count": 3,
+      "raw_reward_event_count": 2,
+      "raw_reward_event_recovery_blocked": false,
+      "raw_reward_total": -44.0,
+      "raw_terminal_event_count": 3,
+      "raw_vs_canonical_reward_reconciliation": {
+        "canonical_task_count": 3,
+        "canonical_task_reward_count": 2,
+        "canonical_task_reward_total": -44.0,
+        "canonical_terminal_task_count": 2,
+        "checkpoint_budget": 200,
+        "duplicate_reward_event_count": 0,
+        "duplicate_terminal_event_count": 1,
+        "raw_event_reward_count": 2,
+        "raw_event_reward_total": -44.0,
+        "raw_reward_event_recovery_blocked": false,
+        "raw_terminal_event_count": 3,
+        "raw_vs_canonical_reward_delta": 0.0,
+        "reward_reconciled": true,
+        "terminal_event_recovery_blocked": false
+      },
+      "reward_event_records": {
+        "raw_reward_event_recovery_blocked": false,
+        "record_count": 2,
+        "reward_available_count": 2,
+        "sample_records": [
+          {
+            "episode_id": 0,
+            "raw_reward": -40.0,
+            "task_id": 1,
+            "trace_id": "trace-0"
+          }
+        ]
+      },
+      "reward_reconciled": true,
+      "reward_reconciliation_status": "passed",
+      "reward_reconciliation_tolerance": 1e-09,
+      "same_evaluation_trace_bank": true,
+      "task_records": {
+        "trace-1:0:1": {
+          "arrival_slot": 0,
+          "canonical_reward": -40.0,
+          "completion_or_drop_slot": 3,
+          "decision_record": {
+            "selected_action": "vertical"
+          },
+          "episode_id": 0,
+          "finalized_records": [
+            {
+              "arrival_slot": 0,
+              "completion_slot": 3,
+              "terminal_outcome": "dropped"
+            }
+          ],
+          "first_decision_slot": 0,
+          "latency_slots": 4,
+          "pending_evidence": false,
+          "raw_reward_event_count": 1,
+          "raw_reward_total": -40.0,
+          "raw_terminal_event_count": 2,
+          "reward_event_records": [
+            {
+              "raw_reward": -40.0,
+              "reward_available": true
+            }
+          ],
+          "selected_action": "vertical",
+          "task_id": 1,
+          "terminal_event_records": [
+            {
+              "slot": 3,
+              "terminal_outcome": "dropped"
+            }
+          ],
+          "terminal_outcome": "dropped",
+          "terminal_slot": 3,
+          "trace_id": "trace-1"
+        },
+        "trace-1:0:2": {
+          "arrival_slot": 1,
+          "canonical_reward": -4.0,
+          "completion_or_drop_slot": 4,
+          "decision_record": {
+            "selected_action": "vertical"
+          },
+          "episode_id": 0,
+          "finalized_records": [
+            {
+              "arrival_slot": 1,
+              "completion_slot": 4,
+              "terminal_outcome": "completed"
+            }
+          ],
+          "first_decision_slot": 1,
+          "latency_slots": 4,
+          "pending_evidence": false,
+          "raw_reward_event_count": 1,
+          "raw_reward_total": -4.0,
+          "raw_terminal_event_count": 1,
+          "reward_event_records": [
+            {
+              "raw_reward": -4.0,
+              "reward_available": true
+            }
+          ],
+          "selected_action": "vertical",
+          "task_id": 2,
+          "terminal_event_records": [
+            {
+              "slot": 4,
+              "terminal_outcome": "completed"
+            }
+          ],
+          "terminal_outcome": "completed",
+          "terminal_slot": 4,
+          "trace_id": "trace-1"
+        },
+        "trace-1:0:3": {
+          "arrival_slot": 2,
+          "canonical_reward": 0.0,
+          "completion_or_drop_slot": null,
+          "decision_record": {
+            "selected_action": "horizontal"
+          },
+          "episode_id": 0,
+          "finalized_records": [],
+          "first_decision_slot": 2,
+          "latency_slots": null,
+          "pending_evidence": true,
+          "raw_reward_event_count": 0,
+          "raw_reward_total": 0.0,
+          "raw_terminal_event_count": 0,
+          "reward_event_records": [],
+          "selected_action": "horizontal",
+          "task_id": 3,
+          "terminal_event_records": [
+            {
+              "slot": 5,
+              "terminal_outcome": "pending_at_horizon"
+            }
+          ],
+          "terminal_outcome": "pending_at_horizon",
+          "terminal_slot": 5,
+          "trace_id": "trace-1"
+        }
+      },
+      "terminal_event_records": {
+        "record_count": 3,
+        "recovered_from_finalized_tasks": true,
+        "sample_records": [
+          {
+            "episode_id": 0,
+            "task_id": 1,
+            "trace_id": "trace-0"
+          }
+        ]
+      },
+      "terminal_event_recovery_blocked": false,
+      "unknown_count": 0
+    },
+    "evaluation_reward_summary": {
+      "candidate_reproduction_supported": true,
+      "canonical_task_count": 3,
+      "canonical_task_reward_count": 2,
+      "canonical_task_reward_total": -44.0,
+      "canonical_terminal_task_count": 2,
+      "checkpoint_budget": 200,
+      "completed_task_count": 1,
+      "dropped_task_count": 1,
+      "duplicate_reward_event_count": 0,
+      "duplicate_terminal_event_count": 1,
+      "evaluation_episode_count": 100,
+      "evaluation_on_training_traces": false,
+      "mean_reward": -44.0,
+      "pending_at_horizon_count": 1,
+      "raw_event_reward_count": 2,
+      "raw_event_reward_total": -44.0,
+      "raw_reward_emission_count": 2,
+      "raw_reward_event_recovery_blocked": false,
+      "raw_terminal_event_count": 3,
+      "raw_vs_canonical_reward_delta": 0.0,
+      "reward_available_count": 2,
+      "reward_bearing_transition_count": 2,
+      "reward_reconciled": true,
+      "same_evaluation_trace_bank": true,
+      "terminal_event_recovery_blocked": false,
+      "terminal_transition_count": 2,
+      "trace_bank_disjoint": true,
+      "trace_bank_ids": {
+        "evaluation": "eval-bank",
+        "training": "train-bank"
+      },
+      "trace_ids": [
+        "trace-0"
+      ],
+      "unknown_task_count": 0
+    },
+    "event_level_metrics": {
+      "raw_event_reward_count": 2,
+      "raw_event_reward_total": -44.0,
+      "raw_reward_emission_count": 2,
+      "raw_reward_event_recovery_blocked": false,
+      "raw_terminal_event_count": 3,
+      "terminal_event_recovery_blocked": false
+    },
+    "last_loss": 4.0,
+    "loss_count": 8,
+    "loss_finite": true,
+    "optimizer_step_count": 103,
+    "paper_aligned_diagnostic_metrics": {
+      "canonical_completion_ratio": 0.3333333333333333,
+      "canonical_deadline_violation_ratio": 0.3333333333333333,
+      "canonical_drop_ratio": 0.3333333333333333,
+      "canonical_mean_completion_latency_slots": 4.0,
+      "canonical_mean_drop_latency_slots": 4.0,
+      "canonical_mean_terminal_latency_slots": 4.0,
+      "canonical_pending_ratio": 0.3333333333333333,
+      "canonical_reward_per_decision": -14.666666666666666,
+      "canonical_reward_per_task": -14.666666666666666,
+      "canonical_tasks_per_decision": 1.0,
+      "raw_reward_event_coverage_ratio": 1.0,
+      "reward_reconciliation_status": "passed",
+      "terminal_event_coverage_ratio": 1.5,
+      "training_budget": 200
+    },
+    "pending_at_horizon_count": 1,
+    "per_action_outcome_summary": {
+      "horizontal": {
+        "canonical_completion_ratio": 0.0,
+        "canonical_deadline_violation_ratio": 0.0,
+        "canonical_drop_ratio": 0.0,
+        "canonical_pending_ratio": 1.0,
+        "canonical_reward_count": 0,
+        "canonical_reward_total": 0.0,
+        "canonical_task_count": 1,
+        "canonical_task_mean_reward": 0.0,
+        "canonical_terminal_task_count": 0,
+        "completed_count": 0,
+        "completion_reward_count": 0,
+        "decision_count": 1,
+        "double_count_detected": false,
+        "drop_penalty_count": 0,
+        "dropped_count": 0,
+        "duplicate_reward_event_count": 0,
+        "duplicate_terminal_event_count": 0,
+        "mean_completion_latency_slots": null,
+        "mean_drop_latency_slots": null,
+        "mean_reward": 0.0,
+        "mean_terminal_latency_slots": null,
+        "pending_at_horizon_count": 1,
+        "raw_event_reward_count": 0,
+        "raw_event_reward_total": 0.0,
+        "raw_reward_emission_count": 0,
+        "raw_terminal_event_count": 0,
+        "raw_vs_canonical_reward_delta": 0.0,
+        "reward_bearing_transition_count": 0,
+        "terminal_transition_count": 0,
+        "total_reward": 0.0,
+        "unknown_count": 0
+      },
+      "local": {
+        "canonical_completion_ratio": 0.0,
+        "canonical_deadline_violation_ratio": 0.0,
+        "canonical_drop_ratio": 0.0,
+        "canonical_pending_ratio": 0.0,
+        "canonical_reward_count": 0,
+        "canonical_reward_total": 0.0,
+        "canonical_task_count": 0,
+        "canonical_task_mean_reward": 0.0,
+        "canonical_terminal_task_count": 0,
+        "completed_count": 0,
+        "completion_reward_count": 0,
+        "decision_count": 0,
+        "double_count_detected": false,
+        "drop_penalty_count": 0,
+        "dropped_count": 0,
+        "duplicate_reward_event_count": 0,
+        "duplicate_terminal_event_count": 0,
+        "mean_completion_latency_slots": null,
+        "mean_drop_latency_slots": null,
+        "mean_reward": 0.0,
+        "mean_terminal_latency_slots": null,
+        "pending_at_horizon_count": 0,
+        "raw_event_reward_count": 0,
+        "raw_event_reward_total": 0.0,
+        "raw_reward_emission_count": 0,
+        "raw_terminal_event_count": 0,
+        "raw_vs_canonical_reward_delta": 0.0,
+        "reward_bearing_transition_count": 0,
+        "terminal_transition_count": 0,
+        "total_reward": 0.0,
+        "unknown_count": 0
+      },
+      "vertical": {
+        "canonical_completion_ratio": 0.5,
+        "canonical_deadline_violation_ratio": 0.5,
+        "canonical_drop_ratio": 0.5,
+        "canonical_pending_ratio": 0.0,
+        "canonical_reward_count": 2,
+        "canonical_reward_total": -44.0,
+        "canonical_task_count": 2,
+        "canonical_task_mean_reward": -22.0,
+        "canonical_terminal_task_count": 2,
+        "completed_count": 1,
+        "completion_reward_count": 1,
+        "decision_count": 2,
+        "double_count_detected": true,
+        "drop_penalty_count": 1,
+        "dropped_count": 1,
+        "duplicate_reward_event_count": 0,
+        "duplicate_terminal_event_count": 1,
+        "mean_completion_latency_slots": 4.0,
+        "mean_drop_latency_slots": 4.0,
+        "mean_reward": -22.0,
+        "mean_terminal_latency_slots": 4.0,
+        "pending_at_horizon_count": 0,
+        "raw_event_reward_count": 2,
+        "raw_event_reward_total": -44.0,
+        "raw_reward_emission_count": 2,
+        "raw_terminal_event_count": 3,
+        "raw_vs_canonical_reward_delta": 0.0,
+        "reward_bearing_transition_count": 2,
+        "terminal_transition_count": 2,
+        "total_reward": -44.0,
+        "unknown_count": 0
+      }
+    },
+    "raw_vs_canonical_metric_comparison": {
+      "canonical_task_count": 3,
+      "canonical_task_reward_count": 2,
+      "canonical_task_reward_total": -44.0,
+      "canonical_terminal_task_count": 2,
+      "checkpoint_budget": 200,
+      "duplicate_reward_event_count": 0,
+      "duplicate_terminal_event_count": 1,
+      "raw_event_reward_count": 2,
+      "raw_event_reward_total": -44.0,
+      "raw_reward_event_recovery_blocked": false,
+      "raw_terminal_event_count": 3,
+      "raw_vs_canonical_reward_delta": 0.0,
+      "reward_reconciled": true,
+      "terminal_event_recovery_blocked": false
+    },
+    "replay_size": 10000,
+    "replay_window_action_distribution": {
+      "horizontal": 0,
+      "local": 0,
+      "vertical": 10000
+    },
+    "replay_window_capacity": 10000,
+    "replay_window_interpretation_warning": true,
+    "replay_window_is_full_training_history": false,
+    "reward_decomposition": {
+      "canonical_task_mean_reward_by_action": {
+        "horizontal": 0.0,
+        "local": 0.0,
+        "vertical": -22.0
+      },
+      "canonical_task_reward_count_by_action": {
+        "horizontal": 0,
+        "local": 0,
+        "vertical": 2
+      },
+      "canonical_task_reward_total_by_action": {
+        "horizontal": 0.0,
+        "local": 0.0,
+        "vertical": -44.0
+      },
+      "completion_reward_count_by_action": {
+        "horizontal": 0,
+        "local": 0,
+        "vertical": 1
+      },
+      "drop_penalty_count_by_action": {
+        "horizontal": 0,
+        "local": 0,
+        "vertical": 1
+      },
+      "nan_reward_count": 0,
+      "raw_event_reward_count_by_action": {
+        "horizontal": 0,
+        "local": 0,
+        "vertical": 2
+      },
+      "raw_event_reward_total_by_action": {
+        "horizontal": 0.0,
+        "local": 0.0,
+        "vertical": -44.0
+      },
+      "raw_vs_canonical_reward_delta_by_action": {
+        "horizontal": 0.0,
+        "local": 0.0,
+        "vertical": 0.0
+      },
+      "raw_vs_canonical_reward_delta_total": 0.0,
+      "reward_available_count": 2,
+      "reward_by_action": {
+        "horizontal": 0.0,
+        "local": 0.0,
+        "vertical": -44.0
+      },
+      "reward_by_action_and_terminal_outcome": {
+        "horizontal": {
+          "completed": {
+            "canonical_task_mean_reward": 0.0,
+            "canonical_task_reward_count": 0,
+            "canonical_task_reward_total": 0.0,
+            "count": 0,
+            "mean_reward": 0.0,
+            "raw_event_reward_count": 0,
+            "raw_event_reward_total": 0.0,
+            "raw_vs_canonical_reward_delta": 0.0,
+            "total_reward": 0.0
+          },
+          "dropped": {
+            "canonical_task_mean_reward": 0.0,
+            "canonical_task_reward_count": 0,
+            "canonical_task_reward_total": 0.0,
+            "count": 0,
+            "mean_reward": 0.0,
+            "raw_event_reward_count": 0,
+            "raw_event_reward_total": 0.0,
+            "raw_vs_canonical_reward_delta": 0.0,
+            "total_reward": 0.0
+          }
+        },
+        "local": {
+          "completed": {
+            "canonical_task_mean_reward": 0.0,
+            "canonical_task_reward_count": 0,
+            "canonical_task_reward_total": 0.0,
+            "count": 0,
+            "mean_reward": 0.0,
+            "raw_event_reward_count": 0,
+            "raw_event_reward_total": 0.0,
+            "raw_vs_canonical_reward_delta": 0.0,
+            "total_reward": 0.0
+          },
+          "dropped": {
+            "canonical_task_mean_reward": 0.0,
+            "canonical_task_reward_count": 0,
+            "canonical_task_reward_total": 0.0,
+            "count": 0,
+            "mean_reward": 0.0,
+            "raw_event_reward_count": 0,
+            "raw_event_reward_total": 0.0,
+            "raw_vs_canonical_reward_delta": 0.0,
+            "total_reward": 0.0
+          }
+        },
+        "vertical": {
+          "completed": {
+            "canonical_task_mean_reward": -4.0,
+            "canonical_task_reward_count": 1,
+            "canonical_task_reward_total": -4.0,
+            "count": 1,
+            "mean_reward": -4.0,
+            "raw_event_reward_count": 1,
+            "raw_event_reward_total": -4.0,
+            "raw_vs_canonical_reward_delta": 0.0,
+            "total_reward": -4.0
+          },
+          "dropped": {
+            "canonical_task_mean_reward": -40.0,
+            "canonical_task_reward_count": 1,
+            "canonical_task_reward_total": -40.0,
+            "count": 1,
+            "mean_reward": -40.0,
+            "raw_event_reward_count": 1,
+            "raw_event_reward_total": -40.0,
+            "raw_vs_canonical_reward_delta": 0.0,
+            "total_reward": -40.0
+          }
+        }
+      },
+      "reward_by_terminal_outcome": {
+        "completed": -4.0,
+        "dropped": -40.0
+      },
+      "zero_reward_count": 0
+    },
+    "reward_summary": {
+      "mean_reward": -1.0,
+      "pending_at_horizon_count": 0,
+      "reward_count": 100,
+      "total_reward": -100.0
+    },
+    "training_budget": 200,
+    "training_state": {
+      "cumulative_training_action_distribution": {
+        "horizontal": 20,
+        "local": 10,
+        "vertical": 30
+      },
+      "cumulative_training_episode_count": 200,
+      "last_loss": 4.0,
+      "loss_count": 8,
+      "loss_finite": true,
+      "optimizer_step_count": 103,
+      "replay_size": 10000,
+      "replay_window_action_distribution": {
+        "horizontal": 0,
+        "local": 0,
+        "vertical": 10000
+      },
+      "replay_window_capacity": 10000,
+      "replay_window_interpretation_warning": true,
+      "replay_window_is_full_training_history": false,
+      "reward_summary": {
+        "mean_reward": -1.0,
+        "pending_at_horizon_count": 0,
+        "reward_count": 100,
+        "total_reward": -100.0
+      },
+      "training_action_sequence_sample": [
+        {
+          "action": "vertical",
+          "episode_id": 0,
+          "legal_action_mask": {
+            "local": true
+          },
+          "step_id": 0
+        }
+      ],
+      "training_budget": 200
+    }
+  },
+  {
+    "action_accounting_reconciled": true,
+    "action_count_total": 60,
+    "action_distribution": {
+      "horizontal": 20,
+      "local": 10,
+      "vertical": 30
+    },
+    "canonical_task_level_metrics": {
+      "canonical_completion_count": 1,
+      "canonical_completion_ratio": 0.3333333333333333,
+      "canonical_deadline_violation_ratio": 0.3333333333333333,
+      "canonical_drop_count": 1,
+      "canonical_drop_ratio": 0.3333333333333333,
+      "canonical_mean_completion_latency_slots": 4.0,
+      "canonical_mean_drop_latency_slots": 4.0,
+      "canonical_mean_terminal_latency_slots": 4.0,
+      "canonical_pending_count": 1,
+      "canonical_pending_ratio": 0.3333333333333333,
+      "canonical_reward_count": 2,
+      "canonical_reward_per_decision": -14.666666666666666,
+      "canonical_reward_per_task": -14.666666666666666,
+      "canonical_task_count": 3,
+      "canonical_task_mean_reward": -22.0,
+      "canonical_task_reward_count": 2,
+      "canonical_task_reward_total": -44.0,
+      "canonical_tasks_per_decision": 1.0,
+      "canonical_terminal_task_count": 2,
+      "canonical_unknown_count": 0,
+      "completed_count": 1,
+      "completion_reward_count": 1,
+      "double_count_detected": true,
+      "drop_penalty_count": 1,
+      "dropped_count": 1,
+      "duplicate_reward_event_count": 0,
+      "duplicate_terminal_event_count": 1,
+      "mean_reward": 0.0,
+      "pending_at_horizon_count": 1,
+      "raw_event_reward_count": 2,
+      "raw_event_reward_total": -44.0,
+      "raw_reward_emission_count": 2,
+      "raw_reward_event_count": 2,
+      "raw_terminal_event_count": 3,
+      "raw_vs_canonical_reward_delta": 0.0,
+      "reward_bearing_transition_count": 2,
+      "terminal_transition_count": 2,
+      "total_reward": -44.0,
+      "unknown_count": 0
+    },
+    "claim_safety_status": {
+      "baseline_superiority_claim_made": false,
+      "claim_safety_passed": true,
+      "paper_reproduction_claim_made": false,
+      "performance_superiority_claim_made": false
+    },
+    "comparison_ready": true,
+    "completed_task_count": 1,
+    "cumulative_training_action_distribution": {
+      "horizontal": 20,
+      "local": 10,
+      "vertical": 30
+    },
+    "cumulative_training_episode_count": 500,
+    "dropped_task_count": 1,
+    "episode_length": 110,
+    "evaluation_action_by_episode_id": {
+      "0": {
+        "decision_count": 3
+      }
+    },
+    "evaluation_action_by_trace_id": {
+      "trace-0": {
+        "decision_count": 3
+      }
+    },
+    "evaluation_action_distribution": {
+      "horizontal": 1,
+      "local": 1,
+      "vertical": 1
+    },
+    "evaluation_action_sequence_sample": [
+      {
+        "episode_id": 0,
+        "selected_action": "vertical",
+        "task_id": 1,
+        "trace_id": "trace-0"
+      }
+    ],
+    "evaluation_decision_count": 3,
+    "evaluation_episode_count": 100,
+    "evaluation_legal_action_mask_distribution": {
+      "local=1|horizontal=1|vertical=1": 3
+    },
+    "evaluation_policy_result": {
+      "candidate_policy_vertical_share": 0.3333333333333333,
+      "canonical_reward_decomposition": {
+        "canonical_task_mean_reward_by_action": {
+          "horizontal": 0.0,
+          "local": 0.0,
+          "vertical": -22.0
+        },
+        "canonical_task_reward_count_by_action": {
+          "horizontal": 0,
+          "local": 0,
+          "vertical": 2
+        },
+        "canonical_task_reward_total_by_action": {
+          "horizontal": 0.0,
+          "local": 0.0,
+          "vertical": -44.0
+        },
+        "completion_reward_count_by_action": {
+          "horizontal": 0,
+          "local": 0,
+          "vertical": 1
+        },
+        "drop_penalty_count_by_action": {
+          "horizontal": 0,
+          "local": 0,
+          "vertical": 1
+        },
+        "nan_reward_count": 0,
+        "raw_event_reward_count_by_action": {
+          "horizontal": 0,
+          "local": 0,
+          "vertical": 2
+        },
+        "raw_event_reward_total_by_action": {
+          "horizontal": 0.0,
+          "local": 0.0,
+          "vertical": -44.0
+        },
+        "raw_vs_canonical_reward_delta_by_action": {
+          "horizontal": 0.0,
+          "local": 0.0,
+          "vertical": 0.0
+        },
+        "raw_vs_canonical_reward_delta_total": 0.0,
+        "reward_available_count": 2,
+        "reward_by_action": {
+          "horizontal": 0.0,
+          "local": 0.0,
+          "vertical": -44.0
+        },
+        "reward_by_action_and_terminal_outcome": {
+          "horizontal": {
+            "completed": {
+              "canonical_task_mean_reward": 0.0,
+              "canonical_task_reward_count": 0,
+              "canonical_task_reward_total": 0.0,
+              "count": 0,
+              "mean_reward": 0.0,
+              "raw_event_reward_count": 0,
+              "raw_event_reward_total": 0.0,
+              "raw_vs_canonical_reward_delta": 0.0,
+              "total_reward": 0.0
+            },
+            "dropped": {
+              "canonical_task_mean_reward": 0.0,
+              "canonical_task_reward_count": 0,
+              "canonical_task_reward_total": 0.0,
+              "count": 0,
+              "mean_reward": 0.0,
+              "raw_event_reward_count": 0,
+              "raw_event_reward_total": 0.0,
+              "raw_vs_canonical_reward_delta": 0.0,
+              "total_reward": 0.0
+            }
+          },
+          "local": {
+            "completed": {
+              "canonical_task_mean_reward": 0.0,
+              "canonical_task_reward_count": 0,
+              "canonical_task_reward_total": 0.0,
+              "count": 0,
+              "mean_reward": 0.0,
+              "raw_event_reward_count": 0,
+              "raw_event_reward_total": 0.0,
+              "raw_vs_canonical_reward_delta": 0.0,
+              "total_reward": 0.0
+            },
+            "dropped": {
+              "canonical_task_mean_reward": 0.0,
+              "canonical_task_reward_count": 0,
+              "canonical_task_reward_total": 0.0,
+              "count": 0,
+              "mean_reward": 0.0,
+              "raw_event_reward_count": 0,
+              "raw_event_reward_total": 0.0,
+              "raw_vs_canonical_reward_delta": 0.0,
+              "total_reward": 0.0
+            }
+          },
+          "vertical": {
+            "completed": {
+              "canonical_task_mean_reward": -4.0,
+              "canonical_task_reward_count": 1,
+              "canonical_task_reward_total": -4.0,
+              "count": 1,
+              "mean_reward": -4.0,
+              "raw_event_reward_count": 1,
+              "raw_event_reward_total": -4.0,
+              "raw_vs_canonical_reward_delta": 0.0,
+              "total_reward": -4.0
+            },
+            "dropped": {
+              "canonical_task_mean_reward": -40.0,
+              "canonical_task_reward_count": 1,
+              "canonical_task_reward_total": -40.0,
+              "count": 1,
+              "mean_reward": -40.0,
+              "raw_event_reward_count": 1,
+              "raw_event_reward_total": -40.0,
+              "raw_vs_canonical_reward_delta": 0.0,
+              "total_reward": -40.0
+            }
+          }
+        },
+        "reward_by_terminal_outcome": {
+          "completed": -4.0,
+          "dropped": -40.0
+        },
+        "zero_reward_count": 0
+      },
+      "canonical_task_outcome_summary": {
+        "by_action": {
+          "horizontal": {
+            "canonical_completion_ratio": 0.0,
+            "canonical_deadline_violation_ratio": 0.0,
+            "canonical_drop_ratio": 0.0,
+            "canonical_pending_ratio": 1.0,
+            "canonical_reward_count": 0,
+            "canonical_reward_total": 0.0,
+            "canonical_task_count": 1,
+            "canonical_task_mean_reward": 0.0,
+            "canonical_terminal_task_count": 0,
+            "completed_count": 0,
+            "completion_reward_count": 0,
+            "decision_count": 1,
+            "double_count_detected": false,
+            "drop_penalty_count": 0,
+            "dropped_count": 0,
+            "duplicate_reward_event_count": 0,
+            "duplicate_terminal_event_count": 0,
+            "mean_completion_latency_slots": null,
+            "mean_drop_latency_slots": null,
+            "mean_reward": 0.0,
+            "mean_terminal_latency_slots": null,
+            "pending_at_horizon_count": 1,
+            "raw_event_reward_count": 0,
+            "raw_event_reward_total": 0.0,
+            "raw_reward_emission_count": 0,
+            "raw_terminal_event_count": 0,
+            "raw_vs_canonical_reward_delta": 0.0,
+            "reward_bearing_transition_count": 0,
+            "terminal_transition_count": 0,
+            "total_reward": 0.0,
+            "unknown_count": 0
+          },
+          "local": {
+            "canonical_completion_ratio": 0.0,
+            "canonical_deadline_violation_ratio": 0.0,
+            "canonical_drop_ratio": 0.0,
+            "canonical_pending_ratio": 0.0,
+            "canonical_reward_count": 0,
+            "canonical_reward_total": 0.0,
+            "canonical_task_count": 0,
+            "canonical_task_mean_reward": 0.0,
+            "canonical_terminal_task_count": 0,
+            "completed_count": 0,
+            "completion_reward_count": 0,
+            "decision_count": 0,
+            "double_count_detected": false,
+            "drop_penalty_count": 0,
+            "dropped_count": 0,
+            "duplicate_reward_event_count": 0,
+            "duplicate_terminal_event_count": 0,
+            "mean_completion_latency_slots": null,
+            "mean_drop_latency_slots": null,
+            "mean_reward": 0.0,
+            "mean_terminal_latency_slots": null,
+            "pending_at_horizon_count": 0,
+            "raw_event_reward_count": 0,
+            "raw_event_reward_total": 0.0,
+            "raw_reward_emission_count": 0,
+            "raw_terminal_event_count": 0,
+            "raw_vs_canonical_reward_delta": 0.0,
+            "reward_bearing_transition_count": 0,
+            "terminal_transition_count": 0,
+            "total_reward": 0.0,
+            "unknown_count": 0
+          },
+          "vertical": {
+            "canonical_completion_ratio": 0.5,
+            "canonical_deadline_violation_ratio": 0.5,
+            "canonical_drop_ratio": 0.5,
+            "canonical_pending_ratio": 0.0,
+            "canonical_reward_count": 2,
+            "canonical_reward_total": -44.0,
+            "canonical_task_count": 2,
+            "canonical_task_mean_reward": -22.0,
+            "canonical_terminal_task_count": 2,
+            "completed_count": 1,
+            "completion_reward_count": 1,
+            "decision_count": 2,
+            "double_count_detected": true,
+            "drop_penalty_count": 1,
+            "dropped_count": 1,
+            "duplicate_reward_event_count": 0,
+            "duplicate_terminal_event_count": 1,
+            "mean_completion_latency_slots": 4.0,
+            "mean_drop_latency_slots": 4.0,
+            "mean_reward": -22.0,
+            "mean_terminal_latency_slots": 4.0,
+            "pending_at_horizon_count": 0,
+            "raw_event_reward_count": 2,
+            "raw_event_reward_total": -44.0,
+            "raw_reward_emission_count": 2,
+            "raw_terminal_event_count": 3,
+            "raw_vs_canonical_reward_delta": 0.0,
+            "reward_bearing_transition_count": 2,
+            "terminal_transition_count": 2,
+            "total_reward": -44.0,
+            "unknown_count": 0
+          }
+        },
+        "checkpoint_budget": 500,
+        "overall": {
+          "canonical_completion_count": 1,
+          "canonical_completion_ratio": 0.3333333333333333,
+          "canonical_deadline_violation_ratio": 0.3333333333333333,
+          "canonical_drop_count": 1,
+          "canonical_drop_ratio": 0.3333333333333333,
+          "canonical_mean_completion_latency_slots": 4.0,
+          "canonical_mean_drop_latency_slots": 4.0,
+          "canonical_mean_terminal_latency_slots": 4.0,
+          "canonical_pending_count": 1,
+          "canonical_pending_ratio": 0.3333333333333333,
+          "canonical_reward_count": 2,
+          "canonical_reward_per_decision": -14.666666666666666,
+          "canonical_reward_per_task": -14.666666666666666,
+          "canonical_task_count": 3,
+          "canonical_task_mean_reward": -22.0,
+          "canonical_task_reward_count": 2,
+          "canonical_task_reward_total": -44.0,
+          "canonical_tasks_per_decision": 1.0,
+          "canonical_terminal_task_count": 2,
+          "canonical_unknown_count": 0,
+          "completed_count": 1,
+          "completion_reward_count": 1,
+          "double_count_detected": true,
+          "drop_penalty_count": 1,
+          "dropped_count": 1,
+          "duplicate_reward_event_count": 0,
+          "duplicate_terminal_event_count": 1,
+          "mean_reward": 0.0,
+          "pending_at_horizon_count": 1,
+          "raw_event_reward_count": 2,
+          "raw_event_reward_total": -44.0,
+          "raw_reward_emission_count": 2,
+          "raw_reward_event_count": 2,
+          "raw_terminal_event_count": 3,
+          "raw_vs_canonical_reward_delta": 0.0,
+          "reward_bearing_transition_count": 2,
+          "terminal_transition_count": 2,
+          "total_reward": -44.0,
+          "unknown_count": 0
+        },
+        "reward_coverage": {
+          "raw_reward_event_count": 2,
+          "raw_terminal_event_count": 3,
+          "reward_available_count": 2
+        }
+      },
+      "canonical_task_reward_total": -44.0,
+      "checkpoint_budget": 500,
+      "completed_count": 1,
+      "decision_records_summary": {
+        "decision_count": 3,
+        "evaluation_action_distribution_source": "evaluation_episodes",
+        "sample_records": [
+          {
+            "episode_id": 0,
+            "selected_action": "vertical",
+            "task_id": 1,
+            "trace_id": "trace-0"
+          }
+        ]
+      },
+      "dropped_count": 1,
+      "episode_length": 110,
+      "episode_reward_totals": [
+        -44.0
+      ],
+      "episode_summaries": [
+        {
+          "canonical_reward_total": -44.0,
+          "completion_count": 1,
+          "decision_count": 3,
+          "drop_count": 1,
+          "episode_id": 0,
+          "pending_count": 1,
+          "raw_reward_event_count": 2,
+          "raw_reward_total": -44.0,
+          "reward_recovered": true,
+          "terminal_task_count": 2,
+          "trace_id": "trace-0",
+          "unknown_count": 0
+        }
+      ],
+      "evaluation_action_by_episode_id": {
+        "0": {
+          "decision_count": 3
+        }
+      },
+      "evaluation_action_by_trace_id": {
+        "trace-0": {
+          "decision_count": 3
+        }
+      },
+      "evaluation_action_distribution": {
+        "horizontal": 1,
+        "local": 1,
+        "vertical": 1
+      },
+      "evaluation_action_distribution_source": "evaluation_episodes",
+      "evaluation_action_sequence_sample": [
+        {
+          "episode_id": 0,
+          "selected_action": "vertical",
+          "task_id": 1,
+          "trace_id": "trace-0"
+        }
+      ],
+      "evaluation_decision_count": 3,
+      "evaluation_episode_count": 100,
+      "evaluation_legal_action_mask_distribution": {
+        "local=1|horizontal=1|vertical=1": 3
+      },
+      "evaluation_reward_summary": {
+        "candidate_reproduction_supported": true,
+        "canonical_task_count": 3,
+        "canonical_task_reward_count": 2,
+        "canonical_task_reward_total": -44.0,
+        "canonical_terminal_task_count": 2,
+        "checkpoint_budget": 500,
+        "completed_task_count": 1,
+        "dropped_task_count": 1,
+        "duplicate_reward_event_count": 0,
+        "duplicate_terminal_event_count": 1,
+        "evaluation_episode_count": 100,
+        "evaluation_on_training_traces": false,
+        "mean_reward": -44.0,
+        "pending_at_horizon_count": 1,
+        "raw_event_reward_count": 2,
+        "raw_event_reward_total": -44.0,
+        "raw_reward_emission_count": 2,
+        "raw_reward_event_recovery_blocked": false,
+        "raw_terminal_event_count": 3,
+        "raw_vs_canonical_reward_delta": 0.0,
+        "reward_available_count": 2,
+        "reward_bearing_transition_count": 2,
+        "reward_reconciled": true,
+        "same_evaluation_trace_bank": true,
+        "terminal_event_recovery_blocked": false,
+        "terminal_transition_count": 2,
+        "trace_bank_disjoint": true,
+        "trace_bank_ids": {
+          "evaluation": "eval-bank",
+          "training": "train-bank"
+        },
+        "trace_ids": [
+          "trace-0"
+        ],
+        "unknown_task_count": 0
+      },
+      "evaluation_trace_bank_id": "eval-bank",
+      "paper_aligned_diagnostic_metrics": {
+        "canonical_completion_ratio": 0.3333333333333333,
+        "canonical_deadline_violation_ratio": 0.3333333333333333,
+        "canonical_drop_ratio": 0.3333333333333333,
+        "canonical_mean_completion_latency_slots": 4.0,
+        "canonical_mean_drop_latency_slots": 4.0,
+        "canonical_mean_terminal_latency_slots": 4.0,
+        "canonical_pending_ratio": 0.3333333333333333,
+        "canonical_reward_per_decision": -14.666666666666666,
+        "canonical_reward_per_task": -14.666666666666666,
+        "canonical_tasks_per_decision": 1.0,
+        "raw_reward_event_coverage_ratio": 1.0,
+        "reward_reconciliation_status": "passed",
+        "terminal_event_coverage_ratio": 1.5,
+        "training_budget": 500
+      },
+      "pending_at_horizon_count": 1,
+      "per_action_outcome_summary": {
+        "horizontal": {
+          "canonical_completion_ratio": 0.0,
+          "canonical_deadline_violation_ratio": 0.0,
+          "canonical_drop_ratio": 0.0,
+          "canonical_pending_ratio": 1.0,
+          "canonical_reward_count": 0,
+          "canonical_reward_total": 0.0,
+          "canonical_task_count": 1,
+          "canonical_task_mean_reward": 0.0,
+          "canonical_terminal_task_count": 0,
+          "completed_count": 0,
+          "completion_reward_count": 0,
+          "decision_count": 1,
+          "double_count_detected": false,
+          "drop_penalty_count": 0,
+          "dropped_count": 0,
+          "duplicate_reward_event_count": 0,
+          "duplicate_terminal_event_count": 0,
+          "mean_completion_latency_slots": null,
+          "mean_drop_latency_slots": null,
+          "mean_reward": 0.0,
+          "mean_terminal_latency_slots": null,
+          "pending_at_horizon_count": 1,
+          "raw_event_reward_count": 0,
+          "raw_event_reward_total": 0.0,
+          "raw_reward_emission_count": 0,
+          "raw_terminal_event_count": 0,
+          "raw_vs_canonical_reward_delta": 0.0,
+          "reward_bearing_transition_count": 0,
+          "terminal_transition_count": 0,
+          "total_reward": 0.0,
+          "unknown_count": 0
+        },
+        "local": {
+          "canonical_completion_ratio": 0.0,
+          "canonical_deadline_violation_ratio": 0.0,
+          "canonical_drop_ratio": 0.0,
+          "canonical_pending_ratio": 0.0,
+          "canonical_reward_count": 0,
+          "canonical_reward_total": 0.0,
+          "canonical_task_count": 0,
+          "canonical_task_mean_reward": 0.0,
+          "canonical_terminal_task_count": 0,
+          "completed_count": 0,
+          "completion_reward_count": 0,
+          "decision_count": 0,
+          "double_count_detected": false,
+          "drop_penalty_count": 0,
+          "dropped_count": 0,
+          "duplicate_reward_event_count": 0,
+          "duplicate_terminal_event_count": 0,
+          "mean_completion_latency_slots": null,
+          "mean_drop_latency_slots": null,
+          "mean_reward": 0.0,
+          "mean_terminal_latency_slots": null,
+          "pending_at_horizon_count": 0,
+          "raw_event_reward_count": 0,
+          "raw_event_reward_total": 0.0,
+          "raw_reward_emission_count": 0,
+          "raw_terminal_event_count": 0,
+          "raw_vs_canonical_reward_delta": 0.0,
+          "reward_bearing_transition_count": 0,
+          "terminal_transition_count": 0,
+          "total_reward": 0.0,
+          "unknown_count": 0
+        },
+        "vertical": {
+          "canonical_completion_ratio": 0.5,
+          "canonical_deadline_violation_ratio": 0.5,
+          "canonical_drop_ratio": 0.5,
+          "canonical_pending_ratio": 0.0,
+          "canonical_reward_count": 2,
+          "canonical_reward_total": -44.0,
+          "canonical_task_count": 2,
+          "canonical_task_mean_reward": -22.0,
+          "canonical_terminal_task_count": 2,
+          "completed_count": 1,
+          "completion_reward_count": 1,
+          "decision_count": 2,
+          "double_count_detected": true,
+          "drop_penalty_count": 1,
+          "dropped_count": 1,
+          "duplicate_reward_event_count": 0,
+          "duplicate_terminal_event_count": 1,
+          "mean_completion_latency_slots": 4.0,
+          "mean_drop_latency_slots": 4.0,
+          "mean_reward": -22.0,
+          "mean_terminal_latency_slots": 4.0,
+          "pending_at_horizon_count": 0,
+          "raw_event_reward_count": 2,
+          "raw_event_reward_total": -44.0,
+          "raw_reward_emission_count": 2,
+          "raw_terminal_event_count": 3,
+          "raw_vs_canonical_reward_delta": 0.0,
+          "reward_bearing_transition_count": 2,
+          "terminal_transition_count": 2,
+          "total_reward": -44.0,
+          "unknown_count": 0
+        }
+      },
+      "policy_kind": "candidate",
+      "policy_name": "candidate_policy_at_500",
+      "raw_event_reward_total": -44.0,
+      "raw_lifecycle_terminal_event_count": 3,
+      "raw_reward_event_count": 2,
+      "raw_reward_event_recovery_blocked": false,
+      "raw_reward_total": -44.0,
+      "raw_terminal_event_count": 3,
+      "raw_vs_canonical_reward_reconciliation": {
+        "canonical_task_count": 3,
+        "canonical_task_reward_count": 2,
+        "canonical_task_reward_total": -44.0,
+        "canonical_terminal_task_count": 2,
+        "checkpoint_budget": 500,
+        "duplicate_reward_event_count": 0,
+        "duplicate_terminal_event_count": 1,
+        "raw_event_reward_count": 2,
+        "raw_event_reward_total": -44.0,
+        "raw_reward_event_recovery_blocked": false,
+        "raw_terminal_event_count": 3,
+        "raw_vs_canonical_reward_delta": 0.0,
+        "reward_reconciled": true,
+        "terminal_event_recovery_blocked": false
+      },
+      "reward_event_records": {
+        "raw_reward_event_recovery_blocked": false,
+        "record_count": 2,
+        "reward_available_count": 2,
+        "sample_records": [
+          {
+            "episode_id": 0,
+            "raw_reward": -40.0,
+            "task_id": 1,
+            "trace_id": "trace-0"
+          }
+        ]
+      },
+      "reward_reconciled": true,
+      "reward_reconciliation_status": "passed",
+      "reward_reconciliation_tolerance": 1e-09,
+      "same_evaluation_trace_bank": true,
+      "task_records": {
+        "trace-1:0:1": {
+          "arrival_slot": 0,
+          "canonical_reward": -40.0,
+          "completion_or_drop_slot": 3,
+          "decision_record": {
+            "selected_action": "vertical"
+          },
+          "episode_id": 0,
+          "finalized_records": [
+            {
+              "arrival_slot": 0,
+              "completion_slot": 3,
+              "terminal_outcome": "dropped"
+            }
+          ],
+          "first_decision_slot": 0,
+          "latency_slots": 4,
+          "pending_evidence": false,
+          "raw_reward_event_count": 1,
+          "raw_reward_total": -40.0,
+          "raw_terminal_event_count": 2,
+          "reward_event_records": [
+            {
+              "raw_reward": -40.0,
+              "reward_available": true
+            }
+          ],
+          "selected_action": "vertical",
+          "task_id": 1,
+          "terminal_event_records": [
+            {
+              "slot": 3,
+              "terminal_outcome": "dropped"
+            }
+          ],
+          "terminal_outcome": "dropped",
+          "terminal_slot": 3,
+          "trace_id": "trace-1"
+        },
+        "trace-1:0:2": {
+          "arrival_slot": 1,
+          "canonical_reward": -4.0,
+          "completion_or_drop_slot": 4,
+          "decision_record": {
+            "selected_action": "vertical"
+          },
+          "episode_id": 0,
+          "finalized_records": [
+            {
+              "arrival_slot": 1,
+              "completion_slot": 4,
+              "terminal_outcome": "completed"
+            }
+          ],
+          "first_decision_slot": 1,
+          "latency_slots": 4,
+          "pending_evidence": false,
+          "raw_reward_event_count": 1,
+          "raw_reward_total": -4.0,
+          "raw_terminal_event_count": 1,
+          "reward_event_records": [
+            {
+              "raw_reward": -4.0,
+              "reward_available": true
+            }
+          ],
+          "selected_action": "vertical",
+          "task_id": 2,
+          "terminal_event_records": [
+            {
+              "slot": 4,
+              "terminal_outcome": "completed"
+            }
+          ],
+          "terminal_outcome": "completed",
+          "terminal_slot": 4,
+          "trace_id": "trace-1"
+        },
+        "trace-1:0:3": {
+          "arrival_slot": 2,
+          "canonical_reward": 0.0,
+          "completion_or_drop_slot": null,
+          "decision_record": {
+            "selected_action": "horizontal"
+          },
+          "episode_id": 0,
+          "finalized_records": [],
+          "first_decision_slot": 2,
+          "latency_slots": null,
+          "pending_evidence": true,
+          "raw_reward_event_count": 0,
+          "raw_reward_total": 0.0,
+          "raw_terminal_event_count": 0,
+          "reward_event_records": [],
+          "selected_action": "horizontal",
+          "task_id": 3,
+          "terminal_event_records": [
+            {
+              "slot": 5,
+              "terminal_outcome": "pending_at_horizon"
+            }
+          ],
+          "terminal_outcome": "pending_at_horizon",
+          "terminal_slot": 5,
+          "trace_id": "trace-1"
+        }
+      },
+      "terminal_event_records": {
+        "record_count": 3,
+        "recovered_from_finalized_tasks": true,
+        "sample_records": [
+          {
+            "episode_id": 0,
+            "task_id": 1,
+            "trace_id": "trace-0"
+          }
+        ]
+      },
+      "terminal_event_recovery_blocked": false,
+      "unknown_count": 0
+    },
+    "evaluation_reward_summary": {
+      "candidate_reproduction_supported": true,
+      "canonical_task_count": 3,
+      "canonical_task_reward_count": 2,
+      "canonical_task_reward_total": -44.0,
+      "canonical_terminal_task_count": 2,
+      "checkpoint_budget": 500,
+      "completed_task_count": 1,
+      "dropped_task_count": 1,
+      "duplicate_reward_event_count": 0,
+      "duplicate_terminal_event_count": 1,
+      "evaluation_episode_count": 100,
+      "evaluation_on_training_traces": false,
+      "mean_reward": -44.0,
+      "pending_at_horizon_count": 1,
+      "raw_event_reward_count": 2,
+      "raw_event_reward_total": -44.0,
+      "raw_reward_emission_count": 2,
+      "raw_reward_event_recovery_blocked": false,
+      "raw_terminal_event_count": 3,
+      "raw_vs_canonical_reward_delta": 0.0,
+      "reward_available_count": 2,
+      "reward_bearing_transition_count": 2,
+      "reward_reconciled": true,
+      "same_evaluation_trace_bank": true,
+      "terminal_event_recovery_blocked": false,
+      "terminal_transition_count": 2,
+      "trace_bank_disjoint": true,
+      "trace_bank_ids": {
+        "evaluation": "eval-bank",
+        "training": "train-bank"
+      },
+      "trace_ids": [
+        "trace-0"
+      ],
+      "unknown_task_count": 0
+    },
+    "event_level_metrics": {
+      "raw_event_reward_count": 2,
+      "raw_event_reward_total": -44.0,
+      "raw_reward_emission_count": 2,
+      "raw_reward_event_recovery_blocked": false,
+      "raw_terminal_event_count": 3,
+      "terminal_event_recovery_blocked": false
+    },
+    "last_loss": 5.0,
+    "loss_count": 9,
+    "loss_finite": true,
+    "optimizer_step_count": 104,
+    "paper_aligned_diagnostic_metrics": {
+      "canonical_completion_ratio": 0.3333333333333333,
+      "canonical_deadline_violation_ratio": 0.3333333333333333,
+      "canonical_drop_ratio": 0.3333333333333333,
+      "canonical_mean_completion_latency_slots": 4.0,
+      "canonical_mean_drop_latency_slots": 4.0,
+      "canonical_mean_terminal_latency_slots": 4.0,
+      "canonical_pending_ratio": 0.3333333333333333,
+      "canonical_reward_per_decision": -14.666666666666666,
+      "canonical_reward_per_task": -14.666666666666666,
+      "canonical_tasks_per_decision": 1.0,
+      "raw_reward_event_coverage_ratio": 1.0,
+      "reward_reconciliation_status": "passed",
+      "terminal_event_coverage_ratio": 1.5,
+      "training_budget": 500
+    },
+    "pending_at_horizon_count": 1,
+    "per_action_outcome_summary": {
+      "horizontal": {
+        "canonical_completion_ratio": 0.0,
+        "canonical_deadline_violation_ratio": 0.0,
+        "canonical_drop_ratio": 0.0,
+        "canonical_pending_ratio": 1.0,
+        "canonical_reward_count": 0,
+        "canonical_reward_total": 0.0,
+        "canonical_task_count": 1,
+        "canonical_task_mean_reward": 0.0,
+        "canonical_terminal_task_count": 0,
+        "completed_count": 0,
+        "completion_reward_count": 0,
+        "decision_count": 1,
+        "double_count_detected": false,
+        "drop_penalty_count": 0,
+        "dropped_count": 0,
+        "duplicate_reward_event_count": 0,
+        "duplicate_terminal_event_count": 0,
+        "mean_completion_latency_slots": null,
+        "mean_drop_latency_slots": null,
+        "mean_reward": 0.0,
+        "mean_terminal_latency_slots": null,
+        "pending_at_horizon_count": 1,
+        "raw_event_reward_count": 0,
+        "raw_event_reward_total": 0.0,
+        "raw_reward_emission_count": 0,
+        "raw_terminal_event_count": 0,
+        "raw_vs_canonical_reward_delta": 0.0,
+        "reward_bearing_transition_count": 0,
+        "terminal_transition_count": 0,
+        "total_reward": 0.0,
+        "unknown_count": 0
+      },
+      "local": {
+        "canonical_completion_ratio": 0.0,
+        "canonical_deadline_violation_ratio": 0.0,
+        "canonical_drop_ratio": 0.0,
+        "canonical_pending_ratio": 0.0,
+        "canonical_reward_count": 0,
+        "canonical_reward_total": 0.0,
+        "canonical_task_count": 0,
+        "canonical_task_mean_reward": 0.0,
+        "canonical_terminal_task_count": 0,
+        "completed_count": 0,
+        "completion_reward_count": 0,
+        "decision_count": 0,
+        "double_count_detected": false,
+        "drop_penalty_count": 0,
+        "dropped_count": 0,
+        "duplicate_reward_event_count": 0,
+        "duplicate_terminal_event_count": 0,
+        "mean_completion_latency_slots": null,
+        "mean_drop_latency_slots": null,
+        "mean_reward": 0.0,
+        "mean_terminal_latency_slots": null,
+        "pending_at_horizon_count": 0,
+        "raw_event_reward_count": 0,
+        "raw_event_reward_total": 0.0,
+        "raw_reward_emission_count": 0,
+        "raw_terminal_event_count": 0,
+        "raw_vs_canonical_reward_delta": 0.0,
+        "reward_bearing_transition_count": 0,
+        "terminal_transition_count": 0,
+        "total_reward": 0.0,
+        "unknown_count": 0
+      },
+      "vertical": {
+        "canonical_completion_ratio": 0.5,
+        "canonical_deadline_violation_ratio": 0.5,
+        "canonical_drop_ratio": 0.5,
+        "canonical_pending_ratio": 0.0,
+        "canonical_reward_count": 2,
+        "canonical_reward_total": -44.0,
+        "canonical_task_count": 2,
+        "canonical_task_mean_reward": -22.0,
+        "canonical_terminal_task_count": 2,
+        "completed_count": 1,
+        "completion_reward_count": 1,
+        "decision_count": 2,
+        "double_count_detected": true,
+        "drop_penalty_count": 1,
+        "dropped_count": 1,
+        "duplicate_reward_event_count": 0,
+        "duplicate_terminal_event_count": 1,
+        "mean_completion_latency_slots": 4.0,
+        "mean_drop_latency_slots": 4.0,
+        "mean_reward": -22.0,
+        "mean_terminal_latency_slots": 4.0,
+        "pending_at_horizon_count": 0,
+        "raw_event_reward_count": 2,
+        "raw_event_reward_total": -44.0,
+        "raw_reward_emission_count": 2,
+        "raw_terminal_event_count": 3,
+        "raw_vs_canonical_reward_delta": 0.0,
+        "reward_bearing_transition_count": 2,
+        "terminal_transition_count": 2,
+        "total_reward": -44.0,
+        "unknown_count": 0
+      }
+    },
+    "raw_vs_canonical_metric_comparison": {
+      "canonical_task_count": 3,
+      "canonical_task_reward_count": 2,
+      "canonical_task_reward_total": -44.0,
+      "canonical_terminal_task_count": 2,
+      "checkpoint_budget": 500,
+      "duplicate_reward_event_count": 0,
+      "duplicate_terminal_event_count": 1,
+      "raw_event_reward_count": 2,
+      "raw_event_reward_total": -44.0,
+      "raw_reward_event_recovery_blocked": false,
+      "raw_terminal_event_count": 3,
+      "raw_vs_canonical_reward_delta": 0.0,
+      "reward_reconciled": true,
+      "terminal_event_recovery_blocked": false
+    },
+    "replay_size": 10000,
+    "replay_window_action_distribution": {
+      "horizontal": 0,
+      "local": 0,
+      "vertical": 10000
+    },
+    "replay_window_capacity": 10000,
+    "replay_window_interpretation_warning": true,
+    "replay_window_is_full_training_history": false,
+    "reward_decomposition": {
+      "canonical_task_mean_reward_by_action": {
+        "horizontal": 0.0,
+        "local": 0.0,
+        "vertical": -22.0
+      },
+      "canonical_task_reward_count_by_action": {
+        "horizontal": 0,
+        "local": 0,
+        "vertical": 2
+      },
+      "canonical_task_reward_total_by_action": {
+        "horizontal": 0.0,
+        "local": 0.0,
+        "vertical": -44.0
+      },
+      "completion_reward_count_by_action": {
+        "horizontal": 0,
+        "local": 0,
+        "vertical": 1
+      },
+      "drop_penalty_count_by_action": {
+        "horizontal": 0,
+        "local": 0,
+        "vertical": 1
+      },
+      "nan_reward_count": 0,
+      "raw_event_reward_count_by_action": {
+        "horizontal": 0,
+        "local": 0,
+        "vertical": 2
+      },
+      "raw_event_reward_total_by_action": {
+        "horizontal": 0.0,
+        "local": 0.0,
+        "vertical": -44.0
+      },
+      "raw_vs_canonical_reward_delta_by_action": {
+        "horizontal": 0.0,
+        "local": 0.0,
+        "vertical": 0.0
+      },
+      "raw_vs_canonical_reward_delta_total": 0.0,
+      "reward_available_count": 2,
+      "reward_by_action": {
+        "horizontal": 0.0,
+        "local": 0.0,
+        "vertical": -44.0
+      },
+      "reward_by_action_and_terminal_outcome": {
+        "horizontal": {
+          "completed": {
+            "canonical_task_mean_reward": 0.0,
+            "canonical_task_reward_count": 0,
+            "canonical_task_reward_total": 0.0,
+            "count": 0,
+            "mean_reward": 0.0,
+            "raw_event_reward_count": 0,
+            "raw_event_reward_total": 0.0,
+            "raw_vs_canonical_reward_delta": 0.0,
+            "total_reward": 0.0
+          },
+          "dropped": {
+            "canonical_task_mean_reward": 0.0,
+            "canonical_task_reward_count": 0,
+            "canonical_task_reward_total": 0.0,
+            "count": 0,
+            "mean_reward": 0.0,
+            "raw_event_reward_count": 0,
+            "raw_event_reward_total": 0.0,
+            "raw_vs_canonical_reward_delta": 0.0,
+            "total_reward": 0.0
+          }
+        },
+        "local": {
+          "completed": {
+            "canonical_task_mean_reward": 0.0,
+            "canonical_task_reward_count": 0,
+            "canonical_task_reward_total": 0.0,
+            "count": 0,
+            "mean_reward": 0.0,
+            "raw_event_reward_count": 0,
+            "raw_event_reward_total": 0.0,
+            "raw_vs_canonical_reward_delta": 0.0,
+            "total_reward": 0.0
+          },
+          "dropped": {
+            "canonical_task_mean_reward": 0.0,
+            "canonical_task_reward_count": 0,
+            "canonical_task_reward_total": 0.0,
+            "count": 0,
+            "mean_reward": 0.0,
+            "raw_event_reward_count": 0,
+            "raw_event_reward_total": 0.0,
+            "raw_vs_canonical_reward_delta": 0.0,
+            "total_reward": 0.0
+          }
+        },
+        "vertical": {
+          "completed": {
+            "canonical_task_mean_reward": -4.0,
+            "canonical_task_reward_count": 1,
+            "canonical_task_reward_total": -4.0,
+            "count": 1,
+            "mean_reward": -4.0,
+            "raw_event_reward_count": 1,
+            "raw_event_reward_total": -4.0,
+            "raw_vs_canonical_reward_delta": 0.0,
+            "total_reward": -4.0
+          },
+          "dropped": {
+            "canonical_task_mean_reward": -40.0,
+            "canonical_task_reward_count": 1,
+            "canonical_task_reward_total": -40.0,
+            "count": 1,
+            "mean_reward": -40.0,
+            "raw_event_reward_count": 1,
+            "raw_event_reward_total": -40.0,
+            "raw_vs_canonical_reward_delta": 0.0,
+            "total_reward": -40.0
+          }
+        }
+      },
+      "reward_by_terminal_outcome": {
+        "completed": -4.0,
+        "dropped": -40.0
+      },
+      "zero_reward_count": 0
+    },
+    "reward_summary": {
+      "mean_reward": -1.0,
+      "pending_at_horizon_count": 0,
+      "reward_count": 100,
+      "total_reward": -100.0
+    },
+    "training_budget": 500,
+    "training_state": {
+      "cumulative_training_action_distribution": {
+        "horizontal": 20,
+        "local": 10,
+        "vertical": 30
+      },
+      "cumulative_training_episode_count": 500,
+      "last_loss": 5.0,
+      "loss_count": 9,
+      "loss_finite": true,
+      "optimizer_step_count": 104,
+      "replay_size": 10000,
+      "replay_window_action_distribution": {
+        "horizontal": 0,
+        "local": 0,
+        "vertical": 10000
+      },
+      "replay_window_capacity": 10000,
+      "replay_window_interpretation_warning": true,
+      "replay_window_is_full_training_history": false,
+      "reward_summary": {
+        "mean_reward": -1.0,
+        "pending_at_horizon_count": 0,
+        "reward_count": 100,
+        "total_reward": -100.0
+      },
+      "training_action_sequence_sample": [
+        {
+          "action": "vertical",
+          "episode_id": 0,
+          "legal_action_mask": {
+            "local": true
+          },
+          "step_id": 0
+        }
+      ],
+      "training_budget": 500
+    }
+  }
+]

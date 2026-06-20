@@ -1,0 +1,84 @@
+{
+  "by_checkpoint": [
+    {
+      "decision_count": 3,
+      "evaluation_action_distribution_source": "evaluation_episodes",
+      "sample_records": [
+        {
+          "episode_id": 0,
+          "selected_action": "vertical",
+          "task_id": 1,
+          "trace_id": "trace-0"
+        }
+      ],
+      "training_budget": 100
+    },
+    {
+      "decision_count": 3,
+      "evaluation_action_distribution_source": "evaluation_episodes",
+      "sample_records": [
+        {
+          "episode_id": 0,
+          "selected_action": "vertical",
+          "task_id": 1,
+          "trace_id": "trace-0"
+        }
+      ],
+      "training_budget": 150
+    },
+    {
+      "decision_count": 3,
+      "evaluation_action_distribution_source": "evaluation_episodes",
+      "sample_records": [
+        {
+          "episode_id": 0,
+          "selected_action": "vertical",
+          "task_id": 1,
+          "trace_id": "trace-0"
+        }
+      ],
+      "training_budget": 200
+    },
+    {
+      "decision_count": 3,
+      "evaluation_action_distribution_source": "evaluation_episodes",
+      "sample_records": [
+        {
+          "episode_id": 0,
+          "selected_action": "vertical",
+          "task_id": 1,
+          "trace_id": "trace-0"
+        }
+      ],
+      "training_budget": 500
+    }
+  ],
+  "evaluation_action_distribution_source": "evaluation_episodes",
+  "record_count": 12,
+  "sample_records": [
+    {
+      "episode_id": 0,
+      "selected_action": "vertical",
+      "task_id": 1,
+      "trace_id": "trace-0"
+    },
+    {
+      "episode_id": 0,
+      "selected_action": "vertical",
+      "task_id": 1,
+      "trace_id": "trace-0"
+    },
+    {
+      "episode_id": 0,
+      "selected_action": "vertical",
+      "task_id": 1,
+      "trace_id": "trace-0"
+    },
+    {
+      "episode_id": 0,
+      "selected_action": "vertical",
+      "task_id": 1,
+      "trace_id": "trace-0"
+    }
+  ]
+}

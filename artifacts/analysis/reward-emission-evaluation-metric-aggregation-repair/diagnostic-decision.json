@@ -1,0 +1,7 @@
+{
+  "decision_reason": "The candidate policy still collapses toward vertical while policy choice does not move reward or terminal outcomes.",
+  "evidence_notes": [
+    "vertical_collapse=true"
+  ],
+  "recommended_next_action": "fix_state_representation_next"
+}

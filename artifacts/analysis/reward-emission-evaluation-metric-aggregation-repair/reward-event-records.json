@@ -1,0 +1,89 @@
+{
+  "by_checkpoint": [
+    {
+      "raw_reward_event_recovery_blocked": false,
+      "record_count": 2,
+      "reward_available_count": 2,
+      "sample_records": [
+        {
+          "episode_id": 0,
+          "raw_reward": -40.0,
+          "task_id": 1,
+          "trace_id": "trace-0"
+        }
+      ],
+      "training_budget": 100
+    },
+    {
+      "raw_reward_event_recovery_blocked": false,
+      "record_count": 2,
+      "reward_available_count": 2,
+      "sample_records": [
+        {
+          "episode_id": 0,
+          "raw_reward": -40.0,
+          "task_id": 1,
+          "trace_id": "trace-0"
+        }
+      ],
+      "training_budget": 150
+    },
+    {
+      "raw_reward_event_recovery_blocked": false,
+      "record_count": 2,
+      "reward_available_count": 2,
+      "sample_records": [
+        {
+          "episode_id": 0,
+          "raw_reward": -40.0,
+          "task_id": 1,
+          "trace_id": "trace-0"
+        }
+      ],
+      "training_budget": 200
+    },
+    {
+      "raw_reward_event_recovery_blocked": false,
+      "record_count": 2,
+      "reward_available_count": 2,
+      "sample_records": [
+        {
+          "episode_id": 0,
+          "raw_reward": -40.0,
+          "task_id": 1,
+          "trace_id": "trace-0"
+        }
+      ],
+      "training_budget": 500
+    }
+  ],
+  "raw_reward_event_recovery_blocked": false,
+  "record_count": 8,
+  "reward_available_count": 8,
+  "sample_records": [
+    {
+      "episode_id": 0,
+      "raw_reward": -40.0,
+      "task_id": 1,
+      "trace_id": "trace-0"
+    },
+    {
+      "episode_id": 0,
+      "raw_reward": -40.0,
+      "task_id": 1,
+      "trace_id": "trace-0"
+    },
+    {
+      "episode_id": 0,
+      "raw_reward": -40.0,
+      "task_id": 1,
+      "trace_id": "trace-0"
+    },
+    {
+      "episode_id": 0,
+      "raw_reward": -40.0,
+      "task_id": 1,
+      "trace_id": "trace-0"
+    }
+  ]
+}

@@ -1,0 +1,75 @@
+{
+  "by_checkpoint": [
+    {
+      "record_count": 3,
+      "recovered_from_finalized_tasks": true,
+      "sample_records": [
+        {
+          "episode_id": 0,
+          "task_id": 1,
+          "trace_id": "trace-0"
+        }
+      ],
+      "training_budget": 100
+    },
+    {
+      "record_count": 3,
+      "recovered_from_finalized_tasks": true,
+      "sample_records": [
+        {
+          "episode_id": 0,
+          "task_id": 1,
+          "trace_id": "trace-0"
+        }
+      ],
+      "training_budget": 150
+    },
+    {
+      "record_count": 3,
+      "recovered_from_finalized_tasks": true,
+      "sample_records": [
+        {
+          "episode_id": 0,
+          "task_id": 1,
+          "trace_id": "trace-0"
+        }
+      ],
+      "training_budget": 200
+    },
+    {
+      "record_count": 3,
+      "recovered_from_finalized_tasks": true,
+      "sample_records": [
+        {
+          "episode_id": 0,
+          "task_id": 1,
+          "trace_id": "trace-0"
+        }
+      ],
+      "training_budget": 500
+    }
+  ],
+  "record_count": 12,
+  "sample_records": [
+    {
+      "episode_id": 0,
+      "task_id": 1,
+      "trace_id": "trace-0"
+    },
+    {
+      "episode_id": 0,
+      "task_id": 1,
+      "trace_id": "trace-0"
+    },
+    {
+      "episode_id": 0,
+      "task_id": 1,
+      "trace_id": "trace-0"
+    },
+    {
+      "episode_id": 0,
+      "task_id": 1,
+      "trace_id": "trace-0"
+    }
+  ]
+}

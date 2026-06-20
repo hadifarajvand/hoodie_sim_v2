@@ -1,0 +1,78 @@
+{
+  "by_checkpoint": [
+    {
+      "canonical_task_count": 3,
+      "canonical_task_reward_count": 2,
+      "canonical_task_reward_total": -44.0,
+      "canonical_terminal_task_count": 2,
+      "checkpoint_budget": 100,
+      "duplicate_reward_event_count": 0,
+      "duplicate_terminal_event_count": 1,
+      "raw_event_reward_count": 2,
+      "raw_event_reward_total": -44.0,
+      "raw_reward_event_recovery_blocked": false,
+      "raw_terminal_event_count": 3,
+      "raw_vs_canonical_reward_delta": 0.0,
+      "reward_reconciled": true,
+      "terminal_event_recovery_blocked": false
+    },
+    {
+      "canonical_task_count": 3,
+      "canonical_task_reward_count": 2,
+      "canonical_task_reward_total": -44.0,
+      "canonical_terminal_task_count": 2,
+      "checkpoint_budget": 150,
+      "duplicate_reward_event_count": 0,
+      "duplicate_terminal_event_count": 1,
+      "raw_event_reward_count": 2,
+      "raw_event_reward_total": -44.0,
+      "raw_reward_event_recovery_blocked": false,
+      "raw_terminal_event_count": 3,
+      "raw_vs_canonical_reward_delta": 0.0,
+      "reward_reconciled": true,
+      "terminal_event_recovery_blocked": false
+    },
+    {
+      "canonical_task_count": 3,
+      "canonical_task_reward_count": 2,
+      "canonical_task_reward_total": -44.0,
+      "canonical_terminal_task_count": 2,
+      "checkpoint_budget": 200,
+      "duplicate_reward_event_count": 0,
+      "duplicate_terminal_event_count": 1,
+      "raw_event_reward_count": 2,
+      "raw_event_reward_total": -44.0,
+      "raw_reward_event_recovery_blocked": false,
+      "raw_terminal_event_count": 3,
+      "raw_vs_canonical_reward_delta": 0.0,
+      "reward_reconciled": true,
+      "terminal_event_recovery_blocked": false
+    },
+    {
+      "canonical_task_count": 3,
+      "canonical_task_reward_count": 2,
+      "canonical_task_reward_total": -44.0,
+      "canonical_terminal_task_count": 2,
+      "checkpoint_budget": 500,
+      "duplicate_reward_event_count": 0,
+      "duplicate_terminal_event_count": 1,
+      "raw_event_reward_count": 2,
+      "raw_event_reward_total": -44.0,
+      "raw_reward_event_recovery_blocked": false,
+      "raw_terminal_event_count": 3,
+      "raw_vs_canonical_reward_delta": 0.0,
+      "reward_reconciled": true,
+      "terminal_event_recovery_blocked": false
+    }
+  ],
+  "checkpoint_budgets": [
+    100,
+    150,
+    200,
+    500
+  ],
+  "raw_reward_event_recovery_blocked": false,
+  "raw_vs_canonical_reward_delta_total": 0.0,
+  "reward_reconciled": true,
+  "terminal_event_recovery_blocked": false
+}

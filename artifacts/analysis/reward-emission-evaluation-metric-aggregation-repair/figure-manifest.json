@@ -1,0 +1,12 @@
+{
+  "figure_count": 5,
+  "figure_directory": "artifacts/analysis/reward-emission-evaluation-metric-aggregation-repair/figures",
+  "figure_files": [
+    "figure_01_raw_vs_canonical_reward_reconciliation.png",
+    "figure_02_reward_event_coverage_by_budget.png",
+    "figure_03_terminal_event_coverage_by_budget.png",
+    "figure_04_completion_drop_pending_ratios_by_budget.png",
+    "figure_05_policy_effect_after_repair.png"
+  ],
+  "figures_generated": true
+}
