@@ -1,7 +1,8 @@
 {
-  "decision_reason": "The candidate policy still collapses toward vertical while policy choice does not move reward or terminal outcomes.",
+  "decision_reason": "The policy collapses and the reward signal still does not separate outcomes cleanly enough for the thesis pipeline.",
   "evidence_notes": [
-    "vertical_collapse=true"
+    "vertical_collapse=true",
+    "policy_affects_reward!=false"
   ],
-  "recommended_next_action": "fix_state_representation_next"
+  "recommended_next_action": "fix_reward_function_next"
 }

@@ -556,7 +556,7 @@ def write_artifacts(payload: dict[str, Any]) -> tuple[Path, Path, Path]:
     OUTPUT_DIR.mkdir(parents=True, exist_ok=True)
     FIGURES_DIR.mkdir(parents=True, exist_ok=True)
 
-    checkpoint_metrics = payload["checkpoint_results"]
+    checkpoint_metrics = payload["checkpoint_metrics"]
     raw_json = {
         "checkpoint_metrics": checkpoint_metrics,
     }
