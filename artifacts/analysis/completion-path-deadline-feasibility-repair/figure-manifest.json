@@ -1,0 +1,12 @@
+{
+  "figure_count": 5,
+  "figure_directory": "artifacts/analysis/completion-path-deadline-feasibility-repair/figures",
+  "figure_files": [
+    "figure_01_action_path_feasibility_50_vs_100.png",
+    "figure_02_completion_drop_by_policy.png",
+    "figure_03_runtime_event_path_counts.png",
+    "figure_04_deadline_slack_distribution.png",
+    "figure_05_feasible_vs_completed_tasks.png"
+  ],
+  "figures_generated": true
+}

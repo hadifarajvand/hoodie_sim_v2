@@ -1,0 +1,9 @@
+{
+  "decision": "fix_deadline_timeout_configuration_next",
+  "evidence": [
+    "local_feasible_task_count=0",
+    "horizontal_feasible_task_count=0",
+    "vertical_feasible_task_count=0"
+  ],
+  "root_cause": "all_tasks_infeasible_under_current_deadlines"
+}

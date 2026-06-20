@@ -1,0 +1,98 @@
+{
+  "by_checkpoint": [
+    {
+      "candidate_action_distribution": {
+        "horizontal": 0,
+        "local": 11000,
+        "vertical": 0
+      },
+      "completion_count": 0,
+      "completion_ratio": 0.0,
+      "cumulative_training_episode_count": 50,
+      "deadline_before_completion_count": 10551,
+      "deadline_violation_ratio": 0.9591818181818181,
+      "drop_count": 10551,
+      "drop_ratio": 0.9591818181818181,
+      "duplicate_reward_event_count": -98,
+      "duplicate_terminal_event_count": 0,
+      "execution_completed_event_count": 0,
+      "execution_progress_event_count": 0,
+      "feasible_task_ratio": 0.0,
+      "horizontal_feasible_ratio": 0.0,
+      "local_feasible_ratio": 0.0,
+      "mean_reward": -4220.4,
+      "mean_terminal_latency_slots": 5.543360818879727,
+      "pending_count": 300,
+      "raw_vs_canonical_reward_delta": 3920.0,
+      "reward_event_coverage_ratio": 0.9907117808738508,
+      "reward_per_decision": -38.36727272727273,
+      "reward_per_task": -38.36727272727273,
+      "reward_reconciled": false,
+      "terminal_event_coverage_ratio": 0.9907117808738508,
+      "terminal_reconciled": false,
+      "training_budget": 50,
+      "vertical_feasible_ratio": 0.0
+    },
+    {
+      "candidate_action_distribution": {
+        "horizontal": 0,
+        "local": 0,
+        "vertical": 11000
+      },
+      "completion_count": 0,
+      "completion_ratio": 0.0,
+      "cumulative_training_episode_count": 100,
+      "deadline_before_completion_count": 10551,
+      "deadline_violation_ratio": 0.9591818181818181,
+      "drop_count": 10551,
+      "drop_ratio": 0.9591818181818181,
+      "duplicate_reward_event_count": -98,
+      "duplicate_terminal_event_count": 0,
+      "execution_completed_event_count": 0,
+      "execution_progress_event_count": 0,
+      "feasible_task_ratio": 0.0,
+      "horizontal_feasible_ratio": 0.0,
+      "local_feasible_ratio": 0.0,
+      "mean_reward": -4220.4,
+      "mean_terminal_latency_slots": 5.543360818879727,
+      "pending_count": 300,
+      "raw_vs_canonical_reward_delta": 3920.0,
+      "reward_event_coverage_ratio": 0.9907117808738508,
+      "reward_per_decision": -38.36727272727273,
+      "reward_per_task": -38.36727272727273,
+      "reward_reconciled": false,
+      "terminal_event_coverage_ratio": 0.9907117808738508,
+      "terminal_reconciled": false,
+      "training_budget": 100,
+      "vertical_feasible_ratio": 0.0
+    }
+  ],
+  "checkpoint_budgets": [
+    50,
+    100
+  ],
+  "comparison": {
+    "budget_pair": [
+      50,
+      100
+    ],
+    "candidate_action_distribution_changed": true,
+    "completion_count_delta": 0,
+    "completion_ratio_delta": 0.0,
+    "deadline_before_completion_count_delta": 0,
+    "deadline_violation_ratio_delta": 0.0,
+    "drop_count_delta": 0,
+    "drop_ratio_delta": 0.0,
+    "execution_completed_event_count_delta": 0,
+    "execution_progress_event_count_delta": 0,
+    "feasible_task_ratio_delta": 0.0,
+    "horizontal_feasible_ratio_delta": 0.0,
+    "local_feasible_ratio_delta": 0.0,
+    "mean_terminal_latency_slots_delta": 0.0,
+    "pending_count_delta": 0,
+    "reward_per_decision_delta": 0.0,
+    "reward_per_task_delta": 0.0,
+    "vertical_feasible_ratio_delta": 0.0
+  },
+  "comparison_classification": "action_changed_but_outcome_static"
+}

@@ -1,0 +1,3098 @@
+{
+  "evaluation_episode_count": 100,
+  "evaluation_mode": "full_step_evaluation",
+  "expected_max_decision_slots": 11000,
+  "full_evaluation_probe": {
+    "episode_length": 110,
+    "evaluation_episode_count": 100,
+    "expected_max_decision_slots": 11000,
+    "observed_decision_count": 11000,
+    "purpose": "paper-aligned evaluation coverage check"
+  },
+  "full_step_decision_coverage_unavailable": false,
+  "observed_decision_count": 11000,
+  "one_decision_per_episode_observed": false,
+  "sampled_completion_path_probe": {
+    "analyzed_decision_count": 100,
+    "evaluation_episode_count": 100,
+    "max_task_decisions_to_analyze": 100,
+    "purpose": "fast feasibility inspection",
+    "sample_records": [
+      {
+        "absolute_deadline_slot": 3,
+        "arrival_slot": 0,
+        "canonical_outcome": "dropped",
+        "canonical_reward": -40.0,
+        "canonical_reward_count": 1,
+        "canonical_reward_per_decision": -0.36363636363636365,
+        "canonical_reward_per_task": -40.0,
+        "canonical_task_reward_count": 1,
+        "canonical_tasks_per_decision": 0.00909090909090909,
+        "completion_or_drop_slot": 4,
+        "decision_record": {
+          "absolute_deadline_slot": 3,
+          "arrival_slot": 0,
+          "episode_id": 0,
+          "legal_action_mask": {
+            "compute_local": true,
+            "horizontal": true,
+            "local": true,
+            "offload_horizontal": true,
+            "offload_vertical": true,
+            "vertical": true
+          },
+          "processing_density": 3.0,
+          "queue_load": 0,
+          "selected_action": "vertical",
+          "slot": 0,
+          "source_agent_id": 1,
+          "task_id": 1,
+          "task_size": 14.0,
+          "timeout_length": 3,
+          "trace_id": "hoodie-43"
+        },
+        "duplicate_reward_event_count": 0,
+        "duplicate_terminal_event_count": 0,
+        "episode_id": 0,
+        "finalized_records": [
+          {
+            "arrival_slot": 0,
+            "completion_slot": 4,
+            "offload_lifecycle_events": [],
+            "resolved_destination": "cloud",
+            "selected_action": "vertical",
+            "task_id": 1,
+            "terminal_outcome": "dropped"
+          },
+          {
+            "arrival_slot": 0,
+            "completion_slot": 4,
+            "offload_lifecycle_events": [
+              "selected_action",
+              "offloaded_cloud",
+              "transmission_started",
+              "dropped_timeout",
+              "dropped_timeout",
+              "reward_emitted"
+            ],
+            "resolved_destination": "cloud",
+            "selected_action": "vertical",
+            "task_id": 1,
+            "terminal_outcome": "dropped"
+          }
+        ],
+        "first_decision_slot": 0,
+        "latency_slots": 5,
+        "lifecycle_event_types": [
+          "task_generated",
+          "task_admitted",
+          "transmission_started",
+          "deadline_reached",
+          "deadline_reached",
+          "deadline_expired",
+          "task_dropped",
+          "reward_emitted"
+        ],
+        "pending_evidence": false,
+        "processing_density": 3.0,
+        "queue_load": 0,
+        "raw_reward_event_count": 1,
+        "raw_reward_event_source": "env_step_reward_with_finalized_task",
+        "raw_reward_total": -40.0,
+        "raw_terminal_event_count": 1,
+        "raw_vs_canonical_reward_delta": 0.0,
+        "reconciled": true,
+        "reward_available_from_step": true,
+        "reward_event_records": [
+          {
+            "episode_id": 0,
+            "raw_reward": -40.0,
+            "reward_available": true,
+            "reward_event_source": "env_step_reward_with_finalized_task",
+            "selected_action": "vertical",
+            "slot": 5,
+            "task_id": 1,
+            "terminal_outcome": "dropped",
+            "trace_id": "hoodie-43"
+          }
+        ],
+        "selected_action": "vertical",
+        "task_id": 1,
+        "task_size": 14.0,
+        "terminal_event_records": [
+          {
+            "episode_id": 0,
+            "event_type": "task_dropped",
+            "selected_action": "vertical",
+            "slot": 5,
+            "task_id": 1,
+            "terminal_outcome": "dropped",
+            "trace_id": "hoodie-43"
+          }
+        ],
+        "terminal_event_source": "env_step_finalized_tasks",
+        "terminal_outcome": "dropped",
+        "terminal_outcome_event_types": [
+          "task_dropped",
+          "task_dropped",
+          "task_dropped"
+        ],
+        "terminal_slot": 6,
+        "timeout_length": 3,
+        "trace_id": "hoodie-43"
+      },
+      {
+        "absolute_deadline_slot": 3,
+        "arrival_slot": 1,
+        "canonical_outcome": "dropped",
+        "canonical_reward": -40.0,
+        "canonical_reward_count": 1,
+        "canonical_reward_per_decision": -0.36363636363636365,
+        "canonical_reward_per_task": -40.0,
+        "canonical_task_reward_count": 1,
+        "canonical_tasks_per_decision": 0.00909090909090909,
+        "completion_or_drop_slot": 4,
+        "decision_record": {
+          "absolute_deadline_slot": 3,
+          "arrival_slot": 1,
+          "episode_id": 0,
+          "legal_action_mask": {
+            "compute_local": true,
+            "horizontal": true,
+            "local": true,
+            "offload_horizontal": true,
+            "offload_vertical": true,
+            "vertical": true
+          },
+          "processing_density": 3.0,
+          "queue_load": 1,
+          "selected_action": "vertical",
+          "slot": 1,
+          "source_agent_id": 2,
+          "task_id": 2,
+          "task_size": 69.0,
+          "timeout_length": 2,
+          "trace_id": "hoodie-43"
+        },
+        "duplicate_reward_event_count": 0,
+        "duplicate_terminal_event_count": 0,
+        "episode_id": 0,
+        "finalized_records": [
+          {
+            "arrival_slot": 1,
+            "completion_slot": 4,
+            "offload_lifecycle_events": [],
+            "resolved_destination": "cloud",
+            "selected_action": "vertical",
+            "task_id": 2,
+            "terminal_outcome": "dropped"
+          },
+          {
+            "arrival_slot": 1,
+            "completion_slot": 4,
+            "offload_lifecycle_events": [
+              "selected_action",
+              "offloaded_cloud",
+              "transmission_started",
+              "dropped_timeout",
+              "dropped_timeout",
+              "reward_emitted"
+            ],
+            "resolved_destination": "cloud",
+            "selected_action": "vertical",
+            "task_id": 2,
+            "terminal_outcome": "dropped"
+          }
+        ],
+        "first_decision_slot": 1,
+        "latency_slots": 4,
+        "lifecycle_event_types": [
+          "task_generated",
+          "task_admitted",
+          "transmission_started",
+          "deadline_reached",
+          "deadline_reached",
+          "deadline_expired",
+          "task_dropped",
+          "reward_emitted"
+        ],
+        "pending_evidence": false,
+        "processing_density": 3.0,
+        "queue_load": 0,
+        "raw_reward_event_count": 1,
+        "raw_reward_event_source": "env_step_reward_with_finalized_task",
+        "raw_reward_total": -40.0,
+        "raw_terminal_event_count": 1,
+        "raw_vs_canonical_reward_delta": 0.0,
+        "reconciled": true,
+        "reward_available_from_step": true,
+        "reward_event_records": [
+          {
+            "episode_id": 0,
+            "raw_reward": -40.0,
+            "reward_available": true,
+            "reward_event_source": "env_step_reward_with_finalized_task",
+            "selected_action": "vertical",
+            "slot": 5,
+            "task_id": 2,
+            "terminal_outcome": "dropped",
+            "trace_id": "hoodie-43"
+          }
+        ],
+        "selected_action": "vertical",
+        "task_id": 2,
+        "task_size": 69.0,
+        "terminal_event_records": [
+          {
+            "episode_id": 0,
+            "event_type": "task_dropped",
+            "selected_action": "vertical",
+            "slot": 5,
+            "task_id": 2,
+            "terminal_outcome": "dropped",
+            "trace_id": "hoodie-43"
+          }
+        ],
+        "terminal_event_source": "env_step_finalized_tasks",
+        "terminal_outcome": "dropped",
+        "terminal_outcome_event_types": [
+          "task_dropped",
+          "task_dropped",
+          "task_dropped"
+        ],
+        "terminal_slot": 6,
+        "timeout_length": null,
+        "trace_id": "hoodie-43"
+      },
+      {
+        "absolute_deadline_slot": 7,
+        "arrival_slot": 2,
+        "canonical_outcome": "dropped",
+        "canonical_reward": -40.0,
+        "canonical_reward_count": 1,
+        "canonical_reward_per_decision": -0.36363636363636365,
+        "canonical_reward_per_task": -40.0,
+        "canonical_task_reward_count": 1,
+        "canonical_tasks_per_decision": 0.00909090909090909,
+        "completion_or_drop_slot": 8,
+        "decision_record": {
+          "absolute_deadline_slot": 7,
+          "arrival_slot": 2,
+          "episode_id": 0,
+          "legal_action_mask": {
+            "compute_local": true,
+            "horizontal": true,
+            "local": true,
+            "offload_horizontal": true,
+            "offload_vertical": true,
+            "vertical": true
+          },
+          "processing_density": 5.0,
+          "queue_load": 2,
+          "selected_action": "vertical",
+          "slot": 2,
+          "source_agent_id": 3,
+          "task_id": 3,
+          "task_size": 68.0,
+          "timeout_length": 5,
+          "trace_id": "hoodie-43"
+        },
+        "duplicate_reward_event_count": 0,
+        "duplicate_terminal_event_count": 0,
+        "episode_id": 0,
+        "finalized_records": [
+          {
+            "arrival_slot": 2,
+            "completion_slot": 8,
+            "offload_lifecycle_events": [],
+            "resolved_destination": "cloud",
+            "selected_action": "vertical",
+            "task_id": 3,
+            "terminal_outcome": "dropped"
+          },
+          {
+            "arrival_slot": 2,
+            "completion_slot": 8,
+            "offload_lifecycle_events": [
+              "selected_action",
+              "offloaded_cloud",
+              "transmission_started",
+              "dropped_timeout",
+              "dropped_timeout",
+              "reward_emitted"
+            ],
+            "resolved_destination": "cloud",
+            "selected_action": "vertical",
+            "task_id": 3,
+            "terminal_outcome": "dropped"
+          }
+        ],
+        "first_decision_slot": 2,
+        "latency_slots": 7,
+        "lifecycle_event_types": [
+          "task_generated",
+          "task_admitted",
+          "transmission_started",
+          "deadline_reached",
+          "deadline_reached",
+          "deadline_expired",
+          "task_dropped",
+          "reward_emitted"
+        ],
+        "pending_evidence": false,
+        "processing_density": 5.0,
+        "queue_load": 0,
+        "raw_reward_event_count": 1,
+        "raw_reward_event_source": "env_step_reward_with_finalized_task",
+        "raw_reward_total": -40.0,
+        "raw_terminal_event_count": 1,
+        "raw_vs_canonical_reward_delta": 0.0,
+        "reconciled": true,
+        "reward_available_from_step": true,
+        "reward_event_records": [
+          {
+            "episode_id": 0,
+            "raw_reward": -40.0,
+            "reward_available": true,
+            "reward_event_source": "env_step_reward_with_finalized_task",
+            "selected_action": "vertical",
+            "slot": 9,
+            "task_id": 3,
+            "terminal_outcome": "dropped",
+            "trace_id": "hoodie-43"
+          }
+        ],
+        "selected_action": "vertical",
+        "task_id": 3,
+        "task_size": 68.0,
+        "terminal_event_records": [
+          {
+            "episode_id": 0,
+            "event_type": "task_dropped",
+            "selected_action": "vertical",
+            "slot": 9,
+            "task_id": 3,
+            "terminal_outcome": "dropped",
+            "trace_id": "hoodie-43"
+          }
+        ],
+        "terminal_event_source": "env_step_finalized_tasks",
+        "terminal_outcome": "dropped",
+        "terminal_outcome_event_types": [
+          "task_dropped",
+          "task_dropped",
+          "task_dropped"
+        ],
+        "terminal_slot": 10,
+        "timeout_length": null,
+        "trace_id": "hoodie-43"
+      },
+      {
+        "absolute_deadline_slot": 8,
+        "arrival_slot": 3,
+        "canonical_outcome": "dropped",
+        "canonical_reward": -40.0,
+        "canonical_reward_count": 1,
+        "canonical_reward_per_decision": -0.36363636363636365,
+        "canonical_reward_per_task": -40.0,
+        "canonical_task_reward_count": 1,
+        "canonical_tasks_per_decision": 0.00909090909090909,
+        "completion_or_drop_slot": 9,
+        "decision_record": {
+          "absolute_deadline_slot": 8,
+          "arrival_slot": 3,
+          "episode_id": 0,
+          "legal_action_mask": {
+            "compute_local": true,
+            "horizontal": true,
+            "local": true,
+            "offload_horizontal": true,
+            "offload_vertical": true,
+            "vertical": true
+          },
+          "processing_density": 1.0,
+          "queue_load": 3,
+          "selected_action": "vertical",
+          "slot": 3,
+          "source_agent_id": 1,
+          "task_id": 4,
+          "task_size": 87.0,
+          "timeout_length": 5,
+          "trace_id": "hoodie-43"
+        },
+        "duplicate_reward_event_count": 0,
+        "duplicate_terminal_event_count": 0,
+        "episode_id": 0,
+        "finalized_records": [
+          {
+            "arrival_slot": 3,
+            "completion_slot": 9,
+            "offload_lifecycle_events": [],
+            "resolved_destination": "cloud",
+            "selected_action": "vertical",
+            "task_id": 4,
+            "terminal_outcome": "dropped"
+          },
+          {
+            "arrival_slot": 3,
+            "completion_slot": 9,
+            "offload_lifecycle_events": [
+              "selected_action",
+              "offloaded_cloud",
+              "transmission_started",
+              "dropped_timeout",
+              "dropped_timeout",
+              "reward_emitted"
+            ],
+            "resolved_destination": "cloud",
+            "selected_action": "vertical",
+            "task_id": 4,
+            "terminal_outcome": "dropped"
+          }
+        ],
+        "first_decision_slot": 3,
+        "latency_slots": 7,
+        "lifecycle_event_types": [
+          "task_generated",
+          "task_admitted",
+          "transmission_started",
+          "deadline_reached",
+          "deadline_reached",
+          "deadline_expired",
+          "task_dropped",
+          "reward_emitted"
+        ],
+        "pending_evidence": false,
+        "processing_density": 1.0,
+        "queue_load": 0,
+        "raw_reward_event_count": 1,
+        "raw_reward_event_source": "env_step_reward_with_finalized_task",
+        "raw_reward_total": -40.0,
+        "raw_terminal_event_count": 1,
+        "raw_vs_canonical_reward_delta": 0.0,
+        "reconciled": true,
+        "reward_available_from_step": true,
+        "reward_event_records": [
+          {
+            "episode_id": 0,
+            "raw_reward": -40.0,
+            "reward_available": true,
+            "reward_event_source": "env_step_reward_with_finalized_task",
+            "selected_action": "vertical",
+            "slot": 10,
+            "task_id": 4,
+            "terminal_outcome": "dropped",
+            "trace_id": "hoodie-43"
+          }
+        ],
+        "selected_action": "vertical",
+        "task_id": 4,
+        "task_size": 87.0,
+        "terminal_event_records": [
+          {
+            "episode_id": 0,
+            "event_type": "task_dropped",
+            "selected_action": "vertical",
+            "slot": 10,
+            "task_id": 4,
+            "terminal_outcome": "dropped",
+            "trace_id": "hoodie-43"
+          }
+        ],
+        "terminal_event_source": "env_step_finalized_tasks",
+        "terminal_outcome": "dropped",
+        "terminal_outcome_event_types": [
+          "task_dropped",
+          "task_dropped",
+          "task_dropped"
+        ],
+        "terminal_slot": 11,
+        "timeout_length": null,
+        "trace_id": "hoodie-43"
+      },
+      {
+        "absolute_deadline_slot": 9,
+        "arrival_slot": 4,
+        "canonical_outcome": "dropped",
+        "canonical_reward": -40.0,
+        "canonical_reward_count": 1,
+        "canonical_reward_per_decision": -0.36363636363636365,
+        "canonical_reward_per_task": -40.0,
+        "canonical_task_reward_count": 1,
+        "canonical_tasks_per_decision": 0.00909090909090909,
+        "completion_or_drop_slot": 10,
+        "decision_record": {
+          "absolute_deadline_slot": 9,
+          "arrival_slot": 4,
+          "episode_id": 0,
+          "legal_action_mask": {
+            "compute_local": true,
+            "horizontal": true,
+            "local": true,
+            "offload_horizontal": true,
+            "offload_vertical": true,
+            "vertical": true
+          },
+          "processing_density": 3.0,
+          "queue_load": 4,
+          "selected_action": "vertical",
+          "slot": 4,
+          "source_agent_id": 2,
+          "task_id": 5,
+          "task_size": 83.0,
+          "timeout_length": 5,
+          "trace_id": "hoodie-43"
+        },
+        "duplicate_reward_event_count": 0,
+        "duplicate_terminal_event_count": 0,
+        "episode_id": 0,
+        "finalized_records": [
+          {
+            "arrival_slot": 4,
+            "completion_slot": 10,
+            "offload_lifecycle_events": [],
+            "resolved_destination": "cloud",
+            "selected_action": "vertical",
+            "task_id": 5,
+            "terminal_outcome": "dropped"
+          },
+          {
+            "arrival_slot": 4,
+            "completion_slot": 10,
+            "offload_lifecycle_events": [
+              "selected_action",
+              "offloaded_cloud",
+              "transmission_started",
+              "dropped_timeout",
+              "dropped_timeout",
+              "reward_emitted"
+            ],
+            "resolved_destination": "cloud",
+            "selected_action": "vertical",
+            "task_id": 5,
+            "terminal_outcome": "dropped"
+          }
+        ],
+        "first_decision_slot": 4,
+        "latency_slots": 7,
+        "lifecycle_event_types": [
+          "task_generated",
+          "task_admitted",
+          "transmission_started",
+          "deadline_reached",
+          "deadline_reached",
+          "deadline_expired",
+          "task_dropped",
+          "reward_emitted"
+        ],
+        "pending_evidence": false,
+        "processing_density": 3.0,
+        "queue_load": 0,
+        "raw_reward_event_count": 1,
+        "raw_reward_event_source": "env_step_reward_with_finalized_task",
+        "raw_reward_total": -40.0,
+        "raw_terminal_event_count": 1,
+        "raw_vs_canonical_reward_delta": 0.0,
+        "reconciled": true,
+        "reward_available_from_step": true,
+        "reward_event_records": [
+          {
+            "episode_id": 0,
+            "raw_reward": -40.0,
+            "reward_available": true,
+            "reward_event_source": "env_step_reward_with_finalized_task",
+            "selected_action": "vertical",
+            "slot": 11,
+            "task_id": 5,
+            "terminal_outcome": "dropped",
+            "trace_id": "hoodie-43"
+          }
+        ],
+        "selected_action": "vertical",
+        "task_id": 5,
+        "task_size": 83.0,
+        "terminal_event_records": [
+          {
+            "episode_id": 0,
+            "event_type": "task_dropped",
+            "selected_action": "vertical",
+            "slot": 11,
+            "task_id": 5,
+            "terminal_outcome": "dropped",
+            "trace_id": "hoodie-43"
+          }
+        ],
+        "terminal_event_source": "env_step_finalized_tasks",
+        "terminal_outcome": "dropped",
+        "terminal_outcome_event_types": [
+          "task_dropped",
+          "task_dropped",
+          "task_dropped"
+        ],
+        "terminal_slot": 12,
+        "timeout_length": null,
+        "trace_id": "hoodie-43"
+      },
+      {
+        "absolute_deadline_slot": 7,
+        "arrival_slot": 5,
+        "canonical_outcome": "dropped",
+        "canonical_reward": -40.0,
+        "canonical_reward_count": 1,
+        "canonical_reward_per_decision": -0.36363636363636365,
+        "canonical_reward_per_task": -40.0,
+        "canonical_task_reward_count": 1,
+        "canonical_tasks_per_decision": 0.00909090909090909,
+        "completion_or_drop_slot": 9,
+        "decision_record": {
+          "absolute_deadline_slot": 7,
+          "arrival_slot": 5,
+          "episode_id": 0,
+          "legal_action_mask": {
+            "compute_local": true,
+            "horizontal": true,
+            "local": true,
+            "offload_horizontal": true,
+            "offload_vertical": true,
+            "vertical": true
+          },
+          "processing_density": 2.0,
+          "queue_load": 3,
+          "selected_action": "vertical",
+          "slot": 5,
+          "source_agent_id": 3,
+          "task_id": 6,
+          "task_size": 60.0,
+          "timeout_length": 2,
+          "trace_id": "hoodie-43"
+        },
+        "duplicate_reward_event_count": 0,
+        "duplicate_terminal_event_count": 0,
+        "episode_id": 0,
+        "finalized_records": [
+          {
+            "arrival_slot": 5,
+            "completion_slot": 9,
+            "offload_lifecycle_events": [],
+            "resolved_destination": "cloud",
+            "selected_action": "vertical",
+            "task_id": 6,
+            "terminal_outcome": "dropped"
+          },
+          {
+            "arrival_slot": 5,
+            "completion_slot": 9,
+            "offload_lifecycle_events": [
+              "selected_action",
+              "offloaded_cloud",
+              "transmission_started",
+              "dropped_timeout",
+              "dropped_timeout",
+              "reward_emitted"
+            ],
+            "resolved_destination": "cloud",
+            "selected_action": "vertical",
+            "task_id": 6,
+            "terminal_outcome": "dropped"
+          }
+        ],
+        "first_decision_slot": 5,
+        "latency_slots": 5,
+        "lifecycle_event_types": [
+          "task_generated",
+          "task_admitted",
+          "transmission_started",
+          "deadline_reached",
+          "deadline_reached",
+          "deadline_expired",
+          "task_dropped",
+          "reward_emitted"
+        ],
+        "pending_evidence": false,
+        "processing_density": 2.0,
+        "queue_load": 0,
+        "raw_reward_event_count": 1,
+        "raw_reward_event_source": "env_step_reward_with_finalized_task",
+        "raw_reward_total": -40.0,
+        "raw_terminal_event_count": 1,
+        "raw_vs_canonical_reward_delta": 0.0,
+        "reconciled": true,
+        "reward_available_from_step": true,
+        "reward_event_records": [
+          {
+            "episode_id": 0,
+            "raw_reward": -40.0,
+            "reward_available": true,
+            "reward_event_source": "env_step_reward_with_finalized_task",
+            "selected_action": "vertical",
+            "slot": 10,
+            "task_id": 6,
+            "terminal_outcome": "dropped",
+            "trace_id": "hoodie-43"
+          }
+        ],
+        "selected_action": "vertical",
+        "task_id": 6,
+        "task_size": 60.0,
+        "terminal_event_records": [
+          {
+            "episode_id": 0,
+            "event_type": "task_dropped",
+            "selected_action": "vertical",
+            "slot": 10,
+            "task_id": 6,
+            "terminal_outcome": "dropped",
+            "trace_id": "hoodie-43"
+          }
+        ],
+        "terminal_event_source": "env_step_finalized_tasks",
+        "terminal_outcome": "dropped",
+        "terminal_outcome_event_types": [
+          "task_dropped",
+          "task_dropped",
+          "task_dropped"
+        ],
+        "terminal_slot": 11,
+        "timeout_length": null,
+        "trace_id": "hoodie-43"
+      },
+      {
+        "absolute_deadline_slot": 11,
+        "arrival_slot": 6,
+        "canonical_outcome": "dropped",
+        "canonical_reward": -40.0,
+        "canonical_reward_count": 1,
+        "canonical_reward_per_decision": -0.36363636363636365,
+        "canonical_reward_per_task": -40.0,
+        "canonical_task_reward_count": 1,
+        "canonical_tasks_per_decision": 0.00909090909090909,
+        "completion_or_drop_slot": 12,
+        "decision_record": {
+          "absolute_deadline_slot": 11,
+          "arrival_slot": 6,
+          "episode_id": 0,
+          "legal_action_mask": {
+            "compute_local": true,
+            "horizontal": true,
+            "local": true,
+            "offload_horizontal": true,
+            "offload_vertical": true,
+            "vertical": true
+          },
+          "processing_density": 1.0,
+          "queue_load": 4,
+          "selected_action": "vertical",
+          "slot": 6,
+          "source_agent_id": 1,
+          "task_id": 7,
+          "task_size": 23.0,
+          "timeout_length": 5,
+          "trace_id": "hoodie-43"
+        },
+        "duplicate_reward_event_count": 0,
+        "duplicate_terminal_event_count": 0,
+        "episode_id": 0,
+        "finalized_records": [
+          {
+            "arrival_slot": 6,
+            "completion_slot": 12,
+            "offload_lifecycle_events": [],
+            "resolved_destination": "cloud",
+            "selected_action": "vertical",
+            "task_id": 7,
+            "terminal_outcome": "dropped"
+          },
+          {
+            "arrival_slot": 6,
+            "completion_slot": 12,
+            "offload_lifecycle_events": [
+              "selected_action",
+              "offloaded_cloud",
+              "transmission_started",
+              "dropped_timeout",
+              "dropped_timeout",
+              "reward_emitted"
+            ],
+            "resolved_destination": "cloud",
+            "selected_action": "vertical",
+            "task_id": 7,
+            "terminal_outcome": "dropped"
+          }
+        ],
+        "first_decision_slot": 6,
+        "latency_slots": 7,
+        "lifecycle_event_types": [
+          "task_generated",
+          "task_admitted",
+          "transmission_started",
+          "deadline_reached",
+          "deadline_reached",
+          "deadline_expired",
+          "task_dropped",
+          "reward_emitted"
+        ],
+        "pending_evidence": false,
+        "processing_density": 1.0,
+        "queue_load": 0,
+        "raw_reward_event_count": 1,
+        "raw_reward_event_source": "env_step_reward_with_finalized_task",
+        "raw_reward_total": -40.0,
+        "raw_terminal_event_count": 1,
+        "raw_vs_canonical_reward_delta": 0.0,
+        "reconciled": true,
+        "reward_available_from_step": true,
+        "reward_event_records": [
+          {
+            "episode_id": 0,
+            "raw_reward": -40.0,
+            "reward_available": true,
+            "reward_event_source": "env_step_reward_with_finalized_task",
+            "selected_action": "vertical",
+            "slot": 13,
+            "task_id": 7,
+            "terminal_outcome": "dropped",
+            "trace_id": "hoodie-43"
+          }
+        ],
+        "selected_action": "vertical",
+        "task_id": 7,
+        "task_size": 23.0,
+        "terminal_event_records": [
+          {
+            "episode_id": 0,
+            "event_type": "task_dropped",
+            "selected_action": "vertical",
+            "slot": 13,
+            "task_id": 7,
+            "terminal_outcome": "dropped",
+            "trace_id": "hoodie-43"
+          }
+        ],
+        "terminal_event_source": "env_step_finalized_tasks",
+        "terminal_outcome": "dropped",
+        "terminal_outcome_event_types": [
+          "task_dropped",
+          "task_dropped",
+          "task_dropped"
+        ],
+        "terminal_slot": 14,
+        "timeout_length": null,
+        "trace_id": "hoodie-43"
+      },
+      {
+        "absolute_deadline_slot": 10,
+        "arrival_slot": 7,
+        "canonical_outcome": "dropped",
+        "canonical_reward": -40.0,
+        "canonical_reward_count": 1,
+        "canonical_reward_per_decision": -0.36363636363636365,
+        "canonical_reward_per_task": -40.0,
+        "canonical_task_reward_count": 1,
+        "canonical_tasks_per_decision": 0.00909090909090909,
+        "completion_or_drop_slot": 11,
+        "decision_record": {
+          "absolute_deadline_slot": 10,
+          "arrival_slot": 7,
+          "episode_id": 0,
+          "legal_action_mask": {
+            "compute_local": true,
+            "horizontal": true,
+            "local": true,
+            "offload_horizontal": true,
+            "offload_vertical": true,
+            "vertical": true
+          },
+          "processing_density": 1.0,
+          "queue_load": 5,
+          "selected_action": "vertical",
+          "slot": 7,
+          "source_agent_id": 2,
+          "task_id": 8,
+          "task_size": 29.0,
+          "timeout_length": 3,
+          "trace_id": "hoodie-43"
+        },
+        "duplicate_reward_event_count": 0,
+        "duplicate_terminal_event_count": 0,
+        "episode_id": 0,
+        "finalized_records": [
+          {
+            "arrival_slot": 7,
+            "completion_slot": 11,
+            "offload_lifecycle_events": [],
+            "resolved_destination": "cloud",
+            "selected_action": "vertical",
+            "task_id": 8,
+            "terminal_outcome": "dropped"
+          },
+          {
+            "arrival_slot": 7,
+            "completion_slot": 11,
+            "offload_lifecycle_events": [
+              "selected_action",
+              "offloaded_cloud",
+              "transmission_started",
+              "dropped_timeout",
+              "dropped_timeout",
+              "reward_emitted"
+            ],
+            "resolved_destination": "cloud",
+            "selected_action": "vertical",
+            "task_id": 8,
+            "terminal_outcome": "dropped"
+          }
+        ],
+        "first_decision_slot": 7,
+        "latency_slots": 5,
+        "lifecycle_event_types": [
+          "task_generated",
+          "task_admitted",
+          "transmission_started",
+          "deadline_reached",
+          "deadline_reached",
+          "deadline_expired",
+          "task_dropped",
+          "reward_emitted"
+        ],
+        "pending_evidence": false,
+        "processing_density": 1.0,
+        "queue_load": 0,
+        "raw_reward_event_count": 1,
+        "raw_reward_event_source": "env_step_reward_with_finalized_task",
+        "raw_reward_total": -40.0,
+        "raw_terminal_event_count": 1,
+        "raw_vs_canonical_reward_delta": 0.0,
+        "reconciled": true,
+        "reward_available_from_step": true,
+        "reward_event_records": [
+          {
+            "episode_id": 0,
+            "raw_reward": -40.0,
+            "reward_available": true,
+            "reward_event_source": "env_step_reward_with_finalized_task",
+            "selected_action": "vertical",
+            "slot": 12,
+            "task_id": 8,
+            "terminal_outcome": "dropped",
+            "trace_id": "hoodie-43"
+          }
+        ],
+        "selected_action": "vertical",
+        "task_id": 8,
+        "task_size": 29.0,
+        "terminal_event_records": [
+          {
+            "episode_id": 0,
+            "event_type": "task_dropped",
+            "selected_action": "vertical",
+            "slot": 12,
+            "task_id": 8,
+            "terminal_outcome": "dropped",
+            "trace_id": "hoodie-43"
+          }
+        ],
+        "terminal_event_source": "env_step_finalized_tasks",
+        "terminal_outcome": "dropped",
+        "terminal_outcome_event_types": [
+          "task_dropped",
+          "task_dropped",
+          "task_dropped"
+        ],
+        "terminal_slot": 13,
+        "timeout_length": null,
+        "trace_id": "hoodie-43"
+      },
+      {
+        "absolute_deadline_slot": 11,
+        "arrival_slot": 8,
+        "canonical_outcome": "dropped",
+        "canonical_reward": -40.0,
+        "canonical_reward_count": 1,
+        "canonical_reward_per_decision": -0.36363636363636365,
+        "canonical_reward_per_task": -40.0,
+        "canonical_task_reward_count": 1,
+        "canonical_tasks_per_decision": 0.00909090909090909,
+        "completion_or_drop_slot": 12,
+        "decision_record": {
+          "absolute_deadline_slot": 11,
+          "arrival_slot": 8,
+          "episode_id": 0,
+          "legal_action_mask": {
+            "compute_local": true,
+            "horizontal": true,
+            "local": true,
+            "offload_horizontal": true,
+            "offload_vertical": true,
+            "vertical": true
+          },
+          "processing_density": 4.0,
+          "queue_load": 6,
+          "selected_action": "vertical",
+          "slot": 8,
+          "source_agent_id": 3,
+          "task_id": 9,
+          "task_size": 75.0,
+          "timeout_length": 3,
+          "trace_id": "hoodie-43"
+        },
+        "duplicate_reward_event_count": 0,
+        "duplicate_terminal_event_count": 0,
+        "episode_id": 0,
+        "finalized_records": [
+          {
+            "arrival_slot": 8,
+            "completion_slot": 12,
+            "offload_lifecycle_events": [],
+            "resolved_destination": "cloud",
+            "selected_action": "vertical",
+            "task_id": 9,
+            "terminal_outcome": "dropped"
+          },
+          {
+            "arrival_slot": 8,
+            "completion_slot": 12,
+            "offload_lifecycle_events": [
+              "selected_action",
+              "offloaded_cloud",
+              "transmission_started",
+              "dropped_timeout",
+              "dropped_timeout",
+              "reward_emitted"
+            ],
+            "resolved_destination": "cloud",
+            "selected_action": "vertical",
+            "task_id": 9,
+            "terminal_outcome": "dropped"
+          }
+        ],
+        "first_decision_slot": 8,
+        "latency_slots": 5,
+        "lifecycle_event_types": [
+          "task_generated",
+          "task_admitted",
+          "transmission_started",
+          "deadline_reached",
+          "deadline_reached",
+          "deadline_expired",
+          "task_dropped",
+          "reward_emitted"
+        ],
+        "pending_evidence": false,
+        "processing_density": 4.0,
+        "queue_load": 0,
+        "raw_reward_event_count": 1,
+        "raw_reward_event_source": "env_step_reward_with_finalized_task",
+        "raw_reward_total": -40.0,
+        "raw_terminal_event_count": 1,
+        "raw_vs_canonical_reward_delta": 0.0,
+        "reconciled": true,
+        "reward_available_from_step": true,
+        "reward_event_records": [
+          {
+            "episode_id": 0,
+            "raw_reward": -40.0,
+            "reward_available": true,
+            "reward_event_source": "env_step_reward_with_finalized_task",
+            "selected_action": "vertical",
+            "slot": 13,
+            "task_id": 9,
+            "terminal_outcome": "dropped",
+            "trace_id": "hoodie-43"
+          }
+        ],
+        "selected_action": "vertical",
+        "task_id": 9,
+        "task_size": 75.0,
+        "terminal_event_records": [
+          {
+            "episode_id": 0,
+            "event_type": "task_dropped",
+            "selected_action": "vertical",
+            "slot": 13,
+            "task_id": 9,
+            "terminal_outcome": "dropped",
+            "trace_id": "hoodie-43"
+          }
+        ],
+        "terminal_event_source": "env_step_finalized_tasks",
+        "terminal_outcome": "dropped",
+        "terminal_outcome_event_types": [
+          "task_dropped",
+          "task_dropped",
+          "task_dropped"
+        ],
+        "terminal_slot": 14,
+        "timeout_length": null,
+        "trace_id": "hoodie-43"
+      },
+      {
+        "absolute_deadline_slot": 13,
+        "arrival_slot": 9,
+        "canonical_outcome": "dropped",
+        "canonical_reward": -40.0,
+        "canonical_reward_count": 1,
+        "canonical_reward_per_decision": -0.36363636363636365,
+        "canonical_reward_per_task": -40.0,
+        "canonical_task_reward_count": 1,
+        "canonical_tasks_per_decision": 0.00909090909090909,
+        "completion_or_drop_slot": 14,
+        "decision_record": {
+          "absolute_deadline_slot": 13,
+          "arrival_slot": 9,
+          "episode_id": 0,
+          "legal_action_mask": {
+            "compute_local": true,
+            "horizontal": true,
+            "local": true,
+            "offload_horizontal": true,
+            "offload_vertical": true,
+            "vertical": true
+          },
+          "processing_density": 5.0,
+          "queue_load": 6,
+          "selected_action": "vertical",
+          "slot": 9,
+          "source_agent_id": 1,
+          "task_id": 10,
+          "task_size": 59.0,
+          "timeout_length": 4,
+          "trace_id": "hoodie-43"
+        },
+        "duplicate_reward_event_count": 0,
+        "duplicate_terminal_event_count": 0,
+        "episode_id": 0,
+        "finalized_records": [
+          {
+            "arrival_slot": 9,
+            "completion_slot": 14,
+            "offload_lifecycle_events": [],
+            "resolved_destination": "cloud",
+            "selected_action": "vertical",
+            "task_id": 10,
+            "terminal_outcome": "dropped"
+          },
+          {
+            "arrival_slot": 9,
+            "completion_slot": 14,
+            "offload_lifecycle_events": [
+              "selected_action",
+              "offloaded_cloud",
+              "transmission_started",
+              "dropped_timeout",
+              "dropped_timeout",
+              "reward_emitted"
+            ],
+            "resolved_destination": "cloud",
+            "selected_action": "vertical",
+            "task_id": 10,
+            "terminal_outcome": "dropped"
+          }
+        ],
+        "first_decision_slot": 9,
+        "latency_slots": 6,
+        "lifecycle_event_types": [
+          "task_generated",
+          "task_admitted",
+          "transmission_started",
+          "deadline_reached",
+          "deadline_reached",
+          "deadline_expired",
+          "task_dropped",
+          "reward_emitted"
+        ],
+        "pending_evidence": false,
+        "processing_density": 5.0,
+        "queue_load": 0,
+        "raw_reward_event_count": 1,
+        "raw_reward_event_source": "env_step_reward_with_finalized_task",
+        "raw_reward_total": -40.0,
+        "raw_terminal_event_count": 1,
+        "raw_vs_canonical_reward_delta": 0.0,
+        "reconciled": true,
+        "reward_available_from_step": true,
+        "reward_event_records": [
+          {
+            "episode_id": 0,
+            "raw_reward": -40.0,
+            "reward_available": true,
+            "reward_event_source": "env_step_reward_with_finalized_task",
+            "selected_action": "vertical",
+            "slot": 15,
+            "task_id": 10,
+            "terminal_outcome": "dropped",
+            "trace_id": "hoodie-43"
+          }
+        ],
+        "selected_action": "vertical",
+        "task_id": 10,
+        "task_size": 59.0,
+        "terminal_event_records": [
+          {
+            "episode_id": 0,
+            "event_type": "task_dropped",
+            "selected_action": "vertical",
+            "slot": 15,
+            "task_id": 10,
+            "terminal_outcome": "dropped",
+            "trace_id": "hoodie-43"
+          }
+        ],
+        "terminal_event_source": "env_step_finalized_tasks",
+        "terminal_outcome": "dropped",
+        "terminal_outcome_event_types": [
+          "task_dropped",
+          "task_dropped",
+          "task_dropped"
+        ],
+        "terminal_slot": 16,
+        "timeout_length": null,
+        "trace_id": "hoodie-43"
+      },
+      {
+        "absolute_deadline_slot": 15,
+        "arrival_slot": 10,
+        "canonical_outcome": "dropped",
+        "canonical_reward": -40.0,
+        "canonical_reward_count": 1,
+        "canonical_reward_per_decision": -0.36363636363636365,
+        "canonical_reward_per_task": -40.0,
+        "canonical_task_reward_count": 1,
+        "canonical_tasks_per_decision": 0.00909090909090909,
+        "completion_or_drop_slot": 16,
+        "decision_record": {
+          "absolute_deadline_slot": 15,
+          "arrival_slot": 10,
+          "episode_id": 0,
+          "legal_action_mask": {
+            "compute_local": true,
+            "horizontal": true,
+            "local": true,
+            "offload_horizontal": true,
+            "offload_vertical": true,
+            "vertical": true
+          },
+          "processing_density": 2.0,
+          "queue_load": 5,
+          "selected_action": "vertical",
+          "slot": 10,
+          "source_agent_id": 2,
+          "task_id": 11,
+          "task_size": 83.0,
+          "timeout_length": 5,
+          "trace_id": "hoodie-43"
+        },
+        "duplicate_reward_event_count": 0,
+        "duplicate_terminal_event_count": 0,
+        "episode_id": 0,
+        "finalized_records": [
+          {
+            "arrival_slot": 10,
+            "completion_slot": 16,
+            "offload_lifecycle_events": [],
+            "resolved_destination": "cloud",
+            "selected_action": "vertical",
+            "task_id": 11,
+            "terminal_outcome": "dropped"
+          },
+          {
+            "arrival_slot": 10,
+            "completion_slot": 16,
+            "offload_lifecycle_events": [
+              "selected_action",
+              "offloaded_cloud",
+              "transmission_started",
+              "dropped_timeout",
+              "dropped_timeout",
+              "reward_emitted"
+            ],
+            "resolved_destination": "cloud",
+            "selected_action": "vertical",
+            "task_id": 11,
+            "terminal_outcome": "dropped"
+          }
+        ],
+        "first_decision_slot": 10,
+        "latency_slots": 7,
+        "lifecycle_event_types": [
+          "task_generated",
+          "task_admitted",
+          "transmission_started",
+          "deadline_reached",
+          "deadline_reached",
+          "deadline_expired",
+          "task_dropped",
+          "reward_emitted"
+        ],
+        "pending_evidence": false,
+        "processing_density": 2.0,
+        "queue_load": 0,
+        "raw_reward_event_count": 1,
+        "raw_reward_event_source": "env_step_reward_with_finalized_task",
+        "raw_reward_total": -40.0,
+        "raw_terminal_event_count": 1,
+        "raw_vs_canonical_reward_delta": 0.0,
+        "reconciled": true,
+        "reward_available_from_step": true,
+        "reward_event_records": [
+          {
+            "episode_id": 0,
+            "raw_reward": -40.0,
+            "reward_available": true,
+            "reward_event_source": "env_step_reward_with_finalized_task",
+            "selected_action": "vertical",
+            "slot": 17,
+            "task_id": 11,
+            "terminal_outcome": "dropped",
+            "trace_id": "hoodie-43"
+          }
+        ],
+        "selected_action": "vertical",
+        "task_id": 11,
+        "task_size": 83.0,
+        "terminal_event_records": [
+          {
+            "episode_id": 0,
+            "event_type": "task_dropped",
+            "selected_action": "vertical",
+            "slot": 17,
+            "task_id": 11,
+            "terminal_outcome": "dropped",
+            "trace_id": "hoodie-43"
+          }
+        ],
+        "terminal_event_source": "env_step_finalized_tasks",
+        "terminal_outcome": "dropped",
+        "terminal_outcome_event_types": [
+          "task_dropped",
+          "task_dropped",
+          "task_dropped"
+        ],
+        "terminal_slot": 18,
+        "timeout_length": null,
+        "trace_id": "hoodie-43"
+      },
+      {
+        "absolute_deadline_slot": 13,
+        "arrival_slot": 11,
+        "canonical_outcome": "dropped",
+        "canonical_reward": -40.0,
+        "canonical_reward_count": 1,
+        "canonical_reward_per_decision": -0.36363636363636365,
+        "canonical_reward_per_task": -40.0,
+        "canonical_task_reward_count": 1,
+        "canonical_tasks_per_decision": 0.00909090909090909,
+        "completion_or_drop_slot": 14,
+        "decision_record": {
+          "absolute_deadline_slot": 13,
+          "arrival_slot": 11,
+          "episode_id": 0,
+          "legal_action_mask": {
+            "compute_local": true,
+            "horizontal": true,
+            "local": true,
+            "offload_horizontal": true,
+            "offload_vertical": true,
+            "vertical": true
+          },
+          "processing_density": 1.0,
+          "queue_load": 5,
+          "selected_action": "vertical",
+          "slot": 11,
+          "source_agent_id": 3,
+          "task_id": 12,
+          "task_size": 18.0,
+          "timeout_length": 2,
+          "trace_id": "hoodie-43"
+        },
+        "duplicate_reward_event_count": 0,
+        "duplicate_terminal_event_count": 0,
+        "episode_id": 0,
+        "finalized_records": [
+          {
+            "arrival_slot": 11,
+            "completion_slot": 14,
+            "offload_lifecycle_events": [],
+            "resolved_destination": "cloud",
+            "selected_action": "vertical",
+            "task_id": 12,
+            "terminal_outcome": "dropped"
+          },
+          {
+            "arrival_slot": 11,
+            "completion_slot": 14,
+            "offload_lifecycle_events": [
+              "selected_action",
+              "offloaded_cloud",
+              "transmission_started",
+              "dropped_timeout",
+              "dropped_timeout",
+              "reward_emitted"
+            ],
+            "resolved_destination": "cloud",
+            "selected_action": "vertical",
+            "task_id": 12,
+            "terminal_outcome": "dropped"
+          }
+        ],
+        "first_decision_slot": 11,
+        "latency_slots": 4,
+        "lifecycle_event_types": [
+          "task_generated",
+          "task_admitted",
+          "transmission_started",
+          "deadline_reached",
+          "deadline_reached",
+          "deadline_expired",
+          "task_dropped",
+          "reward_emitted"
+        ],
+        "pending_evidence": false,
+        "processing_density": 1.0,
+        "queue_load": 0,
+        "raw_reward_event_count": 1,
+        "raw_reward_event_source": "env_step_reward_with_finalized_task",
+        "raw_reward_total": -40.0,
+        "raw_terminal_event_count": 1,
+        "raw_vs_canonical_reward_delta": 0.0,
+        "reconciled": true,
+        "reward_available_from_step": true,
+        "reward_event_records": [
+          {
+            "episode_id": 0,
+            "raw_reward": -40.0,
+            "reward_available": true,
+            "reward_event_source": "env_step_reward_with_finalized_task",
+            "selected_action": "vertical",
+            "slot": 15,
+            "task_id": 12,
+            "terminal_outcome": "dropped",
+            "trace_id": "hoodie-43"
+          }
+        ],
+        "selected_action": "vertical",
+        "task_id": 12,
+        "task_size": 18.0,
+        "terminal_event_records": [
+          {
+            "episode_id": 0,
+            "event_type": "task_dropped",
+            "selected_action": "vertical",
+            "slot": 15,
+            "task_id": 12,
+            "terminal_outcome": "dropped",
+            "trace_id": "hoodie-43"
+          }
+        ],
+        "terminal_event_source": "env_step_finalized_tasks",
+        "terminal_outcome": "dropped",
+        "terminal_outcome_event_types": [
+          "task_dropped",
+          "task_dropped",
+          "task_dropped"
+        ],
+        "terminal_slot": 16,
+        "timeout_length": null,
+        "trace_id": "hoodie-43"
+      },
+      {
+        "absolute_deadline_slot": 15,
+        "arrival_slot": 12,
+        "canonical_outcome": "dropped",
+        "canonical_reward": -40.0,
+        "canonical_reward_count": 1,
+        "canonical_reward_per_decision": -0.36363636363636365,
+        "canonical_reward_per_task": -40.0,
+        "canonical_task_reward_count": 1,
+        "canonical_tasks_per_decision": 0.00909090909090909,
+        "completion_or_drop_slot": 16,
+        "decision_record": {
+          "absolute_deadline_slot": 15,
+          "arrival_slot": 12,
+          "episode_id": 0,
+          "legal_action_mask": {
+            "compute_local": true,
+            "horizontal": true,
+            "local": true,
+            "offload_horizontal": true,
+            "offload_vertical": true,
+            "vertical": true
+          },
+          "processing_density": 1.0,
+          "queue_load": 5,
+          "selected_action": "vertical",
+          "slot": 12,
+          "source_agent_id": 1,
+          "task_id": 13,
+          "task_size": 33.0,
+          "timeout_length": 3,
+          "trace_id": "hoodie-43"
+        },
+        "duplicate_reward_event_count": 0,
+        "duplicate_terminal_event_count": 0,
+        "episode_id": 0,
+        "finalized_records": [
+          {
+            "arrival_slot": 12,
+            "completion_slot": 16,
+            "offload_lifecycle_events": [],
+            "resolved_destination": "cloud",
+            "selected_action": "vertical",
+            "task_id": 13,
+            "terminal_outcome": "dropped"
+          },
+          {
+            "arrival_slot": 12,
+            "completion_slot": 16,
+            "offload_lifecycle_events": [
+              "selected_action",
+              "offloaded_cloud",
+              "transmission_started",
+              "dropped_timeout",
+              "dropped_timeout",
+              "reward_emitted"
+            ],
+            "resolved_destination": "cloud",
+            "selected_action": "vertical",
+            "task_id": 13,
+            "terminal_outcome": "dropped"
+          }
+        ],
+        "first_decision_slot": 12,
+        "latency_slots": 5,
+        "lifecycle_event_types": [
+          "task_generated",
+          "task_admitted",
+          "transmission_started",
+          "deadline_reached",
+          "deadline_reached",
+          "deadline_expired",
+          "task_dropped",
+          "reward_emitted"
+        ],
+        "pending_evidence": false,
+        "processing_density": 1.0,
+        "queue_load": 0,
+        "raw_reward_event_count": 1,
+        "raw_reward_event_source": "env_step_reward_with_finalized_task",
+        "raw_reward_total": -40.0,
+        "raw_terminal_event_count": 1,
+        "raw_vs_canonical_reward_delta": 0.0,
+        "reconciled": true,
+        "reward_available_from_step": true,
+        "reward_event_records": [
+          {
+            "episode_id": 0,
+            "raw_reward": -40.0,
+            "reward_available": true,
+            "reward_event_source": "env_step_reward_with_finalized_task",
+            "selected_action": "vertical",
+            "slot": 17,
+            "task_id": 13,
+            "terminal_outcome": "dropped",
+            "trace_id": "hoodie-43"
+          }
+        ],
+        "selected_action": "vertical",
+        "task_id": 13,
+        "task_size": 33.0,
+        "terminal_event_records": [
+          {
+            "episode_id": 0,
+            "event_type": "task_dropped",
+            "selected_action": "vertical",
+            "slot": 17,
+            "task_id": 13,
+            "terminal_outcome": "dropped",
+            "trace_id": "hoodie-43"
+          }
+        ],
+        "terminal_event_source": "env_step_finalized_tasks",
+        "terminal_outcome": "dropped",
+        "terminal_outcome_event_types": [
+          "task_dropped",
+          "task_dropped",
+          "task_dropped"
+        ],
+        "terminal_slot": 18,
+        "timeout_length": null,
+        "trace_id": "hoodie-43"
+      },
+      {
+        "absolute_deadline_slot": 15,
+        "arrival_slot": 13,
+        "canonical_outcome": "dropped",
+        "canonical_reward": -40.0,
+        "canonical_reward_count": 1,
+        "canonical_reward_per_decision": -0.36363636363636365,
+        "canonical_reward_per_task": -40.0,
+        "canonical_task_reward_count": 1,
+        "canonical_tasks_per_decision": 0.00909090909090909,
+        "completion_or_drop_slot": 17,
+        "decision_record": {
+          "absolute_deadline_slot": 15,
+          "arrival_slot": 13,
+          "episode_id": 0,
+          "legal_action_mask": {
+            "compute_local": true,
+            "horizontal": true,
+            "local": true,
+            "offload_horizontal": true,
+            "offload_vertical": true,
+            "vertical": true
+          },
+          "processing_density": 3.0,
+          "queue_load": 4,
+          "selected_action": "vertical",
+          "slot": 13,
+          "source_agent_id": 2,
+          "task_id": 14,
+          "task_size": 47.0,
+          "timeout_length": 2,
+          "trace_id": "hoodie-43"
+        },
+        "duplicate_reward_event_count": 0,
+        "duplicate_terminal_event_count": 0,
+        "episode_id": 0,
+        "finalized_records": [
+          {
+            "arrival_slot": 13,
+            "completion_slot": 17,
+            "offload_lifecycle_events": [],
+            "resolved_destination": "cloud",
+            "selected_action": "vertical",
+            "task_id": 14,
+            "terminal_outcome": "dropped"
+          },
+          {
+            "arrival_slot": 13,
+            "completion_slot": 17,
+            "offload_lifecycle_events": [
+              "selected_action",
+              "offloaded_cloud",
+              "transmission_started",
+              "dropped_timeout",
+              "dropped_timeout",
+              "reward_emitted"
+            ],
+            "resolved_destination": "cloud",
+            "selected_action": "vertical",
+            "task_id": 14,
+            "terminal_outcome": "dropped"
+          }
+        ],
+        "first_decision_slot": 13,
+        "latency_slots": 5,
+        "lifecycle_event_types": [
+          "task_generated",
+          "task_admitted",
+          "transmission_started",
+          "deadline_reached",
+          "deadline_reached",
+          "deadline_expired",
+          "task_dropped",
+          "reward_emitted"
+        ],
+        "pending_evidence": false,
+        "processing_density": 3.0,
+        "queue_load": 0,
+        "raw_reward_event_count": 1,
+        "raw_reward_event_source": "env_step_reward_with_finalized_task",
+        "raw_reward_total": -40.0,
+        "raw_terminal_event_count": 1,
+        "raw_vs_canonical_reward_delta": 0.0,
+        "reconciled": true,
+        "reward_available_from_step": true,
+        "reward_event_records": [
+          {
+            "episode_id": 0,
+            "raw_reward": -40.0,
+            "reward_available": true,
+            "reward_event_source": "env_step_reward_with_finalized_task",
+            "selected_action": "vertical",
+            "slot": 18,
+            "task_id": 14,
+            "terminal_outcome": "dropped",
+            "trace_id": "hoodie-43"
+          }
+        ],
+        "selected_action": "vertical",
+        "task_id": 14,
+        "task_size": 47.0,
+        "terminal_event_records": [
+          {
+            "episode_id": 0,
+            "event_type": "task_dropped",
+            "selected_action": "vertical",
+            "slot": 18,
+            "task_id": 14,
+            "terminal_outcome": "dropped",
+            "trace_id": "hoodie-43"
+          }
+        ],
+        "terminal_event_source": "env_step_finalized_tasks",
+        "terminal_outcome": "dropped",
+        "terminal_outcome_event_types": [
+          "task_dropped",
+          "task_dropped",
+          "task_dropped"
+        ],
+        "terminal_slot": 19,
+        "timeout_length": null,
+        "trace_id": "hoodie-43"
+      },
+      {
+        "absolute_deadline_slot": 16,
+        "arrival_slot": 14,
+        "canonical_outcome": "dropped",
+        "canonical_reward": -40.0,
+        "canonical_reward_count": 1,
+        "canonical_reward_per_decision": -0.36363636363636365,
+        "canonical_reward_per_task": -40.0,
+        "canonical_task_reward_count": 1,
+        "canonical_tasks_per_decision": 0.00909090909090909,
+        "completion_or_drop_slot": 17,
+        "decision_record": {
+          "absolute_deadline_slot": 16,
+          "arrival_slot": 14,
+          "episode_id": 0,
+          "legal_action_mask": {
+            "compute_local": true,
+            "horizontal": true,
+            "local": true,
+            "offload_horizontal": true,
+            "offload_vertical": true,
+            "vertical": true
+          },
+          "processing_density": 5.0,
+          "queue_load": 5,
+          "selected_action": "vertical",
+          "slot": 14,
+          "source_agent_id": 3,
+          "task_id": 15,
+          "task_size": 76.0,
+          "timeout_length": 2,
+          "trace_id": "hoodie-43"
+        },
+        "duplicate_reward_event_count": 0,
+        "duplicate_terminal_event_count": 0,
+        "episode_id": 0,
+        "finalized_records": [
+          {
+            "arrival_slot": 14,
+            "completion_slot": 17,
+            "offload_lifecycle_events": [],
+            "resolved_destination": "cloud",
+            "selected_action": "vertical",
+            "task_id": 15,
+            "terminal_outcome": "dropped"
+          },
+          {
+            "arrival_slot": 14,
+            "completion_slot": 17,
+            "offload_lifecycle_events": [
+              "selected_action",
+              "offloaded_cloud",
+              "transmission_started",
+              "dropped_timeout",
+              "dropped_timeout",
+              "reward_emitted"
+            ],
+            "resolved_destination": "cloud",
+            "selected_action": "vertical",
+            "task_id": 15,
+            "terminal_outcome": "dropped"
+          }
+        ],
+        "first_decision_slot": 14,
+        "latency_slots": 4,
+        "lifecycle_event_types": [
+          "task_generated",
+          "task_admitted",
+          "transmission_started",
+          "deadline_reached",
+          "deadline_reached",
+          "deadline_expired",
+          "task_dropped",
+          "reward_emitted"
+        ],
+        "pending_evidence": false,
+        "processing_density": 5.0,
+        "queue_load": 0,
+        "raw_reward_event_count": 1,
+        "raw_reward_event_source": "env_step_reward_with_finalized_task",
+        "raw_reward_total": -40.0,
+        "raw_terminal_event_count": 1,
+        "raw_vs_canonical_reward_delta": 0.0,
+        "reconciled": true,
+        "reward_available_from_step": true,
+        "reward_event_records": [
+          {
+            "episode_id": 0,
+            "raw_reward": -40.0,
+            "reward_available": true,
+            "reward_event_source": "env_step_reward_with_finalized_task",
+            "selected_action": "vertical",
+            "slot": 18,
+            "task_id": 15,
+            "terminal_outcome": "dropped",
+            "trace_id": "hoodie-43"
+          }
+        ],
+        "selected_action": "vertical",
+        "task_id": 15,
+        "task_size": 76.0,
+        "terminal_event_records": [
+          {
+            "episode_id": 0,
+            "event_type": "task_dropped",
+            "selected_action": "vertical",
+            "slot": 18,
+            "task_id": 15,
+            "terminal_outcome": "dropped",
+            "trace_id": "hoodie-43"
+          }
+        ],
+        "terminal_event_source": "env_step_finalized_tasks",
+        "terminal_outcome": "dropped",
+        "terminal_outcome_event_types": [
+          "task_dropped",
+          "task_dropped",
+          "task_dropped"
+        ],
+        "terminal_slot": 19,
+        "timeout_length": null,
+        "trace_id": "hoodie-43"
+      },
+      {
+        "absolute_deadline_slot": 17,
+        "arrival_slot": 15,
+        "canonical_outcome": "dropped",
+        "canonical_reward": -40.0,
+        "canonical_reward_count": 1,
+        "canonical_reward_per_decision": -0.36363636363636365,
+        "canonical_reward_per_task": -40.0,
+        "canonical_task_reward_count": 1,
+        "canonical_tasks_per_decision": 0.00909090909090909,
+        "completion_or_drop_slot": 18,
+        "decision_record": {
+          "absolute_deadline_slot": 17,
+          "arrival_slot": 15,
+          "episode_id": 0,
+          "legal_action_mask": {
+            "compute_local": true,
+            "horizontal": true,
+            "local": true,
+            "offload_horizontal": true,
+            "offload_vertical": true,
+            "vertical": true
+          },
+          "processing_density": 1.0,
+          "queue_load": 4,
+          "selected_action": "vertical",
+          "slot": 15,
+          "source_agent_id": 1,
+          "task_id": 16,
+          "task_size": 84.0,
+          "timeout_length": 2,
+          "trace_id": "hoodie-43"
+        },
+        "duplicate_reward_event_count": 0,
+        "duplicate_terminal_event_count": 0,
+        "episode_id": 0,
+        "finalized_records": [
+          {
+            "arrival_slot": 15,
+            "completion_slot": 18,
+            "offload_lifecycle_events": [],
+            "resolved_destination": "cloud",
+            "selected_action": "vertical",
+            "task_id": 16,
+            "terminal_outcome": "dropped"
+          },
+          {
+            "arrival_slot": 15,
+            "completion_slot": 18,
+            "offload_lifecycle_events": [
+              "selected_action",
+              "offloaded_cloud",
+              "transmission_started",
+              "dropped_timeout",
+              "dropped_timeout",
+              "reward_emitted"
+            ],
+            "resolved_destination": "cloud",
+            "selected_action": "vertical",
+            "task_id": 16,
+            "terminal_outcome": "dropped"
+          }
+        ],
+        "first_decision_slot": 15,
+        "latency_slots": 4,
+        "lifecycle_event_types": [
+          "task_generated",
+          "task_admitted",
+          "transmission_started",
+          "deadline_reached",
+          "deadline_reached",
+          "deadline_expired",
+          "task_dropped",
+          "reward_emitted"
+        ],
+        "pending_evidence": false,
+        "processing_density": 1.0,
+        "queue_load": 0,
+        "raw_reward_event_count": 1,
+        "raw_reward_event_source": "env_step_reward_with_finalized_task",
+        "raw_reward_total": -40.0,
+        "raw_terminal_event_count": 1,
+        "raw_vs_canonical_reward_delta": 0.0,
+        "reconciled": true,
+        "reward_available_from_step": true,
+        "reward_event_records": [
+          {
+            "episode_id": 0,
+            "raw_reward": -40.0,
+            "reward_available": true,
+            "reward_event_source": "env_step_reward_with_finalized_task",
+            "selected_action": "vertical",
+            "slot": 19,
+            "task_id": 16,
+            "terminal_outcome": "dropped",
+            "trace_id": "hoodie-43"
+          }
+        ],
+        "selected_action": "vertical",
+        "task_id": 16,
+        "task_size": 84.0,
+        "terminal_event_records": [
+          {
+            "episode_id": 0,
+            "event_type": "task_dropped",
+            "selected_action": "vertical",
+            "slot": 19,
+            "task_id": 16,
+            "terminal_outcome": "dropped",
+            "trace_id": "hoodie-43"
+          }
+        ],
+        "terminal_event_source": "env_step_finalized_tasks",
+        "terminal_outcome": "dropped",
+        "terminal_outcome_event_types": [
+          "task_dropped",
+          "task_dropped",
+          "task_dropped"
+        ],
+        "terminal_slot": 20,
+        "timeout_length": null,
+        "trace_id": "hoodie-43"
+      },
+      {
+        "absolute_deadline_slot": 20,
+        "arrival_slot": 16,
+        "canonical_outcome": "dropped",
+        "canonical_reward": -40.0,
+        "canonical_reward_count": 1,
+        "canonical_reward_per_decision": -0.36363636363636365,
+        "canonical_reward_per_task": -40.0,
+        "canonical_task_reward_count": 1,
+        "canonical_tasks_per_decision": 0.00909090909090909,
+        "completion_or_drop_slot": 21,
+        "decision_record": {
+          "absolute_deadline_slot": 20,
+          "arrival_slot": 16,
+          "episode_id": 0,
+          "legal_action_mask": {
+            "compute_local": true,
+            "horizontal": true,
+            "local": true,
+            "offload_horizontal": true,
+            "offload_vertical": true,
+            "vertical": true
+          },
+          "processing_density": 4.0,
+          "queue_load": 5,
+          "selected_action": "vertical",
+          "slot": 16,
+          "source_agent_id": 2,
+          "task_id": 17,
+          "task_size": 89.0,
+          "timeout_length": 4,
+          "trace_id": "hoodie-43"
+        },
+        "duplicate_reward_event_count": 0,
+        "duplicate_terminal_event_count": 0,
+        "episode_id": 0,
+        "finalized_records": [
+          {
+            "arrival_slot": 16,
+            "completion_slot": 21,
+            "offload_lifecycle_events": [],
+            "resolved_destination": "cloud",
+            "selected_action": "vertical",
+            "task_id": 17,
+            "terminal_outcome": "dropped"
+          },
+          {
+            "arrival_slot": 16,
+            "completion_slot": 21,
+            "offload_lifecycle_events": [
+              "selected_action",
+              "offloaded_cloud",
+              "transmission_started",
+              "dropped_timeout",
+              "dropped_timeout",
+              "reward_emitted"
+            ],
+            "resolved_destination": "cloud",
+            "selected_action": "vertical",
+            "task_id": 17,
+            "terminal_outcome": "dropped"
+          }
+        ],
+        "first_decision_slot": 16,
+        "latency_slots": 6,
+        "lifecycle_event_types": [
+          "task_generated",
+          "task_admitted",
+          "transmission_started",
+          "deadline_reached",
+          "deadline_reached",
+          "deadline_expired",
+          "task_dropped",
+          "reward_emitted"
+        ],
+        "pending_evidence": false,
+        "processing_density": 4.0,
+        "queue_load": 0,
+        "raw_reward_event_count": 1,
+        "raw_reward_event_source": "env_step_reward_with_finalized_task",
+        "raw_reward_total": -40.0,
+        "raw_terminal_event_count": 1,
+        "raw_vs_canonical_reward_delta": 0.0,
+        "reconciled": true,
+        "reward_available_from_step": true,
+        "reward_event_records": [
+          {
+            "episode_id": 0,
+            "raw_reward": -40.0,
+            "reward_available": true,
+            "reward_event_source": "env_step_reward_with_finalized_task",
+            "selected_action": "vertical",
+            "slot": 22,
+            "task_id": 17,
+            "terminal_outcome": "dropped",
+            "trace_id": "hoodie-43"
+          }
+        ],
+        "selected_action": "vertical",
+        "task_id": 17,
+        "task_size": 89.0,
+        "terminal_event_records": [
+          {
+            "episode_id": 0,
+            "event_type": "task_dropped",
+            "selected_action": "vertical",
+            "slot": 22,
+            "task_id": 17,
+            "terminal_outcome": "dropped",
+            "trace_id": "hoodie-43"
+          }
+        ],
+        "terminal_event_source": "env_step_finalized_tasks",
+        "terminal_outcome": "dropped",
+        "terminal_outcome_event_types": [
+          "task_dropped",
+          "task_dropped",
+          "task_dropped"
+        ],
+        "terminal_slot": 23,
+        "timeout_length": null,
+        "trace_id": "hoodie-43"
+      },
+      {
+        "absolute_deadline_slot": 22,
+        "arrival_slot": 17,
+        "canonical_outcome": "dropped",
+        "canonical_reward": -40.0,
+        "canonical_reward_count": 1,
+        "canonical_reward_per_decision": -0.36363636363636365,
+        "canonical_reward_per_task": -40.0,
+        "canonical_task_reward_count": 1,
+        "canonical_tasks_per_decision": 0.00909090909090909,
+        "completion_or_drop_slot": 23,
+        "decision_record": {
+          "absolute_deadline_slot": 22,
+          "arrival_slot": 17,
+          "episode_id": 0,
+          "legal_action_mask": {
+            "compute_local": true,
+            "horizontal": true,
+            "local": true,
+            "offload_horizontal": true,
+            "offload_vertical": true,
+            "vertical": true
+          },
+          "processing_density": 5.0,
+          "queue_load": 4,
+          "selected_action": "vertical",
+          "slot": 17,
+          "source_agent_id": 3,
+          "task_id": 18,
+          "task_size": 52.0,
+          "timeout_length": 5,
+          "trace_id": "hoodie-43"
+        },
+        "duplicate_reward_event_count": 0,
+        "duplicate_terminal_event_count": 0,
+        "episode_id": 0,
+        "finalized_records": [
+          {
+            "arrival_slot": 17,
+            "completion_slot": 23,
+            "offload_lifecycle_events": [],
+            "resolved_destination": "cloud",
+            "selected_action": "vertical",
+            "task_id": 18,
+            "terminal_outcome": "dropped"
+          },
+          {
+            "arrival_slot": 17,
+            "completion_slot": 23,
+            "offload_lifecycle_events": [
+              "selected_action",
+              "offloaded_cloud",
+              "transmission_started",
+              "dropped_timeout",
+              "dropped_timeout",
+              "reward_emitted"
+            ],
+            "resolved_destination": "cloud",
+            "selected_action": "vertical",
+            "task_id": 18,
+            "terminal_outcome": "dropped"
+          }
+        ],
+        "first_decision_slot": 17,
+        "latency_slots": 7,
+        "lifecycle_event_types": [
+          "task_generated",
+          "task_admitted",
+          "transmission_started",
+          "deadline_reached",
+          "deadline_reached",
+          "deadline_expired",
+          "task_dropped",
+          "reward_emitted"
+        ],
+        "pending_evidence": false,
+        "processing_density": 5.0,
+        "queue_load": 0,
+        "raw_reward_event_count": 1,
+        "raw_reward_event_source": "env_step_reward_with_finalized_task",
+        "raw_reward_total": -40.0,
+        "raw_terminal_event_count": 1,
+        "raw_vs_canonical_reward_delta": 0.0,
+        "reconciled": true,
+        "reward_available_from_step": true,
+        "reward_event_records": [
+          {
+            "episode_id": 0,
+            "raw_reward": -40.0,
+            "reward_available": true,
+            "reward_event_source": "env_step_reward_with_finalized_task",
+            "selected_action": "vertical",
+            "slot": 24,
+            "task_id": 18,
+            "terminal_outcome": "dropped",
+            "trace_id": "hoodie-43"
+          }
+        ],
+        "selected_action": "vertical",
+        "task_id": 18,
+        "task_size": 52.0,
+        "terminal_event_records": [
+          {
+            "episode_id": 0,
+            "event_type": "task_dropped",
+            "selected_action": "vertical",
+            "slot": 24,
+            "task_id": 18,
+            "terminal_outcome": "dropped",
+            "trace_id": "hoodie-43"
+          }
+        ],
+        "terminal_event_source": "env_step_finalized_tasks",
+        "terminal_outcome": "dropped",
+        "terminal_outcome_event_types": [
+          "task_dropped",
+          "task_dropped",
+          "task_dropped"
+        ],
+        "terminal_slot": 25,
+        "timeout_length": null,
+        "trace_id": "hoodie-43"
+      },
+      {
+        "absolute_deadline_slot": 20,
+        "arrival_slot": 18,
+        "canonical_outcome": "dropped",
+        "canonical_reward": -40.0,
+        "canonical_reward_count": 1,
+        "canonical_reward_per_decision": -0.36363636363636365,
+        "canonical_reward_per_task": -40.0,
+        "canonical_task_reward_count": 1,
+        "canonical_tasks_per_decision": 0.00909090909090909,
+        "completion_or_drop_slot": 21,
+        "decision_record": {
+          "absolute_deadline_slot": 20,
+          "arrival_slot": 18,
+          "episode_id": 0,
+          "legal_action_mask": {
+            "compute_local": true,
+            "horizontal": true,
+            "local": true,
+            "offload_horizontal": true,
+            "offload_vertical": true,
+            "vertical": true
+          },
+          "processing_density": 2.0,
+          "queue_load": 3,
+          "selected_action": "vertical",
+          "slot": 18,
+          "source_agent_id": 1,
+          "task_id": 19,
+          "task_size": 31.0,
+          "timeout_length": 2,
+          "trace_id": "hoodie-43"
+        },
+        "duplicate_reward_event_count": 0,
+        "duplicate_terminal_event_count": 0,
+        "episode_id": 0,
+        "finalized_records": [
+          {
+            "arrival_slot": 18,
+            "completion_slot": 21,
+            "offload_lifecycle_events": [],
+            "resolved_destination": "cloud",
+            "selected_action": "vertical",
+            "task_id": 19,
+            "terminal_outcome": "dropped"
+          },
+          {
+            "arrival_slot": 18,
+            "completion_slot": 21,
+            "offload_lifecycle_events": [
+              "selected_action",
+              "offloaded_cloud",
+              "transmission_started",
+              "dropped_timeout",
+              "dropped_timeout",
+              "reward_emitted"
+            ],
+            "resolved_destination": "cloud",
+            "selected_action": "vertical",
+            "task_id": 19,
+            "terminal_outcome": "dropped"
+          }
+        ],
+        "first_decision_slot": 18,
+        "latency_slots": 4,
+        "lifecycle_event_types": [
+          "task_generated",
+          "task_admitted",
+          "transmission_started",
+          "deadline_reached",
+          "deadline_reached",
+          "deadline_expired",
+          "task_dropped",
+          "reward_emitted"
+        ],
+        "pending_evidence": false,
+        "processing_density": 2.0,
+        "queue_load": 0,
+        "raw_reward_event_count": 1,
+        "raw_reward_event_source": "env_step_reward_with_finalized_task",
+        "raw_reward_total": -40.0,
+        "raw_terminal_event_count": 1,
+        "raw_vs_canonical_reward_delta": 0.0,
+        "reconciled": true,
+        "reward_available_from_step": true,
+        "reward_event_records": [
+          {
+            "episode_id": 0,
+            "raw_reward": -40.0,
+            "reward_available": true,
+            "reward_event_source": "env_step_reward_with_finalized_task",
+            "selected_action": "vertical",
+            "slot": 22,
+            "task_id": 19,
+            "terminal_outcome": "dropped",
+            "trace_id": "hoodie-43"
+          }
+        ],
+        "selected_action": "vertical",
+        "task_id": 19,
+        "task_size": 31.0,
+        "terminal_event_records": [
+          {
+            "episode_id": 0,
+            "event_type": "task_dropped",
+            "selected_action": "vertical",
+            "slot": 22,
+            "task_id": 19,
+            "terminal_outcome": "dropped",
+            "trace_id": "hoodie-43"
+          }
+        ],
+        "terminal_event_source": "env_step_finalized_tasks",
+        "terminal_outcome": "dropped",
+        "terminal_outcome_event_types": [
+          "task_dropped",
+          "task_dropped",
+          "task_dropped"
+        ],
+        "terminal_slot": 23,
+        "timeout_length": null,
+        "trace_id": "hoodie-43"
+      },
+      {
+        "absolute_deadline_slot": 23,
+        "arrival_slot": 19,
+        "canonical_outcome": "dropped",
+        "canonical_reward": -40.0,
+        "canonical_reward_count": 1,
+        "canonical_reward_per_decision": -0.36363636363636365,
+        "canonical_reward_per_task": -40.0,
+        "canonical_task_reward_count": 1,
+        "canonical_tasks_per_decision": 0.00909090909090909,
+        "completion_or_drop_slot": 24,
+        "decision_record": {
+          "absolute_deadline_slot": 23,
+          "arrival_slot": 19,
+          "episode_id": 0,
+          "legal_action_mask": {
+            "compute_local": true,
+            "horizontal": true,
+            "local": true,
+            "offload_horizontal": true,
+            "offload_vertical": true,
+            "vertical": true
+          },
+          "processing_density": 1.0,
+          "queue_load": 3,
+          "selected_action": "vertical",
+          "slot": 19,
+          "source_agent_id": 2,
+          "task_id": 20,
+          "task_size": 50.0,
+          "timeout_length": 4,
+          "trace_id": "hoodie-43"
+        },
+        "duplicate_reward_event_count": 0,
+        "duplicate_terminal_event_count": 0,
+        "episode_id": 0,
+        "finalized_records": [
+          {
+            "arrival_slot": 19,
+            "completion_slot": 24,
+            "offload_lifecycle_events": [],
+            "resolved_destination": "cloud",
+            "selected_action": "vertical",
+            "task_id": 20,
+            "terminal_outcome": "dropped"
+          },
+          {
+            "arrival_slot": 19,
+            "completion_slot": 24,
+            "offload_lifecycle_events": [
+              "selected_action",
+              "offloaded_cloud",
+              "transmission_started",
+              "dropped_timeout",
+              "dropped_timeout",
+              "reward_emitted"
+            ],
+            "resolved_destination": "cloud",
+            "selected_action": "vertical",
+            "task_id": 20,
+            "terminal_outcome": "dropped"
+          }
+        ],
+        "first_decision_slot": 19,
+        "latency_slots": 6,
+        "lifecycle_event_types": [
+          "task_generated",
+          "task_admitted",
+          "transmission_started",
+          "deadline_reached",
+          "deadline_reached",
+          "deadline_expired",
+          "task_dropped",
+          "reward_emitted"
+        ],
+        "pending_evidence": false,
+        "processing_density": 1.0,
+        "queue_load": 0,
+        "raw_reward_event_count": 1,
+        "raw_reward_event_source": "env_step_reward_with_finalized_task",
+        "raw_reward_total": -40.0,
+        "raw_terminal_event_count": 1,
+        "raw_vs_canonical_reward_delta": 0.0,
+        "reconciled": true,
+        "reward_available_from_step": true,
+        "reward_event_records": [
+          {
+            "episode_id": 0,
+            "raw_reward": -40.0,
+            "reward_available": true,
+            "reward_event_source": "env_step_reward_with_finalized_task",
+            "selected_action": "vertical",
+            "slot": 25,
+            "task_id": 20,
+            "terminal_outcome": "dropped",
+            "trace_id": "hoodie-43"
+          }
+        ],
+        "selected_action": "vertical",
+        "task_id": 20,
+        "task_size": 50.0,
+        "terminal_event_records": [
+          {
+            "episode_id": 0,
+            "event_type": "task_dropped",
+            "selected_action": "vertical",
+            "slot": 25,
+            "task_id": 20,
+            "terminal_outcome": "dropped",
+            "trace_id": "hoodie-43"
+          }
+        ],
+        "terminal_event_source": "env_step_finalized_tasks",
+        "terminal_outcome": "dropped",
+        "terminal_outcome_event_types": [
+          "task_dropped",
+          "task_dropped",
+          "task_dropped"
+        ],
+        "terminal_slot": 26,
+        "timeout_length": null,
+        "trace_id": "hoodie-43"
+      },
+      {
+        "absolute_deadline_slot": 22,
+        "arrival_slot": 20,
+        "canonical_outcome": "dropped",
+        "canonical_reward": -40.0,
+        "canonical_reward_count": 1,
+        "canonical_reward_per_decision": -0.36363636363636365,
+        "canonical_reward_per_task": -40.0,
+        "canonical_task_reward_count": 1,
+        "canonical_tasks_per_decision": 0.00909090909090909,
+        "completion_or_drop_slot": 24,
+        "decision_record": {
+          "absolute_deadline_slot": 22,
+          "arrival_slot": 20,
+          "episode_id": 0,
+          "legal_action_mask": {
+            "compute_local": true,
+            "horizontal": true,
+            "local": true,
+            "offload_horizontal": true,
+            "offload_vertical": true,
+            "vertical": true
+          },
+          "processing_density": 2.0,
+          "queue_load": 4,
+          "selected_action": "vertical",
+          "slot": 20,
+          "source_agent_id": 3,
+          "task_id": 21,
+          "task_size": 57.0,
+          "timeout_length": 2,
+          "trace_id": "hoodie-43"
+        },
+        "duplicate_reward_event_count": 0,
+        "duplicate_terminal_event_count": 0,
+        "episode_id": 0,
+        "finalized_records": [
+          {
+            "arrival_slot": 20,
+            "completion_slot": 24,
+            "offload_lifecycle_events": [],
+            "resolved_destination": "cloud",
+            "selected_action": "vertical",
+            "task_id": 21,
+            "terminal_outcome": "dropped"
+          },
+          {
+            "arrival_slot": 20,
+            "completion_slot": 24,
+            "offload_lifecycle_events": [
+              "selected_action",
+              "offloaded_cloud",
+              "transmission_started",
+              "dropped_timeout",
+              "dropped_timeout",
+              "reward_emitted"
+            ],
+            "resolved_destination": "cloud",
+            "selected_action": "vertical",
+            "task_id": 21,
+            "terminal_outcome": "dropped"
+          }
+        ],
+        "first_decision_slot": 20,
+        "latency_slots": 5,
+        "lifecycle_event_types": [
+          "task_generated",
+          "task_admitted",
+          "transmission_started",
+          "deadline_reached",
+          "deadline_reached",
+          "deadline_expired",
+          "task_dropped",
+          "reward_emitted"
+        ],
+        "pending_evidence": false,
+        "processing_density": 2.0,
+        "queue_load": 0,
+        "raw_reward_event_count": 1,
+        "raw_reward_event_source": "env_step_reward_with_finalized_task",
+        "raw_reward_total": -40.0,
+        "raw_terminal_event_count": 1,
+        "raw_vs_canonical_reward_delta": 0.0,
+        "reconciled": true,
+        "reward_available_from_step": true,
+        "reward_event_records": [
+          {
+            "episode_id": 0,
+            "raw_reward": -40.0,
+            "reward_available": true,
+            "reward_event_source": "env_step_reward_with_finalized_task",
+            "selected_action": "vertical",
+            "slot": 25,
+            "task_id": 21,
+            "terminal_outcome": "dropped",
+            "trace_id": "hoodie-43"
+          }
+        ],
+        "selected_action": "vertical",
+        "task_id": 21,
+        "task_size": 57.0,
+        "terminal_event_records": [
+          {
+            "episode_id": 0,
+            "event_type": "task_dropped",
+            "selected_action": "vertical",
+            "slot": 25,
+            "task_id": 21,
+            "terminal_outcome": "dropped",
+            "trace_id": "hoodie-43"
+          }
+        ],
+        "terminal_event_source": "env_step_finalized_tasks",
+        "terminal_outcome": "dropped",
+        "terminal_outcome_event_types": [
+          "task_dropped",
+          "task_dropped",
+          "task_dropped"
+        ],
+        "terminal_slot": 26,
+        "timeout_length": null,
+        "trace_id": "hoodie-43"
+      },
+      {
+        "absolute_deadline_slot": 25,
+        "arrival_slot": 21,
+        "canonical_outcome": "dropped",
+        "canonical_reward": -40.0,
+        "canonical_reward_count": 1,
+        "canonical_reward_per_decision": -0.36363636363636365,
+        "canonical_reward_per_task": -40.0,
+        "canonical_task_reward_count": 1,
+        "canonical_tasks_per_decision": 0.00909090909090909,
+        "completion_or_drop_slot": 26,
+        "decision_record": {
+          "absolute_deadline_slot": 25,
+          "arrival_slot": 21,
+          "episode_id": 0,
+          "legal_action_mask": {
+            "compute_local": true,
+            "horizontal": true,
+            "local": true,
+            "offload_horizontal": true,
+            "offload_vertical": true,
+            "vertical": true
+          },
+          "processing_density": 1.0,
+          "queue_load": 5,
+          "selected_action": "vertical",
+          "slot": 21,
+          "source_agent_id": 1,
+          "task_id": 22,
+          "task_size": 80.0,
+          "timeout_length": 4,
+          "trace_id": "hoodie-43"
+        },
+        "duplicate_reward_event_count": 0,
+        "duplicate_terminal_event_count": 0,
+        "episode_id": 0,
+        "finalized_records": [
+          {
+            "arrival_slot": 21,
+            "completion_slot": 26,
+            "offload_lifecycle_events": [],
+            "resolved_destination": "cloud",
+            "selected_action": "vertical",
+            "task_id": 22,
+            "terminal_outcome": "dropped"
+          },
+          {
+            "arrival_slot": 21,
+            "completion_slot": 26,
+            "offload_lifecycle_events": [
+              "selected_action",
+              "offloaded_cloud",
+              "transmission_started",
+              "dropped_timeout",
+              "dropped_timeout",
+              "reward_emitted"
+            ],
+            "resolved_destination": "cloud",
+            "selected_action": "vertical",
+            "task_id": 22,
+            "terminal_outcome": "dropped"
+          }
+        ],
+        "first_decision_slot": 21,
+        "latency_slots": 6,
+        "lifecycle_event_types": [
+          "task_generated",
+          "task_admitted",
+          "transmission_started",
+          "deadline_reached",
+          "deadline_reached",
+          "deadline_expired",
+          "task_dropped",
+          "reward_emitted"
+        ],
+        "pending_evidence": false,
+        "processing_density": 1.0,
+        "queue_load": 0,
+        "raw_reward_event_count": 1,
+        "raw_reward_event_source": "env_step_reward_with_finalized_task",
+        "raw_reward_total": -40.0,
+        "raw_terminal_event_count": 1,
+        "raw_vs_canonical_reward_delta": 0.0,
+        "reconciled": true,
+        "reward_available_from_step": true,
+        "reward_event_records": [
+          {
+            "episode_id": 0,
+            "raw_reward": -40.0,
+            "reward_available": true,
+            "reward_event_source": "env_step_reward_with_finalized_task",
+            "selected_action": "vertical",
+            "slot": 27,
+            "task_id": 22,
+            "terminal_outcome": "dropped",
+            "trace_id": "hoodie-43"
+          }
+        ],
+        "selected_action": "vertical",
+        "task_id": 22,
+        "task_size": 80.0,
+        "terminal_event_records": [
+          {
+            "episode_id": 0,
+            "event_type": "task_dropped",
+            "selected_action": "vertical",
+            "slot": 27,
+            "task_id": 22,
+            "terminal_outcome": "dropped",
+            "trace_id": "hoodie-43"
+          }
+        ],
+        "terminal_event_source": "env_step_finalized_tasks",
+        "terminal_outcome": "dropped",
+        "terminal_outcome_event_types": [
+          "task_dropped",
+          "task_dropped",
+          "task_dropped"
+        ],
+        "terminal_slot": 28,
+        "timeout_length": null,
+        "trace_id": "hoodie-43"
+      },
+      {
+        "absolute_deadline_slot": 27,
+        "arrival_slot": 22,
+        "canonical_outcome": "dropped",
+        "canonical_reward": -40.0,
+        "canonical_reward_count": 1,
+        "canonical_reward_per_decision": -0.36363636363636365,
+        "canonical_reward_per_task": -40.0,
+        "canonical_task_reward_count": 1,
+        "canonical_tasks_per_decision": 0.00909090909090909,
+        "completion_or_drop_slot": 28,
+        "decision_record": {
+          "absolute_deadline_slot": 27,
+          "arrival_slot": 22,
+          "episode_id": 0,
+          "legal_action_mask": {
+            "compute_local": true,
+            "horizontal": true,
+            "local": true,
+            "offload_horizontal": true,
+            "offload_vertical": true,
+            "vertical": true
+          },
+          "processing_density": 3.0,
+          "queue_load": 4,
+          "selected_action": "vertical",
+          "slot": 22,
+          "source_agent_id": 2,
+          "task_id": 23,
+          "task_size": 73.0,
+          "timeout_length": 5,
+          "trace_id": "hoodie-43"
+        },
+        "duplicate_reward_event_count": 0,
+        "duplicate_terminal_event_count": 0,
+        "episode_id": 0,
+        "finalized_records": [
+          {
+            "arrival_slot": 22,
+            "completion_slot": 28,
+            "offload_lifecycle_events": [],
+            "resolved_destination": "cloud",
+            "selected_action": "vertical",
+            "task_id": 23,
+            "terminal_outcome": "dropped"
+          },
+          {
+            "arrival_slot": 22,
+            "completion_slot": 28,
+            "offload_lifecycle_events": [
+              "selected_action",
+              "offloaded_cloud",
+              "transmission_started",
+              "dropped_timeout",
+              "dropped_timeout",
+              "reward_emitted"
+            ],
+            "resolved_destination": "cloud",
+            "selected_action": "vertical",
+            "task_id": 23,
+            "terminal_outcome": "dropped"
+          }
+        ],
+        "first_decision_slot": 22,
+        "latency_slots": 7,
+        "lifecycle_event_types": [
+          "task_generated",
+          "task_admitted",
+          "transmission_started",
+          "deadline_reached",
+          "deadline_reached",
+          "deadline_expired",
+          "task_dropped",
+          "reward_emitted"
+        ],
+        "pending_evidence": false,
+        "processing_density": 3.0,
+        "queue_load": 0,
+        "raw_reward_event_count": 1,
+        "raw_reward_event_source": "env_step_reward_with_finalized_task",
+        "raw_reward_total": -40.0,
+        "raw_terminal_event_count": 1,
+        "raw_vs_canonical_reward_delta": 0.0,
+        "reconciled": true,
+        "reward_available_from_step": true,
+        "reward_event_records": [
+          {
+            "episode_id": 0,
+            "raw_reward": -40.0,
+            "reward_available": true,
+            "reward_event_source": "env_step_reward_with_finalized_task",
+            "selected_action": "vertical",
+            "slot": 29,
+            "task_id": 23,
+            "terminal_outcome": "dropped",
+            "trace_id": "hoodie-43"
+          }
+        ],
+        "selected_action": "vertical",
+        "task_id": 23,
+        "task_size": 73.0,
+        "terminal_event_records": [
+          {
+            "episode_id": 0,
+            "event_type": "task_dropped",
+            "selected_action": "vertical",
+            "slot": 29,
+            "task_id": 23,
+            "terminal_outcome": "dropped",
+            "trace_id": "hoodie-43"
+          }
+        ],
+        "terminal_event_source": "env_step_finalized_tasks",
+        "terminal_outcome": "dropped",
+        "terminal_outcome_event_types": [
+          "task_dropped",
+          "task_dropped",
+          "task_dropped"
+        ],
+        "terminal_slot": 30,
+        "timeout_length": null,
+        "trace_id": "hoodie-43"
+      },
+      {
+        "absolute_deadline_slot": 28,
+        "arrival_slot": 23,
+        "canonical_outcome": "dropped",
+        "canonical_reward": -40.0,
+        "canonical_reward_count": 1,
+        "canonical_reward_per_decision": -0.36363636363636365,
+        "canonical_reward_per_task": -40.0,
+        "canonical_task_reward_count": 1,
+        "canonical_tasks_per_decision": 0.00909090909090909,
+        "completion_or_drop_slot": 29,
+        "decision_record": {
+          "absolute_deadline_slot": 28,
+          "arrival_slot": 23,
+          "episode_id": 0,
+          "legal_action_mask": {
+            "compute_local": true,
+            "horizontal": true,
+            "local": true,
+            "offload_horizontal": true,
+            "offload_vertical": true,
+            "vertical": true
+          },
+          "processing_density": 4.0,
+          "queue_load": 5,
+          "selected_action": "vertical",
+          "slot": 23,
+          "source_agent_id": 3,
+          "task_id": 24,
+          "task_size": 15.0,
+          "timeout_length": 5,
+          "trace_id": "hoodie-43"
+        },
+        "duplicate_reward_event_count": 0,
+        "duplicate_terminal_event_count": 0,
+        "episode_id": 0,
+        "finalized_records": [
+          {
+            "arrival_slot": 23,
+            "completion_slot": 29,
+            "offload_lifecycle_events": [],
+            "resolved_destination": "cloud",
+            "selected_action": "vertical",
+            "task_id": 24,
+            "terminal_outcome": "dropped"
+          },
+          {
+            "arrival_slot": 23,
+            "completion_slot": 29,
+            "offload_lifecycle_events": [
+              "selected_action",
+              "offloaded_cloud",
+              "transmission_started",
+              "dropped_timeout",
+              "dropped_timeout",
+              "reward_emitted"
+            ],
+            "resolved_destination": "cloud",
+            "selected_action": "vertical",
+            "task_id": 24,
+            "terminal_outcome": "dropped"
+          }
+        ],
+        "first_decision_slot": 23,
+        "latency_slots": 7,
+        "lifecycle_event_types": [
+          "task_generated",
+          "task_admitted",
+          "transmission_started",
+          "deadline_reached",
+          "deadline_reached",
+          "deadline_expired",
+          "task_dropped",
+          "reward_emitted"
+        ],
+        "pending_evidence": false,
+        "processing_density": 4.0,
+        "queue_load": 0,
+        "raw_reward_event_count": 1,
+        "raw_reward_event_source": "env_step_reward_with_finalized_task",
+        "raw_reward_total": -40.0,
+        "raw_terminal_event_count": 1,
+        "raw_vs_canonical_reward_delta": 0.0,
+        "reconciled": true,
+        "reward_available_from_step": true,
+        "reward_event_records": [
+          {
+            "episode_id": 0,
+            "raw_reward": -40.0,
+            "reward_available": true,
+            "reward_event_source": "env_step_reward_with_finalized_task",
+            "selected_action": "vertical",
+            "slot": 30,
+            "task_id": 24,
+            "terminal_outcome": "dropped",
+            "trace_id": "hoodie-43"
+          }
+        ],
+        "selected_action": "vertical",
+        "task_id": 24,
+        "task_size": 15.0,
+        "terminal_event_records": [
+          {
+            "episode_id": 0,
+            "event_type": "task_dropped",
+            "selected_action": "vertical",
+            "slot": 30,
+            "task_id": 24,
+            "terminal_outcome": "dropped",
+            "trace_id": "hoodie-43"
+          }
+        ],
+        "terminal_event_source": "env_step_finalized_tasks",
+        "terminal_outcome": "dropped",
+        "terminal_outcome_event_types": [
+          "task_dropped",
+          "task_dropped",
+          "task_dropped"
+        ],
+        "terminal_slot": 31,
+        "timeout_length": null,
+        "trace_id": "hoodie-43"
+      },
+      {
+        "absolute_deadline_slot": 28,
+        "arrival_slot": 24,
+        "canonical_outcome": "dropped",
+        "canonical_reward": -40.0,
+        "canonical_reward_count": 1,
+        "canonical_reward_per_decision": -0.36363636363636365,
+        "canonical_reward_per_task": -40.0,
+        "canonical_task_reward_count": 1,
+        "canonical_tasks_per_decision": 0.00909090909090909,
+        "completion_or_drop_slot": 29,
+        "decision_record": {
+          "absolute_deadline_slot": 28,
+          "arrival_slot": 24,
+          "episode_id": 0,
+          "legal_action_mask": {
+            "compute_local": true,
+            "horizontal": true,
+            "local": true,
+            "offload_horizontal": true,
+            "offload_vertical": true,
+            "vertical": true
+          },
+          "processing_density": 1.0,
+          "queue_load": 5,
+          "selected_action": "vertical",
+          "slot": 24,
+          "source_agent_id": 1,
+          "task_id": 25,
+          "task_size": 87.0,
+          "timeout_length": 4,
+          "trace_id": "hoodie-43"
+        },
+        "duplicate_reward_event_count": 0,
+        "duplicate_terminal_event_count": 0,
+        "episode_id": 0,
+        "finalized_records": [
+          {
+            "arrival_slot": 24,
+            "completion_slot": 29,
+            "offload_lifecycle_events": [],
+            "resolved_destination": "cloud",
+            "selected_action": "vertical",
+            "task_id": 25,
+            "terminal_outcome": "dropped"
+          },
+          {
+            "arrival_slot": 24,
+            "completion_slot": 29,
+            "offload_lifecycle_events": [
+              "selected_action",
+              "offloaded_cloud",
+              "transmission_started",
+              "dropped_timeout",
+              "dropped_timeout",
+              "reward_emitted"
+            ],
+            "resolved_destination": "cloud",
+            "selected_action": "vertical",
+            "task_id": 25,
+            "terminal_outcome": "dropped"
+          }
+        ],
+        "first_decision_slot": 24,
+        "latency_slots": 6,
+        "lifecycle_event_types": [
+          "task_generated",
+          "task_admitted",
+          "transmission_started",
+          "deadline_reached",
+          "deadline_reached",
+          "deadline_expired",
+          "task_dropped",
+          "reward_emitted"
+        ],
+        "pending_evidence": false,
+        "processing_density": 1.0,
+        "queue_load": 0,
+        "raw_reward_event_count": 1,
+        "raw_reward_event_source": "env_step_reward_with_finalized_task",
+        "raw_reward_total": -40.0,
+        "raw_terminal_event_count": 1,
+        "raw_vs_canonical_reward_delta": 0.0,
+        "reconciled": true,
+        "reward_available_from_step": true,
+        "reward_event_records": [
+          {
+            "episode_id": 0,
+            "raw_reward": -40.0,
+            "reward_available": true,
+            "reward_event_source": "env_step_reward_with_finalized_task",
+            "selected_action": "vertical",
+            "slot": 30,
+            "task_id": 25,
+            "terminal_outcome": "dropped",
+            "trace_id": "hoodie-43"
+          }
+        ],
+        "selected_action": "vertical",
+        "task_id": 25,
+        "task_size": 87.0,
+        "terminal_event_records": [
+          {
+            "episode_id": 0,
+            "event_type": "task_dropped",
+            "selected_action": "vertical",
+            "slot": 30,
+            "task_id": 25,
+            "terminal_outcome": "dropped",
+            "trace_id": "hoodie-43"
+          }
+        ],
+        "terminal_event_source": "env_step_finalized_tasks",
+        "terminal_outcome": "dropped",
+        "terminal_outcome_event_types": [
+          "task_dropped",
+          "task_dropped",
+          "task_dropped"
+        ],
+        "terminal_slot": 31,
+        "timeout_length": null,
+        "trace_id": "hoodie-43"
+      }
+    ]
+  }
+}

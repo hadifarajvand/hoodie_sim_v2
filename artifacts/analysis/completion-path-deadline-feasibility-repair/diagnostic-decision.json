@@ -1,0 +1,9 @@
+{
+  "decision_reason": "The workload/deadline envelope is infeasible for the observed task set, so deadlines/timeouts need adjustment before more training.",
+  "evidence_notes": [
+    "local_feasible_task_count=0",
+    "horizontal_feasible_task_count=0",
+    "vertical_feasible_task_count=0"
+  ],
+  "recommended_next_action": "fix_deadline_timeout_configuration_next"
+}
