@@ -1,0 +1,253 @@
+{
+  "by_checkpoint": {
+    "100": {
+      "completion_reward_count_by_action": {
+        "horizontal": 0,
+        "local": 0,
+        "vertical": 0
+      },
+      "drop_penalty_count_by_action": {
+        "horizontal": 0,
+        "local": 0,
+        "vertical": 21004
+      },
+      "nan_reward_count": 0,
+      "reward_available_count": 21004,
+      "reward_by_action": {
+        "horizontal": 0.0,
+        "local": 0.0,
+        "vertical": -840160.0
+      },
+      "reward_by_action_and_terminal_outcome": {
+        "horizontal": {
+          "completed": {
+            "count": 0,
+            "mean_reward": 0.0,
+            "total_reward": 0.0
+          },
+          "dropped": {
+            "count": 0,
+            "mean_reward": 0.0,
+            "total_reward": 0.0
+          }
+        },
+        "local": {
+          "completed": {
+            "count": 0,
+            "mean_reward": 0.0,
+            "total_reward": 0.0
+          },
+          "dropped": {
+            "count": 0,
+            "mean_reward": 0.0,
+            "total_reward": 0.0
+          }
+        },
+        "vertical": {
+          "completed": {
+            "count": 0,
+            "mean_reward": 0.0,
+            "total_reward": 0.0
+          },
+          "dropped": {
+            "count": 21004,
+            "mean_reward": -40.0,
+            "total_reward": -840160.0
+          }
+        }
+      },
+      "reward_by_terminal_outcome": {
+        "completed": 0.0,
+        "dropped": -840160.0
+      },
+      "zero_reward_count": 0
+    },
+    "150": {
+      "completion_reward_count_by_action": {
+        "horizontal": 0,
+        "local": 0,
+        "vertical": 0
+      },
+      "drop_penalty_count_by_action": {
+        "horizontal": 0,
+        "local": 0,
+        "vertical": 21004
+      },
+      "nan_reward_count": 0,
+      "reward_available_count": 21004,
+      "reward_by_action": {
+        "horizontal": 0.0,
+        "local": 0.0,
+        "vertical": -840160.0
+      },
+      "reward_by_action_and_terminal_outcome": {
+        "horizontal": {
+          "completed": {
+            "count": 0,
+            "mean_reward": 0.0,
+            "total_reward": 0.0
+          },
+          "dropped": {
+            "count": 0,
+            "mean_reward": 0.0,
+            "total_reward": 0.0
+          }
+        },
+        "local": {
+          "completed": {
+            "count": 0,
+            "mean_reward": 0.0,
+            "total_reward": 0.0
+          },
+          "dropped": {
+            "count": 0,
+            "mean_reward": 0.0,
+            "total_reward": 0.0
+          }
+        },
+        "vertical": {
+          "completed": {
+            "count": 0,
+            "mean_reward": 0.0,
+            "total_reward": 0.0
+          },
+          "dropped": {
+            "count": 21004,
+            "mean_reward": -40.0,
+            "total_reward": -840160.0
+          }
+        }
+      },
+      "reward_by_terminal_outcome": {
+        "completed": 0.0,
+        "dropped": -840160.0
+      },
+      "zero_reward_count": 0
+    },
+    "200": {
+      "completion_reward_count_by_action": {
+        "horizontal": 0,
+        "local": 0,
+        "vertical": 0
+      },
+      "drop_penalty_count_by_action": {
+        "horizontal": 0,
+        "local": 0,
+        "vertical": 21004
+      },
+      "nan_reward_count": 0,
+      "reward_available_count": 21004,
+      "reward_by_action": {
+        "horizontal": 0.0,
+        "local": 0.0,
+        "vertical": -840160.0
+      },
+      "reward_by_action_and_terminal_outcome": {
+        "horizontal": {
+          "completed": {
+            "count": 0,
+            "mean_reward": 0.0,
+            "total_reward": 0.0
+          },
+          "dropped": {
+            "count": 0,
+            "mean_reward": 0.0,
+            "total_reward": 0.0
+          }
+        },
+        "local": {
+          "completed": {
+            "count": 0,
+            "mean_reward": 0.0,
+            "total_reward": 0.0
+          },
+          "dropped": {
+            "count": 0,
+            "mean_reward": 0.0,
+            "total_reward": 0.0
+          }
+        },
+        "vertical": {
+          "completed": {
+            "count": 0,
+            "mean_reward": 0.0,
+            "total_reward": 0.0
+          },
+          "dropped": {
+            "count": 21004,
+            "mean_reward": -40.0,
+            "total_reward": -840160.0
+          }
+        }
+      },
+      "reward_by_terminal_outcome": {
+        "completed": 0.0,
+        "dropped": -840160.0
+      },
+      "zero_reward_count": 0
+    },
+    "500": {
+      "completion_reward_count_by_action": {
+        "horizontal": 0,
+        "local": 0,
+        "vertical": 0
+      },
+      "drop_penalty_count_by_action": {
+        "horizontal": 0,
+        "local": 0,
+        "vertical": 21004
+      },
+      "nan_reward_count": 0,
+      "reward_available_count": 21004,
+      "reward_by_action": {
+        "horizontal": 0.0,
+        "local": 0.0,
+        "vertical": -840160.0
+      },
+      "reward_by_action_and_terminal_outcome": {
+        "horizontal": {
+          "completed": {
+            "count": 0,
+            "mean_reward": 0.0,
+            "total_reward": 0.0
+          },
+          "dropped": {
+            "count": 0,
+            "mean_reward": 0.0,
+            "total_reward": 0.0
+          }
+        },
+        "local": {
+          "completed": {
+            "count": 0,
+            "mean_reward": 0.0,
+            "total_reward": 0.0
+          },
+          "dropped": {
+            "count": 0,
+            "mean_reward": 0.0,
+            "total_reward": 0.0
+          }
+        },
+        "vertical": {
+          "completed": {
+            "count": 0,
+            "mean_reward": 0.0,
+            "total_reward": 0.0
+          },
+          "dropped": {
+            "count": 21004,
+            "mean_reward": -40.0,
+            "total_reward": -840160.0
+          }
+        }
+      },
+      "reward_by_terminal_outcome": {
+        "completed": 0.0,
+        "dropped": -840160.0
+      },
+      "zero_reward_count": 0
+    }
+  },
+  "reward_decomposition_present": true
+}

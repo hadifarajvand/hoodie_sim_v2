@@ -1,0 +1,5 @@
+{
+  "decision_reason": "Reward stayed static while evaluation instrumentation now separates action and outcome signals.",
+  "evidence_notes": [],
+  "recommended_next_action": "fix_evaluation_metric_aggregation_next"
+}

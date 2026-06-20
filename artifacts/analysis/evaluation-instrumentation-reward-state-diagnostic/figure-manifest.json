@@ -1,0 +1,13 @@
+{
+  "figure_count": 6,
+  "figure_directory": "artifacts/analysis/evaluation-instrumentation-reward-state-diagnostic/figures",
+  "figure_files": [
+    "figure_01_evaluation_action_distribution_by_budget.png",
+    "figure_02_per_action_drop_completion_by_budget.png",
+    "figure_03_reward_decomposition_by_action.png",
+    "figure_04_replay_window_vs_cumulative_training_actions.png",
+    "figure_05_policy_effect_mean_reward.png",
+    "figure_06_state_feature_coverage_matrix.png"
+  ],
+  "figures_generated": true
+}

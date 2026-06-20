@@ -1,0 +1,229 @@
+{
+  "by_checkpoint": {
+    "100": {
+      "horizontal": {
+        "completed_count": 0,
+        "completion_reward_count": 0,
+        "decision_count": 0,
+        "drop_penalty_count": 0,
+        "dropped_count": 0,
+        "mean_completion_latency_slots": null,
+        "mean_drop_latency_slots": null,
+        "mean_reward": 0.0,
+        "pending_at_horizon_count": 0,
+        "reward_bearing_transition_count": 0,
+        "terminal_transition_count": 0,
+        "total_reward": 0.0
+      },
+      "local": {
+        "completed_count": 0,
+        "completion_reward_count": 0,
+        "decision_count": 0,
+        "drop_penalty_count": 0,
+        "dropped_count": 0,
+        "mean_completion_latency_slots": null,
+        "mean_drop_latency_slots": null,
+        "mean_reward": 0.0,
+        "pending_at_horizon_count": 0,
+        "reward_bearing_transition_count": 0,
+        "terminal_transition_count": 0,
+        "total_reward": 0.0
+      },
+      "overall": {
+        "completed_count": 0,
+        "decision_count": 11000,
+        "dropped_count": 21004,
+        "mean_completion_latency_slots": null,
+        "mean_drop_latency_slots": 5.5438964006855835,
+        "mean_reward": -8401.6,
+        "pending_at_horizon_count": 100,
+        "reward_bearing_transition_count": 21004,
+        "terminal_transition_count": 21004,
+        "total_reward": -840160.0
+      },
+      "vertical": {
+        "completed_count": 0,
+        "completion_reward_count": 0,
+        "decision_count": 11000,
+        "drop_penalty_count": 0,
+        "dropped_count": 21004,
+        "mean_completion_latency_slots": null,
+        "mean_drop_latency_slots": 5.5438964006855835,
+        "mean_reward": -40.0,
+        "pending_at_horizon_count": 100,
+        "reward_bearing_transition_count": 21004,
+        "terminal_transition_count": 21004,
+        "total_reward": -840160.0
+      }
+    },
+    "150": {
+      "horizontal": {
+        "completed_count": 0,
+        "completion_reward_count": 0,
+        "decision_count": 0,
+        "drop_penalty_count": 0,
+        "dropped_count": 0,
+        "mean_completion_latency_slots": null,
+        "mean_drop_latency_slots": null,
+        "mean_reward": 0.0,
+        "pending_at_horizon_count": 0,
+        "reward_bearing_transition_count": 0,
+        "terminal_transition_count": 0,
+        "total_reward": 0.0
+      },
+      "local": {
+        "completed_count": 0,
+        "completion_reward_count": 0,
+        "decision_count": 0,
+        "drop_penalty_count": 0,
+        "dropped_count": 0,
+        "mean_completion_latency_slots": null,
+        "mean_drop_latency_slots": null,
+        "mean_reward": 0.0,
+        "pending_at_horizon_count": 0,
+        "reward_bearing_transition_count": 0,
+        "terminal_transition_count": 0,
+        "total_reward": 0.0
+      },
+      "overall": {
+        "completed_count": 0,
+        "decision_count": 11000,
+        "dropped_count": 21004,
+        "mean_completion_latency_slots": null,
+        "mean_drop_latency_slots": 5.5438964006855835,
+        "mean_reward": -8401.6,
+        "pending_at_horizon_count": 100,
+        "reward_bearing_transition_count": 21004,
+        "terminal_transition_count": 21004,
+        "total_reward": -840160.0
+      },
+      "vertical": {
+        "completed_count": 0,
+        "completion_reward_count": 0,
+        "decision_count": 11000,
+        "drop_penalty_count": 0,
+        "dropped_count": 21004,
+        "mean_completion_latency_slots": null,
+        "mean_drop_latency_slots": 5.5438964006855835,
+        "mean_reward": -40.0,
+        "pending_at_horizon_count": 100,
+        "reward_bearing_transition_count": 21004,
+        "terminal_transition_count": 21004,
+        "total_reward": -840160.0
+      }
+    },
+    "200": {
+      "horizontal": {
+        "completed_count": 0,
+        "completion_reward_count": 0,
+        "decision_count": 0,
+        "drop_penalty_count": 0,
+        "dropped_count": 0,
+        "mean_completion_latency_slots": null,
+        "mean_drop_latency_slots": null,
+        "mean_reward": 0.0,
+        "pending_at_horizon_count": 0,
+        "reward_bearing_transition_count": 0,
+        "terminal_transition_count": 0,
+        "total_reward": 0.0
+      },
+      "local": {
+        "completed_count": 0,
+        "completion_reward_count": 0,
+        "decision_count": 0,
+        "drop_penalty_count": 0,
+        "dropped_count": 0,
+        "mean_completion_latency_slots": null,
+        "mean_drop_latency_slots": null,
+        "mean_reward": 0.0,
+        "pending_at_horizon_count": 0,
+        "reward_bearing_transition_count": 0,
+        "terminal_transition_count": 0,
+        "total_reward": 0.0
+      },
+      "overall": {
+        "completed_count": 0,
+        "decision_count": 11000,
+        "dropped_count": 21004,
+        "mean_completion_latency_slots": null,
+        "mean_drop_latency_slots": 5.5438964006855835,
+        "mean_reward": -8401.6,
+        "pending_at_horizon_count": 100,
+        "reward_bearing_transition_count": 21004,
+        "terminal_transition_count": 21004,
+        "total_reward": -840160.0
+      },
+      "vertical": {
+        "completed_count": 0,
+        "completion_reward_count": 0,
+        "decision_count": 11000,
+        "drop_penalty_count": 0,
+        "dropped_count": 21004,
+        "mean_completion_latency_slots": null,
+        "mean_drop_latency_slots": 5.5438964006855835,
+        "mean_reward": -40.0,
+        "pending_at_horizon_count": 100,
+        "reward_bearing_transition_count": 21004,
+        "terminal_transition_count": 21004,
+        "total_reward": -840160.0
+      }
+    },
+    "500": {
+      "horizontal": {
+        "completed_count": 0,
+        "completion_reward_count": 0,
+        "decision_count": 0,
+        "drop_penalty_count": 0,
+        "dropped_count": 0,
+        "mean_completion_latency_slots": null,
+        "mean_drop_latency_slots": null,
+        "mean_reward": 0.0,
+        "pending_at_horizon_count": 0,
+        "reward_bearing_transition_count": 0,
+        "terminal_transition_count": 0,
+        "total_reward": 0.0
+      },
+      "local": {
+        "completed_count": 0,
+        "completion_reward_count": 0,
+        "decision_count": 0,
+        "drop_penalty_count": 0,
+        "dropped_count": 0,
+        "mean_completion_latency_slots": null,
+        "mean_drop_latency_slots": null,
+        "mean_reward": 0.0,
+        "pending_at_horizon_count": 0,
+        "reward_bearing_transition_count": 0,
+        "terminal_transition_count": 0,
+        "total_reward": 0.0
+      },
+      "overall": {
+        "completed_count": 0,
+        "decision_count": 11000,
+        "dropped_count": 21004,
+        "mean_completion_latency_slots": null,
+        "mean_drop_latency_slots": 5.5438964006855835,
+        "mean_reward": -8401.6,
+        "pending_at_horizon_count": 100,
+        "reward_bearing_transition_count": 21004,
+        "terminal_transition_count": 21004,
+        "total_reward": -840160.0
+      },
+      "vertical": {
+        "completed_count": 0,
+        "completion_reward_count": 0,
+        "decision_count": 11000,
+        "drop_penalty_count": 0,
+        "dropped_count": 21004,
+        "mean_completion_latency_slots": null,
+        "mean_drop_latency_slots": 5.5438964006855835,
+        "mean_reward": -40.0,
+        "pending_at_horizon_count": 100,
+        "reward_bearing_transition_count": 21004,
+        "terminal_transition_count": 21004,
+        "total_reward": -840160.0
+      }
+    }
+  },
+  "per_action_outcome_summary_present": true
+}

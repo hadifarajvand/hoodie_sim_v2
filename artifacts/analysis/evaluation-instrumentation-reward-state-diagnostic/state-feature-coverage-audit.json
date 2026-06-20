@@ -1,0 +1,173 @@
+[
+  {
+    "available_in_environment_observation": true,
+    "field_name": "slot",
+    "included_in_evaluation_diagnostics": true,
+    "included_in_policy_state_vector": true,
+    "included_in_replay_transition": true,
+    "risk_if_missing": "Loss of temporal alignment and episode progress makes reward trends hard to interpret.",
+    "thesis_relevance": "high"
+  },
+  {
+    "available_in_environment_observation": true,
+    "field_name": "queue_load",
+    "included_in_evaluation_diagnostics": true,
+    "included_in_policy_state_vector": true,
+    "included_in_replay_transition": true,
+    "risk_if_missing": "Congestion pressure disappears from the policy view and action collapse becomes harder to explain.",
+    "thesis_relevance": "high"
+  },
+  {
+    "available_in_environment_observation": true,
+    "field_name": "history_length",
+    "included_in_evaluation_diagnostics": true,
+    "included_in_policy_state_vector": true,
+    "included_in_replay_transition": true,
+    "risk_if_missing": "The policy loses a simple notion of progress through the episode window.",
+    "thesis_relevance": "high"
+  },
+  {
+    "available_in_environment_observation": true,
+    "field_name": "task_size",
+    "included_in_evaluation_diagnostics": true,
+    "included_in_policy_state_vector": true,
+    "included_in_replay_transition": true,
+    "risk_if_missing": "The policy cannot condition on task scale, which can drive offloading choice.",
+    "thesis_relevance": "high"
+  },
+  {
+    "available_in_environment_observation": true,
+    "field_name": "processing_density",
+    "included_in_evaluation_diagnostics": true,
+    "included_in_policy_state_vector": true,
+    "included_in_replay_transition": true,
+    "risk_if_missing": "The policy loses the main processing-cost proxy used by the state vector.",
+    "thesis_relevance": "high"
+  },
+  {
+    "available_in_environment_observation": false,
+    "field_name": "deadline",
+    "included_in_evaluation_diagnostics": false,
+    "included_in_policy_state_vector": false,
+    "included_in_replay_transition": false,
+    "risk_if_missing": "The generic deadline concept is not exposed directly; only absolute_deadline_slot is visible.",
+    "thesis_relevance": "high"
+  },
+  {
+    "available_in_environment_observation": true,
+    "field_name": "absolute_deadline_slot",
+    "included_in_evaluation_diagnostics": true,
+    "included_in_policy_state_vector": false,
+    "included_in_replay_transition": false,
+    "risk_if_missing": "The policy cannot directly see deadline position even though the environment exposes it.",
+    "thesis_relevance": "high"
+  },
+  {
+    "available_in_environment_observation": true,
+    "field_name": "timeout_length",
+    "included_in_evaluation_diagnostics": true,
+    "included_in_policy_state_vector": false,
+    "included_in_replay_transition": false,
+    "risk_if_missing": "The policy cannot directly see how long the task can wait before timing out.",
+    "thesis_relevance": "high"
+  },
+  {
+    "available_in_environment_observation": true,
+    "field_name": "latency_estimates",
+    "included_in_evaluation_diagnostics": true,
+    "included_in_policy_state_vector": false,
+    "included_in_replay_transition": false,
+    "risk_if_missing": "The policy cannot exploit the environment's hinted latency comparison between actions.",
+    "thesis_relevance": "medium"
+  },
+  {
+    "available_in_environment_observation": true,
+    "field_name": "legal_action_mask",
+    "included_in_evaluation_diagnostics": true,
+    "included_in_policy_state_vector": false,
+    "included_in_replay_transition": true,
+    "risk_if_missing": "The policy could choose illegal actions or the diagnostic could not prove legality.",
+    "thesis_relevance": "high"
+  },
+  {
+    "available_in_environment_observation": true,
+    "field_name": "source_agent_id",
+    "included_in_evaluation_diagnostics": true,
+    "included_in_policy_state_vector": false,
+    "included_in_replay_transition": true,
+    "risk_if_missing": "Topology-specific choice context is lost and agent-specific behavior becomes opaque.",
+    "thesis_relevance": "medium"
+  },
+  {
+    "available_in_environment_observation": true,
+    "field_name": "topology",
+    "included_in_evaluation_diagnostics": true,
+    "included_in_policy_state_vector": false,
+    "included_in_replay_transition": false,
+    "risk_if_missing": "The policy cannot directly encode network structure, which can drive horizontal feasibility.",
+    "thesis_relevance": "medium"
+  },
+  {
+    "available_in_environment_observation": false,
+    "field_name": "public_queue_load",
+    "included_in_evaluation_diagnostics": false,
+    "included_in_policy_state_vector": false,
+    "included_in_replay_transition": false,
+    "risk_if_missing": "Queue locality is collapsed into a single queue_load signal and cannot be separated.",
+    "thesis_relevance": "medium"
+  },
+  {
+    "available_in_environment_observation": false,
+    "field_name": "private_queue_load",
+    "included_in_evaluation_diagnostics": false,
+    "included_in_policy_state_vector": false,
+    "included_in_replay_transition": false,
+    "risk_if_missing": "Queue locality is collapsed into a single queue_load signal and cannot be separated.",
+    "thesis_relevance": "medium"
+  },
+  {
+    "available_in_environment_observation": false,
+    "field_name": "offloading_queue_load",
+    "included_in_evaluation_diagnostics": false,
+    "included_in_policy_state_vector": false,
+    "included_in_replay_transition": false,
+    "risk_if_missing": "Queue locality is collapsed into a single queue_load signal and cannot be separated.",
+    "thesis_relevance": "medium"
+  },
+  {
+    "available_in_environment_observation": false,
+    "field_name": "cloud_queue_load",
+    "included_in_evaluation_diagnostics": false,
+    "included_in_policy_state_vector": false,
+    "included_in_replay_transition": false,
+    "risk_if_missing": "Queue locality is collapsed into a single queue_load signal and cannot be separated.",
+    "thesis_relevance": "medium"
+  },
+  {
+    "available_in_environment_observation": false,
+    "field_name": "previous_action",
+    "included_in_evaluation_diagnostics": true,
+    "included_in_policy_state_vector": false,
+    "included_in_replay_transition": true,
+    "risk_if_missing": "The diagnostic cannot relate the current choice to the immediately preceding choice chain.",
+    "thesis_relevance": "medium"
+  },
+  {
+    "available_in_environment_observation": false,
+    "field_name": "previous_reward",
+    "included_in_evaluation_diagnostics": true,
+    "included_in_policy_state_vector": false,
+    "included_in_replay_transition": true,
+    "risk_if_missing": "Reward context cannot be chained across steps when comparing policy behavior.",
+    "thesis_relevance": "medium"
+  },
+  {
+    "available_in_environment_observation": false,
+    "field_name": "pending_at_horizon",
+    "included_in_evaluation_diagnostics": true,
+    "included_in_policy_state_vector": false,
+    "included_in_replay_transition": true,
+    "risk_if_missing": "Horizon truncation becomes invisible and the policy-vs-evaluator mismatch cannot be separated.",
+    "thesis_relevance": "high"
+  }
+]

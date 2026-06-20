@@ -1,0 +1,65 @@
+{
+  "by_checkpoint": {
+    "100": {
+      "cumulative_training_action_distribution": {
+        "horizontal": 4002,
+        "local": 3548,
+        "vertical": 3450
+      },
+      "replay_size": 10000,
+      "replay_window_action_distribution": {
+        "horizontal": 3741,
+        "local": 3207,
+        "vertical": 3052
+      }
+    },
+    "150": {
+      "cumulative_training_action_distribution": {
+        "horizontal": 4183,
+        "local": 4934,
+        "vertical": 7383
+      },
+      "replay_size": 10000,
+      "replay_window_action_distribution": {
+        "horizontal": 2206,
+        "local": 2531,
+        "vertical": 5263
+      }
+    },
+    "200": {
+      "cumulative_training_action_distribution": {
+        "horizontal": 4183,
+        "local": 4934,
+        "vertical": 12883
+      },
+      "replay_size": 10000,
+      "replay_window_action_distribution": {
+        "horizontal": 181,
+        "local": 875,
+        "vertical": 8944
+      }
+    },
+    "500": {
+      "cumulative_training_action_distribution": {
+        "horizontal": 4183,
+        "local": 4934,
+        "vertical": 45883
+      },
+      "replay_size": 10000,
+      "replay_window_action_distribution": {
+        "horizontal": 0,
+        "local": 0,
+        "vertical": 10000
+      }
+    }
+  },
+  "checkpoint_budgets": [
+    100,
+    150,
+    200,
+    500
+  ],
+  "replay_window_capacity": 10000,
+  "replay_window_interpretation_warning": true,
+  "replay_window_is_full_training_history": false
+}

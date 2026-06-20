@@ -1,0 +1,12 @@
+{
+  "evaluation_action_distribution_present": true,
+  "evaluation_action_distribution_source": "evaluation_episodes",
+  "evaluation_action_sequence_sample_limit": 25,
+  "evaluation_action_sequence_sample_present": true,
+  "evaluation_decision_count_per_checkpoint": {
+    "100": 11000,
+    "150": 11000,
+    "200": 11000,
+    "500": 11000
+  }
+}
