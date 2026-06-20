@@ -1,0 +1,7 @@
+{
+  "decision_reason": "Completion exists, but the calibration does not yet show enough action-path diversity to move to state repair confidently.",
+  "evidence_notes": [
+    "any_fixed_policy_completes=true"
+  ],
+  "recommended_next_action": "safe_to_proceed_to_reward_function_alignment"
+}

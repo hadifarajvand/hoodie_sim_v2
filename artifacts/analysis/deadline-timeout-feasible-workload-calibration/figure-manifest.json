@@ -1,0 +1,12 @@
+{
+  "figure_count": 5,
+  "figure_directory": "artifacts/analysis/deadline-timeout-feasible-workload-calibration/figures",
+  "figure_files": [
+    "figure_01_before_after_feasibility_ratio.png",
+    "figure_02_action_path_feasibility_after_calibration.png",
+    "figure_03_completion_drop_by_policy_after_calibration.png",
+    "figure_04_50_vs_100_calibrated_metrics.png",
+    "figure_05_deadline_slack_before_after.png"
+  ],
+  "figures_generated": true
+}

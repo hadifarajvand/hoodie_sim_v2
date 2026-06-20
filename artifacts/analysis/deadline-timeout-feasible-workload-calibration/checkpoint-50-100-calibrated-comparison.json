@@ -1,0 +1,285 @@
+{
+  "by_checkpoint": [
+    {
+      "candidate_action_distribution": {
+        "horizontal": 0,
+        "local": 0,
+        "vertical": 3303
+      },
+      "completion_count": 732,
+      "completion_ratio": 0.22141560798548093,
+      "cumulative_training_episode_count": 50,
+      "deadline_violation_ratio": 0.647610405323654,
+      "drop_count": 2141,
+      "drop_ratio": 0.647610405323654,
+      "feasible_task_ratio": 0.2702702702702703,
+      "horizontal_feasible_ratio": 0.2702702702702703,
+      "local_feasible_ratio": 0.2702702702702703,
+      "mean_terminal_latency_slots": 15.14027149321267,
+      "pending_count": 184,
+      "reward_per_decision": -28.09355131698456,
+      "reward_per_task": -28.068058076225046,
+      "training_budget": 50,
+      "vertical_feasible_ratio": 0.2702702702702703
+    },
+    {
+      "candidate_action_distribution": {
+        "horizontal": 0,
+        "local": 1393,
+        "vertical": 1910
+      },
+      "completion_count": 922,
+      "completion_ratio": 0.278886872353297,
+      "cumulative_training_episode_count": 100,
+      "deadline_violation_ratio": 0.5901391409558379,
+      "drop_count": 1951,
+      "drop_ratio": 0.5901391409558379,
+      "feasible_task_ratio": 0.2702702702702703,
+      "horizontal_feasible_ratio": 0.2702702702702703,
+      "local_feasible_ratio": 0.2702702702702703,
+      "mean_terminal_latency_slots": 14.010442046641142,
+      "pending_count": 184,
+      "reward_per_decision": -25.788676960339085,
+      "reward_per_task": -25.76527525710829,
+      "training_budget": 100,
+      "vertical_feasible_ratio": 0.2702702702702703
+    }
+  ],
+  "candidate_policy_at_100": {
+    "action_distribution": {
+      "horizontal": 0,
+      "local": 1393,
+      "vertical": 1910
+    },
+    "checkpoint_budget": 100,
+    "completed_count": 922,
+    "completed_feasible_task_count": 922,
+    "completion_path_audit": {
+      "completed_canonical_task_count": 922,
+      "deadline_expired_event_count": 1927,
+      "deadline_reached_event_count": 3823,
+      "deadline_reached_then_task_dropped_duplicate_detected": true,
+      "execution_completed_but_no_task_completed_detected": false,
+      "execution_completed_event_count": 984,
+      "pending_at_horizon_count": 184,
+      "reward_emitted_event_count": 2849,
+      "reward_emitted_without_terminal_outcome_detected": false,
+      "task_completed_but_no_reward_detected": false,
+      "task_completed_event_count": 922,
+      "task_dropped_event_count": 1927,
+      "terminal_outcome_without_reward_detected": true
+    },
+    "completion_ratio": 0.278886872353297,
+    "deadline_violation_ratio": 0.5901391409558379,
+    "decision_count": 3303,
+    "drop_ratio": 0.5901391409558379,
+    "dropped_count": 1951,
+    "dropped_feasible_task_count": 1951,
+    "dropped_infeasible_task_count": 3288,
+    "evaluation_action_distribution_source": "evaluation_episodes",
+    "evaluation_trace_bank_id": "full-training-eval-bank",
+    "feasible_task_count": 18,
+    "feasible_task_count_by_action": {
+      "horizontal": 7,
+      "local": 18,
+      "vertical": 7
+    },
+    "infeasible_task_count": 3288,
+    "infeasible_task_count_by_action": {
+      "horizontal": 3299,
+      "local": 3288,
+      "vertical": 3299
+    },
+    "mean_completion_latency_slots": 7.7440347071583515,
+    "mean_drop_latency_slots": 16.971809328549462,
+    "mean_reward": -851.8,
+    "mean_terminal_latency_slots": 14.010442046641142,
+    "paper_aligned_diagnostic_metrics": {
+      "canonical_completion_ratio": 0.278886872353297,
+      "canonical_deadline_violation_ratio": 0.5901391409558379,
+      "canonical_drop_ratio": 0.5901391409558379,
+      "canonical_mean_completion_latency_slots": null,
+      "canonical_mean_drop_latency_slots": null,
+      "canonical_mean_terminal_latency_slots": null,
+      "canonical_pending_ratio": 0.05565638233514821,
+      "canonical_reward_per_decision": -25.788676960339085,
+      "canonical_reward_per_task": -25.76527525710829,
+      "canonical_tasks_per_decision": 1.0009082652134422,
+      "checkpoint_budget": 100,
+      "raw_reward_event_coverage_ratio": 0.9916463626870867,
+      "reward_reconciliation_status": "failed",
+      "terminal_event_coverage_ratio": 0.9916463626870867
+    },
+    "pending_count": 184,
+    "policy_name": "candidate_policy_at_100",
+    "raw_vs_canonical_terminal_reconciliation": {
+      "canonical_reward_event_count": 2873,
+      "canonical_task_reward_total": -85180.0,
+      "canonical_terminal_task_count": 2873,
+      "duplicate_terminal_event_count": 0,
+      "raw_event_reward_total": -84220.0,
+      "raw_reward_event_count": 2849,
+      "raw_reward_event_recovery_blocked": false,
+      "raw_terminal_event_count": 2849,
+      "raw_vs_canonical_reward_delta": 960.0,
+      "reward_event_coverage_ratio": 0.9916463626870867,
+      "reward_reconciled": false,
+      "terminal_event_coverage_ratio": 0.9916463626870867,
+      "terminal_event_recovery_blocked": false,
+      "terminal_reconciled": false
+    },
+    "reward_event_records": {
+      "record_count": 2849
+    },
+    "reward_per_decision": -25.788676960339085,
+    "reward_per_task": -25.76527525710829,
+    "reward_reconciliation_after_terminal_repair": {
+      "canonical_task_reward_count": 2873,
+      "canonical_task_reward_total": -85180.0,
+      "raw_event_reward_count": 2849,
+      "raw_event_reward_total": -84220.0,
+      "raw_reward_event_recovery_blocked": false,
+      "raw_vs_canonical_reward_delta": 960.0,
+      "reward_reconciled": false,
+      "reward_reconciliation_tolerance": 1e-09,
+      "terminal_event_recovery_blocked": false
+    },
+    "same_evaluation_trace_bank": true,
+    "terminal_event_records": {
+      "record_count": 7594
+    }
+  },
+  "candidate_policy_at_50": {
+    "action_distribution": {
+      "horizontal": 0,
+      "local": 0,
+      "vertical": 3303
+    },
+    "checkpoint_budget": 50,
+    "completed_count": 732,
+    "completed_feasible_task_count": 732,
+    "completion_path_audit": {
+      "completed_canonical_task_count": 732,
+      "deadline_expired_event_count": 2117,
+      "deadline_reached_event_count": 4206,
+      "deadline_reached_then_task_dropped_duplicate_detected": true,
+      "execution_completed_but_no_task_completed_detected": false,
+      "execution_completed_event_count": 791,
+      "pending_at_horizon_count": 184,
+      "reward_emitted_event_count": 2849,
+      "reward_emitted_without_terminal_outcome_detected": false,
+      "task_completed_but_no_reward_detected": false,
+      "task_completed_event_count": 732,
+      "task_dropped_event_count": 2117,
+      "terminal_outcome_without_reward_detected": true
+    },
+    "completion_ratio": 0.22141560798548093,
+    "deadline_violation_ratio": 0.647610405323654,
+    "decision_count": 3303,
+    "drop_ratio": 0.647610405323654,
+    "dropped_count": 2141,
+    "dropped_feasible_task_count": 2141,
+    "dropped_infeasible_task_count": 3288,
+    "evaluation_action_distribution_source": "evaluation_episodes",
+    "evaluation_trace_bank_id": "full-training-eval-bank",
+    "feasible_task_count": 18,
+    "feasible_task_count_by_action": {
+      "horizontal": 7,
+      "local": 18,
+      "vertical": 7
+    },
+    "infeasible_task_count": 3288,
+    "infeasible_task_count_by_action": {
+      "horizontal": 3299,
+      "local": 3288,
+      "vertical": 3299
+    },
+    "mean_completion_latency_slots": 9.771857923497267,
+    "mean_drop_latency_slots": 16.975712283979448,
+    "mean_reward": -927.93,
+    "mean_terminal_latency_slots": 15.14027149321267,
+    "paper_aligned_diagnostic_metrics": {
+      "canonical_completion_ratio": 0.22141560798548093,
+      "canonical_deadline_violation_ratio": 0.647610405323654,
+      "canonical_drop_ratio": 0.647610405323654,
+      "canonical_mean_completion_latency_slots": null,
+      "canonical_mean_drop_latency_slots": null,
+      "canonical_mean_terminal_latency_slots": null,
+      "canonical_pending_ratio": 0.05565638233514821,
+      "canonical_reward_per_decision": -28.09355131698456,
+      "canonical_reward_per_task": -28.068058076225046,
+      "canonical_tasks_per_decision": 1.0009082652134422,
+      "checkpoint_budget": 50,
+      "raw_reward_event_coverage_ratio": 0.9916463626870867,
+      "reward_reconciliation_status": "failed",
+      "terminal_event_coverage_ratio": 0.9916463626870867
+    },
+    "pending_count": 184,
+    "policy_name": "candidate_policy_at_50",
+    "raw_vs_canonical_terminal_reconciliation": {
+      "canonical_reward_event_count": 2873,
+      "canonical_task_reward_total": -92793.0,
+      "canonical_terminal_task_count": 2873,
+      "duplicate_terminal_event_count": 0,
+      "raw_event_reward_total": -91833.0,
+      "raw_reward_event_count": 2849,
+      "raw_reward_event_recovery_blocked": false,
+      "raw_terminal_event_count": 2849,
+      "raw_vs_canonical_reward_delta": 960.0,
+      "reward_event_coverage_ratio": 0.9916463626870867,
+      "reward_reconciled": false,
+      "terminal_event_coverage_ratio": 0.9916463626870867,
+      "terminal_event_recovery_blocked": false,
+      "terminal_reconciled": false
+    },
+    "reward_event_records": {
+      "record_count": 2849
+    },
+    "reward_per_decision": -28.09355131698456,
+    "reward_per_task": -28.068058076225046,
+    "reward_reconciliation_after_terminal_repair": {
+      "canonical_task_reward_count": 2873,
+      "canonical_task_reward_total": -92793.0,
+      "raw_event_reward_count": 2849,
+      "raw_event_reward_total": -91833.0,
+      "raw_reward_event_recovery_blocked": false,
+      "raw_vs_canonical_reward_delta": 960.0,
+      "reward_reconciled": false,
+      "reward_reconciliation_tolerance": 1e-09,
+      "terminal_event_recovery_blocked": false
+    },
+    "same_evaluation_trace_bank": true,
+    "terminal_event_records": {
+      "record_count": 7787
+    }
+  },
+  "checkpoint_budgets": [
+    50,
+    100
+  ],
+  "comparison": {
+    "50_to_100_action_distribution_changed": true,
+    "50_to_100_completion_changed": true,
+    "50_to_100_drop_changed": true,
+    "50_to_100_reward_changed": true,
+    "budget_pair": [
+      50,
+      100
+    ],
+    "candidate_action_distribution_changed": true,
+    "completion_count_delta": 190,
+    "completion_ratio_delta": 0.05747126436781608,
+    "deadline_violation_ratio_delta": -0.05747126436781613,
+    "drop_count_delta": -190,
+    "drop_ratio_delta": -0.05747126436781613,
+    "feasible_task_ratio_delta": 0.0,
+    "horizontal_feasible_ratio_delta": 0.0,
+    "local_feasible_ratio_delta": 0.0,
+    "mean_terminal_latency_slots_delta": -1.1298294465715273,
+    "pending_count_delta": 0,
+    "reward_per_decision_delta": 2.304874356645474,
+    "reward_per_task_delta": 2.302782819116757,
+    "vertical_feasible_ratio_delta": 0.0
+  },
+  "comparison_classification": "completion_path_changed"
+}

@@ -1,0 +1,66 @@
+[
+  {
+    "after_value": "paper_aligned_feasible_v1",
+    "before_value": "build_deterministic_trace",
+    "field_name": "trace_generation_model",
+    "paper_alignment_note": "Paper-aligned traces should expose both feasible and infeasible decisions.",
+    "reason": "The deterministic synthetic trace used by Feature 068 was infeasible for every action path."
+  },
+  {
+    "after_value": {
+      "max": 15,
+      "min": 15
+    },
+    "before_value": {
+      "max": 5,
+      "min": 2
+    },
+    "field_name": "timeout_length",
+    "paper_alignment_note": "A longer timeout restores a nontrivial offloading decision problem.",
+    "reason": "The deadline envelope was too short for any completion path to win before the timeout."
+  },
+  {
+    "after_value": {
+      "max": 60.0,
+      "min": 0.5
+    },
+    "before_value": {
+      "max": 100.0,
+      "min": 10.0
+    },
+    "field_name": "task_size_mbits",
+    "paper_alignment_note": "The calibrated sizes are smaller and span both feasible and infeasible cases.",
+    "reason": "Task sizes were too large relative to CPU and link capacity."
+  },
+  {
+    "after_value": 0.2,
+    "before_value": {
+      "max": 5.0,
+      "min": 1.0
+    },
+    "field_name": "processing_density_gcycles_per_mbit",
+    "paper_alignment_note": "A lighter density restores feasible local and offload paths.",
+    "reason": "The workload density was too heavy for the existing compute capacities."
+  },
+  {
+    "after_value": 0.15,
+    "before_value": 1.0,
+    "field_name": "arrival_probability",
+    "paper_alignment_note": "Lower arrival pressure makes feasible tasks observable without trivializing the episode.",
+    "reason": "The calibrated profile reduces load while keeping the workload nontrivial."
+  },
+  {
+    "after_value": 2,
+    "before_value": 1,
+    "field_name": "number_of_agents",
+    "paper_alignment_note": "Maintains a comparable decision horizon without forcing every slot to be occupied.",
+    "reason": "The calibrated profile keeps the per-episode decision volume close to the earlier comparison window."
+  },
+  {
+    "after_value": 1.0,
+    "before_value": 1.0,
+    "field_name": "deadline_slack_multiplier",
+    "paper_alignment_note": "The deadline repair remains transparent and documented.",
+    "reason": "No hidden slack multiplier is introduced; the calibration is explicit in the trace profile."
+  }
+]
