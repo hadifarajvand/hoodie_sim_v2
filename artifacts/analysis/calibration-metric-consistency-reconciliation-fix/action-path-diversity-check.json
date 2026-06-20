@@ -1,0 +1,66 @@
+{
+  "actions_have_different_feasibility": true,
+  "checkpoint_budget": 100,
+  "count_based_action_feasibility_diversity": true,
+  "feasible_task_count_by_action": {
+    "horizontal": 7,
+    "local": 18,
+    "vertical": 7
+  },
+  "feasible_task_ids_by_action_sample": {
+    "horizontal": [
+      "paper_aligned_feasible_v1-121:78:1",
+      "paper_aligned_feasible_v1-123:80:1",
+      "paper_aligned_feasible_v1-127:84:1",
+      "paper_aligned_feasible_v1-137:94:1",
+      "paper_aligned_feasible_v1-139:96:1",
+      "paper_aligned_feasible_v1-140:97:1",
+      "paper_aligned_feasible_v1-141:98:1"
+    ],
+    "local": [
+      "paper_aligned_feasible_v1-121:78:1",
+      "paper_aligned_feasible_v1-123:80:1",
+      "paper_aligned_feasible_v1-127:84:1",
+      "paper_aligned_feasible_v1-137:94:1",
+      "paper_aligned_feasible_v1-139:96:1",
+      "paper_aligned_feasible_v1-140:97:1",
+      "paper_aligned_feasible_v1-141:98:1",
+      "paper_aligned_feasible_v1-43:0:1",
+      "paper_aligned_feasible_v1-48:5:1",
+      "paper_aligned_feasible_v1-49:6:1",
+      "paper_aligned_feasible_v1-52:9:1",
+      "paper_aligned_feasible_v1-54:11:1",
+      "paper_aligned_feasible_v1-55:12:1",
+      "paper_aligned_feasible_v1-57:14:1",
+      "paper_aligned_feasible_v1-66:23:1",
+      "paper_aligned_feasible_v1-67:24:1",
+      "paper_aligned_feasible_v1-69:26:1",
+      "paper_aligned_feasible_v1-72:29:1"
+    ],
+    "vertical": [
+      "paper_aligned_feasible_v1-121:78:1",
+      "paper_aligned_feasible_v1-123:80:1",
+      "paper_aligned_feasible_v1-127:84:1",
+      "paper_aligned_feasible_v1-137:94:1",
+      "paper_aligned_feasible_v1-139:96:1",
+      "paper_aligned_feasible_v1-140:97:1",
+      "paper_aligned_feasible_v1-141:98:1"
+    ]
+  },
+  "feasible_task_set_sizes_by_action": {
+    "horizontal": 7,
+    "local": 18,
+    "vertical": 7
+  },
+  "pairwise_count_equality": {
+    "horizontal_vertical": true,
+    "local_horizontal": false,
+    "local_vertical": false
+  },
+  "pairwise_set_equality": {
+    "horizontal_vertical": true,
+    "local_horizontal": false,
+    "local_vertical": false
+  },
+  "set_based_action_feasibility_diversity": true
+}

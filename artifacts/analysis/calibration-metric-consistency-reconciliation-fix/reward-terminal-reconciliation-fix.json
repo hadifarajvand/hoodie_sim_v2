@@ -1,0 +1,93 @@
+{
+  "by_policy": {
+    "candidate_policy_at_100": {
+      "canonical_task_reward_count": 2873,
+      "canonical_task_reward_total": -85180.0,
+      "canonical_terminal_task_count": 2873,
+      "raw_event_reward_total": -85180.0,
+      "raw_reward_event_count": 2873,
+      "raw_terminal_event_count": 2873,
+      "raw_vs_canonical_reward_delta": 0.0,
+      "reward_event_coverage_ratio": 1.0,
+      "reward_reconciled": true,
+      "reward_reconciliation_status": "passed",
+      "terminal_event_coverage_ratio": 1.0,
+      "terminal_reconciled": true
+    },
+    "candidate_policy_at_50": {
+      "canonical_task_reward_count": 2873,
+      "canonical_task_reward_total": -92793.0,
+      "canonical_terminal_task_count": 2873,
+      "raw_event_reward_total": -92793.0,
+      "raw_reward_event_count": 2873,
+      "raw_terminal_event_count": 2873,
+      "raw_vs_canonical_reward_delta": 0.0,
+      "reward_event_coverage_ratio": 1.0,
+      "reward_reconciled": true,
+      "reward_reconciliation_status": "passed",
+      "terminal_event_coverage_ratio": 1.0,
+      "terminal_reconciled": true
+    },
+    "fixed_horizontal_policy": {
+      "canonical_task_reward_count": 2920,
+      "canonical_task_reward_total": -102007.0,
+      "canonical_terminal_task_count": 2920,
+      "raw_event_reward_total": -102007.0,
+      "raw_reward_event_count": 2920,
+      "raw_terminal_event_count": 2920,
+      "raw_vs_canonical_reward_delta": 0.0,
+      "reward_event_coverage_ratio": 1.0,
+      "reward_reconciled": true,
+      "reward_reconciliation_status": "passed",
+      "terminal_event_coverage_ratio": 1.0,
+      "terminal_reconciled": true
+    },
+    "fixed_local_policy": {
+      "canonical_task_reward_count": 2938,
+      "canonical_task_reward_total": -89237.0,
+      "canonical_terminal_task_count": 2938,
+      "raw_event_reward_total": -89237.0,
+      "raw_reward_event_count": 2938,
+      "raw_terminal_event_count": 2938,
+      "raw_vs_canonical_reward_delta": 0.0,
+      "reward_event_coverage_ratio": 1.0,
+      "reward_reconciled": true,
+      "reward_reconciliation_status": "passed",
+      "terminal_event_coverage_ratio": 1.0,
+      "terminal_reconciled": true
+    },
+    "fixed_vertical_policy": {
+      "canonical_task_reward_count": 2916,
+      "canonical_task_reward_total": -105775.0,
+      "canonical_terminal_task_count": 2916,
+      "raw_event_reward_total": -105775.0,
+      "raw_reward_event_count": 2916,
+      "raw_terminal_event_count": 2916,
+      "raw_vs_canonical_reward_delta": 0.0,
+      "reward_event_coverage_ratio": 1.0,
+      "reward_reconciled": true,
+      "reward_reconciliation_status": "passed",
+      "terminal_event_coverage_ratio": 1.0,
+      "terminal_reconciled": true
+    },
+    "random_legal_policy": {
+      "canonical_task_reward_count": 2930,
+      "canonical_task_reward_total": -92158.0,
+      "canonical_terminal_task_count": 2930,
+      "raw_event_reward_total": -92158.0,
+      "raw_reward_event_count": 2930,
+      "raw_terminal_event_count": 2930,
+      "raw_vs_canonical_reward_delta": 0.0,
+      "reward_event_coverage_ratio": 1.0,
+      "reward_reconciled": true,
+      "reward_reconciliation_status": "passed",
+      "terminal_event_coverage_ratio": 1.0,
+      "terminal_reconciled": true
+    }
+  },
+  "max_raw_vs_canonical_reward_delta": 0.0,
+  "reward_reconciled": true,
+  "reward_reconciliation_status": "passed",
+  "reward_reconciliation_tolerance": 1e-09,
+  "terminal_reconciled": true
+}

@@ -1,0 +1,82 @@
+{
+  "calibration_profile_name": "paper_aligned_feasible_v1",
+  "completed_feasible_task_count_definition": {
+    "definition": "completed_selected_action_feasible_count",
+    "name": "completed_feasible_task_count",
+    "universe": "U_selected_action_tasks"
+  },
+  "feasible_task_count_definition": {
+    "definition": "selected_action_feasible_task_count",
+    "name": "feasible_task_count",
+    "universe": "U_selected_action_tasks"
+  },
+  "record_sample_limit": 25,
+  "reward_event_count_definition": {
+    "definition": "recovered raw reward-bearing events after reconciliation repair",
+    "name": "reward_event_count",
+    "universe": "U_reward_events"
+  },
+  "terminal_event_count_definition": {
+    "definition": "canonical terminal outcome events after deduplication",
+    "name": "terminal_event_count",
+    "universe": "U_terminal_events"
+  },
+  "u_full_decisions": {
+    "count_source": "evaluation_decision_count",
+    "description": "All evaluation decisions / slots / tasks in the full evaluation probe.",
+    "members": [
+      "decision_count",
+      "evaluation_action_distribution",
+      "evaluation_decision_count"
+    ],
+    "name": "U_full_decisions"
+  },
+  "u_hypothetical_action_feasibility": {
+    "count_source": "per-action hypothetical feasibility over unique tasks",
+    "description": "For each unique task, feasibility if action were local / horizontal / vertical.",
+    "members": [
+      "hypothetical_local_feasible_task_count",
+      "hypothetical_horizontal_feasible_task_count",
+      "hypothetical_vertical_feasible_task_count"
+    ],
+    "name": "U_hypothetical_action_feasibility"
+  },
+  "u_reward_events": {
+    "count_source": "reward_event_count",
+    "description": "Actual reward-bearing events emitted by evaluation, with missing reward events recovered from terminal task evidence.",
+    "members": [
+      "reward_event_count",
+      "raw_event_reward_total",
+      "canonical_task_reward_total"
+    ],
+    "name": "U_reward_events"
+  },
+  "u_selected_action_tasks": {
+    "count_source": "selected_action_feasible_task_count + selected_action_infeasible_task_count",
+    "description": "Tasks grouped by the action actually selected by the evaluated policy.",
+    "members": [
+      "selected_action_feasible_task_count",
+      "selected_action_infeasible_task_count"
+    ],
+    "name": "U_selected_action_tasks"
+  },
+  "u_terminal_events": {
+    "count_source": "terminal_task_count",
+    "description": "Actual terminal outcome events emitted by evaluation, with duplicate lifecycle-only events excluded from terminal task counts.",
+    "members": [
+      "terminal_task_count",
+      "raw_terminal_event_count",
+      "terminal_event_coverage_ratio"
+    ],
+    "name": "U_terminal_events"
+  },
+  "u_unique_tasks": {
+    "count_source": "len(task_records)",
+    "description": "Unique task identities by (trace_id, episode_id, task_id).",
+    "members": [
+      "unique_task_count",
+      "task_records"
+    ],
+    "name": "U_unique_tasks"
+  }
+}

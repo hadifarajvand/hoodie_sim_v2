@@ -1,0 +1,12 @@
+{
+  "figure_count": 5,
+  "figure_directory": "artifacts/analysis/calibration-metric-consistency-reconciliation-fix/figures",
+  "figure_files": [
+    "figure_01_reward_reconciliation_before_after.png",
+    "figure_02_terminal_reconciliation_before_after.png",
+    "figure_03_feasibility_universe_consistency.png",
+    "figure_04_action_path_diversity.png",
+    "figure_05_50_vs_100_consistent_metrics.png"
+  ],
+  "figures_generated": true
+}
