@@ -1,5 +1,5 @@
 {
-  "decision_reason": "Reward stayed static while evaluation instrumentation now separates action and outcome signals.",
+  "decision_reason": "No reward-bearing transitions were recovered from the instrumented evaluation.",
   "evidence_notes": [],
-  "recommended_next_action": "fix_evaluation_metric_aggregation_next"
+  "recommended_next_action": "fix_reward_function_next"
 }

@@ -79,8 +79,105 @@ class FigureManifest:
         _ensure_bool(self.figures_generated, "figures_generated")
         if self.figure_count != len(self.figure_files):
             raise ValueError("figure_count must equal the number of figure_files")
-        if self.figures_generated and self.figure_count != 6:
-            raise ValueError("figures_generated pass state requires all six figures")
+        if self.figures_generated and self.figure_count != 7:
+            raise ValueError("figures_generated pass state requires all seven figures")
+
+    def to_dict(self) -> dict[str, Any]:
+        return asdict(self)
+
+
+@dataclass(frozen=True, slots=True)
+class EvaluationDecisionRecord:
+    trace_id: str
+    episode_id: int
+    task_id: int
+    slot: int
+    selected_action: str
+    legal_action_mask: dict[str, bool]
+    source_agent_id: int
+    arrival_slot: int
+    absolute_deadline_slot: int
+    timeout_length: int
+    task_size: float
+    processing_density: float
+
+    def to_dict(self) -> dict[str, Any]:
+        return asdict(self)
+
+
+@dataclass(frozen=True, slots=True)
+class EvaluationTerminalRecord:
+    trace_id: str
+    episode_id: int
+    task_id: int
+    selected_action: str | None
+    terminal_outcome: str
+    completion_slot: int | None
+    arrival_slot: int
+    reward: float
+    raw_terminal_event_count: int
+    raw_reward_emission_count: int
+    raw_event_reward_total: float
+    raw_event_reward_count: int
+    lifecycle_event_types: list[str]
+    canonical_join_key: str
+    pending_at_horizon: bool = False
+
+    def to_dict(self) -> dict[str, Any]:
+        return asdict(self)
+
+
+@dataclass(frozen=True, slots=True)
+class CanonicalTaskOutcome:
+    trace_id: str
+    episode_id: int
+    task_id: int
+    selected_action: str | None
+    canonical_terminal_outcome: str
+    raw_terminal_event_count: int
+    raw_reward_emission_count: int
+    raw_event_reward_total: float
+    raw_event_reward_count: int
+    canonical_task_reward: float
+    canonical_task_reward_count: int
+    canonical_latency_slots: int | None
+    canonical_join_key: str
+
+    def to_dict(self) -> dict[str, Any]:
+        return asdict(self)
+
+
+@dataclass(frozen=True, slots=True)
+class RawVsCanonicalMetricComparison:
+    raw_event_reward_total: float
+    raw_event_reward_count: int
+    raw_terminal_event_count: int
+    canonical_task_reward_total: float
+    canonical_task_reward_count: int
+    canonical_task_count: int
+    canonical_terminal_task_count: int
+    duplicate_terminal_event_count: int
+    duplicate_reward_event_count: int
+    raw_vs_canonical_reward_delta: float
+    double_count_detected: bool
+
+    def to_dict(self) -> dict[str, Any]:
+        return asdict(self)
+
+
+@dataclass(frozen=True, slots=True)
+class PaperAlignedDiagnosticMetric:
+    training_budget: int
+    canonical_completion_ratio: float
+    canonical_drop_ratio: float
+    canonical_deadline_violation_ratio: float
+    canonical_pending_ratio: float
+    canonical_mean_completion_latency_slots: float | None
+    canonical_mean_drop_latency_slots: float | None
+    canonical_mean_terminal_latency_slots: float | None
+    canonical_reward_per_task: float
+    canonical_reward_per_decision: float
+    canonical_tasks_per_decision: float
 
     def to_dict(self) -> dict[str, Any]:
         return asdict(self)
@@ -120,6 +217,10 @@ class CheckpointMetric:
     replay_window_interpretation_warning: bool = True
     per_action_outcome_summary: dict[str, Any] = field(default_factory=dict)
     reward_decomposition: dict[str, Any] = field(default_factory=dict)
+    event_level_metrics: dict[str, Any] = field(default_factory=dict)
+    canonical_task_level_metrics: dict[str, Any] = field(default_factory=dict)
+    raw_vs_canonical_metric_comparison: dict[str, Any] = field(default_factory=dict)
+    paper_aligned_diagnostic_metrics: dict[str, Any] = field(default_factory=dict)
 
     def __post_init__(self) -> None:
         _ensure_int(self.training_budget, "training_budget")
@@ -221,6 +322,21 @@ class EvaluationInstrumentationDiagnosticReport:
     recommended_next_feature: str
     remaining_blockers: list[str] = field(default_factory=list)
     final_verdict: str = "evaluation_instrumentation_diagnostic_blocked"
+    canonical_task_outcome_summary: dict[str, Any] = field(default_factory=dict)
+    canonical_reward_decomposition: dict[str, Any] = field(default_factory=dict)
+    raw_vs_canonical_metric_comparison: dict[str, Any] = field(default_factory=dict)
+    paper_aligned_diagnostic_metrics: dict[str, Any] = field(default_factory=dict)
+    canonical_policy_effect_summary: dict[str, Any] = field(default_factory=dict)
+    canonical_task_outcome_summary_result: dict[str, Any] = field(default_factory=dict)
+    canonical_reward_decomposition_result: dict[str, Any] = field(default_factory=dict)
+    raw_vs_canonical_metric_comparison_result: dict[str, Any] = field(default_factory=dict)
+    paper_aligned_diagnostic_metrics_result: dict[str, Any] = field(default_factory=dict)
+    canonical_policy_effect_summary_result: dict[str, Any] = field(default_factory=dict)
+    raw_event_reward_static_across_budget: bool = False
+    canonical_task_reward_static_across_budget: bool = False
+    canonical_completion_rate_static_across_budget: bool = False
+    canonical_drop_rate_static_across_budget: bool = False
+    evaluation_action_distribution_static_across_budget: bool = False
 
     def __post_init__(self) -> None:
         if self.feature_id != FEATURE_ID:

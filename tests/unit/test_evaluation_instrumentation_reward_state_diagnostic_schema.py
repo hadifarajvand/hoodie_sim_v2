@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import unittest
 
+from src.analysis.evaluation_instrumentation_reward_state_diagnostic.config import RECOMMENDED_NEXT_FEATURE
 from src.analysis.evaluation_instrumentation_reward_state_diagnostic.model import (
     CheckpointMetric,
     ClaimSafetyStatus,
@@ -227,7 +228,7 @@ def _base_report_kwargs() -> dict[str, object]:
         "policy_affects_reward": "false",
         "policy_affects_terminal_outcomes": "false",
         "most_likely_root_cause": "reward aggregation masks action-level differences",
-        "recommended_next_feature": "Feature 066 — Reward and Evaluation Design Repair",
+        "recommended_next_feature": RECOMMENDED_NEXT_FEATURE,
         "remaining_blockers": ["evaluation_signal_insufficient_for_claims"],
         "final_verdict": "evaluation_instrumentation_diagnostic_blocked",
     }
@@ -259,10 +260,15 @@ class EvaluationInstrumentationRewardStateDiagnosticSchemaTests(unittest.TestCas
             "baseline_superiority_claim_made": False,
             "claim_safety_passed": True,
         }
-        kwargs["figure_manifest"] = {"figure_directory": "artifacts/analysis/evaluation-instrumentation-reward-state-diagnostic/figures", "figure_files": ["a", "b", "c", "d", "e", "f"], "figure_count": 6, "figures_generated": True}
+        kwargs["figure_manifest"] = {
+            "figure_directory": "artifacts/analysis/evaluation-instrumentation-reward-state-diagnostic/figures",
+            "figure_files": ["a", "b", "c", "d", "e", "f", "g"],
+            "figure_count": 7,
+            "figures_generated": True,
+        }
         report = EvaluationInstrumentationDiagnosticReport(**kwargs)
         self.assertEqual(report.final_verdict, "evaluation_instrumentation_diagnostic_ready")
-        self.assertEqual(report.to_dict()["figure_manifest"]["figure_count"], 6)
+        self.assertEqual(report.to_dict()["figure_manifest"]["figure_count"], 7)
 
 
 if __name__ == "__main__":

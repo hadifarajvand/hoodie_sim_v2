@@ -49,11 +49,12 @@ class EvaluationInstrumentationRewardStateDiagnosticReportIntegrationTests(unitt
                 self.assertTrue(all(path.exists() for path in paths))
                 self.assertTrue(all((Path(tmp_dir) / "figures" / name).exists() for name in [
                     "figure_01_evaluation_action_distribution_by_budget.png",
-                    "figure_02_per_action_drop_completion_by_budget.png",
-                    "figure_03_reward_decomposition_by_action.png",
+                    "figure_02_canonical_per_action_drop_completion_by_budget.png",
+                    "figure_03_raw_vs_canonical_reward_by_budget.png",
                     "figure_04_replay_window_vs_cumulative_training_actions.png",
-                    "figure_05_policy_effect_mean_reward.png",
+                    "figure_05_policy_effect_canonical_reward.png",
                     "figure_06_state_feature_coverage_matrix.png",
+                    "figure_07_canonical_drop_completion_ratio_by_budget.png",
                 ]))
 
 

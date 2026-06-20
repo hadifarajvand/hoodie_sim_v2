@@ -23,6 +23,10 @@ POLICY_EFFECT_DIAGNOSTIC_JSON = OUTPUT_DIR / "policy-effect-diagnostic.json"
 DIAGNOSTIC_DECISION_JSON = OUTPUT_DIR / "diagnostic-decision.json"
 FINAL_DIAGNOSTIC_SUMMARY_MD = OUTPUT_DIR / "final-diagnostic-summary.md"
 FIGURE_MANIFEST_JSON = OUTPUT_DIR / "figure-manifest.json"
+CANONICAL_TASK_OUTCOME_SUMMARY_JSON = OUTPUT_DIR / "canonical-task-outcome-summary.json"
+CANONICAL_REWARD_DECOMPOSITION_JSON = OUTPUT_DIR / "canonical-reward-decomposition.json"
+RAW_VS_CANONICAL_METRIC_COMPARISON_JSON = OUTPUT_DIR / "raw-vs-canonical-metric-comparison.json"
+PAPER_ALIGNED_DIAGNOSTIC_METRICS_JSON = OUTPUT_DIR / "paper-aligned-diagnostic-metrics.json"
 
 CHECKPOINT_BUDGETS = (100, 150, 200, 500)
 EVALUATION_EPISODES_PER_CHECKPOINT = 100
@@ -37,9 +41,9 @@ ALLOWED_DECISIONS = (
     "fix_reward_function_next",
     "fix_state_representation_next",
     "fix_evaluation_metric_aggregation_next",
-    "fix_action_collapse_policy_training_next",
-    "safe_to_run_medium_training_after_instrumentation",
-    "blocked_due_to_unresolved_instrumentation",
+    "fix_environment_lifecycle_accounting_next",
+    "safe_to_run_medium_training_after_metric_fix",
+    "blocked_due_to_unresolved_canonical_aggregation",
 )
 
 ALLOWED_FINAL_VERDICTS = (
@@ -47,7 +51,7 @@ ALLOWED_FINAL_VERDICTS = (
     "evaluation_instrumentation_diagnostic_blocked",
 )
 
-RECOMMENDED_NEXT_FEATURE = "Feature 066 — Reward and Evaluation Design Repair"
+RECOMMENDED_NEXT_FEATURE = "Canonical lifecycle accounting repair"
 
 FEATURE_064_REPORT = Path("artifacts/analysis/final-review-release-gate-batch/final-review-release-gate-report.json")
 FEATURE_063_REPORT = Path("artifacts/analysis/staged-training-budget-learning-curve/staged-training-budget-learning-curve-report.json")

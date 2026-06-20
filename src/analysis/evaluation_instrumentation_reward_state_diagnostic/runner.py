@@ -10,6 +10,8 @@ from .config import (
     BASE_BRANCH_NAME,
     BRANCH_NAME,
     CHECKPOINT_BUDGETS,
+    CANONICAL_REWARD_DECOMPOSITION_JSON,
+    CANONICAL_TASK_OUTCOME_SUMMARY_JSON,
     DIAGNOSTIC_DECISION_JSON,
     EVALUATION_ACTION_DISTRIBUTION_JSON,
     EVALUATION_ACTION_SEQUENCE_SAMPLE_LIMIT,
@@ -36,6 +38,8 @@ from .config import (
     OUTPUT_DIR,
     PER_ACTION_OUTCOME_SUMMARY_JSON,
     POLICY_EFFECT_DIAGNOSTIC_JSON,
+    PAPER_ALIGNED_DIAGNOSTIC_METRICS_JSON,
+    RAW_VS_CANONICAL_METRIC_COMPARISON_JSON,
     RECOMMENDED_NEXT_FEATURE,
     REPORT_JSON,
     REPORT_MD,
@@ -315,6 +319,80 @@ def _build_checkpoint_metric(
     action_count_total = sum(action_distribution.values())
     reward_summary = dict(training_state["reward_summary"])
     evaluation_reward_summary = dict(evaluation_result["evaluation_reward_summary"])
+    event_level_metrics = dict(
+        evaluation_result.get(
+            "event_level_metrics",
+            {
+                "raw_terminal_event_count": int(evaluation_reward_summary.get("terminal_transition_count", 0)),
+                "raw_reward_emission_count": int(evaluation_reward_summary.get("reward_bearing_transition_count", 0)),
+                "raw_event_reward_total": float(evaluation_reward_summary.get("mean_reward", 0.0)) * max(int(evaluation_reward_summary.get("evaluation_episode_count", 0)), 1),
+                "raw_event_reward_count": int(evaluation_reward_summary.get("reward_bearing_transition_count", 0)),
+                "double_count_detected": False,
+            },
+        )
+    )
+    canonical_task_level_metrics = dict(
+        evaluation_result.get(
+            "canonical_task_level_metrics",
+            {
+                "canonical_task_count": int(evaluation_reward_summary.get("terminal_transition_count", 0)),
+                "canonical_terminal_task_count": int(evaluation_reward_summary.get("terminal_transition_count", 0)),
+                "canonical_completion_count": int(evaluation_reward_summary.get("completed_task_count", 0)),
+                "canonical_drop_count": int(evaluation_reward_summary.get("dropped_task_count", 0)),
+                "canonical_pending_count": int(evaluation_reward_summary.get("pending_at_horizon_count", 0)),
+                "canonical_unknown_count": 0,
+                "canonical_completion_ratio": 0.0,
+                "canonical_drop_ratio": 0.0,
+                "canonical_deadline_violation_ratio": 0.0,
+                "canonical_pending_ratio": 0.0,
+                "canonical_mean_completion_latency_slots": None,
+                "canonical_mean_drop_latency_slots": None,
+                "canonical_mean_terminal_latency_slots": None,
+                "canonical_reward_per_task": float(evaluation_reward_summary.get("mean_reward", 0.0)),
+                "canonical_reward_per_decision": float(evaluation_reward_summary.get("mean_reward", 0.0)),
+                "canonical_tasks_per_decision": 1.0,
+                "canonical_task_reward_total": float(evaluation_reward_summary.get("mean_reward", 0.0)) * max(int(evaluation_reward_summary.get("evaluation_episode_count", 0)), 1),
+                "canonical_task_reward_count": int(evaluation_reward_summary.get("reward_bearing_transition_count", 0)),
+                "canonical_task_mean_reward": float(evaluation_reward_summary.get("mean_reward", 0.0)),
+            },
+        )
+    )
+    raw_vs_canonical_metric_comparison = dict(
+        evaluation_result.get(
+            "raw_vs_canonical_metric_comparison",
+            {
+                "raw_event_reward_total": event_level_metrics["raw_event_reward_total"],
+                "raw_event_reward_count": event_level_metrics["raw_event_reward_count"],
+                "raw_terminal_event_count": event_level_metrics["raw_terminal_event_count"],
+                "canonical_task_reward_total": canonical_task_level_metrics["canonical_task_reward_total"],
+                "canonical_task_reward_count": canonical_task_level_metrics["canonical_task_reward_count"],
+                "canonical_task_count": canonical_task_level_metrics["canonical_task_count"],
+                "canonical_terminal_task_count": canonical_task_level_metrics["canonical_terminal_task_count"],
+                "duplicate_terminal_event_count": 0,
+                "duplicate_reward_event_count": 0,
+                "raw_vs_canonical_reward_delta": 0.0,
+                "double_count_detected": False,
+            },
+        )
+    )
+    paper_aligned_diagnostic_metrics = dict(
+        evaluation_result.get(
+            "paper_aligned_diagnostic_metrics",
+            {
+                "training_budget": training_budget,
+                "canonical_completion_ratio": canonical_task_level_metrics["canonical_completion_ratio"],
+                "canonical_drop_ratio": canonical_task_level_metrics["canonical_drop_ratio"],
+                "canonical_deadline_violation_ratio": canonical_task_level_metrics["canonical_deadline_violation_ratio"],
+                "canonical_pending_ratio": canonical_task_level_metrics["canonical_pending_ratio"],
+                "canonical_mean_completion_latency_slots": canonical_task_level_metrics["canonical_mean_completion_latency_slots"],
+                "canonical_mean_drop_latency_slots": canonical_task_level_metrics["canonical_mean_drop_latency_slots"],
+                "canonical_mean_terminal_latency_slots": canonical_task_level_metrics["canonical_mean_terminal_latency_slots"],
+                "canonical_reward_per_task": canonical_task_level_metrics["canonical_reward_per_task"],
+                "canonical_reward_per_decision": canonical_task_level_metrics["canonical_reward_per_decision"],
+                "canonical_tasks_per_decision": canonical_task_level_metrics["canonical_tasks_per_decision"],
+            },
+        )
+    )
     metric = CheckpointMetric(
         training_budget=training_budget,
         cumulative_training_episode_count=int(training_state["cumulative_training_episode_count"]),
@@ -348,6 +426,10 @@ def _build_checkpoint_metric(
         replay_window_interpretation_warning=bool(training_state["replay_window_interpretation_warning"]),
         per_action_outcome_summary=dict(evaluation_result["per_action_outcome_summary"]),
         reward_decomposition=dict(evaluation_result["reward_decomposition"]),
+        event_level_metrics=event_level_metrics,
+        canonical_task_level_metrics=canonical_task_level_metrics,
+        raw_vs_canonical_metric_comparison=raw_vs_canonical_metric_comparison,
+        paper_aligned_diagnostic_metrics=paper_aligned_diagnostic_metrics,
     )
     payload = metric.to_dict()
     payload["action_distribution"] = {key: int(value) for key, value in payload["action_distribution"].items()}
@@ -390,6 +472,53 @@ def _build_reward_decomposition_artifact(checkpoint_metrics: list[dict[str, Any]
         "by_checkpoint": {
             str(metric["training_budget"]): metric["reward_decomposition"] for metric in checkpoint_metrics
         }
+    }
+
+
+def _build_canonical_task_outcome_summary_artifact(checkpoint_metrics: list[dict[str, Any]]) -> dict[str, Any]:
+    return {
+        "checkpoint_budgets": list(CHECKPOINT_BUDGETS),
+        "by_checkpoint": {
+            str(metric["training_budget"]): {
+                "canonical_task_level_metrics": metric["canonical_task_level_metrics"],
+                "event_level_metrics": metric["event_level_metrics"],
+                "canonical_per_action_outcome_summary": metric["per_action_outcome_summary"],
+                "canonical_task_outcomes": metric["evaluation_action_by_trace_id"],
+                "raw_vs_canonical_metric_comparison": metric["raw_vs_canonical_metric_comparison"],
+            }
+            for metric in checkpoint_metrics
+        },
+    }
+
+
+def _build_canonical_reward_decomposition_artifact(checkpoint_metrics: list[dict[str, Any]]) -> dict[str, Any]:
+    return {
+        "checkpoint_budgets": list(CHECKPOINT_BUDGETS),
+        "by_checkpoint": {
+            str(metric["training_budget"]): {
+                "canonical_reward_decomposition_by_action": metric["reward_decomposition"],
+                "raw_vs_canonical_metric_comparison": metric["raw_vs_canonical_metric_comparison"],
+            }
+            for metric in checkpoint_metrics
+        },
+    }
+
+
+def _build_raw_vs_canonical_metric_comparison_artifact(checkpoint_metrics: list[dict[str, Any]]) -> dict[str, Any]:
+    return {
+        "checkpoint_budgets": list(CHECKPOINT_BUDGETS),
+        "by_checkpoint": {
+            str(metric["training_budget"]): metric["raw_vs_canonical_metric_comparison"] for metric in checkpoint_metrics
+        },
+    }
+
+
+def _build_paper_aligned_diagnostic_metrics_artifact(checkpoint_metrics: list[dict[str, Any]]) -> dict[str, Any]:
+    return {
+        "checkpoint_budgets": list(CHECKPOINT_BUDGETS),
+        "by_checkpoint": {
+            str(metric["training_budget"]): metric["paper_aligned_diagnostic_metrics"] for metric in checkpoint_metrics
+        },
     }
 
 
@@ -455,18 +584,36 @@ def _build_state_feature_coverage_result(audit: list[dict[str, Any]]) -> dict[st
 
 
 def _build_policy_effect_result(policy_effect: dict[str, Any]) -> dict[str, Any]:
+    canonical_policy_effect_summary = policy_effect.get(
+        "canonical_policy_effect_summary",
+        {
+            "raw_event_reward_static_across_budget": policy_effect.get("evaluation_reward_static_after_instrumentation", False),
+            "canonical_task_reward_static_across_budget": policy_effect.get("evaluation_reward_static_after_instrumentation", False),
+            "canonical_completion_rate_static_across_budget": False,
+            "canonical_drop_rate_static_across_budget": False,
+            "evaluation_action_distribution_static_across_budget": False,
+            "policy_affects_reward": policy_effect.get("policy_affects_reward", "uncertain"),
+            "policy_affects_terminal_outcomes": policy_effect.get("policy_affects_terminal_outcomes", "uncertain"),
+        },
+    )
     return {
         "policy_results_present": True,
-        "evaluation_reward_static_after_instrumentation": policy_effect["evaluation_reward_static_after_instrumentation"],
-        "candidate_policy_vertical_collapse_in_evaluation": policy_effect["candidate_policy_vertical_collapse_in_evaluation"],
-        "candidate_policy_vertical_collapse_in_training_replay_window": policy_effect["candidate_policy_vertical_collapse_in_training_replay_window"],
+        "evaluation_reward_static_after_instrumentation": policy_effect.get("evaluation_reward_static_after_instrumentation", False),
+        "raw_event_reward_static_across_budget": policy_effect.get("raw_event_reward_static_across_budget", policy_effect.get("evaluation_reward_static_after_instrumentation", False)),
+        "canonical_task_reward_static_across_budget": policy_effect.get("canonical_task_reward_static_across_budget", policy_effect.get("evaluation_reward_static_after_instrumentation", False)),
+        "canonical_completion_rate_static_across_budget": policy_effect.get("canonical_completion_rate_static_across_budget", False),
+        "canonical_drop_rate_static_across_budget": policy_effect.get("canonical_drop_rate_static_across_budget", False),
+        "evaluation_action_distribution_static_across_budget": policy_effect.get("evaluation_action_distribution_static_across_budget", False),
+        "candidate_policy_vertical_collapse_in_evaluation": policy_effect.get("candidate_policy_vertical_collapse_in_evaluation", False),
+        "candidate_policy_vertical_collapse_in_training_replay_window": policy_effect.get("candidate_policy_vertical_collapse_in_training_replay_window", False),
         "candidate_action_distribution_changed_by_budget": policy_effect.get("candidate_action_distribution_changed_by_budget", False),
         "candidate_terminal_outcomes_changed_by_budget": policy_effect.get("candidate_terminal_outcomes_changed_by_budget", False),
-        "policy_affects_reward": policy_effect["policy_affects_reward"],
-        "policy_affects_terminal_outcomes": policy_effect["policy_affects_terminal_outcomes"],
-        "evaluation_metric_static_because_policy_same": policy_effect["evaluation_metric_static_because_policy_same"],
-        "evaluation_metric_static_because_reward_aggregation": policy_effect["evaluation_metric_static_because_reward_aggregation"],
-        "evaluation_metric_static_because_environment_dynamics": policy_effect["evaluation_metric_static_because_environment_dynamics"],
+        "policy_affects_reward": policy_effect.get("policy_affects_reward", "uncertain"),
+        "policy_affects_terminal_outcomes": policy_effect.get("policy_affects_terminal_outcomes", "uncertain"),
+        "evaluation_metric_static_because_policy_same": policy_effect.get("evaluation_metric_static_because_policy_same", "false"),
+        "evaluation_metric_static_because_reward_aggregation": policy_effect.get("evaluation_metric_static_because_reward_aggregation", "uncertain"),
+        "evaluation_metric_static_because_environment_dynamics": policy_effect.get("evaluation_metric_static_because_environment_dynamics", "uncertain"),
+        "canonical_policy_effect_summary": canonical_policy_effect_summary,
         "policy_results": policy_effect["policy_results"],
     }
 
@@ -480,10 +627,12 @@ def _build_explanation_of_previous_static_outputs(
     state_feature_result: dict[str, Any],
     policy_effect_result: dict[str, Any],
 ) -> dict[str, Any]:
-    mean_rewards = {metric["training_budget"]: metric["evaluation_reward_summary"]["mean_reward"] for metric in checkpoint_metrics}
-    static_mean_reward = len({round(float(value), 9) for value in mean_rewards.values()}) == 1
+    canonical_mean_rewards = {metric["training_budget"]: metric["evaluation_reward_summary"]["mean_reward"] for metric in checkpoint_metrics}
+    raw_event_rewards = {metric["training_budget"]: metric["event_level_metrics"]["raw_event_reward_total"] for metric in checkpoint_metrics}
+    static_mean_reward = len({round(float(value), 9) for value in canonical_mean_rewards.values()}) == 1
     return {
-        "mean_rewards_by_budget": mean_rewards,
+        "canonical_mean_rewards_by_budget": canonical_mean_rewards,
+        "raw_event_rewards_by_budget": raw_event_rewards,
         "evaluation_reward_static_across_budget": static_mean_reward,
         "evaluation_action_distribution_from_evaluation_episodes": evaluation_action_logging_result["evaluation_action_distribution_source"] == "evaluation_episodes",
         "replay_window_is_not_full_history": replay_window_result["replay_window_is_full_training_history"] is False,
@@ -497,7 +646,7 @@ def _build_explanation_of_previous_static_outputs(
         "evidence_notes": [
             "Feature 063 only had replay-window action counts and a scalar evaluation mean reward.",
             "The replay buffer is a 10000-transition rolling window, so replay counts are not full-history counts.",
-            "Feature 065 separates evaluation actions, per-action outcomes, and reward decomposition from training replay counts.",
+            "Feature 065 now separates evaluation decisions, raw lifecycle events, canonical task outcomes, and reward decomposition.",
         ],
     }
 
@@ -559,6 +708,7 @@ def _build_blocked_report(
 ) -> EvaluationInstrumentationDiagnosticReport:
     empty_audit = _build_state_feature_coverage_audit()
     empty_result = _build_state_feature_coverage_result(empty_audit)
+    empty_canonical = {"checkpoint_budgets": list(config.checkpoint_budgets), "by_checkpoint": {}}
     report = EvaluationInstrumentationDiagnosticReport(
         feature_id=config.feature_id,
         base_branch_name=config.base_branch_name,
@@ -577,9 +727,14 @@ def _build_blocked_report(
         evaluation_action_distribution={"source": "evaluation_episodes", "by_checkpoint": {}},
         per_action_outcome_summary={"by_checkpoint": {}},
         reward_decomposition={"by_checkpoint": {}},
+        canonical_task_outcome_summary=empty_canonical,
+        canonical_reward_decomposition=empty_canonical,
+        raw_vs_canonical_metric_comparison=empty_canonical,
+        paper_aligned_diagnostic_metrics=empty_canonical,
         replay_window_vs_cumulative_training_actions={"checkpoint_budgets": list(config.checkpoint_budgets), "by_checkpoint": {}},
         state_feature_coverage_audit=empty_audit,
         policy_effect_diagnostic={"policy_results": {}},
+        canonical_policy_effect_summary={},
         diagnostic_decision=diagnostic_decision,
         claim_safety_status=claim_safety_status,
         figure_manifest={"figure_directory": str(config.figures_dir), "figure_files": [], "figure_count": 0, "figures_generated": False},
@@ -597,10 +752,20 @@ def _build_blocked_report(
         replay_rolling_window_interpretation_repair_result={"replay_window_is_full_training_history": False, "replay_window_capacity": 10_000, "replay_window_interpretation_warning": True},
         per_action_outcome_attribution_result={"per_action_outcome_summary_present": False, "by_checkpoint": {}},
         reward_decomposition_result={"reward_decomposition_present": False, "by_checkpoint": {}},
+        canonical_task_outcome_summary_result=empty_canonical,
+        canonical_reward_decomposition_result=empty_canonical,
+        raw_vs_canonical_metric_comparison_result=empty_canonical,
+        paper_aligned_diagnostic_metrics_result=empty_canonical,
         state_feature_coverage_audit_result=empty_result,
         policy_effect_diagnostic_result={"policy_results_present": False, "policy_results": {}},
+        canonical_policy_effect_summary_result={},
         explanation_of_previous_static_outputs={"evidence_notes": []},
         evaluation_reward_static_after_instrumentation=False,
+        raw_event_reward_static_across_budget=False,
+        canonical_task_reward_static_across_budget=False,
+        canonical_completion_rate_static_across_budget=False,
+        canonical_drop_rate_static_across_budget=False,
+        evaluation_action_distribution_static_across_budget=False,
         evaluation_action_distribution_changed_by_budget=False,
         candidate_policy_vertical_collapse_in_evaluation=False,
         candidate_policy_vertical_collapse_in_training_replay_window=False,
@@ -706,6 +871,10 @@ def build_evaluation_instrumentation_reward_state_diagnostic_report(
     replay_window_result = _build_replay_window_vs_cumulative_training_actions_artifact(checkpoint_metrics)
     per_action_outcome_attribution_result = _build_per_action_outcome_attribution_result(checkpoint_metrics)
     reward_decomposition_result = _build_reward_decomposition_result(checkpoint_metrics)
+    canonical_task_outcome_summary_artifact = _build_canonical_task_outcome_summary_artifact(checkpoint_metrics)
+    canonical_reward_decomposition_artifact = _build_canonical_reward_decomposition_artifact(checkpoint_metrics)
+    raw_vs_canonical_metric_comparison_artifact = _build_raw_vs_canonical_metric_comparison_artifact(checkpoint_metrics)
+    paper_aligned_diagnostic_metrics_artifact = _build_paper_aligned_diagnostic_metrics_artifact(checkpoint_metrics)
     policy_effect_result = _build_policy_effect_result(policy_effect)
     explanation = _build_explanation_of_previous_static_outputs(
         checkpoint_metrics=checkpoint_metrics,
@@ -724,6 +893,8 @@ def build_evaluation_instrumentation_reward_state_diagnostic_report(
         state_feature_coverage_summary=state_feature_result,
         reward_decomposition_summary=reward_decomposition_result["by_checkpoint"][str(CHECKPOINT_BUDGETS[-1])],
         action_logging_summary=evaluation_action_logging_result,
+        raw_vs_canonical_metric_comparison=checkpoint_metrics[-1]["raw_vs_canonical_metric_comparison"],
+        canonical_task_outcome_summary=checkpoint_metrics[-1]["canonical_task_level_metrics"],
     )
     figure_manifest_payload = generate_figures(
         figures_dir=cfg.figures_dir,
@@ -784,9 +955,14 @@ def build_evaluation_instrumentation_reward_state_diagnostic_report(
         evaluation_action_distribution=evaluation_action_logging_result,
         per_action_outcome_summary=per_action_outcome_attribution_result,
         reward_decomposition=reward_decomposition_result,
+        canonical_task_outcome_summary=canonical_task_outcome_summary_artifact,
+        canonical_reward_decomposition=canonical_reward_decomposition_artifact,
+        raw_vs_canonical_metric_comparison=raw_vs_canonical_metric_comparison_artifact,
+        paper_aligned_diagnostic_metrics=paper_aligned_diagnostic_metrics_artifact,
         replay_window_vs_cumulative_training_actions=replay_window_result,
         state_feature_coverage_audit=state_feature_audit,
         policy_effect_diagnostic=policy_effect_result,
+        canonical_policy_effect_summary=policy_effect_result["canonical_policy_effect_summary"],
         diagnostic_decision=diagnostic_decision,
         claim_safety_status=claim_safety,
         figure_manifest=figure_manifest,
@@ -795,10 +971,20 @@ def build_evaluation_instrumentation_reward_state_diagnostic_report(
         replay_rolling_window_interpretation_repair_result=replay_window_result,
         per_action_outcome_attribution_result=per_action_outcome_attribution_result,
         reward_decomposition_result=reward_decomposition_result,
+        canonical_task_outcome_summary_result=canonical_task_outcome_summary_artifact,
+        canonical_reward_decomposition_result=canonical_reward_decomposition_artifact,
+        raw_vs_canonical_metric_comparison_result=raw_vs_canonical_metric_comparison_artifact,
+        paper_aligned_diagnostic_metrics_result=paper_aligned_diagnostic_metrics_artifact,
         state_feature_coverage_audit_result=state_feature_result,
         policy_effect_diagnostic_result=policy_effect_result,
+        canonical_policy_effect_summary_result=policy_effect_result["canonical_policy_effect_summary"],
         explanation_of_previous_static_outputs=explanation,
         evaluation_reward_static_after_instrumentation=policy_effect_result["evaluation_reward_static_after_instrumentation"],
+        raw_event_reward_static_across_budget=policy_effect_result["raw_event_reward_static_across_budget"],
+        canonical_task_reward_static_across_budget=policy_effect_result["canonical_task_reward_static_across_budget"],
+        canonical_completion_rate_static_across_budget=policy_effect_result["canonical_completion_rate_static_across_budget"],
+        canonical_drop_rate_static_across_budget=policy_effect_result["canonical_drop_rate_static_across_budget"],
+        evaluation_action_distribution_static_across_budget=policy_effect_result["evaluation_action_distribution_static_across_budget"],
         evaluation_action_distribution_changed_by_budget=policy_effect_result.get("candidate_action_distribution_changed_by_budget", False),
         candidate_policy_vertical_collapse_in_evaluation=policy_effect_result["candidate_policy_vertical_collapse_in_evaluation"],
         candidate_policy_vertical_collapse_in_training_replay_window=policy_effect_result["candidate_policy_vertical_collapse_in_training_replay_window"],
@@ -824,6 +1010,13 @@ def generate_evaluation_instrumentation_reward_state_diagnostic_artifacts(
     (target_dir / EVALUATION_ACTION_DISTRIBUTION_JSON.name).write_text(json_dump(payload["evaluation_action_distribution"]), encoding="utf-8")
     (target_dir / PER_ACTION_OUTCOME_SUMMARY_JSON.name).write_text(json_dump(payload["per_action_outcome_summary"]), encoding="utf-8")
     (target_dir / REWARD_DECOMPOSITION_JSON.name).write_text(json_dump(payload["reward_decomposition"]), encoding="utf-8")
+    (target_dir / CANONICAL_TASK_OUTCOME_SUMMARY_JSON.name).write_text(json_dump(payload["canonical_task_outcome_summary"]), encoding="utf-8")
+    (target_dir / CANONICAL_REWARD_DECOMPOSITION_JSON.name).write_text(json_dump(payload["canonical_reward_decomposition"]), encoding="utf-8")
+    (target_dir / RAW_VS_CANONICAL_METRIC_COMPARISON_JSON.name).write_text(
+        json_dump(payload["raw_vs_canonical_metric_comparison"]),
+        encoding="utf-8",
+    )
+    (target_dir / PAPER_ALIGNED_DIAGNOSTIC_METRICS_JSON.name).write_text(json_dump(payload["paper_aligned_diagnostic_metrics"]), encoding="utf-8")
     (target_dir / REPLAY_WINDOW_VS_CUMULATIVE_TRAINING_ACTIONS_JSON.name).write_text(
         json_dump(payload["replay_window_vs_cumulative_training_actions"]),
         encoding="utf-8",
@@ -840,6 +1033,10 @@ def generate_evaluation_instrumentation_reward_state_diagnostic_artifacts(
         "evaluation_action_distribution": target_dir / EVALUATION_ACTION_DISTRIBUTION_JSON.name,
         "per_action_outcome_summary": target_dir / PER_ACTION_OUTCOME_SUMMARY_JSON.name,
         "reward_decomposition": target_dir / REWARD_DECOMPOSITION_JSON.name,
+        "canonical_task_outcome_summary": target_dir / CANONICAL_TASK_OUTCOME_SUMMARY_JSON.name,
+        "canonical_reward_decomposition": target_dir / CANONICAL_REWARD_DECOMPOSITION_JSON.name,
+        "raw_vs_canonical_metric_comparison": target_dir / RAW_VS_CANONICAL_METRIC_COMPARISON_JSON.name,
+        "paper_aligned_diagnostic_metrics": target_dir / PAPER_ALIGNED_DIAGNOSTIC_METRICS_JSON.name,
         "replay_window_vs_cumulative_training_actions": target_dir / REPLAY_WINDOW_VS_CUMULATIVE_TRAINING_ACTIONS_JSON.name,
         "state_feature_coverage_audit": target_dir / STATE_FEATURE_COVERAGE_AUDIT_JSON.name,
         "policy_effect_diagnostic": target_dir / POLICY_EFFECT_DIAGNOSTIC_JSON.name,

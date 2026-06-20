@@ -75,6 +75,17 @@ def _policy_label(policy_name: str) -> str:
     return policy_name.replace("_", " ")
 
 
+def _policy_canonical_reward_per_task(result: dict[str, Any]) -> float:
+    canonical = result.get("canonical_task_level_metrics")
+    if isinstance(canonical, dict) and "canonical_reward_per_task" in canonical:
+        return float(canonical["canonical_reward_per_task"])
+    paper = result.get("paper_aligned_diagnostic_metrics")
+    if isinstance(paper, dict) and "canonical_reward_per_task" in paper:
+        return float(paper["canonical_reward_per_task"])
+    evaluation_reward_summary = result.get("evaluation_reward_summary", {})
+    return float(evaluation_reward_summary.get("mean_reward", result.get("mean_reward", 0.0)))
+
+
 def generate_figures(
     *,
     figures_dir: Path,
@@ -97,10 +108,10 @@ def generate_figures(
         action: [float(checkpoint["per_action_outcome_summary"][action]["dropped_count"]) for checkpoint in checkpoint_metrics]
         for action in ("local", "horizontal", "vertical")
     }
-    reward_by_action = {
-        action: [float(checkpoint["reward_decomposition"]["reward_by_action"].get(action, 0.0)) for checkpoint in checkpoint_metrics]
-        for action in ("local", "horizontal", "vertical")
-    }
+    raw_reward_total = [float(checkpoint["event_level_metrics"]["raw_event_reward_total"]) for checkpoint in checkpoint_metrics]
+    canonical_reward_total = [float(checkpoint["canonical_task_level_metrics"]["canonical_task_reward_total"]) for checkpoint in checkpoint_metrics]
+    canonical_completion_ratio = [float(checkpoint["canonical_task_level_metrics"]["canonical_completion_ratio"]) for checkpoint in checkpoint_metrics]
+    canonical_drop_ratio = [float(checkpoint["canonical_task_level_metrics"]["canonical_drop_ratio"]) for checkpoint in checkpoint_metrics]
     replay_vertical_share = [
         float(checkpoint["replay_window_action_distribution"].get("vertical", 0)) / max(float(checkpoint["replay_size"]), 1.0)
         for checkpoint in checkpoint_metrics
@@ -113,7 +124,7 @@ def generate_figures(
 
     policy_items = list(policy_effect_diagnostic["policy_results"].items())
     policy_labels = [_policy_label(name) for name, _ in policy_items]
-    policy_mean_rewards = [float(result["mean_reward"]) for _, result in policy_items]
+    policy_mean_rewards = [_policy_canonical_reward_per_task(result) for _, result in policy_items]
 
     figure_files = []
 
@@ -132,8 +143,8 @@ def generate_figures(
         axes[0].plot(budgets, values, marker="o", linewidth=2, label=action)
     for action, values in per_action_dropped.items():
         axes[1].plot(budgets, values, marker="o", linewidth=2, label=action)
-    axes[0].set_title("Completed Count by Action and Budget")
-    axes[1].set_title("Dropped Count by Action and Budget")
+    axes[0].set_title("Canonical Completed Count by Action and Budget")
+    axes[1].set_title("Canonical Dropped Count by Action and Budget")
     axes[1].set_xlabel("training budget")
     axes[0].set_ylabel("completed")
     axes[1].set_ylabel("dropped")
@@ -142,27 +153,21 @@ def generate_figures(
     axes[0].legend(loc="best")
     axes[1].legend(loc="best")
     fig.tight_layout()
-    fig.savefig(figures_dir / "figure_02_per_action_drop_completion_by_budget.png")
+    fig.savefig(figures_dir / "figure_02_canonical_per_action_drop_completion_by_budget.png")
     plt.close(fig)
-    figure_files.append("figure_02_per_action_drop_completion_by_budget.png")
+    figure_files.append("figure_02_canonical_per_action_drop_completion_by_budget.png")
 
-    plt = _matplotlib()
-    fig, ax = plt.subplots(figsize=(10, 4.8))
-    bottom = [0.0] * len(budgets)
-    for action in ("local", "horizontal", "vertical"):
-        values = reward_by_action[action]
-        ax.bar(budgets, values, bottom=bottom, label=action)
-        bottom = [current + value for current, value in zip(bottom, values)]
-    ax.set_title("Reward Decomposition by Action")
-    ax.set_xlabel("training budget")
-    ax.set_ylabel("total reward")
-    ax.set_xticks(budgets)
-    ax.grid(True, axis="y", alpha=0.25)
-    ax.legend(loc="best")
-    fig.tight_layout()
-    fig.savefig(figures_dir / "figure_03_reward_decomposition_by_action.png")
-    plt.close(fig)
-    figure_files.append("figure_03_reward_decomposition_by_action.png")
+    _save_dual_line_plot(
+        figures_dir / "figure_03_raw_vs_canonical_reward_by_budget.png",
+        "Raw vs Canonical Reward by Budget",
+        budgets,
+        raw_reward_total,
+        canonical_reward_total,
+        "raw event reward total",
+        "canonical task reward total",
+        "total reward",
+    )
+    figure_files.append("figure_03_raw_vs_canonical_reward_by_budget.png")
 
     _save_dual_line_plot(
         figures_dir / "figure_04_replay_window_vs_cumulative_training_actions.png",
@@ -180,14 +185,14 @@ def generate_figures(
     fig, ax = plt.subplots(figsize=(10, 4.8))
     x_positions = list(range(len(policy_labels)))
     ax.bar(x_positions, policy_mean_rewards, color="#4c78a8")
-    ax.set_title("Policy Effect Mean Reward")
-    ax.set_ylabel("mean reward")
+    ax.set_title("Policy Effect Canonical Reward per Task")
+    ax.set_ylabel("canonical reward per task")
     ax.set_xticks(x_positions, labels=policy_labels, rotation=25, ha="right")
     ax.grid(True, axis="y", alpha=0.25)
     fig.tight_layout()
-    fig.savefig(figures_dir / "figure_05_policy_effect_mean_reward.png")
+    fig.savefig(figures_dir / "figure_05_policy_effect_canonical_reward.png")
     plt.close(fig)
-    figure_files.append("figure_05_policy_effect_mean_reward.png")
+    figure_files.append("figure_05_policy_effect_canonical_reward.png")
 
     columns = [
         "env_obs",
@@ -214,8 +219,20 @@ def generate_figures(
     )
     figure_files.append("figure_06_state_feature_coverage_matrix.png")
 
+    _save_dual_line_plot(
+        figures_dir / "figure_07_canonical_drop_completion_ratio_by_budget.png",
+        "Canonical Completion and Drop Ratios by Budget",
+        budgets,
+        canonical_completion_ratio,
+        canonical_drop_ratio,
+        "canonical completion ratio",
+        "canonical drop ratio",
+        "ratio",
+    )
+    figure_files.append("figure_07_canonical_drop_completion_ratio_by_budget.png")
+
     return {
-        "figures_generated": len(figure_files) == 6,
+        "figures_generated": len(figure_files) == 7,
         "figure_count": len(figure_files),
         "figure_files": figure_files,
         "figure_directory": str(figures_dir),

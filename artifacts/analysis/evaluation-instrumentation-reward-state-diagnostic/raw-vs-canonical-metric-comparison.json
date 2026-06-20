@@ -1,0 +1,62 @@
+{
+  "by_checkpoint": {
+    "100": {
+      "canonical_task_count": 11000,
+      "canonical_task_reward_count": 10551,
+      "canonical_task_reward_total": -422040.0,
+      "canonical_terminal_task_count": 10551,
+      "double_count_detected": false,
+      "duplicate_reward_event_count": 0,
+      "duplicate_terminal_event_count": 0,
+      "raw_event_reward_count": 0,
+      "raw_event_reward_total": 0.0,
+      "raw_terminal_event_count": 0,
+      "raw_vs_canonical_reward_delta": 422040.0
+    },
+    "150": {
+      "canonical_task_count": 11000,
+      "canonical_task_reward_count": 10551,
+      "canonical_task_reward_total": -422040.0,
+      "canonical_terminal_task_count": 10551,
+      "double_count_detected": false,
+      "duplicate_reward_event_count": 0,
+      "duplicate_terminal_event_count": 0,
+      "raw_event_reward_count": 0,
+      "raw_event_reward_total": 0.0,
+      "raw_terminal_event_count": 0,
+      "raw_vs_canonical_reward_delta": 422040.0
+    },
+    "200": {
+      "canonical_task_count": 11000,
+      "canonical_task_reward_count": 10551,
+      "canonical_task_reward_total": -422040.0,
+      "canonical_terminal_task_count": 10551,
+      "double_count_detected": false,
+      "duplicate_reward_event_count": 0,
+      "duplicate_terminal_event_count": 0,
+      "raw_event_reward_count": 0,
+      "raw_event_reward_total": 0.0,
+      "raw_terminal_event_count": 0,
+      "raw_vs_canonical_reward_delta": 422040.0
+    },
+    "500": {
+      "canonical_task_count": 11000,
+      "canonical_task_reward_count": 10551,
+      "canonical_task_reward_total": -422040.0,
+      "canonical_terminal_task_count": 10551,
+      "double_count_detected": false,
+      "duplicate_reward_event_count": 0,
+      "duplicate_terminal_event_count": 0,
+      "raw_event_reward_count": 0,
+      "raw_event_reward_total": 0.0,
+      "raw_terminal_event_count": 0,
+      "raw_vs_canonical_reward_delta": 422040.0
+    }
+  },
+  "checkpoint_budgets": [
+    100,
+    150,
+    200,
+    500
+  ]
+}

@@ -1,0 +1,62 @@
+{
+  "by_checkpoint": {
+    "100": {
+      "canonical_completion_ratio": 0.0,
+      "canonical_deadline_violation_ratio": 0.9591818181818181,
+      "canonical_drop_ratio": 0.9591818181818181,
+      "canonical_mean_completion_latency_slots": null,
+      "canonical_mean_drop_latency_slots": 5.543360818879727,
+      "canonical_mean_terminal_latency_slots": 5.543360818879727,
+      "canonical_pending_ratio": 0.040818181818181816,
+      "canonical_reward_per_decision": -38.36727272727273,
+      "canonical_reward_per_task": -38.36727272727273,
+      "canonical_tasks_per_decision": 1.0,
+      "training_budget": 100
+    },
+    "150": {
+      "canonical_completion_ratio": 0.0,
+      "canonical_deadline_violation_ratio": 0.9591818181818181,
+      "canonical_drop_ratio": 0.9591818181818181,
+      "canonical_mean_completion_latency_slots": null,
+      "canonical_mean_drop_latency_slots": 5.543360818879727,
+      "canonical_mean_terminal_latency_slots": 5.543360818879727,
+      "canonical_pending_ratio": 0.040818181818181816,
+      "canonical_reward_per_decision": -38.36727272727273,
+      "canonical_reward_per_task": -38.36727272727273,
+      "canonical_tasks_per_decision": 1.0,
+      "training_budget": 150
+    },
+    "200": {
+      "canonical_completion_ratio": 0.0,
+      "canonical_deadline_violation_ratio": 0.9591818181818181,
+      "canonical_drop_ratio": 0.9591818181818181,
+      "canonical_mean_completion_latency_slots": null,
+      "canonical_mean_drop_latency_slots": 5.543360818879727,
+      "canonical_mean_terminal_latency_slots": 5.543360818879727,
+      "canonical_pending_ratio": 0.040818181818181816,
+      "canonical_reward_per_decision": -38.36727272727273,
+      "canonical_reward_per_task": -38.36727272727273,
+      "canonical_tasks_per_decision": 1.0,
+      "training_budget": 200
+    },
+    "500": {
+      "canonical_completion_ratio": 0.0,
+      "canonical_deadline_violation_ratio": 0.9591818181818181,
+      "canonical_drop_ratio": 0.9591818181818181,
+      "canonical_mean_completion_latency_slots": null,
+      "canonical_mean_drop_latency_slots": 5.543360818879727,
+      "canonical_mean_terminal_latency_slots": 5.543360818879727,
+      "canonical_pending_ratio": 0.040818181818181816,
+      "canonical_reward_per_decision": -38.36727272727273,
+      "canonical_reward_per_task": -38.36727272727273,
+      "canonical_tasks_per_decision": 1.0,
+      "training_budget": 500
+    }
+  },
+  "checkpoint_budgets": [
+    100,
+    150,
+    200,
+    500
+  ]
+}

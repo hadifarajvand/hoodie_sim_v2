@@ -253,28 +253,38 @@ def build_diagnostic_decision(
     state_feature_coverage_summary: dict[str, Any],
     reward_decomposition_summary: dict[str, Any],
     action_logging_summary: dict[str, Any],
+    raw_vs_canonical_metric_comparison: dict[str, Any] | None = None,
+    canonical_task_outcome_summary: dict[str, Any] | None = None,
 ) -> dict[str, Any]:
-    if candidate_policy_vertical_collapse_in_evaluation is True or candidate_policy_vertical_collapse_in_training_replay_window is True:
-        if policy_affects_reward == "false" and policy_affects_terminal_outcomes == "false":
-            recommended_next_action = "fix_action_collapse_policy_training_next"
-            reason = "The candidate policy collapses to vertical in at least one view, so policy training collapse deserves priority."
-        elif evaluation_reward_static_after_instrumentation:
-            recommended_next_action = "fix_evaluation_metric_aggregation_next"
-            reason = "Reward stayed static while evaluation instrumentation now separates action and outcome signals."
-        else:
-            recommended_next_action = "fix_state_representation_next"
-            reason = "The state audit shows limited policy-visible coverage and the policy is collapsing."
+    comparison = raw_vs_canonical_metric_comparison or {}
+    canonical_summary = canonical_task_outcome_summary or {}
+    if comparison.get("double_count_detected") and comparison.get("duplicate_terminal_event_count", 0) > 0:
+        recommended_next_action = "fix_environment_lifecycle_accounting_next"
+        reason = "Raw lifecycle events exceed canonical task outcomes, so the lifecycle accounting path needs repair before any stronger claim."
     elif not reward_decomposition_summary.get("reward_available_count", 0):
         recommended_next_action = "fix_reward_function_next"
         reason = "No reward-bearing transitions were recovered from the instrumented evaluation."
     elif action_logging_summary.get("evaluation_action_distribution_source") != "evaluation_episodes":
-        recommended_next_action = "blocked_due_to_unresolved_instrumentation"
+        recommended_next_action = "blocked_due_to_unresolved_canonical_aggregation"
         reason = "Evaluation action logging could not be proven to come from evaluation episodes."
+    elif candidate_policy_vertical_collapse_in_evaluation is True or candidate_policy_vertical_collapse_in_training_replay_window is True:
+        if policy_affects_reward == "false" and policy_affects_terminal_outcomes == "false":
+            recommended_next_action = "fix_state_representation_next"
+            reason = "The candidate policy still collapses to vertical while canonical metrics do not move, which points at the visible state rather than the metric plumbing."
+        elif evaluation_reward_static_after_instrumentation:
+            recommended_next_action = "fix_evaluation_metric_aggregation_next"
+            reason = "Canonical reward stayed static while the action and outcome signals were separated, so the aggregation layer still needs work."
+        else:
+            recommended_next_action = "fix_state_representation_next"
+            reason = "The state audit shows limited policy-visible coverage and the policy is collapsing."
+    elif canonical_summary.get("canonical_task_count", 0) and canonical_summary.get("canonical_task_reward_total", 0.0) == 0:
+        recommended_next_action = "fix_reward_function_next"
+        reason = "Canonical task accounting is available, but it still produces no reward-bearing task signal."
     elif state_feature_coverage_summary.get("high_risk_missing_fields"):
         recommended_next_action = "fix_state_representation_next"
         reason = "The state-feature audit still shows high-risk missing policy inputs."
     else:
-        recommended_next_action = "safe_to_run_medium_training_after_instrumentation"
-        reason = "The new instrumentation resolves the blind spots enough to justify a medium-sized follow-up training pass."
+        recommended_next_action = "safe_to_run_medium_training_after_metric_fix"
+        reason = "Canonical task accounting is available and the remaining signal is sufficient for a medium follow-up training pass."
     decision = DiagnosticDecision(recommended_next_action=recommended_next_action, decision_reason=reason, evidence_notes=[])
     return decision.to_dict()

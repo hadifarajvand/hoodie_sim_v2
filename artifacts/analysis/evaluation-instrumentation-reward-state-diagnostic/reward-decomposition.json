@@ -1,6 +1,23 @@
 {
   "by_checkpoint": {
     "100": {
+      "canonical_task_mean_reward_by_action": {
+        "horizontal": 0.0,
+        "local": 0.0,
+        "vertical": 0.0
+      },
+      "canonical_task_reward_count": 10551,
+      "canonical_task_reward_count_by_action": {
+        "horizontal": 0,
+        "local": 0,
+        "vertical": 10551
+      },
+      "canonical_task_reward_total": -422040.0,
+      "canonical_task_reward_total_by_action": {
+        "horizontal": 0.0,
+        "local": 0.0,
+        "vertical": -422040.0
+      },
       "completion_reward_count_by_action": {
         "horizontal": 0,
         "local": 0,
@@ -9,60 +26,132 @@
       "drop_penalty_count_by_action": {
         "horizontal": 0,
         "local": 0,
-        "vertical": 21004
+        "vertical": 0
       },
       "nan_reward_count": 0,
-      "reward_available_count": 21004,
+      "raw_event_reward_count": 0,
+      "raw_event_reward_count_by_action": {
+        "horizontal": 0,
+        "local": 0,
+        "vertical": 0
+      },
+      "raw_event_reward_total": 0.0,
+      "raw_event_reward_total_by_action": {
+        "horizontal": 0.0,
+        "local": 0.0,
+        "vertical": 0.0
+      },
+      "raw_vs_canonical_reward_delta": 422040.0,
+      "raw_vs_canonical_reward_delta_by_action": {
+        "horizontal": 0.0,
+        "local": 0.0,
+        "vertical": 422040.0
+      },
+      "raw_vs_canonical_reward_delta_total": 422040.0,
+      "reward_available_count": 0,
       "reward_by_action": {
         "horizontal": 0.0,
         "local": 0.0,
-        "vertical": -840160.0
+        "vertical": -422040.0
       },
       "reward_by_action_and_terminal_outcome": {
         "horizontal": {
           "completed": {
+            "canonical_task_mean_reward": 0.0,
+            "canonical_task_reward_count": 0,
+            "canonical_task_reward_total": 0.0,
             "count": 0,
             "mean_reward": 0.0,
+            "raw_event_reward_count": 0,
+            "raw_event_reward_total": 0.0,
+            "raw_vs_canonical_reward_delta": 0.0,
             "total_reward": 0.0
           },
           "dropped": {
+            "canonical_task_mean_reward": 0.0,
+            "canonical_task_reward_count": 0,
+            "canonical_task_reward_total": 0.0,
             "count": 0,
             "mean_reward": 0.0,
+            "raw_event_reward_count": 0,
+            "raw_event_reward_total": 0.0,
+            "raw_vs_canonical_reward_delta": 0.0,
             "total_reward": 0.0
           }
         },
         "local": {
           "completed": {
+            "canonical_task_mean_reward": 0.0,
+            "canonical_task_reward_count": 0,
+            "canonical_task_reward_total": 0.0,
             "count": 0,
             "mean_reward": 0.0,
+            "raw_event_reward_count": 0,
+            "raw_event_reward_total": 0.0,
+            "raw_vs_canonical_reward_delta": 0.0,
             "total_reward": 0.0
           },
           "dropped": {
+            "canonical_task_mean_reward": 0.0,
+            "canonical_task_reward_count": 0,
+            "canonical_task_reward_total": 0.0,
             "count": 0,
             "mean_reward": 0.0,
+            "raw_event_reward_count": 0,
+            "raw_event_reward_total": 0.0,
+            "raw_vs_canonical_reward_delta": 0.0,
             "total_reward": 0.0
           }
         },
         "vertical": {
           "completed": {
+            "canonical_task_mean_reward": 0.0,
+            "canonical_task_reward_count": 0,
+            "canonical_task_reward_total": 0.0,
             "count": 0,
             "mean_reward": 0.0,
+            "raw_event_reward_count": 0,
+            "raw_event_reward_total": 0.0,
+            "raw_vs_canonical_reward_delta": 0.0,
             "total_reward": 0.0
           },
           "dropped": {
-            "count": 21004,
+            "canonical_task_mean_reward": -40.0,
+            "canonical_task_reward_count": 10551,
+            "canonical_task_reward_total": -422040.0,
+            "count": 10551,
             "mean_reward": -40.0,
-            "total_reward": -840160.0
+            "raw_event_reward_count": 0,
+            "raw_event_reward_total": 0.0,
+            "raw_vs_canonical_reward_delta": 422040.0,
+            "total_reward": -422040.0
           }
         }
       },
       "reward_by_terminal_outcome": {
         "completed": 0.0,
-        "dropped": -840160.0
+        "dropped": -422040.0
       },
       "zero_reward_count": 0
     },
     "150": {
+      "canonical_task_mean_reward_by_action": {
+        "horizontal": 0.0,
+        "local": 0.0,
+        "vertical": 0.0
+      },
+      "canonical_task_reward_count": 10551,
+      "canonical_task_reward_count_by_action": {
+        "horizontal": 0,
+        "local": 0,
+        "vertical": 10551
+      },
+      "canonical_task_reward_total": -422040.0,
+      "canonical_task_reward_total_by_action": {
+        "horizontal": 0.0,
+        "local": 0.0,
+        "vertical": -422040.0
+      },
       "completion_reward_count_by_action": {
         "horizontal": 0,
         "local": 0,
@@ -71,60 +160,132 @@
       "drop_penalty_count_by_action": {
         "horizontal": 0,
         "local": 0,
-        "vertical": 21004
+        "vertical": 0
       },
       "nan_reward_count": 0,
-      "reward_available_count": 21004,
+      "raw_event_reward_count": 0,
+      "raw_event_reward_count_by_action": {
+        "horizontal": 0,
+        "local": 0,
+        "vertical": 0
+      },
+      "raw_event_reward_total": 0.0,
+      "raw_event_reward_total_by_action": {
+        "horizontal": 0.0,
+        "local": 0.0,
+        "vertical": 0.0
+      },
+      "raw_vs_canonical_reward_delta": 422040.0,
+      "raw_vs_canonical_reward_delta_by_action": {
+        "horizontal": 0.0,
+        "local": 0.0,
+        "vertical": 422040.0
+      },
+      "raw_vs_canonical_reward_delta_total": 422040.0,
+      "reward_available_count": 0,
       "reward_by_action": {
         "horizontal": 0.0,
         "local": 0.0,
-        "vertical": -840160.0
+        "vertical": -422040.0
       },
       "reward_by_action_and_terminal_outcome": {
         "horizontal": {
           "completed": {
+            "canonical_task_mean_reward": 0.0,
+            "canonical_task_reward_count": 0,
+            "canonical_task_reward_total": 0.0,
             "count": 0,
             "mean_reward": 0.0,
+            "raw_event_reward_count": 0,
+            "raw_event_reward_total": 0.0,
+            "raw_vs_canonical_reward_delta": 0.0,
             "total_reward": 0.0
           },
           "dropped": {
+            "canonical_task_mean_reward": 0.0,
+            "canonical_task_reward_count": 0,
+            "canonical_task_reward_total": 0.0,
             "count": 0,
             "mean_reward": 0.0,
+            "raw_event_reward_count": 0,
+            "raw_event_reward_total": 0.0,
+            "raw_vs_canonical_reward_delta": 0.0,
             "total_reward": 0.0
           }
         },
         "local": {
           "completed": {
+            "canonical_task_mean_reward": 0.0,
+            "canonical_task_reward_count": 0,
+            "canonical_task_reward_total": 0.0,
             "count": 0,
             "mean_reward": 0.0,
+            "raw_event_reward_count": 0,
+            "raw_event_reward_total": 0.0,
+            "raw_vs_canonical_reward_delta": 0.0,
             "total_reward": 0.0
           },
           "dropped": {
+            "canonical_task_mean_reward": 0.0,
+            "canonical_task_reward_count": 0,
+            "canonical_task_reward_total": 0.0,
             "count": 0,
             "mean_reward": 0.0,
+            "raw_event_reward_count": 0,
+            "raw_event_reward_total": 0.0,
+            "raw_vs_canonical_reward_delta": 0.0,
             "total_reward": 0.0
           }
         },
         "vertical": {
           "completed": {
+            "canonical_task_mean_reward": 0.0,
+            "canonical_task_reward_count": 0,
+            "canonical_task_reward_total": 0.0,
             "count": 0,
             "mean_reward": 0.0,
+            "raw_event_reward_count": 0,
+            "raw_event_reward_total": 0.0,
+            "raw_vs_canonical_reward_delta": 0.0,
             "total_reward": 0.0
           },
           "dropped": {
-            "count": 21004,
+            "canonical_task_mean_reward": -40.0,
+            "canonical_task_reward_count": 10551,
+            "canonical_task_reward_total": -422040.0,
+            "count": 10551,
             "mean_reward": -40.0,
-            "total_reward": -840160.0
+            "raw_event_reward_count": 0,
+            "raw_event_reward_total": 0.0,
+            "raw_vs_canonical_reward_delta": 422040.0,
+            "total_reward": -422040.0
           }
         }
       },
       "reward_by_terminal_outcome": {
         "completed": 0.0,
-        "dropped": -840160.0
+        "dropped": -422040.0
       },
       "zero_reward_count": 0
     },
     "200": {
+      "canonical_task_mean_reward_by_action": {
+        "horizontal": 0.0,
+        "local": 0.0,
+        "vertical": 0.0
+      },
+      "canonical_task_reward_count": 10551,
+      "canonical_task_reward_count_by_action": {
+        "horizontal": 0,
+        "local": 0,
+        "vertical": 10551
+      },
+      "canonical_task_reward_total": -422040.0,
+      "canonical_task_reward_total_by_action": {
+        "horizontal": 0.0,
+        "local": 0.0,
+        "vertical": -422040.0
+      },
       "completion_reward_count_by_action": {
         "horizontal": 0,
         "local": 0,
@@ -133,60 +294,132 @@
       "drop_penalty_count_by_action": {
         "horizontal": 0,
         "local": 0,
-        "vertical": 21004
+        "vertical": 0
       },
       "nan_reward_count": 0,
-      "reward_available_count": 21004,
+      "raw_event_reward_count": 0,
+      "raw_event_reward_count_by_action": {
+        "horizontal": 0,
+        "local": 0,
+        "vertical": 0
+      },
+      "raw_event_reward_total": 0.0,
+      "raw_event_reward_total_by_action": {
+        "horizontal": 0.0,
+        "local": 0.0,
+        "vertical": 0.0
+      },
+      "raw_vs_canonical_reward_delta": 422040.0,
+      "raw_vs_canonical_reward_delta_by_action": {
+        "horizontal": 0.0,
+        "local": 0.0,
+        "vertical": 422040.0
+      },
+      "raw_vs_canonical_reward_delta_total": 422040.0,
+      "reward_available_count": 0,
       "reward_by_action": {
         "horizontal": 0.0,
         "local": 0.0,
-        "vertical": -840160.0
+        "vertical": -422040.0
       },
       "reward_by_action_and_terminal_outcome": {
         "horizontal": {
           "completed": {
+            "canonical_task_mean_reward": 0.0,
+            "canonical_task_reward_count": 0,
+            "canonical_task_reward_total": 0.0,
             "count": 0,
             "mean_reward": 0.0,
+            "raw_event_reward_count": 0,
+            "raw_event_reward_total": 0.0,
+            "raw_vs_canonical_reward_delta": 0.0,
             "total_reward": 0.0
           },
           "dropped": {
+            "canonical_task_mean_reward": 0.0,
+            "canonical_task_reward_count": 0,
+            "canonical_task_reward_total": 0.0,
             "count": 0,
             "mean_reward": 0.0,
+            "raw_event_reward_count": 0,
+            "raw_event_reward_total": 0.0,
+            "raw_vs_canonical_reward_delta": 0.0,
             "total_reward": 0.0
           }
         },
         "local": {
           "completed": {
+            "canonical_task_mean_reward": 0.0,
+            "canonical_task_reward_count": 0,
+            "canonical_task_reward_total": 0.0,
             "count": 0,
             "mean_reward": 0.0,
+            "raw_event_reward_count": 0,
+            "raw_event_reward_total": 0.0,
+            "raw_vs_canonical_reward_delta": 0.0,
             "total_reward": 0.0
           },
           "dropped": {
+            "canonical_task_mean_reward": 0.0,
+            "canonical_task_reward_count": 0,
+            "canonical_task_reward_total": 0.0,
             "count": 0,
             "mean_reward": 0.0,
+            "raw_event_reward_count": 0,
+            "raw_event_reward_total": 0.0,
+            "raw_vs_canonical_reward_delta": 0.0,
             "total_reward": 0.0
           }
         },
         "vertical": {
           "completed": {
+            "canonical_task_mean_reward": 0.0,
+            "canonical_task_reward_count": 0,
+            "canonical_task_reward_total": 0.0,
             "count": 0,
             "mean_reward": 0.0,
+            "raw_event_reward_count": 0,
+            "raw_event_reward_total": 0.0,
+            "raw_vs_canonical_reward_delta": 0.0,
             "total_reward": 0.0
           },
           "dropped": {
-            "count": 21004,
+            "canonical_task_mean_reward": -40.0,
+            "canonical_task_reward_count": 10551,
+            "canonical_task_reward_total": -422040.0,
+            "count": 10551,
             "mean_reward": -40.0,
-            "total_reward": -840160.0
+            "raw_event_reward_count": 0,
+            "raw_event_reward_total": 0.0,
+            "raw_vs_canonical_reward_delta": 422040.0,
+            "total_reward": -422040.0
           }
         }
       },
       "reward_by_terminal_outcome": {
         "completed": 0.0,
-        "dropped": -840160.0
+        "dropped": -422040.0
       },
       "zero_reward_count": 0
     },
     "500": {
+      "canonical_task_mean_reward_by_action": {
+        "horizontal": 0.0,
+        "local": 0.0,
+        "vertical": 0.0
+      },
+      "canonical_task_reward_count": 10551,
+      "canonical_task_reward_count_by_action": {
+        "horizontal": 0,
+        "local": 0,
+        "vertical": 10551
+      },
+      "canonical_task_reward_total": -422040.0,
+      "canonical_task_reward_total_by_action": {
+        "horizontal": 0.0,
+        "local": 0.0,
+        "vertical": -422040.0
+      },
       "completion_reward_count_by_action": {
         "horizontal": 0,
         "local": 0,
@@ -195,56 +428,111 @@
       "drop_penalty_count_by_action": {
         "horizontal": 0,
         "local": 0,
-        "vertical": 21004
+        "vertical": 0
       },
       "nan_reward_count": 0,
-      "reward_available_count": 21004,
+      "raw_event_reward_count": 0,
+      "raw_event_reward_count_by_action": {
+        "horizontal": 0,
+        "local": 0,
+        "vertical": 0
+      },
+      "raw_event_reward_total": 0.0,
+      "raw_event_reward_total_by_action": {
+        "horizontal": 0.0,
+        "local": 0.0,
+        "vertical": 0.0
+      },
+      "raw_vs_canonical_reward_delta": 422040.0,
+      "raw_vs_canonical_reward_delta_by_action": {
+        "horizontal": 0.0,
+        "local": 0.0,
+        "vertical": 422040.0
+      },
+      "raw_vs_canonical_reward_delta_total": 422040.0,
+      "reward_available_count": 0,
       "reward_by_action": {
         "horizontal": 0.0,
         "local": 0.0,
-        "vertical": -840160.0
+        "vertical": -422040.0
       },
       "reward_by_action_and_terminal_outcome": {
         "horizontal": {
           "completed": {
+            "canonical_task_mean_reward": 0.0,
+            "canonical_task_reward_count": 0,
+            "canonical_task_reward_total": 0.0,
             "count": 0,
             "mean_reward": 0.0,
+            "raw_event_reward_count": 0,
+            "raw_event_reward_total": 0.0,
+            "raw_vs_canonical_reward_delta": 0.0,
             "total_reward": 0.0
           },
           "dropped": {
+            "canonical_task_mean_reward": 0.0,
+            "canonical_task_reward_count": 0,
+            "canonical_task_reward_total": 0.0,
             "count": 0,
             "mean_reward": 0.0,
+            "raw_event_reward_count": 0,
+            "raw_event_reward_total": 0.0,
+            "raw_vs_canonical_reward_delta": 0.0,
             "total_reward": 0.0
           }
         },
         "local": {
           "completed": {
+            "canonical_task_mean_reward": 0.0,
+            "canonical_task_reward_count": 0,
+            "canonical_task_reward_total": 0.0,
             "count": 0,
             "mean_reward": 0.0,
+            "raw_event_reward_count": 0,
+            "raw_event_reward_total": 0.0,
+            "raw_vs_canonical_reward_delta": 0.0,
             "total_reward": 0.0
           },
           "dropped": {
+            "canonical_task_mean_reward": 0.0,
+            "canonical_task_reward_count": 0,
+            "canonical_task_reward_total": 0.0,
             "count": 0,
             "mean_reward": 0.0,
+            "raw_event_reward_count": 0,
+            "raw_event_reward_total": 0.0,
+            "raw_vs_canonical_reward_delta": 0.0,
             "total_reward": 0.0
           }
         },
         "vertical": {
           "completed": {
+            "canonical_task_mean_reward": 0.0,
+            "canonical_task_reward_count": 0,
+            "canonical_task_reward_total": 0.0,
             "count": 0,
             "mean_reward": 0.0,
+            "raw_event_reward_count": 0,
+            "raw_event_reward_total": 0.0,
+            "raw_vs_canonical_reward_delta": 0.0,
             "total_reward": 0.0
           },
           "dropped": {
-            "count": 21004,
+            "canonical_task_mean_reward": -40.0,
+            "canonical_task_reward_count": 10551,
+            "canonical_task_reward_total": -422040.0,
+            "count": 10551,
             "mean_reward": -40.0,
-            "total_reward": -840160.0
+            "raw_event_reward_count": 0,
+            "raw_event_reward_total": 0.0,
+            "raw_vs_canonical_reward_delta": 422040.0,
+            "total_reward": -422040.0
           }
         }
       },
       "reward_by_terminal_outcome": {
         "completed": 0.0,
-        "dropped": -840160.0
+        "dropped": -422040.0
       },
       "zero_reward_count": 0
     }
