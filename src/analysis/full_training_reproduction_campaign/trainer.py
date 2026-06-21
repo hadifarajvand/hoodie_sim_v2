@@ -196,8 +196,29 @@ class DDQNTrainer:
         )
         return deque([zero_row] * self.config.lookback_w, maxlen=self.config.lookback_w)
 
-    def _state_tensor(self, history: deque[tuple[float, float, float]]) -> torch.Tensor:
+    def _state_tensor(self, history: deque[tuple[float, ...]]) -> torch.Tensor:
         return build_state_window_tensor(build_state_window(history, state_representation_profile=self.config.state_representation_profile))
+
+    def _decision_state_tensor(
+        self,
+        *,
+        history: deque[tuple[float, ...]],
+        observation: dict[str, Any],
+        current_task: Any,
+        episode_length: int,
+    ) -> tuple[torch.Tensor, tuple[float, ...], tuple[tuple[float, ...], ...]]:
+        current_feature = build_state_vector(
+            observation=observation,
+            current_task=current_task,
+            episode_length=episode_length,
+            state_representation_profile=self.config.state_representation_profile,
+        )
+        decision_history = tuple(history) + (current_feature,)
+        decision_window = build_state_window(
+            decision_history,
+            state_representation_profile=self.config.state_representation_profile,
+        )
+        return build_state_window_tensor(decision_window), current_feature, decision_window
 
     def _episode_rollout(
         self,
@@ -223,7 +244,12 @@ class DDQNTrainer:
             current_task = env.current_task
             if current_task is not None:
                 observation = env.observe_flat(current_task)
-                state_tensor = self._state_tensor(history)
+                state_tensor, current_feature, state_window = self._decision_state_tensor(
+                    history=history,
+                    observation=observation,
+                    current_task=current_task,
+                    episode_length=episode_length,
+                )
                 action = self.policy.choose_action(state_tensor, observation.get("legal_action_mask", {}))
                 if not _ensure_valid_action(action, observation.get("legal_action_mask", {})):
                     illegal_action_count += 1
@@ -240,10 +266,6 @@ class DDQNTrainer:
                 observation=env.observe_flat(next_current_task) if next_current_task is not None else next_observation if isinstance(next_observation, dict) else {},
                 current_task=next_current_task,
                 episode_length=episode_length,
-                state_representation_profile=self.config.state_representation_profile,
-            )
-            state_window = build_state_window(
-                history,
                 state_representation_profile=self.config.state_representation_profile,
             )
             history.append(next_feature)
@@ -526,7 +548,13 @@ class DDQNTrainer:
                 current_task = env.current_task
                 if current_task is not None:
                     observation = env.observe_flat(current_task)
-                    action = self.policy.choose_action(self._state_tensor(history), observation.get("legal_action_mask", {}))
+                    state_tensor, current_feature, _ = self._decision_state_tensor(
+                        history=history,
+                        observation=observation,
+                        current_task=current_task,
+                        episode_length=self.config.evaluation_episode_length,
+                    )
+                    action = self.policy.choose_action(state_tensor, observation.get("legal_action_mask", {}))
                 else:
                     action = None
                 next_observation, reward, terminated, truncated, info = env.step(action)

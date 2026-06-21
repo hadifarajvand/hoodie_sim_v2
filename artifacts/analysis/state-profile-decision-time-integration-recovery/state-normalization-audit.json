@@ -1,0 +1,11 @@
+{
+  "decision_state_contains_current_task": true,
+  "eval_state_dim": 30,
+  "eval_state_representation_profile": "deadline_queue_feasibility_v1",
+  "state_has_inf": false,
+  "state_has_nan": false,
+  "train_eval_state_dim_match": true,
+  "train_eval_state_profile_match": true,
+  "train_state_dim": 30,
+  "train_state_representation_profile": "deadline_queue_feasibility_v1"
+}

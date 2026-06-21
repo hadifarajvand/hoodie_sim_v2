@@ -1,0 +1,9 @@
+{
+  "current_feature_tail_matches": true,
+  "decision_state_contains_current_task": true,
+  "sample_records": [],
+  "state_dim": 30,
+  "state_has_inf": false,
+  "state_has_nan": false,
+  "state_representation_profile": "deadline_queue_feasibility_v1"
+}

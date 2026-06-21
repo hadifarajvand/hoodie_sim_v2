@@ -1,0 +1,21 @@
+{
+  "all_keys_match": true,
+  "artifact_exists": true,
+  "artifact_path": "artifacts/analysis/state-profile-decision-time-integration-recovery/state-profile-integration-recovery-report.json",
+  "comparisons": {
+    "decision_state_injection_audit": true,
+    "feature_id": true,
+    "final_verdict": true,
+    "reconciliation_after_decision_state_fix": true,
+    "replay_state_alignment_audit": true,
+    "train_eval_state_profile_consistency": true
+  },
+  "keys_compared": [
+    "feature_id",
+    "final_verdict",
+    "decision_state_injection_audit",
+    "train_eval_state_profile_consistency",
+    "replay_state_alignment_audit",
+    "reconciliation_after_decision_state_fix"
+  ]
+}
