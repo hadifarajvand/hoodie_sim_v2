@@ -1,0 +1,9 @@
+{
+  "paper_reproduction_claim_made": false,
+  "exact_numerical_reproduction_claim_made": false,
+  "performance_superiority_claim_made": false,
+  "baseline_superiority_claim_made": false,
+  "training_5000_run": false,
+  "max_training_budget_executed": 0,
+  "claim_safety_passed": true
+}

@@ -1,0 +1,12 @@
+{
+  "candidates": [
+    "legacy_minimal_candidate",
+    "deadline_queue_feasibility_candidate"
+  ],
+  "budgets": [
+    50,
+    100
+  ],
+  "schema_consistent": true,
+  "superiority_claim_made": false
+}

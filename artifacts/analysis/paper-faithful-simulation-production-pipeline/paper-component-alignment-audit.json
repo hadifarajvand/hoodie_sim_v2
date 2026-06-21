@@ -1,0 +1,233 @@
+{
+  "feature_id": "080-paper-faithful-simulation-production-pipeline",
+  "component_count": 25,
+  "broken_component_count": 2,
+  "components": [
+    {
+      "paper_component": "topology",
+      "repository_implementation": "src/environment/, structured_paper_topology_linkrate_registry",
+      "status": "implemented_but_unverified",
+      "evidence_files": "src/environment/environment.py",
+      "gap": "node/link counts not cross-checked to a specific paper figure",
+      "proposed_repair": "map to paper topology table",
+      "paper_alignment_status": "inferred"
+    },
+    {
+      "paper_component": "agents / mobile devices / nodes",
+      "repository_implementation": "src/agents/, src/environment",
+      "status": "implemented_but_unverified",
+      "evidence_files": "src/agents/",
+      "gap": "agent count vs paper unverified",
+      "proposed_repair": "document agent cardinality",
+      "paper_alignment_status": "inferred"
+    },
+    {
+      "paper_component": "edge servers",
+      "repository_implementation": "src/environment",
+      "status": "implemented_but_unverified",
+      "evidence_files": "src/environment/environment.py",
+      "gap": "edge capacity profile not paper-matched",
+      "proposed_repair": "record edge CPU profile",
+      "paper_alignment_status": "inferred"
+    },
+    {
+      "paper_component": "cloud server",
+      "repository_implementation": "public_cloud_queue_capacity_sharing",
+      "status": "implemented_with_approximation",
+      "evidence_files": "src/analysis/public_cloud_queue_capacity_sharing/",
+      "gap": "cloud sharing approximated",
+      "proposed_repair": "document approximation",
+      "paper_alignment_status": "approximated"
+    },
+    {
+      "paper_component": "task generation",
+      "repository_implementation": "src/environment",
+      "status": "implemented_but_unverified",
+      "evidence_files": "src/environment/gym_adapter.py",
+      "gap": "arrival process not matched to paper",
+      "proposed_repair": "document arrival model",
+      "paper_alignment_status": "inferred"
+    },
+    {
+      "paper_component": "task size",
+      "repository_implementation": "deadline_timeout_feasible_workload_calibration",
+      "status": "implemented_with_approximation",
+      "evidence_files": "src/analysis/deadline_timeout_feasible_workload_calibration/",
+      "gap": "size distribution calibrated, not paper-exact",
+      "proposed_repair": "tag calibration_profile",
+      "paper_alignment_status": "approximated"
+    },
+    {
+      "paper_component": "processing density",
+      "repository_implementation": "deadline_timeout_feasible_workload_calibration",
+      "status": "implemented_with_approximation",
+      "evidence_files": "src/analysis/deadline_timeout_feasible_workload_calibration/",
+      "gap": "density calibrated",
+      "proposed_repair": "tag calibration_profile",
+      "paper_alignment_status": "approximated"
+    },
+    {
+      "paper_component": "deadline / timeout",
+      "repository_implementation": "completion_path_deadline_feasibility_repair",
+      "status": "implemented_with_approximation",
+      "evidence_files": "src/analysis/completion_path_deadline_feasibility_repair/feasibility.py",
+      "gap": "deadline envelope calibrated in F069",
+      "proposed_repair": "document calibrated envelope",
+      "paper_alignment_status": "approximated"
+    },
+    {
+      "paper_component": "transmission rate",
+      "repository_implementation": "link_rate_transmission_delay_contract",
+      "status": "implemented_but_unverified",
+      "evidence_files": "src/analysis/link_rate_transmission_delay_contract/",
+      "gap": "link rates unverified vs paper",
+      "proposed_repair": "document link-rate registry",
+      "paper_alignment_status": "inferred"
+    },
+    {
+      "paper_component": "execution capacity",
+      "repository_implementation": "computation_delay_cpu_unit_validation",
+      "status": "implemented_but_unverified",
+      "evidence_files": "src/analysis/computation_delay_cpu_unit_validation/",
+      "gap": "cpu unit unverified",
+      "proposed_repair": "document cpu unit",
+      "paper_alignment_status": "inferred"
+    },
+    {
+      "paper_component": "local action",
+      "repository_implementation": "src/environment, gym_adapter",
+      "status": "implemented_but_unverified",
+      "evidence_files": "src/environment/gym_adapter.py",
+      "gap": "verified legal, not paper-cross-checked",
+      "proposed_repair": "keep",
+      "paper_alignment_status": "inferred"
+    },
+    {
+      "paper_component": "horizontal action",
+      "repository_implementation": "src/environment, gym_adapter",
+      "status": "implemented_but_unverified",
+      "evidence_files": "src/environment/gym_adapter.py",
+      "gap": "as above",
+      "proposed_repair": "keep",
+      "paper_alignment_status": "inferred"
+    },
+    {
+      "paper_component": "vertical action",
+      "repository_implementation": "src/environment, gym_adapter",
+      "status": "implemented_but_unverified",
+      "evidence_files": "src/environment/gym_adapter.py",
+      "gap": "as above",
+      "proposed_repair": "keep",
+      "paper_alignment_status": "inferred"
+    },
+    {
+      "paper_component": "queueing behavior",
+      "repository_implementation": "public_cloud_queue_capacity_sharing",
+      "status": "implemented_but_unverified",
+      "evidence_files": "src/environment/runtime_model.py",
+      "gap": "service discipline unverified",
+      "proposed_repair": "document discipline",
+      "paper_alignment_status": "inferred"
+    },
+    {
+      "paper_component": "transmission/execution latency",
+      "repository_implementation": "transmission_delay_runtime_wiring",
+      "status": "implemented_but_unverified",
+      "evidence_files": "src/analysis/transmission_delay_runtime_wiring/",
+      "gap": "latency model unverified",
+      "proposed_repair": "document latency model",
+      "paper_alignment_status": "inferred"
+    },
+    {
+      "paper_component": "reward function",
+      "repository_implementation": "src/environment/reward_timing.py",
+      "status": "implemented_but_unverified",
+      "evidence_files": "src/environment/reward_timing.py:116",
+      "gap": "phi_private + drop_penalty=40; matches canonical recompute",
+      "proposed_repair": "keep; do not modify",
+      "paper_alignment_status": "inferred"
+    },
+    {
+      "paper_component": "terminal event lifecycle",
+      "repository_implementation": "terminal_lifecycle_accounting_50_100_comparison",
+      "status": "broken",
+      "evidence_files": "src/analysis/terminal_lifecycle_accounting_50_100_comparison/repaired_terminal_evaluator.py",
+      "gap": "horizon-finalized tasks counted as reward-bearing without reward_emitted event (Feature 072 blocker)",
+      "proposed_repair": "Repair A: horizon-aware reconciliation",
+      "paper_alignment_status": "inferred"
+    },
+    {
+      "paper_component": "policy / DRL algorithm",
+      "repository_implementation": "src/training, DDQNTrainer",
+      "status": "implemented_but_unverified",
+      "evidence_files": "src/training/",
+      "gap": "DDQN present; convergence not established",
+      "proposed_repair": "keep",
+      "paper_alignment_status": "inferred"
+    },
+    {
+      "paper_component": "state representation",
+      "repository_implementation": "state_profile_decision_time_integration_recovery",
+      "status": "implemented_but_unverified",
+      "evidence_files": "src/analysis/state_profile_decision_time_integration_recovery/state_features.py",
+      "gap": "legacy(3)+new(30) profiles; decision-time injection in place",
+      "proposed_repair": "keep; verify dims",
+      "paper_alignment_status": "inferred"
+    },
+    {
+      "paper_component": "training workflow",
+      "repository_implementation": "full_training_reproduction_campaign",
+      "status": "implemented_but_unverified",
+      "evidence_files": "src/analysis/full_training_reproduction_campaign/trainer.py",
+      "gap": "lightweight only validated",
+      "proposed_repair": "keep budget<=100",
+      "paper_alignment_status": "inferred"
+    },
+    {
+      "paper_component": "evaluation workflow",
+      "repository_implementation": "repaired_terminal_evaluator",
+      "status": "broken",
+      "evidence_files": "src/analysis/terminal_lifecycle_accounting_50_100_comparison/repaired_terminal_evaluator.py",
+      "gap": "reconciliation fails post state-injection",
+      "proposed_repair": "Repair A",
+      "paper_alignment_status": "inferred"
+    },
+    {
+      "paper_component": "baseline policies",
+      "repository_implementation": "baseline_* modules",
+      "status": "implemented_but_unverified",
+      "evidence_files": "src/analysis/baseline_policy_comparative_evaluation_readiness/",
+      "gap": "fixed local/horizontal/vertical/random present",
+      "proposed_repair": "validate schema",
+      "paper_alignment_status": "inferred"
+    },
+    {
+      "paper_component": "metrics",
+      "repository_implementation": "paper_faithful_simulation_production_pipeline/schema.py",
+      "status": "implemented_but_unverified",
+      "evidence_files": "src/analysis/paper_faithful_simulation_production_pipeline/schema.py",
+      "gap": "unified schema defined (Feature 080)",
+      "proposed_repair": "use across policies",
+      "paper_alignment_status": "inferred"
+    },
+    {
+      "paper_component": "figures",
+      "repository_implementation": "unified_campaign_result_analysis_figures_findings",
+      "status": "implemented_but_unverified",
+      "evidence_files": "src/analysis/unified_campaign_result_analysis_figures_findings/",
+      "gap": "matplotlib only",
+      "proposed_repair": "keep",
+      "paper_alignment_status": "inferred"
+    },
+    {
+      "paper_component": "artifact pipeline",
+      "repository_implementation": "this feature",
+      "status": "implemented_but_unverified",
+      "evidence_files": "artifacts/analysis/paper-faithful-simulation-production-pipeline/",
+      "gap": "single run dir",
+      "proposed_repair": "keep",
+      "paper_alignment_status": "inferred"
+    }
+  ],
+  "audit_complete": true
+}

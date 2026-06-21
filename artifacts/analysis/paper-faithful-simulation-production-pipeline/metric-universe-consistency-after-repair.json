@@ -1,0 +1,6 @@
+{
+  "decision_count_universe": "U_full_decisions",
+  "unique_task_count_universe": "U_unique_tasks",
+  "selected_action_universe": "U_selected_action_tasks",
+  "metric_universe_consistency_passed": true
+}

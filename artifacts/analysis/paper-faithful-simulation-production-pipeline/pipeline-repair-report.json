@@ -1,0 +1,7 @@
+{
+  "repair_A_implemented": true,
+  "environment_semantics_modified": false,
+  "reward_function_modified": false,
+  "policy_algorithm_modified": false,
+  "integrated_rerun_executed": false
+}

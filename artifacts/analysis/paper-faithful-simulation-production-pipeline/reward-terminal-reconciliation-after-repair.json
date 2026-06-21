@@ -1,0 +1,7 @@
+{
+  "repair": "Repair A horizon-aware reconciliation implemented and unit-tested",
+  "integrated_campaign_rerun_executed": false,
+  "campaign_level_reward_reconciliation_passed": false,
+  "campaign_level_terminal_reconciliation_passed": false,
+  "note": "module src/analysis/paper_faithful_simulation_production_pipeline/reconciliation.py reconciles synthetic horizon-truncation records to delta=0; integrated 50/100 re-run is gated (Step E)."
+}

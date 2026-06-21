@@ -1,0 +1,98 @@
+{
+  "requires_user_review_before_environment_semantic_change": false,
+  "ordered_repair_steps": [
+    {
+      "id": "A",
+      "name": "horizon-aware reward/terminal reconciliation",
+      "files": [
+        "src/analysis/paper_faithful_simulation_production_pipeline/reconciliation.py (new)"
+      ],
+      "scope": "analysis_only",
+      "expected_artifacts": [
+        "reward-terminal-reconciliation-after-repair.json"
+      ],
+      "tests": [
+        "tests/unit/test_paper_faithful_simulation_pipeline_reconciliation.py"
+      ],
+      "gate": "gate_6_reward_reconciliation_passed && gate_7_terminal_reconciliation_passed",
+      "risk": "shared legacy evaluator unchanged to avoid regressing F067-072; corrected logic isolated.",
+      "rollback": "delete new module; no env/legacy code touched."
+    },
+    {
+      "id": "B",
+      "name": "state/profile integration consistency check",
+      "files": [
+        "src/analysis/paper_faithful_simulation_production_pipeline/ (consumes F072 evidence)"
+      ],
+      "scope": "analysis_only",
+      "expected_artifacts": [
+        "state-profile-consistency-after-repair.json"
+      ],
+      "tests": [
+        "tests/unit/test_paper_faithful_simulation_pipeline_state_profile.py"
+      ],
+      "gate": "gate_9_train_eval_state_profile_consistent",
+      "risk": "low",
+      "rollback": "n/a"
+    },
+    {
+      "id": "C",
+      "name": "paper component alignment audit",
+      "files": [
+        "src/analysis/paper_faithful_simulation_production_pipeline/runner.py"
+      ],
+      "scope": "analysis_only",
+      "expected_artifacts": [
+        "paper-component-alignment-audit.json/md"
+      ],
+      "gate": "gate_2_paper_component_alignment_audited",
+      "risk": "low",
+      "rollback": "n/a"
+    },
+    {
+      "id": "D",
+      "name": "production-style artifact + schema generation",
+      "files": [
+        "src/analysis/paper_faithful_simulation_production_pipeline/schema.py"
+      ],
+      "scope": "analysis_only",
+      "expected_artifacts": [
+        "production-style-run-manifest.json",
+        "paper-compatible-metric-schema.json"
+      ],
+      "gate": "gate_8_metric_universe_consistency_passed",
+      "risk": "low",
+      "rollback": "n/a"
+    },
+    {
+      "id": "E_gated",
+      "name": "integrated 50/100 reconciliation re-run (NOT executed this pass)",
+      "files": [
+        "wires horizon_aware_reconciliation into a 50/100 evaluation campaign"
+      ],
+      "scope": "analysis_only_but_compute_heavy",
+      "expected_artifacts": [
+        "paper-compatible-metrics-50.json",
+        "paper-compatible-metrics-100.json"
+      ],
+      "gate": "all gates -> safe_to_proceed_to_medium_training_smoke",
+      "risk": "compute; requires torch trainer + 6 policies x 100 eval episodes.",
+      "rollback": "discard run directory."
+    }
+  ],
+  "budget_policy": {
+    "training_budgets": [
+      50,
+      100
+    ],
+    "max_training_budget": 100,
+    "forbidden": [
+      150,
+      200,
+      500,
+      1000,
+      2000,
+      5000
+    ]
+  }
+}

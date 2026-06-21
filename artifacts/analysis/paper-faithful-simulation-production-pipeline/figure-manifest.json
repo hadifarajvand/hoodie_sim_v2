@@ -1,0 +1,11 @@
+{
+  "figures": [
+    "artifacts/analysis/paper-faithful-simulation-production-pipeline/figures/figure_01_paper_component_alignment_status.png",
+    "artifacts/analysis/paper-faithful-simulation-production-pipeline/figures/figure_02_reward_terminal_reconciliation_after_repair.png",
+    "artifacts/analysis/paper-faithful-simulation-production-pipeline/figures/figure_03_completion_drop_deadline_metrics_50_100.png",
+    "artifacts/analysis/paper-faithful-simulation-production-pipeline/figures/figure_04_action_distribution_50_100.png",
+    "artifacts/analysis/paper-faithful-simulation-production-pipeline/figures/figure_05_baseline_vs_candidate_metrics.png",
+    "artifacts/analysis/paper-faithful-simulation-production-pipeline/figures/figure_06_state_profile_coverage.png",
+    "artifacts/analysis/paper-faithful-simulation-production-pipeline/figures/figure_07_queue_latency_deadline_summary.png"
+  ]
+}

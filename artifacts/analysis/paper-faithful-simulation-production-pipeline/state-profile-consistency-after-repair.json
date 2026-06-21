@@ -1,0 +1,7 @@
+{
+  "legacy_profile_preserved": true,
+  "new_profile_preserved": true,
+  "state_dim_legacy": 3,
+  "state_dim_new": 30,
+  "train_eval_state_profile_consistent": true
+}

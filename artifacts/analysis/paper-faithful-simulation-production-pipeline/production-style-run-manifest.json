@@ -1,0 +1,19 @@
+{
+  "run_id": "F080-paper-faithful-simulation-production-pipeline",
+  "branch": "080-paper-faithful-simulation-production-pipeline",
+  "base_branch": "072-state-profile-decision-time-integration-recovery",
+  "commit_sha": "5a98894819bef1fb3b955970c7ca0281ebed9dda",
+  "training_budgets_executed": [],
+  "max_training_budget_executed": 0,
+  "training_5000_run": false,
+  "figures": [
+    "artifacts/analysis/paper-faithful-simulation-production-pipeline/figures/figure_01_paper_component_alignment_status.png",
+    "artifacts/analysis/paper-faithful-simulation-production-pipeline/figures/figure_02_reward_terminal_reconciliation_after_repair.png",
+    "artifacts/analysis/paper-faithful-simulation-production-pipeline/figures/figure_03_completion_drop_deadline_metrics_50_100.png",
+    "artifacts/analysis/paper-faithful-simulation-production-pipeline/figures/figure_04_action_distribution_50_100.png",
+    "artifacts/analysis/paper-faithful-simulation-production-pipeline/figures/figure_05_baseline_vs_candidate_metrics.png",
+    "artifacts/analysis/paper-faithful-simulation-production-pipeline/figures/figure_06_state_profile_coverage.png",
+    "artifacts/analysis/paper-faithful-simulation-production-pipeline/figures/figure_07_queue_latency_deadline_summary.png"
+  ],
+  "artifacts_root": "artifacts/analysis/paper-faithful-simulation-production-pipeline"
+}

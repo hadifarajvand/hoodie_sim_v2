@@ -1,0 +1,8 @@
+{
+  "final_verdict": "paper_faithful_simulation_pipeline_blocked",
+  "recommended_next_diagnostic_decision": "fix_reward_terminal_reconciliation_next",
+  "remaining_blockers": [
+    "campaign_level_reward_reconciliation_after_integrated_rerun",
+    "campaign_level_terminal_reconciliation_after_integrated_rerun"
+  ]
+}

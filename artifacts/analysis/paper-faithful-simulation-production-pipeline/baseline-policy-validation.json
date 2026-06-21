@@ -1,0 +1,10 @@
+{
+  "baselines": [
+    "fixed_local_policy",
+    "fixed_horizontal_policy",
+    "fixed_vertical_policy",
+    "random_legal_policy"
+  ],
+  "schema_consistent": true,
+  "schema_field_count": 41
+}
