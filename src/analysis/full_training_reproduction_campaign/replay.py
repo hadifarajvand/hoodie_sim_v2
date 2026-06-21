@@ -14,7 +14,16 @@ ACTION_INDEX_TO_SEMANTICS: dict[int, str] = {
 
 SEMANTICS_TO_ACTION_INDEX: dict[str, int] = {value: key for key, value in ACTION_INDEX_TO_SEMANTICS.items()}
 
+STATE_REPRESENTATION_PROFILE_LEGACY_MINIMAL = "legacy_minimal"
+STATE_REPRESENTATION_PROFILE_DEADLINE_QUEUE_FEASIBILITY_V1 = "deadline_queue_feasibility_v1"
+STATE_REPRESENTATION_PROFILES: tuple[str, ...] = (
+    STATE_REPRESENTATION_PROFILE_LEGACY_MINIMAL,
+    STATE_REPRESENTATION_PROFILE_DEADLINE_QUEUE_FEASIBILITY_V1,
+)
+
 STATE_DIM = 3
+STATE_DIM_LEGACY_MINIMAL = 3
+STATE_DIM_DEADLINE_QUEUE_FEASIBILITY_V1 = 30
 LOOKBACK_W = 10
 DATA_SOURCE = "environment_rollout"
 
@@ -23,30 +32,207 @@ def zero_state_row() -> tuple[float, float, float]:
     return (0.0, 0.0, 0.0)
 
 
-def build_state_window(history: Iterable[tuple[float, float, float]]) -> tuple[tuple[float, float, float], ...]:
+def zero_state_row_for_profile(*, state_representation_profile: str = STATE_REPRESENTATION_PROFILE_LEGACY_MINIMAL) -> tuple[float, ...]:
+    if state_representation_profile == STATE_REPRESENTATION_PROFILE_LEGACY_MINIMAL:
+        return (0.0, 0.0, 0.0)
+    if state_representation_profile == STATE_REPRESENTATION_PROFILE_DEADLINE_QUEUE_FEASIBILITY_V1:
+        return tuple(0.0 for _ in range(STATE_DIM_DEADLINE_QUEUE_FEASIBILITY_V1))
+    raise ValueError(f"Unsupported state representation profile: {state_representation_profile}")
+
+
+def state_dimension_for_profile(state_representation_profile: str) -> int:
+    if state_representation_profile == STATE_REPRESENTATION_PROFILE_LEGACY_MINIMAL:
+        return STATE_DIM_LEGACY_MINIMAL
+    if state_representation_profile == STATE_REPRESENTATION_PROFILE_DEADLINE_QUEUE_FEASIBILITY_V1:
+        return STATE_DIM_DEADLINE_QUEUE_FEASIBILITY_V1
+    raise ValueError(f"Unsupported state representation profile: {state_representation_profile}")
+
+
+def _clip_unit(value: float) -> float:
+    if value != value or value in {float("inf"), float("-inf")}:
+        return 0.0
+    return max(0.0, min(float(value), 1.0))
+
+
+def _clip_signed_unit(value: float) -> float:
+    if value != value or value in {float("inf"), float("-inf")}:
+        return 0.0
+    return max(-1.0, min(float(value), 1.0))
+
+
+def _safe_float(value: Any, default: float = 0.0) -> float:
+    try:
+        result = float(value)
+    except Exception:
+        return float(default)
+    if result != result or result in {float("inf"), float("-inf")}:
+        return float(default)
+    return result
+
+
+def _safe_int(value: Any, default: int = 0) -> int:
+    try:
+        return int(value)
+    except Exception:
+        return int(default)
+
+
+def _observation_value(observation: dict[str, Any], key: str, default: Any = None) -> Any:
+    if key in observation:
+        return observation.get(key, default)
+    return observation.get(key.replace("_norm", ""), default)
+
+
+def _path_total_slots_features(
+    *,
+    observation: dict[str, Any],
+    current_task: Any | None,
+    episode_length: int,
+) -> tuple[float, float, float, float, float, float, bool, bool, bool, float, float, float, float, float]:
+    task_size = _safe_float(_observation_value(observation, "task_size", getattr(current_task, "size", 0.0) if current_task is not None else 0.0))
+    processing_density = _safe_float(
+        _observation_value(observation, "processing_density", getattr(current_task, "processing_density", 0.0) if current_task is not None else 0.0)
+    )
+    timeout_length = max(_safe_int(_observation_value(observation, "timeout_length", getattr(current_task, "timeout_length", 0) if current_task is not None else 0)), 0)
+    absolute_deadline_slot = _safe_int(
+        _observation_value(
+            observation,
+            "absolute_deadline_slot",
+            getattr(current_task, "absolute_deadline_slot", None) if current_task is not None else None,
+        ),
+        default=-1,
+    )
+    current_slot = _safe_int(_observation_value(observation, "slot", getattr(current_task, "slot", 0) if current_task is not None else 0))
+    queue_load = max(_safe_float(_observation_value(observation, "queue_load", 0.0)), 0.0)
+    legal_action_mask = dict(_observation_value(observation, "legal_action_mask", {}) or {})
+    fallback_hints = dict(_observation_value(observation, "fallback_hints", {}) or {})
+    latency_estimates = dict(_observation_value(observation, "latency_estimates", {}) or {})
+    balance_hint = dict(_observation_value(observation, "balance_hint", {}) or {})
+
+    # Use the same feasibility conventions as the calibrated diagnostic layers.
+    from src.analysis.completion_path_deadline_feasibility_repair.feasibility import estimate_task_action_feasibility
+
+    task_payload = {
+        "task_id": _safe_int(_observation_value(observation, "task_id", getattr(current_task, "task_id", 0) if current_task is not None else 0)),
+        "trace_id": _observation_value(observation, "trace_id", None),
+        "episode_id": _observation_value(observation, "episode_id", None),
+        "slot": current_slot,
+        "arrival_slot": _safe_int(_observation_value(observation, "arrival_slot", getattr(current_task, "arrival_slot", current_slot) if current_task is not None else current_slot)),
+        "absolute_deadline_slot": absolute_deadline_slot if absolute_deadline_slot >= 0 else current_slot + timeout_length,
+        "timeout_length": timeout_length,
+        "task_size": task_size,
+        "size": task_size,
+        "processing_density": processing_density,
+        "queue_load": queue_load,
+        "legal_action_mask": legal_action_mask,
+        "source_agent_id": _safe_int(_observation_value(observation, "source_agent_id", getattr(current_task, "source_agent_id", 0) if current_task is not None else 0)),
+    }
+    estimate = estimate_task_action_feasibility(task_payload)
+    local_total_slots = float(estimate["local_estimated_execution_slots"])
+    horizontal_total_slots = float(estimate["horizontal_estimated_total_slots"])
+    vertical_total_slots = float(estimate["vertical_estimated_total_slots"])
+    local_slack = float(estimate["deadline_slack_for_local"])
+    horizontal_slack = float(estimate["deadline_slack_for_horizontal"])
+    vertical_slack = float(estimate["deadline_slack_for_vertical"])
+    remaining_time = max(float(task_payload["absolute_deadline_slot"] - current_slot), 0.0)
+    best_legal_total = min(
+        [
+            total
+            for total, legal in (
+                (local_total_slots, bool(legal_action_mask.get("local", False))),
+                (horizontal_total_slots, bool(legal_action_mask.get("horizontal", False))),
+                (vertical_total_slots, bool(legal_action_mask.get("vertical", False))),
+            )
+            if legal
+        ],
+        default=min(local_total_slots, horizontal_total_slots, vertical_total_slots),
+    )
+    deadline_slack = remaining_time - best_legal_total
+    deadline_urgency_ratio = remaining_time / max(float(timeout_length), 1.0)
+    is_deadline_immediate = 1.0 if remaining_time <= 2.0 else 0.0
+    local_private_queue_load_norm = _clip_unit((queue_load + _safe_float(balance_hint.get("local", queue_load))) / max(float(episode_length), 1.0))
+    public_offloading_queue_load_norm = _clip_unit((queue_load + _safe_float(fallback_hints.get("horizontal", queue_load))) / max(float(episode_length), 1.0))
+    horizontal_path_queue_load_norm = _clip_unit(_safe_float(balance_hint.get("horizontal", queue_load)) / max(float(episode_length), 1.0))
+    vertical_cloud_path_queue_load_norm = _clip_unit(_safe_float(balance_hint.get("vertical", queue_load)) / max(float(episode_length), 1.0))
+    pending_task_pressure_norm = _clip_unit(queue_load / max(float(episode_length), 1.0))
+
+    source_agent_id_norm = _clip_unit(_safe_float(task_payload["source_agent_id"]) / 10.0)
+
+    return (
+        _clip_unit(float(task_payload["slot"]) / max(float(episode_length - 1), 1.0)),
+        _clip_unit(task_size / 60.0),
+        _clip_unit(processing_density / 5.0),
+        _clip_unit(queue_load / max(float(episode_length), 1.0)),
+        _clip_unit(_safe_float(_observation_value(observation, "history_length", 0.0)) / max(float(episode_length), 1.0)),
+        _clip_unit(timeout_length / max(float(episode_length), 1.0)),
+        _clip_unit(float(task_payload["absolute_deadline_slot"]) / max(float(episode_length), 1.0)),
+        _clip_unit(remaining_time / max(float(episode_length), 1.0)),
+        _clip_signed_unit(deadline_slack / max(float(episode_length), 1.0)),
+        _clip_unit(deadline_urgency_ratio),
+        is_deadline_immediate,
+        _clip_unit(local_total_slots / max(float(episode_length), 1.0)),
+        _clip_unit(horizontal_total_slots / max(float(episode_length), 1.0)),
+        _clip_unit(vertical_total_slots / max(float(episode_length), 1.0)),
+        _clip_signed_unit(local_slack / max(float(episode_length), 1.0)),
+        _clip_signed_unit(horizontal_slack / max(float(episode_length), 1.0)),
+        _clip_signed_unit(vertical_slack / max(float(episode_length), 1.0)),
+        1.0 if bool(estimate["local_feasible_before_deadline"]) else 0.0,
+        1.0 if bool(estimate["horizontal_feasible_before_deadline"]) else 0.0,
+        1.0 if bool(estimate["vertical_feasible_before_deadline"]) else 0.0,
+        local_private_queue_load_norm,
+        public_offloading_queue_load_norm,
+        horizontal_path_queue_load_norm,
+        vertical_cloud_path_queue_load_norm,
+        pending_task_pressure_norm,
+        1.0 if bool(legal_action_mask.get("local", False)) else 0.0,
+        1.0 if bool(legal_action_mask.get("horizontal", False)) else 0.0,
+        1.0 if bool(legal_action_mask.get("vertical", False)) else 0.0,
+        _clip_unit(sum(1 for value in legal_action_mask.values() if bool(value)) / 3.0),
+        source_agent_id_norm,
+    )
+
+
+def build_state_window(
+    history: Iterable[tuple[float, ...]],
+    *,
+    state_representation_profile: str = STATE_REPRESENTATION_PROFILE_LEGACY_MINIMAL,
+) -> tuple[tuple[float, ...], ...]:
     rows = list(history)[-LOOKBACK_W:]
     if len(rows) < LOOKBACK_W:
-        padding = [zero_state_row() for _ in range(LOOKBACK_W - len(rows))]
+        zero_row = rows[0] if rows else zero_state_row_for_profile(state_representation_profile=state_representation_profile)
+        padding = [tuple(0.0 for _ in zero_row) for _ in range(LOOKBACK_W - len(rows))]
         rows = padding + rows
     return tuple(rows)
 
 
-def build_state_window_tensor(window: tuple[tuple[float, float, float], ...], *, device: torch.device | None = None) -> torch.Tensor:
+def build_state_window_tensor(window: tuple[tuple[float, ...], ...], *, device: torch.device | None = None) -> torch.Tensor:
     return torch.tensor(window, dtype=torch.float32, device=device)
 
 
-def build_state_vector(*, observation: dict[str, Any], current_task: Any | None, episode_length: int) -> tuple[float, float, float]:
+def build_state_vector(
+    *,
+    observation: dict[str, Any],
+    current_task: Any | None,
+    episode_length: int,
+    state_representation_profile: str = STATE_REPRESENTATION_PROFILE_LEGACY_MINIMAL,
+) -> tuple[float, ...]:
     slot = float(observation.get("slot", 0.0))
     queue_load = float(observation.get("queue_load", 0.0))
     history_length = float(observation.get("history_length", 0.0))
     slot_norm = slot / max(float(episode_length - 1), 1.0)
     queue_norm = min(queue_load / max(float(episode_length), 1.0), 1.0)
     history_norm = min(history_length / max(float(episode_length), 1.0), 1.0)
-    if current_task is None:
-        return (slot_norm, queue_norm, history_norm)
-    size_norm = min(float(getattr(current_task, "size", 0.0)) / 100.0, 1.0)
-    density_norm = min(float(getattr(current_task, "processing_density", 0.0)) / 5.0, 1.0)
-    return (slot_norm, size_norm, density_norm)
+    if state_representation_profile == STATE_REPRESENTATION_PROFILE_LEGACY_MINIMAL:
+        if current_task is None:
+            return (slot_norm, queue_norm, history_norm)
+        size_norm = min(float(getattr(current_task, "size", 0.0)) / 100.0, 1.0)
+        density_norm = min(float(getattr(current_task, "processing_density", 0.0)) / 5.0, 1.0)
+        return (slot_norm, size_norm, density_norm)
+    if state_representation_profile == STATE_REPRESENTATION_PROFILE_DEADLINE_QUEUE_FEASIBILITY_V1:
+        if current_task is None and not observation:
+            return zero_state_row_for_profile(state_representation_profile=state_representation_profile)
+        return _path_total_slots_features(observation=observation, current_task=current_task, episode_length=episode_length)
+    raise ValueError(f"Unsupported state representation profile: {state_representation_profile}")
 
 
 def legal_action_mask_to_tuple(mask: dict[str, bool]) -> tuple[bool, bool, bool]:
@@ -69,10 +255,10 @@ def semantics_to_action_index(semantics: str) -> int:
 
 @dataclass(slots=True, frozen=True)
 class ReplayTransition:
-    state: tuple[tuple[float, float, float], ...]
+    state: tuple[tuple[float, ...], ...]
     action: int
     legal_action_mask: tuple[bool, bool, bool]
-    next_state: tuple[tuple[float, float, float], ...]
+    next_state: tuple[tuple[float, ...], ...]
     reward: float
     reward_available: bool
     terminal: bool

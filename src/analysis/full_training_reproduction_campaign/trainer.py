@@ -187,12 +187,17 @@ class DDQNTrainer:
         self.optimizer_step_count = 0
         self.target_sync_count = 0
 
-    def _initial_history(self, *, episode_length: int) -> deque[tuple[float, float, float]]:
-        zero_row = build_state_vector(observation={"slot": 0, "queue_load": 0, "history_length": 0}, current_task=None, episode_length=episode_length)
+    def _initial_history(self, *, episode_length: int) -> deque[tuple[float, ...]]:
+        zero_row = build_state_vector(
+            observation={"slot": 0, "queue_load": 0, "history_length": 0},
+            current_task=None,
+            episode_length=episode_length,
+            state_representation_profile=self.config.state_representation_profile,
+        )
         return deque([zero_row] * self.config.lookback_w, maxlen=self.config.lookback_w)
 
     def _state_tensor(self, history: deque[tuple[float, float, float]]) -> torch.Tensor:
-        return build_state_window_tensor(build_state_window(history))
+        return build_state_window_tensor(build_state_window(history, state_representation_profile=self.config.state_representation_profile))
 
     def _episode_rollout(
         self,
@@ -235,10 +240,17 @@ class DDQNTrainer:
                 observation=env.observe_flat(next_current_task) if next_current_task is not None else next_observation if isinstance(next_observation, dict) else {},
                 current_task=next_current_task,
                 episode_length=episode_length,
+                state_representation_profile=self.config.state_representation_profile,
             )
-            state_window = build_state_window(history)
+            state_window = build_state_window(
+                history,
+                state_representation_profile=self.config.state_representation_profile,
+            )
             history.append(next_feature)
-            next_state_window = build_state_window(history)
+            next_state_window = build_state_window(
+                history,
+                state_representation_profile=self.config.state_representation_profile,
+            )
 
             finalized_tasks = info.get("finalized_tasks", [])
             reward_available = bool(finalized_tasks)
@@ -523,6 +535,7 @@ class DDQNTrainer:
                     observation=env.observe_flat(next_current_task) if next_current_task is not None else next_observation if isinstance(next_observation, dict) else {},
                     current_task=next_current_task,
                     episode_length=self.config.evaluation_episode_length,
+                    state_representation_profile=self.config.state_representation_profile,
                 )
                 history.append(next_feature)
                 finalized_tasks = info.get("finalized_tasks", [])

@@ -1,0 +1,12 @@
+{
+  "figure_count": 5,
+  "figure_directory": "artifacts/analysis/state-representation-deadline-queue-feasibility-repair/figures",
+  "figure_files": [
+    "figure_01_state_feature_group_coverage.png",
+    "figure_02_legacy_vs_new_action_distribution.png",
+    "figure_03_action_collapse_before_after.png",
+    "figure_04_selected_action_feasibility_before_after.png",
+    "figure_05_completion_drop_50_vs_100_new_state.png"
+  ],
+  "figures_generated": true
+}

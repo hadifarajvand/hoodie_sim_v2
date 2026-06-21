@@ -1,0 +1,7 @@
+{
+  "no_inf_in_state_vector": true,
+  "no_nan_in_state_vector": true,
+  "state_dim_consistent_across_train_eval": true,
+  "state_vector_max": 1.0,
+  "state_vector_min": 0.0
+}

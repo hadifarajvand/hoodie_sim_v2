@@ -1,0 +1,13 @@
+{
+  "completed_selected_action_feasible_delta": 8,
+  "dropped_selected_action_infeasible_delta": -13,
+  "legacy_completed_selected_action_feasible_count": 6,
+  "legacy_dropped_selected_action_feasible_count": 6,
+  "legacy_selected_action_feasible_ratio": 0.06,
+  "legacy_selected_action_feasible_task_count": 6,
+  "new_completed_selected_action_feasible_count": 18,
+  "new_dropped_selected_action_feasible_count": 18,
+  "new_state_selected_action_feasible_ratio": 0.18,
+  "new_state_selected_action_feasible_task_count": 18,
+  "selected_action_feasible_ratio_delta": 0.12
+}

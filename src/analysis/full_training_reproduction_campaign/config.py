@@ -4,6 +4,7 @@ from dataclasses import dataclass, field
 from typing import Any, Literal
 
 from src.analysis.paper_hoodie_network_implementation import PaperHoodieNetworkConfig
+from .replay import STATE_REPRESENTATION_PROFILE_LEGACY_MINIMAL, STATE_REPRESENTATION_PROFILES, state_dimension_for_profile
 
 FEATURE_ID = "041-full-training-reproduction-campaign"
 TARGET_UPDATE_UNIT = "optimizer_step"
@@ -115,6 +116,7 @@ class PilotBudget:
 @dataclass(slots=True)
 class CampaignConfig:
     feature_id: str = FEATURE_ID
+    state_representation_profile: str = STATE_REPRESENTATION_PROFILE_LEGACY_MINIMAL
     state_dim: int = 3
     action_count: int = 3
     lookback_w: int = 10
@@ -150,8 +152,13 @@ class CampaignConfig:
     def __post_init__(self) -> None:
         if self.feature_id != FEATURE_ID:
             raise ValueError("CampaignConfig.feature_id must equal 041-full-training-reproduction-campaign.")
-        if self.state_dim != 3:
-            raise ValueError("CampaignConfig.state_dim must equal 3.")
+        if self.state_representation_profile not in STATE_REPRESENTATION_PROFILES:
+            raise ValueError("CampaignConfig.state_representation_profile must be a supported state profile.")
+        expected_state_dim = state_dimension_for_profile(self.state_representation_profile)
+        if self.state_dim != expected_state_dim:
+            raise ValueError(
+                f"CampaignConfig.state_dim must equal {expected_state_dim} for profile {self.state_representation_profile}."
+            )
         if self.action_count != 3:
             raise ValueError("CampaignConfig.action_count must equal 3.")
         if self.lookback_w != 10:
@@ -209,6 +216,7 @@ class CampaignConfig:
     def to_dict(self) -> dict[str, Any]:
         return {
             "feature_id": self.feature_id,
+            "state_representation_profile": self.state_representation_profile,
             "state_dim": self.state_dim,
             "action_count": self.action_count,
             "lookback_w": self.lookback_w,

@@ -1,0 +1,66 @@
+{
+  "added_feature_count": 27,
+  "added_feature_names": [
+    "deadline_timeout",
+    "action_path_feasibility",
+    "queue_pressure"
+  ],
+  "calibration_profile_name": "paper_aligned_feasible_v1",
+  "legacy_state_dim": 3,
+  "missing_or_approximated_state_features": [
+    "previous_action",
+    "previous_reward"
+  ],
+  "new_state_dim": 30,
+  "state_feature_group_coverage": {
+    "action_path_feasibility": {
+      "covered": true,
+      "feature_names": [
+        "local_estimated_total_slots_norm"
+      ]
+    },
+    "deadline_timeout": {
+      "covered": true,
+      "feature_names": [
+        "timeout_length_norm"
+      ]
+    },
+    "legal_availability": {
+      "covered": true,
+      "feature_names": [
+        "legal_local",
+        "legal_horizontal",
+        "legal_vertical"
+      ]
+    },
+    "minimal": {
+      "covered": true,
+      "feature_names": [
+        "slot_norm",
+        "task_size_norm",
+        "processing_density_norm"
+      ]
+    },
+    "queue_pressure": {
+      "covered": true,
+      "feature_names": [
+        "pending_task_pressure_norm"
+      ]
+    },
+    "source_context": {
+      "covered": true,
+      "feature_names": [
+        "source_agent_id_norm"
+      ]
+    }
+  },
+  "state_normalization_summary": {
+    "no_inf_in_state_vector": true,
+    "no_nan_in_state_vector": true,
+    "state_dim_consistent_across_train_eval": true,
+    "state_vector_max": 1.0,
+    "state_vector_min": 0.0
+  },
+  "state_sample_records": [],
+  "train_eval_state_dim_match": true
+}

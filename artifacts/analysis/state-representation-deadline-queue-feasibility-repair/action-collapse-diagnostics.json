@@ -1,0 +1,13 @@
+{
+  "action_collapse_reduced": true,
+  "legacy_action_entropy": 0.08079313589591118,
+  "legacy_dominant_action_name": "vertical",
+  "legacy_dominant_action_share": 0.99,
+  "legacy_is_action_collapsed": true,
+  "legacy_state_dim": 3,
+  "new_action_entropy": 1.1567796494470395,
+  "new_dominant_action_name": "vertical",
+  "new_dominant_action_share": 0.7,
+  "new_is_action_collapsed": false,
+  "new_state_dim": 30
+}
