@@ -1,0 +1,10 @@
+{
+  "figures": [
+    "artifacts/analysis/horizon-aware-reconciliation-integrated-50-100-rerun/figures/figure_01_reward_delta_before_after_horizon_repair.png",
+    "artifacts/analysis/horizon-aware-reconciliation-integrated-50-100-rerun/figures/figure_02_terminal_coverage_before_after_horizon_repair.png",
+    "artifacts/analysis/horizon-aware-reconciliation-integrated-50-100-rerun/figures/figure_03_completion_drop_50_100_integrated.png",
+    "artifacts/analysis/horizon-aware-reconciliation-integrated-50-100-rerun/figures/figure_04_action_distribution_integrated_50_100.png",
+    "artifacts/analysis/horizon-aware-reconciliation-integrated-50-100-rerun/figures/figure_05_baseline_candidate_integrated_metrics.png",
+    "artifacts/analysis/horizon-aware-reconciliation-integrated-50-100-rerun/figures/figure_06_recovered_horizon_reward_events.png"
+  ]
+}

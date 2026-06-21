@@ -1,10 +1,5 @@
-"""Single paper-compatible metric schema shared by baselines and candidates."""
-
-from __future__ import annotations
-
-from typing import Any
-
-PAPER_COMPATIBLE_METRIC_FIELDS: tuple[str, ...] = (
+{
+  "fields": [
     "run_id",
     "branch",
     "commit_sha",
@@ -48,20 +43,7 @@ PAPER_COMPATIBLE_METRIC_FIELDS: tuple[str, ...] = (
     "horizon_finalized_terminal_count",
     "reward_reconciled",
     "terminal_reconciled",
-    "raw_vs_canonical_reward_delta",
-)
-
-
-def build_paper_compatible_metric(**values: Any) -> dict[str, Any]:
-    """Build a metric row, filling missing fields with None and rejecting unknowns."""
-
-    unknown = set(values) - set(PAPER_COMPATIBLE_METRIC_FIELDS)
-    if unknown:
-        raise KeyError(f"unknown metric fields: {sorted(unknown)}")
-    return {field: values.get(field) for field in PAPER_COMPATIBLE_METRIC_FIELDS}
-
-
-def validate_metric_schema(row: dict[str, Any]) -> bool:
-    """Return True iff row has exactly the schema fields (order-independent)."""
-
-    return set(row) == set(PAPER_COMPATIBLE_METRIC_FIELDS)
+    "raw_vs_canonical_reward_delta"
+  ],
+  "field_count": 44
+}

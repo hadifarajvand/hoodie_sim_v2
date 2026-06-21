@@ -574,7 +574,19 @@ def _write_markdown(audit, root_cause, plan, gates, verdict, decision, claim_saf
 def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser(description="Feature 080 paper-faithful simulation production pipeline")
     parser.add_argument("--json", action="store_true", help="emit JSON summary to stdout")
+    parser.add_argument(
+        "--integrated-horizon-aware-rerun",
+        action="store_true",
+        help="Feature 081: run the integrated horizon-aware 50/100 reconciliation campaign",
+    )
     args = parser.parse_args(argv)
+    if args.integrated_horizon_aware_rerun:
+        from src.analysis.paper_faithful_simulation_production_pipeline.integrated_horizon_rerun import (
+            run as run_integrated,
+        )
+
+        run_integrated(emit_json=args.json)
+        return 0
     run(emit_json=args.json)
     return 0
 

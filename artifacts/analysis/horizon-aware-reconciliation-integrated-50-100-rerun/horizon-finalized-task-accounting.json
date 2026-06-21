@@ -1,0 +1,68 @@
+{
+  "per_policy": [
+    {
+      "policy_name": "deadline_queue_feasibility_candidate_at_50",
+      "training_budget": 50,
+      "horizon_finalized_terminal_count": 83,
+      "raw_terminal_event_count": 9438,
+      "raw_plus_horizon_terminal_count": 9521,
+      "canonical_terminal_task_count": 9521
+    },
+    {
+      "policy_name": "deadline_queue_feasibility_candidate_at_100",
+      "training_budget": 100,
+      "horizon_finalized_terminal_count": 75,
+      "raw_terminal_event_count": 9475,
+      "raw_plus_horizon_terminal_count": 9550,
+      "canonical_terminal_task_count": 9550
+    },
+    {
+      "policy_name": "fixed_local_policy",
+      "training_budget": null,
+      "horizon_finalized_terminal_count": 75,
+      "raw_terminal_event_count": 9475,
+      "raw_plus_horizon_terminal_count": 9550,
+      "canonical_terminal_task_count": 9550
+    },
+    {
+      "policy_name": "fixed_horizontal_policy",
+      "training_budget": null,
+      "horizon_finalized_terminal_count": 83,
+      "raw_terminal_event_count": 9438,
+      "raw_plus_horizon_terminal_count": 9521,
+      "canonical_terminal_task_count": 9521
+    },
+    {
+      "policy_name": "fixed_vertical_policy",
+      "training_budget": null,
+      "horizon_finalized_terminal_count": 85,
+      "raw_terminal_event_count": 9427,
+      "raw_plus_horizon_terminal_count": 9512,
+      "canonical_terminal_task_count": 9512
+    },
+    {
+      "policy_name": "random_legal_policy",
+      "training_budget": null,
+      "horizon_finalized_terminal_count": 78,
+      "raw_terminal_event_count": 9474,
+      "raw_plus_horizon_terminal_count": 9552,
+      "canonical_terminal_task_count": 9552
+    },
+    {
+      "policy_name": "legacy_minimal_candidate_at_50",
+      "training_budget": 50,
+      "horizon_finalized_terminal_count": 75,
+      "raw_terminal_event_count": 9475,
+      "raw_plus_horizon_terminal_count": 9550,
+      "canonical_terminal_task_count": 9550
+    },
+    {
+      "policy_name": "legacy_minimal_candidate_at_100",
+      "training_budget": 100,
+      "horizon_finalized_terminal_count": 85,
+      "raw_terminal_event_count": 9427,
+      "raw_plus_horizon_terminal_count": 9512,
+      "canonical_terminal_task_count": 9512
+    }
+  ]
+}

@@ -53,6 +53,110 @@ def reward_bearing_task(record: dict[str, Any]) -> bool:
     return bool(record.get("reward_available_from_step", False))
 
 
+def horizon_aware_recovered_reconciliation(
+    task_records: dict[str, Any],
+    *,
+    tolerance: float = REWARD_RECONCILIATION_TOLERANCE,
+) -> dict[str, Any]:
+    """Reconcile using the ``horizon_aware_recovered_reward_event`` strategy.
+
+    A horizon-finalized completed/dropped task that the environment never emitted
+    a ``reward_emitted`` event for is treated as a *recovered* reward event: its
+    canonical reward is recovered from terminal-task evidence and explicitly
+    marked as recovered. Then::
+
+        raw_plus_recovered_reward_total == canonical_reward_total
+        raw_plus_recovered_reward_event_count == canonical_reward_task_count
+        raw_plus_horizon_terminal_count == canonical_terminal_task_count
+
+    This keeps the raw event stream untouched (no reward value invented) while
+    making the canonical universe fully accounted. No environment, reward, or
+    policy semantics are changed.
+    """
+
+    raw_reward_event_count = 0
+    raw_reward_total = 0.0
+    recovered_horizon_reward_event_count = 0
+    recovered_horizon_reward_total = 0.0
+    canonical_reward_task_count = 0
+    canonical_reward_total = 0.0
+    raw_terminal_event_count = 0
+    horizon_finalized_terminal_count = 0
+    canonical_terminal_task_count = 0
+    completed_count = 0
+    dropped_count = 0
+    pending_at_horizon_count = 0
+    ledger: list[dict[str, Any]] = []
+
+    for key, record in task_records.items():
+        raw_count = int(record.get("raw_reward_event_count", 0))
+        raw_total = float(record.get("raw_reward_total", 0.0))
+        raw_reward_event_count += raw_count
+        raw_reward_total += raw_total
+        outcome = str(record.get("terminal_outcome") or "unknown")
+        if outcome not in {"completed", "dropped"}:
+            pending_at_horizon_count += 1
+            continue
+        canonical_terminal_task_count += 1
+        canonical_reward = float(record.get("canonical_reward", 0.0))
+        canonical_reward_total += canonical_reward
+        canonical_reward_task_count += 1
+        if outcome == "completed":
+            completed_count += 1
+        else:
+            dropped_count += 1
+        if raw_count > 0:
+            raw_terminal_event_count += 1
+        else:
+            # Horizon-finalized terminal task with no env reward event: recover it.
+            horizon_finalized_terminal_count += 1
+            recovered_horizon_reward_event_count += 1
+            recovered_horizon_reward_total += canonical_reward
+            ledger.append(
+                {
+                    "task_key": key,
+                    "terminal_outcome": outcome,
+                    "recovered_reward": canonical_reward,
+                    "recovery_strategy": "horizon_aware_recovered_reward_event",
+                    "terminal_event_source": record.get("terminal_event_source"),
+                }
+            )
+
+    raw_plus_recovered_reward_total = raw_reward_total + recovered_horizon_reward_total
+    raw_plus_recovered_reward_event_count = raw_reward_event_count + recovered_horizon_reward_event_count
+    raw_plus_horizon_terminal_count = raw_terminal_event_count + horizon_finalized_terminal_count
+    reward_delta = raw_plus_recovered_reward_total - canonical_reward_total
+    terminal_coverage = (
+        float(raw_plus_horizon_terminal_count) / canonical_terminal_task_count
+        if canonical_terminal_task_count
+        else 0.0
+    )
+    return {
+        "recovery_strategy": "horizon_aware_recovered_reward_event",
+        "raw_reward_event_count": raw_reward_event_count,
+        "recovered_horizon_reward_event_count": recovered_horizon_reward_event_count,
+        "raw_plus_recovered_reward_event_count": raw_plus_recovered_reward_event_count,
+        "canonical_reward_task_count": canonical_reward_task_count,
+        "raw_reward_total": raw_reward_total,
+        "recovered_horizon_reward_total": recovered_horizon_reward_total,
+        "raw_plus_recovered_reward_total": raw_plus_recovered_reward_total,
+        "canonical_reward_total": canonical_reward_total,
+        "raw_vs_canonical_reward_delta": reward_delta,
+        "reward_reconciled": abs(reward_delta) <= tolerance,
+        "raw_terminal_event_count": raw_terminal_event_count,
+        "horizon_finalized_terminal_count": horizon_finalized_terminal_count,
+        "raw_plus_horizon_terminal_count": raw_plus_horizon_terminal_count,
+        "canonical_terminal_task_count": canonical_terminal_task_count,
+        "terminal_event_coverage_ratio": terminal_coverage,
+        "terminal_reconciled": raw_plus_horizon_terminal_count == canonical_terminal_task_count,
+        "completed_count": completed_count,
+        "dropped_count": dropped_count,
+        "pending_at_horizon_count": pending_at_horizon_count,
+        "reward_reconciliation_tolerance": tolerance,
+        "recovered_reward_ledger": ledger,
+    }
+
+
 def horizon_aware_reconciliation(
     task_records: dict[str, Any],
     *,

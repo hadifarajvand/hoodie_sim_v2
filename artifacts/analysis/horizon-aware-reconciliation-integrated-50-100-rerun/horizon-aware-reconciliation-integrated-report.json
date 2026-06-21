@@ -1,0 +1,39 @@
+{
+  "feature_id": "081-horizon-aware-reconciliation-integrated-50-100-rerun",
+  "recovery_strategy": "horizon_aware_recovered_reward_event",
+  "campaign_level_reward_reconciliation_passed": true,
+  "campaign_level_terminal_reconciliation_passed": true,
+  "raw_vs_canonical_reward_delta_max": 0.0,
+  "terminal_event_coverage_ratio_min": 1.0,
+  "completion_count_nonzero": true,
+  "fixed_policy_completion_present": true,
+  "paper_compatible_metric_schema_valid": true,
+  "readiness_gates": {
+    "gate_1_scope_clean": true,
+    "gate_2_paper_component_alignment_audited": true,
+    "gate_3_workload_feasible_nontrivial": true,
+    "gate_4_completion_nonzero": true,
+    "gate_5_drop_nonzero_or_deadline_pressure_active": true,
+    "gate_6_reward_reconciliation_passed": true,
+    "gate_7_terminal_reconciliation_passed": true,
+    "gate_8_metric_universe_consistency_passed": true,
+    "gate_9_train_eval_state_profile_consistent": true,
+    "gate_10_no_nan_inf_state": true,
+    "gate_11_action_space_legal_only": true,
+    "gate_12_fixed_baselines_valid": true,
+    "gate_13_candidate_policy_evaluation_valid": true,
+    "gate_14_claim_safety_passed": true
+  },
+  "readiness_gates_passed": 14,
+  "final_verdict": "horizon_aware_reconciliation_integrated_50_100_ready",
+  "recommended_diagnostic_decision": "safe_to_proceed_to_medium_training_smoke",
+  "claim_safety": {
+    "paper_reproduction_claim_made": false,
+    "exact_numerical_reproduction_claim_made": false,
+    "performance_superiority_claim_made": false,
+    "baseline_superiority_claim_made": false,
+    "training_5000_run": false,
+    "max_training_budget_executed": 100,
+    "claim_safety_passed": true
+  }
+}

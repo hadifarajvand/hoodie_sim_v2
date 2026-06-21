@@ -1,0 +1,4666 @@
+{
+  "campaign_level_reward_reconciliation_passed": true,
+  "campaign_level_terminal_reconciliation_passed": true,
+  "raw_vs_canonical_reward_delta_max": 0.0,
+  "terminal_event_coverage_ratio_min": 1.0,
+  "recovery_strategy": "horizon_aware_recovered_reward_event",
+  "per_policy": [
+    {
+      "policy_name": "deadline_queue_feasibility_candidate_at_50",
+      "training_budget": 50,
+      "profile": "deadline_queue_feasibility_v1",
+      "raw_reward_event_count": 9438,
+      "recovered_horizon_reward_event_count": 83,
+      "raw_plus_recovered_reward_event_count": 9521,
+      "canonical_reward_task_count": 9521,
+      "raw_reward_total": -327014.0,
+      "recovered_horizon_reward_total": -3320.0,
+      "raw_plus_recovered_reward_total": -330334.0,
+      "canonical_reward_total": -330334.0,
+      "raw_vs_canonical_reward_delta": 0.0,
+      "reward_reconciled": true,
+      "raw_terminal_event_count": 9438,
+      "horizon_finalized_terminal_count": 83,
+      "raw_plus_horizon_terminal_count": 9521,
+      "canonical_terminal_task_count": 9521,
+      "terminal_event_coverage_ratio": 1.0,
+      "terminal_reconciled": true,
+      "recovered_reward_ledger": [
+        {
+          "task_key": "paper_aligned_feasible_v1-44:1:102",
+          "terminal_outcome": "dropped",
+          "recovered_reward": -40.0,
+          "recovery_strategy": "horizon_aware_recovered_reward_event",
+          "terminal_event_source": "env_step_finalized_tasks"
+        },
+        {
+          "task_key": "paper_aligned_feasible_v1-46:3:105",
+          "terminal_outcome": "dropped",
+          "recovered_reward": -40.0,
+          "recovery_strategy": "horizon_aware_recovered_reward_event",
+          "terminal_event_source": "env_step_finalized_tasks"
+        },
+        {
+          "task_key": "paper_aligned_feasible_v1-49:6:94",
+          "terminal_outcome": "dropped",
+          "recovered_reward": -40.0,
+          "recovery_strategy": "horizon_aware_recovered_reward_event",
+          "terminal_event_source": "env_step_finalized_tasks"
+        },
+        {
+          "task_key": "paper_aligned_feasible_v1-51:8:94",
+          "terminal_outcome": "dropped",
+          "recovered_reward": -40.0,
+          "recovery_strategy": "horizon_aware_recovered_reward_event",
+          "terminal_event_source": "env_step_finalized_tasks"
+        },
+        {
+          "task_key": "paper_aligned_feasible_v1-52:9:99",
+          "terminal_outcome": "dropped",
+          "recovered_reward": -40.0,
+          "recovery_strategy": "horizon_aware_recovered_reward_event",
+          "terminal_event_source": "env_step_finalized_tasks"
+        },
+        {
+          "task_key": "paper_aligned_feasible_v1-53:10:88",
+          "terminal_outcome": "dropped",
+          "recovered_reward": -40.0,
+          "recovery_strategy": "horizon_aware_recovered_reward_event",
+          "terminal_event_source": "env_step_finalized_tasks"
+        },
+        {
+          "task_key": "paper_aligned_feasible_v1-54:11:94",
+          "terminal_outcome": "dropped",
+          "recovered_reward": -40.0,
+          "recovery_strategy": "horizon_aware_recovered_reward_event",
+          "terminal_event_source": "env_step_finalized_tasks"
+        },
+        {
+          "task_key": "paper_aligned_feasible_v1-59:16:100",
+          "terminal_outcome": "dropped",
+          "recovered_reward": -40.0,
+          "recovery_strategy": "horizon_aware_recovered_reward_event",
+          "terminal_event_source": "env_step_finalized_tasks"
+        },
+        {
+          "task_key": "paper_aligned_feasible_v1-62:19:98",
+          "terminal_outcome": "dropped",
+          "recovered_reward": -40.0,
+          "recovery_strategy": "horizon_aware_recovered_reward_event",
+          "terminal_event_source": "env_step_finalized_tasks"
+        },
+        {
+          "task_key": "paper_aligned_feasible_v1-64:21:102",
+          "terminal_outcome": "dropped",
+          "recovered_reward": -40.0,
+          "recovery_strategy": "horizon_aware_recovered_reward_event",
+          "terminal_event_source": "env_step_finalized_tasks"
+        },
+        {
+          "task_key": "paper_aligned_feasible_v1-65:22:91",
+          "terminal_outcome": "dropped",
+          "recovered_reward": -40.0,
+          "recovery_strategy": "horizon_aware_recovered_reward_event",
+          "terminal_event_source": "env_step_finalized_tasks"
+        },
+        {
+          "task_key": "paper_aligned_feasible_v1-66:23:95",
+          "terminal_outcome": "dropped",
+          "recovered_reward": -40.0,
+          "recovery_strategy": "horizon_aware_recovered_reward_event",
+          "terminal_event_source": "env_step_finalized_tasks"
+        },
+        {
+          "task_key": "paper_aligned_feasible_v1-67:24:97",
+          "terminal_outcome": "dropped",
+          "recovered_reward": -40.0,
+          "recovery_strategy": "horizon_aware_recovered_reward_event",
+          "terminal_event_source": "env_step_finalized_tasks"
+        },
+        {
+          "task_key": "paper_aligned_feasible_v1-68:25:96",
+          "terminal_outcome": "dropped",
+          "recovered_reward": -40.0,
+          "recovery_strategy": "horizon_aware_recovered_reward_event",
+          "terminal_event_source": "env_step_finalized_tasks"
+        },
+        {
+          "task_key": "paper_aligned_feasible_v1-69:26:101",
+          "terminal_outcome": "dropped",
+          "recovered_reward": -40.0,
+          "recovery_strategy": "horizon_aware_recovered_reward_event",
+          "terminal_event_source": "env_step_finalized_tasks"
+        },
+        {
+          "task_key": "paper_aligned_feasible_v1-70:27:94",
+          "terminal_outcome": "dropped",
+          "recovered_reward": -40.0,
+          "recovery_strategy": "horizon_aware_recovered_reward_event",
+          "terminal_event_source": "env_step_finalized_tasks"
+        },
+        {
+          "task_key": "paper_aligned_feasible_v1-74:31:95",
+          "terminal_outcome": "dropped",
+          "recovered_reward": -40.0,
+          "recovery_strategy": "horizon_aware_recovered_reward_event",
+          "terminal_event_source": "env_step_finalized_tasks"
+        },
+        {
+          "task_key": "paper_aligned_feasible_v1-76:33:95",
+          "terminal_outcome": "dropped",
+          "recovered_reward": -40.0,
+          "recovery_strategy": "horizon_aware_recovered_reward_event",
+          "terminal_event_source": "env_step_finalized_tasks"
+        },
+        {
+          "task_key": "paper_aligned_feasible_v1-77:34:97",
+          "terminal_outcome": "dropped",
+          "recovered_reward": -40.0,
+          "recovery_strategy": "horizon_aware_recovered_reward_event",
+          "terminal_event_source": "env_step_finalized_tasks"
+        },
+        {
+          "task_key": "paper_aligned_feasible_v1-77:34:98",
+          "terminal_outcome": "dropped",
+          "recovered_reward": -40.0,
+          "recovery_strategy": "horizon_aware_recovered_reward_event",
+          "terminal_event_source": "env_step_finalized_tasks"
+        },
+        {
+          "task_key": "paper_aligned_feasible_v1-80:37:98",
+          "terminal_outcome": "dropped",
+          "recovered_reward": -40.0,
+          "recovery_strategy": "horizon_aware_recovered_reward_event",
+          "terminal_event_source": "env_step_finalized_tasks"
+        },
+        {
+          "task_key": "paper_aligned_feasible_v1-81:38:89",
+          "terminal_outcome": "dropped",
+          "recovered_reward": -40.0,
+          "recovery_strategy": "horizon_aware_recovered_reward_event",
+          "terminal_event_source": "env_step_finalized_tasks"
+        },
+        {
+          "task_key": "paper_aligned_feasible_v1-81:38:90",
+          "terminal_outcome": "dropped",
+          "recovered_reward": -40.0,
+          "recovery_strategy": "horizon_aware_recovered_reward_event",
+          "terminal_event_source": "env_step_finalized_tasks"
+        },
+        {
+          "task_key": "paper_aligned_feasible_v1-81:38:91",
+          "terminal_outcome": "dropped",
+          "recovered_reward": -40.0,
+          "recovery_strategy": "horizon_aware_recovered_reward_event",
+          "terminal_event_source": "env_step_finalized_tasks"
+        },
+        {
+          "task_key": "paper_aligned_feasible_v1-84:41:77",
+          "terminal_outcome": "dropped",
+          "recovered_reward": -40.0,
+          "recovery_strategy": "horizon_aware_recovered_reward_event",
+          "terminal_event_source": "env_step_finalized_tasks"
+        },
+        {
+          "task_key": "paper_aligned_feasible_v1-84:41:78",
+          "terminal_outcome": "dropped",
+          "recovered_reward": -40.0,
+          "recovery_strategy": "horizon_aware_recovered_reward_event",
+          "terminal_event_source": "env_step_finalized_tasks"
+        },
+        {
+          "task_key": "paper_aligned_feasible_v1-86:43:92",
+          "terminal_outcome": "dropped",
+          "recovered_reward": -40.0,
+          "recovery_strategy": "horizon_aware_recovered_reward_event",
+          "terminal_event_source": "env_step_finalized_tasks"
+        },
+        {
+          "task_key": "paper_aligned_feasible_v1-86:43:93",
+          "terminal_outcome": "dropped",
+          "recovered_reward": -40.0,
+          "recovery_strategy": "horizon_aware_recovered_reward_event",
+          "terminal_event_source": "env_step_finalized_tasks"
+        },
+        {
+          "task_key": "paper_aligned_feasible_v1-86:43:94",
+          "terminal_outcome": "dropped",
+          "recovered_reward": -40.0,
+          "recovery_strategy": "horizon_aware_recovered_reward_event",
+          "terminal_event_source": "env_step_finalized_tasks"
+        },
+        {
+          "task_key": "paper_aligned_feasible_v1-86:43:95",
+          "terminal_outcome": "dropped",
+          "recovered_reward": -40.0,
+          "recovery_strategy": "horizon_aware_recovered_reward_event",
+          "terminal_event_source": "env_step_finalized_tasks"
+        },
+        {
+          "task_key": "paper_aligned_feasible_v1-88:45:97",
+          "terminal_outcome": "dropped",
+          "recovered_reward": -40.0,
+          "recovery_strategy": "horizon_aware_recovered_reward_event",
+          "terminal_event_source": "env_step_finalized_tasks"
+        },
+        {
+          "task_key": "paper_aligned_feasible_v1-89:46:97",
+          "terminal_outcome": "dropped",
+          "recovered_reward": -40.0,
+          "recovery_strategy": "horizon_aware_recovered_reward_event",
+          "terminal_event_source": "env_step_finalized_tasks"
+        },
+        {
+          "task_key": "paper_aligned_feasible_v1-91:48:86",
+          "terminal_outcome": "dropped",
+          "recovered_reward": -40.0,
+          "recovery_strategy": "horizon_aware_recovered_reward_event",
+          "terminal_event_source": "env_step_finalized_tasks"
+        },
+        {
+          "task_key": "paper_aligned_feasible_v1-95:52:95",
+          "terminal_outcome": "dropped",
+          "recovered_reward": -40.0,
+          "recovery_strategy": "horizon_aware_recovered_reward_event",
+          "terminal_event_source": "env_step_finalized_tasks"
+        },
+        {
+          "task_key": "paper_aligned_feasible_v1-97:54:98",
+          "terminal_outcome": "dropped",
+          "recovered_reward": -40.0,
+          "recovery_strategy": "horizon_aware_recovered_reward_event",
+          "terminal_event_source": "env_step_finalized_tasks"
+        },
+        {
+          "task_key": "paper_aligned_feasible_v1-97:54:99",
+          "terminal_outcome": "dropped",
+          "recovered_reward": -40.0,
+          "recovery_strategy": "horizon_aware_recovered_reward_event",
+          "terminal_event_source": "env_step_finalized_tasks"
+        },
+        {
+          "task_key": "paper_aligned_feasible_v1-98:55:108",
+          "terminal_outcome": "dropped",
+          "recovered_reward": -40.0,
+          "recovery_strategy": "horizon_aware_recovered_reward_event",
+          "terminal_event_source": "env_step_finalized_tasks"
+        },
+        {
+          "task_key": "paper_aligned_feasible_v1-99:56:100",
+          "terminal_outcome": "dropped",
+          "recovered_reward": -40.0,
+          "recovery_strategy": "horizon_aware_recovered_reward_event",
+          "terminal_event_source": "env_step_finalized_tasks"
+        },
+        {
+          "task_key": "paper_aligned_feasible_v1-100:57:100",
+          "terminal_outcome": "dropped",
+          "recovered_reward": -40.0,
+          "recovery_strategy": "horizon_aware_recovered_reward_event",
+          "terminal_event_source": "env_step_finalized_tasks"
+        },
+        {
+          "task_key": "paper_aligned_feasible_v1-101:58:104",
+          "terminal_outcome": "dropped",
+          "recovered_reward": -40.0,
+          "recovery_strategy": "horizon_aware_recovered_reward_event",
+          "terminal_event_source": "env_step_finalized_tasks"
+        },
+        {
+          "task_key": "paper_aligned_feasible_v1-101:58:105",
+          "terminal_outcome": "dropped",
+          "recovered_reward": -40.0,
+          "recovery_strategy": "horizon_aware_recovered_reward_event",
+          "terminal_event_source": "env_step_finalized_tasks"
+        },
+        {
+          "task_key": "paper_aligned_feasible_v1-103:60:83",
+          "terminal_outcome": "dropped",
+          "recovered_reward": -40.0,
+          "recovery_strategy": "horizon_aware_recovered_reward_event",
+          "terminal_event_source": "env_step_finalized_tasks"
+        },
+        {
+          "task_key": "paper_aligned_feasible_v1-104:61:107",
+          "terminal_outcome": "dropped",
+          "recovered_reward": -40.0,
+          "recovery_strategy": "horizon_aware_recovered_reward_event",
+          "terminal_event_source": "env_step_finalized_tasks"
+        },
+        {
+          "task_key": "paper_aligned_feasible_v1-105:62:88",
+          "terminal_outcome": "dropped",
+          "recovered_reward": -40.0,
+          "recovery_strategy": "horizon_aware_recovered_reward_event",
+          "terminal_event_source": "env_step_finalized_tasks"
+        },
+        {
+          "task_key": "paper_aligned_feasible_v1-106:63:103",
+          "terminal_outcome": "dropped",
+          "recovered_reward": -40.0,
+          "recovery_strategy": "horizon_aware_recovered_reward_event",
+          "terminal_event_source": "env_step_finalized_tasks"
+        },
+        {
+          "task_key": "paper_aligned_feasible_v1-106:63:104",
+          "terminal_outcome": "dropped",
+          "recovered_reward": -40.0,
+          "recovery_strategy": "horizon_aware_recovered_reward_event",
+          "terminal_event_source": "env_step_finalized_tasks"
+        },
+        {
+          "task_key": "paper_aligned_feasible_v1-107:64:95",
+          "terminal_outcome": "dropped",
+          "recovered_reward": -40.0,
+          "recovery_strategy": "horizon_aware_recovered_reward_event",
+          "terminal_event_source": "env_step_finalized_tasks"
+        },
+        {
+          "task_key": "paper_aligned_feasible_v1-107:64:96",
+          "terminal_outcome": "dropped",
+          "recovered_reward": -40.0,
+          "recovery_strategy": "horizon_aware_recovered_reward_event",
+          "terminal_event_source": "env_step_finalized_tasks"
+        },
+        {
+          "task_key": "paper_aligned_feasible_v1-108:65:99",
+          "terminal_outcome": "dropped",
+          "recovered_reward": -40.0,
+          "recovery_strategy": "horizon_aware_recovered_reward_event",
+          "terminal_event_source": "env_step_finalized_tasks"
+        },
+        {
+          "task_key": "paper_aligned_feasible_v1-110:67:107",
+          "terminal_outcome": "dropped",
+          "recovered_reward": -40.0,
+          "recovery_strategy": "horizon_aware_recovered_reward_event",
+          "terminal_event_source": "env_step_finalized_tasks"
+        },
+        {
+          "task_key": "paper_aligned_feasible_v1-111:68:96",
+          "terminal_outcome": "dropped",
+          "recovered_reward": -40.0,
+          "recovery_strategy": "horizon_aware_recovered_reward_event",
+          "terminal_event_source": "env_step_finalized_tasks"
+        },
+        {
+          "task_key": "paper_aligned_feasible_v1-111:68:97",
+          "terminal_outcome": "dropped",
+          "recovered_reward": -40.0,
+          "recovery_strategy": "horizon_aware_recovered_reward_event",
+          "terminal_event_source": "env_step_finalized_tasks"
+        },
+        {
+          "task_key": "paper_aligned_feasible_v1-112:69:85",
+          "terminal_outcome": "dropped",
+          "recovered_reward": -40.0,
+          "recovery_strategy": "horizon_aware_recovered_reward_event",
+          "terminal_event_source": "env_step_finalized_tasks"
+        },
+        {
+          "task_key": "paper_aligned_feasible_v1-112:69:86",
+          "terminal_outcome": "dropped",
+          "recovered_reward": -40.0,
+          "recovery_strategy": "horizon_aware_recovered_reward_event",
+          "terminal_event_source": "env_step_finalized_tasks"
+        },
+        {
+          "task_key": "paper_aligned_feasible_v1-114:71:107",
+          "terminal_outcome": "dropped",
+          "recovered_reward": -40.0,
+          "recovery_strategy": "horizon_aware_recovered_reward_event",
+          "terminal_event_source": "env_step_finalized_tasks"
+        },
+        {
+          "task_key": "paper_aligned_feasible_v1-114:71:108",
+          "terminal_outcome": "dropped",
+          "recovered_reward": -40.0,
+          "recovery_strategy": "horizon_aware_recovered_reward_event",
+          "terminal_event_source": "env_step_finalized_tasks"
+        },
+        {
+          "task_key": "paper_aligned_feasible_v1-115:72:87",
+          "terminal_outcome": "dropped",
+          "recovered_reward": -40.0,
+          "recovery_strategy": "horizon_aware_recovered_reward_event",
+          "terminal_event_source": "env_step_finalized_tasks"
+        },
+        {
+          "task_key": "paper_aligned_feasible_v1-117:74:86",
+          "terminal_outcome": "dropped",
+          "recovered_reward": -40.0,
+          "recovery_strategy": "horizon_aware_recovered_reward_event",
+          "terminal_event_source": "env_step_finalized_tasks"
+        },
+        {
+          "task_key": "paper_aligned_feasible_v1-118:75:99",
+          "terminal_outcome": "dropped",
+          "recovered_reward": -40.0,
+          "recovery_strategy": "horizon_aware_recovered_reward_event",
+          "terminal_event_source": "env_step_finalized_tasks"
+        },
+        {
+          "task_key": "paper_aligned_feasible_v1-121:78:104",
+          "terminal_outcome": "dropped",
+          "recovered_reward": -40.0,
+          "recovery_strategy": "horizon_aware_recovered_reward_event",
+          "terminal_event_source": "env_step_finalized_tasks"
+        },
+        {
+          "task_key": "paper_aligned_feasible_v1-122:79:91",
+          "terminal_outcome": "dropped",
+          "recovered_reward": -40.0,
+          "recovery_strategy": "horizon_aware_recovered_reward_event",
+          "terminal_event_source": "env_step_finalized_tasks"
+        },
+        {
+          "task_key": "paper_aligned_feasible_v1-124:81:94",
+          "terminal_outcome": "dropped",
+          "recovered_reward": -40.0,
+          "recovery_strategy": "horizon_aware_recovered_reward_event",
+          "terminal_event_source": "env_step_finalized_tasks"
+        },
+        {
+          "task_key": "paper_aligned_feasible_v1-126:83:89",
+          "terminal_outcome": "dropped",
+          "recovered_reward": -40.0,
+          "recovery_strategy": "horizon_aware_recovered_reward_event",
+          "terminal_event_source": "env_step_finalized_tasks"
+        },
+        {
+          "task_key": "paper_aligned_feasible_v1-127:84:106",
+          "terminal_outcome": "dropped",
+          "recovered_reward": -40.0,
+          "recovery_strategy": "horizon_aware_recovered_reward_event",
+          "terminal_event_source": "env_step_finalized_tasks"
+        },
+        {
+          "task_key": "paper_aligned_feasible_v1-127:84:107",
+          "terminal_outcome": "dropped",
+          "recovered_reward": -40.0,
+          "recovery_strategy": "horizon_aware_recovered_reward_event",
+          "terminal_event_source": "env_step_finalized_tasks"
+        },
+        {
+          "task_key": "paper_aligned_feasible_v1-127:84:108",
+          "terminal_outcome": "dropped",
+          "recovered_reward": -40.0,
+          "recovery_strategy": "horizon_aware_recovered_reward_event",
+          "terminal_event_source": "env_step_finalized_tasks"
+        },
+        {
+          "task_key": "paper_aligned_feasible_v1-128:85:84",
+          "terminal_outcome": "dropped",
+          "recovered_reward": -40.0,
+          "recovery_strategy": "horizon_aware_recovered_reward_event",
+          "terminal_event_source": "env_step_finalized_tasks"
+        },
+        {
+          "task_key": "paper_aligned_feasible_v1-130:87:107",
+          "terminal_outcome": "dropped",
+          "recovered_reward": -40.0,
+          "recovery_strategy": "horizon_aware_recovered_reward_event",
+          "terminal_event_source": "env_step_finalized_tasks"
+        },
+        {
+          "task_key": "paper_aligned_feasible_v1-132:89:82",
+          "terminal_outcome": "dropped",
+          "recovered_reward": -40.0,
+          "recovery_strategy": "horizon_aware_recovered_reward_event",
+          "terminal_event_source": "env_step_finalized_tasks"
+        },
+        {
+          "task_key": "paper_aligned_feasible_v1-132:89:83",
+          "terminal_outcome": "dropped",
+          "recovered_reward": -40.0,
+          "recovery_strategy": "horizon_aware_recovered_reward_event",
+          "terminal_event_source": "env_step_finalized_tasks"
+        },
+        {
+          "task_key": "paper_aligned_feasible_v1-133:90:99",
+          "terminal_outcome": "dropped",
+          "recovered_reward": -40.0,
+          "recovery_strategy": "horizon_aware_recovered_reward_event",
+          "terminal_event_source": "env_step_finalized_tasks"
+        },
+        {
+          "task_key": "paper_aligned_feasible_v1-133:90:100",
+          "terminal_outcome": "dropped",
+          "recovered_reward": -40.0,
+          "recovery_strategy": "horizon_aware_recovered_reward_event",
+          "terminal_event_source": "env_step_finalized_tasks"
+        },
+        {
+          "task_key": "paper_aligned_feasible_v1-134:91:102",
+          "terminal_outcome": "dropped",
+          "recovered_reward": -40.0,
+          "recovery_strategy": "horizon_aware_recovered_reward_event",
+          "terminal_event_source": "env_step_finalized_tasks"
+        },
+        {
+          "task_key": "paper_aligned_feasible_v1-137:94:93",
+          "terminal_outcome": "dropped",
+          "recovered_reward": -40.0,
+          "recovery_strategy": "horizon_aware_recovered_reward_event",
+          "terminal_event_source": "env_step_finalized_tasks"
+        },
+        {
+          "task_key": "paper_aligned_feasible_v1-138:95:96",
+          "terminal_outcome": "dropped",
+          "recovered_reward": -40.0,
+          "recovery_strategy": "horizon_aware_recovered_reward_event",
+          "terminal_event_source": "env_step_finalized_tasks"
+        },
+        {
+          "task_key": "paper_aligned_feasible_v1-138:95:97",
+          "terminal_outcome": "dropped",
+          "recovered_reward": -40.0,
+          "recovery_strategy": "horizon_aware_recovered_reward_event",
+          "terminal_event_source": "env_step_finalized_tasks"
+        },
+        {
+          "task_key": "paper_aligned_feasible_v1-138:95:98",
+          "terminal_outcome": "dropped",
+          "recovered_reward": -40.0,
+          "recovery_strategy": "horizon_aware_recovered_reward_event",
+          "terminal_event_source": "env_step_finalized_tasks"
+        },
+        {
+          "task_key": "paper_aligned_feasible_v1-138:95:99",
+          "terminal_outcome": "dropped",
+          "recovered_reward": -40.0,
+          "recovery_strategy": "horizon_aware_recovered_reward_event",
+          "terminal_event_source": "env_step_finalized_tasks"
+        },
+        {
+          "task_key": "paper_aligned_feasible_v1-139:96:107",
+          "terminal_outcome": "dropped",
+          "recovered_reward": -40.0,
+          "recovery_strategy": "horizon_aware_recovered_reward_event",
+          "terminal_event_source": "env_step_finalized_tasks"
+        },
+        {
+          "task_key": "paper_aligned_feasible_v1-140:97:88",
+          "terminal_outcome": "dropped",
+          "recovered_reward": -40.0,
+          "recovery_strategy": "horizon_aware_recovered_reward_event",
+          "terminal_event_source": "env_step_finalized_tasks"
+        },
+        {
+          "task_key": "paper_aligned_feasible_v1-141:98:93",
+          "terminal_outcome": "dropped",
+          "recovered_reward": -40.0,
+          "recovery_strategy": "horizon_aware_recovered_reward_event",
+          "terminal_event_source": "env_step_finalized_tasks"
+        },
+        {
+          "task_key": "paper_aligned_feasible_v1-142:99:105",
+          "terminal_outcome": "dropped",
+          "recovered_reward": -40.0,
+          "recovery_strategy": "horizon_aware_recovered_reward_event",
+          "terminal_event_source": "env_step_finalized_tasks"
+        },
+        {
+          "task_key": "paper_aligned_feasible_v1-142:99:106",
+          "terminal_outcome": "dropped",
+          "recovered_reward": -40.0,
+          "recovery_strategy": "horizon_aware_recovered_reward_event",
+          "terminal_event_source": "env_step_finalized_tasks"
+        }
+      ]
+    },
+    {
+      "policy_name": "deadline_queue_feasibility_candidate_at_100",
+      "training_budget": 100,
+      "profile": "deadline_queue_feasibility_v1",
+      "raw_reward_event_count": 9475,
+      "recovered_horizon_reward_event_count": 75,
+      "raw_plus_recovered_reward_event_count": 9550,
+      "canonical_reward_task_count": 9550,
+      "raw_reward_total": -301570.0,
+      "recovered_horizon_reward_total": -3000.0,
+      "raw_plus_recovered_reward_total": -304570.0,
+      "canonical_reward_total": -304570.0,
+      "raw_vs_canonical_reward_delta": 0.0,
+      "reward_reconciled": true,
+      "raw_terminal_event_count": 9475,
+      "horizon_finalized_terminal_count": 75,
+      "raw_plus_horizon_terminal_count": 9550,
+      "canonical_terminal_task_count": 9550,
+      "terminal_event_coverage_ratio": 1.0,
+      "terminal_reconciled": true,
+      "recovered_reward_ledger": [
+        {
+          "task_key": "paper_aligned_feasible_v1-44:1:102",
+          "terminal_outcome": "dropped",
+          "recovered_reward": -40.0,
+          "recovery_strategy": "horizon_aware_recovered_reward_event",
+          "terminal_event_source": "env_step_finalized_tasks"
+        },
+        {
+          "task_key": "paper_aligned_feasible_v1-46:3:105",
+          "terminal_outcome": "dropped",
+          "recovered_reward": -40.0,
+          "recovery_strategy": "horizon_aware_recovered_reward_event",
+          "terminal_event_source": "env_step_finalized_tasks"
+        },
+        {
+          "task_key": "paper_aligned_feasible_v1-52:9:99",
+          "terminal_outcome": "dropped",
+          "recovered_reward": -40.0,
+          "recovery_strategy": "horizon_aware_recovered_reward_event",
+          "terminal_event_source": "env_step_finalized_tasks"
+        },
+        {
+          "task_key": "paper_aligned_feasible_v1-59:16:100",
+          "terminal_outcome": "dropped",
+          "recovered_reward": -40.0,
+          "recovery_strategy": "horizon_aware_recovered_reward_event",
+          "terminal_event_source": "env_step_finalized_tasks"
+        },
+        {
+          "task_key": "paper_aligned_feasible_v1-62:19:98",
+          "terminal_outcome": "dropped",
+          "recovered_reward": -40.0,
+          "recovery_strategy": "horizon_aware_recovered_reward_event",
+          "terminal_event_source": "env_step_finalized_tasks"
+        },
+        {
+          "task_key": "paper_aligned_feasible_v1-64:21:102",
+          "terminal_outcome": "dropped",
+          "recovered_reward": -40.0,
+          "recovery_strategy": "horizon_aware_recovered_reward_event",
+          "terminal_event_source": "env_step_finalized_tasks"
+        },
+        {
+          "task_key": "paper_aligned_feasible_v1-65:22:91",
+          "terminal_outcome": "dropped",
+          "recovered_reward": -40.0,
+          "recovery_strategy": "horizon_aware_recovered_reward_event",
+          "terminal_event_source": "env_step_finalized_tasks"
+        },
+        {
+          "task_key": "paper_aligned_feasible_v1-66:23:95",
+          "terminal_outcome": "dropped",
+          "recovered_reward": -40.0,
+          "recovery_strategy": "horizon_aware_recovered_reward_event",
+          "terminal_event_source": "env_step_finalized_tasks"
+        },
+        {
+          "task_key": "paper_aligned_feasible_v1-67:24:97",
+          "terminal_outcome": "dropped",
+          "recovered_reward": -40.0,
+          "recovery_strategy": "horizon_aware_recovered_reward_event",
+          "terminal_event_source": "env_step_finalized_tasks"
+        },
+        {
+          "task_key": "paper_aligned_feasible_v1-68:25:96",
+          "terminal_outcome": "dropped",
+          "recovered_reward": -40.0,
+          "recovery_strategy": "horizon_aware_recovered_reward_event",
+          "terminal_event_source": "env_step_finalized_tasks"
+        },
+        {
+          "task_key": "paper_aligned_feasible_v1-69:26:101",
+          "terminal_outcome": "dropped",
+          "recovered_reward": -40.0,
+          "recovery_strategy": "horizon_aware_recovered_reward_event",
+          "terminal_event_source": "env_step_finalized_tasks"
+        },
+        {
+          "task_key": "paper_aligned_feasible_v1-70:27:94",
+          "terminal_outcome": "dropped",
+          "recovered_reward": -40.0,
+          "recovery_strategy": "horizon_aware_recovered_reward_event",
+          "terminal_event_source": "env_step_finalized_tasks"
+        },
+        {
+          "task_key": "paper_aligned_feasible_v1-74:31:95",
+          "terminal_outcome": "dropped",
+          "recovered_reward": -40.0,
+          "recovery_strategy": "horizon_aware_recovered_reward_event",
+          "terminal_event_source": "env_step_finalized_tasks"
+        },
+        {
+          "task_key": "paper_aligned_feasible_v1-76:33:95",
+          "terminal_outcome": "dropped",
+          "recovered_reward": -40.0,
+          "recovery_strategy": "horizon_aware_recovered_reward_event",
+          "terminal_event_source": "env_step_finalized_tasks"
+        },
+        {
+          "task_key": "paper_aligned_feasible_v1-77:34:97",
+          "terminal_outcome": "dropped",
+          "recovered_reward": -40.0,
+          "recovery_strategy": "horizon_aware_recovered_reward_event",
+          "terminal_event_source": "env_step_finalized_tasks"
+        },
+        {
+          "task_key": "paper_aligned_feasible_v1-77:34:98",
+          "terminal_outcome": "dropped",
+          "recovered_reward": -40.0,
+          "recovery_strategy": "horizon_aware_recovered_reward_event",
+          "terminal_event_source": "env_step_finalized_tasks"
+        },
+        {
+          "task_key": "paper_aligned_feasible_v1-80:37:98",
+          "terminal_outcome": "dropped",
+          "recovered_reward": -40.0,
+          "recovery_strategy": "horizon_aware_recovered_reward_event",
+          "terminal_event_source": "env_step_finalized_tasks"
+        },
+        {
+          "task_key": "paper_aligned_feasible_v1-81:38:89",
+          "terminal_outcome": "dropped",
+          "recovered_reward": -40.0,
+          "recovery_strategy": "horizon_aware_recovered_reward_event",
+          "terminal_event_source": "env_step_finalized_tasks"
+        },
+        {
+          "task_key": "paper_aligned_feasible_v1-81:38:91",
+          "terminal_outcome": "dropped",
+          "recovered_reward": -40.0,
+          "recovery_strategy": "horizon_aware_recovered_reward_event",
+          "terminal_event_source": "env_step_finalized_tasks"
+        },
+        {
+          "task_key": "paper_aligned_feasible_v1-84:41:77",
+          "terminal_outcome": "dropped",
+          "recovered_reward": -40.0,
+          "recovery_strategy": "horizon_aware_recovered_reward_event",
+          "terminal_event_source": "env_step_finalized_tasks"
+        },
+        {
+          "task_key": "paper_aligned_feasible_v1-86:43:92",
+          "terminal_outcome": "dropped",
+          "recovered_reward": -40.0,
+          "recovery_strategy": "horizon_aware_recovered_reward_event",
+          "terminal_event_source": "env_step_finalized_tasks"
+        },
+        {
+          "task_key": "paper_aligned_feasible_v1-86:43:93",
+          "terminal_outcome": "dropped",
+          "recovered_reward": -40.0,
+          "recovery_strategy": "horizon_aware_recovered_reward_event",
+          "terminal_event_source": "env_step_finalized_tasks"
+        },
+        {
+          "task_key": "paper_aligned_feasible_v1-86:43:94",
+          "terminal_outcome": "dropped",
+          "recovered_reward": -40.0,
+          "recovery_strategy": "horizon_aware_recovered_reward_event",
+          "terminal_event_source": "env_step_finalized_tasks"
+        },
+        {
+          "task_key": "paper_aligned_feasible_v1-86:43:95",
+          "terminal_outcome": "dropped",
+          "recovered_reward": -40.0,
+          "recovery_strategy": "horizon_aware_recovered_reward_event",
+          "terminal_event_source": "env_step_finalized_tasks"
+        },
+        {
+          "task_key": "paper_aligned_feasible_v1-88:45:97",
+          "terminal_outcome": "dropped",
+          "recovered_reward": -40.0,
+          "recovery_strategy": "horizon_aware_recovered_reward_event",
+          "terminal_event_source": "env_step_finalized_tasks"
+        },
+        {
+          "task_key": "paper_aligned_feasible_v1-89:46:97",
+          "terminal_outcome": "dropped",
+          "recovered_reward": -40.0,
+          "recovery_strategy": "horizon_aware_recovered_reward_event",
+          "terminal_event_source": "env_step_finalized_tasks"
+        },
+        {
+          "task_key": "paper_aligned_feasible_v1-91:48:86",
+          "terminal_outcome": "dropped",
+          "recovered_reward": -40.0,
+          "recovery_strategy": "horizon_aware_recovered_reward_event",
+          "terminal_event_source": "env_step_finalized_tasks"
+        },
+        {
+          "task_key": "paper_aligned_feasible_v1-95:52:95",
+          "terminal_outcome": "dropped",
+          "recovered_reward": -40.0,
+          "recovery_strategy": "horizon_aware_recovered_reward_event",
+          "terminal_event_source": "env_step_finalized_tasks"
+        },
+        {
+          "task_key": "paper_aligned_feasible_v1-97:54:98",
+          "terminal_outcome": "dropped",
+          "recovered_reward": -40.0,
+          "recovery_strategy": "horizon_aware_recovered_reward_event",
+          "terminal_event_source": "env_step_finalized_tasks"
+        },
+        {
+          "task_key": "paper_aligned_feasible_v1-97:54:99",
+          "terminal_outcome": "dropped",
+          "recovered_reward": -40.0,
+          "recovery_strategy": "horizon_aware_recovered_reward_event",
+          "terminal_event_source": "env_step_finalized_tasks"
+        },
+        {
+          "task_key": "paper_aligned_feasible_v1-98:55:108",
+          "terminal_outcome": "dropped",
+          "recovered_reward": -40.0,
+          "recovery_strategy": "horizon_aware_recovered_reward_event",
+          "terminal_event_source": "env_step_finalized_tasks"
+        },
+        {
+          "task_key": "paper_aligned_feasible_v1-99:56:100",
+          "terminal_outcome": "dropped",
+          "recovered_reward": -40.0,
+          "recovery_strategy": "horizon_aware_recovered_reward_event",
+          "terminal_event_source": "env_step_finalized_tasks"
+        },
+        {
+          "task_key": "paper_aligned_feasible_v1-100:57:100",
+          "terminal_outcome": "dropped",
+          "recovered_reward": -40.0,
+          "recovery_strategy": "horizon_aware_recovered_reward_event",
+          "terminal_event_source": "env_step_finalized_tasks"
+        },
+        {
+          "task_key": "paper_aligned_feasible_v1-101:58:104",
+          "terminal_outcome": "dropped",
+          "recovered_reward": -40.0,
+          "recovery_strategy": "horizon_aware_recovered_reward_event",
+          "terminal_event_source": "env_step_finalized_tasks"
+        },
+        {
+          "task_key": "paper_aligned_feasible_v1-101:58:105",
+          "terminal_outcome": "dropped",
+          "recovered_reward": -40.0,
+          "recovery_strategy": "horizon_aware_recovered_reward_event",
+          "terminal_event_source": "env_step_finalized_tasks"
+        },
+        {
+          "task_key": "paper_aligned_feasible_v1-103:60:83",
+          "terminal_outcome": "dropped",
+          "recovered_reward": -40.0,
+          "recovery_strategy": "horizon_aware_recovered_reward_event",
+          "terminal_event_source": "env_step_finalized_tasks"
+        },
+        {
+          "task_key": "paper_aligned_feasible_v1-104:61:107",
+          "terminal_outcome": "dropped",
+          "recovered_reward": -40.0,
+          "recovery_strategy": "horizon_aware_recovered_reward_event",
+          "terminal_event_source": "env_step_finalized_tasks"
+        },
+        {
+          "task_key": "paper_aligned_feasible_v1-105:62:88",
+          "terminal_outcome": "dropped",
+          "recovered_reward": -40.0,
+          "recovery_strategy": "horizon_aware_recovered_reward_event",
+          "terminal_event_source": "env_step_finalized_tasks"
+        },
+        {
+          "task_key": "paper_aligned_feasible_v1-106:63:103",
+          "terminal_outcome": "dropped",
+          "recovered_reward": -40.0,
+          "recovery_strategy": "horizon_aware_recovered_reward_event",
+          "terminal_event_source": "env_step_finalized_tasks"
+        },
+        {
+          "task_key": "paper_aligned_feasible_v1-106:63:104",
+          "terminal_outcome": "dropped",
+          "recovered_reward": -40.0,
+          "recovery_strategy": "horizon_aware_recovered_reward_event",
+          "terminal_event_source": "env_step_finalized_tasks"
+        },
+        {
+          "task_key": "paper_aligned_feasible_v1-107:64:95",
+          "terminal_outcome": "dropped",
+          "recovered_reward": -40.0,
+          "recovery_strategy": "horizon_aware_recovered_reward_event",
+          "terminal_event_source": "env_step_finalized_tasks"
+        },
+        {
+          "task_key": "paper_aligned_feasible_v1-107:64:96",
+          "terminal_outcome": "dropped",
+          "recovered_reward": -40.0,
+          "recovery_strategy": "horizon_aware_recovered_reward_event",
+          "terminal_event_source": "env_step_finalized_tasks"
+        },
+        {
+          "task_key": "paper_aligned_feasible_v1-108:65:99",
+          "terminal_outcome": "dropped",
+          "recovered_reward": -40.0,
+          "recovery_strategy": "horizon_aware_recovered_reward_event",
+          "terminal_event_source": "env_step_finalized_tasks"
+        },
+        {
+          "task_key": "paper_aligned_feasible_v1-110:67:107",
+          "terminal_outcome": "dropped",
+          "recovered_reward": -40.0,
+          "recovery_strategy": "horizon_aware_recovered_reward_event",
+          "terminal_event_source": "env_step_finalized_tasks"
+        },
+        {
+          "task_key": "paper_aligned_feasible_v1-111:68:96",
+          "terminal_outcome": "dropped",
+          "recovered_reward": -40.0,
+          "recovery_strategy": "horizon_aware_recovered_reward_event",
+          "terminal_event_source": "env_step_finalized_tasks"
+        },
+        {
+          "task_key": "paper_aligned_feasible_v1-111:68:97",
+          "terminal_outcome": "dropped",
+          "recovered_reward": -40.0,
+          "recovery_strategy": "horizon_aware_recovered_reward_event",
+          "terminal_event_source": "env_step_finalized_tasks"
+        },
+        {
+          "task_key": "paper_aligned_feasible_v1-112:69:85",
+          "terminal_outcome": "dropped",
+          "recovered_reward": -40.0,
+          "recovery_strategy": "horizon_aware_recovered_reward_event",
+          "terminal_event_source": "env_step_finalized_tasks"
+        },
+        {
+          "task_key": "paper_aligned_feasible_v1-112:69:86",
+          "terminal_outcome": "dropped",
+          "recovered_reward": -40.0,
+          "recovery_strategy": "horizon_aware_recovered_reward_event",
+          "terminal_event_source": "env_step_finalized_tasks"
+        },
+        {
+          "task_key": "paper_aligned_feasible_v1-114:71:107",
+          "terminal_outcome": "dropped",
+          "recovered_reward": -40.0,
+          "recovery_strategy": "horizon_aware_recovered_reward_event",
+          "terminal_event_source": "env_step_finalized_tasks"
+        },
+        {
+          "task_key": "paper_aligned_feasible_v1-114:71:108",
+          "terminal_outcome": "dropped",
+          "recovered_reward": -40.0,
+          "recovery_strategy": "horizon_aware_recovered_reward_event",
+          "terminal_event_source": "env_step_finalized_tasks"
+        },
+        {
+          "task_key": "paper_aligned_feasible_v1-115:72:87",
+          "terminal_outcome": "dropped",
+          "recovered_reward": -40.0,
+          "recovery_strategy": "horizon_aware_recovered_reward_event",
+          "terminal_event_source": "env_step_finalized_tasks"
+        },
+        {
+          "task_key": "paper_aligned_feasible_v1-117:74:86",
+          "terminal_outcome": "dropped",
+          "recovered_reward": -40.0,
+          "recovery_strategy": "horizon_aware_recovered_reward_event",
+          "terminal_event_source": "env_step_finalized_tasks"
+        },
+        {
+          "task_key": "paper_aligned_feasible_v1-118:75:99",
+          "terminal_outcome": "dropped",
+          "recovered_reward": -40.0,
+          "recovery_strategy": "horizon_aware_recovered_reward_event",
+          "terminal_event_source": "env_step_finalized_tasks"
+        },
+        {
+          "task_key": "paper_aligned_feasible_v1-121:78:104",
+          "terminal_outcome": "dropped",
+          "recovered_reward": -40.0,
+          "recovery_strategy": "horizon_aware_recovered_reward_event",
+          "terminal_event_source": "env_step_finalized_tasks"
+        },
+        {
+          "task_key": "paper_aligned_feasible_v1-122:79:91",
+          "terminal_outcome": "dropped",
+          "recovered_reward": -40.0,
+          "recovery_strategy": "horizon_aware_recovered_reward_event",
+          "terminal_event_source": "env_step_finalized_tasks"
+        },
+        {
+          "task_key": "paper_aligned_feasible_v1-124:81:94",
+          "terminal_outcome": "dropped",
+          "recovered_reward": -40.0,
+          "recovery_strategy": "horizon_aware_recovered_reward_event",
+          "terminal_event_source": "env_step_finalized_tasks"
+        },
+        {
+          "task_key": "paper_aligned_feasible_v1-126:83:89",
+          "terminal_outcome": "dropped",
+          "recovered_reward": -40.0,
+          "recovery_strategy": "horizon_aware_recovered_reward_event",
+          "terminal_event_source": "env_step_finalized_tasks"
+        },
+        {
+          "task_key": "paper_aligned_feasible_v1-127:84:106",
+          "terminal_outcome": "dropped",
+          "recovered_reward": -40.0,
+          "recovery_strategy": "horizon_aware_recovered_reward_event",
+          "terminal_event_source": "env_step_finalized_tasks"
+        },
+        {
+          "task_key": "paper_aligned_feasible_v1-127:84:107",
+          "terminal_outcome": "dropped",
+          "recovered_reward": -40.0,
+          "recovery_strategy": "horizon_aware_recovered_reward_event",
+          "terminal_event_source": "env_step_finalized_tasks"
+        },
+        {
+          "task_key": "paper_aligned_feasible_v1-127:84:108",
+          "terminal_outcome": "dropped",
+          "recovered_reward": -40.0,
+          "recovery_strategy": "horizon_aware_recovered_reward_event",
+          "terminal_event_source": "env_step_finalized_tasks"
+        },
+        {
+          "task_key": "paper_aligned_feasible_v1-128:85:84",
+          "terminal_outcome": "dropped",
+          "recovered_reward": -40.0,
+          "recovery_strategy": "horizon_aware_recovered_reward_event",
+          "terminal_event_source": "env_step_finalized_tasks"
+        },
+        {
+          "task_key": "paper_aligned_feasible_v1-130:87:107",
+          "terminal_outcome": "dropped",
+          "recovered_reward": -40.0,
+          "recovery_strategy": "horizon_aware_recovered_reward_event",
+          "terminal_event_source": "env_step_finalized_tasks"
+        },
+        {
+          "task_key": "paper_aligned_feasible_v1-132:89:82",
+          "terminal_outcome": "dropped",
+          "recovered_reward": -40.0,
+          "recovery_strategy": "horizon_aware_recovered_reward_event",
+          "terminal_event_source": "env_step_finalized_tasks"
+        },
+        {
+          "task_key": "paper_aligned_feasible_v1-132:89:83",
+          "terminal_outcome": "dropped",
+          "recovered_reward": -40.0,
+          "recovery_strategy": "horizon_aware_recovered_reward_event",
+          "terminal_event_source": "env_step_finalized_tasks"
+        },
+        {
+          "task_key": "paper_aligned_feasible_v1-133:90:99",
+          "terminal_outcome": "dropped",
+          "recovered_reward": -40.0,
+          "recovery_strategy": "horizon_aware_recovered_reward_event",
+          "terminal_event_source": "env_step_finalized_tasks"
+        },
+        {
+          "task_key": "paper_aligned_feasible_v1-133:90:100",
+          "terminal_outcome": "dropped",
+          "recovered_reward": -40.0,
+          "recovery_strategy": "horizon_aware_recovered_reward_event",
+          "terminal_event_source": "env_step_finalized_tasks"
+        },
+        {
+          "task_key": "paper_aligned_feasible_v1-134:91:102",
+          "terminal_outcome": "dropped",
+          "recovered_reward": -40.0,
+          "recovery_strategy": "horizon_aware_recovered_reward_event",
+          "terminal_event_source": "env_step_finalized_tasks"
+        },
+        {
+          "task_key": "paper_aligned_feasible_v1-137:94:93",
+          "terminal_outcome": "dropped",
+          "recovered_reward": -40.0,
+          "recovery_strategy": "horizon_aware_recovered_reward_event",
+          "terminal_event_source": "env_step_finalized_tasks"
+        },
+        {
+          "task_key": "paper_aligned_feasible_v1-138:95:96",
+          "terminal_outcome": "dropped",
+          "recovered_reward": -40.0,
+          "recovery_strategy": "horizon_aware_recovered_reward_event",
+          "terminal_event_source": "env_step_finalized_tasks"
+        },
+        {
+          "task_key": "paper_aligned_feasible_v1-138:95:97",
+          "terminal_outcome": "dropped",
+          "recovered_reward": -40.0,
+          "recovery_strategy": "horizon_aware_recovered_reward_event",
+          "terminal_event_source": "env_step_finalized_tasks"
+        },
+        {
+          "task_key": "paper_aligned_feasible_v1-138:95:98",
+          "terminal_outcome": "dropped",
+          "recovered_reward": -40.0,
+          "recovery_strategy": "horizon_aware_recovered_reward_event",
+          "terminal_event_source": "env_step_finalized_tasks"
+        },
+        {
+          "task_key": "paper_aligned_feasible_v1-138:95:99",
+          "terminal_outcome": "dropped",
+          "recovered_reward": -40.0,
+          "recovery_strategy": "horizon_aware_recovered_reward_event",
+          "terminal_event_source": "env_step_finalized_tasks"
+        },
+        {
+          "task_key": "paper_aligned_feasible_v1-139:96:107",
+          "terminal_outcome": "dropped",
+          "recovered_reward": -40.0,
+          "recovery_strategy": "horizon_aware_recovered_reward_event",
+          "terminal_event_source": "env_step_finalized_tasks"
+        },
+        {
+          "task_key": "paper_aligned_feasible_v1-140:97:88",
+          "terminal_outcome": "dropped",
+          "recovered_reward": -40.0,
+          "recovery_strategy": "horizon_aware_recovered_reward_event",
+          "terminal_event_source": "env_step_finalized_tasks"
+        },
+        {
+          "task_key": "paper_aligned_feasible_v1-141:98:93",
+          "terminal_outcome": "dropped",
+          "recovered_reward": -40.0,
+          "recovery_strategy": "horizon_aware_recovered_reward_event",
+          "terminal_event_source": "env_step_finalized_tasks"
+        }
+      ]
+    },
+    {
+      "policy_name": "fixed_local_policy",
+      "training_budget": null,
+      "profile": "deadline_queue_feasibility_v1",
+      "raw_reward_event_count": 9475,
+      "recovered_horizon_reward_event_count": 75,
+      "raw_plus_recovered_reward_event_count": 9550,
+      "canonical_reward_task_count": 9550,
+      "raw_reward_total": -301570.0,
+      "recovered_horizon_reward_total": -3000.0,
+      "raw_plus_recovered_reward_total": -304570.0,
+      "canonical_reward_total": -304570.0,
+      "raw_vs_canonical_reward_delta": 0.0,
+      "reward_reconciled": true,
+      "raw_terminal_event_count": 9475,
+      "horizon_finalized_terminal_count": 75,
+      "raw_plus_horizon_terminal_count": 9550,
+      "canonical_terminal_task_count": 9550,
+      "terminal_event_coverage_ratio": 1.0,
+      "terminal_reconciled": true,
+      "recovered_reward_ledger": [
+        {
+          "task_key": "paper_aligned_feasible_v1-44:1:102",
+          "terminal_outcome": "dropped",
+          "recovered_reward": -40.0,
+          "recovery_strategy": "horizon_aware_recovered_reward_event",
+          "terminal_event_source": "env_step_finalized_tasks"
+        },
+        {
+          "task_key": "paper_aligned_feasible_v1-46:3:105",
+          "terminal_outcome": "dropped",
+          "recovered_reward": -40.0,
+          "recovery_strategy": "horizon_aware_recovered_reward_event",
+          "terminal_event_source": "env_step_finalized_tasks"
+        },
+        {
+          "task_key": "paper_aligned_feasible_v1-52:9:99",
+          "terminal_outcome": "dropped",
+          "recovered_reward": -40.0,
+          "recovery_strategy": "horizon_aware_recovered_reward_event",
+          "terminal_event_source": "env_step_finalized_tasks"
+        },
+        {
+          "task_key": "paper_aligned_feasible_v1-59:16:100",
+          "terminal_outcome": "dropped",
+          "recovered_reward": -40.0,
+          "recovery_strategy": "horizon_aware_recovered_reward_event",
+          "terminal_event_source": "env_step_finalized_tasks"
+        },
+        {
+          "task_key": "paper_aligned_feasible_v1-62:19:98",
+          "terminal_outcome": "dropped",
+          "recovered_reward": -40.0,
+          "recovery_strategy": "horizon_aware_recovered_reward_event",
+          "terminal_event_source": "env_step_finalized_tasks"
+        },
+        {
+          "task_key": "paper_aligned_feasible_v1-64:21:102",
+          "terminal_outcome": "dropped",
+          "recovered_reward": -40.0,
+          "recovery_strategy": "horizon_aware_recovered_reward_event",
+          "terminal_event_source": "env_step_finalized_tasks"
+        },
+        {
+          "task_key": "paper_aligned_feasible_v1-65:22:91",
+          "terminal_outcome": "dropped",
+          "recovered_reward": -40.0,
+          "recovery_strategy": "horizon_aware_recovered_reward_event",
+          "terminal_event_source": "env_step_finalized_tasks"
+        },
+        {
+          "task_key": "paper_aligned_feasible_v1-66:23:95",
+          "terminal_outcome": "dropped",
+          "recovered_reward": -40.0,
+          "recovery_strategy": "horizon_aware_recovered_reward_event",
+          "terminal_event_source": "env_step_finalized_tasks"
+        },
+        {
+          "task_key": "paper_aligned_feasible_v1-67:24:97",
+          "terminal_outcome": "dropped",
+          "recovered_reward": -40.0,
+          "recovery_strategy": "horizon_aware_recovered_reward_event",
+          "terminal_event_source": "env_step_finalized_tasks"
+        },
+        {
+          "task_key": "paper_aligned_feasible_v1-68:25:96",
+          "terminal_outcome": "dropped",
+          "recovered_reward": -40.0,
+          "recovery_strategy": "horizon_aware_recovered_reward_event",
+          "terminal_event_source": "env_step_finalized_tasks"
+        },
+        {
+          "task_key": "paper_aligned_feasible_v1-69:26:101",
+          "terminal_outcome": "dropped",
+          "recovered_reward": -40.0,
+          "recovery_strategy": "horizon_aware_recovered_reward_event",
+          "terminal_event_source": "env_step_finalized_tasks"
+        },
+        {
+          "task_key": "paper_aligned_feasible_v1-70:27:94",
+          "terminal_outcome": "dropped",
+          "recovered_reward": -40.0,
+          "recovery_strategy": "horizon_aware_recovered_reward_event",
+          "terminal_event_source": "env_step_finalized_tasks"
+        },
+        {
+          "task_key": "paper_aligned_feasible_v1-74:31:95",
+          "terminal_outcome": "dropped",
+          "recovered_reward": -40.0,
+          "recovery_strategy": "horizon_aware_recovered_reward_event",
+          "terminal_event_source": "env_step_finalized_tasks"
+        },
+        {
+          "task_key": "paper_aligned_feasible_v1-76:33:95",
+          "terminal_outcome": "dropped",
+          "recovered_reward": -40.0,
+          "recovery_strategy": "horizon_aware_recovered_reward_event",
+          "terminal_event_source": "env_step_finalized_tasks"
+        },
+        {
+          "task_key": "paper_aligned_feasible_v1-77:34:97",
+          "terminal_outcome": "dropped",
+          "recovered_reward": -40.0,
+          "recovery_strategy": "horizon_aware_recovered_reward_event",
+          "terminal_event_source": "env_step_finalized_tasks"
+        },
+        {
+          "task_key": "paper_aligned_feasible_v1-77:34:98",
+          "terminal_outcome": "dropped",
+          "recovered_reward": -40.0,
+          "recovery_strategy": "horizon_aware_recovered_reward_event",
+          "terminal_event_source": "env_step_finalized_tasks"
+        },
+        {
+          "task_key": "paper_aligned_feasible_v1-80:37:98",
+          "terminal_outcome": "dropped",
+          "recovered_reward": -40.0,
+          "recovery_strategy": "horizon_aware_recovered_reward_event",
+          "terminal_event_source": "env_step_finalized_tasks"
+        },
+        {
+          "task_key": "paper_aligned_feasible_v1-81:38:89",
+          "terminal_outcome": "dropped",
+          "recovered_reward": -40.0,
+          "recovery_strategy": "horizon_aware_recovered_reward_event",
+          "terminal_event_source": "env_step_finalized_tasks"
+        },
+        {
+          "task_key": "paper_aligned_feasible_v1-81:38:91",
+          "terminal_outcome": "dropped",
+          "recovered_reward": -40.0,
+          "recovery_strategy": "horizon_aware_recovered_reward_event",
+          "terminal_event_source": "env_step_finalized_tasks"
+        },
+        {
+          "task_key": "paper_aligned_feasible_v1-84:41:77",
+          "terminal_outcome": "dropped",
+          "recovered_reward": -40.0,
+          "recovery_strategy": "horizon_aware_recovered_reward_event",
+          "terminal_event_source": "env_step_finalized_tasks"
+        },
+        {
+          "task_key": "paper_aligned_feasible_v1-86:43:92",
+          "terminal_outcome": "dropped",
+          "recovered_reward": -40.0,
+          "recovery_strategy": "horizon_aware_recovered_reward_event",
+          "terminal_event_source": "env_step_finalized_tasks"
+        },
+        {
+          "task_key": "paper_aligned_feasible_v1-86:43:93",
+          "terminal_outcome": "dropped",
+          "recovered_reward": -40.0,
+          "recovery_strategy": "horizon_aware_recovered_reward_event",
+          "terminal_event_source": "env_step_finalized_tasks"
+        },
+        {
+          "task_key": "paper_aligned_feasible_v1-86:43:94",
+          "terminal_outcome": "dropped",
+          "recovered_reward": -40.0,
+          "recovery_strategy": "horizon_aware_recovered_reward_event",
+          "terminal_event_source": "env_step_finalized_tasks"
+        },
+        {
+          "task_key": "paper_aligned_feasible_v1-86:43:95",
+          "terminal_outcome": "dropped",
+          "recovered_reward": -40.0,
+          "recovery_strategy": "horizon_aware_recovered_reward_event",
+          "terminal_event_source": "env_step_finalized_tasks"
+        },
+        {
+          "task_key": "paper_aligned_feasible_v1-88:45:97",
+          "terminal_outcome": "dropped",
+          "recovered_reward": -40.0,
+          "recovery_strategy": "horizon_aware_recovered_reward_event",
+          "terminal_event_source": "env_step_finalized_tasks"
+        },
+        {
+          "task_key": "paper_aligned_feasible_v1-89:46:97",
+          "terminal_outcome": "dropped",
+          "recovered_reward": -40.0,
+          "recovery_strategy": "horizon_aware_recovered_reward_event",
+          "terminal_event_source": "env_step_finalized_tasks"
+        },
+        {
+          "task_key": "paper_aligned_feasible_v1-91:48:86",
+          "terminal_outcome": "dropped",
+          "recovered_reward": -40.0,
+          "recovery_strategy": "horizon_aware_recovered_reward_event",
+          "terminal_event_source": "env_step_finalized_tasks"
+        },
+        {
+          "task_key": "paper_aligned_feasible_v1-95:52:95",
+          "terminal_outcome": "dropped",
+          "recovered_reward": -40.0,
+          "recovery_strategy": "horizon_aware_recovered_reward_event",
+          "terminal_event_source": "env_step_finalized_tasks"
+        },
+        {
+          "task_key": "paper_aligned_feasible_v1-97:54:98",
+          "terminal_outcome": "dropped",
+          "recovered_reward": -40.0,
+          "recovery_strategy": "horizon_aware_recovered_reward_event",
+          "terminal_event_source": "env_step_finalized_tasks"
+        },
+        {
+          "task_key": "paper_aligned_feasible_v1-97:54:99",
+          "terminal_outcome": "dropped",
+          "recovered_reward": -40.0,
+          "recovery_strategy": "horizon_aware_recovered_reward_event",
+          "terminal_event_source": "env_step_finalized_tasks"
+        },
+        {
+          "task_key": "paper_aligned_feasible_v1-98:55:108",
+          "terminal_outcome": "dropped",
+          "recovered_reward": -40.0,
+          "recovery_strategy": "horizon_aware_recovered_reward_event",
+          "terminal_event_source": "env_step_finalized_tasks"
+        },
+        {
+          "task_key": "paper_aligned_feasible_v1-99:56:100",
+          "terminal_outcome": "dropped",
+          "recovered_reward": -40.0,
+          "recovery_strategy": "horizon_aware_recovered_reward_event",
+          "terminal_event_source": "env_step_finalized_tasks"
+        },
+        {
+          "task_key": "paper_aligned_feasible_v1-100:57:100",
+          "terminal_outcome": "dropped",
+          "recovered_reward": -40.0,
+          "recovery_strategy": "horizon_aware_recovered_reward_event",
+          "terminal_event_source": "env_step_finalized_tasks"
+        },
+        {
+          "task_key": "paper_aligned_feasible_v1-101:58:104",
+          "terminal_outcome": "dropped",
+          "recovered_reward": -40.0,
+          "recovery_strategy": "horizon_aware_recovered_reward_event",
+          "terminal_event_source": "env_step_finalized_tasks"
+        },
+        {
+          "task_key": "paper_aligned_feasible_v1-101:58:105",
+          "terminal_outcome": "dropped",
+          "recovered_reward": -40.0,
+          "recovery_strategy": "horizon_aware_recovered_reward_event",
+          "terminal_event_source": "env_step_finalized_tasks"
+        },
+        {
+          "task_key": "paper_aligned_feasible_v1-103:60:83",
+          "terminal_outcome": "dropped",
+          "recovered_reward": -40.0,
+          "recovery_strategy": "horizon_aware_recovered_reward_event",
+          "terminal_event_source": "env_step_finalized_tasks"
+        },
+        {
+          "task_key": "paper_aligned_feasible_v1-104:61:107",
+          "terminal_outcome": "dropped",
+          "recovered_reward": -40.0,
+          "recovery_strategy": "horizon_aware_recovered_reward_event",
+          "terminal_event_source": "env_step_finalized_tasks"
+        },
+        {
+          "task_key": "paper_aligned_feasible_v1-105:62:88",
+          "terminal_outcome": "dropped",
+          "recovered_reward": -40.0,
+          "recovery_strategy": "horizon_aware_recovered_reward_event",
+          "terminal_event_source": "env_step_finalized_tasks"
+        },
+        {
+          "task_key": "paper_aligned_feasible_v1-106:63:103",
+          "terminal_outcome": "dropped",
+          "recovered_reward": -40.0,
+          "recovery_strategy": "horizon_aware_recovered_reward_event",
+          "terminal_event_source": "env_step_finalized_tasks"
+        },
+        {
+          "task_key": "paper_aligned_feasible_v1-106:63:104",
+          "terminal_outcome": "dropped",
+          "recovered_reward": -40.0,
+          "recovery_strategy": "horizon_aware_recovered_reward_event",
+          "terminal_event_source": "env_step_finalized_tasks"
+        },
+        {
+          "task_key": "paper_aligned_feasible_v1-107:64:95",
+          "terminal_outcome": "dropped",
+          "recovered_reward": -40.0,
+          "recovery_strategy": "horizon_aware_recovered_reward_event",
+          "terminal_event_source": "env_step_finalized_tasks"
+        },
+        {
+          "task_key": "paper_aligned_feasible_v1-107:64:96",
+          "terminal_outcome": "dropped",
+          "recovered_reward": -40.0,
+          "recovery_strategy": "horizon_aware_recovered_reward_event",
+          "terminal_event_source": "env_step_finalized_tasks"
+        },
+        {
+          "task_key": "paper_aligned_feasible_v1-108:65:99",
+          "terminal_outcome": "dropped",
+          "recovered_reward": -40.0,
+          "recovery_strategy": "horizon_aware_recovered_reward_event",
+          "terminal_event_source": "env_step_finalized_tasks"
+        },
+        {
+          "task_key": "paper_aligned_feasible_v1-110:67:107",
+          "terminal_outcome": "dropped",
+          "recovered_reward": -40.0,
+          "recovery_strategy": "horizon_aware_recovered_reward_event",
+          "terminal_event_source": "env_step_finalized_tasks"
+        },
+        {
+          "task_key": "paper_aligned_feasible_v1-111:68:96",
+          "terminal_outcome": "dropped",
+          "recovered_reward": -40.0,
+          "recovery_strategy": "horizon_aware_recovered_reward_event",
+          "terminal_event_source": "env_step_finalized_tasks"
+        },
+        {
+          "task_key": "paper_aligned_feasible_v1-111:68:97",
+          "terminal_outcome": "dropped",
+          "recovered_reward": -40.0,
+          "recovery_strategy": "horizon_aware_recovered_reward_event",
+          "terminal_event_source": "env_step_finalized_tasks"
+        },
+        {
+          "task_key": "paper_aligned_feasible_v1-112:69:85",
+          "terminal_outcome": "dropped",
+          "recovered_reward": -40.0,
+          "recovery_strategy": "horizon_aware_recovered_reward_event",
+          "terminal_event_source": "env_step_finalized_tasks"
+        },
+        {
+          "task_key": "paper_aligned_feasible_v1-112:69:86",
+          "terminal_outcome": "dropped",
+          "recovered_reward": -40.0,
+          "recovery_strategy": "horizon_aware_recovered_reward_event",
+          "terminal_event_source": "env_step_finalized_tasks"
+        },
+        {
+          "task_key": "paper_aligned_feasible_v1-114:71:107",
+          "terminal_outcome": "dropped",
+          "recovered_reward": -40.0,
+          "recovery_strategy": "horizon_aware_recovered_reward_event",
+          "terminal_event_source": "env_step_finalized_tasks"
+        },
+        {
+          "task_key": "paper_aligned_feasible_v1-114:71:108",
+          "terminal_outcome": "dropped",
+          "recovered_reward": -40.0,
+          "recovery_strategy": "horizon_aware_recovered_reward_event",
+          "terminal_event_source": "env_step_finalized_tasks"
+        },
+        {
+          "task_key": "paper_aligned_feasible_v1-115:72:87",
+          "terminal_outcome": "dropped",
+          "recovered_reward": -40.0,
+          "recovery_strategy": "horizon_aware_recovered_reward_event",
+          "terminal_event_source": "env_step_finalized_tasks"
+        },
+        {
+          "task_key": "paper_aligned_feasible_v1-117:74:86",
+          "terminal_outcome": "dropped",
+          "recovered_reward": -40.0,
+          "recovery_strategy": "horizon_aware_recovered_reward_event",
+          "terminal_event_source": "env_step_finalized_tasks"
+        },
+        {
+          "task_key": "paper_aligned_feasible_v1-118:75:99",
+          "terminal_outcome": "dropped",
+          "recovered_reward": -40.0,
+          "recovery_strategy": "horizon_aware_recovered_reward_event",
+          "terminal_event_source": "env_step_finalized_tasks"
+        },
+        {
+          "task_key": "paper_aligned_feasible_v1-121:78:104",
+          "terminal_outcome": "dropped",
+          "recovered_reward": -40.0,
+          "recovery_strategy": "horizon_aware_recovered_reward_event",
+          "terminal_event_source": "env_step_finalized_tasks"
+        },
+        {
+          "task_key": "paper_aligned_feasible_v1-122:79:91",
+          "terminal_outcome": "dropped",
+          "recovered_reward": -40.0,
+          "recovery_strategy": "horizon_aware_recovered_reward_event",
+          "terminal_event_source": "env_step_finalized_tasks"
+        },
+        {
+          "task_key": "paper_aligned_feasible_v1-124:81:94",
+          "terminal_outcome": "dropped",
+          "recovered_reward": -40.0,
+          "recovery_strategy": "horizon_aware_recovered_reward_event",
+          "terminal_event_source": "env_step_finalized_tasks"
+        },
+        {
+          "task_key": "paper_aligned_feasible_v1-126:83:89",
+          "terminal_outcome": "dropped",
+          "recovered_reward": -40.0,
+          "recovery_strategy": "horizon_aware_recovered_reward_event",
+          "terminal_event_source": "env_step_finalized_tasks"
+        },
+        {
+          "task_key": "paper_aligned_feasible_v1-127:84:106",
+          "terminal_outcome": "dropped",
+          "recovered_reward": -40.0,
+          "recovery_strategy": "horizon_aware_recovered_reward_event",
+          "terminal_event_source": "env_step_finalized_tasks"
+        },
+        {
+          "task_key": "paper_aligned_feasible_v1-127:84:107",
+          "terminal_outcome": "dropped",
+          "recovered_reward": -40.0,
+          "recovery_strategy": "horizon_aware_recovered_reward_event",
+          "terminal_event_source": "env_step_finalized_tasks"
+        },
+        {
+          "task_key": "paper_aligned_feasible_v1-127:84:108",
+          "terminal_outcome": "dropped",
+          "recovered_reward": -40.0,
+          "recovery_strategy": "horizon_aware_recovered_reward_event",
+          "terminal_event_source": "env_step_finalized_tasks"
+        },
+        {
+          "task_key": "paper_aligned_feasible_v1-128:85:84",
+          "terminal_outcome": "dropped",
+          "recovered_reward": -40.0,
+          "recovery_strategy": "horizon_aware_recovered_reward_event",
+          "terminal_event_source": "env_step_finalized_tasks"
+        },
+        {
+          "task_key": "paper_aligned_feasible_v1-130:87:107",
+          "terminal_outcome": "dropped",
+          "recovered_reward": -40.0,
+          "recovery_strategy": "horizon_aware_recovered_reward_event",
+          "terminal_event_source": "env_step_finalized_tasks"
+        },
+        {
+          "task_key": "paper_aligned_feasible_v1-132:89:82",
+          "terminal_outcome": "dropped",
+          "recovered_reward": -40.0,
+          "recovery_strategy": "horizon_aware_recovered_reward_event",
+          "terminal_event_source": "env_step_finalized_tasks"
+        },
+        {
+          "task_key": "paper_aligned_feasible_v1-132:89:83",
+          "terminal_outcome": "dropped",
+          "recovered_reward": -40.0,
+          "recovery_strategy": "horizon_aware_recovered_reward_event",
+          "terminal_event_source": "env_step_finalized_tasks"
+        },
+        {
+          "task_key": "paper_aligned_feasible_v1-133:90:99",
+          "terminal_outcome": "dropped",
+          "recovered_reward": -40.0,
+          "recovery_strategy": "horizon_aware_recovered_reward_event",
+          "terminal_event_source": "env_step_finalized_tasks"
+        },
+        {
+          "task_key": "paper_aligned_feasible_v1-133:90:100",
+          "terminal_outcome": "dropped",
+          "recovered_reward": -40.0,
+          "recovery_strategy": "horizon_aware_recovered_reward_event",
+          "terminal_event_source": "env_step_finalized_tasks"
+        },
+        {
+          "task_key": "paper_aligned_feasible_v1-134:91:102",
+          "terminal_outcome": "dropped",
+          "recovered_reward": -40.0,
+          "recovery_strategy": "horizon_aware_recovered_reward_event",
+          "terminal_event_source": "env_step_finalized_tasks"
+        },
+        {
+          "task_key": "paper_aligned_feasible_v1-137:94:93",
+          "terminal_outcome": "dropped",
+          "recovered_reward": -40.0,
+          "recovery_strategy": "horizon_aware_recovered_reward_event",
+          "terminal_event_source": "env_step_finalized_tasks"
+        },
+        {
+          "task_key": "paper_aligned_feasible_v1-138:95:96",
+          "terminal_outcome": "dropped",
+          "recovered_reward": -40.0,
+          "recovery_strategy": "horizon_aware_recovered_reward_event",
+          "terminal_event_source": "env_step_finalized_tasks"
+        },
+        {
+          "task_key": "paper_aligned_feasible_v1-138:95:97",
+          "terminal_outcome": "dropped",
+          "recovered_reward": -40.0,
+          "recovery_strategy": "horizon_aware_recovered_reward_event",
+          "terminal_event_source": "env_step_finalized_tasks"
+        },
+        {
+          "task_key": "paper_aligned_feasible_v1-138:95:98",
+          "terminal_outcome": "dropped",
+          "recovered_reward": -40.0,
+          "recovery_strategy": "horizon_aware_recovered_reward_event",
+          "terminal_event_source": "env_step_finalized_tasks"
+        },
+        {
+          "task_key": "paper_aligned_feasible_v1-138:95:99",
+          "terminal_outcome": "dropped",
+          "recovered_reward": -40.0,
+          "recovery_strategy": "horizon_aware_recovered_reward_event",
+          "terminal_event_source": "env_step_finalized_tasks"
+        },
+        {
+          "task_key": "paper_aligned_feasible_v1-139:96:107",
+          "terminal_outcome": "dropped",
+          "recovered_reward": -40.0,
+          "recovery_strategy": "horizon_aware_recovered_reward_event",
+          "terminal_event_source": "env_step_finalized_tasks"
+        },
+        {
+          "task_key": "paper_aligned_feasible_v1-140:97:88",
+          "terminal_outcome": "dropped",
+          "recovered_reward": -40.0,
+          "recovery_strategy": "horizon_aware_recovered_reward_event",
+          "terminal_event_source": "env_step_finalized_tasks"
+        },
+        {
+          "task_key": "paper_aligned_feasible_v1-141:98:93",
+          "terminal_outcome": "dropped",
+          "recovered_reward": -40.0,
+          "recovery_strategy": "horizon_aware_recovered_reward_event",
+          "terminal_event_source": "env_step_finalized_tasks"
+        }
+      ]
+    },
+    {
+      "policy_name": "fixed_horizontal_policy",
+      "training_budget": null,
+      "profile": "deadline_queue_feasibility_v1",
+      "raw_reward_event_count": 9438,
+      "recovered_horizon_reward_event_count": 83,
+      "raw_plus_recovered_reward_event_count": 9521,
+      "canonical_reward_task_count": 9521,
+      "raw_reward_total": -327581.0,
+      "recovered_horizon_reward_total": -3320.0,
+      "raw_plus_recovered_reward_total": -330901.0,
+      "canonical_reward_total": -330901.0,
+      "raw_vs_canonical_reward_delta": 0.0,
+      "reward_reconciled": true,
+      "raw_terminal_event_count": 9438,
+      "horizon_finalized_terminal_count": 83,
+      "raw_plus_horizon_terminal_count": 9521,
+      "canonical_terminal_task_count": 9521,
+      "terminal_event_coverage_ratio": 1.0,
+      "terminal_reconciled": true,
+      "recovered_reward_ledger": [
+        {
+          "task_key": "paper_aligned_feasible_v1-44:1:102",
+          "terminal_outcome": "dropped",
+          "recovered_reward": -40.0,
+          "recovery_strategy": "horizon_aware_recovered_reward_event",
+          "terminal_event_source": "env_step_finalized_tasks"
+        },
+        {
+          "task_key": "paper_aligned_feasible_v1-46:3:105",
+          "terminal_outcome": "dropped",
+          "recovered_reward": -40.0,
+          "recovery_strategy": "horizon_aware_recovered_reward_event",
+          "terminal_event_source": "env_step_finalized_tasks"
+        },
+        {
+          "task_key": "paper_aligned_feasible_v1-49:6:94",
+          "terminal_outcome": "dropped",
+          "recovered_reward": -40.0,
+          "recovery_strategy": "horizon_aware_recovered_reward_event",
+          "terminal_event_source": "env_step_finalized_tasks"
+        },
+        {
+          "task_key": "paper_aligned_feasible_v1-51:8:94",
+          "terminal_outcome": "dropped",
+          "recovered_reward": -40.0,
+          "recovery_strategy": "horizon_aware_recovered_reward_event",
+          "terminal_event_source": "env_step_finalized_tasks"
+        },
+        {
+          "task_key": "paper_aligned_feasible_v1-52:9:99",
+          "terminal_outcome": "dropped",
+          "recovered_reward": -40.0,
+          "recovery_strategy": "horizon_aware_recovered_reward_event",
+          "terminal_event_source": "env_step_finalized_tasks"
+        },
+        {
+          "task_key": "paper_aligned_feasible_v1-53:10:88",
+          "terminal_outcome": "dropped",
+          "recovered_reward": -40.0,
+          "recovery_strategy": "horizon_aware_recovered_reward_event",
+          "terminal_event_source": "env_step_finalized_tasks"
+        },
+        {
+          "task_key": "paper_aligned_feasible_v1-54:11:94",
+          "terminal_outcome": "dropped",
+          "recovered_reward": -40.0,
+          "recovery_strategy": "horizon_aware_recovered_reward_event",
+          "terminal_event_source": "env_step_finalized_tasks"
+        },
+        {
+          "task_key": "paper_aligned_feasible_v1-59:16:100",
+          "terminal_outcome": "dropped",
+          "recovered_reward": -40.0,
+          "recovery_strategy": "horizon_aware_recovered_reward_event",
+          "terminal_event_source": "env_step_finalized_tasks"
+        },
+        {
+          "task_key": "paper_aligned_feasible_v1-62:19:98",
+          "terminal_outcome": "dropped",
+          "recovered_reward": -40.0,
+          "recovery_strategy": "horizon_aware_recovered_reward_event",
+          "terminal_event_source": "env_step_finalized_tasks"
+        },
+        {
+          "task_key": "paper_aligned_feasible_v1-64:21:102",
+          "terminal_outcome": "dropped",
+          "recovered_reward": -40.0,
+          "recovery_strategy": "horizon_aware_recovered_reward_event",
+          "terminal_event_source": "env_step_finalized_tasks"
+        },
+        {
+          "task_key": "paper_aligned_feasible_v1-65:22:91",
+          "terminal_outcome": "dropped",
+          "recovered_reward": -40.0,
+          "recovery_strategy": "horizon_aware_recovered_reward_event",
+          "terminal_event_source": "env_step_finalized_tasks"
+        },
+        {
+          "task_key": "paper_aligned_feasible_v1-66:23:95",
+          "terminal_outcome": "dropped",
+          "recovered_reward": -40.0,
+          "recovery_strategy": "horizon_aware_recovered_reward_event",
+          "terminal_event_source": "env_step_finalized_tasks"
+        },
+        {
+          "task_key": "paper_aligned_feasible_v1-67:24:97",
+          "terminal_outcome": "dropped",
+          "recovered_reward": -40.0,
+          "recovery_strategy": "horizon_aware_recovered_reward_event",
+          "terminal_event_source": "env_step_finalized_tasks"
+        },
+        {
+          "task_key": "paper_aligned_feasible_v1-68:25:96",
+          "terminal_outcome": "dropped",
+          "recovered_reward": -40.0,
+          "recovery_strategy": "horizon_aware_recovered_reward_event",
+          "terminal_event_source": "env_step_finalized_tasks"
+        },
+        {
+          "task_key": "paper_aligned_feasible_v1-69:26:101",
+          "terminal_outcome": "dropped",
+          "recovered_reward": -40.0,
+          "recovery_strategy": "horizon_aware_recovered_reward_event",
+          "terminal_event_source": "env_step_finalized_tasks"
+        },
+        {
+          "task_key": "paper_aligned_feasible_v1-70:27:94",
+          "terminal_outcome": "dropped",
+          "recovered_reward": -40.0,
+          "recovery_strategy": "horizon_aware_recovered_reward_event",
+          "terminal_event_source": "env_step_finalized_tasks"
+        },
+        {
+          "task_key": "paper_aligned_feasible_v1-74:31:95",
+          "terminal_outcome": "dropped",
+          "recovered_reward": -40.0,
+          "recovery_strategy": "horizon_aware_recovered_reward_event",
+          "terminal_event_source": "env_step_finalized_tasks"
+        },
+        {
+          "task_key": "paper_aligned_feasible_v1-76:33:95",
+          "terminal_outcome": "dropped",
+          "recovered_reward": -40.0,
+          "recovery_strategy": "horizon_aware_recovered_reward_event",
+          "terminal_event_source": "env_step_finalized_tasks"
+        },
+        {
+          "task_key": "paper_aligned_feasible_v1-77:34:97",
+          "terminal_outcome": "dropped",
+          "recovered_reward": -40.0,
+          "recovery_strategy": "horizon_aware_recovered_reward_event",
+          "terminal_event_source": "env_step_finalized_tasks"
+        },
+        {
+          "task_key": "paper_aligned_feasible_v1-77:34:98",
+          "terminal_outcome": "dropped",
+          "recovered_reward": -40.0,
+          "recovery_strategy": "horizon_aware_recovered_reward_event",
+          "terminal_event_source": "env_step_finalized_tasks"
+        },
+        {
+          "task_key": "paper_aligned_feasible_v1-80:37:98",
+          "terminal_outcome": "dropped",
+          "recovered_reward": -40.0,
+          "recovery_strategy": "horizon_aware_recovered_reward_event",
+          "terminal_event_source": "env_step_finalized_tasks"
+        },
+        {
+          "task_key": "paper_aligned_feasible_v1-81:38:89",
+          "terminal_outcome": "dropped",
+          "recovered_reward": -40.0,
+          "recovery_strategy": "horizon_aware_recovered_reward_event",
+          "terminal_event_source": "env_step_finalized_tasks"
+        },
+        {
+          "task_key": "paper_aligned_feasible_v1-81:38:90",
+          "terminal_outcome": "dropped",
+          "recovered_reward": -40.0,
+          "recovery_strategy": "horizon_aware_recovered_reward_event",
+          "terminal_event_source": "env_step_finalized_tasks"
+        },
+        {
+          "task_key": "paper_aligned_feasible_v1-81:38:91",
+          "terminal_outcome": "dropped",
+          "recovered_reward": -40.0,
+          "recovery_strategy": "horizon_aware_recovered_reward_event",
+          "terminal_event_source": "env_step_finalized_tasks"
+        },
+        {
+          "task_key": "paper_aligned_feasible_v1-84:41:77",
+          "terminal_outcome": "dropped",
+          "recovered_reward": -40.0,
+          "recovery_strategy": "horizon_aware_recovered_reward_event",
+          "terminal_event_source": "env_step_finalized_tasks"
+        },
+        {
+          "task_key": "paper_aligned_feasible_v1-84:41:78",
+          "terminal_outcome": "dropped",
+          "recovered_reward": -40.0,
+          "recovery_strategy": "horizon_aware_recovered_reward_event",
+          "terminal_event_source": "env_step_finalized_tasks"
+        },
+        {
+          "task_key": "paper_aligned_feasible_v1-86:43:92",
+          "terminal_outcome": "dropped",
+          "recovered_reward": -40.0,
+          "recovery_strategy": "horizon_aware_recovered_reward_event",
+          "terminal_event_source": "env_step_finalized_tasks"
+        },
+        {
+          "task_key": "paper_aligned_feasible_v1-86:43:93",
+          "terminal_outcome": "dropped",
+          "recovered_reward": -40.0,
+          "recovery_strategy": "horizon_aware_recovered_reward_event",
+          "terminal_event_source": "env_step_finalized_tasks"
+        },
+        {
+          "task_key": "paper_aligned_feasible_v1-86:43:94",
+          "terminal_outcome": "dropped",
+          "recovered_reward": -40.0,
+          "recovery_strategy": "horizon_aware_recovered_reward_event",
+          "terminal_event_source": "env_step_finalized_tasks"
+        },
+        {
+          "task_key": "paper_aligned_feasible_v1-86:43:95",
+          "terminal_outcome": "dropped",
+          "recovered_reward": -40.0,
+          "recovery_strategy": "horizon_aware_recovered_reward_event",
+          "terminal_event_source": "env_step_finalized_tasks"
+        },
+        {
+          "task_key": "paper_aligned_feasible_v1-88:45:97",
+          "terminal_outcome": "dropped",
+          "recovered_reward": -40.0,
+          "recovery_strategy": "horizon_aware_recovered_reward_event",
+          "terminal_event_source": "env_step_finalized_tasks"
+        },
+        {
+          "task_key": "paper_aligned_feasible_v1-89:46:97",
+          "terminal_outcome": "dropped",
+          "recovered_reward": -40.0,
+          "recovery_strategy": "horizon_aware_recovered_reward_event",
+          "terminal_event_source": "env_step_finalized_tasks"
+        },
+        {
+          "task_key": "paper_aligned_feasible_v1-91:48:86",
+          "terminal_outcome": "dropped",
+          "recovered_reward": -40.0,
+          "recovery_strategy": "horizon_aware_recovered_reward_event",
+          "terminal_event_source": "env_step_finalized_tasks"
+        },
+        {
+          "task_key": "paper_aligned_feasible_v1-95:52:95",
+          "terminal_outcome": "dropped",
+          "recovered_reward": -40.0,
+          "recovery_strategy": "horizon_aware_recovered_reward_event",
+          "terminal_event_source": "env_step_finalized_tasks"
+        },
+        {
+          "task_key": "paper_aligned_feasible_v1-97:54:98",
+          "terminal_outcome": "dropped",
+          "recovered_reward": -40.0,
+          "recovery_strategy": "horizon_aware_recovered_reward_event",
+          "terminal_event_source": "env_step_finalized_tasks"
+        },
+        {
+          "task_key": "paper_aligned_feasible_v1-97:54:99",
+          "terminal_outcome": "dropped",
+          "recovered_reward": -40.0,
+          "recovery_strategy": "horizon_aware_recovered_reward_event",
+          "terminal_event_source": "env_step_finalized_tasks"
+        },
+        {
+          "task_key": "paper_aligned_feasible_v1-98:55:108",
+          "terminal_outcome": "dropped",
+          "recovered_reward": -40.0,
+          "recovery_strategy": "horizon_aware_recovered_reward_event",
+          "terminal_event_source": "env_step_finalized_tasks"
+        },
+        {
+          "task_key": "paper_aligned_feasible_v1-99:56:100",
+          "terminal_outcome": "dropped",
+          "recovered_reward": -40.0,
+          "recovery_strategy": "horizon_aware_recovered_reward_event",
+          "terminal_event_source": "env_step_finalized_tasks"
+        },
+        {
+          "task_key": "paper_aligned_feasible_v1-100:57:100",
+          "terminal_outcome": "dropped",
+          "recovered_reward": -40.0,
+          "recovery_strategy": "horizon_aware_recovered_reward_event",
+          "terminal_event_source": "env_step_finalized_tasks"
+        },
+        {
+          "task_key": "paper_aligned_feasible_v1-101:58:104",
+          "terminal_outcome": "dropped",
+          "recovered_reward": -40.0,
+          "recovery_strategy": "horizon_aware_recovered_reward_event",
+          "terminal_event_source": "env_step_finalized_tasks"
+        },
+        {
+          "task_key": "paper_aligned_feasible_v1-101:58:105",
+          "terminal_outcome": "dropped",
+          "recovered_reward": -40.0,
+          "recovery_strategy": "horizon_aware_recovered_reward_event",
+          "terminal_event_source": "env_step_finalized_tasks"
+        },
+        {
+          "task_key": "paper_aligned_feasible_v1-103:60:83",
+          "terminal_outcome": "dropped",
+          "recovered_reward": -40.0,
+          "recovery_strategy": "horizon_aware_recovered_reward_event",
+          "terminal_event_source": "env_step_finalized_tasks"
+        },
+        {
+          "task_key": "paper_aligned_feasible_v1-104:61:107",
+          "terminal_outcome": "dropped",
+          "recovered_reward": -40.0,
+          "recovery_strategy": "horizon_aware_recovered_reward_event",
+          "terminal_event_source": "env_step_finalized_tasks"
+        },
+        {
+          "task_key": "paper_aligned_feasible_v1-105:62:88",
+          "terminal_outcome": "dropped",
+          "recovered_reward": -40.0,
+          "recovery_strategy": "horizon_aware_recovered_reward_event",
+          "terminal_event_source": "env_step_finalized_tasks"
+        },
+        {
+          "task_key": "paper_aligned_feasible_v1-106:63:103",
+          "terminal_outcome": "dropped",
+          "recovered_reward": -40.0,
+          "recovery_strategy": "horizon_aware_recovered_reward_event",
+          "terminal_event_source": "env_step_finalized_tasks"
+        },
+        {
+          "task_key": "paper_aligned_feasible_v1-106:63:104",
+          "terminal_outcome": "dropped",
+          "recovered_reward": -40.0,
+          "recovery_strategy": "horizon_aware_recovered_reward_event",
+          "terminal_event_source": "env_step_finalized_tasks"
+        },
+        {
+          "task_key": "paper_aligned_feasible_v1-107:64:95",
+          "terminal_outcome": "dropped",
+          "recovered_reward": -40.0,
+          "recovery_strategy": "horizon_aware_recovered_reward_event",
+          "terminal_event_source": "env_step_finalized_tasks"
+        },
+        {
+          "task_key": "paper_aligned_feasible_v1-107:64:96",
+          "terminal_outcome": "dropped",
+          "recovered_reward": -40.0,
+          "recovery_strategy": "horizon_aware_recovered_reward_event",
+          "terminal_event_source": "env_step_finalized_tasks"
+        },
+        {
+          "task_key": "paper_aligned_feasible_v1-108:65:99",
+          "terminal_outcome": "dropped",
+          "recovered_reward": -40.0,
+          "recovery_strategy": "horizon_aware_recovered_reward_event",
+          "terminal_event_source": "env_step_finalized_tasks"
+        },
+        {
+          "task_key": "paper_aligned_feasible_v1-110:67:107",
+          "terminal_outcome": "dropped",
+          "recovered_reward": -40.0,
+          "recovery_strategy": "horizon_aware_recovered_reward_event",
+          "terminal_event_source": "env_step_finalized_tasks"
+        },
+        {
+          "task_key": "paper_aligned_feasible_v1-111:68:96",
+          "terminal_outcome": "dropped",
+          "recovered_reward": -40.0,
+          "recovery_strategy": "horizon_aware_recovered_reward_event",
+          "terminal_event_source": "env_step_finalized_tasks"
+        },
+        {
+          "task_key": "paper_aligned_feasible_v1-111:68:97",
+          "terminal_outcome": "dropped",
+          "recovered_reward": -40.0,
+          "recovery_strategy": "horizon_aware_recovered_reward_event",
+          "terminal_event_source": "env_step_finalized_tasks"
+        },
+        {
+          "task_key": "paper_aligned_feasible_v1-112:69:85",
+          "terminal_outcome": "dropped",
+          "recovered_reward": -40.0,
+          "recovery_strategy": "horizon_aware_recovered_reward_event",
+          "terminal_event_source": "env_step_finalized_tasks"
+        },
+        {
+          "task_key": "paper_aligned_feasible_v1-112:69:86",
+          "terminal_outcome": "dropped",
+          "recovered_reward": -40.0,
+          "recovery_strategy": "horizon_aware_recovered_reward_event",
+          "terminal_event_source": "env_step_finalized_tasks"
+        },
+        {
+          "task_key": "paper_aligned_feasible_v1-114:71:107",
+          "terminal_outcome": "dropped",
+          "recovered_reward": -40.0,
+          "recovery_strategy": "horizon_aware_recovered_reward_event",
+          "terminal_event_source": "env_step_finalized_tasks"
+        },
+        {
+          "task_key": "paper_aligned_feasible_v1-114:71:108",
+          "terminal_outcome": "dropped",
+          "recovered_reward": -40.0,
+          "recovery_strategy": "horizon_aware_recovered_reward_event",
+          "terminal_event_source": "env_step_finalized_tasks"
+        },
+        {
+          "task_key": "paper_aligned_feasible_v1-115:72:87",
+          "terminal_outcome": "dropped",
+          "recovered_reward": -40.0,
+          "recovery_strategy": "horizon_aware_recovered_reward_event",
+          "terminal_event_source": "env_step_finalized_tasks"
+        },
+        {
+          "task_key": "paper_aligned_feasible_v1-117:74:86",
+          "terminal_outcome": "dropped",
+          "recovered_reward": -40.0,
+          "recovery_strategy": "horizon_aware_recovered_reward_event",
+          "terminal_event_source": "env_step_finalized_tasks"
+        },
+        {
+          "task_key": "paper_aligned_feasible_v1-118:75:99",
+          "terminal_outcome": "dropped",
+          "recovered_reward": -40.0,
+          "recovery_strategy": "horizon_aware_recovered_reward_event",
+          "terminal_event_source": "env_step_finalized_tasks"
+        },
+        {
+          "task_key": "paper_aligned_feasible_v1-121:78:104",
+          "terminal_outcome": "dropped",
+          "recovered_reward": -40.0,
+          "recovery_strategy": "horizon_aware_recovered_reward_event",
+          "terminal_event_source": "env_step_finalized_tasks"
+        },
+        {
+          "task_key": "paper_aligned_feasible_v1-122:79:91",
+          "terminal_outcome": "dropped",
+          "recovered_reward": -40.0,
+          "recovery_strategy": "horizon_aware_recovered_reward_event",
+          "terminal_event_source": "env_step_finalized_tasks"
+        },
+        {
+          "task_key": "paper_aligned_feasible_v1-124:81:94",
+          "terminal_outcome": "dropped",
+          "recovered_reward": -40.0,
+          "recovery_strategy": "horizon_aware_recovered_reward_event",
+          "terminal_event_source": "env_step_finalized_tasks"
+        },
+        {
+          "task_key": "paper_aligned_feasible_v1-126:83:89",
+          "terminal_outcome": "dropped",
+          "recovered_reward": -40.0,
+          "recovery_strategy": "horizon_aware_recovered_reward_event",
+          "terminal_event_source": "env_step_finalized_tasks"
+        },
+        {
+          "task_key": "paper_aligned_feasible_v1-127:84:106",
+          "terminal_outcome": "dropped",
+          "recovered_reward": -40.0,
+          "recovery_strategy": "horizon_aware_recovered_reward_event",
+          "terminal_event_source": "env_step_finalized_tasks"
+        },
+        {
+          "task_key": "paper_aligned_feasible_v1-127:84:107",
+          "terminal_outcome": "dropped",
+          "recovered_reward": -40.0,
+          "recovery_strategy": "horizon_aware_recovered_reward_event",
+          "terminal_event_source": "env_step_finalized_tasks"
+        },
+        {
+          "task_key": "paper_aligned_feasible_v1-127:84:108",
+          "terminal_outcome": "dropped",
+          "recovered_reward": -40.0,
+          "recovery_strategy": "horizon_aware_recovered_reward_event",
+          "terminal_event_source": "env_step_finalized_tasks"
+        },
+        {
+          "task_key": "paper_aligned_feasible_v1-128:85:84",
+          "terminal_outcome": "dropped",
+          "recovered_reward": -40.0,
+          "recovery_strategy": "horizon_aware_recovered_reward_event",
+          "terminal_event_source": "env_step_finalized_tasks"
+        },
+        {
+          "task_key": "paper_aligned_feasible_v1-130:87:107",
+          "terminal_outcome": "dropped",
+          "recovered_reward": -40.0,
+          "recovery_strategy": "horizon_aware_recovered_reward_event",
+          "terminal_event_source": "env_step_finalized_tasks"
+        },
+        {
+          "task_key": "paper_aligned_feasible_v1-132:89:82",
+          "terminal_outcome": "dropped",
+          "recovered_reward": -40.0,
+          "recovery_strategy": "horizon_aware_recovered_reward_event",
+          "terminal_event_source": "env_step_finalized_tasks"
+        },
+        {
+          "task_key": "paper_aligned_feasible_v1-132:89:83",
+          "terminal_outcome": "dropped",
+          "recovered_reward": -40.0,
+          "recovery_strategy": "horizon_aware_recovered_reward_event",
+          "terminal_event_source": "env_step_finalized_tasks"
+        },
+        {
+          "task_key": "paper_aligned_feasible_v1-133:90:99",
+          "terminal_outcome": "dropped",
+          "recovered_reward": -40.0,
+          "recovery_strategy": "horizon_aware_recovered_reward_event",
+          "terminal_event_source": "env_step_finalized_tasks"
+        },
+        {
+          "task_key": "paper_aligned_feasible_v1-133:90:100",
+          "terminal_outcome": "dropped",
+          "recovered_reward": -40.0,
+          "recovery_strategy": "horizon_aware_recovered_reward_event",
+          "terminal_event_source": "env_step_finalized_tasks"
+        },
+        {
+          "task_key": "paper_aligned_feasible_v1-134:91:102",
+          "terminal_outcome": "dropped",
+          "recovered_reward": -40.0,
+          "recovery_strategy": "horizon_aware_recovered_reward_event",
+          "terminal_event_source": "env_step_finalized_tasks"
+        },
+        {
+          "task_key": "paper_aligned_feasible_v1-137:94:93",
+          "terminal_outcome": "dropped",
+          "recovered_reward": -40.0,
+          "recovery_strategy": "horizon_aware_recovered_reward_event",
+          "terminal_event_source": "env_step_finalized_tasks"
+        },
+        {
+          "task_key": "paper_aligned_feasible_v1-138:95:96",
+          "terminal_outcome": "dropped",
+          "recovered_reward": -40.0,
+          "recovery_strategy": "horizon_aware_recovered_reward_event",
+          "terminal_event_source": "env_step_finalized_tasks"
+        },
+        {
+          "task_key": "paper_aligned_feasible_v1-138:95:97",
+          "terminal_outcome": "dropped",
+          "recovered_reward": -40.0,
+          "recovery_strategy": "horizon_aware_recovered_reward_event",
+          "terminal_event_source": "env_step_finalized_tasks"
+        },
+        {
+          "task_key": "paper_aligned_feasible_v1-138:95:98",
+          "terminal_outcome": "dropped",
+          "recovered_reward": -40.0,
+          "recovery_strategy": "horizon_aware_recovered_reward_event",
+          "terminal_event_source": "env_step_finalized_tasks"
+        },
+        {
+          "task_key": "paper_aligned_feasible_v1-138:95:99",
+          "terminal_outcome": "dropped",
+          "recovered_reward": -40.0,
+          "recovery_strategy": "horizon_aware_recovered_reward_event",
+          "terminal_event_source": "env_step_finalized_tasks"
+        },
+        {
+          "task_key": "paper_aligned_feasible_v1-139:96:107",
+          "terminal_outcome": "dropped",
+          "recovered_reward": -40.0,
+          "recovery_strategy": "horizon_aware_recovered_reward_event",
+          "terminal_event_source": "env_step_finalized_tasks"
+        },
+        {
+          "task_key": "paper_aligned_feasible_v1-140:97:88",
+          "terminal_outcome": "dropped",
+          "recovered_reward": -40.0,
+          "recovery_strategy": "horizon_aware_recovered_reward_event",
+          "terminal_event_source": "env_step_finalized_tasks"
+        },
+        {
+          "task_key": "paper_aligned_feasible_v1-141:98:93",
+          "terminal_outcome": "dropped",
+          "recovered_reward": -40.0,
+          "recovery_strategy": "horizon_aware_recovered_reward_event",
+          "terminal_event_source": "env_step_finalized_tasks"
+        },
+        {
+          "task_key": "paper_aligned_feasible_v1-142:99:105",
+          "terminal_outcome": "dropped",
+          "recovered_reward": -40.0,
+          "recovery_strategy": "horizon_aware_recovered_reward_event",
+          "terminal_event_source": "env_step_finalized_tasks"
+        },
+        {
+          "task_key": "paper_aligned_feasible_v1-142:99:106",
+          "terminal_outcome": "dropped",
+          "recovered_reward": -40.0,
+          "recovery_strategy": "horizon_aware_recovered_reward_event",
+          "terminal_event_source": "env_step_finalized_tasks"
+        }
+      ]
+    },
+    {
+      "policy_name": "fixed_vertical_policy",
+      "training_budget": null,
+      "profile": "deadline_queue_feasibility_v1",
+      "raw_reward_event_count": 9427,
+      "recovered_horizon_reward_event_count": 85,
+      "raw_plus_recovered_reward_event_count": 9512,
+      "canonical_reward_task_count": 9512,
+      "raw_reward_total": -337042.0,
+      "recovered_horizon_reward_total": -3400.0,
+      "raw_plus_recovered_reward_total": -340442.0,
+      "canonical_reward_total": -340442.0,
+      "raw_vs_canonical_reward_delta": 0.0,
+      "reward_reconciled": true,
+      "raw_terminal_event_count": 9427,
+      "horizon_finalized_terminal_count": 85,
+      "raw_plus_horizon_terminal_count": 9512,
+      "canonical_terminal_task_count": 9512,
+      "terminal_event_coverage_ratio": 1.0,
+      "terminal_reconciled": true,
+      "recovered_reward_ledger": [
+        {
+          "task_key": "paper_aligned_feasible_v1-44:1:102",
+          "terminal_outcome": "dropped",
+          "recovered_reward": -40.0,
+          "recovery_strategy": "horizon_aware_recovered_reward_event",
+          "terminal_event_source": "env_step_finalized_tasks"
+        },
+        {
+          "task_key": "paper_aligned_feasible_v1-46:3:105",
+          "terminal_outcome": "dropped",
+          "recovered_reward": -40.0,
+          "recovery_strategy": "horizon_aware_recovered_reward_event",
+          "terminal_event_source": "env_step_finalized_tasks"
+        },
+        {
+          "task_key": "paper_aligned_feasible_v1-49:6:93",
+          "terminal_outcome": "dropped",
+          "recovered_reward": -40.0,
+          "recovery_strategy": "horizon_aware_recovered_reward_event",
+          "terminal_event_source": "env_step_finalized_tasks"
+        },
+        {
+          "task_key": "paper_aligned_feasible_v1-49:6:94",
+          "terminal_outcome": "dropped",
+          "recovered_reward": -40.0,
+          "recovery_strategy": "horizon_aware_recovered_reward_event",
+          "terminal_event_source": "env_step_finalized_tasks"
+        },
+        {
+          "task_key": "paper_aligned_feasible_v1-51:8:94",
+          "terminal_outcome": "dropped",
+          "recovered_reward": -40.0,
+          "recovery_strategy": "horizon_aware_recovered_reward_event",
+          "terminal_event_source": "env_step_finalized_tasks"
+        },
+        {
+          "task_key": "paper_aligned_feasible_v1-52:9:99",
+          "terminal_outcome": "dropped",
+          "recovered_reward": -40.0,
+          "recovery_strategy": "horizon_aware_recovered_reward_event",
+          "terminal_event_source": "env_step_finalized_tasks"
+        },
+        {
+          "task_key": "paper_aligned_feasible_v1-54:11:94",
+          "terminal_outcome": "dropped",
+          "recovered_reward": -40.0,
+          "recovery_strategy": "horizon_aware_recovered_reward_event",
+          "terminal_event_source": "env_step_finalized_tasks"
+        },
+        {
+          "task_key": "paper_aligned_feasible_v1-58:15:93",
+          "terminal_outcome": "dropped",
+          "recovered_reward": -40.0,
+          "recovery_strategy": "horizon_aware_recovered_reward_event",
+          "terminal_event_source": "env_step_finalized_tasks"
+        },
+        {
+          "task_key": "paper_aligned_feasible_v1-59:16:100",
+          "terminal_outcome": "dropped",
+          "recovered_reward": -40.0,
+          "recovery_strategy": "horizon_aware_recovered_reward_event",
+          "terminal_event_source": "env_step_finalized_tasks"
+        },
+        {
+          "task_key": "paper_aligned_feasible_v1-60:17:91",
+          "terminal_outcome": "dropped",
+          "recovered_reward": -40.0,
+          "recovery_strategy": "horizon_aware_recovered_reward_event",
+          "terminal_event_source": "env_step_finalized_tasks"
+        },
+        {
+          "task_key": "paper_aligned_feasible_v1-62:19:98",
+          "terminal_outcome": "dropped",
+          "recovered_reward": -40.0,
+          "recovery_strategy": "horizon_aware_recovered_reward_event",
+          "terminal_event_source": "env_step_finalized_tasks"
+        },
+        {
+          "task_key": "paper_aligned_feasible_v1-64:21:102",
+          "terminal_outcome": "dropped",
+          "recovered_reward": -40.0,
+          "recovery_strategy": "horizon_aware_recovered_reward_event",
+          "terminal_event_source": "env_step_finalized_tasks"
+        },
+        {
+          "task_key": "paper_aligned_feasible_v1-65:22:91",
+          "terminal_outcome": "dropped",
+          "recovered_reward": -40.0,
+          "recovery_strategy": "horizon_aware_recovered_reward_event",
+          "terminal_event_source": "env_step_finalized_tasks"
+        },
+        {
+          "task_key": "paper_aligned_feasible_v1-66:23:95",
+          "terminal_outcome": "dropped",
+          "recovered_reward": -40.0,
+          "recovery_strategy": "horizon_aware_recovered_reward_event",
+          "terminal_event_source": "env_step_finalized_tasks"
+        },
+        {
+          "task_key": "paper_aligned_feasible_v1-67:24:97",
+          "terminal_outcome": "dropped",
+          "recovered_reward": -40.0,
+          "recovery_strategy": "horizon_aware_recovered_reward_event",
+          "terminal_event_source": "env_step_finalized_tasks"
+        },
+        {
+          "task_key": "paper_aligned_feasible_v1-68:25:96",
+          "terminal_outcome": "dropped",
+          "recovered_reward": -40.0,
+          "recovery_strategy": "horizon_aware_recovered_reward_event",
+          "terminal_event_source": "env_step_finalized_tasks"
+        },
+        {
+          "task_key": "paper_aligned_feasible_v1-69:26:101",
+          "terminal_outcome": "dropped",
+          "recovered_reward": -40.0,
+          "recovery_strategy": "horizon_aware_recovered_reward_event",
+          "terminal_event_source": "env_step_finalized_tasks"
+        },
+        {
+          "task_key": "paper_aligned_feasible_v1-70:27:94",
+          "terminal_outcome": "dropped",
+          "recovered_reward": -40.0,
+          "recovery_strategy": "horizon_aware_recovered_reward_event",
+          "terminal_event_source": "env_step_finalized_tasks"
+        },
+        {
+          "task_key": "paper_aligned_feasible_v1-74:31:95",
+          "terminal_outcome": "dropped",
+          "recovered_reward": -40.0,
+          "recovery_strategy": "horizon_aware_recovered_reward_event",
+          "terminal_event_source": "env_step_finalized_tasks"
+        },
+        {
+          "task_key": "paper_aligned_feasible_v1-76:33:95",
+          "terminal_outcome": "dropped",
+          "recovered_reward": -40.0,
+          "recovery_strategy": "horizon_aware_recovered_reward_event",
+          "terminal_event_source": "env_step_finalized_tasks"
+        },
+        {
+          "task_key": "paper_aligned_feasible_v1-77:34:97",
+          "terminal_outcome": "dropped",
+          "recovered_reward": -40.0,
+          "recovery_strategy": "horizon_aware_recovered_reward_event",
+          "terminal_event_source": "env_step_finalized_tasks"
+        },
+        {
+          "task_key": "paper_aligned_feasible_v1-77:34:98",
+          "terminal_outcome": "dropped",
+          "recovered_reward": -40.0,
+          "recovery_strategy": "horizon_aware_recovered_reward_event",
+          "terminal_event_source": "env_step_finalized_tasks"
+        },
+        {
+          "task_key": "paper_aligned_feasible_v1-80:37:98",
+          "terminal_outcome": "dropped",
+          "recovered_reward": -40.0,
+          "recovery_strategy": "horizon_aware_recovered_reward_event",
+          "terminal_event_source": "env_step_finalized_tasks"
+        },
+        {
+          "task_key": "paper_aligned_feasible_v1-81:38:89",
+          "terminal_outcome": "dropped",
+          "recovered_reward": -40.0,
+          "recovery_strategy": "horizon_aware_recovered_reward_event",
+          "terminal_event_source": "env_step_finalized_tasks"
+        },
+        {
+          "task_key": "paper_aligned_feasible_v1-81:38:90",
+          "terminal_outcome": "dropped",
+          "recovered_reward": -40.0,
+          "recovery_strategy": "horizon_aware_recovered_reward_event",
+          "terminal_event_source": "env_step_finalized_tasks"
+        },
+        {
+          "task_key": "paper_aligned_feasible_v1-81:38:91",
+          "terminal_outcome": "dropped",
+          "recovered_reward": -40.0,
+          "recovery_strategy": "horizon_aware_recovered_reward_event",
+          "terminal_event_source": "env_step_finalized_tasks"
+        },
+        {
+          "task_key": "paper_aligned_feasible_v1-84:41:77",
+          "terminal_outcome": "dropped",
+          "recovered_reward": -40.0,
+          "recovery_strategy": "horizon_aware_recovered_reward_event",
+          "terminal_event_source": "env_step_finalized_tasks"
+        },
+        {
+          "task_key": "paper_aligned_feasible_v1-84:41:78",
+          "terminal_outcome": "dropped",
+          "recovered_reward": -40.0,
+          "recovery_strategy": "horizon_aware_recovered_reward_event",
+          "terminal_event_source": "env_step_finalized_tasks"
+        },
+        {
+          "task_key": "paper_aligned_feasible_v1-86:43:92",
+          "terminal_outcome": "dropped",
+          "recovered_reward": -40.0,
+          "recovery_strategy": "horizon_aware_recovered_reward_event",
+          "terminal_event_source": "env_step_finalized_tasks"
+        },
+        {
+          "task_key": "paper_aligned_feasible_v1-86:43:93",
+          "terminal_outcome": "dropped",
+          "recovered_reward": -40.0,
+          "recovery_strategy": "horizon_aware_recovered_reward_event",
+          "terminal_event_source": "env_step_finalized_tasks"
+        },
+        {
+          "task_key": "paper_aligned_feasible_v1-86:43:94",
+          "terminal_outcome": "dropped",
+          "recovered_reward": -40.0,
+          "recovery_strategy": "horizon_aware_recovered_reward_event",
+          "terminal_event_source": "env_step_finalized_tasks"
+        },
+        {
+          "task_key": "paper_aligned_feasible_v1-86:43:95",
+          "terminal_outcome": "dropped",
+          "recovered_reward": -40.0,
+          "recovery_strategy": "horizon_aware_recovered_reward_event",
+          "terminal_event_source": "env_step_finalized_tasks"
+        },
+        {
+          "task_key": "paper_aligned_feasible_v1-88:45:97",
+          "terminal_outcome": "dropped",
+          "recovered_reward": -40.0,
+          "recovery_strategy": "horizon_aware_recovered_reward_event",
+          "terminal_event_source": "env_step_finalized_tasks"
+        },
+        {
+          "task_key": "paper_aligned_feasible_v1-89:46:97",
+          "terminal_outcome": "dropped",
+          "recovered_reward": -40.0,
+          "recovery_strategy": "horizon_aware_recovered_reward_event",
+          "terminal_event_source": "env_step_finalized_tasks"
+        },
+        {
+          "task_key": "paper_aligned_feasible_v1-91:48:86",
+          "terminal_outcome": "dropped",
+          "recovered_reward": -40.0,
+          "recovery_strategy": "horizon_aware_recovered_reward_event",
+          "terminal_event_source": "env_step_finalized_tasks"
+        },
+        {
+          "task_key": "paper_aligned_feasible_v1-95:52:95",
+          "terminal_outcome": "dropped",
+          "recovered_reward": -40.0,
+          "recovery_strategy": "horizon_aware_recovered_reward_event",
+          "terminal_event_source": "env_step_finalized_tasks"
+        },
+        {
+          "task_key": "paper_aligned_feasible_v1-97:54:98",
+          "terminal_outcome": "dropped",
+          "recovered_reward": -40.0,
+          "recovery_strategy": "horizon_aware_recovered_reward_event",
+          "terminal_event_source": "env_step_finalized_tasks"
+        },
+        {
+          "task_key": "paper_aligned_feasible_v1-97:54:99",
+          "terminal_outcome": "dropped",
+          "recovered_reward": -40.0,
+          "recovery_strategy": "horizon_aware_recovered_reward_event",
+          "terminal_event_source": "env_step_finalized_tasks"
+        },
+        {
+          "task_key": "paper_aligned_feasible_v1-98:55:108",
+          "terminal_outcome": "dropped",
+          "recovered_reward": -40.0,
+          "recovery_strategy": "horizon_aware_recovered_reward_event",
+          "terminal_event_source": "env_step_finalized_tasks"
+        },
+        {
+          "task_key": "paper_aligned_feasible_v1-99:56:100",
+          "terminal_outcome": "dropped",
+          "recovered_reward": -40.0,
+          "recovery_strategy": "horizon_aware_recovered_reward_event",
+          "terminal_event_source": "env_step_finalized_tasks"
+        },
+        {
+          "task_key": "paper_aligned_feasible_v1-100:57:100",
+          "terminal_outcome": "dropped",
+          "recovered_reward": -40.0,
+          "recovery_strategy": "horizon_aware_recovered_reward_event",
+          "terminal_event_source": "env_step_finalized_tasks"
+        },
+        {
+          "task_key": "paper_aligned_feasible_v1-101:58:104",
+          "terminal_outcome": "dropped",
+          "recovered_reward": -40.0,
+          "recovery_strategy": "horizon_aware_recovered_reward_event",
+          "terminal_event_source": "env_step_finalized_tasks"
+        },
+        {
+          "task_key": "paper_aligned_feasible_v1-101:58:105",
+          "terminal_outcome": "dropped",
+          "recovered_reward": -40.0,
+          "recovery_strategy": "horizon_aware_recovered_reward_event",
+          "terminal_event_source": "env_step_finalized_tasks"
+        },
+        {
+          "task_key": "paper_aligned_feasible_v1-103:60:83",
+          "terminal_outcome": "dropped",
+          "recovered_reward": -40.0,
+          "recovery_strategy": "horizon_aware_recovered_reward_event",
+          "terminal_event_source": "env_step_finalized_tasks"
+        },
+        {
+          "task_key": "paper_aligned_feasible_v1-104:61:107",
+          "terminal_outcome": "dropped",
+          "recovered_reward": -40.0,
+          "recovery_strategy": "horizon_aware_recovered_reward_event",
+          "terminal_event_source": "env_step_finalized_tasks"
+        },
+        {
+          "task_key": "paper_aligned_feasible_v1-105:62:88",
+          "terminal_outcome": "dropped",
+          "recovered_reward": -40.0,
+          "recovery_strategy": "horizon_aware_recovered_reward_event",
+          "terminal_event_source": "env_step_finalized_tasks"
+        },
+        {
+          "task_key": "paper_aligned_feasible_v1-106:63:103",
+          "terminal_outcome": "dropped",
+          "recovered_reward": -40.0,
+          "recovery_strategy": "horizon_aware_recovered_reward_event",
+          "terminal_event_source": "env_step_finalized_tasks"
+        },
+        {
+          "task_key": "paper_aligned_feasible_v1-106:63:104",
+          "terminal_outcome": "dropped",
+          "recovered_reward": -40.0,
+          "recovery_strategy": "horizon_aware_recovered_reward_event",
+          "terminal_event_source": "env_step_finalized_tasks"
+        },
+        {
+          "task_key": "paper_aligned_feasible_v1-107:64:95",
+          "terminal_outcome": "dropped",
+          "recovered_reward": -40.0,
+          "recovery_strategy": "horizon_aware_recovered_reward_event",
+          "terminal_event_source": "env_step_finalized_tasks"
+        },
+        {
+          "task_key": "paper_aligned_feasible_v1-107:64:96",
+          "terminal_outcome": "dropped",
+          "recovered_reward": -40.0,
+          "recovery_strategy": "horizon_aware_recovered_reward_event",
+          "terminal_event_source": "env_step_finalized_tasks"
+        },
+        {
+          "task_key": "paper_aligned_feasible_v1-108:65:99",
+          "terminal_outcome": "dropped",
+          "recovered_reward": -40.0,
+          "recovery_strategy": "horizon_aware_recovered_reward_event",
+          "terminal_event_source": "env_step_finalized_tasks"
+        },
+        {
+          "task_key": "paper_aligned_feasible_v1-110:67:107",
+          "terminal_outcome": "dropped",
+          "recovered_reward": -40.0,
+          "recovery_strategy": "horizon_aware_recovered_reward_event",
+          "terminal_event_source": "env_step_finalized_tasks"
+        },
+        {
+          "task_key": "paper_aligned_feasible_v1-111:68:96",
+          "terminal_outcome": "dropped",
+          "recovered_reward": -40.0,
+          "recovery_strategy": "horizon_aware_recovered_reward_event",
+          "terminal_event_source": "env_step_finalized_tasks"
+        },
+        {
+          "task_key": "paper_aligned_feasible_v1-111:68:97",
+          "terminal_outcome": "dropped",
+          "recovered_reward": -40.0,
+          "recovery_strategy": "horizon_aware_recovered_reward_event",
+          "terminal_event_source": "env_step_finalized_tasks"
+        },
+        {
+          "task_key": "paper_aligned_feasible_v1-112:69:85",
+          "terminal_outcome": "dropped",
+          "recovered_reward": -40.0,
+          "recovery_strategy": "horizon_aware_recovered_reward_event",
+          "terminal_event_source": "env_step_finalized_tasks"
+        },
+        {
+          "task_key": "paper_aligned_feasible_v1-112:69:86",
+          "terminal_outcome": "dropped",
+          "recovered_reward": -40.0,
+          "recovery_strategy": "horizon_aware_recovered_reward_event",
+          "terminal_event_source": "env_step_finalized_tasks"
+        },
+        {
+          "task_key": "paper_aligned_feasible_v1-114:71:107",
+          "terminal_outcome": "dropped",
+          "recovered_reward": -40.0,
+          "recovery_strategy": "horizon_aware_recovered_reward_event",
+          "terminal_event_source": "env_step_finalized_tasks"
+        },
+        {
+          "task_key": "paper_aligned_feasible_v1-114:71:108",
+          "terminal_outcome": "dropped",
+          "recovered_reward": -40.0,
+          "recovery_strategy": "horizon_aware_recovered_reward_event",
+          "terminal_event_source": "env_step_finalized_tasks"
+        },
+        {
+          "task_key": "paper_aligned_feasible_v1-115:72:87",
+          "terminal_outcome": "dropped",
+          "recovered_reward": -40.0,
+          "recovery_strategy": "horizon_aware_recovered_reward_event",
+          "terminal_event_source": "env_step_finalized_tasks"
+        },
+        {
+          "task_key": "paper_aligned_feasible_v1-117:74:86",
+          "terminal_outcome": "dropped",
+          "recovered_reward": -40.0,
+          "recovery_strategy": "horizon_aware_recovered_reward_event",
+          "terminal_event_source": "env_step_finalized_tasks"
+        },
+        {
+          "task_key": "paper_aligned_feasible_v1-118:75:99",
+          "terminal_outcome": "dropped",
+          "recovered_reward": -40.0,
+          "recovery_strategy": "horizon_aware_recovered_reward_event",
+          "terminal_event_source": "env_step_finalized_tasks"
+        },
+        {
+          "task_key": "paper_aligned_feasible_v1-121:78:104",
+          "terminal_outcome": "dropped",
+          "recovered_reward": -40.0,
+          "recovery_strategy": "horizon_aware_recovered_reward_event",
+          "terminal_event_source": "env_step_finalized_tasks"
+        },
+        {
+          "task_key": "paper_aligned_feasible_v1-122:79:91",
+          "terminal_outcome": "dropped",
+          "recovered_reward": -40.0,
+          "recovery_strategy": "horizon_aware_recovered_reward_event",
+          "terminal_event_source": "env_step_finalized_tasks"
+        },
+        {
+          "task_key": "paper_aligned_feasible_v1-124:81:94",
+          "terminal_outcome": "dropped",
+          "recovered_reward": -40.0,
+          "recovery_strategy": "horizon_aware_recovered_reward_event",
+          "terminal_event_source": "env_step_finalized_tasks"
+        },
+        {
+          "task_key": "paper_aligned_feasible_v1-126:83:89",
+          "terminal_outcome": "dropped",
+          "recovered_reward": -40.0,
+          "recovery_strategy": "horizon_aware_recovered_reward_event",
+          "terminal_event_source": "env_step_finalized_tasks"
+        },
+        {
+          "task_key": "paper_aligned_feasible_v1-127:84:106",
+          "terminal_outcome": "dropped",
+          "recovered_reward": -40.0,
+          "recovery_strategy": "horizon_aware_recovered_reward_event",
+          "terminal_event_source": "env_step_finalized_tasks"
+        },
+        {
+          "task_key": "paper_aligned_feasible_v1-127:84:107",
+          "terminal_outcome": "dropped",
+          "recovered_reward": -40.0,
+          "recovery_strategy": "horizon_aware_recovered_reward_event",
+          "terminal_event_source": "env_step_finalized_tasks"
+        },
+        {
+          "task_key": "paper_aligned_feasible_v1-127:84:108",
+          "terminal_outcome": "dropped",
+          "recovered_reward": -40.0,
+          "recovery_strategy": "horizon_aware_recovered_reward_event",
+          "terminal_event_source": "env_step_finalized_tasks"
+        },
+        {
+          "task_key": "paper_aligned_feasible_v1-128:85:84",
+          "terminal_outcome": "dropped",
+          "recovered_reward": -40.0,
+          "recovery_strategy": "horizon_aware_recovered_reward_event",
+          "terminal_event_source": "env_step_finalized_tasks"
+        },
+        {
+          "task_key": "paper_aligned_feasible_v1-130:87:107",
+          "terminal_outcome": "dropped",
+          "recovered_reward": -40.0,
+          "recovery_strategy": "horizon_aware_recovered_reward_event",
+          "terminal_event_source": "env_step_finalized_tasks"
+        },
+        {
+          "task_key": "paper_aligned_feasible_v1-132:89:82",
+          "terminal_outcome": "dropped",
+          "recovered_reward": -40.0,
+          "recovery_strategy": "horizon_aware_recovered_reward_event",
+          "terminal_event_source": "env_step_finalized_tasks"
+        },
+        {
+          "task_key": "paper_aligned_feasible_v1-132:89:83",
+          "terminal_outcome": "dropped",
+          "recovered_reward": -40.0,
+          "recovery_strategy": "horizon_aware_recovered_reward_event",
+          "terminal_event_source": "env_step_finalized_tasks"
+        },
+        {
+          "task_key": "paper_aligned_feasible_v1-133:90:99",
+          "terminal_outcome": "dropped",
+          "recovered_reward": -40.0,
+          "recovery_strategy": "horizon_aware_recovered_reward_event",
+          "terminal_event_source": "env_step_finalized_tasks"
+        },
+        {
+          "task_key": "paper_aligned_feasible_v1-133:90:100",
+          "terminal_outcome": "dropped",
+          "recovered_reward": -40.0,
+          "recovery_strategy": "horizon_aware_recovered_reward_event",
+          "terminal_event_source": "env_step_finalized_tasks"
+        },
+        {
+          "task_key": "paper_aligned_feasible_v1-134:91:102",
+          "terminal_outcome": "dropped",
+          "recovered_reward": -40.0,
+          "recovery_strategy": "horizon_aware_recovered_reward_event",
+          "terminal_event_source": "env_step_finalized_tasks"
+        },
+        {
+          "task_key": "paper_aligned_feasible_v1-137:94:93",
+          "terminal_outcome": "dropped",
+          "recovered_reward": -40.0,
+          "recovery_strategy": "horizon_aware_recovered_reward_event",
+          "terminal_event_source": "env_step_finalized_tasks"
+        },
+        {
+          "task_key": "paper_aligned_feasible_v1-138:95:96",
+          "terminal_outcome": "dropped",
+          "recovered_reward": -40.0,
+          "recovery_strategy": "horizon_aware_recovered_reward_event",
+          "terminal_event_source": "env_step_finalized_tasks"
+        },
+        {
+          "task_key": "paper_aligned_feasible_v1-138:95:97",
+          "terminal_outcome": "dropped",
+          "recovered_reward": -40.0,
+          "recovery_strategy": "horizon_aware_recovered_reward_event",
+          "terminal_event_source": "env_step_finalized_tasks"
+        },
+        {
+          "task_key": "paper_aligned_feasible_v1-138:95:98",
+          "terminal_outcome": "dropped",
+          "recovered_reward": -40.0,
+          "recovery_strategy": "horizon_aware_recovered_reward_event",
+          "terminal_event_source": "env_step_finalized_tasks"
+        },
+        {
+          "task_key": "paper_aligned_feasible_v1-138:95:99",
+          "terminal_outcome": "dropped",
+          "recovered_reward": -40.0,
+          "recovery_strategy": "horizon_aware_recovered_reward_event",
+          "terminal_event_source": "env_step_finalized_tasks"
+        },
+        {
+          "task_key": "paper_aligned_feasible_v1-139:96:107",
+          "terminal_outcome": "dropped",
+          "recovered_reward": -40.0,
+          "recovery_strategy": "horizon_aware_recovered_reward_event",
+          "terminal_event_source": "env_step_finalized_tasks"
+        },
+        {
+          "task_key": "paper_aligned_feasible_v1-140:97:88",
+          "terminal_outcome": "dropped",
+          "recovered_reward": -40.0,
+          "recovery_strategy": "horizon_aware_recovered_reward_event",
+          "terminal_event_source": "env_step_finalized_tasks"
+        },
+        {
+          "task_key": "paper_aligned_feasible_v1-141:98:93",
+          "terminal_outcome": "dropped",
+          "recovered_reward": -40.0,
+          "recovery_strategy": "horizon_aware_recovered_reward_event",
+          "terminal_event_source": "env_step_finalized_tasks"
+        },
+        {
+          "task_key": "paper_aligned_feasible_v1-142:99:105",
+          "terminal_outcome": "dropped",
+          "recovered_reward": -40.0,
+          "recovery_strategy": "horizon_aware_recovered_reward_event",
+          "terminal_event_source": "env_step_finalized_tasks"
+        },
+        {
+          "task_key": "paper_aligned_feasible_v1-142:99:106",
+          "terminal_outcome": "dropped",
+          "recovered_reward": -40.0,
+          "recovery_strategy": "horizon_aware_recovered_reward_event",
+          "terminal_event_source": "env_step_finalized_tasks"
+        }
+      ]
+    },
+    {
+      "policy_name": "random_legal_policy",
+      "training_budget": null,
+      "profile": "deadline_queue_feasibility_v1",
+      "raw_reward_event_count": 9474,
+      "recovered_horizon_reward_event_count": 78,
+      "raw_plus_recovered_reward_event_count": 9552,
+      "canonical_reward_task_count": 9552,
+      "raw_reward_total": -302716.0,
+      "recovered_horizon_reward_total": -3120.0,
+      "raw_plus_recovered_reward_total": -305836.0,
+      "canonical_reward_total": -305836.0,
+      "raw_vs_canonical_reward_delta": 0.0,
+      "reward_reconciled": true,
+      "raw_terminal_event_count": 9474,
+      "horizon_finalized_terminal_count": 78,
+      "raw_plus_horizon_terminal_count": 9552,
+      "canonical_terminal_task_count": 9552,
+      "terminal_event_coverage_ratio": 1.0,
+      "terminal_reconciled": true,
+      "recovered_reward_ledger": [
+        {
+          "task_key": "paper_aligned_feasible_v1-46:3:105",
+          "terminal_outcome": "dropped",
+          "recovered_reward": -40.0,
+          "recovery_strategy": "horizon_aware_recovered_reward_event",
+          "terminal_event_source": "env_step_finalized_tasks"
+        },
+        {
+          "task_key": "paper_aligned_feasible_v1-49:6:93",
+          "terminal_outcome": "dropped",
+          "recovered_reward": -40.0,
+          "recovery_strategy": "horizon_aware_recovered_reward_event",
+          "terminal_event_source": "env_step_finalized_tasks"
+        },
+        {
+          "task_key": "paper_aligned_feasible_v1-51:8:94",
+          "terminal_outcome": "dropped",
+          "recovered_reward": -40.0,
+          "recovery_strategy": "horizon_aware_recovered_reward_event",
+          "terminal_event_source": "env_step_finalized_tasks"
+        },
+        {
+          "task_key": "paper_aligned_feasible_v1-54:11:94",
+          "terminal_outcome": "dropped",
+          "recovered_reward": -40.0,
+          "recovery_strategy": "horizon_aware_recovered_reward_event",
+          "terminal_event_source": "env_step_finalized_tasks"
+        },
+        {
+          "task_key": "paper_aligned_feasible_v1-58:15:93",
+          "terminal_outcome": "dropped",
+          "recovered_reward": -40.0,
+          "recovery_strategy": "horizon_aware_recovered_reward_event",
+          "terminal_event_source": "env_step_finalized_tasks"
+        },
+        {
+          "task_key": "paper_aligned_feasible_v1-59:16:100",
+          "terminal_outcome": "dropped",
+          "recovered_reward": -40.0,
+          "recovery_strategy": "horizon_aware_recovered_reward_event",
+          "terminal_event_source": "env_step_finalized_tasks"
+        },
+        {
+          "task_key": "paper_aligned_feasible_v1-62:19:98",
+          "terminal_outcome": "dropped",
+          "recovered_reward": -40.0,
+          "recovery_strategy": "horizon_aware_recovered_reward_event",
+          "terminal_event_source": "env_step_finalized_tasks"
+        },
+        {
+          "task_key": "paper_aligned_feasible_v1-64:21:102",
+          "terminal_outcome": "dropped",
+          "recovered_reward": -40.0,
+          "recovery_strategy": "horizon_aware_recovered_reward_event",
+          "terminal_event_source": "env_step_finalized_tasks"
+        },
+        {
+          "task_key": "paper_aligned_feasible_v1-65:22:91",
+          "terminal_outcome": "dropped",
+          "recovered_reward": -40.0,
+          "recovery_strategy": "horizon_aware_recovered_reward_event",
+          "terminal_event_source": "env_step_finalized_tasks"
+        },
+        {
+          "task_key": "paper_aligned_feasible_v1-67:24:97",
+          "terminal_outcome": "dropped",
+          "recovered_reward": -40.0,
+          "recovery_strategy": "horizon_aware_recovered_reward_event",
+          "terminal_event_source": "env_step_finalized_tasks"
+        },
+        {
+          "task_key": "paper_aligned_feasible_v1-68:25:96",
+          "terminal_outcome": "dropped",
+          "recovered_reward": -40.0,
+          "recovery_strategy": "horizon_aware_recovered_reward_event",
+          "terminal_event_source": "env_step_finalized_tasks"
+        },
+        {
+          "task_key": "paper_aligned_feasible_v1-69:26:101",
+          "terminal_outcome": "dropped",
+          "recovered_reward": -40.0,
+          "recovery_strategy": "horizon_aware_recovered_reward_event",
+          "terminal_event_source": "env_step_finalized_tasks"
+        },
+        {
+          "task_key": "paper_aligned_feasible_v1-70:27:94",
+          "terminal_outcome": "dropped",
+          "recovered_reward": -40.0,
+          "recovery_strategy": "horizon_aware_recovered_reward_event",
+          "terminal_event_source": "env_step_finalized_tasks"
+        },
+        {
+          "task_key": "paper_aligned_feasible_v1-74:31:95",
+          "terminal_outcome": "dropped",
+          "recovered_reward": -40.0,
+          "recovery_strategy": "horizon_aware_recovered_reward_event",
+          "terminal_event_source": "env_step_finalized_tasks"
+        },
+        {
+          "task_key": "paper_aligned_feasible_v1-76:33:95",
+          "terminal_outcome": "dropped",
+          "recovered_reward": -40.0,
+          "recovery_strategy": "horizon_aware_recovered_reward_event",
+          "terminal_event_source": "env_step_finalized_tasks"
+        },
+        {
+          "task_key": "paper_aligned_feasible_v1-77:34:97",
+          "terminal_outcome": "dropped",
+          "recovered_reward": -40.0,
+          "recovery_strategy": "horizon_aware_recovered_reward_event",
+          "terminal_event_source": "env_step_finalized_tasks"
+        },
+        {
+          "task_key": "paper_aligned_feasible_v1-77:34:98",
+          "terminal_outcome": "dropped",
+          "recovered_reward": -40.0,
+          "recovery_strategy": "horizon_aware_recovered_reward_event",
+          "terminal_event_source": "env_step_finalized_tasks"
+        },
+        {
+          "task_key": "paper_aligned_feasible_v1-80:37:98",
+          "terminal_outcome": "dropped",
+          "recovered_reward": -40.0,
+          "recovery_strategy": "horizon_aware_recovered_reward_event",
+          "terminal_event_source": "env_step_finalized_tasks"
+        },
+        {
+          "task_key": "paper_aligned_feasible_v1-81:38:90",
+          "terminal_outcome": "dropped",
+          "recovered_reward": -40.0,
+          "recovery_strategy": "horizon_aware_recovered_reward_event",
+          "terminal_event_source": "env_step_finalized_tasks"
+        },
+        {
+          "task_key": "paper_aligned_feasible_v1-81:38:91",
+          "terminal_outcome": "dropped",
+          "recovered_reward": -40.0,
+          "recovery_strategy": "horizon_aware_recovered_reward_event",
+          "terminal_event_source": "env_step_finalized_tasks"
+        },
+        {
+          "task_key": "paper_aligned_feasible_v1-84:41:77",
+          "terminal_outcome": "dropped",
+          "recovered_reward": -40.0,
+          "recovery_strategy": "horizon_aware_recovered_reward_event",
+          "terminal_event_source": "env_step_finalized_tasks"
+        },
+        {
+          "task_key": "paper_aligned_feasible_v1-84:41:78",
+          "terminal_outcome": "dropped",
+          "recovered_reward": -40.0,
+          "recovery_strategy": "horizon_aware_recovered_reward_event",
+          "terminal_event_source": "env_step_finalized_tasks"
+        },
+        {
+          "task_key": "paper_aligned_feasible_v1-86:43:92",
+          "terminal_outcome": "dropped",
+          "recovered_reward": -40.0,
+          "recovery_strategy": "horizon_aware_recovered_reward_event",
+          "terminal_event_source": "env_step_finalized_tasks"
+        },
+        {
+          "task_key": "paper_aligned_feasible_v1-86:43:93",
+          "terminal_outcome": "dropped",
+          "recovered_reward": -40.0,
+          "recovery_strategy": "horizon_aware_recovered_reward_event",
+          "terminal_event_source": "env_step_finalized_tasks"
+        },
+        {
+          "task_key": "paper_aligned_feasible_v1-86:43:94",
+          "terminal_outcome": "dropped",
+          "recovered_reward": -40.0,
+          "recovery_strategy": "horizon_aware_recovered_reward_event",
+          "terminal_event_source": "env_step_finalized_tasks"
+        },
+        {
+          "task_key": "paper_aligned_feasible_v1-86:43:95",
+          "terminal_outcome": "dropped",
+          "recovered_reward": -40.0,
+          "recovery_strategy": "horizon_aware_recovered_reward_event",
+          "terminal_event_source": "env_step_finalized_tasks"
+        },
+        {
+          "task_key": "paper_aligned_feasible_v1-88:45:97",
+          "terminal_outcome": "dropped",
+          "recovered_reward": -40.0,
+          "recovery_strategy": "horizon_aware_recovered_reward_event",
+          "terminal_event_source": "env_step_finalized_tasks"
+        },
+        {
+          "task_key": "paper_aligned_feasible_v1-89:46:97",
+          "terminal_outcome": "dropped",
+          "recovered_reward": -40.0,
+          "recovery_strategy": "horizon_aware_recovered_reward_event",
+          "terminal_event_source": "env_step_finalized_tasks"
+        },
+        {
+          "task_key": "paper_aligned_feasible_v1-91:48:86",
+          "terminal_outcome": "dropped",
+          "recovered_reward": -40.0,
+          "recovery_strategy": "horizon_aware_recovered_reward_event",
+          "terminal_event_source": "env_step_finalized_tasks"
+        },
+        {
+          "task_key": "paper_aligned_feasible_v1-95:52:95",
+          "terminal_outcome": "dropped",
+          "recovered_reward": -40.0,
+          "recovery_strategy": "horizon_aware_recovered_reward_event",
+          "terminal_event_source": "env_step_finalized_tasks"
+        },
+        {
+          "task_key": "paper_aligned_feasible_v1-97:54:98",
+          "terminal_outcome": "dropped",
+          "recovered_reward": -40.0,
+          "recovery_strategy": "horizon_aware_recovered_reward_event",
+          "terminal_event_source": "env_step_finalized_tasks"
+        },
+        {
+          "task_key": "paper_aligned_feasible_v1-97:54:99",
+          "terminal_outcome": "dropped",
+          "recovered_reward": -40.0,
+          "recovery_strategy": "horizon_aware_recovered_reward_event",
+          "terminal_event_source": "env_step_finalized_tasks"
+        },
+        {
+          "task_key": "paper_aligned_feasible_v1-98:55:108",
+          "terminal_outcome": "dropped",
+          "recovered_reward": -40.0,
+          "recovery_strategy": "horizon_aware_recovered_reward_event",
+          "terminal_event_source": "env_step_finalized_tasks"
+        },
+        {
+          "task_key": "paper_aligned_feasible_v1-99:56:100",
+          "terminal_outcome": "dropped",
+          "recovered_reward": -40.0,
+          "recovery_strategy": "horizon_aware_recovered_reward_event",
+          "terminal_event_source": "env_step_finalized_tasks"
+        },
+        {
+          "task_key": "paper_aligned_feasible_v1-100:57:100",
+          "terminal_outcome": "dropped",
+          "recovered_reward": -40.0,
+          "recovery_strategy": "horizon_aware_recovered_reward_event",
+          "terminal_event_source": "env_step_finalized_tasks"
+        },
+        {
+          "task_key": "paper_aligned_feasible_v1-101:58:104",
+          "terminal_outcome": "dropped",
+          "recovered_reward": -40.0,
+          "recovery_strategy": "horizon_aware_recovered_reward_event",
+          "terminal_event_source": "env_step_finalized_tasks"
+        },
+        {
+          "task_key": "paper_aligned_feasible_v1-101:58:105",
+          "terminal_outcome": "dropped",
+          "recovered_reward": -40.0,
+          "recovery_strategy": "horizon_aware_recovered_reward_event",
+          "terminal_event_source": "env_step_finalized_tasks"
+        },
+        {
+          "task_key": "paper_aligned_feasible_v1-103:60:83",
+          "terminal_outcome": "dropped",
+          "recovered_reward": -40.0,
+          "recovery_strategy": "horizon_aware_recovered_reward_event",
+          "terminal_event_source": "env_step_finalized_tasks"
+        },
+        {
+          "task_key": "paper_aligned_feasible_v1-104:61:107",
+          "terminal_outcome": "dropped",
+          "recovered_reward": -40.0,
+          "recovery_strategy": "horizon_aware_recovered_reward_event",
+          "terminal_event_source": "env_step_finalized_tasks"
+        },
+        {
+          "task_key": "paper_aligned_feasible_v1-105:62:88",
+          "terminal_outcome": "dropped",
+          "recovered_reward": -40.0,
+          "recovery_strategy": "horizon_aware_recovered_reward_event",
+          "terminal_event_source": "env_step_finalized_tasks"
+        },
+        {
+          "task_key": "paper_aligned_feasible_v1-106:63:103",
+          "terminal_outcome": "dropped",
+          "recovered_reward": -40.0,
+          "recovery_strategy": "horizon_aware_recovered_reward_event",
+          "terminal_event_source": "env_step_finalized_tasks"
+        },
+        {
+          "task_key": "paper_aligned_feasible_v1-106:63:104",
+          "terminal_outcome": "dropped",
+          "recovered_reward": -40.0,
+          "recovery_strategy": "horizon_aware_recovered_reward_event",
+          "terminal_event_source": "env_step_finalized_tasks"
+        },
+        {
+          "task_key": "paper_aligned_feasible_v1-107:64:95",
+          "terminal_outcome": "dropped",
+          "recovered_reward": -40.0,
+          "recovery_strategy": "horizon_aware_recovered_reward_event",
+          "terminal_event_source": "env_step_finalized_tasks"
+        },
+        {
+          "task_key": "paper_aligned_feasible_v1-107:64:96",
+          "terminal_outcome": "dropped",
+          "recovered_reward": -40.0,
+          "recovery_strategy": "horizon_aware_recovered_reward_event",
+          "terminal_event_source": "env_step_finalized_tasks"
+        },
+        {
+          "task_key": "paper_aligned_feasible_v1-108:65:99",
+          "terminal_outcome": "dropped",
+          "recovered_reward": -40.0,
+          "recovery_strategy": "horizon_aware_recovered_reward_event",
+          "terminal_event_source": "env_step_finalized_tasks"
+        },
+        {
+          "task_key": "paper_aligned_feasible_v1-110:67:107",
+          "terminal_outcome": "dropped",
+          "recovered_reward": -40.0,
+          "recovery_strategy": "horizon_aware_recovered_reward_event",
+          "terminal_event_source": "env_step_finalized_tasks"
+        },
+        {
+          "task_key": "paper_aligned_feasible_v1-111:68:96",
+          "terminal_outcome": "dropped",
+          "recovered_reward": -40.0,
+          "recovery_strategy": "horizon_aware_recovered_reward_event",
+          "terminal_event_source": "env_step_finalized_tasks"
+        },
+        {
+          "task_key": "paper_aligned_feasible_v1-111:68:97",
+          "terminal_outcome": "dropped",
+          "recovered_reward": -40.0,
+          "recovery_strategy": "horizon_aware_recovered_reward_event",
+          "terminal_event_source": "env_step_finalized_tasks"
+        },
+        {
+          "task_key": "paper_aligned_feasible_v1-112:69:85",
+          "terminal_outcome": "dropped",
+          "recovered_reward": -40.0,
+          "recovery_strategy": "horizon_aware_recovered_reward_event",
+          "terminal_event_source": "env_step_finalized_tasks"
+        },
+        {
+          "task_key": "paper_aligned_feasible_v1-112:69:86",
+          "terminal_outcome": "dropped",
+          "recovered_reward": -40.0,
+          "recovery_strategy": "horizon_aware_recovered_reward_event",
+          "terminal_event_source": "env_step_finalized_tasks"
+        },
+        {
+          "task_key": "paper_aligned_feasible_v1-114:71:107",
+          "terminal_outcome": "dropped",
+          "recovered_reward": -40.0,
+          "recovery_strategy": "horizon_aware_recovered_reward_event",
+          "terminal_event_source": "env_step_finalized_tasks"
+        },
+        {
+          "task_key": "paper_aligned_feasible_v1-114:71:108",
+          "terminal_outcome": "dropped",
+          "recovered_reward": -40.0,
+          "recovery_strategy": "horizon_aware_recovered_reward_event",
+          "terminal_event_source": "env_step_finalized_tasks"
+        },
+        {
+          "task_key": "paper_aligned_feasible_v1-115:72:87",
+          "terminal_outcome": "dropped",
+          "recovered_reward": -40.0,
+          "recovery_strategy": "horizon_aware_recovered_reward_event",
+          "terminal_event_source": "env_step_finalized_tasks"
+        },
+        {
+          "task_key": "paper_aligned_feasible_v1-117:74:86",
+          "terminal_outcome": "dropped",
+          "recovered_reward": -40.0,
+          "recovery_strategy": "horizon_aware_recovered_reward_event",
+          "terminal_event_source": "env_step_finalized_tasks"
+        },
+        {
+          "task_key": "paper_aligned_feasible_v1-118:75:99",
+          "terminal_outcome": "dropped",
+          "recovered_reward": -40.0,
+          "recovery_strategy": "horizon_aware_recovered_reward_event",
+          "terminal_event_source": "env_step_finalized_tasks"
+        },
+        {
+          "task_key": "paper_aligned_feasible_v1-121:78:104",
+          "terminal_outcome": "dropped",
+          "recovered_reward": -40.0,
+          "recovery_strategy": "horizon_aware_recovered_reward_event",
+          "terminal_event_source": "env_step_finalized_tasks"
+        },
+        {
+          "task_key": "paper_aligned_feasible_v1-122:79:91",
+          "terminal_outcome": "dropped",
+          "recovered_reward": -40.0,
+          "recovery_strategy": "horizon_aware_recovered_reward_event",
+          "terminal_event_source": "env_step_finalized_tasks"
+        },
+        {
+          "task_key": "paper_aligned_feasible_v1-124:81:94",
+          "terminal_outcome": "dropped",
+          "recovered_reward": -40.0,
+          "recovery_strategy": "horizon_aware_recovered_reward_event",
+          "terminal_event_source": "env_step_finalized_tasks"
+        },
+        {
+          "task_key": "paper_aligned_feasible_v1-126:83:89",
+          "terminal_outcome": "dropped",
+          "recovered_reward": -40.0,
+          "recovery_strategy": "horizon_aware_recovered_reward_event",
+          "terminal_event_source": "env_step_finalized_tasks"
+        },
+        {
+          "task_key": "paper_aligned_feasible_v1-127:84:106",
+          "terminal_outcome": "dropped",
+          "recovered_reward": -40.0,
+          "recovery_strategy": "horizon_aware_recovered_reward_event",
+          "terminal_event_source": "env_step_finalized_tasks"
+        },
+        {
+          "task_key": "paper_aligned_feasible_v1-127:84:107",
+          "terminal_outcome": "dropped",
+          "recovered_reward": -40.0,
+          "recovery_strategy": "horizon_aware_recovered_reward_event",
+          "terminal_event_source": "env_step_finalized_tasks"
+        },
+        {
+          "task_key": "paper_aligned_feasible_v1-127:84:108",
+          "terminal_outcome": "dropped",
+          "recovered_reward": -40.0,
+          "recovery_strategy": "horizon_aware_recovered_reward_event",
+          "terminal_event_source": "env_step_finalized_tasks"
+        },
+        {
+          "task_key": "paper_aligned_feasible_v1-128:85:84",
+          "terminal_outcome": "dropped",
+          "recovered_reward": -40.0,
+          "recovery_strategy": "horizon_aware_recovered_reward_event",
+          "terminal_event_source": "env_step_finalized_tasks"
+        },
+        {
+          "task_key": "paper_aligned_feasible_v1-130:87:107",
+          "terminal_outcome": "dropped",
+          "recovered_reward": -40.0,
+          "recovery_strategy": "horizon_aware_recovered_reward_event",
+          "terminal_event_source": "env_step_finalized_tasks"
+        },
+        {
+          "task_key": "paper_aligned_feasible_v1-132:89:82",
+          "terminal_outcome": "dropped",
+          "recovered_reward": -40.0,
+          "recovery_strategy": "horizon_aware_recovered_reward_event",
+          "terminal_event_source": "env_step_finalized_tasks"
+        },
+        {
+          "task_key": "paper_aligned_feasible_v1-132:89:83",
+          "terminal_outcome": "dropped",
+          "recovered_reward": -40.0,
+          "recovery_strategy": "horizon_aware_recovered_reward_event",
+          "terminal_event_source": "env_step_finalized_tasks"
+        },
+        {
+          "task_key": "paper_aligned_feasible_v1-133:90:99",
+          "terminal_outcome": "dropped",
+          "recovered_reward": -40.0,
+          "recovery_strategy": "horizon_aware_recovered_reward_event",
+          "terminal_event_source": "env_step_finalized_tasks"
+        },
+        {
+          "task_key": "paper_aligned_feasible_v1-133:90:100",
+          "terminal_outcome": "dropped",
+          "recovered_reward": -40.0,
+          "recovery_strategy": "horizon_aware_recovered_reward_event",
+          "terminal_event_source": "env_step_finalized_tasks"
+        },
+        {
+          "task_key": "paper_aligned_feasible_v1-134:91:102",
+          "terminal_outcome": "dropped",
+          "recovered_reward": -40.0,
+          "recovery_strategy": "horizon_aware_recovered_reward_event",
+          "terminal_event_source": "env_step_finalized_tasks"
+        },
+        {
+          "task_key": "paper_aligned_feasible_v1-137:94:93",
+          "terminal_outcome": "dropped",
+          "recovered_reward": -40.0,
+          "recovery_strategy": "horizon_aware_recovered_reward_event",
+          "terminal_event_source": "env_step_finalized_tasks"
+        },
+        {
+          "task_key": "paper_aligned_feasible_v1-138:95:96",
+          "terminal_outcome": "dropped",
+          "recovered_reward": -40.0,
+          "recovery_strategy": "horizon_aware_recovered_reward_event",
+          "terminal_event_source": "env_step_finalized_tasks"
+        },
+        {
+          "task_key": "paper_aligned_feasible_v1-138:95:97",
+          "terminal_outcome": "dropped",
+          "recovered_reward": -40.0,
+          "recovery_strategy": "horizon_aware_recovered_reward_event",
+          "terminal_event_source": "env_step_finalized_tasks"
+        },
+        {
+          "task_key": "paper_aligned_feasible_v1-138:95:98",
+          "terminal_outcome": "dropped",
+          "recovered_reward": -40.0,
+          "recovery_strategy": "horizon_aware_recovered_reward_event",
+          "terminal_event_source": "env_step_finalized_tasks"
+        },
+        {
+          "task_key": "paper_aligned_feasible_v1-138:95:99",
+          "terminal_outcome": "dropped",
+          "recovered_reward": -40.0,
+          "recovery_strategy": "horizon_aware_recovered_reward_event",
+          "terminal_event_source": "env_step_finalized_tasks"
+        },
+        {
+          "task_key": "paper_aligned_feasible_v1-139:96:107",
+          "terminal_outcome": "dropped",
+          "recovered_reward": -40.0,
+          "recovery_strategy": "horizon_aware_recovered_reward_event",
+          "terminal_event_source": "env_step_finalized_tasks"
+        },
+        {
+          "task_key": "paper_aligned_feasible_v1-140:97:88",
+          "terminal_outcome": "dropped",
+          "recovered_reward": -40.0,
+          "recovery_strategy": "horizon_aware_recovered_reward_event",
+          "terminal_event_source": "env_step_finalized_tasks"
+        },
+        {
+          "task_key": "paper_aligned_feasible_v1-141:98:93",
+          "terminal_outcome": "dropped",
+          "recovered_reward": -40.0,
+          "recovery_strategy": "horizon_aware_recovered_reward_event",
+          "terminal_event_source": "env_step_finalized_tasks"
+        },
+        {
+          "task_key": "paper_aligned_feasible_v1-142:99:105",
+          "terminal_outcome": "dropped",
+          "recovered_reward": -40.0,
+          "recovery_strategy": "horizon_aware_recovered_reward_event",
+          "terminal_event_source": "env_step_finalized_tasks"
+        }
+      ]
+    },
+    {
+      "policy_name": "legacy_minimal_candidate_at_50",
+      "training_budget": 50,
+      "profile": "legacy_minimal",
+      "raw_reward_event_count": 9475,
+      "recovered_horizon_reward_event_count": 75,
+      "raw_plus_recovered_reward_event_count": 9550,
+      "canonical_reward_task_count": 9550,
+      "raw_reward_total": -301570.0,
+      "recovered_horizon_reward_total": -3000.0,
+      "raw_plus_recovered_reward_total": -304570.0,
+      "canonical_reward_total": -304570.0,
+      "raw_vs_canonical_reward_delta": 0.0,
+      "reward_reconciled": true,
+      "raw_terminal_event_count": 9475,
+      "horizon_finalized_terminal_count": 75,
+      "raw_plus_horizon_terminal_count": 9550,
+      "canonical_terminal_task_count": 9550,
+      "terminal_event_coverage_ratio": 1.0,
+      "terminal_reconciled": true,
+      "recovered_reward_ledger": [
+        {
+          "task_key": "paper_aligned_feasible_v1-44:1:102",
+          "terminal_outcome": "dropped",
+          "recovered_reward": -40.0,
+          "recovery_strategy": "horizon_aware_recovered_reward_event",
+          "terminal_event_source": "env_step_finalized_tasks"
+        },
+        {
+          "task_key": "paper_aligned_feasible_v1-46:3:105",
+          "terminal_outcome": "dropped",
+          "recovered_reward": -40.0,
+          "recovery_strategy": "horizon_aware_recovered_reward_event",
+          "terminal_event_source": "env_step_finalized_tasks"
+        },
+        {
+          "task_key": "paper_aligned_feasible_v1-52:9:99",
+          "terminal_outcome": "dropped",
+          "recovered_reward": -40.0,
+          "recovery_strategy": "horizon_aware_recovered_reward_event",
+          "terminal_event_source": "env_step_finalized_tasks"
+        },
+        {
+          "task_key": "paper_aligned_feasible_v1-59:16:100",
+          "terminal_outcome": "dropped",
+          "recovered_reward": -40.0,
+          "recovery_strategy": "horizon_aware_recovered_reward_event",
+          "terminal_event_source": "env_step_finalized_tasks"
+        },
+        {
+          "task_key": "paper_aligned_feasible_v1-62:19:98",
+          "terminal_outcome": "dropped",
+          "recovered_reward": -40.0,
+          "recovery_strategy": "horizon_aware_recovered_reward_event",
+          "terminal_event_source": "env_step_finalized_tasks"
+        },
+        {
+          "task_key": "paper_aligned_feasible_v1-64:21:102",
+          "terminal_outcome": "dropped",
+          "recovered_reward": -40.0,
+          "recovery_strategy": "horizon_aware_recovered_reward_event",
+          "terminal_event_source": "env_step_finalized_tasks"
+        },
+        {
+          "task_key": "paper_aligned_feasible_v1-65:22:91",
+          "terminal_outcome": "dropped",
+          "recovered_reward": -40.0,
+          "recovery_strategy": "horizon_aware_recovered_reward_event",
+          "terminal_event_source": "env_step_finalized_tasks"
+        },
+        {
+          "task_key": "paper_aligned_feasible_v1-66:23:95",
+          "terminal_outcome": "dropped",
+          "recovered_reward": -40.0,
+          "recovery_strategy": "horizon_aware_recovered_reward_event",
+          "terminal_event_source": "env_step_finalized_tasks"
+        },
+        {
+          "task_key": "paper_aligned_feasible_v1-67:24:97",
+          "terminal_outcome": "dropped",
+          "recovered_reward": -40.0,
+          "recovery_strategy": "horizon_aware_recovered_reward_event",
+          "terminal_event_source": "env_step_finalized_tasks"
+        },
+        {
+          "task_key": "paper_aligned_feasible_v1-68:25:96",
+          "terminal_outcome": "dropped",
+          "recovered_reward": -40.0,
+          "recovery_strategy": "horizon_aware_recovered_reward_event",
+          "terminal_event_source": "env_step_finalized_tasks"
+        },
+        {
+          "task_key": "paper_aligned_feasible_v1-69:26:101",
+          "terminal_outcome": "dropped",
+          "recovered_reward": -40.0,
+          "recovery_strategy": "horizon_aware_recovered_reward_event",
+          "terminal_event_source": "env_step_finalized_tasks"
+        },
+        {
+          "task_key": "paper_aligned_feasible_v1-70:27:94",
+          "terminal_outcome": "dropped",
+          "recovered_reward": -40.0,
+          "recovery_strategy": "horizon_aware_recovered_reward_event",
+          "terminal_event_source": "env_step_finalized_tasks"
+        },
+        {
+          "task_key": "paper_aligned_feasible_v1-74:31:95",
+          "terminal_outcome": "dropped",
+          "recovered_reward": -40.0,
+          "recovery_strategy": "horizon_aware_recovered_reward_event",
+          "terminal_event_source": "env_step_finalized_tasks"
+        },
+        {
+          "task_key": "paper_aligned_feasible_v1-76:33:95",
+          "terminal_outcome": "dropped",
+          "recovered_reward": -40.0,
+          "recovery_strategy": "horizon_aware_recovered_reward_event",
+          "terminal_event_source": "env_step_finalized_tasks"
+        },
+        {
+          "task_key": "paper_aligned_feasible_v1-77:34:97",
+          "terminal_outcome": "dropped",
+          "recovered_reward": -40.0,
+          "recovery_strategy": "horizon_aware_recovered_reward_event",
+          "terminal_event_source": "env_step_finalized_tasks"
+        },
+        {
+          "task_key": "paper_aligned_feasible_v1-77:34:98",
+          "terminal_outcome": "dropped",
+          "recovered_reward": -40.0,
+          "recovery_strategy": "horizon_aware_recovered_reward_event",
+          "terminal_event_source": "env_step_finalized_tasks"
+        },
+        {
+          "task_key": "paper_aligned_feasible_v1-80:37:98",
+          "terminal_outcome": "dropped",
+          "recovered_reward": -40.0,
+          "recovery_strategy": "horizon_aware_recovered_reward_event",
+          "terminal_event_source": "env_step_finalized_tasks"
+        },
+        {
+          "task_key": "paper_aligned_feasible_v1-81:38:89",
+          "terminal_outcome": "dropped",
+          "recovered_reward": -40.0,
+          "recovery_strategy": "horizon_aware_recovered_reward_event",
+          "terminal_event_source": "env_step_finalized_tasks"
+        },
+        {
+          "task_key": "paper_aligned_feasible_v1-81:38:91",
+          "terminal_outcome": "dropped",
+          "recovered_reward": -40.0,
+          "recovery_strategy": "horizon_aware_recovered_reward_event",
+          "terminal_event_source": "env_step_finalized_tasks"
+        },
+        {
+          "task_key": "paper_aligned_feasible_v1-84:41:77",
+          "terminal_outcome": "dropped",
+          "recovered_reward": -40.0,
+          "recovery_strategy": "horizon_aware_recovered_reward_event",
+          "terminal_event_source": "env_step_finalized_tasks"
+        },
+        {
+          "task_key": "paper_aligned_feasible_v1-86:43:92",
+          "terminal_outcome": "dropped",
+          "recovered_reward": -40.0,
+          "recovery_strategy": "horizon_aware_recovered_reward_event",
+          "terminal_event_source": "env_step_finalized_tasks"
+        },
+        {
+          "task_key": "paper_aligned_feasible_v1-86:43:93",
+          "terminal_outcome": "dropped",
+          "recovered_reward": -40.0,
+          "recovery_strategy": "horizon_aware_recovered_reward_event",
+          "terminal_event_source": "env_step_finalized_tasks"
+        },
+        {
+          "task_key": "paper_aligned_feasible_v1-86:43:94",
+          "terminal_outcome": "dropped",
+          "recovered_reward": -40.0,
+          "recovery_strategy": "horizon_aware_recovered_reward_event",
+          "terminal_event_source": "env_step_finalized_tasks"
+        },
+        {
+          "task_key": "paper_aligned_feasible_v1-86:43:95",
+          "terminal_outcome": "dropped",
+          "recovered_reward": -40.0,
+          "recovery_strategy": "horizon_aware_recovered_reward_event",
+          "terminal_event_source": "env_step_finalized_tasks"
+        },
+        {
+          "task_key": "paper_aligned_feasible_v1-88:45:97",
+          "terminal_outcome": "dropped",
+          "recovered_reward": -40.0,
+          "recovery_strategy": "horizon_aware_recovered_reward_event",
+          "terminal_event_source": "env_step_finalized_tasks"
+        },
+        {
+          "task_key": "paper_aligned_feasible_v1-89:46:97",
+          "terminal_outcome": "dropped",
+          "recovered_reward": -40.0,
+          "recovery_strategy": "horizon_aware_recovered_reward_event",
+          "terminal_event_source": "env_step_finalized_tasks"
+        },
+        {
+          "task_key": "paper_aligned_feasible_v1-91:48:86",
+          "terminal_outcome": "dropped",
+          "recovered_reward": -40.0,
+          "recovery_strategy": "horizon_aware_recovered_reward_event",
+          "terminal_event_source": "env_step_finalized_tasks"
+        },
+        {
+          "task_key": "paper_aligned_feasible_v1-95:52:95",
+          "terminal_outcome": "dropped",
+          "recovered_reward": -40.0,
+          "recovery_strategy": "horizon_aware_recovered_reward_event",
+          "terminal_event_source": "env_step_finalized_tasks"
+        },
+        {
+          "task_key": "paper_aligned_feasible_v1-97:54:98",
+          "terminal_outcome": "dropped",
+          "recovered_reward": -40.0,
+          "recovery_strategy": "horizon_aware_recovered_reward_event",
+          "terminal_event_source": "env_step_finalized_tasks"
+        },
+        {
+          "task_key": "paper_aligned_feasible_v1-97:54:99",
+          "terminal_outcome": "dropped",
+          "recovered_reward": -40.0,
+          "recovery_strategy": "horizon_aware_recovered_reward_event",
+          "terminal_event_source": "env_step_finalized_tasks"
+        },
+        {
+          "task_key": "paper_aligned_feasible_v1-98:55:108",
+          "terminal_outcome": "dropped",
+          "recovered_reward": -40.0,
+          "recovery_strategy": "horizon_aware_recovered_reward_event",
+          "terminal_event_source": "env_step_finalized_tasks"
+        },
+        {
+          "task_key": "paper_aligned_feasible_v1-99:56:100",
+          "terminal_outcome": "dropped",
+          "recovered_reward": -40.0,
+          "recovery_strategy": "horizon_aware_recovered_reward_event",
+          "terminal_event_source": "env_step_finalized_tasks"
+        },
+        {
+          "task_key": "paper_aligned_feasible_v1-100:57:100",
+          "terminal_outcome": "dropped",
+          "recovered_reward": -40.0,
+          "recovery_strategy": "horizon_aware_recovered_reward_event",
+          "terminal_event_source": "env_step_finalized_tasks"
+        },
+        {
+          "task_key": "paper_aligned_feasible_v1-101:58:104",
+          "terminal_outcome": "dropped",
+          "recovered_reward": -40.0,
+          "recovery_strategy": "horizon_aware_recovered_reward_event",
+          "terminal_event_source": "env_step_finalized_tasks"
+        },
+        {
+          "task_key": "paper_aligned_feasible_v1-101:58:105",
+          "terminal_outcome": "dropped",
+          "recovered_reward": -40.0,
+          "recovery_strategy": "horizon_aware_recovered_reward_event",
+          "terminal_event_source": "env_step_finalized_tasks"
+        },
+        {
+          "task_key": "paper_aligned_feasible_v1-103:60:83",
+          "terminal_outcome": "dropped",
+          "recovered_reward": -40.0,
+          "recovery_strategy": "horizon_aware_recovered_reward_event",
+          "terminal_event_source": "env_step_finalized_tasks"
+        },
+        {
+          "task_key": "paper_aligned_feasible_v1-104:61:107",
+          "terminal_outcome": "dropped",
+          "recovered_reward": -40.0,
+          "recovery_strategy": "horizon_aware_recovered_reward_event",
+          "terminal_event_source": "env_step_finalized_tasks"
+        },
+        {
+          "task_key": "paper_aligned_feasible_v1-105:62:88",
+          "terminal_outcome": "dropped",
+          "recovered_reward": -40.0,
+          "recovery_strategy": "horizon_aware_recovered_reward_event",
+          "terminal_event_source": "env_step_finalized_tasks"
+        },
+        {
+          "task_key": "paper_aligned_feasible_v1-106:63:103",
+          "terminal_outcome": "dropped",
+          "recovered_reward": -40.0,
+          "recovery_strategy": "horizon_aware_recovered_reward_event",
+          "terminal_event_source": "env_step_finalized_tasks"
+        },
+        {
+          "task_key": "paper_aligned_feasible_v1-106:63:104",
+          "terminal_outcome": "dropped",
+          "recovered_reward": -40.0,
+          "recovery_strategy": "horizon_aware_recovered_reward_event",
+          "terminal_event_source": "env_step_finalized_tasks"
+        },
+        {
+          "task_key": "paper_aligned_feasible_v1-107:64:95",
+          "terminal_outcome": "dropped",
+          "recovered_reward": -40.0,
+          "recovery_strategy": "horizon_aware_recovered_reward_event",
+          "terminal_event_source": "env_step_finalized_tasks"
+        },
+        {
+          "task_key": "paper_aligned_feasible_v1-107:64:96",
+          "terminal_outcome": "dropped",
+          "recovered_reward": -40.0,
+          "recovery_strategy": "horizon_aware_recovered_reward_event",
+          "terminal_event_source": "env_step_finalized_tasks"
+        },
+        {
+          "task_key": "paper_aligned_feasible_v1-108:65:99",
+          "terminal_outcome": "dropped",
+          "recovered_reward": -40.0,
+          "recovery_strategy": "horizon_aware_recovered_reward_event",
+          "terminal_event_source": "env_step_finalized_tasks"
+        },
+        {
+          "task_key": "paper_aligned_feasible_v1-110:67:107",
+          "terminal_outcome": "dropped",
+          "recovered_reward": -40.0,
+          "recovery_strategy": "horizon_aware_recovered_reward_event",
+          "terminal_event_source": "env_step_finalized_tasks"
+        },
+        {
+          "task_key": "paper_aligned_feasible_v1-111:68:96",
+          "terminal_outcome": "dropped",
+          "recovered_reward": -40.0,
+          "recovery_strategy": "horizon_aware_recovered_reward_event",
+          "terminal_event_source": "env_step_finalized_tasks"
+        },
+        {
+          "task_key": "paper_aligned_feasible_v1-111:68:97",
+          "terminal_outcome": "dropped",
+          "recovered_reward": -40.0,
+          "recovery_strategy": "horizon_aware_recovered_reward_event",
+          "terminal_event_source": "env_step_finalized_tasks"
+        },
+        {
+          "task_key": "paper_aligned_feasible_v1-112:69:85",
+          "terminal_outcome": "dropped",
+          "recovered_reward": -40.0,
+          "recovery_strategy": "horizon_aware_recovered_reward_event",
+          "terminal_event_source": "env_step_finalized_tasks"
+        },
+        {
+          "task_key": "paper_aligned_feasible_v1-112:69:86",
+          "terminal_outcome": "dropped",
+          "recovered_reward": -40.0,
+          "recovery_strategy": "horizon_aware_recovered_reward_event",
+          "terminal_event_source": "env_step_finalized_tasks"
+        },
+        {
+          "task_key": "paper_aligned_feasible_v1-114:71:107",
+          "terminal_outcome": "dropped",
+          "recovered_reward": -40.0,
+          "recovery_strategy": "horizon_aware_recovered_reward_event",
+          "terminal_event_source": "env_step_finalized_tasks"
+        },
+        {
+          "task_key": "paper_aligned_feasible_v1-114:71:108",
+          "terminal_outcome": "dropped",
+          "recovered_reward": -40.0,
+          "recovery_strategy": "horizon_aware_recovered_reward_event",
+          "terminal_event_source": "env_step_finalized_tasks"
+        },
+        {
+          "task_key": "paper_aligned_feasible_v1-115:72:87",
+          "terminal_outcome": "dropped",
+          "recovered_reward": -40.0,
+          "recovery_strategy": "horizon_aware_recovered_reward_event",
+          "terminal_event_source": "env_step_finalized_tasks"
+        },
+        {
+          "task_key": "paper_aligned_feasible_v1-117:74:86",
+          "terminal_outcome": "dropped",
+          "recovered_reward": -40.0,
+          "recovery_strategy": "horizon_aware_recovered_reward_event",
+          "terminal_event_source": "env_step_finalized_tasks"
+        },
+        {
+          "task_key": "paper_aligned_feasible_v1-118:75:99",
+          "terminal_outcome": "dropped",
+          "recovered_reward": -40.0,
+          "recovery_strategy": "horizon_aware_recovered_reward_event",
+          "terminal_event_source": "env_step_finalized_tasks"
+        },
+        {
+          "task_key": "paper_aligned_feasible_v1-121:78:104",
+          "terminal_outcome": "dropped",
+          "recovered_reward": -40.0,
+          "recovery_strategy": "horizon_aware_recovered_reward_event",
+          "terminal_event_source": "env_step_finalized_tasks"
+        },
+        {
+          "task_key": "paper_aligned_feasible_v1-122:79:91",
+          "terminal_outcome": "dropped",
+          "recovered_reward": -40.0,
+          "recovery_strategy": "horizon_aware_recovered_reward_event",
+          "terminal_event_source": "env_step_finalized_tasks"
+        },
+        {
+          "task_key": "paper_aligned_feasible_v1-124:81:94",
+          "terminal_outcome": "dropped",
+          "recovered_reward": -40.0,
+          "recovery_strategy": "horizon_aware_recovered_reward_event",
+          "terminal_event_source": "env_step_finalized_tasks"
+        },
+        {
+          "task_key": "paper_aligned_feasible_v1-126:83:89",
+          "terminal_outcome": "dropped",
+          "recovered_reward": -40.0,
+          "recovery_strategy": "horizon_aware_recovered_reward_event",
+          "terminal_event_source": "env_step_finalized_tasks"
+        },
+        {
+          "task_key": "paper_aligned_feasible_v1-127:84:106",
+          "terminal_outcome": "dropped",
+          "recovered_reward": -40.0,
+          "recovery_strategy": "horizon_aware_recovered_reward_event",
+          "terminal_event_source": "env_step_finalized_tasks"
+        },
+        {
+          "task_key": "paper_aligned_feasible_v1-127:84:107",
+          "terminal_outcome": "dropped",
+          "recovered_reward": -40.0,
+          "recovery_strategy": "horizon_aware_recovered_reward_event",
+          "terminal_event_source": "env_step_finalized_tasks"
+        },
+        {
+          "task_key": "paper_aligned_feasible_v1-127:84:108",
+          "terminal_outcome": "dropped",
+          "recovered_reward": -40.0,
+          "recovery_strategy": "horizon_aware_recovered_reward_event",
+          "terminal_event_source": "env_step_finalized_tasks"
+        },
+        {
+          "task_key": "paper_aligned_feasible_v1-128:85:84",
+          "terminal_outcome": "dropped",
+          "recovered_reward": -40.0,
+          "recovery_strategy": "horizon_aware_recovered_reward_event",
+          "terminal_event_source": "env_step_finalized_tasks"
+        },
+        {
+          "task_key": "paper_aligned_feasible_v1-130:87:107",
+          "terminal_outcome": "dropped",
+          "recovered_reward": -40.0,
+          "recovery_strategy": "horizon_aware_recovered_reward_event",
+          "terminal_event_source": "env_step_finalized_tasks"
+        },
+        {
+          "task_key": "paper_aligned_feasible_v1-132:89:82",
+          "terminal_outcome": "dropped",
+          "recovered_reward": -40.0,
+          "recovery_strategy": "horizon_aware_recovered_reward_event",
+          "terminal_event_source": "env_step_finalized_tasks"
+        },
+        {
+          "task_key": "paper_aligned_feasible_v1-132:89:83",
+          "terminal_outcome": "dropped",
+          "recovered_reward": -40.0,
+          "recovery_strategy": "horizon_aware_recovered_reward_event",
+          "terminal_event_source": "env_step_finalized_tasks"
+        },
+        {
+          "task_key": "paper_aligned_feasible_v1-133:90:99",
+          "terminal_outcome": "dropped",
+          "recovered_reward": -40.0,
+          "recovery_strategy": "horizon_aware_recovered_reward_event",
+          "terminal_event_source": "env_step_finalized_tasks"
+        },
+        {
+          "task_key": "paper_aligned_feasible_v1-133:90:100",
+          "terminal_outcome": "dropped",
+          "recovered_reward": -40.0,
+          "recovery_strategy": "horizon_aware_recovered_reward_event",
+          "terminal_event_source": "env_step_finalized_tasks"
+        },
+        {
+          "task_key": "paper_aligned_feasible_v1-134:91:102",
+          "terminal_outcome": "dropped",
+          "recovered_reward": -40.0,
+          "recovery_strategy": "horizon_aware_recovered_reward_event",
+          "terminal_event_source": "env_step_finalized_tasks"
+        },
+        {
+          "task_key": "paper_aligned_feasible_v1-137:94:93",
+          "terminal_outcome": "dropped",
+          "recovered_reward": -40.0,
+          "recovery_strategy": "horizon_aware_recovered_reward_event",
+          "terminal_event_source": "env_step_finalized_tasks"
+        },
+        {
+          "task_key": "paper_aligned_feasible_v1-138:95:96",
+          "terminal_outcome": "dropped",
+          "recovered_reward": -40.0,
+          "recovery_strategy": "horizon_aware_recovered_reward_event",
+          "terminal_event_source": "env_step_finalized_tasks"
+        },
+        {
+          "task_key": "paper_aligned_feasible_v1-138:95:97",
+          "terminal_outcome": "dropped",
+          "recovered_reward": -40.0,
+          "recovery_strategy": "horizon_aware_recovered_reward_event",
+          "terminal_event_source": "env_step_finalized_tasks"
+        },
+        {
+          "task_key": "paper_aligned_feasible_v1-138:95:98",
+          "terminal_outcome": "dropped",
+          "recovered_reward": -40.0,
+          "recovery_strategy": "horizon_aware_recovered_reward_event",
+          "terminal_event_source": "env_step_finalized_tasks"
+        },
+        {
+          "task_key": "paper_aligned_feasible_v1-138:95:99",
+          "terminal_outcome": "dropped",
+          "recovered_reward": -40.0,
+          "recovery_strategy": "horizon_aware_recovered_reward_event",
+          "terminal_event_source": "env_step_finalized_tasks"
+        },
+        {
+          "task_key": "paper_aligned_feasible_v1-139:96:107",
+          "terminal_outcome": "dropped",
+          "recovered_reward": -40.0,
+          "recovery_strategy": "horizon_aware_recovered_reward_event",
+          "terminal_event_source": "env_step_finalized_tasks"
+        },
+        {
+          "task_key": "paper_aligned_feasible_v1-140:97:88",
+          "terminal_outcome": "dropped",
+          "recovered_reward": -40.0,
+          "recovery_strategy": "horizon_aware_recovered_reward_event",
+          "terminal_event_source": "env_step_finalized_tasks"
+        },
+        {
+          "task_key": "paper_aligned_feasible_v1-141:98:93",
+          "terminal_outcome": "dropped",
+          "recovered_reward": -40.0,
+          "recovery_strategy": "horizon_aware_recovered_reward_event",
+          "terminal_event_source": "env_step_finalized_tasks"
+        }
+      ]
+    },
+    {
+      "policy_name": "legacy_minimal_candidate_at_100",
+      "training_budget": 100,
+      "profile": "legacy_minimal",
+      "raw_reward_event_count": 9427,
+      "recovered_horizon_reward_event_count": 85,
+      "raw_plus_recovered_reward_event_count": 9512,
+      "canonical_reward_task_count": 9512,
+      "raw_reward_total": -337042.0,
+      "recovered_horizon_reward_total": -3400.0,
+      "raw_plus_recovered_reward_total": -340442.0,
+      "canonical_reward_total": -340442.0,
+      "raw_vs_canonical_reward_delta": 0.0,
+      "reward_reconciled": true,
+      "raw_terminal_event_count": 9427,
+      "horizon_finalized_terminal_count": 85,
+      "raw_plus_horizon_terminal_count": 9512,
+      "canonical_terminal_task_count": 9512,
+      "terminal_event_coverage_ratio": 1.0,
+      "terminal_reconciled": true,
+      "recovered_reward_ledger": [
+        {
+          "task_key": "paper_aligned_feasible_v1-44:1:102",
+          "terminal_outcome": "dropped",
+          "recovered_reward": -40.0,
+          "recovery_strategy": "horizon_aware_recovered_reward_event",
+          "terminal_event_source": "env_step_finalized_tasks"
+        },
+        {
+          "task_key": "paper_aligned_feasible_v1-46:3:105",
+          "terminal_outcome": "dropped",
+          "recovered_reward": -40.0,
+          "recovery_strategy": "horizon_aware_recovered_reward_event",
+          "terminal_event_source": "env_step_finalized_tasks"
+        },
+        {
+          "task_key": "paper_aligned_feasible_v1-49:6:93",
+          "terminal_outcome": "dropped",
+          "recovered_reward": -40.0,
+          "recovery_strategy": "horizon_aware_recovered_reward_event",
+          "terminal_event_source": "env_step_finalized_tasks"
+        },
+        {
+          "task_key": "paper_aligned_feasible_v1-49:6:94",
+          "terminal_outcome": "dropped",
+          "recovered_reward": -40.0,
+          "recovery_strategy": "horizon_aware_recovered_reward_event",
+          "terminal_event_source": "env_step_finalized_tasks"
+        },
+        {
+          "task_key": "paper_aligned_feasible_v1-51:8:94",
+          "terminal_outcome": "dropped",
+          "recovered_reward": -40.0,
+          "recovery_strategy": "horizon_aware_recovered_reward_event",
+          "terminal_event_source": "env_step_finalized_tasks"
+        },
+        {
+          "task_key": "paper_aligned_feasible_v1-52:9:99",
+          "terminal_outcome": "dropped",
+          "recovered_reward": -40.0,
+          "recovery_strategy": "horizon_aware_recovered_reward_event",
+          "terminal_event_source": "env_step_finalized_tasks"
+        },
+        {
+          "task_key": "paper_aligned_feasible_v1-54:11:94",
+          "terminal_outcome": "dropped",
+          "recovered_reward": -40.0,
+          "recovery_strategy": "horizon_aware_recovered_reward_event",
+          "terminal_event_source": "env_step_finalized_tasks"
+        },
+        {
+          "task_key": "paper_aligned_feasible_v1-58:15:93",
+          "terminal_outcome": "dropped",
+          "recovered_reward": -40.0,
+          "recovery_strategy": "horizon_aware_recovered_reward_event",
+          "terminal_event_source": "env_step_finalized_tasks"
+        },
+        {
+          "task_key": "paper_aligned_feasible_v1-59:16:100",
+          "terminal_outcome": "dropped",
+          "recovered_reward": -40.0,
+          "recovery_strategy": "horizon_aware_recovered_reward_event",
+          "terminal_event_source": "env_step_finalized_tasks"
+        },
+        {
+          "task_key": "paper_aligned_feasible_v1-60:17:91",
+          "terminal_outcome": "dropped",
+          "recovered_reward": -40.0,
+          "recovery_strategy": "horizon_aware_recovered_reward_event",
+          "terminal_event_source": "env_step_finalized_tasks"
+        },
+        {
+          "task_key": "paper_aligned_feasible_v1-62:19:98",
+          "terminal_outcome": "dropped",
+          "recovered_reward": -40.0,
+          "recovery_strategy": "horizon_aware_recovered_reward_event",
+          "terminal_event_source": "env_step_finalized_tasks"
+        },
+        {
+          "task_key": "paper_aligned_feasible_v1-64:21:102",
+          "terminal_outcome": "dropped",
+          "recovered_reward": -40.0,
+          "recovery_strategy": "horizon_aware_recovered_reward_event",
+          "terminal_event_source": "env_step_finalized_tasks"
+        },
+        {
+          "task_key": "paper_aligned_feasible_v1-65:22:91",
+          "terminal_outcome": "dropped",
+          "recovered_reward": -40.0,
+          "recovery_strategy": "horizon_aware_recovered_reward_event",
+          "terminal_event_source": "env_step_finalized_tasks"
+        },
+        {
+          "task_key": "paper_aligned_feasible_v1-66:23:95",
+          "terminal_outcome": "dropped",
+          "recovered_reward": -40.0,
+          "recovery_strategy": "horizon_aware_recovered_reward_event",
+          "terminal_event_source": "env_step_finalized_tasks"
+        },
+        {
+          "task_key": "paper_aligned_feasible_v1-67:24:97",
+          "terminal_outcome": "dropped",
+          "recovered_reward": -40.0,
+          "recovery_strategy": "horizon_aware_recovered_reward_event",
+          "terminal_event_source": "env_step_finalized_tasks"
+        },
+        {
+          "task_key": "paper_aligned_feasible_v1-68:25:96",
+          "terminal_outcome": "dropped",
+          "recovered_reward": -40.0,
+          "recovery_strategy": "horizon_aware_recovered_reward_event",
+          "terminal_event_source": "env_step_finalized_tasks"
+        },
+        {
+          "task_key": "paper_aligned_feasible_v1-69:26:101",
+          "terminal_outcome": "dropped",
+          "recovered_reward": -40.0,
+          "recovery_strategy": "horizon_aware_recovered_reward_event",
+          "terminal_event_source": "env_step_finalized_tasks"
+        },
+        {
+          "task_key": "paper_aligned_feasible_v1-70:27:94",
+          "terminal_outcome": "dropped",
+          "recovered_reward": -40.0,
+          "recovery_strategy": "horizon_aware_recovered_reward_event",
+          "terminal_event_source": "env_step_finalized_tasks"
+        },
+        {
+          "task_key": "paper_aligned_feasible_v1-74:31:95",
+          "terminal_outcome": "dropped",
+          "recovered_reward": -40.0,
+          "recovery_strategy": "horizon_aware_recovered_reward_event",
+          "terminal_event_source": "env_step_finalized_tasks"
+        },
+        {
+          "task_key": "paper_aligned_feasible_v1-76:33:95",
+          "terminal_outcome": "dropped",
+          "recovered_reward": -40.0,
+          "recovery_strategy": "horizon_aware_recovered_reward_event",
+          "terminal_event_source": "env_step_finalized_tasks"
+        },
+        {
+          "task_key": "paper_aligned_feasible_v1-77:34:97",
+          "terminal_outcome": "dropped",
+          "recovered_reward": -40.0,
+          "recovery_strategy": "horizon_aware_recovered_reward_event",
+          "terminal_event_source": "env_step_finalized_tasks"
+        },
+        {
+          "task_key": "paper_aligned_feasible_v1-77:34:98",
+          "terminal_outcome": "dropped",
+          "recovered_reward": -40.0,
+          "recovery_strategy": "horizon_aware_recovered_reward_event",
+          "terminal_event_source": "env_step_finalized_tasks"
+        },
+        {
+          "task_key": "paper_aligned_feasible_v1-80:37:98",
+          "terminal_outcome": "dropped",
+          "recovered_reward": -40.0,
+          "recovery_strategy": "horizon_aware_recovered_reward_event",
+          "terminal_event_source": "env_step_finalized_tasks"
+        },
+        {
+          "task_key": "paper_aligned_feasible_v1-81:38:89",
+          "terminal_outcome": "dropped",
+          "recovered_reward": -40.0,
+          "recovery_strategy": "horizon_aware_recovered_reward_event",
+          "terminal_event_source": "env_step_finalized_tasks"
+        },
+        {
+          "task_key": "paper_aligned_feasible_v1-81:38:90",
+          "terminal_outcome": "dropped",
+          "recovered_reward": -40.0,
+          "recovery_strategy": "horizon_aware_recovered_reward_event",
+          "terminal_event_source": "env_step_finalized_tasks"
+        },
+        {
+          "task_key": "paper_aligned_feasible_v1-81:38:91",
+          "terminal_outcome": "dropped",
+          "recovered_reward": -40.0,
+          "recovery_strategy": "horizon_aware_recovered_reward_event",
+          "terminal_event_source": "env_step_finalized_tasks"
+        },
+        {
+          "task_key": "paper_aligned_feasible_v1-84:41:77",
+          "terminal_outcome": "dropped",
+          "recovered_reward": -40.0,
+          "recovery_strategy": "horizon_aware_recovered_reward_event",
+          "terminal_event_source": "env_step_finalized_tasks"
+        },
+        {
+          "task_key": "paper_aligned_feasible_v1-84:41:78",
+          "terminal_outcome": "dropped",
+          "recovered_reward": -40.0,
+          "recovery_strategy": "horizon_aware_recovered_reward_event",
+          "terminal_event_source": "env_step_finalized_tasks"
+        },
+        {
+          "task_key": "paper_aligned_feasible_v1-86:43:92",
+          "terminal_outcome": "dropped",
+          "recovered_reward": -40.0,
+          "recovery_strategy": "horizon_aware_recovered_reward_event",
+          "terminal_event_source": "env_step_finalized_tasks"
+        },
+        {
+          "task_key": "paper_aligned_feasible_v1-86:43:93",
+          "terminal_outcome": "dropped",
+          "recovered_reward": -40.0,
+          "recovery_strategy": "horizon_aware_recovered_reward_event",
+          "terminal_event_source": "env_step_finalized_tasks"
+        },
+        {
+          "task_key": "paper_aligned_feasible_v1-86:43:94",
+          "terminal_outcome": "dropped",
+          "recovered_reward": -40.0,
+          "recovery_strategy": "horizon_aware_recovered_reward_event",
+          "terminal_event_source": "env_step_finalized_tasks"
+        },
+        {
+          "task_key": "paper_aligned_feasible_v1-86:43:95",
+          "terminal_outcome": "dropped",
+          "recovered_reward": -40.0,
+          "recovery_strategy": "horizon_aware_recovered_reward_event",
+          "terminal_event_source": "env_step_finalized_tasks"
+        },
+        {
+          "task_key": "paper_aligned_feasible_v1-88:45:97",
+          "terminal_outcome": "dropped",
+          "recovered_reward": -40.0,
+          "recovery_strategy": "horizon_aware_recovered_reward_event",
+          "terminal_event_source": "env_step_finalized_tasks"
+        },
+        {
+          "task_key": "paper_aligned_feasible_v1-89:46:97",
+          "terminal_outcome": "dropped",
+          "recovered_reward": -40.0,
+          "recovery_strategy": "horizon_aware_recovered_reward_event",
+          "terminal_event_source": "env_step_finalized_tasks"
+        },
+        {
+          "task_key": "paper_aligned_feasible_v1-91:48:86",
+          "terminal_outcome": "dropped",
+          "recovered_reward": -40.0,
+          "recovery_strategy": "horizon_aware_recovered_reward_event",
+          "terminal_event_source": "env_step_finalized_tasks"
+        },
+        {
+          "task_key": "paper_aligned_feasible_v1-95:52:95",
+          "terminal_outcome": "dropped",
+          "recovered_reward": -40.0,
+          "recovery_strategy": "horizon_aware_recovered_reward_event",
+          "terminal_event_source": "env_step_finalized_tasks"
+        },
+        {
+          "task_key": "paper_aligned_feasible_v1-97:54:98",
+          "terminal_outcome": "dropped",
+          "recovered_reward": -40.0,
+          "recovery_strategy": "horizon_aware_recovered_reward_event",
+          "terminal_event_source": "env_step_finalized_tasks"
+        },
+        {
+          "task_key": "paper_aligned_feasible_v1-97:54:99",
+          "terminal_outcome": "dropped",
+          "recovered_reward": -40.0,
+          "recovery_strategy": "horizon_aware_recovered_reward_event",
+          "terminal_event_source": "env_step_finalized_tasks"
+        },
+        {
+          "task_key": "paper_aligned_feasible_v1-98:55:108",
+          "terminal_outcome": "dropped",
+          "recovered_reward": -40.0,
+          "recovery_strategy": "horizon_aware_recovered_reward_event",
+          "terminal_event_source": "env_step_finalized_tasks"
+        },
+        {
+          "task_key": "paper_aligned_feasible_v1-99:56:100",
+          "terminal_outcome": "dropped",
+          "recovered_reward": -40.0,
+          "recovery_strategy": "horizon_aware_recovered_reward_event",
+          "terminal_event_source": "env_step_finalized_tasks"
+        },
+        {
+          "task_key": "paper_aligned_feasible_v1-100:57:100",
+          "terminal_outcome": "dropped",
+          "recovered_reward": -40.0,
+          "recovery_strategy": "horizon_aware_recovered_reward_event",
+          "terminal_event_source": "env_step_finalized_tasks"
+        },
+        {
+          "task_key": "paper_aligned_feasible_v1-101:58:104",
+          "terminal_outcome": "dropped",
+          "recovered_reward": -40.0,
+          "recovery_strategy": "horizon_aware_recovered_reward_event",
+          "terminal_event_source": "env_step_finalized_tasks"
+        },
+        {
+          "task_key": "paper_aligned_feasible_v1-101:58:105",
+          "terminal_outcome": "dropped",
+          "recovered_reward": -40.0,
+          "recovery_strategy": "horizon_aware_recovered_reward_event",
+          "terminal_event_source": "env_step_finalized_tasks"
+        },
+        {
+          "task_key": "paper_aligned_feasible_v1-103:60:83",
+          "terminal_outcome": "dropped",
+          "recovered_reward": -40.0,
+          "recovery_strategy": "horizon_aware_recovered_reward_event",
+          "terminal_event_source": "env_step_finalized_tasks"
+        },
+        {
+          "task_key": "paper_aligned_feasible_v1-104:61:107",
+          "terminal_outcome": "dropped",
+          "recovered_reward": -40.0,
+          "recovery_strategy": "horizon_aware_recovered_reward_event",
+          "terminal_event_source": "env_step_finalized_tasks"
+        },
+        {
+          "task_key": "paper_aligned_feasible_v1-105:62:88",
+          "terminal_outcome": "dropped",
+          "recovered_reward": -40.0,
+          "recovery_strategy": "horizon_aware_recovered_reward_event",
+          "terminal_event_source": "env_step_finalized_tasks"
+        },
+        {
+          "task_key": "paper_aligned_feasible_v1-106:63:103",
+          "terminal_outcome": "dropped",
+          "recovered_reward": -40.0,
+          "recovery_strategy": "horizon_aware_recovered_reward_event",
+          "terminal_event_source": "env_step_finalized_tasks"
+        },
+        {
+          "task_key": "paper_aligned_feasible_v1-106:63:104",
+          "terminal_outcome": "dropped",
+          "recovered_reward": -40.0,
+          "recovery_strategy": "horizon_aware_recovered_reward_event",
+          "terminal_event_source": "env_step_finalized_tasks"
+        },
+        {
+          "task_key": "paper_aligned_feasible_v1-107:64:95",
+          "terminal_outcome": "dropped",
+          "recovered_reward": -40.0,
+          "recovery_strategy": "horizon_aware_recovered_reward_event",
+          "terminal_event_source": "env_step_finalized_tasks"
+        },
+        {
+          "task_key": "paper_aligned_feasible_v1-107:64:96",
+          "terminal_outcome": "dropped",
+          "recovered_reward": -40.0,
+          "recovery_strategy": "horizon_aware_recovered_reward_event",
+          "terminal_event_source": "env_step_finalized_tasks"
+        },
+        {
+          "task_key": "paper_aligned_feasible_v1-108:65:99",
+          "terminal_outcome": "dropped",
+          "recovered_reward": -40.0,
+          "recovery_strategy": "horizon_aware_recovered_reward_event",
+          "terminal_event_source": "env_step_finalized_tasks"
+        },
+        {
+          "task_key": "paper_aligned_feasible_v1-110:67:107",
+          "terminal_outcome": "dropped",
+          "recovered_reward": -40.0,
+          "recovery_strategy": "horizon_aware_recovered_reward_event",
+          "terminal_event_source": "env_step_finalized_tasks"
+        },
+        {
+          "task_key": "paper_aligned_feasible_v1-111:68:96",
+          "terminal_outcome": "dropped",
+          "recovered_reward": -40.0,
+          "recovery_strategy": "horizon_aware_recovered_reward_event",
+          "terminal_event_source": "env_step_finalized_tasks"
+        },
+        {
+          "task_key": "paper_aligned_feasible_v1-111:68:97",
+          "terminal_outcome": "dropped",
+          "recovered_reward": -40.0,
+          "recovery_strategy": "horizon_aware_recovered_reward_event",
+          "terminal_event_source": "env_step_finalized_tasks"
+        },
+        {
+          "task_key": "paper_aligned_feasible_v1-112:69:85",
+          "terminal_outcome": "dropped",
+          "recovered_reward": -40.0,
+          "recovery_strategy": "horizon_aware_recovered_reward_event",
+          "terminal_event_source": "env_step_finalized_tasks"
+        },
+        {
+          "task_key": "paper_aligned_feasible_v1-112:69:86",
+          "terminal_outcome": "dropped",
+          "recovered_reward": -40.0,
+          "recovery_strategy": "horizon_aware_recovered_reward_event",
+          "terminal_event_source": "env_step_finalized_tasks"
+        },
+        {
+          "task_key": "paper_aligned_feasible_v1-114:71:107",
+          "terminal_outcome": "dropped",
+          "recovered_reward": -40.0,
+          "recovery_strategy": "horizon_aware_recovered_reward_event",
+          "terminal_event_source": "env_step_finalized_tasks"
+        },
+        {
+          "task_key": "paper_aligned_feasible_v1-114:71:108",
+          "terminal_outcome": "dropped",
+          "recovered_reward": -40.0,
+          "recovery_strategy": "horizon_aware_recovered_reward_event",
+          "terminal_event_source": "env_step_finalized_tasks"
+        },
+        {
+          "task_key": "paper_aligned_feasible_v1-115:72:87",
+          "terminal_outcome": "dropped",
+          "recovered_reward": -40.0,
+          "recovery_strategy": "horizon_aware_recovered_reward_event",
+          "terminal_event_source": "env_step_finalized_tasks"
+        },
+        {
+          "task_key": "paper_aligned_feasible_v1-117:74:86",
+          "terminal_outcome": "dropped",
+          "recovered_reward": -40.0,
+          "recovery_strategy": "horizon_aware_recovered_reward_event",
+          "terminal_event_source": "env_step_finalized_tasks"
+        },
+        {
+          "task_key": "paper_aligned_feasible_v1-118:75:99",
+          "terminal_outcome": "dropped",
+          "recovered_reward": -40.0,
+          "recovery_strategy": "horizon_aware_recovered_reward_event",
+          "terminal_event_source": "env_step_finalized_tasks"
+        },
+        {
+          "task_key": "paper_aligned_feasible_v1-121:78:104",
+          "terminal_outcome": "dropped",
+          "recovered_reward": -40.0,
+          "recovery_strategy": "horizon_aware_recovered_reward_event",
+          "terminal_event_source": "env_step_finalized_tasks"
+        },
+        {
+          "task_key": "paper_aligned_feasible_v1-122:79:91",
+          "terminal_outcome": "dropped",
+          "recovered_reward": -40.0,
+          "recovery_strategy": "horizon_aware_recovered_reward_event",
+          "terminal_event_source": "env_step_finalized_tasks"
+        },
+        {
+          "task_key": "paper_aligned_feasible_v1-124:81:94",
+          "terminal_outcome": "dropped",
+          "recovered_reward": -40.0,
+          "recovery_strategy": "horizon_aware_recovered_reward_event",
+          "terminal_event_source": "env_step_finalized_tasks"
+        },
+        {
+          "task_key": "paper_aligned_feasible_v1-126:83:89",
+          "terminal_outcome": "dropped",
+          "recovered_reward": -40.0,
+          "recovery_strategy": "horizon_aware_recovered_reward_event",
+          "terminal_event_source": "env_step_finalized_tasks"
+        },
+        {
+          "task_key": "paper_aligned_feasible_v1-127:84:106",
+          "terminal_outcome": "dropped",
+          "recovered_reward": -40.0,
+          "recovery_strategy": "horizon_aware_recovered_reward_event",
+          "terminal_event_source": "env_step_finalized_tasks"
+        },
+        {
+          "task_key": "paper_aligned_feasible_v1-127:84:107",
+          "terminal_outcome": "dropped",
+          "recovered_reward": -40.0,
+          "recovery_strategy": "horizon_aware_recovered_reward_event",
+          "terminal_event_source": "env_step_finalized_tasks"
+        },
+        {
+          "task_key": "paper_aligned_feasible_v1-127:84:108",
+          "terminal_outcome": "dropped",
+          "recovered_reward": -40.0,
+          "recovery_strategy": "horizon_aware_recovered_reward_event",
+          "terminal_event_source": "env_step_finalized_tasks"
+        },
+        {
+          "task_key": "paper_aligned_feasible_v1-128:85:84",
+          "terminal_outcome": "dropped",
+          "recovered_reward": -40.0,
+          "recovery_strategy": "horizon_aware_recovered_reward_event",
+          "terminal_event_source": "env_step_finalized_tasks"
+        },
+        {
+          "task_key": "paper_aligned_feasible_v1-130:87:107",
+          "terminal_outcome": "dropped",
+          "recovered_reward": -40.0,
+          "recovery_strategy": "horizon_aware_recovered_reward_event",
+          "terminal_event_source": "env_step_finalized_tasks"
+        },
+        {
+          "task_key": "paper_aligned_feasible_v1-132:89:82",
+          "terminal_outcome": "dropped",
+          "recovered_reward": -40.0,
+          "recovery_strategy": "horizon_aware_recovered_reward_event",
+          "terminal_event_source": "env_step_finalized_tasks"
+        },
+        {
+          "task_key": "paper_aligned_feasible_v1-132:89:83",
+          "terminal_outcome": "dropped",
+          "recovered_reward": -40.0,
+          "recovery_strategy": "horizon_aware_recovered_reward_event",
+          "terminal_event_source": "env_step_finalized_tasks"
+        },
+        {
+          "task_key": "paper_aligned_feasible_v1-133:90:99",
+          "terminal_outcome": "dropped",
+          "recovered_reward": -40.0,
+          "recovery_strategy": "horizon_aware_recovered_reward_event",
+          "terminal_event_source": "env_step_finalized_tasks"
+        },
+        {
+          "task_key": "paper_aligned_feasible_v1-133:90:100",
+          "terminal_outcome": "dropped",
+          "recovered_reward": -40.0,
+          "recovery_strategy": "horizon_aware_recovered_reward_event",
+          "terminal_event_source": "env_step_finalized_tasks"
+        },
+        {
+          "task_key": "paper_aligned_feasible_v1-134:91:102",
+          "terminal_outcome": "dropped",
+          "recovered_reward": -40.0,
+          "recovery_strategy": "horizon_aware_recovered_reward_event",
+          "terminal_event_source": "env_step_finalized_tasks"
+        },
+        {
+          "task_key": "paper_aligned_feasible_v1-137:94:93",
+          "terminal_outcome": "dropped",
+          "recovered_reward": -40.0,
+          "recovery_strategy": "horizon_aware_recovered_reward_event",
+          "terminal_event_source": "env_step_finalized_tasks"
+        },
+        {
+          "task_key": "paper_aligned_feasible_v1-138:95:96",
+          "terminal_outcome": "dropped",
+          "recovered_reward": -40.0,
+          "recovery_strategy": "horizon_aware_recovered_reward_event",
+          "terminal_event_source": "env_step_finalized_tasks"
+        },
+        {
+          "task_key": "paper_aligned_feasible_v1-138:95:97",
+          "terminal_outcome": "dropped",
+          "recovered_reward": -40.0,
+          "recovery_strategy": "horizon_aware_recovered_reward_event",
+          "terminal_event_source": "env_step_finalized_tasks"
+        },
+        {
+          "task_key": "paper_aligned_feasible_v1-138:95:98",
+          "terminal_outcome": "dropped",
+          "recovered_reward": -40.0,
+          "recovery_strategy": "horizon_aware_recovered_reward_event",
+          "terminal_event_source": "env_step_finalized_tasks"
+        },
+        {
+          "task_key": "paper_aligned_feasible_v1-138:95:99",
+          "terminal_outcome": "dropped",
+          "recovered_reward": -40.0,
+          "recovery_strategy": "horizon_aware_recovered_reward_event",
+          "terminal_event_source": "env_step_finalized_tasks"
+        },
+        {
+          "task_key": "paper_aligned_feasible_v1-139:96:107",
+          "terminal_outcome": "dropped",
+          "recovered_reward": -40.0,
+          "recovery_strategy": "horizon_aware_recovered_reward_event",
+          "terminal_event_source": "env_step_finalized_tasks"
+        },
+        {
+          "task_key": "paper_aligned_feasible_v1-140:97:88",
+          "terminal_outcome": "dropped",
+          "recovered_reward": -40.0,
+          "recovery_strategy": "horizon_aware_recovered_reward_event",
+          "terminal_event_source": "env_step_finalized_tasks"
+        },
+        {
+          "task_key": "paper_aligned_feasible_v1-141:98:93",
+          "terminal_outcome": "dropped",
+          "recovered_reward": -40.0,
+          "recovery_strategy": "horizon_aware_recovered_reward_event",
+          "terminal_event_source": "env_step_finalized_tasks"
+        },
+        {
+          "task_key": "paper_aligned_feasible_v1-142:99:105",
+          "terminal_outcome": "dropped",
+          "recovered_reward": -40.0,
+          "recovery_strategy": "horizon_aware_recovered_reward_event",
+          "terminal_event_source": "env_step_finalized_tasks"
+        },
+        {
+          "task_key": "paper_aligned_feasible_v1-142:99:106",
+          "terminal_outcome": "dropped",
+          "recovered_reward": -40.0,
+          "recovery_strategy": "horizon_aware_recovered_reward_event",
+          "terminal_event_source": "env_step_finalized_tasks"
+        }
+      ]
+    }
+  ]
+}

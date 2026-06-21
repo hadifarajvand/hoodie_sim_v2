@@ -15,6 +15,7 @@ Claim-safety: this pipeline makes no paper-reproduction or superiority claims.
 from .reconciliation import (
     REWARD_RECONCILIATION_TOLERANCE,
     horizon_aware_reconciliation,
+    horizon_aware_recovered_reconciliation,
     reward_bearing_task,
 )
 from .schema import PAPER_COMPATIBLE_METRIC_FIELDS, build_paper_compatible_metric
@@ -22,6 +23,7 @@ from .schema import PAPER_COMPATIBLE_METRIC_FIELDS, build_paper_compatible_metri
 __all__ = [
     "REWARD_RECONCILIATION_TOLERANCE",
     "horizon_aware_reconciliation",
+    "horizon_aware_recovered_reconciliation",
     "reward_bearing_task",
     "PAPER_COMPATIBLE_METRIC_FIELDS",
     "build_paper_compatible_metric",

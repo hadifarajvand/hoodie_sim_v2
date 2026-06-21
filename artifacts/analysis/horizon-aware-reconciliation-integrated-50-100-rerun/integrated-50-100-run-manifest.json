@@ -1,0 +1,33 @@
+{
+  "run_id": "F081-horizon-aware-reconciliation-integrated-50-100-rerun",
+  "branch": "081-horizon-aware-reconciliation-integrated-50-100-rerun",
+  "base_branch": "080-paper-faithful-simulation-production-pipeline",
+  "commit_sha": "e3c36b5c868c34eb270555c380975652d818404f",
+  "training_budgets_executed": [
+    50,
+    100
+  ],
+  "max_training_budget_executed": 100,
+  "training_5000_run": false,
+  "evaluation_episode_count": 100,
+  "episode_length": 110,
+  "calibration_profile": "paper_aligned_feasible_v1",
+  "policies_evaluated": [
+    "deadline_queue_feasibility_candidate_at_50@50",
+    "deadline_queue_feasibility_candidate_at_100@100",
+    "fixed_local_policy",
+    "fixed_horizontal_policy",
+    "fixed_vertical_policy",
+    "random_legal_policy",
+    "legacy_minimal_candidate_at_50@50",
+    "legacy_minimal_candidate_at_100@100"
+  ],
+  "figures": [
+    "artifacts/analysis/horizon-aware-reconciliation-integrated-50-100-rerun/figures/figure_01_reward_delta_before_after_horizon_repair.png",
+    "artifacts/analysis/horizon-aware-reconciliation-integrated-50-100-rerun/figures/figure_02_terminal_coverage_before_after_horizon_repair.png",
+    "artifacts/analysis/horizon-aware-reconciliation-integrated-50-100-rerun/figures/figure_03_completion_drop_50_100_integrated.png",
+    "artifacts/analysis/horizon-aware-reconciliation-integrated-50-100-rerun/figures/figure_04_action_distribution_integrated_50_100.png",
+    "artifacts/analysis/horizon-aware-reconciliation-integrated-50-100-rerun/figures/figure_05_baseline_candidate_integrated_metrics.png",
+    "artifacts/analysis/horizon-aware-reconciliation-integrated-50-100-rerun/figures/figure_06_recovered_horizon_reward_events.png"
+  ]
+}
