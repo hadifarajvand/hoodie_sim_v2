@@ -1,0 +1,50 @@
+{
+  "verdict": "paper_faithful_simulation_production_ready_for_next_smoke",
+  "recommended_next_step": "run_extended_medium_smoke",
+  "readiness_gates": {
+    "scope_clean": true,
+    "paper_mechanism_map_completed": true,
+    "paper_metric_schema_completed": true,
+    "workload_feasible_nontrivial": true,
+    "completion_nonzero": true,
+    "drop_or_deadline_pressure_active": true,
+    "reward_reconciliation_passed": true,
+    "terminal_reconciliation_passed": true,
+    "metric_universe_consistency_passed": true,
+    "state_profile_consistent": true,
+    "no_nan_inf_state": true,
+    "legal_action_only": true,
+    "baseline_metrics_valid": true,
+    "candidate_metrics_valid": true,
+    "claim_safety_passed": true,
+    "medium_smoke_completed": true
+  },
+  "gates_passed": 16,
+  "reward_reconciliation_passed": true,
+  "terminal_reconciliation_passed": true,
+  "raw_vs_canonical_reward_delta_max": 0.0,
+  "terminal_event_coverage_ratio_min": 1.0,
+  "completion_nonzero": true,
+  "claim_safety": {
+    "paper_reproduction_claim_made": false,
+    "exact_numerical_reproduction_claim_made": false,
+    "performance_superiority_claim_made": false,
+    "baseline_superiority_claim_made": false,
+    "training_5000_run": false,
+    "max_training_budget_executed": 300,
+    "energy_metric_status": "not_implemented",
+    "claim_safety_passed": true
+  },
+  "paper_source_audit_summary": {
+    "paper_file_path": "resources/papers/hoodie/original/HOODIE_paper.pdf",
+    "parameters_extracted_count": 17,
+    "parameters_missing": []
+  },
+  "mechanism_status_counts": {
+    "matched_with_documented_approximation": 14,
+    "matched": 10,
+    "implemented_but_unverified": 1,
+    "not_applicable": 1
+  },
+  "energy_metric_status": "not_implemented"
+}

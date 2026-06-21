@@ -1,0 +1,45 @@
+{
+  "paper_file_path": "resources/papers/hoodie/original/HOODIE_paper.pdf",
+  "paper_pdf_present": true,
+  "paper_text_extracted": true,
+  "ocr_used": true,
+  "ocr_artifacts": {
+    "txt": "resources/papers/hoodie/ocr/merged.txt",
+    "md": "resources/papers/hoodie/ocr/merged.md",
+    "tex": "resources/papers/hoodie/ocr/merged.tex"
+  },
+  "ocr_already_present_no_reocr_needed": true,
+  "tables_found": [
+    "Table 4 (experimental setup / hyperparameters)",
+    "symbol/notation table"
+  ],
+  "figures_found": [
+    "Fig. 7 (Edge layer topology, adjacency graph G)"
+  ],
+  "parameters_extracted": {
+    "number_of_agents_N_EA": "20",
+    "number_of_time_slots_T": "110",
+    "time_slot_duration_sec": "0.1 sec",
+    "task_timeout_slots": "20 time slots (2 sec)",
+    "cpu_freq_private_public_ghz": "5 GHz",
+    "cpu_freq_cloud_ghz": "30 GHz",
+    "drop_penalty_C": "40",
+    "learning_rate": "7e-7",
+    "q_network_hidden_layers": "3 x 1024 neurons",
+    "lstm_cells": "1 x 20 cells",
+    "replay_memory_size": "10000 samples",
+    "batch_size": "64 samples",
+    "optimizer": "Adam",
+    "loss_function": "MSE",
+    "number_of_training_episodes_N_E": "5000",
+    "techniques": "LSTM, Dueling DQN, Double DQN",
+    "reward_drop_penalty_eq20": "-Phi_n(t) success / -C drop (Eq. 20)"
+  },
+  "parameters_missing": [],
+  "source_confidence": "high",
+  "notes": [
+    "OCR text already staged in repository; re-OCR not required.",
+    "Topology (Fig. 7) is image-based; exact adjacency matrix G not numerically recovered.",
+    "Phi_n(t) approximated in code as (completion_slot - arrival_slot + 1); documented deviation."
+  ]
+}

@@ -1,0 +1,22 @@
+{
+  "gates": {
+    "scope_clean": true,
+    "paper_mechanism_map_completed": true,
+    "paper_metric_schema_completed": true,
+    "workload_feasible_nontrivial": true,
+    "completion_nonzero": true,
+    "drop_or_deadline_pressure_active": true,
+    "reward_reconciliation_passed": true,
+    "terminal_reconciliation_passed": true,
+    "metric_universe_consistency_passed": true,
+    "state_profile_consistent": true,
+    "no_nan_inf_state": true,
+    "legal_action_only": true,
+    "baseline_metrics_valid": true,
+    "candidate_metrics_valid": true,
+    "claim_safety_passed": true,
+    "medium_smoke_completed": true
+  },
+  "gates_passed": 16,
+  "all_pass": true
+}
