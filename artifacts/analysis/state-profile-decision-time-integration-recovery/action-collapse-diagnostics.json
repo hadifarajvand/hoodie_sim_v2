@@ -1,17 +1,17 @@
 {
-  "action_collapse_reduced": true,
+  "action_collapse_reduced": false,
   "legacy": {
-    "action_entropy": 0.08079313589591118,
-    "dominant_action_name": "vertical",
-    "dominant_action_share": 0.99,
-    "is_action_collapsed": true
+    "action_entropy": 0.0,
+    "dominant_action_name": null,
+    "dominant_action_share": 0.0,
+    "is_action_collapsed": false
   },
   "legacy_state_dim": 3,
   "new_state": {
-    "action_entropy": 1.1567796494470395,
-    "dominant_action_name": "vertical",
-    "dominant_action_share": 0.7,
-    "is_action_collapsed": false
+    "action_entropy": 0.0,
+    "dominant_action_name": "local",
+    "dominant_action_share": 1.0,
+    "is_action_collapsed": true
   },
   "new_state_dim": 30
 }

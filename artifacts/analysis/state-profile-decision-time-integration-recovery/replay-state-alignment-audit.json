@@ -1,6 +1,307 @@
 {
-  "compared_transition_count": 0,
+  "compared_transition_count": 25,
   "mismatch_count": 0,
   "replay_transition_state_matches_action_state": true,
-  "sample_records": []
+  "sample_records": [
+    {
+      "action_state_matches_replay_state": true,
+      "action_state_shape": [
+        10,
+        30
+      ],
+      "index": 0,
+      "replay_state_shape": [
+        10,
+        30
+      ]
+    },
+    {
+      "action_state_matches_replay_state": true,
+      "action_state_shape": [
+        10,
+        30
+      ],
+      "index": 1,
+      "replay_state_shape": [
+        10,
+        30
+      ]
+    },
+    {
+      "action_state_matches_replay_state": true,
+      "action_state_shape": [
+        10,
+        30
+      ],
+      "index": 2,
+      "replay_state_shape": [
+        10,
+        30
+      ]
+    },
+    {
+      "action_state_matches_replay_state": true,
+      "action_state_shape": [
+        10,
+        30
+      ],
+      "index": 3,
+      "replay_state_shape": [
+        10,
+        30
+      ]
+    },
+    {
+      "action_state_matches_replay_state": true,
+      "action_state_shape": [
+        10,
+        30
+      ],
+      "index": 4,
+      "replay_state_shape": [
+        10,
+        30
+      ]
+    },
+    {
+      "action_state_matches_replay_state": true,
+      "action_state_shape": [
+        10,
+        30
+      ],
+      "index": 5,
+      "replay_state_shape": [
+        10,
+        30
+      ]
+    },
+    {
+      "action_state_matches_replay_state": true,
+      "action_state_shape": [
+        10,
+        30
+      ],
+      "index": 6,
+      "replay_state_shape": [
+        10,
+        30
+      ]
+    },
+    {
+      "action_state_matches_replay_state": true,
+      "action_state_shape": [
+        10,
+        30
+      ],
+      "index": 7,
+      "replay_state_shape": [
+        10,
+        30
+      ]
+    },
+    {
+      "action_state_matches_replay_state": true,
+      "action_state_shape": [
+        10,
+        30
+      ],
+      "index": 8,
+      "replay_state_shape": [
+        10,
+        30
+      ]
+    },
+    {
+      "action_state_matches_replay_state": true,
+      "action_state_shape": [
+        10,
+        30
+      ],
+      "index": 9,
+      "replay_state_shape": [
+        10,
+        30
+      ]
+    },
+    {
+      "action_state_matches_replay_state": true,
+      "action_state_shape": [
+        10,
+        30
+      ],
+      "index": 10,
+      "replay_state_shape": [
+        10,
+        30
+      ]
+    },
+    {
+      "action_state_matches_replay_state": true,
+      "action_state_shape": [
+        10,
+        30
+      ],
+      "index": 11,
+      "replay_state_shape": [
+        10,
+        30
+      ]
+    },
+    {
+      "action_state_matches_replay_state": true,
+      "action_state_shape": [
+        10,
+        30
+      ],
+      "index": 12,
+      "replay_state_shape": [
+        10,
+        30
+      ]
+    },
+    {
+      "action_state_matches_replay_state": true,
+      "action_state_shape": [
+        10,
+        30
+      ],
+      "index": 13,
+      "replay_state_shape": [
+        10,
+        30
+      ]
+    },
+    {
+      "action_state_matches_replay_state": true,
+      "action_state_shape": [
+        10,
+        30
+      ],
+      "index": 14,
+      "replay_state_shape": [
+        10,
+        30
+      ]
+    },
+    {
+      "action_state_matches_replay_state": true,
+      "action_state_shape": [
+        10,
+        30
+      ],
+      "index": 15,
+      "replay_state_shape": [
+        10,
+        30
+      ]
+    },
+    {
+      "action_state_matches_replay_state": true,
+      "action_state_shape": [
+        10,
+        30
+      ],
+      "index": 16,
+      "replay_state_shape": [
+        10,
+        30
+      ]
+    },
+    {
+      "action_state_matches_replay_state": true,
+      "action_state_shape": [
+        10,
+        30
+      ],
+      "index": 17,
+      "replay_state_shape": [
+        10,
+        30
+      ]
+    },
+    {
+      "action_state_matches_replay_state": true,
+      "action_state_shape": [
+        10,
+        30
+      ],
+      "index": 18,
+      "replay_state_shape": [
+        10,
+        30
+      ]
+    },
+    {
+      "action_state_matches_replay_state": true,
+      "action_state_shape": [
+        10,
+        30
+      ],
+      "index": 19,
+      "replay_state_shape": [
+        10,
+        30
+      ]
+    },
+    {
+      "action_state_matches_replay_state": true,
+      "action_state_shape": [
+        10,
+        30
+      ],
+      "index": 20,
+      "replay_state_shape": [
+        10,
+        30
+      ]
+    },
+    {
+      "action_state_matches_replay_state": true,
+      "action_state_shape": [
+        10,
+        30
+      ],
+      "index": 21,
+      "replay_state_shape": [
+        10,
+        30
+      ]
+    },
+    {
+      "action_state_matches_replay_state": true,
+      "action_state_shape": [
+        10,
+        30
+      ],
+      "index": 22,
+      "replay_state_shape": [
+        10,
+        30
+      ]
+    },
+    {
+      "action_state_matches_replay_state": true,
+      "action_state_shape": [
+        10,
+        30
+      ],
+      "index": 23,
+      "replay_state_shape": [
+        10,
+        30
+      ]
+    },
+    {
+      "action_state_matches_replay_state": true,
+      "action_state_shape": [
+        10,
+        30
+      ],
+      "index": 24,
+      "replay_state_shape": [
+        10,
+        30
+      ]
+    }
+  ]
 }

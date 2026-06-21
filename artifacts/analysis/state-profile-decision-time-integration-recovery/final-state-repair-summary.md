@@ -1,10 +1,10 @@
 # Final State Profile Integration Summary
 
-- final_verdict: `state_profile_decision_time_integration_ready`
-- diagnostic_decision: `safe_to_proceed_to_reward_function_alignment`
+- final_verdict: `state_profile_decision_time_integration_blocked`
+- diagnostic_decision: `blocked_due_to_state_profile_integration_failure`
 - state_dim: `30`
-- reward_reconciliation_passed: `True`
-- terminal_reconciliation_passed: `True`
+- reward_reconciliation_passed: `False`
+- terminal_reconciliation_passed: `False`
 - completion_count_nonzero: `True`
 - fixed_policy_completion_present: `True`
 

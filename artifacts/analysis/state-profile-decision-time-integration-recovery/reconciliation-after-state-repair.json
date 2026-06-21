@@ -1,7 +1,21 @@
 {
-  "policies_with_reward_reconciled_false": [],
-  "policies_with_terminal_reconciled_false": [],
-  "raw_vs_canonical_reward_delta_max": 0.0,
-  "reward_reconciliation_passed": true,
-  "terminal_reconciliation_passed": true
+  "policies_with_reward_reconciled_false": [
+    "candidate_policy_at_50",
+    "candidate_policy_at_100",
+    "fixed_local_policy",
+    "fixed_horizontal_policy",
+    "fixed_vertical_policy",
+    "random_legal_policy"
+  ],
+  "policies_with_terminal_reconciled_false": [
+    "candidate_policy_at_50",
+    "candidate_policy_at_100",
+    "fixed_local_policy",
+    "fixed_horizontal_policy",
+    "fixed_vertical_policy",
+    "random_legal_policy"
+  ],
+  "raw_vs_canonical_reward_delta_max": 3400.0,
+  "reward_reconciliation_passed": false,
+  "terminal_reconciliation_passed": false
 }

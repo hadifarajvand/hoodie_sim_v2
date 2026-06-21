@@ -1,8 +1,8 @@
 {
-  "decision_reason": "The repaired state profile is consistent and exposes current-task deadline, queue, and feasibility signals.",
+  "decision_reason": "The repaired decision-time state path failed one or more required consistency checks.",
   "evidence_notes": [
-    "state_profile_passed",
-    "decision_time_injection_passed"
+    "reward_reconciliation_failed",
+    "terminal_reconciliation_failed"
   ],
-  "recommended_next_action": "safe_to_proceed_to_reward_function_alignment"
+  "recommended_next_action": "blocked_due_to_state_profile_integration_failure"
 }
