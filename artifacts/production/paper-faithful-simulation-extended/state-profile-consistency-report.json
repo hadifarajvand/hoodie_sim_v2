@@ -1,0 +1,5 @@
+{
+  "state_representation_profile": "deadline_queue_feasibility_v1",
+  "state_profile_consistent": true,
+  "train_eval_same_profile": true
+}

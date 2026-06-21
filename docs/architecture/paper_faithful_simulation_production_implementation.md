@@ -46,8 +46,16 @@ reconciliation reuses the Feature 081 `horizon_aware_recovered_reconciliation`.
 No environment, reward, policy, or dependency changes were made.
 
 ## Budget policy
-Medium smoke at budgets [50, 100, 200, 300]; the paper's 5000-episode campaign is
+Medium smoke at budgets [50, 100, 200, 300]. An **extended** medium smoke runs
+budgets [300, 500, 750, 1000] (`--extended-smoke`, output under
+`artifacts/production/paper-faithful-simulation-extended/`). The pipeline enforces
+an absolute smoke ceiling of 1000 episodes; the paper's 5000-episode campaign is
 preserved as config-only and requires explicit user approval to execute.
+
+The extended run additionally emits `extended-stability-report.json` validating:
+reconciliation stability across all checkpoints, completion/drop/reward trends,
+late-budget non-regression, plateau detection, and a diagnostic (non-superiority)
+baseline comparison.
 
 ## Entry point
 `python -m src.analysis.paper_faithful_simulation_production.runner --medium-smoke --json`

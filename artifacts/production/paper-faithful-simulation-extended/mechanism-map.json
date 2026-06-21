@@ -1,0 +1,272 @@
+{
+  "mechanism_count": 26,
+  "status_counts": {
+    "matched_with_documented_approximation": 14,
+    "matched": 10,
+    "implemented_but_unverified": 1,
+    "not_applicable": 1
+  },
+  "rows": [
+    {
+      "mechanism": "network_topology",
+      "paper_expected": "Multi-server CEC graph, 20 agents, adjacency Fig.7",
+      "repo_current": "structured topology registry + env",
+      "implementation_status": "matched_with_documented_approximation",
+      "gap": "exact adjacency matrix G not numerically recovered (image-only Fig.7)",
+      "source": "paper_pdf:Fig.7",
+      "confidence": "medium",
+      "required_action": "keep calibrated topology; document G gap"
+    },
+    {
+      "mechanism": "number_of_agents",
+      "paper_expected": "N = 20 Edge Agents (EA)",
+      "repo_current": "agent set in env/campaign",
+      "implementation_status": "matched",
+      "gap": "none",
+      "source": "paper_pdf:Table4/text",
+      "confidence": "high",
+      "required_action": "keep"
+    },
+    {
+      "mechanism": "edge_nodes",
+      "paper_expected": "ECs (M) with private/public queues",
+      "repo_current": "edge node + private/public queues",
+      "implementation_status": "matched_with_documented_approximation",
+      "gap": "M count not numerically fixed",
+      "source": "paper_pdf:notation",
+      "confidence": "medium",
+      "required_action": "document M"
+    },
+    {
+      "mechanism": "cloud_node",
+      "paper_expected": "Single cloud, 30 GHz",
+      "repo_current": "cloud queue capacity sharing module",
+      "implementation_status": "matched",
+      "gap": "none",
+      "source": "paper_pdf:Table4",
+      "confidence": "high",
+      "required_action": "keep"
+    },
+    {
+      "mechanism": "horizontal_offload_path",
+      "paper_expected": "One-hop horizontal to neighbor EA public queue",
+      "repo_current": "runtime_model horizontal route",
+      "implementation_status": "matched_with_documented_approximation",
+      "gap": "exact one-hop sentence not OCR-recovered",
+      "source": "paper_pdf:text",
+      "confidence": "medium",
+      "required_action": "keep"
+    },
+    {
+      "mechanism": "vertical_offload_path",
+      "paper_expected": "Vertical to cloud",
+      "repo_current": "runtime_model vertical route",
+      "implementation_status": "matched",
+      "gap": "none",
+      "source": "paper_pdf:text",
+      "confidence": "high",
+      "required_action": "keep"
+    },
+    {
+      "mechanism": "local_execution_path",
+      "paper_expected": "Local compute in private queue",
+      "repo_current": "execution_helper local path",
+      "implementation_status": "matched",
+      "gap": "none",
+      "source": "paper_pdf:text",
+      "confidence": "high",
+      "required_action": "keep"
+    },
+    {
+      "mechanism": "task_arrival",
+      "paper_expected": "Bernoulli arrival prob P per slot (x_n(t))",
+      "repo_current": "traffic_generator",
+      "implementation_status": "matched_with_documented_approximation",
+      "gap": "P swept in paper; calibrated here",
+      "source": "paper_pdf:Algorithm1",
+      "confidence": "medium",
+      "required_action": "expose P in config"
+    },
+    {
+      "mechanism": "task_size",
+      "paper_expected": "Set of task sizes H [bits]",
+      "repo_current": "task size in trace_protocol",
+      "implementation_status": "matched_with_documented_approximation",
+      "gap": "exact size set calibrated",
+      "source": "paper_pdf:notation",
+      "confidence": "medium",
+      "required_action": "tag calibration_profile"
+    },
+    {
+      "mechanism": "processing_density",
+      "paper_expected": "rho_n(t) [CPU cycles/bit]",
+      "repo_current": "task.py processing density",
+      "implementation_status": "matched_with_documented_approximation",
+      "gap": "exact density set calibrated",
+      "source": "paper_pdf:notation",
+      "confidence": "medium",
+      "required_action": "tag calibration_profile"
+    },
+    {
+      "mechanism": "deadline_timeout",
+      "paper_expected": "Timeout = 20 slots (2 sec)",
+      "repo_current": "deadline_rules / absolute_deadline_slot",
+      "implementation_status": "matched",
+      "gap": "none",
+      "source": "paper_pdf:Table4",
+      "confidence": "high",
+      "required_action": "keep"
+    },
+    {
+      "mechanism": "queueing_model",
+      "paper_expected": "FIFO private/public queues, capacity shared among active public queues",
+      "repo_current": "private/public/offloading queues",
+      "implementation_status": "matched_with_documented_approximation",
+      "gap": "exact paper citation indirect",
+      "source": "paper_pdf:text",
+      "confidence": "medium",
+      "required_action": "keep"
+    },
+    {
+      "mechanism": "transmission_model",
+      "paper_expected": "Horizontal R_H / vertical R_V data rates",
+      "repo_current": "link_rate registry / transmission wiring",
+      "implementation_status": "implemented_but_unverified",
+      "gap": "exact R_H/R_V not numerically fixed",
+      "source": "paper_pdf:notation",
+      "confidence": "medium",
+      "required_action": "document link rates"
+    },
+    {
+      "mechanism": "execution_model",
+      "paper_expected": "Slot-based compute decrement using CPU freq / Delta",
+      "repo_current": "runtime_model compute_service_delay",
+      "implementation_status": "matched",
+      "gap": "none",
+      "source": "paper_pdf:Table4",
+      "confidence": "high",
+      "required_action": "keep"
+    },
+    {
+      "mechanism": "reward_function",
+      "paper_expected": "r=-Phi_n(t) success, -C(=40) drop, NaN no-arrival (Eq.20)",
+      "repo_current": "reward_timing.py",
+      "implementation_status": "matched_with_documented_approximation",
+      "gap": "Phi_n approximated as (completion-arrival+1)",
+      "source": "paper_pdf:Eq20/Table4",
+      "confidence": "high",
+      "required_action": "keep; do not modify reward"
+    },
+    {
+      "mechanism": "state_representation",
+      "paper_expected": "Per-agent observation incl. load, queues, task features",
+      "repo_current": "deadline_queue_feasibility_v1 (state_dim=30)",
+      "implementation_status": "matched_with_documented_approximation",
+      "gap": "exact paper feature vector not enumerated",
+      "source": "paper_pdf:text",
+      "confidence": "medium",
+      "required_action": "keep"
+    },
+    {
+      "mechanism": "action_space",
+      "paper_expected": "Local / horizontal / vertical decisions (d1/d2)",
+      "repo_current": "3-action legal-masked space",
+      "implementation_status": "matched",
+      "gap": "none",
+      "source": "paper_pdf:Eq19",
+      "confidence": "high",
+      "required_action": "keep"
+    },
+    {
+      "mechanism": "drl_algorithm",
+      "paper_expected": "Double + Dueling DQN with LSTM, eps-greedy",
+      "repo_current": "DDQNTrainer",
+      "implementation_status": "matched_with_documented_approximation",
+      "gap": "LSTM/dueling depth not fully verified vs 3x1024+1x20",
+      "source": "paper_pdf:Table4",
+      "confidence": "medium",
+      "required_action": "verify network shape later"
+    },
+    {
+      "mechanism": "replay_target_optimizer",
+      "paper_expected": "Replay N_R=10000, batch 64, Adam, MSE, target copy N_copy",
+      "repo_current": "trainer replay buffer + optimizer",
+      "implementation_status": "matched_with_documented_approximation",
+      "gap": "N_R/N_copy not asserted equal to paper",
+      "source": "paper_pdf:Table4",
+      "confidence": "medium",
+      "required_action": "document"
+    },
+    {
+      "mechanism": "training_schedule",
+      "paper_expected": "N_E=5000 episodes, T=110 slots",
+      "repo_current": "staged budgets (<=300 here)",
+      "implementation_status": "matched_with_documented_approximation",
+      "gap": "5000 intentionally not executed (bounded smoke)",
+      "source": "paper_pdf:Table4",
+      "confidence": "high",
+      "required_action": "full campaign config only"
+    },
+    {
+      "mechanism": "evaluation_schedule",
+      "paper_expected": "Per-episode evaluation over traces",
+      "repo_current": "evaluate_policy_on_trace_bank_terminal_repaired",
+      "implementation_status": "matched",
+      "gap": "none",
+      "source": "existing_repo",
+      "confidence": "high",
+      "required_action": "keep"
+    },
+    {
+      "mechanism": "baselines",
+      "paper_expected": "Several baseline offloading methods",
+      "repo_current": "fixed local/horizontal/vertical + random legal",
+      "implementation_status": "matched_with_documented_approximation",
+      "gap": "exact paper baseline names not enumerated",
+      "source": "paper_pdf:abstract",
+      "confidence": "medium",
+      "required_action": "document missing named baselines"
+    },
+    {
+      "mechanism": "metrics",
+      "paper_expected": "Drop rate, average processing delay, throughput, reward",
+      "repo_current": "paper-compatible metric schema",
+      "implementation_status": "matched",
+      "gap": "none",
+      "source": "paper_pdf:text",
+      "confidence": "high",
+      "required_action": "keep"
+    },
+    {
+      "mechanism": "figures",
+      "paper_expected": "Reward/drop/delay vs P; topology",
+      "repo_current": "matplotlib figures",
+      "implementation_status": "matched_with_documented_approximation",
+      "gap": "P-sweep figure not reproduced (single calibrated P)",
+      "source": "paper_pdf:figures",
+      "confidence": "medium",
+      "required_action": "keep"
+    },
+    {
+      "mechanism": "seed_reproducibility",
+      "paper_expected": "Deterministic seeds per episode",
+      "repo_current": "seed bundle in campaign config",
+      "implementation_status": "matched",
+      "gap": "none",
+      "source": "existing_repo",
+      "confidence": "high",
+      "required_action": "keep"
+    },
+    {
+      "mechanism": "energy_cost",
+      "paper_expected": "Not a primary metric in base reward (delay+drop focus)",
+      "repo_current": "not modeled",
+      "implementation_status": "not_applicable",
+      "gap": "energy/cost not in reward Eq.20",
+      "source": "paper_pdf:Eq20",
+      "confidence": "high",
+      "required_action": "report energy_metric_status=not_implemented"
+    }
+  ],
+  "paper_mechanism_map_completed": true
+}

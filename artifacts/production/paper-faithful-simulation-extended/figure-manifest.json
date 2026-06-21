@@ -1,0 +1,12 @@
+{
+  "figures": [
+    "artifacts/production/paper-faithful-simulation-extended/figures/figure_01_completion_drop_by_budget.png",
+    "artifacts/production/paper-faithful-simulation-extended/figures/figure_02_deadline_violation_by_budget.png",
+    "artifacts/production/paper-faithful-simulation-extended/figures/figure_03_reward_by_budget.png",
+    "artifacts/production/paper-faithful-simulation-extended/figures/figure_04_action_distribution_by_budget.png",
+    "artifacts/production/paper-faithful-simulation-extended/figures/figure_05_candidate_vs_baselines_completion_drop.png",
+    "artifacts/production/paper-faithful-simulation-extended/figures/figure_06_latency_summary.png",
+    "artifacts/production/paper-faithful-simulation-extended/figures/figure_07_reconciliation_summary.png",
+    "artifacts/production/paper-faithful-simulation-extended/figures/figure_08_paper_mechanism_alignment_status.png"
+  ]
+}

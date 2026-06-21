@@ -152,11 +152,116 @@ def _figures(rows: list[dict[str, Any]], details: list[dict[str, Any]], mech: di
     return paths
 
 
-def run(medium_smoke: bool, emit_json: bool = False) -> dict[str, Any]:
+def _stability_report(candidate_rows: list[dict[str, Any]], baseline_rows: list[dict[str, Any]]) -> dict[str, Any]:
+    """Validate stability/trends across candidate budget checkpoints."""
+
+    cand = sorted(candidate_rows, key=lambda r: r["training_budget"])
+    budgets = [r["training_budget"] for r in cand]
+    completion = [r["completion_ratio"] for r in cand]
+    drop = [r["drop_ratio"] for r in cand]
+    reward = [r["reward_per_task"] for r in cand]
+
+    def _trend(series: list[float]) -> dict[str, Any]:
+        if len(series) < 2:
+            return {"delta_first_to_last": 0.0, "monotonic_nondecreasing": True, "monotonic_nonincreasing": True, "max_abs_step": 0.0}
+        steps = [series[i + 1] - series[i] for i in range(len(series) - 1)]
+        return {
+            "delta_first_to_last": series[-1] - series[0],
+            "monotonic_nondecreasing": all(s >= -1e-9 for s in steps),
+            "monotonic_nonincreasing": all(s <= 1e-9 for s in steps),
+            "max_abs_step": max(abs(s) for s in steps),
+        }
+
+    all_reconciled = all(r["reward_reconciled"] and r["terminal_reconciled"] for r in candidate_rows + baseline_rows)
+    completion_trend = _trend(completion)
+    drop_trend = _trend(drop)
+    reward_trend = _trend(reward)
+
+    # --- Learning-health diagnostics (surface action collapse / no progress) ---
+    def _dominant_share(row: dict[str, Any]) -> float:
+        counts = [row["action_local_count"], row["action_horizontal_count"], row["action_vertical_count"]]
+        total = sum(counts)
+        return (max(counts) / total) if total else 0.0
+
+    candidate_action_collapse = any(_dominant_share(r) >= 0.99 for r in cand)
+    candidate_collapse_by_budget = {str(r["training_budget"]): _dominant_share(r) >= 0.99 for r in cand}
+    # No learning progress: reward and completion identical across all checkpoints.
+    no_learning_progress = (
+        len(cand) >= 2
+        and abs(reward_trend["delta_first_to_last"]) <= 1e-9
+        and abs(completion_trend["delta_first_to_last"]) <= 1e-9
+        and reward_trend["max_abs_step"] <= 1e-9
+    )
+
+    def _action_sig(row: dict[str, Any]) -> tuple[int, int, int]:
+        return (row["action_local_count"], row["action_horizontal_count"], row["action_vertical_count"])
+
+    candidate_matches_baseline = None
+    for b in baseline_rows:
+        if cand and _action_sig(cand[-1]) == _action_sig(b) and abs(cand[-1]["completion_ratio"] - b["completion_ratio"]) <= 1e-9:
+            candidate_matches_baseline = b["policy_name"]
+            break
+    learning_health_ok = not candidate_action_collapse and not no_learning_progress
+    # "Stable" = reconciliation holds, no collapse to zero completion, and the
+    # late-budget completion does not regress materially from its peak.
+    peak_completion = max(completion) if completion else 0.0
+    last_completion = completion[-1] if completion else 0.0
+    no_late_regression = (peak_completion - last_completion) <= 0.02
+
+    # Diagnostic baseline comparison (NO superiority claim).
+    best_baseline_completion = max((r["completion_ratio"] for r in baseline_rows), default=0.0)
+    candidate_best_completion = peak_completion
+    return {
+        "budgets": budgets,
+        "completion_by_budget": completion,
+        "drop_by_budget": drop,
+        "reward_per_task_by_budget": reward,
+        "completion_trend": completion_trend,
+        "drop_trend": drop_trend,
+        "reward_trend": reward_trend,
+        "all_policies_reconciled": all_reconciled,
+        "completion_nonzero_all_budgets": all(c > 0 for c in completion),
+        "no_late_completion_regression": no_late_regression,
+        "converged_plateau_detected": completion_trend["max_abs_step"] <= 0.01 if len(completion) >= 3 else False,
+        "stability_passed": all_reconciled and all(c > 0 for c in completion) and no_late_regression,
+        "learning_health": {
+            "candidate_action_collapse_detected": candidate_action_collapse,
+            "candidate_collapse_by_budget": candidate_collapse_by_budget,
+            "no_learning_progress_detected": no_learning_progress,
+            "candidate_action_signature_matches_baseline": candidate_matches_baseline,
+            "learning_health_ok": learning_health_ok,
+            "interpretation": (
+                "Pipeline is stable and fully reconciled, but the learned candidate degenerated to a "
+                "single-action policy with no reward/completion improvement across budgets; this is a "
+                "training/exploration blocker, not a pipeline blocker."
+                if not learning_health_ok else
+                "Candidate shows action diversity and/or learning progress across budgets."
+            ),
+        },
+        "diagnostic_baseline_comparison": {
+            "candidate_best_completion_ratio": candidate_best_completion,
+            "best_fixed_baseline_completion_ratio": best_baseline_completion,
+            "candidate_meets_or_exceeds_best_baseline": candidate_best_completion >= best_baseline_completion - 1e-9,
+            "note": "Diagnostic only; no superiority claim is made.",
+        },
+    }
+
+
+def run(
+    medium_smoke: bool,
+    emit_json: bool = False,
+    profile: ProductionProfile | None = None,
+    output_root: Path | None = None,
+) -> dict[str, Any]:
+    global ROOT, FIGURES
+    if output_root is not None:
+        ROOT = output_root
+        FIGURES = ROOT / "figures"
     ROOT.mkdir(parents=True, exist_ok=True)
     FIGURES.mkdir(parents=True, exist_ok=True)
     commit = _commit()
-    profile = ProductionProfile()
+    if profile is None:
+        profile = ProductionProfile()
 
     source_audit = build_paper_source_audit()
     mech = build_mechanism_map()
@@ -191,6 +296,8 @@ def run(medium_smoke: bool, emit_json: bool = False) -> dict[str, Any]:
 
     candidate_rows = [r for r in rows if r["training_budget"] is not None]
     baseline_rows = [r for r in rows if r["training_budget"] is None]
+
+    stability = _stability_report(candidate_rows, baseline_rows)
 
     reward_ok = bool(rows) and all(r["reward_reconciled"] for r in rows)
     terminal_ok = bool(rows) and all(r["terminal_reconciled"] for r in rows)
@@ -229,7 +336,14 @@ def run(medium_smoke: bool, emit_json: bool = False) -> dict[str, Any]:
         else "paper_faithful_simulation_production_blocked"
     )
     assert verdict in ALLOWED_VERDICTS
-    next_step = "run_extended_medium_smoke" if all_pass else "fix_reward_terminal_reconciliation"
+    learning_health_ok = bool(stability.get("learning_health", {}).get("learning_health_ok", True))
+    if not all_pass:
+        next_step = "fix_reward_terminal_reconciliation"
+    elif not learning_health_ok:
+        # Pipeline is ready, but the learned policy collapsed / showed no progress.
+        next_step = "fix_training_stability"
+    else:
+        next_step = "run_extended_medium_smoke"
 
     claim_safety = {
         "paper_reproduction_claim_made": False,
@@ -257,6 +371,7 @@ def run(medium_smoke: bool, emit_json: bool = False) -> dict[str, Any]:
         "state_profile_consistent": True,
         "train_eval_same_profile": True,
     })
+    w("extended-stability-report.json", stability)
     w("readiness-gates.json", {"gates": gates, "gates_passed": gates_passed, "all_pass": all_pass})
     w("claim-safety.json", claim_safety)
     w("figure-manifest.json", {"figures": figures})
@@ -292,6 +407,8 @@ def run(medium_smoke: bool, emit_json: bool = False) -> dict[str, Any]:
         },
         "mechanism_status_counts": mech["status_counts"],
         "energy_metric_status": ENERGY_METRIC_STATUS,
+        "learning_health": stability.get("learning_health", {}),
+        "stability_passed": stability.get("stability_passed"),
     }
     w("final-production-simulation-report.json", report)
     _markdown(report, gates, rows, details, mech, source_audit, profile, verdict, next_step)
@@ -366,9 +483,20 @@ def _markdown(report, gates, rows, details, mech, source_audit, profile, verdict
 
 def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser(description="Paper-faithful simulation production pipeline")
-    parser.add_argument("--medium-smoke", action="store_true", help="run the bounded medium smoke campaign")
+    parser.add_argument("--medium-smoke", action="store_true", help="run the bounded medium smoke campaign [50,100,200,300]")
+    parser.add_argument("--extended-smoke", action="store_true", help="run the extended medium smoke campaign [300,500,750,1000]")
     parser.add_argument("--json", action="store_true", help="emit JSON summary")
     args = parser.parse_args(argv)
+    if args.extended_smoke:
+        from src.analysis.paper_faithful_simulation_production.profiles import extended_smoke_profile
+
+        run(
+            medium_smoke=True,
+            emit_json=args.json,
+            profile=extended_smoke_profile(),
+            output_root=Path("artifacts/production/paper-faithful-simulation-extended"),
+        )
+        return 0
     run(medium_smoke=args.medium_smoke, emit_json=args.json)
     return 0
 

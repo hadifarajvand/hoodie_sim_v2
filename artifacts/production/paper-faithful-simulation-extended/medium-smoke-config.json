@@ -1,0 +1,40 @@
+{
+  "simulation_profile": "paper_faithful_base",
+  "calibration_profile": "paper_aligned_feasible_v1",
+  "state_representation_profile": "deadline_queue_feasibility_v1",
+  "reconciliation_profile": "horizon_aware_recovered_reward_event",
+  "training_budgets": [
+    300,
+    500,
+    750,
+    1000
+  ],
+  "max_training_budget": 1000,
+  "evaluation_episode_count": 100,
+  "episode_length": 110,
+  "paper_exact_parameters": {
+    "number_of_agents_N_EA": 20,
+    "number_of_time_slots_T": 110,
+    "time_slot_duration_sec": 0.1,
+    "task_timeout_slots": 20,
+    "cpu_freq_private_ghz": 5,
+    "cpu_freq_public_ghz": 5,
+    "cpu_freq_cloud_ghz": 30,
+    "drop_penalty_C": 40,
+    "learning_rate": 7e-07,
+    "q_network_hidden_layers": "3 x 1024 neurons",
+    "lstm_cells": "1 x 20",
+    "replay_memory_size": 10000,
+    "batch_size": 64,
+    "optimizer": "Adam",
+    "loss_function": "MSE",
+    "number_of_training_episodes_N_E": 5000,
+    "techniques": [
+      "LSTM",
+      "Dueling DQN",
+      "Double DQN"
+    ],
+    "exploration": "epsilon-greedy",
+    "source": "resources/papers/hoodie/ocr/merged.txt (Table 4)"
+  }
+}

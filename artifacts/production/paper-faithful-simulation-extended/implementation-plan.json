@@ -1,0 +1,55 @@
+{
+  "environment_semantic_change_required": false,
+  "reward_semantics_changed": false,
+  "policy_algorithm_changed": false,
+  "changes": [
+    {
+      "what": "new production package",
+      "why": "integrate audit+map+campaign+metrics+gates",
+      "mechanism": "all",
+      "files": [
+        "src/analysis/paper_faithful_simulation_production/*"
+      ],
+      "tests": [
+        "tests/unit/test_paper_faithful_simulation_production_*"
+      ],
+      "metrics": [
+        "paper-compatible schema"
+      ],
+      "risk": "low"
+    },
+    {
+      "what": "reuse F072 training + F081 reconciliation",
+      "why": "avoid re-deriving proven harness",
+      "mechanism": "training/eval/reconciliation",
+      "files": [
+        "(import only)"
+      ],
+      "tests": [
+        "integration runner"
+      ],
+      "metrics": [
+        "reconciliation"
+      ],
+      "risk": "low"
+    }
+  ],
+  "intentionally_not_changed": [
+    "src/environment/* (reward, queues, topology semantics)",
+    "DRL algorithm (DDQNTrainer)",
+    "dependencies",
+    "5000-episode full campaign (config only, not executed)"
+  ],
+  "budget_policy": {
+    "training_budgets": [
+      300,
+      500,
+      750,
+      1000
+    ],
+    "max_training_budget": 1000,
+    "forbidden": [
+      5000
+    ]
+  }
+}

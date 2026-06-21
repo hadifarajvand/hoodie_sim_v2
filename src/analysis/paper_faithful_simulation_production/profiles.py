@@ -42,9 +42,15 @@ PAPER_EXACT = {
 # Bounded medium-smoke budgets actually executed by this pipeline.
 MEDIUM_SMOKE_BUDGETS = [50, 100, 200, 300]
 MAX_TRAINING_BUDGET = 300
+# Extended medium-smoke: carefully beyond 300, still far below the paper's 5000.
+EXTENDED_SMOKE_BUDGETS = [300, 500, 750, 1000]
+EXTENDED_MAX_TRAINING_BUDGET = 1000
 EVALUATION_EPISODE_COUNT = 100
 EPISODE_LENGTH = 110  # matches paper T = 110
+# 5000 is the paper's full campaign and is never executed by the smoke pipeline.
+# Anything strictly above the extended ceiling is also forbidden here.
 FORBIDDEN_BUDGETS = [5000]
+ABSOLUTE_SMOKE_CEILING = 1000
 
 
 @dataclass(frozen=True, slots=True)
@@ -61,8 +67,10 @@ class ProductionProfile:
     def __post_init__(self) -> None:
         if any(b in FORBIDDEN_BUDGETS for b in self.training_budgets):
             raise ValueError("forbidden training budget present")
-        if self.max_training_budget > MAX_TRAINING_BUDGET:
-            raise ValueError("max_training_budget exceeds bounded medium-smoke ceiling")
+        if any(b > ABSOLUTE_SMOKE_CEILING for b in self.training_budgets):
+            raise ValueError("training budget exceeds absolute smoke ceiling (1000)")
+        if self.max_training_budget > ABSOLUTE_SMOKE_CEILING:
+            raise ValueError("max_training_budget exceeds absolute smoke ceiling (1000)")
         if self.episode_length != EPISODE_LENGTH:
             raise ValueError("episode_length must equal paper T=110")
 
@@ -78,3 +86,12 @@ class ProductionProfile:
             "episode_length": self.episode_length,
             "paper_exact_parameters": PAPER_EXACT,
         }
+
+
+def extended_smoke_profile() -> "ProductionProfile":
+    """Profile for the extended medium smoke (budgets [300, 500, 750, 1000])."""
+
+    return ProductionProfile(
+        training_budgets=list(EXTENDED_SMOKE_BUDGETS),
+        max_training_budget=EXTENDED_MAX_TRAINING_BUDGET,
+    )

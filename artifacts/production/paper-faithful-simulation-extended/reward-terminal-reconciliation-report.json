@@ -1,0 +1,89 @@
+{
+  "reward_reconciliation_passed": true,
+  "terminal_reconciliation_passed": true,
+  "raw_vs_canonical_reward_delta_max": 0.0,
+  "terminal_event_coverage_ratio_min": 1.0,
+  "reconciliation_profile": "horizon_aware_recovered_reward_event",
+  "per_policy": [
+    {
+      "policy_name": "candidate_learned_policy_at_300",
+      "training_budget": 300,
+      "terminal_event_coverage_ratio": 1.0,
+      "raw_plus_recovered_reward_total": -304570.0,
+      "canonical_reward_total": -304570.0,
+      "raw_vs_canonical_reward_delta": 0.0,
+      "recovered_horizon_reward_event_count": 75,
+      "horizon_finalized_terminal_count": 75
+    },
+    {
+      "policy_name": "candidate_learned_policy_at_500",
+      "training_budget": 500,
+      "terminal_event_coverage_ratio": 1.0,
+      "raw_plus_recovered_reward_total": -304570.0,
+      "canonical_reward_total": -304570.0,
+      "raw_vs_canonical_reward_delta": 0.0,
+      "recovered_horizon_reward_event_count": 75,
+      "horizon_finalized_terminal_count": 75
+    },
+    {
+      "policy_name": "candidate_learned_policy_at_750",
+      "training_budget": 750,
+      "terminal_event_coverage_ratio": 1.0,
+      "raw_plus_recovered_reward_total": -304570.0,
+      "canonical_reward_total": -304570.0,
+      "raw_vs_canonical_reward_delta": 0.0,
+      "recovered_horizon_reward_event_count": 75,
+      "horizon_finalized_terminal_count": 75
+    },
+    {
+      "policy_name": "candidate_learned_policy_at_1000",
+      "training_budget": 1000,
+      "terminal_event_coverage_ratio": 1.0,
+      "raw_plus_recovered_reward_total": -304570.0,
+      "canonical_reward_total": -304570.0,
+      "raw_vs_canonical_reward_delta": 0.0,
+      "recovered_horizon_reward_event_count": 75,
+      "horizon_finalized_terminal_count": 75
+    },
+    {
+      "policy_name": "fixed_local_policy",
+      "training_budget": null,
+      "terminal_event_coverage_ratio": 1.0,
+      "raw_plus_recovered_reward_total": -304570.0,
+      "canonical_reward_total": -304570.0,
+      "raw_vs_canonical_reward_delta": 0.0,
+      "recovered_horizon_reward_event_count": 75,
+      "horizon_finalized_terminal_count": 75
+    },
+    {
+      "policy_name": "fixed_horizontal_policy",
+      "training_budget": null,
+      "terminal_event_coverage_ratio": 1.0,
+      "raw_plus_recovered_reward_total": -330901.0,
+      "canonical_reward_total": -330901.0,
+      "raw_vs_canonical_reward_delta": 0.0,
+      "recovered_horizon_reward_event_count": 83,
+      "horizon_finalized_terminal_count": 83
+    },
+    {
+      "policy_name": "fixed_vertical_policy",
+      "training_budget": null,
+      "terminal_event_coverage_ratio": 1.0,
+      "raw_plus_recovered_reward_total": -340442.0,
+      "canonical_reward_total": -340442.0,
+      "raw_vs_canonical_reward_delta": 0.0,
+      "recovered_horizon_reward_event_count": 85,
+      "horizon_finalized_terminal_count": 85
+    },
+    {
+      "policy_name": "random_legal_policy",
+      "training_budget": null,
+      "terminal_event_coverage_ratio": 1.0,
+      "raw_plus_recovered_reward_total": -305836.0,
+      "canonical_reward_total": -305836.0,
+      "raw_vs_canonical_reward_delta": 0.0,
+      "recovered_horizon_reward_event_count": 78,
+      "horizon_finalized_terminal_count": 78
+    }
+  ]
+}
