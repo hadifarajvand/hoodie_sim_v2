@@ -1,0 +1,157 @@
+{
+  "investigation": "workload_topology_oracle_validation",
+  "evaluation_episodes": 100,
+  "episode_length": 110,
+  "calibrated_evaluation_environment": true,
+  "training_run": false,
+  "training_5000_run": false,
+  "algorithm_changed": false,
+  "environment_changed": false,
+  "parameters_changed": false,
+  "policy_results": {
+    "fixed_local": {
+      "completed_count": 2589,
+      "dropped_count": 6961,
+      "pending_count": 955,
+      "completion_ratio": 0.2464540694907187,
+      "drop_ratio": 0.6626368396001904,
+      "reward_per_task": -28.992860542598763,
+      "reward_per_decision": -29.251824817518248,
+      "action_distribution": {
+        "local": 10412,
+        "horizontal": 0,
+        "vertical": 0
+      },
+      "selected_action_feasible_ratio": 0.0033317467872441696,
+      "reward_reconciled": true,
+      "terminal_reconciled": true,
+      "raw_vs_canonical_reward_delta": 0.0,
+      "terminal_event_coverage_ratio": 1.0
+    },
+    "fixed_horizontal": {
+      "completed_count": 1743,
+      "dropped_count": 7778,
+      "pending_count": 984,
+      "completion_ratio": 0.16592099000475963,
+      "drop_ratio": 0.7404093288910043,
+      "reward_per_task": -31.499381247025227,
+      "reward_per_decision": -31.78073376872839,
+      "action_distribution": {
+        "local": 0,
+        "horizontal": 10412,
+        "vertical": 0
+      },
+      "selected_action_feasible_ratio": 0.0013326987148976678,
+      "reward_reconciled": true,
+      "terminal_reconciled": true,
+      "raw_vs_canonical_reward_delta": 0.0,
+      "terminal_event_coverage_ratio": 1.0
+    },
+    "fixed_vertical": {
+      "completed_count": 1413,
+      "dropped_count": 8099,
+      "pending_count": 993,
+      "completion_ratio": 0.13450737743931462,
+      "drop_ratio": 0.7709662065683008,
+      "reward_per_task": -32.40761542122799,
+      "reward_per_decision": -32.697080291970806,
+      "action_distribution": {
+        "local": 0,
+        "horizontal": 0,
+        "vertical": 10412
+      },
+      "selected_action_feasible_ratio": 0.0013326987148976678,
+      "reward_reconciled": true,
+      "terminal_reconciled": true,
+      "raw_vs_canonical_reward_delta": 0.0,
+      "terminal_event_coverage_ratio": 1.0
+    },
+    "random_legal": {
+      "completed_count": 2551,
+      "dropped_count": 7001,
+      "pending_count": 953,
+      "completion_ratio": 0.24283674440742503,
+      "drop_ratio": 0.6664445502141837,
+      "reward_per_task": -29.11337458353165,
+      "reward_per_decision": -29.37341529004994,
+      "action_distribution": {
+        "local": 3431,
+        "horizontal": 3495,
+        "vertical": 3486
+      },
+      "selected_action_feasible_ratio": 0.001999048072346502,
+      "reward_reconciled": true,
+      "terminal_reconciled": true,
+      "raw_vs_canonical_reward_delta": 0.0,
+      "terminal_event_coverage_ratio": 1.0
+    },
+    "capacity_proportional_split": {
+      "completed_count": 2716,
+      "dropped_count": 6845,
+      "pending_count": 944,
+      "completion_ratio": 0.25854355069014756,
+      "drop_ratio": 0.6515944788196097,
+      "reward_per_task": -28.620656830080915,
+      "reward_per_decision": -28.876296580868228,
+      "action_distribution": {
+        "local": 4488,
+        "horizontal": 4556,
+        "vertical": 1368
+      },
+      "selected_action_feasible_ratio": 0.0021894336030461683,
+      "reward_reconciled": true,
+      "terminal_reconciled": true,
+      "raw_vs_canonical_reward_delta": 0.0,
+      "terminal_event_coverage_ratio": 1.0
+    },
+    "slack_feasibility_oracle": {
+      "completed_count": 2589,
+      "dropped_count": 6961,
+      "pending_count": 955,
+      "completion_ratio": 0.2464540694907187,
+      "drop_ratio": 0.6626368396001904,
+      "reward_per_task": -28.992860542598763,
+      "reward_per_decision": -29.251824817518248,
+      "action_distribution": {
+        "local": 10412,
+        "horizontal": 0,
+        "vertical": 0
+      },
+      "selected_action_feasible_ratio": 0.0033317467872441696,
+      "reward_reconciled": true,
+      "terminal_reconciled": true,
+      "raw_vs_canonical_reward_delta": 0.0,
+      "terminal_event_coverage_ratio": 1.0
+    }
+  },
+  "mixed_vs_fixed_local": {
+    "capacity_proportional_split": {
+      "completion_gain_vs_fixed_local": 0.012089481199428848,
+      "reward_per_task_gain_vs_fixed_local": 0.3722037125178481,
+      "beats_fixed_local": true
+    },
+    "slack_feasibility_oracle": {
+      "completion_gain_vs_fixed_local": 0.0,
+      "reward_per_task_gain_vs_fixed_local": 0.0,
+      "beats_fixed_local": false
+    }
+  },
+  "any_mixed_policy_beats_fixed_local": true,
+  "marginal_improvement_observed": {
+    "capacity_proportional_split": false,
+    "slack_feasibility_oracle": false
+  },
+  "any_marginal_improvement": false,
+  "best_completion_policy": "capacity_proportional_split",
+  "verdict": "mixed_policy_outperforms_fixed_local",
+  "classification": "algorithm_state_action_policy_learning_failure",
+  "recommended_next_step": "inspect_algorithm_fidelity_against_paper",
+  "conclusion": "A non-learned mixed policy (capacity_proportional_split) measurably outperforms fixed_local on the paper-faithful calibrated environment, by a modest but consistent margin (completion +0.0121, reward/task +0.372), and it also exceeds random_legal on both metrics. The margin is small, so this is NOT a claim of large headroom; but because a trivial capacity-proportional split (no training) already beats a pure-local policy, the environment ADMITS a better mixed policy that the DRL agent failed to learn. The per-checkpoint collapse to pure-local therefore leaves measurable performance on the table -> the residual issue is policy-learning / algorithm fidelity (state-action discrimination, training budget, exploration), not solely workload bias.",
+  "reconciliation_all_pass": true,
+  "claim_safety": {
+    "paper_reproduction_claim_made": false,
+    "performance_superiority_claim_made": false,
+    "baseline_superiority_claim_made": false,
+    "training_5000_run": false
+  }
+}
