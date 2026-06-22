@@ -1,10 +1,16 @@
 {
   "candidate_action_collapse_detected": true,
   "distinct_action_signatures": 1,
-  "candidate_matches_fixed_local": true,
   "completion_trend_first_to_last": 0.008091385054735806,
   "reward_per_task_trend_first_to_last": 0.6730128510233229,
   "candidate_vs_fixed_local_completion": 0.008091385054735806,
   "candidate_vs_capacity_split_completion": -0.0026653974297953797,
-  "mixed_policy_learned": false
+  "mixed_policy_learned": false,
+  "local_dominant_policy": true,
+  "exact_fixed_local_signature_final": false,
+  "horizontal_action_usage_emerged_after_ep4000": true,
+  "vertical_action_usage_final": false,
+  "true_balanced_mixed_load_spreading_policy_learned": false,
+  "dominant_action_collapse_note": "candidate remains local-dominant, but no longer exactly all-local at late checkpoints (horizontal usage emerged after ep4000).",
+  "distinct_dominant_action_signatures": 1
 }

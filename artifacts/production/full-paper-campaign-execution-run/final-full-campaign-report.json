@@ -9,27 +9,34 @@
   "learning_health": {
     "candidate_action_collapse_detected": true,
     "distinct_action_signatures": 1,
-    "candidate_matches_fixed_local": true,
     "completion_trend_first_to_last": 0.008091385054735806,
     "reward_per_task_trend_first_to_last": 0.6730128510233229,
     "candidate_vs_fixed_local_completion": 0.008091385054735806,
     "candidate_vs_capacity_split_completion": -0.0026653974297953797,
-    "mixed_policy_learned": false
+    "mixed_policy_learned": false,
+    "local_dominant_policy": true,
+    "exact_fixed_local_signature_final": false,
+    "horizontal_action_usage_emerged_after_ep4000": true,
+    "vertical_action_usage_final": false,
+    "true_balanced_mixed_load_spreading_policy_learned": false,
+    "dominant_action_collapse_note": "candidate remains local-dominant, but no longer exactly all-local at late checkpoints (horizontal usage emerged after ep4000).",
+    "distinct_dominant_action_signatures": 1
   },
   "reconciliation": {
     "reconciled_all": true,
     "raw_vs_canonical_delta_max": 0.0
   },
   "claim_safety": {
-    "training_5000_run": false,
-    "config_only": true,
+    "training_5000_run": true,
+    "config_only": false,
     "paper_reproduction_claim_made": false,
     "exact_numerical_reproduction_claim_made": false,
     "performance_superiority_claim_made": false,
     "baseline_superiority_claim_made": false,
     "reward_function_modified": false,
     "environment_semantics_modified": false,
-    "claim_safety_passed": true
+    "claim_safety_passed": true,
+    "note": "5000 training was executed, but no reproduction, exact numerical, superiority, or baseline-superiority claim is made."
   },
   "figures": [
     "artifacts/production/full-paper-campaign-execution-run/figures/figure_01_epsilon_schedule_actual.png",
@@ -40,5 +47,9 @@
     "artifacts/production/full-paper-campaign-execution-run/figures/figure_06_q_value_state_action_discrimination.png",
     "artifacts/production/full-paper-campaign-execution-run/figures/figure_07_reconciliation_summary.png",
     "artifacts/production/full-paper-campaign-execution-run/figures/figure_08_learning_health_summary.png"
-  ]
+  ],
+  "runtime_commit_sha": "f00d1195dc3e7bc9bd929095e8a1dee73cde2493",
+  "results_commit_sha": "afa255984293888d6b183bb2022e9d3c5f4e0b9c",
+  "metadata_cleanup_commit_sha": null,
+  "summary": "The full 5000-episode campaign completed successfully with exact reconciliation. Candidate improved modestly over fixed_local. Candidate nearly matched, but did not exceed, capacity_proportional_split on completion. Candidate became local-dominant with late horizontal usage, not a balanced distributed mixed policy. No paper reproduction, exact numerical reproduction, or superiority claim is made. Remaining limitation: shared-parameter trainer vs paper per-EA distributed models."
 }

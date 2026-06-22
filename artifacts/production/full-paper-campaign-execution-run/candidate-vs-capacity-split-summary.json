@@ -1,4 +1,5 @@
 {
   "capacity_split_completion": 0.2572108519752499,
-  "candidate_vs_capacity_split_completion": -0.0026653974297953797
+  "candidate_vs_capacity_split_completion": -0.0026653974297953797,
+  "note": "Candidate nearly matched but did NOT exceed capacity_proportional_split on completion."
 }

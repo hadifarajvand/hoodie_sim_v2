@@ -2,5 +2,6 @@
   "final_candidate_completion": 0.2545454545454545,
   "fixed_local_completion": 0.2464540694907187,
   "random_legal_completion": 0.24283674440742503,
-  "candidate_vs_fixed_local_completion": 0.008091385054735806
+  "candidate_vs_fixed_local_completion": 0.008091385054735806,
+  "note": "Candidate beats fixed_local on completion; final policy is local-dominant with late horizontal usage, not exactly all-local."
 }
