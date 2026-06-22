@@ -253,6 +253,13 @@ class DDQNTrainer:
         # greedy-only training behavior for existing campaign features/tests.
         self.exploration: EpsilonGreedyExploration | None = None
         self.exploration_step = 0
+        # Optional per-task delayed-reward credit assignment (paper Algorithm 1
+        # lines 20-21): attribute each decision's transition to that task's OWN
+        # terminal reward instead of the per-step aggregate. Default False keeps
+        # legacy behavior for existing campaign features/tests.
+        self.per_task_credit_assignment = False
+        self.per_task_credit_emitted = 0
+        self.per_task_pending_flushed = 0
         self.q_value_action_sums = [0.0, 0.0, 0.0]
         self.q_value_action_sq_sums = [0.0, 0.0, 0.0]
         self.q_value_decision_count = 0
@@ -310,6 +317,9 @@ class DDQNTrainer:
         illegal_action_count = 0
         legal_action_only = True
         loss_values: list[float] = []
+        # task_id -> pending decision skeleton (per-task credit assignment mode)
+        pending_decisions: dict[int, dict[str, Any]] = {}
+        use_per_task = bool(self.per_task_credit_assignment and training)
         while True:
             current_task = env.current_task
             if current_task is not None:
@@ -372,7 +382,48 @@ class DDQNTrainer:
                 reward_value = 0.0
                 terminal = False
 
-            if current_task is not None:
+            def _maybe_train() -> None:
+                if training and len(self.replay_buffer) >= self.config.batch_size:
+                    loss_values.append(self._train_batch())
+
+            if use_per_task:
+                # Defer this decision's transition until its OWN task finalizes,
+                # so the reward credited is that task's own delayed reward.
+                if current_task is not None:
+                    pending_decisions[int(getattr(current_task, "task_id", id(current_task)))] = {
+                        "state": state_window,
+                        "action": action_index,
+                        "legal_action_mask": legal_action_mask_to_tuple(observation.get("legal_action_mask", {})),
+                        "next_state": next_state_window,
+                        "arrival_slot": int(getattr(current_task, "arrival_slot", 0)),
+                        "agent_id": int(getattr(current_task, "source_agent_id", 0)),
+                    }
+                for task in finalized_tasks:
+                    tid = int(task.get("task_id", -1))
+                    skeleton = pending_decisions.pop(tid, None)
+                    if skeleton is None:
+                        continue
+                    outcome = task.get("terminal_outcome")
+                    completion_slot = task.get("completion_slot")
+                    if outcome == "completed" and completion_slot is not None:
+                        per_task_reward = -float(int(completion_slot) - skeleton["arrival_slot"] + 1)
+                    elif outcome == "dropped":
+                        per_task_reward = -float(self.config.drop_penalty) if hasattr(self.config, "drop_penalty") else -40.0
+                    else:
+                        per_task_reward = 0.0
+                    self.replay_buffer.add(ReplayTransition(
+                        state=skeleton["state"], action=skeleton["action"],
+                        legal_action_mask=skeleton["legal_action_mask"], next_state=skeleton["next_state"],
+                        reward=per_task_reward, reward_available=outcome in {"completed", "dropped"},
+                        terminal=outcome in {"completed", "dropped"}, terminal_reason=outcome,
+                        pending_at_horizon=False, arrival_slot=skeleton["arrival_slot"],
+                        completion_or_drop_slot=int(completion_slot) if completion_slot is not None else None,
+                        agent_id=skeleton["agent_id"], episode_id=episode_id, step_id=transition_count,
+                    ))
+                    transition_count += 1
+                    self.per_task_credit_emitted += 1
+                    _maybe_train()
+            elif current_task is not None:
                 transition = ReplayTransition(
                     state=state_window,
                     action=action_index,
@@ -391,12 +442,24 @@ class DDQNTrainer:
                 )
                 self.replay_buffer.add(transition)
                 transition_count += 1
-
-                if training and len(self.replay_buffer) >= self.config.batch_size:
-                    loss = self._train_batch()
-                    loss_values.append(loss)
+                _maybe_train()
 
             if terminated or truncated:
+                if use_per_task:
+                    # Flush undelivered decisions as non-terminal (reward 0).
+                    for skeleton in pending_decisions.values():
+                        self.replay_buffer.add(ReplayTransition(
+                            state=skeleton["state"], action=skeleton["action"],
+                            legal_action_mask=skeleton["legal_action_mask"], next_state=skeleton["next_state"],
+                            reward=0.0, reward_available=False, terminal=False,
+                            terminal_reason="pending_at_horizon", pending_at_horizon=True,
+                            arrival_slot=skeleton["arrival_slot"], completion_or_drop_slot=None,
+                            agent_id=skeleton["agent_id"], episode_id=episode_id, step_id=transition_count,
+                        ))
+                        transition_count += 1
+                        self.per_task_pending_flushed += 1
+                        _maybe_train()
+                    pending_decisions.clear()
                 break
 
         return {

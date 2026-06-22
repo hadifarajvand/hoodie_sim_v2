@@ -486,8 +486,14 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument("--medium-smoke", action="store_true", help="run the bounded medium smoke campaign [50,100,200,300]")
     parser.add_argument("--extended-smoke", action="store_true", help="run the extended medium smoke campaign [300,500,750,1000]")
     parser.add_argument("--training-stability-repair", action="store_true", help="run the training-stability/exploration repair smoke [50..1000]")
+    parser.add_argument("--reward-signal-repair", action="store_true", help="run the reward-signal/state-action discrimination repair smoke [50..1000]")
     parser.add_argument("--json", action="store_true", help="emit JSON summary")
     args = parser.parse_args(argv)
+    if args.reward_signal_repair:
+        from src.analysis.paper_faithful_simulation_production.reward_signal_repair import run as run_reward_repair
+
+        run_reward_repair(emit_json=args.json)
+        return 0
     if args.training_stability_repair:
         from src.analysis.paper_faithful_simulation_production.training_repair import run as run_repair
 
