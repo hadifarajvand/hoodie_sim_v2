@@ -1,0 +1,19 @@
+{
+  "root": "artifacts/production/full-paper-campaign-run/",
+  "per_checkpoint": [
+    "candidate-metrics-ep{N}.json (paper-compatible schema)",
+    "checkpoints/ckpt_ep{N}.pt"
+  ],
+  "final": [
+    "candidate-metrics-full-campaign.json",
+    "baseline-and-oracle-metrics.json",
+    "reward-terminal-reconciliation-full-campaign.json",
+    "learning-health-full-campaign.json",
+    "readiness-gates.json",
+    "claim-safety.json",
+    "final-report.json",
+    "final-report.md",
+    "figures/ (learning curve, action distribution vs episode, candidate vs oracle)"
+  ],
+  "metric_schema": "PAPER_COMPATIBLE_METRIC_FIELDS (energy/cost = None, not_implemented)"
+}

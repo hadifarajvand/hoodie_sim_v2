@@ -1,0 +1,42 @@
+{
+  "monitoring": {
+    "progress_log": "tail -f artifacts/production/full-paper-campaign-run/progress.jsonl",
+    "watch_loss_and_epsilon": "Monitor: each checkpoint row should report loss_is_finite=true and the episode-indexed epsilon (1.0 at ep0 -> 0.0 at ep2500 -> 0.0 after).",
+    "watch_action_distribution": "Per-checkpoint candidate eval action_distribution should begin to spread from pure-local toward a mix as epsilon decays past ~ep2500.",
+    "watch_reconciliation": "Every candidate/baseline row must keep reward_reconciled=true, terminal_reconciled=true, raw_vs_canonical_delta=0, coverage=1.0.",
+    "suggested_commands": [
+      "grep -c 'checkpoint_written' artifacts/production/full-paper-campaign-run/progress.jsonl",
+      "python -m src.analysis.paper_faithful_simulation_production.runner --json  # schema check on latest metrics"
+    ]
+  },
+  "abort_conditions": [
+    {
+      "condition": "loss becomes NaN/Inf",
+      "action": "abort; inspect td-target-loss; do not continue"
+    },
+    {
+      "condition": "reward_reconciled or terminal_reconciled becomes false at any checkpoint",
+      "action": "abort; reconciliation regression must be root-caused before resuming"
+    },
+    {
+      "condition": "raw_vs_canonical_reward_delta != 0",
+      "action": "abort; reward accounting corrupted"
+    },
+    {
+      "condition": "terminal_event_coverage_ratio < 1.0",
+      "action": "abort; horizon recovery incomplete"
+    },
+    {
+      "condition": "wall-clock exceeds 2x upper estimate (~ >9h)",
+      "action": "pause; profile per-episode cost"
+    },
+    {
+      "condition": "checkpoint write fails / disk full",
+      "action": "abort; free storage, resume from last good ckpt"
+    },
+    {
+      "condition": "epsilon not reaching 0 by episode 2500",
+      "action": "abort; schedule misconfigured"
+    }
+  ]
+}

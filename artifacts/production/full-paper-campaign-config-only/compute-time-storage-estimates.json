@@ -1,0 +1,18 @@
+{
+  "hardware_assumption": "single CPU core (no GPU; model is small, GPU gives little benefit)",
+  "measured_train_sec_per_episode": 1.73,
+  "measured_eval_sec_per_episode": 1.29,
+  "train_episodes": 5000,
+  "estimated_train_hours": 2.4,
+  "estimated_eval_hours": 0.61,
+  "estimated_total_hours_point": 3.01,
+  "estimated_total_hours_range": [
+    2.83,
+    4.22
+  ],
+  "estimate_caveat": "Per-episode time may rise modestly once the replay buffer fills (more consistent per-step batch updates); range brackets 1.6-2.6 s/episode.",
+  "num_checkpoints": 20,
+  "storage_checkpoints_mb": 503.5,
+  "storage_replay_snapshot_mb": 23.3,
+  "storage_total_estimate_mb": 726.9
+}
