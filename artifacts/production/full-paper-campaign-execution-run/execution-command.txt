@@ -1,0 +1,2 @@
+HOODIE_EXECUTE_FULL_CAMPAIGN=1 python -m src.analysis.full_paper_campaign_config.runner --execute-full-campaign --json
+python -m src.analysis.full_paper_campaign_config.runner --dry-run --json

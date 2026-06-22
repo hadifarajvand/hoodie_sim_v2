@@ -1,0 +1,102 @@
+[
+  {
+    "budget": 250,
+    "path": "artifacts/production/full-paper-campaign-execution-run/checkpoints/ckpt_ep00250.pt",
+    "elapsed_s": 334.1
+  },
+  {
+    "budget": 500,
+    "path": "artifacts/production/full-paper-campaign-execution-run/checkpoints/ckpt_ep00500.pt",
+    "elapsed_s": 672.1
+  },
+  {
+    "budget": 750,
+    "path": "artifacts/production/full-paper-campaign-execution-run/checkpoints/ckpt_ep00750.pt",
+    "elapsed_s": 983.2
+  },
+  {
+    "budget": 1000,
+    "path": "artifacts/production/full-paper-campaign-execution-run/checkpoints/ckpt_ep01000.pt",
+    "elapsed_s": 1180.0
+  },
+  {
+    "budget": 1250,
+    "path": "artifacts/production/full-paper-campaign-execution-run/checkpoints/ckpt_ep01250.pt",
+    "elapsed_s": 1499.9
+  },
+  {
+    "budget": 1500,
+    "path": "artifacts/production/full-paper-campaign-execution-run/checkpoints/ckpt_ep01500.pt",
+    "elapsed_s": 1673.9
+  },
+  {
+    "budget": 1750,
+    "path": "artifacts/production/full-paper-campaign-execution-run/checkpoints/ckpt_ep01750.pt",
+    "elapsed_s": 1964.9
+  },
+  {
+    "budget": 2000,
+    "path": "artifacts/production/full-paper-campaign-execution-run/checkpoints/ckpt_ep02000.pt",
+    "elapsed_s": 2116.5
+  },
+  {
+    "budget": 2250,
+    "path": "artifacts/production/full-paper-campaign-execution-run/checkpoints/ckpt_ep02250.pt",
+    "elapsed_s": 2417.6
+  },
+  {
+    "budget": 2500,
+    "path": "artifacts/production/full-paper-campaign-execution-run/checkpoints/ckpt_ep02500.pt",
+    "elapsed_s": 2590.3
+  },
+  {
+    "budget": 2750,
+    "path": "artifacts/production/full-paper-campaign-execution-run/checkpoints/ckpt_ep02750.pt",
+    "elapsed_s": 2879.9
+  },
+  {
+    "budget": 3000,
+    "path": "artifacts/production/full-paper-campaign-execution-run/checkpoints/ckpt_ep03000.pt",
+    "elapsed_s": 3027.3
+  },
+  {
+    "budget": 3250,
+    "path": "artifacts/production/full-paper-campaign-execution-run/checkpoints/ckpt_ep03250.pt",
+    "elapsed_s": 3278.5
+  },
+  {
+    "budget": 3500,
+    "path": "artifacts/production/full-paper-campaign-execution-run/checkpoints/ckpt_ep03500.pt",
+    "elapsed_s": 3426.8
+  },
+  {
+    "budget": 3750,
+    "path": "artifacts/production/full-paper-campaign-execution-run/checkpoints/ckpt_ep03750.pt",
+    "elapsed_s": 3687.0
+  },
+  {
+    "budget": 4000,
+    "path": "artifacts/production/full-paper-campaign-execution-run/checkpoints/ckpt_ep04000.pt",
+    "elapsed_s": 3836.8
+  },
+  {
+    "budget": 4250,
+    "path": "artifacts/production/full-paper-campaign-execution-run/checkpoints/ckpt_ep04250.pt",
+    "elapsed_s": 4079.3
+  },
+  {
+    "budget": 4500,
+    "path": "artifacts/production/full-paper-campaign-execution-run/checkpoints/ckpt_ep04500.pt",
+    "elapsed_s": 4228.6
+  },
+  {
+    "budget": 4750,
+    "path": "artifacts/production/full-paper-campaign-execution-run/checkpoints/ckpt_ep04750.pt",
+    "elapsed_s": 4446.9
+  },
+  {
+    "budget": 5000,
+    "path": "artifacts/production/full-paper-campaign-execution-run/checkpoints/ckpt_ep05000.pt",
+    "elapsed_s": 4569.7
+  }
+]
