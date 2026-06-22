@@ -1,0 +1,32 @@
+[
+  {
+    "paper_reference": "Algorithm 1 line 16",
+    "paper_step": "epsilon-greedy action selection",
+    "repo_symbol": "DDQNTrainer._episode_rollout",
+    "repo_note": "select_action_index uses episode-based schedule in algorithm-fidelity smoke"
+  },
+  {
+    "paper_reference": "Algorithm 1 lines 19-22",
+    "paper_step": "collect delayed reward for prior task",
+    "repo_symbol": "DDQNTrainer._episode_rollout",
+    "repo_note": "per_task_credit_assignment path credits the terminal task itself"
+  },
+  {
+    "paper_reference": "Algorithm 1 lines 23-36",
+    "paper_step": "sample replay and update Q-model via Double DQN + MSE",
+    "repo_symbol": "DDQNTrainer._train_batch",
+    "repo_note": "online next-action selection + target evaluation + MSE loss"
+  },
+  {
+    "paper_reference": "Algorithm 1 lines 39-41",
+    "paper_step": "copy target network every N_copy episodes",
+    "repo_symbol": "TargetUpdateContract / DDQNTrainer._episode_rollout",
+    "repo_note": "episode-based sync is enabled for the algorithm-fidelity run"
+  },
+  {
+    "paper_reference": "Algorithm 1 lines 42-46",
+    "paper_step": "epsilon decays linearly to zero over first half of training",
+    "repo_symbol": "EpsilonGreedyExploration.schedule_unit='episode'",
+    "repo_note": "paper-aligned exploration schedule used by the repair run"
+  }
+]

@@ -75,15 +75,28 @@ class TargetUpdateContract:
     def __post_init__(self) -> None:
         if self.update_frequency != 2000:
             raise ValueError("TargetUpdateContract.update_frequency must equal 2000.")
-        if self.target_update_unit != TARGET_UPDATE_UNIT:
-            raise ValueError("TargetUpdateContract.target_update_unit must equal optimizer_step.")
-        if self.approval_status != "user_approved_campaign_assumption":
-            raise ValueError("TargetUpdateContract.approval_status must reflect user-approved campaign assumption.")
-        if self.paper_evidence_status != "ambiguous_not_explicitly_defined":
-            raise ValueError("TargetUpdateContract.paper_evidence_status must remain ambiguous_not_explicitly_defined.")
+        if self.target_update_unit not in {"optimizer_step", "episode"}:
+            raise ValueError("TargetUpdateContract.target_update_unit must equal optimizer_step or episode.")
+        if self.target_update_unit == "optimizer_step":
+            if self.approval_status != "user_approved_campaign_assumption":
+                raise ValueError("TargetUpdateContract.approval_status must reflect user-approved campaign assumption.")
+            if self.paper_evidence_status != "ambiguous_not_explicitly_defined":
+                raise ValueError("TargetUpdateContract.paper_evidence_status must remain ambiguous_not_explicitly_defined.")
+        else:
+            if self.approval_status != "paper_aligned_episode_sync_approved":
+                raise ValueError("Episode target sync requires explicit paper-aligned approval status.")
+            if self.paper_evidence_status != "ocr_recovered_algorithm_1_episode_copy":
+                raise ValueError("Episode target sync requires explicit OCR-backed evidence status.")
 
-    def should_sync(self, optimizer_step_count: int) -> bool:
-        return optimizer_step_count > 0 and optimizer_step_count % self.update_frequency == 0
+    def should_sync(
+        self,
+        optimizer_step_count: int | None = None,
+        *,
+        episode_count: int | None = None,
+    ) -> bool:
+        if self.target_update_unit == "episode":
+            return episode_count is not None and episode_count > 0 and episode_count % self.update_frequency == 0
+        return optimizer_step_count is not None and optimizer_step_count > 0 and optimizer_step_count % self.update_frequency == 0
 
     def to_dict(self) -> dict[str, Any]:
         return {

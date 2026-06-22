@@ -1,0 +1,110 @@
+{
+  "stability": {
+    "budgets": [
+      50,
+      100,
+      200,
+      300,
+      500,
+      750,
+      1000
+    ],
+    "completion_by_budget": [
+      0.2464540694907187,
+      0.2464540694907187,
+      0.2464540694907187,
+      0.2464540694907187,
+      0.2464540694907187,
+      0.2464540694907187,
+      0.2464540694907187
+    ],
+    "drop_by_budget": [
+      0.6626368396001904,
+      0.6626368396001904,
+      0.6626368396001904,
+      0.6626368396001904,
+      0.6626368396001904,
+      0.6626368396001904,
+      0.6626368396001904
+    ],
+    "reward_per_task_by_budget": [
+      -28.992860542598763,
+      -28.992860542598763,
+      -28.992860542598763,
+      -28.992860542598763,
+      -28.992860542598763,
+      -28.992860542598763,
+      -28.992860542598763
+    ],
+    "completion_trend": {
+      "delta_first_to_last": 0.0,
+      "monotonic_nondecreasing": true,
+      "monotonic_nonincreasing": true,
+      "max_abs_step": 0.0
+    },
+    "drop_trend": {
+      "delta_first_to_last": 0.0,
+      "monotonic_nondecreasing": true,
+      "monotonic_nonincreasing": true,
+      "max_abs_step": 0.0
+    },
+    "reward_trend": {
+      "delta_first_to_last": 0.0,
+      "monotonic_nondecreasing": true,
+      "monotonic_nonincreasing": true,
+      "max_abs_step": 0.0
+    },
+    "all_policies_reconciled": true,
+    "completion_nonzero_all_budgets": true,
+    "no_late_completion_regression": true,
+    "converged_plateau_detected": true,
+    "stability_passed": true,
+    "learning_health": {
+      "candidate_action_collapse_detected": true,
+      "candidate_collapse_by_budget": {
+        "50": true,
+        "100": true,
+        "200": true,
+        "300": true,
+        "500": true,
+        "750": true,
+        "1000": true
+      },
+      "no_learning_progress_detected": true,
+      "candidate_action_signature_matches_baseline": "fixed_local_policy",
+      "learning_health_ok": false,
+      "interpretation": "Pipeline is stable and fully reconciled, but the learned candidate degenerated to a single-action policy with no reward/completion improvement across budgets; this is a training/exploration blocker, not a pipeline blocker."
+    },
+    "diagnostic_baseline_comparison": {
+      "candidate_best_completion_ratio": 0.2464540694907187,
+      "best_fixed_baseline_completion_ratio": 0.2464540694907187,
+      "candidate_meets_or_exceeds_best_baseline": true,
+      "note": "Diagnostic only; no superiority claim is made."
+    }
+  },
+  "before_final_action_signature": [
+    10412,
+    0,
+    0
+  ],
+  "after_final_action_signature": [
+    10412,
+    0,
+    0
+  ],
+  "before_final_dominant_share": 1.0,
+  "after_final_dominant_share": 1.0,
+  "before_candidate_matches_fixed_local": true,
+  "after_candidate_matches_fixed_local": true,
+  "candidate_uses_more_than_one_action_in_greedy_eval": false,
+  "candidate_reward_task_improves_vs_before": false,
+  "candidate_completion_improves_vs_before": false,
+  "candidate_moves_toward_capacity_proportional_split": true,
+  "q_value_ranking": {},
+  "candidate_vs_capacity_split_gap": {
+    "completion_ratio_gap": -0.012089481199428848,
+    "reward_per_task_gap": -0.3722037125178481
+  },
+  "candidate_action_collapse_detected": true,
+  "candidate_action_signature_matches_baseline": "fixed_local_policy"
+}

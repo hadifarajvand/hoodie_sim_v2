@@ -1,0 +1,7 @@
+{
+  "paper_expected": "Distributed multi-agent HOODIE with one DRL agent per edge server.",
+  "repo_current": "Single shared trainer is reused across per-agent traces; the policy is shared rather than one model per agent.",
+  "status": "approximated",
+  "evidence": "Current production pipeline trains one shared policy over trace-bank episodes; no separate model fleet is implemented here.",
+  "repair_needed": false
+}

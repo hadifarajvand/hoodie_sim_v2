@@ -1,0 +1,7 @@
+{
+  "paper_expected": "Algorithm 1 lines 23-36 sample replay and apply Double DQN loss with MSE.",
+  "repo_current": "DDQNTrainer._train_batch samples replay, uses online argmax on next state, target net evaluation, and MSE loss.",
+  "status": "matched",
+  "evidence": "trainer.py:_train_batch implements the Double DQN target path and MSE loss.",
+  "repair_needed": false
+}

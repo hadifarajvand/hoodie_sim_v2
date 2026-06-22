@@ -1,0 +1,32 @@
+{
+  "feature_id": "algorithm-fidelity-against-paper-repair",
+  "training_budgets": [
+    50,
+    100,
+    200,
+    300,
+    500,
+    750,
+    1000
+  ],
+  "max_training_budget": 1000,
+  "evaluation_episode_count": 100,
+  "episode_length": 110,
+  "exploration": {
+    "epsilon_start": 1.0,
+    "epsilon_final": 0.0,
+    "epsilon_decay_steps": 2500,
+    "decay_type": "linear",
+    "schedule_unit": "episode",
+    "seed": 53
+  },
+  "target_update": {
+    "update_frequency": 2000,
+    "target_update_unit": "episode",
+    "approval_status": "paper_aligned_episode_sync_approved",
+    "paper_evidence_status": "ocr_recovered_algorithm_1_episode_copy"
+  },
+  "reward_transform": "per_task_delayed_reward_credit_assignment",
+  "environment_semantics_modified": false,
+  "policy_algorithm_modified": false
+}

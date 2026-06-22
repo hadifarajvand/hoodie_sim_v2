@@ -1,0 +1,7 @@
+{
+  "paper_expected": "replay batch sampled and updated every time slot using recent experience tuples",
+  "repo_current": "replay buffer is updated per completed task and sampled during _train_batch",
+  "status": "matched",
+  "evidence": "trainer.py _episode_rollout + _train_batch",
+  "repair_needed": false
+}

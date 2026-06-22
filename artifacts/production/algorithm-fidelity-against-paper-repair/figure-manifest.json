@@ -1,0 +1,10 @@
+{
+  "figures": [
+    "artifacts/production/algorithm-fidelity-against-paper-repair/figures/figure_01_algorithm_fidelity_status.png",
+    "artifacts/production/algorithm-fidelity-against-paper-repair/figures/figure_02_q_target_before_after.png",
+    "artifacts/production/algorithm-fidelity-against-paper-repair/figures/figure_03_action_distribution_before_after_algorithm_repair.png",
+    "artifacts/production/algorithm-fidelity-against-paper-repair/figures/figure_04_candidate_vs_capacity_split.png",
+    "artifacts/production/algorithm-fidelity-against-paper-repair/figures/figure_05_q_value_state_action_ranking.png",
+    "artifacts/production/algorithm-fidelity-against-paper-repair/figures/figure_06_learning_health_after_algorithm_repair.png"
+  ]
+}

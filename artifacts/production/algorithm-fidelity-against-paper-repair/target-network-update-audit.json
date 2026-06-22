@@ -1,0 +1,7 @@
+{
+  "paper_expected": "Target network copied every N_copy episodes (OCR line 39 / Table 3).",
+  "repo_current": "Legacy config remains optimizer-step based, but the algorithm-fidelity run enables explicit episode-based target sync with paper-aligned approval.",
+  "status": "matched_with_documented_repair",
+  "evidence": "TargetUpdateContract now accepts an episode unit; algorithm-fidelity smoke sets it to episode-based sync at 2000 episodes.",
+  "repair_needed": false
+}

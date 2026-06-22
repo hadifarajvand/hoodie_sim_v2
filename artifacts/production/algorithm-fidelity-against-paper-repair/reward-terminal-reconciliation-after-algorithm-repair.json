@@ -1,0 +1,328 @@
+{
+  "reward_reconciliation_passed": true,
+  "terminal_reconciliation_passed": true,
+  "raw_vs_canonical_reward_delta_max": 0.0,
+  "terminal_event_coverage_ratio_min": 1.0,
+  "per_policy": [
+    {
+      "policy_name": "candidate_learned_policy_at_50",
+      "training_budget": 50,
+      "terminal_event_coverage_ratio": 1.0,
+      "raw_plus_recovered_reward_total": -304570.0,
+      "canonical_reward_total": -304570.0,
+      "raw_vs_canonical_reward_delta": 0.0,
+      "recovered_horizon_reward_event_count": 75,
+      "horizon_finalized_terminal_count": 75,
+      "training_diagnostics": {
+        "training_budget": 50,
+        "exploration": {
+          "epsilon_start": 1.0,
+          "epsilon_final": 0.0,
+          "epsilon_decay_steps": 2500,
+          "decay_type": "linear",
+          "schedule_unit": "episode",
+          "random_action_count": 5158,
+          "greedy_action_count": 56,
+          "random_action_ratio": 0.9892596854622171,
+          "paper_detail_status": "inferred"
+        },
+        "epsilon_at_budget": 0.0,
+        "q_value_diagnostics": {
+          "q_value_decision_count": 5214,
+          "q_local_mean": -2.574052715408971,
+          "q_horizontal_mean": -3.0469492675760126,
+          "q_vertical_mean": -3.0179022930605006,
+          "q_local_std": 2.208619467604376,
+          "q_horizontal_std": 2.6843611811527546,
+          "q_vertical_std": 2.747266191195973,
+          "advantage_gap": 0.4728965521670414,
+          "dominant_q_action": "local",
+          "q_values_have_nonzero_action_separation": true,
+          "q_value_collapse_detected": false
+        },
+        "optimizer_step_count": 5151,
+        "target_sync_count": 0
+      }
+    },
+    {
+      "policy_name": "candidate_learned_policy_at_100",
+      "training_budget": 100,
+      "terminal_event_coverage_ratio": 1.0,
+      "raw_plus_recovered_reward_total": -304570.0,
+      "canonical_reward_total": -304570.0,
+      "raw_vs_canonical_reward_delta": 0.0,
+      "recovered_horizon_reward_event_count": 75,
+      "horizon_finalized_terminal_count": 75,
+      "training_diagnostics": {
+        "training_budget": 100,
+        "exploration": {
+          "epsilon_start": 1.0,
+          "epsilon_final": 0.0,
+          "epsilon_decay_steps": 2500,
+          "decay_type": "linear",
+          "schedule_unit": "episode",
+          "random_action_count": 10195,
+          "greedy_action_count": 220,
+          "random_action_ratio": 0.9788766202592415,
+          "paper_detail_status": "inferred"
+        },
+        "epsilon_at_budget": 0.0,
+        "q_value_diagnostics": {
+          "q_value_decision_count": 10415,
+          "q_local_mean": -9.450942550132439,
+          "q_horizontal_mean": -11.649594055756433,
+          "q_vertical_mean": -11.981184681460523,
+          "q_local_std": 7.9572132523099635,
+          "q_horizontal_std": 9.912460556496178,
+          "q_vertical_std": 10.341816086930976,
+          "advantage_gap": 2.530242131328084,
+          "dominant_q_action": "local",
+          "q_values_have_nonzero_action_separation": true,
+          "q_value_collapse_detected": false
+        },
+        "optimizer_step_count": 10352,
+        "target_sync_count": 0
+      }
+    },
+    {
+      "policy_name": "candidate_learned_policy_at_200",
+      "training_budget": 200,
+      "terminal_event_coverage_ratio": 1.0,
+      "raw_plus_recovered_reward_total": -304570.0,
+      "canonical_reward_total": -304570.0,
+      "raw_vs_canonical_reward_delta": 0.0,
+      "recovered_horizon_reward_event_count": 75,
+      "horizon_finalized_terminal_count": 75,
+      "training_diagnostics": {
+        "training_budget": 200,
+        "exploration": {
+          "epsilon_start": 1.0,
+          "epsilon_final": 0.0,
+          "epsilon_decay_steps": 2500,
+          "decay_type": "linear",
+          "schedule_unit": "episode",
+          "random_action_count": 13390,
+          "greedy_action_count": 425,
+          "random_action_ratio": 0.9692363373145132,
+          "paper_detail_status": "inferred"
+        },
+        "epsilon_at_budget": 0.0,
+        "q_value_diagnostics": {
+          "q_value_decision_count": 13815,
+          "q_local_mean": -12.928073749803694,
+          "q_horizontal_mean": -15.894865174887624,
+          "q_vertical_mean": -16.38083074582256,
+          "q_local_std": 9.228006617475653,
+          "q_horizontal_std": 11.3970996158903,
+          "q_vertical_std": 11.855884410763773,
+          "advantage_gap": 3.4527569960188664,
+          "dominant_q_action": "local",
+          "q_values_have_nonzero_action_separation": true,
+          "q_value_collapse_detected": false
+        },
+        "optimizer_step_count": 13752,
+        "target_sync_count": 0
+      }
+    },
+    {
+      "policy_name": "candidate_learned_policy_at_300",
+      "training_budget": 300,
+      "terminal_event_coverage_ratio": 1.0,
+      "raw_plus_recovered_reward_total": -304570.0,
+      "canonical_reward_total": -304570.0,
+      "raw_vs_canonical_reward_delta": 0.0,
+      "recovered_horizon_reward_event_count": 75,
+      "horizon_finalized_terminal_count": 75,
+      "training_diagnostics": {
+        "training_budget": 300,
+        "exploration": {
+          "epsilon_start": 1.0,
+          "epsilon_final": 0.0,
+          "epsilon_decay_steps": 2500,
+          "decay_type": "linear",
+          "schedule_unit": "episode",
+          "random_action_count": 16294,
+          "greedy_action_count": 739,
+          "random_action_ratio": 0.9566136323607115,
+          "paper_detail_status": "inferred"
+        },
+        "epsilon_at_budget": 0.0,
+        "q_value_diagnostics": {
+          "q_value_decision_count": 17033,
+          "q_local_mean": -14.9115757029111,
+          "q_horizontal_mean": -18.362645730224894,
+          "q_vertical_mean": -18.890519632650587,
+          "q_local_std": 9.293497449293197,
+          "q_horizontal_std": 11.497518378272389,
+          "q_vertical_std": 11.90668089613148,
+          "advantage_gap": 3.978943929739488,
+          "dominant_q_action": "local",
+          "q_values_have_nonzero_action_separation": true,
+          "q_value_collapse_detected": false
+        },
+        "optimizer_step_count": 16970,
+        "target_sync_count": 0
+      }
+    },
+    {
+      "policy_name": "candidate_learned_policy_at_500",
+      "training_budget": 500,
+      "terminal_event_coverage_ratio": 1.0,
+      "raw_plus_recovered_reward_total": -304570.0,
+      "canonical_reward_total": -304570.0,
+      "raw_vs_canonical_reward_delta": 0.0,
+      "recovered_horizon_reward_event_count": 75,
+      "horizon_finalized_terminal_count": 75,
+      "training_diagnostics": {
+        "training_budget": 500,
+        "exploration": {
+          "epsilon_start": 1.0,
+          "epsilon_final": 0.0,
+          "epsilon_decay_steps": 2500,
+          "decay_type": "linear",
+          "schedule_unit": "episode",
+          "random_action_count": 21795,
+          "greedy_action_count": 1799,
+          "random_action_ratio": 0.9237518013054167,
+          "paper_detail_status": "inferred"
+        },
+        "epsilon_at_budget": 0.0,
+        "q_value_diagnostics": {
+          "q_value_decision_count": 23594,
+          "q_local_mean": -16.932349678284638,
+          "q_horizontal_mean": -20.960801963040645,
+          "q_vertical_mean": -21.54938610772126,
+          "q_local_std": 8.637180393553594,
+          "q_horizontal_std": 10.755708278358489,
+          "q_vertical_std": 11.117600082217278,
+          "advantage_gap": 4.617036429436624,
+          "dominant_q_action": "local",
+          "q_values_have_nonzero_action_separation": true,
+          "q_value_collapse_detected": false
+        },
+        "optimizer_step_count": 23531,
+        "target_sync_count": 0
+      }
+    },
+    {
+      "policy_name": "candidate_learned_policy_at_750",
+      "training_budget": 750,
+      "terminal_event_coverage_ratio": 1.0,
+      "raw_plus_recovered_reward_total": -304570.0,
+      "canonical_reward_total": -304570.0,
+      "raw_vs_canonical_reward_delta": 0.0,
+      "recovered_horizon_reward_event_count": 75,
+      "horizon_finalized_terminal_count": 75,
+      "training_diagnostics": {
+        "training_budget": 750,
+        "exploration": {
+          "epsilon_start": 1.0,
+          "epsilon_final": 0.0,
+          "epsilon_decay_steps": 2500,
+          "decay_type": "linear",
+          "schedule_unit": "episode",
+          "random_action_count": 28081,
+          "greedy_action_count": 3858,
+          "random_action_ratio": 0.8792072387989606,
+          "paper_detail_status": "inferred"
+        },
+        "epsilon_at_budget": 0.0,
+        "q_value_diagnostics": {
+          "q_value_decision_count": 31939,
+          "q_local_mean": -18.378806751682255,
+          "q_horizontal_mean": -22.626337642478617,
+          "q_vertical_mean": -23.33614520657308,
+          "q_local_std": 8.307825248575686,
+          "q_horizontal_std": 10.245149527055784,
+          "q_vertical_std": 10.624275363855332,
+          "advantage_gap": 4.957338454890824,
+          "dominant_q_action": "local",
+          "q_values_have_nonzero_action_separation": true,
+          "q_value_collapse_detected": false
+        },
+        "optimizer_step_count": 31876,
+        "target_sync_count": 0
+      }
+    },
+    {
+      "policy_name": "candidate_learned_policy_at_1000",
+      "training_budget": 1000,
+      "terminal_event_coverage_ratio": 1.0,
+      "raw_plus_recovered_reward_total": -304570.0,
+      "canonical_reward_total": -304570.0,
+      "raw_vs_canonical_reward_delta": 0.0,
+      "recovered_horizon_reward_event_count": 75,
+      "horizon_finalized_terminal_count": 75,
+      "training_diagnostics": {
+        "training_budget": 1000,
+        "exploration": {
+          "epsilon_start": 1.0,
+          "epsilon_final": 0.0,
+          "epsilon_decay_steps": 2500,
+          "decay_type": "linear",
+          "schedule_unit": "episode",
+          "random_action_count": 33532,
+          "greedy_action_count": 6818,
+          "random_action_ratio": 0.8310285006195787,
+          "paper_detail_status": "inferred"
+        },
+        "epsilon_at_budget": 0.0,
+        "q_value_diagnostics": {
+          "q_value_decision_count": 40350,
+          "q_local_mean": -19.30092112064805,
+          "q_horizontal_mean": -23.64238076525033,
+          "q_vertical_mean": -24.372981749881298,
+          "q_local_std": 8.718503486955077,
+          "q_horizontal_std": 10.52584362809887,
+          "q_vertical_std": 10.871638552471293,
+          "advantage_gap": 5.072060629233249,
+          "dominant_q_action": "local",
+          "q_values_have_nonzero_action_separation": true,
+          "q_value_collapse_detected": false
+        },
+        "optimizer_step_count": 40287,
+        "target_sync_count": 0
+      }
+    },
+    {
+      "policy_name": "fixed_local_policy",
+      "training_budget": null,
+      "terminal_event_coverage_ratio": 1.0,
+      "raw_plus_recovered_reward_total": -304570.0,
+      "canonical_reward_total": -304570.0,
+      "raw_vs_canonical_reward_delta": 0.0,
+      "recovered_horizon_reward_event_count": 75,
+      "horizon_finalized_terminal_count": 75
+    },
+    {
+      "policy_name": "fixed_horizontal_policy",
+      "training_budget": null,
+      "terminal_event_coverage_ratio": 1.0,
+      "raw_plus_recovered_reward_total": -330901.0,
+      "canonical_reward_total": -330901.0,
+      "raw_vs_canonical_reward_delta": 0.0,
+      "recovered_horizon_reward_event_count": 83,
+      "horizon_finalized_terminal_count": 83
+    },
+    {
+      "policy_name": "fixed_vertical_policy",
+      "training_budget": null,
+      "terminal_event_coverage_ratio": 1.0,
+      "raw_plus_recovered_reward_total": -340442.0,
+      "canonical_reward_total": -340442.0,
+      "raw_vs_canonical_reward_delta": 0.0,
+      "recovered_horizon_reward_event_count": 85,
+      "horizon_finalized_terminal_count": 85
+    },
+    {
+      "policy_name": "random_legal_policy",
+      "training_budget": null,
+      "terminal_event_coverage_ratio": 1.0,
+      "raw_plus_recovered_reward_total": -305836.0,
+      "canonical_reward_total": -305836.0,
+      "raw_vs_canonical_reward_delta": 0.0,
+      "recovered_horizon_reward_event_count": 78,
+      "horizon_finalized_terminal_count": 78
+    }
+  ]
+}

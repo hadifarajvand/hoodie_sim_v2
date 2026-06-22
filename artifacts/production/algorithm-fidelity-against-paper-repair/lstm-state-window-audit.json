@@ -1,0 +1,7 @@
+{
+  "paper_expected": "Per-agent local state contains task size, queue load, deadlines and load forecasts.",
+  "repo_current": "deadline_queue_feasibility_v1 state profile provides slot, queue load, task size, processing density, deadlines, slack and action feasibility features.",
+  "status": "matched_with_documented_approximation",
+  "evidence": "src/analysis/full_training_reproduction_campaign/replay.py and state-profile integration artifacts.",
+  "repair_needed": false
+}

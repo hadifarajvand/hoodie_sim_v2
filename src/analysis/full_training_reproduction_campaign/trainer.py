@@ -152,10 +152,13 @@ class EpsilonGreedyExploration:
         epsilon_final: float = 0.05,
         epsilon_decay_steps: int = 8000,
         decay_type: str = "linear",
+        schedule_unit: str = "step",
         seed: int = 53,
     ) -> None:
         if decay_type not in {"linear", "exponential"}:
             raise ValueError("decay_type must be 'linear' or 'exponential'")
+        if schedule_unit not in {"step", "episode"}:
+            raise ValueError("schedule_unit must be 'step' or 'episode'")
         if not (0.0 <= epsilon_final <= epsilon_start <= 1.0):
             raise ValueError("require 0 <= epsilon_final <= epsilon_start <= 1")
         if epsilon_decay_steps <= 0:
@@ -164,6 +167,7 @@ class EpsilonGreedyExploration:
         self.epsilon_final = float(epsilon_final)
         self.epsilon_decay_steps = int(epsilon_decay_steps)
         self.decay_type = decay_type
+        self.schedule_unit = schedule_unit
         self.rng = random.Random(seed)
         self.random_action_count = 0
         self.greedy_action_count = 0
@@ -174,6 +178,9 @@ class EpsilonGreedyExploration:
             return self.epsilon_start + (self.epsilon_final - self.epsilon_start) * frac
         ratio = self.epsilon_final / self.epsilon_start if self.epsilon_start > 0 else 0.0
         return self.epsilon_start * (ratio ** frac)
+
+    def epsilon_for_episode(self, episode_index: int) -> float:
+        return self.epsilon_for_step(episode_index)
 
     def select_action_index(self, step: int, greedy_index: int, legal_mask: tuple[bool, ...]) -> tuple[int, bool, float]:
         epsilon = self.epsilon_for_step(step)
@@ -191,6 +198,7 @@ class EpsilonGreedyExploration:
             "epsilon_final": self.epsilon_final,
             "epsilon_decay_steps": self.epsilon_decay_steps,
             "decay_type": self.decay_type,
+            "schedule_unit": self.schedule_unit,
             "random_action_count": self.random_action_count,
             "greedy_action_count": self.greedy_action_count,
             "random_action_ratio": (self.random_action_count / total) if total else 0.0,
@@ -335,8 +343,9 @@ class DDQNTrainer:
                 self._record_q_values(state_tensor)
                 if training and self.exploration is not None:
                     greedy_index = semantics_to_action_index(self.policy.choose_action(state_tensor, legal_mask))
+                    exploration_schedule_value = episode_id if getattr(self.exploration, "schedule_unit", "step") == "episode" else self.exploration_step
                     action_index, _was_random, _eps = self.exploration.select_action_index(
-                        self.exploration_step, greedy_index, legal_mask_tuple
+                        exploration_schedule_value, greedy_index, legal_mask_tuple
                     )
                     self.exploration_step += 1
                     action = ACTION_INDEX_TO_SEMANTICS[action_index]
@@ -449,18 +458,31 @@ class DDQNTrainer:
                     # Flush undelivered decisions as non-terminal (reward 0).
                     for skeleton in pending_decisions.values():
                         self.replay_buffer.add(ReplayTransition(
-                            state=skeleton["state"], action=skeleton["action"],
-                            legal_action_mask=skeleton["legal_action_mask"], next_state=skeleton["next_state"],
-                            reward=0.0, reward_available=False, terminal=False,
-                            terminal_reason="pending_at_horizon", pending_at_horizon=True,
-                            arrival_slot=skeleton["arrival_slot"], completion_or_drop_slot=None,
-                            agent_id=skeleton["agent_id"], episode_id=episode_id, step_id=transition_count,
+                            state=skeleton["state"],
+                            action=skeleton["action"],
+                            legal_action_mask=skeleton["legal_action_mask"],
+                            next_state=skeleton["next_state"],
+                            reward=0.0,
+                            reward_available=False,
+                            terminal=False,
+                            terminal_reason="pending_at_horizon",
+                            pending_at_horizon=True,
+                            arrival_slot=skeleton["arrival_slot"],
+                            completion_or_drop_slot=None,
+                            agent_id=skeleton["agent_id"],
+                            episode_id=episode_id,
+                            step_id=transition_count,
                         ))
                         transition_count += 1
                         self.per_task_pending_flushed += 1
                         _maybe_train()
                     pending_decisions.clear()
                 break
+
+        if training and self.config.target_update_contract.target_update_unit == "episode":
+            if self.config.target_update_contract.should_sync(episode_count=episode_id + 1):
+                self.target_network.load_state_dict(self.online_network.state_dict())
+                self.target_sync_count += 1
 
         return {
             "transition_count": transition_count,
@@ -474,7 +496,13 @@ class DDQNTrainer:
             "loss_values": loss_values,
             "exploration_random_action_count": self.exploration.random_action_count if self.exploration else 0,
             "exploration_greedy_action_count": self.exploration.greedy_action_count if self.exploration else 0,
-            "epsilon_current": self.exploration.epsilon_for_step(self.exploration_step) if self.exploration else None,
+            "epsilon_current": (
+                self.exploration.epsilon_for_episode(episode_id)
+                if self.exploration and getattr(self.exploration, "schedule_unit", "step") == "episode"
+                else self.exploration.epsilon_for_step(self.exploration_step)
+                if self.exploration
+                else None
+            ),
         }
 
     def _record_q_values(self, state_tensor: torch.Tensor) -> None:
@@ -518,7 +546,7 @@ class DDQNTrainer:
         loss.backward()
         self.optimizer.step()
         self.optimizer_step_count += 1
-        if self.config.target_update_contract.should_sync(self.optimizer_step_count):
+        if self.config.target_update_contract.target_update_unit == "optimizer_step" and self.config.target_update_contract.should_sync(self.optimizer_step_count):
             self.target_network.load_state_dict(self.online_network.state_dict())
             self.target_sync_count += 1
         return float(loss.detach().item())

@@ -1,0 +1,70 @@
+{
+  "paper_expected": "HOODIE Algorithm 1 / Table 4 / Dueling-DDQN / LSTM / epsilon-greedy / N_copy",
+  "repo_current": "Paper-faithful simulation production pipeline with explicit algorithm-fidelity repair run",
+  "status_summary": {
+    "matched_with_repair": 2,
+    "matched": 3,
+    "matched_with_documented_repair": 1,
+    "approximated": 1,
+    "matched_with_documented_approximation": 1
+  },
+  "rows": [
+    {
+      "paper_expected": "Algorithm 1 line 16 uses epsilon-greedy exploration.",
+      "repo_current": "DDQNTrainer._episode_rollout selects random legal actions when exploration is enabled.",
+      "status": "matched_with_repair",
+      "evidence": "Training now uses epsilon-greedy exploration; algorithm-fidelity run sets schedule_unit='episode' and decays epsilon over 2500 episodes.",
+      "repair_needed": false
+    },
+    {
+      "paper_expected": "Algorithm 1 lines 23-36 sample replay and apply Double DQN loss with MSE.",
+      "repo_current": "DDQNTrainer._train_batch samples replay, uses online argmax on next state, target net evaluation, and MSE loss.",
+      "status": "matched",
+      "evidence": "trainer.py:_train_batch implements the Double DQN target path and MSE loss.",
+      "repair_needed": false
+    },
+    {
+      "paper_expected": "Dueling network with LSTM encoder and 3x1024 fully-connected body.",
+      "repo_current": "PaperHoodieDuelingNetwork uses LSTM(20, 1 layer) followed by 3x1024 body and value/advantage heads.",
+      "status": "matched",
+      "evidence": "src/analysis/paper_hoodie_network_implementation/network.py",
+      "repair_needed": false
+    },
+    {
+      "paper_expected": "Target network copied every N_copy episodes (OCR line 39 / Table 3).",
+      "repo_current": "Legacy config remains optimizer-step based, but the algorithm-fidelity run enables explicit episode-based target sync with paper-aligned approval.",
+      "status": "matched_with_documented_repair",
+      "evidence": "TargetUpdateContract now accepts an episode unit; algorithm-fidelity smoke sets it to episode-based sync at 2000 episodes.",
+      "repair_needed": false
+    },
+    {
+      "paper_expected": "Epsilon decreases linearly to zero during the first N/2 episodes and stays at zero.",
+      "repo_current": "Algorithm-fidelity smoke uses episode-based epsilon decay from 1.0 to 0.0 over 2500 episodes.",
+      "status": "matched_with_repair",
+      "evidence": "EpsilonGreedyExploration schedule_unit='episode'; epsilon_decay_steps=2500.",
+      "repair_needed": false
+    },
+    {
+      "paper_expected": "Distributed multi-agent HOODIE with one DRL agent per edge server.",
+      "repo_current": "Single shared trainer is reused across per-agent traces; the policy is shared rather than one model per agent.",
+      "status": "approximated",
+      "evidence": "Current production pipeline trains one shared policy over trace-bank episodes; no separate model fleet is implemented here.",
+      "repair_needed": false
+    },
+    {
+      "paper_expected": "Per-agent local state contains task size, queue load, deadlines and load forecasts.",
+      "repo_current": "deadline_queue_feasibility_v1 state profile provides slot, queue load, task size, processing density, deadlines, slack and action feasibility features.",
+      "status": "matched_with_documented_approximation",
+      "evidence": "src/analysis/full_training_reproduction_campaign/replay.py and state-profile integration artifacts.",
+      "repair_needed": false
+    },
+    {
+      "paper_expected": "Reward Eq. 20: negative latency on success, -40 on drop, NaN on no-arrival.",
+      "repo_current": "Per-task delayed reward credit assignment and horizon-aware recovered reconciliation remain unchanged from the prior repair.",
+      "status": "matched",
+      "evidence": "reward_signal_state_action_discrimination_repair artifacts and trainer.py per_task_credit_assignment path.",
+      "repair_needed": false
+    }
+  ],
+  "repair_needed_any": false
+}

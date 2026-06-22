@@ -1,0 +1,7 @@
+{
+  "paper_expected": "Adam, MSE, learning rate 7e-7",
+  "repo_current": "Adam optimizer, MSE loss, learning_rate=7e-7",
+  "status": "matched",
+  "evidence": "config.py and trainer.py",
+  "repair_needed": false
+}

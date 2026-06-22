@@ -9,6 +9,7 @@ policy, or DAL semantics are modified.
 
 from __future__ import annotations
 
+from collections.abc import Callable
 from typing import Any
 
 from src.analysis.completion_path_deadline_feasibility_repair.feasibility import (
@@ -148,14 +149,21 @@ def _metric_row(
 
 
 def run_medium_smoke(
-    profile: ProductionProfile, commit: str, *, per_task_credit_assignment: bool = False
+    profile: ProductionProfile,
+    commit: str,
+    *,
+    per_task_credit_assignment: bool = False,
+    exploration_kwargs: dict[str, Any] | None = None,
+    session_setup: Callable[[StateRepresentationTrainingSession], None] | None = None,
 ) -> dict[str, Any]:
     cfg = StateRepresentationRepairConfig()
     session = StateRepresentationTrainingSession(
         config=cfg, state_representation_profile=STATE_REPRESENTATION_PROFILE_DEADLINE_QUEUE_FEASIBILITY_V1,
     )
+    if session_setup is not None:
+        session_setup(session)
     # Enable epsilon-greedy exploration on the training rollout (the fix).
-    session.trainer.exploration = EpsilonGreedyExploration(**EXPLORATION_KWARGS)
+    session.trainer.exploration = EpsilonGreedyExploration(**(exploration_kwargs or EXPLORATION_KWARGS))
     # Enable per-task delayed-reward credit assignment (reward-signal repair).
     session.trainer.per_task_credit_assignment = bool(per_task_credit_assignment)
     rows: list[dict[str, Any]] = []

@@ -1,0 +1,7 @@
+{
+  "paper_expected": "Dueling network with LSTM encoder and 3x1024 fully-connected body.",
+  "repo_current": "PaperHoodieDuelingNetwork uses LSTM(20, 1 layer) followed by 3x1024 body and value/advantage heads.",
+  "status": "matched",
+  "evidence": "src/analysis/paper_hoodie_network_implementation/network.py",
+  "repair_needed": false
+}

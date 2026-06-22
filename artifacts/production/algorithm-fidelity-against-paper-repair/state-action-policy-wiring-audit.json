@@ -1,0 +1,7 @@
+{
+  "paper_expected": "state/action wiring uses current decision-time state and legal masks per task",
+  "repo_current": "decision-time injection and legal-masked action selection in trainer._episode_rollout",
+  "status": "matched",
+  "evidence": "trainer.py uses _decision_state_tensor and legal_action_mask_to_tuple at decision time.",
+  "repair_needed": false
+}
