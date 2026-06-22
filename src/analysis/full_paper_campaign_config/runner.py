@@ -274,19 +274,33 @@ def _md_final_report(r: dict[str, Any]) -> str:
 
 def run(*, dry_run: bool, execute_full_campaign: bool, emit_json: bool) -> int:
     if execute_full_campaign:
-        cfg = build_full_campaign_config()
         if not execution_authorized(execute_full_campaign):
             print(
                 "Pre-flight only: --execute-full-campaign acknowledged, but execution is NOT authorized. "
-                f"Set {EXECUTION_ENV_CONFIRMATION}=1 after explicit user approval. "
-                "This config-only branch does not wire the 5000-episode training path; nothing was run."
+                f"Set {EXECUTION_ENV_CONFIRMATION}=1 after explicit user approval; nothing was run."
             )
             return 0
-        # Never reached on this branch (env var intentionally unset). Hard stop.
-        raise SystemExit(
-            "Execution path intentionally not implemented in the config-only branch. "
-            "Wire a dedicated execution runner under explicit approval before running N_E=5000."
-        )
+        # Authorized full-campaign execution (explicit flag + env confirmation).
+        from .executor import run_full_campaign
+        from .execution_report import write_execution_artifacts
+
+        import os as _os
+        smoke = _os.environ.get("HOODIE_FULL_CAMPAIGN_SMOKE")
+        kwargs: dict[str, Any] = {}
+        if smoke:
+            # Plumbing smoke: tiny budgets/decay to validate the path without 5000.
+            kwargs = {"smoke_budgets": [2, 4], "eval_at": [2, 4], "epsilon_decay_episodes": 2}
+        report = run_full_campaign(**kwargs)
+        final = write_execution_artifacts(report, dry_run_output={"note": "see dry-run command output"})
+        if emit_json:
+            print(json.dumps({
+                "executed_5000": final["executed_5000"],
+                "abort_reason": final["abort_reason"],
+                "wall_hours": final["wall_hours"],
+                "verdict": final["verdict"],
+                "recommended_next_step": final["recommended_next_step"],
+            }, indent=2))
+        return 0
 
     if dry_run:
         report = write_all_artifacts()

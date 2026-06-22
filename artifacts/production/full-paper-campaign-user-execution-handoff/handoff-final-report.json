@@ -1,0 +1,115 @@
+{
+  "branch": "full-paper-campaign-user-execution-handoff",
+  "commit_sha": "3e973d6508f493faebd63ea77a0d2ae0dc4ea1f8",
+  "executed_5000": false,
+  "execution_path_wired": true,
+  "execution_requires": [
+    "--execute-full-campaign",
+    "HOODIE_EXECUTE_FULL_CAMPAIGN=1"
+  ],
+  "full_execution_command": "cd /Users/hadi/Documents/GitHub/hoodie_sim_v2\nPY=/Users/hadi/Documents/GitHub/hoodie_sim_v2/.venvmac/bin/python\n\ngit fetch origin\ngit checkout full-paper-campaign-user-execution-handoff\ngit reset --hard origin/full-paper-campaign-user-execution-handoff\n\nHOODIE_EXECUTE_FULL_CAMPAIGN=1 $PY -m src.analysis.full_paper_campaign_config.runner --execute-full-campaign --json",
+  "dry_run_command": "cd /Users/hadi/Documents/GitHub/hoodie_sim_v2\nPY=/Users/hadi/Documents/GitHub/hoodie_sim_v2/.venvmac/bin/python\n\n$PY -m src.analysis.full_paper_campaign_config.runner --dry-run --json",
+  "config_checks": {
+    "config_only_execute_false": true,
+    "N_E_is_5000": true,
+    "episode_length_is_110": true,
+    "epsilon_schedule_paper_aligned": true,
+    "target_sync_2000_episodes": true,
+    "learning_rate_7e_7": true,
+    "gamma_0_99": true,
+    "batch_64": true,
+    "replay_10000": true,
+    "per_task_delayed_reward_credit_enabled": true,
+    "horizon_aware_reconciliation_enabled": true
+  },
+  "all_config_guards_pass": true,
+  "execution_guard_validation": {
+    "requires_flag": "--execute-full-campaign",
+    "requires_env": "HOODIE_EXECUTE_FULL_CAMPAIGN=1",
+    "refusal_message_without_flag": "Full campaign execution is disabled by default. Pass --execute-full-campaign only after explicit user approval.",
+    "authorized_when_flag_only": false,
+    "authorized_when_env_only": false,
+    "authorized_when_both": true,
+    "guard_correct": true
+  },
+  "checkpoint_budgets": [
+    250,
+    500,
+    750,
+    1000,
+    1250,
+    1500,
+    1750,
+    2000,
+    2250,
+    2500,
+    2750,
+    3000,
+    3250,
+    3500,
+    3750,
+    4000,
+    4250,
+    4500,
+    4750,
+    5000
+  ],
+  "eval_at": [
+    250,
+    500,
+    1000,
+    1500,
+    2000,
+    2500,
+    3000,
+    3500,
+    4000,
+    4500,
+    5000
+  ],
+  "output_artifact_path": "artifacts/production/full-paper-campaign-execution-run",
+  "estimates": {
+    "hardware_assumption": "single CPU core (no GPU; small model, GPU yields little benefit)",
+    "measured_train_sec_per_episode": 1.73,
+    "measured_eval_sec_per_episode": 1.29,
+    "train_seconds_per_episode_range": {
+      "low": 1.6,
+      "expected": 1.73,
+      "high": 2.6
+    },
+    "eval_seconds_per_episode": 1.29,
+    "train_episodes": 5000,
+    "eval_episode_total": 1700,
+    "training_hours": {
+      "low": 2.22,
+      "expected": 2.4,
+      "high": 3.61
+    },
+    "evaluation_hours": 0.61,
+    "total_wall_hours": {
+      "low": 2.83,
+      "expected": 3.01,
+      "high": 4.22
+    },
+    "checkpoint_count": 20,
+    "checkpoint_interval_episodes": 250,
+    "storage_checkpoints_mb": 503.5,
+    "storage_replay_snapshot_mb": 23.3,
+    "storage_artifact_overhead_mb": 200.0,
+    "storage_total_estimate_mb": 726.9,
+    "estimate_caveat": "Per-episode time may rise modestly once replay fills; low/expected/high bracket 1.6/1.73/2.6 s per training episode."
+  },
+  "claim_safety": {
+    "training_5000_run": false,
+    "config_only": true,
+    "paper_reproduction_claim_made": false,
+    "exact_numerical_reproduction_claim_made": false,
+    "performance_superiority_claim_made": false,
+    "baseline_superiority_claim_made": false,
+    "reward_function_modified": false,
+    "environment_semantics_modified": false,
+    "claim_safety_passed": true
+  },
+  "verdict": "full_campaign_user_execution_handoff_ready",
+  "recommended_next_step": "user_runs_full_campaign_command"
+}

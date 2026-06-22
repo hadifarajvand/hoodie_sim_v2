@@ -1,0 +1,9 @@
+{
+  "requires_flag": "--execute-full-campaign",
+  "requires_env": "HOODIE_EXECUTE_FULL_CAMPAIGN=1",
+  "refusal_message_without_flag": "Full campaign execution is disabled by default. Pass --execute-full-campaign only after explicit user approval.",
+  "authorized_when_flag_only": false,
+  "authorized_when_env_only": false,
+  "authorized_when_both": true,
+  "guard_correct": true
+}
