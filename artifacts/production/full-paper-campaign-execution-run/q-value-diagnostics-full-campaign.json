@@ -1,0 +1,13 @@
+{
+  "q_value_decision_count": 171985,
+  "q_local_mean": -24.168817383299494,
+  "q_horizontal_mean": -27.214390180631444,
+  "q_vertical_mean": -28.682364094885095,
+  "q_local_std": 12.651272216138487,
+  "q_horizontal_std": 11.969184329720424,
+  "q_vertical_std": 11.76616822472677,
+  "advantage_gap": 4.513546711585601,
+  "dominant_q_action": "local",
+  "q_values_have_nonzero_action_separation": true,
+  "q_value_collapse_detected": false
+}

@@ -1,0 +1,44 @@
+{
+  "branch": "full-paper-campaign-execution-run",
+  "commit_sha": "f00d1195dc3e7bc9bd929095e8a1dee73cde2493",
+  "executed_5000": true,
+  "abort_reason": null,
+  "wall_hours": 1.077,
+  "verdict": "full_campaign_completed_learning_still_blocked",
+  "recommended_next_step": "implement_true_per_EA_distributed_models",
+  "learning_health": {
+    "candidate_action_collapse_detected": true,
+    "distinct_action_signatures": 1,
+    "candidate_matches_fixed_local": true,
+    "completion_trend_first_to_last": 0.008091385054735806,
+    "reward_per_task_trend_first_to_last": 0.6730128510233229,
+    "candidate_vs_fixed_local_completion": 0.008091385054735806,
+    "candidate_vs_capacity_split_completion": -0.0026653974297953797,
+    "mixed_policy_learned": false
+  },
+  "reconciliation": {
+    "reconciled_all": true,
+    "raw_vs_canonical_delta_max": 0.0
+  },
+  "claim_safety": {
+    "training_5000_run": false,
+    "config_only": true,
+    "paper_reproduction_claim_made": false,
+    "exact_numerical_reproduction_claim_made": false,
+    "performance_superiority_claim_made": false,
+    "baseline_superiority_claim_made": false,
+    "reward_function_modified": false,
+    "environment_semantics_modified": false,
+    "claim_safety_passed": true
+  },
+  "figures": [
+    "artifacts/production/full-paper-campaign-execution-run/figures/figure_01_epsilon_schedule_actual.png",
+    "artifacts/production/full-paper-campaign-execution-run/figures/figure_02_completion_drop_by_checkpoint.png",
+    "artifacts/production/full-paper-campaign-execution-run/figures/figure_03_reward_by_checkpoint.png",
+    "artifacts/production/full-paper-campaign-execution-run/figures/figure_04_action_distribution_by_checkpoint.png",
+    "artifacts/production/full-paper-campaign-execution-run/figures/figure_05_candidate_vs_fixed_local_vs_capacity_split.png",
+    "artifacts/production/full-paper-campaign-execution-run/figures/figure_06_q_value_state_action_discrimination.png",
+    "artifacts/production/full-paper-campaign-execution-run/figures/figure_07_reconciliation_summary.png",
+    "artifacts/production/full-paper-campaign-execution-run/figures/figure_08_learning_health_summary.png"
+  ]
+}

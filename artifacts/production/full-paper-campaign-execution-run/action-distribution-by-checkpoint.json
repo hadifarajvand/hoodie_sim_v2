@@ -1,0 +1,68 @@
+{
+  "250": {
+    "local": 10412,
+    "horizontal": 0,
+    "vertical": 0,
+    "dominant": "local"
+  },
+  "500": {
+    "local": 10412,
+    "horizontal": 0,
+    "vertical": 0,
+    "dominant": "local"
+  },
+  "1000": {
+    "local": 10412,
+    "horizontal": 0,
+    "vertical": 0,
+    "dominant": "local"
+  },
+  "1500": {
+    "local": 10412,
+    "horizontal": 0,
+    "vertical": 0,
+    "dominant": "local"
+  },
+  "2000": {
+    "local": 10412,
+    "horizontal": 0,
+    "vertical": 0,
+    "dominant": "local"
+  },
+  "2500": {
+    "local": 10412,
+    "horizontal": 0,
+    "vertical": 0,
+    "dominant": "local"
+  },
+  "3000": {
+    "local": 10412,
+    "horizontal": 0,
+    "vertical": 0,
+    "dominant": "local"
+  },
+  "3500": {
+    "local": 10412,
+    "horizontal": 0,
+    "vertical": 0,
+    "dominant": "local"
+  },
+  "4000": {
+    "local": 7890,
+    "horizontal": 2522,
+    "vertical": 0,
+    "dominant": "local"
+  },
+  "4500": {
+    "local": 6585,
+    "horizontal": 3827,
+    "vertical": 0,
+    "dominant": "local"
+  },
+  "5000": {
+    "local": 6443,
+    "horizontal": 3969,
+    "vertical": 0,
+    "dominant": "local"
+  }
+}

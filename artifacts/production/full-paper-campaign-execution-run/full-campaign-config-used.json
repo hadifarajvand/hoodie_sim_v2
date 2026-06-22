@@ -1,0 +1,63 @@
+{
+  "number_of_training_episodes_N_E": 5000,
+  "episode_length_T": 110,
+  "number_of_agents_N": 20,
+  "epsilon": {
+    "start": 1.0,
+    "final": 0.0,
+    "decay_episodes": 2500,
+    "schedule_unit": "episode",
+    "paper_reference": "Algorithm 1 line 680 (linear 1->0 over first N_E/2 episodes, 0 after)"
+  },
+  "target_update": {
+    "frequency_N_copy": 2000,
+    "unit": "episode",
+    "approval_status": "paper_aligned_episode_sync_approved",
+    "evidence_status": "ocr_recovered_algorithm_1_episode_copy",
+    "paper_reference": "Algorithm 1 line 587 / Table 4 N_copy=2000"
+  },
+  "optimizer": {
+    "name": "Adam",
+    "learning_rate": 7e-07,
+    "loss": "MSE"
+  },
+  "gamma": 0.99,
+  "batch_size": 64,
+  "replay_memory_capacity": 10000,
+  "q_network_hidden_layers": [
+    1024,
+    1024,
+    1024
+  ],
+  "lstm_cells": 20,
+  "lstm_lookback_w": 10,
+  "techniques": [
+    "LSTM",
+    "Dueling DQN",
+    "Double DQN"
+  ],
+  "state_representation_profile": "deadline_queue_feasibility_v1",
+  "calibration_profile": "paper_aligned_feasible_v1",
+  "reconciliation_profile": "horizon_aware_recovered_reward_event",
+  "credit_assignment": "per_task_delayed_reward",
+  "reward_equation": "Eq. 20: completed -> -Phi_n(t); dropped -> -C (C=40)",
+  "evaluation_episode_count": 100,
+  "checkpoint_every_episodes": 250,
+  "eval_at_episodes": [
+    250,
+    500,
+    1000,
+    1500,
+    2000,
+    2500,
+    3000,
+    3500,
+    4000,
+    4500,
+    5000
+  ],
+  "execute": false,
+  "estimated_train_hours": 2.4,
+  "estimated_eval_hours": 0.61,
+  "estimated_total_hours": 3.01
+}
