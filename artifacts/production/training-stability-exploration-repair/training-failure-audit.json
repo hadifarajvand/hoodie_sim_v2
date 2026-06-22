@@ -1,0 +1,22 @@
+{
+  "diagnosed_root_cause": "missing_epsilon_greedy_exploration_in_training_rollout",
+  "evidence": [
+    "DDQNTrainer._episode_rollout selected actions via greedy argmax only (CampaignPolicy.choose_action).",
+    "The `training` flag gated only _train_batch, never exploration.",
+    "config carried action_exploration_seed but no epsilon value/schedule existed.",
+    "Extended smoke: candidate action distribution local-only (L/H/V=10412/0/0), identical to fixed_local at all budgets."
+  ],
+  "questions_answered": {
+    "exploration_schedule": "ABSENT before fix \u2014 primary cause.",
+    "reward_dominance": "local has a structural advantage under calibration, which a non-exploring greedy policy locks into immediately.",
+    "q_value_overestimation": "not the primary cause; collapse precedes any meaningful Q learning.",
+    "insufficient_action_diversity_in_replay": "TRUE consequence of no exploration; replay was local-only.",
+    "legal_mask_imbalance": "masks allow all three actions on most decisions; not the cause.",
+    "implementation_bug": "Double-DQN/target/dueling wiring is correct; the bug is the dropped epsilon-greedy branch.",
+    "paper_parameter_mismatch": "epsilon schedule not implemented at all (paper specifies epsilon-greedy)."
+  },
+  "double_dqn_wiring_status": "correct (online selects next action, target evaluates) \u2014 verified in trainer._train_batch",
+  "target_update_status": "correct (target sync via target_update_contract)",
+  "dueling_status": "implemented in paper_hoodie_network_implementation (not modified)",
+  "fix_class": "exploration_schedule_repair_paper_consistent"
+}

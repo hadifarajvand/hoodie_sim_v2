@@ -1,0 +1,43 @@
+{
+  "online_selects_next_action": true,
+  "target_evaluates_next_action": true,
+  "target_update_via_contract": true,
+  "status": "correct_no_change_needed",
+  "target_sync_count_by_budget": [
+    {
+      "training_budget": 50,
+      "target_sync_count": 2,
+      "optimizer_step_count": 5151
+    },
+    {
+      "training_budget": 100,
+      "target_sync_count": 5,
+      "optimizer_step_count": 10352
+    },
+    {
+      "training_budget": 200,
+      "target_sync_count": 6,
+      "optimizer_step_count": 13752
+    },
+    {
+      "training_budget": 300,
+      "target_sync_count": 8,
+      "optimizer_step_count": 16970
+    },
+    {
+      "training_budget": 500,
+      "target_sync_count": 11,
+      "optimizer_step_count": 23531
+    },
+    {
+      "training_budget": 750,
+      "target_sync_count": 15,
+      "optimizer_step_count": 31876
+    },
+    {
+      "training_budget": 1000,
+      "target_sync_count": 20,
+      "optimizer_step_count": 40287
+    }
+  ]
+}

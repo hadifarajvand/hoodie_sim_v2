@@ -485,8 +485,14 @@ def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser(description="Paper-faithful simulation production pipeline")
     parser.add_argument("--medium-smoke", action="store_true", help="run the bounded medium smoke campaign [50,100,200,300]")
     parser.add_argument("--extended-smoke", action="store_true", help="run the extended medium smoke campaign [300,500,750,1000]")
+    parser.add_argument("--training-stability-repair", action="store_true", help="run the training-stability/exploration repair smoke [50..1000]")
     parser.add_argument("--json", action="store_true", help="emit JSON summary")
     args = parser.parse_args(argv)
+    if args.training_stability_repair:
+        from src.analysis.paper_faithful_simulation_production.training_repair import run as run_repair
+
+        run_repair(emit_json=args.json)
+        return 0
     if args.extended_smoke:
         from src.analysis.paper_faithful_simulation_production.profiles import extended_smoke_profile
 

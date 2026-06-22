@@ -1,0 +1,74 @@
+{
+  "reward_reconciliation_passed": true,
+  "terminal_reconciliation_passed": true,
+  "raw_vs_canonical_reward_delta_max": 0.0,
+  "terminal_event_coverage_ratio_min": 1.0,
+  "per_policy": [
+    {
+      "policy_name": "candidate_learned_policy_at_50",
+      "training_budget": 50,
+      "raw_vs_canonical_reward_delta": 0.0,
+      "terminal_event_coverage_ratio": 1.0
+    },
+    {
+      "policy_name": "candidate_learned_policy_at_100",
+      "training_budget": 100,
+      "raw_vs_canonical_reward_delta": 0.0,
+      "terminal_event_coverage_ratio": 1.0
+    },
+    {
+      "policy_name": "candidate_learned_policy_at_200",
+      "training_budget": 200,
+      "raw_vs_canonical_reward_delta": 0.0,
+      "terminal_event_coverage_ratio": 1.0
+    },
+    {
+      "policy_name": "candidate_learned_policy_at_300",
+      "training_budget": 300,
+      "raw_vs_canonical_reward_delta": 0.0,
+      "terminal_event_coverage_ratio": 1.0
+    },
+    {
+      "policy_name": "candidate_learned_policy_at_500",
+      "training_budget": 500,
+      "raw_vs_canonical_reward_delta": 0.0,
+      "terminal_event_coverage_ratio": 1.0
+    },
+    {
+      "policy_name": "candidate_learned_policy_at_750",
+      "training_budget": 750,
+      "raw_vs_canonical_reward_delta": 0.0,
+      "terminal_event_coverage_ratio": 1.0
+    },
+    {
+      "policy_name": "candidate_learned_policy_at_1000",
+      "training_budget": 1000,
+      "raw_vs_canonical_reward_delta": 0.0,
+      "terminal_event_coverage_ratio": 1.0
+    },
+    {
+      "policy_name": "fixed_local_policy",
+      "training_budget": null,
+      "raw_vs_canonical_reward_delta": 0.0,
+      "terminal_event_coverage_ratio": 1.0
+    },
+    {
+      "policy_name": "fixed_horizontal_policy",
+      "training_budget": null,
+      "raw_vs_canonical_reward_delta": 0.0,
+      "terminal_event_coverage_ratio": 1.0
+    },
+    {
+      "policy_name": "fixed_vertical_policy",
+      "training_budget": null,
+      "raw_vs_canonical_reward_delta": 0.0,
+      "terminal_event_coverage_ratio": 1.0
+    },
+    {
+      "policy_name": "random_legal_policy",
+      "training_budget": null,
+      "raw_vs_canonical_reward_delta": 0.0,
+      "terminal_event_coverage_ratio": 1.0
+    }
+  ]
+}

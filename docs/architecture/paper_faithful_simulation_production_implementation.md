@@ -63,3 +63,27 @@ baseline comparison.
 ## Energy/cost
 Not modeled by the base reward (Eq. 20 is delay + drop only);
 `energy_metric_status = not_implemented`, reported as None in the schema.
+
+## Training-stability / exploration repair
+
+The extended smoke surfaced an action-collapse blocker (candidate = fixed_local at
+every budget). Root cause: `DDQNTrainer._episode_rollout` selected actions with a
+pure greedy `argmax` and **no epsilon-greedy exploration**, so replay filled with a
+single action and the policy collapsed. The paper (Algorithm 1, line 16) uses an
+epsilon-greedy policy.
+
+Fix (paper-consistent, training-only): a configurable `EpsilonGreedyExploration`
+schedule was added to `DDQNTrainer` (default `None` preserves legacy behavior) and
+enabled in the production training session. Evaluation stays deterministic/greedy
+(`epsilon_eval = 0.0`). Double-DQN, target-update, and dueling wiring were verified
+correct and **not** modified.
+
+Entry point: `python -m src.analysis.paper_faithful_simulation_production.runner --training-stability-repair --json`
+
+Result (budgets 50→1000): exploration now active (random ratio 0.88→0.29),
+Q-values separate (gap ~1.19), and the greedy eval policy is no longer frozen — it
+selects horizontal→vertical→local across budgets. The **exploration-collapse root
+cause is fixed**. A *separate* issue remains: the eval policy still picks one action
+per checkpoint (reward-signal / state-discrimination), so training-health verdict is
+`training_stability_repair_blocked` with next step `inspect_reward_signal`. No
+environment/reward/policy-algorithm/dependency semantics were changed.
