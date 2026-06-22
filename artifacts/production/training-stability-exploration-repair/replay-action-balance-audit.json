@@ -1,0 +1,48 @@
+{
+  "action_balanced_replay_sampling": false,
+  "note": "Exploration alone restores action diversity; no replay balancing applied.",
+  "candidate_eval_action_counts_by_budget": [
+    {
+      "training_budget": 50,
+      "local": 0,
+      "horizontal": 10412,
+      "vertical": 0
+    },
+    {
+      "training_budget": 100,
+      "local": 0,
+      "horizontal": 0,
+      "vertical": 10412
+    },
+    {
+      "training_budget": 200,
+      "local": 0,
+      "horizontal": 0,
+      "vertical": 10412
+    },
+    {
+      "training_budget": 300,
+      "local": 0,
+      "horizontal": 0,
+      "vertical": 10412
+    },
+    {
+      "training_budget": 500,
+      "local": 0,
+      "horizontal": 0,
+      "vertical": 10412
+    },
+    {
+      "training_budget": 750,
+      "local": 0,
+      "horizontal": 0,
+      "vertical": 10412
+    },
+    {
+      "training_budget": 1000,
+      "local": 10412,
+      "horizontal": 0,
+      "vertical": 0
+    }
+  ]
+}

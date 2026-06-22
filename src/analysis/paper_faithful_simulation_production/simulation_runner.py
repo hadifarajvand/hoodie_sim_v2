@@ -26,9 +26,22 @@ from src.analysis.paper_faithful_simulation_production_pipeline.reconciliation i
 from src.analysis.state_profile_decision_time_integration_recovery.config import (
     StateRepresentationRepairConfig,
 )
+from src.analysis.full_training_reproduction_campaign.trainer import EpsilonGreedyExploration
 from src.analysis.state_profile_decision_time_integration_recovery.policy_probe import (
     StateRepresentationTrainingSession,
 )
+
+# Epsilon-greedy schedule for production training. The paper specifies an
+# epsilon-greedy policy but no explicit schedule, so this is documented as
+# inferred. Heavy early exploration fills replay with diverse actions to prevent
+# the local-only collapse observed in the extended smoke.
+EXPLORATION_KWARGS = {
+    "epsilon_start": 1.0,
+    "epsilon_final": 0.05,
+    "epsilon_decay_steps": 20000,
+    "decay_type": "linear",
+    "seed": 53,
+}
 
 _FEASIBLE_KEYS = {
     "local": "local_feasible_before_deadline",
@@ -139,18 +152,30 @@ def run_medium_smoke(profile: ProductionProfile, commit: str) -> dict[str, Any]:
     session = StateRepresentationTrainingSession(
         config=cfg, state_representation_profile=STATE_REPRESENTATION_PROFILE_DEADLINE_QUEUE_FEASIBILITY_V1,
     )
+    # Enable epsilon-greedy exploration on the training rollout (the fix).
+    session.trainer.exploration = EpsilonGreedyExploration(**EXPLORATION_KWARGS)
     rows: list[dict[str, Any]] = []
     details: list[dict[str, Any]] = []
     budgets_executed: list[int] = []
+    training_diagnostics: list[dict[str, Any]] = []
 
     for budget in profile.training_budgets:
         session.train_to_budget(budget)
         budgets_executed.append(budget)
+        training_diagnostics.append({
+            "training_budget": budget,
+            "exploration": session.trainer.exploration.to_dict(),
+            "epsilon_at_budget": session.trainer.exploration.epsilon_for_step(session.trainer.exploration_step),
+            "q_value_diagnostics": session.trainer.q_value_diagnostics(),
+            "optimizer_step_count": session.trainer.optimizer_step_count,
+            "target_sync_count": session.trainer.target_sync_count,
+        })
         result = session.candidate_policy_result(checkpoint_budget=budget)
         row, detail = _metric_row(
             policy_name=f"candidate_learned_policy_at_{budget}", training_budget=budget,
             evaluation_result=result, profile=profile, commit=commit,
         )
+        detail["training_diagnostics"] = training_diagnostics[-1]
         rows.append(row)
         details.append(detail)
 
@@ -163,4 +188,9 @@ def run_medium_smoke(profile: ProductionProfile, commit: str) -> dict[str, Any]:
         rows.append(row)
         details.append(detail)
 
-    return {"rows": rows, "details": details, "budgets_executed": sorted(set(budgets_executed))}
+    return {
+        "rows": rows,
+        "details": details,
+        "budgets_executed": sorted(set(budgets_executed)),
+        "training_diagnostics": training_diagnostics,
+    }

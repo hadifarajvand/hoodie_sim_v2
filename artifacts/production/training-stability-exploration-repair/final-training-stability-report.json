@@ -1,0 +1,67 @@
+{
+  "branch": "training-stability-exploration-repair",
+  "commit_sha": "6438dcd4e007488100799102a241b304727437be",
+  "verdict": "training_stability_repair_blocked",
+  "recommended_next_step": "inspect_reward_signal",
+  "root_cause": "missing_epsilon_greedy_exploration_in_training_rollout",
+  "fix": "configurable epsilon-greedy exploration enabled in training rollout (paper Algorithm 1 line 16)",
+  "pipeline_gates": {
+    "reward_reconciliation_passed": true,
+    "terminal_reconciliation_passed": true,
+    "raw_vs_canonical_reward_delta_zero": true,
+    "terminal_coverage_one": true,
+    "completion_nonzero": true,
+    "drop_or_deadline_pressure_active": true,
+    "metric_schema_valid": true,
+    "no_nan_inf": true,
+    "legal_action_only": true,
+    "claim_safety_passed": true
+  },
+  "learning_gates": {
+    "exploration_random_action_ratio_nonzero_during_training": true,
+    "q_values_have_nonzero_action_separation": true,
+    "completion_or_reward_changes_across_budgets": true,
+    "eval_policy_no_longer_frozen_across_budgets": true,
+    "exploration_collapse_root_cause_fixed": true,
+    "candidate_action_collapse_resolved": false,
+    "learning_recovered": false
+  },
+  "learning_health": {
+    "candidate_action_collapse_detected": true,
+    "candidate_collapse_by_budget": {
+      "50": true,
+      "100": true,
+      "200": true,
+      "300": true,
+      "500": true,
+      "750": true,
+      "1000": true
+    },
+    "no_learning_progress_detected": false,
+    "candidate_action_signature_matches_baseline": "fixed_local_policy",
+    "learning_health_ok": false,
+    "interpretation": "Pipeline is stable and fully reconciled, but the learned candidate degenerated to a single-action policy with no reward/completion improvement across budgets; this is a training/exploration blocker, not a pipeline blocker."
+  },
+  "raw_vs_canonical_reward_delta_max": 0.0,
+  "terminal_event_coverage_ratio_min": 1.0,
+  "budgets_executed": [
+    50,
+    100,
+    200,
+    300,
+    500,
+    750,
+    1000
+  ],
+  "claim_safety": {
+    "paper_reproduction_claim_made": false,
+    "exact_numerical_reproduction_claim_made": false,
+    "performance_superiority_claim_made": false,
+    "baseline_superiority_claim_made": false,
+    "training_5000_run": false,
+    "max_training_budget_executed": 1000,
+    "energy_metric_status": "not_implemented",
+    "claim_safety_passed": true
+  },
+  "exploration_collapse_root_cause_fixed": true
+}

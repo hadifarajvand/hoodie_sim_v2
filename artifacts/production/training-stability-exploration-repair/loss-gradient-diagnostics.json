@@ -1,0 +1,33 @@
+{
+  "note": "loss collected per train batch; gradient clipping not added (no instability observed).",
+  "optimizer_step_count_by_budget": [
+    {
+      "training_budget": 50,
+      "optimizer_step_count": 5151
+    },
+    {
+      "training_budget": 100,
+      "optimizer_step_count": 10352
+    },
+    {
+      "training_budget": 200,
+      "optimizer_step_count": 13752
+    },
+    {
+      "training_budget": 300,
+      "optimizer_step_count": 16970
+    },
+    {
+      "training_budget": 500,
+      "optimizer_step_count": 23531
+    },
+    {
+      "training_budget": 750,
+      "optimizer_step_count": 31876
+    },
+    {
+      "training_budget": 1000,
+      "optimizer_step_count": 40287
+    }
+  ]
+}

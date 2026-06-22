@@ -1,0 +1,11 @@
+{
+  "figures": [
+    "artifacts/production/training-stability-exploration-repair/figures/figure_01_epsilon_schedule.png",
+    "artifacts/production/training-stability-exploration-repair/figures/figure_02_action_distribution_by_budget_before_after.png",
+    "artifacts/production/training-stability-exploration-repair/figures/figure_03_q_values_by_action.png",
+    "artifacts/production/training-stability-exploration-repair/figures/figure_04_reward_completion_drop_by_budget.png",
+    "artifacts/production/training-stability-exploration-repair/figures/figure_05_td_error_loss_trend.png",
+    "artifacts/production/training-stability-exploration-repair/figures/figure_06_replay_action_balance.png",
+    "artifacts/production/training-stability-exploration-repair/figures/figure_07_candidate_vs_baselines_after_repair.png"
+  ]
+}

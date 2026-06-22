@@ -1,0 +1,63 @@
+{
+  "epsilon_greedy_policy": {
+    "value": "yes (Algorithm 1 line 16)",
+    "paper_detail_status": "exact"
+  },
+  "epsilon_schedule": {
+    "value": "not explicitly tabulated",
+    "paper_detail_status": "inferred",
+    "applied": {
+      "epsilon_start": 1.0,
+      "epsilon_final": 0.05,
+      "epsilon_decay_steps": 20000,
+      "decay_type": "linear",
+      "seed": 53
+    }
+  },
+  "learning_rate": {
+    "value": "7e-7",
+    "paper_detail_status": "exact"
+  },
+  "target_update_period_N_copy": {
+    "value": "Table 4 (Update frequency)",
+    "paper_detail_status": "approximated"
+  },
+  "dueling_dqn": {
+    "value": "yes",
+    "paper_detail_status": "exact"
+  },
+  "double_dqn": {
+    "value": "yes",
+    "paper_detail_status": "exact"
+  },
+  "lstm": {
+    "value": "1 x 20 cells",
+    "paper_detail_status": "exact"
+  },
+  "replay_memory_size": {
+    "value": "10000",
+    "paper_detail_status": "exact"
+  },
+  "batch_size": {
+    "value": "64",
+    "paper_detail_status": "exact"
+  },
+  "optimizer": {
+    "value": "Adam",
+    "paper_detail_status": "exact"
+  },
+  "loss_function": {
+    "value": "MSE",
+    "paper_detail_status": "exact"
+  },
+  "reward_equation": {
+    "value": "-Phi success / -C(=40) drop / NaN no-arrival (Eq.20)",
+    "paper_detail_status": "exact"
+  },
+  "training_episodes_N_E": {
+    "value": "5000 (NOT executed)",
+    "paper_detail_status": "exact"
+  },
+  "ocr_pdf_used": true,
+  "source": "resources/papers/hoodie/ocr/merged.txt"
+}

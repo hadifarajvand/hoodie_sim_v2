@@ -1,0 +1,26 @@
+{
+  "suspected_cause": "no epsilon-greedy exploration during training rollout",
+  "code_changes": [
+    "Add EpsilonGreedyExploration schedule to DDQNTrainer (default None preserves legacy behavior).",
+    "Use epsilon-greedy action selection in _episode_rollout when training and exploration is set.",
+    "Add Q-value and exploration diagnostics.",
+    "Enable the schedule in the production training session only."
+  ],
+  "paper_consistency": "epsilon-greedy is the paper's Algorithm 1 line 16 policy; schedule values are inferred (documented).",
+  "files_modified": [
+    "src/analysis/full_training_reproduction_campaign/trainer.py",
+    "src/analysis/paper_faithful_simulation_production/simulation_runner.py",
+    "src/analysis/paper_faithful_simulation_production/training_repair.py (new)"
+  ],
+  "tests": [
+    "tests/unit/test_training_stability_exploration_repair_*",
+    "tests/integration/test_training_stability_exploration_repair_*"
+  ],
+  "expected_metrics_after_repair": {
+    "candidate_action_collapse_detected": false,
+    "q_values_have_nonzero_action_separation": true,
+    "exploration_random_action_ratio_nonzero_during_training": true
+  },
+  "rollback": "set trainer.exploration = None (reverts to legacy greedy-only training); no env/reward change to undo.",
+  "environment_semantic_change_required": false
+}

@@ -135,6 +135,69 @@ class EvaluationSummary:
         }
 
 
+class EpsilonGreedyExploration:
+    """Configurable epsilon-greedy exploration schedule for training rollouts.
+
+    Implements the paper's Algorithm 1 line 16 (random legal action with
+    probability epsilon, otherwise greedy). The exact epsilon schedule is not
+    fully recovered from the paper (Table 4 lists an epsilon-greedy policy but no
+    explicit schedule), so the schedule is configurable and documented as
+    `paper_detail_status = inferred`.
+    """
+
+    def __init__(
+        self,
+        *,
+        epsilon_start: float = 1.0,
+        epsilon_final: float = 0.05,
+        epsilon_decay_steps: int = 8000,
+        decay_type: str = "linear",
+        seed: int = 53,
+    ) -> None:
+        if decay_type not in {"linear", "exponential"}:
+            raise ValueError("decay_type must be 'linear' or 'exponential'")
+        if not (0.0 <= epsilon_final <= epsilon_start <= 1.0):
+            raise ValueError("require 0 <= epsilon_final <= epsilon_start <= 1")
+        if epsilon_decay_steps <= 0:
+            raise ValueError("epsilon_decay_steps must be positive")
+        self.epsilon_start = float(epsilon_start)
+        self.epsilon_final = float(epsilon_final)
+        self.epsilon_decay_steps = int(epsilon_decay_steps)
+        self.decay_type = decay_type
+        self.rng = random.Random(seed)
+        self.random_action_count = 0
+        self.greedy_action_count = 0
+
+    def epsilon_for_step(self, step: int) -> float:
+        frac = min(1.0, max(0.0, step / self.epsilon_decay_steps))
+        if self.decay_type == "linear":
+            return self.epsilon_start + (self.epsilon_final - self.epsilon_start) * frac
+        ratio = self.epsilon_final / self.epsilon_start if self.epsilon_start > 0 else 0.0
+        return self.epsilon_start * (ratio ** frac)
+
+    def select_action_index(self, step: int, greedy_index: int, legal_mask: tuple[bool, ...]) -> tuple[int, bool, float]:
+        epsilon = self.epsilon_for_step(step)
+        legal_indices = [i for i, ok in enumerate(legal_mask) if ok]
+        if legal_indices and self.rng.random() < epsilon:
+            self.random_action_count += 1
+            return self.rng.choice(legal_indices), True, epsilon
+        self.greedy_action_count += 1
+        return greedy_index, False, epsilon
+
+    def to_dict(self) -> dict[str, Any]:
+        total = self.random_action_count + self.greedy_action_count
+        return {
+            "epsilon_start": self.epsilon_start,
+            "epsilon_final": self.epsilon_final,
+            "epsilon_decay_steps": self.epsilon_decay_steps,
+            "decay_type": self.decay_type,
+            "random_action_count": self.random_action_count,
+            "greedy_action_count": self.greedy_action_count,
+            "random_action_ratio": (self.random_action_count / total) if total else 0.0,
+            "paper_detail_status": "inferred",
+        }
+
+
 class CampaignPolicy:
     def __init__(self, network) -> None:
         self.network = network
@@ -186,6 +249,13 @@ class DDQNTrainer:
         self.sample_rng = random.Random(self.config.seed_bundle.replay_sampling_seed)
         self.optimizer_step_count = 0
         self.target_sync_count = 0
+        # Optional epsilon-greedy exploration; default None preserves the legacy
+        # greedy-only training behavior for existing campaign features/tests.
+        self.exploration: EpsilonGreedyExploration | None = None
+        self.exploration_step = 0
+        self.q_value_action_sums = [0.0, 0.0, 0.0]
+        self.q_value_action_sq_sums = [0.0, 0.0, 0.0]
+        self.q_value_decision_count = 0
 
     def _initial_history(self, *, episode_length: int) -> deque[tuple[float, ...]]:
         zero_row = build_state_vector(
@@ -250,11 +320,22 @@ class DDQNTrainer:
                     current_task=current_task,
                     episode_length=episode_length,
                 )
-                action = self.policy.choose_action(state_tensor, observation.get("legal_action_mask", {}))
-                if not _ensure_valid_action(action, observation.get("legal_action_mask", {})):
+                legal_mask = observation.get("legal_action_mask", {})
+                legal_mask_tuple = legal_action_mask_to_tuple(legal_mask)
+                self._record_q_values(state_tensor)
+                if training and self.exploration is not None:
+                    greedy_index = semantics_to_action_index(self.policy.choose_action(state_tensor, legal_mask))
+                    action_index, _was_random, _eps = self.exploration.select_action_index(
+                        self.exploration_step, greedy_index, legal_mask_tuple
+                    )
+                    self.exploration_step += 1
+                    action = ACTION_INDEX_TO_SEMANTICS[action_index]
+                else:
+                    action = self.policy.choose_action(state_tensor, legal_mask)
+                    action_index = semantics_to_action_index(action)
+                if not _ensure_valid_action(action, legal_mask):
                     illegal_action_count += 1
                     legal_action_only = False
-                action_index = semantics_to_action_index(action)
             else:
                 observation = env.observe_flat()
                 action = None
@@ -328,6 +409,35 @@ class DDQNTrainer:
             "illegal_action_count": illegal_action_count,
             "legal_action_only": legal_action_only,
             "loss_values": loss_values,
+            "exploration_random_action_count": self.exploration.random_action_count if self.exploration else 0,
+            "exploration_greedy_action_count": self.exploration.greedy_action_count if self.exploration else 0,
+            "epsilon_current": self.exploration.epsilon_for_step(self.exploration_step) if self.exploration else None,
+        }
+
+    def _record_q_values(self, state_tensor: torch.Tensor) -> None:
+        with torch.no_grad():
+            q_values = self.online_network(state_tensor.unsqueeze(0))[0].tolist()
+        for i in range(min(3, len(q_values))):
+            self.q_value_action_sums[i] += float(q_values[i])
+            self.q_value_action_sq_sums[i] += float(q_values[i]) ** 2
+        self.q_value_decision_count += 1
+
+    def q_value_diagnostics(self) -> dict[str, Any]:
+        n = self.q_value_decision_count
+        if n == 0:
+            return {"q_value_decision_count": 0, "q_value_collapse_detected": None}
+        means = [s / n for s in self.q_value_action_sums]
+        stds = [max(0.0, (self.q_value_action_sq_sums[i] / n) - means[i] ** 2) ** 0.5 for i in range(3)]
+        labels = [ACTION_INDEX_TO_SEMANTICS[i] for i in range(3)]
+        advantage_gap = max(means) - min(means)
+        return {
+            "q_value_decision_count": n,
+            "q_local_mean": means[0], "q_horizontal_mean": means[1], "q_vertical_mean": means[2],
+            "q_local_std": stds[0], "q_horizontal_std": stds[1], "q_vertical_std": stds[2],
+            "advantage_gap": advantage_gap,
+            "dominant_q_action": labels[means.index(max(means))],
+            "q_values_have_nonzero_action_separation": advantage_gap > 1e-6,
+            "q_value_collapse_detected": advantage_gap <= 1e-6,
         }
 
     def _train_batch(self) -> float:

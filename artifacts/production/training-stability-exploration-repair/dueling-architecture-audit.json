@@ -1,0 +1,7 @@
+{
+  "value_stream": "present (paper_hoodie_network_implementation)",
+  "advantage_stream": "present",
+  "aggregation": "Q=V+A-mean(A) (not modified)",
+  "lstm_wiring": "state-window based (not modified)",
+  "status": "not_modified"
+}

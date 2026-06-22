@@ -1,0 +1,70 @@
+{
+  "learning_health": {
+    "candidate_action_collapse_detected": true,
+    "candidate_collapse_by_budget": {
+      "50": true,
+      "100": true,
+      "200": true,
+      "300": true,
+      "500": true,
+      "750": true,
+      "1000": true
+    },
+    "no_learning_progress_detected": false,
+    "candidate_action_signature_matches_baseline": "fixed_local_policy",
+    "learning_health_ok": false,
+    "interpretation": "Pipeline is stable and fully reconciled, but the learned candidate degenerated to a single-action policy with no reward/completion improvement across budgets; this is a training/exploration blocker, not a pipeline blocker."
+  },
+  "learning_gates": {
+    "exploration_random_action_ratio_nonzero_during_training": true,
+    "q_values_have_nonzero_action_separation": true,
+    "completion_or_reward_changes_across_budgets": true,
+    "eval_policy_no_longer_frozen_across_budgets": true,
+    "exploration_collapse_root_cause_fixed": true,
+    "candidate_action_collapse_resolved": false,
+    "learning_recovered": false
+  },
+  "stability": {
+    "completion_by_budget": [
+      0.16592099000475963,
+      0.13450737743931462,
+      0.13450737743931462,
+      0.13450737743931462,
+      0.13450737743931462,
+      0.13450737743931462,
+      0.2464540694907187
+    ],
+    "drop_by_budget": [
+      0.7404093288910043,
+      0.7709662065683008,
+      0.7709662065683008,
+      0.7709662065683008,
+      0.7709662065683008,
+      0.7709662065683008,
+      0.6626368396001904
+    ],
+    "reward_per_task_by_budget": [
+      -31.499381247025227,
+      -32.40761542122799,
+      -32.40761542122799,
+      -32.40761542122799,
+      -32.40761542122799,
+      -32.40761542122799,
+      -28.992860542598763
+    ],
+    "completion_trend": {
+      "delta_first_to_last": 0.08053307948595909,
+      "monotonic_nondecreasing": false,
+      "monotonic_nonincreasing": false,
+      "max_abs_step": 0.11194669205140409
+    },
+    "reward_trend": {
+      "delta_first_to_last": 2.506520704426464,
+      "monotonic_nondecreasing": false,
+      "monotonic_nonincreasing": false,
+      "max_abs_step": 3.4147548786292248
+    }
+  },
+  "learning_recovered": false,
+  "exploration_collapse_root_cause_fixed": true
+}

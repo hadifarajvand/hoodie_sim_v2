@@ -1,0 +1,61 @@
+{
+  "schedule": {
+    "epsilon_start": 1.0,
+    "epsilon_final": 0.05,
+    "epsilon_decay_steps": 20000,
+    "decay_type": "linear",
+    "seed": 53
+  },
+  "epsilon_eval": 0.0,
+  "per_budget": [
+    {
+      "training_budget": 50,
+      "epsilon_at_budget": 0.752335,
+      "random_action_ratio": 0.8830072880705792,
+      "greedy_action_count": 610,
+      "random_action_count": 4604
+    },
+    {
+      "training_budget": 100,
+      "epsilon_at_budget": 0.5052875,
+      "random_action_ratio": 0.7586173787806049,
+      "greedy_action_count": 2514,
+      "random_action_count": 7901
+    },
+    {
+      "training_budget": 200,
+      "epsilon_at_budget": 0.3437875,
+      "random_action_ratio": 0.6756424176619616,
+      "greedy_action_count": 4481,
+      "random_action_count": 9334
+    },
+    {
+      "training_budget": 300,
+      "epsilon_at_budget": 0.19093250000000006,
+      "random_action_ratio": 0.6019491575177597,
+      "greedy_action_count": 6780,
+      "random_action_count": 10253
+    },
+    {
+      "training_budget": 500,
+      "epsilon_at_budget": 0.050000000000000044,
+      "random_action_ratio": 0.4559209968636094,
+      "greedy_action_count": 12837,
+      "random_action_count": 10757
+    },
+    {
+      "training_budget": 750,
+      "epsilon_at_budget": 0.050000000000000044,
+      "random_action_ratio": 0.3488211903941889,
+      "greedy_action_count": 20798,
+      "random_action_count": 11141
+    },
+    {
+      "training_budget": 1000,
+      "epsilon_at_budget": 0.050000000000000044,
+      "random_action_ratio": 0.28664188351920694,
+      "greedy_action_count": 28784,
+      "random_action_count": 11566
+    }
+  ]
+}
