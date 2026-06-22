@@ -1,0 +1,5 @@
+{
+  "primary": "broken_per_task_delayed_reward_credit_assignment",
+  "secondary": "workload_topology_bias_favoring_local (local completes 35% vs vertical 14%)",
+  "fixed": "credit assignment (per-task delayed reward); exploration (prior repair)"
+}

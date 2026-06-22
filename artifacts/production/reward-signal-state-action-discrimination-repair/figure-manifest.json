@@ -1,0 +1,11 @@
+{
+  "figures": [
+    "artifacts/production/reward-signal-state-action-discrimination-repair/figures/figure_01_before_after_action_distribution.png",
+    "artifacts/production/reward-signal-state-action-discrimination-repair/figures/figure_02_q_value_distribution_by_action.png",
+    "artifacts/production/reward-signal-state-action-discrimination-repair/figures/figure_03_advantage_gap_by_state_bucket.png",
+    "artifacts/production/reward-signal-state-action-discrimination-repair/figures/figure_04_per_action_return_distribution.png",
+    "artifacts/production/reward-signal-state-action-discrimination-repair/figures/figure_05_reward_scale_and_td_error.png",
+    "artifacts/production/reward-signal-state-action-discrimination-repair/figures/figure_06_state_feature_discrimination.png",
+    "artifacts/production/reward-signal-state-action-discrimination-repair/figures/figure_07_candidate_vs_baselines_after_repair.png"
+  ]
+}

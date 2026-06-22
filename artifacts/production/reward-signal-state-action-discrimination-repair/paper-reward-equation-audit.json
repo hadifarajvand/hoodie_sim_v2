@@ -1,0 +1,7 @@
+{
+  "equation": "r_n(t+1) = -Phi_n(t) if completed; -C (C=40) if dropped; NaN if no arrival (Eq. 20)",
+  "phi_implementation": "-(completion_slot - arrival_slot + 1)",
+  "paper_detail_status": "exact",
+  "raw_reward_changed": false,
+  "source": "resources/papers/hoodie/ocr/merged.txt"
+}

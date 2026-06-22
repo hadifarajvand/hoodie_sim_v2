@@ -1,0 +1,6 @@
+{
+  "reward_reconciliation_passed": true,
+  "terminal_reconciliation_passed": true,
+  "raw_vs_canonical_reward_delta_max": 0.0,
+  "terminal_event_coverage_ratio_min": 1.0
+}

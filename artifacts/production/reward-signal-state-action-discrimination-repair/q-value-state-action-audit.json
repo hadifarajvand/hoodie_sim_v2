@@ -1,0 +1,102 @@
+{
+  "per_budget": [
+    {
+      "training_budget": 50,
+      "q_value_decision_count": 5214,
+      "q_local_mean": -2.688137629219786,
+      "q_horizontal_mean": -2.89561131018838,
+      "q_vertical_mean": -3.0602068615947626,
+      "q_local_std": 2.3933153279571986,
+      "q_horizontal_std": 2.505014633880083,
+      "q_vertical_std": 2.759216907754842,
+      "advantage_gap": 0.3720692323749768,
+      "dominant_q_action": "local",
+      "q_values_have_nonzero_action_separation": true,
+      "q_value_collapse_detected": false
+    },
+    {
+      "training_budget": 100,
+      "q_value_decision_count": 10415,
+      "q_local_mean": -10.695901666986531,
+      "q_horizontal_mean": -11.095016954392838,
+      "q_vertical_mean": -12.044217635196398,
+      "q_local_std": 9.249436003832272,
+      "q_horizontal_std": 9.623182488649636,
+      "q_vertical_std": 10.448868370019841,
+      "advantage_gap": 1.3483159682098673,
+      "dominant_q_action": "local",
+      "q_values_have_nonzero_action_separation": true,
+      "q_value_collapse_detected": false
+    },
+    {
+      "training_budget": 200,
+      "q_value_decision_count": 13815,
+      "q_local_mean": -14.791152177560148,
+      "q_horizontal_mean": -15.775011203333147,
+      "q_vertical_mean": -16.966452181973157,
+      "q_local_std": 10.79398490795267,
+      "q_horizontal_std": 11.738129007374061,
+      "q_vertical_std": 12.548188390388646,
+      "advantage_gap": 2.1753000044130086,
+      "dominant_q_action": "local",
+      "q_values_have_nonzero_action_separation": true,
+      "q_value_collapse_detected": false
+    },
+    {
+      "training_budget": 300,
+      "q_value_decision_count": 17033,
+      "q_local_mean": -17.2358144677693,
+      "q_horizontal_mean": -18.728185145318797,
+      "q_vertical_mean": -20.011655567529548,
+      "q_local_std": 11.00138992018943,
+      "q_horizontal_std": 12.267193580578228,
+      "q_vertical_std": 12.995944566370207,
+      "advantage_gap": 2.7758410997602496,
+      "dominant_q_action": "local",
+      "q_values_have_nonzero_action_separation": true,
+      "q_value_collapse_detected": false
+    },
+    {
+      "training_budget": 500,
+      "q_value_decision_count": 23594,
+      "q_local_mean": -19.907357212888673,
+      "q_horizontal_mean": -21.958154392345566,
+      "q_vertical_mean": -23.302630752878112,
+      "q_local_std": 10.508755254312014,
+      "q_horizontal_std": 11.890772272421154,
+      "q_vertical_std": 12.500292908095048,
+      "advantage_gap": 3.3952735399894394,
+      "dominant_q_action": "local",
+      "q_values_have_nonzero_action_separation": true,
+      "q_value_collapse_detected": false
+    },
+    {
+      "training_budget": 750,
+      "q_value_decision_count": 31939,
+      "q_local_mean": -21.970717727481766,
+      "q_horizontal_mean": -23.848108204417628,
+      "q_vertical_mean": -25.32015120638235,
+      "q_local_std": 10.808992355484122,
+      "q_horizontal_std": 11.710262834904004,
+      "q_vertical_std": 12.352525055187787,
+      "advantage_gap": 3.3494334789005826,
+      "dominant_q_action": "local",
+      "q_values_have_nonzero_action_separation": true,
+      "q_value_collapse_detected": false
+    },
+    {
+      "training_budget": 1000,
+      "q_value_decision_count": 40350,
+      "q_local_mean": -23.196027376831058,
+      "q_horizontal_mean": -24.976627967091186,
+      "q_vertical_mean": -26.498268966996715,
+      "q_local_std": 11.448405150035734,
+      "q_horizontal_std": 11.975006679104629,
+      "q_vertical_std": 12.639785962461385,
+      "advantage_gap": 3.302241590165657,
+      "dominant_q_action": "local",
+      "q_values_have_nonzero_action_separation": true,
+      "q_value_collapse_detected": false
+    }
+  ]
+}

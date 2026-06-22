@@ -1,0 +1,9 @@
+{
+  "reward_range_after": [
+    -40.0,
+    0.0
+  ],
+  "aggregate_reward_spikes_removed": true,
+  "double_dqn": "online selects next action, target evaluates (verified)",
+  "status": "stable"
+}

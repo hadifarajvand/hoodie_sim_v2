@@ -1,0 +1,6 @@
+{
+  "raw_reward_changed": false,
+  "training_target_reward": "per-task delayed reward (-(latency+1) / -40 / 0), bounded",
+  "extra_scaling_or_clipping_applied": false,
+  "reason": "credit-assignment fix alone restored gradient; no scaling needed."
+}

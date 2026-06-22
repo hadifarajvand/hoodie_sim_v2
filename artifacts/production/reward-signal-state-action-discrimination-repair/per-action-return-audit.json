@@ -1,0 +1,15 @@
+{
+  "before_per_action_mean_reward": {
+    "local": -29.569,
+    "vertical": -27.969,
+    "horizontal": -27.261
+  },
+  "after_per_action_mean_reward": {
+    "local": -26.286,
+    "vertical": -32.443,
+    "horizontal": -30.257
+  },
+  "before_reward_min": -174.0,
+  "after_reward_min": -40.0,
+  "per_action_return_separation_detected": true
+}

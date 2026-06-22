@@ -1,0 +1,5 @@
+{
+  "action_balanced_replay_sampling": false,
+  "outcome_balanced_replay": false,
+  "note": "exploration restores action balance; per-task credit restores reward signal; no resampling added."
+}
