@@ -1,0 +1,11 @@
+{
+  "exploration": {
+    "epsilon_start": 1.0,
+    "epsilon_final": 0.05,
+    "epsilon_decay_steps": 20000,
+    "decay_type": "linear",
+    "seed": 53
+  },
+  "per_task_credit_assignment": true,
+  "per_task_credit_emitted_last_run": null
+}

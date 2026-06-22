@@ -1,0 +1,41 @@
+{
+  "state_dim": 30,
+  "features_include": [
+    "per-action slack",
+    "per-action feasibility flags",
+    "per-path queue loads",
+    "deadline urgency",
+    "legal-action mask"
+  ],
+  "selected_action_feasible_ratio_by_budget": [
+    {
+      "training_budget": 50,
+      "ratio": 0.0033317467872441696
+    },
+    {
+      "training_budget": 100,
+      "ratio": 0.0033317467872441696
+    },
+    {
+      "training_budget": 200,
+      "ratio": 0.0033317467872441696
+    },
+    {
+      "training_budget": 300,
+      "ratio": 0.0033317467872441696
+    },
+    {
+      "training_budget": 500,
+      "ratio": 0.0033317467872441696
+    },
+    {
+      "training_budget": 750,
+      "ratio": 0.0033317467872441696
+    },
+    {
+      "training_budget": 1000,
+      "ratio": 0.0033317467872441696
+    }
+  ],
+  "note": "features vary across tasks; discrimination depends on usable reward gradient (now restored)."
+}

@@ -1,0 +1,28 @@
+{
+  "pipeline_gates": {
+    "reward_reconciliation_passed": true,
+    "terminal_reconciliation_passed": true,
+    "raw_vs_canonical_reward_delta_zero": true,
+    "terminal_coverage_one": true,
+    "metric_schema_valid": true,
+    "completion_nonzero": true,
+    "drop_or_deadline_pressure_active": true,
+    "no_nan_inf": true,
+    "legal_action_only": true,
+    "claim_safety_passed": true
+  },
+  "learning_signals": {
+    "eval_action_collapse_reduced": false,
+    "candidate_no_longer_signature_matches_fixed_local": false,
+    "q_values_state_dependent": true,
+    "advantage_gap_varies_by_state": true,
+    "selected_action_feasible_ratio_improved": false,
+    "completion_or_reward_changes_across_budget": false,
+    "per_action_return_separation_detected": true
+  },
+  "signals_met": 3,
+  "learning_recovered": false,
+  "all_pass": false,
+  "gates_passed": 13,
+  "gate_count": 18
+}

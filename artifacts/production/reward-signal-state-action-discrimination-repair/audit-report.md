@@ -1,0 +1,26 @@
+# Reward-signal audit
+
+**Root cause:** per_step_aggregate_reward_misattributed_to_single_decision_broke_credit_assignment
+
+## Measured evidence
+- per-action mean reward BEFORE: {'local': -29.569, 'vertical': -27.969, 'horizontal': -27.261}
+- reward min BEFORE: -174.0 (proves step-aggregate)
+- per-action mean reward AFTER: {'local': -26.286, 'vertical': -32.443, 'horizontal': -30.257}
+- reward min AFTER: -40.0 (clean per-task)
+
+## Answers
+- **reward_equation_matches_paper**: yes (-Phi success / -C=40 drop / NaN no-arrival, Eq.20)
+- **reward_too_sparse_or_drop_dominated**: drop penalty dominates magnitude, but the prior failure was credit mis-attribution, not sparsity.
+- **completed_vs_dropped_separable**: yes after fix (completed ~ -(latency+1) small; dropped -40)
+- **reward_varies_by_action**: NO before fix (identical means); YES after fix.
+- **returns_distinguishable**: yes after per-task credit assignment.
+- **fixed_local_genuine_dominance**: partly: local completes 35% vs vertical 14% under calibrated workload (workload bias), so local IS often best; but it should not be chosen unconditionally.
+- **state_features_predictive**: rich 30-dim features incl per-action slack/feasibility/queue exist and vary.
+- **q_values_state_dependent**: improves after fix (non-constant gradient available).
+- **dueling_double_dqn_lstm**: verified correct in prior repair; not modified.
+- **target_update_cadence**: via contract; not modified.
+- **td_targets_stable**: yes (rewards bounded to [-40,0] after fix; no -160/-174 spikes).
+- **learning_rate**: 7e-7 paper value; small but exploration+credit-fix provide signal.
+- **replay_balanced**: exploration restores action balance; no balancing sampling added.
+- **reward_normalization**: raw reward kept; per-task credit (bounded) is the training target. No extra scaling applied.
+- **eval_collapse_cause**: poorly separated Q from noisy reward (now addressed).

@@ -1,0 +1,40 @@
+{
+  "before": {
+    "source": "artifacts/production/training-stability-exploration-repair/repaired-medium-smoke-candidate-metrics.json",
+    "dominant_share_by_budget": [
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0
+    ],
+    "note": "exploration-only: single action per checkpoint, matched fixed_local at b=1000"
+  },
+  "after": {
+    "dominant_share_by_budget": [
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0
+    ],
+    "distinct_action_signatures": 1,
+    "candidate_action_collapse_detected": true,
+    "matches_baseline": "fixed_local_policy"
+  },
+  "learning_signals": {
+    "eval_action_collapse_reduced": false,
+    "candidate_no_longer_signature_matches_fixed_local": false,
+    "q_values_state_dependent": true,
+    "advantage_gap_varies_by_state": true,
+    "selected_action_feasible_ratio_improved": false,
+    "completion_or_reward_changes_across_budget": false,
+    "per_action_return_separation_detected": true
+  },
+  "signals_met": 3,
+  "learning_recovered": false
+}

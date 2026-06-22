@@ -147,13 +147,17 @@ def _metric_row(
     return row, detail
 
 
-def run_medium_smoke(profile: ProductionProfile, commit: str) -> dict[str, Any]:
+def run_medium_smoke(
+    profile: ProductionProfile, commit: str, *, per_task_credit_assignment: bool = False
+) -> dict[str, Any]:
     cfg = StateRepresentationRepairConfig()
     session = StateRepresentationTrainingSession(
         config=cfg, state_representation_profile=STATE_REPRESENTATION_PROFILE_DEADLINE_QUEUE_FEASIBILITY_V1,
     )
     # Enable epsilon-greedy exploration on the training rollout (the fix).
     session.trainer.exploration = EpsilonGreedyExploration(**EXPLORATION_KWARGS)
+    # Enable per-task delayed-reward credit assignment (reward-signal repair).
+    session.trainer.per_task_credit_assignment = bool(per_task_credit_assignment)
     rows: list[dict[str, Any]] = []
     details: list[dict[str, Any]] = []
     budgets_executed: list[int] = []

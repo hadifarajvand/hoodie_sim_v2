@@ -1,0 +1,70 @@
+{
+  "branch": "reward-signal-state-action-discrimination-repair",
+  "commit_sha": "650c47fc7c6a5ca3b0d4c09d35250521daf972b5",
+  "verdict": "reward_signal_state_action_repair_blocked",
+  "recommended_next_step": "inspect_workload_topology_bias",
+  "root_cause": "per_step_aggregate_reward_misattributed_to_single_decision_broke_credit_assignment",
+  "fix": "per-task delayed-reward credit assignment (paper Algorithm 1)",
+  "pipeline_gates": {
+    "reward_reconciliation_passed": true,
+    "terminal_reconciliation_passed": true,
+    "raw_vs_canonical_reward_delta_zero": true,
+    "terminal_coverage_one": true,
+    "metric_schema_valid": true,
+    "completion_nonzero": true,
+    "drop_or_deadline_pressure_active": true,
+    "no_nan_inf": true,
+    "legal_action_only": true,
+    "claim_safety_passed": true
+  },
+  "learning_signals": {
+    "eval_action_collapse_reduced": false,
+    "candidate_no_longer_signature_matches_fixed_local": false,
+    "q_values_state_dependent": true,
+    "advantage_gap_varies_by_state": true,
+    "selected_action_feasible_ratio_improved": false,
+    "completion_or_reward_changes_across_budget": false,
+    "per_action_return_separation_detected": true
+  },
+  "signals_met": 3,
+  "learning_health": {
+    "candidate_action_collapse_detected": true,
+    "candidate_collapse_by_budget": {
+      "50": true,
+      "100": true,
+      "200": true,
+      "300": true,
+      "500": true,
+      "750": true,
+      "1000": true
+    },
+    "no_learning_progress_detected": true,
+    "candidate_action_signature_matches_baseline": "fixed_local_policy",
+    "learning_health_ok": false,
+    "interpretation": "Pipeline is stable and fully reconciled, but the learned candidate degenerated to a single-action policy with no reward/completion improvement across budgets; this is a training/exploration blocker, not a pipeline blocker."
+  },
+  "learning_recovered": false,
+  "raw_vs_canonical_reward_delta_max": 0.0,
+  "terminal_event_coverage_ratio_min": 1.0,
+  "budgets_executed": [
+    50,
+    100,
+    200,
+    300,
+    500,
+    750,
+    1000
+  ],
+  "claim_safety": {
+    "paper_reproduction_claim_made": false,
+    "exact_numerical_reproduction_claim_made": false,
+    "performance_superiority_claim_made": false,
+    "baseline_superiority_claim_made": false,
+    "training_5000_run": false,
+    "max_training_budget_executed": 1000,
+    "raw_reward_semantics_changed": false,
+    "training_only_reward_transform": "per_task_delayed_reward_credit_assignment",
+    "energy_metric_status": "not_implemented",
+    "claim_safety_passed": true
+  }
+}

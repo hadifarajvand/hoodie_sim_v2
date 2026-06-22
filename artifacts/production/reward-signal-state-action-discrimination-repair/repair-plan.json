@@ -1,0 +1,12 @@
+{
+  "selected_repair": "A+ per-task delayed-reward credit assignment (training-only)",
+  "files_modified": [
+    "src/analysis/full_training_reproduction_campaign/trainer.py",
+    "src/analysis/paper_faithful_simulation_production/simulation_runner.py",
+    "src/analysis/paper_faithful_simulation_production/reward_signal_repair.py (new)"
+  ],
+  "raw_reward_changed": false,
+  "environment_changed": false,
+  "dependencies_changed": false,
+  "rollback": "set trainer.per_task_credit_assignment=False (and exploration handling unchanged)."
+}

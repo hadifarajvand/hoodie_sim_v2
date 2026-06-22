@@ -1,0 +1,5 @@
+{
+  "lstm": "1x20 cells (paper)",
+  "state_window_lookback": "config.lookback_w",
+  "status": "not_modified"
+}
