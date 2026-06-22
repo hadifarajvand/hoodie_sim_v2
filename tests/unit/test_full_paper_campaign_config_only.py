@@ -9,7 +9,8 @@ import pytest
 
 from src.analysis.full_paper_campaign_config import build_full_campaign_config
 from src.analysis.full_paper_campaign_config import config as cfgmod
-from src.analysis.full_paper_campaign_config.runbook import build_runbook, write_campaign_config_artifacts
+from src.analysis.full_paper_campaign_config.runbook import build_runbook
+from src.analysis.full_paper_campaign_config.runner import write_all_artifacts
 
 
 def test_config_is_paper_faithful_and_config_only():
@@ -74,17 +75,18 @@ def test_no_execution_imports_in_modules():
         assert "run_medium_smoke" not in names
 
 
-def test_artifacts_written(tmp_path, monkeypatch):
-    rb = write_campaign_config_artifacts(emit_json=False)
+def test_artifacts_written():
+    write_all_artifacts()
     root = Path("artifacts/production/full-paper-campaign-config-only")
     for name in (
-        "full-campaign-config.json", "compute-time-storage-estimates.json",
-        "checkpoint-resume-strategy.json", "monitoring-and-abort.json",
-        "expected-artifacts.json", "multi-agent-approximation.json",
-        "claim-safety.json", "runbook.json", "runbook.md",
+        "full-paper-campaign-config.json", "compute-time-storage-estimates.json",
+        "checkpoint-resume-plan.md", "monitoring-plan.md", "abort-conditions.md",
+        "expected-artifact-manifest.json", "remaining-approximations.md",
+        "paper-parameter-summary.json", "claim-safety.json",
+        "config-only-final-report.json", "config-only-final-report.md", "execution-runbook.md",
     ):
         assert (root / name).exists(), name
-    assert (root / "figures" / "figure_01_paper_epsilon_schedule.png").exists()
-    cfg = json.loads((root / "full-campaign-config.json").read_text())
+    assert (root / "figures" / "figure_01_full_campaign_epsilon_schedule.png").exists()
+    cfg = json.loads((root / "full-paper-campaign-config.json").read_text())
     assert cfg["number_of_training_episodes_N_E"] == 5000
     assert cfg["execute"] is False

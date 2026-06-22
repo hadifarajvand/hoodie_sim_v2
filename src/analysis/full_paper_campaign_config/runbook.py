@@ -1,24 +1,13 @@
-"""Emit the config-only runbook + artifacts for the full HOODIE paper campaign.
+"""Build the config-only runbook payload for the full HOODIE paper campaign.
 
-This module writes configuration, estimates, and operational runbook artifacts.
-It NEVER trains. The only "run" here is artifact generation.
-
-Run::
-
-    python -m src.analysis.full_paper_campaign_config.runbook --json
+This module assembles the operational runbook (config, estimates, checkpoint/
+resume, monitoring, abort conditions, expected artifacts, approximation note).
+It NEVER trains. Artifact writing lives in ``runner.py``.
 """
 
 from __future__ import annotations
 
-import argparse
-import json
-from pathlib import Path
 from typing import Any
-
-import matplotlib
-
-matplotlib.use("Agg")
-import matplotlib.pyplot as plt  # noqa: E402
 
 from .config import (
     FullPaperCampaignConfig,
@@ -27,23 +16,11 @@ from .config import (
     build_full_campaign_config,
 )
 
-OUT_DIR = Path("artifacts/production/full-paper-campaign-config-only")
-FIGURES = OUT_DIR / "figures"
-
 # Approximate on-disk sizes (bytes) derived from the validated network/replay shapes.
 _PARAM_COUNT_APPROX = 2_200_000          # LSTM + 3x1024 + dueling heads
 _BYTES_PER_FLOAT = 4
 _CHECKPOINT_BYTES = _PARAM_COUNT_APPROX * _BYTES_PER_FLOAT * 3  # online + target + Adam state
 _REPLAY_BYTES = 10_000 * (2 * 10 * 30 + 12) * _BYTES_PER_FLOAT  # 2 windows(WxD) + scalars
-
-
-def _commit() -> str:
-    import subprocess
-
-    try:
-        return subprocess.check_output(["git", "rev-parse", "HEAD"], text=True).strip()
-    except Exception:  # noqa: BLE001
-        return "unknown"
 
 
 def _compute_estimates(cfg: FullPaperCampaignConfig) -> dict[str, Any]:
@@ -229,140 +206,3 @@ def build_runbook() -> dict[str, Any]:
             ),
         },
     }
-
-
-def _figure(cfg: FullPaperCampaignConfig) -> str:
-    FIGURES.mkdir(parents=True, exist_ok=True)
-    eps_x = list(range(0, cfg.number_of_training_episodes + 1, 100))
-    eps_y = [cfg.epsilon_at(e) for e in eps_x]
-    fig, ax = plt.subplots(figsize=(8, 4))
-    ax.plot(eps_x, eps_y, color="#1f77b4")
-    ax.axvline(cfg.epsilon_decay_episodes, color="red", linestyle="--", label="N_E/2 = 2500")
-    ax.set_xlabel("training episode"); ax.set_ylabel("epsilon")
-    ax.set_title("Paper epsilon schedule (linear 1->0 over first N_E/2, then 0)")
-    ax.legend(); fig.tight_layout()
-    p = FIGURES / "figure_01_paper_epsilon_schedule.png"
-    fig.savefig(p, dpi=110); plt.close(fig)
-    return str(p)
-
-
-def write_campaign_config_artifacts(emit_json: bool = False) -> dict[str, Any]:
-    OUT_DIR.mkdir(parents=True, exist_ok=True)
-    runbook = build_runbook()
-    runbook["commit_sha"] = _commit()
-
-    (OUT_DIR / "full-campaign-config.json").write_text(json.dumps(runbook["config"], indent=2))
-    (OUT_DIR / "compute-time-storage-estimates.json").write_text(json.dumps(runbook["compute_time_estimates"], indent=2))
-    (OUT_DIR / "checkpoint-resume-strategy.json").write_text(json.dumps(runbook["checkpoint_resume_strategy"], indent=2))
-    (OUT_DIR / "monitoring-and-abort.json").write_text(json.dumps(
-        {"monitoring": runbook["monitoring"], "abort_conditions": runbook["abort_conditions"]}, indent=2))
-    (OUT_DIR / "expected-artifacts.json").write_text(json.dumps(runbook["expected_artifacts"], indent=2))
-    (OUT_DIR / "multi-agent-approximation.json").write_text(json.dumps(runbook["multi_agent_approximation"], indent=2))
-    (OUT_DIR / "claim-safety.json").write_text(json.dumps(runbook["claim_safety"], indent=2))
-    (OUT_DIR / "runbook.json").write_text(json.dumps(runbook, indent=2))
-    fig = _figure(build_full_campaign_config())
-    runbook["figure"] = fig
-    (OUT_DIR / "runbook.md").write_text(_markdown(runbook))
-
-    if emit_json:
-        print(json.dumps({
-            "config_only": True,
-            "execute": runbook["execute"],
-            "N_E": runbook["config"]["number_of_training_episodes_N_E"],
-            "estimated_total_hours": runbook["config"]["estimated_total_hours"],
-            "estimated_total_hours_range": runbook["compute_time_estimates"]["estimated_total_hours_range"],
-            "storage_total_estimate_mb": runbook["compute_time_estimates"]["storage_total_estimate_mb"],
-            "multi_agent_status": runbook["multi_agent_approximation"]["status"],
-        }, indent=2))
-    return runbook
-
-
-def _markdown(r: dict[str, Any]) -> str:
-    cfg = r["config"]; est = r["compute_time_estimates"]; ma = r["multi_agent_approximation"]
-    L = [
-        "# Full HOODIE Paper Campaign — Config-Only Runbook (N_E=5000)",
-        "",
-        "> **CONFIG ONLY — this branch does not run the campaign.** Executing 5000 episodes",
-        "> is a deliberate, separately authorized action. Nothing here starts training.",
-        "",
-        "## 1. Configuration (paper-faithful)",
-        f"- N_E (training episodes): **{cfg['number_of_training_episodes_N_E']}**  | T = {cfg['episode_length_T']} | N agents = {cfg['number_of_agents_N']}",
-        f"- Epsilon: {cfg['epsilon']['start']} -> {cfg['epsilon']['final']} linearly over first {cfg['epsilon']['decay_episodes']} episodes "
-        f"({cfg['epsilon']['schedule_unit']}-based), 0 after. _{cfg['epsilon']['paper_reference']}_",
-        f"- Target update: every {cfg['target_update']['frequency_N_copy']} {cfg['target_update']['unit']}s. _{cfg['target_update']['paper_reference']}_",
-        f"- Optimizer: {cfg['optimizer']['name']} lr={cfg['optimizer']['learning_rate']} loss={cfg['optimizer']['loss']} | gamma={cfg['gamma']} | batch={cfg['batch_size']} | replay={cfg['replay_memory_capacity']}",
-        f"- Network: LSTM {cfg['lstm_cells']} cells (lookback {cfg['lstm_lookback_w']}) -> {cfg['q_network_hidden_layers']} -> dueling V/A | Double DQN",
-        f"- Reward: {cfg['reward_equation']}",
-        f"- Credit assignment: {cfg['credit_assignment']} | Reconciliation: {cfg['reconciliation_profile']}",
-        f"- State profile: {cfg['state_representation_profile']} | Calibration: {cfg['calibration_profile']}",
-        f"- Eval: {cfg['evaluation_episode_count']} episodes at checkpoints {cfg['eval_at_episodes']}",
-        "",
-        "## 2. Compute / time / storage estimates",
-        f"- Hardware assumption: {est['hardware_assumption']}",
-        f"- Measured: {est['measured_train_sec_per_episode']} s/train-episode, {est['measured_eval_sec_per_episode']} s/eval-episode",
-        f"- **Training: ~{est['estimated_train_hours']} h** | Evaluation: ~{est['estimated_eval_hours']} h | "
-        f"**Total point estimate: ~{cfg['estimated_total_hours']} h** (range {est['estimated_total_hours_range']} h)",
-        f"- Caveat: {est['estimate_caveat']}",
-        f"- Storage: ~{est['storage_checkpoints_mb']} MB checkpoints ({est['num_checkpoints']} ckpts) + "
-        f"~{est['storage_replay_snapshot_mb']} MB replay + artifacts ≈ **~{est['storage_total_estimate_mb']} MB total**",
-        "",
-        "## 3. Checkpoint / resume strategy",
-        f"- Checkpoint every **{r['checkpoint_resume_strategy']['checkpoint_cadence_episodes']} episodes** to "
-        f"`{r['checkpoint_resume_strategy']['checkpoint_path_pattern']}`",
-        "- Checkpoint contents: " + "; ".join(r["checkpoint_resume_strategy"]["checkpoint_contents"]),
-        "- Resume protocol:",
-    ]
-    for step in r["checkpoint_resume_strategy"]["resume_protocol"]:
-        L.append(f"  - {step}")
-    L += [f"- Determinism: {r['checkpoint_resume_strategy']['determinism_notes']}", "",
-          "## 4. Monitoring"]
-    for k, v in r["monitoring"].items():
-        if isinstance(v, list):
-            L.append(f"- {k}:")
-            L += [f"  - `{c}`" for c in v]
-        else:
-            L.append(f"- {k}: {v}")
-    L += ["", "## 5. Abort conditions"]
-    for a in r["abort_conditions"]:
-        L.append(f"- **{a['condition']}** -> {a['action']}")
-    L += ["", "## 6. Expected artifacts",
-          f"- Root: `{r['expected_artifacts']['root']}`",
-          "- Per checkpoint: " + "; ".join(r["expected_artifacts"]["per_checkpoint"]),
-          "- Final: " + "; ".join(r["expected_artifacts"]["final"]),
-          f"- Metric schema: {r['expected_artifacts']['metric_schema']}",
-          "",
-          "## 7. Remaining approximation — shared-parameter trainer vs paper per-EA distributed models",
-          f"- **Paper design:** {ma['paper_design']}",
-          f"- **Repo implementation:** {ma['repo_implementation']}",
-          f"- **Status:** `{ma['status']}`",
-          f"- **Impact:** {ma['impact']}",
-          f"- **Implication for the full campaign:** {ma['implication_for_full_campaign']}",
-          f"- **Scope:** {ma['scope_note']}",
-          "",
-          "## 8. Claim safety",
-          f"- training_5000_run: {r['claim_safety']['training_5000_run']} | config_only: {r['claim_safety']['config_only']}",
-          "- No paper-reproduction or superiority claims; reward & environment unmodified.",
-          "",
-          "## 9. How to execute (when authorized)",
-          f"- {r['how_to_execute_when_authorized']['note']}",
-          f"- Prerequisite: {r['how_to_execute_when_authorized']['prerequisite']}",
-          f"- {r['how_to_execute_when_authorized']['command_sketch']}",
-    ]
-    return "\n".join(L)
-
-
-def main() -> None:
-    parser = argparse.ArgumentParser(description="Emit config-only full-campaign runbook (never trains).")
-    parser.add_argument("--json", action="store_true")
-    parser.add_argument("--execute", action="store_true", help="(blocked) refuses to run 5000")
-    args = parser.parse_args()
-    if args.execute:
-        raise SystemExit(
-            "Refusing to execute: this is a config-only runbook generator. "
-            "Running N_E=5000 is a separate, explicitly authorized action and is not implemented here."
-        )
-    write_campaign_config_artifacts(emit_json=args.json)
-
-
-if __name__ == "__main__":
-    main()
