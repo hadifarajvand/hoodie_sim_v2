@@ -1,0 +1,40 @@
+{
+  "mean_task_size_mbits": 3.5,
+  "work_per_task_gcycles": 1.0394999999999999,
+  "offered_load_gcycles_per_slot": 10.395,
+  "capacity_gcycles_per_slot": {
+    "private": 10.0,
+    "public": 10.0,
+    "cloud": 3.0,
+    "total": 23.0
+  },
+  "pure_strategy_analysis": {
+    "fixed_local": {
+      "served_pool_gcycles_per_slot": 10.0,
+      "utilization": 1.0394999999999999,
+      "best_case_delay_slots": 3,
+      "transmission_slots": 0
+    },
+    "fixed_horizontal": {
+      "served_pool_gcycles_per_slot": 10.0,
+      "utilization": 1.0394999999999999,
+      "best_case_delay_slots": 5,
+      "transmission_slots": 2,
+      "extra_penalty": "public-queue contention concentrates on degree-3 neighbours"
+    },
+    "fixed_vertical": {
+      "served_pool_gcycles_per_slot": 3.0,
+      "utilization": 3.465,
+      "best_case_delay_slots": 5,
+      "transmission_slots": 4,
+      "extra_penalty": "single shared cloud pool, lowest capacity, highest transmission"
+    }
+  },
+  "mixed_balanced_utilization": 0.4519565217391304,
+  "predicted_best_pure_strategy": "fixed_local",
+  "predicted_pure_ordering_best_to_worst": [
+    "fixed_local",
+    "fixed_horizontal",
+    "fixed_vertical"
+  ]
+}

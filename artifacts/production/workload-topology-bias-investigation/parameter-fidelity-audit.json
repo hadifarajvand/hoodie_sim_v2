@@ -1,0 +1,82 @@
+{
+  "table_4_parameter_checks": {
+    "task_arrival_probability_P": {
+      "implemented": 0.5,
+      "paper": 0.5,
+      "matches": true
+    },
+    "horizontal_data_rate_RH_mbps": {
+      "implemented": 30.0,
+      "paper": 30.0,
+      "matches": true
+    },
+    "vertical_data_rate_RV_mbps": {
+      "implemented": 10.0,
+      "paper": 10.0,
+      "matches": true
+    },
+    "task_size_min_mbits": {
+      "implemented": 2.0,
+      "paper": 2.0,
+      "matches": true
+    },
+    "task_size_max_mbits": {
+      "implemented": 5.0,
+      "paper": 5.0,
+      "matches": true
+    },
+    "task_size_step_mbits": {
+      "implemented": 0.1,
+      "paper": 0.1,
+      "matches": true
+    },
+    "processing_density_rho": {
+      "implemented": 0.297,
+      "paper": 0.297,
+      "matches": true
+    },
+    "number_of_EAs_N": {
+      "implemented": 20,
+      "paper": 20,
+      "matches": true
+    },
+    "cpu_freq_private_ghz": {
+      "implemented": 5.0,
+      "paper": 5.0,
+      "matches": true
+    },
+    "cpu_freq_public_ghz": {
+      "implemented": 5.0,
+      "paper": 5.0,
+      "matches": true
+    },
+    "cpu_freq_cloud_ghz": {
+      "implemented": 30.0,
+      "paper": 30.0,
+      "matches": true
+    },
+    "time_slot_duration_sec": {
+      "implemented": 0.1,
+      "paper": 0.1,
+      "matches": true
+    },
+    "task_timeout_slots": {
+      "implemented": 20,
+      "paper": 20,
+      "matches": true
+    }
+  },
+  "all_table_4_parameters_match": true,
+  "rate_constraint_RH_gt_RV": true,
+  "adjacency_audit": {
+    "implemented_nodes": 20,
+    "implemented_edges": 30,
+    "implemented_degree_uniform": true,
+    "implemented_degree": 3,
+    "implemented_symmetric_constant": true,
+    "paper_constraint": "See Fig. 7 (constant, symmetric, R_H > R_V)",
+    "status": "recovered_assumption",
+    "note": "Fig.7 adjacency is not numerically recoverable from OCR; implementation uses an approved symmetric constant 20-node degree-3 (30-edge) graph. Connectivity affects horizontal routing spread but NOT the per-layer compute capacities that drive bias."
+  },
+  "paper_source": "resources/papers/hoodie/ocr/merged.txt"
+}

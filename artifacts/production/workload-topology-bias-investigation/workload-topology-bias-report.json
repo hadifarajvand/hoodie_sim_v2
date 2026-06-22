@@ -1,0 +1,173 @@
+{
+  "investigation": "workload_topology_bias",
+  "do_not_change_algorithm": true,
+  "parameter_fidelity_audit": {
+    "table_4_parameter_checks": {
+      "task_arrival_probability_P": {
+        "implemented": 0.5,
+        "paper": 0.5,
+        "matches": true
+      },
+      "horizontal_data_rate_RH_mbps": {
+        "implemented": 30.0,
+        "paper": 30.0,
+        "matches": true
+      },
+      "vertical_data_rate_RV_mbps": {
+        "implemented": 10.0,
+        "paper": 10.0,
+        "matches": true
+      },
+      "task_size_min_mbits": {
+        "implemented": 2.0,
+        "paper": 2.0,
+        "matches": true
+      },
+      "task_size_max_mbits": {
+        "implemented": 5.0,
+        "paper": 5.0,
+        "matches": true
+      },
+      "task_size_step_mbits": {
+        "implemented": 0.1,
+        "paper": 0.1,
+        "matches": true
+      },
+      "processing_density_rho": {
+        "implemented": 0.297,
+        "paper": 0.297,
+        "matches": true
+      },
+      "number_of_EAs_N": {
+        "implemented": 20,
+        "paper": 20,
+        "matches": true
+      },
+      "cpu_freq_private_ghz": {
+        "implemented": 5.0,
+        "paper": 5.0,
+        "matches": true
+      },
+      "cpu_freq_public_ghz": {
+        "implemented": 5.0,
+        "paper": 5.0,
+        "matches": true
+      },
+      "cpu_freq_cloud_ghz": {
+        "implemented": 30.0,
+        "paper": 30.0,
+        "matches": true
+      },
+      "time_slot_duration_sec": {
+        "implemented": 0.1,
+        "paper": 0.1,
+        "matches": true
+      },
+      "task_timeout_slots": {
+        "implemented": 20,
+        "paper": 20,
+        "matches": true
+      }
+    },
+    "all_table_4_parameters_match": true,
+    "rate_constraint_RH_gt_RV": true,
+    "adjacency_audit": {
+      "implemented_nodes": 20,
+      "implemented_edges": 30,
+      "implemented_degree_uniform": true,
+      "implemented_degree": 3,
+      "implemented_symmetric_constant": true,
+      "paper_constraint": "See Fig. 7 (constant, symmetric, R_H > R_V)",
+      "status": "recovered_assumption",
+      "note": "Fig.7 adjacency is not numerically recoverable from OCR; implementation uses an approved symmetric constant 20-node degree-3 (30-edge) graph. Connectivity affects horizontal routing spread but NOT the per-layer compute capacities that drive bias."
+    },
+    "paper_source": "resources/papers/hoodie/ocr/merged.txt"
+  },
+  "capacity_feasibility_analysis": {
+    "mean_task_size_mbits": 3.5,
+    "work_per_task_gcycles": 1.0394999999999999,
+    "offered_load_gcycles_per_slot": 10.395,
+    "capacity_gcycles_per_slot": {
+      "private": 10.0,
+      "public": 10.0,
+      "cloud": 3.0,
+      "total": 23.0
+    },
+    "pure_strategy_analysis": {
+      "fixed_local": {
+        "served_pool_gcycles_per_slot": 10.0,
+        "utilization": 1.0394999999999999,
+        "best_case_delay_slots": 3,
+        "transmission_slots": 0
+      },
+      "fixed_horizontal": {
+        "served_pool_gcycles_per_slot": 10.0,
+        "utilization": 1.0394999999999999,
+        "best_case_delay_slots": 5,
+        "transmission_slots": 2,
+        "extra_penalty": "public-queue contention concentrates on degree-3 neighbours"
+      },
+      "fixed_vertical": {
+        "served_pool_gcycles_per_slot": 3.0,
+        "utilization": 3.465,
+        "best_case_delay_slots": 5,
+        "transmission_slots": 4,
+        "extra_penalty": "single shared cloud pool, lowest capacity, highest transmission"
+      }
+    },
+    "mixed_balanced_utilization": 0.4519565217391304,
+    "predicted_best_pure_strategy": "fixed_local",
+    "predicted_pure_ordering_best_to_worst": [
+      "fixed_local",
+      "fixed_horizontal",
+      "fixed_vertical"
+    ]
+  },
+  "measured_baseline_ordering": {
+    "completion_ratio": {
+      "fixed_local_policy": 0.2464540694907187,
+      "fixed_horizontal_policy": 0.16592099000475963,
+      "fixed_vertical_policy": 0.13450737743931462
+    },
+    "drop_ratio": {
+      "fixed_local_policy": 0.6626368396001904,
+      "fixed_horizontal_policy": 0.7404093288910043,
+      "fixed_vertical_policy": 0.7709662065683008
+    },
+    "reward_per_task": {
+      "fixed_local_policy": -28.992860542598763,
+      "fixed_horizontal_policy": -31.499381247025227,
+      "fixed_vertical_policy": -32.40761542122799
+    },
+    "measured_ordering_best_to_worst": [
+      "fixed_local_policy",
+      "fixed_horizontal_policy",
+      "fixed_vertical_policy"
+    ],
+    "source": "artifacts/production/reward-signal-state-action-discrimination-repair/baseline-metrics-after-repair.json"
+  },
+  "predicted_pure_ordering": [
+    "local",
+    "horizontal",
+    "vertical"
+  ],
+  "measured_pure_ordering": [
+    "local",
+    "horizontal",
+    "vertical"
+  ],
+  "predicted_matches_measured": true,
+  "local_dominance_expected": true,
+  "offload_paths_correctly_weaker_not_misparameterised": true,
+  "verdict": "local_dominance_is_genuine_paper_faithful_consequence",
+  "parameter_repair_needed": false,
+  "required_parameter_repair": "NONE \u2014 task-size H, density rho, link rates R_H/R_V, CPU frequencies, and adjacency degree all match Table 4. fixed_local saturates the private pool (util ~104%), public is equal-capacity but pays transmission + degree-3 contention, and cloud is a single 3 Gcycle/slot pool (util ~347%). A MIXED policy is feasible (util ~45%); discovering it is a learning/training-budget problem (paper N_E=5000), not a parameter problem.",
+  "recommended_next_step": "inspect_algorithm_fidelity_against_paper",
+  "claim_safety": {
+    "algorithm_changed": false,
+    "environment_changed": false,
+    "parameters_changed": false,
+    "paper_reproduction_claim_made": false,
+    "performance_superiority_claim_made": false
+  }
+}
