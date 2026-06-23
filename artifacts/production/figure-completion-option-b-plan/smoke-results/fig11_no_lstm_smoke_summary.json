@@ -1,0 +1,16 @@
+{
+  "num_episodes": 50,
+  "metadata": {
+    "learning_rate": 7e-07,
+    "gamma": 0.99,
+    "num_agents": 20,
+    "proposed_method": "none",
+    "state_representation_profile": "deadline_queue_feasibility_v1",
+    "reconciliation_profile": "horizon_aware_recovered_reward_event",
+    "network_architecture": "feedforward_no_lstm"
+  },
+  "status": "success_no_lstm_smoke_test",
+  "smoke_mode": true,
+  "delta": 0.0,
+  "terminal_coverage": 1.0
+}

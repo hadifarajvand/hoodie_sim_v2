@@ -1,0 +1,13 @@
+{
+  "config": {
+    "arrival_probability": 0.2,
+    "num_agents_drl": 20,
+    "proposed_method": "none",
+    "state_representation_profile": "deadline_queue_feasibility_v1",
+    "reconciliation_profile": "horizon_aware_recovered_reward_event",
+    "evaluation_mode": "policy_fixed_no_training"
+  },
+  "eval_episodes": 10,
+  "status": "success_evaluation_smoke_test",
+  "smoke_mode": true
+}
