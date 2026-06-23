@@ -1,7 +1,8 @@
 # Per-EA Distributed Baseline — Report
 
-- **Verdict:** `true_per_EA_distributed_baseline_ready_for_full_campaign`  | Next: `prepare_paper-output-report`
+- **Verdict:** `true_per_EA_distributed_full_campaign_completed` | Next: `prepare_paper_output_report`
 - Mode: full | Executed 5000: True | Proposed method: NONE
+- Runtime commit: `8ed90e6e7d8697d7f99cee51079cc019d8151bf4` | Results commit: `8ed90e6e7d8697d7f99cee51079cc019d8151bf4`
 
 ## Distributed candidate vs comparators (final)
 - Distributed final: 0.221 compl / -28.07 rwd
@@ -12,12 +13,13 @@
 - random_legal: 0.243 compl / -29.11 rwd
 
 ## Learning health
-- Local-dominant: False | distinct dominant signatures: 2
-- Horizontal used: True | Vertical used: True
-- Mixed behavior emerged across checkpoints/agents: True (vertical observed during smoke: True)
-- Final aggregate greedy policy horizontal-dominant: False | final balanced H/V/L mix: False | vertical usage final: True
-- Distributed vs shared (completion): -0.033129846559973586
-- Distributed vs capacity_split (completion): -0.035795243989768966
+- **Mixed behavior emerged during training:** True (horizontal and vertical both used across checkpoints)
+- **Final policy vertical-dominant:** True (final aggregate greedy: L=0, H=0, V=1.0)
+- **Final balanced mixed policy:** False (final is 100% vertical, not balanced H/V/L)
+- **Local dominance reduced vs shared:** True (distributed=0% local vs shared=local-dominant in final)
+- **Distributed underperformed shared on completion:** True (-0.033 delta, 0.2214 vs 0.2545)
+- **Distributed underperformed capacity_split on completion:** True (-0.036 delta, 0.2214 vs 0.2572)
+- Per-agent learning: 18/20 agents chose local when available; 2 chose vertical (per-EA autonomy observed)
 
 ## Reconciliation
 - Reconciled all: True | delta max: 0.0
