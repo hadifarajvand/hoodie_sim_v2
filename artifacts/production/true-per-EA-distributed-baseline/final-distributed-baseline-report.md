@@ -14,7 +14,8 @@
 ## Learning health
 - Local-dominant: False | distinct dominant signatures: 3
 - Horizontal used: True | Vertical used: True
-- True balanced mixed/load-spreading policy learned: True
+- Mixed behavior emerged across checkpoints/agents: True (vertical observed during smoke: True)
+- Final aggregate greedy policy horizontal-dominant: True | final balanced H/V/L mix: False | vertical usage final: False
 - Distributed vs shared (completion): -0.0031842930209536324
 - Distributed vs capacity_split (completion): -0.005849690450749012
 

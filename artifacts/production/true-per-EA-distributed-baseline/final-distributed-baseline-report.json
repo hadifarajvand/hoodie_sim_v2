@@ -9,14 +9,18 @@
     "distinct_dominant_action_signatures": 3,
     "horizontal_action_usage_emerged": true,
     "vertical_action_usage_emerged": true,
-    "true_balanced_mixed_load_spreading_policy_learned": true,
     "final_action_distribution": {
       "local": 0,
       "horizontal": 3303,
       "vertical": 0
     },
     "distributed_vs_shared_completion": -0.0031842930209536324,
-    "distributed_vs_capacity_split_completion": -0.005849690450749012
+    "distributed_vs_capacity_split_completion": -0.005849690450749012,
+    "mixed_behavior_emerged": true,
+    "final_policy_horizontal_dominant": true,
+    "final_balanced_mixed_policy": false,
+    "vertical_usage_observed_during_smoke": true,
+    "vertical_usage_final": false
   },
   "reconciliation": {
     "reconciled_all": true,

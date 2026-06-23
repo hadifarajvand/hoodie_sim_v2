@@ -43,7 +43,8 @@ def _run_campaign(*, budgets: list[int], eval_at: list[int], epsilon_decay_episo
             "distributed_vs_shared_completion": report["learning_health"].get("distributed_vs_shared_completion"),
             "distributed_vs_capacity_split_completion": report["learning_health"].get("distributed_vs_capacity_split_completion"),
             "local_dominant": report["learning_health"].get("local_dominant_policy"),
-            "mixed_policy_learned": report["learning_health"].get("true_balanced_mixed_load_spreading_policy_learned"),
+            "mixed_behavior_emerged": report["learning_health"].get("mixed_behavior_emerged"),
+            "final_balanced_mixed_policy": report["learning_health"].get("final_balanced_mixed_policy"),
         }, indent=2))
     return 0
 

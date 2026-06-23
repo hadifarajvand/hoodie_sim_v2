@@ -2,7 +2,6 @@
   "local_dominant_policy": false,
   "horizontal_action_usage_emerged": true,
   "vertical_action_usage_emerged": true,
-  "true_balanced_mixed_load_spreading_policy_learned": true,
   "per_agent_actions": [
     {
       "local": 0,
@@ -104,5 +103,10 @@
       "horizontal": 0,
       "vertical": 0
     }
-  ]
+  ],
+  "mixed_behavior_emerged": true,
+  "final_policy_horizontal_dominant": true,
+  "final_balanced_mixed_policy": false,
+  "vertical_usage_observed_during_smoke": true,
+  "vertical_usage_final": false
 }

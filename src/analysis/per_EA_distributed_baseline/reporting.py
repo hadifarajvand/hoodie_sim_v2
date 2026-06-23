@@ -174,7 +174,18 @@ def _assemble(cfg, candidate_rows, baseline_rows, per_agent_actions, manifest, e
     terminal_reconciled_all = all(r["terminal_reconciled"] for r in _all_rows) if _all_rows else False
     terminal_coverage = (sum(1 for r in _all_rows if r["terminal_reconciled"]) / len(_all_rows)) if _all_rows else 0.0
 
-    true_mixed = bool((not local_dominant) and vertical_used and horizontal_used)
+    # Precise behavior characterization. Mixed *behavior* emerged across
+    # checkpoints/agents (both horizontal and vertical were used), but the final
+    # aggregate greedy policy is horizontal-dominant, not a truly balanced H/V/L mix.
+    final_dominant = _dominant(final) if final else None
+    final_h_ratio = final["action_horizontal_ratio"] if final else 0.0
+    final_v_ratio = final["action_vertical_ratio"] if final else 0.0
+    final_l_ratio = final["action_local_ratio"] if final else 0.0
+    mixed_behavior_emerged = bool(horizontal_used and vertical_used)
+    final_policy_horizontal_dominant = bool(final_dominant == "horizontal")
+    final_balanced_mixed_policy = bool(final and min(final_l_ratio, final_h_ratio, final_v_ratio) > 0.1)
+    vertical_usage_observed_during_smoke = bool(vertical_used)
+    vertical_usage_final = bool(final_v_ratio > 0.0)
     verdict = "true_per_EA_distributed_baseline_ready_for_full_campaign" if (reconciled_all and final is not None) else "true_per_EA_distributed_baseline_blocked"
     next_step = "user_runs_full_distributed_campaign_command" if mode != "full" else "prepare_paper-output-report"
 
@@ -201,7 +212,11 @@ def _assemble(cfg, candidate_rows, baseline_rows, per_agent_actions, manifest, e
             "distinct_dominant_action_signatures": distinct_sigs,
             "horizontal_action_usage_emerged": horizontal_used,
             "vertical_action_usage_emerged": vertical_used,
-            "true_balanced_mixed_load_spreading_policy_learned": true_mixed,
+            "mixed_behavior_emerged": mixed_behavior_emerged,
+            "final_policy_horizontal_dominant": final_policy_horizontal_dominant,
+            "final_balanced_mixed_policy": final_balanced_mixed_policy,
+            "vertical_usage_observed_during_smoke": vertical_usage_observed_during_smoke,
+            "vertical_usage_final": vertical_usage_final,
             "final_action_distribution": {"local": agg_local, "horizontal": agg_h, "vertical": agg_v},
             "distributed_vs_shared_completion": vs_shared,
             "distributed_vs_capacity_split_completion": vs_cap,
@@ -222,7 +237,11 @@ def _emit_artifacts(report: dict[str, Any]) -> None:
         "local_dominant_policy": report["learning_health"]["local_dominant_policy"],
         "horizontal_action_usage_emerged": report["learning_health"]["horizontal_action_usage_emerged"],
         "vertical_action_usage_emerged": report["learning_health"]["vertical_action_usage_emerged"],
-        "true_balanced_mixed_load_spreading_policy_learned": report["learning_health"]["true_balanced_mixed_load_spreading_policy_learned"],
+        "mixed_behavior_emerged": report["learning_health"]["mixed_behavior_emerged"],
+        "final_policy_horizontal_dominant": report["learning_health"]["final_policy_horizontal_dominant"],
+        "final_balanced_mixed_policy": report["learning_health"]["final_balanced_mixed_policy"],
+        "vertical_usage_observed_during_smoke": report["learning_health"]["vertical_usage_observed_during_smoke"],
+        "vertical_usage_final": report["learning_health"]["vertical_usage_final"],
         "per_agent_actions": report["per_agent_actions"],
     })
     _w("shared-vs-distributed-summary.json", {
@@ -310,7 +329,8 @@ def _figures(report: dict[str, Any]) -> None:
     flags = {"local_dominant": 1 if lh["local_dominant_policy"] else 0,
              "horizontal_used": 1 if lh["horizontal_action_usage_emerged"] else 0,
              "vertical_used": 1 if lh["vertical_action_usage_emerged"] else 0,
-             "true_mixed": 1 if lh["true_balanced_mixed_load_spreading_policy_learned"] else 0}
+             "mixed_behavior": 1 if lh["mixed_behavior_emerged"] else 0,
+             "final_balanced": 1 if lh["final_balanced_mixed_policy"] else 0}
     ax.bar(list(flags), list(flags.values()), color="#1f77b4"); ax.set_ylim(0, 1.2)
     ax.set_title("Learning health (distributed)"); plt.setp(ax.get_xticklabels(), rotation=20, ha="right")
     save(fig, "figure_07_learning_health_distributed.png")
@@ -494,7 +514,10 @@ def _final_md(r: dict[str, Any]) -> str:
         "## Learning health",
         f"- Local-dominant: {lh['local_dominant_policy']} | distinct dominant signatures: {lh['distinct_dominant_action_signatures']}",
         f"- Horizontal used: {lh['horizontal_action_usage_emerged']} | Vertical used: {lh['vertical_action_usage_emerged']}",
-        f"- True balanced mixed/load-spreading policy learned: {lh['true_balanced_mixed_load_spreading_policy_learned']}",
+        f"- Mixed behavior emerged across checkpoints/agents: {lh['mixed_behavior_emerged']} "
+        f"(vertical observed during smoke: {lh['vertical_usage_observed_during_smoke']})",
+        f"- Final aggregate greedy policy horizontal-dominant: {lh['final_policy_horizontal_dominant']} "
+        f"| final balanced H/V/L mix: {lh['final_balanced_mixed_policy']} | vertical usage final: {lh['vertical_usage_final']}",
         f"- Distributed vs shared (completion): {lh['distributed_vs_shared_completion']}",
         f"- Distributed vs capacity_split (completion): {lh['distributed_vs_capacity_split_completion']}",
         "",
