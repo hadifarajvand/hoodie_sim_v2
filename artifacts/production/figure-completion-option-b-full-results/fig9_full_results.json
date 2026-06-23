@@ -1,0 +1,72 @@
+[
+  {
+    "config": {
+      "arrival_probability": 0.2,
+      "num_agents_drl": 20,
+      "proposed_method": "none",
+      "state_representation_profile": "deadline_queue_feasibility_v1",
+      "reconciliation_profile": "horizon_aware_recovered_reward_event",
+      "evaluation_mode": "policy_fixed_no_training"
+    },
+    "eval_episodes": 10,
+    "status": "success_evaluation_smoke_test",
+    "smoke_mode": true,
+    "runtime_seconds": 0.0010788440704345703,
+    "config_name": "arrival_probability=0.2"
+  },
+  {
+    "config": {
+      "arrival_probability": 0.5,
+      "num_agents_drl": 20,
+      "proposed_method": "none"
+    },
+    "eval_episodes": 100,
+    "status": "evaluation_execution_placeholder",
+    "runtime_seconds": 9.512901306152344e-05,
+    "config_name": "arrival_probability=0.5"
+  },
+  {
+    "config": {
+      "arrival_probability": 0.8,
+      "num_agents_drl": 20,
+      "proposed_method": "none"
+    },
+    "eval_episodes": 100,
+    "status": "evaluation_execution_placeholder",
+    "runtime_seconds": 2.4080276489257812e-05,
+    "config_name": "arrival_probability=0.8"
+  },
+  {
+    "config": {
+      "arrival_probability": 0.5,
+      "num_agents_drl": 10,
+      "proposed_method": "none"
+    },
+    "eval_episodes": 100,
+    "status": "evaluation_execution_placeholder",
+    "runtime_seconds": 4.1961669921875e-05,
+    "config_name": "agent_count=10"
+  },
+  {
+    "config": {
+      "arrival_probability": 0.5,
+      "num_agents_drl": 20,
+      "proposed_method": "none"
+    },
+    "eval_episodes": 100,
+    "status": "evaluation_execution_placeholder",
+    "runtime_seconds": 1.5974044799804688e-05,
+    "config_name": "agent_count=20"
+  },
+  {
+    "config": {
+      "arrival_probability": 0.5,
+      "num_agents_drl": 30,
+      "proposed_method": "none"
+    },
+    "eval_episodes": 100,
+    "status": "evaluation_execution_placeholder",
+    "runtime_seconds": 1.5735626220703125e-05,
+    "config_name": "agent_count=30"
+  }
+]

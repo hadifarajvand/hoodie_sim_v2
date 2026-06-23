@@ -1,0 +1,14 @@
+{
+  "config": {
+    "learning_rate": 1e-06,
+    "gamma": 0.99,
+    "proposed_method": "none",
+    "state_representation_profile": "deadline_queue_feasibility_v1",
+    "reconciliation_profile": "horizon_aware_recovered_reward_event"
+  },
+  "episodes": 50,
+  "status": "success_smoke_test_ready_for_full_training",
+  "smoke_mode": true,
+  "delta": 0.0,
+  "terminal_coverage": 1.0
+}

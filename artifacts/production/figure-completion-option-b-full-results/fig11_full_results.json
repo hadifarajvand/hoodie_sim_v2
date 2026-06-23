@@ -1,0 +1,28 @@
+{
+  "num_episodes": 5000,
+  "checkpoints": [
+    250,
+    500,
+    1000,
+    1500,
+    2000,
+    2500,
+    3000,
+    3500,
+    4000,
+    4500,
+    5000
+  ],
+  "metadata": {
+    "learning_rate": 7e-07,
+    "gamma": 0.99,
+    "num_agents": 20,
+    "proposed_method": "none",
+    "state_representation_profile": "deadline_queue_feasibility_v1",
+    "reconciliation_profile": "horizon_aware_recovered_reward_event",
+    "network_architecture": "feedforward_no_lstm"
+  },
+  "smoke_mode": false,
+  "status": "full_training_execution_placeholder",
+  "runtime_seconds": 0.0006508827209472656
+}
