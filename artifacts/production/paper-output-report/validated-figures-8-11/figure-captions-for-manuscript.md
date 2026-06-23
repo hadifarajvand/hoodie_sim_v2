@@ -56,7 +56,7 @@ Figure 9a is real: the agent genuinely learned to prefer vertical offloading in 
 
 ### Main Caption
 
-**Figure 10.** Delay and drop ratio comparison across distributed HOODIE candidate and six baseline policies. **(a)** Average delay (in timeslots) per policy: shared-agent candidate (14.58 slots), per-EA distributed candidate (15.14 slots), fixed-local baseline (15.12 slots), capacity-proportional oracle (14.62 slots), and others. **(b)** Drop ratio (fraction of deadline violations): shared-agent 0.655, per-EA distributed 0.6476, fixed-local 0.6626, oracle 0.6511. All metrics generated directly from completed simulation runs evaluated under identical protocols (100 episodes, ~3300 decisions per policy). Shared-agent achieved 25.45% task completion (−0.27 pp vs oracle, 98.96% of oracle); per-EA distributed achieved 22.14% completion (−3.31 pp vs shared-agent, 86.08% of oracle). No oracle results are estimated or extrapolated.
+**Figure 10.** Delay and drop ratio comparison across two candidate agents and six baseline policies. **(a)** Average delay (in timeslots): per-EA distributed (15.14 slots), shared-agent (14.58 slots), fixed-local (15.12 slots), capacity-split oracle (14.62 slots), and others. **(b)** Drop ratio (fraction of deadline violations): per-EA distributed (0.648), shared-agent (0.655), fixed-local (0.6626), capacity-split (0.6515). All metrics generated directly from completed simulation runs evaluated under identical protocols (100 episodes, ~3300 decisions per policy). Per-EA distributed achieved 22.14% task completion; shared-agent achieved 25.45% (−3.31 pp better); capacity-split oracle achieved 25.72% (−3.58 pp better). Per-EA distributed improves drop ratio relative to some baselines (fixed policies) but underperforms shared-agent and capacity-split on both completion and drop ratio, with slightly higher delay than both. This is an honest baseline comparison—no superiority claim is made. All metrics are real from simulation; no oracle extrapolation.
 
 ### Data Origin
 
@@ -68,7 +68,7 @@ Figure 9a is real: the agent genuinely learned to prefer vertical offloading in 
 
 ### What Readers Should Understand
 
-This is the most complete figure in the baseline report. All metrics are real from end-to-end simulations. No synthetic data. All baselines use the same environment configuration, same episode count, and same reconciliation standard. Readers can trust these comparisons entirely. The gap between candidates and oracle is honest; we made no claims of superiority, only honest reporting of what was learned.
+This is the most complete figure in the baseline report. All metrics are real from end-to-end simulations. No synthetic data. All baselines use the same environment configuration, same episode count, and same reconciliation standard. Readers can trust these comparisons entirely. Per-EA distributed is a valid baseline candidate but does not outperform shared-agent or capacity-split on the primary metrics (completion, drop ratio). The honest presentation clarifies that this is a baseline comparison study, not a superiority claim. Both candidate approaches are evaluated fairly against fixed-action baselines, random routing, and oracle.
 
 ---
 

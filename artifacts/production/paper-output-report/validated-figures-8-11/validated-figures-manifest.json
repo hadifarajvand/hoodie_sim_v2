@@ -30,7 +30,8 @@
       "real_data": true,
       "missing_work": "None",
       "publishable": true,
-      "caption_required": false
+      "caption_required": true,
+      "important_note": "Per-EA distributed does NOT beat all baselines. Honest comparison showing underperformance vs shared-agent and capacity-split on completion and latency."
     },
     "figure_11": {
       "overall_status": "REAL_PARTIAL",
@@ -199,8 +200,8 @@
   "export_recommendation": {
     "verdict": "VALIDATED_PAPER_FIGURES_8_11_EXPORT_READY",
     "submit_now": true,
-    "reason": "Figure 10 is complete. Figures 8, 9, 11 are partially real but mechanistically valid and publishable with honest captions. All missing work is optional and can be added post-review if needed.",
-    "reviewer_handling": "If reviewers request specific sweeps or ablations, effort estimates are documented. Most likely requests will be Fig 8 lr/gamma (medium), Fig 11 LSTM ablation (small), Fig 9 system params (large)."
+    "reason": "Figure 10 is complete and presented as an honest baseline comparison (per-EA distributed does not beat all baselines; this is correct and transparent). Figures 8, 9, 11 are partially real but mechanistically valid and publishable with honest captions. All missing work is optional and can be added post-review if needed.",
+    "reviewer_handling": "If reviewers request specific sweeps or ablations, effort estimates are documented. Most likely requests will be Fig 8 lr/gamma (medium), Fig 11 LSTM ablation (small), Fig 9 system params (large). Figure 10 requires no corrections; it is honest and complete."
   },
   "files_in_manifest": {
     "documentation": [

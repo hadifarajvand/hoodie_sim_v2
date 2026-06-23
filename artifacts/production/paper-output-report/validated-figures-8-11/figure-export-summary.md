@@ -85,14 +85,14 @@ figure-export-summary.md             (this file)
 
 **Verdict:** EXPORT_READY (with placeholder labeling)
 
-### Figure 10: HOODIE vs Baselines
-- **Mechanism:** Delay and drop ratio comparison across 7 policies
+### Figure 10: Candidate vs Baseline Comparison
+- **Mechanism:** Delay and drop ratio comparison across 2 candidates and 5 fixed baselines + oracle
 - **Real Data:** ✓ 100% real (all metrics from completed simulations)
 - **Quality:** Complete; no gaps
-- **Honest Caption:** ✓ No caveats needed; all real
-- **Exportable:** ✓ Yes (fully exportable)
+- **Honest Caption:** ✓ All real; per-EA distributed does NOT beat all baselines
+- **Exportable:** ✓ Yes (fully exportable as honest comparison)
 
-**Verdict:** EXPORT_READY (complete and final)
+**Verdict:** EXPORT_READY (complete and final; baseline comparison, not superiority claim)
 
 ### Figure 11: LSTM Ablation
 - **Mechanism:** LSTM contribution to delay reduction
@@ -150,7 +150,7 @@ figure-export-summary.md             (this file)
 
 ### Ready Now
 
-- ✓ Figure 10 (complete, no caveats)
+- ✓ Figure 10 (complete, real data; honest baseline comparison, not superiority)
 - ✓ Figure 8 (with honest caption about single-config)
 - ✓ Figure 9a (with honest statement that 9b–9e are future work)
 - ✓ Figure 11a (with honest statement that 11b is future work)

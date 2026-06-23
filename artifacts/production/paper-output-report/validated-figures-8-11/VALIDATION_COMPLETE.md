@@ -68,7 +68,7 @@ Created `figure-export-summary.md`:
 |--------|--------|-------|-------|---------|------------|
 | 8 | REAL_PARTIAL | ✓ | 3 | lr/gamma sweep | ✓ Yes |
 | 9 | REAL_PARTIAL | ✓ (9a) | 6 | Param sweeps | ✓ Yes |
-| 10 | REAL_FULL | ✓ | 3 | None | ✓ Yes |
+| 10 | REAL_FULL | ✓ | 3 | None | ✓ Yes (honest baseline comparison; per-EA distributed does not beat all baselines) |
 | 11 | REAL_PARTIAL | ✓ (with-LSTM) | 1 | Ablation | ✓ Yes |
 
 ---
@@ -244,7 +244,7 @@ This approach **builds trust** with readers and reviewers while **clarifying sco
 
 ✓ **VALIDATED_PAPER_FIGURES_8_11_EXPORT_READY**
 
-All figures are mechanistically valid for export. All real data is verified. No fabricated curves. No placeholders presented as real. All captions are honest. Reconciliation integrity confirmed.
+All figures are mechanistically valid for export. All real data is verified. No fabricated curves. No placeholders presented as real. All captions are honest. Reconciliation integrity confirmed. Figure 10 is presented as an honest baseline comparison (per-EA distributed does NOT beat all baselines); this is correct and transparent.
 
 **Recommendation:** Submit to manuscript NOW. All figures are publishable as-is.
 

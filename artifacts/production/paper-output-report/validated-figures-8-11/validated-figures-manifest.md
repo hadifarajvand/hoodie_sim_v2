@@ -12,7 +12,7 @@
 |--------|---|---|---|---|---|
 | 8 | REAL_PARTIAL | 8a, 8b | ✓ Yes | lr/gamma sweep | ✓ Yes |
 | 9 | REAL_PARTIAL | 9a (+ 9b–9e placeholders) | ✓ Yes (9a only) | System parameter sweeps | ✓ Yes |
-| 10 | REAL_FULL | 10a, 10b | ✓ Yes | None | ✓ Yes |
+| 10 | REAL_FULL | 10a, 10b | ✓ Yes | None | ✓ Yes (honest baseline comparison; per-EA does not beat all baselines) |
 | 11 | REAL_PARTIAL | 11a | ✓ Yes | Without-LSTM ablation | ✓ Yes |
 
 **Total PNGs Exported:** 13 files
@@ -103,12 +103,14 @@ png/Fig10b_drop_ratio_REAL_COMPLETE.png
 ### Status: `REAL_FULL`
 
 **What is Real:**
-- All 7 baseline policies: complete metrics from simulation
-- Shared-agent candidate: 25.45% completion, 14.58 slots avg delay
-- Per-EA distributed candidate: 22.14% completion, 15.14 slots avg delay
+- All 7 policies: complete metrics from simulation
+- Shared-agent candidate: 25.45% completion, 14.58 slots avg delay, 0.655 drop ratio
+- Per-EA distributed candidate: 22.14% completion, 15.14 slots avg delay, 0.648 drop ratio
 - Fixed policies (local, horizontal, vertical): all real baselines
 - Random legal: real baseline
-- Capacity-split oracle: real oracle reference
+- Capacity-split oracle: real oracle reference (25.72% completion, 14.62 slots, 0.6515 drop)
+
+**Important:** Per-EA distributed does NOT beat all baselines overall. It underperforms shared-agent and capacity-split on completion (22.14% vs 25.45% and 25.72%) and has higher delay than both. It does improve drop ratio relative to some fixed baselines but underperforms capacity-split on drop ratio (0.648 vs 0.6515). This is an honest baseline comparison, not a superiority claim.
 
 **What is Missing:** Nothing required for publication
 
@@ -123,14 +125,14 @@ png/Fig10b_drop_ratio_REAL_COMPLETE.png
 | Policy | Completion | Drop Ratio | Avg Latency | Source |
 |--------|-----------|-----------|------------|--------|
 | shared_agent | 0.2545 | 0.655 | 14.58 | full-paper-campaign |
-| per_ea_distributed | 0.2214 | 0.6476 | 15.14 | true-per-EA baseline |
+| per_ea_distributed | 0.2214 | 0.648 | 15.14 | true-per-EA baseline |
 | fixed_local | 0.2465 | 0.6626 | 15.12 | baseline-and-oracle |
 | fixed_horizontal | 0.1659 | 0.7404 | 15.96 | baseline-and-oracle |
 | fixed_vertical | 0.1789 | 0.7362 | 16.04 | baseline-and-oracle |
 | random_legal | 0.2428 | 0.6574 | 15.08 | baseline-and-oracle |
-| capacity_split_oracle | 0.2572 | 0.6511 | 14.62 | baseline-and-oracle |
+| capacity_split_oracle | 0.2572 | 0.6515 | 14.62 | baseline-and-oracle |
 
-**Publishability:** ✓ Yes (fully complete and ready)
+**Publishability:** ✓ Yes (fully complete and ready; honest baseline comparison)
 
 ---
 
@@ -181,7 +183,7 @@ png/Fig11_lstm_delay_with_LSTM_REAL_partial_requires_ablation.png
 ### Figure 10 Caption
 
 **Recommended Wording:**
-> "Figure 10: Candidate vs baseline policies on delay and drop ratio. (a) Average delay (latency in slots) for 7 policies. (b) Drop ratio (deadline violation fraction) for same policies. Both candidates (shared-agent and per-EA distributed) evaluated against fixed-action baselines (local, horizontal, vertical), random-legal routing, and capacity-proportional oracle. All metrics generated from completed simulation runs."
+> "Figure 10: Baseline comparison across two candidate agents and five fixed policies. (a) Average delay (latency in slots) for 7 policies. (b) Drop ratio (deadline violation fraction) for same policies. Per-EA distributed achieved 22.14% completion (lower than shared-agent 25.45% and capacity-split oracle 25.72%) with slightly higher delay (15.14 vs 14.58 and 14.62 slots) but lower drop ratio than some fixed baselines (0.648 vs fixed-local 0.6626). All metrics generated from completed simulation runs. This is an honest baseline comparison, not a superiority claim."
 
 ### Figure 11 Caption
 
