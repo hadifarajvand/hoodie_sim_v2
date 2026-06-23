@@ -1,26 +1,26 @@
 {
-  "mode": "smoke",
-  "executed_5000": false,
-  "commit_sha": "84cd0386e12bc6dc82b83fa70c9784a4eb16eb26",
+  "mode": "full",
+  "executed_5000": true,
+  "commit_sha": "11b9d034137aa021335180bc66738f778505fe0f",
   "verdict": "true_per_EA_distributed_baseline_ready_for_full_campaign",
-  "recommended_next_step": "user_runs_full_distributed_campaign_command",
+  "recommended_next_step": "prepare_paper-output-report",
   "learning_health": {
     "local_dominant_policy": false,
-    "distinct_dominant_action_signatures": 3,
+    "distinct_dominant_action_signatures": 2,
     "horizontal_action_usage_emerged": true,
     "vertical_action_usage_emerged": true,
-    "final_action_distribution": {
-      "local": 0,
-      "horizontal": 3303,
-      "vertical": 0
-    },
-    "distributed_vs_shared_completion": -0.0031842930209536324,
-    "distributed_vs_capacity_split_completion": -0.005849690450749012,
     "mixed_behavior_emerged": true,
-    "final_policy_horizontal_dominant": true,
+    "final_policy_horizontal_dominant": false,
     "final_balanced_mixed_policy": false,
     "vertical_usage_observed_during_smoke": true,
-    "vertical_usage_final": false
+    "vertical_usage_final": true,
+    "final_action_distribution": {
+      "local": 0,
+      "horizontal": 0,
+      "vertical": 3303
+    },
+    "distributed_vs_shared_completion": -0.033129846559973586,
+    "distributed_vs_capacity_split_completion": -0.035795243989768966
   },
   "reconciliation": {
     "reconciled_all": true,
@@ -30,7 +30,7 @@
     "terminal_coverage": 1.0
   },
   "claim_safety": {
-    "training_5000_run": false,
+    "training_5000_run": true,
     "paper_reproduction_claim_made": false,
     "exact_numerical_reproduction_claim_made": false,
     "performance_superiority_claim_made": false,
@@ -40,6 +40,6 @@
     "proposed_method_implemented": false,
     "claim_safety_passed": true
   },
-  "final_candidate_completion": 0.2513611615245009,
+  "final_candidate_completion": 0.22141560798548093,
   "capacity_split_completion": 0.2572108519752499
 }

@@ -5,5 +5,5 @@
     "HOODIE_EXECUTE_DISTRIBUTED_FULL_CAMPAIGN=1"
   ],
   "verdict": "true_per_EA_distributed_baseline_ready_for_full_campaign",
-  "next_step": "user_runs_full_distributed_campaign_command"
+  "next_step": "prepare_paper-output-report"
 }

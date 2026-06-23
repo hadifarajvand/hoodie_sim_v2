@@ -1,5 +1,5 @@
 {
-  "training_5000_run": false,
+  "training_5000_run": true,
   "paper_reproduction_claim_made": false,
   "exact_numerical_reproduction_claim_made": false,
   "performance_superiority_claim_made": false,

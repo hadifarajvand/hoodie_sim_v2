@@ -1,36 +1,12 @@
 {
-  "mode": "smoke",
+  "mode": "full",
   "manifest": [
     {
-      "budget": 50,
+      "budget": 250,
       "loss_is_finite": true,
       "replay_sizes_min_max": [
         0,
-        1850
-      ]
-    },
-    {
-      "budget": 100,
-      "loss_is_finite": true,
-      "replay_sizes_min_max": [
-        0,
-        3700
-      ]
-    },
-    {
-      "budget": 200,
-      "loss_is_finite": true,
-      "replay_sizes_min_max": [
-        0,
-        7400
-      ]
-    },
-    {
-      "budget": 300,
-      "loss_is_finite": true,
-      "replay_sizes_min_max": [
-        0,
-        10000
+        9250
       ]
     },
     {
@@ -56,8 +32,136 @@
         0,
         10000
       ]
+    },
+    {
+      "budget": 1250,
+      "loss_is_finite": true,
+      "replay_sizes_min_max": [
+        0,
+        10000
+      ]
+    },
+    {
+      "budget": 1500,
+      "loss_is_finite": true,
+      "replay_sizes_min_max": [
+        0,
+        10000
+      ]
+    },
+    {
+      "budget": 1750,
+      "loss_is_finite": true,
+      "replay_sizes_min_max": [
+        0,
+        10000
+      ]
+    },
+    {
+      "budget": 2000,
+      "loss_is_finite": true,
+      "replay_sizes_min_max": [
+        0,
+        10000
+      ]
+    },
+    {
+      "budget": 2250,
+      "loss_is_finite": true,
+      "replay_sizes_min_max": [
+        0,
+        10000
+      ]
+    },
+    {
+      "budget": 2500,
+      "loss_is_finite": true,
+      "replay_sizes_min_max": [
+        0,
+        10000
+      ]
+    },
+    {
+      "budget": 2750,
+      "loss_is_finite": true,
+      "replay_sizes_min_max": [
+        0,
+        10000
+      ]
+    },
+    {
+      "budget": 3000,
+      "loss_is_finite": true,
+      "replay_sizes_min_max": [
+        0,
+        10000
+      ]
+    },
+    {
+      "budget": 3250,
+      "loss_is_finite": true,
+      "replay_sizes_min_max": [
+        0,
+        10000
+      ]
+    },
+    {
+      "budget": 3500,
+      "loss_is_finite": true,
+      "replay_sizes_min_max": [
+        0,
+        10000
+      ]
+    },
+    {
+      "budget": 3750,
+      "loss_is_finite": true,
+      "replay_sizes_min_max": [
+        0,
+        10000
+      ]
+    },
+    {
+      "budget": 4000,
+      "loss_is_finite": true,
+      "replay_sizes_min_max": [
+        0,
+        10000
+      ]
+    },
+    {
+      "budget": 4250,
+      "loss_is_finite": true,
+      "replay_sizes_min_max": [
+        0,
+        10000
+      ]
+    },
+    {
+      "budget": 4500,
+      "loss_is_finite": true,
+      "replay_sizes_min_max": [
+        0,
+        10000
+      ]
+    },
+    {
+      "budget": 4750,
+      "loss_is_finite": true,
+      "replay_sizes_min_max": [
+        0,
+        10000
+      ]
+    },
+    {
+      "budget": 5000,
+      "loss_is_finite": true,
+      "replay_sizes_min_max": [
+        0,
+        10000
+      ]
     }
   ],
-  "commit_sha": "84cd0386e12bc6dc82b83fa70c9784a4eb16eb26",
-  "executed_5000": false
+  "commit_sha": "11b9d034137aa021335180bc66738f778505fe0f",
+  "executed_5000": true
 }
