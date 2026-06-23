@@ -1,0 +1,75 @@
+{
+  "paper_source": "resources/papers/hoodie/ocr/merged.txt",
+  "items": [
+    {
+      "item": "each EA runs its own DRL model (per-EA distributed agents)",
+      "paper_expected": "each EA n runs a DRL model; multi-agent scheme where each EA acts as a DRL agent",
+      "repo_design": "one DDQNTrainer (online+target+optimizer+replay) per EA; N=20 agents",
+      "evidence": "OCR lines 138, 401, 405: 'each EA runs a DRL model'; 'each EA acts as a DRL agent'",
+      "status": "exact"
+    },
+    {
+      "item": "per-EA model parameters theta_n",
+      "paper_expected": "Q-model parameters theta_n of DRL agent n (Table 2 symbols)",
+      "repo_design": "separate online network weights per agent",
+      "evidence": "OCR Table 2: theta_n = Q-model parameters of DRL agent n",
+      "status": "exact"
+    },
+    {
+      "item": "per-EA target model theta_hat_n",
+      "paper_expected": "Target Q-model parameters theta_hat_n per agent; copied every N_copy",
+      "repo_design": "separate target network per agent; episode-based sync per agent",
+      "evidence": "OCR line 587 + Table 2: target theta_hat_n; 'every N_copy training episodes'",
+      "status": "exact"
+    },
+    {
+      "item": "Algorithm 1 is single-agent training, replicated per EA",
+      "paper_expected": "Algorithm 1 trains a single-agent model in EA n; deployed per EA",
+      "repo_design": "the validated single-agent DDQN update is instantiated independently per agent",
+      "evidence": "OCR line 587: 'pseudocode for training a single-agent model'; line 591 'in EA n'",
+      "status": "exact"
+    },
+    {
+      "item": "agents do not share decisions / autonomy",
+      "paper_expected": "each agent does not require knowledge of other agents' decisions",
+      "repo_design": "agents select independently from their own networks; only env state is shared",
+      "evidence": "OCR lines 99, 109: 'each HOODIE agent does not require knowledge on the decisions made by other agents'",
+      "status": "exact"
+    },
+    {
+      "item": "per-EA experience replay",
+      "paper_expected": "experience tuples stored in replay memory of size N_R; per-agent in Algorithm 1 (EA n)",
+      "repo_design": "one ReplayBuffer (capacity N_R=10000) per agent",
+      "evidence": "OCR line 587/Table 4: N_R=10000; Algorithm 1 framed per EA n",
+      "status": "inferred"
+    },
+    {
+      "item": "N_EA = 20, N_E = 5000",
+      "paper_expected": "20 EAs; 5000 training episodes",
+      "repo_design": "num_agents=20; full campaign N_E=5000 (guarded; smoke \u22641000)",
+      "evidence": "OCR Table 4: N=20, N_E=5000",
+      "status": "exact"
+    },
+    {
+      "item": "shared optimizer vs per-agent optimizer",
+      "paper_expected": "not explicitly stated; per-agent models imply per-agent optimization",
+      "repo_design": "one Adam optimizer per agent (lr 7e-7)",
+      "evidence": "Table 4 lists Adam/lr; per-agent optimizer inferred from per-agent models",
+      "status": "inferred"
+    },
+    {
+      "item": "evaluation routing to per-EA models",
+      "paper_expected": "inference deploys distributed Q-models at each EA site",
+      "repo_design": "greedy action routed to the owning EA's network; reconciliation evaluator reused with a shared decision-time state encoding (documented approximation)",
+      "evidence": "OCR line 694: 'deploying distributed HOODIE models (only the Q-models) at each of the N EA sites'",
+      "status": "approximated"
+    }
+  ],
+  "all_core_per_EA_items_exact": true,
+  "remaining_approximations": [
+    "per-EA experience replay",
+    "shared optimizer vs per-agent optimizer",
+    "evaluation routing to per-EA models"
+  ],
+  "no_proposed_method": true
+}

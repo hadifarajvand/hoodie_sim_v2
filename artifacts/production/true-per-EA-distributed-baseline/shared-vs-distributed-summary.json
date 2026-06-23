@@ -1,0 +1,7 @@
+{
+  "shared_final_completion": 0.2545454545454545,
+  "distributed_final_completion": 0.2513611615245009,
+  "distributed_vs_shared_completion": -0.0031842930209536324,
+  "capacity_split_completion": 0.2572108519752499,
+  "distributed_vs_capacity_split_completion": -0.005849690450749012
+}

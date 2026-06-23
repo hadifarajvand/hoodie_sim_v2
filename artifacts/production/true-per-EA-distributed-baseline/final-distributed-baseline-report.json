@@ -1,0 +1,41 @@
+{
+  "mode": "smoke",
+  "executed_5000": false,
+  "commit_sha": "84cd0386e12bc6dc82b83fa70c9784a4eb16eb26",
+  "verdict": "true_per_EA_distributed_baseline_ready_for_full_campaign",
+  "recommended_next_step": "user_runs_full_distributed_campaign_command",
+  "learning_health": {
+    "local_dominant_policy": false,
+    "distinct_dominant_action_signatures": 3,
+    "horizontal_action_usage_emerged": true,
+    "vertical_action_usage_emerged": true,
+    "true_balanced_mixed_load_spreading_policy_learned": true,
+    "final_action_distribution": {
+      "local": 0,
+      "horizontal": 3303,
+      "vertical": 0
+    },
+    "distributed_vs_shared_completion": -0.0031842930209536324,
+    "distributed_vs_capacity_split_completion": -0.005849690450749012
+  },
+  "reconciliation": {
+    "reconciled_all": true,
+    "raw_vs_canonical_delta_max": 0.0,
+    "reward_reconciled_all": true,
+    "terminal_reconciled_all": true,
+    "terminal_coverage": 1.0
+  },
+  "claim_safety": {
+    "training_5000_run": false,
+    "paper_reproduction_claim_made": false,
+    "exact_numerical_reproduction_claim_made": false,
+    "performance_superiority_claim_made": false,
+    "baseline_superiority_claim_made": false,
+    "reward_function_modified": false,
+    "environment_semantics_modified": false,
+    "proposed_method_implemented": false,
+    "claim_safety_passed": true
+  },
+  "final_candidate_completion": 0.2513611615245009,
+  "capacity_split_completion": 0.2572108519752499
+}

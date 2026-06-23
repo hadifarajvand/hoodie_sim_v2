@@ -1,0 +1,8 @@
+cd /Users/hadi/Documents/GitHub/hoodie_sim_v2
+PY=/Users/hadi/Documents/GitHub/hoodie_sim_v2/.venvmac/bin/python
+
+git fetch origin
+git checkout true-per-EA-distributed-baseline
+git reset --hard origin/true-per-EA-distributed-baseline
+
+HOODIE_EXECUTE_DISTRIBUTED_FULL_CAMPAIGN=1 $PY -m src.analysis.per_EA_distributed_baseline.distributed_runner --execute-full-distributed-campaign --json

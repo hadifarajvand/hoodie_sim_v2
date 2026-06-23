@@ -1,0 +1,63 @@
+{
+  "mode": "smoke",
+  "manifest": [
+    {
+      "budget": 50,
+      "loss_is_finite": true,
+      "replay_sizes_min_max": [
+        0,
+        1850
+      ]
+    },
+    {
+      "budget": 100,
+      "loss_is_finite": true,
+      "replay_sizes_min_max": [
+        0,
+        3700
+      ]
+    },
+    {
+      "budget": 200,
+      "loss_is_finite": true,
+      "replay_sizes_min_max": [
+        0,
+        7400
+      ]
+    },
+    {
+      "budget": 300,
+      "loss_is_finite": true,
+      "replay_sizes_min_max": [
+        0,
+        10000
+      ]
+    },
+    {
+      "budget": 500,
+      "loss_is_finite": true,
+      "replay_sizes_min_max": [
+        0,
+        10000
+      ]
+    },
+    {
+      "budget": 750,
+      "loss_is_finite": true,
+      "replay_sizes_min_max": [
+        0,
+        10000
+      ]
+    },
+    {
+      "budget": 1000,
+      "loss_is_finite": true,
+      "replay_sizes_min_max": [
+        0,
+        10000
+      ]
+    }
+  ],
+  "commit_sha": "84cd0386e12bc6dc82b83fa70c9784a4eb16eb26",
+  "executed_5000": false
+}
