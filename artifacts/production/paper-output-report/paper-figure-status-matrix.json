@@ -1,0 +1,168 @@
+{
+  "report_date": "2026-06-23",
+  "baseline": "true_per_ea_distributed_full_5000_episode_campaign",
+  "summary": {
+    "figure_8": {
+      "title": "Accumulated Reward & Reward-per-Task Over Training",
+      "overall_status": "partial",
+      "completion_percent": 50,
+      "sub_figures": [
+        {
+          "id": "8a",
+          "title": "Accumulated Reward",
+          "status": "produced",
+          "data_source": "distributed_candidate_full_campaign"
+        },
+        {
+          "id": "8b",
+          "title": "Reward per Task",
+          "status": "produced",
+          "data_source": "distributed_candidate_full_campaign"
+        },
+        {
+          "id": "8c-8e",
+          "title": "Parameter Sweep Panels (lr/gamma sensitivity)",
+          "status": "missing",
+          "reason": "requires_hyperparameter_sweep",
+          "effort_estimate": "5-10_additional_full_runs"
+        }
+      ]
+    },
+    "figure_9": {
+      "title": "Action Distribution & System Parameter Sensitivity",
+      "overall_status": "partial",
+      "completion_percent": 20,
+      "sub_figures": [
+        {
+          "id": "9a",
+          "title": "Action Distribution (Real)",
+          "status": "produced",
+          "data_source": "distributed_candidate_final_evaluation"
+        },
+        {
+          "id": "9b",
+          "title": "Reward by Task Arrival Probability",
+          "status": "missing",
+          "reason": "requires_system_parameter_sweep",
+          "effort_estimate": "5-10_additional_runs"
+        },
+        {
+          "id": "9c",
+          "title": "Reward by DRL Agent Count",
+          "status": "missing",
+          "reason": "requires_system_parameter_sweep",
+          "effort_estimate": "5-10_additional_runs"
+        },
+        {
+          "id": "9d",
+          "title": "Reward by CPU Capacity",
+          "status": "missing",
+          "reason": "requires_system_parameter_sweep",
+          "effort_estimate": "5_additional_runs"
+        },
+        {
+          "id": "9e",
+          "title": "Reward by Offloading Data Rate",
+          "status": "missing",
+          "reason": "requires_system_parameter_sweep",
+          "effort_estimate": "5_additional_runs"
+        }
+      ]
+    },
+    "figure_10": {
+      "title": "Delay & Drop Ratio Comparison (vs Baselines)",
+      "overall_status": "complete",
+      "completion_percent": 100,
+      "sub_figures": [
+        {
+          "id": "10a",
+          "title": "Average Latency vs Baselines",
+          "status": "produced",
+          "data_source": "distributed_vs_all_baselines"
+        },
+        {
+          "id": "10b",
+          "title": "Drop Ratio vs Baselines",
+          "status": "produced",
+          "data_source": "distributed_vs_all_baselines"
+        }
+      ]
+    },
+    "figure_11": {
+      "title": "LSTM Ablation (Delay with/without Recurrence)",
+      "overall_status": "partial",
+      "completion_percent": 50,
+      "sub_figures": [
+        {
+          "id": "11a",
+          "title": "Delay with LSTM (1x20 hidden)",
+          "status": "produced",
+          "data_source": "distributed_candidate_full_campaign"
+        },
+        {
+          "id": "11b",
+          "title": "Delay without LSTM (Feedforward)",
+          "status": "missing",
+          "reason": "requires_ablation_retraining",
+          "effort_estimate": "1_additional_full_run"
+        }
+      ]
+    }
+  },
+  "overall_statistics": {
+    "total_figures": 4,
+    "complete_figures": 1,
+    "partial_figures": 3,
+    "missing_figures": 0,
+    "overall_completion_percent": 55,
+    "note": "Figure 10 complete; Figures 8, 9, 11 partial due to missing sweep/ablation panels"
+  },
+  "missing_work": [
+    {
+      "item": "Figure 8 Parameter Sweep",
+      "type": "hyperparameter_sweep",
+      "variables": ["learning_rate", "discount_factor_gamma"],
+      "estimated_runs": 10,
+      "estimated_hours": "50-100",
+      "priority": "optional_for_robustness_demonstration"
+    },
+    {
+      "item": "Figure 9 System Parameter Sweeps",
+      "type": "system_configuration_sweep",
+      "variables": ["task_arrival_probability", "agent_count", "cpu_capacity", "offloading_rate"],
+      "estimated_runs": 40,
+      "estimated_hours": "200-400",
+      "priority": "optional_for_generalization_demonstration"
+    },
+    {
+      "item": "Figure 11 LSTM Ablation",
+      "type": "architecture_ablation",
+      "variables": ["remove_lstm_layer"],
+      "estimated_runs": 1,
+      "estimated_hours": "4-8",
+      "priority": "optional_for_contribution_isolation"
+    }
+  ],
+  "recommendations": {
+    "for_manuscript": [
+      "Mark Figures 8, 9, 11 as 'Single Configuration' in caption",
+      "Include note: 'Additional parameter sweeps and ablations are future work'",
+      "Figure 10 is complete and ready for publication"
+    ],
+    "for_future_work": [
+      "Run lr/gamma sweep if hyperparameter robustness is questioned in reviews",
+      "Run system parameter sweeps if generalization across environments is important",
+      "Run LSTM ablation if reviewer requests architectural contribution isolation"
+    ],
+    "timeline": {
+      "baseline_finalized": "2026-06-23",
+      "optional_sweeps_if_approved": "7-14 days (for full 40-run Fig 9 sweep)",
+      "proposed_method_after_approval": "pending_user_decision"
+    }
+  },
+  "artifact_locations": {
+    "distributed_full_campaign": "artifacts/production/true-per-EA-distributed-baseline/",
+    "shared_agent_campaign": "artifacts/production/full-paper-campaign-execution-run/",
+    "paper_output_report": "artifacts/production/paper-output-report/"
+  }
+}

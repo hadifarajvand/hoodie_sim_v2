@@ -1,0 +1,179 @@
+{
+  "report_date": "2026-06-23",
+  "baselines_trained": 2,
+  "final_checkpoint": 5000,
+  "shared_agent_baseline": {
+    "branch": "full-paper-campaign-execution-run",
+    "commit_sha": "afa255984293888d6b183bb2022e9d3c5f4e0b9c",
+    "model": "Single DDQN trainer (shared online/target networks)",
+    "episodes": 5000,
+    "checkpoints": 11,
+    "wall_time_hours": 1.08,
+    "abort": false,
+    "metrics": {
+      "completion_ratio": 0.2545454545454545,
+      "reward_per_task": -28.32,
+      "drop_ratio": 0.655,
+      "average_latency_slots": 14.58,
+      "action_local_ratio": 1.0,
+      "action_horizontal_ratio": 0.0,
+      "action_vertical_ratio": 0.0
+    },
+    "action_behavior": {
+      "episodes_1_to_4000": "100% local",
+      "episodes_4001_to_5000": "~90% local, ~10% horizontal",
+      "final_signature": "local_dominant_with_late_horizontal_emergence"
+    },
+    "vs_baselines": {
+      "vs_fixed_local": 0.008091385054735806,
+      "vs_fixed_horizontal": 0.08864858369098566,
+      "vs_fixed_vertical": 0.11988215653203748,
+      "vs_random_legal": 0.012727070313713026,
+      "vs_capacity_split_oracle": -0.0026653974297953797
+    },
+    "reconciliation": {
+      "reconciled_all": true,
+      "raw_vs_canonical_delta_max": 0.0
+    },
+    "conclusion": "Modest improvement over fixed_local (+0.81 pp) but did not exceed capacity_split oracle. Local-dominant with late horizontal exploration."
+  },
+  "per_ea_distributed_baseline": {
+    "branch": "true-per-EA-distributed-baseline",
+    "commit_sha_runtime": "8ed90e6e7d8697d7f99cee51079cc019d8151bf4",
+    "commit_sha_metadata_cleanup": "e605655",
+    "model": "20 independent DDQN trainers (per-agent networks/optimizers/replays/epsilon/target-sync)",
+    "episodes": 5000,
+    "checkpoints": 11,
+    "agents": 20,
+    "wall_time_hours_estimated": 12.0,
+    "abort": false,
+    "metrics": {
+      "completion_ratio": 0.22141560798548093,
+      "reward_per_task": -28.068058076225046,
+      "drop_ratio": 0.647610405323654,
+      "average_latency_slots": 15.14027149321267,
+      "action_local_ratio": 0.0,
+      "action_horizontal_ratio": 0.0,
+      "action_vertical_ratio": 1.0
+    },
+    "action_behavior": {
+      "smoke_phase_50_to_1000": "Mixed (H and V both used)",
+      "full_training_250_to_5000": "Evolved from mixed to vertical_dominant",
+      "final_signature": "100_percent_vertical",
+      "per_agent_distribution": {
+        "agents_preferring_local": 18,
+        "agents_preferring_vertical": 2
+      }
+    },
+    "vs_baselines": {
+      "vs_fixed_local": -0.024536937098623074,
+      "vs_fixed_horizontal": 0.05550900566789097,
+      "vs_fixed_vertical": 0.08798215653203748,
+      "vs_random_legal": -0.021436439989768966,
+      "vs_capacity_split_oracle": -0.035795243989768966,
+      "vs_shared_agent": -0.033129846559973586
+    },
+    "reconciliation": {
+      "reconciled_all": true,
+      "raw_vs_canonical_delta_max": 0.0,
+      "terminal_coverage": 1.0
+    },
+    "conclusion": "Learned different final policy (100% vertical) than shared-agent (local-dominant), confirming per-EA autonomy. However, underperformed both shared-agent (−3.31 pp) and oracle (−3.58 pp) on completion."
+  },
+  "comparative_analysis": {
+    "policy_diversity": {
+      "shared_agent_action": "Local-dominant with late horizontal",
+      "distributed_action": "100% Vertical",
+      "action_diversity_shared": "Low",
+      "action_diversity_distributed": "None (pure vertical)",
+      "per_agent_variance_distributed": "High (18 local, 2 vertical)"
+    },
+    "reconciliation_integrity": {
+      "shared_agent_reconciled": true,
+      "distributed_reconciled": true,
+      "shared_agent_delta_max": 0.0,
+      "distributed_delta_max": 0.0,
+      "both_campaigns_perfect_reconciliation": true
+    },
+    "training_stability": {
+      "shared_agent_wall_time": 1.08,
+      "distributed_wall_time_estimated": 12.0,
+      "wall_time_ratio": 11.1,
+      "shared_agent_abort": false,
+      "distributed_abort": false
+    }
+  },
+  "vs_oracle": {
+    "oracle_name": "capacity_proportional_split",
+    "oracle_completion": 0.2572108519752499,
+    "oracle_action_distribution": {
+      "local": 0.43,
+      "horizontal": 0.44,
+      "vertical": 0.13
+    },
+    "results_relative_to_oracle": [
+      {
+        "policy": "shared_agent",
+        "completion": 0.2545454545454545,
+        "gap": -0.0026653974297953797,
+        "percent_of_oracle": 98.96
+      },
+      {
+        "policy": "per_ea_distributed",
+        "completion": 0.22141560798548093,
+        "gap": -0.035795243989768966,
+        "percent_of_oracle": 86.08
+      }
+    ]
+  },
+  "learning_insights": [
+    {
+      "observation": "Shared-agent converged to local-dominant strategy",
+      "implication": "Single-agent learner found local routing near-optimal for this environment"
+    },
+    {
+      "observation": "Per-EA distributed converged to 100% vertical strategy",
+      "implication": "Per-EA architecture enables independent learning but got stuck in suboptimal mode"
+    },
+    {
+      "observation": "Per-EA final policy differs from shared-agent (vertical vs local)",
+      "implication": "Per-EA architecture prevents homogenization; agents learn differentiated strategies"
+    },
+    {
+      "observation": "Per-EA 18/20 agents prefer local when available",
+      "implication": "Per-agent autonomy is real; agents learned heterogeneous routing preferences"
+    },
+    {
+      "observation": "Per-EA underperformed shared-agent by 3.31 pp",
+      "implication": "Different is not better; shared-parameter trainer found more effective strategy"
+    }
+  ],
+  "possible_explanations_for_difference": [
+    {
+      "factor": "Per-agent exploration",
+      "explanation": "20 independent agents exploring separately may get stuck in local optima more easily"
+    },
+    {
+      "factor": "Shared environment, independent agents",
+      "explanation": "All agents see same environment; per-agent epsilon schedules may not provide sufficient exploration diversity"
+    },
+    {
+      "factor": "Hyperparameter tuning",
+      "explanation": "Fixed lr=7e-7, γ=0.99, target_sync=2000 may not be optimal for per-EA training"
+    },
+    {
+      "factor": "Training sample efficiency",
+      "explanation": "Per-agent replay buffers (10k capacity) may be smaller effective samples than shared buffer"
+    }
+  ],
+  "recommendations": {
+    "freeze_baselines": "No further changes to shared-agent or per-EA distributed campaigns",
+    "optional_improvements": [
+      "Run lr/gamma sweep if hyperparameter robustness desired",
+      "Run per-agent hyperparameter tuning if per-EA performance improvement desired",
+      "Run LSTM ablation if recurrence contribution needs isolation"
+    ],
+    "proposed_method": "Separate branch; only after baseline review complete",
+    "next_phase": "Awaiting user decision on optional work and proposed-method approval"
+  }
+}

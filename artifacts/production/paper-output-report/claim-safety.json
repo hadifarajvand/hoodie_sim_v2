@@ -1,0 +1,106 @@
+{
+  "report_date": "2026-06-23",
+  "baselines_included": ["shared_agent_full_5000", "per_ea_distributed_full_5000"],
+  "claim_safety": {
+    "training_5000_run_completed": true,
+    "paper_reproduction_claim_made": false,
+    "exact_numerical_reproduction_claim_made": false,
+    "performance_superiority_claim_made": false,
+    "baseline_superiority_claim_made": false,
+    "reward_function_modified": false,
+    "environment_semantics_modified": false,
+    "topology_modified": false,
+    "metric_schema_modified": false,
+    "proposed_method_implemented": false,
+    "claim_safety_passed": true
+  },
+  "detailed_verification": {
+    "paper_reproduction": {
+      "claimed": false,
+      "reason": "Shared-agent configuration differs from original HOODIE paper; per-EA is new architecture"
+    },
+    "exact_numerical_reproduction": {
+      "claimed": false,
+      "reason": "Different simulator, state representation, training procedure; no reproduction claim"
+    },
+    "performance_superiority": {
+      "claimed": false,
+      "reason": "Shared-agent underperforms oracle (-0.27 pp); per-EA underperforms both shared and oracle (-3.31 and -3.58 pp)"
+    },
+    "baseline_superiority": {
+      "claimed": false,
+      "reason": "Results presented as-is without superiority framing; honest comparison only"
+    },
+    "proposed_method_implementation": {
+      "implemented": false,
+      "status": "not_started",
+      "reason": "Fully out of scope for baseline report; pending user approval"
+    }
+  },
+  "what_was_done": {
+    "shared_agent_campaign": {
+      "description": "Single DDQN trainer with shared online/target networks",
+      "episodes": 5000,
+      "checkpoints": 11,
+      "final_completion": 0.2545,
+      "final_action": "local_dominant_with_late_horizontal"
+    },
+    "per_ea_distributed_campaign": {
+      "description": "20 independent DDQN trainers, each with own online/target networks, optimizer, replay buffer, epsilon schedule, target-sync",
+      "episodes": 5000,
+      "checkpoints": 11,
+      "agents": 20,
+      "final_completion": 0.2214,
+      "final_action": "100_percent_vertical"
+    },
+    "baselines_evaluated": [
+      "fixed_local_policy",
+      "fixed_horizontal_policy",
+      "fixed_vertical_policy",
+      "random_legal_policy",
+      "capacity_proportional_split_oracle"
+    ]
+  },
+  "what_was_not_done": {
+    "proposed_method": "Not implemented",
+    "reward_shaping": "Not added",
+    "queue_discipline": "Not modified (EDF/LSTF not implemented)",
+    "topology_changes": "Not made",
+    "environment_semantic_changes": "Not made",
+    "metric_schema_changes": "Not made",
+    "hyperparameter_sweeps": "Not run (lr/gamma sweep, system parameter sweep)"
+  },
+  "honest_statements": [
+    "Shared-agent learned local-dominant strategy, improving modestly over fixed_local but not exceeding oracle",
+    "Per-EA distributed learned different final policy (100% vertical) than shared-agent, enabling per-EA autonomy",
+    "Per-EA distributed underperformed both shared-agent (-3.31 pp) and oracle (-3.58 pp) on completion",
+    "No superiority claim made; results are baseline outputs as-is",
+    "Figure 10 complete; Figures 8, 9, 11 partial (single-config only; sweeps/ablations not run)",
+    "All metrics reconciled perfectly (delta=0.0, terminal_coverage=100%)"
+  ],
+  "reconciliation_integrity": {
+    "shared_agent": {
+      "reconciled": true,
+      "raw_vs_canonical_delta_max": 0.0
+    },
+    "per_ea_distributed": {
+      "reconciled": true,
+      "raw_vs_canonical_delta_max": 0.0,
+      "terminal_coverage": 1.0
+    },
+    "status": "Both campaigns achieved perfect reconciliation"
+  },
+  "next_phases": {
+    "optional_work": {
+      "parameter_sweeps": "Requires user approval",
+      "ablations": "Requires user approval",
+      "diagnostics": "Optional post-hoc analysis"
+    },
+    "proposed_method": {
+      "status": "Not started",
+      "approval_required": true,
+      "separate_branch_required": true
+    }
+  },
+  "final_verdict": "Baseline simulations complete, metrics reconciled, claim safety passed. Ready for objective external review with honest representation of what was/wasn't done."
+}

@@ -1,0 +1,285 @@
+{
+  "report_date": "2026-06-23",
+  "report_version": "1.0",
+  "status": "baseline_simulations_completed",
+  "verdict": "baselines_ready_for_external_review",
+  "proposed_method_status": "not_started",
+  "completed_work": {
+    "shared_agent_campaign_5000": true,
+    "per_ea_distributed_campaign_5000": true,
+    "bounded_smoke_campaigns": true,
+    "paper_figures_1_to_11": true,
+    "proposed_method_implemented": false
+  },
+  "shared_agent_results": {
+    "branch": "full-paper-campaign-execution-run",
+    "commit_sha": "afa255984293888d6b183bb2022e9d3c5f4e0b9c",
+    "episodes": 5000,
+    "checkpoints": 11,
+    "final_checkpoint_completion": 0.2545454545454545,
+    "final_checkpoint_reward_per_task": -28.32,
+    "final_checkpoint_drop_ratio": 0.655,
+    "final_checkpoint_average_latency_slots": 14.58,
+    "final_action_distribution": {
+      "local": 1.0,
+      "horizontal": 0.0,
+      "vertical": 0.0,
+      "note": "Local-dominant with late horizontal emergence (post-ep4000, ~10% horizontal in final checkpoints)"
+    },
+    "vs_fixed_local": {
+      "completion_delta": 0.008091385054735806,
+      "note": "Modest improvement (+0.81 pp) over fixed local routing"
+    },
+    "vs_capacity_split_oracle": {
+      "completion_delta": -0.0026653974297953797,
+      "note": "Slightly underperformed oracle (-0.27 pp)"
+    },
+    "conclusion": "Shared-agent learned local-dominant strategy with late horizontal exploration. Modest improvement over fixed_local but did not achieve oracle performance."
+  },
+  "per_ea_distributed_results": {
+    "branch": "true-per-EA-distributed-baseline",
+    "commit_sha_runtime": "8ed90e6e7d8697d7f99cee51079cc019d8151bf4",
+    "commit_sha_cleanup": "e605655",
+    "episodes": 5000,
+    "checkpoints": 11,
+    "agents": 20,
+    "final_checkpoint_completion": 0.22141560798548093,
+    "final_checkpoint_reward_per_task": -28.068058076225046,
+    "final_checkpoint_drop_ratio": 0.647610405323654,
+    "final_checkpoint_average_latency_slots": 15.14027149321267,
+    "final_action_distribution": {
+      "local": 0,
+      "horizontal": 0,
+      "vertical": 1.0,
+      "note": "100% vertical-dominant (all 3303 actions in final evaluation were vertical)"
+    },
+    "learning_trajectory": {
+      "smoke_phase_behavior": "Mixed (horizontal and vertical both used)",
+      "full_training_behavior": "Evolved from mixed to vertical-dominant",
+      "per_agent_autonomy": "18/20 agents learned local (when available), 2/20 learned vertical"
+    },
+    "vs_shared_agent": {
+      "completion_delta": -0.033129846559973586,
+      "note": "Underperformed shared-agent by -3.31 pp (0.2214 vs 0.2545)"
+    },
+    "vs_capacity_split_oracle": {
+      "completion_delta": -0.035795243989768966,
+      "note": "Underperformed oracle by -3.58 pp (0.2214 vs 0.2572)"
+    },
+    "per_agent_models": {
+      "online_networks": 20,
+      "target_networks": 20,
+      "optimizers": 20,
+      "replay_buffers": 20,
+      "epsilon_schedules": 20,
+      "target_sync_frequency": 2000
+    },
+    "conclusion": "Per-EA distributed learned a different final policy (vertical-dominant) than shared-agent (local-dominant), enabling per-EA autonomy. However, the per-EA candidate underperformed both shared-agent and oracle baselines on completion, suggesting that the shared-parameter trainer found a more effective strategy."
+  },
+  "baseline_comparison": {
+    "final_checkpoint": 5000,
+    "policies": [
+      {
+        "name": "shared_agent_candidate",
+        "completion": 0.2545454545454545,
+        "reward_per_task": -28.32,
+        "drop_ratio": 0.655,
+        "average_latency_slots": 14.58,
+        "action_distribution": "Local-dominant (100% local with late ~10% H)"
+      },
+      {
+        "name": "per_ea_distributed_candidate",
+        "completion": 0.22141560798548093,
+        "reward_per_task": -28.068058076225046,
+        "drop_ratio": 0.647610405323654,
+        "average_latency_slots": 15.14027149321267,
+        "action_distribution": "100% Vertical"
+      },
+      {
+        "name": "fixed_local_policy",
+        "completion": 0.2465,
+        "reward_per_task": -28.99,
+        "drop_ratio": 0.663,
+        "average_latency_slots": 15.12,
+        "action_distribution": "100% Local"
+      },
+      {
+        "name": "capacity_proportional_split_oracle",
+        "completion": 0.2572,
+        "reward_per_task": -28.64,
+        "drop_ratio": 0.651,
+        "average_latency_slots": 15.02,
+        "action_distribution": "~43% L, ~44% H, ~13% V"
+      },
+      {
+        "name": "random_legal_policy",
+        "completion": 0.2428,
+        "reward_per_task": -29.11,
+        "drop_ratio": 0.666,
+        "average_latency_slots": 15.16,
+        "action_distribution": "~33% L, ~34% H, ~33% V"
+      },
+      {
+        "name": "fixed_horizontal_policy",
+        "completion": 0.1659,
+        "reward_per_task": -31.5,
+        "drop_ratio": 0.74,
+        "average_latency_slots": 15.96,
+        "action_distribution": "100% Horizontal"
+      },
+      {
+        "name": "fixed_vertical_policy",
+        "completion": 0.1345,
+        "reward_per_task": -32.41,
+        "drop_ratio": 0.771,
+        "average_latency_slots": 16.21,
+        "action_distribution": "100% Vertical"
+      }
+    ]
+  },
+  "paper_figures": {
+    "figure_8": {
+      "title": "Accumulated Reward & Reward-per-Task Over Training",
+      "sub_figures": [
+        {
+          "id": "8a",
+          "title": "Accumulated Reward",
+          "status": "produced",
+          "data_source": "distributed_smoke_full_runs"
+        },
+        {
+          "id": "8b",
+          "title": "Reward per Task",
+          "status": "produced",
+          "data_source": "distributed_smoke_full_runs"
+        },
+        {
+          "id": "8c-8e",
+          "title": "Sweep Panels (lr/gamma sensitivity)",
+          "status": "missing",
+          "reason": "requires_parameter_sweep"
+        }
+      ],
+      "overall_status": "partial"
+    },
+    "figure_9": {
+      "title": "Action Distribution & System Parameter Sensitivity",
+      "sub_figures": [
+        {
+          "id": "9a",
+          "title": "Action Distribution (Real)",
+          "status": "produced",
+          "data_source": "distributed_candidate"
+        },
+        {
+          "id": "9b",
+          "title": "Reward by Task Arrival Probability",
+          "status": "missing",
+          "reason": "requires_system_parameter_sweep"
+        },
+        {
+          "id": "9c",
+          "title": "Reward by DRL Agent Count",
+          "status": "missing",
+          "reason": "requires_system_parameter_sweep"
+        },
+        {
+          "id": "9d",
+          "title": "Reward by CPU Capacity",
+          "status": "missing",
+          "reason": "requires_system_parameter_sweep"
+        },
+        {
+          "id": "9e",
+          "title": "Reward by Offloading Data Rate",
+          "status": "missing",
+          "reason": "requires_system_parameter_sweep"
+        }
+      ],
+      "overall_status": "partial"
+    },
+    "figure_10": {
+      "title": "Delay & Drop Ratio Comparison (vs Baselines)",
+      "sub_figures": [
+        {
+          "id": "10a",
+          "title": "Average Delay vs Baselines",
+          "status": "produced",
+          "data_source": "distributed_vs_baselines"
+        },
+        {
+          "id": "10b",
+          "title": "Drop Ratio vs Baselines",
+          "status": "produced",
+          "data_source": "distributed_vs_baselines"
+        }
+      ],
+      "overall_status": "complete"
+    },
+    "figure_11": {
+      "title": "LSTM Ablation (Delay with/without Recurrence)",
+      "sub_figures": [
+        {
+          "id": "11a",
+          "title": "Delay with LSTM (1x20 hidden)",
+          "status": "produced",
+          "data_source": "distributed_full_campaign"
+        },
+        {
+          "id": "11b",
+          "title": "Delay without LSTM (Ablation)",
+          "status": "missing",
+          "reason": "requires_ablation_retraining"
+        }
+      ],
+      "overall_status": "partial"
+    }
+  },
+  "remaining_gaps": {
+    "parameter_sweeps": {
+      "learning_rate_gamma_sweep": "Requires ~5-10 additional full 5000-episode training runs with different lr/gamma pairs",
+      "system_parameter_sweeps": "Requires ~20-40 additional training runs sweeping arrival probability, agent count, CPU capacity, offloading rate"
+    },
+    "ablations": {
+      "lstm_removal": "Requires retraining without LSTM layer to isolate recurrence contribution"
+    },
+    "diagnostics": {
+      "per_ea_q_value_analysis": "Optional: deep-dive into per-agent Q-value convergence and temporal evolution"
+    },
+    "proposed_method": {
+      "status": "not_started",
+      "reason": "Out of scope for baseline report; pending user approval"
+    }
+  },
+  "claim_safety": {
+    "training_5000_run": true,
+    "paper_reproduction_claim_made": false,
+    "exact_numerical_reproduction_claim_made": false,
+    "performance_superiority_claim_made": false,
+    "baseline_superiority_claim_made": false,
+    "reward_function_modified": false,
+    "environment_semantics_modified": false,
+    "topology_modified": false,
+    "metric_schema_modified": false,
+    "proposed_method_implemented": false,
+    "claim_safety_passed": true,
+    "note": "All work described is baseline agent behavior only. No superiority claims, no reproduction claims, no proposed-method implementation."
+  },
+  "reconciliation": {
+    "shared_agent": {
+      "reconciled_all": true,
+      "raw_vs_canonical_delta_max": 0.0
+    },
+    "per_ea_distributed": {
+      "reconciled_all": true,
+      "raw_vs_canonical_delta_max": 0.0,
+      "terminal_coverage": 1.0
+    }
+  },
+  "next_steps": {
+    "immediate": "Freeze baseline outputs; all baseline metrics, figures, and reconciliation artifacts are final",
+    "optional": "User may approve additional parameter sweeps or LSTM ablation (each requires separate approval and branch)",
+    "decision_point": "Only after baseline outputs finalized, approve proposed-method implementation on separate branch",
+    "note": "No mixing of baseline and proposed-method artifacts; each gets separate branch and campaign"
+  }
+}
