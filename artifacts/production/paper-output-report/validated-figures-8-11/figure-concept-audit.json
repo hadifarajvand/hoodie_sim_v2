@@ -1,0 +1,199 @@
+{
+  "audit_date": "2026-06-23",
+  "audit_type": "mechanism_validation_before_export",
+  "source_branches": [
+    "true-per-EA-distributed-baseline",
+    "full-paper-campaign-execution-run"
+  ],
+  "figures": [
+    {
+      "figure_id": 8,
+      "figure_name": "Reward Time-Course (Learning Dynamics)",
+      "paper_intent": "Demonstrate accumulated reward and reward-per-task evolution during training under single hyperparameter configuration",
+      "mechanism_being_tested": [
+        "Does the agent converge to stable policy?",
+        "What is reward trajectory shape?",
+        "At what episode does convergence stabilize?"
+      ],
+      "sub_figures": [
+        {
+          "subfigure_id": "8a",
+          "name": "Accumulated Reward Over Training",
+          "required_data": "Accumulated reward per episode (episodes 1-5000) at lr=7e-7, gamma=0.99",
+          "available_data": "Yes - checkpoint metrics from distributed-candidate-metrics.json",
+          "is_available_data_mechanistically_valid": true,
+          "data_source_file": "artifacts/production/true-per-EA-distributed-baseline/distributed-candidate-metrics.json",
+          "status": "REAL_PARTIAL",
+          "reason": "Single-config real data mechanistically valid. Hyperparameter robustness requires sweep (not run)."
+        },
+        {
+          "subfigure_id": "8b",
+          "name": "Reward Per Task Over Training",
+          "required_data": "Reward-per-task per episode at lr=7e-7, gamma=0.99",
+          "available_data": "Yes - checkpoint metrics",
+          "is_available_data_mechanistically_valid": true,
+          "data_source_file": "artifacts/production/true-per-EA-distributed-baseline/distributed-candidate-metrics.json",
+          "status": "REAL_PARTIAL",
+          "reason": "Valid single-config real data. Sweep panels require additional runs."
+        },
+        {
+          "subfigure_id": "8c-8e",
+          "name": "Learning-Rate and Discount-Factor Sweep Panels",
+          "required_data": "Configs for lr ∈ {1e-6, 5e-7, 7e-7, 1e-7} and gamma ∈ {0.95, 0.99, 0.995}",
+          "available_data": "No - only single config (lr=7e-7, gamma=0.99) executed",
+          "is_available_data_mechanistically_valid": false,
+          "data_source_file": "N/A",
+          "status": "PLACEHOLDER_REQUIRES_SWEEP",
+          "reason": "Requires 5-10 additional full 5000-episode runs. Not executed."
+        }
+      ],
+      "overall_status": "REAL_PARTIAL",
+      "publishable": true,
+      "caption_honesty": "Must state 'single-configuration results; sweep panels require additional hyperparameter tuning (future work)'"
+    },
+    {
+      "figure_id": 9,
+      "figure_name": "Behavior Insights & System Sensitivity",
+      "paper_intent": "Show action distribution and sensitivity to system parameters (arrival, agent count, capacity, rate)",
+      "mechanism_being_tested": [
+        "Which actions (L/H/V) does learned policy prefer?",
+        "How robust across system parameter variations?",
+        "Does policy generalize or fail?"
+      ],
+      "sub_figures": [
+        {
+          "subfigure_id": "9a",
+          "name": "Action Distribution",
+          "required_data": "Real action counts from trained agent evaluation",
+          "available_data": "Yes - 100% vertical from distributed-candidate-metrics.json",
+          "is_available_data_mechanistically_valid": true,
+          "data_source_file": "artifacts/production/true-per-EA-distributed-baseline/distributed-candidate-metrics.json",
+          "status": "REAL_PARTIAL",
+          "reason": "Real distribution from fixed environment. Sweep generalization is optional."
+        },
+        {
+          "subfigure_id": "9b",
+          "name": "Reward by Task Arrival Probability",
+          "required_data": "Reward under arrival probability ∈ {0.2, 0.4, 0.6, 0.8}",
+          "available_data": "No - only single arrival profile evaluated",
+          "is_available_data_mechanistically_valid": false,
+          "data_source_file": "N/A",
+          "status": "PLACEHOLDER_REQUIRES_SWEEP",
+          "reason": "Requires re-evaluation under different arrival profiles. Not executed."
+        },
+        {
+          "subfigure_id": "9c",
+          "name": "Reward by DRL Agent Count",
+          "required_data": "Reward under agent count ∈ {5, 10, 15, 20, 25}",
+          "available_data": "No - only 20 agents evaluated",
+          "is_available_data_mechanistically_valid": false,
+          "data_source_file": "N/A",
+          "status": "PLACEHOLDER_REQUIRES_SWEEP",
+          "reason": "Requires separate evaluation configs. Not executed."
+        },
+        {
+          "subfigure_id": "9d",
+          "name": "Reward by CPU Capacity",
+          "required_data": "Reward under capacity ∈ {0.5x, 1.0x, 2.0x}",
+          "available_data": "No - only single capacity config evaluated",
+          "is_available_data_mechanistically_valid": false,
+          "data_source_file": "N/A",
+          "status": "PLACEHOLDER_REQUIRES_SWEEP",
+          "reason": "Requires environment reconfiguration. Not executed."
+        },
+        {
+          "subfigure_id": "9e",
+          "name": "Reward by Offloading Data Rate",
+          "required_data": "Reward under data rate ∈ {0.2x, 1.0x, 5.0x}",
+          "available_data": "No - only single rate config evaluated",
+          "is_available_data_mechanistically_valid": false,
+          "data_source_file": "N/A",
+          "status": "PLACEHOLDER_REQUIRES_SWEEP",
+          "reason": "Requires environment reconfiguration. Not executed."
+        }
+      ],
+      "overall_status": "REAL_PARTIAL",
+      "publishable": true,
+      "caption_honesty": "Must state 'Action distribution from fixed environment (9a real); system parameter sensitivity requires additional evaluation campaigns (9b-9e future work)'"
+    },
+    {
+      "figure_id": 10,
+      "figure_name": "HOODIE vs Baselines (Comparison)",
+      "paper_intent": "Demonstrate learned agent achieves lower delay/drop than baselines; validate DRL approach",
+      "mechanism_being_tested": [
+        "Does candidate outperform fixed policies?",
+        "Does candidate approach oracle?",
+        "Is learned routing effective for deadline-aware scheduling?"
+      ],
+      "sub_figures": [
+        {
+          "subfigure_id": "10a",
+          "name": "Average Delay vs Baselines",
+          "required_data": "Average latency (slots) for 7 policies: candidate, fixed_local, fixed_horizontal, fixed_vertical, random_legal, capacity_split_oracle",
+          "available_data": "Yes - all baselines from baseline-and-oracle-metrics.json",
+          "is_available_data_mechanistically_valid": true,
+          "data_source_file": "artifacts/production/true-per-EA-distributed-baseline/baseline-and-oracle-metrics.json",
+          "status": "REAL_FULL",
+          "reason": "All baseline and candidate metrics fully available and reconciled (delta=0.0)."
+        },
+        {
+          "subfigure_id": "10b",
+          "name": "Drop Ratio vs Baselines",
+          "required_data": "Drop ratio (deadline violations) for same 7 policies",
+          "available_data": "Yes - all metrics available",
+          "is_available_data_mechanistically_valid": true,
+          "data_source_file": "artifacts/production/true-per-EA-distributed-baseline/baseline-and-oracle-metrics.json",
+          "status": "REAL_FULL",
+          "reason": "All metrics fully available from reconciled simulation runs."
+        }
+      ],
+      "overall_status": "REAL_FULL",
+      "publishable": true,
+      "caption_honesty": "Can state 'Comparison of delay and drop ratio against implemented baselines, generated fully from simulation outputs.'"
+    },
+    {
+      "figure_id": 11,
+      "figure_name": "LSTM Ablation (Architecture Contribution)",
+      "paper_intent": "Demonstrate LSTM layer is necessary; contrast with and without LSTM",
+      "mechanism_being_tested": [
+        "Does LSTM provide significant delay reduction?",
+        "How much performance is due to recurrence?",
+        "Is LSTM contribution measurable and substantial?"
+      ],
+      "sub_figures": [
+        {
+          "subfigure_id": "11a",
+          "name": "Delay Trend (With LSTM)",
+          "required_data": "Delay measurements from LSTM-enabled training",
+          "available_data": "Yes - from distributed-candidate-metrics.json (LSTM was used)",
+          "is_available_data_mechanistically_valid": true,
+          "data_source_file": "artifacts/production/true-per-EA-distributed-baseline/distributed-candidate-metrics.json",
+          "status": "REAL_PARTIAL",
+          "reason": "Real performance with LSTM. Without-LSTM comparison requires ablation."
+        },
+        {
+          "subfigure_id": "11b",
+          "name": "Delay Trend (Without LSTM)",
+          "required_data": "Delay measurements from feedforward (no-LSTM) training run for 5000 episodes",
+          "available_data": "No - ablation not executed",
+          "is_available_data_mechanistically_valid": false,
+          "data_source_file": "N/A",
+          "status": "PLACEHOLDER_REQUIRES_ABLATION",
+          "reason": "Ablation requires separate 5000-episode training run. Not executed."
+        }
+      ],
+      "overall_status": "REAL_PARTIAL",
+      "publishable": true,
+      "caption_honesty": "Must state 'LSTM-enabled model delay (11a real); no-LSTM ablation not yet executed and is marked as future work (11b).'"
+    }
+  ],
+  "summary": {
+    "figures_fully_real": [10],
+    "figures_partially_real": [8, 9, 11],
+    "all_figures_publishable": true,
+    "figures_requiring_sweep": [8, 9],
+    "figures_requiring_ablation": [11],
+    "no_fabricated_curves": true,
+    "no_placeholder_presented_as_real": true
+  }
+}
