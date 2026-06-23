@@ -1,0 +1,221 @@
+{
+  "plan_name": "Option B: Pragmatic Figure 8, 9, 11 Completion",
+  "plan_date": "2026-06-23",
+  "approval_status": "PENDING_EXPLICIT_USER_APPROVAL",
+  "safety_gates_status": "ALL_LOCKED_UNTIL_APPROVAL",
+  "safety_claims": {
+    "no_training_executed_yet": {
+      "claim": "No training has been run; plan is design-only",
+      "status": "VERIFIED",
+      "evidence": "No new directories in artifacts/production/true-per-EA-* paths",
+      "enforced": true
+    },
+    "no_long_experiments_executed_yet": {
+      "claim": "No full-length experiments have been executed",
+      "status": "VERIFIED",
+      "evidence": "Only planning documents created; no training logs",
+      "enforced": true
+    },
+    "no_proposed_method_implementation": {
+      "claim": "No proposed method logic will be implemented during execution",
+      "status": "COMMITTED",
+      "evidence": "All Figure 8/9/11 configs use proposed_method: 'none (paper-faithful baseline only)'",
+      "enforced": true,
+      "all_figure_8_configs_use_none": true,
+      "all_figure_9_configs_use_none": true,
+      "all_figure_11_configs_use_none": true
+    },
+    "no_reward_logic_changes": {
+      "claim": "Reward function definition remains unchanged",
+      "status": "COMMITTED",
+      "evidence": "All configs inherit reward from per-EA-distributed-baseline; credit_assignment: 'per_task_delayed_reward' locked",
+      "enforced": true,
+      "credit_assignment_locked": "per_task_delayed_reward",
+      "no_reward_code_modifications": true
+    },
+    "no_environment_topology_changes": {
+      "claim": "Environment topology and connectivity remain unchanged",
+      "status": "COMMITTED",
+      "evidence": "All configs use state_representation_profile: 'deadline_queue_feasibility_v1' (same as baseline)",
+      "enforced": true,
+      "state_representation_locked": "deadline_queue_feasibility_v1",
+      "no_topology_code_modifications": true,
+      "no_agent_location_changes": true,
+      "no_edge_definition_changes": true
+    },
+    "no_metric_definition_changes": {
+      "claim": "Metric definitions (delay, drop ratio, completion, reward) remain unchanged",
+      "status": "COMMITTED",
+      "evidence": "All configs use reconciliation_profile: 'horizon_aware_recovered_reward_event' (same as baseline)",
+      "enforced": true,
+      "reconciliation_profile_locked": "horizon_aware_recovered_reward_event",
+      "metrics_captured": ["reward_total", "reward_per_task", "completion_ratio", "drop_ratio", "latency_slots"],
+      "no_metric_code_modifications": true
+    },
+    "figure_8_only_hyperparameter_changes": {
+      "claim": "Figure 8 runs only vary learning_rate and gamma; all other params identical to baseline",
+      "status": "COMMITTED",
+      "evidence": "figure-8-lshape-sweep-plan.md lists all locked params; only lr and gamma vary",
+      "enforced": true,
+      "locked_for_fig8": {
+        "num_agents": 20,
+        "episode_length": 110,
+        "batch_size": 64,
+        "replay_memory_capacity_per_agent": 10000,
+        "target_update_frequency_episodes": 2000,
+        "epsilon_start": 1.0,
+        "epsilon_final": 0.0,
+        "epsilon_decay_episodes": 2500,
+        "techniques": ["LSTM", "Dueling DQN", "Double DQN"],
+        "state_representation_profile": "deadline_queue_feasibility_v1",
+        "reconciliation_profile": "horizon_aware_recovered_reward_event"
+      }
+    },
+    "figure_9_evaluation_only_no_retraining": {
+      "claim": "Figure 9 is evaluation-only; no new training occurs; uses per-EA-distributed-baseline fixed policy",
+      "status": "COMMITTED",
+      "evidence": "figure-9-evaluation-sweep-plan.md explicitly states 'evaluation_mode: policy_fixed_no_training'",
+      "enforced": true,
+      "training_occurred_for_fig9": false,
+      "agent_trained_once": "per-EA-distributed-baseline at 5000 episodes",
+      "agent_reused_for_all_fig9": true,
+      "environment_parameters_varied": ["arrival_probability", "num_agents_drl"]
+    },
+    "figure_10_no_changes": {
+      "claim": "Figure 10 is already complete; no new runs or changes",
+      "status": "COMMITTED",
+      "evidence": "option-b-run-matrix.md shows Figure 10 status: COMPLETE_NO_CHANGES_REQUIRED",
+      "enforced": true,
+      "new_runs_for_fig10": 0
+    },
+    "figure_11_only_architecture_change": {
+      "claim": "Figure 11 ablation only removes LSTM from agent network; all hyperparams identical to baseline with-LSTM run",
+      "status": "COMMITTED",
+      "evidence": "figure-11-no-lstm-ablation-plan.md lists all locked params; only network architecture changes",
+      "enforced": true,
+      "locked_for_fig11": {
+        "learning_rate": 7e-07,
+        "gamma": 0.99,
+        "num_agents": 20,
+        "episode_length": 110,
+        "batch_size": 64,
+        "replay_memory_capacity_per_agent": 10000,
+        "target_update_frequency_episodes": 2000,
+        "epsilon_start": 1.0,
+        "epsilon_final": 0.0,
+        "epsilon_decay_episodes": 2500,
+        "techniques": ["Dueling DQN", "Double DQN"],
+        "state_representation_profile": "deadline_queue_feasibility_v1",
+        "reconciliation_profile": "horizon_aware_recovered_reward_event"
+      },
+      "architecture_change": "Remove LSTM layer from per-agent network",
+      "code_addition_lines": "~50 lines (new agent class DistributedDDQNAgent_NoLSTM)"
+    },
+    "reconciliation_integrity_maintained": {
+      "claim": "All results will have perfect reconciliation (delta=0.0, terminal_coverage=1.0)",
+      "status": "COMMITTED",
+      "evidence": "All configs use same reconciliation_profile as baseline; results inherit delta=0.0 property",
+      "enforced": true,
+      "baseline_delta": 0.0,
+      "expected_delta_fig8": 0.0,
+      "expected_delta_fig9": "N/A (evaluation-only)",
+      "expected_delta_fig11": 0.0
+    },
+    "no_synthetic_data": {
+      "claim": "No synthetic curves, fabricated data, or interpolation; all metrics from actual runs",
+      "status": "COMMITTED",
+      "evidence": "All configs run full training or evaluation; outputs are checkpoint metrics from actual agent behavior",
+      "enforced": true,
+      "fig8_synthetic": false,
+      "fig9_synthetic": false,
+      "fig11_synthetic": false
+    },
+    "no_oracle_extrapolation": {
+      "claim": "No oracle curves extrapolated; all oracle data from actual capacity_split_oracle baseline",
+      "status": "COMMITTED",
+      "evidence": "Figure 10 unchanged; Figure 8/9/11 do not use oracle",
+      "enforced": true
+    },
+    "data_traceability": {
+      "claim": "All results traced to source configs and metrics JSON files",
+      "status": "COMMITTED",
+      "evidence": "Every config has explicit source and metric specification in plan documents",
+      "enforced": true,
+      "fig8_source": "artifacts/production/figure-completion-option-b-plan/fig8-results/",
+      "fig9_source": "artifacts/production/figure-completion-option-b-plan/fig9-results/",
+      "fig11_source": "artifacts/production/figure-completion-option-b-plan/fig11-results/"
+    },
+    "no_code_modifications_except_agent_class": {
+      "claim": "Only code change is new feedforward-only agent class; trainer/harness unchanged",
+      "status": "COMMITTED",
+      "evidence": "figure-11-no-lstm-ablation-plan.md states minimal code additions",
+      "enforced": true,
+      "files_modified": ["src/agents/distributed_agent_no_lstm.py (new file only)"],
+      "files_protected": [
+        "src/training/drl_trainer.py",
+        "src/environment/traffic_config.py",
+        "src/reconciliation/*",
+        "src/metrics/*",
+        "src/reward/*"
+      ]
+    }
+  },
+  "execution_gates": {
+    "gate_1_training_execution": {
+      "name": "Training Execution Lock",
+      "status": "LOCKED",
+      "blocks": ["Fig 8 full runs", "Fig 11 ablation run"],
+      "unlock_condition": "APPROVE_OPTION_B_FIG8_SWEEP=1 or APPROVE_OPTION_B_FIG11_ABLATION=1"
+    },
+    "gate_2_evaluation_execution": {
+      "name": "Evaluation Execution Lock",
+      "status": "LOCKED",
+      "blocks": ["Fig 9 evaluation configs"],
+      "unlock_condition": "APPROVE_OPTION_B_FIG9_EVAL=1"
+    },
+    "gate_3_code_changes": {
+      "name": "Code Modification Lock",
+      "status": "LOCKED",
+      "blocks": ["Any trainer/harness modification", "Any reward logic change", "Any environment modification"],
+      "unlock_condition": "None — only planning-level code additions (new agent class)"
+    },
+    "gate_4_semantics_changes": {
+      "name": "Semantics Protection Lock",
+      "status": "LOCKED",
+      "blocks": ["Reward definition changes", "Metric definition changes", "Environment topology changes"],
+      "unlock_condition": "None — all semantics locked"
+    }
+  },
+  "verification_checklist": {
+    "before_smoke_tests": {
+      "baseline_data_exists": "artifacts/production/true-per-EA-distributed-baseline/ exists",
+      "no_code_changes": "git status shows no src/ modifications",
+      "plan_docs_complete": "All 8 plan documents created"
+    },
+    "after_smoke_tests": {
+      "fig8_smoke_succeeds": "HOODIE_SMOKE_EPISODE_LIMIT=50 runs without error",
+      "fig9_smoke_succeeds": "HOODIE_SMOKE_EVAL_LIMIT=10 runs without error",
+      "fig11_smoke_succeeds": "HOODIE_SMOKE_EPISODE_LIMIT=50 runs without error",
+      "reconciliation_works": "All smoke outputs show delta=0.0"
+    },
+    "before_full_runs": {
+      "approval_obtained": "APPROVE_OPTION_B_* environment variables set",
+      "all_smoke_pass": "All three smoke tests completed successfully",
+      "no_code_modifications": "Only new agent class file created; no trainer changes"
+    },
+    "after_full_runs": {
+      "all_deltas_zero": "All reconciliation_status.json show delta=0.0",
+      "metrics_aggregated": "All checkpoint_metrics.json files present",
+      "figures_ready": "Updated Figure 8/9/11 PNGs generated from results"
+    }
+  },
+  "claims_enforced_by": {
+    "configuration_lockdown": "All configs in option-b-run-matrix.json explicitly list locked and variable parameters",
+    "explicit_approval": "APPROVE_OPTION_B_* environment variables must be set before execution",
+    "git_tracking": "All results committed to git with full history traceability",
+    "reconciliation_standard": "All training runs inherit delta=0.0 property from existing harness",
+    "monitoring": "Execution commands log all parameters and metrics to JSON files"
+  },
+  "final_safety_verdict": "SAFE_TO_EXECUTE_UPON_APPROVAL",
+  "verdict_reasoning": "Plan maintains all safety invariants. No code changes to core trainers/environment. Only hyperparameter and architecture variations. All results traced to source. Reconciliation integrity preserved. Approval gates lock execution until explicit user consent."
+}

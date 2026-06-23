@@ -1,0 +1,203 @@
+{
+  "plan_name": "Option B: Pragmatic Figure 8, 9, 11 Completion",
+  "plan_date": "2026-06-23",
+  "approval_status": "PENDING_FULL_RUN_APPROVAL",
+  "mode": "planning_only_no_execution",
+  "total_planned_training_runs": 6,
+  "total_planned_evaluation_configs": 6,
+  "total_planned_ablation_runs": 1,
+  "estimated_total_wall_hours": 7.1,
+  "figure_10_status": "COMPLETE_NO_CHANGES",
+  "runs": {
+    "figure_8_lshape_sweep": {
+      "purpose": "Hyperparameter robustness for learning-rate and discount-factor",
+      "type": "training",
+      "count": 5,
+      "baseline_existing": {
+        "config_id": "per-EA-distributed-baseline",
+        "lr": 7e-07,
+        "gamma": 0.99,
+        "status": "ALREADY_COMPLETE"
+      },
+      "new_configs": [
+        {
+          "config_id": "fig8_lr_1e6_gamma099",
+          "lr": 1e-06,
+          "gamma": 0.99,
+          "episodes": 5000,
+          "description": "High learning rate branch"
+        },
+        {
+          "config_id": "fig8_lr_5e7_gamma099",
+          "lr": 5e-07,
+          "gamma": 0.99,
+          "episodes": 5000,
+          "description": "Mid-low learning rate branch"
+        },
+        {
+          "config_id": "fig8_lr_1e7_gamma099",
+          "lr": 1e-07,
+          "gamma": 0.99,
+          "episodes": 5000,
+          "description": "Low learning rate branch"
+        },
+        {
+          "config_id": "fig8_lr_7e7_gamma095",
+          "lr": 7e-07,
+          "gamma": 0.95,
+          "episodes": 5000,
+          "description": "Low discount factor branch"
+        },
+        {
+          "config_id": "fig8_lr_7e7_gamma0995",
+          "lr": 7e-07,
+          "gamma": 0.995,
+          "episodes": 5000,
+          "description": "High discount factor branch"
+        }
+      ],
+      "estimated_time_hours": 5.4,
+      "per_run_hours": 1.077,
+      "shared_config_params": {
+        "num_agents": 20,
+        "episode_length": 110,
+        "evaluation_episode_count": 100,
+        "batch_size": 64,
+        "replay_memory_capacity_per_agent": 10000,
+        "target_update_frequency_episodes": 2000,
+        "epsilon_start": 1.0,
+        "epsilon_final": 0.0,
+        "epsilon_decay_episodes": 2500,
+        "state_representation_profile": "deadline_queue_feasibility_v1",
+        "reconciliation_profile": "horizon_aware_recovered_reward_event",
+        "credit_assignment": "per_task_delayed_reward",
+        "techniques": ["LSTM", "Dueling DQN", "Double DQN"],
+        "per_agent_enabled": true,
+        "proposed_method": "none (paper-faithful baseline only)"
+      }
+    },
+    "figure_9_system_sensitivity": {
+      "purpose": "Evaluation-only sensitivity analysis of learned candidate policy",
+      "type": "evaluation_only",
+      "training_needed": false,
+      "training_to_reuse": "per-EA-distributed-baseline (already trained)",
+      "count": 6,
+      "evaluation_configs": [
+        {
+          "config_id": "fig9_arrival_prob_02",
+          "parameter": "arrival_probability",
+          "value": 0.2,
+          "episodes": 100,
+          "description": "Low task arrival rate"
+        },
+        {
+          "config_id": "fig9_arrival_prob_05",
+          "parameter": "arrival_probability",
+          "value": 0.5,
+          "episodes": 100,
+          "description": "Medium task arrival rate (baseline)"
+        },
+        {
+          "config_id": "fig9_arrival_prob_08",
+          "parameter": "arrival_probability",
+          "value": 0.8,
+          "episodes": 100,
+          "description": "High task arrival rate"
+        },
+        {
+          "config_id": "fig9_agent_count_10",
+          "parameter": "num_agents_drl",
+          "value": 10,
+          "episodes": 100,
+          "description": "Reduced agent count"
+        },
+        {
+          "config_id": "fig9_agent_count_20",
+          "parameter": "num_agents_drl",
+          "value": 20,
+          "episodes": 100,
+          "description": "Baseline agent count"
+        },
+        {
+          "config_id": "fig9_agent_count_30",
+          "parameter": "num_agents_drl",
+          "value": 30,
+          "episodes": 100,
+          "description": "Increased agent count"
+        }
+      ],
+      "estimated_time_hours": 0.6,
+      "per_config_hours": 0.1,
+      "shared_eval_params": {
+        "evaluation_mode": "policy_fixed_no_training",
+        "agent_policy_source": "per-EA-distributed-baseline_trained_at_5000_episodes",
+        "metrics_captured": ["reward", "completion_ratio", "drop_ratio", "latency"],
+        "seed_policy": "fixed_seed_7_deterministic"
+      }
+    },
+    "figure_11_no_lstm_ablation": {
+      "purpose": "Ablation study: feedforward-only vs with-LSTM architecture",
+      "type": "training",
+      "count": 1,
+      "config": {
+        "config_id": "fig11_no_lstm_ablation",
+        "architecture": "feedforward_3layer_1024_no_lstm",
+        "episodes": 5000,
+        "lr": 7e-07,
+        "gamma": 0.99,
+        "num_agents": 20,
+        "description": "Full training without LSTM layer; all else identical to baseline"
+      },
+      "baseline_for_comparison": {
+        "config_id": "per-EA-distributed-baseline",
+        "architecture": "feedforward_3layer_1024_plus_lstm_256_per_agent",
+        "episodes": 5000,
+        "status": "ALREADY_COMPLETE"
+      },
+      "estimated_time_hours": 1.077,
+      "per_run_hours": 1.077,
+      "shared_config_params": {
+        "num_agents": 20,
+        "episode_length": 110,
+        "evaluation_episode_count": 100,
+        "batch_size": 64,
+        "replay_memory_capacity_per_agent": 10000,
+        "target_update_frequency_episodes": 2000,
+        "epsilon_start": 1.0,
+        "epsilon_final": 0.0,
+        "epsilon_decay_episodes": 2500,
+        "state_representation_profile": "deadline_queue_feasibility_v1",
+        "reconciliation_profile": "horizon_aware_recovered_reward_event",
+        "credit_assignment": "per_task_delayed_reward",
+        "techniques": ["Dueling DQN", "Double DQN"],
+        "proposed_method": "none (paper-faithful baseline only)"
+      }
+    },
+    "figure_10_baseline_comparison": {
+      "status": "COMPLETE_NO_CHANGES_REQUIRED",
+      "reason": "Figure 10 has all 7 policies with real metrics and reconciliation delta=0.0",
+      "new_runs_needed": 0,
+      "existing_data_sufficient": true
+    }
+  },
+  "total_summary": {
+    "new_training_runs": 6,
+    "new_evaluation_configs": 6,
+    "existing_complete_figures": 1,
+    "total_estimated_hours": 7.1,
+    "breakdown": {
+      "figure_8_training": 5.4,
+      "figure_9_evaluation": 0.6,
+      "figure_10_unchanged": 0.0,
+      "figure_11_training": 1.077
+    }
+  },
+  "safety_gates": {
+    "training_execution_blocked_until_approval": true,
+    "long_experiment_execution_blocked": true,
+    "proposed_method_logic_unchanged": true,
+    "reward_semantics_unchanged": true,
+    "environment_topology_unchanged": true,
+    "metric_definitions_unchanged": true
+  }
+}
