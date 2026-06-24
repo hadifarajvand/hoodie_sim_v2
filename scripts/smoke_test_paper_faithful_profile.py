@@ -14,6 +14,9 @@ This test confirms:
 import sys
 from pathlib import Path
 
+# Add repo root to path for imports
+sys.path.insert(0, str(Path(__file__).parent.parent))
+
 from src.analysis.paper_faithful_profile.config import build_paper_faithful_profile
 
 
