@@ -141,6 +141,9 @@ class CampaignPolicy:
         self.epsilon = epsilon
         self.exploration_rng = exploration_rng or random.Random()
 
+    def set_epsilon(self, epsilon: float) -> None:
+        self.epsilon = epsilon
+
     def choose_action_index(self, state_window: torch.Tensor, legal_action_mask: dict[str, bool]) -> int:
         # Epsilon-greedy exploration
         if self.exploration_rng.random() < self.epsilon:
@@ -189,11 +192,14 @@ class DDQNTrainer:
         self.target_network.load_state_dict(self.online_network.state_dict())
         self.optimizer = torch.optim.Adam(self.online_network.parameters(), lr=self.config.learning_rate)
         self.exploration_rng = random.Random(self.config.seed_bundle.action_exploration_seed)
-        self.policy = CampaignPolicy(self.online_network, epsilon=0.1, exploration_rng=self.exploration_rng)
+        # Use config epsilon if available, else default to 1.0 (paper-faithful standard)
+        epsilon_start = getattr(self.config, 'epsilon_start', 1.0)
+        self.policy = CampaignPolicy(self.online_network, epsilon=epsilon_start, exploration_rng=self.exploration_rng)
         self.replay_buffer = ReplayBuffer(capacity=self.config.replay_memory_capacity, seed=self.config.seed_bundle.replay_sampling_seed)
         self.sample_rng = random.Random(self.config.seed_bundle.replay_sampling_seed)
         self.optimizer_step_count = 0
         self.target_sync_count = 0
+        self.total_episodes_trained = 0
 
     def _initial_history(self, *, episode_length: int) -> deque[tuple[float, float, float]]:
         zero_row = build_state_vector(observation={"slot": 0, "queue_load": 0, "history_length": 0}, current_task=None, episode_length=episode_length)
@@ -324,7 +330,20 @@ class DDQNTrainer:
     def run_pilot(self, *, episodes: int, episode_length: int) -> PilotTrainingResult:
         loss_values: list[float] = []
         episode_summaries: list[dict[str, Any]] = []
+        # Get epsilon schedule from config if available
+        epsilon_start = getattr(self.config, 'epsilon_start', 1.0)
+        epsilon_end = getattr(self.config, 'epsilon_end', 0.0)
+        epsilon_decay_episodes = getattr(self.config, 'epsilon_decay_episodes', 2500)
+
         for episode_index in range(episodes):
+            # Update epsilon schedule: linear decay from epsilon_start to epsilon_end
+            if epsilon_decay_episodes > 0:
+                progress = min(self.total_episodes_trained / epsilon_decay_episodes, 1.0)
+                epsilon = epsilon_start + (epsilon_end - epsilon_start) * progress
+            else:
+                epsilon = epsilon_start
+            self.policy.set_epsilon(epsilon)
+
             summary = self._episode_rollout(
                 episode_id=episode_index,
                 seed=self.config.seed_bundle.training_trace_generation_seed + episode_index,
@@ -333,6 +352,7 @@ class DDQNTrainer:
             )
             episode_summaries.append(summary)
             loss_values.extend(summary["loss_values"])
+            self.total_episodes_trained += 1
 
         loss_value = loss_values[-1] if loss_values else 0.0
         loss_is_finite = bool(torch.isfinite(torch.tensor(loss_value)).item())
@@ -396,7 +416,20 @@ class DDQNTrainer:
         # Continue from the pilot state with the requested full campaign budget.
         additional_summaries: list[dict[str, Any]] = []
         candidate_loss_values: list[float] = []
+        # Get epsilon schedule from config if available
+        epsilon_start = getattr(self.config, 'epsilon_start', 1.0)
+        epsilon_end = getattr(self.config, 'epsilon_end', 0.0)
+        epsilon_decay_episodes = getattr(self.config, 'epsilon_decay_episodes', 2500)
+
         for episode_index in range(episodes):
+            # Update epsilon schedule: linear decay from epsilon_start to epsilon_end
+            if epsilon_decay_episodes > 0:
+                progress = min(self.total_episodes_trained / epsilon_decay_episodes, 1.0)
+                epsilon = epsilon_start + (epsilon_end - epsilon_start) * progress
+            else:
+                epsilon = epsilon_start
+            self.policy.set_epsilon(epsilon)
+
             summary = self._episode_rollout(
                 episode_id=1000 + episode_index,
                 seed=self.config.seed_bundle.training_trace_generation_seed + 1000 + episode_index,
@@ -405,6 +438,7 @@ class DDQNTrainer:
             )
             additional_summaries.append(summary)
             candidate_loss_values.extend(summary["loss_values"])
+            self.total_episodes_trained += 1
         checkpoint_metadata = self._checkpoint_metadata(stage="full_training_candidate", replay_size=len(self.replay_buffer))
         checkpoint_schema_valid = self._checkpoint_schema_valid(checkpoint_metadata)
         evaluation_summary = self.evaluate()
