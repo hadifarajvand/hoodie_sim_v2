@@ -136,10 +136,17 @@ class EvaluationSummary:
 
 
 class CampaignPolicy:
-    def __init__(self, network) -> None:
+    def __init__(self, network, epsilon: float = 0.0, exploration_rng: random.Random | None = None) -> None:
         self.network = network
+        self.epsilon = epsilon
+        self.exploration_rng = exploration_rng or random.Random()
 
     def choose_action_index(self, state_window: torch.Tensor, legal_action_mask: dict[str, bool]) -> int:
+        # Epsilon-greedy exploration
+        if self.exploration_rng.random() < self.epsilon:
+            legal_indices = [i for i, legal in enumerate(legal_action_mask_to_tuple(legal_action_mask)) if legal]
+            return self.exploration_rng.choice(legal_indices) if legal_indices else 0
+
         with torch.no_grad():
             q_values = self.network(state_window.unsqueeze(0))[0]
         legal_mask_tensor = torch.tensor(
@@ -181,7 +188,8 @@ class DDQNTrainer:
         self.target_network = build_target_network(self.network_config)
         self.target_network.load_state_dict(self.online_network.state_dict())
         self.optimizer = torch.optim.Adam(self.online_network.parameters(), lr=self.config.learning_rate)
-        self.policy = CampaignPolicy(self.online_network)
+        self.exploration_rng = random.Random(self.config.seed_bundle.action_exploration_seed)
+        self.policy = CampaignPolicy(self.online_network, epsilon=0.1, exploration_rng=self.exploration_rng)
         self.replay_buffer = ReplayBuffer(capacity=self.config.replay_memory_capacity, seed=self.config.seed_bundle.replay_sampling_seed)
         self.sample_rng = random.Random(self.config.seed_bundle.replay_sampling_seed)
         self.optimizer_step_count = 0
@@ -250,7 +258,7 @@ class DDQNTrainer:
                 terminal_transition_count += 1
                 completed_task_count += sum(1 for task in finalized_tasks if task.get("terminal_outcome") == "completed")
                 dropped_task_count += sum(1 for task in finalized_tasks if task.get("terminal_outcome") == "dropped")
-            if truncated and (env.current_task is not None or info.get("queue_load", 0) > 0):
+            if truncated and not reward_available and (env.current_task is not None or info.get("queue_load", 0) > 0):
                 pending_at_horizon_count += 1
                 terminal_reason = "pending_at_horizon"
 
