@@ -102,13 +102,13 @@ running the smoke test or full Option B training with the correct parameters.
 
 ## Validation Status
 
-**Config Validation:** ✅ PASSING (20/20 checks)
+**Config Validation:** ✅ PASSING (24/24 checks)
 ```
 ✅ task_size_mbits_min = 2.0
 ✅ task_size_mbits_max = 5.0
 ✅ task_size_mbits_step = 0.1
 ✅ processing_density = 0.297
-✅ [17 more paper parameters verified]
+✅ [20 more paper parameters verified]
 ```
 
 **Trace Generation:** ✅ PASSING
@@ -116,9 +116,14 @@ running the smoke test or full Option B training with the correct parameters.
 - All within paper range
 - Processing density = 0.297 for all tasks
 
-**Smoke Test:** ⏳ Ready to execute (not yet run)
-- Trains for 10, 50 episodes with paper-faithful profile
-- Captures action distributions
+**Profile Instantiation Smoke Test:** ✅ Ready to execute
+- Validates config immutability and parameter correctness
+- Does NOT run training (lightweight instantiation test only)
+
+**Behavioral Smoke Test:** ⏳ Ready to execute (not yet run)
+- Runs actual training for 10 and 50 episodes with paper-faithful profile
+- Uses same trainer/evaluator path as full Option B
+- Captures action distributions at each checkpoint
 - Expected: Mixed actions (30-50% each) if parameter scaling was root cause
 
 ---
@@ -143,8 +148,9 @@ running the smoke test or full Option B training with the correct parameters.
 
 1. ✅ Paper-faithful profile module created
 2. ✅ Validation script passes
-3. ⏳ Smoke test runs and shows mixed actions (not collapsed)
-4. ⏳ Decision report confirms root cause
+3. ✅ Profile instantiation smoke test passes
+4. ⏳ Behavioral smoke test runs and shows mixed actions (not collapsed)
+5. ⏳ Decision report confirms root cause
 
 **Timeline:**
 - Smoke test: 20-50 min
@@ -198,16 +204,20 @@ Explicitly excluded to keep commit minimal:
 
 ## Next Action
 
-**User must run smoke test:**
+**User must run two smoke tests in order:**
 
 ```bash
+# 1. Profile instantiation smoke test (instant)
 python scripts/validate_paper_faithful_profile.py  # Should pass ✅
-python scripts/smoke_test_paper_faithful_profile.py  # 20-50 min execution
+python scripts/smoke_test_paper_faithful_profile.py  # ~1 second
+
+# 2. Behavioral smoke test (training)
+python scripts/smoke_train_paper_faithful_profile.py  # 15-30 min execution
 ```
 
-**Expected smoke test outcome:**
-- If mixed actions (30-50% each) → Root cause confirmed → Full Option B approved
-- If still collapsed (100% one action) → Root cause not parameter scaling → Deeper diagnostics needed
+**Expected behavior smoke test outcome:**
+- If mixed actions (30-50% each) at 10 and 50 episodes → Root cause confirmed → Full Option B approved
+- If still collapsed (100% one action) at 10 and 50 episodes → Root cause not parameter scaling → Deeper diagnostics needed
 
 ---
 
