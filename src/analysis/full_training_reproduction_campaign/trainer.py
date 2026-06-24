@@ -170,13 +170,32 @@ def _config_hash(config: CampaignConfig) -> str:
 
 
 def _build_environment(config: CampaignConfig, *, episode_length: int, seed: int) -> HoodieGymEnvironment:
-    return HoodieGymEnvironment(
-        episode_length=episode_length,
-        topology=TopologyGraph.from_approved_assumption_registry(),
-        runtime_parameters=SharedRuntimeParameters(),
-        compute_config=ComputeConfig(),
-        policy_name="HOODIE",
-    )
+    if config.environment_profile == "paper_faithful":
+        from src.analysis.paper_faithful_profile.config import build_paper_faithful_profile
+        from src.analysis.paper_faithful_profile.calibration import build_paper_faithful_environment
+        profile = build_paper_faithful_profile()
+        trace_root_path = Path(config.trace_root)
+        env = build_paper_faithful_environment(profile, episode_length=episode_length, seed=seed, trace_root=trace_root_path)
+        return env
+    else:
+        return HoodieGymEnvironment(
+            episode_length=episode_length,
+            topology=TopologyGraph.from_approved_assumption_registry(),
+            runtime_parameters=SharedRuntimeParameters(),
+            compute_config=ComputeConfig(),
+            policy_name="HOODIE",
+            seed=seed,
+        )
+
+
+def _validate_paper_faithful_config(config: CampaignConfig) -> None:
+    if config.environment_profile != "paper_faithful":
+        raise ValueError(f"Expected environment_profile='paper_faithful', got '{config.environment_profile}'")
+    if not config.trace_root:
+        raise ValueError("trace_root must be set for paper_faithful environment_profile")
+    trace_root = Path(config.trace_root)
+    if not trace_root.exists():
+        trace_root.mkdir(parents=True, exist_ok=True)
 
 
 def _ensure_valid_action(action: str, legal_action_mask: dict[str, bool]) -> bool:
@@ -186,6 +205,8 @@ def _ensure_valid_action(action: str, legal_action_mask: dict[str, bool]) -> boo
 class DDQNTrainer:
     def __init__(self, config: CampaignConfig) -> None:
         self.config = config
+        if config.require_paper_faithful_trace:
+            _validate_paper_faithful_config(config)
         self.network_config = config.build_network_config()
         self.online_network = build_online_network(self.network_config)
         self.target_network = build_target_network(self.network_config)
@@ -217,7 +238,8 @@ class DDQNTrainer:
         training: bool,
     ) -> dict[str, Any]:
         env = _build_environment(self.config, episode_length=episode_length, seed=seed)
-        env.reset(seed=seed)
+        reset_seed = None if self.config.environment_profile == "paper_faithful" else seed
+        env.reset(seed=reset_seed)
         history = self._initial_history(episode_length=episode_length)
         transition_count = 0
         completed_task_count = 0
@@ -541,12 +563,14 @@ class DDQNTrainer:
         reward_bearing_transition_count = 0
         trace_ids: list[str] = []
         for episode_index in range(evaluation_episode_count):
+            eval_seed = self.config.seed_bundle.evaluation_trace_generation_seed + episode_index
             env = _build_environment(
                 self.config,
                 episode_length=self.config.evaluation_episode_length,
-                seed=self.config.seed_bundle.evaluation_trace_generation_seed + episode_index,
+                seed=eval_seed,
             )
-            env.reset(seed=self.config.seed_bundle.evaluation_trace_generation_seed + episode_index)
+            reset_seed = None if self.config.environment_profile == "paper_faithful" else eval_seed
+            env.reset(seed=reset_seed)
             history = self._initial_history(episode_length=self.config.evaluation_episode_length)
             episode_reward = 0.0
             while True:

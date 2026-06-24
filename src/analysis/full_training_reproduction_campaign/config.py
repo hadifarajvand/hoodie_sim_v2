@@ -146,6 +146,9 @@ class CampaignConfig:
         "artifacts/analysis/baseline-revalidation-after-runtime-repair/baseline-revalidation-report.md",
     )
     full_campaign_flag_name: str = "--enable-full-campaign"
+    environment_profile: str = "default"
+    trace_root: str | None = None
+    require_paper_faithful_trace: bool = False
 
     def __post_init__(self) -> None:
         if self.feature_id != FEATURE_ID:
@@ -199,6 +202,10 @@ class CampaignConfig:
             raise ValueError("CampaignConfig.readiness_manual_approval_status cannot be approved without readiness_manual_approval_reference.")
         if not isinstance(self.seed_bundle, CampaignSeedBundle):
             raise ValueError("seed_bundle must be a CampaignSeedBundle.")
+        if self.environment_profile not in ("default", "paper_faithful"):
+            raise ValueError("environment_profile must be 'default' or 'paper_faithful'.")
+        if self.environment_profile == "paper_faithful" and self.trace_root is None:
+            raise ValueError("trace_root must be specified when environment_profile is 'paper_faithful'.")
 
     def build_network_config(self) -> PaperHoodieNetworkConfig:
         return PaperHoodieNetworkConfig.standard(
@@ -237,4 +244,17 @@ class CampaignConfig:
             "evaluation_trace_bank_id": self.evaluation_trace_bank_id,
             "baseline_reference_set": list(self.baseline_reference_set),
             "full_campaign_flag_name": self.full_campaign_flag_name,
+            "environment_profile": self.environment_profile,
+            "trace_root": self.trace_root,
+            "require_paper_faithful_trace": self.require_paper_faithful_trace,
         }
+
+    @classmethod
+    def for_paper_faithful(cls, trace_root: str | None = None) -> CampaignConfig:
+        if trace_root is None:
+            trace_root = "artifacts/paper_faithful_campaign_traces"
+        return cls(
+            environment_profile="paper_faithful",
+            trace_root=trace_root,
+            require_paper_faithful_trace=True,
+        )
