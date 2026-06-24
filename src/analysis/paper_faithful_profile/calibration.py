@@ -19,7 +19,6 @@ from src.environment.traffic_config import TrafficConfig
 from src.environment.traffic_generator import TrafficGenerator
 
 from src.analysis.full_training_reproduction_campaign import trainer as campaign_trainer
-from src.analysis.terminal_lifecycle_accounting_50_100_comparison import repaired_terminal_evaluator as terminal_evaluator
 
 from .config import PaperFaithfulConfig, build_paper_faithful_profile
 
@@ -86,17 +85,18 @@ def build_paper_faithful_environment(cfg: PaperFaithfulConfig, *, episode_length
 
 @contextmanager
 def patched_paper_faithful_environment(cfg: PaperFaithfulConfig, trace_root: Path) -> Iterator[None]:
-    """Context manager that patches trainer/evaluator to use paper-faithful environment."""
+    """Context manager that patches trainer to use paper-faithful environment.
+
+    This patches campaign_trainer._build_environment so that DDQNTrainer._episode_rollout()
+    and DDQNTrainer.evaluate() both use the paper-faithful environment instead of the default.
+    """
     original_trainer_builder = campaign_trainer._build_environment
-    original_evaluator_builder = terminal_evaluator._build_environment
 
     def _build_environment(config, *, episode_length: int, seed: int):
         return build_paper_faithful_environment(cfg, episode_length=episode_length, seed=seed, trace_root=trace_root)
 
     campaign_trainer._build_environment = _build_environment
-    terminal_evaluator._build_environment = _build_environment
     try:
         yield
     finally:
         campaign_trainer._build_environment = original_trainer_builder
-        terminal_evaluator._build_environment = original_evaluator_builder
