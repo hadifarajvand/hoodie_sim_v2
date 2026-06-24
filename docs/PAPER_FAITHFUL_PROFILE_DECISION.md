@@ -54,15 +54,16 @@ processing_density       = 0.2         ❌ (should be 0.297)
 
 ---
 
-## Root Cause Verdict
+## Root Cause Hypothesis
 
-The vertical-collapse bug was caused by **parameter mismatch, not algorithm defect**:
+The vertical-collapse bug was likely caused by **parameter mismatch, not algorithm defect**:
 
-✅ Epsilon-greedy exploration: Implemented correctly  
-✅ State representation (30 features): Comprehensive  
-✅ Network architecture: Matches paper exactly  
-✅ Training loop: Correct  
-❌ **Task parameters: Scaled 12-120x beyond paper**
+- **Task parameters:** Scaled 12-120x beyond paper (0.5-60 vs 2-5 Mbits)
+- **Processing density:** 0.2 instead of 0.297 Gcycles/Mbit
+
+**Note:** This paper-faithful profile module locks down traffic parameters only.
+Full algorithm verification (epsilon-greedy, state representation, network) requires
+running the smoke test or full Option B training with the correct parameters.
 
 ---
 
@@ -84,7 +85,7 @@ The vertical-collapse bug was caused by **parameter mismatch, not algorithm defe
 - `__init__.py` — Public API
 
 **Validation:** `scripts/validate_paper_faithful_profile.py`
-- Checks all 20 config fields match paper values
+- Checks all 24 config fields match paper values (traffic + training parameters)
 - Verifies task traces stay within [2.0, 5.0] Mbits
 - Exit code 0 (success) or 1 (failure)
 - **Status:** ✅ PASSING

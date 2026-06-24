@@ -33,10 +33,10 @@ PAPER_TIMEOUT_SLOTS = 20
 PAPER_ARRIVAL_PROBABILITY = 0.5
 PAPER_DROP_PENALTY_C = 40
 
-# CPU capacities (from paper specs or standard assumptions)
-PAPER_CPU_PRIVATE_GCYCLES_PER_SLOT = 5.0  # 5 GHz at 0.1s slot = 0.5 Gcycles/slot
-PAPER_CPU_PUBLIC_GCYCLES_PER_SLOT = 5.0
-PAPER_CPU_CLOUD_GCYCLES_PER_SLOT = 30.0
+# CPU capacities (aligned with ComputeConfig defaults, 5 GHz at 0.1s slot = 0.5 Gcycles/slot)
+PAPER_CPU_PRIVATE_GCYCLES_PER_SLOT = 0.5  # 5 GHz * 0.1s slot = 0.5 Gcycles/slot
+PAPER_CPU_PUBLIC_GCYCLES_PER_SLOT = 0.5   # 5 GHz * 0.1s slot = 0.5 Gcycles/slot
+PAPER_CPU_CLOUD_GCYCLES_PER_SLOT = 3.0    # 30 GHz * 0.1s slot = 3.0 Gcycles/slot
 
 # Training parameters from paper
 PAPER_LEARNING_RATE = 7e-7
@@ -84,6 +84,8 @@ class PaperFaithfulConfig:
 
     def __post_init__(self) -> None:
         # Strict validation: any deviation is a bug
+        if self.profile_name != PAPER_FAITHFUL_PROFILE_NAME:
+            raise ValueError(f"profile_name must equal {PAPER_FAITHFUL_PROFILE_NAME}")
         if self.num_agents != PAPER_N_EA:
             raise ValueError(f"num_agents must equal {PAPER_N_EA} (paper N_EA)")
         if self.episode_length != PAPER_T:
@@ -108,6 +110,28 @@ class PaperFaithfulConfig:
             raise ValueError(f"arrival_probability must equal {PAPER_ARRIVAL_PROBABILITY} (paper)")
         if self.drop_penalty_c != PAPER_DROP_PENALTY_C:
             raise ValueError(f"drop_penalty_c must equal {PAPER_DROP_PENALTY_C} (paper)")
+        if abs(self.cpu_private_gcycles_per_slot - PAPER_CPU_PRIVATE_GCYCLES_PER_SLOT) > 1e-6:
+            raise ValueError(f"cpu_private_gcycles_per_slot must equal {PAPER_CPU_PRIVATE_GCYCLES_PER_SLOT} (paper)")
+        if abs(self.cpu_public_gcycles_per_slot - PAPER_CPU_PUBLIC_GCYCLES_PER_SLOT) > 1e-6:
+            raise ValueError(f"cpu_public_gcycles_per_slot must equal {PAPER_CPU_PUBLIC_GCYCLES_PER_SLOT} (paper)")
+        if abs(self.cpu_cloud_gcycles_per_slot - PAPER_CPU_CLOUD_GCYCLES_PER_SLOT) > 1e-6:
+            raise ValueError(f"cpu_cloud_gcycles_per_slot must equal {PAPER_CPU_CLOUD_GCYCLES_PER_SLOT} (paper)")
+        if abs(self.learning_rate - PAPER_LEARNING_RATE) > 1e-9:
+            raise ValueError(f"learning_rate must equal {PAPER_LEARNING_RATE} (paper)")
+        if abs(self.gamma - PAPER_GAMMA) > 1e-6:
+            raise ValueError(f"gamma must equal {PAPER_GAMMA} (paper)")
+        if self.batch_size != PAPER_BATCH_SIZE:
+            raise ValueError(f"batch_size must equal {PAPER_BATCH_SIZE} (paper)")
+        if self.replay_memory != PAPER_REPLAY_MEMORY:
+            raise ValueError(f"replay_memory must equal {PAPER_REPLAY_MEMORY} (paper)")
+        if abs(self.epsilon_start - PAPER_EPSILON_START) > 1e-6:
+            raise ValueError(f"epsilon_start must equal {PAPER_EPSILON_START} (paper)")
+        if abs(self.epsilon_end - PAPER_EPSILON_END) > 1e-6:
+            raise ValueError(f"epsilon_end must equal {PAPER_EPSILON_END} (paper)")
+        if self.epsilon_decay_episodes != PAPER_EPSILON_DECAY_EPISODES:
+            raise ValueError(f"epsilon_decay_episodes must equal {PAPER_EPSILON_DECAY_EPISODES} (paper)")
+        if self.target_update_frequency != PAPER_TARGET_UPDATE_FREQUENCY:
+            raise ValueError(f"target_update_frequency must equal {PAPER_TARGET_UPDATE_FREQUENCY} (paper)")
 
     def to_dict(self) -> dict[str, Any]:
         return {

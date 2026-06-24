@@ -29,6 +29,17 @@ from src.analysis.paper_faithful_profile.config import (
     PAPER_TIMEOUT_SLOTS,
     PAPER_ARRIVAL_PROBABILITY,
     PAPER_DROP_PENALTY_C,
+    PAPER_CPU_PRIVATE_GCYCLES_PER_SLOT,
+    PAPER_CPU_PUBLIC_GCYCLES_PER_SLOT,
+    PAPER_CPU_CLOUD_GCYCLES_PER_SLOT,
+    PAPER_LEARNING_RATE,
+    PAPER_GAMMA,
+    PAPER_BATCH_SIZE,
+    PAPER_REPLAY_MEMORY,
+    PAPER_EPSILON_START,
+    PAPER_EPSILON_END,
+    PAPER_EPSILON_DECAY_EPISODES,
+    PAPER_TARGET_UPDATE_FREQUENCY,
 )
 from src.environment.traffic_config import TrafficConfig
 from src.environment.traffic_generator import TrafficGenerator
@@ -49,7 +60,7 @@ def validate_config() -> tuple[bool, list[str]]:
         errors.append(f"Config validation failed: {e}")
         return False, errors
 
-    # Check all values match paper
+    # Check all 24 paper parameters
     checks = [
         ("profile_name", cfg.profile_name, PAPER_FAITHFUL_PROFILE_NAME),
         ("num_agents", cfg.num_agents, PAPER_N_EA),
@@ -64,6 +75,17 @@ def validate_config() -> tuple[bool, list[str]]:
         ("timeout_slots", cfg.timeout_slots, PAPER_TIMEOUT_SLOTS),
         ("arrival_probability", cfg.arrival_probability, PAPER_ARRIVAL_PROBABILITY),
         ("drop_penalty_c", cfg.drop_penalty_c, PAPER_DROP_PENALTY_C),
+        ("cpu_private_gcycles_per_slot", cfg.cpu_private_gcycles_per_slot, PAPER_CPU_PRIVATE_GCYCLES_PER_SLOT),
+        ("cpu_public_gcycles_per_slot", cfg.cpu_public_gcycles_per_slot, PAPER_CPU_PUBLIC_GCYCLES_PER_SLOT),
+        ("cpu_cloud_gcycles_per_slot", cfg.cpu_cloud_gcycles_per_slot, PAPER_CPU_CLOUD_GCYCLES_PER_SLOT),
+        ("learning_rate", cfg.learning_rate, PAPER_LEARNING_RATE),
+        ("gamma", cfg.gamma, PAPER_GAMMA),
+        ("batch_size", cfg.batch_size, PAPER_BATCH_SIZE),
+        ("replay_memory", cfg.replay_memory, PAPER_REPLAY_MEMORY),
+        ("epsilon_start", cfg.epsilon_start, PAPER_EPSILON_START),
+        ("epsilon_end", cfg.epsilon_end, PAPER_EPSILON_END),
+        ("epsilon_decay_episodes", cfg.epsilon_decay_episodes, PAPER_EPSILON_DECAY_EPISODES),
+        ("target_update_frequency", cfg.target_update_frequency, PAPER_TARGET_UPDATE_FREQUENCY),
     ]
 
     for param_name, actual, expected in checks:
