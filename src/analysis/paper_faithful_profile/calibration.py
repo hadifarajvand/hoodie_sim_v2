@@ -26,7 +26,7 @@ from .config import PaperFaithfulConfig, build_paper_faithful_profile
 def build_paper_faithful_traffic_config(cfg: PaperFaithfulConfig) -> TrafficConfig:
     """Create TrafficConfig from paper-faithful profile."""
     return TrafficConfig(
-        scenario_name="paper_faithful",
+        scenario_name="paper_default",
         number_of_agents=cfg.num_agents,
         episode_length=cfg.episode_length,
         arrival_probability=cfg.arrival_probability,
@@ -50,21 +50,17 @@ def ensure_paper_faithful_trace_bank(cfg: PaperFaithfulConfig, trace_root: Path,
     return trace_path
 
 
-class PaperFaithfulEnvironment(HoodieGymEnvironment):
-    """HoodieGymEnvironment with paper-faithful parameters."""
-
-    def reset(self, seed: int | None = None):  # type: ignore[override]
-        # When using trace bank, don't override seed (traces are deterministic)
-        if self.trace_source is not None and self.trace_source.mode == "trace_bank":
-            return super().reset(seed=None)
-        return super().reset(seed=seed)
-
-
 def build_paper_faithful_environment(cfg: PaperFaithfulConfig, *, episode_length: int, seed: int, trace_root: Path) -> HoodieGymEnvironment:
-    """Construct a paper-faithful HoodieGymEnvironment."""
+    """Construct a paper-faithful HoodieGymEnvironment using traces from paper-faithful trace bank.
+
+    Uses paper-faithful traffic parameters to generate and load traces.
+    This ensures task sizes, densities, and all traffic parameters match the paper exactly.
+    """
+    # Generate and cache trace for reproducibility
     ensure_paper_faithful_trace_bank(cfg, trace_root, seed)
 
-    return PaperFaithfulEnvironment(
+    # Use HoodieGymEnvironment with paper-faithful compute, link rate, and trace configs.
+    return HoodieGymEnvironment(
         episode_length=episode_length,
         topology=TopologyGraph.from_approved_assumption_registry(),
         runtime_parameters=SharedRuntimeParameters(),
