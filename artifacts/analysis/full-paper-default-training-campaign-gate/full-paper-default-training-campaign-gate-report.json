@@ -1,6 +1,6 @@
 {
   "artifact_output_contract_summary": {
-    "artifact_output_contract_complete": true,
+    "artifact_output_contract_complete": false,
     "checkpoint_metadata_artifact": "artifacts/analysis/full-paper-default-training-campaign-execution/checkpoint-metadata.json",
     "evaluation_metrics_artifact": "artifacts/analysis/full-paper-default-training-campaign-execution/evaluation-metrics.json",
     "full_campaign_json_report": "artifacts/analysis/full-paper-default-training-campaign-execution/full-paper-default-training-campaign-report.json",
@@ -9,24 +9,15 @@
     "training_metrics_artifact": "artifacts/analysis/full-paper-default-training-campaign-execution/training-metrics.json"
   },
   "campaign_scope_summary": {
-    "baseline_harness_id": "feature-058-baseline-evaluation-harness",
-    "campaign_scale_is_explicit": true,
-    "evaluation_trace_bank_id": "feature-058-evaluation-trace-bank",
+    "baseline_harness_id": "",
+    "campaign_scale_is_explicit": false,
+    "evaluation_trace_bank_id": "",
     "full_campaign_allowed_next_feature": true,
     "full_campaign_executed_this_feature": false,
     "paper_default_training_campaign": true,
-    "run_count_or_episode_budget": {
-      "baseline_evaluation_episode_count": 100,
-      "evaluation_episode_count": 100,
-      "training_episode_count": 1000
-    },
-    "seed_bundle": {
-      "baseline_policy_seed": 6101,
-      "evaluation_trace_generation_seed": 43,
-      "trace_identity_seed": 5843,
-      "training_trace_generation_seed": 41
-    },
-    "training_trace_bank_id": "full-training-train-bank"
+    "run_count_or_episode_budget": {},
+    "seed_bundle": {},
+    "training_trace_bank_id": ""
   },
   "checkpoint_contract_summary": {
     "checkpoint_binary_policy": "Feature 060 may write checkpoint binaries only under its controlled output directory with metadata; Feature 059 writes none.",
@@ -39,20 +30,19 @@
     "trace_bank_ids_required": true
   },
   "evaluation_harness_gate_summary": {
-    "baseline_harness_ready": true,
-    "baseline_policy_registry_ready": true,
-    "determinism_ready": true,
-    "evaluation_trace_bank_ready": true,
-    "metric_schema_complete": true,
-    "train_eval_trace_banks_disjoint": true
+    "baseline_harness_ready": false,
+    "baseline_policy_registry_ready": false,
+    "determinism_ready": false,
+    "evaluation_trace_bank_ready": false,
+    "metric_schema_complete": false,
+    "train_eval_trace_banks_disjoint": false
   },
-  "feature_058_harness_verified": true,
+  "feature_058_harness_verified": false,
   "feature_id": "059-full-paper-default-training-campaign-gate",
-  "final_verdict": "full_paper_default_training_campaign_gate_ready",
+  "final_verdict": "feature_058_prerequisite_blocked",
   "metric_collection_contract_summary": {
-    "metric_collection_contract_complete": true,
-    "missing_metric_fields": [],
-    "present_metric_fields": [
+    "metric_collection_contract_complete": false,
+    "missing_metric_fields": [
       "delay",
       "drop",
       "timeout",
@@ -65,6 +55,7 @@
       "train_eval_separation",
       "baseline_policy_metrics"
     ],
+    "present_metric_fields": [],
     "required_metric_fields": [
       "delay",
       "drop",
@@ -83,7 +74,7 @@
     {
       "details": "git branch --show-current == 059-full-paper-default-training-campaign-gate",
       "name": "branch",
-      "verified": true
+      "verified": false
     },
     {
       "details": "current branch != main",
@@ -93,7 +84,7 @@
     {
       "details": "058-evaluation-trace-bank-baseline-harness-complete is an ancestor of main",
       "name": "main_contains_feature_058_complete",
-      "verified": true
+      "verified": false
     },
     {
       "details": "branch is based on local main",
@@ -103,7 +94,7 @@
     {
       "details": "artifacts/analysis/evaluation-trace-bank-baseline-harness/evaluation-trace-bank-baseline-harness-report.json contains the approved Feature 058 readiness verdict",
       "name": "feature_058_report_valid",
-      "verified": true
+      "verified": false
     },
     {
       "details": "artifacts/analysis/paper-default-pilot-training-run/paper-default-pilot-training-run-report.json",
@@ -123,7 +114,7 @@
     {
       "details": "git status --short contains only approved Feature 059 paths",
       "name": "working_tree_paths_approved",
-      "verified": true
+      "verified": false
     },
     {
       "details": "git diff --cached --name-only contains only approved Feature 059 paths",
@@ -133,54 +124,50 @@
     {
       "details": "git diff --name-only main...HEAD contains only approved Feature 059 paths",
       "name": "main_head_diff_approved",
-      "verified": true
+      "verified": false
     },
     {
       "details": "AGENTS.md is stable and not modified",
       "name": "agents_stable_not_modified",
-      "verified": true
+      "verified": false
     },
     {
       "details": ".specify/feature.json is absent from dirty/staged/committed paths",
       "name": "pointer_local_only_not_dirty_or_staged",
-      "verified": true
+      "verified": false
     }
   ],
-  "recommended_next_feature": "Feature 060 — Full Paper-Default Training Campaign Execution",
-  "remaining_blockers": [],
+  "recommended_next_feature": "Repair Feature 058 prerequisite evidence before Feature 059 can proceed",
+  "remaining_blockers": [
+    "branch",
+    "main_contains_feature_058_complete",
+    "feature_058_report_valid",
+    "working_tree_paths_approved",
+    "main_head_diff_approved",
+    "agents_stable_not_modified",
+    "pointer_local_only_not_dirty_or_staged"
+  ],
   "resource_control_summary": {
     "controlled_output_directory": "artifacts/analysis/full-paper-default-training-campaign-execution/",
-    "deterministic_seeds": {
-      "baseline_policy_seed": 6101,
-      "evaluation_trace_generation_seed": 43,
-      "trace_identity_seed": 5843,
-      "training_trace_generation_seed": 41
-    },
-    "max_episode_or_run_budget": {
-      "baseline_evaluation_episode_count": 100,
-      "evaluation_episode_count": 100,
-      "training_episode_count": 1000
-    },
+    "deterministic_seeds": {},
+    "max_episode_or_run_budget": {},
     "no_uncontrolled_loop": true,
-    "resource_control_complete": true,
-    "timeout_runtime_budget": {
-      "max_wall_clock_minutes": 240,
-      "per_episode_timeout_seconds": 120
-    }
+    "resource_control_complete": false,
+    "timeout_runtime_budget": {}
   },
   "safety_summary": {
     "no_baseline_superiority_claim": true,
     "no_checkpoint_binary_written": true,
     "no_dependency_drift": true,
-    "no_environment_contract_drift": true,
+    "no_environment_contract_drift": false,
     "no_full_campaign_execution": true,
     "no_optimizer_execution": true,
     "no_paper_reproduction_claim": true,
     "no_performance_claim": true,
-    "no_policy_drift": true,
-    "no_prior_artifact_rewrite": true,
+    "no_policy_drift": false,
+    "no_prior_artifact_rewrite": false,
     "no_replay_mutation": true,
-    "no_reward_timing_change": true,
+    "no_reward_timing_change": false,
     "no_training_execution": true
   },
   "training_execution_gate_summary": {

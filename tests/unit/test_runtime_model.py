@@ -3,6 +3,7 @@ from __future__ import annotations
 import unittest
 from pathlib import Path
 
+from src.environment.compute_config import ComputeConfig
 from src.environment.runtime_model import (
     SharedRuntimeParameters,
     advance_shared_runtime,
@@ -25,23 +26,30 @@ class SharedRuntimeModelTests(unittest.TestCase):
 
     def test_destination_specific_service_timing_differs_when_capacity_changes(self) -> None:
         task = self._task()
+        compute_config_low = ComputeConfig(cpu_capacity_per_slot_agent=1.0, cpu_capacity_per_slot_edge=1.0, cpu_capacity_per_slot_cloud=1.0)
+        compute_config_medium = ComputeConfig(cpu_capacity_per_slot_agent=2.0, cpu_capacity_per_slot_edge=2.0, cpu_capacity_per_slot_cloud=2.0)
+        compute_config_high = ComputeConfig(cpu_capacity_per_slot_agent=4.0, cpu_capacity_per_slot_edge=4.0, cpu_capacity_per_slot_cloud=4.0)
+        
         local = advance_shared_runtime(
             task,
             "local",
             current_slot=1,
-            parameters=SharedRuntimeParameters(slot_duration=1, local_service_capacity=1),
+            parameters=SharedRuntimeParameters(slot_duration=1),
+            compute_config=compute_config_low,
         )
         public = advance_shared_runtime(
             task,
             "public",
             current_slot=1,
-            parameters=SharedRuntimeParameters(slot_duration=1, public_service_capacity=2),
+            parameters=SharedRuntimeParameters(slot_duration=1),
+            compute_config=compute_config_medium,
         )
         cloud = advance_shared_runtime(
             task,
             "cloud",
             current_slot=1,
-            parameters=SharedRuntimeParameters(slot_duration=1, cloud_service_capacity=4),
+            parameters=SharedRuntimeParameters(slot_duration=1),
+            compute_config=compute_config_high,
         )
 
         self.assertGreater(local.service_slots, public.service_slots)
@@ -49,17 +57,20 @@ class SharedRuntimeModelTests(unittest.TestCase):
 
     def test_offload_timing_remains_one_hop_and_bounded(self) -> None:
         task = self._task()
+        compute_config = ComputeConfig()
         public = advance_shared_runtime(
             task,
             "public",
             current_slot=2,
             parameters=SharedRuntimeParameters(),
+            compute_config=compute_config,
         )
         cloud = advance_shared_runtime(
             task,
             "cloud",
             current_slot=2,
             parameters=SharedRuntimeParameters(),
+            compute_config=compute_config,
         )
 
         self.assertEqual(public.offload_slots, 1)
@@ -82,11 +93,13 @@ class SharedRuntimeModelTests(unittest.TestCase):
 
     def test_drain_slot_behavior_can_continue_pending_task_after_action_window(self) -> None:
         task = self._task()
+        compute_config = ComputeConfig()
         progress = advance_shared_runtime(
             task,
             "local",
             current_slot=5,
             parameters=SharedRuntimeParameters(),
+            compute_config=compute_config,
         )
         self.assertGreater(progress.terminal_slot, task.arrival_slot)
         self.assertGreater(progress.waiting_slots, 0)
@@ -96,39 +109,43 @@ class SharedRuntimeModelTests(unittest.TestCase):
         self.assertTrue(config_path.exists())
         config_text = config_path.read_text()
         self.assertIn("slot_duration: 1", config_text)
-        self.assertIn("local_service_capacity: 1", config_text)
-        self.assertIn("public_service_capacity: 1", config_text)
-        self.assertIn("cloud_service_capacity: 1", config_text)
+        self.assertIn("local_service_capacity: 0.5", config_text)
+        self.assertIn("public_service_capacity: 0.5", config_text)
+        self.assertIn("cloud_service_capacity: 3.0", config_text)
         self.assertIn("timeout_grace_slots: 0", config_text)
         self.assertIn("runtime_variant: density_based", config_text)
 
         parameters = SharedRuntimeParameters()
         self.assertEqual(parameters.slot_duration, 1)
-        self.assertEqual(parameters.local_service_capacity, 1)
-        self.assertEqual(parameters.public_service_capacity, 1)
-        self.assertEqual(parameters.cloud_service_capacity, 1)
+        self.assertEqual(parameters.local_service_capacity, 0.5)
+        self.assertEqual(parameters.public_service_capacity, 0.5)
+        self.assertEqual(parameters.cloud_service_capacity, 3.0)
         self.assertEqual(parameters.timeout_grace_slots, 0)
         self.assertEqual(parameters.runtime_variant, "density_based")
 
     def test_runtime_variants_change_delay_values_without_changing_structure(self) -> None:
         task = self._task()
+        compute_config = ComputeConfig()
         density = advance_shared_runtime(
             task,
             "local",
             current_slot=1,
             parameters=SharedRuntimeParameters(runtime_variant="density_based"),
+            compute_config=compute_config,
         )
         discrete = advance_shared_runtime(
             task,
             "local",
             current_slot=1,
             parameters=SharedRuntimeParameters(runtime_variant="discrete_slot_service"),
+            compute_config=compute_config,
         )
         constant = advance_shared_runtime(
             task,
             "local",
             current_slot=1,
             parameters=SharedRuntimeParameters(runtime_variant="constant_service"),
+            compute_config=compute_config,
         )
 
         self.assertNotEqual(density.service_slots, discrete.service_slots)

@@ -11,9 +11,9 @@
     "delayed-message recovery using previous LSTM/queue values",
     "queue-fidelity report proving compatibility with Feature 065 and Feature 066"
   ],
-  "feature_066_verified": true,
+  "feature_066_verified": false,
   "feature_id": "067-paper-traffic-queue-communication-fidelity-batch",
-  "final_verdict": "paper_traffic_queue_communication_fidelity_batch_passed",
+  "final_verdict": "feature_066_prerequisite_blocked",
   "link_delay_summary": {
     "default_horizontal_rate_mbps": 30,
     "default_vertical_rate_mbps": 10,
@@ -168,7 +168,7 @@
     "queue_fidelity_version": "paper_queue_fidelity_v1",
     "queue_ordering_policy": "FIFO"
   },
-  "recommended_next_feature": "Feature 068 \u2014 Paper Baseline Suite Batch",
+  "recommended_next_feature": "Repair Feature 067 prerequisites before Feature 068",
   "recovery_summary": {
     "delayed_message_recovery_available": true,
     "previous_forecast_input_used": false,
@@ -232,7 +232,9 @@
     "recovery_used": true,
     "recovery_version": "paper_recovery_v1"
   },
-  "remaining_blockers": [],
+  "remaining_blockers": [
+    "feature_066_prerequisite_blocked"
+  ],
   "safety_summary": {
     "no_dependency_drift": true,
     "no_optimizer_steps": true,
@@ -292,7 +294,7 @@
     "arrival_slot": 10,
     "completion_slot": 14,
     "deadline_slot": 14,
-    "dropped_due_to_timeout": false,
+    "dropped_due_to_timeout": true,
     "timeout_phi": 5,
     "timeout_phi_minus_one_semantics": true,
     "timeout_semantics_version": "timeout_arrival_plus_phi_minus_one_v1"

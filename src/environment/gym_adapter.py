@@ -443,7 +443,7 @@ class HoodieGymEnvironment:
                 ledger = self._trace_ledgers.setdefault(task.task_id, OffloadTraceLedger())
                 if "execution_started" not in ledger.snapshot():
                     ledger.emit("execution_started")
-                advance_shared_runtime(task, destination_kind, self.current_slot, self.runtime_parameters)
+                advance_shared_runtime(task, destination_kind, self.current_slot, self.runtime_parameters, self.compute_config)
                 execution_progress = step_execution(
                     task,
                     per_head_capacity,

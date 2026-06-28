@@ -1,8 +1,8 @@
 # Campaign Integrity Evaluation Comparison Batch Report
 
 - feature_id: `061-campaign-integrity-evaluation-comparison-batch`
-- final_verdict: `campaign_integrity_evaluation_comparison_batch_passed`
-- recommended_next_feature: `Feature 062 — Multi-Seed Campaign and Ablation Batch`
+- final_verdict: `behavior_drift_detected`
+- recommended_next_feature: `Repair Feature 061 behavior guard`
 
 ## Campaign Integrity Summary
 {
@@ -968,10 +968,10 @@
 
 ## Safety Summary
 {
-  "no_dependency_drift": true,
-  "no_environment_contract_drift": true,
+  "no_dependency_drift": false,
+  "no_environment_contract_drift": false,
   "no_paper_reproduction_claim": true,
-  "no_policy_drift": true,
+  "no_policy_drift": false,
   "no_prior_feature_artifact_rewrite": true,
   "no_reward_timing_change": true,
   "no_uncontrolled_campaign_loop": true,
@@ -979,4 +979,6 @@
 }
 
 ## Remaining Blockers
-[]
+[
+  "behavior_drift_detected"
+]

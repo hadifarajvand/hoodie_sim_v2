@@ -20,9 +20,9 @@
     "epsilon_greedy_schedule_available": true,
     "epsilon_start": 1.0
   },
-  "feature_065_verified": true,
+  "feature_065_verified": false,
   "feature_id": "066-distributed-multi-agent-hoodie-training-batch",
-  "final_verdict": "distributed_multi_agent_hoodie_training_batch_passed",
+  "final_verdict": "feature_065_prerequisite_blocked",
   "migration_summary": {
     "distributed_training_contract_available": true,
     "full_paper_reproduction_training_executed": false,
@@ -69,8 +69,10 @@
     "target_network_count": 20,
     "target_sync_interval": 100
   },
-  "recommended_next_feature": "Feature 067 \u2014 Paper Traffic, Queue, and Communication Fidelity Batch",
-  "remaining_blockers": [],
+  "recommended_next_feature": "Repair Feature 066 prerequisites before Feature 067",
+  "remaining_blockers": [
+    "feature_065_prerequisite_blocked"
+  ],
   "safety_summary": {
     "no_dependency_drift": true,
     "no_paper_reproduction_claim": true,

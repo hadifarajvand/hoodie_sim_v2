@@ -1,7 +1,7 @@
 slot_duration: 1
-local_service_capacity: 1
-public_service_capacity: 1
-cloud_service_capacity: 1
+local_service_capacity: 0.5
+public_service_capacity: 0.5
+cloud_service_capacity: 3.0
 timeout_grace_slots: 0
 runtime_variant: density_based
 destination_kinds:
@@ -30,6 +30,6 @@ assumptions:
   timeout_grace_slots:
     paper_status: assumption-backed
     note: explicit grace window is not fully recovered from the staged paper resources
-runtime_variant:
-  paper_status: assumption-backed
-  note: variant selection is an experimental extension and defaults to density_based
+  runtime_variant:
+    paper_status: assumption-backed
+    note: variant selection is an experimental extension and defaults to density_based

@@ -1,8 +1,8 @@
 # Multi-Seed Campaign and Ablation Batch Report
 
 - feature_id: `062-multi-seed-campaign-ablation-batch`
-- final_verdict: `multi_seed_campaign_ablation_batch_passed`
-- recommended_next_feature: `Feature 063 — Results Export, Reproducibility, and Final Documentation Batch`
+- final_verdict: `feature_061_prerequisite_blocked`
+- recommended_next_feature: `Repair Feature 062 prerequisites before proceeding`
 
 ## Multi-Seed Gate Summary
 {
@@ -6662,15 +6662,18 @@
 ## Safety Summary
 {
   "no_checkpoint_binary_created": true,
-  "no_dependency_drift": true,
-  "no_environment_contract_drift": true,
+  "no_dependency_drift": false,
+  "no_environment_contract_drift": false,
   "no_paper_reproduction_claim": true,
-  "no_policy_drift": true,
-  "no_prior_feature_artifact_rewrite": true,
+  "no_policy_drift": false,
+  "no_prior_feature_artifact_rewrite": false,
   "no_reward_timing_change": true,
   "no_uncontrolled_campaign_loop": true,
   "no_unsupported_superiority_claim": true
 }
 
 ## Remaining Blockers
-[]
+[
+  "feature_061_prerequisite_blocked",
+  "behavior_drift_detected"
+]

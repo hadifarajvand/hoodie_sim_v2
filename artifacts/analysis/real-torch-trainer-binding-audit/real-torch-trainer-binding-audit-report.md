@@ -1,28 +1,28 @@
 # Real Torch Trainer Binding Audit Report
 
 - feature_id: `060a-real-torch-trainer-binding-audit`
-- final_verdict: `real_torch_trainer_binding_missing_repair_required`
-- recommended_next_feature: `Feature 060B — Bind Full Campaign Execution to Real Torch Trainer`
+- final_verdict: `audit_scope_blocked`
+- recommended_next_feature: `Repair Feature 060A audit scope hygiene`
 
 ## Python Environment Summary
 {
   "expected_python3": "src/.venvmac/bin/python3",
-  "expected_python3_exists": true,
+  "expected_python3_exists": false,
   "same_interpreter_expected": false,
-  "sys_executable": "/opt/homebrew/opt/python@3.14/bin/python3.14",
-  "torch_probe_interpreter": "src/.venvmac/bin/python3",
+  "sys_executable": "/Users/hadi/Documents/GitHub/hoodie_sim_v2/.venv/bin/python",
+  "torch_probe_interpreter": "/Users/hadi/Documents/GitHub/hoodie_sim_v2/.venv/bin/python",
   "which_python3": "/opt/homebrew/bin/python3"
 }
 
 ## Torch Availability Summary
 {
-  "interpreter_used": "src/.venvmac/bin/python3",
+  "interpreter_used": "/Users/hadi/Documents/GitHub/hoodie_sim_v2/.venv/bin/python",
   "torch_find_spec_available": true,
   "torch_import_available": true,
   "torch_pip_show_present": true,
-  "torch_version": "2.12.0",
-  "torchrl_find_spec_available": true,
-  "torchrl_pip_show_present": true
+  "torch_version": "2.12.1",
+  "torchrl_find_spec_available": false,
+  "torchrl_pip_show_present": false
 }
 
 ## Feature 060 Claim Summary
@@ -36,14 +36,16 @@
 
 ## Feature 060 Code Binding Summary
 {
-  "referenced_candidate_names": [],
+  "referenced_candidate_names": [
+    "DDQNTrainer"
+  ],
   "runner_executes_real_trainer_update_or_fit": false,
   "runner_exists": true,
   "runner_imports_real_trainer_candidate": false,
   "runner_imports_torch": false,
   "runner_imports_torchrl": false,
   "runner_instantiates_real_trainer_candidate": false,
-  "runner_uses_scalar_fallback_campaign": true
+  "runner_uses_scalar_fallback_campaign": false
 }
 
 ## Real Trainer Candidate Summary
@@ -72,7 +74,7 @@
         "run_pilot_training"
       ],
       "candidate_path": "src/analysis/full_training_reproduction_campaign/trainer.py",
-      "feature_060_references_candidate": false
+      "feature_060_references_candidate": true
     },
     {
       "candidate_names": [
@@ -101,23 +103,25 @@
       "feature_060_references_candidate": false
     }
   ],
-  "feature_060_referenced_candidate_names": []
+  "feature_060_referenced_candidate_names": [
+    "DDQNTrainer"
+  ]
 }
 
 ## Simulation Fallback Summary
 {
-  "manual_optimizer_step_count_increment": true,
-  "manual_replay_list_construction": true,
-  "manual_scalar_loss_calculation": true,
-  "manual_target_sync_count_calculation": true,
-  "random_random_used": true,
-  "scalar_fallback_detected": true,
+  "manual_optimizer_step_count_increment": false,
+  "manual_replay_list_construction": false,
+  "manual_scalar_loss_calculation": false,
+  "manual_target_sync_count_calculation": false,
+  "random_random_used": false,
+  "scalar_fallback_detected": false,
   "torch_tensor_module_optimizer_absent": true
 }
 
 ## Binding Audit Summary
 {
-  "environment_supports_real_binding": true,
+  "environment_supports_real_binding": false,
   "feature_060_claim_supported": false,
   "real_binding_verified": false,
   "repair_feature": "Feature 060B — Bind Full Campaign Execution to Real Torch Trainer",
@@ -126,12 +130,9 @@
 
 ## Remaining Blockers
 [
-  "feature_060_runner_missing_torch_import",
-  "feature_060_runner_missing_torchrl_import",
-  "feature_060_runner_missing_real_trainer_import",
-  "feature_060_runner_missing_real_trainer_instantiation",
-  "feature_060_runner_missing_real_trainer_update_fit_train_call",
-  "feature_060_runner_uses_scalar_fallback_campaign",
-  "feature_060_runner_absent_torch_tensor_module_optimizer_execution",
-  "feature_060_claim_not_supported_by_real_trainer_binding"
+  "branch",
+  "base_branch_is_ancestor",
+  "working_tree_paths_approved",
+  "feature_branch_diff_paths_approved",
+  "forbidden_paths_absent"
 ]

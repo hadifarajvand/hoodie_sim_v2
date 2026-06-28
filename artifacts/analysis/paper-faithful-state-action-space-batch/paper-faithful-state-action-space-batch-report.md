@@ -1,8 +1,8 @@
 # Paper-Faithful State and Action Space Batch Report
 
 - feature_id: `065-paper-faithful-state-action-space-batch`
-- final_verdict: `paper_faithful_state_action_space_batch_passed`
-- recommended_next_feature: `Feature 066 — Distributed Multi-Agent HOODIE Training Batch`
+- final_verdict: `feature_064_prerequisite_blocked`
+- recommended_next_feature: `Repair Feature 065 prerequisites before training migration`
 
 ## Paper State Contract Summary
 {
@@ -678,13 +678,13 @@
 
 ## Safety Summary
 {
-  "no_dependency_drift": true,
-  "no_environment_contract_drift": true,
+  "no_dependency_drift": false,
+  "no_environment_contract_drift": false,
   "no_evaluation_campaign_rerun": true,
   "no_optimizer_steps": true,
   "no_paper_reproduction_claim": true,
-  "no_policy_drift": true,
-  "no_prior_feature_artifact_rewrite": true,
+  "no_policy_drift": false,
+  "no_prior_feature_artifact_rewrite": false,
   "no_replay_mutation": true,
   "no_reward_timing_change": true,
   "no_training_rerun": true,
@@ -692,4 +692,7 @@
 }
 
 ## Remaining Blockers
-[]
+[
+  "feature_064_prerequisite_blocked",
+  "behavior_drift_detected"
+]

@@ -2,35 +2,35 @@
   "behavior_safety_summary": {
     "no_baseline_comparison": true,
     "no_dependency_drift": true,
-    "no_environment_contract_drift": true,
+    "no_environment_contract_drift": false,
     "no_full_campaign": true,
     "no_paper_reproduction_claim": true,
-    "no_policy_drift": true
+    "no_policy_drift": false
   },
   "checkpoint_summary": {
-    "checkpoint_schema_valid": true,
+    "checkpoint_schema_valid": false,
     "metadata_only": true,
     "model_checkpoint_written": false
   },
   "delayed_reward_contract_verified": {
-    "delayed_reward_contract_preserved": true,
-    "pending_at_horizon_preserved": true
+    "delayed_reward_contract_preserved": false,
+    "pending_at_horizon_preserved": false
   },
-  "feature_054_readiness_verified": true,
+  "feature_054_readiness_verified": false,
   "feature_id": "055-paper-default-training-smoke-run",
-  "final_verdict": "paper_default_training_smoke_passed",
+  "final_verdict": "paper_default_training_smoke_blocked",
   "fixture_training_used": false,
   "legal_action_summary": {
-    "legal_action_only": true
+    "legal_action_only": false
   },
-  "live_environment_training_used": true,
+  "live_environment_training_used": false,
   "loss_summary": {
-    "loss_is_finite": true,
-    "loss_value": 25.033153533935547
+    "loss_is_finite": false,
+    "loss_value": null
   },
   "optimizer_step_summary": {
-    "optimizer_step_count": 47,
-    "optimizer_steps_executed": true,
+    "optimizer_step_count": 0,
+    "optimizer_steps_executed": false,
     "target_sync_count": 0
   },
   "paper_default_smoke_scope": {
@@ -44,7 +44,7 @@
     {
       "details": "git branch --show-current == 055-paper-default-smoke-run",
       "name": "branch",
-      "verified": true
+      "verified": false
     },
     {
       "details": "current branch != main",
@@ -54,12 +54,12 @@
     {
       "details": "main contains 054-training-readiness-contract-complete",
       "name": "main_contains_054_complete",
-      "verified": true
+      "verified": false
     },
     {
       "details": "main contains 054a-speckit-local-state-hygiene-complete",
       "name": "main_contains_054a_hygiene",
-      "verified": true
+      "verified": false
     },
     {
       "details": "branch is based on current main",
@@ -69,37 +69,37 @@
     {
       "details": "main...HEAD diff contains only approved Feature 055 paths",
       "name": "approved_paths_only",
-      "verified": true
+      "verified": false
     },
     {
       "details": "no Feature 037-054 artifacts are rewritten",
       "name": "no_prior_artifact_rewrite",
-      "verified": true
+      "verified": false
     },
     {
       "details": "AGENTS.md is stable and not modified",
       "name": "agents_stable_not_modified",
-      "verified": true
+      "verified": false
     },
     {
       "details": ".specify/feature.json is local-only and absent from committed diff",
       "name": "pointer_local_only_not_in_committed_diff",
-      "verified": true
+      "verified": false
     }
   ],
-  "recommended_next_feature": "Feature 056 — Target Update and Replay Training Validation",
-  "remaining_blockers": [],
+  "recommended_next_feature": "paper-default training smoke repair",
+  "remaining_blockers": [
+    "feature_054_readiness_failed",
+    "prerequisite_tags_failed"
+  ],
   "replay_summary": {
-    "pending_at_horizon_preserved": true,
-    "replay_inserted": true,
-    "replay_size": 110
+    "pending_at_horizon_preserved": false,
+    "replay_inserted": false,
+    "replay_size": 0
   },
   "train_eval_contract_verified": {
     "evaluation_on_training_traces": false,
-    "trace_bank_ids": {
-      "evaluation": "full-training-eval-bank",
-      "training": "full-training-train-bank"
-    },
-    "train_eval_trace_banks_disjoint": true
+    "trace_bank_ids": {},
+    "train_eval_trace_banks_disjoint": false
   }
 }

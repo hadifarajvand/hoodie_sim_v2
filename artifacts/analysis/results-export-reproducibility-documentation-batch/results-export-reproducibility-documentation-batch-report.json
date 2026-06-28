@@ -109,7 +109,7 @@
     "unsupported_claims_marked": true,
     "unsupported_superiority_claim": false
   },
-  "feature_062_verified": true,
+  "feature_062_verified": false,
   "feature_id": "063-results-export-reproducibility-documentation-batch",
   "final_integrity_audit_summary": {
     "claim_mappings": [
@@ -159,7 +159,7 @@
       "unsupported superiority"
     ]
   },
-  "final_verdict": "results_export_reproducibility_documentation_batch_passed",
+  "final_verdict": "feature_062_prerequisite_blocked",
   "mechanism_documentation_summary": {
     "deviation_notes": [
       "documentation package exports only committed evidence",
@@ -198,12 +198,12 @@
     {
       "details": "feature 062 final verdict",
       "name": "feature_062_final_verdict",
-      "verified": true
+      "verified": false
     },
     {
       "details": "feature 062 blockers empty",
       "name": "feature_062_remaining_blockers",
-      "verified": true
+      "verified": false
     },
     {
       "details": "feature 062 artifacts exist",
@@ -211,8 +211,11 @@
       "verified": true
     }
   ],
-  "recommended_next_feature": "Feature 064 — Final Review and Release Gate",
-  "remaining_blockers": [],
+  "recommended_next_feature": "Repair Feature 063 prerequisites before proceeding",
+  "remaining_blockers": [
+    "feature_062_prerequisite_blocked",
+    "behavior_drift_detected"
+  ],
   "reproducibility_package_summary": {
     "branch_tag_assumptions": {
       "branch_name": "063-results-export-reproducibility-documentation-batch",
@@ -363,7 +366,7 @@
     "no_dependency_drift": true,
     "no_environment_contract_drift": true,
     "no_paper_reproduction_claim": true,
-    "no_policy_drift": true,
+    "no_policy_drift": false,
     "no_prior_feature_artifact_rewrite": true,
     "no_reward_timing_change": true,
     "no_training_rerun": true,

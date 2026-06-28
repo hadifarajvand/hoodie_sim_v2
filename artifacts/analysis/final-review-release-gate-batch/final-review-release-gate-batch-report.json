@@ -29,9 +29,9 @@
       "unsupported superiority"
     ]
   },
-  "feature_063_verified": true,
+  "feature_063_verified": false,
   "feature_id": "064-final-review-release-gate-batch",
-  "final_verdict": "final_review_release_gate_batch_passed",
+  "final_verdict": "feature_063_prerequisite_blocked",
   "handoff_summary": {
     "known_limitations": [
       "controlled materialization only",
@@ -55,12 +55,12 @@
     {
       "details": "feature 063 final verdict",
       "name": "feature_063_final_verdict",
-      "verified": true
+      "verified": false
     },
     {
       "details": "feature 063 blockers empty",
       "name": "feature_063_remaining_blockers",
-      "verified": true
+      "verified": false
     },
     {
       "details": "feature 063 final exports exist",
@@ -68,7 +68,7 @@
       "verified": true
     }
   ],
-  "recommended_next_feature": "Release tag creation or thesis/paper writing workflow",
+  "recommended_next_feature": "Repair Feature 064 prerequisites before release",
   "release_tag_readiness_summary": {
     "post_merge_tag_commands": [
       "git tag -a hoodie-mechanism-evidence-release-v1 -m \"Release tag for final reviewed HOODIE evidence\"",
@@ -83,7 +83,10 @@
     "rollback_or_repair_note": "If any final gate fails, repair the failing gate before tagging; do not create the tag from this feature.",
     "tag_not_created_by_this_feature": true
   },
-  "remaining_blockers": [],
+  "remaining_blockers": [
+    "feature_063_prerequisite_blocked",
+    "behavior_drift_detected"
+  ],
   "repository_state_audit_summary": {
     "committed_inputs_only": true,
     "no_uncommitted_local_state_dependency": true,
@@ -101,12 +104,12 @@
     "source_backed_evidence": true
   },
   "safety_summary": {
-    "no_dependency_drift": true,
-    "no_environment_contract_drift": true,
+    "no_dependency_drift": false,
+    "no_environment_contract_drift": false,
     "no_new_experiment_output": true,
     "no_paper_reproduction_claim": true,
-    "no_policy_drift": true,
-    "no_prior_feature_artifact_rewrite": true,
+    "no_policy_drift": false,
+    "no_prior_feature_artifact_rewrite": false,
     "no_release_tag_created": true,
     "no_reward_timing_change": true,
     "no_training_rerun": true,

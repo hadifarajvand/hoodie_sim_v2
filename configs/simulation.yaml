@@ -1,0 +1,17 @@
+# Simulation configuration for reproducibility and data paths
+seed: 42
+
+# Path to directory containing synthetic workload CSV files (relative to repo root)
+data_dir: data/
+
+# Environment configuration (can be overridden by runtime_model.yml if needed)
+environment:
+  # Example: number of agents, resources, etc.
+  num_agents: 10
+  num_resources: 5
+  episode_length: 1000
+
+# Output configuration
+output:
+  log_dir: artifacts/analysis/
+  save_logs: true

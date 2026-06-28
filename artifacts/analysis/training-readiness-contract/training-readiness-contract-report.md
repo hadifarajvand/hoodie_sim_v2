@@ -1,18 +1,18 @@
 # Training Readiness Contract Report
 
 - feature_id: `054-training-readiness-contract`
-- final_verdict: `training_readiness_contract_ready_for_smoke_run`
-- recommended_next_feature: `Feature 055 — Paper-Default Training Smoke Run`
+- final_verdict: `evidence_chain_prerequisite_blocked`
+- recommended_next_feature: `prerequisite evidence repair before training`
 - feature_053_readiness_verified: `True`
-- evidence_chain_ready_for_training_contract: `True`
-- training_execution_allowed_next: `True`
+- evidence_chain_ready_for_training_contract: `False`
+- training_execution_allowed_next: `False`
 
 ## Contract Locks
 {
-  "action_contract_locked": true,
+  "action_contract_locked": false,
   "artifact_contract_locked": true,
   "capacity_contract_locked": true,
-  "legality_contract_locked": true,
+  "legality_contract_locked": false,
   "metric_contract_locked": true,
   "observation_contract_locked": true,
   "paper_default_config_locked": true,
@@ -61,4 +61,12 @@
 }
 
 ## Remaining Blockers
-[]
+[
+  "prerequisite_tags_failed",
+  "evidence_chain_prerequisite_blocked",
+  "action_contract_blocked",
+  "legality_contract_blocked",
+  "no_policy_drift",
+  "no_runtime_semantic_changes",
+  "no_prior_artifact_rewrite"
+]

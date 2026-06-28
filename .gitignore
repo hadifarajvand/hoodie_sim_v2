@@ -17,5 +17,36 @@ dist/
 build/
 site/
 outputs/
-resources/references/simpy/venv_mac/
+references/simpy/venv_mac/
 .specify/feature.json
+# Secrets and credentials
+.env
+.env.*
+*.env
+*.env.*
+*.pem
+*.key
+*.p12
+*.pfx
+id_rsa
+id_ed25519
+# Runtime folders and caches
+.venv
+__pycache__/
+*.py[cod]
+*$py.class
+.cache
+.mssecrets
+.SPICKETS
+.spotlights
+instance/
+.webassets-cache
+# Orchestration runtime assets
+.swarm/
+# Generated Graphify outputs
+graphify-out/
+.graphify_*
+# Local backups and duplicate scratch files
+*.bak
+*.backup
+* copy.*

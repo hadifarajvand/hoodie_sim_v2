@@ -1,30 +1,21 @@
 # Full Paper-Default Training Campaign Gate Report
 
 - feature_id: `059-full-paper-default-training-campaign-gate`
-- final_verdict: `full_paper_default_training_campaign_gate_ready`
-- recommended_next_feature: `Feature 060 — Full Paper-Default Training Campaign Execution`
-- feature_058_harness_verified: `True`
+- final_verdict: `feature_058_prerequisite_blocked`
+- recommended_next_feature: `Repair Feature 058 prerequisite evidence before Feature 059 can proceed`
+- feature_058_harness_verified: `False`
 
 ## Campaign Scope Summary
 {
-  "baseline_harness_id": "feature-058-baseline-evaluation-harness",
-  "campaign_scale_is_explicit": true,
-  "evaluation_trace_bank_id": "feature-058-evaluation-trace-bank",
+  "baseline_harness_id": "",
+  "campaign_scale_is_explicit": false,
+  "evaluation_trace_bank_id": "",
   "full_campaign_allowed_next_feature": true,
   "full_campaign_executed_this_feature": false,
   "paper_default_training_campaign": true,
-  "run_count_or_episode_budget": {
-    "baseline_evaluation_episode_count": 100,
-    "evaluation_episode_count": 100,
-    "training_episode_count": 1000
-  },
-  "seed_bundle": {
-    "baseline_policy_seed": 6101,
-    "evaluation_trace_generation_seed": 43,
-    "trace_identity_seed": 5843,
-    "training_trace_generation_seed": 41
-  },
-  "training_trace_bank_id": "full-training-train-bank"
+  "run_count_or_episode_budget": {},
+  "seed_bundle": {},
+  "training_trace_bank_id": ""
 }
 
 ## Training Execution Gate Summary
@@ -38,17 +29,17 @@
 
 ## Evaluation Harness Gate Summary
 {
-  "baseline_harness_ready": true,
-  "baseline_policy_registry_ready": true,
-  "determinism_ready": true,
-  "evaluation_trace_bank_ready": true,
-  "metric_schema_complete": true,
-  "train_eval_trace_banks_disjoint": true
+  "baseline_harness_ready": false,
+  "baseline_policy_registry_ready": false,
+  "determinism_ready": false,
+  "evaluation_trace_bank_ready": false,
+  "metric_schema_complete": false,
+  "train_eval_trace_banks_disjoint": false
 }
 
 ## Artifact Output Contract Summary
 {
-  "artifact_output_contract_complete": true,
+  "artifact_output_contract_complete": false,
   "checkpoint_metadata_artifact": "artifacts/analysis/full-paper-default-training-campaign-execution/checkpoint-metadata.json",
   "evaluation_metrics_artifact": "artifacts/analysis/full-paper-default-training-campaign-execution/evaluation-metrics.json",
   "full_campaign_json_report": "artifacts/analysis/full-paper-default-training-campaign-execution/full-paper-default-training-campaign-report.json",
@@ -60,23 +51,11 @@
 ## Resource Control Summary
 {
   "controlled_output_directory": "artifacts/analysis/full-paper-default-training-campaign-execution/",
-  "deterministic_seeds": {
-    "baseline_policy_seed": 6101,
-    "evaluation_trace_generation_seed": 43,
-    "trace_identity_seed": 5843,
-    "training_trace_generation_seed": 41
-  },
-  "max_episode_or_run_budget": {
-    "baseline_evaluation_episode_count": 100,
-    "evaluation_episode_count": 100,
-    "training_episode_count": 1000
-  },
+  "deterministic_seeds": {},
+  "max_episode_or_run_budget": {},
   "no_uncontrolled_loop": true,
-  "resource_control_complete": true,
-  "timeout_runtime_budget": {
-    "max_wall_clock_minutes": 240,
-    "per_episode_timeout_seconds": 120
-  }
+  "resource_control_complete": false,
+  "timeout_runtime_budget": {}
 }
 
 ## Checkpoint Contract Summary
@@ -93,9 +72,8 @@
 
 ## Metric Collection Contract Summary
 {
-  "metric_collection_contract_complete": true,
-  "missing_metric_fields": [],
-  "present_metric_fields": [
+  "metric_collection_contract_complete": false,
+  "missing_metric_fields": [
     "delay",
     "drop",
     "timeout",
@@ -108,6 +86,7 @@
     "train_eval_separation",
     "baseline_policy_metrics"
   ],
+  "present_metric_fields": [],
   "required_metric_fields": [
     "delay",
     "drop",
@@ -128,17 +107,25 @@
   "no_baseline_superiority_claim": true,
   "no_checkpoint_binary_written": true,
   "no_dependency_drift": true,
-  "no_environment_contract_drift": true,
+  "no_environment_contract_drift": false,
   "no_full_campaign_execution": true,
   "no_optimizer_execution": true,
   "no_paper_reproduction_claim": true,
   "no_performance_claim": true,
-  "no_policy_drift": true,
-  "no_prior_artifact_rewrite": true,
+  "no_policy_drift": false,
+  "no_prior_artifact_rewrite": false,
   "no_replay_mutation": true,
-  "no_reward_timing_change": true,
+  "no_reward_timing_change": false,
   "no_training_execution": true
 }
 
 ## Remaining Blockers
-[]
+[
+  "branch",
+  "main_contains_feature_058_complete",
+  "feature_058_report_valid",
+  "working_tree_paths_approved",
+  "main_head_diff_approved",
+  "agents_stable_not_modified",
+  "pointer_local_only_not_dirty_or_staged"
+]

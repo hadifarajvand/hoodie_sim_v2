@@ -1,5 +1,5 @@
 {
-  "action_contract_locked": true,
+  "action_contract_locked": false,
   "artifact_contract_locked": true,
   "behavior_equivalence_passed": true,
   "behavior_equivalence_summary": {
@@ -38,21 +38,21 @@
     "passed": true
   },
   "capacity_contract_locked": true,
-  "evidence_chain_ready_for_training_contract": true,
+  "evidence_chain_ready_for_training_contract": false,
   "feature_053_readiness_verified": true,
   "feature_id": "054-training-readiness-contract",
-  "final_verdict": "training_readiness_contract_ready_for_smoke_run",
-  "legality_contract_locked": true,
+  "final_verdict": "evidence_chain_prerequisite_blocked",
+  "legality_contract_locked": false,
   "metric_contract_locked": true,
   "no_campaign_run": true,
   "no_checkpoint_written": true,
   "no_dependency_drift": true,
   "no_optimizer_step": true,
   "no_paper_reproduction_claim": true,
-  "no_policy_drift": true,
-  "no_prior_artifact_rewrite": true,
+  "no_policy_drift": false,
+  "no_prior_artifact_rewrite": false,
   "no_replay_training": true,
-  "no_runtime_semantic_changes": true,
+  "no_runtime_semantic_changes": false,
   "no_target_update_execution": true,
   "no_training_started": true,
   "observation_contract_locked": true,
@@ -61,7 +61,7 @@
     {
       "details": "git branch --show-current == 054-training-readiness-contract",
       "name": "branch",
-      "verified": true
+      "verified": false
     },
     {
       "details": "current branch != main",
@@ -71,12 +71,12 @@
     {
       "details": "main contains 053-exposure-matrix-paper-mechanism-rerun-with-outcome-evidence-complete",
       "name": "main_contains_feature_053",
-      "verified": true
+      "verified": false
     },
     {
       "details": "main contains 054a-speckit-local-state-hygiene-complete",
       "name": "main_contains_054a_hygiene",
-      "verified": true
+      "verified": false
     },
     {
       "details": "branch is based on current main",
@@ -86,22 +86,22 @@
     {
       "details": "main...HEAD diff contains only approved Feature 054 paths",
       "name": "feature_diff_contains_only_approved_paths",
-      "verified": true
+      "verified": false
     },
     {
       "details": "no Feature 037-053 artifacts are rewritten",
       "name": "no_feature_037_053_artifact_rewrites",
-      "verified": true
+      "verified": false
     },
     {
       "details": "AGENTS.md is stable and not modified",
       "name": "agents_stable_not_modified",
-      "verified": true
+      "verified": false
     },
     {
       "details": ".specify/feature.json is ignored/local-only and absent from committed diff",
       "name": "pointer_local_only_not_in_committed_diff",
-      "verified": true
+      "verified": false
     }
   ],
   "prior_feature_gates_verified": [
@@ -143,11 +143,19 @@
     }
   ],
   "queue_contract_locked": true,
-  "recommended_next_feature": "Feature 055 — Paper-Default Training Smoke Run",
-  "remaining_blockers": [],
+  "recommended_next_feature": "prerequisite evidence repair before training",
+  "remaining_blockers": [
+    "prerequisite_tags_failed",
+    "evidence_chain_prerequisite_blocked",
+    "action_contract_blocked",
+    "legality_contract_blocked",
+    "no_policy_drift",
+    "no_runtime_semantic_changes",
+    "no_prior_artifact_rewrite"
+  ],
   "reward_contract_locked": true,
   "seed_contract_locked": true,
   "timeout_contract_locked": true,
-  "training_execution_allowed_next": true,
+  "training_execution_allowed_next": false,
   "transmission_contract_locked": true
 }

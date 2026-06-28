@@ -7,5 +7,5 @@
   ],
   "legacy_training_behavior_preserved": true,
   "paper_faithful_contract_available": true,
-  "recommended_next_feature": "Feature 066 \u2014 Distributed Multi-Agent HOODIE Training Batch"
+  "recommended_next_feature": "Repair Feature 065 prerequisites before training migration"
 }

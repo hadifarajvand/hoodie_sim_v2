@@ -2,7 +2,7 @@
   "arrival_slot": 10,
   "completion_slot": 14,
   "deadline_slot": 14,
-  "dropped_due_to_timeout": false,
+  "dropped_due_to_timeout": true,
   "timeout_phi": 5,
   "timeout_phi_minus_one_semantics": true,
   "timeout_semantics_version": "timeout_arrival_plus_phi_minus_one_v1"

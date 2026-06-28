@@ -6,6 +6,7 @@ from pathlib import Path
 from typing import Any
 
 from .task import Task
+from .compute_config import ComputeConfig
 
 
 def _load_runtime_config() -> dict[str, Any]:
@@ -29,7 +30,10 @@ def _load_runtime_config() -> dict[str, Any]:
                 try:
                     values[key] = int(value)
                 except ValueError:
-                    values[key] = value
+                    try:
+                        values[key] = float(value)
+                    except ValueError:
+                        values[key] = value
             else:
                 current_section = key
                 values.setdefault(current_section, {})
@@ -42,9 +46,9 @@ _RUNTIME_CONFIG = _load_runtime_config()
 @dataclass(slots=True)
 class SharedRuntimeParameters:
     slot_duration: int = int(_RUNTIME_CONFIG.get("slot_duration", 1))
-    local_service_capacity: int = int(_RUNTIME_CONFIG.get("local_service_capacity", 1))
-    public_service_capacity: int = int(_RUNTIME_CONFIG.get("public_service_capacity", 1))
-    cloud_service_capacity: int = int(_RUNTIME_CONFIG.get("cloud_service_capacity", 1))
+    local_service_capacity: float = float(_RUNTIME_CONFIG.get("local_service_capacity", 1.0))
+    public_service_capacity: float = float(_RUNTIME_CONFIG.get("public_service_capacity", 1.0))
+    cloud_service_capacity: float = float(_RUNTIME_CONFIG.get("cloud_service_capacity", 1.0))
     timeout_grace_slots: int = int(_RUNTIME_CONFIG.get("timeout_grace_slots", 0))
     runtime_variant: str = str(_RUNTIME_CONFIG.get("runtime_variant", "density_based"))
     metadata: dict[str, object] = field(default_factory=dict)
@@ -59,24 +63,21 @@ class SharedRuntimeProgress:
     delayed_reward_ready: bool = False
 
 
-def compute_service_delay(task: Task, destination_kind: str, parameters: SharedRuntimeParameters) -> int:
+def compute_service_delay(task: Task, destination_kind: str, parameters: SharedRuntimeParameters, compute_config: ComputeConfig) -> int:
     variant = parameters.runtime_variant
     if variant == "constant_service":
         return 1
     if variant == "discrete_slot_service":
         return max(1, math.ceil(task.size / max(1, parameters.slot_duration)))
 
-    base = max(1, task.processing_density) * max(1, parameters.slot_duration)
-    if destination_kind == "local":
-        capacity = max(1, parameters.local_service_capacity)
-    elif destination_kind == "public":
-        capacity = max(1, parameters.public_service_capacity)
-    elif destination_kind == "cloud":
-        capacity = max(1, parameters.cloud_service_capacity)
-    else:
-        capacity = max(1, parameters.local_service_capacity)
-
-    return max(1, math.ceil(base / capacity))
+    # density_based: paper formula
+    cycles_required = max(0.0, float(task.size) * float(task.processing_density))
+    if cycles_required <= 0.0:
+        return 0
+    capacity = compute_config.capacity_for(destination_kind)  # cycles per slot
+    if capacity <= 0.0:
+        return 0
+    return max(1, int(math.ceil(cycles_required / capacity)))
 
 
 def resolve_destination_kind(destination_kind: str | None, action: str | None) -> str:
@@ -100,12 +101,13 @@ def advance_shared_runtime(
     destination_kind: str,
     current_slot: int,
     parameters: SharedRuntimeParameters,
+    compute_config: ComputeConfig,
 ) -> SharedRuntimeProgress:
     destination_kind = resolve_destination_kind(destination_kind, task.selected_action)
     waiting_slots = max(0, current_slot - task.arrival_slot)
     if task.metadata.get("queue_entered_at") is not None:
         waiting_slots = max(waiting_slots, max(0, current_slot - int(task.metadata["queue_entered_at"])))
-    service_slots = compute_service_delay(task, destination_kind, parameters)
+    service_slots = compute_service_delay(task, destination_kind, parameters, compute_config)
     offload_slots = 1 if destination_kind in {"public", "cloud"} else 0
     terminal_slot = task.arrival_slot + waiting_slots + offload_slots + service_slots
     return SharedRuntimeProgress(

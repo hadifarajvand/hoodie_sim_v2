@@ -116,7 +116,7 @@
     "offloaded_path": "HoodieGymEnvironment.step -> finalize_task_runtime_state_with_parameters -> emit_delayed_reward -> reward_for_terminal_task",
     "reward_emitted_timing": "terminal_completion_or_drop",
     "reward_for_terminal_task_values": {
-      "completed": -3.0,
+      "completed": -4.0,
       "dropped": -40.0
     },
     "selected_action_emits_reward": false

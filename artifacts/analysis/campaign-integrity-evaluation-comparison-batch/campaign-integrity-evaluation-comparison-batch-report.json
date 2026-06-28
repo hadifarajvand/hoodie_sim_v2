@@ -880,12 +880,12 @@
   },
   "feature_060_verified": true,
   "feature_id": "061-campaign-integrity-evaluation-comparison-batch",
-  "final_verdict": "campaign_integrity_evaluation_comparison_batch_passed",
+  "final_verdict": "behavior_drift_detected",
   "prerequisite_tags_verified": [
     {
       "details": "061-campaign-integrity-evaluation-comparison-batch",
       "name": "branch",
-      "verified": true
+      "verified": false
     },
     {
       "details": "current branch != main",
@@ -900,7 +900,7 @@
     {
       "details": "git status --short contains only approved Feature 061 paths",
       "name": "working_tree_paths_approved",
-      "verified": true
+      "verified": false
     },
     {
       "details": "git diff --cached --name-only contains only approved Feature 061 paths",
@@ -910,21 +910,23 @@
     {
       "details": "git diff --name-only main...HEAD contains only approved Feature 061 paths",
       "name": "feature_branch_diff_paths_approved",
-      "verified": true
+      "verified": false
     },
     {
       "details": "forbidden paths absent",
       "name": "forbidden_paths_absent",
-      "verified": true
+      "verified": false
     }
   ],
-  "recommended_next_feature": "Feature 062 — Multi-Seed Campaign and Ablation Batch",
-  "remaining_blockers": [],
+  "recommended_next_feature": "Repair Feature 061 behavior guard",
+  "remaining_blockers": [
+    "behavior_drift_detected"
+  ],
   "safety_summary": {
-    "no_dependency_drift": true,
-    "no_environment_contract_drift": true,
+    "no_dependency_drift": false,
+    "no_environment_contract_drift": false,
     "no_paper_reproduction_claim": true,
-    "no_policy_drift": true,
+    "no_policy_drift": false,
     "no_prior_feature_artifact_rewrite": true,
     "no_reward_timing_change": true,
     "no_uncontrolled_campaign_loop": true,

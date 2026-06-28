@@ -1,8 +1,8 @@
 # Results Export, Reproducibility, and Final Documentation Batch Report
 
 - feature_id: `063-results-export-reproducibility-documentation-batch`
-- final_verdict: `results_export_reproducibility_documentation_batch_passed`
-- recommended_next_feature: `Feature 064 — Final Review and Release Gate`
+- final_verdict: `feature_062_prerequisite_blocked`
+- recommended_next_feature: `Repair Feature 063 prerequisites before proceeding`
 
 ## Final Integrity Audit Summary
 {
@@ -352,7 +352,7 @@
   "no_dependency_drift": true,
   "no_environment_contract_drift": true,
   "no_paper_reproduction_claim": true,
-  "no_policy_drift": true,
+  "no_policy_drift": false,
   "no_prior_feature_artifact_rewrite": true,
   "no_reward_timing_change": true,
   "no_training_rerun": true,
@@ -361,4 +361,7 @@
 }
 
 ## Remaining Blockers
-[]
+[
+  "feature_062_prerequisite_blocked",
+  "behavior_drift_detected"
+]
