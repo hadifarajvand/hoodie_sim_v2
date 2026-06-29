@@ -1,0 +1,17 @@
+    @patch("src.analysis.full_training_reproduction_campaign.trainer.build_online_network")
+    @patch("src.analysis.full_training_reproduction_campaign.trainer.build_target_network")
+    def test_initial_history_uses_74_dimensional_rows_when_configured(self, mock_build_target, mock_build_online) -> None:
+        mock_build_online.return_value = torch.nn.Linear(PAPER_STATE_DIM, PAPER_ACTION_COUNT)
+        mock_build_target.return_value = torch.nn.Linear(PAPER_STATE_DIM, PAPER_ACTION_COUNT)
+        config = CampaignConfig(state_dim=PAPER_STATE_DIM, action_count=PAPER_ACTION_COUNT)
+        trainer = DDQNTrainer(config)
+        history = trainer._initial_history(episode_length=20)
+        self.assertEqual(len(history), config.lookback_w)
+        for row in history:
+            self.assertEqual(len(row), PAPER_STATE_DIM)
+            # Should not be all zeros (paper state represents empty system)
+            self.assertFalse(all(v == 0.0 for v in row), "Paper state should not be all zeros")
+            # Check that it is a valid one-hot encoding for task size (first 31 elements)
+            size_one_hot = row[:31]
+            self.assertAlmostEqual(sum(size_one_hot), 1.0, places=5, msg="Size one-hot should sum to 1.0")
+            self.assertAlmostEqual(size_one_hot[0], 1.0, places=5, msg="Size 0 should be active for empty task")

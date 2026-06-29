@@ -1,0 +1,33 @@
+
+    def test_initial_history_uses_3_dimensional_rows_by_default(self) -> None:
+        config = CampaignConfig()
+        trainer = DDQNTrainer(config)
+        history = trainer._initial_history(episode_length=20)
+        self.assertEqual(len(history), config.lookback_w)
+        for row in history:
+            self.assertEqual(len(row), 3)
+            self.assertTrue(all(v == 0.0 for v in row))
+
+
+class PaperActionIndexSemanticsTests(unittest.TestCase):
+    def test_paper_faithful_action_index_zero_is_local(self) -> None:
+        from src.analysis.full_training_reproduction_campaign.replay import ACTION_INDEX_TO_SEMANTICS_PAPER
+        self.assertEqual(ACTION_INDEX_TO_SEMANTICS_PAPER[0], "local")
+
+    def test_paper_faithful_action_index_21_is_cloud(self) -> None:
+        from src.analysis.full_training_reproduction_campaign.replay import ACTION_INDEX_TO_SEMANTICS_PAPER
+        self.assertEqual(ACTION_INDEX_TO_SEMANTICS_PAPER[21], "cloud")
+
+    def test_paper_faithful_action_count_is_22(self) -> None:
+        from src.analysis.full_training_reproduction_campaign.replay import ACTION_INDEX_TO_SEMANTICS_PAPER
+        self.assertEqual(len(ACTION_INDEX_TO_SEMANTICS_PAPER), 22)
+
+    def test_paper_faithful_has_horizontal_edge_indices(self) -> None:
+        from src.analysis.full_training_reproduction_campaign.replay import ACTION_INDEX_TO_SEMANTICS_PAPER
+        for i in range(1, 21):
+            self.assertIn(i, ACTION_INDEX_TO_SEMANTICS_PAPER)
+            self.assertTrue(ACTION_INDEX_TO_SEMANTICS_PAPER[i].startswith("horizontal_"))
+
+
+if __name__ == "__main__":
+    unittest.main()
