@@ -15,8 +15,8 @@ from torch.nn import functional as F
 from src.analysis.paper_hoodie_network_implementation import build_online_network, build_target_network
 from src.environment.compute_config import ComputeConfig
 from src.environment.gym_adapter import HoodieGymEnvironment
-from src.environment.runtime_model import SharedRuntimeParameters
 from src.environment.topology import TopologyGraph
+from src.environment.runtime_model import SharedRuntimeParameters
 
 from .config import CampaignConfig, READINESS_MANUAL_APPROVAL_APPROVED
 from .readiness import ReadinessProbeResult
@@ -32,6 +32,7 @@ from .replay import (
     legal_action_mask_to_tuple,
     semantics_to_action_index,
 )
+from src.agents.paper_state_builder import PaperStateBuilder
 
 
 @dataclass(slots=True)
@@ -101,7 +102,7 @@ class PilotTrainingResult:
             "pilot_training_executed": self.pilot_training_executed,
             "full_campaign_executed": self.full_campaign_executed,
             "full_campaign_block_reason": self.full_campaign_block_reason,
-            "evaluation_summary": dict(self.evaluation_summary),
+            "evaluation_summary": self.evaluation_summary,
             "checkpoint_metadata": self.checkpoint_metadata.to_dict(),
         }
 
@@ -192,12 +193,62 @@ class DDQNTrainer:
         self.sample_rng = random.Random(self.config.seed_bundle.replay_sampling_seed)
         self.optimizer_step_count = 0
         self.target_sync_count = 0
+        # Paper state builder for 74D state vectors
+        self.num_eas = len(TopologyGraph.from_approved_assumption_registry().node_ids)
+        self.state_builder = PaperStateBuilder(num_eas=self.num_eas)
+
+    def _get_public_queue_lengths(self, env: HoodieGymEnvironment) -> list[float]:
+        """Return list of public queue lengths per EA in order of EA IDs 1..num_eas."""
+        lengths = [0.0] * self.num_eas
+        for (destination, _source_id), queue in env._public_queues.items():
+            # destination is string like "1", "2", ..., "20"
+            try:
+                ea_index = int(destination) - 1  # zero-based index
+                if 0 <= ea_index < self.num_eas:
+                    lengths[ea_index] += len(queue.tasks)
+            except ValueError:
+                # If destination is not an integer string, skip
+                pass
+        return lengths
+
+    def _compute_state_vector(self, observation: dict[str, Any], env: HoodieGymEnvironment | None = None) -> tuple[float, ...]:
+        """Compute the 74-dimensional state vector from observation and environment."""
+        # Task characteristics
+        task_size = float(observation.get("size", 0.0))
+        processing_density = float(observation.get("processing_density", 0.0))
+        # Queue state (wait times are zero at decision points)
+        private_wait_time = 0.0
+        offload_wait_time = 0.0
+        # Public queue lengths
+        if env is None:
+            public_queue_lengths = [0.0] * self.num_eas
+        else:
+            public_queue_lengths = self._get_public_queue_lengths(env)
+        # Load forecast (placeholder zeros until LSTM component is ready)
+        load_forecast = [0.0] * self.num_eas
+        # Build state using PaperStateBuilder
+        state_vector = self.state_builder.build_state(
+            task_size=task_size,
+            processing_density=processing_density,
+            private_wait_time=private_wait_time,
+            offload_wait_time=offload_wait_time,
+            public_queue_lengths=public_queue_lengths,
+            load_forecast=load_forecast,
+        )
+        # Ensure we return a tuple of floats
+        return tuple(state_vector.tolist())
 
     def _initial_history(self, *, episode_length: int) -> deque[tuple[float, ...]]:
         if self.config.state_dim == 3:
             zero_row = build_state_vector(observation={"slot": 0, "queue_load": 0, "history_length": 0}, current_task=None, episode_length=episode_length)
         else:
-            zero_row = tuple(0.0 for _ in range(self.config.state_dim))
+            # For paper state dimension, compute a realistic zero state (empty system)
+            obs = {
+                "size": 0.0,
+                "processing_density": 0.0,
+                # Note: _compute_state_vector does not use slot, queue_load, history_length
+            }
+            zero_row = self._compute_state_vector(obs, env=None)
         return deque([zero_row] * self.config.lookback_w, maxlen=self.config.lookback_w)
 
     def _state_tensor(self, history: deque[tuple[float, ...]]) -> torch.Tensor:
@@ -247,7 +298,8 @@ class DDQNTrainer:
                     episode_length=episode_length,
                 )
             else:
-                next_feature = tuple(0.0 for _ in range(self.config.state_dim))
+                # Use PaperStateBuilder to compute real state vector
+                next_feature = self._compute_state_vector(next_observation, env)
             state_window = build_state_window(history, state_dim=self.config.state_dim)
             history.append(next_feature)
             next_state_window = build_state_window(history, state_dim=self.config.state_dim)
@@ -537,7 +589,8 @@ class DDQNTrainer:
                         episode_length=self.config.evaluation_episode_length,
                     )
                 else:
-                    next_feature = tuple(0.0 for _ in range(self.config.state_dim))
+                    # Use PaperStateBuilder to compute real state vector
+                    next_feature = self._compute_state_vector(next_observation, env)
                 history.append(next_feature)
                 finalized_tasks = info.get("finalized_tasks", [])
                 if finalized_tasks:
