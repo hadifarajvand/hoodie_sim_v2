@@ -24,7 +24,7 @@
       "swarmId": "swarm-1782663156076-h4s0do",
       "topology": "hierarchical-mesh",
       "maxAgents": 8,
-      "status": "running",
+      "status": "terminated",
       "agents": [],
       "tasks": [],
       "config": {
@@ -36,8 +36,78 @@
         "consensusMechanism": "majority"
       },
       "createdAt": "2026-06-28T16:12:36.076Z",
-      "updatedAt": "2026-06-28T16:12:36.076Z",
-      "pid": 42929
+      "updatedAt": "2026-06-28T16:38:07.608Z",
+      "pid": 42929,
+      "terminationReason": "host process 42929 exited"
+    },
+    "swarm-1782664687608-ftlcew": {
+      "swarmId": "swarm-1782664687608-ftlcew",
+      "topology": "hierarchical-mesh",
+      "maxAgents": 8,
+      "status": "terminated",
+      "agents": [],
+      "tasks": [],
+      "config": {
+        "topology": "hierarchical-mesh",
+        "maxAgents": 8,
+        "strategy": "specialized",
+        "communicationProtocol": "message-bus",
+        "autoScaling": true,
+        "consensusMechanism": "majority"
+      },
+      "createdAt": "2026-06-28T16:38:07.608Z",
+      "updatedAt": "2026-06-28T17:28:31.754Z",
+      "pid": 71126,
+      "terminationReason": "host process 71126 exited"
+    },
+    "swarm-1782667711753-z3fue8": {
+      "swarmId": "swarm-1782667711753-z3fue8",
+      "topology": "hierarchical-mesh",
+      "maxAgents": 8,
+      "status": "terminated",
+      "agents": [
+        "coordinator-1",
+        "planner-1",
+        "coder-1",
+        "tester-1",
+        "reviewer-1",
+        "security-auditor-1",
+        "performance-engineer-1",
+        "agent-1782672152460-iuj6wa",
+        "agent-1782672162949-1zbm2n",
+        "agent-1782672171601-ugbiab",
+        "agent-1782672181605-yq39kh",
+        "agent-1782672190381-re1bg1",
+        "agent-1782672200058-mn1l8p",
+        "agent-1782672209484-3iv1rm",
+        "agent-1782672222926-uojip8",
+        "agent-1782676286468-mnyxb3",
+        "agent-1782676288235-1zx8fa",
+        "agent-1782676289720-eglwq3",
+        "agent-1782676291135-mairi3",
+        "agent-1782676384061-r8g7tt",
+        "agent-1782676385576-vo3uai",
+        "agent-1782676386995-tkjdnr",
+        "agent-1782676388479-daiau7",
+        "agent-1782676390050-rm9530",
+        "agent-1782676391580-vr5h9q",
+        "agent-1782676393073-hzc7kx",
+        "agent-1782676394525-a8ych2",
+        "agent-1782676395981-oqz5qi"
+      ],
+      "tasks": [],
+      "config": {
+        "topology": "hierarchical-mesh",
+        "maxAgents": 8,
+        "strategy": "specialized",
+        "communicationProtocol": "message-bus",
+        "autoScaling": true,
+        "consensusMechanism": "majority"
+      },
+      "createdAt": "2026-06-28T17:28:31.753Z",
+      "updatedAt": "2026-06-28T17:59:14.069Z",
+      "pid": 28455,
+      "terminationReason": "host process 28455 exited"
     }
   },
   "version": "3.0.0"
