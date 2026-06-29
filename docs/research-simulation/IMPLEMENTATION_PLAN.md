@@ -387,8 +387,8 @@ The repository contains a substantially complete simulation framework with most 
 **Completion status**: □ pending
 
 ## 12. Current Status Checklist
-- [ ] Phase 0: Baseline fidelity audit & config correction
-- [ ] Phase 1: Paper-faithful HOODIE agent
+- [x] Phase 0: Baseline fidelity audit & config correction (CLOSED 2026-06-28: 62/62 validation gates pass, 4 drift areas SOURCE_CONFIRMED, approved)
+- [ ] Phase 1: Paper-faithful HOODIE agent (PLAN WRITTEN: docs/plans/2026-06-28-phase1-...; awaiting approval)
 - [ ] Phase 2: Multi-agent architecture & topology
 - [ ] Phase 3: LSTM load forecaster integration
 - [ ] Phase 4: Paper hyperparameter training configuration

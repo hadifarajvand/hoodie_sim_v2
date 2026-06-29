@@ -50,3 +50,7 @@ graphify-out/
 *.bak
 *.backup
 * copy.*
+
+.opencode/*
+.claude/*
+.claude-flow/*

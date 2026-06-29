@@ -12,6 +12,12 @@ Use a precision-first workflow. Optimize for correctness, speed of implementatio
 - CI/test/build output is the final truth.
 - Humans approve production and irreversible actions.
 
+OpenCode commands are the command surface.
+RuFlo built-in agents are the real swarm workers.
+Do not create duplicate OpenCode agents for RuFlo roles.
+Custom OpenCode agents are allowed only for project-specific roles not covered by RuFlo.
+Duplicate custom agents must stay archived under `.opencode/agents/_archived-ruflo-duplicates/`.
+
 ## Safety
 
 Do not read or print secrets.
