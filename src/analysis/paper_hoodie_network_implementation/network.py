@@ -16,8 +16,8 @@ class PaperHoodieDuelingNetwork(nn.Module):
         super().__init__()
         if config.state_dim is None or config.state_dim <= 0:
             raise ValueError("state_dim is required and must be positive to build the network.")
-        if config.action_count != 3:
-            raise ValueError("Feature 039 keeps the stable action count fixed at 3.")
+        if config.action_count not in (3, 22):
+            raise ValueError("PaperHoodieDuelingNetwork.action_count must be 3 (legacy) or 22 (paper-faithful).")
         if list(config.q_network_hidden_layers) != [1024, 1024, 1024]:
             raise ValueError("q_network_hidden_layers must equal [1024, 1024, 1024].")
         if config.lstm_num_layers != 1:

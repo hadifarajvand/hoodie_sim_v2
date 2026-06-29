@@ -137,14 +137,15 @@ class EvaluationSummary:
 
 
 class CampaignPolicy:
-    def __init__(self, network) -> None:
+    def __init__(self, network, *, action_count: int = 3) -> None:
         self.network = network
+        self.action_count = action_count
 
     def choose_action_index(self, state_window: torch.Tensor, legal_action_mask: dict[str, bool]) -> int:
         with torch.no_grad():
             q_values = self.network(state_window.unsqueeze(0))[0]
         legal_mask_tensor = torch.tensor(
-            legal_action_mask_to_tuple(legal_action_mask),
+            legal_action_mask_to_tuple(legal_action_mask, action_count=self.action_count),
             dtype=torch.bool,
             device=q_values.device,
         )
@@ -152,7 +153,10 @@ class CampaignPolicy:
         return int(torch.argmax(masked_q_values).item())
 
     def choose_action(self, state_window: torch.Tensor, legal_action_mask: dict[str, bool]) -> str:
-        return ACTION_INDEX_TO_SEMANTICS[self.choose_action_index(state_window, legal_action_mask)]
+        idx = self.choose_action_index(state_window, legal_action_mask)
+        if self.action_count == 3:
+            return ACTION_INDEX_TO_SEMANTICS[idx]
+        return ACTION_INDEX_TO_SEMANTICS_PAPER[idx]
 
 
 def _config_hash(config: CampaignConfig) -> str:
@@ -183,7 +187,7 @@ class DDQNTrainer:
         self.target_network = build_target_network(self.network_config)
         self.target_network.load_state_dict(self.online_network.state_dict())
         self.optimizer = torch.optim.Adam(self.online_network.parameters(), lr=self.config.learning_rate)
-        self.policy = CampaignPolicy(self.online_network)
+        self.policy = CampaignPolicy(self.online_network, action_count=self.config.action_count)
         self.replay_buffer = ReplayBuffer(capacity=self.config.replay_memory_capacity, seed=self.config.seed_bundle.replay_sampling_seed)
         self.sample_rng = random.Random(self.config.seed_bundle.replay_sampling_seed)
         self.optimizer_step_count = 0
