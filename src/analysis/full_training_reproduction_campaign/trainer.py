@@ -22,6 +22,7 @@ from .config import CampaignConfig, READINESS_MANUAL_APPROVAL_APPROVED
 from .readiness import ReadinessProbeResult
 from .replay import (
     ACTION_INDEX_TO_SEMANTICS,
+    ACTION_INDEX_TO_SEMANTICS_PAPER,
     ReplayBatch,
     ReplayBuffer,
     ReplayTransition,
@@ -188,12 +189,15 @@ class DDQNTrainer:
         self.optimizer_step_count = 0
         self.target_sync_count = 0
 
-    def _initial_history(self, *, episode_length: int) -> deque[tuple[float, float, float]]:
-        zero_row = build_state_vector(observation={"slot": 0, "queue_load": 0, "history_length": 0}, current_task=None, episode_length=episode_length)
+    def _initial_history(self, *, episode_length: int) -> deque[tuple[float, ...]]:
+        if self.config.state_dim == 3:
+            zero_row = build_state_vector(observation={"slot": 0, "queue_load": 0, "history_length": 0}, current_task=None, episode_length=episode_length)
+        else:
+            zero_row = tuple(0.0 for _ in range(self.config.state_dim))
         return deque([zero_row] * self.config.lookback_w, maxlen=self.config.lookback_w)
 
-    def _state_tensor(self, history: deque[tuple[float, float, float]]) -> torch.Tensor:
-        return build_state_window_tensor(build_state_window(history))
+    def _state_tensor(self, history: deque[tuple[float, ...]]) -> torch.Tensor:
+        return build_state_window_tensor(build_state_window(history, state_dim=self.config.state_dim))
 
     def _episode_rollout(
         self,
@@ -232,14 +236,17 @@ class DDQNTrainer:
 
             next_observation, reward, terminated, truncated, info = env.step(action)
             next_current_task = env.current_task
-            next_feature = build_state_vector(
-                observation=env.observe_flat(next_current_task) if next_current_task is not None else next_observation if isinstance(next_observation, dict) else {},
-                current_task=next_current_task,
-                episode_length=episode_length,
-            )
-            state_window = build_state_window(history)
+            if self.config.state_dim == 3:
+                next_feature = build_state_vector(
+                    observation=env.observe_flat(next_current_task) if next_current_task is not None else next_observation if isinstance(next_observation, dict) else {},
+                    current_task=next_current_task,
+                    episode_length=episode_length,
+                )
+            else:
+                next_feature = tuple(0.0 for _ in range(self.config.state_dim))
+            state_window = build_state_window(history, state_dim=self.config.state_dim)
             history.append(next_feature)
-            next_state_window = build_state_window(history)
+            next_state_window = build_state_window(history, state_dim=self.config.state_dim)
 
             finalized_tasks = info.get("finalized_tasks", [])
             reward_available = bool(finalized_tasks)
@@ -259,7 +266,7 @@ class DDQNTrainer:
                 transition = ReplayTransition(
                     state=state_window,
                     action=action_index,
-                    legal_action_mask=legal_action_mask_to_tuple(observation.get("legal_action_mask", {})),
+                    legal_action_mask=legal_action_mask_to_tuple(observation.get("legal_action_mask", {}), action_count=self.config.action_count),
                     next_state=next_state_window,
                     reward=reward_value,
                     reward_available=reward_available,
@@ -271,6 +278,8 @@ class DDQNTrainer:
                     agent_id=int(getattr(current_task, "source_agent_id", 0)),
                     episode_id=episode_id,
                     step_id=transition_count,
+                    state_dim=self.config.state_dim,
+                    action_count=self.config.action_count,
                 )
                 self.replay_buffer.add(transition)
                 transition_count += 1
@@ -517,11 +526,14 @@ class DDQNTrainer:
                     action = None
                 next_observation, reward, terminated, truncated, info = env.step(action)
                 next_current_task = env.current_task
-                next_feature = build_state_vector(
-                    observation=env.observe_flat(next_current_task) if next_current_task is not None else next_observation if isinstance(next_observation, dict) else {},
-                    current_task=next_current_task,
-                    episode_length=self.config.evaluation_episode_length,
-                )
+                if self.config.state_dim == 3:
+                    next_feature = build_state_vector(
+                        observation=env.observe_flat(next_current_task) if next_current_task is not None else next_observation if isinstance(next_observation, dict) else {},
+                        current_task=next_current_task,
+                        episode_length=self.config.evaluation_episode_length,
+                    )
+                else:
+                    next_feature = tuple(0.0 for _ in range(self.config.state_dim))
                 history.append(next_feature)
                 finalized_tasks = info.get("finalized_tasks", [])
                 if finalized_tasks:

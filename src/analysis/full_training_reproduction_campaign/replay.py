@@ -14,24 +14,38 @@ ACTION_INDEX_TO_SEMANTICS: dict[int, str] = {
 
 SEMANTICS_TO_ACTION_INDEX: dict[str, int] = {value: key for key, value in ACTION_INDEX_TO_SEMANTICS.items()}
 
+PAPER_STATE_DIM = 74
+PAPER_ACTION_COUNT = 22
+PAPER_LOOKBACK_W = 10
+
+ACTION_INDEX_TO_SEMANTICS_PAPER: dict[int, str] = {
+    0: "local",
+    21: "cloud",
+}
+for _i in range(1, PAPER_ACTION_COUNT - 1):
+    ACTION_INDEX_TO_SEMANTICS_PAPER[_i] = f"horizontal_{_i}"
+
+SEMANTICS_TO_ACTION_INDEX_PAPER: dict[str, int] = {value: key for key, value in ACTION_INDEX_TO_SEMANTICS_PAPER.items()}
+
 STATE_DIM = 3
 LOOKBACK_W = 10
 DATA_SOURCE = "environment_rollout"
 
 
-def zero_state_row() -> tuple[float, float, float]:
-    return (0.0, 0.0, 0.0)
+def zero_state_row(state_dim: int = STATE_DIM) -> tuple[float, ...]:
+    return tuple(0.0 for _ in range(state_dim))
 
 
-def build_state_window(history: Iterable[tuple[float, float, float]]) -> tuple[tuple[float, float, float], ...]:
-    rows = list(history)[-LOOKBACK_W:]
-    if len(rows) < LOOKBACK_W:
-        padding = [zero_state_row() for _ in range(LOOKBACK_W - len(rows))]
+def build_state_window(history: Iterable[tuple[float, ...]], *, lookback_w: int = LOOKBACK_W, state_dim: int = STATE_DIM) -> tuple[tuple[float, ...], ...]:
+    rows = list(history)[-lookback_w:]
+    if len(rows) < lookback_w:
+        dim = len(rows[0]) if rows else state_dim
+        padding = [zero_state_row(dim) for _ in range(lookback_w - len(rows))]
         rows = padding + rows
     return tuple(rows)
 
 
-def build_state_window_tensor(window: tuple[tuple[float, float, float], ...], *, device: torch.device | None = None) -> torch.Tensor:
+def build_state_window_tensor(window: tuple[tuple[float, ...], ...], *, device: torch.device | None = None) -> torch.Tensor:
     return torch.tensor(window, dtype=torch.float32, device=device)
 
 
@@ -49,8 +63,11 @@ def build_state_vector(*, observation: dict[str, Any], current_task: Any | None,
     return (slot_norm, size_norm, density_norm)
 
 
-def legal_action_mask_to_tuple(mask: dict[str, bool]) -> tuple[bool, bool, bool]:
-    return (bool(mask.get("local", False)), bool(mask.get("horizontal", False)), bool(mask.get("vertical", False)))
+def legal_action_mask_to_tuple(mask: dict[str, bool], *, action_count: int = 3) -> tuple[bool, ...]:
+    if action_count == 3:
+        return (bool(mask.get("local", False)), bool(mask.get("horizontal", False)), bool(mask.get("vertical", False)))
+    mask_list = mask.get("legal_action_mask", [False] * action_count)
+    return tuple(bool(m) for m in mask_list[:action_count])
 
 
 def action_index_to_semantics(action_index: int) -> str:
@@ -69,10 +86,10 @@ def semantics_to_action_index(semantics: str) -> int:
 
 @dataclass(slots=True, frozen=True)
 class ReplayTransition:
-    state: tuple[tuple[float, float, float], ...]
+    state: tuple[tuple[float, ...], ...]
     action: int
-    legal_action_mask: tuple[bool, bool, bool]
-    next_state: tuple[tuple[float, float, float], ...]
+    legal_action_mask: tuple[bool, ...]
+    next_state: tuple[tuple[float, ...], ...]
     reward: float
     reward_available: bool
     terminal: bool
@@ -83,6 +100,8 @@ class ReplayTransition:
     agent_id: int
     episode_id: int
     step_id: int
+    state_dim: int = STATE_DIM
+    action_count: int = 3
     source_type: str = DATA_SOURCE
 
     def __post_init__(self) -> None:
@@ -90,10 +109,14 @@ class ReplayTransition:
             raise ValueError("ReplayTransition.state must contain ten history rows.")
         if len(self.next_state) != LOOKBACK_W:
             raise ValueError("ReplayTransition.next_state must contain ten history rows.")
-        if self.action not in ACTION_INDEX_TO_SEMANTICS:
-            raise ValueError("ReplayTransition.action must be one of the stable action indices 0, 1, or 2.")
-        if len(self.legal_action_mask) != 3:
-            raise ValueError("ReplayTransition.legal_action_mask must contain three entries.")
+        if self.state and any(len(row) != self.state_dim for row in self.state):
+            raise ValueError(f"ReplayTransition.state rows must have {self.state_dim} elements, got row lengths { {len(row) for row in self.state} }.")
+        if self.next_state and any(len(row) != self.state_dim for row in self.next_state):
+            raise ValueError(f"ReplayTransition.next_state rows must have {self.state_dim} elements.")
+        if not (0 <= self.action < self.action_count):
+            raise ValueError(f"ReplayTransition.action must be between 0 and {self.action_count - 1}, got {self.action}.")
+        if len(self.legal_action_mask) != self.action_count:
+            raise ValueError(f"ReplayTransition.legal_action_mask must contain {self.action_count} entries, got {len(self.legal_action_mask)}.")
         if self.source_type != DATA_SOURCE:
             raise ValueError("ReplayTransition.source_type must equal environment_rollout.")
         if self.pending_at_horizon and self.terminal:
