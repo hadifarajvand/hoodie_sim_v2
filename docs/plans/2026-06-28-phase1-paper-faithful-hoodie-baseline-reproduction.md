@@ -1,8 +1,8 @@
 # Phase 1 Plan: Paper-Faithful HOODIE Baseline Reproduction
 
-**Status:** PARTIALLY_COMPLETED (1A done)  
+**Status:** PARTIALLY_COMPLETED (1A+1B done)  
 **Phase 1A:** IMPLEMENTED ✅  
-**Phase 1B:** PENDING  
+**Phase 1B:** IMPLEMENTED ✅  
 **Phase 1C:** PENDING  
 **Previous Review:** `INVALID_REVIEW_SURFACE` -- approved wrong surface, did not inspect dimension locks.
 
@@ -38,7 +38,7 @@ Based on `graphify query CampaignConfig` and raw source confirmation:
 | 1 | `CampaignConfig.state_dim` hard-locked to 3 | `src/analysis/full_training_reproduction_campaign/config.py:153` | **RESOLVED ✅** | 1A |
 | 2 | `CampaignConfig.action_count` hard-locked to 3 | `src/analysis/full_training_reproduction_campaign/config.py:155-156` | **RESOLVED ✅** | 1A |
 | 3 | `PaperHoodieNetworkConfig.action_count` hard-locked to 3 | `src/analysis/paper_hoodie_network_implementation/report.py:91` | **RESOLVED ✅** | 1A |
-| 4 | Data rate wiring in campaign/training unconfirmed | No evidence CampaignConfig passes LinkRateConfig to trainer | **BLOCKING** | 1B |
+| 4 | Data rate wiring in campaign/training unconfirmed | No evidence CampaignConfig passes LinkRateConfig to trainer | **RESOLVED ✅** | 1B |
 
 ---
 
@@ -70,19 +70,22 @@ Based on `graphify query CampaignConfig` and raw source confirmation:
 
 ---
 
-## Phase 1B: Wire Data Rates (30/10 Mbps) Into Active Campaign/Training
+## Phase 1B: Wire Data Rates (30/10 Mbps) Into Active Campaign/Training ✅ IMPLEMENTED
 
 **Scope:**
-- Confirm `LinkRateConfig` is properly passed to the environment in campaign runner
-- Add integration test: `tests/integration/test_campaign_link_rate_wiring.py`:
-  - run a campaign with non-default rates (e.g., 60/20)
-  - verify each task gets correct `transmission_data_rate_bps` metadata
-  - verify transmission delay matches expected for active link rates
-
-**Files Needing Approval:**
-- `src/analysis/full_training_reproduction_campaign/runner.py`
-- `src/environment/gym_adapter.py`
-- `tests/integration/test_campaign_link_rate_wiring.py`
+- ✅ `src/analysis/full_training_reproduction_campaign/config.py`:
+  - Added `horizontal_data_rate_mbps: float = 30.0` and `vertical_data_rate_mbps: float = 10.0` fields
+  - Added positive-value validation for both fields in `__post_init__`
+  - Added `build_link_rate_config() -> LinkRateConfig` method
+  - Added fields to `to_dict()`
+- ✅ `src/analysis/full_training_reproduction_campaign/trainer.py`:
+  - `_build_environment()` now passes `link_rate_config=config.build_link_rate_config()`
+- ✅ `src/analysis/full_training_reproduction_campaign/readiness.py`:
+  - `_environment()` now passes `link_rate_config=config.build_link_rate_config()`
+- ✅ `tests/integration/test_campaign_link_rate_wiring.py`:
+  - 11 tests covering: 30/10 Mbps defaults, custom rates, delay math (horizontal vs vertical), known task/rate delay, config exposure, non-positive rejection
+- ✅ `gym_adapter.py` already has `link_rate_config` field and correctly computes `compute_transmission_delay` with horizontal/vertical rate distinction — no edit required
+- **Validation:** 37/37 tests pass across all affected suites
 
 ---
 
@@ -139,5 +142,5 @@ npx ruflo@latest hooks explain --task "Invalidate incorrect Phase 1 approval rev
 
 **Next Steps:**
 1. ~~Implement Phase 1A: unlock config locks~~ ✅ DONE
-2. Implement Phase 1B: wire link rates and confirm they are active
+2. ~~Implement Phase 1B: wire link rates and confirm they are active~~ ✅ DONE
 3. Implement Phase 1C: create `paper_default` config and smoke test

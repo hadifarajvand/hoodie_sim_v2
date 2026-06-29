@@ -4,6 +4,7 @@ from dataclasses import dataclass, field
 from typing import Any, Literal
 
 from src.analysis.paper_hoodie_network_implementation import PaperHoodieNetworkConfig
+from src.environment.link_rate_config import LinkRateConfig
 
 FEATURE_ID = "041-full-training-reproduction-campaign"
 TARGET_UPDATE_UNIT = "optimizer_step"
@@ -145,6 +146,8 @@ class CampaignConfig:
         "artifacts/analysis/baseline-revalidation-after-runtime-repair/baseline-revalidation-report.json",
         "artifacts/analysis/baseline-revalidation-after-runtime-repair/baseline-revalidation-report.md",
     )
+    horizontal_data_rate_mbps: float = 30.0
+    vertical_data_rate_mbps: float = 10.0
     full_campaign_flag_name: str = "--enable-full-campaign"
 
     def __post_init__(self) -> None:
@@ -199,12 +202,24 @@ class CampaignConfig:
             raise ValueError("CampaignConfig.readiness_manual_approval_status cannot be approved without readiness_manual_approval_reference.")
         if not isinstance(self.seed_bundle, CampaignSeedBundle):
             raise ValueError("seed_bundle must be a CampaignSeedBundle.")
+        self.horizontal_data_rate_mbps = float(self.horizontal_data_rate_mbps)
+        self.vertical_data_rate_mbps = float(self.vertical_data_rate_mbps)
+        if self.horizontal_data_rate_mbps <= 0:
+            raise ValueError("CampaignConfig.horizontal_data_rate_mbps must be positive.")
+        if self.vertical_data_rate_mbps <= 0:
+            raise ValueError("CampaignConfig.vertical_data_rate_mbps must be positive.")
 
     def build_network_config(self) -> PaperHoodieNetworkConfig:
         return PaperHoodieNetworkConfig.standard(
             state_dim=self.state_dim,
             action_count=self.action_count,
             model_initialization_seed=self.model_initialization_seed,
+        )
+
+    def build_link_rate_config(self) -> LinkRateConfig:
+        return LinkRateConfig(
+            horizontal_data_rate_mbps=self.horizontal_data_rate_mbps,
+            vertical_data_rate_mbps=self.vertical_data_rate_mbps,
         )
 
     def to_dict(self) -> dict[str, Any]:
@@ -236,6 +251,8 @@ class CampaignConfig:
             "seed_bundle": self.seed_bundle.to_dict(),
             "training_trace_bank_id": self.training_trace_bank_id,
             "evaluation_trace_bank_id": self.evaluation_trace_bank_id,
+            "horizontal_data_rate_mbps": self.horizontal_data_rate_mbps,
+            "vertical_data_rate_mbps": self.vertical_data_rate_mbps,
             "baseline_reference_set": list(self.baseline_reference_set),
             "full_campaign_flag_name": self.full_campaign_flag_name,
         }

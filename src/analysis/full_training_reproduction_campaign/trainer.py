@@ -165,6 +165,7 @@ def _build_environment(config: CampaignConfig, *, episode_length: int, seed: int
         topology=TopologyGraph.from_approved_assumption_registry(),
         runtime_parameters=SharedRuntimeParameters(),
         compute_config=ComputeConfig(),
+        link_rate_config=config.build_link_rate_config(),
         policy_name="HOODIE",
     )
 
