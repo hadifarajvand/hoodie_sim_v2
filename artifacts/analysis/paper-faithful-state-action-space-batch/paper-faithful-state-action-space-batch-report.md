@@ -678,13 +678,13 @@
 
 ## Safety Summary
 {
-  "no_dependency_drift": false,
-  "no_environment_contract_drift": false,
+  "no_dependency_drift": true,
+  "no_environment_contract_drift": true,
   "no_evaluation_campaign_rerun": true,
   "no_optimizer_steps": true,
   "no_paper_reproduction_claim": true,
-  "no_policy_drift": false,
-  "no_prior_feature_artifact_rewrite": false,
+  "no_policy_drift": true,
+  "no_prior_feature_artifact_rewrite": true,
   "no_replay_mutation": true,
   "no_reward_timing_change": true,
   "no_training_rerun": true,
@@ -693,6 +693,5 @@
 
 ## Remaining Blockers
 [
-  "feature_064_prerequisite_blocked",
-  "behavior_drift_detected"
+  "feature_064_prerequisite_blocked"
 ]

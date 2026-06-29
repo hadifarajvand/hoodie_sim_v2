@@ -150,10 +150,10 @@ class CampaignConfig:
     def __post_init__(self) -> None:
         if self.feature_id != FEATURE_ID:
             raise ValueError("CampaignConfig.feature_id must equal 041-full-training-reproduction-campaign.")
-        if self.state_dim != 3:
-            raise ValueError("CampaignConfig.state_dim must equal 3.")
-        if self.action_count != 3:
-            raise ValueError("CampaignConfig.action_count must equal 3.")
+        if self.state_dim <= 0:
+            raise ValueError("CampaignConfig.state_dim must be positive.")
+        if self.action_count <= 0:
+            raise ValueError("CampaignConfig.action_count must be positive.")
         if self.lookback_w != 10:
             raise ValueError("CampaignConfig.lookback_w must equal 10.")
         if not isinstance(self.q_network_hidden_layers, list):
@@ -203,6 +203,7 @@ class CampaignConfig:
     def build_network_config(self) -> PaperHoodieNetworkConfig:
         return PaperHoodieNetworkConfig.standard(
             state_dim=self.state_dim,
+            action_count=self.action_count,
             model_initialization_seed=self.model_initialization_seed,
         )
 

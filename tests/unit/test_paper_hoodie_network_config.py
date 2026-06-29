@@ -19,12 +19,24 @@ class PaperHoodieNetworkConfigUnitTests(unittest.TestCase):
         with self.assertRaises(ValueError):
             PaperHoodieNetworkConfig.from_shared_n_l(shared_n_l=20)
 
-    def test_action_count_matches_feature_038_contract(self) -> None:
+    def test_action_count_accepts_valid_values(self) -> None:
+        config = PaperHoodieNetworkConfig(
+            state_dim=None,
+            q_network_hidden_layers=[1024, 1024, 1024],
+            action_count=4,
+            lstm_lookback_w=10,
+            lstm_num_layers=1,
+            lstm_hidden_size=20,
+            model_initialization_seed=19,
+        )
+        self.assertEqual(config.action_count, 4)
+
+    def test_action_count_rejects_non_positive(self) -> None:
         with self.assertRaises(ValueError):
             PaperHoodieNetworkConfig(
                 state_dim=None,
                 q_network_hidden_layers=[1024, 1024, 1024],
-                action_count=4,
+                action_count=0,
                 lstm_lookback_w=10,
                 lstm_num_layers=1,
                 lstm_hidden_size=20,

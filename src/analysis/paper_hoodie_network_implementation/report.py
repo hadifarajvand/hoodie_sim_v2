@@ -87,8 +87,8 @@ class PaperHoodieNetworkConfig:
     dependency_blocked_reason: str = "torch is unavailable in the approved interpreter"
 
     def __post_init__(self) -> None:
-        if self.action_count != 3:
-            raise ValueError("Feature 039 keeps action_count fixed at 3.")
+        if self.action_count <= 0:
+            raise ValueError("action_count must be positive.")
         if self.q_network_hidden_layers is None:
             raise ValueError("q_network_hidden_layers is required and must equal [1024, 1024, 1024].")
         if isinstance(self.q_network_hidden_layers, int):
@@ -113,11 +113,11 @@ class PaperHoodieNetworkConfig:
             raise ValueError("double_dqn_api_enabled must remain true.")
 
     @classmethod
-    def standard(cls, *, state_dim: int | None = 3, model_initialization_seed: int = 19) -> "PaperHoodieNetworkConfig":
+    def standard(cls, *, state_dim: int | None = 3, action_count: int = 3, model_initialization_seed: int = 19) -> "PaperHoodieNetworkConfig":
         return cls(
             state_dim=state_dim,
             q_network_hidden_layers=[1024, 1024, 1024],
-            action_count=3,
+            action_count=action_count,
             lstm_lookback_w=10,
             lstm_num_layers=1,
             lstm_hidden_size=20,
@@ -127,7 +127,7 @@ class PaperHoodieNetworkConfig:
         )
 
     @classmethod
-    def from_shared_n_l(cls, *, shared_n_l: int, state_dim: int | None = 3, model_initialization_seed: int = 19) -> "PaperHoodieNetworkConfig":
+    def from_shared_n_l(cls, *, shared_n_l: int, state_dim: int | None = 3, action_count: int = 3, model_initialization_seed: int = 19) -> "PaperHoodieNetworkConfig":
         raise ValueError(
             f"Shared N_L coupling is forbidden for Feature 039; received shared_n_l={shared_n_l} instead of separate q_network_hidden_layers and lstm_* fields."
         )
@@ -155,7 +155,7 @@ class PaperHoodieNetworkConfig:
 
     @property
     def expected_output_shape(self) -> str:
-        return "batch_size x 3"
+        return f"batch_size x {self.action_count}"
 
 
 @dataclass(slots=True)
@@ -311,7 +311,7 @@ class ShapeValidationReport:
 
 
 def _build_config() -> PaperHoodieNetworkConfig:
-    return PaperHoodieNetworkConfig.standard(state_dim=3, model_initialization_seed=19)
+    return PaperHoodieNetworkConfig.standard(state_dim=3, action_count=3, model_initialization_seed=19)
 
 
 def _build_shape_summary(config: PaperHoodieNetworkConfig, torch_available: bool) -> dict[str, Any]:
