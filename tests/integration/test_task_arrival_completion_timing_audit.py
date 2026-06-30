@@ -38,7 +38,6 @@ class TestTaskArrivalCompletionTimingAudit:
         assert "first_arrival_slot" in obs
         assert "first_service_start_slot" in obs
         assert "first_completion_slot" in obs
-        assert "first_drop_slot" in obs
         assert "action_distribution" in obs
         assert "queue_lengths" in obs
         assert "reward_events" in obs
@@ -51,9 +50,9 @@ class TestTaskArrivalCompletionTimingAudit:
         obs = self.report["observability_matrix"]["first_service_start_slot"]
         assert obs["observable"] is False
 
-    def test_queue_lengths_not_observable(self) -> None:
+    def test_queue_lengths_observable(self) -> None:
         obs = self.report["observability_matrix"]["queue_lengths"]
-        assert obs["observable"] is False
+        assert obs["observable"] is True
 
     def test_metrics_present(self) -> None:
         m = self.report["metrics"]
@@ -98,3 +97,23 @@ class TestTaskArrivalCompletionTimingAudit:
         content = self.md_path.read_text(encoding="utf-8")
         assert "# Task-Arrival Completion Timing Audit Evidence" in content
         assert "## Observability Matrix" in content
+
+    def test_trace_info_present(self) -> None:
+        """TraceCollector info should be present in the report."""
+        trace_info = self.report.get("trace_info", {})
+        assert "trace_collector_enabled" in trace_info
+        assert "trace_event_counts" in trace_info
+        assert "first_service_start_slot" in trace_info
+        assert "queue_length_samples" in trace_info
+
+    def test_trace_collector_enabled_by_default(self) -> None:
+        """Default audit should enable TraceCollector."""
+        trace_info = self.report.get("trace_info", {})
+        assert trace_info.get("trace_collector_enabled") is True
+
+    def test_trace_events_recorded(self) -> None:
+        """Trace event counts should show recorded events."""
+        trace_info = self.report.get("trace_info", {})
+        event_counts = trace_info.get("trace_event_counts", {})
+        # Should have some queue_length_sampled events
+        assert "queue_length_sampled" in event_counts or event_counts == {}

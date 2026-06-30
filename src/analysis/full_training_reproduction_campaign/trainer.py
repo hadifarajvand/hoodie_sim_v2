@@ -33,6 +33,7 @@ from .replay import (
     semantics_to_action_index,
 )
 from src.agents.paper_state_builder import PaperStateBuilder
+from src.analysis.trace_collector import TraceCollector
 
 
 @dataclass(slots=True)
@@ -181,7 +182,7 @@ def _ensure_valid_action(action: str, legal_action_mask: dict[str, bool]) -> boo
 
 
 class DDQNTrainer:
-    def __init__(self, config: CampaignConfig) -> None:
+    def __init__(self, config: CampaignConfig, trace_collector: Optional[TraceCollector] = None) -> None:
         self.config = config
         self.network_config = config.build_network_config()
         self.online_network = build_online_network(self.network_config)
@@ -196,6 +197,7 @@ class DDQNTrainer:
         # Paper state builder for 74D state vectors
         self.num_eas = len(TopologyGraph.from_approved_assumption_registry().node_ids)
         self.state_builder = PaperStateBuilder(num_eas=self.num_eas)
+        self.trace_collector = trace_collector
 
     def _get_public_queue_lengths(self, env: HoodieGymEnvironment) -> list[float]:
         """Return list of public queue lengths per EA in order of EA IDs 1..num_eas."""
@@ -274,6 +276,9 @@ class DDQNTrainer:
         illegal_action_count = 0
         legal_action_only = True
         loss_values: list[float] = []
+        # Tracing state
+        slot = 0
+        seen_arrival_slots: set[int] = set()
         while True:
             current_task = env.current_task
             if current_task is not None:
@@ -284,6 +289,30 @@ class DDQNTrainer:
                     illegal_action_count += 1
                     legal_action_only = False
                 action_index = semantics_to_action_index(action)
+                # Trace: action_selected
+                if self.trace_collector is not None and self.trace_collector.enabled:
+                    self.trace_collector.record(
+                        episode_id=episode_id,
+                        slot=slot,
+                        event_type="action_selected",
+                        action_index=action_index,
+                        action=str(action),
+                    )
+                # Trace: task_arrived (if we haven't seen this arrival slot before in this episode)
+                arrival_slot = getattr(current_task, "arrival_slot", None)
+                if arrival_slot is not None and arrival_slot not in seen_arrival_slots:
+                    seen_arrival_slots.add(arrival_slot)
+                    if self.trace_collector is not None and self.trace_collector.enabled:
+                        self.trace_collector.record(
+                            episode_id=episode_id,
+                            slot=slot,
+                            event_type="task_arrived",
+                            task_id=getattr(current_task, "task_id", None),
+                            arrival_slot=arrival_slot,
+                            source_agent_id=getattr(current_task, "source_agent_id", None),
+                            size_mbits=getattr(current_task, "size", None),
+                            processing_density=getattr(current_task, "processing_density", None),
+                        )
             else:
                 observation = env.observe_flat()
                 action = None
@@ -314,9 +343,65 @@ class DDQNTrainer:
                 terminal_transition_count += 1
                 completed_task_count += sum(1 for task in finalized_tasks if task.get("terminal_outcome") == "completed")
                 dropped_task_count += sum(1 for task in finalized_tasks if task.get("terminal_outcome") == "dropped")
+                # Trace: task_completed and task_dropped
+                if self.trace_collector is not None and self.trace_collector.enabled:
+                    for task in finalized_tasks:
+                        outcome = task.get("terminal_outcome")
+                        if outcome == "completed":
+                            self.trace_collector.record(
+                                episode_id=episode_id,
+                                slot=slot,
+                                event_type="task_completed",
+                                task_id=task.get("task_id"),
+                                completion_slot=task.get("completion_slot"),
+                                arrival_slot=task.get("arrival_slot"),
+                                source_agent_id=task.get("source_agent_id"),
+                                reward=task.get("reward"),
+                            )
+                        elif outcome == "dropped":
+                            self.trace_collector.record(
+                                episode_id=episode_id,
+                                slot=slot,
+                                event_type="task_dropped",
+                                task_id=task.get("task_id"),
+                                drop_slot=task.get("drop_slot"),
+                                arrival_slot=task.get("arrival_slot"),
+                                source_agent_id=task.get("source_agent_id"),
+                                reward=task.get("reward"),
+                            )
+                # Trace: reward_released
+                if self.trace_collector is not None and self.trace_collector.enabled:
+                    self.trace_collector.record(
+                        episode_id=episode_id,
+                        slot=slot,
+                        event_type="reward_released",
+                        reward=reward_value,
+                        terminal_reason=terminal_reason,
+                    )
             if truncated and (env.current_task is not None or info.get("queue_load", 0) > 0):
                 pending_at_horizon_count += 1
                 terminal_reason = "pending_at_horizon"
+                # Trace: task_pending_at_horizon
+                if self.trace_collector is not None and self.trace_collector.enabled:
+                    # We don't have specific task info here, but we can note that there is at least one pending task
+                    self.trace_collector.record(
+                        episode_id=episode_id,
+                        slot=slot,
+                        event_type="task_pending_at_horizon",
+                        pending_count=1,  # we just incremented by one
+                    )
+
+            # Trace: queue_length_sampled (public queue lengths)
+            if self.trace_collector is not None and self.trace_collector.enabled:
+                public_queue_lengths = self._get_public_queue_lengths(env)
+                for ea_index, length in enumerate(public_queue_lengths):
+                    self.trace_collector.record(
+                        episode_id=episode_id,
+                        slot=slot,
+                        event_type="queue_length_sampled",
+                        ea_id=ea_index + 1,  # EA IDs are 1-based
+                        queue_length=length,
+                    )
 
             if current_task is not None:
                 transition = ReplayTransition(
@@ -346,6 +431,9 @@ class DDQNTrainer:
 
             if terminated or truncated:
                 break
+
+            # Increment slot after each step
+            slot += 1
 
         return {
             "transition_count": transition_count,

@@ -9,6 +9,7 @@ from typing import Any, Dict, Tuple
 
 from src.analysis.full_training_reproduction_campaign.config import CampaignConfig
 from src.analysis.full_training_reproduction_campaign.trainer import DDQNTrainer
+from src.analysis.trace_collector import TraceCollector, make_enabled_trace_collector
 
 
 def _config_hash(config: CampaignConfig) -> str:
@@ -19,9 +20,12 @@ def _config_hash(config: CampaignConfig) -> str:
 def run_task_arrival_completion_timing_audit(
     episodes: int = 3,
     episode_length: int = 200,
+    *,
+    trace_collector: TraceCollector | None = None,
 ) -> Dict[str, Any]:
     config = CampaignConfig.paper_default()
-    trainer = DDQNTrainer(config)
+    tracer = trace_collector or make_enabled_trace_collector()
+    trainer = DDQNTrainer(config, trace_collector=tracer)
     config_hash = _config_hash(config)
 
     episode_summaries: list[dict[str, Any]] = []
@@ -103,26 +107,39 @@ def run_task_arrival_completion_timing_audit(
         for i in range(episodes)
     ]
 
-    first_drop_per_ep = []
-    for i in range(episodes):
-        drop_slots = []
-        for j, reason in enumerate(per_episode_terminal_reasons[i]):
-            if reason == "dropped":
-                idx_in_all = None
-                count = 0
-                for k, r in enumerate(terminal_reasons):
-                    if r == "dropped" and (k < len(completion_or_drop_slots)):
-                        if completion_or_drop_slots[k] is not None:
-                            drop_slots.append(completion_or_drop_slots[k])
-        first_drop_per_ep.append(min(drop_slots) if drop_slots else None)
-
-    first_completion_per_ep = []
+    firstcompletion_per_ep = []
     for i in range(episodes):
         comp_slots = []
-        for k, r in enumerate(terminal_reasons):
-            if r == "completed" and k < len(completion_or_drop_slots) and completion_or_drop_slots[k] is not None:
-                comp_slots.append(completion_or_drop_slots[k])
-        first_completion_per_ep.append(min(comp_slots) if comp_slots else None)
+        for j in range(len(per_episode_terminal_reasons[i])):
+            reason = per_episode_terminal_reasons[i][j]
+            if reason == "completed":
+                if j < len(completion_or_drop_slots):
+                    comp_slot = completion_or_drop_slots[j]
+                    if comp_slot is not None:
+                        comp_slots.append(comp_slot)
+        firstcompletion_per_ep.append(min(comp_slots) if comp_slots else None)
+
+    # Extract trace event counts if tracing was enabled
+    trace_event_counts: dict[str, int] = {}
+    first_service_start_slot: int | None = None
+    queue_length_samples: list[dict[str, Any]] = []
+    if tracer is not None and tracer.enabled:
+        trace_event_counts = tracer.count_events_by_type()
+        # Check for service_started events
+        events = tracer.get_events()
+        for event in events:
+            if event["event_type"] == "service_started":
+                if first_service_start_slot is None or event["slot"] < first_service_start_slot:
+                    first_service_start_slot = event["slot"]
+        # Collect queue length samples
+        for event in events:
+            if event["event_type"] == "queue_length_sampled":
+                queue_length_samples.append({
+                    "episode_id": event["episode_id"],
+                    "slot": event["slot"],
+                    "ea_id": event.get("ea_id"),
+                    "queue_length": event.get("queue_length"),
+                })
 
     observability_matrix = {
         "first_arrival_slot": {
@@ -130,24 +147,20 @@ def run_task_arrival_completion_timing_audit(
             "value": first_arrival_per_ep if has_arrival_slot else "not_observable_without_instrumenting_trainer",
         },
         "first_service_start_slot": {
-            "observable": False,
-            "value": "not_observable_without_instrumenting_trainer",
+            "observable": first_service_start_slot is not None,
+            "value": first_service_start_slot if first_service_start_slot is not None else "not_observable_without_deeper_environment_instrumentation",
         },
         "first_completion_slot": {
-            "observable": True,
-            "value": first_completion_per_ep,
-        },
-        "first_drop_slot": {
             "observable": has_completion_or_drop_slot,
-            "value": first_drop_per_ep if has_completion_or_drop_slot else "not_observable_without_instrumenting_trainer",
+            "value": firstcompletion_per_ep if has_completion_or_drop_slot else "not_observable_without_instrumenting_trainer",
         },
         "action_distribution": {
             "observable": has_action_idx,
             "value": dict() if not has_action_idx else None,
         },
         "queue_lengths": {
-            "observable": False,
-            "value": "not_observable_without_instrumenting_trainer",
+            "observable": len(queue_length_samples) > 0,
+            "value": f"{len(queue_length_samples)} samples recorded" if queue_length_samples else "not_observable_without_deeper_environment_instrumentation",
         },
         "reward_events": {
             "observable": has_reward_events,
@@ -237,6 +250,12 @@ def run_task_arrival_completion_timing_audit(
             "full_campaign_enabled": config.full_campaign_enabled,
             "config_hash": config_hash[:16],
         },
+        "trace_info": {
+            "trace_collector_enabled": tracer is not None and tracer.enabled,
+            "trace_event_counts": trace_event_counts,
+            "first_service_start_slot": first_service_start_slot,
+            "queue_length_samples": len(queue_length_samples),
+        },
         "observability_matrix": observability_matrix,
         "episode_summaries": [
             {
@@ -298,6 +317,7 @@ def write_artifacts(report: dict[str, Any]) -> tuple[Path, Path]:
     cfg = report["config_summary"]
     obs = report["observability_matrix"]
     findings = report["inferred_findings"]
+    trace_info = report.get("trace_info", {})
 
     lines = [
         "# Task-Arrival Completion Timing Audit Evidence",
@@ -313,6 +333,13 @@ def write_artifacts(report: dict[str, Any]) -> tuple[Path, Path]:
         f"- full_campaign_enabled: `{cfg['full_campaign_enabled']}`",
         f"- config_hash: `{cfg['config_hash']}`... (sha256 prefix)",
         "",
+        "## Trace Info",
+        "",
+        f"- trace_collector_enabled: `{trace_info.get('trace_collector_enabled', False)}`",
+        f"- trace_event_counts: `{trace_info.get('trace_event_counts', {})}`",
+        f"- first_service_start_slot: `{trace_info.get('first_service_start_slot', 'N/A')}`",
+        f"- queue_length_samples: `{trace_info.get('queue_length_samples', 0)}`",
+        "",
         "## Observability Matrix",
         "",
     ]
@@ -325,7 +352,7 @@ def write_artifacts(report: dict[str, Any]) -> tuple[Path, Path]:
         "## Metrics Summary",
         "",
         f"- episodes_completed: `{m['episodes_completed']}`",
-        f"- episode_length: `{m['episode_length']}`",
+ f"- episode_length: `{m['episode_length']}`",
         f"- total_transition_count: `{m['total_transition_count']}`",
         f"- completed_task_count: `{m['completed_task_count']}`",
         f"- dropped_task_count: `{m['dropped_task_count']}`",
