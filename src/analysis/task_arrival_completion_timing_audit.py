@@ -3,6 +3,7 @@ from __future__ import annotations
 import hashlib
 import json
 import math
+import os
 from pathlib import Path
 from statistics import mean
 from typing import Any, Dict, Tuple
@@ -125,10 +126,10 @@ def run_task_arrival_completion_timing_audit(
     queue_length_samples: list[dict[str, Any]] = []
     if tracer is not None and tracer.enabled:
         trace_event_counts = tracer.count_events_by_type()
-        # Check for service_started events
+        # Check for service_started or execution_started events
         events = tracer.get_events()
         for event in events:
-            if event["event_type"] == "service_started":
+            if event["event_type"] in ["service_started", "execution_started"]:
                 if first_service_start_slot is None or event["slot"] < first_service_start_slot:
                     first_service_start_slot = event["slot"]
         # Collect queue length samples
@@ -303,7 +304,7 @@ def run_task_arrival_completion_timing_audit(
 
 
 def write_artifacts(report: dict[str, Any]) -> tuple[Path, Path]:
-    OUTPUT_DIR = Path("artifacts/analysis/task-arrival-completion-timing-audit")
+    OUTPUT_DIR = Path(os.getenv("AUDIT_OUTPUT_DIR", "artifacts/analysis/task-arrival-completion-timing-audit"))
     OUTPUT_DIR.mkdir(parents=True, exist_ok=True)
     json_path = OUTPUT_DIR / "task-arrival-completion-timing-audit.json"
     md_path = OUTPUT_DIR / "task-arrival-completion-timing-audit.md"

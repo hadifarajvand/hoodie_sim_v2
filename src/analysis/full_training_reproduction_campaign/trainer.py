@@ -435,6 +435,23 @@ class DDQNTrainer:
             # Increment slot after each step
             slot += 1
 
+        # If tracing is enabled, record lifecycle trace events into the trace collector
+        if self.trace_collector is not None and self.trace_collector.enabled:
+            lifecycle_events = info.get("lifecycle_trace_events", [])
+            for event in lifecycle_events:
+                event_copy = event.copy()
+                event_type = event_copy.pop('event_type')
+                slot_val = event_copy.pop('slot')
+                # Map execution_started to service_started for the purpose of the audit
+                if event_type == "execution_started":
+                    event_type = "service_started"
+                self.trace_collector.record(
+                    episode_id=episode_id,
+                    slot=slot_val,
+                    event_type=event_type,
+                    **event_copy
+                )
+
         return {
             "transition_count": transition_count,
             "completed_task_count": completed_task_count,
