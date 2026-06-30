@@ -1,5 +1,11 @@
 # Trace Collector Instrumentation Evidence
 
+- **Date:** 2026-06-30
+- **Repository:** /Users/hadi/Documents/GitHub/hoodie_sim_v2
+- **Branch:** main
+- **Commit:** 36f76d891d8e827775b7dca2826b5e2139ccb381
+- **Base commit:** 1de43f2cdb125c8a8b1d790ec623f4690ad12f36
+
 ## Summary of Changes
 
 This commit adds optional TraceCollector instrumentation to the DDQNTrainer to enable observability of task arrival, action selection, task completion/drop, queue lengths, and reward events without altering the core training logic.
@@ -124,16 +130,17 @@ The instrumented audit was run with tracing enabled by default. Key findings:
 - 4 tasks were dropped but 0 completed — tasks arrive but cannot finish within 200 slots
 - 3 tasks were pending at horizon — episode truncation prevents completion accounting
 - All rewards are negative (total=-160.0, avg=-40.00) — drop penalties dominate, no completion rewards
+- Zero completions is still not fully explained: whether service time exceeds horizon or action selection fails to advance processing is unknown without deeper instrumentation
 
 **What is not observable:**
-- `first_service_start_slot`
-- `queue_lengths_over_time` (though we now have sampled queue lengths at each transition)
+- `first_service_start_slot` — not observable without deeper environment instrumentation
+- `queue_lengths_over_time` is partially observable: queue lengths are now observable via sampled public queue lengths at each transition
 
 **Most likely next hypothesis:**
-Tasks arrive (first at slot 0) but are dropped (n=4) or pending (n=3) before completing. Most likely: the bounded horizon of 200 slots is too short for the service time of tasks given the current action selection policy, OR the action selection is not advancing task processing effectively.
+Tasks arrive (first at slot 0) but are dropped (n=4) or pending (n=3) before completing. Most likely: the bounded horizon of 200 slots is too short for the service time of tasks given the current action selection policy, OR the action selection is not advancing task processing effectively. Zero completions remains unexplained without service-start instrumentation.
 
 ### Recommended Next Step
-`minimal trainer instrumentation plan` (which we have implemented)
+`deeper environment/service-start instrumentation plan`
 
 ## Conclusion
 
@@ -141,22 +148,3 @@ The TraceCollector instrumentation has been successfully integrated and validate
 
 All tests pass, confirming that the instrumentation does not alter the existing behavior when disabled and provides valuable observability when enabled.
 
-### Files to Commit
-- `src/analysis/trace_collector.py`
-- `src/analysis/full_training_reproduction_campaign/trainer.py`
-- `src/analysis/task_arrival_completion_timing_audit.py`
-- `tests/integration/test_trace_collector_instrumentation.py`
-- `tests/integration/test_task_arrival_completion_timing_audit.py`
-- `docs/run-logs/2026-06-30-trace-collector-instrumentation-evidence.md`
-
-### Commit Message
-```
-feat: add optional trace collector instrumentation
-
-- Add TraceCollector class for recording training loop events
-- Modify DDQNTrainer to accept optional TraceCollector and record events
-- Update task arrival completion timing audit to use TraceCollector
-- Add comprehensive test suite for TraceCollector and updated audit
-- Run bounded audit (3x200) with tracing enabled and produce evidence report
-- All validation tests pass
-```
