@@ -154,7 +154,7 @@ Each bridged or recorded event contains:
 | 1 | Run instrumented 3×200 | 3 episodes × 200 slots | First validation; must complete |
 | 2 | If step 1 shows `service_started` events but zero completions, run 3×500 | 3 episodes × 500 slots | Only if step 1 is safe and informative |
 | 3 | Do not exceed 3×500 | Hard cap | No full campaign, no unbounded runs |
-| 4 | Do not run full campaign | Hard cap | Not until Phase 2 |
+| 4 | Do not run full campaign | Hard cap | Only after explicit Phase 1 full-campaign approval gate |
 
 ## 11. Acceptance Criteria for Future Implementation
 
