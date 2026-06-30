@@ -124,14 +124,28 @@ def run_task_arrival_completion_timing_audit(
     trace_event_counts: dict[str, int] = {}
     first_service_start_slot: int | None = None
     queue_length_samples: list[dict[str, Any]] = []
+    lifecycle_event_counts: dict[str, int] = {}
+    service_started_observable = False
+    lifecycle_events_absent = False
+    
     if tracer is not None and tracer.enabled:
         trace_event_counts = tracer.count_events_by_type()
         # Check for service_started or execution_started events
         events = tracer.get_events()
         for event in events:
-            if event["event_type"] in ["service_started", "execution_started"]:
+            event_type = event.get("event_type", "")
+            if event_type in ["service_started", "execution_started"]:
+                service_started_observable = True
                 if first_service_start_slot is None or event["slot"] < first_service_start_slot:
                     first_service_start_slot = event["slot"]
+            # Count lifecycle events by their source type
+            if "lifecycle_event_source" in event:
+                source_type = event["lifecycle_event_source"]
+                lifecycle_event_counts[source_type] = lifecycle_event_counts.get(source_type, 0) + 1
+            else:
+                # Also count by event_type for non-lifecycle events
+                if event_type:
+                    lifecycle_event_counts[event_type] = lifecycle_event_counts.get(event_type, 0) + 1
         # Collect queue length samples
         for event in events:
             if event["event_type"] == "queue_length_sampled":
@@ -141,6 +155,10 @@ def run_task_arrival_completion_timing_audit(
                     "ea_id": event.get("ea_id"),
                     "queue_length": event.get("queue_length"),
                 })
+        
+        # Check if lifecycle events are absent even when trace is enabled
+        has_lifecycle_events = any("lifecycle_event_source" in e for e in events)
+        lifecycle_events_absent = not has_lifecycle_events and len(events) > 0
 
     observability_matrix = {
         "first_arrival_slot": {
@@ -148,8 +166,8 @@ def run_task_arrival_completion_timing_audit(
             "value": first_arrival_per_ep if has_arrival_slot else "not_observable_without_instrumenting_trainer",
         },
         "first_service_start_slot": {
-            "observable": first_service_start_slot is not None,
-            "value": first_service_start_slot if first_service_start_slot is not None else "not_observable_without_deeper_environment_instrumentation",
+            "observable": service_started_observable,
+            "value": first_service_start_slot if service_started_observable else "not_observable_without_deeper_environment_instrumentation",
         },
         "first_completion_slot": {
             "observable": has_completion_or_drop_slot,
@@ -170,6 +188,10 @@ def run_task_arrival_completion_timing_audit(
                 "total": total_reward,
                 "average": avg_reward,
             },
+        },
+        "service_started_observable": {
+            "observable": service_started_observable,
+            "value": service_started_observable,
         },
     }
 
@@ -198,7 +220,11 @@ def run_task_arrival_completion_timing_audit(
 
     # Inferred findings
     proven = []
-    not_observable = ["first_service_start_slot", "queue_lengths_over_time"]
+    not_observable = []
+    if not service_started_observable:
+        not_observable.append("first_service_start_slot")
+    if len(queue_length_samples) == 0:
+        not_observable.append("queue_lengths_over_time")
 
     if has_arrival_slot and arrival_slots:
         proven.append(f"Task arrivals occur as early as slot {min(arrival_slots)} (mean {mean(arrival_slots):.1f})")
@@ -254,8 +280,11 @@ def run_task_arrival_completion_timing_audit(
         "trace_info": {
             "trace_collector_enabled": tracer is not None and tracer.enabled,
             "trace_event_counts": trace_event_counts,
+            "lifecycle_event_counts": lifecycle_event_counts,
             "first_service_start_slot": first_service_start_slot,
             "queue_length_samples": len(queue_length_samples),
+            "service_started_observable": service_started_observable,
+            "lifecycle_events_absent_even_when_trace_enabled": lifecycle_events_absent,
         },
         "observability_matrix": observability_matrix,
         "episode_summaries": [
@@ -338,8 +367,11 @@ def write_artifacts(report: dict[str, Any]) -> tuple[Path, Path]:
         "",
         f"- trace_collector_enabled: `{trace_info.get('trace_collector_enabled', False)}`",
         f"- trace_event_counts: `{trace_info.get('trace_event_counts', {})}`",
+        f"- lifecycle_event_counts: `{trace_info.get('lifecycle_event_counts', {})}`",
         f"- first_service_start_slot: `{trace_info.get('first_service_start_slot', 'N/A')}`",
         f"- queue_length_samples: `{trace_info.get('queue_length_samples', 0)}`",
+        f"- service_started_observable: `{trace_info.get('service_started_observable', False)}`",
+        f"- lifecycle_events_absent_even_when_trace_enabled: `{trace_info.get('lifecycle_events_absent_even_when_trace_enabled', False)}`",
         "",
         "## Observability Matrix",
         "",

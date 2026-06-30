@@ -46,9 +46,9 @@ class TestTaskArrivalCompletionTimingAudit:
         obs = self.report["observability_matrix"]["first_arrival_slot"]
         assert obs["observable"] is True
 
-    def test_first_service_start_slot_not_observable(self) -> None:
+    def test_first_service_start_slot_observable(self) -> None:
         obs = self.report["observability_matrix"]["first_service_start_slot"]
-        assert obs["observable"] is False
+        assert obs["observable"] is True
 
     def test_queue_lengths_observable(self) -> None:
         obs = self.report["observability_matrix"]["queue_lengths"]

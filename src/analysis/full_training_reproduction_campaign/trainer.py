@@ -15,6 +15,7 @@ from torch.nn import functional as F
 from src.analysis.paper_hoodie_network_implementation import build_online_network, build_target_network
 from src.environment.compute_config import ComputeConfig
 from src.environment.gym_adapter import HoodieGymEnvironment
+from src.environment.lifecycle_trace import LifecycleTraceConfig
 from src.environment.topology import TopologyGraph
 from src.environment.runtime_model import SharedRuntimeParameters
 
@@ -166,7 +167,7 @@ def _config_hash(config: CampaignConfig) -> str:
     return hashlib.sha256(payload).hexdigest()
 
 
-def _build_environment(config: CampaignConfig, *, episode_length: int, seed: int) -> HoodieGymEnvironment:
+def _build_environment(config: CampaignConfig, *, episode_length: int, seed: int, trace_enabled: bool = False) -> HoodieGymEnvironment:
     return HoodieGymEnvironment(
         episode_length=episode_length,
         topology=TopologyGraph.from_approved_assumption_registry(),
@@ -174,6 +175,7 @@ def _build_environment(config: CampaignConfig, *, episode_length: int, seed: int
         compute_config=ComputeConfig(),
         link_rate_config=config.build_link_rate_config(),
         policy_name="HOODIE",
+        trace_config=LifecycleTraceConfig(trace_enabled=trace_enabled),
     )
 
 
@@ -264,7 +266,7 @@ class DDQNTrainer:
         episode_length: int,
         training: bool,
     ) -> dict[str, Any]:
-        env = _build_environment(self.config, episode_length=episode_length, seed=seed)
+        env = _build_environment(self.config, episode_length=episode_length, seed=seed, trace_enabled=(self.trace_collector is not None and self.trace_collector.enabled))
         env.reset(seed=seed)
         history = self._initial_history(episode_length=episode_length)
         transition_count = 0
@@ -319,6 +321,28 @@ class DDQNTrainer:
                 action_index = -1
 
             next_observation, reward, terminated, truncated, info = env.step(action)
+            
+            # Bridge lifecycle trace events per step (only newly observed events)
+            if self.trace_collector is not None and self.trace_collector.enabled:
+                lifecycle_events = info.get("lifecycle_trace_events", [])
+                for event in lifecycle_events:
+                    if isinstance(event, dict):
+                        event_copy = event.copy()
+                        event_type = event_copy.pop('event_type', 'unknown')
+                        slot_val = event_copy.pop('slot', slot)
+                        # Preserve raw lifecycle event type as lifecycle_event_source
+                        event_copy['lifecycle_event_source'] = event_type
+                        # Map execution_started to service_started for audit compatibility
+                        # but keep the original in lifecycle_event_source
+                        if event_type == "execution_started":
+                            event_type = "service_started"
+                        self.trace_collector.record(
+                            episode_id=episode_id,
+                            slot=slot_val,
+                            event_type=event_type,
+                            **event_copy
+                        )
+            
             next_current_task = env.current_task
             if self.config.state_dim == 3:
                 next_feature = build_state_vector(
@@ -674,6 +698,7 @@ class DDQNTrainer:
                 self.config,
                 episode_length=self.config.evaluation_episode_length,
                 seed=self.config.seed_bundle.evaluation_trace_generation_seed + episode_index,
+                trace_enabled=(self.trace_collector is not None and self.trace_collector.enabled),
             )
             env.reset(seed=self.config.seed_bundle.evaluation_trace_generation_seed + episode_index)
             history = self._initial_history(episode_length=self.config.evaluation_episode_length)
