@@ -3,7 +3,8 @@
 **Date**: 2026-06-30  
 **Repository**: /Users/hadi/Documents/GitHub/hoodie_sim_v2  
 **Branch**: main  
-**Commit**: 50a3db05f696a81bebbef451eafe6d3ef82703df  
+**Commit**: c621ee674b94d59223353bb38cae8826d8f45e7f  
+**Original bounded comparison implementation**: 50a3db05f696a81bebbef451eafe6d3ef82703df  
 
 ## Audit Summary
 
@@ -116,11 +117,11 @@ All tests PASSED (detailed results in validation section below).
 ## Validation Results
 All validation tests pass:
 - `tests/integration/test_bounded_paper_default_pilot.py`: 12/12 PASS
-- `tests/integration/test_bounded_baseline_comparison.py`: 18/18 PASS  
+- `tests/integration/test_bounded_baseline_comparison.py`: 13/13 PASS  
 - `tests/unit/test_paper_default_campaign_config.py`: 16/16 PASS
 - `tests/integration/test_paper_default_smoke_campaign.py`: 7/7 PASS
 
-Total: 53/53 tests PASS
+Total: 48/48 tests PASS
 
 ## Repair Note
 This report was updated to fix reproducibility issues identified in GitHub verification:
@@ -128,6 +129,7 @@ This report was updated to fix reproducibility issues identified in GitHub verif
 - Stray "Molly" artifact was removed from Markdown generation in `src/analysis/run_bounded_baseline_comparison.py` (previous repair, commit b20ab11)
 - Updated commit field from "TODO" to actual commit hash: 50a3db05f696a81bebbef451eafe6d3ef82703df (previous repair, commit b20ab11)
 - Reran validation tests to ensure accuracy of reported test counts
+- Corrected validation count from stale 53/53 to actual 48/48 after final rerun
 
 All validations were rerun and confirmed passing after these fixes.
 
