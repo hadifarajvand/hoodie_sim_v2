@@ -183,7 +183,7 @@ def write_artifacts(report: dict[str, Any]) -> tuple[Path, Path]:
             f"- loss_count: `{m['loss_summary']['count']}`",
             f"- loss_all_finite: `{m['loss_summary']['all_finite']}`",
             f"- loss_no_nan: `{m['loss_summary']['no_nan']}`",
-            f"- loss_no_inf: `{m['loss_summary']['no_inf']}` Molly",            f"- loss_mean: `{m['loss_summary']['mean']}`",
+            f"- loss_no_inf: `{m['loss_summary']['no_inf']}` ",            f"- loss_mean: `{m['loss_summary']['mean']}`",
             f"- loss_min: `{m['loss_summary']['min']}`",
             f"- loss_max: `{m['loss_summary']['max']}`",
             f"- completed_task_count: `{m['completed_task_count']}`",
