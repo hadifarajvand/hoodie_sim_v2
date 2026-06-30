@@ -71,6 +71,11 @@ class TestTaskArrivalCompletionTimingAudit:
 
     def test_verdict_valid(self) -> None:
         assert self.report["verdict"] in (
+            "bridge_explains_zero_completion",
+            "bridge_needs_completion_accounting_repair",
+            "bridge_needs_action_dispatch_audit",
+            "bridge_needs_service_progress_audit",
+            "bridge_failed",
             "audit_explains_zero_completion",
             "audit_needs_deeper_instrumentation",
             "audit_failed",
@@ -79,6 +84,10 @@ class TestTaskArrivalCompletionTimingAudit:
     def test_recommended_next_step_present(self) -> None:
         assert self.report["recommended_next_step"] in (
             "bounded horizon extension plan",
+            "completion accounting repair",
+            "action dispatch audit",
+            "service progress audit",
+            "trace collector fix",
             "minimal trainer instrumentation plan",
             "minimal repair plan",
             "explicit full-campaign approval gate",

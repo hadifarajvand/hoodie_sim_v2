@@ -281,6 +281,7 @@ class DDQNTrainer:
         # Tracing state
         slot = 0
         seen_arrival_slots: set[int] = set()
+        bridged_lifecycle_event_count = 0  # deduplicate: snapshot() is cumulative
         while True:
             current_task = env.current_task
             if current_task is not None:
@@ -322,18 +323,16 @@ class DDQNTrainer:
 
             next_observation, reward, terminated, truncated, info = env.step(action)
             
-            # Bridge lifecycle trace events per step (only newly observed events)
+            # Bridge only NEW lifecycle trace events (snapshot() is cumulative)
             if self.trace_collector is not None and self.trace_collector.enabled:
                 lifecycle_events = info.get("lifecycle_trace_events", [])
-                for event in lifecycle_events:
+                new_events = lifecycle_events[bridged_lifecycle_event_count:]
+                for event in new_events:
                     if isinstance(event, dict):
                         event_copy = event.copy()
                         event_type = event_copy.pop('event_type', 'unknown')
                         slot_val = event_copy.pop('slot', slot)
-                        # Preserve raw lifecycle event type as lifecycle_event_source
                         event_copy['lifecycle_event_source'] = event_type
-                        # Map execution_started to service_started for audit compatibility
-                        # but keep the original in lifecycle_event_source
                         if event_type == "execution_started":
                             event_type = "service_started"
                         self.trace_collector.record(
@@ -342,6 +341,7 @@ class DDQNTrainer:
                             event_type=event_type,
                             **event_copy
                         )
+                bridged_lifecycle_event_count = len(lifecycle_events)
             
             next_current_task = env.current_task
             if self.config.state_dim == 3:

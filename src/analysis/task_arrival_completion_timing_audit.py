@@ -126,26 +126,51 @@ def run_task_arrival_completion_timing_audit(
     queue_length_samples: list[dict[str, Any]] = []
     lifecycle_event_counts: dict[str, int] = {}
     service_started_observable = False
+    service_started_count = 0
+    service_progress_observable = False
+    service_progress_count = 0
+    service_completed_observable = False
+    execution_completed_count = 0
     lifecycle_events_absent = False
+    bridged_lifecycle_event_count = 0
     
     if tracer is not None and tracer.enabled:
         trace_event_counts = tracer.count_events_by_type()
-        # Check for service_started or execution_started events
         events = tracer.get_events()
+        
         for event in events:
             event_type = event.get("event_type", "")
-            if event_type in ["service_started", "execution_started"]:
-                service_started_observable = True
-                if first_service_start_slot is None or event["slot"] < first_service_start_slot:
-                    first_service_start_slot = event["slot"]
-            # Count lifecycle events by their source type
+            
+            # Count bridged lifecycle events by their original source type
             if "lifecycle_event_source" in event:
+                bridged_lifecycle_event_count += 1
                 source_type = event["lifecycle_event_source"]
                 lifecycle_event_counts[source_type] = lifecycle_event_counts.get(source_type, 0) + 1
-            else:
-                # Also count by event_type for non-lifecycle events
-                if event_type:
-                    lifecycle_event_counts[event_type] = lifecycle_event_counts.get(event_type, 0) + 1
+            
+            # Track service_started and execution_started
+            if event_type in ["service_started", "execution_started"]:
+                service_started_observable = True
+                service_started_count += 1
+                if first_service_start_slot is None or event.get("slot", 999999) < first_service_start_slot:
+                    first_service_start_slot = event.get("slot")
+            
+            # Track service/execution progress
+            if event_type in ["execution_progress", "service_progress"]:
+                service_progress_observable = True
+                service_progress_count += 1
+            
+            # Track service/execution completed
+            if event_type in ["execution_completed", "task_completed", "service_completed"]:
+                service_completed_observable = True
+                if event_type == "execution_completed":
+                    execution_completed_count += 1
+        
+        # Also count non-lifecycle (trainer-level) events
+        for event in events:
+            event_type = event.get("event_type", "")
+            if "lifecycle_event_source" not in event and event_type:
+                lifecycle_event_counts[event_type] = lifecycle_event_counts.get(event_type, 0) + 1
+        
         # Collect queue length samples
         for event in events:
             if event["event_type"] == "queue_length_sampled":
@@ -159,6 +184,14 @@ def run_task_arrival_completion_timing_audit(
         # Check if lifecycle events are absent even when trace is enabled
         has_lifecycle_events = any("lifecycle_event_source" in e for e in events)
         lifecycle_events_absent = not has_lifecycle_events and len(events) > 0
+        
+        # Completion accounting mismatch: lifecycle completed events exist but completed_task_count=0
+        # OR lifecycle events are clearly dropping tasks but completed_task_count=0
+        lifecycle_completed_events = execution_completed_count
+        completion_accounting_mismatch = (
+            (lifecycle_completed_events > 0 and total_completed == 0) or
+            (service_started_observable and service_completed_observable and execution_completed_count > 0 and total_completed == 0)
+        )
 
     observability_matrix = {
         "first_arrival_slot": {
@@ -251,16 +284,23 @@ def run_task_arrival_completion_timing_audit(
             f"Tasks may still be in processing/pending at episode end."
         )
 
-    # Verdict
-    if total_completed == 0 and (has_arrival_slot or total_dropped > 0):
-        verdict = "audit_needs_deeper_instrumentation"
-        recommended_next_step = "minimal trainer instrumentation plan"
-    elif total_completed > 0:
-        verdict = "audit_explains_zero_completion"
+    # Verdict rules (per spec)
+    if (completion_accounting_mismatch or
+        (service_started_observable and execution_completed_count > 0 and total_completed == 0)):
+        verdict = "bridge_needs_completion_accounting_repair"
+        recommended_next_step = "completion accounting repair"
+    elif total_completed == 0 and service_started_observable:
+        verdict = "bridge_explains_zero_completion"
         recommended_next_step = "bounded horizon extension plan"
+    elif not service_started_observable and has_arrival_slot:
+        verdict = "bridge_needs_action_dispatch_audit"
+        recommended_next_step = "action dispatch audit"
+    elif lifecycle_events_absent:
+        verdict = "bridge_failed"
+        recommended_next_step = "trace collector fix"
     else:
-        verdict = "audit_needs_deeper_instrumentation"
-        recommended_next_step = "minimal trainer instrumentation plan"
+        verdict = "bridge_needs_service_progress_audit"
+        recommended_next_step = "service progress audit"
 
     report: dict[str, Any] = {
         "diagnostic_type": "task_arrival_completion_timing_audit",
@@ -284,7 +324,15 @@ def run_task_arrival_completion_timing_audit(
             "first_service_start_slot": first_service_start_slot,
             "queue_length_samples": len(queue_length_samples),
             "service_started_observable": service_started_observable,
+            "service_started_count": service_started_count,
+            "service_progress_observable": service_progress_observable,
+            "service_progress_count": service_progress_count,
+            "service_completed_observable": service_completed_observable,
+            "execution_completed_count": execution_completed_count,
+            "bridged_lifecycle_event_count": bridged_lifecycle_event_count,
+            "duplicate_bridge_guard_enabled": True,
             "lifecycle_events_absent_even_when_trace_enabled": lifecycle_events_absent,
+            "completion_accounting_mismatch": completion_accounting_mismatch,
         },
         "observability_matrix": observability_matrix,
         "episode_summaries": [
@@ -327,6 +375,16 @@ def run_task_arrival_completion_timing_audit(
         },
         "verdict": verdict,
         "recommended_next_step": recommended_next_step,
+        "bridge": {
+            "duplicate_bridge_guard_enabled": True,
+            "bridged_lifecycle_event_count": bridged_lifecycle_event_count,
+            "service_started_count": service_started_count,
+            "service_progress_observable": service_progress_observable,
+            "service_progress_count": service_progress_count,
+            "service_completed_observable": service_completed_observable,
+            "execution_completed_count": execution_completed_count,
+            "completion_accounting_mismatch": completion_accounting_mismatch,
+        },
     }
 
     return report
