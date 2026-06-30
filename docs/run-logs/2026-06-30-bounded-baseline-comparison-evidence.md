@@ -122,13 +122,13 @@ All validation tests pass:
 
 Total: 53/53 tests PASS
 
-## Repair Noten
-This report was updated to fix reproducibility issues identified in GitHub verification:n
-- Added missing `src/analysis/run_bounded_paper_default_pilot.py` file (was committed but not pushed initially)n
-- Removed stray "Molly" artifact from Markdown generation in `src/analysis/run_bounded_baseline_comparison.py`n
-- Updated commit field from "TODO" to actual commit hash: 50a3db05f696a81bebbef451eafe6d3ef82703dfn
-- Reran validation tests to ensure accuracy of reported test countsn
-n
+## Repair Note
+This report was updated to fix reproducibility issues identified in GitHub verification:
+- Missing bounded pilot helper `src/analysis/run_bounded_paper_default_pilot.py` was added and tracked in this commit
+- Stray "Molly" artifact was removed from Markdown generation in `src/analysis/run_bounded_baseline_comparison.py` (previous repair, commit b20ab11)
+- Updated commit field from "TODO" to actual commit hash: 50a3db05f696a81bebbef451eafe6d3ef82703df (previous repair, commit b20ab11)
+- Reran validation tests to ensure accuracy of reported test counts
+
 All validations were rerun and confirmed passing after these fixes.
 
 ## Runtime Artifact Paths (Not Committed)
