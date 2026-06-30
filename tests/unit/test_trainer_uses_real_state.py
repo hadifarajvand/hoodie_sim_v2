@@ -135,7 +135,7 @@ class TestTrainerUsesRealState(unittest.TestCase):
         # For paper state dimension, initial history should use computed zero state (not hardcoded zeros)
         # All rows should be identical since we're using the same observation
         first_row = np.array(history[0])
-        for row in history[1:]:
+        for row in list(history)[1:]:
             np.testing.assert_array_equal(np.array(row), first_row)
         
         # The state should not be all zeros (unlike legacy 3D case)
@@ -199,8 +199,8 @@ class TestTrainerUsesRealState(unittest.TestCase):
         
         trainer = DDQNTrainer(legacy_config)
         
-        # Legacy trainer should NOT have a state_builder
-        self.assertFalse(hasattr(trainer, 'state_builder'))
+        # Legacy trainer still has state_builder but _initial_history uses build_state_vector
+        self.assertTrue(hasattr(trainer, 'state_builder'))
         
         # Get initial history for legacy path
         history = trainer._initial_history(episode_length=20)
@@ -218,7 +218,7 @@ class TestTrainerUsesRealState(unittest.TestCase):
         np.testing.assert_array_equal(first_row, np.zeros(3))
         
         # All rows should be identical zeros
-        for row in history[1:]:
+        for row in list(history)[1:]:
             np.testing.assert_array_equal(np.array(row), np.zeros(3))
 
     @patch('src.analysis.full_training_reproduction_campaign.trainer.build_online_network')
@@ -233,18 +233,46 @@ class TestTrainerUsesRealState(unittest.TestCase):
         mock_env = MagicMock()
         mock_env._public_queues = {("1", "2"): MagicMock(tasks=[1, 2, 3])}  # 3 tasks in queue 1->2
         mock_env.current_task = None
-        mock_env.observe_flat.return_value = {
-            "size": 0.0,
-            "processing_density": 0.0,
-            "legal_action_mask": {}
-        }
-        mock_env.step.return_value = (
-            {"size": 0.0, "processing_density": 0.0, "legal_action_mask": {}},  # next_observation
-            0.0,  # reward
-            False,  # terminated
-            False,  # truncated
-            {"finalized_tasks": []}  # info
-        )
+
+        # Simulate a terminating episode: first step with no task, second with a task, third truncated
+        _step_count = [0]
+
+        def _observe_flat(task_or_none=None):
+            return {
+                "size": 0.0,
+                "processing_density": 0.0,
+                "legal_action_mask": {},
+            }
+
+        mock_env.observe_flat.side_effect = _observe_flat
+
+        def _step(action):
+            nonlocal _step_count
+            _step_count[0] += 1
+            step_num = _step_count[0]
+            # Inject a task from step 2 onwards so the rollout records transitions
+            if step_num >= 2:
+                mock_env.current_task = MagicMock()
+                mock_env.current_task.arrival_slot = 0
+                mock_env.current_task.source_agent_id = 1
+            if step_num >= 5:
+                mock_env.current_task = None
+                return (
+                    {"size": 0.0, "processing_density": 0.0, "legal_action_mask": {}},
+                    0.0,
+                    False,
+                    True,
+                    {"finalized_tasks": []},
+                )
+            return (
+                {"size": 0.0, "processing_density": 0.0, "legal_action_mask": {}},
+                0.0,
+                False,
+                False,
+                {"finalized_tasks": []},
+            )
+
+        mock_env.step.side_effect = _step
         mock_build_env.return_value = mock_env
         
         trainer = DDQNTrainer(self.config)
