@@ -13,13 +13,13 @@ This package consolidates all Phase 1 evidence: Gate 2 (paper_default config), G
 
 | Gate | Description | Files | Status |
 |------|-------------|-------|--------|
-| Gate 2 | `CampaignConfig.paper_default()` static factory: state_dim=74, action_count=22, lookback_w=10, horizontal=30 Mbps, vertical=10 Mbps, full_campaign_enabled=False | `src/config/campaign_config.py` | VERIFIED |
-| Gate 3 | Bounded smoke campaign: DDQNTrainer instantiation, 74D state production, bounded episode execution (3 episodes x 50 slots), no NaN, full training disabled, legacy 3D/3A intact | `tests/integration/test_paper_default_smoke_campaign.py` | VERIFIED (7/7 PASS) |
-| Gate 4A | Simplified pipeline viability: pipeline connects config -> replay -> trainer -> network -> policy without error | `src/engine/pipeline.py` | VERIFIED |
-| Gate 4B | Replay/trainer 74D/22A path: replay stores 74D transitions, trainer samples and optimizes with 22-action output | `src/training/ddqn_trainer.py` | VERIFIED |
-| Gate 4C | Network/policy 22-action unlock: DQN outputs 22 action values, epsilon-greedy policy selects from 22 actions | `src/network/dqn.py`, `src/agent/policy.py` | VERIFIED |
-| Gate 4D | Real PaperStateBuilder 74D state population: 74-dimensional state vector built from real simulation context | `src/state/paper_state_builder.py` | VERIFIED |
-| Pilot | Bounded 3-episode execution: 150 transitions, 87 loss steps, zero illegal actions, all losses finite | `tests/integration/test_bounded_paper_default_pilot.py` | PASS (12/12), commit `5bb4065` |
+| Gate 2 | `CampaignConfig.paper_default()` static factory: state_dim=74, action_count=22, lookback_w=10, horizontal=30 Mbps, vertical=10 Mbps, full_campaign_enabled=False | `src/analysis/full_training_reproduction_campaign/config.py`, `tests/unit/test_paper_default_campaign_config.py` | VERIFIED (16/16 PASS) |
+| Gate 3 | Bounded smoke campaign: DDQNTrainer instantiation, 74D state production, bounded episode execution (3 episodes x 50 slots), no NaN, full training disabled, legacy 3D/3A intact | `tests/integration/test_paper_default_smoke_campaign.py`, `docs/run-logs/2026-06-28-phase1-gate2-gate3-paper-default-smoke-implementation.md` | VERIFIED (7/7 PASS) |
+| Gate 4A | Simplified pipeline viability: pipeline connects config -> replay -> trainer -> network -> policy without error | `docs/plans/2026-06-28-phase1-master-paper-faithful-hoodie-reproduction-plan.md`, `docs/run-logs/2026-06-28-phase1-gate4-scope-reconciliation.md` | VERIFIED |
+| Gate 4B | Replay/trainer 74D/22A path: replay stores 74D transitions, trainer samples and optimizes with 22-action output | `src/analysis/full_training_reproduction_campaign/replay.py`, `src/analysis/full_training_reproduction_campaign/trainer.py`, `tests/unit/test_full_training_reproduction_campaign_replay_paper_dimensions.py` | VERIFIED |
+| Gate 4C | Network/policy 22-action unlock: DQN outputs 22 action values, epsilon-greedy policy selects from 22 actions | `src/analysis/paper_hoodie_network_implementation/network.py`, `src/analysis/full_training_reproduction_campaign/trainer.py`, `tests/unit/test_gate4c_paper_network_dimension_unlock.py` | VERIFIED |
+| Gate 4D | Real PaperStateBuilder 74D state population: 74-dimensional state vector built from real simulation context | `src/analysis/full_training_reproduction_campaign/trainer.py`, `src/agents/paper_state_builder.py`, `tests/unit/test_paper_state_vector_real.py`, `tests/unit/test_trainer_uses_real_state.py` | VERIFIED (5/5 PASS) |
+| Pilot | Bounded 3-episode execution: 150 transitions, 87 loss steps, zero illegal actions, all losses finite | `tests/integration/test_bounded_paper_default_pilot.py`, `docs/run-logs/2026-06-30-phase1-bounded-paper-default-pilot-evidence.md` | PASS (12/12), commit `5bb4065` |
 
 ## Key Configuration
 
