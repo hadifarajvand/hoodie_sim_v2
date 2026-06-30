@@ -256,3 +256,32 @@ class CampaignConfig:
             "baseline_reference_set": list(self.baseline_reference_set),
             "full_campaign_flag_name": self.full_campaign_flag_name,
         }
+
+    @staticmethod
+    def paper_default() -> CampaignConfig:
+        return CampaignConfig(
+            feature_id="041-full-training-reproduction-campaign",
+            state_dim=74,
+            action_count=22,
+            lookback_w=10,
+            q_network_hidden_layers=[1024, 1024, 1024],
+            lstm_num_layers=1,
+            lstm_hidden_size=20,
+            model_initialization_seed=19,
+            learning_rate=7e-7,
+            gamma=0.99,
+            batch_size=64,
+            replay_memory_capacity=10_000,
+            readiness_probe_episode_count=3,
+            readiness_probe_episode_length=50,
+            pilot_episode_length=50,
+            evaluation_episode_length=50,
+            full_campaign_episode_length=110,
+            full_campaign_budget=5_000,
+            full_campaign_enabled=False,
+            readiness_manual_approval_required=True,
+            readiness_manual_approval_status="approved",
+            readiness_manual_approval_reference="paper-default-smoke-campaign-approved",
+            horizontal_data_rate_mbps=30.0,
+            vertical_data_rate_mbps=10.0,
+        )
