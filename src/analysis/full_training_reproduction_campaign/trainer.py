@@ -285,6 +285,9 @@ class DDQNTrainer:
         illegal_action_count = 0
         legal_action_only = True
         loss_values: list[float] = []
+        episode_reward = 0.0
+        action_counts: dict[int, int] = {}
+        completion_delays: list[int] = []
         # Tracing state
         slot = 0
         seen_arrival_slots: set[int] = set()
@@ -299,6 +302,9 @@ class DDQNTrainer:
                     illegal_action_count += 1
                     legal_action_only = False
                 action_index = semantics_to_action_index(action)
+                # Additive metric: action distribution (non-semantic)
+                if action_index is not None and action_index >= 0:
+                    action_counts[action_index] = action_counts.get(action_index, 0) + 1
                 # Trace: action_selected
                 if self.trace_collector is not None and self.trace_collector.enabled:
                     self.trace_collector.record(
@@ -369,6 +375,7 @@ class DDQNTrainer:
             terminal_reason = finalized_tasks[0].get("terminal_outcome") if finalized_tasks else None
             terminal = bool(finalized_tasks)
             reward_value = float(reward) if reward_available and not (isinstance(reward, float) and math.isnan(reward)) else 0.0
+            episode_reward += reward_value
             if reward_available:
                 reward_bearing_transition_count += 1
                 terminal_transition_count += 1
@@ -389,6 +396,13 @@ class DDQNTrainer:
                                 source_agent_id=task.get("source_agent_id"),
                                 reward=task.get("reward"),
                             )
+                            # Additive metric: completion delay
+                            completion_slot = task.get("completion_slot")
+                            arrival_slot = task.get("arrival_slot")
+                            if completion_slot is not None and arrival_slot is not None:
+                                delay = completion_slot - arrival_slot
+                                if delay >= 0:
+                                    completion_delays.append(delay)
                         elif outcome == "dropped":
                             self.trace_collector.record(
                                 episode_id=episode_id,
@@ -494,6 +508,9 @@ class DDQNTrainer:
             "illegal_action_count": illegal_action_count,
             "legal_action_only": legal_action_only,
             "loss_values": loss_values,
+            "episode_reward": episode_reward,
+            "action_counts": action_counts,
+            "completion_delays": completion_delays,
         }
 
     def _train_batch(self) -> float:
