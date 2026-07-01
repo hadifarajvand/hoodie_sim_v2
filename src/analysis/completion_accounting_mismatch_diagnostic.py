@@ -77,7 +77,7 @@ def classify_accounting(
     finalized_terminal_outcome: Optional[str],
     counted_by_trainer: str
 ) -> str:
-    if not execution_completed_slot:
+    if execution_completed_slot is None:
         return "pending_or_unknown"
 
     if not finalized_terminal_outcome:
@@ -286,11 +286,11 @@ def diagnose(
                 "classification": classification
             })
 
-    # Aggregate-level mismatch: compare trainer aggregate counts against lifecycle-matched finalized tasks.
-    # Differences arise when finalized tasks exist without corresponding lifecycle events (orphan tasks)
-    # or when lifecycle events exist without finalized entries.
-    expected_completed = len(finalized_completed_task_ids)
-    expected_dropped = len(finalized_dropped_task_ids)
+    # Aggregate-level mismatch: compare trainer aggregate counts against ALL finalized task entries.
+    # Count per-entry (not deduplicated by task_id) to match the trainer's per-episode counting.
+    # The trainer counts by terminal_outcome, so use the same criterion:
+    expected_completed = sum(1 for ft in finalized_tasks if ft.get("terminal_outcome") == "completed")
+    expected_dropped = sum(1 for ft in finalized_tasks if ft.get("terminal_outcome") == "dropped")
     aggregate_mismatch_completed = trainer_completed != expected_completed
     aggregate_mismatch_dropped = trainer_dropped != expected_dropped
 

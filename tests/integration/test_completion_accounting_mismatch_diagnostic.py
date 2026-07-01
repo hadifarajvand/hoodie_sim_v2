@@ -15,7 +15,41 @@ from src.analysis.completion_accounting_mismatch_diagnostic import (
 )
 
 
-class TestCompletionAccountingMismatchDiagnostic:
+class TestCompletionAccountingMismatchDiagnostic: 
+
+    def test_diagnose_deduplicates_finalized_task_ids(self):
+        """Duplicate finalized_task task_ids are counted per-entry (last outcome wins for lifecycle matching)."""
+        lifecycle_events = [
+            {"event_type": "task_arrived", "slot": 1, "task_id": "task1", "episode_id": 1},
+            {"event_type": "execution_completed", "slot": 5, "task_id": "task1", "episode_id": 1},
+            {"event_type": "task_arrived", "slot": 6, "task_id": "task2", "episode_id": 1},
+            {"event_type": "execution_completed", "slot": 10, "task_id": "task2", "episode_id": 1},
+        ]
+        finalized_tasks = [
+            {"task_id": "task1", "terminal_outcome": "completed", "completion_slot": 5, "drop_slot": None},
+            {"task_id": "task1", "terminal_outcome": "dropped", "completion_slot": None, "drop_slot": 7},
+            {"task_id": "task2", "terminal_outcome": "completed", "completion_slot": 10, "drop_slot": None},
+        ]
+        result = diagnose(
+            timing_audit={},
+            lifecycle_events=lifecycle_events,
+            finalized_tasks=finalized_tasks,
+            trainer_completed=0,
+            trainer_dropped=1,
+        )
+        summary = result["accounting_summary"]
+        # Lifecycle matching uses last outcome per task_id (dedup)
+        # finalized_completed_task_ids: only task2 (task1 overwritten by dropped)
+        # finalized_dropped_task_ids: task1 (last outcome dropped)
+        assert summary["finalized_completed_count"] == 1
+        assert summary["finalized_dropped_count"] == 1
+        # Aggregate comparison uses PER-ENTRY counts (matches trainer behavior)
+        # expected_completed = 1 (task1 completed) + 1 (task2 completed) = 2
+        # expected_dropped = 1 (task1 dropped) = 1
+        # trainer_completed = 0, diff = -2
+        # trainer_dropped = 1, diff = 0
+        assert summary["aggregate_completed_diff"] == -2
+        assert summary["aggregate_dropped_diff"] == 0
 
     def test_execution_completed_then_dropped(self):
         """Test verdict when execution_completed tasks are dropped and trainer counted correctly."""
@@ -29,7 +63,7 @@ class TestCompletionAccountingMismatchDiagnostic:
 
         finalized_tasks = [{
             "task_id": "task1",
-            "terminal_outcome": "expired",
+            "terminal_outcome": "dropped",
             "completion_slot": None,
             "drop_slot": 7
         }]
@@ -195,8 +229,11 @@ class TestCompletionAccountingMismatchDiagnostic:
         # lifecycle_finalized_disagreement
         assert classify_accounting(5, "something_else", "completed") == "lifecycle_finalized_disagreement"
 
-        # pending_or_unknown
+        # pending_or_unknown (None slot)
         assert classify_accounting(None, None, "unknown") == "pending_or_unknown"
+        # slot 0 is valid, not None
+        assert classify_accounting(0, "dropped", "dropped") == "execution_completed_then_dropped"
+        assert classify_accounting(0, None, "unknown") == "execution_completed_without_finalized_task"
 
     def test_integration_with_runner(self):
         """Run the bounded diagnostic against the real environment."""

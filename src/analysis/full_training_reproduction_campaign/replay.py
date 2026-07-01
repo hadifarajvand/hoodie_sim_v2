@@ -66,8 +66,17 @@ def build_state_vector(*, observation: dict[str, Any], current_task: Any | None,
 def legal_action_mask_to_tuple(mask: dict[str, bool], *, action_count: int = 3) -> tuple[bool, ...]:
     if action_count == 3:
         return (bool(mask.get("local", False)), bool(mask.get("horizontal", False)), bool(mask.get("vertical", False)))
-    mask_list = mask.get("legal_action_mask", [False] * action_count)
-    return tuple(bool(m) for m in mask_list[:action_count])
+    local_legal = bool(mask.get("local", False)) or bool(mask.get("compute_local", False))
+    horizontal_legal = bool(mask.get("horizontal", False)) or bool(mask.get("offload_horizontal", False))
+    cloud_legal = bool(mask.get("vertical", False)) or bool(mask.get("offload_vertical", False)) or bool(mask.get("cloud", False))
+    result = [False] * action_count
+    result[0] = local_legal
+    if horizontal_legal:
+        for i in range(1, action_count - 1):
+            result[i] = True
+    if cloud_legal:
+        result[action_count - 1] = True
+    return tuple(result)
 
 
 def action_index_to_semantics(action_index: int) -> str:
@@ -78,6 +87,8 @@ def action_index_to_semantics(action_index: int) -> str:
 
 
 def semantics_to_action_index(semantics: str) -> int:
+    if semantics in SEMANTICS_TO_ACTION_INDEX_PAPER:
+        return SEMANTICS_TO_ACTION_INDEX_PAPER[semantics]
     try:
         return SEMANTICS_TO_ACTION_INDEX[semantics]
     except KeyError as exc:  # pragma: no cover - defensive

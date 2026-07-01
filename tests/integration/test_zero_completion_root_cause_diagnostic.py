@@ -9,6 +9,7 @@ from src.analysis.full_training_reproduction_campaign.config import CampaignConf
 from src.analysis.full_training_reproduction_campaign.replay import (
     legal_action_mask_to_tuple,
     ACTION_INDEX_TO_SEMANTICS_PAPER,
+    SEMANTICS_TO_ACTION_INDEX_PAPER,
 )
 from src.evaluation.trace_protocol import build_deterministic_trace
 
@@ -16,8 +17,8 @@ from src.evaluation.trace_protocol import build_deterministic_trace
 def _compute_build_deterministic_trace_stats():
     traces = [build_deterministic_trace(f"check-{s}", s, 200) for s in range(3)]
     stats: dict[str, float] = {}
-    all_sizes: list[int] = []
-    all_densities: list[int] = []
+    all_sizes: list[float] = []
+    all_densities: list[float] = []
     all_timeouts: list[int] = []
     all_cycles: list[float] = []
     all_agents: set[int] = set()
@@ -48,78 +49,62 @@ def _compute_build_deterministic_trace_stats():
 class TestZeroCompletionRootCauseDiagnostic:
     """Evidence generation: zero-completion root cause in paper_default DDQN path."""
 
-    def test_trace_param_size_mismatch(self):
-        """Size should be 2-5 but trace uses 10-100."""
+    def test_trace_param_size_paper_aligned(self):
+        """Size should be 2.0-5.0 after repair."""
         s = _compute_build_deterministic_trace_stats()
-        assert s["min_size"] >= 10, f"min_size={s['min_size']} should be >= 10 (bug: trace uses wrong range)"
-        assert s["max_size"] <= 100, f"max_size={s['max_size']} should be <= 100"
-        assert s["min_size"] < 5 or s["max_size"] > 6, (
-            f"sizes {s['min_size']}-{s['max_size']} not in paper_default range 2-5"
-        )
+        assert s["min_size"] >= 2.0, f"min_size={s['min_size']} should be >= 2.0"
+        assert s["max_size"] <= 5.0, f"max_size={s['max_size']} should be <= 5.0"
 
-    def test_trace_param_density_mismatch(self):
-        """Processing density should be ~0.297 but trace uses 1-5."""
+    def test_trace_param_density_paper_aligned(self):
+        """Processing density should be 0.297 after repair."""
         s = _compute_build_deterministic_trace_stats()
-        assert s["min_density"] >= 1, f"min_density={s['min_density']}"
-        assert s["max_density"] <= 5, f"max_density={s['max_density']}"
-        assert s["min_density"] >= 1, (
-            f"density {s['min_density']}-{s['max_density']} not ~0.297 (paper_default)"
-        )
+        assert s["min_density"] == 0.297, f"min_density={s['min_density']} should be 0.297"
+        assert s["max_density"] == 0.297, f"max_density={s['max_density']} should be 0.297"
 
-    def test_trace_param_timeout_mismatch(self):
-        """Timeout should be 20 but trace uses 2-5."""
+    def test_trace_param_timeout_paper_aligned(self):
+        """Timeout should be 20 after repair."""
         s = _compute_build_deterministic_trace_stats()
-        assert s["min_timeout"] >= 2, f"min_timeout={s['min_timeout']}"
-        assert s["max_timeout"] <= 5, f"max_timeout={s['max_timeout']}"
-        assert s["min_timeout"] < 10, (
-            f"timeout {s['min_timeout']}-{s['max_timeout']} not 20 (paper_default)"
-        )
+        assert s["min_timeout"] == 20, f"min_timeout={s['min_timeout']} should be 20"
+        assert s["max_timeout"] == 20, f"max_timeout={s['max_timeout']} should be 20"
 
-    def test_trace_param_cycles_required_too_large(self):
-        """Cycles required should be 0.594-1.485 but trace produces 10-500."""
+    def test_trace_param_cycles_paper_aligned(self):
+        """Cycles required should be 0.594-1.485 after repair."""
         s = _compute_build_deterministic_trace_stats()
-        assert s["min_cycles"] >= 10, f"min_cycles={s['min_cycles']}"
-        assert s["max_cycles"] <= 500, f"max_cycles={s['max_cycles']}"
-        assert s["min_cycles"] > 2 or s["max_cycles"] > 2, (
-            f"cycles {s['min_cycles']}-{s['max_cycles']} is 10-1000x paper_default expected 0.594-1.485"
-        )
+        assert s["min_cycles"] >= 0.594, f"min_cycles={s['min_cycles']} should be >= 0.594"
+        assert s["max_cycles"] <= 1.485, f"max_cycles={s['max_cycles']} should be <= 1.485"
 
-    def test_trace_agent_concentration(self):
-        """Only 3 agents generate tasks instead of all 20."""
+    def test_trace_agent_distribution(self):
+        """Agents should cover full 1-20 range after repair."""
         s = _compute_build_deterministic_trace_stats()
-        assert s["unique_agents"] <= 3, f"unique_agents={s['unique_agents']}"
+        assert s["unique_agents"] >= 20, f"unique_agents={s['unique_agents']} should be 20"
 
-    def test_trace_deadline_too_short(self):
-        """Deadline delta should be 19 (phi-1) but trace uses 2-5."""
+    def test_trace_deadline_paper_aligned(self):
+        """Deadline delta should be 19 (phi-1=20-1) after repair."""
         s = _compute_build_deterministic_trace_stats()
-        assert s["min_deadline_delta"] >= 2
-        assert s["max_deadline_delta"] <= 5
-        assert s["max_deadline_delta"] < 15, (
-            f"deadline delta {s['min_deadline_delta']}-{s['max_deadline_delta']} is "
-            f"not 19 (paper_default phi=20 → arrival+phi-1)"
-        )
+        assert s["min_deadline_delta"] == 19, f"min_deadline_delta={s['min_deadline_delta']} should be 19"
+        assert s["max_deadline_delta"] == 19, f"max_deadline_delta={s['max_deadline_delta']} should be 19"
 
-    def test_paper_default_trainer_produces_zero_completions(self):
-        """Verify the zero-completion symptom is reproducible with DDQNTrainer."""
+    def test_paper_default_trainer_produces_completions(self):
+        """After repair, trainer should produce at least one completed task."""
         config = CampaignConfig.paper_default()
         trainer = DDQNTrainer(config)
         result = trainer._episode_rollout(
             episode_id=0,
             seed=config.seed_bundle.training_trace_generation_seed,
-            episode_length=50,
+            episode_length=200,
             training=True,
         )
         assert result["transition_count"] > 0, "should generate at least one transition"
-        assert result["completed_task_count"] == 0, (
-            f"expected 0 completed, got {result['completed_task_count']} "
-            f"(trace cycle inflation prevents completion)"
+        assert result["completed_task_count"] > 0, (
+            f"expected > 0 completed, got {result['completed_task_count']} "
+            f"(trace repair makes tasks structurally feasible)"
         )
         assert result["illegal_action_count"] == 0, (
-            f"expected 0 illegal actions (all are 'local'), got {result['illegal_action_count']}"
+            f"expected 0 illegal actions, got {result['illegal_action_count']}"
         )
 
-    def test_legal_mask_mapping_allows_only_local(self):
-        """legal_action_mask_to_tuple with action_count=22 always returns all-False."""
+    def test_legal_mask_mapping_22_action(self):
+        """legal_action_mask_to_tuple with action_count=22 must not return all-False for valid mask."""
         mask_6key = {
             "local": True, "compute_local": True,
             "horizontal": True, "offload_horizontal": True,
@@ -127,32 +112,43 @@ class TestZeroCompletionRootCauseDiagnostic:
         }
         result = legal_action_mask_to_tuple(mask_6key, action_count=22)
         assert len(result) == 22, f"expected 22, got {len(result)}"
-        assert all(v is False for v in result), (
-            f"expected all False (missing 'legal_action_mask' key), got {result}"
-        )
+        assert result[0] is True, "local should be legal"
+        assert result[21] is True, "cloud should be legal"
+        assert any(result[1:21]), "at least one horizontal should be legal"
+        assert not all(v is False for v in result), "should NOT be all-False"
 
-    def test_paper_action_map_not_in_mask(self):
-        """ACTION_INDEX_TO_SEMANTICS_PAPER outputs 'horizontal_N' which is not in the 6-key mask."""
-        mask_keys = {"local", "compute_local", "horizontal", "offload_horizontal", "vertical", "offload_vertical"}
-        for idx, sem in ACTION_INDEX_TO_SEMANTICS_PAPER.items():
-            if idx == 0:
-                assert sem == "local", f"index 0 should be 'local', got '{sem}'"
-            elif idx == 21:
-                assert sem == "cloud", f"index 21 should be 'cloud', got '{sem}'"
-                assert sem not in mask_keys, f"'{sem}' should NOT be in the 6-key mask"
-            else:
-                assert sem.startswith("horizontal_"), f"index {idx} should be 'horizontal_N', got '{sem}'"
-                assert sem not in mask_keys, f"'{sem}' should NOT be in the 6-key mask"
+    def test_legal_mask_local_only(self):
+        """When only local is legal, only index 0 is True."""
+        mask_local_only = {"local": True}
+        result = legal_action_mask_to_tuple(mask_local_only, action_count=22)
+        assert result[0] is True, "local should be legal"
+        assert all(v is False for v in result[1:]), "non-local should be illegal"
 
-    def test_paper_default_trace_produces_wrong_cycles(self):
-        """A single episode with paper_default config and trace produces zero completions."""
+    def test_legal_mask_3_action_backward_compat(self):
+        """3-action path preserves backward compatibility."""
+        mask = {"local": True, "horizontal": True, "vertical": True}
+        result = legal_action_mask_to_tuple(mask, action_count=3)
+        assert result == (True, True, True), f"expected (True, True, True), got {result}"
+
+        mask2 = {"local": True, "horizontal": False, "vertical": False}
+        result2 = legal_action_mask_to_tuple(mask2, action_count=3)
+        assert result2 == (True, False, False), f"expected (True, False, False), got {result2}"
+
+    def test_paper_action_semantics_convertible(self):
+        """Paper action semantics can round-trip through semantics_to_action_index."""
+        for sem, idx in SEMANTICS_TO_ACTION_INDEX_PAPER.items():
+            from src.analysis.full_training_reproduction_campaign.replay import semantics_to_action_index as stai
+            recovered = stai(sem)
+            assert recovered == idx, f"semantics '{sem}' → {recovered}, expected {idx}"
+
+    def test_paper_default_trace_produces_completions_bounded(self):
+        """3x200 episodes with paper_default should produce completions after repair."""
         config = CampaignConfig.paper_default()
         trainer = DDQNTrainer(config)
         episodes = 3
         total_completed = 0
         total_dropped = 0
         total_transitions = 0
-        all_actions: dict[str, int] = {}
         for ep in range(episodes):
             r = trainer._episode_rollout(
                 episode_id=ep,
@@ -164,7 +160,7 @@ class TestZeroCompletionRootCauseDiagnostic:
             total_dropped += r["dropped_task_count"]
             total_transitions += r["transition_count"]
         assert total_transitions > 0, "expected > 0 transitions"
-        assert total_completed == 0, (
-            f"expected 0 completed across {episodes} episodes, got {total_completed} "
+        assert total_completed > 0, (
+            f"expected > 0 completed across {episodes} episodes, got {total_completed} "
             f"(dropped={total_dropped})"
         )

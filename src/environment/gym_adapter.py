@@ -195,7 +195,12 @@ class HoodieGymEnvironment:
             )
             selected_action = select_legal_action(context, action)
             current_task.metadata["selected_action_family"] = self._selected_action_family(selected_action)
-            current_task.metadata["action_index"] = {"local": 0, "compute_local": 0, "horizontal": 1, "offload_horizontal": 1, "vertical": 2, "offload_vertical": 2}.get(selected_action)
+            if selected_action.startswith("horizontal_"):
+                current_task.metadata["action_index"] = 1
+            elif selected_action == "cloud":
+                current_task.metadata["action_index"] = 2
+            else:
+                current_task.metadata["action_index"] = {"local": 0, "compute_local": 0, "horizontal": 1, "offload_horizontal": 1, "vertical": 2, "offload_vertical": 2}.get(selected_action)
             current_task.metadata["decision_event_id"] = f"{self.trace.trace_id}:{self.current_slot}:{current_task.task_id}"
             current_task.metadata["selected_action_trace_source"] = "decision_point"
             current_task.metadata["selected_action_to_task_join_key"] = f"{self.trace.trace_id}:{current_task.task_id}"
@@ -497,16 +502,17 @@ class HoodieGymEnvironment:
     def _resolve_destination(self, task: Task, action: str) -> str:
         if action in {"local", "compute_local"}:
             return "self"
-        if self.topology is not None:
-            if action in {"horizontal", "offload_horizontal"}:
+        if action == "cloud":
+            return "cloud"
+        if action.startswith("horizontal_") or action in {"horizontal", "offload_horizontal"}:
+            if self.topology is not None:
                 allowed_horizontal = self.topology.legal_horizontal_destinations(str(task.source_agent_id))
                 if allowed_horizontal:
                     return allowed_horizontal[0]
                 raise ValueError("No topology-backed horizontal destination available")
-            if action in {"vertical", "offload_vertical"}:
-                return "cloud"
-        if action in {"horizontal", "offload_horizontal", "vertical", "offload_vertical"}:
-            raise ValueError("Topology-backed destination required for offload actions")
+            return "horizontal"
+        if action in {"vertical", "offload_vertical"}:
+            return "cloud"
         raise ValueError(f"Unsupported action: {action}")
 
     def _fallback_hints(self, task: Task, legal_action_mask: dict[str, bool]) -> dict[str, float]:
@@ -737,9 +743,9 @@ class HoodieGymEnvironment:
     def _selected_action_family(selected_action: str) -> str | None:
         if selected_action in {"local", "compute_local"}:
             return "local"
-        if selected_action in {"horizontal", "offload_horizontal"}:
+        if selected_action.startswith("horizontal_") or selected_action in {"horizontal", "offload_horizontal"}:
             return "horizontal"
-        if selected_action in {"vertical", "offload_vertical"}:
+        if selected_action in {"cloud", "vertical", "offload_vertical"}:
             return "vertical"
         return "unknown"
 

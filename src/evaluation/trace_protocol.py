@@ -48,19 +48,20 @@ class EvaluationTrace:
     metadata: dict[str, str] = field(default_factory=dict)
 
 
-def build_deterministic_trace(trace_id: str, seed: int, episode_length: int) -> EvaluationTrace:
+def build_deterministic_trace(trace_id: str, seed: int, episode_length: int, *, agent_count: int = 20) -> EvaluationTrace:
     rng = Random(seed)
     tasks: list[TraceTaskBlueprint] = []
+    timeout_length = 20
     for index in range(episode_length):
         arrival_slot = index
-        size = rng.randint(10, 100)
-        processing_density = rng.randint(1, 5)
-        timeout_length = rng.randint(2, 5)
-        absolute_deadline_slot = arrival_slot + timeout_length
+        size = round(rng.uniform(2.0, 5.0), 1)
+        processing_density = 0.297
+        absolute_deadline_slot = arrival_slot + timeout_length - 1
+        source_agent_id = (index % agent_count) + 1
         tasks.append(
             TraceTaskBlueprint(
                 task_id=index + 1,
-                source_agent_id=(index % 3) + 1,
+                source_agent_id=source_agent_id,
                 arrival_slot=arrival_slot,
                 size=size,
                 processing_density=processing_density,
