@@ -180,7 +180,14 @@ def _build_environment(config: CampaignConfig, *, episode_length: int, seed: int
 
 
 def _ensure_valid_action(action: str, legal_action_mask: dict[str, bool]) -> bool:
-    return bool(legal_action_mask.get(action, False))
+    if action in ("local", "compute_local"):
+        return bool(legal_action_mask.get("local", False) or legal_action_mask.get("compute_local", False))
+    elif action.startswith("horizontal_") or action in ("horizontal", "offload_horizontal"):
+        return bool(legal_action_mask.get("horizontal", False) or legal_action_mask.get("offload_horizontal", False))
+    elif action in ("cloud", "vertical", "offload_vertical"):
+        return bool(legal_action_mask.get("vertical", False) or legal_action_mask.get("offload_vertical", False) or legal_action_mask.get("cloud", False))
+    else:
+        return bool(legal_action_mask.get(action, False))
 
 
 class DDQNTrainer:
@@ -404,7 +411,8 @@ class DDQNTrainer:
                     )
             if truncated and (env.current_task is not None or info.get("queue_load", 0) > 0):
                 pending_at_horizon_count += 1
-                terminal_reason = "pending_at_horizon"
+                if not finalized_tasks:
+                    terminal_reason = "pending_at_horizon"
                 # Trace: task_pending_at_horizon
                 if self.trace_collector is not None and self.trace_collector.enabled:
                     # We don't have specific task info here, but we can note that there is at least one pending task

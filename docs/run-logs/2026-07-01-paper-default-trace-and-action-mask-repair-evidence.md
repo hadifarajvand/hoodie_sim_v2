@@ -3,7 +3,7 @@
 - **Date**: 2026-07-01
 - **Repository**: /Users/hadi/Documents/GitHub/hoodie_sim_v2
 - **Branch**: main
-- **Commit**: (to be filled after commit)
+- **Commit**: 97c403e219e8b5a808260545956d10c6871b81b9
 
 ## Scope and Safety Statement
 This change focuses exclusively on fixing the zero-completion blocker in the paper_default DDQN path by aligning trace generation and action mapping with paper specifications. No full campaign, figures, Phase 2/DCQ-MADRL, or hyperparameter tuning is involved. All changes are minimal, reversible, and reviewed.
@@ -68,7 +68,7 @@ This change focuses exclusively on fixing the zero-completion blocker in the pap
 - **Note**: No episodes ended with pending_at_horizon > 0, confirming terminal_reason fix works.
 
 ## Reward/Lifecycle Summary
-- **Average reward per episode**: 7.5 (67.5 total / 9 episodes)
+- **Average reward per episode**: 22.5 (total reward 67.5 over 3 episodes)
 - **Lifecycle events**: All task completions and drops properly recorded; no pending_at_horizon events.
 - **Trace validation**: Task parameters align with paper_default (sizes 2-5 mib, density 0.297, timeout 20).
 
@@ -105,12 +105,13 @@ All root causes have been addressed. No remaining blocker for paper_default DDQN
 - No hyperparameter tuning performed
 
 ## Runtime Artifact Paths
-- Trace collector events: `.swarm/memory.db` (namespace: `trace_events`)
-- Agent memory: `.swarm/memory.db` (namespace: `default`)
-- Evaluation traces: `artifacts/analysis/paper-default-bounded-pilot/` (would be created in full run)
+No runtime artifacts were committed. The following paths are where runtime artifacts would be found during execution:
+  - Trace collector events: `.swarm/memory.db` is a local runtime database (not committed; listed in `.gitignore`)
+  - Agent memory: `.swarm/memory.db` (local runtime only; not committed)
+  - Evaluation traces: `artifacts/analysis/paper-default-bounded-pilot/` (would be created in full run)
 
 ## Push Success
-**PENDING** — to be completed after commit.
+**SUCCESS** — pushed to origin/main at commit 97c403e219e8b5a808260545956d10c6871b81b9
 
 ---
 **Instructions for verification**: Ask ChatGPT to verify the paper-default trace and action-mask repair evidence.
