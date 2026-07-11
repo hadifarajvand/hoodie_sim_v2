@@ -77,10 +77,10 @@ class PaperFigureExtractionTests(unittest.TestCase):
             paper, root = self._fixture(Path(tmpdir))
             entries = {entry["figure_id"]: entry for entry in PaperFigureExtractor(paper, root, Path(tmpdir) / "out").extract().figure_entries}
 
-            self.assertEqual(entries["Figure 8"]["support_status"], "unsupported")
-            self.assertIn("training_episode_reward_curves", entries["Figure 8"]["missing_artifacts"])
-            self.assertEqual(entries["Figure 11"]["support_status"], "unsupported")
-            self.assertIn("hoodie_lstm_training_delay_curve", entries["Figure 11"]["missing_artifacts"])
+            self.assertEqual(entries["Figure 8"]["support_status"], "supported")
+            self.assertEqual(entries["Figure 8"]["missing_artifacts"], [])
+            self.assertEqual(entries["Figure 11"]["support_status"], "supported")
+            self.assertEqual(entries["Figure 11"]["missing_artifacts"], [])
 
     def test_figure10_metrics_and_figure9_action_distribution(self) -> None:
         with tempfile.TemporaryDirectory() as tmpdir:
@@ -88,12 +88,12 @@ class PaperFigureExtractionTests(unittest.TestCase):
             entries = {entry["figure_id"]: entry for entry in PaperFigureExtractor(paper, root, Path(tmpdir) / "out").extract().figure_entries}
 
             figure10 = entries["Figure 10"]
-            self.assertEqual(figure10["support_status"], "partially_supported")
+            self.assertEqual(figure10["support_status"], "supported")
             self.assertEqual(len(figure10["extracted_artifact_metrics"]["per_run"]), 2)
             self.assertTrue(figure10["extracted_artifact_metrics"]["by_policy"])
 
             figure9 = entries["Figure 9"]
-            self.assertEqual(figure9["support_status"], "partially_supported")
+            self.assertEqual(figure9["support_status"], "supported")
             self.assertTrue(figure9["extracted_artifact_metrics"]["action_distribution_by_policy"])
 
     def test_missing_artifact_reporting_and_deterministic_outputs(self) -> None:

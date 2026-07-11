@@ -1,0 +1,312 @@
+[
+  {
+    "config": {
+      "action_count": 22,
+      "agent_count": 20,
+      "arrival_probability": 0.5,
+      "baseline_reference_set": [
+        "artifacts/analysis/baseline-revalidation-after-runtime-repair/baseline-revalidation-report.json",
+        "artifacts/analysis/baseline-revalidation-after-runtime-repair/baseline-revalidation-report.md"
+      ],
+      "batch_size": 64,
+      "cloud_cpu_ghz": 30.0,
+      "evaluation_episode_length": 110,
+      "evaluation_trace_bank_id": "full-training-eval-bank",
+      "feature_id": "041-full-training-reproduction-campaign",
+      "full_campaign_budget": 5000,
+      "full_campaign_enabled": false,
+      "full_campaign_episode_length": 110,
+      "full_campaign_flag_name": "--enable-full-campaign",
+      "gamma": 0.99,
+      "horizontal_data_rate_mbps": 30.0,
+      "learning_rate": 7e-07,
+      "local_cpu_ghz": 5.0,
+      "lookback_w": 10,
+      "lstm_enabled": false,
+      "lstm_hidden_size": 20,
+      "lstm_num_layers": 1,
+      "model_initialization_seed": 19,
+      "pilot_budget": {
+        "follow_up_episodes": 25,
+        "primary_episodes": 10
+      },
+      "pilot_episode_length": 110,
+      "public_cpu_ghz": 5.0,
+      "q_network_hidden_layers": [
+        1024,
+        1024,
+        1024
+      ],
+      "readiness_manual_approval_reference": "paper-figures-campaign",
+      "readiness_manual_approval_required": true,
+      "readiness_manual_approval_status": "approved",
+      "readiness_probe_episode_count": 3,
+      "readiness_probe_episode_length": 50,
+      "replay_memory_capacity": 10000,
+      "seed_bundle": {
+        "action_exploration_seed": 53,
+        "evaluation_trace_generation_seed": 43,
+        "model_initialization_seed": 19,
+        "python_seed": 59,
+        "readiness_probe_seed": 31,
+        "replay_sampling_seed": 47,
+        "torch_seed": 61,
+        "training_trace_generation_seed": 41
+      },
+      "state_dim": 74,
+      "sweep_metadata": {
+        "lstm_effective_enabled": false,
+        "lstm_enabled": false,
+        "sweep_type": "lstm_ablation"
+      },
+      "target_update_contract": {
+        "allowed_units": [
+          "optimizer_step",
+          "environment_step",
+          "replay_insertion",
+          "episode"
+        ],
+        "approval_status": "user_approved_campaign_assumption",
+        "paper_evidence_status": "ambiguous_not_explicitly_defined",
+        "target_update_unit": "optimizer_step",
+        "update_frequency": 2000
+      },
+      "task_size_max_mbits": 5.0,
+      "task_size_min_mbits": 2.0,
+      "timeout_slots": 20,
+      "training_trace_bank_id": "full-training-train-bank",
+      "vertical_data_rate_mbps": 10.0
+    },
+    "experiment_label": "without_lstm",
+    "result": {
+      "checkpoint_metadata": {
+        "config_hash": "b16ce15c392c4c1cd4223e5b6f1d141d0fc58d0df31d03dfc140615e5922a9c1",
+        "eval_trace_bank_id": "full-training-eval-bank",
+        "feature_id": "041-full-training-reproduction-campaign",
+        "full_campaign_enabled": false,
+        "optimizer_step_count": 46,
+        "replay_size": 109,
+        "seed_bundle": {
+          "action_exploration_seed": 53,
+          "evaluation_trace_generation_seed": 43,
+          "model_initialization_seed": 19,
+          "python_seed": 59,
+          "readiness_probe_seed": 31,
+          "replay_sampling_seed": 47,
+          "torch_seed": 61,
+          "training_trace_generation_seed": 41
+        },
+        "stage": "pilot_training",
+        "target_update_unit": "optimizer_step",
+        "train_trace_bank_id": "full-training-train-bank"
+      },
+      "checkpoint_schema_valid": true,
+      "delayed_reward_contract_preserved": true,
+      "episodes_completed": 2,
+      "episodes_requested": 2,
+      "evaluation_summary": {
+        "candidate_reproduction_supported": false,
+        "completed_task_count": 151,
+        "completion_rate_by_destination": {
+          "local": 1.0
+        },
+        "drop_ratio": 0.0,
+        "dropped_task_count": 0,
+        "evaluation_episode_count": 3,
+        "evaluation_on_training_traces": false,
+        "mean_completion_delay": 5.099337748344371,
+        "mean_reward": -307.0,
+        "mean_reward_across_agents": -46.05,
+        "per_agent_reward": {
+          "1": -56.0,
+          "10": -26.0,
+          "11": -36.0,
+          "12": -20.0,
+          "13": -56.0,
+          "14": -43.0,
+          "15": -59.0,
+          "16": -50.0,
+          "17": -40.0,
+          "18": -19.0,
+          "19": -72.0,
+          "2": -47.0,
+          "20": -46.0,
+          "3": -44.0,
+          "4": -69.0,
+          "5": -53.0,
+          "6": -44.0,
+          "7": -43.0,
+          "8": -54.0,
+          "9": -44.0
+        },
+        "reward_bearing_transition_count": 121,
+        "reward_per_episode": [
+          -327.0,
+          -273.0,
+          -321.0
+        ],
+        "terminal_transition_count": 121,
+        "topology_usage_stats": {
+          "horizontal": 144,
+          "local": 12
+        },
+        "trace_bank_disjoint": true,
+        "trace_bank_ids": {
+          "evaluation": "full-training-eval-bank",
+          "training": "full-training-train-bank"
+        },
+        "trace_ids": [
+          "hoodie-43",
+          "hoodie-44",
+          "hoodie-45"
+        ]
+      },
+      "full_campaign_block_reason": "full campaign not requested during pilot",
+      "full_campaign_executed": false,
+      "legal_action_only": true,
+      "loss_is_finite": true,
+      "loss_value": 9.210125923156738,
+      "optimizer_step_count": 46,
+      "pending_at_horizon_preserved": true,
+      "pilot_training_executed": true,
+      "replay_size": 109,
+      "stage": "pilot_training",
+      "target_sync_count": 0,
+      "train_eval_trace_banks_disjoint": true
+    },
+    "training_metrics": {
+      "action_counts": [
+        {
+          "0": 54
+        },
+        {
+          "0": 40,
+          "12": 8,
+          "15": 3,
+          "16": 3,
+          "18": 1
+        }
+      ],
+      "average_delays": [
+        0.0,
+        0.0
+      ],
+      "completed_counts": [
+        52,
+        51
+      ],
+      "completion_delays": [],
+      "drop_ratios": [
+        0.0,
+        0.0
+      ],
+      "dropped_counts": [
+        0,
+        0
+      ],
+      "episode_rewards": [
+        -138.0,
+        -171.0
+      ],
+      "loss_values": [
+        3.751437187194824,
+        3.683526039123535,
+        3.535339832305908,
+        3.7487058639526367,
+        3.734423875808716,
+        3.7468862533569336,
+        3.2642364501953125,
+        3.731663703918457,
+        3.7975780963897705,
+        4.064305782318115,
+        3.9163320064544678,
+        3.901951313018799,
+        3.9144904613494873,
+        3.8603415489196777,
+        3.5783464908599854,
+        3.937810182571411,
+        4.311699390411377,
+        4.1910176277160645,
+        4.1358537673950195,
+        4.25446891784668,
+        4.466646194458008,
+        3.4255166053771973,
+        3.9581856727600098,
+        4.464992523193359,
+        4.555962085723877,
+        3.9689266681671143,
+        3.967970848083496,
+        4.593696594238281,
+        4.032417297363281,
+        5.190670967102051,
+        4.336726665496826,
+        4.708284854888916,
+        4.083428859710693,
+        4.281162738800049,
+        4.213109016418457,
+        7.102609634399414,
+        6.62177848815918,
+        7.2079620361328125,
+        7.830455303192139,
+        7.665716171264648,
+        8.82064437866211,
+        7.973430633544922,
+        8.686514854431152,
+        9.296283721923828,
+        7.532238960266113,
+        9.210125923156738
+      ],
+      "mean_reward_across_agents": [
+        -6.9,
+        -8.55
+      ],
+      "per_agent_rewards": [
+        {
+          "1": -8.0,
+          "10": -3.0,
+          "11": -7.0,
+          "12": -5.0,
+          "13": -5.0,
+          "14": -12.0,
+          "15": -9.0,
+          "16": -5.0,
+          "17": -6.0,
+          "18": -6.0,
+          "19": -7.0,
+          "2": -6.0,
+          "20": -10.0,
+          "3": -5.0,
+          "4": -10.0,
+          "5": -3.0,
+          "6": -11.0,
+          "7": -6.0,
+          "8": -4.0,
+          "9": -10.0
+        },
+        {
+          "1": -17.0,
+          "10": -3.0,
+          "11": -2.0,
+          "12": -18.0,
+          "13": -15.0,
+          "14": -11.0,
+          "15": -12.0,
+          "16": -10.0,
+          "17": -6.0,
+          "18": -9.0,
+          "19": -6.0,
+          "2": -5.0,
+          "20": -3.0,
+          "3": -3.0,
+          "4": -9.0,
+          "5": -16.0,
+          "6": -10.0,
+          "7": -2.0,
+          "8": -2.0,
+          "9": -12.0
+        }
+      ],
+      "total_training_episodes": 2
+    }
+  }
+]

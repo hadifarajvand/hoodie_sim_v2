@@ -1,0 +1,35 @@
+{
+  "datasets": {
+    "Figure 10": {
+      "csv": "artifacts/analysis/paper-figure-reproduction/figure_data/figure_10_simulation_metrics_partial.csv",
+      "json": "artifacts/analysis/paper-figure-reproduction/figure_data/figure_10_simulation_metrics_partial.json",
+      "row_count": 280
+    },
+    "Figure 11": {
+      "csv": "artifacts/analysis/paper-figure-reproduction/figure_data/figure_11_lstm_ablation.csv",
+      "json": "artifacts/analysis/paper-figure-reproduction/figure_data/figure_11_lstm_ablation.json",
+      "row_count": 8
+    },
+    "Figure 8": {
+      "csv": "artifacts/analysis/paper-figure-reproduction/figure_data/figure_8_training_curves.csv",
+      "json": "artifacts/analysis/paper-figure-reproduction/figure_data/figure_8_training_curves.json",
+      "row_count": 528
+    },
+    "Figure 9": {
+      "csv": "artifacts/analysis/paper-figure-reproduction/figure_data/figure_9_parameter_sweeps.csv",
+      "json": "artifacts/analysis/paper-figure-reproduction/figure_data/figure_9_parameter_sweeps.json",
+      "row_count": 575
+    }
+  },
+  "figures": {
+    "Figure 10": "artifacts/analysis/paper-figure-reproduction/figures/figure_10_offloading_schemes.png",
+    "Figure 11": "artifacts/analysis/paper-figure-reproduction/figures/figure_11_lstm_comparison.png",
+    "Figure 8": "artifacts/analysis/paper-figure-reproduction/figures/figure_8_training_curves.png",
+    "Figure 9": "artifacts/analysis/paper-figure-reproduction/figures/figure_9_parameter_sweeps.png"
+  },
+  "limitations": {
+    "Figure 10": "Figure 10 PDF extraction lacks full numeric curve targets; export simulation metrics only; no paper-target reconstruction."
+  },
+  "mode": "quick",
+  "output_dir": "artifacts/analysis/paper-figure-reproduction"
+}

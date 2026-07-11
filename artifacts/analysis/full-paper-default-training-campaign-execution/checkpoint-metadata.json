@@ -15,14 +15,18 @@
     "real_trainer_update_or_train_called": true,
     "scalar_fallback_drives_campaign_claim": false,
     "torch_import_used": true,
-    "torch_version": "2.12.0",
+    "torch_version": "2.12.1",
     "torchrl_available": true
   },
   "replay_size": 110,
   "seed_bundle": {
-    "baseline_policy_seed": 6101,
+    "action_exploration_seed": 53,
     "evaluation_trace_generation_seed": 43,
-    "trace_identity_seed": 5843,
+    "model_initialization_seed": 19,
+    "python_seed": 59,
+    "readiness_probe_seed": 31,
+    "replay_sampling_seed": 47,
+    "torch_seed": 61,
     "training_trace_generation_seed": 41
   },
   "stage": "full_paper_default_training_campaign_execution",

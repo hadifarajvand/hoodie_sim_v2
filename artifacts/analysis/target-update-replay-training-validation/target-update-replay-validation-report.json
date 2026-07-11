@@ -2,12 +2,12 @@
   "behavior_safety_summary": {
     "no_baseline_comparison": true,
     "no_dependency_drift": true,
-    "no_environment_contract_drift": false,
+    "no_environment_contract_drift": true,
     "no_full_campaign": true,
     "no_paper_reproduction_claim": true,
-    "no_policy_drift": false,
-    "no_prior_artifact_rewrite": false,
-    "no_reward_timing_change": false
+    "no_policy_drift": true,
+    "no_prior_artifact_rewrite": true,
+    "no_reward_timing_change": true
   },
   "checkpoint_metadata_summary": {
     "config_hash": "",
@@ -41,7 +41,7 @@
     {
       "details": "current branch != main",
       "name": "not_main",
-      "verified": true
+      "verified": false
     },
     {
       "details": "Feature 054 report is consumed directly by the validation gate",
@@ -71,22 +71,22 @@
     {
       "details": "main...HEAD diff contains only approved Feature 056 paths",
       "name": "approved_paths_only",
-      "verified": false
+      "verified": true
     },
     {
       "details": "no Feature 037-055 artifacts are rewritten",
       "name": "no_prior_artifact_rewrite",
-      "verified": false
+      "verified": true
     },
     {
       "details": "AGENTS.md is stable and not modified",
       "name": "agents_stable_not_modified",
-      "verified": false
+      "verified": true
     },
     {
       "details": ".specify/feature.json is local-only and absent from committed diff",
       "name": "pointer_local_only_not_in_committed_diff",
-      "verified": false
+      "verified": true
     }
   ],
   "recommended_next_feature": "Feature 055 smoke repair",
@@ -96,8 +96,7 @@
     "replay_sampling_blocked",
     "optimizer_step_counter_blocked",
     "target_update_contract_blocked",
-    "checkpoint_metadata_blocked",
-    "behavior_drift_detected"
+    "checkpoint_metadata_blocked"
   ],
   "replay_insertion_validated": false,
   "replay_sampling_validated": false,

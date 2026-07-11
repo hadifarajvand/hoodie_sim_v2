@@ -1,12 +1,12 @@
 {
   "behavior_safety_summary": {
     "no_baseline_comparison": true,
-    "no_dependency_drift": true,
+    "no_dependency_drift": false,
     "no_environment_contract_drift": false,
     "no_full_campaign": true,
     "no_paper_reproduction_claim": true,
     "no_performance_claim": true,
-    "no_policy_drift": false,
+    "no_policy_drift": true,
     "no_prior_artifact_rewrite": false,
     "no_reward_timing_change": false
   },
@@ -85,7 +85,7 @@
     {
       "details": "current branch != main",
       "name": "not_main",
-      "verified": true
+      "verified": false
     },
     {
       "details": "origin/main contains the 056 validation branch commit",
@@ -100,17 +100,17 @@
     {
       "details": "origin/main contains the 054 readiness branch commit",
       "name": "origin_main_contains_054_complete",
-      "verified": true
+      "verified": false
     },
     {
       "details": "origin/main contains the 054A hygiene branch commit",
       "name": "origin_main_contains_054a_hygiene",
-      "verified": true
+      "verified": false
     },
     {
       "details": "branch is based on current origin/main",
       "name": "origin_main_is_branch_base",
-      "verified": false
+      "verified": true
     },
     {
       "details": "artifacts/analysis/target-update-replay-training-validation/target-update-replay-validation-report.json exists and contains the approved 056 readiness verdict",
@@ -140,22 +140,22 @@
     {
       "details": "git diff --name-only main...HEAD contains only approved Feature 057 paths",
       "name": "main_head_diff_approved",
-      "verified": false
+      "verified": true
     },
     {
       "details": "no Feature 037-056 artifacts are rewritten",
       "name": "no_prior_artifact_rewrite",
-      "verified": false
+      "verified": true
     },
     {
       "details": "AGENTS.md is stable and not modified",
       "name": "agents_stable_not_modified",
-      "verified": false
+      "verified": true
     },
     {
       "details": ".specify/feature.json is ignored/local-only and absent from dirty/staged/committed paths",
       "name": "pointer_local_only_not_dirty_or_staged",
-      "verified": false
+      "verified": true
     }
   ],
   "recommended_next_feature": "Feature 056 validation repair before pilot training",

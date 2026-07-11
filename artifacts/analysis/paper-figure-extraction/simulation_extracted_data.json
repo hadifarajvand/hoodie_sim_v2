@@ -1,0 +1,74 @@
+{
+  "metrics": [
+    {
+      "policy_name": "FLC",
+      "average_delay": 1.5274043433298863,
+      "drop_ratio": 0.0,
+      "throughput": 967
+    },
+    {
+      "policy_name": "RO",
+      "average_delay": 2.885593220338983,
+      "drop_ratio": 0.0,
+      "throughput": 944
+    },
+    {
+      "policy_name": "HO",
+      "average_delay": 3.1454352441613587,
+      "drop_ratio": 0.0,
+      "throughput": 942
+    },
+    {
+      "policy_name": "VO",
+      "average_delay": 3.975054229934924,
+      "drop_ratio": 0.0,
+      "throughput": 922
+    },
+    {
+      "policy_name": "MLEO",
+      "average_delay": 1.5274043433298863,
+      "drop_ratio": 0.0,
+      "throughput": 967
+    },
+    {
+      "policy_name": "BCO",
+      "average_delay": 1.5274043433298863,
+      "drop_ratio": 0.0,
+      "throughput": 967
+    },
+    {
+      "policy_name": "HOODIE",
+      "average_delay": 3.975054229934924,
+      "drop_ratio": 0.0,
+      "throughput": 922
+    }
+  ],
+  "action_distributions": {
+    "FLC": {
+      "local": 967
+    },
+    "RO": {
+      "local": 150,
+      "offload_vertical": 165,
+      "offload_horizontal": 154,
+      "vertical": 153,
+      "compute_local": 152,
+      "horizontal": 170
+    },
+    "HO": {
+      "horizontal": 942
+    },
+    "VO": {
+      "vertical": 922
+    },
+    "MLEO": {
+      "local": 967
+    },
+    "BCO": {
+      "local": 967
+    },
+    "HOODIE": {
+      "vertical": 922
+    }
+  }
+}

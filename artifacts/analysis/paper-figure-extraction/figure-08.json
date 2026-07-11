@@ -1,0 +1,15 @@
+{
+  "figure_id": "Figure 8",
+  "support_status": "unsupported",
+  "reconstruction_status": "full_pdf_extracted",
+  "comparison_allowed": false,
+  "limitations": [
+    "Training episode reward curves unavailable",
+    "No DRL training run performed"
+  ],
+  "missing_artifacts": [
+    "training_episode_reward_curves",
+    "reward_by_learning_rate",
+    "reward_by_discount_factor"
+  ]
+}

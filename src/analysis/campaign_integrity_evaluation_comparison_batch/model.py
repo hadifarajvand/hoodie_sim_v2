@@ -8,6 +8,7 @@ from .config import FEATURE_ID, READY_NEXT_FEATURE, REQUIRED_TOP_LEVEL_FIELDS
 ALLOWED_FINAL_VERDICTS = (
     "campaign_integrity_evaluation_comparison_batch_passed",
     "feature_060_prerequisite_blocked",
+    "feature_060_stale_artifact_blocked",
     "campaign_integrity_blocked",
     "baseline_evaluation_blocked",
     "trained_policy_evaluation_blocked",
@@ -19,6 +20,7 @@ ALLOWED_FINAL_VERDICTS = (
 
 REPAIR_ROUTING = {
     "feature_060_prerequisite_blocked": "Repair Feature 060 and 060B prerequisites before Feature 061 can proceed",
+    "feature_060_stale_artifact_blocked": "Refresh stale Feature 060 and Feature 058 artifact handoff before Feature 061 can proceed",
     "campaign_integrity_blocked": "Repair campaign artifact integrity",
     "baseline_evaluation_blocked": "Repair baseline evaluation execution",
     "trained_policy_evaluation_blocked": "Repair trained-policy evaluation execution",
@@ -74,7 +76,7 @@ class CampaignIntegrityEvaluationComparisonBatchReport:
         _unique_names(self.prerequisite_tags_verified)
         if not REQUIRED_TOP_LEVEL_FIELDS:
             raise ValueError("required fields unavailable")
-        _required_keys(self.campaign_integrity_summary, "campaign_integrity_summary", ("feature_060_report_exists", "feature_060_training_metrics_exist", "feature_060_evaluation_metrics_exist", "feature_060_checkpoint_metadata_exist", "feature_060_run_manifest_exist", "artifact_manifest_paths_agree", "trace_bank_ids_consistent", "seed_bundle_consistent", "real_trainer_binding_evidence_exists", "scalar_fallback_drives_campaign_claim"))
+        _required_keys(self.campaign_integrity_summary, "campaign_integrity_summary", ("feature_060_report_exists", "feature_060_training_metrics_exist", "feature_060_evaluation_metrics_exist", "feature_060_checkpoint_metadata_exist", "feature_060_run_manifest_exist", "artifact_manifest_paths_agree", "trace_bank_ids_consistent", "seed_bundle_consistent", "real_trainer_binding_evidence_exists", "scalar_fallback_drives_campaign_claim", "feature_060_sources", "feature_060_artifacts_refreshed"))
         _required_keys(self.baseline_evaluation_summary, "baseline_evaluation_summary", ("evaluation_trace_bank_id", "trace_ids", "policies", "metric_schema", "baseline_policy_metrics", "controlled_experiment_data"))
         _required_keys(self.trained_policy_evaluation_summary, "trained_policy_evaluation_summary", ("evaluation_trace_bank_id", "trace_ids", "metric_schema", "trained_policy_metrics", "controlled_experiment_data"))
         _required_keys(self.comparison_readiness_summary, "comparison_readiness_summary", ("same_evaluation_trace_bank", "identical_metric_schema", "identical_action_contract", "trace_ids_comparable", "no_training_traces_leak_into_evaluation", "no_paper_reproduction_claim", "no_unsupported_superiority_claim"))

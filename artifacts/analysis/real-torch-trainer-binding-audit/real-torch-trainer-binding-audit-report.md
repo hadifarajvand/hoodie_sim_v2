@@ -11,7 +11,7 @@
   "same_interpreter_expected": false,
   "sys_executable": "/Users/hadi/Documents/GitHub/hoodie_sim_v2/.venv/bin/python",
   "torch_probe_interpreter": "/Users/hadi/Documents/GitHub/hoodie_sim_v2/.venv/bin/python",
-  "which_python3": "/opt/homebrew/bin/python3"
+  "which_python3": "/Users/hadi/Documents/GitHub/hoodie_sim_v2/.venv/bin/python3"
 }
 
 ## Torch Availability Summary
@@ -21,8 +21,8 @@
   "torch_import_available": true,
   "torch_pip_show_present": true,
   "torch_version": "2.12.1",
-  "torchrl_find_spec_available": false,
-  "torchrl_pip_show_present": false
+  "torchrl_find_spec_available": true,
+  "torchrl_pip_show_present": true
 }
 
 ## Feature 060 Claim Summary
@@ -121,7 +121,7 @@
 
 ## Binding Audit Summary
 {
-  "environment_supports_real_binding": false,
+  "environment_supports_real_binding": true,
   "feature_060_claim_supported": false,
   "real_binding_verified": false,
   "repair_feature": "Feature 060B — Bind Full Campaign Execution to Real Torch Trainer",
@@ -131,6 +131,7 @@
 ## Remaining Blockers
 [
   "branch",
+  "not_main",
   "base_branch_is_ancestor",
   "working_tree_paths_approved",
   "feature_branch_diff_paths_approved",

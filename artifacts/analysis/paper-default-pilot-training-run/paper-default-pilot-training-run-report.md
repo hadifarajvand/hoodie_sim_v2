@@ -140,12 +140,12 @@
 ## Behavior Safety Summary
 {
   "no_baseline_comparison": true,
-  "no_dependency_drift": true,
+  "no_dependency_drift": false,
   "no_environment_contract_drift": false,
   "no_full_campaign": true,
   "no_paper_reproduction_claim": true,
   "no_performance_claim": true,
-  "no_policy_drift": false,
+  "no_policy_drift": true,
   "no_prior_artifact_rewrite": false,
   "no_reward_timing_change": false
 }

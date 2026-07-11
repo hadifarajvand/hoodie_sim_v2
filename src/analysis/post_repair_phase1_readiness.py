@@ -17,6 +17,12 @@ from src.analysis.full_training_reproduction_campaign.config import CampaignConf
 from src.analysis.full_training_reproduction_campaign.trainer import DDQNTrainer
 
 
+class ConfigFactory:
+    @staticmethod
+    def paper_default() -> CampaignConfig:
+        return CampaignConfig.paper_default()
+
+
 def run_bounded_episodes(
     trainer: DDQNTrainer,
     num_episodes: int,

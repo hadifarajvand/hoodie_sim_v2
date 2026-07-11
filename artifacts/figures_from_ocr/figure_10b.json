@@ -1,0 +1,13 @@
+{
+  "figure_id": "Figure 10b",
+  "title": "Average delay as a function of CPU computation capacity dedicated to local tasks across different offloading schemes",
+  "description": "Extracted from OCR of HOODIE paper, showing impact of computational capacity",
+  "cpu_levels": [
+    3,
+    4,
+    5,
+    6,
+    7
+  ],
+  "delay_by_method": {}
+}

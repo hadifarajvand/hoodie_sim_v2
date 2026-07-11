@@ -212,22 +212,22 @@
     {
       "details": "current branch is 052-selected-action-outcome-evidence-rerun",
       "name": "branch",
-      "verified": true
+      "verified": false
     },
     {
       "details": "branch is not main",
       "name": "not_main",
-      "verified": true
+      "verified": false
     },
     {
       "details": "main contains 051-passive-selected-action-trace-repair-complete",
       "name": "main_contains_051_passive_selected_action_trace_repair_complete",
-      "verified": true
+      "verified": false
     },
     {
       "details": "main contains spec-kit-workflow-operating-contract-complete",
       "name": "main_contains_spec_kit_workflow_operating_contract_complete",
-      "verified": true
+      "verified": false
     },
     {
       "details": "main is an ancestor of HEAD",
@@ -237,7 +237,7 @@
     {
       "details": "main...HEAD diff contains only approved Feature 052 paths",
       "name": "feature_diff_contains_only_approved_feature_paths",
-      "verified": true
+      "verified": false
     },
     {
       "details": "no Feature 037-051 artifact path is rewritten in the Feature 052 diff",

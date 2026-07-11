@@ -1,0 +1,197 @@
+{
+  "bounded_constraint": "3 episodes x 200 slots",
+  "bridge": {
+    "bridged_lifecycle_event_count": 3431,
+    "completion_accounting_mismatch": false,
+    "duplicate_bridge_guard_enabled": true,
+    "execution_completed_count": 560,
+    "service_completed_observable": true,
+    "service_progress_count": 1428,
+    "service_progress_observable": true,
+    "service_started_count": 1428
+  },
+  "config_summary": {
+    "action_count": 22,
+    "batch_size": 64,
+    "config_hash": "9d537ad29abb096c",
+    "full_campaign_enabled": false,
+    "gamma": 0.99,
+    "horizontal_data_rate_mbps": 30.0,
+    "learning_rate": 7e-07,
+    "lookback_w": 10,
+    "state_dim": 74,
+    "vertical_data_rate_mbps": 10.0
+  },
+  "diagnostic_type": "task_arrival_completion_timing_audit",
+  "episode_summaries": [
+    {
+      "completed_task_count": 91,
+      "dropped_task_count": 0,
+      "episode_id": 0,
+      "illegal_action_count": 0,
+      "loss_count": 32,
+      "pending_at_horizon_count": 1,
+      "transition_count": 95
+    },
+    {
+      "completed_task_count": 96,
+      "dropped_task_count": 0,
+      "episode_id": 1,
+      "illegal_action_count": 0,
+      "loss_count": 98,
+      "pending_at_horizon_count": 1,
+      "transition_count": 98
+    },
+    {
+      "completed_task_count": 93,
+      "dropped_task_count": 0,
+      "episode_id": 2,
+      "illegal_action_count": 0,
+      "loss_count": 96,
+      "pending_at_horizon_count": 1,
+      "transition_count": 96
+    }
+  ],
+  "inferred_findings": {
+    "arrival_slot_statistics": {
+      "count": 289,
+      "max": 199,
+      "mean": 99.34256055363322,
+      "min": 0
+    },
+    "most_likely_next_hypothesis": "",
+    "terminal_reason_distribution": {
+      "completed": 109,
+      "none": 178,
+      "pending_at_horizon": 2
+    },
+    "what_is_not_observable": [],
+    "what_is_proven": [
+      "Task arrivals occur as early as slot 0 (mean 99.3)",
+      "All rewards are negative (total=-838.0, avg=-7.69) — drop penalties dominate, no completion rewards"
+    ]
+  },
+  "metrics": {
+    "average_reward": -7.6880733944954125,
+    "completed_task_count": 280,
+    "dropped_task_count": 0,
+    "episode_length": 200,
+    "episodes_completed": 3,
+    "illegal_action_count": 0,
+    "legal_action_only": true,
+    "loss_count": 226,
+    "loss_summary": {
+      "all_finite": true,
+      "no_inf": true,
+      "no_nan": true
+    },
+    "pending_at_horizon_count": 3,
+    "replay_size": 289,
+    "reward_count": 109,
+    "total_transition_count": 289
+  },
+  "observability_matrix": {
+    "action_distribution": {
+      "observable": true,
+      "value": {
+        "3": 61,
+        "4": 35,
+        "8": 50,
+        "9": 5,
+        "10": 97,
+        "12": 1,
+        "13": 30,
+        "18": 1,
+        "21": 9
+      }
+    },
+    "first_arrival_slot": {
+      "observable": true,
+      "value": [
+        0,
+        1,
+        0
+      ]
+    },
+    "first_completion_slot": {
+      "observable": true,
+      "value": [
+        12,
+        32,
+        33
+      ]
+    },
+    "first_service_start_slot": {
+      "observable": true,
+      "value": 3
+    },
+    "queue_lengths": {
+      "observable": true,
+      "value": "12000 samples recorded"
+    },
+    "reward_events": {
+      "observable": true,
+      "value": {
+        "average": -7.6880733944954125,
+        "count": 109,
+        "total": -838.0
+      }
+    },
+    "service_started_observable": {
+      "observable": true,
+      "value": true
+    }
+  },
+  "recommended_next_step": "service progress audit",
+  "trace_info": {
+    "bridged_lifecycle_event_count": 3431,
+    "completion_accounting_mismatch": false,
+    "duplicate_bridge_guard_enabled": true,
+    "execution_completed_count": 560,
+    "first_service_start_slot": 3,
+    "lifecycle_event_counts": {
+      "action_selected": 289,
+      "execution_completed": 560,
+      "execution_progress": 1428,
+      "execution_started": 714,
+      "pending_at_horizon": 18,
+      "queue_length_sampled": 12000,
+      "reward_emitted": 560,
+      "reward_released": 235,
+      "service_started": 714,
+      "task_admitted": 578,
+      "task_arrived": 289,
+      "task_completed": 840,
+      "task_generated": 584,
+      "task_pending_at_horizon": 3,
+      "transmission_completed": 568,
+      "transmission_started": 578
+    },
+    "lifecycle_events_absent_even_when_trace_enabled": false,
+    "queue_length_samples": 12000,
+    "service_completed_observable": true,
+    "service_progress_count": 1428,
+    "service_progress_observable": true,
+    "service_started_count": 1428,
+    "service_started_observable": true,
+    "trace_collector_enabled": true,
+    "trace_event_counts": {
+      "action_selected": 289,
+      "execution_completed": 560,
+      "execution_progress": 1428,
+      "pending_at_horizon": 18,
+      "queue_length_sampled": 12000,
+      "reward_emitted": 560,
+      "reward_released": 235,
+      "service_started": 1428,
+      "task_admitted": 578,
+      "task_arrived": 289,
+      "task_completed": 840,
+      "task_generated": 584,
+      "task_pending_at_horizon": 3,
+      "transmission_completed": 568,
+      "transmission_started": 578
+    }
+  },
+  "verdict": "bridge_needs_service_progress_audit"
+}

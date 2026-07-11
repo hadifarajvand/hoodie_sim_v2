@@ -1,0 +1,54 @@
+{
+  "allowed_outputs": [
+    "numeric_dataset",
+    "plot_payload"
+  ],
+  "artifact_backed_reproduction_data": {
+    "available": false
+  },
+  "caveats": [
+    "Campaign training reward curves provide evaluation episode rewards for Figure 8-style analysis."
+  ],
+  "comparison_ready": false,
+  "extracted_artifact_metrics": {
+    "completed_tasks": 0,
+    "episode_reward_means": [],
+    "mean_reward": 0.0
+  },
+  "figure_id": "Figure 8",
+  "limitation_level": "none",
+  "missing_artifacts": [
+    "training_episode_reward_curves",
+    "reward_by_learning_rate",
+    "reward_by_discount_factor",
+    "true_hoodie_drl_training_logs"
+  ],
+  "paper_caption_supported_metadata": {
+    "dimensions": [
+      "learning_rate",
+      "discount_factor",
+      "training_episode"
+    ]
+  },
+  "paper_claim_type": "training_curve_caption",
+  "paper_extraction_source": {},
+  "paper_numeric_target_data": {
+    "available": false,
+    "missing": [
+      "paper_numeric_curve_values"
+    ]
+  },
+  "paper_ocr_evidence": [
+    {
+      "char_offset": 143495,
+      "figure_id": "Figure 8",
+      "snippet_index": 0,
+      "source_path": "resources/papers/hoodie/ocr/merged.tex",
+      "text": "| -61.0 | -62.0 | 32 | -28.5 | -27.5 | -26.5 | 3500 | -56.0 | -58.0 | -598 | | -61.0 | -62.0 | 32.5 | -28.5 | -27.5 | -26.5 | 12.0 4000 | -56.0 | -58.0 | -599 | | -61.0 | -62.0 | 32.8 | -28.5 | -27.5 | -26.5 | FIGURE 8. Accumulated reward time-course averaged across the distributed HOoDIE agents as a function of the training episodes for different (a) Learning rate \\$\\textbackslash\\{\\}alpha\\_\\{l\\_\\{1\\}\\}\\$ and(b) Discount factorγ. 18 VOLUME, ===== page\\_019\\_0\\_res.txt ===== between the CPU capacity and the average reward, indicating that as more computational power is allocated to local tasks,the system's performance improves. This trend is consistent across all agent configurations, althou"
+    }
+  ],
+  "reconstruction_status": "full_pdf_extracted",
+  "source_artifacts": [],
+  "support_status": "unsupported",
+  "title": "Accumulated reward time-course by learning rate and discount factor"
+}

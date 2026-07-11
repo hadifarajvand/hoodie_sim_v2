@@ -118,7 +118,11 @@ def reward_for_terminal_task(task: Task, *, drop_penalty: float = 40.0, mode: st
     if task.terminal_outcome == "completed" and task.completion_slot is not None:
         if mode == "compatibility":
             return -float(task.completion_slot - task.arrival_slot)
-        return -float(phi_private(task.completion_slot, task.arrival_slot))
+        if task.selected_action is not None and task.selected_action not in ("local", "compute_local"):
+            phi_val = phi_public([(True, task.completion_slot)], task.start_slot or task.arrival_slot)
+        else:
+            phi_val = phi_private(task.completion_slot, task.arrival_slot)
+        return -float(phi_val)
     if task.terminal_outcome == "dropped":
         return -float(drop_penalty)
     raise ValueError("Reward is only defined for completed or dropped tasks")

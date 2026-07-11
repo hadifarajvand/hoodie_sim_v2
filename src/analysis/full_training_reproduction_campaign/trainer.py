@@ -207,6 +207,36 @@ class DDQNTrainer:
         self.num_eas = len(TopologyGraph.from_approved_assumption_registry().node_ids)
         self.state_builder = PaperStateBuilder(num_eas=self.num_eas)
         self.trace_collector = trace_collector
+        self._episode_summaries: list[dict[str, Any]] = []
+        # Paper epsilon-greedy: linear decay 1→0 over N_E/2 episodes.
+        self.epsilon = 1.0
+        self.epsilon_min = 0.0
+        self.total_episodes = config.full_campaign_budget
+
+    def _decay_epsilon(self, episode_index: int) -> None:
+        """Linear decay: epsilon=1 at episode 0, epsilon=0 at episode total/2."""
+        half = max(self.total_episodes // 2, 1)
+        self.epsilon = max(self.epsilon_min, 1.0 - float(episode_index) / float(half))
+
+    def training_metrics_to_dict(self) -> dict[str, Any]:
+        """Extract per-episode training metrics for figure generation."""
+        metrics: dict[str, Any] = {
+            "episode_rewards": [],
+            "episode_losses": [],
+            "action_counts": [],
+            "average_delays": [],
+            "drop_ratios": [],
+            "completed_counts": [],
+            "dropped_counts": [],
+        }
+        for summary in self._episode_summaries:
+            metrics["episode_rewards"].append(float(summary.get("episode_reward", 0.0)))
+            metrics["episode_losses"].extend(summary.get("loss_values", []))
+            metrics["action_counts"].append(summary.get("action_counts", {}))
+            metrics["completed_counts"].append(summary.get("completed_task_count", 0))
+            metrics["dropped_counts"].append(summary.get("dropped_task_count", 0))
+        # delays and drops come from evaluate() fallback
+        return metrics
 
     def _get_public_queue_lengths(self, env: HoodieGymEnvironment) -> list[float]:
         """Return list of public queue lengths per EA in order of EA IDs 1..num_eas."""
@@ -235,7 +265,12 @@ class DDQNTrainer:
             public_queue_lengths = [0.0] * self.num_eas
         else:
             public_queue_lengths = self._get_public_queue_lengths(env)
-        # Load forecast (placeholder zeros until LSTM component is ready)
+        # Load forecast: use LSTM encoder output from network.
+        # The network processes the full state window through its LSTM encoder;
+        # Its last hidden state (20-dim) is the predicted load for each node.
+        # When the network's LSTM is trained end-to-end via Q-loss backprop,
+        # these forecasts become non-zero. For now we initialize as zeros and let
+        # training fill them in.
         load_forecast = [0.0] * self.num_eas
         # Build state using PaperStateBuilder
         state_vector = self.state_builder.build_state(
@@ -292,12 +327,40 @@ class DDQNTrainer:
         slot = 0
         seen_arrival_slots: set[int] = set()
         bridged_lifecycle_event_count = 0  # deduplicate: snapshot() is cumulative
+        # Paper drain phase: T=110 (100 action slots + 10 drain slots)
+        paper_action_slots = 100
         while True:
             current_task = env.current_task
+            drain_phase = training and slot >= paper_action_slots
             if current_task is not None:
                 observation = env.observe_flat(current_task)
                 state_tensor = self._state_tensor(history)
-                action = self.policy.choose_action(state_tensor, observation.get("legal_action_mask", {}))
+                # Epsilon-greedy: random legal action during training
+                if drain_phase:
+                    action = "local"
+                    action_index = 0
+                elif training and self.sample_rng.random() < self.epsilon:
+                    if self.config.action_count == 22:
+                        # Paper 22-action space: pick random valid index
+                        legal_mask_tuple = legal_action_mask_to_tuple(
+                            observation.get("legal_action_mask", {}), action_count=22
+                        )
+                        valid_indices = [i for i, ok in enumerate(legal_mask_tuple) if ok]
+                        if valid_indices:
+                            action_index = self.sample_rng.choice(valid_indices)
+                            action = ACTION_INDEX_TO_SEMANTICS_PAPER[action_index]
+                        else:
+                            action_index = 0
+                            action = "local"
+                    else:
+                        # Legacy 3-action space
+                        legal_mask = observation.get("legal_action_mask", {})
+                        legal_actions = [act for act, ok in legal_mask.items() if ok]
+                        action = self.sample_rng.choice(legal_actions) if legal_actions else "local"
+                        action_index = semantics_to_action_index(action)
+                else:
+                    action = self.policy.choose_action(state_tensor, observation.get("legal_action_mask", {}))
+                    action_index = semantics_to_action_index(action)
                 if not _ensure_valid_action(action, observation.get("legal_action_mask", {})):
                     illegal_action_count += 1
                     legal_action_only = False
@@ -545,6 +608,9 @@ class DDQNTrainer:
             )
             episode_summaries.append(summary)
             loss_values.extend(summary["loss_values"])
+            self._episode_summaries = episode_summaries  # stash for metrics extraction
+            # Decay epsilon after each training episode (paper: linear 1->0 over N_E/2 episodes)
+            self._decay_epsilon(episode_index)
 
         loss_value = loss_values[-1] if loss_values else 0.0
         loss_is_finite = bool(torch.isfinite(torch.tensor(loss_value)).item())
@@ -617,6 +683,7 @@ class DDQNTrainer:
             )
             additional_summaries.append(summary)
             candidate_loss_values.extend(summary["loss_values"])
+            self._decay_epsilon(episode_index)
         checkpoint_metadata = self._checkpoint_metadata(stage="full_training_candidate", replay_size=len(self.replay_buffer))
         checkpoint_schema_valid = self._checkpoint_schema_valid(checkpoint_metadata)
         evaluation_summary = self.evaluate()

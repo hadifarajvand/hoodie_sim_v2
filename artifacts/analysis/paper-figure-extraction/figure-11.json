@@ -1,0 +1,14 @@
+{
+  "figure_id": "Figure 11",
+  "support_status": "unsupported",
+  "reconstruction_status": "full_pdf_extracted",
+  "comparison_allowed": false,
+  "limitations": [
+    "LSTM training delay curves unavailable",
+    "No LSTM model implemented"
+  ],
+  "missing_artifacts": [
+    "hoodie_lstm_training_delay_curve",
+    "hoodie_without_lstm_training_delay_curve"
+  ]
+}

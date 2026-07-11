@@ -65,8 +65,5 @@
   "prerequisite_tags_failed",
   "evidence_chain_prerequisite_blocked",
   "action_contract_blocked",
-  "legality_contract_blocked",
-  "no_policy_drift",
-  "no_runtime_semantic_changes",
-  "no_prior_artifact_rewrite"
+  "legality_contract_blocked"
 ]

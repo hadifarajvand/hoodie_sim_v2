@@ -7,9 +7,9 @@
   "no_paper_topology_fabrication": true,
   "observed_default_audit_events": [
     "created",
-    "selected_action:horizontal",
-    "selected_action:vertical",
     "created",
+    "created",
+    "selected_action:local",
     "created",
     "created"
   ],
@@ -41,10 +41,7 @@
     "feature_024": "preserved",
     "figure_7_topology": "unrecoverable"
   },
-  "remaining_topology_blockers": [
-    "Topology-backed destination required for offload actions",
-    "Topology-backed destination required for offload actions"
-  ],
+  "remaining_topology_blockers": [],
   "schema_supported_events": [
     "selected_action",
     "queued_public",

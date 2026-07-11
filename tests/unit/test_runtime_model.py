@@ -108,7 +108,7 @@ class SharedRuntimeModelTests(unittest.TestCase):
         config_path = Path("configs/runtime_model.yml")
         self.assertTrue(config_path.exists())
         config_text = config_path.read_text()
-        self.assertIn("slot_duration: 1", config_text)
+        self.assertIn("slot_duration: 0.1", config_text)
         self.assertIn("local_service_capacity: 0.5", config_text)
         self.assertIn("public_service_capacity: 0.5", config_text)
         self.assertIn("cloud_service_capacity: 3.0", config_text)
@@ -116,7 +116,7 @@ class SharedRuntimeModelTests(unittest.TestCase):
         self.assertIn("runtime_variant: density_based", config_text)
 
         parameters = SharedRuntimeParameters()
-        self.assertEqual(parameters.slot_duration, 1)
+        self.assertEqual(parameters.slot_duration, 0.1)
         self.assertEqual(parameters.local_service_capacity, 0.5)
         self.assertEqual(parameters.public_service_capacity, 0.5)
         self.assertEqual(parameters.cloud_service_capacity, 3.0)

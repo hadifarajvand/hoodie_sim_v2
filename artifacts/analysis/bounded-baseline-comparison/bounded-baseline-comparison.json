@@ -1,0 +1,143 @@
+{
+  "comparison_type": "bounded-baseline-comparison",
+  "legacy": {
+    "config_summary": {
+      "action_count": 3,
+      "batch_size": 64,
+      "config_hash": "416829cf02594ff4",
+      "full_campaign_enabled": false,
+      "gamma": 0.99,
+      "horizontal_data_rate_mbps": 30.0,
+      "learning_rate": 7e-07,
+      "lookback_w": 10,
+      "state_dim": 3,
+      "vertical_data_rate_mbps": 10.0
+    },
+    "episode_summaries": [
+      {
+        "completed_task_count": 46,
+        "dropped_task_count": 0,
+        "episode_id": 0,
+        "illegal_action_count": 0,
+        "loss_count": 0,
+        "pending_at_horizon_count": 1,
+        "transition_count": 50
+      },
+      {
+        "completed_task_count": 47,
+        "dropped_task_count": 0,
+        "episode_id": 1,
+        "illegal_action_count": 0,
+        "loss_count": 37,
+        "pending_at_horizon_count": 1,
+        "transition_count": 50
+      },
+      {
+        "completed_task_count": 46,
+        "dropped_task_count": 0,
+        "episode_id": 2,
+        "illegal_action_count": 0,
+        "loss_count": 50,
+        "pending_at_horizon_count": 1,
+        "transition_count": 50
+      }
+    ],
+    "metrics": {
+      "average_reward": -6.171428571428572,
+      "completed_task_count": 139,
+      "dropped_task_count": 0,
+      "episodes_completed": 3,
+      "illegal_action_count": 0,
+      "legal_action_only": true,
+      "loss_summary": {
+        "all_finite": true,
+        "count": 87,
+        "max": 38.746185302734375,
+        "mean": 32.63337955255618,
+        "min": 24.199623107910156,
+        "no_inf": true,
+        "no_nan": true
+      },
+      "optimizer_step_count": 87,
+      "pending_at_horizon_count": 3,
+      "replay_size": 150,
+      "reward_count": 105,
+      "target_sync_count": 0,
+      "total_reward": -648.0,
+      "total_transition_count": 150
+    },
+    "path_name": "legacy",
+    "pilot_constraint": "3 episodes x 50 slots"
+  },
+  "paper_default": {
+    "config_summary": {
+      "action_count": 22,
+      "batch_size": 64,
+      "config_hash": "9d537ad29abb096c",
+      "full_campaign_enabled": false,
+      "gamma": 0.99,
+      "horizontal_data_rate_mbps": 30.0,
+      "learning_rate": 7e-07,
+      "lookback_w": 10,
+      "state_dim": 74,
+      "vertical_data_rate_mbps": 10.0
+    },
+    "episode_summaries": [
+      {
+        "completed_task_count": 22,
+        "dropped_task_count": 0,
+        "episode_id": 0,
+        "illegal_action_count": 0,
+        "loss_count": 0,
+        "pending_at_horizon_count": 1,
+        "transition_count": 24
+      },
+      {
+        "completed_task_count": 19,
+        "dropped_task_count": 0,
+        "episode_id": 1,
+        "illegal_action_count": 0,
+        "loss_count": 0,
+        "pending_at_horizon_count": 1,
+        "transition_count": 22
+      },
+      {
+        "completed_task_count": 19,
+        "dropped_task_count": 0,
+        "episode_id": 2,
+        "illegal_action_count": 0,
+        "loss_count": 7,
+        "pending_at_horizon_count": 1,
+        "transition_count": 24
+      }
+    ],
+    "metrics": {
+      "average_reward": -7.4375,
+      "completed_task_count": 60,
+      "dropped_task_count": 0,
+      "episodes_completed": 3,
+      "illegal_action_count": 0,
+      "legal_action_only": true,
+      "loss_summary": {
+        "all_finite": true,
+        "count": 7,
+        "max": 16.416311264038086,
+        "mean": 16.051862035478866,
+        "min": 15.407934188842773,
+        "no_inf": true,
+        "no_nan": true
+      },
+      "optimizer_step_count": 7,
+      "pending_at_horizon_count": 3,
+      "replay_size": 70,
+      "reward_count": 16,
+      "target_sync_count": 0,
+      "total_reward": -119.0,
+      "total_transition_count": 70
+    },
+    "path_name": "paper_default",
+    "pilot_constraint": "3 episodes x 50 slots"
+  },
+  "pilot_constraint": "3 episodes x 50 slots",
+  "verdict": "pass"
+}

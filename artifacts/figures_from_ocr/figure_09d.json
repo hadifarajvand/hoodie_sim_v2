@@ -1,0 +1,35 @@
+{
+  "figure_id": "Figure 9d",
+  "title": "Average reward as a function of the number of DRL agents under different task traffic scenarios",
+  "description": "Extracted from OCR of HOODIE paper, showing impact of task traffic intensity",
+  "traffic_levels": [
+    0.0,
+    0.3,
+    0.5,
+    0.7,
+    1.0
+  ],
+  "rewards_by_agent_count": {
+    "N=10": [
+      0,
+      -2,
+      -12,
+      -25,
+      -45
+    ],
+    "N=15": [
+      0,
+      -10,
+      -20,
+      -38,
+      -58
+    ],
+    "N=20": [
+      0,
+      -15,
+      -28,
+      -42,
+      -55
+    ]
+  }
+}

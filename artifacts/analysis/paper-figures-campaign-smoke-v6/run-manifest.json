@@ -1,0 +1,36 @@
+{
+  "figure_10_experiment_count": 140,
+  "figure_11_experiment_count": 2,
+  "figure_8_experiment_count": 11,
+  "figure_9_experiment_count": 39,
+  "figures": [
+    "artifacts/analysis/paper-figures-campaign-smoke-v6/figures/figure_10_offloading_schemes.png",
+    "artifacts/analysis/paper-figures-campaign-smoke-v6/figures/figure_11_lstm_comparison.png",
+    "artifacts/analysis/paper-figures-campaign-smoke-v6/figures/figure_8_reward_timecourse.png",
+    "artifacts/analysis/paper-figures-campaign-smoke-v6/figures/figure_9_parameter_sweep.png"
+  ],
+  "mode": "quick",
+  "output_dir": "artifacts/analysis/paper-figures-campaign-smoke-v6",
+  "paper_parameters": {
+    "N_default": 20,
+    "P_default": 0.5,
+    "R_H_mbps": 30.0,
+    "R_V_mbps": 10.0,
+    "batch_size": 64,
+    "cloud_cpu_gcycles_per_slot": 3.0,
+    "episode_length_slots": 110,
+    "episodes_full": 5000,
+    "gamma_default": 0.99,
+    "learning_rate_default": 7e-07,
+    "private_public_cpu_gcycles_per_slot": 0.5,
+    "processing_density_gcycles_per_mbit": 0.297,
+    "replay_memory_capacity": 10000,
+    "slot_duration_seconds": 0.1,
+    "task_size_mbits": [
+      2.0,
+      5.0,
+      0.1
+    ],
+    "timeout_slots": 20
+  }
+}

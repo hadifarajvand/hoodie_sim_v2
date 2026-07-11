@@ -87,6 +87,13 @@ def action_index_to_semantics(action_index: int) -> str:
 
 
 def semantics_to_action_index(semantics: str) -> int:
+    aliases = {
+        "compute_local": "local",
+        "offload_horizontal": "horizontal",
+        "offload_vertical": "vertical",
+        "cloud": "vertical",
+    }
+    semantics = aliases.get(semantics, semantics)
     if semantics in SEMANTICS_TO_ACTION_INDEX_PAPER:
         return SEMANTICS_TO_ACTION_INDEX_PAPER[semantics]
     try:

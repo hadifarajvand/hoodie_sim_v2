@@ -1,0 +1,131 @@
+{
+  "figure_id": "Figure 9",
+  "support_status": "partially_supported",
+  "reconstruction_status": "full_pdf_extracted",
+  "comparison_allowed": false,
+  "limitations": [
+    "Parameter sweep data unavailable (arrival prob, CPU capacity, agent count)"
+  ],
+  "data": [
+    {
+      "figure_id": "Figure 9",
+      "subfigure_id": "9-action-distribution",
+      "series_name": "local",
+      "x_value": "FLC",
+      "y_value": 967,
+      "x_unit": "policy",
+      "y_unit": "count",
+      "policy_name": "FLC"
+    },
+    {
+      "figure_id": "Figure 9",
+      "subfigure_id": "9-action-distribution",
+      "series_name": "local",
+      "x_value": "RO",
+      "y_value": 150,
+      "x_unit": "policy",
+      "y_unit": "count",
+      "policy_name": "RO"
+    },
+    {
+      "figure_id": "Figure 9",
+      "subfigure_id": "9-action-distribution",
+      "series_name": "offload_vertical",
+      "x_value": "RO",
+      "y_value": 165,
+      "x_unit": "policy",
+      "y_unit": "count",
+      "policy_name": "RO"
+    },
+    {
+      "figure_id": "Figure 9",
+      "subfigure_id": "9-action-distribution",
+      "series_name": "offload_horizontal",
+      "x_value": "RO",
+      "y_value": 154,
+      "x_unit": "policy",
+      "y_unit": "count",
+      "policy_name": "RO"
+    },
+    {
+      "figure_id": "Figure 9",
+      "subfigure_id": "9-action-distribution",
+      "series_name": "vertical",
+      "x_value": "RO",
+      "y_value": 153,
+      "x_unit": "policy",
+      "y_unit": "count",
+      "policy_name": "RO"
+    },
+    {
+      "figure_id": "Figure 9",
+      "subfigure_id": "9-action-distribution",
+      "series_name": "compute_local",
+      "x_value": "RO",
+      "y_value": 152,
+      "x_unit": "policy",
+      "y_unit": "count",
+      "policy_name": "RO"
+    },
+    {
+      "figure_id": "Figure 9",
+      "subfigure_id": "9-action-distribution",
+      "series_name": "horizontal",
+      "x_value": "RO",
+      "y_value": 170,
+      "x_unit": "policy",
+      "y_unit": "count",
+      "policy_name": "RO"
+    },
+    {
+      "figure_id": "Figure 9",
+      "subfigure_id": "9-action-distribution",
+      "series_name": "horizontal",
+      "x_value": "HO",
+      "y_value": 942,
+      "x_unit": "policy",
+      "y_unit": "count",
+      "policy_name": "HO"
+    },
+    {
+      "figure_id": "Figure 9",
+      "subfigure_id": "9-action-distribution",
+      "series_name": "vertical",
+      "x_value": "VO",
+      "y_value": 922,
+      "x_unit": "policy",
+      "y_unit": "count",
+      "policy_name": "VO"
+    },
+    {
+      "figure_id": "Figure 9",
+      "subfigure_id": "9-action-distribution",
+      "series_name": "local",
+      "x_value": "MLEO",
+      "y_value": 967,
+      "x_unit": "policy",
+      "y_unit": "count",
+      "policy_name": "MLEO"
+    },
+    {
+      "figure_id": "Figure 9",
+      "subfigure_id": "9-action-distribution",
+      "series_name": "local",
+      "x_value": "BCO",
+      "y_value": 967,
+      "x_unit": "policy",
+      "y_unit": "count",
+      "policy_name": "BCO"
+    },
+    {
+      "figure_id": "Figure 9",
+      "subfigure_id": "9-action-distribution",
+      "series_name": "vertical",
+      "x_value": "HOODIE",
+      "y_value": 922,
+      "x_unit": "policy",
+      "y_unit": "count",
+      "policy_name": "HOODIE"
+    }
+  ]
+}

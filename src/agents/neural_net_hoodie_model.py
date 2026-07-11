@@ -1,5 +1,7 @@
 from __future__ import annotations
 
+import warnings
+
 import torch
 import torch.nn as nn
 import numpy as np
@@ -8,6 +10,12 @@ from typing import Dict, Tuple, List, Any, Iterable
 from .dueling_dqn_network import DuelingDQNNetwork
 from .paper_state_builder import PaperStateBuilder
 from .replay_buffer import Transition
+
+warnings.warn(
+    "NeuralNetHoodieModel is deprecated. Use PaperHoodieDuelingNetwork from "
+    "src/analysis/paper_hoodie_network_implementation/ instead.",
+    DeprecationWarning, stacklevel=2,
+)
 
 
 class NeuralNetHoodieModel:

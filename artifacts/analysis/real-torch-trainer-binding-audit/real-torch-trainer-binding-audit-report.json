@@ -1,6 +1,6 @@
 {
   "binding_audit_summary": {
-    "environment_supports_real_binding": false,
+    "environment_supports_real_binding": true,
     "feature_060_claim_supported": false,
     "real_binding_verified": false,
     "repair_feature": "Feature 060B — Bind Full Campaign Execution to Real Torch Trainer",
@@ -36,7 +36,7 @@
     {
       "details": "current branch != main",
       "name": "not_main",
-      "verified": true
+      "verified": false
     },
     {
       "details": "060-full-paper-default-training-campaign-execution is an ancestor of HEAD",
@@ -84,7 +84,6 @@
     },
     {
       "details": [
-        "AGENTS.md",
         "artifacts/analysis/evaluation-trace-bank-baseline-harness/evaluation-trace-bank-baseline-harness-report.json",
         "artifacts/analysis/evaluation-trace-bank-baseline-harness/evaluation-trace-bank-baseline-harness-report.md",
         "artifacts/analysis/full-paper-default-training-campaign-gate/full-paper-default-training-campaign-gate-report.json",
@@ -95,9 +94,8 @@
         "artifacts/analysis/paper-default-training-smoke-run/paper-default-training-smoke-run-report.md",
         "artifacts/analysis/target-update-replay-training-validation/target-update-replay-validation-report.json",
         "artifacts/analysis/target-update-replay-training-validation/target-update-replay-validation-report.md",
-        "src/environment/gym_adapter.py",
-        "src/environment/runtime_model.py",
-        "src/policies/ho.py",
+        "src/environment/reward_timing.py",
+        "requirements.txt",
         ".gitignore",
         ".specify/feature.json",
         "AGENTS.md",
@@ -138,6 +136,8 @@
         "src/environment/paper_timeout.py",
         "src/environment/paper_traffic.py",
         "src/environment/reward_timing.py",
+        "src/environment/runtime_model.py",
+        "src/policies/action_masking.py",
         "src/policies/bco.py",
         "src/policies/common.py",
         "src/policies/flc.py",
@@ -161,7 +161,7 @@
     "same_interpreter_expected": false,
     "sys_executable": "/Users/hadi/Documents/GitHub/hoodie_sim_v2/.venv/bin/python",
     "torch_probe_interpreter": "/Users/hadi/Documents/GitHub/hoodie_sim_v2/.venv/bin/python",
-    "which_python3": "/opt/homebrew/bin/python3"
+    "which_python3": "/Users/hadi/Documents/GitHub/hoodie_sim_v2/.venv/bin/python3"
   },
   "real_trainer_candidate_summary": {
     "candidate_count": 6,
@@ -224,6 +224,7 @@
   "recommended_next_feature": "Repair Feature 060A audit scope hygiene",
   "remaining_blockers": [
     "branch",
+    "not_main",
     "base_branch_is_ancestor",
     "working_tree_paths_approved",
     "feature_branch_diff_paths_approved",
@@ -244,7 +245,7 @@
     "torch_import_available": true,
     "torch_pip_show_present": true,
     "torch_version": "2.12.1",
-    "torchrl_find_spec_available": false,
-    "torchrl_pip_show_present": false
+    "torchrl_find_spec_available": true,
+    "torchrl_pip_show_present": true
   }
 }

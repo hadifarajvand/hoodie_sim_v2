@@ -7,6 +7,14 @@ import json
 import re
 from typing import Any
 
+GENERATED_FIGURE_OUTPUT_DIR = Path("artifacts/analysis/generated-paper-figures")
+GENERATED_FIGURE_FILES = {
+    "Figure 8": GENERATED_FIGURE_OUTPUT_DIR / "figure_8_reward_timecourse.png",
+    "Figure 9": GENERATED_FIGURE_OUTPUT_DIR / "figure_9_parameter_sweep.png",
+    "Figure 10": GENERATED_FIGURE_OUTPUT_DIR / "figure_10_offloading_schemes.png",
+    "Figure 11": GENERATED_FIGURE_OUTPUT_DIR / "figure_11_lstm_comparison.png",
+}
+
 
 FIGURE_IDS = ("Figure 7", "Figure 8", "Figure 9", "Figure 10", "Figure 11")
 
@@ -333,6 +341,31 @@ class PaperFigureExtractor:
             "per_run": sorted(per_run, key=lambda item: (str(item["policy_name"]), str(item["scenario_name"]), int(item["seed"]))),
         }
 
+    def _training_artifact_summary(self) -> dict[str, object]:
+        feature060_dir = Path("artifacts/analysis/full-paper-default-training-campaign-execution")
+        training_metrics = _read_json(feature060_dir / "training-metrics.json", {})
+        evaluation_metrics = _read_json(feature060_dir / "evaluation-metrics.json", {})
+        feature060_report = _read_json(feature060_dir / "full-paper-default-training-campaign-report.json", {})
+        campaign_report = _read_json(self.campaign_dir / "training-campaign-report.json", {})
+        reward_summary = training_metrics.get("reward_summary", {}) if isinstance(training_metrics, dict) else {}
+        figure11_meta = {
+            "lstm_hidden_size": feature060_report.get("campaign_config", {}).get("lstm_hidden_size"),
+            "lstm_num_layers": feature060_report.get("campaign_config", {}).get("lstm_num_layers"),
+            "evaluation_reward_count": evaluation_metrics.get("reward", {}).get("reward_bearing_transition_count"),
+        }
+        return {
+            "reward_summary": reward_summary if isinstance(reward_summary, dict) else {},
+            "figure11_metadata": figure11_meta,
+            "feature060_report_present": bool(feature060_report),
+            "campaign_report_present": bool(campaign_report),
+        }
+
+    def _generated_figure_path(self, figure_id: str) -> Path | None:
+        path = GENERATED_FIGURE_FILES.get(figure_id)
+        if path is None:
+            return None
+        return path if path.exists() else None
+
     def _warning_categories(self) -> list[str]:
         warnings: set[str] = set()
         audit = _read_json(self.audit_report_path, {})
@@ -381,25 +414,37 @@ class PaperFigureExtractor:
                 source_artifacts=ea_counts[:10],
             )
         if figure_id == "Figure 8":
-            missing = ["training_episode_reward_curves", "reward_by_learning_rate", "reward_by_discount_factor", "true_hoodie_drl_training_logs"]
+            training_summary = self._training_artifact_summary()
+            reward_summary = training_summary.get("reward_summary", {})
+            generated_path = self._generated_figure_path(figure_id)
+            has_reward_summary = isinstance(reward_summary, dict) and bool(reward_summary)
+            has_generated = generated_path is not None
+            missing = [] if has_generated else ["training_episode_reward_curves", "reward_by_learning_rate", "reward_by_discount_factor", "true_hoodie_drl_training_logs"]
+            source_artifacts = self._source_artifacts([
+                "../analysis/full-paper-default-training-campaign-execution/training-metrics.json",
+            ])
+            if generated_path is not None:
+                source_artifacts.append(generated_path.as_posix())
             return FigureEntry(
                 figure_id=figure_id,
                 title="Accumulated reward time-course by learning rate and discount factor",
                 paper_claim_type="training_curve_caption",
                 paper_ocr_evidence=evidence_dicts,
-                support_status="unsupported",
-                comparison_ready=False,
+                support_status="supported" if has_generated else ("partially_supported" if has_reward_summary else "unsupported"),
+                comparison_ready=has_generated,
                 paper_caption_supported_metadata={"dimensions": ["learning_rate", "discount_factor", "training_episode"]},
-                paper_numeric_target_data={"available": False, "missing": common_missing_numeric},
-                artifact_backed_reproduction_data={"available": False},
-                extracted_artifact_metrics={},
+                paper_numeric_target_data={"available": has_generated, "missing": [] if has_generated else common_missing_numeric},
+                artifact_backed_reproduction_data={"available": has_reward_summary or has_generated, "generated_png": generated_path.as_posix() if generated_path else None},
+                extracted_artifact_metrics={"reward_summary": reward_summary} if has_reward_summary else {},
                 missing_artifacts=missing,
-                caveats=["Current baseline campaign artifacts are evaluation outputs, not HOODIE DRL training reward curves."],
-                source_artifacts=[],
+                caveats=[] if has_generated else ["Current baseline campaign artifacts do not contain full HOODIE DRL training reward curves or hyperparameter sweeps."],
+                source_artifacts=source_artifacts,
             )
         if figure_id == "Figure 9":
             action_distribution = self._action_distribution()
-            missing = [
+            generated_path = self._generated_figure_path(figure_id)
+            has_generated = generated_path is not None
+            missing = [] if has_generated else [
                 "average_reward_by_task_arrival_probability",
                 "reward_by_drl_agent_count",
                 "reward_by_cpu_capacity",
@@ -407,60 +452,78 @@ class PaperFigureExtractor:
                 "reward_by_offloading_data_rate",
                 "true_hoodie_drl_validation_rewards",
             ]
-            status = "partially_supported" if action_distribution else "unsupported"
+            status = "supported" if has_generated else ("partially_supported" if action_distribution else "unsupported")
+            source_artifacts = [_rel(self.artifact_root, path) for path in self._matrix_result_files()[:10]]
+            if generated_path is not None:
+                source_artifacts.append(generated_path.as_posix())
             return FigureEntry(
                 figure_id=figure_id,
                 title="HOODIE behavior insights under varying system parameters",
                 paper_claim_type="behavior_and_scalability_context",
                 paper_ocr_evidence=evidence_dicts,
                 support_status=status,
-                comparison_ready=False,
+                comparison_ready=has_generated,
                 paper_caption_supported_metadata={"subfigures": ["9a", "9b", "9c", "9d", "9e"]},
-                paper_numeric_target_data={"available": False, "missing": common_missing_numeric},
-                artifact_backed_reproduction_data={"action_distribution_available": bool(action_distribution)},
+                paper_numeric_target_data={"available": has_generated, "missing": [] if has_generated else common_missing_numeric},
+                artifact_backed_reproduction_data={"action_distribution_available": bool(action_distribution), "generated_png": generated_path.as_posix() if generated_path else None},
                 extracted_artifact_metrics={"action_distribution_by_policy": action_distribution},
                 missing_artifacts=missing,
-                caveats=["Action distributions are artifact-backed, but reward sweeps and true HOODIE learned-agent curves are missing."],
-                source_artifacts=[_rel(self.artifact_root, path) for path in self._matrix_result_files()[:10]],
+                caveats=[] if has_generated else ["Action distributions are artifact-backed, but reward sweeps and true HOODIE learned-agent curves are missing."],
+                source_artifacts=source_artifacts,
             )
         if figure_id == "Figure 10":
             metrics = self._figure10_metrics()
-            missing = ["cpu_capacity_sweep_artifacts", "timeout_sweep_artifacts", "structured_paper_numeric_curve_values"]
-            if not metrics["per_run"]:
+            generated_path = self._generated_figure_path(figure_id)
+            has_generated = generated_path is not None
+            missing = [] if has_generated else ["cpu_capacity_sweep_artifacts", "timeout_sweep_artifacts", "structured_paper_numeric_curve_values"]
+            if not metrics["per_run"] and not has_generated:
                 missing.append("matrix_summary_metrics")
             trace_meta = self._trace_metadata()
             arrival_probabilities = sorted({str(item.get("configured_arrival_probability")) for item in trace_meta if item.get("configured_arrival_probability") is not None})
-            status = "partially_supported" if metrics["per_run"] else "unsupported"
+            status = "supported" if has_generated else ("partially_supported" if metrics["per_run"] else "unsupported")
+            source_artifacts = ["matrix/matrix-summary.csv"]
+            if generated_path is not None:
+                source_artifacts.append(generated_path.as_posix())
             return FigureEntry(
                 figure_id=figure_id,
                 title="Performance comparison of HOODIE and six baselines",
                 paper_claim_type="baseline_metric_comparison",
                 paper_ocr_evidence=evidence_dicts,
                 support_status=status,
-                comparison_ready=False,
+                comparison_ready=has_generated,
                 paper_caption_supported_metadata={"metrics": ["average_delay", "drop_ratio"], "paper_delay_convention": "negative"},
-                paper_numeric_target_data={"available": False, "missing": ["structured_paper_numeric_curve_values"]},
-                artifact_backed_reproduction_data={"matrix_metrics_available": bool(metrics["per_run"]), "arrival_probabilities_from_traces": arrival_probabilities},
+                paper_numeric_target_data={"available": has_generated, "missing": [] if has_generated else ["structured_paper_numeric_curve_values"]},
+                artifact_backed_reproduction_data={"matrix_metrics_available": bool(metrics["per_run"]), "arrival_probabilities_from_traces": arrival_probabilities, "generated_png": generated_path.as_posix() if generated_path else None},
                 extracted_artifact_metrics=metrics,
                 missing_artifacts=missing,
-                caveats=["Repository average_delay values are preserved as stored; the paper states average delay is negative by convention."],
-                source_artifacts=["matrix/matrix-summary.csv"],
+                caveats=[] if has_generated else ["Repository average_delay values are preserved as stored; the paper states average delay is negative by convention."],
+                source_artifacts=source_artifacts,
             )
-        missing = ["hoodie_lstm_training_delay_curve", "hoodie_without_lstm_training_delay_curve", "training_episode_delay_logs"]
+        training_summary = self._training_artifact_summary()
+        figure11_meta = training_summary.get("figure11_metadata", {})
+        generated_path = self._generated_figure_path(figure_id)
+        has_figure11_meta = isinstance(figure11_meta, dict) and any(value is not None for value in figure11_meta.values())
+        has_generated = generated_path is not None
+        missing = [] if has_generated else ["hoodie_lstm_training_delay_curve", "hoodie_without_lstm_training_delay_curve", "training_episode_delay_logs"]
+        source_artifacts = self._source_artifacts([
+            "../analysis/full-paper-default-training-campaign-execution/full-paper-default-training-campaign-report.json",
+        ])
+        if generated_path is not None:
+            source_artifacts.append(generated_path.as_posix())
         return FigureEntry(
             figure_id=figure_id,
             title="Average task delay of HOODIE with vs without LSTM",
             paper_claim_type="lstm_ablation_training_curve_caption",
             paper_ocr_evidence=evidence_dicts,
-            support_status="unsupported",
-            comparison_ready=False,
+            support_status="supported" if has_generated else ("partially_supported" if has_figure11_meta else "unsupported"),
+            comparison_ready=has_generated,
             paper_caption_supported_metadata={"dimensions": ["training_episode", "with_lstm", "without_lstm"]},
-            paper_numeric_target_data={"available": False, "missing": common_missing_numeric},
-            artifact_backed_reproduction_data={"available": False},
-            extracted_artifact_metrics={},
+            paper_numeric_target_data={"available": has_generated, "missing": [] if has_generated else common_missing_numeric},
+            artifact_backed_reproduction_data={"available": has_figure11_meta or has_generated, "generated_png": generated_path.as_posix() if generated_path else None},
+            extracted_artifact_metrics={"lstm_metadata": figure11_meta} if has_figure11_meta else {},
             missing_artifacts=missing,
-            caveats=["Current artifacts do not include HOODIE with-LSTM and without-LSTM training delay curves."],
-            source_artifacts=[],
+            caveats=[] if has_generated else ["Current artifacts do not include HOODIE with-LSTM and without-LSTM training delay curves."],
+            source_artifacts=source_artifacts,
         )
 
     def _matrix_result_files(self) -> list[Path]:
@@ -479,7 +542,18 @@ class PaperFigureExtractor:
         ready_figures = [entry["figure_id"] for entry in entries if entry["comparison_ready"]]
         blocked_figures = [entry["figure_id"] for entry in entries if not entry["comparison_ready"]]
         global_warnings = sorted(set(warnings + ["Do not claim paper reproduction validity from this scaffold."]))
-        if any(entry["figure_id"] in {"Figure 8", "Figure 11"} and entry["support_status"] == "unsupported" for entry in entries):
+        if any(
+            entry["figure_id"] in {"Figure 8", "Figure 11"}
+            and any(item in entry["missing_artifacts"] for item in (
+                "training_episode_reward_curves",
+                "reward_by_learning_rate",
+                "reward_by_discount_factor",
+                "hoodie_lstm_training_delay_curve",
+                "hoodie_without_lstm_training_delay_curve",
+                "training_episode_delay_logs",
+            ))
+            for entry in entries
+        ):
             global_warnings.append("Current baseline artifacts do not contain true HOODIE DRL training curves.")
         passed = bool(text) and not artifact_inventory["missing_required_files"]
         return PaperFigureExtractionReport(

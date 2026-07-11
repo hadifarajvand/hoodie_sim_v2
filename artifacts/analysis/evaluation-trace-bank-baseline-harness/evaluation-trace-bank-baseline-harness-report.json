@@ -18,14 +18,14 @@
   },
   "behavior_safety_summary": {
     "no_checkpoint_binary_written": true,
-    "no_dependency_drift": true,
+    "no_dependency_drift": false,
     "no_environment_contract_drift": false,
     "no_full_campaign": true,
     "no_optimizer_execution": true,
     "no_paper_reproduction_claim": true,
     "no_performance_claim": true,
-    "no_policy_drift": false,
-    "no_prior_artifact_rewrite": false,
+    "no_policy_drift": true,
+    "no_prior_artifact_rewrite": true,
     "no_replay_mutation": true,
     "no_reward_timing_change": false,
     "no_training_execution": true
@@ -85,7 +85,7 @@
     {
       "details": "current branch != main",
       "name": "not_main",
-      "verified": true
+      "verified": false
     },
     {
       "details": "057-paper-default-pilot-training-run-complete is an ancestor of main",
@@ -125,28 +125,26 @@
     {
       "details": "git diff --name-only main...HEAD contains only approved Feature 058 paths",
       "name": "main_head_diff_approved",
-      "verified": false
+      "verified": true
     },
     {
       "details": "AGENTS.md is stable and not modified",
       "name": "agents_stable_not_modified",
-      "verified": false
+      "verified": true
     },
     {
       "details": ".specify/feature.json is absent from dirty/staged/committed paths",
       "name": "pointer_local_only_not_dirty_or_staged",
-      "verified": false
+      "verified": true
     }
   ],
   "recommended_next_feature": "Repair Feature 057 prerequisite evidence before Feature 058 can proceed",
   "remaining_blockers": [
     "branch",
+    "not_main",
     "main_contains_feature_057_complete",
     "feature_057_report_valid",
-    "working_tree_paths_approved",
-    "main_head_diff_approved",
-    "agents_stable_not_modified",
-    "pointer_local_only_not_dirty_or_staged"
+    "working_tree_paths_approved"
   ],
   "train_eval_separation_summary": {
     "evaluation_on_training_traces": false,

@@ -6662,11 +6662,11 @@
 ## Safety Summary
 {
   "no_checkpoint_binary_created": true,
-  "no_dependency_drift": false,
-  "no_environment_contract_drift": false,
+  "no_dependency_drift": true,
+  "no_environment_contract_drift": true,
   "no_paper_reproduction_claim": true,
   "no_policy_drift": false,
-  "no_prior_feature_artifact_rewrite": false,
+  "no_prior_feature_artifact_rewrite": true,
   "no_reward_timing_change": true,
   "no_uncontrolled_campaign_loop": true,
   "no_unsupported_superiority_claim": true

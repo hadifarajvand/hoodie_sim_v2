@@ -1,0 +1,15 @@
+policy_name,metric,value
+FLC,average_delay,1.5274043433298863
+FLC,drop_ratio,0.0
+RO,average_delay,2.885593220338983
+RO,drop_ratio,0.0
+HO,average_delay,3.1454352441613587
+HO,drop_ratio,0.0
+VO,average_delay,3.975054229934924
+VO,drop_ratio,0.0
+MLEO,average_delay,1.5274043433298863
+MLEO,drop_ratio,0.0
+BCO,average_delay,1.5274043433298863
+BCO,drop_ratio,0.0
+HOODIE,average_delay,3.975054229934924
+HOODIE,drop_ratio,0.0

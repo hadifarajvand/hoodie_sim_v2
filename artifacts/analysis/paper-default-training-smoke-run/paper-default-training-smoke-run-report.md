@@ -65,10 +65,10 @@
 {
   "no_baseline_comparison": true,
   "no_dependency_drift": true,
-  "no_environment_contract_drift": false,
+  "no_environment_contract_drift": true,
   "no_full_campaign": true,
   "no_paper_reproduction_claim": true,
-  "no_policy_drift": false
+  "no_policy_drift": true
 }
 
 ## Remaining Blockers

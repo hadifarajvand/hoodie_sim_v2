@@ -35,18 +35,25 @@
     },
     {
       "case_id": "case-horizontal-offload",
-      "classification": "blocked_by_runtime_topology_or_destination_fixture",
+      "classification": "match",
       "environment_summary": {
         "case_id": "case-horizontal-offload",
         "event_sequence": [
-          "selected_action:horizontal"
+          "created",
+          "selected_action",
+          "queued_public",
+          "transmission_started",
+          "transmission_completed",
+          "execution_started",
+          "execution_completed",
+          "reward_emitted"
         ],
         "notes": "environment public interface",
-        "reward_timing": null,
-        "terminal_status": null
+        "reward_timing": "terminal",
+        "terminal_status": "completed"
       },
       "finding_cause": "expected_scope_difference",
-      "notes": "horizontal_offload: blocked_by_runtime_topology_or_destination_fixture / expected_scope_difference",
+      "notes": "horizontal_offload: match / expected_scope_difference",
       "reference_summary": {
         "case_id": "case-horizontal-offload",
         "event_sequence": [
@@ -66,18 +73,25 @@
     },
     {
       "case_id": "case-vertical-offload",
-      "classification": "blocked_by_runtime_topology_or_destination_fixture",
+      "classification": "match",
       "environment_summary": {
         "case_id": "case-vertical-offload",
         "event_sequence": [
-          "selected_action:vertical"
+          "created",
+          "selected_action",
+          "offloaded_cloud",
+          "transmission_started",
+          "transmission_completed",
+          "execution_started",
+          "execution_completed",
+          "reward_emitted"
         ],
         "notes": "environment public interface",
-        "reward_timing": null,
-        "terminal_status": null
+        "reward_timing": "terminal",
+        "terminal_status": "completed"
       },
       "finding_cause": "expected_scope_difference",
-      "notes": "vertical_offload: blocked_by_runtime_topology_or_destination_fixture / expected_scope_difference",
+      "notes": "vertical_offload: match / expected_scope_difference",
       "reference_summary": {
         "case_id": "case-vertical-offload",
         "event_sequence": [
@@ -97,21 +111,18 @@
     },
     {
       "case_id": "case-timeout-drop",
-      "classification": "assumption_gap",
+      "classification": "divergence",
       "environment_summary": {
         "case_id": "case-timeout-drop",
         "event_sequence": [
-          "created",
-          "selected_action",
-          "dropped_timeout",
-          "reward_emitted"
+          "selected_action:local"
         ],
         "notes": "environment public interface",
-        "reward_timing": "terminal",
-        "terminal_status": "dropped"
+        "reward_timing": null,
+        "terminal_status": null
       },
-      "finding_cause": "expected_scope_difference",
-      "notes": "timeout_drop: assumption_gap / expected_scope_difference",
+      "finding_cause": "likely_environment_bug",
+      "notes": "timeout_drop: divergence / likely_environment_bug",
       "reference_summary": {
         "case_id": "case-timeout-drop",
         "event_sequence": [
@@ -207,32 +218,43 @@
     {
       "case_id": "case-horizontal-offload",
       "event_sequence": [
-        "selected_action:horizontal"
-      ],
-      "notes": "environment public interface",
-      "reward_timing": null,
-      "terminal_status": null
-    },
-    {
-      "case_id": "case-vertical-offload",
-      "event_sequence": [
-        "selected_action:vertical"
-      ],
-      "notes": "environment public interface",
-      "reward_timing": null,
-      "terminal_status": null
-    },
-    {
-      "case_id": "case-timeout-drop",
-      "event_sequence": [
         "created",
         "selected_action",
-        "dropped_timeout",
+        "queued_public",
+        "transmission_started",
+        "transmission_completed",
+        "execution_started",
+        "execution_completed",
         "reward_emitted"
       ],
       "notes": "environment public interface",
       "reward_timing": "terminal",
-      "terminal_status": "dropped"
+      "terminal_status": "completed"
+    },
+    {
+      "case_id": "case-vertical-offload",
+      "event_sequence": [
+        "created",
+        "selected_action",
+        "offloaded_cloud",
+        "transmission_started",
+        "transmission_completed",
+        "execution_started",
+        "execution_completed",
+        "reward_emitted"
+      ],
+      "notes": "environment public interface",
+      "reward_timing": "terminal",
+      "terminal_status": "completed"
+    },
+    {
+      "case_id": "case-timeout-drop",
+      "event_sequence": [
+        "selected_action:local"
+      ],
+      "notes": "environment public interface",
+      "reward_timing": null,
+      "terminal_status": null
     },
     {
       "case_id": "case-delayed-reward",
@@ -273,24 +295,24 @@
     {
       "case_id": "case-horizontal-offload",
       "cause": "expected_scope_difference",
-      "classification": "blocked_by_runtime_topology_or_destination_fixture",
-      "evidence": "case-horizontal-offload: blocked_by_runtime_topology_or_destination_fixture / expected_scope_difference (environment trace unsupported)",
+      "classification": "match",
+      "evidence": "case-horizontal-offload: match / expected_scope_difference (environment supported)",
       "finding_id": "F-case-horizontal-offload",
       "notes": ""
     },
     {
       "case_id": "case-vertical-offload",
       "cause": "expected_scope_difference",
-      "classification": "blocked_by_runtime_topology_or_destination_fixture",
-      "evidence": "case-vertical-offload: blocked_by_runtime_topology_or_destination_fixture / expected_scope_difference (environment trace unsupported)",
+      "classification": "match",
+      "evidence": "case-vertical-offload: match / expected_scope_difference (environment supported)",
       "finding_id": "F-case-vertical-offload",
       "notes": ""
     },
     {
       "case_id": "case-timeout-drop",
-      "cause": "expected_scope_difference",
-      "classification": "assumption_gap",
-      "evidence": "case-timeout-drop: assumption_gap / expected_scope_difference (environment supported)",
+      "cause": "likely_environment_bug",
+      "classification": "divergence",
+      "evidence": "case-timeout-drop: divergence / likely_environment_bug (environment trace unsupported)",
       "finding_id": "F-case-timeout-drop",
       "notes": ""
     },
@@ -313,12 +335,8 @@
   ],
   "instrumentation_gaps": [
     {
-      "case_id": "case-horizontal-offload",
-      "text": "Topology-backed destination required for offload actions"
-    },
-    {
-      "case_id": "case-vertical-offload",
-      "text": "Topology-backed destination required for offload actions"
+      "case_id": "case-timeout-drop",
+      "text": "Environment public interface did not expose enough trace evidence for full lifecycle comparison."
     }
   ],
   "metadata": {
@@ -422,7 +440,7 @@
     "approved_python": "/Users/hadi/Documents/GitHub/hoodie_sim_v2/src/.venvmac/bin/python",
     "case_count": 6,
     "output_root": "artifacts/analysis/differential-environment-audit",
-    "report_hash": "a11bb36a8889bf25933f97b3b1553063e01b256f805c2358ab39d9d6357951eb"
+    "report_hash": "1882be6e40f4c2e2fa7e70727629abb0421651234b9563daf1ec8912988e1d7b"
   },
   "toy_cases": [
     {
@@ -492,14 +510,5 @@
       "timeout_slot": 5
     }
   ],
-  "unsupported_cases": [
-    {
-      "case_id": "case-horizontal-offload",
-      "text": "Topology-backed destination required for offload actions"
-    },
-    {
-      "case_id": "case-vertical-offload",
-      "text": "Topology-backed destination required for offload actions"
-    }
-  ]
+  "unsupported_cases": []
 }

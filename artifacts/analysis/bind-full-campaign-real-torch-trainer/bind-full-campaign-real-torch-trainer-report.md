@@ -1,8 +1,8 @@
 # Bind Full Campaign Real Torch Trainer Report
 
 - feature_id: `060b-bind-full-campaign-real-torch-trainer`
-- final_verdict: `real_torch_trainer_binding_repair_passed`
-- recommended_next_feature: `Feature 061 — Campaign Result Integrity and Comparison Readiness Audit`
+- final_verdict: `feature_060a_prerequisite_blocked`
+- recommended_next_feature: `Repair Feature 060A audit prerequisite before Feature 060B can proceed`
 
 ## Real Trainer Binding Summary
 {
@@ -48,4 +48,14 @@
 }
 
 ## Remaining Blockers
-[]
+[
+  "feature_060a_audit_not_verified",
+  "branch",
+  "not_main",
+  "base_branch_is_ancestor",
+  "feature_060a_audit_verified",
+  "working_tree_paths_approved",
+  "feature_branch_diff_paths_approved",
+  "forbidden_paths_absent",
+  "behavior_drift_detected"
+]

@@ -1,0 +1,72 @@
+{
+  "bounded_constraint": "3 episodes x 200 slots",
+  "config_summary": {
+    "action_count": 22,
+    "batch_size": 64,
+    "config_hash": "9d537ad29abb096c",
+    "full_campaign_enabled": false,
+    "gamma": 0.99,
+    "horizontal_data_rate_mbps": 30.0,
+    "learning_rate": 7e-07,
+    "lookback_w": 10,
+    "state_dim": 74,
+    "vertical_data_rate_mbps": 10.0
+  },
+  "diagnostic_type": "completion_positive_diagnostic",
+  "episode_summaries": [
+    {
+      "completed_task_count": 91,
+      "dropped_task_count": 0,
+      "episode_id": 0,
+      "illegal_action_count": 0,
+      "loss_count": 32,
+      "pending_at_horizon_count": 1,
+      "transition_count": 95
+    },
+    {
+      "completed_task_count": 96,
+      "dropped_task_count": 0,
+      "episode_id": 1,
+      "illegal_action_count": 0,
+      "loss_count": 98,
+      "pending_at_horizon_count": 1,
+      "transition_count": 98
+    },
+    {
+      "completed_task_count": 93,
+      "dropped_task_count": 0,
+      "episode_id": 2,
+      "illegal_action_count": 0,
+      "loss_count": 96,
+      "pending_at_horizon_count": 1,
+      "transition_count": 96
+    }
+  ],
+  "interpretation": "Full-campaign readiness can proceed to final approval gate. Non-zero task completions observed in bounded diagnostic.",
+  "metrics": {
+    "average_reward": -7.6880733944954125,
+    "completed_task_count": 280,
+    "dropped_task_count": 0,
+    "episode_length": 200,
+    "episodes_completed": 3,
+    "illegal_action_count": 0,
+    "legal_action_only": true,
+    "loss_count": 226,
+    "loss_summary": {
+      "all_finite": true,
+      "max": 38.06584930419922,
+      "mean": 23.652129612137784,
+      "min": 9.997180938720703,
+      "no_inf": true,
+      "no_nan": true
+    },
+    "optimizer_step_count": 226,
+    "pending_at_horizon_count": 3,
+    "replay_size": 289,
+    "reward_count": 109,
+    "target_sync_count": 0,
+    "total_reward": -838.0,
+    "total_transition_count": 289
+  },
+  "verdict": "pass_completion_positive"
+}

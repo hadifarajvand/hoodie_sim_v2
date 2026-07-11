@@ -1,5 +1,8 @@
 from __future__ import annotations
 
+from importlib import import_module
+from typing import Any
+
 from .config import (
     CampaignConfig,
     CampaignSeedBundle,
@@ -10,6 +13,10 @@ from .config import (
 from .readiness import CampaignReadinessProbe, ReadinessProbeResult, run_campaign_readiness_probe
 from .replay import (
     ACTION_INDEX_TO_SEMANTICS,
+    ACTION_INDEX_TO_SEMANTICS_PAPER,
+    PAPER_ACTION_COUNT,
+    PAPER_LOOKBACK_W,
+    PAPER_STATE_DIM,
     ReplayBuffer,
     ReplayBatch,
     ReplayTransition,
@@ -24,18 +31,35 @@ from .report import (
     collect_prior_feature_gates_verified,
     write_campaign_report,
 )
-from .runner import CampaignExecutionResult, generate_campaign_artifacts, main, run_campaign
-from .trainer import (
-    DDQNTrainer,
-    EvaluationSummary,
-    PilotTrainingResult,
-    CampaignCheckpointMetadata,
-    run_campaign_evaluation,
-    run_pilot_training,
-)
+
+_LAZY_IMPORTS = {
+    "CampaignExecutionResult": (".runner", "CampaignExecutionResult"),
+    "generate_campaign_artifacts": (".runner", "generate_campaign_artifacts"),
+    "main": (".runner", "main"),
+    "run_campaign": (".runner", "run_campaign"),
+    "DDQNTrainer": (".trainer", "DDQNTrainer"),
+    "EvaluationSummary": (".trainer", "EvaluationSummary"),
+    "PilotTrainingResult": (".trainer", "PilotTrainingResult"),
+    "CampaignCheckpointMetadata": (".trainer", "CampaignCheckpointMetadata"),
+    "run_campaign_evaluation": (".trainer", "run_campaign_evaluation"),
+    "run_pilot_training": (".trainer", "run_pilot_training"),
+}
+
+
+def __getattr__(name: str) -> Any:
+    target = _LAZY_IMPORTS.get(name)
+    if target is None:
+        raise AttributeError(f"module {__name__!r} has no attribute {name!r}")
+    module_name, attr_name = target
+    module = import_module(module_name, __name__)
+    value = getattr(module, attr_name)
+    globals()[name] = value
+    return value
+
 
 __all__ = [
     "ACTION_INDEX_TO_SEMANTICS",
+    "ACTION_INDEX_TO_SEMANTICS_PAPER",
     "CampaignCheckpointMetadata",
     "CampaignConfig",
     "CampaignExecutionResult",

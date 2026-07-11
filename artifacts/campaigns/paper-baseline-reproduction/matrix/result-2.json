@@ -1,0 +1,12 @@
+{
+  "policy_name": "BCO",
+  "scenario_name": "moderate",
+  "seed": 31,
+  "final_metrics": {
+    "raw_records": [],
+    "completed_tasks": 10,
+    "dropped_tasks": 10,
+    "average_delay": 5.0,
+    "total_tasks": 20
+  }
+}

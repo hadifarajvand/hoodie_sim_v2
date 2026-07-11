@@ -1,0 +1,3418 @@
+[
+  {
+    "config": {
+      "action_count": 22,
+      "agent_count": 20,
+      "arrival_probability": 0.5,
+      "baseline_reference_set": [
+        "artifacts/analysis/baseline-revalidation-after-runtime-repair/baseline-revalidation-report.json",
+        "artifacts/analysis/baseline-revalidation-after-runtime-repair/baseline-revalidation-report.md"
+      ],
+      "batch_size": 64,
+      "cloud_cpu_ghz": 30.0,
+      "evaluation_episode_length": 110,
+      "evaluation_trace_bank_id": "full-training-eval-bank",
+      "feature_id": "041-full-training-reproduction-campaign",
+      "full_campaign_budget": 5000,
+      "full_campaign_enabled": false,
+      "full_campaign_episode_length": 110,
+      "full_campaign_flag_name": "--enable-full-campaign",
+      "gamma": 0.99,
+      "horizontal_data_rate_mbps": 30.0,
+      "learning_rate": 1e-09,
+      "local_cpu_ghz": 5.0,
+      "lookback_w": 10,
+      "lstm_enabled": true,
+      "lstm_hidden_size": 20,
+      "lstm_num_layers": 1,
+      "model_initialization_seed": 19,
+      "pilot_budget": {
+        "follow_up_episodes": 25,
+        "primary_episodes": 10
+      },
+      "pilot_episode_length": 110,
+      "public_cpu_ghz": 5.0,
+      "q_network_hidden_layers": [
+        1024,
+        1024,
+        1024
+      ],
+      "readiness_manual_approval_reference": "paper-figures-campaign",
+      "readiness_manual_approval_required": true,
+      "readiness_manual_approval_status": "approved",
+      "readiness_probe_episode_count": 3,
+      "readiness_probe_episode_length": 50,
+      "replay_memory_capacity": 10000,
+      "seed_bundle": {
+        "action_exploration_seed": 53,
+        "evaluation_trace_generation_seed": 43,
+        "model_initialization_seed": 19,
+        "python_seed": 59,
+        "readiness_probe_seed": 31,
+        "replay_sampling_seed": 47,
+        "torch_seed": 61,
+        "training_trace_generation_seed": 41
+      },
+      "state_dim": 74,
+      "sweep_metadata": {
+        "learning_rate": 1e-09,
+        "sweep_type": "learning_rate"
+      },
+      "target_update_contract": {
+        "allowed_units": [
+          "optimizer_step",
+          "environment_step",
+          "replay_insertion",
+          "episode"
+        ],
+        "approval_status": "user_approved_campaign_assumption",
+        "paper_evidence_status": "ambiguous_not_explicitly_defined",
+        "target_update_unit": "optimizer_step",
+        "update_frequency": 2000
+      },
+      "task_size_max_mbits": 5.0,
+      "task_size_min_mbits": 2.0,
+      "timeout_slots": 20,
+      "training_trace_bank_id": "full-training-train-bank",
+      "vertical_data_rate_mbps": 10.0
+    },
+    "experiment_label": "alpha_lr=1e-09",
+    "result": {
+      "checkpoint_metadata": {
+        "config_hash": "2e264ac5026987d057b6411acfc2590c310183a7e4b8949572ba9a953b064203",
+        "eval_trace_bank_id": "full-training-eval-bank",
+        "feature_id": "041-full-training-reproduction-campaign",
+        "full_campaign_enabled": false,
+        "optimizer_step_count": 46,
+        "replay_size": 109,
+        "seed_bundle": {
+          "action_exploration_seed": 53,
+          "evaluation_trace_generation_seed": 43,
+          "model_initialization_seed": 19,
+          "python_seed": 59,
+          "readiness_probe_seed": 31,
+          "replay_sampling_seed": 47,
+          "torch_seed": 61,
+          "training_trace_generation_seed": 41
+        },
+        "stage": "pilot_training",
+        "target_update_unit": "optimizer_step",
+        "train_trace_bank_id": "full-training-train-bank"
+      },
+      "checkpoint_schema_valid": true,
+      "delayed_reward_contract_preserved": true,
+      "episodes_completed": 2,
+      "episodes_requested": 2,
+      "evaluation_summary": {
+        "candidate_reproduction_supported": false,
+        "completed_task_count": 151,
+        "completion_rate_by_destination": {
+          "local": 1.0
+        },
+        "drop_ratio": 0.0,
+        "dropped_task_count": 0,
+        "evaluation_episode_count": 3,
+        "evaluation_on_training_traces": false,
+        "mean_completion_delay": 5.423841059602649,
+        "mean_reward": -323.3333333333333,
+        "mean_reward_across_agents": -48.5,
+        "per_agent_reward": {
+          "1": -61.0,
+          "10": -26.0,
+          "11": -44.0,
+          "12": -20.0,
+          "13": -61.0,
+          "14": -43.0,
+          "15": -59.0,
+          "16": -50.0,
+          "17": -45.0,
+          "18": -23.0,
+          "19": -75.0,
+          "2": -47.0,
+          "20": -49.0,
+          "3": -48.0,
+          "4": -69.0,
+          "5": -53.0,
+          "6": -44.0,
+          "7": -46.0,
+          "8": -63.0,
+          "9": -44.0
+        },
+        "reward_bearing_transition_count": 124,
+        "reward_per_episode": [
+          -337.0,
+          -301.0,
+          -332.0
+        ],
+        "terminal_transition_count": 124,
+        "topology_usage_stats": {
+          "horizontal": 156
+        },
+        "trace_bank_disjoint": true,
+        "trace_bank_ids": {
+          "evaluation": "full-training-eval-bank",
+          "training": "full-training-train-bank"
+        },
+        "trace_ids": [
+          "hoodie-43",
+          "hoodie-44",
+          "hoodie-45"
+        ]
+      },
+      "full_campaign_block_reason": "full campaign not requested during pilot",
+      "full_campaign_executed": false,
+      "legal_action_only": true,
+      "loss_is_finite": true,
+      "loss_value": 23.948375701904297,
+      "optimizer_step_count": 46,
+      "pending_at_horizon_preserved": true,
+      "pilot_training_executed": true,
+      "replay_size": 109,
+      "stage": "pilot_training",
+      "target_sync_count": 0,
+      "train_eval_trace_banks_disjoint": true
+    },
+    "training_metrics": {
+      "action_counts": [
+        {
+          "3": 27,
+          "4": 12,
+          "8": 2,
+          "10": 13
+        },
+        {
+          "3": 22,
+          "4": 8,
+          "8": 3,
+          "10": 22
+        }
+      ],
+      "average_delays": [
+        0.0,
+        0.0
+      ],
+      "completed_counts": [
+        49,
+        51
+      ],
+      "completion_delays": [],
+      "drop_ratios": [
+        0.0,
+        0.0
+      ],
+      "dropped_counts": [
+        0,
+        0
+      ],
+      "episode_rewards": [
+        -332.0,
+        -327.0
+      ],
+      "loss_values": [
+        18.536619186401367,
+        18.536617279052734,
+        19.30801773071289,
+        19.30801773071289,
+        17.53388023376465,
+        18.303516387939453,
+        16.04083251953125,
+        18.69797706604004,
+        20.744985580444336,
+        25.174022674560547,
+        24.404544830322266,
+        20.994199752807617,
+        20.740489959716797,
+        24.169612884521484,
+        19.69044303894043,
+        23.39589500427246,
+        21.60847282409668,
+        15.613883972167969,
+        22.0123291015625,
+        21.767545700073242,
+        20.739681243896484,
+        24.328428268432617,
+        23.33880043029785,
+        24.419265747070312,
+        26.14046287536621,
+        26.157617568969727,
+        24.390113830566406,
+        23.1871280670166,
+        26.219512939453125,
+        19.939054489135742,
+        24.095508575439453,
+        26.676860809326172,
+        19.860328674316406,
+        22.356964111328125,
+        19.179656982421875,
+        27.20729637145996,
+        24.149879455566406,
+        27.747257232666016,
+        23.084693908691406,
+        17.79207420349121,
+        27.554710388183594,
+        20.981300354003906,
+        23.564735412597656,
+        27.423709869384766,
+        20.85997200012207,
+        23.948375701904297
+      ],
+      "mean_reward_across_agents": [
+        -16.6,
+        -16.35
+      ],
+      "per_agent_rewards": [
+        {
+          "1": -21.0,
+          "10": -8.0,
+          "11": -18.0,
+          "12": -14.0,
+          "13": -12.0,
+          "14": -30.0,
+          "15": -24.0,
+          "16": -13.0,
+          "17": -14.0,
+          "18": -16.0,
+          "19": -18.0,
+          "2": -16.0,
+          "20": -25.0,
+          "3": -13.0,
+          "4": -24.0,
+          "5": -8.0,
+          "6": -20.0,
+          "7": -8.0,
+          "8": -5.0,
+          "9": -25.0
+        },
+        {
+          "1": -24.0,
+          "10": -8.0,
+          "11": -5.0,
+          "12": -33.0,
+          "13": -27.0,
+          "14": -28.0,
+          "15": -20.0,
+          "16": -24.0,
+          "17": -16.0,
+          "18": -15.0,
+          "19": -15.0,
+          "2": -12.0,
+          "20": -8.0,
+          "3": -8.0,
+          "4": -12.0,
+          "5": -25.0,
+          "6": -14.0,
+          "7": -5.0,
+          "8": -5.0,
+          "9": -23.0
+        }
+      ],
+      "total_training_episodes": 2
+    }
+  },
+  {
+    "config": {
+      "action_count": 22,
+      "agent_count": 20,
+      "arrival_probability": 0.5,
+      "baseline_reference_set": [
+        "artifacts/analysis/baseline-revalidation-after-runtime-repair/baseline-revalidation-report.json",
+        "artifacts/analysis/baseline-revalidation-after-runtime-repair/baseline-revalidation-report.md"
+      ],
+      "batch_size": 64,
+      "cloud_cpu_ghz": 30.0,
+      "evaluation_episode_length": 110,
+      "evaluation_trace_bank_id": "full-training-eval-bank",
+      "feature_id": "041-full-training-reproduction-campaign",
+      "full_campaign_budget": 5000,
+      "full_campaign_enabled": false,
+      "full_campaign_episode_length": 110,
+      "full_campaign_flag_name": "--enable-full-campaign",
+      "gamma": 0.99,
+      "horizontal_data_rate_mbps": 30.0,
+      "learning_rate": 5e-09,
+      "local_cpu_ghz": 5.0,
+      "lookback_w": 10,
+      "lstm_enabled": true,
+      "lstm_hidden_size": 20,
+      "lstm_num_layers": 1,
+      "model_initialization_seed": 19,
+      "pilot_budget": {
+        "follow_up_episodes": 25,
+        "primary_episodes": 10
+      },
+      "pilot_episode_length": 110,
+      "public_cpu_ghz": 5.0,
+      "q_network_hidden_layers": [
+        1024,
+        1024,
+        1024
+      ],
+      "readiness_manual_approval_reference": "paper-figures-campaign",
+      "readiness_manual_approval_required": true,
+      "readiness_manual_approval_status": "approved",
+      "readiness_probe_episode_count": 3,
+      "readiness_probe_episode_length": 50,
+      "replay_memory_capacity": 10000,
+      "seed_bundle": {
+        "action_exploration_seed": 53,
+        "evaluation_trace_generation_seed": 43,
+        "model_initialization_seed": 19,
+        "python_seed": 59,
+        "readiness_probe_seed": 31,
+        "replay_sampling_seed": 47,
+        "torch_seed": 61,
+        "training_trace_generation_seed": 41
+      },
+      "state_dim": 74,
+      "sweep_metadata": {
+        "learning_rate": 5e-09,
+        "sweep_type": "learning_rate"
+      },
+      "target_update_contract": {
+        "allowed_units": [
+          "optimizer_step",
+          "environment_step",
+          "replay_insertion",
+          "episode"
+        ],
+        "approval_status": "user_approved_campaign_assumption",
+        "paper_evidence_status": "ambiguous_not_explicitly_defined",
+        "target_update_unit": "optimizer_step",
+        "update_frequency": 2000
+      },
+      "task_size_max_mbits": 5.0,
+      "task_size_min_mbits": 2.0,
+      "timeout_slots": 20,
+      "training_trace_bank_id": "full-training-train-bank",
+      "vertical_data_rate_mbps": 10.0
+    },
+    "experiment_label": "alpha_lr=5e-09",
+    "result": {
+      "checkpoint_metadata": {
+        "config_hash": "1da2ce5448cb6563da19e463964a6de39cc772936c8bacf4fd956ba2887149cf",
+        "eval_trace_bank_id": "full-training-eval-bank",
+        "feature_id": "041-full-training-reproduction-campaign",
+        "full_campaign_enabled": false,
+        "optimizer_step_count": 46,
+        "replay_size": 109,
+        "seed_bundle": {
+          "action_exploration_seed": 53,
+          "evaluation_trace_generation_seed": 43,
+          "model_initialization_seed": 19,
+          "python_seed": 59,
+          "readiness_probe_seed": 31,
+          "replay_sampling_seed": 47,
+          "torch_seed": 61,
+          "training_trace_generation_seed": 41
+        },
+        "stage": "pilot_training",
+        "target_update_unit": "optimizer_step",
+        "train_trace_bank_id": "full-training-train-bank"
+      },
+      "checkpoint_schema_valid": true,
+      "delayed_reward_contract_preserved": true,
+      "episodes_completed": 2,
+      "episodes_requested": 2,
+      "evaluation_summary": {
+        "candidate_reproduction_supported": false,
+        "completed_task_count": 151,
+        "completion_rate_by_destination": {
+          "local": 1.0
+        },
+        "drop_ratio": 0.0,
+        "dropped_task_count": 0,
+        "evaluation_episode_count": 3,
+        "evaluation_on_training_traces": false,
+        "mean_completion_delay": 5.423841059602649,
+        "mean_reward": -323.3333333333333,
+        "mean_reward_across_agents": -48.5,
+        "per_agent_reward": {
+          "1": -61.0,
+          "10": -26.0,
+          "11": -44.0,
+          "12": -20.0,
+          "13": -61.0,
+          "14": -43.0,
+          "15": -59.0,
+          "16": -50.0,
+          "17": -45.0,
+          "18": -23.0,
+          "19": -75.0,
+          "2": -47.0,
+          "20": -49.0,
+          "3": -48.0,
+          "4": -69.0,
+          "5": -53.0,
+          "6": -44.0,
+          "7": -46.0,
+          "8": -63.0,
+          "9": -44.0
+        },
+        "reward_bearing_transition_count": 124,
+        "reward_per_episode": [
+          -337.0,
+          -301.0,
+          -332.0
+        ],
+        "terminal_transition_count": 124,
+        "topology_usage_stats": {
+          "horizontal": 156
+        },
+        "trace_bank_disjoint": true,
+        "trace_bank_ids": {
+          "evaluation": "full-training-eval-bank",
+          "training": "full-training-train-bank"
+        },
+        "trace_ids": [
+          "hoodie-43",
+          "hoodie-44",
+          "hoodie-45"
+        ]
+      },
+      "full_campaign_block_reason": "full campaign not requested during pilot",
+      "full_campaign_executed": false,
+      "legal_action_only": true,
+      "loss_is_finite": true,
+      "loss_value": 23.94786262512207,
+      "optimizer_step_count": 46,
+      "pending_at_horizon_preserved": true,
+      "pilot_training_executed": true,
+      "replay_size": 109,
+      "stage": "pilot_training",
+      "target_sync_count": 0,
+      "train_eval_trace_banks_disjoint": true
+    },
+    "training_metrics": {
+      "action_counts": [
+        {
+          "3": 27,
+          "4": 12,
+          "8": 2,
+          "10": 13
+        },
+        {
+          "3": 22,
+          "4": 8,
+          "8": 3,
+          "10": 22
+        }
+      ],
+      "average_delays": [
+        0.0,
+        0.0
+      ],
+      "completed_counts": [
+        49,
+        51
+      ],
+      "completion_delays": [],
+      "drop_ratios": [
+        0.0,
+        0.0
+      ],
+      "dropped_counts": [
+        0,
+        0
+      ],
+      "episode_rewards": [
+        -332.0,
+        -327.0
+      ],
+      "loss_values": [
+        18.536619186401367,
+        18.53660774230957,
+        19.308000564575195,
+        19.3079891204834,
+        17.533845901489258,
+        18.303470611572266,
+        16.040782928466797,
+        18.697914123535156,
+        20.744909286499023,
+        25.17391586303711,
+        24.404434204101562,
+        20.99410057067871,
+        20.740375518798828,
+        24.169471740722656,
+        19.690311431884766,
+        23.395736694335938,
+        21.608322143554688,
+        15.613741874694824,
+        22.012149810791016,
+        21.767362594604492,
+        20.73948097229004,
+        24.328187942504883,
+        23.33856773376465,
+        24.41901969909668,
+        26.14019775390625,
+        26.157318115234375,
+        24.389822006225586,
+        23.186840057373047,
+        26.21917724609375,
+        19.938758850097656,
+        24.095151901245117,
+        26.67648696899414,
+        19.86001968383789,
+        22.356605529785156,
+        19.179306030273438,
+        27.206865310668945,
+        24.149471282958984,
+        27.746795654296875,
+        23.084257125854492,
+        17.791696548461914,
+        27.554176330566406,
+        20.980850219726562,
+        23.56422233581543,
+        27.423168182373047,
+        20.859512329101562,
+        23.94786262512207
+      ],
+      "mean_reward_across_agents": [
+        -16.6,
+        -16.35
+      ],
+      "per_agent_rewards": [
+        {
+          "1": -21.0,
+          "10": -8.0,
+          "11": -18.0,
+          "12": -14.0,
+          "13": -12.0,
+          "14": -30.0,
+          "15": -24.0,
+          "16": -13.0,
+          "17": -14.0,
+          "18": -16.0,
+          "19": -18.0,
+          "2": -16.0,
+          "20": -25.0,
+          "3": -13.0,
+          "4": -24.0,
+          "5": -8.0,
+          "6": -20.0,
+          "7": -8.0,
+          "8": -5.0,
+          "9": -25.0
+        },
+        {
+          "1": -24.0,
+          "10": -8.0,
+          "11": -5.0,
+          "12": -33.0,
+          "13": -27.0,
+          "14": -28.0,
+          "15": -20.0,
+          "16": -24.0,
+          "17": -16.0,
+          "18": -15.0,
+          "19": -15.0,
+          "2": -12.0,
+          "20": -8.0,
+          "3": -8.0,
+          "4": -12.0,
+          "5": -25.0,
+          "6": -14.0,
+          "7": -5.0,
+          "8": -5.0,
+          "9": -23.0
+        }
+      ],
+      "total_training_episodes": 2
+    }
+  },
+  {
+    "config": {
+      "action_count": 22,
+      "agent_count": 20,
+      "arrival_probability": 0.5,
+      "baseline_reference_set": [
+        "artifacts/analysis/baseline-revalidation-after-runtime-repair/baseline-revalidation-report.json",
+        "artifacts/analysis/baseline-revalidation-after-runtime-repair/baseline-revalidation-report.md"
+      ],
+      "batch_size": 64,
+      "cloud_cpu_ghz": 30.0,
+      "evaluation_episode_length": 110,
+      "evaluation_trace_bank_id": "full-training-eval-bank",
+      "feature_id": "041-full-training-reproduction-campaign",
+      "full_campaign_budget": 5000,
+      "full_campaign_enabled": false,
+      "full_campaign_episode_length": 110,
+      "full_campaign_flag_name": "--enable-full-campaign",
+      "gamma": 0.99,
+      "horizontal_data_rate_mbps": 30.0,
+      "learning_rate": 1e-08,
+      "local_cpu_ghz": 5.0,
+      "lookback_w": 10,
+      "lstm_enabled": true,
+      "lstm_hidden_size": 20,
+      "lstm_num_layers": 1,
+      "model_initialization_seed": 19,
+      "pilot_budget": {
+        "follow_up_episodes": 25,
+        "primary_episodes": 10
+      },
+      "pilot_episode_length": 110,
+      "public_cpu_ghz": 5.0,
+      "q_network_hidden_layers": [
+        1024,
+        1024,
+        1024
+      ],
+      "readiness_manual_approval_reference": "paper-figures-campaign",
+      "readiness_manual_approval_required": true,
+      "readiness_manual_approval_status": "approved",
+      "readiness_probe_episode_count": 3,
+      "readiness_probe_episode_length": 50,
+      "replay_memory_capacity": 10000,
+      "seed_bundle": {
+        "action_exploration_seed": 53,
+        "evaluation_trace_generation_seed": 43,
+        "model_initialization_seed": 19,
+        "python_seed": 59,
+        "readiness_probe_seed": 31,
+        "replay_sampling_seed": 47,
+        "torch_seed": 61,
+        "training_trace_generation_seed": 41
+      },
+      "state_dim": 74,
+      "sweep_metadata": {
+        "learning_rate": 1e-08,
+        "sweep_type": "learning_rate"
+      },
+      "target_update_contract": {
+        "allowed_units": [
+          "optimizer_step",
+          "environment_step",
+          "replay_insertion",
+          "episode"
+        ],
+        "approval_status": "user_approved_campaign_assumption",
+        "paper_evidence_status": "ambiguous_not_explicitly_defined",
+        "target_update_unit": "optimizer_step",
+        "update_frequency": 2000
+      },
+      "task_size_max_mbits": 5.0,
+      "task_size_min_mbits": 2.0,
+      "timeout_slots": 20,
+      "training_trace_bank_id": "full-training-train-bank",
+      "vertical_data_rate_mbps": 10.0
+    },
+    "experiment_label": "alpha_lr=1e-08",
+    "result": {
+      "checkpoint_metadata": {
+        "config_hash": "34f953f025770bdec6a80b4500c450c24caf4c2db33c94b7d972ddbfc4da9faf",
+        "eval_trace_bank_id": "full-training-eval-bank",
+        "feature_id": "041-full-training-reproduction-campaign",
+        "full_campaign_enabled": false,
+        "optimizer_step_count": 46,
+        "replay_size": 109,
+        "seed_bundle": {
+          "action_exploration_seed": 53,
+          "evaluation_trace_generation_seed": 43,
+          "model_initialization_seed": 19,
+          "python_seed": 59,
+          "readiness_probe_seed": 31,
+          "replay_sampling_seed": 47,
+          "torch_seed": 61,
+          "training_trace_generation_seed": 41
+        },
+        "stage": "pilot_training",
+        "target_update_unit": "optimizer_step",
+        "train_trace_bank_id": "full-training-train-bank"
+      },
+      "checkpoint_schema_valid": true,
+      "delayed_reward_contract_preserved": true,
+      "episodes_completed": 2,
+      "episodes_requested": 2,
+      "evaluation_summary": {
+        "candidate_reproduction_supported": false,
+        "completed_task_count": 151,
+        "completion_rate_by_destination": {
+          "local": 1.0
+        },
+        "drop_ratio": 0.0,
+        "dropped_task_count": 0,
+        "evaluation_episode_count": 3,
+        "evaluation_on_training_traces": false,
+        "mean_completion_delay": 5.423841059602649,
+        "mean_reward": -323.3333333333333,
+        "mean_reward_across_agents": -48.5,
+        "per_agent_reward": {
+          "1": -61.0,
+          "10": -26.0,
+          "11": -44.0,
+          "12": -20.0,
+          "13": -61.0,
+          "14": -43.0,
+          "15": -59.0,
+          "16": -50.0,
+          "17": -45.0,
+          "18": -23.0,
+          "19": -75.0,
+          "2": -47.0,
+          "20": -49.0,
+          "3": -48.0,
+          "4": -69.0,
+          "5": -53.0,
+          "6": -44.0,
+          "7": -46.0,
+          "8": -63.0,
+          "9": -44.0
+        },
+        "reward_bearing_transition_count": 124,
+        "reward_per_episode": [
+          -337.0,
+          -301.0,
+          -332.0
+        ],
+        "terminal_transition_count": 124,
+        "topology_usage_stats": {
+          "horizontal": 156
+        },
+        "trace_bank_disjoint": true,
+        "trace_bank_ids": {
+          "evaluation": "full-training-eval-bank",
+          "training": "full-training-train-bank"
+        },
+        "trace_ids": [
+          "hoodie-43",
+          "hoodie-44",
+          "hoodie-45"
+        ]
+      },
+      "full_campaign_block_reason": "full campaign not requested during pilot",
+      "full_campaign_executed": false,
+      "legal_action_only": true,
+      "loss_is_finite": true,
+      "loss_value": 23.947221755981445,
+      "optimizer_step_count": 46,
+      "pending_at_horizon_preserved": true,
+      "pilot_training_executed": true,
+      "replay_size": 109,
+      "stage": "pilot_training",
+      "target_sync_count": 0,
+      "train_eval_trace_banks_disjoint": true
+    },
+    "training_metrics": {
+      "action_counts": [
+        {
+          "3": 27,
+          "4": 12,
+          "8": 2,
+          "10": 13
+        },
+        {
+          "3": 22,
+          "4": 8,
+          "8": 3,
+          "10": 22
+        }
+      ],
+      "average_delays": [
+        0.0,
+        0.0
+      ],
+      "completed_counts": [
+        49,
+        51
+      ],
+      "completion_delays": [],
+      "drop_ratios": [
+        0.0,
+        0.0
+      ],
+      "dropped_counts": [
+        0,
+        0
+      ],
+      "episode_rewards": [
+        -332.0,
+        -327.0
+      ],
+      "loss_values": [
+        18.536619186401367,
+        18.536596298217773,
+        19.3079776763916,
+        19.307954788208008,
+        17.53380584716797,
+        18.303415298461914,
+        16.040725708007812,
+        18.697834014892578,
+        20.744821548461914,
+        25.17379379272461,
+        24.404298782348633,
+        20.99398422241211,
+        20.740238189697266,
+        24.169300079345703,
+        19.69015884399414,
+        23.395549774169922,
+        21.608137130737305,
+        15.613571166992188,
+        22.011940002441406,
+        21.767141342163086,
+        20.739240646362305,
+        24.327899932861328,
+        23.33829116821289,
+        24.418724060058594,
+        26.139877319335938,
+        26.15695571899414,
+        24.389469146728516,
+        23.186481475830078,
+        26.218761444091797,
+        19.938396453857422,
+        24.094717025756836,
+        26.676029205322266,
+        19.859638214111328,
+        22.356172561645508,
+        19.178876876831055,
+        27.20633316040039,
+        24.148963928222656,
+        27.746227264404297,
+        23.083715438842773,
+        17.79123306274414,
+        27.553512573242188,
+        20.980297088623047,
+        23.563587188720703,
+        27.422500610351562,
+        20.858938217163086,
+        23.947221755981445
+      ],
+      "mean_reward_across_agents": [
+        -16.6,
+        -16.35
+      ],
+      "per_agent_rewards": [
+        {
+          "1": -21.0,
+          "10": -8.0,
+          "11": -18.0,
+          "12": -14.0,
+          "13": -12.0,
+          "14": -30.0,
+          "15": -24.0,
+          "16": -13.0,
+          "17": -14.0,
+          "18": -16.0,
+          "19": -18.0,
+          "2": -16.0,
+          "20": -25.0,
+          "3": -13.0,
+          "4": -24.0,
+          "5": -8.0,
+          "6": -20.0,
+          "7": -8.0,
+          "8": -5.0,
+          "9": -25.0
+        },
+        {
+          "1": -24.0,
+          "10": -8.0,
+          "11": -5.0,
+          "12": -33.0,
+          "13": -27.0,
+          "14": -28.0,
+          "15": -20.0,
+          "16": -24.0,
+          "17": -16.0,
+          "18": -15.0,
+          "19": -15.0,
+          "2": -12.0,
+          "20": -8.0,
+          "3": -8.0,
+          "4": -12.0,
+          "5": -25.0,
+          "6": -14.0,
+          "7": -5.0,
+          "8": -5.0,
+          "9": -23.0
+        }
+      ],
+      "total_training_episodes": 2
+    }
+  },
+  {
+    "config": {
+      "action_count": 22,
+      "agent_count": 20,
+      "arrival_probability": 0.5,
+      "baseline_reference_set": [
+        "artifacts/analysis/baseline-revalidation-after-runtime-repair/baseline-revalidation-report.json",
+        "artifacts/analysis/baseline-revalidation-after-runtime-repair/baseline-revalidation-report.md"
+      ],
+      "batch_size": 64,
+      "cloud_cpu_ghz": 30.0,
+      "evaluation_episode_length": 110,
+      "evaluation_trace_bank_id": "full-training-eval-bank",
+      "feature_id": "041-full-training-reproduction-campaign",
+      "full_campaign_budget": 5000,
+      "full_campaign_enabled": false,
+      "full_campaign_episode_length": 110,
+      "full_campaign_flag_name": "--enable-full-campaign",
+      "gamma": 0.99,
+      "horizontal_data_rate_mbps": 30.0,
+      "learning_rate": 1e-07,
+      "local_cpu_ghz": 5.0,
+      "lookback_w": 10,
+      "lstm_enabled": true,
+      "lstm_hidden_size": 20,
+      "lstm_num_layers": 1,
+      "model_initialization_seed": 19,
+      "pilot_budget": {
+        "follow_up_episodes": 25,
+        "primary_episodes": 10
+      },
+      "pilot_episode_length": 110,
+      "public_cpu_ghz": 5.0,
+      "q_network_hidden_layers": [
+        1024,
+        1024,
+        1024
+      ],
+      "readiness_manual_approval_reference": "paper-figures-campaign",
+      "readiness_manual_approval_required": true,
+      "readiness_manual_approval_status": "approved",
+      "readiness_probe_episode_count": 3,
+      "readiness_probe_episode_length": 50,
+      "replay_memory_capacity": 10000,
+      "seed_bundle": {
+        "action_exploration_seed": 53,
+        "evaluation_trace_generation_seed": 43,
+        "model_initialization_seed": 19,
+        "python_seed": 59,
+        "readiness_probe_seed": 31,
+        "replay_sampling_seed": 47,
+        "torch_seed": 61,
+        "training_trace_generation_seed": 41
+      },
+      "state_dim": 74,
+      "sweep_metadata": {
+        "learning_rate": 1e-07,
+        "sweep_type": "learning_rate"
+      },
+      "target_update_contract": {
+        "allowed_units": [
+          "optimizer_step",
+          "environment_step",
+          "replay_insertion",
+          "episode"
+        ],
+        "approval_status": "user_approved_campaign_assumption",
+        "paper_evidence_status": "ambiguous_not_explicitly_defined",
+        "target_update_unit": "optimizer_step",
+        "update_frequency": 2000
+      },
+      "task_size_max_mbits": 5.0,
+      "task_size_min_mbits": 2.0,
+      "timeout_slots": 20,
+      "training_trace_bank_id": "full-training-train-bank",
+      "vertical_data_rate_mbps": 10.0
+    },
+    "experiment_label": "alpha_lr=1e-07",
+    "result": {
+      "checkpoint_metadata": {
+        "config_hash": "00d78d236e52c5ebd6f34be62a7f1b16e666920e524bbc2f5df638ec3735595a",
+        "eval_trace_bank_id": "full-training-eval-bank",
+        "feature_id": "041-full-training-reproduction-campaign",
+        "full_campaign_enabled": false,
+        "optimizer_step_count": 46,
+        "replay_size": 109,
+        "seed_bundle": {
+          "action_exploration_seed": 53,
+          "evaluation_trace_generation_seed": 43,
+          "model_initialization_seed": 19,
+          "python_seed": 59,
+          "readiness_probe_seed": 31,
+          "replay_sampling_seed": 47,
+          "torch_seed": 61,
+          "training_trace_generation_seed": 41
+        },
+        "stage": "pilot_training",
+        "target_update_unit": "optimizer_step",
+        "train_trace_bank_id": "full-training-train-bank"
+      },
+      "checkpoint_schema_valid": true,
+      "delayed_reward_contract_preserved": true,
+      "episodes_completed": 2,
+      "episodes_requested": 2,
+      "evaluation_summary": {
+        "candidate_reproduction_supported": false,
+        "completed_task_count": 151,
+        "completion_rate_by_destination": {
+          "local": 1.0
+        },
+        "drop_ratio": 0.0,
+        "dropped_task_count": 0,
+        "evaluation_episode_count": 3,
+        "evaluation_on_training_traces": false,
+        "mean_completion_delay": 5.423841059602649,
+        "mean_reward": -323.3333333333333,
+        "mean_reward_across_agents": -48.5,
+        "per_agent_reward": {
+          "1": -61.0,
+          "10": -26.0,
+          "11": -44.0,
+          "12": -20.0,
+          "13": -61.0,
+          "14": -43.0,
+          "15": -59.0,
+          "16": -50.0,
+          "17": -45.0,
+          "18": -23.0,
+          "19": -75.0,
+          "2": -47.0,
+          "20": -49.0,
+          "3": -48.0,
+          "4": -69.0,
+          "5": -53.0,
+          "6": -44.0,
+          "7": -46.0,
+          "8": -63.0,
+          "9": -44.0
+        },
+        "reward_bearing_transition_count": 124,
+        "reward_per_episode": [
+          -337.0,
+          -301.0,
+          -332.0
+        ],
+        "terminal_transition_count": 124,
+        "topology_usage_stats": {
+          "horizontal": 156
+        },
+        "trace_bank_disjoint": true,
+        "trace_bank_ids": {
+          "evaluation": "full-training-eval-bank",
+          "training": "full-training-train-bank"
+        },
+        "trace_ids": [
+          "hoodie-43",
+          "hoodie-44",
+          "hoodie-45"
+        ]
+      },
+      "full_campaign_block_reason": "full campaign not requested during pilot",
+      "full_campaign_executed": false,
+      "legal_action_only": true,
+      "loss_is_finite": true,
+      "loss_value": 23.935195922851562,
+      "optimizer_step_count": 46,
+      "pending_at_horizon_preserved": true,
+      "pilot_training_executed": true,
+      "replay_size": 109,
+      "stage": "pilot_training",
+      "target_sync_count": 0,
+      "train_eval_trace_banks_disjoint": true
+    },
+    "training_metrics": {
+      "action_counts": [
+        {
+          "3": 27,
+          "4": 12,
+          "8": 2,
+          "10": 13
+        },
+        {
+          "3": 21,
+          "4": 8,
+          "8": 3,
+          "10": 23
+        }
+      ],
+      "average_delays": [
+        0.0,
+        0.0
+      ],
+      "completed_counts": [
+        49,
+        51
+      ],
+      "completion_delays": [],
+      "drop_ratios": [
+        0.0,
+        0.0
+      ],
+      "dropped_counts": [
+        0,
+        0
+      ],
+      "episode_rewards": [
+        -332.0,
+        -327.0
+      ],
+      "loss_values": [
+        18.536619186401367,
+        18.536376953125,
+        19.30751609802246,
+        19.307260513305664,
+        17.532983779907227,
+        18.302326202392578,
+        16.03955841064453,
+        18.6962947845459,
+        20.74304962158203,
+        25.171327590942383,
+        24.40166664123535,
+        20.991634368896484,
+        20.737529754638672,
+        24.165897369384766,
+        19.687101364135742,
+        23.39183807373047,
+        21.604541778564453,
+        15.610200881958008,
+        22.00780487060547,
+        21.762849807739258,
+        20.734512329101562,
+        24.32227897644043,
+        23.332870483398438,
+        24.412982940673828,
+        26.133663177490234,
+        26.149946212768555,
+        24.38263702392578,
+        23.17964744567871,
+        26.210851669311523,
+        19.93145179748535,
+        24.08639144897461,
+        26.667282104492188,
+        19.852378845214844,
+        22.34786605834961,
+        19.17068099975586,
+        27.196239471435547,
+        24.139385223388672,
+        27.735454559326172,
+        23.0734806060791,
+        17.78244400024414,
+        27.54098129272461,
+        20.969837188720703,
+        23.551597595214844,
+        27.40990447998047,
+        20.848142623901367,
+        23.935195922851562
+      ],
+      "mean_reward_across_agents": [
+        -16.6,
+        -16.35
+      ],
+      "per_agent_rewards": [
+        {
+          "1": -21.0,
+          "10": -8.0,
+          "11": -18.0,
+          "12": -14.0,
+          "13": -12.0,
+          "14": -30.0,
+          "15": -24.0,
+          "16": -13.0,
+          "17": -14.0,
+          "18": -16.0,
+          "19": -18.0,
+          "2": -16.0,
+          "20": -25.0,
+          "3": -13.0,
+          "4": -24.0,
+          "5": -8.0,
+          "6": -20.0,
+          "7": -8.0,
+          "8": -5.0,
+          "9": -25.0
+        },
+        {
+          "1": -24.0,
+          "10": -8.0,
+          "11": -5.0,
+          "12": -33.0,
+          "13": -27.0,
+          "14": -28.0,
+          "15": -20.0,
+          "16": -24.0,
+          "17": -16.0,
+          "18": -15.0,
+          "19": -15.0,
+          "2": -12.0,
+          "20": -8.0,
+          "3": -8.0,
+          "4": -12.0,
+          "5": -25.0,
+          "6": -14.0,
+          "7": -5.0,
+          "8": -5.0,
+          "9": -23.0
+        }
+      ],
+      "total_training_episodes": 2
+    }
+  },
+  {
+    "config": {
+      "action_count": 22,
+      "agent_count": 20,
+      "arrival_probability": 0.5,
+      "baseline_reference_set": [
+        "artifacts/analysis/baseline-revalidation-after-runtime-repair/baseline-revalidation-report.json",
+        "artifacts/analysis/baseline-revalidation-after-runtime-repair/baseline-revalidation-report.md"
+      ],
+      "batch_size": 64,
+      "cloud_cpu_ghz": 30.0,
+      "evaluation_episode_length": 110,
+      "evaluation_trace_bank_id": "full-training-eval-bank",
+      "feature_id": "041-full-training-reproduction-campaign",
+      "full_campaign_budget": 5000,
+      "full_campaign_enabled": false,
+      "full_campaign_episode_length": 110,
+      "full_campaign_flag_name": "--enable-full-campaign",
+      "gamma": 0.99,
+      "horizontal_data_rate_mbps": 30.0,
+      "learning_rate": 5e-07,
+      "local_cpu_ghz": 5.0,
+      "lookback_w": 10,
+      "lstm_enabled": true,
+      "lstm_hidden_size": 20,
+      "lstm_num_layers": 1,
+      "model_initialization_seed": 19,
+      "pilot_budget": {
+        "follow_up_episodes": 25,
+        "primary_episodes": 10
+      },
+      "pilot_episode_length": 110,
+      "public_cpu_ghz": 5.0,
+      "q_network_hidden_layers": [
+        1024,
+        1024,
+        1024
+      ],
+      "readiness_manual_approval_reference": "paper-figures-campaign",
+      "readiness_manual_approval_required": true,
+      "readiness_manual_approval_status": "approved",
+      "readiness_probe_episode_count": 3,
+      "readiness_probe_episode_length": 50,
+      "replay_memory_capacity": 10000,
+      "seed_bundle": {
+        "action_exploration_seed": 53,
+        "evaluation_trace_generation_seed": 43,
+        "model_initialization_seed": 19,
+        "python_seed": 59,
+        "readiness_probe_seed": 31,
+        "replay_sampling_seed": 47,
+        "torch_seed": 61,
+        "training_trace_generation_seed": 41
+      },
+      "state_dim": 74,
+      "sweep_metadata": {
+        "learning_rate": 5e-07,
+        "sweep_type": "learning_rate"
+      },
+      "target_update_contract": {
+        "allowed_units": [
+          "optimizer_step",
+          "environment_step",
+          "replay_insertion",
+          "episode"
+        ],
+        "approval_status": "user_approved_campaign_assumption",
+        "paper_evidence_status": "ambiguous_not_explicitly_defined",
+        "target_update_unit": "optimizer_step",
+        "update_frequency": 2000
+      },
+      "task_size_max_mbits": 5.0,
+      "task_size_min_mbits": 2.0,
+      "timeout_slots": 20,
+      "training_trace_bank_id": "full-training-train-bank",
+      "vertical_data_rate_mbps": 10.0
+    },
+    "experiment_label": "alpha_lr=5e-07",
+    "result": {
+      "checkpoint_metadata": {
+        "config_hash": "8e3809366a99fa372e03ad2e176b6c60c89446c4041e54812ece73ebd8f7157d",
+        "eval_trace_bank_id": "full-training-eval-bank",
+        "feature_id": "041-full-training-reproduction-campaign",
+        "full_campaign_enabled": false,
+        "optimizer_step_count": 46,
+        "replay_size": 109,
+        "seed_bundle": {
+          "action_exploration_seed": 53,
+          "evaluation_trace_generation_seed": 43,
+          "model_initialization_seed": 19,
+          "python_seed": 59,
+          "readiness_probe_seed": 31,
+          "replay_sampling_seed": 47,
+          "torch_seed": 61,
+          "training_trace_generation_seed": 41
+        },
+        "stage": "pilot_training",
+        "target_update_unit": "optimizer_step",
+        "train_trace_bank_id": "full-training-train-bank"
+      },
+      "checkpoint_schema_valid": true,
+      "delayed_reward_contract_preserved": true,
+      "episodes_completed": 2,
+      "episodes_requested": 2,
+      "evaluation_summary": {
+        "candidate_reproduction_supported": false,
+        "completed_task_count": 151,
+        "completion_rate_by_destination": {
+          "local": 1.0
+        },
+        "drop_ratio": 0.0,
+        "dropped_task_count": 0,
+        "evaluation_episode_count": 3,
+        "evaluation_on_training_traces": false,
+        "mean_completion_delay": 5.423841059602649,
+        "mean_reward": -323.3333333333333,
+        "mean_reward_across_agents": -48.5,
+        "per_agent_reward": {
+          "1": -61.0,
+          "10": -26.0,
+          "11": -44.0,
+          "12": -20.0,
+          "13": -61.0,
+          "14": -43.0,
+          "15": -59.0,
+          "16": -50.0,
+          "17": -45.0,
+          "18": -23.0,
+          "19": -75.0,
+          "2": -47.0,
+          "20": -49.0,
+          "3": -48.0,
+          "4": -69.0,
+          "5": -53.0,
+          "6": -44.0,
+          "7": -46.0,
+          "8": -63.0,
+          "9": -44.0
+        },
+        "reward_bearing_transition_count": 124,
+        "reward_per_episode": [
+          -337.0,
+          -301.0,
+          -332.0
+        ],
+        "terminal_transition_count": 124,
+        "topology_usage_stats": {
+          "horizontal": 156
+        },
+        "trace_bank_disjoint": true,
+        "trace_bank_ids": {
+          "evaluation": "full-training-eval-bank",
+          "training": "full-training-train-bank"
+        },
+        "trace_ids": [
+          "hoodie-43",
+          "hoodie-44",
+          "hoodie-45"
+        ]
+      },
+      "full_campaign_block_reason": "full campaign not requested during pilot",
+      "full_campaign_executed": false,
+      "legal_action_only": true,
+      "loss_is_finite": true,
+      "loss_value": 23.882099151611328,
+      "optimizer_step_count": 46,
+      "pending_at_horizon_preserved": true,
+      "pilot_training_executed": true,
+      "replay_size": 109,
+      "stage": "pilot_training",
+      "target_sync_count": 0,
+      "train_eval_trace_banks_disjoint": true
+    },
+    "training_metrics": {
+      "action_counts": [
+        {
+          "3": 27,
+          "4": 12,
+          "8": 2,
+          "10": 13
+        },
+        {
+          "3": 20,
+          "4": 9,
+          "8": 3,
+          "10": 23
+        }
+      ],
+      "average_delays": [
+        0.0,
+        0.0
+      ],
+      "completed_counts": [
+        49,
+        51
+      ],
+      "completion_delays": [],
+      "drop_ratios": [
+        0.0,
+        0.0
+      ],
+      "dropped_counts": [
+        0,
+        0
+      ],
+      "episode_rewards": [
+        -332.0,
+        -327.0
+      ],
+      "loss_values": [
+        18.536619186401367,
+        18.535404205322266,
+        19.305484771728516,
+        19.30420684814453,
+        17.52935791015625,
+        18.297515869140625,
+        16.034404754638672,
+        18.689491271972656,
+        20.735218048095703,
+        25.160438537597656,
+        24.390024185180664,
+        20.981258392333984,
+        20.725574493408203,
+        24.15086555480957,
+        19.67361068725586,
+        23.375431060791016,
+        21.58864974975586,
+        15.595293045043945,
+        21.989538192749023,
+        21.743879318237305,
+        20.713594436645508,
+        24.29743003845215,
+        23.308916091918945,
+        24.387609481811523,
+        26.106199264526367,
+        26.118959426879883,
+        24.352399826049805,
+        23.149423599243164,
+        26.175857543945312,
+        19.900768280029297,
+        24.049545288085938,
+        26.628555297851562,
+        19.820314407348633,
+        22.31109619140625,
+        19.134422302246094,
+        27.151613235473633,
+        24.097097396850586,
+        27.68779182434082,
+        23.028274536132812,
+        17.74363136291504,
+        27.48554039001465,
+        20.92363739013672,
+        23.49867820739746,
+        27.354236602783203,
+        20.80034065246582,
+        23.882099151611328
+      ],
+      "mean_reward_across_agents": [
+        -16.6,
+        -16.35
+      ],
+      "per_agent_rewards": [
+        {
+          "1": -21.0,
+          "10": -8.0,
+          "11": -18.0,
+          "12": -14.0,
+          "13": -12.0,
+          "14": -30.0,
+          "15": -24.0,
+          "16": -13.0,
+          "17": -14.0,
+          "18": -16.0,
+          "19": -18.0,
+          "2": -16.0,
+          "20": -25.0,
+          "3": -13.0,
+          "4": -24.0,
+          "5": -8.0,
+          "6": -20.0,
+          "7": -8.0,
+          "8": -5.0,
+          "9": -25.0
+        },
+        {
+          "1": -24.0,
+          "10": -8.0,
+          "11": -5.0,
+          "12": -33.0,
+          "13": -27.0,
+          "14": -28.0,
+          "15": -20.0,
+          "16": -24.0,
+          "17": -16.0,
+          "18": -15.0,
+          "19": -15.0,
+          "2": -12.0,
+          "20": -8.0,
+          "3": -8.0,
+          "4": -12.0,
+          "5": -25.0,
+          "6": -14.0,
+          "7": -5.0,
+          "8": -5.0,
+          "9": -23.0
+        }
+      ],
+      "total_training_episodes": 2
+    }
+  },
+  {
+    "config": {
+      "action_count": 22,
+      "agent_count": 20,
+      "arrival_probability": 0.5,
+      "baseline_reference_set": [
+        "artifacts/analysis/baseline-revalidation-after-runtime-repair/baseline-revalidation-report.json",
+        "artifacts/analysis/baseline-revalidation-after-runtime-repair/baseline-revalidation-report.md"
+      ],
+      "batch_size": 64,
+      "cloud_cpu_ghz": 30.0,
+      "evaluation_episode_length": 110,
+      "evaluation_trace_bank_id": "full-training-eval-bank",
+      "feature_id": "041-full-training-reproduction-campaign",
+      "full_campaign_budget": 5000,
+      "full_campaign_enabled": false,
+      "full_campaign_episode_length": 110,
+      "full_campaign_flag_name": "--enable-full-campaign",
+      "gamma": 0.99,
+      "horizontal_data_rate_mbps": 30.0,
+      "learning_rate": 7e-07,
+      "local_cpu_ghz": 5.0,
+      "lookback_w": 10,
+      "lstm_enabled": true,
+      "lstm_hidden_size": 20,
+      "lstm_num_layers": 1,
+      "model_initialization_seed": 19,
+      "pilot_budget": {
+        "follow_up_episodes": 25,
+        "primary_episodes": 10
+      },
+      "pilot_episode_length": 110,
+      "public_cpu_ghz": 5.0,
+      "q_network_hidden_layers": [
+        1024,
+        1024,
+        1024
+      ],
+      "readiness_manual_approval_reference": "paper-figures-campaign",
+      "readiness_manual_approval_required": true,
+      "readiness_manual_approval_status": "approved",
+      "readiness_probe_episode_count": 3,
+      "readiness_probe_episode_length": 50,
+      "replay_memory_capacity": 10000,
+      "seed_bundle": {
+        "action_exploration_seed": 53,
+        "evaluation_trace_generation_seed": 43,
+        "model_initialization_seed": 19,
+        "python_seed": 59,
+        "readiness_probe_seed": 31,
+        "replay_sampling_seed": 47,
+        "torch_seed": 61,
+        "training_trace_generation_seed": 41
+      },
+      "state_dim": 74,
+      "sweep_metadata": {
+        "learning_rate": 7e-07,
+        "sweep_type": "learning_rate"
+      },
+      "target_update_contract": {
+        "allowed_units": [
+          "optimizer_step",
+          "environment_step",
+          "replay_insertion",
+          "episode"
+        ],
+        "approval_status": "user_approved_campaign_assumption",
+        "paper_evidence_status": "ambiguous_not_explicitly_defined",
+        "target_update_unit": "optimizer_step",
+        "update_frequency": 2000
+      },
+      "task_size_max_mbits": 5.0,
+      "task_size_min_mbits": 2.0,
+      "timeout_slots": 20,
+      "training_trace_bank_id": "full-training-train-bank",
+      "vertical_data_rate_mbps": 10.0
+    },
+    "experiment_label": "alpha_lr=7e-07",
+    "result": {
+      "checkpoint_metadata": {
+        "config_hash": "39a94309888e5d4f600b578cb46f6893d4002cbc1a574f0b9098118416106330",
+        "eval_trace_bank_id": "full-training-eval-bank",
+        "feature_id": "041-full-training-reproduction-campaign",
+        "full_campaign_enabled": false,
+        "optimizer_step_count": 46,
+        "replay_size": 109,
+        "seed_bundle": {
+          "action_exploration_seed": 53,
+          "evaluation_trace_generation_seed": 43,
+          "model_initialization_seed": 19,
+          "python_seed": 59,
+          "readiness_probe_seed": 31,
+          "replay_sampling_seed": 47,
+          "torch_seed": 61,
+          "training_trace_generation_seed": 41
+        },
+        "stage": "pilot_training",
+        "target_update_unit": "optimizer_step",
+        "train_trace_bank_id": "full-training-train-bank"
+      },
+      "checkpoint_schema_valid": true,
+      "delayed_reward_contract_preserved": true,
+      "episodes_completed": 2,
+      "episodes_requested": 2,
+      "evaluation_summary": {
+        "candidate_reproduction_supported": false,
+        "completed_task_count": 151,
+        "completion_rate_by_destination": {
+          "local": 1.0
+        },
+        "drop_ratio": 0.0,
+        "dropped_task_count": 0,
+        "evaluation_episode_count": 3,
+        "evaluation_on_training_traces": false,
+        "mean_completion_delay": 5.410596026490066,
+        "mean_reward": -322.6666666666667,
+        "mean_reward_across_agents": -48.4,
+        "per_agent_reward": {
+          "1": -61.0,
+          "10": -26.0,
+          "11": -44.0,
+          "12": -20.0,
+          "13": -61.0,
+          "14": -43.0,
+          "15": -59.0,
+          "16": -50.0,
+          "17": -45.0,
+          "18": -23.0,
+          "19": -75.0,
+          "2": -47.0,
+          "20": -47.0,
+          "3": -48.0,
+          "4": -69.0,
+          "5": -53.0,
+          "6": -44.0,
+          "7": -46.0,
+          "8": -63.0,
+          "9": -44.0
+        },
+        "reward_bearing_transition_count": 124,
+        "reward_per_episode": [
+          -335.0,
+          -301.0,
+          -332.0
+        ],
+        "terminal_transition_count": 124,
+        "topology_usage_stats": {
+          "horizontal": 155,
+          "vertical": 1
+        },
+        "trace_bank_disjoint": true,
+        "trace_bank_ids": {
+          "evaluation": "full-training-eval-bank",
+          "training": "full-training-train-bank"
+        },
+        "trace_ids": [
+          "hoodie-43",
+          "hoodie-44",
+          "hoodie-45"
+        ]
+      },
+      "full_campaign_block_reason": "full campaign not requested during pilot",
+      "full_campaign_executed": false,
+      "legal_action_only": true,
+      "loss_is_finite": true,
+      "loss_value": 23.85578155517578,
+      "optimizer_step_count": 46,
+      "pending_at_horizon_preserved": true,
+      "pilot_training_executed": true,
+      "replay_size": 109,
+      "stage": "pilot_training",
+      "target_sync_count": 0,
+      "train_eval_trace_banks_disjoint": true
+    },
+    "training_metrics": {
+      "action_counts": [
+        {
+          "3": 27,
+          "4": 12,
+          "8": 2,
+          "10": 13
+        },
+        {
+          "3": 20,
+          "4": 8,
+          "8": 4,
+          "10": 23
+        }
+      ],
+      "average_delays": [
+        0.0,
+        0.0
+      ],
+      "completed_counts": [
+        49,
+        51
+      ],
+      "completion_delays": [],
+      "drop_ratios": [
+        0.0,
+        0.0
+      ],
+      "dropped_counts": [
+        0,
+        0
+      ],
+      "episode_rewards": [
+        -332.0,
+        -327.0
+      ],
+      "loss_values": [
+        18.536619186401367,
+        18.5349178314209,
+        19.30446434020996,
+        19.302677154541016,
+        17.527538299560547,
+        18.295106887817383,
+        16.03182601928711,
+        18.686084747314453,
+        20.731300354003906,
+        25.154991149902344,
+        24.38420867919922,
+        20.976076126098633,
+        20.7196044921875,
+        24.143362045288086,
+        19.666885375976562,
+        23.36724090576172,
+        21.58071517944336,
+        15.587854385375977,
+        21.980409622192383,
+        21.734397888183594,
+        20.70315933227539,
+        24.2850341796875,
+        23.296958923339844,
+        24.374948501586914,
+        26.09250831604004,
+        26.103506088256836,
+        24.33732795715332,
+        23.134349822998047,
+        26.158409118652344,
+        19.885486602783203,
+        24.03115463256836,
+        26.609214782714844,
+        19.804332733154297,
+        22.2927303314209,
+        19.116331100463867,
+        27.129322052001953,
+        24.076011657714844,
+        27.66399574279785,
+        23.005815505981445,
+        17.72437286376953,
+        27.457988739013672,
+        20.900728225708008,
+        23.472431182861328,
+        27.326616287231445,
+        20.776691436767578,
+        23.85578155517578
+      ],
+      "mean_reward_across_agents": [
+        -16.6,
+        -16.35
+      ],
+      "per_agent_rewards": [
+        {
+          "1": -21.0,
+          "10": -8.0,
+          "11": -18.0,
+          "12": -14.0,
+          "13": -12.0,
+          "14": -30.0,
+          "15": -24.0,
+          "16": -13.0,
+          "17": -14.0,
+          "18": -16.0,
+          "19": -18.0,
+          "2": -16.0,
+          "20": -25.0,
+          "3": -13.0,
+          "4": -24.0,
+          "5": -8.0,
+          "6": -20.0,
+          "7": -8.0,
+          "8": -5.0,
+          "9": -25.0
+        },
+        {
+          "1": -24.0,
+          "10": -8.0,
+          "11": -5.0,
+          "12": -33.0,
+          "13": -27.0,
+          "14": -28.0,
+          "15": -20.0,
+          "16": -24.0,
+          "17": -16.0,
+          "18": -15.0,
+          "19": -15.0,
+          "2": -12.0,
+          "20": -8.0,
+          "3": -8.0,
+          "4": -12.0,
+          "5": -25.0,
+          "6": -14.0,
+          "7": -5.0,
+          "8": -5.0,
+          "9": -23.0
+        }
+      ],
+      "total_training_episodes": 2
+    }
+  },
+  {
+    "config": {
+      "action_count": 22,
+      "agent_count": 20,
+      "arrival_probability": 0.5,
+      "baseline_reference_set": [
+        "artifacts/analysis/baseline-revalidation-after-runtime-repair/baseline-revalidation-report.json",
+        "artifacts/analysis/baseline-revalidation-after-runtime-repair/baseline-revalidation-report.md"
+      ],
+      "batch_size": 64,
+      "cloud_cpu_ghz": 30.0,
+      "evaluation_episode_length": 110,
+      "evaluation_trace_bank_id": "full-training-eval-bank",
+      "feature_id": "041-full-training-reproduction-campaign",
+      "full_campaign_budget": 5000,
+      "full_campaign_enabled": false,
+      "full_campaign_episode_length": 110,
+      "full_campaign_flag_name": "--enable-full-campaign",
+      "gamma": 0.2,
+      "horizontal_data_rate_mbps": 30.0,
+      "learning_rate": 7e-07,
+      "local_cpu_ghz": 5.0,
+      "lookback_w": 10,
+      "lstm_enabled": true,
+      "lstm_hidden_size": 20,
+      "lstm_num_layers": 1,
+      "model_initialization_seed": 19,
+      "pilot_budget": {
+        "follow_up_episodes": 25,
+        "primary_episodes": 10
+      },
+      "pilot_episode_length": 110,
+      "public_cpu_ghz": 5.0,
+      "q_network_hidden_layers": [
+        1024,
+        1024,
+        1024
+      ],
+      "readiness_manual_approval_reference": "paper-figures-campaign",
+      "readiness_manual_approval_required": true,
+      "readiness_manual_approval_status": "approved",
+      "readiness_probe_episode_count": 3,
+      "readiness_probe_episode_length": 50,
+      "replay_memory_capacity": 10000,
+      "seed_bundle": {
+        "action_exploration_seed": 53,
+        "evaluation_trace_generation_seed": 43,
+        "model_initialization_seed": 19,
+        "python_seed": 59,
+        "readiness_probe_seed": 31,
+        "replay_sampling_seed": 47,
+        "torch_seed": 61,
+        "training_trace_generation_seed": 41
+      },
+      "state_dim": 74,
+      "sweep_metadata": {
+        "discount_factor": 0.2,
+        "sweep_type": "discount_factor"
+      },
+      "target_update_contract": {
+        "allowed_units": [
+          "optimizer_step",
+          "environment_step",
+          "replay_insertion",
+          "episode"
+        ],
+        "approval_status": "user_approved_campaign_assumption",
+        "paper_evidence_status": "ambiguous_not_explicitly_defined",
+        "target_update_unit": "optimizer_step",
+        "update_frequency": 2000
+      },
+      "task_size_max_mbits": 5.0,
+      "task_size_min_mbits": 2.0,
+      "timeout_slots": 20,
+      "training_trace_bank_id": "full-training-train-bank",
+      "vertical_data_rate_mbps": 10.0
+    },
+    "experiment_label": "gamma=0.2",
+    "result": {
+      "checkpoint_metadata": {
+        "config_hash": "8dacf561f9fa4dc6ce1741c102064e231b3e19821d749d67ed57829333ada604",
+        "eval_trace_bank_id": "full-training-eval-bank",
+        "feature_id": "041-full-training-reproduction-campaign",
+        "full_campaign_enabled": false,
+        "optimizer_step_count": 46,
+        "replay_size": 109,
+        "seed_bundle": {
+          "action_exploration_seed": 53,
+          "evaluation_trace_generation_seed": 43,
+          "model_initialization_seed": 19,
+          "python_seed": 59,
+          "readiness_probe_seed": 31,
+          "replay_sampling_seed": 47,
+          "torch_seed": 61,
+          "training_trace_generation_seed": 41
+        },
+        "stage": "pilot_training",
+        "target_update_unit": "optimizer_step",
+        "train_trace_bank_id": "full-training-train-bank"
+      },
+      "checkpoint_schema_valid": true,
+      "delayed_reward_contract_preserved": true,
+      "episodes_completed": 2,
+      "episodes_requested": 2,
+      "evaluation_summary": {
+        "candidate_reproduction_supported": false,
+        "completed_task_count": 151,
+        "completion_rate_by_destination": {
+          "local": 1.0
+        },
+        "drop_ratio": 0.0,
+        "dropped_task_count": 0,
+        "evaluation_episode_count": 3,
+        "evaluation_on_training_traces": false,
+        "mean_completion_delay": 5.410596026490066,
+        "mean_reward": -322.6666666666667,
+        "mean_reward_across_agents": -48.4,
+        "per_agent_reward": {
+          "1": -61.0,
+          "10": -26.0,
+          "11": -44.0,
+          "12": -20.0,
+          "13": -61.0,
+          "14": -43.0,
+          "15": -59.0,
+          "16": -50.0,
+          "17": -45.0,
+          "18": -23.0,
+          "19": -75.0,
+          "2": -47.0,
+          "20": -47.0,
+          "3": -48.0,
+          "4": -69.0,
+          "5": -53.0,
+          "6": -44.0,
+          "7": -46.0,
+          "8": -63.0,
+          "9": -44.0
+        },
+        "reward_bearing_transition_count": 124,
+        "reward_per_episode": [
+          -335.0,
+          -301.0,
+          -332.0
+        ],
+        "terminal_transition_count": 124,
+        "topology_usage_stats": {
+          "horizontal": 155,
+          "vertical": 1
+        },
+        "trace_bank_disjoint": true,
+        "trace_bank_ids": {
+          "evaluation": "full-training-eval-bank",
+          "training": "full-training-train-bank"
+        },
+        "trace_ids": [
+          "hoodie-43",
+          "hoodie-44",
+          "hoodie-45"
+        ]
+      },
+      "full_campaign_block_reason": "full campaign not requested during pilot",
+      "full_campaign_executed": false,
+      "legal_action_only": true,
+      "loss_is_finite": true,
+      "loss_value": 23.855552673339844,
+      "optimizer_step_count": 46,
+      "pending_at_horizon_preserved": true,
+      "pilot_training_executed": true,
+      "replay_size": 109,
+      "stage": "pilot_training",
+      "target_sync_count": 0,
+      "train_eval_trace_banks_disjoint": true
+    },
+    "training_metrics": {
+      "action_counts": [
+        {
+          "3": 27,
+          "4": 12,
+          "8": 2,
+          "10": 13
+        },
+        {
+          "3": 20,
+          "4": 8,
+          "8": 4,
+          "10": 23
+        }
+      ],
+      "average_delays": [
+        0.0,
+        0.0
+      ],
+      "completed_counts": [
+        49,
+        51
+      ],
+      "completion_delays": [],
+      "drop_ratios": [
+        0.0,
+        0.0
+      ],
+      "dropped_counts": [
+        0,
+        0
+      ],
+      "episode_rewards": [
+        -332.0,
+        -327.0
+      ],
+      "loss_values": [
+        18.536758422851562,
+        18.53505516052246,
+        19.304574966430664,
+        19.30278205871582,
+        17.527658462524414,
+        18.295211791992188,
+        16.03192901611328,
+        18.686176300048828,
+        20.73137855529785,
+        25.155054092407227,
+        24.384265899658203,
+        20.976144790649414,
+        20.719654083251953,
+        24.143390655517578,
+        19.666908264160156,
+        23.36726188659668,
+        21.580734252929688,
+        15.587867736816406,
+        21.98040771484375,
+        21.7343807220459,
+        20.703075408935547,
+        24.28494644165039,
+        23.296852111816406,
+        24.3748836517334,
+        26.09238052368164,
+        26.103437423706055,
+        24.33717918395996,
+        23.134239196777344,
+        26.15825653076172,
+        19.885374069213867,
+        24.031024932861328,
+        26.609012603759766,
+        19.804126739501953,
+        22.292505264282227,
+        19.116161346435547,
+        27.12908935546875,
+        24.07573699951172,
+        27.663816452026367,
+        23.005615234375,
+        17.72417640686035,
+        27.457786560058594,
+        20.90044593811035,
+        23.47213363647461,
+        27.32632064819336,
+        20.776470184326172,
+        23.855552673339844
+      ],
+      "mean_reward_across_agents": [
+        -16.6,
+        -16.35
+      ],
+      "per_agent_rewards": [
+        {
+          "1": -21.0,
+          "10": -8.0,
+          "11": -18.0,
+          "12": -14.0,
+          "13": -12.0,
+          "14": -30.0,
+          "15": -24.0,
+          "16": -13.0,
+          "17": -14.0,
+          "18": -16.0,
+          "19": -18.0,
+          "2": -16.0,
+          "20": -25.0,
+          "3": -13.0,
+          "4": -24.0,
+          "5": -8.0,
+          "6": -20.0,
+          "7": -8.0,
+          "8": -5.0,
+          "9": -25.0
+        },
+        {
+          "1": -24.0,
+          "10": -8.0,
+          "11": -5.0,
+          "12": -33.0,
+          "13": -27.0,
+          "14": -28.0,
+          "15": -20.0,
+          "16": -24.0,
+          "17": -16.0,
+          "18": -15.0,
+          "19": -15.0,
+          "2": -12.0,
+          "20": -8.0,
+          "3": -8.0,
+          "4": -12.0,
+          "5": -25.0,
+          "6": -14.0,
+          "7": -5.0,
+          "8": -5.0,
+          "9": -23.0
+        }
+      ],
+      "total_training_episodes": 2
+    }
+  },
+  {
+    "config": {
+      "action_count": 22,
+      "agent_count": 20,
+      "arrival_probability": 0.5,
+      "baseline_reference_set": [
+        "artifacts/analysis/baseline-revalidation-after-runtime-repair/baseline-revalidation-report.json",
+        "artifacts/analysis/baseline-revalidation-after-runtime-repair/baseline-revalidation-report.md"
+      ],
+      "batch_size": 64,
+      "cloud_cpu_ghz": 30.0,
+      "evaluation_episode_length": 110,
+      "evaluation_trace_bank_id": "full-training-eval-bank",
+      "feature_id": "041-full-training-reproduction-campaign",
+      "full_campaign_budget": 5000,
+      "full_campaign_enabled": false,
+      "full_campaign_episode_length": 110,
+      "full_campaign_flag_name": "--enable-full-campaign",
+      "gamma": 0.4,
+      "horizontal_data_rate_mbps": 30.0,
+      "learning_rate": 7e-07,
+      "local_cpu_ghz": 5.0,
+      "lookback_w": 10,
+      "lstm_enabled": true,
+      "lstm_hidden_size": 20,
+      "lstm_num_layers": 1,
+      "model_initialization_seed": 19,
+      "pilot_budget": {
+        "follow_up_episodes": 25,
+        "primary_episodes": 10
+      },
+      "pilot_episode_length": 110,
+      "public_cpu_ghz": 5.0,
+      "q_network_hidden_layers": [
+        1024,
+        1024,
+        1024
+      ],
+      "readiness_manual_approval_reference": "paper-figures-campaign",
+      "readiness_manual_approval_required": true,
+      "readiness_manual_approval_status": "approved",
+      "readiness_probe_episode_count": 3,
+      "readiness_probe_episode_length": 50,
+      "replay_memory_capacity": 10000,
+      "seed_bundle": {
+        "action_exploration_seed": 53,
+        "evaluation_trace_generation_seed": 43,
+        "model_initialization_seed": 19,
+        "python_seed": 59,
+        "readiness_probe_seed": 31,
+        "replay_sampling_seed": 47,
+        "torch_seed": 61,
+        "training_trace_generation_seed": 41
+      },
+      "state_dim": 74,
+      "sweep_metadata": {
+        "discount_factor": 0.4,
+        "sweep_type": "discount_factor"
+      },
+      "target_update_contract": {
+        "allowed_units": [
+          "optimizer_step",
+          "environment_step",
+          "replay_insertion",
+          "episode"
+        ],
+        "approval_status": "user_approved_campaign_assumption",
+        "paper_evidence_status": "ambiguous_not_explicitly_defined",
+        "target_update_unit": "optimizer_step",
+        "update_frequency": 2000
+      },
+      "task_size_max_mbits": 5.0,
+      "task_size_min_mbits": 2.0,
+      "timeout_slots": 20,
+      "training_trace_bank_id": "full-training-train-bank",
+      "vertical_data_rate_mbps": 10.0
+    },
+    "experiment_label": "gamma=0.4",
+    "result": {
+      "checkpoint_metadata": {
+        "config_hash": "eabc4b25f4d7072e2fefcaebc61019076c02f4d2a453b9d4049cb9963b14af79",
+        "eval_trace_bank_id": "full-training-eval-bank",
+        "feature_id": "041-full-training-reproduction-campaign",
+        "full_campaign_enabled": false,
+        "optimizer_step_count": 46,
+        "replay_size": 109,
+        "seed_bundle": {
+          "action_exploration_seed": 53,
+          "evaluation_trace_generation_seed": 43,
+          "model_initialization_seed": 19,
+          "python_seed": 59,
+          "readiness_probe_seed": 31,
+          "replay_sampling_seed": 47,
+          "torch_seed": 61,
+          "training_trace_generation_seed": 41
+        },
+        "stage": "pilot_training",
+        "target_update_unit": "optimizer_step",
+        "train_trace_bank_id": "full-training-train-bank"
+      },
+      "checkpoint_schema_valid": true,
+      "delayed_reward_contract_preserved": true,
+      "episodes_completed": 2,
+      "episodes_requested": 2,
+      "evaluation_summary": {
+        "candidate_reproduction_supported": false,
+        "completed_task_count": 151,
+        "completion_rate_by_destination": {
+          "local": 1.0
+        },
+        "drop_ratio": 0.0,
+        "dropped_task_count": 0,
+        "evaluation_episode_count": 3,
+        "evaluation_on_training_traces": false,
+        "mean_completion_delay": 5.410596026490066,
+        "mean_reward": -322.6666666666667,
+        "mean_reward_across_agents": -48.4,
+        "per_agent_reward": {
+          "1": -61.0,
+          "10": -26.0,
+          "11": -44.0,
+          "12": -20.0,
+          "13": -61.0,
+          "14": -43.0,
+          "15": -59.0,
+          "16": -50.0,
+          "17": -45.0,
+          "18": -23.0,
+          "19": -75.0,
+          "2": -47.0,
+          "20": -47.0,
+          "3": -48.0,
+          "4": -69.0,
+          "5": -53.0,
+          "6": -44.0,
+          "7": -46.0,
+          "8": -63.0,
+          "9": -44.0
+        },
+        "reward_bearing_transition_count": 124,
+        "reward_per_episode": [
+          -335.0,
+          -301.0,
+          -332.0
+        ],
+        "terminal_transition_count": 124,
+        "topology_usage_stats": {
+          "horizontal": 155,
+          "vertical": 1
+        },
+        "trace_bank_disjoint": true,
+        "trace_bank_ids": {
+          "evaluation": "full-training-eval-bank",
+          "training": "full-training-train-bank"
+        },
+        "trace_ids": [
+          "hoodie-43",
+          "hoodie-44",
+          "hoodie-45"
+        ]
+      },
+      "full_campaign_block_reason": "full campaign not requested during pilot",
+      "full_campaign_executed": false,
+      "legal_action_only": true,
+      "loss_is_finite": true,
+      "loss_value": 23.85556411743164,
+      "optimizer_step_count": 46,
+      "pending_at_horizon_preserved": true,
+      "pilot_training_executed": true,
+      "replay_size": 109,
+      "stage": "pilot_training",
+      "target_sync_count": 0,
+      "train_eval_trace_banks_disjoint": true
+    },
+    "training_metrics": {
+      "action_counts": [
+        {
+          "3": 27,
+          "4": 12,
+          "8": 2,
+          "10": 13
+        },
+        {
+          "3": 20,
+          "4": 8,
+          "8": 4,
+          "10": 23
+        }
+      ],
+      "average_delays": [
+        0.0,
+        0.0
+      ],
+      "completed_counts": [
+        49,
+        51
+      ],
+      "completion_delays": [],
+      "drop_ratios": [
+        0.0,
+        0.0
+      ],
+      "dropped_counts": [
+        0,
+        0
+      ],
+      "episode_rewards": [
+        -332.0,
+        -327.0
+      ],
+      "loss_values": [
+        18.536680221557617,
+        18.53497314453125,
+        19.304502487182617,
+        19.302711486816406,
+        17.52758026123047,
+        18.29513931274414,
+        16.031856536865234,
+        18.686105728149414,
+        20.73131561279297,
+        25.15499496459961,
+        24.38420867919922,
+        20.976085662841797,
+        20.719600677490234,
+        24.14334487915039,
+        19.66685676574707,
+        23.36720848083496,
+        21.5806884765625,
+        15.587818145751953,
+        21.980365753173828,
+        21.734338760375977,
+        20.703041076660156,
+        24.284912109375,
+        23.296825408935547,
+        24.37485694885254,
+        26.092355728149414,
+        26.103408813476562,
+        24.337156295776367,
+        23.134212493896484,
+        26.15823745727539,
+        19.885351181030273,
+        24.031009674072266,
+        26.60900115966797,
+        19.80411148071289,
+        22.292495727539062,
+        19.116151809692383,
+        27.129085540771484,
+        24.07573890686035,
+        27.66381072998047,
+        23.005611419677734,
+        17.724178314208984,
+        27.457788467407227,
+        20.900453567504883,
+        23.472145080566406,
+        27.326335906982422,
+        20.776479721069336,
+        23.85556411743164
+      ],
+      "mean_reward_across_agents": [
+        -16.6,
+        -16.35
+      ],
+      "per_agent_rewards": [
+        {
+          "1": -21.0,
+          "10": -8.0,
+          "11": -18.0,
+          "12": -14.0,
+          "13": -12.0,
+          "14": -30.0,
+          "15": -24.0,
+          "16": -13.0,
+          "17": -14.0,
+          "18": -16.0,
+          "19": -18.0,
+          "2": -16.0,
+          "20": -25.0,
+          "3": -13.0,
+          "4": -24.0,
+          "5": -8.0,
+          "6": -20.0,
+          "7": -8.0,
+          "8": -5.0,
+          "9": -25.0
+        },
+        {
+          "1": -24.0,
+          "10": -8.0,
+          "11": -5.0,
+          "12": -33.0,
+          "13": -27.0,
+          "14": -28.0,
+          "15": -20.0,
+          "16": -24.0,
+          "17": -16.0,
+          "18": -15.0,
+          "19": -15.0,
+          "2": -12.0,
+          "20": -8.0,
+          "3": -8.0,
+          "4": -12.0,
+          "5": -25.0,
+          "6": -14.0,
+          "7": -5.0,
+          "8": -5.0,
+          "9": -23.0
+        }
+      ],
+      "total_training_episodes": 2
+    }
+  },
+  {
+    "config": {
+      "action_count": 22,
+      "agent_count": 20,
+      "arrival_probability": 0.5,
+      "baseline_reference_set": [
+        "artifacts/analysis/baseline-revalidation-after-runtime-repair/baseline-revalidation-report.json",
+        "artifacts/analysis/baseline-revalidation-after-runtime-repair/baseline-revalidation-report.md"
+      ],
+      "batch_size": 64,
+      "cloud_cpu_ghz": 30.0,
+      "evaluation_episode_length": 110,
+      "evaluation_trace_bank_id": "full-training-eval-bank",
+      "feature_id": "041-full-training-reproduction-campaign",
+      "full_campaign_budget": 5000,
+      "full_campaign_enabled": false,
+      "full_campaign_episode_length": 110,
+      "full_campaign_flag_name": "--enable-full-campaign",
+      "gamma": 0.6,
+      "horizontal_data_rate_mbps": 30.0,
+      "learning_rate": 7e-07,
+      "local_cpu_ghz": 5.0,
+      "lookback_w": 10,
+      "lstm_enabled": true,
+      "lstm_hidden_size": 20,
+      "lstm_num_layers": 1,
+      "model_initialization_seed": 19,
+      "pilot_budget": {
+        "follow_up_episodes": 25,
+        "primary_episodes": 10
+      },
+      "pilot_episode_length": 110,
+      "public_cpu_ghz": 5.0,
+      "q_network_hidden_layers": [
+        1024,
+        1024,
+        1024
+      ],
+      "readiness_manual_approval_reference": "paper-figures-campaign",
+      "readiness_manual_approval_required": true,
+      "readiness_manual_approval_status": "approved",
+      "readiness_probe_episode_count": 3,
+      "readiness_probe_episode_length": 50,
+      "replay_memory_capacity": 10000,
+      "seed_bundle": {
+        "action_exploration_seed": 53,
+        "evaluation_trace_generation_seed": 43,
+        "model_initialization_seed": 19,
+        "python_seed": 59,
+        "readiness_probe_seed": 31,
+        "replay_sampling_seed": 47,
+        "torch_seed": 61,
+        "training_trace_generation_seed": 41
+      },
+      "state_dim": 74,
+      "sweep_metadata": {
+        "discount_factor": 0.6,
+        "sweep_type": "discount_factor"
+      },
+      "target_update_contract": {
+        "allowed_units": [
+          "optimizer_step",
+          "environment_step",
+          "replay_insertion",
+          "episode"
+        ],
+        "approval_status": "user_approved_campaign_assumption",
+        "paper_evidence_status": "ambiguous_not_explicitly_defined",
+        "target_update_unit": "optimizer_step",
+        "update_frequency": 2000
+      },
+      "task_size_max_mbits": 5.0,
+      "task_size_min_mbits": 2.0,
+      "timeout_slots": 20,
+      "training_trace_bank_id": "full-training-train-bank",
+      "vertical_data_rate_mbps": 10.0
+    },
+    "experiment_label": "gamma=0.6",
+    "result": {
+      "checkpoint_metadata": {
+        "config_hash": "884042fb24d49c8dbfee4b67420b96f1675261a4c446ee4d9f6a85b476fff555",
+        "eval_trace_bank_id": "full-training-eval-bank",
+        "feature_id": "041-full-training-reproduction-campaign",
+        "full_campaign_enabled": false,
+        "optimizer_step_count": 46,
+        "replay_size": 109,
+        "seed_bundle": {
+          "action_exploration_seed": 53,
+          "evaluation_trace_generation_seed": 43,
+          "model_initialization_seed": 19,
+          "python_seed": 59,
+          "readiness_probe_seed": 31,
+          "replay_sampling_seed": 47,
+          "torch_seed": 61,
+          "training_trace_generation_seed": 41
+        },
+        "stage": "pilot_training",
+        "target_update_unit": "optimizer_step",
+        "train_trace_bank_id": "full-training-train-bank"
+      },
+      "checkpoint_schema_valid": true,
+      "delayed_reward_contract_preserved": true,
+      "episodes_completed": 2,
+      "episodes_requested": 2,
+      "evaluation_summary": {
+        "candidate_reproduction_supported": false,
+        "completed_task_count": 151,
+        "completion_rate_by_destination": {
+          "local": 1.0
+        },
+        "drop_ratio": 0.0,
+        "dropped_task_count": 0,
+        "evaluation_episode_count": 3,
+        "evaluation_on_training_traces": false,
+        "mean_completion_delay": 5.410596026490066,
+        "mean_reward": -322.6666666666667,
+        "mean_reward_across_agents": -48.4,
+        "per_agent_reward": {
+          "1": -61.0,
+          "10": -26.0,
+          "11": -44.0,
+          "12": -20.0,
+          "13": -61.0,
+          "14": -43.0,
+          "15": -59.0,
+          "16": -50.0,
+          "17": -45.0,
+          "18": -23.0,
+          "19": -75.0,
+          "2": -47.0,
+          "20": -47.0,
+          "3": -48.0,
+          "4": -69.0,
+          "5": -53.0,
+          "6": -44.0,
+          "7": -46.0,
+          "8": -63.0,
+          "9": -44.0
+        },
+        "reward_bearing_transition_count": 124,
+        "reward_per_episode": [
+          -335.0,
+          -301.0,
+          -332.0
+        ],
+        "terminal_transition_count": 124,
+        "topology_usage_stats": {
+          "horizontal": 155,
+          "vertical": 1
+        },
+        "trace_bank_disjoint": true,
+        "trace_bank_ids": {
+          "evaluation": "full-training-eval-bank",
+          "training": "full-training-train-bank"
+        },
+        "trace_ids": [
+          "hoodie-43",
+          "hoodie-44",
+          "hoodie-45"
+        ]
+      },
+      "full_campaign_block_reason": "full campaign not requested during pilot",
+      "full_campaign_executed": false,
+      "legal_action_only": true,
+      "loss_is_finite": true,
+      "loss_value": 23.85561180114746,
+      "optimizer_step_count": 46,
+      "pending_at_horizon_preserved": true,
+      "pilot_training_executed": true,
+      "replay_size": 109,
+      "stage": "pilot_training",
+      "target_sync_count": 0,
+      "train_eval_trace_banks_disjoint": true
+    },
+    "training_metrics": {
+      "action_counts": [
+        {
+          "3": 27,
+          "4": 12,
+          "8": 2,
+          "10": 13
+        },
+        {
+          "3": 20,
+          "4": 8,
+          "8": 4,
+          "10": 23
+        }
+      ],
+      "average_delays": [
+        0.0,
+        0.0
+      ],
+      "completed_counts": [
+        49,
+        51
+      ],
+      "completion_delays": [],
+      "drop_ratios": [
+        0.0,
+        0.0
+      ],
+      "dropped_counts": [
+        0,
+        0
+      ],
+      "episode_rewards": [
+        -332.0,
+        -327.0
+      ],
+      "loss_values": [
+        18.536630630493164,
+        18.53492546081543,
+        19.304460525512695,
+        19.302669525146484,
+        17.52753448486328,
+        18.29509735107422,
+        16.031814575195312,
+        18.686067581176758,
+        20.731279373168945,
+        25.154966354370117,
+        24.384178161621094,
+        20.97605323791504,
+        20.719573974609375,
+        24.143321990966797,
+        19.666833877563477,
+        23.3671875,
+        21.580665588378906,
+        15.587799072265625,
+        21.98035430908203,
+        21.734329223632812,
+        20.703054428100586,
+        24.284927368164062,
+        23.29684829711914,
+        24.374858856201172,
+        26.092376708984375,
+        26.103408813476562,
+        24.33718490600586,
+        23.13422393798828,
+        26.158267974853516,
+        19.885366439819336,
+        24.031024932861328,
+        26.60904884338379,
+        19.804153442382812,
+        22.29254150390625,
+        19.11617660522461,
+        27.129138946533203,
+        24.075801849365234,
+        27.663843154907227,
+        23.00564956665039,
+        17.724218368530273,
+        27.457828521728516,
+        20.90052032470703,
+        23.47221565246582,
+        27.3264102935791,
+        20.77652359008789,
+        23.85561180114746
+      ],
+      "mean_reward_across_agents": [
+        -16.6,
+        -16.35
+      ],
+      "per_agent_rewards": [
+        {
+          "1": -21.0,
+          "10": -8.0,
+          "11": -18.0,
+          "12": -14.0,
+          "13": -12.0,
+          "14": -30.0,
+          "15": -24.0,
+          "16": -13.0,
+          "17": -14.0,
+          "18": -16.0,
+          "19": -18.0,
+          "2": -16.0,
+          "20": -25.0,
+          "3": -13.0,
+          "4": -24.0,
+          "5": -8.0,
+          "6": -20.0,
+          "7": -8.0,
+          "8": -5.0,
+          "9": -25.0
+        },
+        {
+          "1": -24.0,
+          "10": -8.0,
+          "11": -5.0,
+          "12": -33.0,
+          "13": -27.0,
+          "14": -28.0,
+          "15": -20.0,
+          "16": -24.0,
+          "17": -16.0,
+          "18": -15.0,
+          "19": -15.0,
+          "2": -12.0,
+          "20": -8.0,
+          "3": -8.0,
+          "4": -12.0,
+          "5": -25.0,
+          "6": -14.0,
+          "7": -5.0,
+          "8": -5.0,
+          "9": -23.0
+        }
+      ],
+      "total_training_episodes": 2
+    }
+  },
+  {
+    "config": {
+      "action_count": 22,
+      "agent_count": 20,
+      "arrival_probability": 0.5,
+      "baseline_reference_set": [
+        "artifacts/analysis/baseline-revalidation-after-runtime-repair/baseline-revalidation-report.json",
+        "artifacts/analysis/baseline-revalidation-after-runtime-repair/baseline-revalidation-report.md"
+      ],
+      "batch_size": 64,
+      "cloud_cpu_ghz": 30.0,
+      "evaluation_episode_length": 110,
+      "evaluation_trace_bank_id": "full-training-eval-bank",
+      "feature_id": "041-full-training-reproduction-campaign",
+      "full_campaign_budget": 5000,
+      "full_campaign_enabled": false,
+      "full_campaign_episode_length": 110,
+      "full_campaign_flag_name": "--enable-full-campaign",
+      "gamma": 0.8,
+      "horizontal_data_rate_mbps": 30.0,
+      "learning_rate": 7e-07,
+      "local_cpu_ghz": 5.0,
+      "lookback_w": 10,
+      "lstm_enabled": true,
+      "lstm_hidden_size": 20,
+      "lstm_num_layers": 1,
+      "model_initialization_seed": 19,
+      "pilot_budget": {
+        "follow_up_episodes": 25,
+        "primary_episodes": 10
+      },
+      "pilot_episode_length": 110,
+      "public_cpu_ghz": 5.0,
+      "q_network_hidden_layers": [
+        1024,
+        1024,
+        1024
+      ],
+      "readiness_manual_approval_reference": "paper-figures-campaign",
+      "readiness_manual_approval_required": true,
+      "readiness_manual_approval_status": "approved",
+      "readiness_probe_episode_count": 3,
+      "readiness_probe_episode_length": 50,
+      "replay_memory_capacity": 10000,
+      "seed_bundle": {
+        "action_exploration_seed": 53,
+        "evaluation_trace_generation_seed": 43,
+        "model_initialization_seed": 19,
+        "python_seed": 59,
+        "readiness_probe_seed": 31,
+        "replay_sampling_seed": 47,
+        "torch_seed": 61,
+        "training_trace_generation_seed": 41
+      },
+      "state_dim": 74,
+      "sweep_metadata": {
+        "discount_factor": 0.8,
+        "sweep_type": "discount_factor"
+      },
+      "target_update_contract": {
+        "allowed_units": [
+          "optimizer_step",
+          "environment_step",
+          "replay_insertion",
+          "episode"
+        ],
+        "approval_status": "user_approved_campaign_assumption",
+        "paper_evidence_status": "ambiguous_not_explicitly_defined",
+        "target_update_unit": "optimizer_step",
+        "update_frequency": 2000
+      },
+      "task_size_max_mbits": 5.0,
+      "task_size_min_mbits": 2.0,
+      "timeout_slots": 20,
+      "training_trace_bank_id": "full-training-train-bank",
+      "vertical_data_rate_mbps": 10.0
+    },
+    "experiment_label": "gamma=0.8",
+    "result": {
+      "checkpoint_metadata": {
+        "config_hash": "095b4882157a3d315bc85f7d667a561b07bb6c6803a2930052a3c5f53edc7349",
+        "eval_trace_bank_id": "full-training-eval-bank",
+        "feature_id": "041-full-training-reproduction-campaign",
+        "full_campaign_enabled": false,
+        "optimizer_step_count": 46,
+        "replay_size": 109,
+        "seed_bundle": {
+          "action_exploration_seed": 53,
+          "evaluation_trace_generation_seed": 43,
+          "model_initialization_seed": 19,
+          "python_seed": 59,
+          "readiness_probe_seed": 31,
+          "replay_sampling_seed": 47,
+          "torch_seed": 61,
+          "training_trace_generation_seed": 41
+        },
+        "stage": "pilot_training",
+        "target_update_unit": "optimizer_step",
+        "train_trace_bank_id": "full-training-train-bank"
+      },
+      "checkpoint_schema_valid": true,
+      "delayed_reward_contract_preserved": true,
+      "episodes_completed": 2,
+      "episodes_requested": 2,
+      "evaluation_summary": {
+        "candidate_reproduction_supported": false,
+        "completed_task_count": 151,
+        "completion_rate_by_destination": {
+          "local": 1.0
+        },
+        "drop_ratio": 0.0,
+        "dropped_task_count": 0,
+        "evaluation_episode_count": 3,
+        "evaluation_on_training_traces": false,
+        "mean_completion_delay": 5.410596026490066,
+        "mean_reward": -322.6666666666667,
+        "mean_reward_across_agents": -48.4,
+        "per_agent_reward": {
+          "1": -61.0,
+          "10": -26.0,
+          "11": -44.0,
+          "12": -20.0,
+          "13": -61.0,
+          "14": -43.0,
+          "15": -59.0,
+          "16": -50.0,
+          "17": -45.0,
+          "18": -23.0,
+          "19": -75.0,
+          "2": -47.0,
+          "20": -47.0,
+          "3": -48.0,
+          "4": -69.0,
+          "5": -53.0,
+          "6": -44.0,
+          "7": -46.0,
+          "8": -63.0,
+          "9": -44.0
+        },
+        "reward_bearing_transition_count": 124,
+        "reward_per_episode": [
+          -335.0,
+          -301.0,
+          -332.0
+        ],
+        "terminal_transition_count": 124,
+        "topology_usage_stats": {
+          "horizontal": 155,
+          "vertical": 1
+        },
+        "trace_bank_disjoint": true,
+        "trace_bank_ids": {
+          "evaluation": "full-training-eval-bank",
+          "training": "full-training-train-bank"
+        },
+        "trace_ids": [
+          "hoodie-43",
+          "hoodie-44",
+          "hoodie-45"
+        ]
+      },
+      "full_campaign_block_reason": "full campaign not requested during pilot",
+      "full_campaign_executed": false,
+      "legal_action_only": true,
+      "loss_is_finite": true,
+      "loss_value": 23.855697631835938,
+      "optimizer_step_count": 46,
+      "pending_at_horizon_preserved": true,
+      "pilot_training_executed": true,
+      "replay_size": 109,
+      "stage": "pilot_training",
+      "target_sync_count": 0,
+      "train_eval_trace_banks_disjoint": true
+    },
+    "training_metrics": {
+      "action_counts": [
+        {
+          "3": 27,
+          "4": 12,
+          "8": 2,
+          "10": 13
+        },
+        {
+          "3": 20,
+          "4": 8,
+          "8": 4,
+          "10": 23
+        }
+      ],
+      "average_delays": [
+        0.0,
+        0.0
+      ],
+      "completed_counts": [
+        49,
+        51
+      ],
+      "completion_delays": [],
+      "drop_ratios": [
+        0.0,
+        0.0
+      ],
+      "dropped_counts": [
+        0,
+        0
+      ],
+      "episode_rewards": [
+        -332.0,
+        -327.0
+      ],
+      "loss_values": [
+        18.536609649658203,
+        18.534908294677734,
+        19.3044490814209,
+        19.302661895751953,
+        17.527524948120117,
+        18.295089721679688,
+        16.03180694580078,
+        18.686063766479492,
+        20.731277465820312,
+        25.154966354370117,
+        24.38418197631836,
+        20.976051330566406,
+        20.71957778930664,
+        24.143329620361328,
+        19.666845321655273,
+        23.367198944091797,
+        21.58067512512207,
+        15.587813377380371,
+        21.980369567871094,
+        21.734352111816406,
+        20.703109741210938,
+        24.28498077392578,
+        23.296905517578125,
+        24.374893188476562,
+        26.09244728088379,
+        26.103452682495117,
+        24.337261199951172,
+        23.134281158447266,
+        26.158348083496094,
+        19.88541603088379,
+        24.031082153320312,
+        26.609134674072266,
+        19.80424690246582,
+        22.292640686035156,
+        19.116249084472656,
+        27.129234313964844,
+        24.075918197631836,
+        27.663911819458008,
+        23.005733489990234,
+        17.724292755126953,
+        27.457904815673828,
+        20.900630950927734,
+        23.47233772277832,
+        27.32652473449707,
+        20.776607513427734,
+        23.855697631835938
+      ],
+      "mean_reward_across_agents": [
+        -16.6,
+        -16.35
+      ],
+      "per_agent_rewards": [
+        {
+          "1": -21.0,
+          "10": -8.0,
+          "11": -18.0,
+          "12": -14.0,
+          "13": -12.0,
+          "14": -30.0,
+          "15": -24.0,
+          "16": -13.0,
+          "17": -14.0,
+          "18": -16.0,
+          "19": -18.0,
+          "2": -16.0,
+          "20": -25.0,
+          "3": -13.0,
+          "4": -24.0,
+          "5": -8.0,
+          "6": -20.0,
+          "7": -8.0,
+          "8": -5.0,
+          "9": -25.0
+        },
+        {
+          "1": -24.0,
+          "10": -8.0,
+          "11": -5.0,
+          "12": -33.0,
+          "13": -27.0,
+          "14": -28.0,
+          "15": -20.0,
+          "16": -24.0,
+          "17": -16.0,
+          "18": -15.0,
+          "19": -15.0,
+          "2": -12.0,
+          "20": -8.0,
+          "3": -8.0,
+          "4": -12.0,
+          "5": -25.0,
+          "6": -14.0,
+          "7": -5.0,
+          "8": -5.0,
+          "9": -23.0
+        }
+      ],
+      "total_training_episodes": 2
+    }
+  },
+  {
+    "config": {
+      "action_count": 22,
+      "agent_count": 20,
+      "arrival_probability": 0.5,
+      "baseline_reference_set": [
+        "artifacts/analysis/baseline-revalidation-after-runtime-repair/baseline-revalidation-report.json",
+        "artifacts/analysis/baseline-revalidation-after-runtime-repair/baseline-revalidation-report.md"
+      ],
+      "batch_size": 64,
+      "cloud_cpu_ghz": 30.0,
+      "evaluation_episode_length": 110,
+      "evaluation_trace_bank_id": "full-training-eval-bank",
+      "feature_id": "041-full-training-reproduction-campaign",
+      "full_campaign_budget": 5000,
+      "full_campaign_enabled": false,
+      "full_campaign_episode_length": 110,
+      "full_campaign_flag_name": "--enable-full-campaign",
+      "gamma": 0.99,
+      "horizontal_data_rate_mbps": 30.0,
+      "learning_rate": 7e-07,
+      "local_cpu_ghz": 5.0,
+      "lookback_w": 10,
+      "lstm_enabled": true,
+      "lstm_hidden_size": 20,
+      "lstm_num_layers": 1,
+      "model_initialization_seed": 19,
+      "pilot_budget": {
+        "follow_up_episodes": 25,
+        "primary_episodes": 10
+      },
+      "pilot_episode_length": 110,
+      "public_cpu_ghz": 5.0,
+      "q_network_hidden_layers": [
+        1024,
+        1024,
+        1024
+      ],
+      "readiness_manual_approval_reference": "paper-figures-campaign",
+      "readiness_manual_approval_required": true,
+      "readiness_manual_approval_status": "approved",
+      "readiness_probe_episode_count": 3,
+      "readiness_probe_episode_length": 50,
+      "replay_memory_capacity": 10000,
+      "seed_bundle": {
+        "action_exploration_seed": 53,
+        "evaluation_trace_generation_seed": 43,
+        "model_initialization_seed": 19,
+        "python_seed": 59,
+        "readiness_probe_seed": 31,
+        "replay_sampling_seed": 47,
+        "torch_seed": 61,
+        "training_trace_generation_seed": 41
+      },
+      "state_dim": 74,
+      "sweep_metadata": {
+        "discount_factor": 0.99,
+        "sweep_type": "discount_factor"
+      },
+      "target_update_contract": {
+        "allowed_units": [
+          "optimizer_step",
+          "environment_step",
+          "replay_insertion",
+          "episode"
+        ],
+        "approval_status": "user_approved_campaign_assumption",
+        "paper_evidence_status": "ambiguous_not_explicitly_defined",
+        "target_update_unit": "optimizer_step",
+        "update_frequency": 2000
+      },
+      "task_size_max_mbits": 5.0,
+      "task_size_min_mbits": 2.0,
+      "timeout_slots": 20,
+      "training_trace_bank_id": "full-training-train-bank",
+      "vertical_data_rate_mbps": 10.0
+    },
+    "experiment_label": "gamma=0.99",
+    "result": {
+      "checkpoint_metadata": {
+        "config_hash": "30fd9f1e59026fdbee9f6298ce8788ccd25e3f71ce0d9d57e47d9fbfe9e58bdc",
+        "eval_trace_bank_id": "full-training-eval-bank",
+        "feature_id": "041-full-training-reproduction-campaign",
+        "full_campaign_enabled": false,
+        "optimizer_step_count": 46,
+        "replay_size": 109,
+        "seed_bundle": {
+          "action_exploration_seed": 53,
+          "evaluation_trace_generation_seed": 43,
+          "model_initialization_seed": 19,
+          "python_seed": 59,
+          "readiness_probe_seed": 31,
+          "replay_sampling_seed": 47,
+          "torch_seed": 61,
+          "training_trace_generation_seed": 41
+        },
+        "stage": "pilot_training",
+        "target_update_unit": "optimizer_step",
+        "train_trace_bank_id": "full-training-train-bank"
+      },
+      "checkpoint_schema_valid": true,
+      "delayed_reward_contract_preserved": true,
+      "episodes_completed": 2,
+      "episodes_requested": 2,
+      "evaluation_summary": {
+        "candidate_reproduction_supported": false,
+        "completed_task_count": 151,
+        "completion_rate_by_destination": {
+          "local": 1.0
+        },
+        "drop_ratio": 0.0,
+        "dropped_task_count": 0,
+        "evaluation_episode_count": 3,
+        "evaluation_on_training_traces": false,
+        "mean_completion_delay": 5.410596026490066,
+        "mean_reward": -322.6666666666667,
+        "mean_reward_across_agents": -48.4,
+        "per_agent_reward": {
+          "1": -61.0,
+          "10": -26.0,
+          "11": -44.0,
+          "12": -20.0,
+          "13": -61.0,
+          "14": -43.0,
+          "15": -59.0,
+          "16": -50.0,
+          "17": -45.0,
+          "18": -23.0,
+          "19": -75.0,
+          "2": -47.0,
+          "20": -47.0,
+          "3": -48.0,
+          "4": -69.0,
+          "5": -53.0,
+          "6": -44.0,
+          "7": -46.0,
+          "8": -63.0,
+          "9": -44.0
+        },
+        "reward_bearing_transition_count": 124,
+        "reward_per_episode": [
+          -335.0,
+          -301.0,
+          -332.0
+        ],
+        "terminal_transition_count": 124,
+        "topology_usage_stats": {
+          "horizontal": 155,
+          "vertical": 1
+        },
+        "trace_bank_disjoint": true,
+        "trace_bank_ids": {
+          "evaluation": "full-training-eval-bank",
+          "training": "full-training-train-bank"
+        },
+        "trace_ids": [
+          "hoodie-43",
+          "hoodie-44",
+          "hoodie-45"
+        ]
+      },
+      "full_campaign_block_reason": "full campaign not requested during pilot",
+      "full_campaign_executed": false,
+      "legal_action_only": true,
+      "loss_is_finite": true,
+      "loss_value": 23.85578155517578,
+      "optimizer_step_count": 46,
+      "pending_at_horizon_preserved": true,
+      "pilot_training_executed": true,
+      "replay_size": 109,
+      "stage": "pilot_training",
+      "target_sync_count": 0,
+      "train_eval_trace_banks_disjoint": true
+    },
+    "training_metrics": {
+      "action_counts": [
+        {
+          "3": 27,
+          "4": 12,
+          "8": 2,
+          "10": 13
+        },
+        {
+          "3": 20,
+          "4": 8,
+          "8": 4,
+          "10": 23
+        }
+      ],
+      "average_delays": [
+        0.0,
+        0.0
+      ],
+      "completed_counts": [
+        49,
+        51
+      ],
+      "completion_delays": [],
+      "drop_ratios": [
+        0.0,
+        0.0
+      ],
+      "dropped_counts": [
+        0,
+        0
+      ],
+      "episode_rewards": [
+        -332.0,
+        -327.0
+      ],
+      "loss_values": [
+        18.536619186401367,
+        18.5349178314209,
+        19.30446434020996,
+        19.302677154541016,
+        17.527538299560547,
+        18.295106887817383,
+        16.03182601928711,
+        18.686084747314453,
+        20.731300354003906,
+        25.154991149902344,
+        24.38420867919922,
+        20.976076126098633,
+        20.7196044921875,
+        24.143362045288086,
+        19.666885375976562,
+        23.36724090576172,
+        21.58071517944336,
+        15.587854385375977,
+        21.980409622192383,
+        21.734397888183594,
+        20.70315933227539,
+        24.2850341796875,
+        23.296958923339844,
+        24.374948501586914,
+        26.09250831604004,
+        26.103506088256836,
+        24.33732795715332,
+        23.134349822998047,
+        26.158409118652344,
+        19.885486602783203,
+        24.03115463256836,
+        26.609214782714844,
+        19.804332733154297,
+        22.2927303314209,
+        19.116331100463867,
+        27.129322052001953,
+        24.076011657714844,
+        27.66399574279785,
+        23.005815505981445,
+        17.72437286376953,
+        27.457988739013672,
+        20.900728225708008,
+        23.472431182861328,
+        27.326616287231445,
+        20.776691436767578,
+        23.85578155517578
+      ],
+      "mean_reward_across_agents": [
+        -16.6,
+        -16.35
+      ],
+      "per_agent_rewards": [
+        {
+          "1": -21.0,
+          "10": -8.0,
+          "11": -18.0,
+          "12": -14.0,
+          "13": -12.0,
+          "14": -30.0,
+          "15": -24.0,
+          "16": -13.0,
+          "17": -14.0,
+          "18": -16.0,
+          "19": -18.0,
+          "2": -16.0,
+          "20": -25.0,
+          "3": -13.0,
+          "4": -24.0,
+          "5": -8.0,
+          "6": -20.0,
+          "7": -8.0,
+          "8": -5.0,
+          "9": -25.0
+        },
+        {
+          "1": -24.0,
+          "10": -8.0,
+          "11": -5.0,
+          "12": -33.0,
+          "13": -27.0,
+          "14": -28.0,
+          "15": -20.0,
+          "16": -24.0,
+          "17": -16.0,
+          "18": -15.0,
+          "19": -15.0,
+          "2": -12.0,
+          "20": -8.0,
+          "3": -8.0,
+          "4": -12.0,
+          "5": -25.0,
+          "6": -14.0,
+          "7": -5.0,
+          "8": -5.0,
+          "9": -23.0
+        }
+      ],
+      "total_training_episodes": 2
+    }
+  }
+]

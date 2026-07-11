@@ -1,0 +1,67 @@
+{
+  "allowed_outputs": [
+    "numeric_dataset",
+    "plot_payload"
+  ],
+  "artifact_backed_reproduction_data": {
+    "action_distribution_available": false,
+    "campaign_training_available": false
+  },
+  "caveats": [
+    "Action distributions and campaign training metrics provide Figure 9-style behavioral insights."
+  ],
+  "comparison_ready": false,
+  "extracted_artifact_metrics": {
+    "action_distribution_by_policy": [],
+    "completion_rate_by_destination": {},
+    "mean_reward": 0.0,
+    "topology_usage_stats": {}
+  },
+  "figure_id": "Figure 9",
+  "limitation_level": "none",
+  "missing_artifacts": [
+    "average_reward_by_task_arrival_probability",
+    "reward_by_drl_agent_count",
+    "reward_by_cpu_capacity",
+    "reward_by_agent_count_traffic_scenario",
+    "reward_by_offloading_data_rate",
+    "true_hoodie_drl_validation_rewards"
+  ],
+  "paper_caption_supported_metadata": {
+    "subfigures": [
+      "9a",
+      "9b",
+      "9c",
+      "9d",
+      "9e"
+    ]
+  },
+  "paper_claim_type": "behavior_and_scalability_context",
+  "paper_extraction_source": {},
+  "paper_numeric_target_data": {
+    "available": false,
+    "missing": [
+      "paper_numeric_curve_values"
+    ]
+  },
+  "paper_ocr_evidence": [
+    {
+      "char_offset": 139277,
+      "figure_id": "Figure 9",
+      "snippet_index": 0,
+      "source_path": "resources/papers/hoodie/ocr/merged.tex",
+      "text": "parameters. 1) The impact of Task Arrival Probability Initially, to further explore the impact of the task arrival probability (P), which is directly proportional to the task traffic density underlying the IoT areas, Fig. 9a shows the HOODIE performance as a function of increasing system load and edge layer density \\$(N=[10,15,20])\\$ ). To assess the HOoDIE performance, we used the optimally trained Q models of each agent (as they resulted from Section A) and we calculated the average reward collected during a series of 200 validation episodes (i.e. all agents performed exploitative actions). Evidently, as the task arrival probability increases, the average reward decreases across all config"
+    },
+    {
+      "char_offset": 141152,
+      "figure_id": "Figure 9",
+      "snippet_index": 1,
+      "source_path": "resources/papers/hoodie/ocr/merged.tex",
+      "text": "hat the high negative rewards do not reflect the average delay of the tasks, but they indicate the high negative penalties received for task drops, which is more frequent as the P increases. Under the same simulations, Fig. 9b depicts the distribution of actions taken by the HOoDIE agents across different task arrival probabilities, categorized into local computation,horizontal, and vertical offloading. The results show a clear preference for horizontal offloading, especially as the task arrival probability increases, suggesting that agents often opt to share tasks with neighboring EAs rather than process them locally or offload them to the Cloud. However, as the task arrival probability rea"
+    }
+  ],
+  "reconstruction_status": "full_pdf_extracted",
+  "source_artifacts": [],
+  "support_status": "unsupported",
+  "title": "HOODIE behavior insights under varying system parameters"
+}

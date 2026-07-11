@@ -40,8 +40,20 @@ class PaperHoodieDuelingNetwork(nn.Module):
             batch_first=True,
         )
 
+        # Paper Section IV-A: LSTM predicts load forecast from load_history.
+        # Forecast concatenated with base state (task + queue + wait dims)
+        # forms the full state vector. Only active in paper 74-dim mode.
+        self.forecast_output_dim = 20  # num_eas = 20
+        if self.state_dim > self.forecast_output_dim:
+            self.base_state_dim = self.state_dim - self.forecast_output_dim
+            self.forecast_head = nn.Linear(self.lstm_hidden_size, self.forecast_output_dim)
+            body_input_dim = self.state_dim
+        else:
+            # Legacy mode: forecast not applicable, use LSTM hidden directly
+            self.base_state_dim = 0
+            self.forecast_head = None
+            body_input_dim = self.lstm_hidden_size
         body_layers: list[nn.Module] = []
-        body_input_dim = self.lstm_hidden_size
         for width in self.q_network_hidden_layers:
             body_layers.append(nn.Linear(body_input_dim, width))
             body_layers.append(nn.ReLU())
@@ -66,9 +78,24 @@ class PaperHoodieDuelingNetwork(nn.Module):
         encoder_output, _ = self.encoder(observation)
         return encoder_output[:, -1, :]
 
-    def forward_components(self, observation: Tensor) -> tuple[Tensor, Tensor, Tensor]:
+    def encode_and_forecast(self, observation: Tensor) -> tuple[Tensor, Tensor]:
+        """Encode with LSTM, produce load forecast, reconstruct full state.
+
+        Returns (reconstructed_state, encoder_hidden) where reconstructed_state
+        is either the full 74-dim state (base from obs + forecast from LSTM head)
+        or the legacy raw LSTM hidden when forecast is disabled.
+        """
         encoded = self.encode_history(observation)
-        body_output = self.q_body(encoded)
+        if self.forecast_head is not None:
+            forecast = self.forecast_head(encoded)  # (batch, 20)
+            base = observation[:, -1, :self.base_state_dim]  # (batch, 54)
+            reconstructed = torch.cat([base, forecast], dim=-1)  # (batch, 74)
+            return reconstructed, encoded
+        return encoded, encoded
+
+    def forward_components(self, observation: Tensor) -> tuple[Tensor, Tensor, Tensor]:
+        combined, _ = self.encode_and_forecast(observation)
+        body_output = self.q_body(combined)
         value = self.value_head(body_output)
         advantage = self.advantage_head(body_output)
         q_values = value + advantage - advantage.mean(dim=-1, keepdim=True)

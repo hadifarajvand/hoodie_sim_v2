@@ -1,0 +1,2 @@
+comparison_allowed,episode,figure_id,limitation,policy_name,reconstruction_status,scenario_name,seed,series_name,source_kind,source_path,subfigure_id,x_unit,x_value,y_unit,y_value
+False,,Figure 11,Campaign training metrics provide episode-level rewards and topology usage for LSTM analysis in Figure 11-style comparisons.,,full_pdf_extracted,,,support_status,pdf_extracted,,,,,,unsupported

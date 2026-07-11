@@ -1,0 +1,26 @@
+{
+  "episodes_expected": 5,
+  "figure_id": "Figure 8",
+  "missing_or_invalid": [],
+  "output": "artifacts/analysis/figure8-11-validation/figure_8/figure8_reward_timecourse.png",
+  "source": "artifacts/analysis/figure8-11-validation/sweep/sweep_results.json",
+  "status": "exported",
+  "subfigures": [
+    {
+      "flat": false,
+      "id": "8a",
+      "max_episodes": 100,
+      "nonempty": true,
+      "present": true,
+      "series": "learning_rate"
+    },
+    {
+      "flat": false,
+      "id": "8b",
+      "max_episodes": 100,
+      "nonempty": true,
+      "present": true,
+      "series": "discount_factor"
+    }
+  ]
+}

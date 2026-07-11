@@ -19,9 +19,9 @@
 
 ## Observed Default Audit Events
 - `created`
-- `selected_action:horizontal`
-- `selected_action:vertical`
 - `created`
+- `created`
+- `selected_action:local`
 - `created`
 - `created`
 
@@ -43,5 +43,3 @@
 - `figure_7_topology`: `unrecoverable`
 
 ## Remaining Topology Blockers
-- Topology-backed destination required for offload actions
-- Topology-backed destination required for offload actions

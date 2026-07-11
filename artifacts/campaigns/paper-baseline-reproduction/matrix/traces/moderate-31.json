@@ -1,0 +1,11 @@
+{
+  "trace_id": "moderate-31",
+  "seed": 31,
+  "metadata": {
+    "scenario_name": "moderate"
+  },
+  "tasks": [
+    {"arrival_slot": 0, "size": 2.0, "processing_density": 1.0},
+    {"arrival_slot": 1, "size": 3.0, "processing_density": 1.5}
+  ]
+}

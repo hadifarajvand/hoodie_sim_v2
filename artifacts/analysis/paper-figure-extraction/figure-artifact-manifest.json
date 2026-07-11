@@ -1,0 +1,26 @@
+{
+  "Figure 8": {
+    "png": "artifacts/analysis/paper-figure-extraction/figure-08.png",
+    "json": "artifacts/analysis/paper-figure-extraction/figure-08.json",
+    "csv": "artifacts/analysis/paper-figure-extraction/figure-08.csv",
+    "support": "unsupported"
+  },
+  "Figure 9": {
+    "png": "artifacts/analysis/paper-figure-extraction/figure-09.png",
+    "json": "artifacts/analysis/paper-figure-extraction/figure-09.json",
+    "csv": "artifacts/analysis/paper-figure-extraction/figure-09.csv",
+    "support": "partially_supported"
+  },
+  "Figure 10": {
+    "png": "artifacts/analysis/paper-figure-extraction/figure-10.png",
+    "json": "artifacts/analysis/paper-figure-extraction/figure-10.json",
+    "csv": "artifacts/analysis/paper-figure-extraction/figure-10.csv",
+    "support": "partially_supported"
+  },
+  "Figure 11": {
+    "png": "artifacts/analysis/paper-figure-extraction/figure-11.png",
+    "json": "artifacts/analysis/paper-figure-extraction/figure-11.json",
+    "csv": "artifacts/analysis/paper-figure-extraction/figure-11.csv",
+    "support": "unsupported"
+  }
+}

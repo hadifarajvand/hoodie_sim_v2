@@ -1,0 +1,14 @@
+{
+  "mode": "quick",
+  "parameters": {
+    "agent_count": 20,
+    "batch_size": 64,
+    "gamma_default": 0.99,
+    "learning_rate_default": 7e-07,
+    "replay_capacity": 10000,
+    "slot_duration_seconds": 0.1,
+    "slots_per_episode": 110,
+    "timeout_slots": 20
+  },
+  "pipeline": "paper_figure_reproduction"
+}

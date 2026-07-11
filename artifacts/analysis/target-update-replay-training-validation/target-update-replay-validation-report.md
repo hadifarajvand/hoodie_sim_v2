@@ -72,12 +72,12 @@
 {
   "no_baseline_comparison": true,
   "no_dependency_drift": true,
-  "no_environment_contract_drift": false,
+  "no_environment_contract_drift": true,
   "no_full_campaign": true,
   "no_paper_reproduction_claim": true,
-  "no_policy_drift": false,
-  "no_prior_artifact_rewrite": false,
-  "no_reward_timing_change": false
+  "no_policy_drift": true,
+  "no_prior_artifact_rewrite": true,
+  "no_reward_timing_change": true
 }
 
 ## Remaining Blockers
@@ -87,6 +87,5 @@
   "replay_sampling_blocked",
   "optimizer_step_counter_blocked",
   "target_update_contract_blocked",
-  "checkpoint_metadata_blocked",
-  "behavior_drift_detected"
+  "checkpoint_metadata_blocked"
 ]

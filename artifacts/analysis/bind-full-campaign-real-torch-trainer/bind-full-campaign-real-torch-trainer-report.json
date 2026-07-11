@@ -129,34 +129,34 @@
     "feature_060_recommended_next_feature": "Feature 061 — Campaign Result Integrity and Comparison Readiness Audit",
     "feature_060_remaining_blockers": []
   },
-  "feature_060a_audit_verified": true,
+  "feature_060a_audit_verified": false,
   "feature_id": "060b-bind-full-campaign-real-torch-trainer",
-  "final_verdict": "real_torch_trainer_binding_repair_passed",
+  "final_verdict": "feature_060a_prerequisite_blocked",
   "prerequisite_tags_verified": [
     {
       "details": "git branch --show-current == 060b-bind-full-campaign-real-torch-trainer",
       "name": "branch",
-      "verified": true
+      "verified": false
     },
     {
       "details": "current branch != main",
       "name": "not_main",
-      "verified": true
+      "verified": false
     },
     {
       "details": "060-full-paper-default-training-campaign-execution is ancestor of HEAD",
       "name": "base_branch_is_ancestor",
-      "verified": true
+      "verified": false
     },
     {
       "details": "artifacts/analysis/real-torch-trainer-binding-audit/real-torch-trainer-binding-audit-report.json",
       "name": "feature_060a_audit_verified",
-      "verified": true
+      "verified": false
     },
     {
       "details": "git status --short contains only approved Feature 060B paths",
       "name": "working_tree_paths_approved",
-      "verified": true
+      "verified": false
     },
     {
       "details": "git diff --cached --name-only contains only approved Feature 060B paths",
@@ -166,12 +166,41 @@
     {
       "details": "git diff --name-only 060-full-paper-default-training-campaign-execution...HEAD contains only approved Feature 060B paths",
       "name": "feature_branch_diff_paths_approved",
-      "verified": true
+      "verified": false
     },
     {
-      "details": [],
+      "details": [
+        "src/environment/reward_timing.py",
+        "requirements.txt",
+        ".gitignore",
+        ".specify/feature.json",
+        "AGENTS.md",
+        "src/environment/deadline_rules.py",
+        "src/environment/gym_adapter.py",
+        "src/environment/lifecycle_trace.py",
+        "src/environment/paper_action_space.py",
+        "src/environment/paper_link_delay.py",
+        "src/environment/paper_load_history.py",
+        "src/environment/paper_lstm_forecast.py",
+        "src/environment/paper_pubsub.py",
+        "src/environment/paper_queue_fidelity.py",
+        "src/environment/paper_recovery.py",
+        "src/environment/paper_state.py",
+        "src/environment/paper_timeout.py",
+        "src/environment/paper_traffic.py",
+        "src/environment/reward_timing.py",
+        "src/environment/runtime_model.py",
+        "src/policies/action_masking.py",
+        "src/policies/bco.py",
+        "src/policies/common.py",
+        "src/policies/flc.py",
+        "src/policies/ho.py",
+        "src/policies/mleo.py",
+        "src/policies/ro.py",
+        "src/policies/vo.py"
+      ],
       "name": "forbidden_paths_absent",
-      "verified": true
+      "verified": false
     }
   ],
   "real_trainer_binding_summary": {
@@ -186,23 +215,33 @@
     "torch_import_used": true,
     "torchrl_available": true
   },
-  "recommended_next_feature": "Feature 061 — Campaign Result Integrity and Comparison Readiness Audit",
-  "remaining_blockers": [],
+  "recommended_next_feature": "Repair Feature 060A audit prerequisite before Feature 060B can proceed",
+  "remaining_blockers": [
+    "feature_060a_audit_not_verified",
+    "branch",
+    "not_main",
+    "base_branch_is_ancestor",
+    "feature_060a_audit_verified",
+    "working_tree_paths_approved",
+    "feature_branch_diff_paths_approved",
+    "forbidden_paths_absent",
+    "behavior_drift_detected"
+  ],
   "safety_summary": {
     "no_baseline_superiority_claim": true,
-    "no_dependency_drift": true,
-    "no_environment_contract_drift": true,
+    "no_dependency_drift": false,
+    "no_environment_contract_drift": false,
     "no_paper_reproduction_claim": true,
     "no_performance_superiority_claim": true,
-    "no_policy_drift": true,
+    "no_policy_drift": false,
     "no_reward_timing_change": true,
     "no_uncontrolled_campaign_loop": true
   },
   "torch_environment_summary": {
-    "repo_venv_python": "src/.venvmac/bin/python3",
+    "repo_venv_python": ".venv/bin/python",
     "repo_venv_python_exists": true,
     "torch_available": true,
-    "torch_version": "2.12.0",
+    "torch_version": "2.12.1",
     "torchrl_available": true
   },
   "training_metrics_summary": {

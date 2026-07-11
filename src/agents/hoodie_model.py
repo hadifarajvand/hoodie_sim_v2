@@ -335,12 +335,14 @@ class HoodieModel:
         self.online_net.optimizer.zero_grad()
         
         # Compute current Q-values for taken actions
-        current_q_values = self.online_net(states_tensor).gather(1, actions.unsqueeze(1))
-        
-        # Compute next Q-values using target network
+        current_q_values = self.online_net(states_tensor).gather(1, actions_tensor.unsqueeze(1))
+
+        # Double DQN: online network selects action, target network evaluates it
         with torch.no_grad():
-            next_q_values = self.target_net(next_states_tensor)
-            max_next_q_values = next_q_values.max(1)[0]
+            online_next_q = self.online_net(next_states_tensor)
+            best_actions = online_next_q.argmax(dim=1, keepdim=True)
+            target_next_q = self.target_net(next_states_tensor)
+            max_next_q_values = target_next_q.gather(1, best_actions).squeeze(1)
             target_q_values = rewards_tensor + (0.99 * max_next_q_values * (1 - dones_tensor))
         
         # Compute loss

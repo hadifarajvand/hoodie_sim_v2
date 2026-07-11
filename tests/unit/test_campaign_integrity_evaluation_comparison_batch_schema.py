@@ -31,6 +31,12 @@ def _base_report_kwargs() -> dict[str, object]:
             "seed_bundle_consistent": True,
             "real_trainer_binding_evidence_exists": True,
             "scalar_fallback_drives_campaign_claim": False,
+            "feature_060_sources": {
+                "feature_058_report": "artifacts/analysis/evaluation-trace-bank-baseline-harness/evaluation-trace-bank-baseline-harness-report.json",
+                "feature_060_report": "artifacts/analysis/full-paper-default-training-campaign-execution/full-paper-default-training-campaign-report.json",
+                "feature_060b_report": "artifacts/analysis/bind-full-campaign-real-torch-trainer/bind-full-campaign-real-torch-trainer-report.json"
+            },
+            "feature_060_artifacts_refreshed": True,
         },
         "baseline_evaluation_summary": {
             "evaluation_trace_bank_id": "feature-058-evaluation-trace-bank",

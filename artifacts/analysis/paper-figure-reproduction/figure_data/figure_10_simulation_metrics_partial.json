@@ -1,0 +1,88 @@
+{
+  "allowed_outputs": [
+    "numeric_dataset",
+    "plot_payload"
+  ],
+  "artifact_backed_reproduction_data": {
+    "arrival_probabilities_from_traces": [],
+    "campaign_training_available": false,
+    "matrix_metrics_available": false
+  },
+  "caveats": [
+    "Repository average_delay values are preserved as stored; the paper states average delay is negative by convention.",
+    "Campaign training metrics provide episode-level rewards and topology usage for Figure 10-style comparisons."
+  ],
+  "comparison_ready": false,
+  "extracted_artifact_metrics": {
+    "by_policy": [],
+    "by_policy_scenario": [],
+    "by_scenario": [],
+    "by_seed": [],
+    "completion_rate_by_destination": {},
+    "drop_ratio": 0.0,
+    "mean_completion_delay": 0.0,
+    "mean_reward": 0.0,
+    "per_run": [],
+    "reward_per_episode": [],
+    "topology_usage_stats": {}
+  },
+  "figure_id": "Figure 10",
+  "limitation_level": "partial",
+  "missing_artifacts": [
+    "cpu_capacity_sweep_artifacts",
+    "timeout_sweep_artifacts",
+    "structured_paper_numeric_curve_values",
+    "matrix_summary_metrics"
+  ],
+  "paper_caption_supported_metadata": {
+    "metrics": [
+      "average_delay",
+      "drop_ratio"
+    ],
+    "paper_delay_convention": "negative"
+  },
+  "paper_claim_type": "baseline_metric_comparison",
+  "paper_extraction_source": {},
+  "paper_numeric_target_data": {
+    "available": false,
+    "missing": [
+      "structured_paper_numeric_curve_values"
+    ]
+  },
+  "paper_ocr_evidence": [
+    {
+      "char_offset": 155096,
+      "figure_id": "Figure 10",
+      "snippet_index": 0,
+      "source_path": "resources/papers/hoodie/ocr/merged.tex",
+      "text": "f the task dropped, divided by the total number of tasks arrived in all EAs. By convention, delay values are negative,since they reflect negative impact on the task completion. 1)The impact of Task Arrival Probability Fig. 10a presents the average delay as a function of the task arrival probability across different offloading schemes.As the task arrival probability increases, the average delay generally decreases for all schemes, reflecting the growing challenge of handling a higher load within the system's limited computational resources. Notably, HOoDIE consistently outperforms the other schemes, achieving lower average delays across the entire range of task arrival probabilities.The HO an"
+    },
+    {
+      "char_offset": 155868,
+      "figure_id": "Figure 10",
+      "snippet_index": 1,
+      "source_path": "resources/papers/hoodie/ocr/merged.tex",
+      "text": "w significantly higher delays as the load increases. The MLEO scheme also demonstrates strong performance, particularly at moderate task loads, but it falls behind HOoDIE as the task arrival probability approaches 0.9. Fig. 10d illustrates the drop ratio as a function of task arrival probability for the same set of offloading schemes.As expected, the drop ratio increases with higher task arrival probabilities, reflecting the system's difficulty in meeting task deadlines under heavier loads. HOoDIE demonstrates the lowest drop ratios across the board, indicating its effectiveness in preventing task drops even as the system becomes increasingly burdened. The FLC and HO schemes,in contrast, exh"
+    },
+    {
+      "char_offset": 156872,
+      "figure_id": "Figure 10",
+      "snippet_index": 2,
+      "source_path": "resources/papers/hoodie/ocr/merged.tex",
+      "text": "lts may highlight the HOODIE superior ability to minimize task computation delays and drop rates by dynamically adjusting offloading decisions based on current system conditions. 2)The impact of Computational Capacity Fig. 10b illustrates the average delay as a function of CPU computation capacity dedicated to local tasks across different offloading schemes. As the CPU capacity increases from \\$3\\textbackslash\\{\\}mathrm\\{\\textasciitilde{}-\\textasciitilde{}\\}7\\$ GHz, most schemes show a reduction in average delay, highlighting the importance of local computational Task | Metric | Metric | 3 | 4 | 5 | 6 | 7 (a) | Average Delay (sec) | RO | -0.05 | -0.05 | -0.05 | -0.05 | | | FLC | 0.0 | -0.05 "
+    },
+    {
+      "char_offset": 159684,
+      "figure_id": "Figure 10",
+      "snippet_index": 3,
+      "source_path": "resources/papers/hoodie/ocr/merged.tex",
+      "text": "tation and offloading decisions. The MLEO scheme also performs well, but its delay reduction is less pronounced compared to HOODIE, particularly at lower CPU capacities, where offloading decisions become more critical. Fig. 10e shows the drop ratio as a function of CPU computation capacity for the same set of offloading schemes.As expected, higher CPU capacities lead to a reduction in drop ratios across most schemes, as more tasks can be processed locally, reducing the likelihood of tasks being dropped due to deadline violations. HOODIE demonstrates the most significant reduction in drop ratio, particularly at lower CPU capacities, where its dynamic offloading strategy helps manage the limit"
+    }
+  ],
+  "reconstruction_status": "partial_pdf_extracted",
+  "source_artifacts": [
+    "matrix/matrix-summary.csv"
+  ],
+  "support_status": "unsupported",
+  "title": "Performance comparison of HOODIE and six baselines"
+}

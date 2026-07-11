@@ -1,0 +1,151 @@
+{
+  "figure_id": "Figure 10",
+  "support_status": "partially_supported",
+  "reconstruction_status": "partial_pdf_extracted",
+  "comparison_allowed": false,
+  "limitations": [
+    "CPU capacity and arrival probability sweep data unavailable \u2014 single operating point only"
+  ],
+  "data": [
+    {
+      "figure_id": "Figure 10",
+      "subfigure_id": "10-performance",
+      "series_name": "average_delay",
+      "x_value": "FLC",
+      "y_value": 1.5274043433298863,
+      "x_unit": "policy",
+      "y_unit": "slots",
+      "policy_name": "FLC"
+    },
+    {
+      "figure_id": "Figure 10",
+      "subfigure_id": "10-performance",
+      "series_name": "drop_ratio",
+      "x_value": "FLC",
+      "y_value": 0.0,
+      "x_unit": "policy",
+      "y_unit": "ratio",
+      "policy_name": "FLC"
+    },
+    {
+      "figure_id": "Figure 10",
+      "subfigure_id": "10-performance",
+      "series_name": "average_delay",
+      "x_value": "RO",
+      "y_value": 2.885593220338983,
+      "x_unit": "policy",
+      "y_unit": "slots",
+      "policy_name": "RO"
+    },
+    {
+      "figure_id": "Figure 10",
+      "subfigure_id": "10-performance",
+      "series_name": "drop_ratio",
+      "x_value": "RO",
+      "y_value": 0.0,
+      "x_unit": "policy",
+      "y_unit": "ratio",
+      "policy_name": "RO"
+    },
+    {
+      "figure_id": "Figure 10",
+      "subfigure_id": "10-performance",
+      "series_name": "average_delay",
+      "x_value": "HO",
+      "y_value": 3.1454352441613587,
+      "x_unit": "policy",
+      "y_unit": "slots",
+      "policy_name": "HO"
+    },
+    {
+      "figure_id": "Figure 10",
+      "subfigure_id": "10-performance",
+      "series_name": "drop_ratio",
+      "x_value": "HO",
+      "y_value": 0.0,
+      "x_unit": "policy",
+      "y_unit": "ratio",
+      "policy_name": "HO"
+    },
+    {
+      "figure_id": "Figure 10",
+      "subfigure_id": "10-performance",
+      "series_name": "average_delay",
+      "x_value": "VO",
+      "y_value": 3.975054229934924,
+      "x_unit": "policy",
+      "y_unit": "slots",
+      "policy_name": "VO"
+    },
+    {
+      "figure_id": "Figure 10",
+      "subfigure_id": "10-performance",
+      "series_name": "drop_ratio",
+      "x_value": "VO",
+      "y_value": 0.0,
+      "x_unit": "policy",
+      "y_unit": "ratio",
+      "policy_name": "VO"
+    },
+    {
+      "figure_id": "Figure 10",
+      "subfigure_id": "10-performance",
+      "series_name": "average_delay",
+      "x_value": "MLEO",
+      "y_value": 1.5274043433298863,
+      "x_unit": "policy",
+      "y_unit": "slots",
+      "policy_name": "MLEO"
+    },
+    {
+      "figure_id": "Figure 10",
+      "subfigure_id": "10-performance",
+      "series_name": "drop_ratio",
+      "x_value": "MLEO",
+      "y_value": 0.0,
+      "x_unit": "policy",
+      "y_unit": "ratio",
+      "policy_name": "MLEO"
+    },
+    {
+      "figure_id": "Figure 10",
+      "subfigure_id": "10-performance",
+      "series_name": "average_delay",
+      "x_value": "BCO",
+      "y_value": 1.5274043433298863,
+      "x_unit": "policy",
+      "y_unit": "slots",
+      "policy_name": "BCO"
+    },
+    {
+      "figure_id": "Figure 10",
+      "subfigure_id": "10-performance",
+      "series_name": "drop_ratio",
+      "x_value": "BCO",
+      "y_value": 0.0,
+      "x_unit": "policy",
+      "y_unit": "ratio",
+      "policy_name": "BCO"
+    },
+    {
+      "figure_id": "Figure 10",
+      "subfigure_id": "10-performance",
+      "series_name": "average_delay",
+      "x_value": "HOODIE",
+      "y_value": 3.975054229934924,
+      "x_unit": "policy",
+      "y_unit": "slots",
+      "policy_name": "HOODIE"
+    },
+    {
+      "figure_id": "Figure 10",
+      "subfigure_id": "10-performance",
+      "series_name": "drop_ratio",
+      "x_value": "HOODIE",
+      "y_value": 0.0,
+      "x_unit": "policy",
+      "y_unit": "ratio",
+      "policy_name": "HOODIE"
+    }
+  ]
+}

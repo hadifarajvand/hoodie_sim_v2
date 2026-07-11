@@ -149,6 +149,7 @@ class CampaignConfig:
     horizontal_data_rate_mbps: float = 30.0
     vertical_data_rate_mbps: float = 10.0
     full_campaign_flag_name: str = "--enable-full-campaign"
+    sweep_metadata: dict[str, Any] = field(default_factory=dict)
 
     def __post_init__(self) -> None:
         if self.feature_id != FEATURE_ID:
@@ -202,6 +203,8 @@ class CampaignConfig:
             raise ValueError("CampaignConfig.readiness_manual_approval_status cannot be approved without readiness_manual_approval_reference.")
         if not isinstance(self.seed_bundle, CampaignSeedBundle):
             raise ValueError("seed_bundle must be a CampaignSeedBundle.")
+        if not isinstance(self.sweep_metadata, dict):
+            raise ValueError("CampaignConfig.sweep_metadata must be a dict.")
         self.horizontal_data_rate_mbps = float(self.horizontal_data_rate_mbps)
         self.vertical_data_rate_mbps = float(self.vertical_data_rate_mbps)
         if self.horizontal_data_rate_mbps <= 0:
@@ -255,6 +258,7 @@ class CampaignConfig:
             "vertical_data_rate_mbps": self.vertical_data_rate_mbps,
             "baseline_reference_set": list(self.baseline_reference_set),
             "full_campaign_flag_name": self.full_campaign_flag_name,
+            "sweep_metadata": dict(self.sweep_metadata),
         }
 
     @staticmethod

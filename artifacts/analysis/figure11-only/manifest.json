@@ -1,0 +1,10 @@
+{
+  "figure_id": "Figure 11",
+  "episodes_expected": 5,
+  "status": "exported",
+  "source": [
+    "artifacts/analysis/figure11-only/figure_11_lstm/sweep_results.json",
+    "artifacts/analysis/figure11-only/figure_11_no_lstm/sweep_results.json"
+  ],
+  "output": "artifacts/analysis/figure11-only/figures/figure11_lstm_comparison.png"
+}

@@ -1,0 +1,56 @@
+{
+  "allowed_outputs": [
+    "numeric_dataset",
+    "plot_payload"
+  ],
+  "artifact_backed_reproduction_data": {
+    "available": false
+  },
+  "caveats": [
+    "Campaign training metrics provide episode-level rewards and topology usage for LSTM analysis in Figure 11-style comparisons."
+  ],
+  "comparison_ready": false,
+  "extracted_artifact_metrics": {
+    "completion_rate_by_destination": {},
+    "drop_ratio": 0.0,
+    "mean_completion_delay": 0.0,
+    "mean_reward": 0.0,
+    "reward_per_episode": [],
+    "topology_usage_stats": {}
+  },
+  "figure_id": "Figure 11",
+  "limitation_level": "none",
+  "missing_artifacts": [
+    "hoodie_lstm_training_delay_curve",
+    "hoodie_without_lstm_training_delay_curve",
+    "training_episode_delay_logs"
+  ],
+  "paper_caption_supported_metadata": {
+    "dimensions": [
+      "training_episode",
+      "with_lstm",
+      "without_lstm"
+    ]
+  },
+  "paper_claim_type": "lstm_ablation_training_curve_caption",
+  "paper_extraction_source": {},
+  "paper_numeric_target_data": {
+    "available": false,
+    "missing": [
+      "paper_numeric_curve_values"
+    ]
+  },
+  "paper_ocr_evidence": [
+    {
+      "char_offset": 164767,
+      "figure_id": "Figure 11",
+      "snippet_index": 0,
+      "source_path": "resources/papers/hoodie/ocr/merged.tex",
+      "text": "| -0.43 2100 | -0.42 | -0.42 2200 | -0.42 | -0.42 2300 | -0.42 | -0.42 2400 | -0.42 | -0.42 2500 | -0.42 | -0.42 2600 | -0.42 | -0.42 2700 | -0.42 | -0.42 2800 | -0.42 | -0.42 2900 | -0.42 | -0.42 3000 | -0.42 | -0.42 FIGURE 11. Average task delay of HOoDIE with vs without the LSTM inclusion as a function of the training episodes. 22 VOLUME, ===== page\\_023\\_0\\_res.txt ===== unexpected traffic variations (e.g. traffic burst or decline) in which HOODIE could adopt an adaptive behavior to handle these changes. One potential solution would be the P valuebaled model-switching mechanism that allows the agents to respond flexibly to varying traffic conditions without the need for retraining in rea"
+    }
+  ],
+  "reconstruction_status": "full_pdf_extracted",
+  "source_artifacts": [],
+  "support_status": "unsupported",
+  "title": "Average task delay of HOODIE with vs without LSTM"
+}

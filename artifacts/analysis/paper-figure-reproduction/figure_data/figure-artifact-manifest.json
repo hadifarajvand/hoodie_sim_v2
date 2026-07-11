@@ -1,0 +1,22 @@
+{
+  "Figure 10": {
+    "csv": "artifacts/analysis/paper-figure-reproduction/figure_data/figure_10_simulation_metrics_partial.csv",
+    "json": "artifacts/analysis/paper-figure-reproduction/figure_data/figure_10_simulation_metrics_partial.json",
+    "png": "artifacts/analysis/paper-figure-reproduction/figure_data/figure_10_simulation_metrics_partial.png"
+  },
+  "Figure 11": {
+    "csv": "artifacts/analysis/paper-figure-reproduction/figure_data/figure_11_lstm_ablation.csv",
+    "json": "artifacts/analysis/paper-figure-reproduction/figure_data/figure_11_lstm_ablation.json",
+    "png": "artifacts/analysis/paper-figure-reproduction/figure_data/figure_11_lstm_ablation.png"
+  },
+  "Figure 8": {
+    "csv": "artifacts/analysis/paper-figure-reproduction/figure_data/figure_8_training_curves.csv",
+    "json": "artifacts/analysis/paper-figure-reproduction/figure_data/figure_8_training_curves.json",
+    "png": "artifacts/analysis/paper-figure-reproduction/figure_data/figure_8_training_curves.png"
+  },
+  "Figure 9": {
+    "csv": "artifacts/analysis/paper-figure-reproduction/figure_data/figure_9_parameter_sweeps.csv",
+    "json": "artifacts/analysis/paper-figure-reproduction/figure_data/figure_9_parameter_sweeps.json",
+    "png": "artifacts/analysis/paper-figure-reproduction/figure_data/figure_9_parameter_sweeps.png"
+  }
+}

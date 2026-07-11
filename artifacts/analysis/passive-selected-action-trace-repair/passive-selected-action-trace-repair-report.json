@@ -64,12 +64,12 @@
     {
       "details": "current branch is 051-passive-selected-action-trace-repair",
       "name": "branch",
-      "verified": true
+      "verified": false
     },
     {
       "details": "branch is not main",
       "name": "not_main",
-      "verified": true
+      "verified": false
     },
     {
       "details": "main matches origin/main",
@@ -79,12 +79,12 @@
     {
       "details": "main matches 050-selected-action-family-per-action-outcome-evidence-complete^{}",
       "name": "main_equals_feature_050",
-      "verified": true
+      "verified": false
     },
     {
       "details": "diff between 050-selected-action-family-per-action-outcome-evidence-complete^{} and main is empty",
       "name": "prerequisite_diff_empty",
-      "verified": true
+      "verified": false
     },
     {
       "details": ".specify/feature.json is not staged",

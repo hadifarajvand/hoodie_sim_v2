@@ -13,7 +13,7 @@ OUTPUT_DIR = Path("artifacts/analysis/bind-full-campaign-real-torch-trainer")
 REPORT_JSON = OUTPUT_DIR / "bind-full-campaign-real-torch-trainer-report.json"
 REPORT_MD = OUTPUT_DIR / "bind-full-campaign-real-torch-trainer-report.md"
 
-REPO_VENV_PYTHON = Path("src/.venvmac/bin/python3")
+REPO_VENV_PYTHON = Path(".venv/bin/python")
 FEATURE_060A_REPORT = Path("artifacts/analysis/real-torch-trainer-binding-audit/real-torch-trainer-binding-audit-report.json")
 FEATURE_060_REPORT = Path("artifacts/analysis/full-paper-default-training-campaign-execution/full-paper-default-training-campaign-report.json")
 FEATURE_060_RUNNER = Path("src/analysis/full_paper_default_training_campaign_execution/runner.py")

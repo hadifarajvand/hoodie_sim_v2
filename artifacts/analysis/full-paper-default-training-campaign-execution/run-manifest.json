@@ -13,9 +13,9 @@
     "training_metrics_json": "artifacts/analysis/full-paper-default-training-campaign-execution/training-metrics.json"
   },
   "configured_budget": {
-    "baseline_evaluation_episode_count": 100,
-    "evaluation_episode_count": 100,
-    "training_episode_count": 1000
+    "baseline_evaluation_episode_count": 1,
+    "evaluation_episode_count": 3,
+    "training_episode_count": 1
   },
   "controlled_output_directory": "artifacts/analysis/full-paper-default-training-campaign-execution",
   "feature_id": "060-full-paper-default-training-campaign-execution",

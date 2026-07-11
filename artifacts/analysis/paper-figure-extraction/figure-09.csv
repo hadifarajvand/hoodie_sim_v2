@@ -1,0 +1,13 @@
+policy_name,action,count
+FLC,local,967
+RO,local,150
+RO,offload_vertical,165
+RO,offload_horizontal,154
+RO,vertical,153
+RO,compute_local,152
+RO,horizontal,170
+HO,horizontal,942
+VO,vertical,922
+MLEO,local,967
+BCO,local,967
+HOODIE,vertical,922

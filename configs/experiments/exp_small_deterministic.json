@@ -1,6 +1,6 @@
 {
   "training": {
-    "learning_rate": 0.001,
+    "learning_rate": 7e-7,
     "batch_size": 4,
     "replay_buffer_capacity": 32,
     "target_network_update_frequency": 2,
@@ -25,10 +25,10 @@
     "device": "cpu"
   },
   "runtime": {
-    "slot_duration": 1,
-    "local_service_capacity": 1,
-    "public_service_capacity": 1,
-    "cloud_service_capacity": 1,
+    "slot_duration": 0.1,
+    "local_service_capacity": 0.5,
+    "public_service_capacity": 0.5,
+    "cloud_service_capacity": 3.0,
     "timeout_grace_slots": 0,
     "runtime_variant": "density_based"
   },
