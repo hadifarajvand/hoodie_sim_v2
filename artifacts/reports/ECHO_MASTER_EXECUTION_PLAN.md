@@ -5,8 +5,8 @@
 | Field | Value |
 |---|---|
 | Title | ECHO Master Execution Plan |
-| Plan version | `ECHO-MEP-v2.1` |
-| Status | `PLANNED — source-authority correction blocked; live tab fetch unavailable` |
+| Plan version | `ECHO-MEP-v2.2` |
+| Status | `PLANNED — source-authority validation blocked; live tab fetch unavailable after retries` |
 | Creation time | `2026-07-13T18:30:45Z` |
 | Last updated time | `2026-07-13T18:30:45Z` |
 | Repository branch | `main` |
@@ -39,7 +39,7 @@ Superseded document: `research/ECHO_topology_authorization.md`.
 
 | Source | Revision / identifier | Coverage | Status |
 | --- | --- | --- | --- |
-| Live ECHO method tab | Google Doc `17iqZWA0bF5unbyuVYnRiW1IUcr0Ctb2KFw1f5XE2poE`, tab `t.iav4589yyeo7`, title `روش پیشنهادی`, captured snapshot `ALtnJHzzm4hFNZK8DdBeKreoGaZ2RSO7F5oymwXZTjamK8fUxsa71RdvAu-7KkfW25xxeNA3C-Ns0TIbs-kwgO8FwUg1U68nloS7CIA1sg` | Equations (1)–(67); sections A–G | BLOCKED — live fetch unavailable in this environment; repository export snapshot recorded for offline comparison only |
+| Live ECHO method tab | Google Doc `17iqZWA0bF5unbyuVYnRiW1IUcr0Ctb2KFw1f5XE2poE`, tab `t.iav4589yyeo7`, title `روش پیشنهادی`, captured snapshot `ALtnJHzzm4hFNZK8DdBeKreoGaZ2RSO7F5oymwXZTjamK8fUxsa71RdvAu-7KkfW25xxeNA3C-Ns0TIbs-kwgO8FwUg1U68nloS7CIA1sg` | Equations (1)–(67); sections A–G | BLOCKED — live fetch unavailable in this environment after retries; repository export snapshot recorded for offline comparison only |
 | HOODIE paper | Original PDF + OCR exports in `resources/papers/hoodie/ocr/*` | Base simulator, learning, queueing, baselines, experiments | VERIFIED |
 | Topology authorization | `research/ECHO_topology_authorization_v2.md` | Five-cluster scalable topology and Figure 4 / 6(d) / 6(e) | VERIFIED |
 | PNG export authorization | `research/ECHO_png_export_authorization.md` | Vector + 300-dpi export without CairoSVG dependency | VERIFIED |
@@ -100,6 +100,8 @@ Superseded document: `research/ECHO_topology_authorization.md`.
 7. `scripts/run_figures_8_11_validation.py` and the legacy analysis bundles are historical evidence only; they are not authoritative Figure 4–8 outputs. Fix in `CLEAN-002`, `FIG-001`–`FIG-006`.
 
 ## Live ECHO Source Drift Audit
+
+Source authority validation is blocked until the live Google Docs tab can be fetched successfully. The rows below record offline comparison evidence only; they are not a substitute for live authority.
 
 | Item | Live equation/section | Repository-export behavior | Existing plan behavior | Difference | Scientific significance | Affected task IDs | Required correction | Status |
 |---|---|---|---|---|---|---|---|---|
@@ -218,7 +220,7 @@ Cloud example: same as horizontal, but with cloud destination capacity and cloud
 
 | ID | Status | Title | Dependencies |
 | --- | --- | --- | --- |
-| `SRC-001` | `READY` | Fetch and register the current live ECHO method tab and revision | `Live Google Docs tab `t.iav4589yyeo7`; repository snapshot only for offline comparison |
+| `SRC-001` | `BLOCKED BY DEPENDENCY` | Fetch and register the current live ECHO method tab and revision | `Live Google Docs tab `t.iav4589yyeo7`; repository snapshot only for offline comparison |
 | `SRC-002` | `PARTIALLY IMPLEMENTED` | Build a HOODIE paper evidence registry by section, equation, table, and figure | `resources/papers/hoodie/ocr/*`; `resources/papers/hoodie/original/HOODIE_paper.pdf` |
 | `AUDIT-001` | `VERIFIED COMPLETE` | Produce the current code-path and dependency inventory | `src/` and `tests/` inventory |
 | `AUDIT-002` | `PARTIALLY IMPLEMENTED` | Reconcile old completion claims against real live paths | `artifacts/reports/ECHO_AUTONOMOUS_HANDOFF.md`; `artifacts/reports/ECHO_FULL_TEST_TRIAGE_REPORT.md` |
@@ -491,7 +493,7 @@ Bounded paired comparison across ECHO, ECHO-NoLSTM, HOODIE, RO, FLC, VO, HO, BCO
 | Reporting completion % | 0.0% |
 | Overall weighted completion % | 19.2% |
 | Current critical-path task | `SRC-001` → `SRC-002` → `AUDIT-001` → `AUDIT-002` → `PLAN-001` → `CLEAN-001` → `BASE-001` → `BASE-005` → `BASE-010` → `BASE-014` → `BASE-015` → `BASE-016` → `BASE-018` → `FREEZE-001` → `ECHO-001` → `ECHO-012` → `ECHO-015` → `ECHO-017` → `ECHO-019` → `ECHO-020` → `EVAL-001` → `EVAL-004` → `EVAL-008` → `EVAL-012` → `FIG-001` → `FIG-004` → `FIG-005` → `REPORT-003` → `HANDOFF-001` |
-| Next exact command | `fetch live Google Docs tab t.iav4589yyeo7 and update source-revision register` |
+| Next exact command | `retry live Google Docs tab fetch for t.iav4589yyeo7 and record revision or block status` |
 
 ## 28. Next Exact Command
 
@@ -502,12 +504,13 @@ Bounded paired comparison across ECHO, ECHO-NoLSTM, HOODIE, RO, FLC, VO, HO, BCO
 | Timestamp | Change | Evidence |
 |---|---|---|
 | 2026-07-13T18:30:45Z | Planning pass rewrote `ECHO_MASTER_EXECUTION_PLAN.md` to v2.0 with refreshed authority hierarchy, current repo state, verified current-state inventory, 73-task register, dependency graph, gates, smoke / pilot plan, compute plan, artifact plan, risk register, decision register, dashboard, and audit. | Current git state (`d747b0c1f9dc2c956b7272fa7b4e3b9da0d836d7` on `main`), triage artifacts in `artifacts/test_triage/*`, smoke artifacts in `artifacts/smoke/*`, checkpoint manifest in `artifacts/checkpoints/echo_smoke/*`, and the inspected source / research files listed above. |
+| 2026-07-13T18:30:45Z | Source-authority correction pass attempted three live fetch attempts for the Google Docs tab `t.iav4589yyeo7` and failed in this environment. | No connector-backed live revision could be retrieved; repository export hash remains offline-only evidence. |
 
 ## 30. Plan Quality Audit
 
 | Criterion | Result | Evidence |
 | --- | --- | --- |
-| Source authority consistency | FAIL | Live tab fetch unavailable in this environment; repository snapshot was incorrectly treated as current authority in prior pass. |
+| Source authority consistency | FAIL | Live tab fetch unavailable after retries; repository snapshot remains offline-only evidence. |
 | Current HEAD consistency | PASS | Branch `main`, HEAD `d747b0c1f9dc2c956b7272fa7b4e3b9da0d836d7`, origin/main matches. |
 | Task-count consistency | PASS | 73 tasks total; phase counts 6 / 23 / 20 / 12 / 12; dashboard matches register. |
 | Dependency consistency | PASS | Every dependency points to a real task id; phase chains and cross-phase gates are coherent. |
@@ -521,4 +524,4 @@ Bounded paired comparison across ECHO, ECHO-NoLSTM, HOODIE, RO, FLC, VO, HO, BCO
 | Compute sequencing | PASS | Smoke precedes pilot; pilot precedes full evaluation; throughput measurement precedes budgeting. |
 | Artifact lineage | PASS | Every figure / evaluation task requires raw outputs, seed CSVs, manifests, and lineage. |
 | Cleanup safety | PASS | Legacy artifacts are classified as historical or superseded, not deleted first. |
-| No unsupported completion claims | FAIL | Prior pass overstated source authority; correction pass is required before execution. |
+| No unsupported completion claims | FAIL | Prior pass overstated source authority; correction pass remains unresolved because live fetch failed. |
