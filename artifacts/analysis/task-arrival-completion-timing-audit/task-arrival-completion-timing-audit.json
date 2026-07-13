@@ -1,19 +1,19 @@
 {
   "bounded_constraint": "3 episodes x 200 slots",
   "bridge": {
-    "bridged_lifecycle_event_count": 3431,
+    "bridged_lifecycle_event_count": 6706,
     "completion_accounting_mismatch": false,
     "duplicate_bridge_guard_enabled": true,
-    "execution_completed_count": 560,
+    "execution_completed_count": 1192,
     "service_completed_observable": true,
-    "service_progress_count": 1428,
+    "service_progress_count": 3154,
     "service_progress_observable": true,
-    "service_started_count": 1428
+    "service_started_count": 3154
   },
   "config_summary": {
     "action_count": 22,
     "batch_size": 64,
-    "config_hash": "9d537ad29abb096c",
+    "config_hash": "03e2f5694ae361f6",
     "full_campaign_enabled": false,
     "gamma": 0.99,
     "horizontal_data_rate_mbps": 30.0,
@@ -25,100 +25,112 @@
   "diagnostic_type": "task_arrival_completion_timing_audit",
   "episode_summaries": [
     {
-      "completed_task_count": 91,
+      "completed_task_count": 199,
       "dropped_task_count": 0,
       "episode_id": 0,
       "illegal_action_count": 0,
-      "loss_count": 32,
+      "loss_count": 137,
       "pending_at_horizon_count": 1,
-      "transition_count": 95
+      "transition_count": 200
     },
     {
-      "completed_task_count": 96,
+      "completed_task_count": 198,
       "dropped_task_count": 0,
       "episode_id": 1,
       "illegal_action_count": 0,
-      "loss_count": 98,
+      "loss_count": 200,
       "pending_at_horizon_count": 1,
-      "transition_count": 98
+      "transition_count": 200
     },
     {
-      "completed_task_count": 93,
+      "completed_task_count": 199,
       "dropped_task_count": 0,
       "episode_id": 2,
       "illegal_action_count": 0,
-      "loss_count": 96,
+      "loss_count": 200,
       "pending_at_horizon_count": 1,
-      "transition_count": 96
+      "transition_count": 200
     }
   ],
   "inferred_findings": {
     "arrival_slot_statistics": {
-      "count": 289,
+      "count": 600,
       "max": 199,
-      "mean": 99.34256055363322,
+      "mean": 99.5,
       "min": 0
     },
     "most_likely_next_hypothesis": "",
     "terminal_reason_distribution": {
-      "completed": 109,
-      "none": 178,
-      "pending_at_horizon": 2
+      "completed": 425,
+      "none": 174,
+      "pending_at_horizon": 1
     },
     "what_is_not_observable": [],
     "what_is_proven": [
-      "Task arrivals occur as early as slot 0 (mean 99.3)",
-      "All rewards are negative (total=-838.0, avg=-7.69) — drop penalties dominate, no completion rewards"
+      "Task arrivals occur as early as slot 0 (mean 99.5)",
+      "All rewards are negative (total=-2703.0, avg=-6.36) — drop penalties dominate, no completion rewards"
     ]
   },
   "metrics": {
-    "average_reward": -7.6880733944954125,
-    "completed_task_count": 280,
+    "average_reward": -6.36,
+    "completed_task_count": 596,
     "dropped_task_count": 0,
     "episode_length": 200,
     "episodes_completed": 3,
     "illegal_action_count": 0,
     "legal_action_only": true,
-    "loss_count": 226,
+    "loss_count": 537,
     "loss_summary": {
       "all_finite": true,
       "no_inf": true,
       "no_nan": true
     },
     "pending_at_horizon_count": 3,
-    "replay_size": 289,
-    "reward_count": 109,
-    "total_transition_count": 289
+    "replay_size": 600,
+    "reward_count": 425,
+    "total_transition_count": 600
   },
   "observability_matrix": {
     "action_distribution": {
       "observable": true,
       "value": {
-        "3": 61,
-        "4": 35,
-        "8": 50,
-        "9": 5,
-        "10": 97,
-        "12": 1,
-        "13": 30,
-        "18": 1,
-        "21": 9
+        "0": 320,
+        "1": 19,
+        "2": 14,
+        "3": 13,
+        "4": 11,
+        "5": 14,
+        "6": 15,
+        "7": 16,
+        "8": 19,
+        "9": 14,
+        "10": 15,
+        "11": 9,
+        "12": 9,
+        "13": 21,
+        "14": 9,
+        "15": 16,
+        "16": 16,
+        "17": 14,
+        "18": 13,
+        "19": 11,
+        "20": 12
       }
     },
     "first_arrival_slot": {
       "observable": true,
       "value": [
         0,
-        1,
+        0,
         0
       ]
     },
     "first_completion_slot": {
       "observable": true,
       "value": [
-        12,
-        32,
-        33
+        4,
+        4,
+        9
       ]
     },
     "first_service_start_slot": {
@@ -132,9 +144,9 @@
     "reward_events": {
       "observable": true,
       "value": {
-        "average": -7.6880733944954125,
-        "count": 109,
-        "total": -838.0
+        "average": -6.36,
+        "count": 425,
+        "total": -2703.0
       }
     },
     "service_started_observable": {
@@ -144,53 +156,53 @@
   },
   "recommended_next_step": "service progress audit",
   "trace_info": {
-    "bridged_lifecycle_event_count": 3431,
+    "bridged_lifecycle_event_count": 6706,
     "completion_accounting_mismatch": false,
     "duplicate_bridge_guard_enabled": true,
-    "execution_completed_count": 560,
+    "execution_completed_count": 1192,
     "first_service_start_slot": 3,
     "lifecycle_event_counts": {
-      "action_selected": 289,
-      "execution_completed": 560,
-      "execution_progress": 1428,
-      "execution_started": 714,
-      "pending_at_horizon": 18,
+      "action_selected": 600,
+      "execution_completed": 1192,
+      "execution_progress": 3154,
+      "execution_started": 1577,
+      "pending_at_horizon": 8,
       "queue_length_sampled": 12000,
-      "reward_emitted": 560,
-      "reward_released": 235,
-      "service_started": 714,
-      "task_admitted": 578,
-      "task_arrived": 289,
-      "task_completed": 840,
-      "task_generated": 584,
+      "reward_emitted": 1192,
+      "reward_released": 425,
+      "service_started": 1577,
+      "task_admitted": 1200,
+      "task_arrived": 600,
+      "task_completed": 1788,
+      "task_generated": 1200,
       "task_pending_at_horizon": 3,
-      "transmission_completed": 568,
-      "transmission_started": 578
+      "transmission_completed": 560,
+      "transmission_started": 560
     },
     "lifecycle_events_absent_even_when_trace_enabled": false,
     "queue_length_samples": 12000,
     "service_completed_observable": true,
-    "service_progress_count": 1428,
+    "service_progress_count": 3154,
     "service_progress_observable": true,
-    "service_started_count": 1428,
+    "service_started_count": 3154,
     "service_started_observable": true,
     "trace_collector_enabled": true,
     "trace_event_counts": {
-      "action_selected": 289,
-      "execution_completed": 560,
-      "execution_progress": 1428,
-      "pending_at_horizon": 18,
+      "action_selected": 600,
+      "execution_completed": 1192,
+      "execution_progress": 3154,
+      "pending_at_horizon": 8,
       "queue_length_sampled": 12000,
-      "reward_emitted": 560,
-      "reward_released": 235,
-      "service_started": 1428,
-      "task_admitted": 578,
-      "task_arrived": 289,
-      "task_completed": 840,
-      "task_generated": 584,
+      "reward_emitted": 1192,
+      "reward_released": 425,
+      "service_started": 3154,
+      "task_admitted": 1200,
+      "task_arrived": 600,
+      "task_completed": 1788,
+      "task_generated": 1200,
       "task_pending_at_horizon": 3,
-      "transmission_completed": 568,
-      "transmission_started": 578
+      "transmission_completed": 560,
+      "transmission_started": 560
     }
   },
   "verdict": "bridge_needs_service_progress_audit"

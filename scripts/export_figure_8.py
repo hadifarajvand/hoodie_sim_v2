@@ -2,27 +2,22 @@
 from __future__ import annotations
 
 import json
+import sys
 from pathlib import Path
 
-from src.analysis.figure_generator import plot_figure_8_reward_timecourse
+ROOT_DIR = Path(__file__).resolve().parents[1]
+if str(ROOT_DIR) not in sys.path:
+    sys.path.insert(0, str(ROOT_DIR))
+
+from src.analysis.figure_generator import (
+    plot_figure_8_reward_timecourse,
+    render_status_figure,
+    write_export_manifest,
+)
 
 
-OUTPUT_DIR = Path("artifacts/analysis/figure8-11-validation/figure_8")
-SOURCE_DIR = Path("artifacts/analysis/figure8-11-validation/sweep")
-
-
-def _render_status_png(path: Path, title: str, missing: list[str]) -> None:
-    import matplotlib
-
-    matplotlib.use("Agg")
-    import matplotlib.pyplot as plt
-
-    fig, ax = plt.subplots(figsize=(10, 5))
-    ax.axis("off")
-    ax.text(0.02, 0.95, "\n".join([title, "", "Export blocked.", "Missing/invalid:", *[f"- {item}" for item in missing]]), va="top", ha="left", family="monospace")
-    fig.tight_layout()
-    fig.savefig(path, dpi=180, bbox_inches="tight")
-    plt.close(fig)
+OUTPUT_DIR = ROOT_DIR / "artifacts/analysis/figure8-11-validation/figure_8"
+SOURCE_DIR = ROOT_DIR / "artifacts/analysis/figure8-11-validation/sweep"
 
 
 def _series_stats(rows: list[dict], sweep_type: str) -> dict[str, object]:
@@ -62,24 +57,24 @@ def main() -> int:
 
     output_png = OUTPUT_DIR / "figure8_reward_timecourse.png"
     if missing:
-        _render_status_png(output_png, "Figure 8: data incomplete", missing)
+        render_status_figure(output_png, "Figure 8: data incomplete", missing)
         status = "blocked"
     else:
-        plot_figure_8_reward_timecourse(results, str(output_png), "Figure 8: 5-episode training reward")
+        plot_figure_8_reward_timecourse(results, str(output_png), "Figure 8: 100-episode training reward")
         status = "exported"
     manifest = {
         "figure_id": "Figure 8",
-        "episodes_expected": 5,
+        "episodes_expected": 100,
         "status": status,
         "source": str(SOURCE_DIR / "sweep_results.json"),
         "output": str(output_png),
         "missing_or_invalid": missing,
         "subfigures": [
-            {"id": "8a", "series": "learning_rate", "present": lr["present"], "nonempty": lr["nonempty"], "flat": lr["flat"], "max_episodes": lr["max_episodes"]},
-            {"id": "8b", "series": "discount_factor", "present": gamma["present"], "nonempty": gamma["nonempty"], "flat": gamma["flat"], "max_episodes": gamma["max_episodes"]},
+            {"id": "fig08a", "series": "learning_rate", "present": lr["present"], "nonempty": lr["nonempty"], "flat": lr["flat"], "max_episodes": lr["max_episodes"]},
+            {"id": "fig08b", "series": "discount_factor", "present": gamma["present"], "nonempty": gamma["nonempty"], "flat": gamma["flat"], "max_episodes": gamma["max_episodes"]},
         ],
     }
-    (OUTPUT_DIR / "manifest.json").write_text(json.dumps(manifest, indent=2, sort_keys=True) + "\n", encoding="utf-8")
+    write_export_manifest(OUTPUT_DIR, manifest)
     print(json.dumps(manifest, indent=2, sort_keys=True))
     return 0
 

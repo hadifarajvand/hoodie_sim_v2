@@ -23,7 +23,7 @@
 
 ## Environment Observed Lifecycle Summary
 - `case-local-compute`: created, selected_action, execution_started, execution_completed, reward_emitted
-- `case-horizontal-offload`: created, selected_action, queued_public, transmission_started, transmission_completed, execution_started, execution_completed, reward_emitted
+- `case-horizontal-offload`: selected_action:horizontal, selected_action:horizontal, selected_action:horizontal, selected_action:horizontal, selected_action:horizontal, selected_action:horizontal
 - `case-vertical-offload`: created, selected_action, offloaded_cloud, transmission_started, transmission_completed, execution_started, execution_completed, reward_emitted
 - `case-timeout-drop`: selected_action:local
 - `case-delayed-reward`: created, selected_action, execution_started, execution_completed, reward_emitted
@@ -31,7 +31,7 @@
 
 ## Comparison Results
 - `case-local-compute`: match / expected_scope_difference
-- `case-horizontal-offload`: match / expected_scope_difference
+- `case-horizontal-offload`: unsupported_by_environment_trace / instrumentation_gap
 - `case-vertical-offload`: match / expected_scope_difference
 - `case-timeout-drop`: divergence / likely_environment_bug
 - `case-delayed-reward`: assumption_gap / paper_assumption_gap
@@ -39,7 +39,7 @@
 
 ## Findings
 - `F-case-local-compute` `case-local-compute`: match / expected_scope_difference
-- `F-case-horizontal-offload` `case-horizontal-offload`: match / expected_scope_difference
+- `F-case-horizontal-offload` `case-horizontal-offload`: unsupported_by_environment_trace / instrumentation_gap
 - `F-case-vertical-offload` `case-vertical-offload`: match / expected_scope_difference
 - `F-case-timeout-drop` `case-timeout-drop`: divergence / likely_environment_bug
 - `F-case-delayed-reward` `case-delayed-reward`: assumption_gap / paper_assumption_gap
@@ -48,6 +48,7 @@
 ## Assumptions
 
 ## Instrumentation Gaps
+- `case-horizontal-offload`: Environment public interface did not expose enough trace evidence for full lifecycle comparison.
 - `case-timeout-drop`: Environment public interface did not expose enough trace evidence for full lifecycle comparison.
 
 ## Unsupported Cases
@@ -59,7 +60,7 @@ No fixes were applied to HoodieGymEnvironment, SlotEngine, simulator lifecycle c
 - output_root: `artifacts/analysis/differential-environment-audit`
 - approved_python: `/Users/hadi/Documents/GitHub/hoodie_sim_v2/src/.venvmac/bin/python`
 - case_count: `6`
-- report_hash: `1882be6e40f4c2e2fa7e70727629abb0421651234b9563daf1ec8912988e1d7b`
+- report_hash: `5f9aa48e722a5cb0476a36437076ba93293cabe08ffe59c6b1daa827ac52ad4a`
 
 ## Overall Status
 

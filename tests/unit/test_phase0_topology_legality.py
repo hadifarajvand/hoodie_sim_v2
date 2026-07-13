@@ -1,11 +1,11 @@
 """
-Phase 0, Part 2: Verify topology legality helpers match the paper's Figure 7.
+Phase 0, Part 2: Verify topology legality helpers match approved modular topology.
 
 Tests cover:
-- TopologyGraph construction from paper's approved assumption registry
-- 20-node, degree-3, symmetric, undirected graph properties
+- TopologyGraph construction from approved assumption registry
+- exact 20-node anchor match against five-cluster modular rule
+- five connected components with complete intra-cluster connectivity
 - legal_horizontal_destinations() excludes self and cloud
-- legal_horizontal_destinations() matches adjacency matrix
 - Legal action mask generation in gym_adapter respects topology
 """
 
@@ -15,7 +15,9 @@ import tempfile
 import unittest
 from pathlib import Path
 
-from src.environment.topology import TopologyGraph
+from PIL import Image
+
+from src.environment.topology import TopologyGraph, TOPOLOGY_FIGURE_SIZE_INCHES, TOPOLOGY_PNG_DPI
 
 
 class TestFigure7TopologyProperties(unittest.TestCase):
@@ -47,6 +49,28 @@ class TestFigure7TopologyProperties(unittest.TestCase):
                 len(neighbors), 3,
                 f"Node {node_id} has degree {len(neighbors)}, expected 3"
             )
+
+    def test_anchor_exactly_matches_modular_five_cluster_rule(self) -> None:
+        """Approved A20 must exactly match residue-class modular rule."""
+        expected = {
+            str(index): tuple(
+                str(other)
+                for other in range(1, 21)
+                if other != index and ((other - 1) % 5) == ((index - 1) % 5)
+            )
+            for index in range(1, 21)
+        }
+        self.assertEqual(self.adjacency, expected)
+
+    def test_topology_has_exactly_five_complete_components(self) -> None:
+        """Approved topology must be 5 disjoint complete clusters of size 4."""
+        components = self.topology.metrics()["component_memberships"]
+        self.assertEqual(len(components), 5)
+        self.assertEqual(sorted(len(component) for component in components), [4, 4, 4, 4, 4])
+        for component in components:
+            for source in component:
+                neighbors = set(self.adjacency[source])
+                self.assertEqual(neighbors, set(component) - {source})
 
     def test_adjacency_is_symmetric(self) -> None:
         """If node A lists B as neighbor, node B must list A."""
@@ -152,17 +176,13 @@ class TestTopologyGraphConstruction(unittest.TestCase):
         finally:
             os.unlink(temp_path)
 
-    def test_from_approved_registry_rejects_non_degree_3(self) -> None:
-        """Construction must reject matrices where nodes don't all have degree 3."""
+    def test_from_approved_registry_accepts_disconnected_anchor(self) -> None:
+        """Construction must accept approved disconnected anchor topology."""
         matrix = [[0] * 20 for _ in range(20)]
-        for i in range(20):
-            for j in range(3):
-                neighbor = (i + j + 1) % 20
-                matrix[i][neighbor] = 1
-                matrix[neighbor][i] = 1
-        # Now make node 0 have degree 2 instead of 3
-        matrix[0][3] = 0
-        matrix[3][0] = 0
+        for row in range(20):
+            for col in range(20):
+                if row != col and (row % 5) == (col % 5):
+                    matrix[row][col] = 1
         with tempfile.NamedTemporaryFile(mode="w", suffix=".json", delete=False) as f:
             json.dump({
                 "entries": [{
@@ -174,10 +194,72 @@ class TestTopologyGraphConstruction(unittest.TestCase):
             }, f)
             temp_path = f.name
         try:
-            with self.assertRaises(ValueError):
-                TopologyGraph.from_approved_assumption_registry(temp_path)
+            topology = TopologyGraph.from_approved_assumption_registry(temp_path)
+            self.assertEqual(topology.connected_component_count(), 5)
         finally:
             os.unlink(temp_path)
+
+
+class TestTopologyArtifactExport(unittest.TestCase):
+    def test_export_artifacts_writes_svg_png_and_shared_coordinate_manifest(self) -> None:
+        topology = TopologyGraph.for_agent_count(20)
+        with tempfile.TemporaryDirectory() as tmpdir:
+            artifacts = topology.export_artifacts(tmpdir)
+            svg_path = Path(artifacts["topology_svg"])
+            png_path = Path(artifacts["topology_png"])
+            json_path = Path(artifacts["topology_json"])
+
+            self.assertTrue(svg_path.exists())
+            self.assertGreater(svg_path.stat().st_size, 0)
+            self.assertTrue(png_path.exists())
+            self.assertGreater(png_path.stat().st_size, 0)
+
+            payload = json.loads(json_path.read_text(encoding="utf-8"))
+            metadata = payload["metadata"]
+            self.assertEqual(metadata["adjacency_hash"], topology.topology_hash())
+            self.assertEqual(metadata["png_dpi"], TOPOLOGY_PNG_DPI)
+            self.assertEqual(metadata["node_coordinates"], topology.metrics()["node_coordinates"])
+            self.assertEqual(metadata["number_of_edges"], topology.edge_count())
+            self.assertEqual(len(payload["edge_list"]), topology.edge_count())
+
+    def test_exported_png_has_valid_signature_and_expected_dimensions(self) -> None:
+        topology = TopologyGraph.for_agent_count(20)
+        with tempfile.TemporaryDirectory() as tmpdir:
+            artifacts = topology.export_artifacts(tmpdir)
+            png_path = Path(artifacts["topology_png"])
+            with Image.open(png_path) as image:
+                expected_width = round(TOPOLOGY_FIGURE_SIZE_INCHES[0] * TOPOLOGY_PNG_DPI)
+                expected_height = round(TOPOLOGY_FIGURE_SIZE_INCHES[1] * TOPOLOGY_PNG_DPI)
+                self.assertGreaterEqual(image.size[0], int(expected_width * 0.80))
+                self.assertGreaterEqual(image.size[1], int(expected_height * 0.80))
+                dpi = image.info.get("dpi")
+                self.assertIsNotNone(dpi)
+                assert dpi is not None
+                self.assertAlmostEqual(float(dpi[0]), TOPOLOGY_PNG_DPI, delta=1.0)
+                self.assertAlmostEqual(float(dpi[1]), TOPOLOGY_PNG_DPI, delta=1.0)
+
+    def test_export_artifacts_are_geometry_deterministic(self) -> None:
+        topology = TopologyGraph.for_agent_count(20)
+        with tempfile.TemporaryDirectory() as first_tmpdir, tempfile.TemporaryDirectory() as second_tmpdir:
+            first = topology.export_artifacts(first_tmpdir)
+            second = topology.export_artifacts(second_tmpdir)
+            first_payload = json.loads(Path(first["topology_json"]).read_text(encoding="utf-8"))
+            second_payload = json.loads(Path(second["topology_json"]).read_text(encoding="utf-8"))
+            self.assertEqual(first_payload["metadata"]["node_coordinates"], second_payload["metadata"]["node_coordinates"])
+            self.assertEqual(first_payload["metadata"]["adjacency_hash"], second_payload["metadata"]["adjacency_hash"])
+            self.assertEqual(first_payload["metadata"]["number_of_edges"], second_payload["metadata"]["number_of_edges"])
+            self.assertEqual(first_payload["metadata"]["component_memberships"], second_payload["metadata"]["component_memberships"])
+            self.assertTrue(first_payload["metadata"]["svg_hash"])
+            self.assertTrue(second_payload["metadata"]["svg_hash"])
+            self.assertTrue(first_payload["metadata"]["png_hash"])
+            self.assertTrue(second_payload["metadata"]["png_hash"])
+
+    def test_missing_cairosvg_does_not_block_export(self) -> None:
+        topology = TopologyGraph.for_agent_count(20)
+        with tempfile.TemporaryDirectory() as tmpdir:
+            artifacts = topology.export_artifacts(tmpdir)
+            self.assertTrue(Path(artifacts["topology_svg"]).exists())
+            self.assertTrue(Path(artifacts["topology_png"]).exists())
 
 
 class TestLegalActionMaskWithTopology(unittest.TestCase):

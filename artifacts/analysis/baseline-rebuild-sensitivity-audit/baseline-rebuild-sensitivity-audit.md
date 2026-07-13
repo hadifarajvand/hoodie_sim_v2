@@ -51,23 +51,23 @@
 ## Baseline Signatures
 - seed=7 scenario=paper_default episode_length=4
   - FLC: completed=3::dropped=0::throughput=3::delay=2.0
-  - VO: completed=1::dropped=0::throughput=1::delay=3.0
-  - HO: completed=1::dropped=0::throughput=1::delay=2.0
+  - VO: completed=3::dropped=0::throughput=3::delay=2.0
+  - HO: completed=2::dropped=0::throughput=2::delay=2.5
   - RO: completed=2::dropped=0::throughput=2::delay=2.0
   - BCO: completed=3::dropped=0::throughput=3::delay=2.0
   - MLEO: completed=3::dropped=0::throughput=3::delay=2.0
-  - ADAPTIVE: completed=1::dropped=0::throughput=1::delay=1.0
+  - ADAPTIVE: completed=2::dropped=0::throughput=2::delay=2.0
 - seed=7 scenario=paper_default episode_length=6
   - FLC: completed=5::dropped=0::throughput=5::delay=3.0
-  - VO: completed=3::dropped=0::throughput=3::delay=4.0
-  - HO: completed=2::dropped=0::throughput=2::delay=3.0
-  - RO: completed=4::dropped=0::throughput=4::delay=3.5
+  - VO: completed=5::dropped=0::throughput=5::delay=3.0
+  - HO: completed=4::dropped=0::throughput=4::delay=3.5
+  - RO: completed=4::dropped=0::throughput=4::delay=3.25
   - BCO: completed=5::dropped=0::throughput=5::delay=3.0
   - MLEO: completed=5::dropped=0::throughput=5::delay=3.0
-  - ADAPTIVE: completed=2::dropped=0::throughput=2::delay=2.5
+  - ADAPTIVE: completed=4::dropped=0::throughput=4::delay=3.25
 - seed=7 scenario=moderate episode_length=4
   - FLC: completed=3::dropped=0::throughput=3::delay=2.0
-  - VO: completed=2::dropped=0::throughput=2::delay=2.5
+  - VO: completed=3::dropped=0::throughput=3::delay=2.0
   - HO: completed=2::dropped=0::throughput=2::delay=2.5
   - RO: completed=2::dropped=0::throughput=2::delay=2.0
   - BCO: completed=3::dropped=0::throughput=3::delay=2.0
@@ -75,31 +75,31 @@
   - ADAPTIVE: completed=2::dropped=0::throughput=2::delay=2.0
 - seed=7 scenario=moderate episode_length=6
   - FLC: completed=5::dropped=0::throughput=5::delay=3.0
-  - VO: completed=4::dropped=0::throughput=4::delay=3.5
-  - HO: completed=3::dropped=0::throughput=3::delay=3.3333333333333335
+  - VO: completed=5::dropped=0::throughput=5::delay=3.0
+  - HO: completed=4::dropped=0::throughput=4::delay=3.5
   - RO: completed=4::dropped=0::throughput=4::delay=3.25
   - BCO: completed=5::dropped=0::throughput=5::delay=3.0
   - MLEO: completed=5::dropped=0::throughput=5::delay=3.0
-  - ADAPTIVE: completed=3::dropped=0::throughput=3::delay=3.0
+  - ADAPTIVE: completed=4::dropped=0::throughput=4::delay=3.25
 - seed=7 scenario=heavy episode_length=4
   - FLC: completed=3::dropped=0::throughput=3::delay=2.0
-  - VO: completed=1::dropped=0::throughput=1::delay=3.0
-  - HO: completed=1::dropped=0::throughput=1::delay=2.0
+  - VO: completed=3::dropped=0::throughput=3::delay=2.0
+  - HO: completed=2::dropped=0::throughput=2::delay=2.5
   - RO: completed=2::dropped=0::throughput=2::delay=2.0
   - BCO: completed=3::dropped=0::throughput=3::delay=2.0
   - MLEO: completed=3::dropped=0::throughput=3::delay=2.0
-  - ADAPTIVE: completed=1::dropped=0::throughput=1::delay=1.0
+  - ADAPTIVE: completed=2::dropped=0::throughput=2::delay=2.0
 - seed=7 scenario=heavy episode_length=6
   - FLC: completed=5::dropped=0::throughput=5::delay=3.0
-  - VO: completed=3::dropped=0::throughput=3::delay=4.0
-  - HO: completed=2::dropped=0::throughput=2::delay=3.0
-  - RO: completed=4::dropped=0::throughput=4::delay=3.5
+  - VO: completed=5::dropped=0::throughput=5::delay=3.0
+  - HO: completed=4::dropped=0::throughput=4::delay=3.5
+  - RO: completed=4::dropped=0::throughput=4::delay=3.25
   - BCO: completed=5::dropped=0::throughput=5::delay=3.0
   - MLEO: completed=5::dropped=0::throughput=5::delay=3.0
-  - ADAPTIVE: completed=2::dropped=0::throughput=2::delay=2.5
+  - ADAPTIVE: completed=4::dropped=0::throughput=4::delay=3.25
 - seed=11 scenario=paper_default episode_length=4
   - FLC: completed=3::dropped=0::throughput=3::delay=2.0
-  - VO: completed=0::dropped=0::throughput=0::delay=0.0
+  - VO: completed=3::dropped=0::throughput=3::delay=2.0
   - HO: completed=1::dropped=0::throughput=1::delay=3.0
   - RO: completed=2::dropped=0::throughput=2::delay=2.5
   - BCO: completed=3::dropped=0::throughput=3::delay=2.0
@@ -107,15 +107,15 @@
   - ADAPTIVE: completed=1::dropped=0::throughput=1::delay=1.0
 - seed=11 scenario=paper_default episode_length=6
   - FLC: completed=4::dropped=0::throughput=4::delay=2.75
-  - VO: completed=2::dropped=0::throughput=2::delay=4.5
-  - HO: completed=1::dropped=0::throughput=1::delay=3.0
-  - RO: completed=2::dropped=0::throughput=2::delay=2.5
+  - VO: completed=4::dropped=0::throughput=4::delay=2.75
+  - HO: completed=3::dropped=0::throughput=3::delay=4.0
+  - RO: completed=3::dropped=0::throughput=3::delay=3.3333333333333335
   - BCO: completed=4::dropped=0::throughput=4::delay=2.75
   - MLEO: completed=4::dropped=0::throughput=4::delay=2.75
-  - ADAPTIVE: completed=1::dropped=0::throughput=1::delay=1.0
+  - ADAPTIVE: completed=3::dropped=0::throughput=3::delay=3.3333333333333335
 - seed=11 scenario=moderate episode_length=4
   - FLC: completed=3::dropped=0::throughput=3::delay=2.0
-  - VO: completed=1::dropped=0::throughput=1::delay=3.0
+  - VO: completed=3::dropped=0::throughput=3::delay=2.0
   - HO: completed=2::dropped=0::throughput=2::delay=2.5
   - RO: completed=2::dropped=0::throughput=2::delay=2.0
   - BCO: completed=3::dropped=0::throughput=3::delay=2.0
@@ -123,15 +123,15 @@
   - ADAPTIVE: completed=2::dropped=0::throughput=2::delay=2.0
 - seed=11 scenario=moderate episode_length=6
   - FLC: completed=5::dropped=0::throughput=5::delay=3.0
-  - VO: completed=3::dropped=0::throughput=3::delay=4.0
-  - HO: completed=2::dropped=0::throughput=2::delay=2.5
-  - RO: completed=4::dropped=0::throughput=4::delay=3.5
+  - VO: completed=5::dropped=0::throughput=5::delay=3.0
+  - HO: completed=4::dropped=0::throughput=4::delay=3.5
+  - RO: completed=4::dropped=0::throughput=4::delay=3.25
   - BCO: completed=5::dropped=0::throughput=5::delay=3.0
   - MLEO: completed=5::dropped=0::throughput=5::delay=3.0
-  - ADAPTIVE: completed=2::dropped=0::throughput=2::delay=2.0
+  - ADAPTIVE: completed=4::dropped=0::throughput=4::delay=3.25
 - seed=11 scenario=heavy episode_length=4
   - FLC: completed=3::dropped=0::throughput=3::delay=2.0
-  - VO: completed=0::dropped=0::throughput=0::delay=0.0
+  - VO: completed=3::dropped=0::throughput=3::delay=2.0
   - HO: completed=1::dropped=0::throughput=1::delay=3.0
   - RO: completed=2::dropped=0::throughput=2::delay=2.5
   - BCO: completed=3::dropped=0::throughput=3::delay=2.0
@@ -139,15 +139,15 @@
   - ADAPTIVE: completed=1::dropped=0::throughput=1::delay=1.0
 - seed=11 scenario=heavy episode_length=6
   - FLC: completed=4::dropped=0::throughput=4::delay=2.75
-  - VO: completed=2::dropped=0::throughput=2::delay=4.5
-  - HO: completed=1::dropped=0::throughput=1::delay=3.0
-  - RO: completed=2::dropped=0::throughput=2::delay=2.5
+  - VO: completed=4::dropped=0::throughput=4::delay=2.75
+  - HO: completed=3::dropped=0::throughput=3::delay=4.0
+  - RO: completed=3::dropped=0::throughput=3::delay=3.3333333333333335
   - BCO: completed=4::dropped=0::throughput=4::delay=2.75
   - MLEO: completed=4::dropped=0::throughput=4::delay=2.75
-  - ADAPTIVE: completed=1::dropped=0::throughput=1::delay=1.0
+  - ADAPTIVE: completed=3::dropped=0::throughput=3::delay=3.3333333333333335
 - seed=13 scenario=paper_default episode_length=4
   - FLC: completed=2::dropped=0::throughput=2::delay=2.0
-  - VO: completed=0::dropped=0::throughput=0::delay=0.0
+  - VO: completed=2::dropped=0::throughput=2::delay=2.0
   - HO: completed=1::dropped=0::throughput=1::delay=3.0
   - RO: completed=2::dropped=0::throughput=2::delay=3.0
   - BCO: completed=2::dropped=0::throughput=2::delay=2.0
@@ -155,15 +155,15 @@
   - ADAPTIVE: completed=1::dropped=0::throughput=1::delay=1.0
 - seed=13 scenario=paper_default episode_length=6
   - FLC: completed=4::dropped=0::throughput=4::delay=3.25
-  - VO: completed=2::dropped=0::throughput=2::delay=4.5
-  - HO: completed=1::dropped=0::throughput=1::delay=3.0
+  - VO: completed=4::dropped=0::throughput=4::delay=3.25
+  - HO: completed=2::dropped=0::throughput=2::delay=4.0
   - RO: completed=2::dropped=0::throughput=2::delay=3.0
   - BCO: completed=4::dropped=0::throughput=4::delay=3.25
   - MLEO: completed=4::dropped=0::throughput=4::delay=3.25
-  - ADAPTIVE: completed=1::dropped=0::throughput=1::delay=1.0
+  - ADAPTIVE: completed=2::dropped=0::throughput=2::delay=3.0
 - seed=13 scenario=moderate episode_length=4
   - FLC: completed=3::dropped=0::throughput=3::delay=2.0
-  - VO: completed=1::dropped=0::throughput=1::delay=3.0
+  - VO: completed=3::dropped=0::throughput=3::delay=2.0
   - HO: completed=2::dropped=0::throughput=2::delay=2.5
   - RO: completed=2::dropped=0::throughput=2::delay=2.0
   - BCO: completed=3::dropped=0::throughput=3::delay=2.0
@@ -171,15 +171,15 @@
   - ADAPTIVE: completed=2::dropped=0::throughput=2::delay=2.0
 - seed=13 scenario=moderate episode_length=6
   - FLC: completed=5::dropped=0::throughput=5::delay=3.0
-  - VO: completed=3::dropped=0::throughput=3::delay=4.0
-  - HO: completed=2::dropped=0::throughput=2::delay=2.5
-  - RO: completed=3::dropped=0::throughput=3::delay=3.0
+  - VO: completed=5::dropped=0::throughput=5::delay=3.0
+  - HO: completed=4::dropped=0::throughput=4::delay=3.5
+  - RO: completed=4::dropped=0::throughput=4::delay=3.25
   - BCO: completed=5::dropped=0::throughput=5::delay=3.0
   - MLEO: completed=5::dropped=0::throughput=5::delay=3.0
-  - ADAPTIVE: completed=2::dropped=0::throughput=2::delay=2.0
+  - ADAPTIVE: completed=4::dropped=0::throughput=4::delay=3.25
 - seed=13 scenario=heavy episode_length=4
   - FLC: completed=2::dropped=0::throughput=2::delay=2.0
-  - VO: completed=0::dropped=0::throughput=0::delay=0.0
+  - VO: completed=2::dropped=0::throughput=2::delay=2.0
   - HO: completed=1::dropped=0::throughput=1::delay=3.0
   - RO: completed=2::dropped=0::throughput=2::delay=3.0
   - BCO: completed=2::dropped=0::throughput=2::delay=2.0
@@ -187,17 +187,17 @@
   - ADAPTIVE: completed=1::dropped=0::throughput=1::delay=1.0
 - seed=13 scenario=heavy episode_length=6
   - FLC: completed=4::dropped=0::throughput=4::delay=3.25
-  - VO: completed=2::dropped=0::throughput=2::delay=4.5
-  - HO: completed=1::dropped=0::throughput=1::delay=3.0
+  - VO: completed=4::dropped=0::throughput=4::delay=3.25
+  - HO: completed=2::dropped=0::throughput=2::delay=4.0
   - RO: completed=2::dropped=0::throughput=2::delay=3.0
   - BCO: completed=4::dropped=0::throughput=4::delay=3.25
   - MLEO: completed=4::dropped=0::throughput=4::delay=3.25
-  - ADAPTIVE: completed=1::dropped=0::throughput=1::delay=1.0
+  - ADAPTIVE: completed=2::dropped=0::throughput=2::delay=3.0
 
 ## Collapse Stability Indicators
 - seed=7 scenario=paper_default episode_length=4 status=robust_collapse_reduced support=full note=reduced collapse survived this setting and improved differentiation
 - seed=7 scenario=paper_default episode_length=6 status=robust_collapse_reduced support=full note=reduced collapse survived this setting and improved differentiation
-- seed=7 scenario=moderate episode_length=4 status=collapse_unchanged support=full note=baseline diversity remained materially unchanged
+- seed=7 scenario=moderate episode_length=4 status=robust_collapse_reduced support=full note=reduced collapse survived this setting and improved differentiation
 - seed=7 scenario=moderate episode_length=6 status=robust_collapse_reduced support=full note=reduced collapse survived this setting and improved differentiation
 - seed=7 scenario=heavy episode_length=4 status=robust_collapse_reduced support=full note=reduced collapse survived this setting and improved differentiation
 - seed=7 scenario=heavy episode_length=6 status=robust_collapse_reduced support=full note=reduced collapse survived this setting and improved differentiation

@@ -61,13 +61,7 @@ class EvaluationMatrixRunner:
         return self.config.seeds
 
     def _default_topology(self, traffic_config) -> TopologyGraph:
-        node_ids = tuple(str(agent_id) for agent_id in range(1, traffic_config.number_of_agents + 1)) + ("cloud",)
-        legal_adjacency = {
-            node_id: tuple(destination for destination in node_ids if destination != node_id)
-            for node_id in node_ids[:-1]
-        }
-        legal_adjacency["cloud"] = tuple(node_id for node_id in node_ids if node_id != "cloud")
-        return TopologyGraph(node_ids=node_ids, legal_adjacency=legal_adjacency)
+        return TopologyGraph.for_agent_count(traffic_config.number_of_agents)
 
     def _trace_directory(self) -> Path | None:
         if self.config.output_dir is None:

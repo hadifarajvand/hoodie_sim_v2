@@ -1,0 +1,16 @@
+series,x,y_approx
+Extreme traffic,10,-65.227
+Extreme traffic,15,-67.914
+Extreme traffic,20,-70.451
+Extreme traffic,25,-73.883
+Extreme traffic,30,-75.675
+Heavy traffic,10,-27.463
+Heavy traffic,15,-38.211
+Heavy traffic,20,-45.674
+Heavy traffic,25,-49.405
+Heavy traffic,30,-51.494
+Moderate traffic,10,-4.177
+Moderate traffic,15,-6.119
+Moderate traffic,20,-8.656
+Moderate traffic,25,-11.192
+Moderate traffic,30,-14.625

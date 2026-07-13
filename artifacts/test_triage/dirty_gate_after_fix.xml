@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="7" skipped="0" tests="7" time="0.632" timestamp="2026-07-13T13:15:59.304041+03:30" hostname="Hadis-MacBook-4.local"><testcase classname="tests.integration.test_bind_full_campaign_real_torch_trainer_scope_guard.BindFullCampaignRealTorchTrainerScopeGuardTests" name="test_dirty_and_staged_paths_are_only_feature_060b_paths" time="0.100"><failure message="AssertionError: True is not false : forbidden path present: src/environment/environment.py">self = &lt;tests.integration.test_bind_full_campaign_real_torch_trainer_scope_guard.BindFullCampaignRealTorchTrainerScopeGuardTests testMethod=test_dirty_and_staged_paths_are_only_feature_060b_paths&gt;
+
+    def test_dirty_and_staged_paths_are_only_feature_060b_paths(self) -&gt; None:
+        status_output = subprocess.run(["git", "status", "--short"], check=True, capture_output=True, text=True).stdout.splitlines()
+        cached_output = subprocess.run(["git", "diff", "--cached", "--name-only"], check=True, capture_output=True, text=True).stdout.splitlines()
+        paths = [line[3:].strip() for line in status_output] + [line.strip() for line in cached_output]
+        forbidden = (".specify/feature.json", "AGENTS.md", ".gitignore", "src/environment/", "src/policies/", "pyproject.toml", "poetry.lock", "uv.lock")
+        ignored = (
+            ".claude-flow/daemon-state.json",
+            ".claude-flow/daemon.pid",
+            "data/memory/memory.db",
+            "data/memory/memory.db-shm",
+            "data/memory/memory.db-wal",
+            "ruvector.db",
+            "SUMMARY.md",
+        )
+        for path in paths:
+&gt;           self.assertFalse(any(path.startswith(prefix) for prefix in forbidden), msg=f"forbidden path present: {path}")
+E           AssertionError: True is not false : forbidden path present: src/environment/environment.py
+
+tests/integration/test_bind_full_campaign_real_torch_trainer_scope_guard.py:23: AssertionError</failure></testcase><testcase classname="tests.integration.test_controlled_mechanistic_sweeps_final_diff.ControlledMechanisticSweepsFinalDiffTests" name="test_final_diff_stays_within_allowed_paths" time="0.109"><failure message="AssertionError: True is not false : Forbidden path touched: agentdb.rvf.lock">self = &lt;tests.integration.test_controlled_mechanistic_sweeps_final_diff.ControlledMechanisticSweepsFinalDiffTests testMethod=test_final_diff_stays_within_allowed_paths&gt;
+
+    def test_final_diff_stays_within_allowed_paths(self) -&gt; None:
+        diff = subprocess.run(
+            ["git", "diff", "--name-only", "HEAD"],
+            check=True,
+            capture_output=True,
+            text=True,
+        ).stdout.splitlines()
+        untracked = subprocess.run(
+            ["git", "ls-files", "--others", "--exclude-standard"],
+            check=True,
+            capture_output=True,
+            text=True,
+        ).stdout.splitlines()
+        changed_paths = [Path(item) for item in diff + untracked]
+        forbidden_tokens = (
+            "src/environment/",
+            "src/policies/",
+            "src/training/",
+            "src/metrics/",
+            "campaign/",
+            ".tf",
+            ".lock",
+            "plot",
+        )
+        for path in changed_paths:
+&gt;           self.assertFalse(
+                any(token in path.as_posix() for token in forbidden_tokens),
+                msg=f"Forbidden path touched: {path}",
+            )
+E           AssertionError: True is not false : Forbidden path touched: agentdb.rvf.lock
+
+tests/integration/test_controlled_mechanistic_sweeps_final_diff.py:34: AssertionError</failure></testcase><testcase classname="tests.integration.test_controlled_mechanistic_sweeps_scope_guard.ControlledMechanisticSweepsScopeGuardTests" name="test_git_diff_does_not_touch_forbidden_paths" time="0.092"><failure message="AssertionError: True is not false : Forbidden path touched: src/environment/environment.py">self = &lt;tests.integration.test_controlled_mechanistic_sweeps_scope_guard.ControlledMechanisticSweepsScopeGuardTests testMethod=test_git_diff_does_not_touch_forbidden_paths&gt;
+
+    def test_git_diff_does_not_touch_forbidden_paths(self) -&gt; None:
+        import subprocess
+    
+        diff = subprocess.run(
+            ["git", "diff", "--name-only", "HEAD"],
+            check=True,
+            capture_output=True,
+            text=True,
+        ).stdout.splitlines()
+        untracked = subprocess.run(
+            ["git", "ls-files", "--others", "--exclude-standard"],
+            check=True,
+            capture_output=True,
+            text=True,
+        ).stdout.splitlines()
+    
+        changed_paths = [Path(item) for item in diff + untracked]
+        forbidden_prefixes = (
+            Path("src/environment"),
+            Path("src/policies"),
+            Path("src/training"),
+            Path("src/metrics"),
+            Path("campaign"),
+            Path("dependencies"),
+            Path("lockfiles"),
+        )
+        for path in changed_paths:
+&gt;           self.assertFalse(
+                any(path.as_posix().startswith(prefix.as_posix()) for prefix in forbidden_prefixes),
+                msg=f"Forbidden path touched: {path}",
+            )
+E           AssertionError: True is not false : Forbidden path touched: src/environment/environment.py
+
+tests/integration/test_controlled_mechanistic_sweeps_scope_guard.py:72: AssertionError</failure></testcase><testcase classname="tests.integration.test_environment_lifecycle_final_diff.EnvironmentLifecycleFinalDiffIntegrationTest" name="test_no_forbidden_paths_changed" time="0.057"><failure message="AssertionError: True is not false : forbidden path changed: src/policies/policy_interface.py">self = &lt;tests.integration.test_environment_lifecycle_final_diff.EnvironmentLifecycleFinalDiffIntegrationTest testMethod=test_no_forbidden_paths_changed&gt;
+
+    def test_no_forbidden_paths_changed(self) -&gt; None:
+        changed_paths = [
+            line[3:]
+            for line in subprocess.run(
+                ["git", "status", "--short", "--untracked-files=normal"],
+                check=True,
+                capture_output=True,
+                text=True,
+            ).stdout.splitlines()
+            if len(line) &gt; 3
+        ]
+        for path in changed_paths:
+            for forbidden in FORBIDDEN_PATH_PREFIXES:
+&gt;               self.assertFalse(
+                    path.startswith(forbidden) or forbidden in path,
+                    f"forbidden path changed: {path}",
+                )
+E               AssertionError: True is not false : forbidden path changed: src/policies/policy_interface.py
+
+tests/integration/test_environment_lifecycle_final_diff.py:35: AssertionError</failure></testcase><testcase classname="tests.integration.test_execution_time_contract_scope_guard.ExecutionTimeContractScopeGuardIntegrationTest" name="test_no_forbidden_paths_changed" time="0.059"><failure message="AssertionError: True is not false : forbidden path changed: src/policies/policy_interface.py">self = &lt;tests.integration.test_execution_time_contract_scope_guard.ExecutionTimeContractScopeGuardIntegrationTest testMethod=test_no_forbidden_paths_changed&gt;
+
+    def test_no_forbidden_paths_changed(self) -&gt; None:
+        changed_paths = self._changed_paths()
+        for path in changed_paths:
+            normalized = Path(path).as_posix()
+&gt;           self.assertFalse(
+                any(normalized.startswith(prefix) for prefix in FORBIDDEN_PREFIXES),
+                msg=f"forbidden path changed: {normalized}",
+            )
+E           AssertionError: True is not false : forbidden path changed: src/policies/policy_interface.py
+
+tests/integration/test_execution_time_contract_scope_guard.py:46: AssertionError</failure></testcase><testcase classname="tests.integration.test_mechanism_repair_scope_guard.MechanismRepairScopeGuardIntegrationTest" name="test_no_forbidden_paths_changed" time="0.059"><failure message="AssertionError: True is not false : forbidden path changed: src/policies/policy_interface.py">self = &lt;tests.integration.test_mechanism_repair_scope_guard.MechanismRepairScopeGuardIntegrationTest testMethod=test_no_forbidden_paths_changed&gt;
+
+    def test_no_forbidden_paths_changed(self) -&gt; None:
+        changed_paths = self._changed_paths()
+        for path in changed_paths:
+            normalized = Path(path).as_posix()
+&gt;           self.assertFalse(
+                any(normalized.startswith(prefix) for prefix in FORBIDDEN_PREFIXES),
+                msg=f"forbidden path changed: {normalized}",
+            )
+E           AssertionError: True is not false : forbidden path changed: src/policies/policy_interface.py
+
+tests/integration/test_mechanism_repair_scope_guard.py:53: AssertionError</failure></testcase><testcase classname="tests.integration.test_transmission_delay_runtime_scope_guard.TransmissionDelayRuntimeScopeGuardIntegrationTests" name="test_no_forbidden_paths_changed" time="0.060"><failure message="AssertionError: True is not false : forbidden path changed: src/policies/policy_interface.py">self = &lt;tests.integration.test_transmission_delay_runtime_scope_guard.TransmissionDelayRuntimeScopeGuardIntegrationTests testMethod=test_no_forbidden_paths_changed&gt;
+
+    def test_no_forbidden_paths_changed(self) -&gt; None:
+        changed_paths = self._changed_paths()
+        for path in changed_paths:
+            normalized = Path(path).as_posix()
+&gt;           self.assertFalse(
+                any(normalized.startswith(prefix) for prefix in FORBIDDEN_PREFIXES),
+                msg=f"forbidden path changed: {normalized}",
+            )
+E           AssertionError: True is not false : forbidden path changed: src/policies/policy_interface.py
+
+tests/integration/test_transmission_delay_runtime_scope_guard.py:46: AssertionError</failure></testcase></testsuite></testsuites>

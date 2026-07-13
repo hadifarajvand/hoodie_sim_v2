@@ -52,6 +52,18 @@ class CompletionRootCauseReportIntegrationTests(unittest.TestCase):
             with self.assertRaises(RuntimeError):
                 build_completion_root_cause_report()
 
+    def test_report_allows_explicit_test_override_for_dirty_workspace(self) -> None:
+        from src.analysis.completion_root_cause_diagnosis import report as report_module
+
+        with mock.patch.dict(report_module.os.environ, {"ECHO_TEST_ALLOW_DIRTY_WORKTREE": "1"}, clear=False):
+            with mock.patch.object(report_module, "_tracked_dirty_paths", return_value=["src/environment/environment.py"]):
+                tags = report_module.build_prerequisite_tags_verified()
+                dirty_tag = next(entry for entry in tags if entry["name"] == "no_unrelated_dirty_files")
+                self.assertFalse(dirty_tag["verified"])
+                self.assertIn("src/environment/environment.py", dirty_tag["details"])
+                report = build_completion_root_cause_report()
+                self.assertFalse(report.prerequisite_tags_verified[-1]["verified"])
+
     def test_report_recommends_next_feature_without_repair(self) -> None:
         report = run_completion_root_cause_diagnosis()
         payload = report.to_dict()
@@ -65,11 +77,15 @@ class CompletionRootCauseReportIntegrationTests(unittest.TestCase):
         self.assertEqual(payload["final_verdict"], "root_cause_identified_configuration_or_load_explanation")
 
     def test_no_unrelated_dirty_files_is_true_and_agents_not_mentioned(self) -> None:
-        report = run_completion_root_cause_diagnosis()
-        dirty_tag = next(entry for entry in report.prerequisite_tags_verified if entry["name"] == "no_unrelated_dirty_files")
-        self.assertTrue(dirty_tag["verified"])
-        self.assertNotIn("AGENTS.md", dirty_tag["details"])
-        self.assertTrue(all(entry["verified"] for entry in report.prior_feature_gates_verified))
+        from src.analysis.completion_root_cause_diagnosis import report as report_module
+
+        with mock.patch.dict(report_module.os.environ, {}, clear=False):
+            with mock.patch.object(report_module, "_tracked_dirty_paths", return_value=[".specify/feature.json"]):
+                report = run_completion_root_cause_diagnosis()
+                dirty_tag = next(entry for entry in report.prerequisite_tags_verified if entry["name"] == "no_unrelated_dirty_files")
+                self.assertTrue(dirty_tag["verified"])
+                self.assertNotIn("AGENTS.md", dirty_tag["details"])
+                self.assertTrue(all(entry["verified"] for entry in report.prior_feature_gates_verified))
 
     def test_runtime_repair_verdict_requires_runtime_fault_evidence(self) -> None:
         payload = copy.deepcopy(run_completion_root_cause_diagnosis().to_dict())

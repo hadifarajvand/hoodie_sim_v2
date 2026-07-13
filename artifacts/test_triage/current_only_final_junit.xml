@@ -1,0 +1,192 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="27" skipped="0" tests="27" time="19.130" timestamp="2026-07-13T12:07:46.420395+03:30" hostname="Hadis-MacBook-4.local"><testcase classname="tests.integration.test_bind_full_campaign_real_torch_trainer_scope_guard.BindFullCampaignRealTorchTrainerScopeGuardTests" name="test_dirty_and_staged_paths_are_only_feature_060b_paths" time="0.110"><failure message="AssertionError: True is not false : forbidden path present: src/environment/environment.py">tests/integration/test_bind_full_campaign_real_torch_trainer_scope_guard.py:23: in test_dirty_and_staged_paths_are_only_feature_060b_paths
+    self.assertFalse(any(path.startswith(prefix) for prefix in forbidden), msg=f"forbidden path present: {path}")
+E   AssertionError: True is not false : forbidden path present: src/environment/environment.py</failure></testcase><testcase classname="tests.integration.test_controlled_mechanistic_sweeps_final_diff.ControlledMechanisticSweepsFinalDiffTests" name="test_final_diff_stays_within_allowed_paths" time="0.113"><failure message="AssertionError: True is not false : Forbidden path touched: agentdb.rvf.lock">tests/integration/test_controlled_mechanistic_sweeps_final_diff.py:34: in test_final_diff_stays_within_allowed_paths
+    self.assertFalse(
+E   AssertionError: True is not false : Forbidden path touched: agentdb.rvf.lock</failure></testcase><testcase classname="tests.integration.test_controlled_mechanistic_sweeps_flow.ControlledMechanisticSweepsFlowTests" name="test_tiny_sweeps_run_deterministically_and_write_artifacts" time="0.006"><failure message="ValueError: Topology adjacency must be symmetric">tests/integration/test_controlled_mechanistic_sweeps_flow.py:17: in test_tiny_sweeps_run_deterministically_and_write_artifacts
+    first_report = first_runner.run()
+                   ^^^^^^^^^^^^^^^^^^
+src/analysis/controlled_mechanistic_sweeps/runner.py:114: in run
+    result = self._run_definition(definition)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+src/analysis/controlled_mechanistic_sweeps/runner.py:179: in _run_definition
+    return self._run_topology_density(definition)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+src/analysis/controlled_mechanistic_sweeps/runner.py:279: in _run_topology_density
+    topology = _topology_for_density(str(value))
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+src/analysis/controlled_mechanistic_sweeps/runner.py:86: in _topology_for_density
+    return TopologyGraph(node_ids=("1", "2"), legal_adjacency={"1": ("2",)})
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+&lt;string&gt;:6: in __init__
+    ???
+src/environment/topology.py:54: in __post_init__
+    _validate_simple_undirected_graph(canonical_nodes, normalized_adjacency)
+src/environment/topology.py:407: in _validate_simple_undirected_graph
+    raise ValueError("Topology adjacency must be symmetric")
+E   ValueError: Topology adjacency must be symmetric</failure></testcase><testcase classname="tests.integration.test_controlled_mechanistic_sweeps_flow.ControlledMechanisticSweepsFlowTests" name="test_unsupported_dimensions_remain_instrumentation_gaps" time="0.005"><failure message="ValueError: Topology adjacency must be symmetric">tests/integration/test_controlled_mechanistic_sweeps_flow.py:51: in test_unsupported_dimensions_remain_instrumentation_gaps
+    report = ControlledMechanisticSweepRunner(output_dir=Path(output_dir)).run()
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+src/analysis/controlled_mechanistic_sweeps/runner.py:114: in run
+    result = self._run_definition(definition)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+src/analysis/controlled_mechanistic_sweeps/runner.py:179: in _run_definition
+    return self._run_topology_density(definition)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+src/analysis/controlled_mechanistic_sweeps/runner.py:279: in _run_topology_density
+    topology = _topology_for_density(str(value))
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+src/analysis/controlled_mechanistic_sweeps/runner.py:86: in _topology_for_density
+    return TopologyGraph(node_ids=("1", "2"), legal_adjacency={"1": ("2",)})
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+&lt;string&gt;:6: in __init__
+    ???
+src/environment/topology.py:54: in __post_init__
+    _validate_simple_undirected_graph(canonical_nodes, normalized_adjacency)
+src/environment/topology.py:407: in _validate_simple_undirected_graph
+    raise ValueError("Topology adjacency must be symmetric")
+E   ValueError: Topology adjacency must be symmetric</failure></testcase><testcase classname="tests.integration.test_controlled_mechanistic_sweeps_scope_guard.ControlledMechanisticSweepsScopeGuardTests" name="test_git_diff_does_not_touch_forbidden_paths" time="0.080"><failure message="AssertionError: True is not false : Forbidden path touched: src/environment/environment.py">tests/integration/test_controlled_mechanistic_sweeps_scope_guard.py:72: in test_git_diff_does_not_touch_forbidden_paths
+    self.assertFalse(
+E   AssertionError: True is not false : Forbidden path touched: src/environment/environment.py</failure></testcase><testcase classname="tests.integration.test_environment_lifecycle_final_diff.EnvironmentLifecycleFinalDiffIntegrationTest" name="test_no_forbidden_paths_changed" time="0.047"><failure message="AssertionError: True is not false : forbidden path changed: src/policies/policy_interface.py">tests/integration/test_environment_lifecycle_final_diff.py:35: in test_no_forbidden_paths_changed
+    self.assertFalse(
+E   AssertionError: True is not false : forbidden path changed: src/policies/policy_interface.py</failure></testcase><testcase classname="tests.integration.test_evaluation_runner.EvaluationRunnerTests" name="test_multiple_policies_share_the_same_runner" time="0.001"><failure message="ValueError: Topology adjacency must be symmetric">tests/integration/test_evaluation_runner.py:36: in test_multiple_policies_share_the_same_runner
+    topology = TopologyGraph(
+&lt;string&gt;:6: in __init__
+    ???
+src/environment/topology.py:54: in __post_init__
+    _validate_simple_undirected_graph(canonical_nodes, normalized_adjacency)
+src/environment/topology.py:407: in _validate_simple_undirected_graph
+    raise ValueError("Topology adjacency must be symmetric")
+E   ValueError: Topology adjacency must be symmetric</failure></testcase><testcase classname="tests.integration.test_execution_time_contract_scope_guard.ExecutionTimeContractScopeGuardIntegrationTest" name="test_no_forbidden_paths_changed" time="0.047"><failure message="AssertionError: True is not false : forbidden path changed: src/policies/policy_interface.py">tests/integration/test_execution_time_contract_scope_guard.py:46: in test_no_forbidden_paths_changed
+    self.assertFalse(
+E   AssertionError: True is not false : forbidden path changed: src/policies/policy_interface.py</failure></testcase><testcase classname="tests.integration.test_execution_time_flow.ExecutionTimeFlowTests" name="test_local_edge_and_cloud_execution_complete_in_expected_slots" time="0.003"><failure message="ValueError: Topology adjacency must be symmetric">tests/integration/test_execution_time_flow.py:108: in test_local_edge_and_cloud_execution_complete_in_expected_slots
+    topology=TopologyGraph(node_ids=("1", "2"), legal_adjacency={"1": ("2",)}),
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+&lt;string&gt;:6: in __init__
+    ???
+src/environment/topology.py:54: in __post_init__
+    _validate_simple_undirected_graph(canonical_nodes, normalized_adjacency)
+src/environment/topology.py:407: in _validate_simple_undirected_graph
+    raise ValueError("Topology adjacency must be symmetric")
+E   ValueError: Topology adjacency must be symmetric</failure></testcase><testcase classname="tests.integration.test_mechanism_repair_scope_guard.MechanismRepairScopeGuardIntegrationTest" name="test_no_forbidden_paths_changed" time="0.055"><failure message="AssertionError: True is not false : forbidden path changed: src/policies/policy_interface.py">tests/integration/test_mechanism_repair_scope_guard.py:53: in test_no_forbidden_paths_changed
+    self.assertFalse(
+E   AssertionError: True is not false : forbidden path changed: src/policies/policy_interface.py</failure></testcase><testcase classname="tests.integration.test_offload_instrumentation_no_behavior_change.OffloadInstrumentationNoBehaviorChangeTest" name="test_instrumentation_does_not_change_rewards_or_metrics" time="0.001"><failure message="ValueError: Topology adjacency must be symmetric">tests/integration/test_offload_instrumentation_no_behavior_change.py:10: in test_instrumentation_does_not_change_rewards_or_metrics
+    env = attach_one_task_trace_bank(make_horizontal_topology_environment(episode_length=6), action="horizontal")
+                                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+tests/integration/offload_trace_fixtures.py:11: in make_horizontal_topology_environment
+    env.topology = TopologyGraph(
+&lt;string&gt;:6: in __init__
+    ???
+src/environment/topology.py:54: in __post_init__
+    _validate_simple_undirected_graph(canonical_nodes, normalized_adjacency)
+src/environment/topology.py:407: in _validate_simple_undirected_graph
+    raise ValueError("Topology adjacency must be symmetric")
+E   ValueError: Topology adjacency must be symmetric</failure></testcase><testcase classname="tests.integration.test_passive_selected_action_trace_repair.PassiveSelectedActionTraceRepairIntegrationTest" name="test_decision_point_emits_selected_action_join_fields" time="0.001"><failure message="ValueError: Topology adjacency must be symmetric">tests/integration/test_passive_selected_action_trace_repair.py:14: in test_decision_point_emits_selected_action_join_fields
+    topology = TopologyGraph(node_ids=("1", "2", "cloud"), legal_adjacency={"1": ("2", "cloud")})
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+&lt;string&gt;:6: in __init__
+    ???
+src/environment/topology.py:54: in __post_init__
+    _validate_simple_undirected_graph(canonical_nodes, normalized_adjacency)
+src/environment/topology.py:407: in _validate_simple_undirected_graph
+    raise ValueError("Topology adjacency must be symmetric")
+E   ValueError: Topology adjacency must be symmetric</failure></testcase><testcase classname="tests.integration.test_transmission_delay_runtime_scope_guard.TransmissionDelayRuntimeScopeGuardIntegrationTests" name="test_no_forbidden_paths_changed" time="0.054"><failure message="AssertionError: True is not false : forbidden path changed: src/policies/policy_interface.py">tests/integration/test_transmission_delay_runtime_scope_guard.py:46: in test_no_forbidden_paths_changed
+    self.assertFalse(
+E   AssertionError: True is not false : forbidden path changed: src/policies/policy_interface.py</failure></testcase><testcase classname="tests.integration.test_transmission_delay_runtime_wiring.TransmissionDelayRuntimeWiringIntegrationTests" name="test_horizontal_metadata_recorded" time="0.001"><failure message="ValueError: Topology adjacency must be symmetric">tests/integration/test_transmission_delay_runtime_wiring.py:149: in test_horizontal_metadata_recorded
+    topology=TopologyGraph(node_ids=("1", "2"), legal_adjacency={"1": ("2",)}),
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+&lt;string&gt;:6: in __init__
+    ???
+src/environment/topology.py:54: in __post_init__
+    _validate_simple_undirected_graph(canonical_nodes, normalized_adjacency)
+src/environment/topology.py:407: in _validate_simple_undirected_graph
+    raise ValueError("Topology adjacency must be symmetric")
+E   ValueError: Topology adjacency must be symmetric</failure></testcase><testcase classname="tests.integration.test_transmission_delay_runtime_wiring.TransmissionDelayRuntimeWiringIntegrationTests" name="test_horizontal_transmission_delay_uses_task_size_and_RH" time="0.001"><failure message="ValueError: Topology adjacency must be symmetric">tests/integration/test_transmission_delay_runtime_wiring.py:48: in test_horizontal_transmission_delay_uses_task_size_and_RH
+    env = self._environment(trace, TopologyGraph(node_ids=("1", "2"), legal_adjacency={"1": ("2",)}))
+                                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+&lt;string&gt;:6: in __init__
+    ???
+src/environment/topology.py:54: in __post_init__
+    _validate_simple_undirected_graph(canonical_nodes, normalized_adjacency)
+src/environment/topology.py:407: in _validate_simple_undirected_graph
+    raise ValueError("Topology adjacency must be symmetric")
+E   ValueError: Topology adjacency must be symmetric</failure></testcase><testcase classname="tests.integration.test_transmission_delay_runtime_wiring.TransmissionDelayRuntimeWiringIntegrationTests" name="test_local_path_has_no_transmission_metadata" time="0.001"><failure message="AssertionError: Lists differ: ['transmission_start_slot', 'transmission_completion_slot'] != []&#10;&#10;First list contains 2 additional elements.&#10;First extra element 0:&#10;'transmission_start_slot'&#10;&#10;- ['transmission_start_slot', 'transmission_completion_slot']&#10;+ []">tests/integration/test_transmission_delay_runtime_wiring.py:194: in test_local_path_has_no_transmission_metadata
+    self.assertEqual(transmission_keys, [])
+E   AssertionError: Lists differ: ['transmission_start_slot', 'transmission_completion_slot'] != []
+E   
+E   First list contains 2 additional elements.
+E   First extra element 0:
+E   'transmission_start_slot'
+E   
+E   - ['transmission_start_slot', 'transmission_completion_slot']
+E   + []</failure></testcase><testcase classname="tests.integration.test_transmission_delay_runtime_wiring.TransmissionDelayRuntimeWiringIntegrationTests" name="test_no_dependency_training_policy_campaign_drift" time="0.001"><failure message="ValueError: Topology adjacency must be symmetric">tests/integration/test_transmission_delay_runtime_wiring.py:230: in test_no_dependency_training_policy_campaign_drift
+    env = self._environment(trace, TopologyGraph(node_ids=("1", "2"), legal_adjacency={"1": ("2",)}))
+                                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+&lt;string&gt;:6: in __init__
+    ???
+src/environment/topology.py:54: in __post_init__
+    _validate_simple_undirected_graph(canonical_nodes, normalized_adjacency)
+src/environment/topology.py:407: in _validate_simple_undirected_graph
+    raise ValueError("Topology adjacency must be symmetric")
+E   ValueError: Topology adjacency must be symmetric</failure></testcase><testcase classname="tests.integration.test_transmission_delay_runtime_wiring.TransmissionDelayRuntimeWiringIntegrationTests" name="test_no_feature_033_execution_contract_drift" time="0.001"><failure message="ValueError: Topology adjacency must be symmetric">tests/integration/test_transmission_delay_runtime_wiring.py:221: in test_no_feature_033_execution_contract_drift
+    env = self._environment(trace, TopologyGraph(node_ids=("1", "2"), legal_adjacency={"1": ("2",)}))
+                                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+&lt;string&gt;:6: in __init__
+    ???
+src/environment/topology.py:54: in __post_init__
+    _validate_simple_undirected_graph(canonical_nodes, normalized_adjacency)
+src/environment/topology.py:407: in _validate_simple_undirected_graph
+    raise ValueError("Topology adjacency must be symmetric")
+E   ValueError: Topology adjacency must be symmetric</failure></testcase><testcase classname="tests.integration.test_transmission_delay_runtime_wiring.TransmissionDelayRuntimeWiringIntegrationTests" name="test_offload_admitted_at_documented_boundary" time="0.001"><failure message="ValueError: Topology adjacency must be symmetric">tests/integration/test_transmission_delay_runtime_wiring.py:127: in test_offload_admitted_at_documented_boundary
+    topology=TopologyGraph(node_ids=("1", "2"), legal_adjacency={"1": ("2",)}),
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+&lt;string&gt;:6: in __init__
+    ???
+src/environment/topology.py:54: in __post_init__
+    _validate_simple_undirected_graph(canonical_nodes, normalized_adjacency)
+src/environment/topology.py:407: in _validate_simple_undirected_graph
+    raise ValueError("Topology adjacency must be symmetric")
+E   ValueError: Topology adjacency must be symmetric</failure></testcase><testcase classname="tests.integration.test_transmission_delay_runtime_wiring.TransmissionDelayRuntimeWiringIntegrationTests" name="test_offload_not_admitted_before_delay_boundary" time="0.001"><failure message="ValueError: Topology adjacency must be symmetric">tests/integration/test_transmission_delay_runtime_wiring.py:111: in test_offload_not_admitted_before_delay_boundary
+    env = self._environment(trace, TopologyGraph(node_ids=("1", "2"), legal_adjacency={"1": ("2",)}))
+                                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+&lt;string&gt;:6: in __init__
+    ???
+src/environment/topology.py:54: in __post_init__
+    _validate_simple_undirected_graph(canonical_nodes, normalized_adjacency)
+src/environment/topology.py:407: in _validate_simple_undirected_graph
+    raise ValueError("Topology adjacency must be symmetric")
+E   ValueError: Topology adjacency must be symmetric</failure></testcase><testcase classname="tests.unit.test_baseline_registry_revalidation.BaselineRegistryRevalidationUnitTests" name="test_vertical_cloud_legality_does_not_require_cloud_in_figure7" time="0.024"><failure message="AssertionError: False is not true">tests/unit/test_baseline_registry_revalidation.py:73: in test_vertical_cloud_legality_does_not_require_cloud_in_figure7
+    self.assertTrue(env.legal_action_mask(task)["vertical"])
+E   AssertionError: False is not true</failure></testcase><testcase classname="tests.unit.test_evaluation_trace_bank_baseline_harness_behavior_equivalence.EvaluationTraceBankBaselineHarnessBehaviorEquivalenceTests" name="test_behavior_safety_fields_cover_all_forbidden_behaviors" time="0.163"><failure message="AssertionError: False is not true">tests/unit/test_evaluation_trace_bank_baseline_harness_behavior_equivalence.py:34: in test_behavior_safety_fields_cover_all_forbidden_behaviors
+    self.assertTrue(payload["behavior_safety_summary"][key])
+E   AssertionError: False is not true</failure></testcase><testcase classname="tests.unit.test_full_paper_default_training_campaign_gate_behavior_equivalence.FullPaperDefaultTrainingCampaignGateBehaviorEquivalenceTests" name="test_safety_fields_cover_forbidden_feature_059_behaviors" time="0.159"><failure message="AssertionError: False is not true">tests/unit/test_full_paper_default_training_campaign_gate_behavior_equivalence.py:35: in test_safety_fields_cover_forbidden_feature_059_behaviors
+    self.assertTrue(payload["safety_summary"][key])
+E   AssertionError: False is not true</failure></testcase><testcase classname="tests.unit.test_gym_environment.GymEnvironmentTests" name="test_action_legality_under_topology" time="0.001"><failure message="ValueError: Topology adjacency must be symmetric">tests/unit/test_gym_environment.py:146: in test_action_legality_under_topology
+    topology = TopologyGraph(node_ids=("1", "2", "cloud"), legal_adjacency={"1": ("2", "cloud")})
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+&lt;string&gt;:6: in __init__
+    ???
+src/environment/topology.py:54: in __post_init__
+    _validate_simple_undirected_graph(canonical_nodes, normalized_adjacency)
+src/environment/topology.py:407: in _validate_simple_undirected_graph
+    raise ValueError("Topology adjacency must be symmetric")
+E   ValueError: Topology adjacency must be symmetric</failure></testcase><testcase classname="tests.unit.test_gym_environment.GymEnvironmentTests" name="test_horizontal_offload_path" time="0.001"><failure message="ValueError: Topology adjacency must be symmetric">tests/unit/test_gym_environment.py:185: in test_horizontal_offload_path
+    topology = TopologyGraph(node_ids=("1", "2", "cloud"), legal_adjacency={"1": ("2", "cloud")})
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+&lt;string&gt;:6: in __init__
+    ???
+src/environment/topology.py:54: in __post_init__
+    _validate_simple_undirected_graph(canonical_nodes, normalized_adjacency)
+src/environment/topology.py:407: in _validate_simple_undirected_graph
+    raise ValueError("Topology adjacency must be symmetric")
+E   ValueError: Topology adjacency must be symmetric</failure></testcase><testcase classname="tests.unit.test_gym_environment.GymEnvironmentTests" name="test_vertical_offload_does_not_require_cloud_in_topology" time="0.001"><failure message="ValueError: Topology adjacency must be symmetric">tests/unit/test_gym_environment.py:156: in test_vertical_offload_does_not_require_cloud_in_topology
+    horizontal_only = TopologyGraph(node_ids=("1", "2"), legal_adjacency={"1": ("2",)})
+                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+&lt;string&gt;:6: in __init__
+    ???
+src/environment/topology.py:54: in __post_init__
+    _validate_simple_undirected_graph(canonical_nodes, normalized_adjacency)
+src/environment/topology.py:407: in _validate_simple_undirected_graph
+    raise ValueError("Topology adjacency must be symmetric")
+E   ValueError: Topology adjacency must be symmetric</failure></testcase><testcase classname="tests.unit.test_runtime_adoption_approved_assumption_registry.RuntimeAdoptionApprovedAssumptionRegistryUnitTests" name="test_approved_figure7_topology_keeps_vertical_cloud_offload_legal" time="0.001"><failure message="AssertionError: False is not true">tests/unit/test_runtime_adoption_approved_assumption_registry.py:70: in test_approved_figure7_topology_keeps_vertical_cloud_offload_legal
+    self.assertTrue(env.legal_action_mask(task)["vertical"])
+E   AssertionError: False is not true</failure></testcase></testsuite></testsuites>

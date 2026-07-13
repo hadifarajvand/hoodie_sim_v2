@@ -1,0 +1,26 @@
+# Baseline vs candidate
+
+- clean-head failures/errors: 246
+- current-worktree failures/errors: 257
+- shared nodes: 1630
+- unique clean-head nodes: 3
+- unique current-worktree nodes: 12
+
+## Unique current-worktree nodes
+- `tests.integration.test_training_loop.TrainingLoopIntegrationTests::test_evaluation_runner_uses_runtime_compute_capacities`
+- `tests.integration.test_training_loop.TrainingLoopIntegrationTests::test_training_loop_applies_replay_seed_from_config`
+- `tests.unit.test_agent_components.AgentComponentTests::test_replay_buffer_sampling_is_seeded_uniform_random`
+- `tests.unit.test_agent_components.AgentComponentTests::test_torchrl_hoodie_learner_reports_dependency_availability_consistently`
+- `tests.unit.test_agent_components.AgentComponentTests::test_torchrl_hoodie_learner_require_available_matches_dependency_state`
+- `tests.unit.test_phase0_topology_legality.TestFigure7TopologyProperties::test_anchor_exactly_matches_modular_five_cluster_rule`
+- `tests.unit.test_phase0_topology_legality.TestFigure7TopologyProperties::test_topology_has_exactly_five_complete_components`
+- `tests.unit.test_phase0_topology_legality.TestTopologyArtifactExport::test_export_artifacts_are_geometry_deterministic`
+- `tests.unit.test_phase0_topology_legality.TestTopologyArtifactExport::test_export_artifacts_writes_svg_png_and_shared_coordinate_manifest`
+- `tests.unit.test_phase0_topology_legality.TestTopologyArtifactExport::test_exported_png_has_valid_signature_and_expected_dimensions`
+- `tests.unit.test_phase0_topology_legality.TestTopologyArtifactExport::test_missing_cairosvg_does_not_block_export`
+- `tests.unit.test_phase0_topology_legality.TestTopologyGraphConstruction::test_from_approved_registry_accepts_disconnected_anchor`
+
+## Unique clean-head nodes
+- `tests.unit.test_agent_components.AgentComponentTests::test_torchrl_hoodie_learner_imports_without_torch_or_torchrl`
+- `tests.unit.test_agent_components.AgentComponentTests::test_torchrl_hoodie_learner_require_available_fails_clearly_when_unavailable`
+- `tests.unit.test_phase0_topology_legality.TestTopologyGraphConstruction::test_from_approved_registry_rejects_non_degree_3`

@@ -1,0 +1,17 @@
+{
+  "trace_id": "echo-smoke-1",
+  "seed": null,
+  "topology_hash": "echo-runtime-smoke",
+  "files": [
+    "action_masks.csv",
+    "candidate_ert.csv",
+    "event_trace.jsonl",
+    "invariant_report.json",
+    "queue_snapshots.jsonl",
+    "replay_insertions.csv",
+    "reward_deliveries.csv",
+    "smoke_manifest.json",
+    "state_vectors.csv",
+    "task_lifecycles.csv"
+  ]
+}

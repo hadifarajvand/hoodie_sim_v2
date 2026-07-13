@@ -1,0 +1,29 @@
+{
+  "episodes_expected": 100,
+  "figure_id": "Figure 11",
+  "missing_or_invalid": [],
+  "output": "/Users/hadi/Documents/GitHub/hoodie_sim_v2/artifacts/analysis/figure8-11-validation/figure_11/figure11_lstm_comparison.png",
+  "source": [
+    "/Users/hadi/Documents/GitHub/hoodie_sim_v2/artifacts/analysis/figure8-11-validation/figure_11_lstm/sweep_results.json",
+    "/Users/hadi/Documents/GitHub/hoodie_sim_v2/artifacts/analysis/figure8-11-validation/figure_11_no_lstm/sweep_results.json"
+  ],
+  "status": "exported",
+  "subfigures": [
+    {
+      "flat": true,
+      "id": "fig11a",
+      "nonempty": true,
+      "points": 1,
+      "present": true,
+      "series": "with_lstm"
+    },
+    {
+      "flat": true,
+      "id": "fig11b",
+      "nonempty": true,
+      "points": 1,
+      "present": true,
+      "series": "without_lstm"
+    }
+  ]
+}

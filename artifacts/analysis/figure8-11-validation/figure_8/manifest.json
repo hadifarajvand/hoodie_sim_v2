@@ -1,5 +1,5 @@
 {
-  "episodes_expected": 5,
+  "episodes_expected": 100,
   "figure_id": "Figure 8",
   "missing_or_invalid": [],
   "output": "artifacts/analysis/figure8-11-validation/figure_8/figure8_reward_timecourse.png",
@@ -9,7 +9,7 @@
     {
       "flat": false,
       "id": "8a",
-      "max_episodes": 100,
+      "max_episodes": 10,
       "nonempty": true,
       "present": true,
       "series": "learning_rate"
@@ -17,7 +17,7 @@
     {
       "flat": false,
       "id": "8b",
-      "max_episodes": 100,
+      "max_episodes": 10,
       "nonempty": true,
       "present": true,
       "series": "discount_factor"

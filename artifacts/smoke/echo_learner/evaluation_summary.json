@@ -1,0 +1,42 @@
+{
+  "first": {
+    "evaluation_episode_count": 3,
+    "mean_reward": 0.0,
+    "completed_task_count": 0,
+    "dropped_task_count": 0,
+    "terminal_transition_count": 0,
+    "reward_bearing_transition_count": 0,
+    "trace_bank_disjoint": true,
+    "trace_bank_ids": {
+      "training": "full-training-train-bank",
+      "evaluation": "full-training-eval-bank"
+    },
+    "trace_ids": [
+      "hoodie-13",
+      "hoodie-14",
+      "hoodie-15"
+    ],
+    "evaluation_on_training_traces": false,
+    "candidate_reproduction_supported": false
+  },
+  "resume": {
+    "evaluation_episode_count": 3,
+    "mean_reward": 0.0,
+    "completed_task_count": 0,
+    "dropped_task_count": 0,
+    "terminal_transition_count": 0,
+    "reward_bearing_transition_count": 0,
+    "trace_bank_disjoint": true,
+    "trace_bank_ids": {
+      "training": "full-training-train-bank",
+      "evaluation": "full-training-eval-bank"
+    },
+    "trace_ids": [
+      "hoodie-13",
+      "hoodie-14",
+      "hoodie-15"
+    ],
+    "evaluation_on_training_traces": false,
+    "candidate_reproduction_supported": false
+  }
+}

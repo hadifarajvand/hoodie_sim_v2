@@ -7,18 +7,18 @@
       "status": "schema_only_not_claimed"
     },
     "trained_drop_count": {
-      "max": 6,
-      "mean": 6,
-      "min": 6,
+      "max": 0,
+      "mean": 0,
+      "min": 0,
       "not_claimed": false,
       "sample_count": 3,
       "std": 0.0,
       "variance": 0.0
     },
     "trained_reward": {
-      "max": -80.0,
-      "mean": -80.0,
-      "min": -80.0,
+      "max": -452.0,
+      "mean": -452.0,
+      "min": -452.0,
       "not_claimed": false,
       "sample_count": 3,
       "std": 0.0,

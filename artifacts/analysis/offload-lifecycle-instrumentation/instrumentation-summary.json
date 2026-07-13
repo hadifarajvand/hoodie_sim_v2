@@ -7,7 +7,7 @@
   "no_paper_topology_fabrication": true,
   "observed_default_audit_events": [
     "created",
-    "created",
+    "selected_action:horizontal",
     "created",
     "selected_action:local",
     "created",

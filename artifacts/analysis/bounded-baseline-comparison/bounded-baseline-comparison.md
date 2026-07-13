@@ -9,21 +9,21 @@
 - state_dim: `3`
 - action_count: `3`
 - lookback_w: `10`
-- config_hash: `416829cf02594ff4`... (sha256 prefix)
+- config_hash: `65b1c807a78a3833`... (sha256 prefix)
 - full_campaign_enabled: `False`
 
 ### Metrics
 - episodes_completed: `3`
 - total_transition_count: `150`
-- average_reward: `-6.171429`
+- average_reward: `-4.514286`
 - loss_count: `87`
 - loss_all_finite: `True`
 - loss_no_nan: `True`
 - loss_no_inf: `True` 
-- loss_mean: `32.63337955255618`
-- loss_min: `24.199623107910156`
-- loss_max: `38.746185302734375`
-- completed_task_count: `139`
+- loss_mean: `18.253358884789478`
+- loss_min: `12.803314208984375`
+- loss_max: `23.08195686340332`
+- completed_task_count: `143`
 - dropped_task_count: `0`
 - pending_at_horizon_count: `3`
 - illegal_action_count: `0`
@@ -38,25 +38,25 @@
 - state_dim: `74`
 - action_count: `22`
 - lookback_w: `10`
-- config_hash: `9d537ad29abb096c`... (sha256 prefix)
+- config_hash: `03e2f5694ae361f6`... (sha256 prefix)
 - full_campaign_enabled: `False`
 
 ### Metrics
 - episodes_completed: `3`
-- total_transition_count: `70`
-- average_reward: `-7.437500`
-- loss_count: `7`
+- total_transition_count: `150`
+- average_reward: `-8.724490`
+- loss_count: `87`
 - loss_all_finite: `True`
 - loss_no_nan: `True`
 - loss_no_inf: `True` 
-- loss_mean: `16.051862035478866`
-- loss_min: `15.407934188842773`
-- loss_max: `16.416311264038086`
-- completed_task_count: `60`
+- loss_mean: `55.0221658465506`
+- loss_min: `41.22209548950195`
+- loss_max: `69.2023696899414`
+- completed_task_count: `132`
 - dropped_task_count: `0`
 - pending_at_horizon_count: `3`
 - illegal_action_count: `0`
 - legal_action_only: `True`
-- optimizer_step_count: `7`
+- optimizer_step_count: `87`
 - target_sync_count: `0`
-- replay_size: `70`
+- replay_size: `150`

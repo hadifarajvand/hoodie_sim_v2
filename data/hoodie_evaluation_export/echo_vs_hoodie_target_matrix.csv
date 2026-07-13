@@ -1,0 +1,16 @@
+base_panel,metric,expected_ECHO_status,interpretation
+Fig. 7,Topology,Not applicable,Setup only; ECHO must use the same G for fair comparison.
+Fig. 8a,Accumulated reward vs learning rate,Not directly comparable,"ECHO reward includes additional risk/drop terms; use the sweep to tune ECHO, then compare both methods using external drop ratio and delay."
+Fig. 8b,Accumulated reward vs discount factor,Not directly comparable,Same reward-scale issue. ECHO may converge more slowly because of the larger state and semi-Markov transitions.
+Fig. 9a,Average reward vs arrival probability,Conditional,"Raw reward cannot establish superiority across different reward definitions. On a common metric, ECHO is most likely to improve task drop ratio at P=0.7-0.9."
+Fig. 9b,Action distribution,No universal better direction,"Expected ECHO signature: fewer deadline-infeasible actions, lower fallback/miss rate, and route shifts as deadlines tighten."
+Fig. 9c,Average reward vs CPU capacity,Conditional,ECHO is most likely to improve drop ratio at 4-5 GHz; at 8-9 GHz the methods may converge.
+Fig. 9d,Average reward vs number of agents / traffic,Conditional,"Action masking may help under heavy/extreme traffic, but ERT computation and larger state may reduce convergence speed. Compare drop ratio, not raw reward."
+Fig. 9e,Average reward vs number of agents / data rates,Conditional,"ECHO should help when route feasibility differs sharply, especially vertical-centric or congested cases, but not necessarily on raw reward."
+Fig. 10a,Average delay vs arrival probability,Possible but secondary,"Likely benefit at P=0.7-0.9; under a 10-s timeout ERT has weak urgency pressure, so gains may be small."
+Fig. 10b,Average delay vs CPU capacity,Possible but secondary,Likely at 3-5 GHz; at 6-7 GHz little separation is expected.
+Fig. 10c,Average delay vs timeout,Uncertain,"ECHO prioritizes deadline survival, which can trade average delay among successful tasks. It should not be claimed as guaranteed."
+Fig. 10d,Drop ratio vs arrival probability,Primary expected win,Strongest expected advantage at P=0.7 and 0.9 due to ERT queue ordering and deadline-feasible masking.
+Fig. 10e,Drop ratio vs CPU capacity,Primary expected win,Strongest expected advantage at 3-5 GHz; the gap should shrink as capacity becomes abundant.
+Fig. 10f,Drop ratio vs task timeout,Primary expected win,Strongest expected advantage at tight deadlines 1.6-2.0 s; this directly tests ECHO novelty.
+Fig. 11,Delay with/without LSTM,Likely within-method improvement,"ECHO with LSTM should outperform ECHO-NoLSTM under delayed/stale load data. Against HOODIE-LSTM, final delay is plausible but not guaranteed; drop ratio is the stronger target."

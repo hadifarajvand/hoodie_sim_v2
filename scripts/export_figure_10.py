@@ -2,45 +2,58 @@
 from __future__ import annotations
 
 import json
+import sys
 from pathlib import Path
 
-from src.analysis.figure_generator import plot_figure_10_offloading_schemes
+ROOT_DIR = Path(__file__).resolve().parents[1]
+if str(ROOT_DIR) not in sys.path:
+    sys.path.insert(0, str(ROOT_DIR))
+
+from src.analysis.figure_generator import (
+    plot_figure_10_offloading_schemes,
+    render_status_figure,
+    write_export_manifest,
+)
 
 
-OUTPUT_DIR = Path("artifacts/analysis/figure8-11-validation/figure_10")
-SOURCE_DIR = Path("artifacts/analysis/figure8-11-validation/figure_10_baselines")
-
-
-def _render_status_png(path: Path, title: str, missing: list[str]) -> None:
-    import matplotlib
-
-    matplotlib.use("Agg")
-    import matplotlib.pyplot as plt
-
-    fig, ax = plt.subplots(figsize=(10, 5))
-    ax.axis("off")
-    ax.text(0.02, 0.95, "\n".join([title, "", "Export blocked.", "Missing/invalid:", *[f"- {item}" for item in missing]]), va="top", ha="left", family="monospace")
-    fig.tight_layout()
-    fig.savefig(path, dpi=180, bbox_inches="tight")
-    plt.close(fig)
+ROOT_DIR = Path(__file__).resolve().parents[1]
+OUTPUT_DIR = ROOT_DIR / "artifacts/analysis/figure8-11-validation/figure_10"
+SOURCE_DIR = ROOT_DIR / "artifacts/analysis/figure8-11-validation/figure_10_baselines"
 
 
 def _check(results: list[dict], sweep_type: str) -> dict[str, object]:
     rows = []
+    x_values: set[float] = set()
+    policies: set[str] = set()
+    delay_points = 0
+    drop_points = 0
     for r in results:
         meta = (r.get("config", {}).get("sweep_metadata", {}) or {})
-        if meta.get("sweep_type") == sweep_type:
-            rows.append(r)
-    delays = [r.get("training_metrics", {}).get("average_delays", []) or [] for r in rows]
-    drops = [r.get("training_metrics", {}).get("drop_ratios", []) or [] for r in rows]
+        if meta.get("sweep_type") != sweep_type:
+            continue
+        rows.append(r)
+        policy = str(meta.get("policy") or "")
+        if policy:
+            policies.add(policy)
+        if sweep_type == "arrival_probability":
+            x_value = meta.get("arrival_probability")
+        elif sweep_type == "cpu_capacity":
+            x_value = meta.get("cpu_capacity")
+        else:
+            x_value = meta.get("task_timeout_slots")
+        if x_value is not None:
+            x_values.add(float(x_value))
+        delay_series = r.get("training_metrics", {}).get("average_delays", []) or []
+        drop_series = r.get("training_metrics", {}).get("drop_ratios", []) or []
+        delay_points += len(delay_series)
+        drop_points += len(drop_series)
     return {
         "present": bool(rows),
-        "delay_nonempty": any(delays),
-        "drop_nonempty": any(drops),
-        "delay_flat": any(len(set(s)) <= 1 for s in delays if s),
-        "drop_flat": any(len(set(s)) <= 1 for s in drops if s),
-        "max_delay_points": max((len(s) for s in delays), default=0),
-        "max_drop_points": max((len(s) for s in drops), default=0),
+        "delay_nonempty": delay_points > 0,
+        "drop_nonempty": drop_points > 0,
+        "row_count": len(rows),
+        "x_count": len(x_values),
+        "policy_count": len(policies),
     }
 
 
@@ -56,36 +69,36 @@ def main() -> int:
             missing.append(f"{name} delay missing")
         if not chk["drop_nonempty"]:
             missing.append(f"{name} drop missing")
-        if int(chk["max_delay_points"]) < 2:
-            missing.append(f"{name} delay points < 2")
-        if int(chk["max_drop_points"]) < 2:
-            missing.append(f"{name} drop points < 2")
+        if int(chk["x_count"]) < 2:
+            missing.append(f"{name} x-values < 2")
+        if int(chk["policy_count"]) < 2:
+            missing.append(f"{name} policies < 2")
     output_png = OUTPUT_DIR / "figure10_offloading_schemes.png"
     if missing:
-        _render_status_png(output_png, "Figure 10: data incomplete", missing)
+        render_status_figure(output_png, "Figure 10: data incomplete", missing)
         status = "blocked"
     else:
-        plot_figure_10_offloading_schemes(results, str(output_png), "Figure 10: 5-episode baseline comparison")
+        plot_figure_10_offloading_schemes(results, str(output_png), "Figure 10: 100-episode baseline comparison")
         status = "exported"
     if status == "exported":
         print("[figure10] policy order forced: RO, VO, VCO, hoodie, FLC, HO, MLEO")
     manifest = {
         "figure_id": "Figure 10",
-        "episodes_expected": 5,
+        "episodes_expected": 100,
         "status": status,
         "source": str(SOURCE_DIR / "sweep_results.json"),
         "output": str(output_png),
         "missing_or_invalid": missing,
         "subfigures": [
-            {"id": "10a", "series": "arrival_probability_delay", "present": checks["arrival_probability"]["delay_nonempty"], "points": checks["arrival_probability"]["max_delay_points"]},
-            {"id": "10b", "series": "arrival_probability_drop", "present": checks["arrival_probability"]["drop_nonempty"], "points": checks["arrival_probability"]["max_drop_points"]},
-            {"id": "10c", "series": "cpu_capacity_delay", "present": checks["cpu_capacity"]["delay_nonempty"], "points": checks["cpu_capacity"]["max_delay_points"]},
-            {"id": "10d", "series": "cpu_capacity_drop", "present": checks["cpu_capacity"]["drop_nonempty"], "points": checks["cpu_capacity"]["max_drop_points"]},
-            {"id": "10e", "series": "timeout_delay", "present": checks["task_timeout"]["delay_nonempty"], "points": checks["task_timeout"]["max_delay_points"]},
-            {"id": "10f", "series": "timeout_drop", "present": checks["task_timeout"]["drop_nonempty"], "points": checks["task_timeout"]["max_drop_points"]},
+            {"id": "fig10a", "series": "arrival_probability_delay", "present": checks["arrival_probability"]["delay_nonempty"], "x_count": checks["arrival_probability"]["x_count"], "policy_count": checks["arrival_probability"]["policy_count"]},
+            {"id": "fig10b", "series": "arrival_probability_drop", "present": checks["arrival_probability"]["drop_nonempty"], "x_count": checks["arrival_probability"]["x_count"], "policy_count": checks["arrival_probability"]["policy_count"]},
+            {"id": "fig10c", "series": "cpu_capacity_delay", "present": checks["cpu_capacity"]["delay_nonempty"], "x_count": checks["cpu_capacity"]["x_count"], "policy_count": checks["cpu_capacity"]["policy_count"]},
+            {"id": "fig10d", "series": "cpu_capacity_drop", "present": checks["cpu_capacity"]["drop_nonempty"], "x_count": checks["cpu_capacity"]["x_count"], "policy_count": checks["cpu_capacity"]["policy_count"]},
+            {"id": "fig10e", "series": "timeout_delay", "present": checks["task_timeout"]["delay_nonempty"], "x_count": checks["task_timeout"]["x_count"], "policy_count": checks["task_timeout"]["policy_count"]},
+            {"id": "fig10f", "series": "timeout_drop", "present": checks["task_timeout"]["drop_nonempty"], "x_count": checks["task_timeout"]["x_count"], "policy_count": checks["task_timeout"]["policy_count"]},
         ],
     }
-    (OUTPUT_DIR / "manifest.json").write_text(json.dumps(manifest, indent=2, sort_keys=True) + "\n", encoding="utf-8")
+    write_export_manifest(OUTPUT_DIR, manifest)
     print(json.dumps(manifest, indent=2, sort_keys=True))
     return 0
 

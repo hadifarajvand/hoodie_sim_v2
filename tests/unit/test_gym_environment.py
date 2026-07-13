@@ -209,11 +209,17 @@ class GymEnvironmentTests(unittest.TestCase):
         env.current_slot = 0
         env._current_task = env._load_current_task()
         env.step("horizontal")
-        env.step(None)
 
-        self.assertIn(("2", "1"), env._public_queues)
-        self.assertEqual(len(env._public_queues[("2", "1")].tasks), 1)
-        self.assertEqual(env._public_queues[("2", "1")].tasks[0].queue_state, "public_queue")
+        admitted = False
+        for _ in range(12):
+            _obs, _reward, _terminated, _truncated, _info = env.step(None)
+            if ("2", "1") in env._public_queues and env._public_queues[("2", "1")].tasks:
+                admitted = True
+                self.assertEqual(env._public_queues[("2", "1")].tasks[0].queue_state, "public_queue")
+                self.assertEqual(env._public_queues[("2", "1")].tasks[0].selected_destination, "2")
+                break
+
+        self.assertTrue(admitted)
 
     def test_same_slot_arrivals_are_not_stranded(self) -> None:
         env = self._env(
@@ -253,25 +259,36 @@ class GymEnvironmentTests(unittest.TestCase):
 
         self.assertEqual(reward0, 0.0)
         self.assertLess(reward1, 0.0)
-        self.assertTrue(any(task["terminal_outcome"] == "completed" for task in info1["finalized_tasks"]))
+        self.assertTrue(any(task["terminal_outcome"] == "completed" for task in info0["finalized_tasks"]))
+        self.assertFalse(info0["reward_delivery_events"])
+        self.assertTrue(info1["reward_delivery_events"])
         self.assertTrue(terminated1)
 
     def test_delayed_reward_after_drop(self) -> None:
         env = self._env(
             runtime_parameters=SharedRuntimeParameters(runtime_variant="constant_service"),
             compute_config=ComputeConfig(cpu_capacity_per_slot_agent=64.0, cpu_capacity_per_slot_edge=64.0, cpu_capacity_per_slot_cloud=64.0),
+            topology=TopologyGraph(node_ids=("1", "2"), legal_adjacency={"1": ("2",)}),
         )
         custom_trace = self._single_task_trace(task_id=1, timeout_length=0, absolute_deadline_slot=0)
         env.trace = custom_trace
         env._pending_arrivals = {0: [custom_trace.tasks[0]]}  # type: ignore[assignment]
         env._current_task = env._load_current_task()
         env.current_slot = 0
-        _obs, reward0, _terminated0, _truncated0, _info0 = env.step("local")
-        _obs, reward1, _terminated1, _truncated1, info1 = env.step("local")
-
+        _obs, reward0, _terminated0, _truncated0, info0 = env.step("horizontal")
         self.assertEqual(reward0, 0.0)
-        self.assertLess(reward1, 0.0)
-        self.assertTrue(any(task["terminal_outcome"] == "dropped" for task in info1["finalized_tasks"]))
+        self.assertFalse(info0["reward_delivery_events"])
+
+        dropped = False
+        for _ in range(15):
+            _obs, reward1, _terminated1, _truncated1, info1 = env.step(None)
+            if info1["reward_delivery_events"]:
+                dropped = True
+                self.assertLess(reward1, 0.0)
+                self.assertTrue(any(task["terminal_outcome"] == "dropped" for task in info1["finalized_tasks"] or info0["finalized_tasks"]))
+                break
+
+        self.assertTrue(dropped)
 
     def test_fractional_paper_values_survive_runtime_observation(self) -> None:
         from src.environment.traffic_config import TrafficConfig

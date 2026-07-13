@@ -1,0 +1,6 @@
+slot,task_id,candidate_ert,deadline_mask
+0,1,"{"cloud": 970.0, "horizontal_2": 970.0, "horizontal_cloud": 970.0, "local": 989.0}","["cloud", "horizontal_2", "horizontal_cloud", "local"]"
+1,2,"{"cloud": 969.0, "horizontal_2": 969.0, "horizontal_cloud": 969.0, "local": 987.0}","["cloud", "horizontal_2", "horizontal_cloud", "local"]"
+2,3,"{"cloud": 968.0, "horizontal_2": 967.0, "horizontal_cloud": 968.0, "local": 987.0}","["cloud", "horizontal_2", "horizontal_cloud", "local"]"
+3,4,"{"cloud": -30.0, "horizontal_2": -30.0, "horizontal_cloud": -30.0, "local": -10.0}","["local"]"
+4,5,"{"cloud": -319.0, "horizontal_2": -319.0, "horizontal_cloud": -319.0, "local": -126.0}","["local"]"

@@ -9,13 +9,13 @@
 - action_count: `22`
 - lookback_w: `10`
 - full_campaign_enabled: `False`
-- config_hash: `9d537ad29abb096c`... (sha256 prefix)
+- config_hash: `03e2f5694ae361f6`... (sha256 prefix)
 
 ## Trace Info
 
 - trace_collector_enabled: `True`
-- trace_event_counts: `{'action_selected': 289, 'task_arrived': 289, 'task_generated': 584, 'task_admitted': 578, 'transmission_started': 578, 'queue_length_sampled': 12000, 'transmission_completed': 568, 'service_started': 1428, 'execution_progress': 1428, 'execution_completed': 560, 'task_completed': 840, 'reward_emitted': 560, 'reward_released': 235, 'pending_at_horizon': 18, 'task_pending_at_horizon': 3}`
-- lifecycle_event_counts: `{'task_generated': 584, 'task_admitted': 578, 'transmission_started': 578, 'transmission_completed': 568, 'execution_started': 714, 'execution_progress': 1428, 'execution_completed': 560, 'task_completed': 840, 'reward_emitted': 560, 'pending_at_horizon': 18, 'action_selected': 289, 'task_arrived': 289, 'queue_length_sampled': 12000, 'reward_released': 235, 'task_pending_at_horizon': 3, 'service_started': 714}`
+- trace_event_counts: `{'action_selected': 600, 'task_arrived': 600, 'task_generated': 1200, 'task_admitted': 1200, 'transmission_started': 560, 'queue_length_sampled': 12000, 'transmission_completed': 560, 'service_started': 3154, 'execution_progress': 3154, 'execution_completed': 1192, 'task_completed': 1788, 'reward_emitted': 1192, 'reward_released': 425, 'pending_at_horizon': 8, 'task_pending_at_horizon': 3}`
+- lifecycle_event_counts: `{'task_generated': 1200, 'task_admitted': 1200, 'transmission_started': 560, 'transmission_completed': 560, 'execution_started': 1577, 'execution_progress': 3154, 'execution_completed': 1192, 'task_completed': 1788, 'reward_emitted': 1192, 'pending_at_horizon': 8, 'action_selected': 600, 'task_arrived': 600, 'queue_length_sampled': 12000, 'reward_released': 425, 'task_pending_at_horizon': 3, 'service_started': 1577}`
 - first_service_start_slot: `3`
 - queue_length_samples: `12000`
 - service_started_observable: `True`
@@ -35,23 +35,23 @@
 
 - episodes_completed: `3`
 - episode_length: `200`
-- total_transition_count: `289`
-- completed_task_count: `280`
+- total_transition_count: `600`
+- completed_task_count: `596`
 - dropped_task_count: `0`
 - pending_at_horizon_count: `3`
 - illegal_action_count: `0`
 - legal_action_only: `True`
-- reward_count: `109`
-- average_reward: `-7.688073`
-- loss_count: `226`
-- replay_size: `289`
+- reward_count: `425`
+- average_reward: `-6.360000`
+- loss_count: `537`
+- replay_size: `600`
 
 ## Inferred Findings
 
 ### What is proven
 
-- Task arrivals occur as early as slot 0 (mean 99.3)
-- All rewards are negative (total=-838.0, avg=-7.69) — drop penalties dominate, no completion rewards
+- Task arrivals occur as early as slot 0 (mean 99.5)
+- All rewards are negative (total=-2703.0, avg=-6.36) — drop penalties dominate, no completion rewards
 
 ### What is not observable
 

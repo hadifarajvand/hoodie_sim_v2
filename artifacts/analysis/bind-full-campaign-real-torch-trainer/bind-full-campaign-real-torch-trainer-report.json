@@ -25,13 +25,14 @@
     "actual_training_episode_count": 1,
     "baseline_harness_id": "feature-058-baseline-evaluation-harness",
     "configured_budget": {
-      "baseline_evaluation_episode_count": 100,
-      "evaluation_episode_count": 100,
-      "training_episode_count": 1000
+      "baseline_evaluation_episode_count": 1,
+      "evaluation_episode_count": 3,
+      "training_episode_count": 1
     },
     "controlled_output_directory": "artifacts/analysis/full-paper-default-training-campaign-execution",
     "evaluation_trace_bank_id": "feature-058-evaluation-trace-bank",
     "execution_completed": true,
+    "local_validation_mode": true,
     "real_trainer_binding": {
       "real_trainer_class": "src.analysis.full_training_reproduction_campaign.trainer.DDQNTrainer",
       "real_trainer_import_used": true,
@@ -40,30 +41,34 @@
       "real_trainer_update_or_train_called": true,
       "scalar_fallback_drives_campaign_claim": false,
       "torch_import_used": true,
-      "torch_version": "2.12.0",
+      "torch_version": "2.12.1",
       "torchrl_available": true
     },
     "seed_bundle": {
-      "baseline_policy_seed": 6101,
+      "action_exploration_seed": 53,
       "evaluation_trace_generation_seed": 43,
-      "trace_identity_seed": 5843,
+      "model_initialization_seed": 19,
+      "python_seed": 59,
+      "readiness_probe_seed": 31,
+      "replay_sampling_seed": 47,
+      "torch_seed": 61,
       "training_trace_generation_seed": 41
     },
     "training_trace_bank_id": "full-training-train-bank"
   },
   "evaluation_metrics_summary": {
     "action_distribution": {
-      "horizontal": 0,
-      "local": 0,
-      "vertical": 110
+      "horizontal": 45,
+      "local": 65,
+      "vertical": 0
     },
-    "completed_task_count": 0,
+    "completed_task_count": 320,
     "delay": {
       "status": "not_claimed_in_feature_060",
       "value": null
     },
     "drop": {
-      "count": 6
+      "count": 0
     },
     "evaluation_episode_count": 3,
     "evaluation_trace_bank_id": "feature-058-evaluation-trace-bank",
@@ -101,10 +106,10 @@
     "no_performance_superiority_claim": true,
     "real_trainer_bound_evaluation": true,
     "reward": {
-      "mean_reward": -80.0,
-      "reward_bearing_transition_count": 6
+      "mean_reward": -452.0,
+      "reward_bearing_transition_count": 244
     },
-    "terminal_transition_count": 6,
+    "terminal_transition_count": 244,
     "timeout": {
       "status": "not_claimed_in_feature_060",
       "value": null
@@ -134,73 +139,24 @@
   "final_verdict": "feature_060a_prerequisite_blocked",
   "prerequisite_tags_verified": [
     {
-      "details": "git branch --show-current == 060b-bind-full-campaign-real-torch-trainer",
-      "name": "branch",
-      "verified": false
-    },
-    {
-      "details": "current branch != main",
-      "name": "not_main",
-      "verified": false
-    },
-    {
-      "details": "060-full-paper-default-training-campaign-execution is ancestor of HEAD",
-      "name": "base_branch_is_ancestor",
-      "verified": false
-    },
-    {
       "details": "artifacts/analysis/real-torch-trainer-binding-audit/real-torch-trainer-binding-audit-report.json",
       "name": "feature_060a_audit_verified",
       "verified": false
     },
     {
-      "details": "git status --short contains only approved Feature 060B paths",
-      "name": "working_tree_paths_approved",
-      "verified": false
-    },
-    {
-      "details": "git diff --cached --name-only contains only approved Feature 060B paths",
-      "name": "staged_paths_approved",
+      "details": "artifacts/analysis/full-paper-default-training-campaign-execution/full-paper-default-training-campaign-report.json",
+      "name": "feature_060_report_present",
       "verified": true
     },
     {
-      "details": "git diff --name-only 060-full-paper-default-training-campaign-execution...HEAD contains only approved Feature 060B paths",
-      "name": "feature_branch_diff_paths_approved",
-      "verified": false
+      "details": "src/analysis/full_paper_default_training_campaign_execution/runner.py",
+      "name": "feature_060_runner_present",
+      "verified": true
     },
     {
-      "details": [
-        "src/environment/reward_timing.py",
-        "requirements.txt",
-        ".gitignore",
-        ".specify/feature.json",
-        "AGENTS.md",
-        "src/environment/deadline_rules.py",
-        "src/environment/gym_adapter.py",
-        "src/environment/lifecycle_trace.py",
-        "src/environment/paper_action_space.py",
-        "src/environment/paper_link_delay.py",
-        "src/environment/paper_load_history.py",
-        "src/environment/paper_lstm_forecast.py",
-        "src/environment/paper_pubsub.py",
-        "src/environment/paper_queue_fidelity.py",
-        "src/environment/paper_recovery.py",
-        "src/environment/paper_state.py",
-        "src/environment/paper_timeout.py",
-        "src/environment/paper_traffic.py",
-        "src/environment/reward_timing.py",
-        "src/environment/runtime_model.py",
-        "src/policies/action_masking.py",
-        "src/policies/bco.py",
-        "src/policies/common.py",
-        "src/policies/flc.py",
-        "src/policies/ho.py",
-        "src/policies/mleo.py",
-        "src/policies/ro.py",
-        "src/policies/vo.py"
-      ],
-      "name": "forbidden_paths_absent",
-      "verified": false
+      "details": "src/analysis/full_paper_default_training_campaign_execution/real_trainer_bridge.py",
+      "name": "feature_060_bridge_present",
+      "verified": true
     }
   ],
   "real_trainer_binding_summary": {
@@ -218,22 +174,15 @@
   "recommended_next_feature": "Repair Feature 060A audit prerequisite before Feature 060B can proceed",
   "remaining_blockers": [
     "feature_060a_audit_not_verified",
-    "branch",
-    "not_main",
-    "base_branch_is_ancestor",
-    "feature_060a_audit_verified",
-    "working_tree_paths_approved",
-    "feature_branch_diff_paths_approved",
-    "forbidden_paths_absent",
-    "behavior_drift_detected"
+    "feature_060a_audit_verified"
   ],
   "safety_summary": {
     "no_baseline_superiority_claim": true,
-    "no_dependency_drift": false,
-    "no_environment_contract_drift": false,
+    "no_dependency_drift": true,
+    "no_environment_contract_drift": true,
     "no_paper_reproduction_claim": true,
     "no_performance_superiority_claim": true,
-    "no_policy_drift": false,
+    "no_policy_drift": true,
     "no_reward_timing_change": true,
     "no_uncontrolled_campaign_loop": true
   },
@@ -241,22 +190,22 @@
     "repo_venv_python": ".venv/bin/python",
     "repo_venv_python_exists": true,
     "torch_available": true,
-    "torch_version": "2.12.1",
+    "torch_version": "2.12.0",
     "torchrl_available": true
   },
   "training_metrics_summary": {
     "action_distribution": {
-      "horizontal": 0,
-      "local": 0,
-      "vertical": 110
+      "horizontal": 45,
+      "local": 65,
+      "vertical": 0
     },
-    "horizontal_action_count": 0,
-    "local_action_count": 0,
+    "horizontal_action_count": 45,
+    "local_action_count": 65,
     "loss_count": 1,
     "loss_finite": true,
     "loss_summary": {
       "all_losses_finite": true,
-      "last_loss": 25.033153533935547,
+      "last_loss": 20.38028907775879,
       "loss_count": 1
     },
     "optimizer_step_count": 47,
@@ -268,22 +217,22 @@
       "real_trainer_update_or_train_called": true,
       "scalar_fallback_drives_campaign_claim": false,
       "torch_import_used": true,
-      "torch_version": "2.12.0",
+      "torch_version": "2.12.1",
       "torchrl_available": true
     },
     "replay_size": 110,
     "reward_summary": {
-      "mean_reward": -40.0,
-      "pending_at_horizon_count": 1,
-      "reward_available_count": 1,
-      "reward_count": 1,
-      "total_reward": -40.0
+      "mean_reward": -4.402439024390244,
+      "pending_at_horizon_count": 0,
+      "reward_available_count": 82,
+      "reward_count": 82,
+      "total_reward": -361.0
     },
     "target_update_summary": {
       "target_sync_count": 0,
       "target_update_frequency": 2000,
       "target_update_unit": "optimizer_step"
     },
-    "vertical_action_count": 110
+    "vertical_action_count": 0
   }
 }

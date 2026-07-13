@@ -51,7 +51,17 @@ class SharedRuntimeParameters:
     cloud_service_capacity: float = float(_RUNTIME_CONFIG.get("cloud_service_capacity", 3.0))
     timeout_grace_slots: int = int(_RUNTIME_CONFIG.get("timeout_grace_slots", 0))
     runtime_variant: str = str(_RUNTIME_CONFIG.get("runtime_variant", "density_based"))
+    arrival_probability: float = 1.0
+    agent_count: int = 20
+    timeout_slots: int = 20
     metadata: dict[str, object] = field(default_factory=dict)
+
+    def to_compute_config(self) -> ComputeConfig:
+        return ComputeConfig(
+            cpu_capacity_per_slot_agent=float(self.local_service_capacity),
+            cpu_capacity_per_slot_edge=float(self.public_service_capacity),
+            cpu_capacity_per_slot_cloud=float(self.cloud_service_capacity),
+        )
 
 
 @dataclass(slots=True)
@@ -127,14 +137,21 @@ def resolve_runtime_terminal_state(
 ) -> None:
     if task.completion_slot is None:
         task.completion_slot = terminal_slot
+    task.resolution_slot = int(current_slot)
     effective_deadline = task.absolute_deadline_slot
     if parameters is not None:
         effective_deadline += max(0, parameters.timeout_grace_slots)
     if task.terminal_outcome is None:
         if terminal_slot <= effective_deadline:
             task.terminal_outcome = "completed"
+            task.resolution_reason = "met_deadline"
         else:
             task.terminal_outcome = "dropped"
+            task.resolution_reason = "deadline_missed_after_service"
     if task.terminal_outcome in {"completed", "dropped"}:
         task.drop_flag = task.terminal_outcome == "dropped"
         task.reward_emitted = True
+        task.metadata["completion_slot"] = task.completion_slot
+        task.metadata["resolution_slot"] = task.resolution_slot
+        task.metadata["success_state"] = task.terminal_outcome
+        task.metadata["resolution_reason"] = task.resolution_reason

@@ -1,0 +1,11 @@
+{
+  "generated_tasks": 5,
+  "successful_tasks": 4,
+  "dropped_tasks": 1,
+  "one_decision_per_task": true,
+  "one_physical_resolution_per_task": true,
+  "one_reward_per_task": true,
+  "one_replay_transition_per_task_decision": true,
+  "no_pending_rewards_after_terminal_flush": true,
+  "no_pending_decisions_after_terminal_flush": true
+}

@@ -1,7 +1,7 @@
 seed,scenario_name,episode_length,status,support_level
 7,paper_default,4,robust_collapse_reduced,full
 7,paper_default,6,robust_collapse_reduced,full
-7,moderate,4,collapse_unchanged,full
+7,moderate,4,robust_collapse_reduced,full
 7,moderate,6,robust_collapse_reduced,full
 7,heavy,4,robust_collapse_reduced,full
 7,heavy,6,robust_collapse_reduced,full

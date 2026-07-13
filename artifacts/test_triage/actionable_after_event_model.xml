@@ -1,0 +1,154 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="4" skipped="0" tests="20" time="23.287" timestamp="2026-07-13T13:15:13.170528+03:30" hostname="Hadis-MacBook-4.local"><testcase classname="tests.integration.test_controlled_mechanistic_sweeps_flow.ControlledMechanisticSweepsFlowTests" name="test_tiny_sweeps_run_deterministically_and_write_artifacts" time="0.025"><failure message="AssertionError: 'warn' != 'pass'&#10;- warn&#10;+ pass">self = &lt;tests.integration.test_controlled_mechanistic_sweeps_flow.ControlledMechanisticSweepsFlowTests testMethod=test_tiny_sweeps_run_deterministically_and_write_artifacts&gt;
+
+    def test_tiny_sweeps_run_deterministically_and_write_artifacts(self) -&gt; None:
+        with tempfile.TemporaryDirectory() as first_dir, tempfile.TemporaryDirectory() as second_dir:
+            first_runner = ControlledMechanisticSweepRunner(output_dir=Path(first_dir))
+            second_runner = ControlledMechanisticSweepRunner(output_dir=Path(second_dir))
+    
+            first_report = first_runner.run()
+            second_report = second_runner.run()
+    
+            first_json = Path(first_dir) / "controlled-mechanistic-sweeps.json"
+            first_md = Path(first_dir) / "controlled-mechanistic-sweeps.md"
+            second_json = Path(second_dir) / "controlled-mechanistic-sweeps.json"
+            second_md = Path(second_dir) / "controlled-mechanistic-sweeps.md"
+    
+            self.assertTrue(first_json.exists())
+            self.assertTrue(first_md.exists())
+            self.assertTrue(second_json.exists())
+            self.assertTrue(second_md.exists())
+            self.assertEqual(first_json.read_text(encoding="utf-8"), second_json.read_text(encoding="utf-8"))
+            self.assertEqual(first_md.read_text(encoding="utf-8"), second_md.read_text(encoding="utf-8"))
+            self.assertEqual(first_report.to_dict(), second_report.to_dict())
+            self.assertEqual(first_report.overall_status, "instrumentation_gap")
+    
+            checks = {check["sweep_name"]: check for check in first_report.to_dict()["monotonic_checks"]}
+            self.assertEqual(checks["arrival_probability"]["status"], "pass")
+&gt;           self.assertEqual(checks["timeout"]["status"], "pass")
+E           AssertionError: 'warn' != 'pass'
+E           - warn
+E           + pass
+
+tests/integration/test_controlled_mechanistic_sweeps_flow.py:36: AssertionError</failure></testcase><testcase classname="tests.integration.test_controlled_mechanistic_sweeps_flow.ControlledMechanisticSweepsFlowTests" name="test_unsupported_dimensions_remain_instrumentation_gaps" time="0.014" /><testcase classname="tests.integration.test_evaluation_runner.EvaluationRunnerTests" name="test_multiple_policies_share_the_same_runner" time="0.005" /><testcase classname="tests.integration.test_execution_time_flow.ExecutionTimeFlowTests" name="test_local_edge_and_cloud_execution_complete_in_expected_slots" time="0.003"><failure message="AssertionError: 0 not greater than or equal to 1">self = &lt;tests.integration.test_execution_time_flow.ExecutionTimeFlowTests testMethod=test_local_edge_and_cloud_execution_complete_in_expected_slots&gt;
+
+    def test_local_edge_and_cloud_execution_complete_in_expected_slots(self) -&gt; None:
+        task_cycles = 2.1 * 0.297
+        compute_config = ComputeConfig(
+            cpu_capacity_per_slot_agent=0.25,
+            cpu_capacity_per_slot_edge=0.2,
+            cpu_capacity_per_slot_cloud=0.1,
+        )
+    
+&gt;       local_info, _ = self._run_episode(
+            policy=FullLocalComputingPolicy(),
+            topology=None,
+            compute_config=compute_config,
+        )
+
+tests/integration/test_execution_time_flow.py:97: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = &lt;tests.integration.test_execution_time_flow.ExecutionTimeFlowTests testMethod=test_local_edge_and_cloud_execution_complete_in_expected_slots&gt;
+policy = &lt;src.policies.flc.FullLocalComputingPolicy object at 0x108831090&gt;
+topology = None
+compute_config = ComputeConfig(cpu_capacity_per_slot_agent=0.25, cpu_capacity_per_slot_edge=0.2, cpu_capacity_per_slot_cloud=0.1)
+
+    def _run_episode(
+        self,
+        *,
+        policy: object,
+        topology: TopologyGraph | None,
+        compute_config: ComputeConfig,
+    ) -&gt; tuple[dict[str, object], dict[str, object]]:
+        config = self._config()
+        traffic_trace = TrafficGenerator.generate(config, seed=42)
+    
+        with tempfile.TemporaryDirectory() as tmpdir:
+            trace_root = Path(tmpdir)
+            payload_path = trace_root / f"{traffic_trace.trace_id}.json"
+            traffic_trace.write_json(payload_path)
+            payload = payload_path.read_text(encoding="utf-8")
+            self.assertIn('"cycles_required"', payload)
+            self.assertIn('"cycles_remaining"', payload)
+    
+            env = HoodieGymEnvironment(
+                episode_length=10,
+                topology=topology,
+                runtime_parameters=SharedRuntimeParameters(runtime_variant="constant_service"),
+                compute_config=compute_config,
+                trace_source=TraceSource.from_trace_bank(traffic_trace.trace_id, root_path=trace_root),
+                policy_name="FLC",
+            )
+    
+            observation, info = env.reset(seed=None)
+            self.assertEqual(info["trace_id"], traffic_trace.trace_id)
+            self.assertEqual(env.current_task.size, 2.1)
+            self.assertAlmostEqual(env.current_task.cycles_required, 2.1 * 0.297)
+            self.assertAlmostEqual(env.current_task.cycles_remaining, 2.1 * 0.297)
+    
+            final_info: dict[str, object] = {}
+            final_observation = observation
+            while True:
+                current_task = env.current_task
+                action = None
+                if current_task is not None:
+                    action = policy.choose_action(
+                        PolicyContext(
+                            observation=env.observe_flat(current_task),
+                            legal_action_mask=env.legal_action_mask(current_task),
+                            trace_history=(traffic_trace.trace_id,),
+                        )
+                    )
+                final_observation, reward, terminated, truncated, final_info = env.step(action)
+                if terminated or truncated:
+                    break
+    
+&gt;           self.assertGreaterEqual(len(final_info["finalized_tasks"]), 1)
+E           AssertionError: 0 not greater than or equal to 1
+
+tests/integration/test_execution_time_flow.py:86: AssertionError</failure></testcase><testcase classname="tests.integration.test_offload_instrumentation_no_behavior_change.OffloadInstrumentationNoBehaviorChangeTest" name="test_instrumentation_does_not_change_rewards_or_metrics" time="0.001" /><testcase classname="tests.integration.test_passive_selected_action_trace_repair.PassiveSelectedActionTraceRepairIntegrationTest" name="test_decision_point_emits_selected_action_join_fields" time="0.002" /><testcase classname="tests.integration.test_transmission_delay_runtime_wiring.TransmissionDelayRuntimeWiringIntegrationTests" name="test_horizontal_metadata_recorded" time="0.001" /><testcase classname="tests.integration.test_transmission_delay_runtime_wiring.TransmissionDelayRuntimeWiringIntegrationTests" name="test_horizontal_transmission_delay_uses_task_size_and_RH" time="0.001" /><testcase classname="tests.integration.test_transmission_delay_runtime_wiring.TransmissionDelayRuntimeWiringIntegrationTests" name="test_local_path_has_no_transmission_metadata" time="0.001" /><testcase classname="tests.integration.test_transmission_delay_runtime_wiring.TransmissionDelayRuntimeWiringIntegrationTests" name="test_no_dependency_training_policy_campaign_drift" time="0.002" /><testcase classname="tests.integration.test_transmission_delay_runtime_wiring.TransmissionDelayRuntimeWiringIntegrationTests" name="test_no_feature_033_execution_contract_drift" time="0.001" /><testcase classname="tests.integration.test_transmission_delay_runtime_wiring.TransmissionDelayRuntimeWiringIntegrationTests" name="test_offload_admitted_at_documented_boundary" time="0.001" /><testcase classname="tests.integration.test_transmission_delay_runtime_wiring.TransmissionDelayRuntimeWiringIntegrationTests" name="test_offload_not_admitted_before_delay_boundary" time="0.001" /><testcase classname="tests.unit.test_baseline_registry_revalidation.BaselineRegistryRevalidationUnitTests" name="test_vertical_cloud_legality_does_not_require_cloud_in_figure7" time="0.044" /><testcase classname="tests.unit.test_evaluation_trace_bank_baseline_harness_behavior_equivalence.EvaluationTraceBankBaselineHarnessBehaviorEquivalenceTests" name="test_behavior_safety_fields_cover_all_forbidden_behaviors" time="0.228"><failure message="AssertionError: False is not true">self = &lt;tests.unit.test_evaluation_trace_bank_baseline_harness_behavior_equivalence.EvaluationTraceBankBaselineHarnessBehaviorEquivalenceTests testMethod=test_behavior_safety_fields_cover_all_forbidden_behaviors&gt;
+
+    def test_behavior_safety_fields_cover_all_forbidden_behaviors(self) -&gt; None:
+        payload = build_evaluation_trace_bank_baseline_harness_report().to_dict()
+        for key in (
+            "no_training_execution",
+            "no_optimizer_execution",
+            "no_replay_mutation",
+            "no_checkpoint_binary_written",
+            "no_full_campaign",
+            "no_paper_reproduction_claim",
+            "no_performance_claim",
+            "no_policy_drift",
+            "no_dependency_drift",
+            "no_environment_contract_drift",
+            "no_reward_timing_change",
+            "no_prior_artifact_rewrite",
+        ):
+            self.assertIn(key, payload["behavior_safety_summary"])
+&gt;           self.assertTrue(payload["behavior_safety_summary"][key])
+E           AssertionError: False is not true
+
+tests/unit/test_evaluation_trace_bank_baseline_harness_behavior_equivalence.py:34: AssertionError</failure></testcase><testcase classname="tests.unit.test_full_paper_default_training_campaign_gate_behavior_equivalence.FullPaperDefaultTrainingCampaignGateBehaviorEquivalenceTests" name="test_safety_fields_cover_forbidden_feature_059_behaviors" time="0.213"><failure message="AssertionError: False is not true">self = &lt;tests.unit.test_full_paper_default_training_campaign_gate_behavior_equivalence.FullPaperDefaultTrainingCampaignGateBehaviorEquivalenceTests testMethod=test_safety_fields_cover_forbidden_feature_059_behaviors&gt;
+
+    def test_safety_fields_cover_forbidden_feature_059_behaviors(self) -&gt; None:
+        payload = build_full_paper_default_training_campaign_gate_report().to_dict()
+        for key in (
+            "no_training_execution",
+            "no_optimizer_execution",
+            "no_replay_mutation",
+            "no_checkpoint_binary_written",
+            "no_full_campaign_execution",
+            "no_paper_reproduction_claim",
+            "no_performance_claim",
+            "no_baseline_superiority_claim",
+            "no_policy_drift",
+            "no_dependency_drift",
+            "no_environment_contract_drift",
+            "no_reward_timing_change",
+            "no_prior_artifact_rewrite",
+        ):
+            self.assertIn(key, payload["safety_summary"])
+&gt;           self.assertTrue(payload["safety_summary"][key])
+E           AssertionError: False is not true
+
+tests/unit/test_full_paper_default_training_campaign_gate_behavior_equivalence.py:35: AssertionError</failure></testcase><testcase classname="tests.unit.test_gym_environment.GymEnvironmentTests" name="test_action_legality_under_topology" time="0.001" /><testcase classname="tests.unit.test_gym_environment.GymEnvironmentTests" name="test_horizontal_offload_path" time="0.001" /><testcase classname="tests.unit.test_gym_environment.GymEnvironmentTests" name="test_vertical_offload_does_not_require_cloud_in_topology" time="0.001" /><testcase classname="tests.unit.test_runtime_adoption_approved_assumption_registry.RuntimeAdoptionApprovedAssumptionRegistryUnitTests" name="test_approved_figure7_topology_keeps_vertical_cloud_offload_legal" time="0.001" /></testsuite></testsuites>

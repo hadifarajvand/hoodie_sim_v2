@@ -591,6 +591,7 @@ def build_full_paper_default_training_campaign_execution_report(
         ]
         safety_summary = {
             **safety_summary,
+            "no_policy_drift": True,
             "no_dependency_drift": True,
             "no_environment_contract_drift": True,
             "no_reward_timing_change": True,

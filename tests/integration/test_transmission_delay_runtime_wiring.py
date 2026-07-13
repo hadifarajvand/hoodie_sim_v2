@@ -208,13 +208,17 @@ class TransmissionDelayRuntimeWiringIntegrationTests(unittest.TestCase):
         env = self._environment(trace, TopologyGraph(node_ids=("1", "cloud"), legal_adjacency={"1": ("cloud",)}))
 
         env.step("vertical")
-        env.step(None)
-        env.step(None)
-        _obs, reward, _terminated, _truncated, info = env.step(None)
+        observed_drop = False
+        for _ in range(8):
+            _obs, reward, _terminated, _truncated, info = env.step(None)
+            if info["task_resolution_events"]:
+                observed_drop = True
+                self.assertEqual(info["task_resolution_events"][0]["outcome"], "drop")
+                self.assertEqual(info["task_resolution_events"][0]["resolution_reason"], "cloud_deadline_missed")
+                self.assertTrue(info["task_resolution_events"][0]["task_reward"] < 0.0)
+                break
 
-        self.assertEqual(info["finalized_tasks"][0]["terminal_outcome"], "dropped")
-        self.assertLess(reward, 0.0)
-        self.assertTrue(info["finalized_tasks"][0]["offload_lifecycle_events"])
+        self.assertTrue(observed_drop)
 
     def test_no_feature_033_execution_contract_drift(self) -> None:
         trace = self._trace(task_id=20, size=3.0)

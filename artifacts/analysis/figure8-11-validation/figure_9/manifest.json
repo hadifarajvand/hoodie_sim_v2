@@ -1,5 +1,5 @@
 {
-  "episodes_expected": 5,
+  "episodes_expected": 100,
   "figure_id": "Figure 9",
   "missing_or_invalid": [],
   "output": "artifacts/analysis/figure8-11-validation/figure_9/figure9_parameter_sweep.png",
@@ -9,7 +9,7 @@
     {
       "flat": false,
       "id": "9a",
-      "max_episodes": 100,
+      "max_episodes": 10,
       "nonempty": true,
       "present": true,
       "series": "arrival_probability"
@@ -22,7 +22,7 @@
     {
       "flat": false,
       "id": "9c",
-      "max_episodes": 100,
+      "max_episodes": 10,
       "nonempty": true,
       "present": true,
       "series": "cpu_capacity"
@@ -30,7 +30,7 @@
     {
       "flat": false,
       "id": "9d",
-      "max_episodes": 100,
+      "max_episodes": 10,
       "nonempty": true,
       "present": true,
       "series": "num_drl_agents"
@@ -38,7 +38,7 @@
     {
       "flat": false,
       "id": "9e",
-      "max_episodes": 100,
+      "max_episodes": 10,
       "nonempty": true,
       "present": true,
       "series": "offload_data_rate"

@@ -4,7 +4,6 @@ from dataclasses import dataclass
 from typing import Protocol, runtime_checkable
 
 from src.environment.gym_adapter import HoodieGymEnvironment
-from src.environment.compute_config import ComputeConfig
 from src.environment.runtime_model import SharedRuntimeParameters
 from src.environment.task import Task
 from src.environment.topology import TopologyGraph
@@ -33,18 +32,25 @@ class EvaluationRunner:
 
     def _trace_for_episode(self, episode_index: int) -> EvaluationTrace:
         trace_id = f"{self.config.trace_id}-{episode_index}"
-        return build_deterministic_trace(trace_id, self.config.seed + episode_index, self.config.episode_length)
+        agent_count = int(getattr(self.runtime_parameters, "agent_count", 20) or 20)
+        arrival_probability = float(getattr(self.runtime_parameters, "arrival_probability", 1.0) or 1.0)
+        timeout_slots = int(getattr(self.runtime_parameters, "timeout_slots", 20) or 20)
+        return build_deterministic_trace(
+            trace_id,
+            self.config.seed + episode_index,
+            self.config.episode_length,
+            agent_count=agent_count,
+            arrival_probability=arrival_probability,
+            timeout_length=timeout_slots,
+        )
 
     def _evaluate_episode(self, trace: EvaluationTrace) -> TraceMetrics:
+        runtime_parameters = self.runtime_parameters or SharedRuntimeParameters()
         env = HoodieGymEnvironment(
             episode_length=self.config.episode_length,
             topology=self.topology,
-            runtime_parameters=self.runtime_parameters or SharedRuntimeParameters(),
-            compute_config=ComputeConfig(
-                cpu_capacity_per_slot_agent=0.5,
-                cpu_capacity_per_slot_edge=0.5,
-                cpu_capacity_per_slot_cloud=3.0,
-            ),
+            runtime_parameters=runtime_parameters,
+            compute_config=runtime_parameters.to_compute_config(),
             policy_name=self.config.policy_name,
         )
         observation, _info = env.reset(seed=trace.seed)
@@ -81,7 +87,9 @@ class EvaluationRunner:
                         ),
                     )
                 )
-            if terminated or truncated:
+            if terminated:
+                break
+            if truncated and env.current_task is None and env.queue_load == 0:
                 break
         return evaluate_trace(
             trace_id=trace.trace_id,
@@ -122,7 +130,7 @@ class EvaluationRunner:
             allowed_horizontal = self.topology.legal_horizontal_destinations(source_id)
             legal["horizontal"] = bool(allowed_horizontal)
             legal["offload_horizontal"] = legal["horizontal"]
-            legal["vertical"] = True
+            legal["vertical"] = self.topology.is_legal_destination(source_id, "cloud")
             legal["offload_vertical"] = legal["vertical"]
         else:
             legal["horizontal"] = True

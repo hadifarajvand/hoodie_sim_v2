@@ -1,0 +1,16 @@
+action_type,task_arrival_probability,action_count_approx
+Local,0.1,50.7
+Local,0.3,148.5
+Local,0.5,245.1
+Local,0.7,341.6
+Local,0.9,408.0
+Horizontal,0.1,56.7
+Horizontal,0.3,169.0
+Horizontal,0.5,325.9
+Horizontal,0.7,445.5
+Horizontal,0.9,590.3
+Vertical,0.1,43.4
+Vertical,0.3,131.6
+Vertical,0.5,176.2
+Vertical,0.7,262.0
+Vertical,0.9,348.9

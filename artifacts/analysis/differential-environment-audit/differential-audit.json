@@ -35,25 +35,23 @@
     },
     {
       "case_id": "case-horizontal-offload",
-      "classification": "match",
+      "classification": "unsupported_by_environment_trace",
       "environment_summary": {
         "case_id": "case-horizontal-offload",
         "event_sequence": [
-          "created",
-          "selected_action",
-          "queued_public",
-          "transmission_started",
-          "transmission_completed",
-          "execution_started",
-          "execution_completed",
-          "reward_emitted"
+          "selected_action:horizontal",
+          "selected_action:horizontal",
+          "selected_action:horizontal",
+          "selected_action:horizontal",
+          "selected_action:horizontal",
+          "selected_action:horizontal"
         ],
         "notes": "environment public interface",
-        "reward_timing": "terminal",
-        "terminal_status": "completed"
+        "reward_timing": null,
+        "terminal_status": null
       },
-      "finding_cause": "expected_scope_difference",
-      "notes": "horizontal_offload: match / expected_scope_difference",
+      "finding_cause": "instrumentation_gap",
+      "notes": "horizontal_offload: unsupported_by_environment_trace / instrumentation_gap",
       "reference_summary": {
         "case_id": "case-horizontal-offload",
         "event_sequence": [
@@ -218,18 +216,16 @@
     {
       "case_id": "case-horizontal-offload",
       "event_sequence": [
-        "created",
-        "selected_action",
-        "queued_public",
-        "transmission_started",
-        "transmission_completed",
-        "execution_started",
-        "execution_completed",
-        "reward_emitted"
+        "selected_action:horizontal",
+        "selected_action:horizontal",
+        "selected_action:horizontal",
+        "selected_action:horizontal",
+        "selected_action:horizontal",
+        "selected_action:horizontal"
       ],
       "notes": "environment public interface",
-      "reward_timing": "terminal",
-      "terminal_status": "completed"
+      "reward_timing": null,
+      "terminal_status": null
     },
     {
       "case_id": "case-vertical-offload",
@@ -294,9 +290,9 @@
     },
     {
       "case_id": "case-horizontal-offload",
-      "cause": "expected_scope_difference",
-      "classification": "match",
-      "evidence": "case-horizontal-offload: match / expected_scope_difference (environment supported)",
+      "cause": "instrumentation_gap",
+      "classification": "unsupported_by_environment_trace",
+      "evidence": "case-horizontal-offload: unsupported_by_environment_trace / instrumentation_gap (environment trace unsupported)",
       "finding_id": "F-case-horizontal-offload",
       "notes": ""
     },
@@ -334,6 +330,10 @@
     }
   ],
   "instrumentation_gaps": [
+    {
+      "case_id": "case-horizontal-offload",
+      "text": "Environment public interface did not expose enough trace evidence for full lifecycle comparison."
+    },
     {
       "case_id": "case-timeout-drop",
       "text": "Environment public interface did not expose enough trace evidence for full lifecycle comparison."
@@ -440,7 +440,7 @@
     "approved_python": "/Users/hadi/Documents/GitHub/hoodie_sim_v2/src/.venvmac/bin/python",
     "case_count": 6,
     "output_root": "artifacts/analysis/differential-environment-audit",
-    "report_hash": "1882be6e40f4c2e2fa7e70727629abb0421651234b9563daf1ec8912988e1d7b"
+    "report_hash": "5f9aa48e722a5cb0476a36437076ba93293cabe08ffe59c6b1daa827ac52ad4a"
   },
   "toy_cases": [
     {

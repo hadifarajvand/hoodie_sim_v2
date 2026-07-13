@@ -127,11 +127,11 @@
   },
   "evaluation_metrics_summary": {
     "action_distribution": {
-      "horizontal": 35,
-      "local": 43,
-      "vertical": 32
+      "horizontal": 45,
+      "local": 65,
+      "vertical": 0
     },
-    "completed_task_count": 317,
+    "completed_task_count": 320,
     "delay": {
       "status": "not_claimed_in_feature_060",
       "value": null
@@ -175,10 +175,10 @@
     "no_performance_superiority_claim": true,
     "real_trainer_bound_evaluation": true,
     "reward": {
-      "mean_reward": -531.0,
-      "reward_bearing_transition_count": 225
+      "mean_reward": -452.0,
+      "reward_bearing_transition_count": 244
     },
-    "terminal_transition_count": 225,
+    "terminal_transition_count": 244,
     "timeout": {
       "status": "not_claimed_in_feature_060",
       "value": null
@@ -296,17 +296,17 @@
   },
   "training_metrics_summary": {
     "action_distribution": {
-      "horizontal": 35,
-      "local": 43,
-      "vertical": 32
+      "horizontal": 45,
+      "local": 65,
+      "vertical": 0
     },
-    "horizontal_action_count": 35,
-    "local_action_count": 43,
+    "horizontal_action_count": 45,
+    "local_action_count": 65,
     "loss_count": 1,
     "loss_finite": true,
     "loss_summary": {
       "all_losses_finite": true,
-      "last_loss": 25.072696685791016,
+      "last_loss": 20.38028907775879,
       "loss_count": 1
     },
     "optimizer_step_count": 47,
@@ -323,17 +323,17 @@
     },
     "replay_size": 110,
     "reward_summary": {
-      "mean_reward": -5.493333333333333,
+      "mean_reward": -4.402439024390244,
       "pending_at_horizon_count": 0,
-      "reward_available_count": 75,
-      "reward_count": 75,
-      "total_reward": -412.0
+      "reward_available_count": 82,
+      "reward_count": 82,
+      "total_reward": -361.0
     },
     "target_update_summary": {
       "target_sync_count": 0,
       "target_update_frequency": 2000,
       "target_update_unit": "optimizer_step"
     },
-    "vertical_action_count": 32
+    "vertical_action_count": 0
   }
 }

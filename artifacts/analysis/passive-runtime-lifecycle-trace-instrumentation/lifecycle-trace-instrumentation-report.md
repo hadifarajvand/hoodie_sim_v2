@@ -223,8 +223,8 @@
       "horizontal": true,
       "local": true,
       "offload_horizontal": true,
-      "offload_vertical": true,
-      "vertical": true
+      "offload_vertical": false,
+      "vertical": false
     },
     "processing_density_gcycles_per_mbit": 0.297,
     "queue_type": "private",
@@ -261,8 +261,8 @@
       "horizontal": true,
       "local": true,
       "offload_horizontal": true,
-      "offload_vertical": true,
-      "vertical": true
+      "offload_vertical": false,
+      "vertical": false
     },
     "processing_density_gcycles_per_mbit": 0.297,
     "queue_type": "private",
@@ -299,8 +299,8 @@
       "horizontal": true,
       "local": true,
       "offload_horizontal": true,
-      "offload_vertical": true,
-      "vertical": true
+      "offload_vertical": false,
+      "vertical": false
     },
     "processing_density_gcycles_per_mbit": 0.297,
     "queue_type": "private",

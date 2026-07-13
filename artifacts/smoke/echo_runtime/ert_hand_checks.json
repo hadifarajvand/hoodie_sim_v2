@@ -1,0 +1,21 @@
+{
+  "local": {
+    "expected": 989.0,
+    "actual": 989.0,
+    "case": "seedless trace-bank first task"
+  },
+  "horizontal": {
+    "expected": 970.0,
+    "actual": 970.0,
+    "case": "seedless trace-bank first task"
+  },
+  "cloud": {
+    "expected": 970.0,
+    "actual": 970.0,
+    "case": "seedless trace-bank first task"
+  },
+  "all_late_fallback": {
+    "expected": "single fallback action exposed",
+    "actual": "deadline_mask local only when all late"
+  }
+}

@@ -1,0 +1,52 @@
+{
+  "episodes_expected": 100,
+  "figure_id": "Figure 10",
+  "missing_or_invalid": [],
+  "output": "/Users/hadi/Documents/GitHub/hoodie_sim_v2/artifacts/analysis/figure8-11-validation/figure_10/figure10_offloading_schemes.png",
+  "source": "/Users/hadi/Documents/GitHub/hoodie_sim_v2/artifacts/analysis/figure8-11-validation/figure_10_baselines/sweep_results.json",
+  "status": "exported",
+  "subfigures": [
+    {
+      "id": "10a",
+      "policy_count": 7,
+      "present": true,
+      "series": "arrival_probability_delay",
+      "x_count": 5
+    },
+    {
+      "id": "10b",
+      "policy_count": 7,
+      "present": true,
+      "series": "arrival_probability_drop",
+      "x_count": 5
+    },
+    {
+      "id": "10c",
+      "policy_count": 7,
+      "present": true,
+      "series": "cpu_capacity_delay",
+      "x_count": 5
+    },
+    {
+      "id": "10d",
+      "policy_count": 7,
+      "present": true,
+      "series": "cpu_capacity_drop",
+      "x_count": 5
+    },
+    {
+      "id": "10e",
+      "policy_count": 7,
+      "present": true,
+      "series": "timeout_delay",
+      "x_count": 10
+    },
+    {
+      "id": "10f",
+      "policy_count": 7,
+      "present": true,
+      "series": "timeout_drop",
+      "x_count": 10
+    }
+  ]
+}

@@ -1,9 +1,5 @@
 {
-  "baseline_policy_list": [
-    "fixed-horizontal",
-    "local-only",
-    "random-legal"
-  ],
+  "baseline_policy_list": [],
   "bounded_execution_budget_per_seed": {
     "baseline_evaluation_episode_count": 1,
     "evaluation_episode_count": 3,

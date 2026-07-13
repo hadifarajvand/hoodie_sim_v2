@@ -1,0 +1,16 @@
+series,x,y_approx
+Balanced,10,-42.499
+Balanced,15,-51.084
+Balanced,20,-57.213
+Balanced,25,-60.715
+Balanced,30,-65.217
+Horizontal-centric,10,-45.053
+Horizontal-centric,15,-55.753
+Horizontal-centric,20,-62.882
+Horizontal-centric,25,-66.162
+Horizontal-centric,30,-69.886
+Vertical-centric,10,-49.071
+Vertical-centric,15,-57.651
+Vertical-centric,20,-63.608
+Vertical-centric,25,-66.775
+Vertical-centric,30,-71.839

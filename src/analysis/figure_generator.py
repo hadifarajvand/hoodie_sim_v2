@@ -54,6 +54,31 @@ def load_sweep_results(results_dir: str):
         return json.load(f)
 
 
+def render_status_figure(output_path: str | Path, title: str, missing: list[str]) -> None:
+    fig, ax = plt.subplots(figsize=(10, 5))
+    ax.axis("off")
+    ax.text(
+        0.02,
+        0.95,
+        "\n".join([title, "", "Export blocked.", "Missing/invalid:", *[f"- {item}" for item in missing]]),
+        va="top",
+        ha="left",
+        family="monospace",
+    )
+    plt.tight_layout()
+    plt.savefig(output_path, dpi=300, bbox_inches="tight")
+    plt.close(fig)
+
+
+def write_export_manifest(output_dir: str | Path, manifest: dict[str, object]) -> None:
+    output_path = Path(output_dir)
+    output_path.mkdir(parents=True, exist_ok=True)
+    (output_path / "manifest.json").write_text(
+        json.dumps(manifest, indent=2, sort_keys=True) + "\n",
+        encoding="utf-8",
+    )
+
+
 def _average(values: list[float]) -> float:
     return float(np.mean(values)) if values else 0.0
 

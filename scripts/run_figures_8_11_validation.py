@@ -4,8 +4,13 @@ from __future__ import annotations
 import argparse
 import csv
 import json
+import sys
 from pathlib import Path
 from typing import Any
+
+ROOT_DIR = Path(__file__).resolve().parents[1]
+if str(ROOT_DIR) not in sys.path:
+    sys.path.insert(0, str(ROOT_DIR))
 
 from src.analysis.experiment_runner import ExperimentResult, save_sweep_results, run_experiment
 from src.analysis.figure_generator import (
@@ -32,8 +37,10 @@ def _paper_config(**overrides: Any) -> CampaignConfig:
 
 
 def _run_labeled(label: str, config: CampaignConfig, episodes: int, episode_length: int) -> ExperimentResult:
+    print(f"[validation] start {label}", flush=True)
     result = run_experiment(config, episodes=episodes, episode_length=episode_length)
     result.experiment_label = label
+    print(f"[validation] done {label}", flush=True)
     return result
 
 
@@ -129,16 +136,19 @@ def main() -> int:
             results.append(_run_labeled(f"figure9_arrival_p{p:g}_n{agents}", config, args.episodes, args.episode_length))
 
     for cpu in [4, 5, 6, 7, 8, 9]:
-        config = _paper_config(
-            local_cpu_ghz=cpu,
-            public_cpu_ghz=cpu,
-            sweep_metadata={
-                "sweep_type": "cpu_capacity",
-                "cpu_capacity": cpu,
-                "implementation_status": "wired_to_ComputeConfig",
-            },
-        )
-        results.append(_run_labeled(f"figure9_cpu_{cpu:g}GHz", config, args.episodes, args.episode_length))
+        for agents in [10, 15, 20]:
+            config = _paper_config(
+                local_cpu_ghz=cpu,
+                public_cpu_ghz=cpu,
+                agent_count=agents,
+                sweep_metadata={
+                    "sweep_type": "cpu_capacity",
+                    "cpu_capacity": cpu,
+                    "num_drl_agents": agents,
+                    "implementation_status": "wired_to_ComputeConfig",
+                },
+            )
+            results.append(_run_labeled(f"figure9_cpu_{cpu:g}GHz_n{agents}", config, args.episodes, args.episode_length))
 
     for agents in [10, 15, 20, 25, 30]:
         config = _paper_config(
@@ -153,18 +163,21 @@ def main() -> int:
         results.append(_run_labeled(f"figure9_agents_{agents}", config, args.episodes, args.episode_length))
 
     for label, rh, rv in [("balanced", 10, 30), ("horizontal_centric", 20, 20), ("vertical_centric", 5, 40)]:
-        config = _paper_config(
-            horizontal_data_rate_mbps=rh,
-            vertical_data_rate_mbps=rv,
-            sweep_metadata={
-                "sweep_type": "offload_data_rate",
-                "horizontal_data_rate_mbps": rh,
-                "vertical_data_rate_mbps": rv,
-                "data_rate_scenario": {"balanced": "Balanced", "horizontal_centric": "Horizontal-centric", "vertical_centric": "Vertical-centric"}[label],
-                "implementation_status": "wired_to_LinkRateConfig",
-            },
-        )
-        results.append(_run_labeled(f"figure9_rate_{label}", config, args.episodes, args.episode_length))
+        for agents in [10, 15, 20]:
+            config = _paper_config(
+                horizontal_data_rate_mbps=rh,
+                vertical_data_rate_mbps=rv,
+                agent_count=agents,
+                sweep_metadata={
+                    "sweep_type": "offload_data_rate",
+                    "horizontal_data_rate_mbps": rh,
+                    "vertical_data_rate_mbps": rv,
+                    "num_drl_agents": agents,
+                    "data_rate_scenario": {"balanced": "Balanced", "horizontal_centric": "Horizontal-centric", "vertical_centric": "Vertical-centric"}[label],
+                    "implementation_status": "wired_to_LinkRateConfig",
+                },
+            )
+            results.append(_run_labeled(f"figure9_rate_{label}_{agents}", config, args.episodes, args.episode_length))
 
     for timeout in [16, 20, 24]:
         config = _paper_config(
@@ -189,8 +202,10 @@ def main() -> int:
     plot_figure_9_parameter_sweep(serialized, str(fig_dir / "figure9_parameter_sweep.png"), "Figure 9: Bounded HOODIE Parameter Sweeps")
     print("[validation] figure9 done")
 
+    bounded_mode = args.episodes < DEFAULT_MANUAL_EPISODES
+
     print("[validation] figure10 run + render")
-    figure10_results = run_figure_10(output_dir, quick=True)
+    figure10_results = run_figure_10(output_dir, quick=bounded_mode)
     figure10_dir = output_dir / "figure_10_baselines"
     plot_figure_10_offloading_schemes(
         json.loads((figure10_dir / "sweep_results.json").read_text(encoding="utf-8")),
@@ -200,7 +215,7 @@ def main() -> int:
     print(f"[validation] figure10 done: {len(figure10_results)} experiments")
 
     print("[validation] figure11 run + render")
-    figure11_with, figure11_without = run_figure_11(output_dir, quick=True)
+    figure11_with, figure11_without = run_figure_11(output_dir, quick=bounded_mode)
     figure11_lstm_dir = output_dir / "figure_11_lstm"
     figure11_no_lstm_dir = output_dir / "figure_11_no_lstm"
     plot_figure_11_lstm_comparison(
@@ -211,10 +226,9 @@ def main() -> int:
     )
     print(f"[validation] figure11 done: with={len(figure11_with)} without={len(figure11_without)}")
 
-    return 0
-
     manifest = {
         "status": "bounded_validation_complete",
+        "bounded_mode": bounded_mode,
         "episodes_per_experiment": args.episodes,
         "episode_length": args.episode_length,
         "paper_mechanisms_exercised": [

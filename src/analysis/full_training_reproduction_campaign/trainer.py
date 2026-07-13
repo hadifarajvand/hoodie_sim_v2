@@ -168,11 +168,16 @@ def _config_hash(config: CampaignConfig) -> str:
 
 
 def _build_environment(config: CampaignConfig, *, episode_length: int, seed: int, trace_enabled: bool = False) -> HoodieGymEnvironment:
+    runtime_parameters = SharedRuntimeParameters(
+        arrival_probability=config.arrival_probability,
+        agent_count=config.agent_count,
+        timeout_slots=config.timeout_slots,
+    )
     return HoodieGymEnvironment(
         episode_length=episode_length,
         topology=TopologyGraph.from_approved_assumption_registry(),
-        runtime_parameters=SharedRuntimeParameters(),
-        compute_config=ComputeConfig(),
+        runtime_parameters=runtime_parameters,
+        compute_config=config.build_compute_config(),
         link_rate_config=config.build_link_rate_config(),
         policy_name="HOODIE",
         trace_config=LifecycleTraceConfig(trace_enabled=trace_enabled),
@@ -193,7 +198,10 @@ def _ensure_valid_action(action: str, legal_action_mask: dict[str, bool]) -> boo
 class DDQNTrainer:
     def __init__(self, config: CampaignConfig, trace_collector: Optional[TraceCollector] = None) -> None:
         self.config = config
+        network_state_dim = (config.state_dim - int(config.lstm_hidden_size)) if not config.lstm_enabled else config.state_dim
+        self.network_state_dim = int(network_state_dim)
         self.network_config = config.build_network_config()
+        self.network_config.state_dim = self.network_state_dim
         self.online_network = build_online_network(self.network_config)
         self.target_network = build_target_network(self.network_config)
         self.target_network.load_state_dict(self.online_network.state_dict())
@@ -203,8 +211,9 @@ class DDQNTrainer:
         self.sample_rng = random.Random(self.config.seed_bundle.replay_sampling_seed)
         self.optimizer_step_count = 0
         self.target_sync_count = 0
-        # Paper state builder for 74D state vectors
-        self.num_eas = len(TopologyGraph.from_approved_assumption_registry().node_ids)
+        # Paper state builder uses fixed 74D layout: 31 size bins + 1 density + 2 waits + 20 queue lengths + 20 forecast slots.
+        # Runtime agent_count may vary for sweeps, but network input width must stay fixed.
+        self.num_eas = int(self.config.lstm_hidden_size)
         self.state_builder = PaperStateBuilder(num_eas=self.num_eas)
         self.trace_collector = trace_collector
         self._episode_summaries: list[dict[str, Any]] = []
@@ -281,11 +290,13 @@ class DDQNTrainer:
             public_queue_lengths=public_queue_lengths,
             load_forecast=load_forecast,
         )
+        if not self.config.lstm_enabled:
+            state_vector = state_vector[:-self.num_eas]
         # Ensure we return a tuple of floats
         return tuple(state_vector.tolist())
 
     def _initial_history(self, *, episode_length: int) -> deque[tuple[float, ...]]:
-        if self.config.state_dim == 3:
+        if self.network_state_dim == 3:
             zero_row = build_state_vector(observation={"slot": 0, "queue_load": 0, "history_length": 0}, current_task=None, episode_length=episode_length)
         else:
             # For paper state dimension, compute a realistic zero state (empty system)
@@ -298,7 +309,7 @@ class DDQNTrainer:
         return deque([zero_row] * self.config.lookback_w, maxlen=self.config.lookback_w)
 
     def _state_tensor(self, history: deque[tuple[float, ...]]) -> torch.Tensor:
-        return build_state_window_tensor(build_state_window(history, state_dim=self.config.state_dim))
+        return build_state_window_tensor(build_state_window(history, state_dim=self.network_state_dim))
 
     def _episode_rollout(
         self,
@@ -340,7 +351,7 @@ class DDQNTrainer:
                     action = "local"
                     action_index = 0
                 elif training and self.sample_rng.random() < self.epsilon:
-                    if self.config.action_count == 22:
+                    if self.network_state_dim == 74 and self.config.action_count == 22:
                         # Paper 22-action space: pick random valid index
                         legal_mask_tuple = legal_action_mask_to_tuple(
                             observation.get("legal_action_mask", {}), action_count=22
@@ -429,9 +440,9 @@ class DDQNTrainer:
             else:
                 # Use PaperStateBuilder to compute real state vector
                 next_feature = self._compute_state_vector(next_observation, env)
-            state_window = build_state_window(history, state_dim=self.config.state_dim)
+            state_window = build_state_window(history, state_dim=self.network_state_dim)
             history.append(next_feature)
-            next_state_window = build_state_window(history, state_dim=self.config.state_dim)
+            next_state_window = build_state_window(history, state_dim=self.network_state_dim)
 
             finalized_tasks = info.get("finalized_tasks", [])
             reward_available = bool(finalized_tasks)
@@ -528,7 +539,7 @@ class DDQNTrainer:
                     agent_id=int(getattr(current_task, "source_agent_id", 0)),
                     episode_id=episode_id,
                     step_id=transition_count,
-                    state_dim=self.config.state_dim,
+                    state_dim=self.network_state_dim,
                     action_count=self.config.action_count,
                 )
                 self.replay_buffer.add(transition)

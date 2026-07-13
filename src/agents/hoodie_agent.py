@@ -52,8 +52,26 @@ class HoodieAgent(SharedPolicy):
     def disable_learner(self) -> None:
         self.learner_enabled = False
 
-    def record_transition(self, state: dict[str, object], action: str, reward: float, next_state: dict[str, object], done: bool) -> None:
-        self.replay_buffer.add(Transition(state=state, action=action, reward=reward, next_state=next_state, done=done))
+    def record_transition(
+        self,
+        state: dict[str, object],
+        action: str,
+        reward: float,
+        next_state: dict[str, object],
+        done: bool,
+        *,
+        delta_slots: int = 1,
+    ) -> None:
+        self.replay_buffer.add(
+            Transition(
+                state=state,
+                action=action,
+                reward=reward,
+                next_state=next_state,
+                done=done,
+                delta_slots=delta_slots,
+            )
+        )
 
     def learn_from_replay(self, batch_size: int, learning_rate: float) -> int:
         if batch_size <= 0:

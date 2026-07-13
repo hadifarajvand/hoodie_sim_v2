@@ -91,7 +91,7 @@ class ExecutionTimeFlowTests(unittest.TestCase):
         compute_config = ComputeConfig(
             cpu_capacity_per_slot_agent=0.25,
             cpu_capacity_per_slot_edge=0.2,
-            cpu_capacity_per_slot_cloud=0.1,
+            cpu_capacity_per_slot_cloud=1.0,
         )
 
         local_info, _ = self._run_episode(

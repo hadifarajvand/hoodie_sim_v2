@@ -10,7 +10,7 @@ from .task import Task
 @dataclass(slots=True)
 class OffloadingQueue:
     owner_node_id: str
-    resolved_destination: str
+    resolved_destination: str | None = None
     tasks: Deque[Task] = field(default_factory=deque)
     current_head_entered_at: int | None = None
 
@@ -20,7 +20,8 @@ class OffloadingQueue:
         self.tasks.append(task)
         task.metadata["queue_entered_at"] = slot
         task.queue_state = "offloading_queue"
-        task.resolved_destination = self.resolved_destination
+        task.transmission_start_slot = task.transmission_start_slot if task.transmission_start_slot is not None else int(slot)
+        task.metadata["transmission_start_slot"] = task.transmission_start_slot
 
     def dequeue(self) -> Task:
         task = self.tasks.popleft()

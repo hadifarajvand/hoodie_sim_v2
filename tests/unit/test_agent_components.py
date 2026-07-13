@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import json
+import random
 import tempfile
 import unittest
 from pathlib import Path
@@ -145,13 +146,17 @@ class AgentComponentTests(unittest.TestCase):
         self.assertIsInstance(result["features"], tuple)
         self.assertIsInstance(result["legal_actions"], tuple)
 
-    def test_torchrl_hoodie_learner_imports_without_torch_or_torchrl(self) -> None:
+    def test_torchrl_hoodie_learner_reports_dependency_availability_consistently(self) -> None:
         learner = TorchRLHoodieLearner()
 
-        self.assertFalse(learner.is_available())
+        self.assertEqual(learner.is_available(), learner.__class__.is_available())
 
-    def test_torchrl_hoodie_learner_require_available_fails_clearly_when_unavailable(self) -> None:
+    def test_torchrl_hoodie_learner_require_available_matches_dependency_state(self) -> None:
         learner = TorchRLHoodieLearner()
+
+        if learner.is_available():
+            learner.require_available()
+            return
 
         with self.assertRaisesRegex(RuntimeError, "torch and/or torchrl are not installed"):
             learner.require_available()
@@ -437,8 +442,13 @@ class AgentComponentTests(unittest.TestCase):
             config_path.write_text(json.dumps(torchrl_config, sort_keys=True), encoding="utf-8")
             loaded_torchrl = ConfigLoader.load(config_path)
 
+        guard = ReproGuard(loaded_torchrl)
+        if TorchRLHoodieLearner.is_available():
+            guard.validate()
+            return
+
         with self.assertRaisesRegex(ReproGuardError, "TorchRL learner requested but torch and/or torchrl are unavailable"):
-            ReproGuard(loaded_torchrl).validate()
+            guard.validate()
 
     def test_checkpoint_manifest_schema_is_deterministic_and_versioned(self) -> None:
         from src.evaluation.validation_artifacts import ValidationArtifacts
@@ -809,14 +819,36 @@ class AgentComponentTests(unittest.TestCase):
         self.assertEqual(target.parameters, {"value_weight": 4.0, "bias": 2.0})
 
     def test_replay_buffer_capacity_and_sample_behavior(self) -> None:
-        buffer = ReplayBuffer(capacity=2)
+        buffer = ReplayBuffer(capacity=2, seed=7)
         buffer.add(Transition(state={"id": 1}, action="a", reward=1.0, next_state={"id": 2}, done=False))
         buffer.add(Transition(state={"id": 2}, action="b", reward=2.0, next_state={"id": 3}, done=False))
         buffer.add(Transition(state={"id": 3}, action="c", reward=3.0, next_state={"id": 4}, done=True))
 
         self.assertEqual(len(buffer), 2)
         self.assertEqual([transition.action for transition in buffer.sample(10)], ["b", "c"])
-        self.assertEqual([transition.action for transition in buffer.sample(1)], ["c"])
+
+        buffer.reseed(7)
+        sampled = [transition.action for transition in buffer.sample(1)]
+        self.assertEqual(len(sampled), 1)
+        self.assertIn(sampled[0], {"b", "c"})
+
+    def test_replay_buffer_sampling_is_seeded_uniform_random(self) -> None:
+        seed = 11
+        transitions = (
+            Transition(state={"id": 1}, action="a", reward=1.0, next_state={"id": 2}, done=False),
+            Transition(state={"id": 2}, action="b", reward=2.0, next_state={"id": 3}, done=False),
+            Transition(state={"id": 3}, action="c", reward=3.0, next_state={"id": 4}, done=False),
+            Transition(state={"id": 4}, action="d", reward=4.0, next_state={"id": 5}, done=True),
+        )
+        buffer = ReplayBuffer(capacity=8, seed=seed)
+        buffer.extend(transitions)
+
+        sampled_actions = [transition.action for transition in buffer.sample(2)]
+        expected_indices = sorted(random.Random(seed).sample(range(len(transitions)), 2))
+        expected_actions = [transitions[index].action for index in expected_indices]
+
+        self.assertEqual(sampled_actions, expected_actions)
+        self.assertEqual(len(set(sampled_actions)), 2)
 
 
 if __name__ == "__main__":

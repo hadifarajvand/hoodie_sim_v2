@@ -59,28 +59,29 @@
 - arrival_probability seed=7 value=0.2 indicator=0.3333333333333333 evidence=True summary=arrivals=2, observed_probability=0.3333333333333333
 - arrival_probability seed=7 value=0.5 indicator=0.6666666666666666 evidence=True summary=arrivals=4, observed_probability=0.6666666666666666
 - arrival_probability seed=7 value=0.8 indicator=1.0 evidence=True summary=arrivals=6, observed_probability=1.0
-- timeout seed=7 value=1 indicator=1.0 evidence=True summary=dropped=1.0 final_outcomes=['dropped']
-- timeout seed=7 value=2 indicator=1.0 evidence=True summary=dropped=1.0 final_outcomes=['dropped']
+- timeout seed=7 value=1 indicator=0.0 evidence=True summary=dropped=0.0 final_outcomes=['completed']
+- timeout seed=7 value=2 indicator=0.0 evidence=True summary=dropped=0.0 final_outcomes=['completed']
 - timeout seed=7 value=3 indicator=0.0 evidence=True summary=dropped=0.0 final_outcomes=['completed']
-- cpu_capacity seed=7 value=1.0 indicator=0.0 evidence=True summary=completed=0.0 final_outcomes=['dropped']
+- cpu_capacity seed=7 value=1.0 indicator=1.0 evidence=True summary=completed=1.0 final_outcomes=['completed']
 - cpu_capacity seed=7 value=2.0 indicator=1.0 evidence=True summary=completed=1.0 final_outcomes=['completed']
 - cpu_capacity seed=7 value=4.0 indicator=1.0 evidence=True summary=completed=1.0 final_outcomes=['completed']
 - link_rate seed=7 value=low indicator=None evidence=False summary=no direct public control for link rate; instrumentation gap recorded
 - link_rate seed=7 value=medium indicator=None evidence=False summary=no direct public control for link rate; instrumentation gap recorded
 - link_rate seed=7 value=high indicator=None evidence=False summary=no direct public control for link rate; instrumentation gap recorded
-- topology_density seed=7 value=sparse indicator=0.0 evidence=True summary=offload_opportunities=0
-- topology_density seed=7 value=default indicator=1.0 evidence=True summary=offload_opportunities=1
+- topology_density seed=7 value=sparse indicator=1.0 evidence=True summary=offload_opportunities=1
+- topology_density seed=7 value=default indicator=2.0 evidence=True summary=offload_opportunities=2
 - topology_density seed=7 value=dense indicator=2.0 evidence=True summary=offload_opportunities=2
 
 ## Monotonic Checks
 - arrival_probability: pass (full) - arrival_probability rose monotonically: [0.3333333333333333, 0.6666666666666666, 1.0].
-- timeout: pass (full) - timeout fell monotonically: [1.0, 1.0, 0.0].
-- cpu_capacity: pass (full) - cpu_capacity rose monotonically: [0.0, 1.0, 1.0].
+- timeout: warn (partial) - timeout remained flat across the tiny sweep: [0.0, 0.0, 0.0].
+- cpu_capacity: warn (partial) - cpu_capacity remained flat across the tiny sweep: [1.0, 1.0, 1.0].
 - link_rate: instrumentation_gap (none) - link_rate has no direct public control source: unsupported.
-- topology_density: pass (full) - topology_density rose monotonically: [0.0, 1.0, 2.0].
+- topology_density: pass (full) - topology_density rose monotonically: [1.0, 2.0, 2.0].
 
 ## Warnings
-- None
+- timeout remained flat across the tiny sweep.
+- cpu_capacity remained flat across the tiny sweep.
 
 ## Instrumentation Gaps
 - link rate: No direct public link-rate hook exists in the current environment interface.

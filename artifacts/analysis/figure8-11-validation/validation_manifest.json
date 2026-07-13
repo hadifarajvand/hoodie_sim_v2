@@ -1,0 +1,30 @@
+{
+  "bounded_mode": true,
+  "episode_length": 20,
+  "episodes_per_experiment": 5,
+  "known_gaps": [
+    "Full 5000-episode paper campaign not run by this bounded ASAP validation.",
+    "Figure 10 uses the paper comparison path, not the old DDQN-only sweep."
+  ],
+  "outputs": {
+    "figures": [
+      "/Users/hadi/Documents/GitHub/hoodie_sim_v2/artifacts/analysis/figure8-11-validation/figures/figure10_offloading_schemes.png",
+      "/Users/hadi/Documents/GitHub/hoodie_sim_v2/artifacts/analysis/figure8-11-validation/figures/figure11_lstm_comparison.png",
+      "/Users/hadi/Documents/GitHub/hoodie_sim_v2/artifacts/analysis/figure8-11-validation/figures/figure8_reward_timecourse.png",
+      "/Users/hadi/Documents/GitHub/hoodie_sim_v2/artifacts/analysis/figure8-11-validation/figures/figure9_parameter_sweep.png"
+    ],
+    "summary_csv": "/Users/hadi/Documents/GitHub/hoodie_sim_v2/artifacts/analysis/figure8-11-validation/figure8_11_validation_summary.csv",
+    "sweep_json": "/Users/hadi/Documents/GitHub/hoodie_sim_v2/artifacts/analysis/figure8-11-validation/sweep/sweep_results.json"
+  },
+  "paper_mechanisms_exercised": [
+    "distributed DDQN trainer",
+    "dueling LSTM HOODIE network path",
+    "double-DQN target network update",
+    "experience replay",
+    "Figure 7 topology registry",
+    "paper default link rates and altered link-rate sweeps",
+    "baseline policy evaluation matrix",
+    "delayed rewards and timeout/drop metrics"
+  ],
+  "status": "bounded_validation_complete"
+}

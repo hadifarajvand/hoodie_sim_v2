@@ -24,6 +24,8 @@ class PublicQueue:
         self.tasks.append(task)
         task.metadata["queue_entered_at"] = slot
         task.queue_state = "public_queue"
+        task.destination_admission_slot = int(slot)
+        task.metadata["destination_admission_slot"] = task.destination_admission_slot
 
     def dequeue(self) -> Task:
         task = self.tasks.popleft()

@@ -1,0 +1,6 @@
+task_id,decision_slot,resolution_slot,outcome,reason
+1,0,1,success,local_execution_completed
+4,3,4,success,local_execution_completed
+2,1,5,success,public_execution_completed
+3,2,7,success,cloud_execution_completed
+5,4,17,drop,local_deadline_missed

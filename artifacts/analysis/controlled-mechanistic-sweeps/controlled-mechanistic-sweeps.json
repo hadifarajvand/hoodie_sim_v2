@@ -135,15 +135,15 @@
       "sweep_name": "arrival_probability"
     },
     {
-      "rationale": "timeout fell monotonically: [1.0, 1.0, 0.0].",
-      "status": "pass",
-      "support_level": "full",
+      "rationale": "timeout remained flat across the tiny sweep: [0.0, 0.0, 0.0].",
+      "status": "warn",
+      "support_level": "partial",
       "sweep_name": "timeout"
     },
     {
-      "rationale": "cpu_capacity rose monotonically: [0.0, 1.0, 1.0].",
-      "status": "pass",
-      "support_level": "full",
+      "rationale": "cpu_capacity remained flat across the tiny sweep: [1.0, 1.0, 1.0].",
+      "status": "warn",
+      "support_level": "partial",
       "sweep_name": "cpu_capacity"
     },
     {
@@ -153,7 +153,7 @@
       "sweep_name": "link_rate"
     },
     {
-      "rationale": "topology_density rose monotonically: [0.0, 1.0, 2.0].",
+      "rationale": "topology_density rose monotonically: [1.0, 2.0, 2.0].",
       "status": "pass",
       "support_level": "full",
       "sweep_name": "topology_density"
@@ -188,16 +188,16 @@
     },
     {
       "evidence_available": true,
-      "observed_outcome_summary": "dropped=1.0 final_outcomes=['dropped']",
-      "observed_pressure_indicator": 1.0,
+      "observed_outcome_summary": "dropped=0.0 final_outcomes=['completed']",
+      "observed_pressure_indicator": 0.0,
       "parameter_value": 1,
       "seed": 7,
       "sweep_name": "timeout"
     },
     {
       "evidence_available": true,
-      "observed_outcome_summary": "dropped=1.0 final_outcomes=['dropped']",
-      "observed_pressure_indicator": 1.0,
+      "observed_outcome_summary": "dropped=0.0 final_outcomes=['completed']",
+      "observed_pressure_indicator": 0.0,
       "parameter_value": 2,
       "seed": 7,
       "sweep_name": "timeout"
@@ -212,8 +212,8 @@
     },
     {
       "evidence_available": true,
-      "observed_outcome_summary": "completed=0.0 final_outcomes=['dropped']",
-      "observed_pressure_indicator": 0.0,
+      "observed_outcome_summary": "completed=1.0 final_outcomes=['completed']",
+      "observed_pressure_indicator": 1.0,
       "parameter_value": 1.0,
       "seed": 7,
       "sweep_name": "cpu_capacity"
@@ -260,16 +260,16 @@
     },
     {
       "evidence_available": true,
-      "observed_outcome_summary": "offload_opportunities=0",
-      "observed_pressure_indicator": 0.0,
+      "observed_outcome_summary": "offload_opportunities=1",
+      "observed_pressure_indicator": 1.0,
       "parameter_value": "sparse",
       "seed": 7,
       "sweep_name": "topology_density"
     },
     {
       "evidence_available": true,
-      "observed_outcome_summary": "offload_opportunities=1",
-      "observed_pressure_indicator": 1.0,
+      "observed_outcome_summary": "offload_opportunities=2",
+      "observed_pressure_indicator": 2.0,
       "parameter_value": "default",
       "seed": 7,
       "sweep_name": "topology_density"
@@ -374,5 +374,8 @@
       ]
     }
   ],
-  "warnings": []
+  "warnings": [
+    "timeout remained flat across the tiny sweep.",
+    "cpu_capacity remained flat across the tiny sweep."
+  ]
 }

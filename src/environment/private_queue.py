@@ -19,6 +19,8 @@ class PrivateQueue:
         self.tasks.append(task)
         task.metadata["queue_entered_at"] = slot
         task.queue_state = "private_queue"
+        task.computation_start_slot = task.computation_start_slot if task.computation_start_slot is not None else int(slot)
+        task.metadata["computation_start_slot"] = task.computation_start_slot
 
     def dequeue(self) -> Task:
         task = self.tasks.popleft()

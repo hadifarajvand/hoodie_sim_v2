@@ -1,0 +1,6 @@
+slot,task_id,mask
+0,1,"{"compute_local": true, "horizontal": true, "local": true, "offload_horizontal": true, "offload_vertical": true, "vertical": true}"
+1,2,"{"compute_local": true, "horizontal": true, "local": true, "offload_horizontal": true, "offload_vertical": true, "vertical": true}"
+2,3,"{"compute_local": true, "horizontal": true, "local": true, "offload_horizontal": true, "offload_vertical": true, "vertical": true}"
+3,4,"{"compute_local": true, "horizontal": false, "local": true, "offload_horizontal": false, "offload_vertical": false, "vertical": false}"
+4,5,"{"compute_local": true, "horizontal": false, "local": true, "offload_horizontal": false, "offload_vertical": false, "vertical": false}"

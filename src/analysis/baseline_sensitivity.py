@@ -226,7 +226,10 @@ class BaselineSensitivityAnalyzer:
     def _matrix_result_files(self) -> list[Path]:
         if not self.matrix_dir.exists():
             return []
-        return sorted(path for path in self.matrix_dir.glob("*.json") if path.is_file())
+        return sorted(
+            path for path in self.matrix_dir.glob("*.json")
+            if path.is_file() and not path.name.startswith("result-")
+        )
 
     def _matrix_results(self) -> list[dict[str, Any]]:
         results: list[dict[str, Any]] = []

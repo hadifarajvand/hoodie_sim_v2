@@ -1,0 +1,128 @@
+{
+  "device": "cpu",
+  "wall_time_s": 1.357936143875122,
+  "first_pilot": {
+    "stage": "pilot_training",
+    "episodes_requested": 1,
+    "episodes_completed": 1,
+    "optimizer_step_count": 4,
+    "target_sync_count": 0,
+    "replay_size": 4,
+    "loss_value": 5.543805855268147e-06,
+    "loss_is_finite": true,
+    "legal_action_only": true,
+    "delayed_reward_contract_preserved": true,
+    "pending_at_horizon_preserved": true,
+    "checkpoint_schema_valid": true,
+    "train_eval_trace_banks_disjoint": true,
+    "pilot_training_executed": true,
+    "full_campaign_executed": false,
+    "full_campaign_block_reason": "full campaign not requested during pilot",
+    "evaluation_summary": {
+      "evaluation_episode_count": 3,
+      "mean_reward": 0.0,
+      "completed_task_count": 0,
+      "dropped_task_count": 0,
+      "terminal_transition_count": 0,
+      "reward_bearing_transition_count": 0,
+      "trace_bank_disjoint": true,
+      "trace_bank_ids": {
+        "training": "full-training-train-bank",
+        "evaluation": "full-training-eval-bank"
+      },
+      "trace_ids": [
+        "hoodie-13",
+        "hoodie-14",
+        "hoodie-15"
+      ],
+      "evaluation_on_training_traces": false,
+      "candidate_reproduction_supported": false
+    },
+    "checkpoint_metadata": {
+      "stage": "pilot_training",
+      "feature_id": "041-full-training-reproduction-campaign",
+      "seed_bundle": {
+        "readiness_probe_seed": 31,
+        "training_trace_generation_seed": 11,
+        "evaluation_trace_generation_seed": 13,
+        "replay_sampling_seed": 17,
+        "model_initialization_seed": 19,
+        "action_exploration_seed": 23,
+        "python_seed": 7,
+        "torch_seed": 7
+      },
+      "target_update_unit": "optimizer_step",
+      "config_hash": "389a059d1d70a24b9418533aafa2d7d39bcfadf647b2684a403ba9c8a3a68f00",
+      "train_trace_bank_id": "full-training-train-bank",
+      "eval_trace_bank_id": "full-training-eval-bank",
+      "optimizer_step_count": 4,
+      "replay_size": 4,
+      "full_campaign_enabled": false
+    }
+  },
+  "resume_pilot": {
+    "stage": "pilot_training",
+    "episodes_requested": 1,
+    "episodes_completed": 1,
+    "optimizer_step_count": 8,
+    "target_sync_count": 0,
+    "replay_size": 4,
+    "loss_value": 4.816000000573695e-06,
+    "loss_is_finite": true,
+    "legal_action_only": true,
+    "delayed_reward_contract_preserved": true,
+    "pending_at_horizon_preserved": true,
+    "checkpoint_schema_valid": true,
+    "train_eval_trace_banks_disjoint": true,
+    "pilot_training_executed": true,
+    "full_campaign_executed": false,
+    "full_campaign_block_reason": "full campaign not requested during pilot",
+    "evaluation_summary": {
+      "evaluation_episode_count": 3,
+      "mean_reward": 0.0,
+      "completed_task_count": 0,
+      "dropped_task_count": 0,
+      "terminal_transition_count": 0,
+      "reward_bearing_transition_count": 0,
+      "trace_bank_disjoint": true,
+      "trace_bank_ids": {
+        "training": "full-training-train-bank",
+        "evaluation": "full-training-eval-bank"
+      },
+      "trace_ids": [
+        "hoodie-13",
+        "hoodie-14",
+        "hoodie-15"
+      ],
+      "evaluation_on_training_traces": false,
+      "candidate_reproduction_supported": false
+    },
+    "checkpoint_metadata": {
+      "stage": "pilot_training",
+      "feature_id": "041-full-training-reproduction-campaign",
+      "seed_bundle": {
+        "readiness_probe_seed": 31,
+        "training_trace_generation_seed": 11,
+        "evaluation_trace_generation_seed": 13,
+        "replay_sampling_seed": 17,
+        "model_initialization_seed": 19,
+        "action_exploration_seed": 23,
+        "python_seed": 7,
+        "torch_seed": 7
+      },
+      "target_update_unit": "optimizer_step",
+      "config_hash": "389a059d1d70a24b9418533aafa2d7d39bcfadf647b2684a403ba9c8a3a68f00",
+      "train_trace_bank_id": "full-training-train-bank",
+      "eval_trace_bank_id": "full-training-eval-bank",
+      "optimizer_step_count": 8,
+      "replay_size": 4,
+      "full_campaign_enabled": false
+    }
+  },
+  "replay_size": 4,
+  "loss_values": [
+    5.543805855268147e-06,
+    4.816000000573695e-06
+  ],
+  "checkpoint_path": "artifacts/checkpoints/echo_smoke/echo_smoke_checkpoint.pt"
+}

@@ -1,0 +1,5 @@
+{
+  "checkpoint_path": "artifacts/checkpoints/echo_smoke/echo_smoke_checkpoint.pt",
+  "resume_checkpoint_path": "artifacts/checkpoints/echo_smoke/echo_smoke_checkpoint.pt",
+  "loaded_device": "cpu"
+}

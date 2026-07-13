@@ -50,12 +50,5 @@
 ## Remaining Blockers
 [
   "feature_060a_audit_not_verified",
-  "branch",
-  "not_main",
-  "base_branch_is_ancestor",
-  "feature_060a_audit_verified",
-  "working_tree_paths_approved",
-  "feature_branch_diff_paths_approved",
-  "forbidden_paths_absent",
-  "behavior_drift_detected"
+  "feature_060a_audit_verified"
 ]

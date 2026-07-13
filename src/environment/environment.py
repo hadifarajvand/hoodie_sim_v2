@@ -44,8 +44,15 @@ def apply_policy_action(
     resolved_destination: str | None = None,
 ) -> str:
     selected_action = select_legal_action(context, action)
-    task.selected_action = selected_action
-    task.resolved_destination = resolved_destination
+    decision_slot = task.metadata.get("decision_slot")
+    task.mark_decision(
+        action=selected_action,
+        destination=resolved_destination,
+        slot=int(task.arrival_slot if decision_slot is None else decision_slot),
+        predicted_ert_slots=task.metadata.get("predicted_ert_slots"),
+        predicted_lateness_slots=task.metadata.get("predicted_lateness_slots"),
+        predicted_risk=task.metadata.get("predicted_risk"),
+    )
     return selected_action
 
 

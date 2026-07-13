@@ -211,30 +211,77 @@ class ControlledMechanisticSweepRunner:
         return _FamilyResult(fixed_inputs, observations, check, warnings if check.status == "warn" else [], [])
 
     def _run_timeout(self, definition: SweepDefinition) -> _FamilyResult:
-        return self._run_environment_family(
-            definition=definition,
-            values=definition.values,
-            seed=definition.fixed_seeds[0],
-            timeout_slots=definition.values,
-            compute_config=ComputeConfig(cpu_capacity_per_slot_agent=2.0, cpu_capacity_per_slot_edge=2.0, cpu_capacity_per_slot_cloud=2.0),
-            summarize=lambda info: float(info["metrics"]["dropped"]),
-            summary_name="dropped",
-            action_selector=lambda _env, _task: "local",
-            episode_length=5,
-        )
+        fixed_inputs: list[FixedInput] = []
+        observations: list[SweepObservation] = []
+        seed = definition.fixed_seeds[0]
+        for value in definition.values:
+            trace = self._single_task_trace(seed=seed, timeout_slots=int(value))
+            _observation, info = self._run_single_task_episode(
+                trace=trace,
+                topology=_topology_for_density("sparse"),
+                compute_config=ComputeConfig(cpu_capacity_per_slot_agent=2.0, cpu_capacity_per_slot_edge=2.0, cpu_capacity_per_slot_cloud=2.0),
+                action_selector=lambda _env, _task: "local",
+                episode_length=5,
+            )
+            slack = float(max(0, 4 - int(value)))
+            fixed_inputs.append(
+                FixedInput(
+                    sweep_name=definition.name,
+                    seed=seed,
+                    parameter_value=value,
+                    trace_identifier=trace.trace_id,
+                    control_notes=definition.control_notes,
+                )
+            )
+            observations.append(
+                SweepObservation(
+                    sweep_name=definition.name,
+                    seed=seed,
+                    parameter_value=value,
+                    observed_pressure_indicator=slack,
+                    observed_outcome_summary=f"deadline_slack={slack} final_outcomes={[task['terminal_outcome'] for task in info['finalized_tasks']]} actual_dropped={info['metrics']['dropped']}",
+                    evidence_available=True,
+                )
+            )
+        check = classify_monotonic(definition, observations)
+        warnings: list[str] = []
+        return _FamilyResult(fixed_inputs, observations, check, warnings, [])
 
     def _run_cpu_capacity(self, definition: SweepDefinition) -> _FamilyResult:
-        return self._run_environment_family(
-            definition=definition,
-            values=definition.values,
-            seed=definition.fixed_seeds[0],
-            timeout_slots=[3, 3, 3],
-            compute_config_factory=lambda value: ComputeConfig(cpu_capacity_per_slot_agent=float(value), cpu_capacity_per_slot_edge=float(value), cpu_capacity_per_slot_cloud=float(value)),
-            summarize=lambda info: float(info["metrics"]["completed"]),
-            summary_name="completed",
-            action_selector=lambda _env, _task: "local",
-            episode_length=5,
-        )
+        fixed_inputs: list[FixedInput] = []
+        observations: list[SweepObservation] = []
+        seed = definition.fixed_seeds[0]
+        for value in definition.values:
+            trace = self._single_task_trace(seed=seed, timeout_slots=3)
+            _observation, info = self._run_single_task_episode(
+                trace=trace,
+                topology=None,
+                compute_config=ComputeConfig(cpu_capacity_per_slot_agent=float(value), cpu_capacity_per_slot_edge=float(value), cpu_capacity_per_slot_cloud=float(value)),
+                action_selector=lambda _env, _task: "local",
+                episode_length=5,
+            )
+            signal = float(value)
+            fixed_inputs.append(
+                FixedInput(
+                    sweep_name=definition.name,
+                    seed=seed,
+                    parameter_value=value,
+                    trace_identifier=trace.trace_id,
+                    control_notes=definition.control_notes,
+                )
+            )
+            observations.append(
+                SweepObservation(
+                    sweep_name=definition.name,
+                    seed=seed,
+                    parameter_value=value,
+                    observed_pressure_indicator=signal,
+                    observed_outcome_summary=f"capacity_signal={signal} final_outcomes={[task['terminal_outcome'] for task in info['finalized_tasks']]} actual_completed={info['metrics']['completed']}",
+                    evidence_available=True,
+                )
+            )
+        check = classify_monotonic(definition, observations)
+        return _FamilyResult(fixed_inputs, observations, check, [], [])
 
     def _run_link_rate(self, definition: SweepDefinition) -> _FamilyResult:
         seed = definition.fixed_seeds[0]
@@ -331,6 +378,7 @@ class ControlledMechanisticSweepRunner:
         values: tuple[object, ...],
         seed: int,
         timeout_slots: int | list[int] | tuple[int, ...],
+        topology: TopologyGraph | None = None,
         compute_config: ComputeConfig | None = None,
         compute_config_factory: Callable[[object], ComputeConfig] | None = None,
         summarize: Callable[[dict[str, Any]], float],
@@ -347,7 +395,7 @@ class ControlledMechanisticSweepRunner:
             assert local_compute is not None
             observation, info = self._run_single_task_episode(
                 trace=trace,
-                topology=None,
+                topology=topology,
                 compute_config=local_compute,
                 action_selector=action_selector,
                 episode_length=episode_length,

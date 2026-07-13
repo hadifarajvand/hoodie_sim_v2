@@ -43,9 +43,9 @@
 ## Collapse Indicators
 - FLC / paper_default: completed=3|dropped=0|throughput=3
 - FLC / moderate: completed=3|dropped=0|throughput=3
-- VO / paper_default: completed=1|dropped=0|throughput=1
-- VO / moderate: completed=2|dropped=0|throughput=2
-- HO / paper_default: completed=1|dropped=0|throughput=1
+- VO / paper_default: completed=3|dropped=0|throughput=3
+- VO / moderate: completed=3|dropped=0|throughput=3
+- HO / paper_default: completed=2|dropped=0|throughput=2
 - HO / moderate: completed=2|dropped=0|throughput=2
 - RO / paper_default: completed=2|dropped=0|throughput=2
 - RO / moderate: completed=2|dropped=0|throughput=2
@@ -53,7 +53,7 @@
 - BCO / moderate: completed=3|dropped=0|throughput=3
 - MLEO / paper_default: completed=3|dropped=0|throughput=3
 - MLEO / moderate: completed=3|dropped=0|throughput=3
-- ADAPTIVE / paper_default: completed=1|dropped=0|throughput=1
+- ADAPTIVE / paper_default: completed=2|dropped=0|throughput=2
 - ADAPTIVE / moderate: completed=2|dropped=0|throughput=2
 
 ## Anti-Collapse Assessment

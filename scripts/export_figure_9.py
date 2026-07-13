@@ -2,27 +2,22 @@
 from __future__ import annotations
 
 import json
+import sys
 from pathlib import Path
 
-from src.analysis.figure_generator import plot_figure_9_parameter_sweep
+ROOT_DIR = Path(__file__).resolve().parents[1]
+if str(ROOT_DIR) not in sys.path:
+    sys.path.insert(0, str(ROOT_DIR))
+
+from src.analysis.figure_generator import (
+    plot_figure_9_parameter_sweep,
+    render_status_figure,
+    write_export_manifest,
+)
 
 
-OUTPUT_DIR = Path("artifacts/analysis/figure8-11-validation/figure_9")
-SOURCE_DIR = Path("artifacts/analysis/figure8-11-validation/sweep")
-
-
-def _render_status_png(path: Path, title: str, missing: list[str]) -> None:
-    import matplotlib
-
-    matplotlib.use("Agg")
-    import matplotlib.pyplot as plt
-
-    fig, ax = plt.subplots(figsize=(10, 5))
-    ax.axis("off")
-    ax.text(0.02, 0.95, "\n".join([title, "", "Export blocked.", "Missing/invalid:", *[f"- {item}" for item in missing]]), va="top", ha="left", family="monospace")
-    fig.tight_layout()
-    fig.savefig(path, dpi=180, bbox_inches="tight")
-    plt.close(fig)
+OUTPUT_DIR = ROOT_DIR / "artifacts/analysis/figure8-11-validation/figure_9"
+SOURCE_DIR = ROOT_DIR / "artifacts/analysis/figure8-11-validation/sweep"
 
 
 def _subseries(rows: list[dict], sweep_type: str) -> list[list[float]]:
@@ -73,27 +68,27 @@ def main() -> int:
 
     output_png = OUTPUT_DIR / "figure9_parameter_sweep.png"
     if missing:
-        _render_status_png(output_png, "Figure 9: data incomplete", missing)
+        render_status_figure(output_png, "Figure 9: data incomplete", missing)
         status = "blocked"
     else:
-        plot_figure_9_parameter_sweep(results, str(output_png), "Figure 9: 5-episode parameter sweeps")
+        plot_figure_9_parameter_sweep(results, str(output_png), "Figure 9: 100-episode parameter sweeps")
         status = "exported"
     manifest = {
         "figure_id": "Figure 9",
-        "episodes_expected": 5,
+        "episodes_expected": 100,
         "status": status,
         "source": str(SOURCE_DIR / "sweep_results.json"),
         "output": str(output_png),
         "missing_or_invalid": missing,
         "subfigures": [
-            {"id": "9a", "series": "arrival_probability", "present": checks["arrival_probability"]["present"], "nonempty": checks["arrival_probability"]["nonempty"], "flat": checks["arrival_probability"]["flat"], "max_episodes": checks["arrival_probability"]["max_episodes"]},
-            {"id": "9b", "series": "action_distribution", "present": action_present},
-            {"id": "9c", "series": "cpu_capacity", "present": checks["cpu_capacity"]["present"], "nonempty": checks["cpu_capacity"]["nonempty"], "flat": checks["cpu_capacity"]["flat"], "max_episodes": checks["cpu_capacity"]["max_episodes"]},
-            {"id": "9d", "series": "num_drl_agents", "present": checks["num_drl_agents"]["present"], "nonempty": checks["num_drl_agents"]["nonempty"], "flat": checks["num_drl_agents"]["flat"], "max_episodes": checks["num_drl_agents"]["max_episodes"]},
-            {"id": "9e", "series": "offload_data_rate", "present": checks["offload_data_rate"]["present"], "nonempty": checks["offload_data_rate"]["nonempty"], "flat": checks["offload_data_rate"]["flat"], "max_episodes": checks["offload_data_rate"]["max_episodes"]},
+            {"id": "fig09a", "series": "arrival_probability", "present": checks["arrival_probability"]["present"], "nonempty": checks["arrival_probability"]["nonempty"], "flat": checks["arrival_probability"]["flat"], "max_episodes": checks["arrival_probability"]["max_episodes"]},
+            {"id": "fig09b", "series": "action_distribution", "present": action_present},
+            {"id": "fig09c", "series": "cpu_capacity", "present": checks["cpu_capacity"]["present"], "nonempty": checks["cpu_capacity"]["nonempty"], "flat": checks["cpu_capacity"]["flat"], "max_episodes": checks["cpu_capacity"]["max_episodes"]},
+            {"id": "fig09d", "series": "num_drl_agents", "present": checks["num_drl_agents"]["present"], "nonempty": checks["num_drl_agents"]["nonempty"], "flat": checks["num_drl_agents"]["flat"], "max_episodes": checks["num_drl_agents"]["max_episodes"]},
+            {"id": "fig09e", "series": "offload_data_rate", "present": checks["offload_data_rate"]["present"], "nonempty": checks["offload_data_rate"]["nonempty"], "flat": checks["offload_data_rate"]["flat"], "max_episodes": checks["offload_data_rate"]["max_episodes"]},
         ],
     }
-    (OUTPUT_DIR / "manifest.json").write_text(json.dumps(manifest, indent=2, sort_keys=True) + "\n", encoding="utf-8")
+    write_export_manifest(OUTPUT_DIR, manifest)
     print(json.dumps(manifest, indent=2, sort_keys=True))
     return 0
 

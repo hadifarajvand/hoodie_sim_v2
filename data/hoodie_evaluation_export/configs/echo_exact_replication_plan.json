@@ -1,0 +1,58 @@
+{
+  "evaluation_figure_count": 5,
+  "total_panels": 15,
+  "numbering_for_echo_article": {
+    "topology": 3,
+    "hyperparameter_convergence": 4,
+    "behavior_scalability": 5,
+    "comparative_performance": 6,
+    "lstm_ablation": 7
+  },
+  "figures": {
+    "Figure 3": {
+      "base_equivalent": "Figure 7",
+      "panels": [
+        "topology G"
+      ],
+      "echo_change": "none; use identical adjacency matrix"
+    },
+    "Figure 4": {
+      "base_equivalent": "Figure 8",
+      "panels": [
+        "(a) ECHO reward vs training episode for six learning rates",
+        "(b) ECHO reward vs training episode for five discount factors"
+      ],
+      "echo_change": "use ECHO reward and select ECHO hyperparameters; do not compare absolute reward to HOODIE because reward definitions differ"
+    },
+    "Figure 5": {
+      "base_equivalent": "Figure 9",
+      "panels": [
+        "(a) ECHO average reward vs arrival probability for N=10,15,20",
+        "(b) ECHO local/horizontal/vertical action counts vs arrival probability",
+        "(c) ECHO average reward vs local CPU capacity for N=10,15,20",
+        "(d) ECHO average reward vs number of agents for moderate/heavy/extreme traffic",
+        "(e) ECHO average reward vs number of agents for balanced/horizontal-centric/vertical-centric rates"
+      ],
+      "echo_change": "retain same x-values and scenarios; additionally log drop ratio, feasible-action ratio, fallback rate and queue waits for interpretation"
+    },
+    "Figure 6": {
+      "base_equivalent": "Figure 10",
+      "panels": [
+        "(a) average delay vs arrival probability",
+        "(b) average delay vs CPU capacity",
+        "(c) average delay vs task timeout",
+        "(d) drop ratio vs arrival probability",
+        "(e) drop ratio vs CPU capacity",
+        "(f) drop ratio vs task timeout"
+      ],
+      "echo_change": "add ECHO as eighth method while retaining HOODIE and six baselines; this is the main superiority figure"
+    },
+    "Figure 7": {
+      "base_equivalent": "Figure 11",
+      "panels": [
+        "ECHO without LSTM vs ECHO with LSTM average delay during training"
+      ],
+      "echo_change": "same two-curve ablation; record drop ratio separately in the output table; HOODIE comparison remains in Figure 6"
+    }
+  }
+}

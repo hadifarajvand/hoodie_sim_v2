@@ -1,9 +1,11 @@
 from __future__ import annotations
 
+import random
 import unittest
 
 from src.agents.hoodie_agent import HoodieAgent
 from src.config.training_config import TrainingConfig
+from src.environment.runtime_model import SharedRuntimeParameters
 from src.environment.task import Task
 from src.environment.topology import TopologyGraph
 from src.evaluation.config import EvaluationConfig
@@ -81,6 +83,7 @@ class TrainingLoopIntegrationTests(unittest.TestCase):
         self.assertEqual(len(agent.replay_buffer), 3)
         self.assertEqual([summary.transitions_recorded for summary in summaries], [2, 2])
         self.assertLessEqual(agent.replay_buffer.capacity, 3)
+        self.assertTrue(all(transition.delta_slots >= 1 for transition in agent.replay_buffer._items))
 
     def test_delayed_rewards_are_respected(self) -> None:
         handler = DelayedRewardTraining()
@@ -201,6 +204,42 @@ class TrainingLoopIntegrationTests(unittest.TestCase):
         self.assertEqual(snapshot["context"]["seeds"]["training_seed"], 17)
         self.assertNotIn("average_delay", snapshot["context"])
         self.assertNotIn("drop_ratio", snapshot["context"])
+
+    def test_evaluation_runner_uses_runtime_compute_capacities(self) -> None:
+        topology = self._topology()
+        runtime = SharedRuntimeParameters(
+            local_service_capacity=0.25,
+            public_service_capacity=0.75,
+            cloud_service_capacity=1.5,
+        )
+        runner = EvaluationRunner(
+            policy=HoodieAgent(),
+            config=self._eval_config(),
+            topology=topology,
+            runtime_parameters=runtime,
+        )
+
+        trace = runner._trace_for_episode(0)
+        metrics = runner._evaluate_episode(trace)
+
+        self.assertEqual(metrics.policy_name, "HOODIE")
+        self.assertEqual(runtime.to_compute_config().cpu_capacity_per_slot_agent, 0.25)
+        self.assertEqual(runtime.to_compute_config().cpu_capacity_per_slot_edge, 0.75)
+        self.assertEqual(runtime.to_compute_config().cpu_capacity_per_slot_cloud, 1.5)
+
+    def test_training_loop_applies_replay_seed_from_config(self) -> None:
+        topology = self._topology()
+        config = self._training_config()
+        config.replay_seed = 99
+        agent = HoodieAgent()
+        agent.model = _StubModel()
+
+        TrainingLoop(policy=agent, config=config, topology=topology)
+
+        expected_sample = random.Random(99).sample(range(5), 2)
+        actual_sample = agent.replay_buffer._rng.sample(range(5), 2)
+        self.assertEqual(agent.replay_buffer.seed, 99)
+        self.assertEqual(actual_sample, expected_sample)
 
 
 if __name__ == "__main__":

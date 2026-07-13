@@ -8,15 +8,15 @@
 {
   "dominant_root_causes": [
     "execution_progress_deadline_expires_first",
-    "no_completion_problem_detected",
-    "task_generation_admission_overload"
+    "action_exposure_bias",
+    "no_completion_problem_detected"
   ],
   "runtime_repair_verdict_guard": false,
   "summary": "Some tasks make measurable execution progress but the deadline drops them before completion can finish.",
   "trace_evidence": {
-    "completed_count": 292,
-    "dropped_count": 1312,
-    "pending_at_horizon_count": 61,
+    "completed_count": 284,
+    "dropped_count": 1328,
+    "pending_at_horizon_count": 53,
     "trace_depth_ok": true
   }
 }
@@ -27,14 +27,14 @@
     "confidence": "high",
     "detected": true,
     "evaluated": true,
-    "evidence_count": 1312,
+    "evidence_count": 1328,
     "explanation": "Some tasks make measurable execution progress but the deadline drops them before completion can finish.",
     "representative_task_ids": [
+      "environment_default_policy_probe:0:21",
       "environment_default_policy_probe:0:22",
       "environment_default_policy_probe:0:23",
       "environment_default_policy_probe:0:24",
-      "environment_default_policy_probe:0:25",
-      "environment_default_policy_probe:0:26"
+      "environment_default_policy_probe:0:25"
     ],
     "required_next_action": "consider runtime repair only if progress is lost despite adequate budget",
     "root_cause_class": "execution_progress_deadline_expires_first",
@@ -46,10 +46,31 @@
     ]
   },
   {
+    "confidence": "high",
+    "detected": true,
+    "evaluated": true,
+    "evidence_count": 927,
+    "explanation": "Action usage is dominated by 'local' but this alone does not explain the completion pattern unless completion rates diverge materially.",
+    "representative_task_ids": [
+      "environment_default_policy_probe:0:21",
+      "environment_default_policy_probe:0:22",
+      "environment_default_policy_probe:0:23",
+      "environment_default_policy_probe:0:24",
+      "environment_default_policy_probe:0:25"
+    ],
+    "required_next_action": "adjust observation vectors or exploration if action exposure appears to suppress viable paths",
+    "root_cause_class": "action_exposure_bias",
+    "supporting_event_types": [
+      "task_admitted",
+      "execution_progress",
+      "task_dropped"
+    ]
+  },
+  {
     "confidence": "medium",
     "detected": true,
     "evaluated": true,
-    "evidence_count": 292,
+    "evidence_count": 284,
     "explanation": "Completions do occur under paper-default traces; the problem is weakness, not total absence.",
     "representative_task_ids": [
       "environment_default_policy_probe:0:1",
@@ -69,7 +90,7 @@
     "confidence": "low",
     "detected": true,
     "evaluated": true,
-    "evidence_count": 61,
+    "evidence_count": 53,
     "explanation": "Generation and admission progress faster than the system can retire work within the paper-default horizon.",
     "representative_task_ids": [
       "109",
@@ -109,7 +130,7 @@
     "confidence": "low",
     "detected": true,
     "evaluated": true,
-    "evidence_count": 61,
+    "evidence_count": 53,
     "explanation": "Generation and admission progress faster than the system can retire work within the paper-default horizon.",
     "representative_task_ids": [
       "109",
@@ -128,16 +149,16 @@
   },
   {
     "confidence": "high",
-    "detected": false,
+    "detected": true,
     "evaluated": true,
-    "evidence_count": 611,
+    "evidence_count": 927,
     "explanation": "Action usage is dominated by 'local' but this alone does not explain the completion pattern unless completion rates diverge materially.",
     "representative_task_ids": [
+      "environment_default_policy_probe:0:21",
       "environment_default_policy_probe:0:22",
       "environment_default_policy_probe:0:23",
       "environment_default_policy_probe:0:24",
-      "environment_default_policy_probe:0:25",
-      "environment_default_policy_probe:0:26"
+      "environment_default_policy_probe:0:25"
     ],
     "required_next_action": "adjust observation vectors or exploration if action exposure appears to suppress viable paths",
     "root_cause_class": "action_exposure_bias",
@@ -199,14 +220,14 @@
     "confidence": "high",
     "detected": true,
     "evaluated": true,
-    "evidence_count": 1312,
+    "evidence_count": 1328,
     "explanation": "Some tasks make measurable execution progress but the deadline drops them before completion can finish.",
     "representative_task_ids": [
+      "environment_default_policy_probe:0:21",
       "environment_default_policy_probe:0:22",
       "environment_default_policy_probe:0:23",
       "environment_default_policy_probe:0:24",
-      "environment_default_policy_probe:0:25",
-      "environment_default_policy_probe:0:26"
+      "environment_default_policy_probe:0:25"
     ],
     "required_next_action": "consider runtime repair only if progress is lost despite adequate budget",
     "root_cause_class": "execution_progress_deadline_expires_first",
@@ -265,7 +286,7 @@
     "confidence": "medium",
     "detected": true,
     "evaluated": true,
-    "evidence_count": 292,
+    "evidence_count": 284,
     "explanation": "Completions do occur under paper-default traces; the problem is weakness, not total absence.",
     "representative_task_ids": [
       "environment_default_policy_probe:0:1",
@@ -299,10 +320,10 @@
 
 ## Task Lifecycle Reconstruction Summary
 {
-  "completed_count": 292,
-  "dropped_count": 1312,
+  "completed_count": 284,
+  "dropped_count": 1328,
   "median_queue_wait_time": 0.0,
-  "pending_at_horizon_count": 61,
+  "pending_at_horizon_count": 53,
   "run_count": 15,
   "seed_counts": {
     "0": 5,

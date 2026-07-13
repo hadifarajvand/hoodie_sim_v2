@@ -1,0 +1,115 @@
+ M agentdb.rvf.lock
+ M artifacts/analysis/baseline-fairness-rebuild/baseline-fairness-rebuild.csv
+ M artifacts/analysis/baseline-fairness-rebuild/baseline-fairness-rebuild.json
+ M artifacts/analysis/baseline-fairness-rebuild/baseline-fairness-rebuild.md
+ M artifacts/analysis/baseline-rebuild-sensitivity-audit/baseline-rebuild-sensitivity-audit.csv
+ M artifacts/analysis/baseline-rebuild-sensitivity-audit/baseline-rebuild-sensitivity-audit.json
+ M artifacts/analysis/baseline-rebuild-sensitivity-audit/baseline-rebuild-sensitivity-audit.md
+ M artifacts/analysis/bind-full-campaign-real-torch-trainer/bind-full-campaign-real-torch-trainer-report.json
+ M artifacts/analysis/bind-full-campaign-real-torch-trainer/bind-full-campaign-real-torch-trainer-report.md
+ M artifacts/analysis/bounded-baseline-comparison/bounded-baseline-comparison.json
+ M artifacts/analysis/bounded-baseline-comparison/bounded-baseline-comparison.md
+ M artifacts/analysis/campaign-integrity-evaluation-comparison-batch/baseline-vs-trained-policy-comparison.json
+ M artifacts/analysis/campaign-integrity-evaluation-comparison-batch/baseline-vs-trained-policy-comparison.md
+ M artifacts/analysis/campaign-integrity-evaluation-comparison-batch/campaign-integrity-evaluation-comparison-batch-report.json
+ M artifacts/analysis/campaign-integrity-evaluation-comparison-batch/campaign-integrity-evaluation-comparison-batch-report.md
+ M artifacts/analysis/campaign-integrity-evaluation-comparison-batch/trained-policy-evaluation-results.json
+ M artifacts/analysis/completion-positive-diagnostic/completion-positive-diagnostic.json
+ M artifacts/analysis/completion-positive-diagnostic/completion-positive-diagnostic.md
+ M artifacts/analysis/differential-environment-audit/differential-audit.json
+ M artifacts/analysis/differential-environment-audit/differential-audit.md
+ M artifacts/analysis/evaluation-trace-bank-baseline-harness/evaluation-trace-bank-baseline-harness-report.json
+ M artifacts/analysis/evaluation-trace-bank-baseline-harness/evaluation-trace-bank-baseline-harness-report.md
+ M artifacts/analysis/figure8-11-validation/figure8_11_validation_summary.csv
+ M artifacts/analysis/figure8-11-validation/figure_8/figure8_reward_timecourse.png
+ M artifacts/analysis/figure8-11-validation/figure_8/manifest.json
+ M artifacts/analysis/figure8-11-validation/figure_9/figure9_parameter_sweep.png
+ M artifacts/analysis/figure8-11-validation/figure_9/manifest.json
+ M artifacts/analysis/figure8-11-validation/figures/figure8_reward_timecourse.png
+ M artifacts/analysis/figure8-11-validation/sweep/sweep_results.json
+ M artifacts/analysis/final-review-release-gate-batch/final-review-release-gate-batch-report.json
+ M artifacts/analysis/final-review-release-gate-batch/final-review-release-gate-batch-report.md
+ M artifacts/analysis/full-paper-default-training-campaign-execution/evaluation-metrics.json
+ M artifacts/analysis/full-paper-default-training-campaign-execution/full-paper-default-training-campaign-report.json
+ M artifacts/analysis/full-paper-default-training-campaign-execution/full-paper-default-training-campaign-report.md
+ M artifacts/analysis/full-paper-default-training-campaign-execution/training-metrics.json
+ M artifacts/analysis/full-paper-default-training-campaign-gate/full-paper-default-training-campaign-gate-report.json
+ M artifacts/analysis/full-paper-default-training-campaign-gate/full-paper-default-training-campaign-gate-report.md
+ M artifacts/analysis/multi-seed-campaign-ablation-batch/ablation-results.json
+ M artifacts/analysis/multi-seed-campaign-ablation-batch/multi-seed-aggregation.json
+ M artifacts/analysis/multi-seed-campaign-ablation-batch/multi-seed-campaign-ablation-batch-report.json
+ M artifacts/analysis/multi-seed-campaign-ablation-batch/multi-seed-campaign-ablation-batch-report.md
+ M artifacts/analysis/multi-seed-campaign-ablation-batch/multi-seed-campaign-gate.json
+ M artifacts/analysis/multi-seed-campaign-ablation-batch/multi-seed-campaign-results.json
+ M artifacts/analysis/offload-lifecycle-instrumentation/instrumentation-summary.json
+ M artifacts/analysis/offload-lifecycle-instrumentation/instrumentation-summary.md
+ M artifacts/analysis/paper-default-bounded-pilot/bounded-pilot-summary.json
+ M artifacts/analysis/paper-default-bounded-pilot/bounded-pilot-summary.md
+ M artifacts/analysis/paper-default-pilot-training-run/paper-default-pilot-training-run-report.json
+ M artifacts/analysis/paper-default-pilot-training-run/paper-default-pilot-training-run-report.md
+ M artifacts/analysis/paper-faithful-state-action-space-batch/paper-faithful-state-action-space-batch-report.json
+ M artifacts/analysis/paper-faithful-state-action-space-batch/paper-faithful-state-action-space-batch-report.md
+ M artifacts/analysis/passive-runtime-lifecycle-trace-instrumentation/lifecycle-trace-instrumentation-report.json
+ M artifacts/analysis/passive-runtime-lifecycle-trace-instrumentation/lifecycle-trace-instrumentation-report.md
+ M artifacts/analysis/real-torch-trainer-binding-audit/real-torch-trainer-binding-audit-report.json
+ M artifacts/analysis/results-export-reproducibility-documentation-batch/figure-data-export.json
+ M artifacts/analysis/results-export-reproducibility-documentation-batch/results-export-reproducibility-documentation-batch-report.json
+ M artifacts/analysis/results-export-reproducibility-documentation-batch/results-export-reproducibility-documentation-batch-report.md
+ M artifacts/analysis/results-export-reproducibility-documentation-batch/results-table-export.csv
+ M artifacts/analysis/results-export-reproducibility-documentation-batch/results-table-export.md
+ M artifacts/analysis/task-arrival-completion-timing-audit/task-arrival-completion-timing-audit.json
+ M artifacts/analysis/task-arrival-completion-timing-audit/task-arrival-completion-timing-audit.md
+ M artifacts/analysis/task-completion-lifecycle-formula-audit/completion-lifecycle-audit-report.json
+ M artifacts/analysis/task-completion-lifecycle-formula-audit/completion-lifecycle-audit-report.md
+ M ruvector.db
+ M scripts/export_figure_10.py
+ M scripts/export_figure_11.py
+ M scripts/export_figure_8.py
+ M scripts/export_figure_9.py
+ M scripts/run_figures_8_11_validation.py
+ M src/agents/hoodie_agent.py
+ M src/agents/replay_buffer.py
+ M src/analysis/baseline_sensitivity.py
+ M src/analysis/bind_full_campaign_real_torch_trainer/runner.py
+ M src/analysis/figure_generator.py
+ M src/analysis/full_paper_default_training_campaign_execution/runner.py
+ M src/analysis/full_training_reproduction_campaign/config.py
+ M src/analysis/full_training_reproduction_campaign/trainer.py
+ M src/analysis/paper_figures_campaign.py
+ M src/environment/environment.py
+ M src/environment/gym_adapter.py
+ M src/environment/offloading_queue.py
+ M src/environment/private_queue.py
+ M src/environment/public_queue.py
+ M src/environment/runtime_model.py
+ M src/environment/task.py
+ M src/environment/topology.py
+ M src/evaluation/matrix_runner.py
+ M src/evaluation/runner.py
+ M src/evaluation/trace_protocol.py
+ M src/policies/policy_interface.py
+ M src/training/training_loop.py
+ M tests/integration/test_training_loop.py
+ M tests/unit/test_agent_components.py
+ M tests/unit/test_phase0_topology_legality.py
+ M tests/unit/test_topology_legality.py
+?? artifacts/analysis/figure8-11-validation/figure_10/
+?? artifacts/analysis/figure8-11-validation/figure_10_baselines/
+?? artifacts/analysis/figure8-11-validation/figure_11/
+?? artifacts/analysis/figure8-11-validation/figure_11_lstm/
+?? artifacts/analysis/figure8-11-validation/figure_11_no_lstm/
+?? artifacts/analysis/figure8-11-validation/figures/figure10_offloading_schemes.png
+?? artifacts/analysis/figure8-11-validation/figures/figure11_lstm_comparison.png
+?? artifacts/analysis/figure8-11-validation/figures/figure9_parameter_sweep.png
+?? artifacts/analysis/figure8-11-validation/validation_manifest.json
+?? artifacts/analysis/topology-family/
+?? artifacts/reports/
+?? artifacts/test_triage/
+?? data/hoodie_evaluation_export/
+?? docs/echo/
+?? research/
+?? resources/ECHO_multi_agent_phase_runbook.md
+?? src/echo_action_space.py
+?? src/echo_ert.py
+?? src/echo_types.py
+?? src/environment/topology_scaling.py

@@ -61,18 +61,18 @@
   "figure_data": {
     "data_series": {
       "trained_drop_count": {
-        "max": 6,
-        "mean": 6,
-        "min": 6,
+        "max": 0,
+        "mean": 0,
+        "min": 0,
         "not_claimed": false,
         "sample_count": 3,
         "std": 0.0,
         "variance": 0.0
       },
       "trained_reward": {
-        "max": -80.0,
-        "mean": -80.0,
-        "min": -80.0,
+        "max": -452.0,
+        "mean": -452.0,
+        "min": -452.0,
         "not_claimed": false,
         "sample_count": 3,
         "std": 0.0,
@@ -109,21 +109,21 @@
       "limitation": "seed-level aggregation only",
       "metric_name": "trained_reward_mean",
       "source_artifact": "artifacts/analysis/multi-seed-campaign-ablation-batch/multi-seed-aggregation.json",
-      "value_status": "-80.0"
+      "value_status": "-452.0"
     },
     {
       "claim_type": "controlled_experiment_data",
       "limitation": "seed-level aggregation only",
       "metric_name": "trained_reward_min",
       "source_artifact": "artifacts/analysis/multi-seed-campaign-ablation-batch/multi-seed-aggregation.json",
-      "value_status": "-80.0"
+      "value_status": "-452.0"
     },
     {
       "claim_type": "controlled_experiment_data",
       "limitation": "seed-level aggregation only",
       "metric_name": "trained_reward_max",
       "source_artifact": "artifacts/analysis/multi-seed-campaign-ablation-batch/multi-seed-aggregation.json",
-      "value_status": "-80.0"
+      "value_status": "-452.0"
     },
     {
       "claim_type": "unsupported",
@@ -350,10 +350,10 @@
 ## Safety Summary
 {
   "no_dependency_drift": true,
-  "no_environment_contract_drift": true,
+  "no_environment_contract_drift": false,
   "no_paper_reproduction_claim": true,
   "no_policy_drift": false,
-  "no_prior_feature_artifact_rewrite": true,
+  "no_prior_feature_artifact_rewrite": false,
   "no_reward_timing_change": true,
   "no_training_rerun": true,
   "no_uncontrolled_outputs": true,

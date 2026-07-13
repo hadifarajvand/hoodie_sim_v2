@@ -88,11 +88,11 @@
 
 ## Safety Summary
 {
-  "no_dependency_drift": false,
+  "no_dependency_drift": true,
   "no_environment_contract_drift": false,
   "no_new_experiment_output": true,
   "no_paper_reproduction_claim": true,
-  "no_policy_drift": true,
+  "no_policy_drift": false,
   "no_prior_feature_artifact_rewrite": false,
   "no_release_tag_created": true,
   "no_reward_timing_change": true,

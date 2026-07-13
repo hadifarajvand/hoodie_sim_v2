@@ -3,7 +3,7 @@
   "config_summary": {
     "action_count": 22,
     "batch_size": 64,
-    "config_hash": "9d537ad29abb096c",
+    "config_hash": "03e2f5694ae361f6",
     "full_campaign_enabled": false,
     "gamma": 0.99,
     "horizontal_data_rate_mbps": 30.0,
@@ -15,58 +15,58 @@
   "diagnostic_type": "completion_positive_diagnostic",
   "episode_summaries": [
     {
-      "completed_task_count": 91,
+      "completed_task_count": 199,
       "dropped_task_count": 0,
       "episode_id": 0,
       "illegal_action_count": 0,
-      "loss_count": 32,
+      "loss_count": 137,
       "pending_at_horizon_count": 1,
-      "transition_count": 95
+      "transition_count": 200
     },
     {
-      "completed_task_count": 96,
+      "completed_task_count": 198,
       "dropped_task_count": 0,
       "episode_id": 1,
       "illegal_action_count": 0,
-      "loss_count": 98,
+      "loss_count": 200,
       "pending_at_horizon_count": 1,
-      "transition_count": 98
+      "transition_count": 200
     },
     {
-      "completed_task_count": 93,
+      "completed_task_count": 199,
       "dropped_task_count": 0,
       "episode_id": 2,
       "illegal_action_count": 0,
-      "loss_count": 96,
+      "loss_count": 200,
       "pending_at_horizon_count": 1,
-      "transition_count": 96
+      "transition_count": 200
     }
   ],
   "interpretation": "Full-campaign readiness can proceed to final approval gate. Non-zero task completions observed in bounded diagnostic.",
   "metrics": {
-    "average_reward": -7.6880733944954125,
-    "completed_task_count": 280,
+    "average_reward": -6.36,
+    "completed_task_count": 596,
     "dropped_task_count": 0,
     "episode_length": 200,
     "episodes_completed": 3,
     "illegal_action_count": 0,
     "legal_action_only": true,
-    "loss_count": 226,
+    "loss_count": 537,
     "loss_summary": {
       "all_finite": true,
-      "max": 38.06584930419922,
-      "mean": 23.652129612137784,
-      "min": 9.997180938720703,
+      "max": 97.42826843261719,
+      "mean": 53.49744928882109,
+      "min": 20.814550399780273,
       "no_inf": true,
       "no_nan": true
     },
-    "optimizer_step_count": 226,
+    "optimizer_step_count": 537,
     "pending_at_horizon_count": 3,
-    "replay_size": 289,
-    "reward_count": 109,
+    "replay_size": 600,
+    "reward_count": 425,
     "target_sync_count": 0,
-    "total_reward": -838.0,
-    "total_transition_count": 289
+    "total_reward": -2703.0,
+    "total_transition_count": 600
   },
   "verdict": "pass_completion_positive"
 }

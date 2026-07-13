@@ -3,6 +3,8 @@ from __future__ import annotations
 from dataclasses import dataclass, field
 from typing import Any, Literal
 
+from src.environment.compute_config import ComputeConfig
+
 from src.analysis.paper_hoodie_network_implementation import PaperHoodieNetworkConfig
 from src.environment.link_rate_config import LinkRateConfig
 
@@ -148,6 +150,13 @@ class CampaignConfig:
     )
     horizontal_data_rate_mbps: float = 30.0
     vertical_data_rate_mbps: float = 10.0
+    arrival_probability: float = 0.5
+    agent_count: int = 20
+    timeout_slots: int = 20
+    local_cpu_ghz: float = 0.5
+    public_cpu_ghz: float = 0.5
+    cloud_cpu_ghz: float = 3.0
+    lstm_enabled: bool = True
     full_campaign_flag_name: str = "--enable-full-campaign"
     sweep_metadata: dict[str, Any] = field(default_factory=dict)
 
@@ -207,10 +216,24 @@ class CampaignConfig:
             raise ValueError("CampaignConfig.sweep_metadata must be a dict.")
         self.horizontal_data_rate_mbps = float(self.horizontal_data_rate_mbps)
         self.vertical_data_rate_mbps = float(self.vertical_data_rate_mbps)
+        self.arrival_probability = float(self.arrival_probability)
+        self.agent_count = int(self.agent_count)
+        self.timeout_slots = int(self.timeout_slots)
+        self.local_cpu_ghz = float(self.local_cpu_ghz)
+        self.public_cpu_ghz = float(self.public_cpu_ghz)
+        self.cloud_cpu_ghz = float(self.cloud_cpu_ghz)
         if self.horizontal_data_rate_mbps <= 0:
             raise ValueError("CampaignConfig.horizontal_data_rate_mbps must be positive.")
         if self.vertical_data_rate_mbps <= 0:
             raise ValueError("CampaignConfig.vertical_data_rate_mbps must be positive.")
+        if not 0.0 < self.arrival_probability <= 1.0:
+            raise ValueError("CampaignConfig.arrival_probability must be in (0, 1].")
+        if self.agent_count <= 0:
+            raise ValueError("CampaignConfig.agent_count must be positive.")
+        if self.timeout_slots <= 0:
+            raise ValueError("CampaignConfig.timeout_slots must be positive.")
+        if self.local_cpu_ghz <= 0 or self.public_cpu_ghz <= 0 or self.cloud_cpu_ghz <= 0:
+            raise ValueError("CampaignConfig CPU capacities must be positive.")
 
     def build_network_config(self) -> PaperHoodieNetworkConfig:
         return PaperHoodieNetworkConfig.standard(
@@ -223,6 +246,13 @@ class CampaignConfig:
         return LinkRateConfig(
             horizontal_data_rate_mbps=self.horizontal_data_rate_mbps,
             vertical_data_rate_mbps=self.vertical_data_rate_mbps,
+        )
+
+    def build_compute_config(self) -> ComputeConfig:
+        return ComputeConfig(
+            cpu_capacity_per_slot_agent=self.local_cpu_ghz,
+            cpu_capacity_per_slot_edge=self.public_cpu_ghz,
+            cpu_capacity_per_slot_cloud=self.cloud_cpu_ghz,
         )
 
     def to_dict(self) -> dict[str, Any]:
@@ -256,6 +286,13 @@ class CampaignConfig:
             "evaluation_trace_bank_id": self.evaluation_trace_bank_id,
             "horizontal_data_rate_mbps": self.horizontal_data_rate_mbps,
             "vertical_data_rate_mbps": self.vertical_data_rate_mbps,
+            "arrival_probability": self.arrival_probability,
+            "agent_count": self.agent_count,
+            "timeout_slots": self.timeout_slots,
+            "local_cpu_ghz": self.local_cpu_ghz,
+            "public_cpu_ghz": self.public_cpu_ghz,
+            "cloud_cpu_ghz": self.cloud_cpu_ghz,
+            "lstm_enabled": self.lstm_enabled,
             "baseline_reference_set": list(self.baseline_reference_set),
             "full_campaign_flag_name": self.full_campaign_flag_name,
             "sweep_metadata": dict(self.sweep_metadata),
@@ -288,4 +325,11 @@ class CampaignConfig:
             readiness_manual_approval_reference="paper-default-smoke-campaign-approved",
             horizontal_data_rate_mbps=30.0,
             vertical_data_rate_mbps=10.0,
+            arrival_probability=0.5,
+            agent_count=20,
+            timeout_slots=20,
+            local_cpu_ghz=0.5,
+            public_cpu_ghz=0.5,
+            cloud_cpu_ghz=3.0,
+            lstm_enabled=True,
         )

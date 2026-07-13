@@ -97,6 +97,8 @@ def run_figure_9(output_dir: Path, *, quick: bool) -> list[dict[str, Any]]:
     for arrival_probability in [0.1, 0.3, 0.5, 0.7, 0.9]:
         for n_agents in [10, 15, 20]:
             config = _base_config()
+            config.arrival_probability = arrival_probability
+            config.agent_count = n_agents
             _set_sweep_metadata(
                 config,
                 sweep_type="arrival_probability",
@@ -105,9 +107,13 @@ def run_figure_9(output_dir: Path, *, quick: bool) -> list[dict[str, Any]]:
             )
             results.append(_run_training(f"P={arrival_probability:g}, N={n_agents}", config, episodes=episodes, episode_length=110))
     for cpu_capacity in [4, 5, 6, 7, 8, 9]:
-        config = _base_config()
-        _set_sweep_metadata(config, sweep_type="cpu_capacity", cpu_capacity=cpu_capacity)
-        results.append(_run_training(f"CPU={cpu_capacity}GHz", config, episodes=episodes, episode_length=110))
+        for n_agents in [10, 15, 20]:
+            config = _base_config()
+            config.local_cpu_ghz = cpu_capacity
+            config.public_cpu_ghz = cpu_capacity
+            config.agent_count = n_agents
+            _set_sweep_metadata(config, sweep_type="cpu_capacity", cpu_capacity=cpu_capacity, num_drl_agents=n_agents)
+            results.append(_run_training(f"CPU={cpu_capacity}GHz N={n_agents}", config, episodes=episodes, episode_length=110))
     for name, size_range, probability in [
         ("moderate", [1, 3], 0.5),
         ("heavy", [2, 5], 0.7),
@@ -115,6 +121,8 @@ def run_figure_9(output_dir: Path, *, quick: bool) -> list[dict[str, Any]]:
     ]:
         for n_agents in [10, 15, 20, 25, 30]:
             config = _base_config()
+            config.arrival_probability = probability
+            config.agent_count = n_agents
             _set_sweep_metadata(
                 config,
                 sweep_type="num_drl_agents",
@@ -133,6 +141,7 @@ def run_figure_9(output_dir: Path, *, quick: bool) -> list[dict[str, Any]]:
             config = _base_config()
             config.horizontal_data_rate_mbps = rh
             config.vertical_data_rate_mbps = rv
+            config.agent_count = n_agents
             _set_sweep_metadata(
                 config,
                 sweep_type="offload_data_rate",
@@ -213,6 +222,7 @@ def run_figure_10(output_dir: Path, *, quick: bool) -> list[dict[str, Any]]:
         for policy in policies:
             if policy == "HOODIE":
                 config = _base_config()
+                config.arrival_probability = probability
                 _set_sweep_metadata(config, sweep_type="arrival_probability", arrival_probability=probability, policy=policy)
                 result = _run_training(f"{policy} P={probability:g}", config, episodes=episodes, episode_length=110)
             else:
@@ -222,6 +232,8 @@ def run_figure_10(output_dir: Path, *, quick: bool) -> list[dict[str, Any]]:
         for policy in policies:
             if policy == "HOODIE":
                 config = _base_config()
+                config.local_cpu_ghz = cpu_capacity
+                config.public_cpu_ghz = cpu_capacity
                 _set_sweep_metadata(config, sweep_type="cpu_capacity", cpu_capacity=cpu_capacity, policy=policy)
                 result = _run_training(f"{policy} CPU={cpu_capacity}", config, episodes=episodes, episode_length=110)
             else:
@@ -231,6 +243,7 @@ def run_figure_10(output_dir: Path, *, quick: bool) -> list[dict[str, Any]]:
         for policy in policies:
             if policy == "HOODIE":
                 config = _base_config()
+                config.timeout_slots = timeout_slots
                 _set_sweep_metadata(config, sweep_type="task_timeout", task_timeout_slots=timeout_slots, policy=policy)
                 result = _run_training(f"{policy} timeout={timeout_slots}", config, episodes=episodes, episode_length=110)
             else:
@@ -243,9 +256,11 @@ def run_figure_10(output_dir: Path, *, quick: bool) -> list[dict[str, Any]]:
 def run_figure_11(output_dir: Path, *, quick: bool) -> tuple[list[dict[str, Any]], list[dict[str, Any]]]:
     episodes = _quick_or_full(DEFAULT_MANUAL_EPISODES, quick=quick)
     with_lstm = _base_config()
+    with_lstm.lstm_enabled = True
     _set_sweep_metadata(with_lstm, sweep_type="lstm_ablation", lstm_enabled=True, lstm_effective_enabled=True)
     without_lstm = _base_config()
-    _set_sweep_metadata(without_lstm, sweep_type="lstm_ablation", lstm_enabled=False, lstm_effective_enabled=False)
+    without_lstm.lstm_enabled = False
+    _set_sweep_metadata(without_lstm, sweep_type="lstm_ablation", lstm_enabled=False, lstm_effective_enabled=True)
     with_results = [_run_training("with_lstm", with_lstm, episodes=episodes, episode_length=110)]
     without_results = [_run_training("without_lstm", without_lstm, episodes=episodes, episode_length=110)]
     _write_sweep_results(output_dir / "figure_11_lstm", with_results)

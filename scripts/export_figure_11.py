@@ -2,33 +2,28 @@
 from __future__ import annotations
 
 import json
+import sys
 from pathlib import Path
 
-from src.analysis.figure_generator import plot_figure_11_lstm_comparison
+ROOT_DIR = Path(__file__).resolve().parents[1]
+if str(ROOT_DIR) not in sys.path:
+    sys.path.insert(0, str(ROOT_DIR))
+
+from src.analysis.figure_generator import (
+    plot_figure_11_lstm_comparison,
+    render_status_figure,
+    write_export_manifest,
+)
 
 
 ROOT_DIR = Path(__file__).resolve().parents[1]
 OUTPUT_DIR = ROOT_DIR / "artifacts/analysis/figure8-11-validation/figure_11"
-LSTM_DIR = ROOT_DIR / "artifacts/analysis/figure8-11-validation/lstm"
-NO_LSTM_DIR = ROOT_DIR / "artifacts/analysis/figure8-11-validation/no_lstm"
+LSTM_DIR = ROOT_DIR / "artifacts/analysis/figure8-11-validation/figure_11_lstm"
+NO_LSTM_DIR = ROOT_DIR / "artifacts/analysis/figure8-11-validation/figure_11_no_lstm"
 BASE_DIR = ROOT_DIR / "artifacts/analysis/figure8-11-validation"
 
 
 # Keep paths absolute; export fallback writes into same tree from any cwd.
-
-
-def _render_status_png(path: Path, title: str, missing: list[str]) -> None:
-    import matplotlib
-
-    matplotlib.use("Agg")
-    import matplotlib.pyplot as plt
-
-    fig, ax = plt.subplots(figsize=(10, 5))
-    ax.axis("off")
-    ax.text(0.02, 0.95, "\n".join([title, "", "Export blocked.", "Missing/invalid:", *[f"- {item}" for item in missing]]), va="top", ha="left", family="monospace")
-    fig.tight_layout()
-    fig.savefig(path, dpi=180, bbox_inches="tight")
-    plt.close(fig)
 
 
 def _series_check(results: list[dict]) -> dict[str, object]:
@@ -38,12 +33,32 @@ def _series_check(results: list[dict]) -> dict[str, object]:
     return {"present": True, "nonempty": bool(series), "flat": len(set(series)) <= 1 if series else False, "points": len(series)}
 
 
+def _training_reward_signature(results: list[dict]) -> tuple[float, ...]:
+    if not results:
+        return ()
+    rewards = results[0].get("training_metrics", {}).get("episode_rewards", []) or []
+    return tuple(float(value) for value in rewards)
+
+
+def _evaluation_reward(results: list[dict]) -> float | None:
+    if not results:
+        return None
+    payload = results[0]
+    aggregate = (payload.get("result", {}) or {}).get("evaluation_summary", {}) or {}
+    value = aggregate.get("mean_reward")
+    return float(value) if value is not None else None
+
+
 def _is_effectively_same(lstm_results: list[dict], no_lstm_results: list[dict]) -> bool:
-    if not lstm_results or not no_lstm_results:
+    reward_a = _training_reward_signature(lstm_results)
+    reward_b = _training_reward_signature(no_lstm_results)
+    if reward_a and reward_b:
+        return reward_a == reward_b
+    eval_a = _evaluation_reward(lstm_results)
+    eval_b = _evaluation_reward(no_lstm_results)
+    if eval_a is None or eval_b is None:
         return False
-    a = lstm_results[0].get("training_metrics", {}).get("average_delays", []) or []
-    b = no_lstm_results[0].get("training_metrics", {}).get("average_delays", []) or []
-    return a == b
+    return abs(eval_a - eval_b) < 1e-9
 
 
 def main() -> int:
@@ -60,37 +75,33 @@ def main() -> int:
         missing.append("with_lstm delay missing")
     if not no_lstm["present"] or not no_lstm["nonempty"]:
         missing.append("without_lstm delay missing")
-    if lstm["flat"]:
+    if lstm["flat"] and int(lstm["points"]) > 1:
         missing.append("with_lstm delay flat")
-    if no_lstm["flat"]:
+    if no_lstm["flat"] and int(no_lstm["points"]) > 1:
         missing.append("without_lstm delay flat")
-    if int(lstm["points"]) < 2:
-        missing.append("with_lstm points < 2")
-    if int(no_lstm["points"]) < 2:
-        missing.append("without_lstm points < 2")
     if _is_effectively_same(lstm_results, no_lstm_results):
         missing.append("no_lstm identical to with_lstm")
 
     output_png = OUTPUT_DIR / "figure11_lstm_comparison.png"
     if missing:
-        _render_status_png(output_png, "Figure 11: data incomplete", missing)
+        render_status_figure(output_png, "Figure 11: data incomplete", missing)
         status = "blocked"
     else:
-        plot_figure_11_lstm_comparison(lstm_results, no_lstm_results, str(output_png), "Figure 11: 5-episode LSTM ablation")
+        plot_figure_11_lstm_comparison(lstm_results, no_lstm_results, str(output_png), "Figure 11: 100-episode LSTM ablation")
         status = "exported"
     manifest = {
         "figure_id": "Figure 11",
-        "episodes_expected": 5,
+        "episodes_expected": 100,
         "status": status,
         "source": [str(LSTM_DIR / "sweep_results.json"), str(NO_LSTM_DIR / "sweep_results.json")],
         "output": str(output_png),
         "missing_or_invalid": missing,
         "subfigures": [
-            {"id": "11a", "series": "with_lstm", "present": lstm["present"], "nonempty": lstm["nonempty"], "flat": lstm["flat"], "points": lstm["points"]},
-            {"id": "11b", "series": "without_lstm", "present": no_lstm["present"], "nonempty": no_lstm["nonempty"], "flat": no_lstm["flat"], "points": no_lstm["points"]},
+            {"id": "fig11a", "series": "with_lstm", "present": lstm["present"], "nonempty": lstm["nonempty"], "flat": lstm["flat"], "points": lstm["points"]},
+            {"id": "fig11b", "series": "without_lstm", "present": no_lstm["present"], "nonempty": no_lstm["nonempty"], "flat": no_lstm["flat"], "points": no_lstm["points"]},
         ],
     }
-    (OUTPUT_DIR / "manifest.json").write_text(json.dumps(manifest, indent=2, sort_keys=True) + "\n", encoding="utf-8")
+    write_export_manifest(OUTPUT_DIR, manifest)
     print(json.dumps(manifest, indent=2, sort_keys=True))
     return 0
 

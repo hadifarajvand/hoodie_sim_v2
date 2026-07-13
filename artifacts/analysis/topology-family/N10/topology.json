@@ -1,0 +1,315 @@
+{
+  "adjacency_matrix": [
+    [
+      0,
+      0,
+      0,
+      0,
+      0,
+      1,
+      0,
+      0,
+      0,
+      0
+    ],
+    [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      1,
+      0,
+      0,
+      0
+    ],
+    [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      1,
+      0,
+      0
+    ],
+    [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      1,
+      0
+    ],
+    [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      1
+    ],
+    [
+      1,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    [
+      0,
+      1,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    [
+      0,
+      0,
+      1,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    [
+      0,
+      0,
+      0,
+      1,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    [
+      0,
+      0,
+      0,
+      0,
+      1,
+      0,
+      0,
+      0,
+      0,
+      0
+    ]
+  ],
+  "edge_list": [
+    [
+      "1",
+      "6"
+    ],
+    [
+      "2",
+      "7"
+    ],
+    [
+      "3",
+      "8"
+    ],
+    [
+      "4",
+      "9"
+    ],
+    [
+      "5",
+      "10"
+    ]
+  ],
+  "generator": {
+    "name": "modular-five-cluster-v1",
+    "version": "2.0.0"
+  },
+  "metadata": {
+    "N": 10,
+    "adjacency_hash": "24958ca858ddd9fa45afab3f1dd9673b6093b55f15362e49eb4a72906136b8a3",
+    "average_shortest_path_length": null,
+    "clustering_coefficient": 0.0,
+    "component_memberships": [
+      [
+        "1",
+        "6"
+      ],
+      [
+        "2",
+        "7"
+      ],
+      [
+        "3",
+        "8"
+      ],
+      [
+        "4",
+        "9"
+      ],
+      [
+        "5",
+        "10"
+      ]
+    ],
+    "component_sizes": [
+      2,
+      2,
+      2,
+      2,
+      2
+    ],
+    "connected_component_count": 5,
+    "exact_anchor_match": false,
+    "figure_canvas_px": [
+      440,
+      480
+    ],
+    "figure_size_inches": [
+      4.4,
+      4.8
+    ],
+    "formula": "G_N(i,j)=1 iff i!=j and ((i-1) mod 5)==((j-1) mod 5)",
+    "generated_at": "2026-07-12T08:45:11.358079+00:00",
+    "generator_name": "modular-five-cluster-v1",
+    "generator_version": "2.0.0",
+    "graph_density": 0.1111111111111111,
+    "maximum_degree": 1,
+    "mean_degree": 1.0,
+    "minimum_degree": 1,
+    "node_coordinates": {
+      "1": {
+        "x_norm": 0.5,
+        "x_px": 220.0,
+        "y_norm": 0.104166667,
+        "y_px": 50.0
+      },
+      "10": {
+        "x_norm": 0.272901153,
+        "x_px": 120.076507,
+        "y_norm": 0.171806481,
+        "y_px": 82.467111
+      },
+      "2": {
+        "x_norm": 0.727098847,
+        "x_px": 319.923493,
+        "y_norm": 0.171806481,
+        "y_px": 82.467111
+      },
+      "3": {
+        "x_norm": 0.867453654,
+        "x_px": 381.679608,
+        "y_norm": 0.348889814,
+        "y_px": 167.467111
+      },
+      "4": {
+        "x_norm": 0.867453654,
+        "x_px": 381.679608,
+        "y_norm": 0.567776852,
+        "y_px": 272.532889
+      },
+      "5": {
+        "x_norm": 0.727098847,
+        "x_px": 319.923493,
+        "y_norm": 0.744860186,
+        "y_px": 357.532889
+      },
+      "6": {
+        "x_norm": 0.5,
+        "x_px": 220.0,
+        "y_norm": 0.8125,
+        "y_px": 390.0
+      },
+      "7": {
+        "x_norm": 0.272901153,
+        "x_px": 120.076507,
+        "y_norm": 0.744860186,
+        "y_px": 357.532889
+      },
+      "8": {
+        "x_norm": 0.132546346,
+        "x_px": 58.320392,
+        "y_norm": 0.567776852,
+        "y_px": 272.532889
+      },
+      "9": {
+        "x_norm": 0.132546346,
+        "x_px": 58.320392,
+        "y_norm": 0.348889814,
+        "y_px": 167.467111
+      }
+    },
+    "number_of_edges": 5,
+    "png_dpi": 300,
+    "png_hash": "2e046803089d6af95c43d7bcfb96500a7bf0a13362f4e284dec30f76a569a7bf",
+    "realized_degree_sequence": [
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1
+    ],
+    "renderer": {
+      "backend": "Agg",
+      "matplotlib_config_dir": "/tmp/claude-501/mpl",
+      "name": "matplotlib-direct-dual-export",
+      "version": "3.11.0"
+    },
+    "source_a20_hash": "75feebe2a5304fdbdd4b7b14637bc3162eae4e25b2a67054533ae8a0659d4834",
+    "svg_hash": "9ea99509158f7201f1f82be259aa5c00f951db4734d051d566668e84ea1f9eb2",
+    "target_degree_sequence": [
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1
+    ],
+    "topology_seed": null
+  },
+  "node_ids": [
+    "1",
+    "2",
+    "3",
+    "4",
+    "5",
+    "6",
+    "7",
+    "8",
+    "9",
+    "10"
+  ],
+  "source_a20_hash": "75feebe2a5304fdbdd4b7b14637bc3162eae4e25b2a67054533ae8a0659d4834",
+  "topology_hash": "24958ca858ddd9fa45afab3f1dd9673b6093b55f15362e49eb4a72906136b8a3"
+}
