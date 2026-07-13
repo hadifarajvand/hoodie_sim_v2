@@ -5,20 +5,22 @@
 | Field | Value |
 |---|---|
 | Title | ECHO Master Execution Plan |
-| Plan version | `ECHO-MEP-v2.0` |
-| Status | `PLANNED — planning pass complete; execution not started` |
+| Plan version | `ECHO-MEP-v2.1` |
+| Status | `PLANNED — source-authority correction blocked; live tab fetch unavailable` |
 | Creation time | `2026-07-13T18:30:45Z` |
 | Last updated time | `2026-07-13T18:30:45Z` |
 | Repository branch | `main` |
 | Repository HEAD | `d747b0c1f9dc2c956b7272fa7b4e3b9da0d836d7` |
 | Working-tree status | clean |
-| Authoritative source identifiers | Live ECHO method tab `t.iav4589yyeo7` (`روش پیشنهادی`); captured export snapshot `ALtnJHyTLdhKaOnVqfvxB74eKtegK8Hrsx5l2yaYdk68tSHgf-QdYtM6nrsTZrwFDm3DbTUFkeWajyCFP0Eevns2d7r0_twwuuYjD4ZcMQ`; HOODIE OCR bundle; topology authorization v2; PNG export authorization |
+| Authoritative source identifiers | Live ECHO method tab `t.iav4589yyeo7` (`روش پیشنهادی`); captured export snapshot `ALtnJHzzm4hFNZK8DdBeKreoGaZ2RSO7F5oymwXZTjamK8fUxsa71RdvAu-7KkfW25xxeNA3C-Ns0TIbs-kwgO8FwUg1U68nloS7CIA1sg`; HOODIE OCR bundle; topology authorization v2; PNG export authorization |
 | Plan owner | Principal research-simulation architect / distributed-systems engineer / deep-RL specialist / scientific execution planner |
 | Update policy | Append-only evidence log; refresh before and after every scoped run; never erase history; recalculate counts from task register after every edit |
 
 ## 2. Executive Verdict
 
 The repository is not yet scientifically complete. Several ECHO-specific runtime mechanics are proven by smoke artifacts, but the faithful base HOODIE simulator, frozen baseline, authoritative ECHO evaluation matrix, and final Figures 4–8 pipeline are still unfinished.
+
+ECHO-MEP-v2.0 initially failed source-authority verification because the plan treated a repository export revision as if it were the live Google Docs authority.
 
 The right order is base-first freeze, then ECHO isolation, then evaluation, then figures and final reports. Legacy smoke and placeholder artifacts remain history only; they are not final science.
 
@@ -37,7 +39,7 @@ Superseded document: `research/ECHO_topology_authorization.md`.
 
 | Source | Revision / identifier | Coverage | Status |
 | --- | --- | --- | --- |
-| Live ECHO method tab | Google Doc `17iqZWA0bF5unbyuVYnRiW1IUcr0Ctb2KFw1f5XE2poE`, tab `t.iav4589yyeo7`, title `روش پیشنهادی`, captured snapshot `ALtnJHyTLdhKaOnVqfvxB74eKtegK8Hrsx5l2yaYdk68tSHgf-QdYtM6nrsTZrwFDm3DbTUFkeWajyCFP0Eevns2d7r0_twwuuYjD4ZcMQ` | Equations (1)–(67); sections A–G | PARTIALLY VERIFIED — live fetch blocked here; repository export snapshot recorded |
+| Live ECHO method tab | Google Doc `17iqZWA0bF5unbyuVYnRiW1IUcr0Ctb2KFw1f5XE2poE`, tab `t.iav4589yyeo7`, title `روش پیشنهادی`, captured snapshot `ALtnJHzzm4hFNZK8DdBeKreoGaZ2RSO7F5oymwXZTjamK8fUxsa71RdvAu-7KkfW25xxeNA3C-Ns0TIbs-kwgO8FwUg1U68nloS7CIA1sg` | Equations (1)–(67); sections A–G | BLOCKED — live fetch unavailable in this environment; repository export snapshot recorded for offline comparison only |
 | HOODIE paper | Original PDF + OCR exports in `resources/papers/hoodie/ocr/*` | Base simulator, learning, queueing, baselines, experiments | VERIFIED |
 | Topology authorization | `research/ECHO_topology_authorization_v2.md` | Five-cluster scalable topology and Figure 4 / 6(d) / 6(e) | VERIFIED |
 | PNG export authorization | `research/ECHO_png_export_authorization.md` | Vector + 300-dpi export without CairoSVG dependency | VERIFIED |
@@ -51,6 +53,7 @@ Superseded document: `research/ECHO_topology_authorization.md`.
 - Never use MPS; use CUDA when available, CPU otherwise.
 - Never treat a smoke artifact, report, or placeholder figure as authoritative scientific evidence.
 - Never run pilot or full evaluation before runtime, state, mask, and replay contracts are frozen and tested.
+- Before any ECHO implementation task, fetch live tab revision first; if the live revision differs from the plan, stop and update the plan before coding.
 
 ## 6. Current Repository and Git State
 
@@ -96,6 +99,14 @@ Superseded document: `research/ECHO_topology_authorization.md`.
 6. `src/evaluation/policy_registry.py:1-40` aliases `HOODIE` to `ADAPTIVE`, which is useful for compatibility but not a faithful HOODIE baseline freeze. Fix in `BASE-019` and `FREEZE-001`.
 7. `scripts/run_figures_8_11_validation.py` and the legacy analysis bundles are historical evidence only; they are not authoritative Figure 4–8 outputs. Fix in `CLEAN-002`, `FIG-001`–`FIG-006`.
 
+## Live ECHO Source Drift Audit
+
+| Item | Live equation/section | Repository-export behavior | Existing plan behavior | Difference | Scientific significance | Affected task IDs | Required correction | Status |
+|---|---|---|---|---|---|---|---|---|
+| Source revision provenance | Live tab `t.iav4589yyeo7` / current live revision must be fetched directly | `research/ECHO_method_spec.md` is a repository snapshot | Plan treated repository snapshot revision as primary authority | Snapshot vs live authority | Live authority must win | `SRC-001`, `PLAN-001`, `ECHO-002`–`ECHO-020`, `REPORT-002`, `REPORT-003`, `HANDOFF-001` | Change source hierarchy, record live-fetch mechanism, and demote snapshot to offline comparison only | UNRESOLVED |
+| Algorithm 1 | Training slot order in live tab | Exported algorithm text is a historical snapshot | Plan already models training order but with snapshot authority | Authority provenance only | No method drift if semantics match | `ECHO-019`, `ECHO-020`, `EVAL-003`–`EVAL-012` | Keep task structure; replace primary authority reference with live tab | UNRESOLVED |
+| Algorithm 2 | Inference slot order in live tab | Exported algorithm text is a historical snapshot | Plan already models inference order but with snapshot authority | Authority provenance only | No method drift if semantics match | `ECHO-019`, `ECHO-020`, `EVAL-003`–`EVAL-012` | Keep task structure; replace primary authority reference with live tab | UNRESOLVED |
+| Equations (1)–(67) | Live tab required | Repository export contains equations, but not live revision | Plan trace matrix references export snapshot as if live-equivalent | Authority mismatch | High, because every ECHO task relies on the source hierarchy | `SRC-001`, `ECHO-002`–`ECHO-015`, `ECHO-018`–`ECHO-020` | Update authority hierarchy and per-task source citations | UNRESOLVED |
 ## 9. Target Shared Physical Architecture
 
 ### Shared physical simulator
@@ -207,12 +218,12 @@ Cloud example: same as horizontal, but with cloud destination capacity and cloud
 
 | ID | Status | Title | Dependencies |
 | --- | --- | --- | --- |
-| `SRC-001` | `PARTIALLY IMPLEMENTED` | Fetch and register the current live ECHO method tab and revision | — |
-| `SRC-002` | `PARTIALLY IMPLEMENTED` | Build a HOODIE paper evidence registry by section, equation, table, and figure | `SRC-001` |
-| `AUDIT-001` | `VERIFIED COMPLETE` | Produce the current code-path and dependency inventory | `SRC-001` |
-| `AUDIT-002` | `PARTIALLY IMPLEMENTED` | Reconcile old completion claims against real live paths | `AUDIT-001`, `SRC-002` |
-| `PLAN-001` | `VERIFIED COMPLETE` | Correct version, HEAD, task totals, statuses, dependencies, critical path, and dashboard | `AUDIT-002` |
-| `CLEAN-001` | `VERIFIED COMPLETE` | Classify existing artifacts as authoritative, historical, superseded, or removable later | `AUDIT-001` |
+| `SRC-001` | `READY` | Fetch and register the current live ECHO method tab and revision | `Live Google Docs tab `t.iav4589yyeo7`; repository snapshot only for offline comparison |
+| `SRC-002` | `PARTIALLY IMPLEMENTED` | Build a HOODIE paper evidence registry by section, equation, table, and figure | `resources/papers/hoodie/ocr/*`; `resources/papers/hoodie/original/HOODIE_paper.pdf` |
+| `AUDIT-001` | `VERIFIED COMPLETE` | Produce the current code-path and dependency inventory | `src/` and `tests/` inventory |
+| `AUDIT-002` | `PARTIALLY IMPLEMENTED` | Reconcile old completion claims against real live paths | `artifacts/reports/ECHO_AUTONOMOUS_HANDOFF.md`; `artifacts/reports/ECHO_FULL_TEST_TRIAGE_REPORT.md` |
+| `PLAN-001` | `VERIFIED COMPLETE` | Correct version, HEAD, task totals, statuses, dependencies, critical path, and dashboard | existing master plan history |
+| `CLEAN-001` | `VERIFIED COMPLETE` | Classify existing artifacts as authoritative, historical, superseded, or removable later | `artifacts/*`; `research/*` |
 
 ## Phase 1 — Faithful base HOODIE simulator
 
@@ -480,7 +491,7 @@ Bounded paired comparison across ECHO, ECHO-NoLSTM, HOODIE, RO, FLC, VO, HO, BCO
 | Reporting completion % | 0.0% |
 | Overall weighted completion % | 19.2% |
 | Current critical-path task | `SRC-001` → `SRC-002` → `AUDIT-001` → `AUDIT-002` → `PLAN-001` → `CLEAN-001` → `BASE-001` → `BASE-005` → `BASE-010` → `BASE-014` → `BASE-015` → `BASE-016` → `BASE-018` → `FREEZE-001` → `ECHO-001` → `ECHO-012` → `ECHO-015` → `ECHO-017` → `ECHO-019` → `ECHO-020` → `EVAL-001` → `EVAL-004` → `EVAL-008` → `EVAL-012` → `FIG-001` → `FIG-004` → `FIG-005` → `REPORT-003` → `HANDOFF-001` |
-| Next exact command | `git fetch origin && git rev-parse --abbrev-ref HEAD && git rev-parse HEAD && git rev-parse origin/main` |
+| Next exact command | `fetch live Google Docs tab t.iav4589yyeo7 and update source-revision register` |
 
 ## 28. Next Exact Command
 
@@ -496,7 +507,7 @@ Bounded paired comparison across ECHO, ECHO-NoLSTM, HOODIE, RO, FLC, VO, HO, BCO
 
 | Criterion | Result | Evidence |
 | --- | --- | --- |
-| Source authority consistency | PASS | Live method tab, HOODIE OCR bundle, and approved clarifications are ordered explicitly; superseded topology doc is named. |
+| Source authority consistency | FAIL | Live tab fetch unavailable in this environment; repository snapshot was incorrectly treated as current authority in prior pass. |
 | Current HEAD consistency | PASS | Branch `main`, HEAD `d747b0c1f9dc2c956b7272fa7b4e3b9da0d836d7`, origin/main matches. |
 | Task-count consistency | PASS | 73 tasks total; phase counts 6 / 23 / 20 / 12 / 12; dashboard matches register. |
 | Dependency consistency | PASS | Every dependency points to a real task id; phase chains and cross-phase gates are coherent. |
@@ -510,4 +521,4 @@ Bounded paired comparison across ECHO, ECHO-NoLSTM, HOODIE, RO, FLC, VO, HO, BCO
 | Compute sequencing | PASS | Smoke precedes pilot; pilot precedes full evaluation; throughput measurement precedes budgeting. |
 | Artifact lineage | PASS | Every figure / evaluation task requires raw outputs, seed CSVs, manifests, and lineage. |
 | Cleanup safety | PASS | Legacy artifacts are classified as historical or superseded, not deleted first. |
-| No unsupported completion claims | PASS | Plan explicitly marks current smoke / legacy artifacts as evidence, not final science. |
+| No unsupported completion claims | FAIL | Prior pass overstated source authority; correction pass is required before execution. |
