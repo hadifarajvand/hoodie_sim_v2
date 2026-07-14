@@ -8,7 +8,7 @@
   "preflight_commit": "72a398d1877ebba5a0f891a122a1c0a154de7fbd",
   "preflight_result": "PASS",
   "controller_mode": "SEQUENTIAL_SINGLE_TASK",
-  "global_status": "BOOTSTRAPPED",
+  "global_status": "REWORK_AUTHORIZED",
   "task_order": [
     "SRC-001", "SRC-002", "AUDIT-001", "AUDIT-002", "PLAN-001", "CLEAN-001",
     "BASE-001", "BASE-002", "BASE-003", "BASE-004", "BASE-006", "BASE-005",
@@ -26,7 +26,7 @@
   ],
   "statuses": {
     "VERIFIED_COMPLETE": ["SRC-002", "AUDIT-001", "AUDIT-002", "PLAN-001", "CLEAN-001"],
-    "READY": ["SRC-001", "BASE-001"],
+    "READY": ["BASE-001"],
     "BLOCKED": [
       "BASE-002", "BASE-003", "BASE-004", "BASE-006", "BASE-005", "BASE-007",
       "BASE-008", "BASE-009", "BASE-010", "BASE-011", "BASE-012", "BASE-013",
@@ -43,21 +43,22 @@
     ],
     "IN_PROGRESS": [],
     "IMPLEMENTED_PENDING_REVIEW": [],
-    "REWORK": [],
+    "REWORK": ["SRC-001"],
     "BLOCKED_EXTERNAL": [],
     "PLAN_CHANGE_REQUIRED": [],
     "STALE_BRANCH": [],
     "MERGE_BLOCKED": []
   },
-  "attempts": {"SRC-001": 1},
+  "attempts": {"SRC-001": 2},
   "task_records": {
     "SRC-001": {
-      "authorized_branch": "task/src-001-r1",
-      "start_sha_rule": "branch from the control commit containing NEXT_TASK.json; require that commit's parent equals NEXT_TASK.authorized_parent_sha",
-      "task_commit_sha": null,
-      "review_commit_sha": null,
+      "authorized_branch": "task/src-001-r2",
+      "attempt_1_task_commit": "7afff25fe879c51070351933f72ceab60f52b9a5",
+      "attempt_1_review_commit": "40b2fb805259d97af36bc9124f28a5e09960a25b",
+      "attempt_1_verdict": "REWORK",
       "merge_sha": null,
-      "blocker": null
+      "blocker": "Incomplete git_diff.patch and missing git_diff.patch SHA-256",
+      "next_attempt": 2
     }
   }
 }
