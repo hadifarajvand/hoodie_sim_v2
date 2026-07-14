@@ -15,6 +15,8 @@ class TrainingConfig:
     target_network_update_frequency: int
     episode_count: int
     episode_length: int
+    discount_factor: float = 0.99
+    drain_slots: int = 0
     seed_management: SeedManagement = field(default_factory=SeedManagement)
     policy_name: str = "HOODIE"
     trace_id: str = "training"
@@ -53,6 +55,7 @@ class TrainingConfig:
             trace_id=self.trace_id,
             episode_count=self.episode_count,
             episode_length=self.episode_length,
+            drain_slots=self.drain_slots,
             output_dir=self.output_dir,
             trace_mode=self.trace_mode,
             device=self.device,
