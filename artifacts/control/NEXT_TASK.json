@@ -1,6 +1,9 @@
 {
   "schema_version": 1,
   "plan_version": "ECHO-MEP-v4.2",
+  "approved_plan_commit": "a99ed28feb2999832738dcdff96bb085629ac546",
+  "preflight_result": "PASS",
+  "authorization_status": "AUTHORIZED",
   "task_id": "SRC-001",
   "attempt": 1,
   "branch": "task/src-001-r1",
