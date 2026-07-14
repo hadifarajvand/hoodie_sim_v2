@@ -28,7 +28,7 @@ class AgentEventSMDPAccumulator:
     """Build one non-overlapping transition between decisions of each EA.
 
     Task outcomes are assigned to the open interval of their source EA using
-    the within-interval discount from Equation (59).  A transition is emitted
+    the within-interval discount from Equation (59). A transition is emitted
     only when that same EA receives its next task, or at the terminal epoch.
     """
 
@@ -75,9 +75,18 @@ class AgentEventSMDPAccumulator:
         return transition
 
     def observe_resolution(self, event: dict[str, Any]) -> None:
-        source_agent_id = int(event["source_agent_id"])
+        # The environment's TaskResolutionEvent serializes this field as
+        # ``source_id``.  ``source_agent_id`` remains accepted for tests and
+        # external campaign adapters.
+        source_value = event.get("source_agent_id", event.get("source_id"))
+        if source_value is None:
+            raise KeyError("resolution event requires source_id")
+        source_agent_id = int(source_value)
         open_decision = self._open.get(source_agent_id)
         if open_decision is None:
+            # A resolution without an open source interval can only originate
+            # from an invalid trace or an episode that began mid-lifecycle.  It
+            # is ignored here and caught by the campaign accounting audit.
             return
         resolution_slot = int(event["resolution_slot"])
         exponent = max(0, resolution_slot - open_decision.decision_slot)
