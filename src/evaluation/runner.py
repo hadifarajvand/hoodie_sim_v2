@@ -42,16 +42,19 @@ class EvaluationRunner:
             agent_count=agent_count,
             arrival_probability=arrival_probability,
             timeout_length=timeout_slots,
+            drain_slots=self.config.drain_slots,
         )
 
     def _evaluate_episode(self, trace: EvaluationTrace) -> TraceMetrics:
         runtime_parameters = self.runtime_parameters or SharedRuntimeParameters()
         env = HoodieGymEnvironment(
             episode_length=self.config.episode_length,
+            drain_slots=self.config.drain_slots,
             topology=self.topology,
             runtime_parameters=runtime_parameters,
             compute_config=runtime_parameters.to_compute_config(),
             policy_name=self.config.policy_name,
+            trace=trace,
         )
         observation, _info = env.reset(seed=trace.seed)
         records: list[TaskEvaluationRecord] = []
