@@ -5,45 +5,62 @@
 | Field | Value |
 |---|---|
 | Title | ECHO Master Execution Plan |
-| Plan version | `ECHO-MEP-v2.2` |
-| Status | `PLANNED — source-authority validation blocked; live tab fetch unavailable after retries` |
+| Plan version | `ECHO-MEP-v2.3` |
+| Status | `CONDITIONALLY APPROVED — BASE-HOODIE PHASE ONLY` |
 | Creation time | `2026-07-13T18:30:45Z` |
-| Last updated time | `2026-07-13T18:30:45Z` |
+| Last updated time | `2026-07-13T19:30:14Z` |
 | Repository branch | `main` |
-| Repository HEAD | `d747b0c1f9dc2c956b7272fa7b4e3b9da0d836d7` |
-| Working-tree status | clean |
-| Authoritative source identifiers | Live ECHO method tab `t.iav4589yyeo7` (`روش پیشنهادی`); captured export snapshot `ALtnJHzzm4hFNZK8DdBeKreoGaZ2RSO7F5oymwXZTjamK8fUxsa71RdvAu-7KkfW25xxeNA3C-Ns0TIbs-kwgO8FwUg1U68nloS7CIA1sg`; HOODIE OCR bundle; topology authorization v2; PNG export authorization |
+| Repository HEAD | `d8dbf131dc4cff3879636853cafa9371a0914d99` |
+| Working-tree status | clean at verification start; this file is the only intended tracked edit from this pass |
+| Authoritative source identifiers | Live ECHO method tab `t.iav4589yyeo7` (`روش پیشنهادی`), externally verified current revision `ALtnJHzzm4hFNZK8DdBeKreoGaZ2RSO7F5oymwXZTjamK8fUxsa71RdvAu-7KkfW25xxeNA3C-Ns0TIbs-kwgO8FwUg1U68nloS7CIA1sg`; historical repository export `ALtnJHyTLdhKaOnVqfvxB74eKtegK8Hrsx5l2yaYdk68tSHgf-QdYtM6nrsTZrwFDm3DbTUFkeWajyCFP0Eevns2d7r0_twwuuYjD4ZcMQ` for offline comparison only; HOODIE OCR bundle; topology authorization v2; PNG export authorization |
 | Plan owner | Principal research-simulation architect / distributed-systems engineer / deep-RL specialist / scientific execution planner |
 | Update policy | Append-only evidence log; refresh before and after every scoped run; never erase history; recalculate counts from task register after every edit |
 
 ## 2. Executive Verdict
 
-The repository is not yet scientifically complete. Several ECHO-specific runtime mechanics are proven by smoke artifacts, but the faithful base HOODIE simulator, frozen baseline, authoritative ECHO evaluation matrix, and final Figures 4–8 pipeline are still unfinished.
+Plan structural readiness: PASS. Base-HOODIE execution readiness: PASS. ECHO implementation readiness: BLOCKED — SOURCE LOCK AND BASE FREEZE REQUIRED. Overall approval: CONDITIONALLY APPROVED — BASE-HOODIE PHASE ONLY.
 
-ECHO-MEP-v2.0 initially failed source-authority verification because the plan treated a repository export revision as if it were the live Google Docs authority.
+ECHO-MEP-v2.0 treated the historical export as live authority. ECHO-MEP-v2.1 fixed source hierarchy but could not complete live validation in this environment. ECHO-MEP-v2.2 preserved that limitation but left readiness semantics too coarse. ECHO-MEP-v2.3 separates base execution readiness from ECHO source-lock readiness, preserves external live verification, and blocks only the work that truly depends on an immutable source lock.
 
-The right order is base-first freeze, then ECHO isolation, then evaluation, then figures and final reports. Legacy smoke and placeholder artifacts remain history only; they are not final science.
+The base HOODIE phase may proceed now. ECHO implementation and authoritative evaluation remain blocked until the source-lock bundle exists and FREEZE-001 is complete.
 
 ## 3. Authority Hierarchy
 
-1. Live ECHO method tab `t.iav4589yyeo7` (`روش پیشنهادی`).
-2. HOODIE paper PDF + OCR bundle.
-3. ECHO evaluation material, when consistent with the live method tab.
+1. Live ECHO method tab `t.iav4589yyeo7` (`روش پیشنهادی`) as externally verified live authority.
+2. HOODIE paper PDF + OCR bundle for the frozen base simulator.
+3. ECHO evaluation material only when consistent with the live method tab.
 4. `research/ECHO_topology_authorization_v2.md` and `research/ECHO_png_export_authorization.md`.
-5. Repository code and tests as evidence only.
+5. Repository code and tests as evidence only, never as method authority.
 6. Legacy artifacts and reports as lowest authority.
 
-Superseded document: `research/ECHO_topology_authorization.md`.
+Repository export snapshot `research/ECHO_method_spec.md` is a historical offline aid only. It may support comparison after the live snapshot is locked, but it is not the implementation lock source.
 
 ## 4. Source Revision Register
 
 | Source | Revision / identifier | Coverage | Status |
 | --- | --- | --- | --- |
-| Live ECHO method tab | Google Doc `17iqZWA0bF5unbyuVYnRiW1IUcr0Ctb2KFw1f5XE2poE`, tab `t.iav4589yyeo7`, title `روش پیشنهادی`, captured snapshot `ALtnJHzzm4hFNZK8DdBeKreoGaZ2RSO7F5oymwXZTjamK8fUxsa71RdvAu-7KkfW25xxeNA3C-Ns0TIbs-kwgO8FwUg1U68nloS7CIA1sg` | Equations (1)–(67); sections A–G | BLOCKED — live fetch unavailable in this environment after retries; repository export snapshot recorded for offline comparison only |
+| Live ECHO method tab | Google Doc `17iqZWA0bF5unbyuVYnRiW1IUcr0Ctb2KFw1f5XE2poE`, tab `t.iav4589yyeo7`, title `روش پیشنهادی`, externally verified current revision `ALtnJHzzm4hFNZK8DdBeKreoGaZ2RSO7F5oymwXZTjamK8fUxsa71RdvAu-7KkfW25xxeNA3C-Ns0TIbs-kwgO8FwUg1U68nloS7CIA1sg` | Equations (1)–(67); Algorithm 1; Algorithm 2; arrivals; dispatch; queues; ERT; canonical mask; state; reward; masked Dueling Double-DQL | EXTERNALLY VERIFIED — LOCAL SOURCE SNAPSHOT STILL REQUIRED |
+| Repository export snapshot | `research/ECHO_method_spec.md`, revision `ALtnJHyTLdhKaOnVqfvxB74eKtegK8Hrsx5l2yaYdk68tSHgf-QdYtM6nrsTZrwFDm3DbTUFkeWajyCFP0Eevns2d7r0_twwuuYjD4ZcMQ` | Offline comparison snapshot only | HISTORICAL / SECONDARY |
 | HOODIE paper | Original PDF + OCR exports in `resources/papers/hoodie/ocr/*` | Base simulator, learning, queueing, baselines, experiments | VERIFIED |
 | Topology authorization | `research/ECHO_topology_authorization_v2.md` | Five-cluster scalable topology and Figure 4 / 6(d) / 6(e) | VERIFIED |
 | PNG export authorization | `research/ECHO_png_export_authorization.md` | Vector + 300-dpi export without CairoSVG dependency | VERIFIED |
 | Evaluation specification | `research/ECHO_evaluation_spec.md` | Figures 4–8 panel matrix and held-out evaluation rules | VERIFIED |
+| Source-lock paths | `research/authority/echo/live/ECHO_PROPOSED_METHOD.md`; `research/authority/echo/live/source_metadata.json`; `research/authority/echo/live/SHA256SUMS` | Future immutable snapshot bundle for the live ECHO tab | PLANNED |
+
+## Required ECHO Source-Lock Handoff
+
+1. Fetch exact document and tab with a trusted live Docs environment.
+2. Record returned revision ID and retrieval metadata.
+3. Export only authoritative tab content.
+4. Normalize line endings and Unicode consistently.
+5. Store snapshot at `research/authority/echo/live/ECHO_PROPOSED_METHOD.md`.
+6. Compute SHA-256 and write `research/authority/echo/live/SHA256SUMS`.
+7. Verify Equations (1)–(67), Algorithm 1, and Algorithm 2.
+8. Write `research/authority/echo/live/source_metadata.json` with document ID, tab ID, tab title, revision ID, retrieval timestamp, retrieval method, normalized SHA-256, raw SHA-256 when available, equation range, algorithm presence, approver, and authority status.
+9. Commit the source snapshot and metadata in the trusted environment.
+10. Update `SRC-001` evidence in this plan.
+11. Run the 69-row drift audit against the snapshot and the repository export.
+12. Lock ECHO implementation to that revision; any later live revision change stops new ECHO work until reviewed and approved.
 
 ## 5. Non-Negotiable Reproduction Principles
 
@@ -68,26 +85,11 @@ Superseded document: `research/ECHO_topology_authorization.md`.
 
 | Component | Current status | Evidence | Remaining gap | Planned task IDs |
 | --- | --- | --- | --- | --- |
-| Topology | PARTIALLY COMPLETE | `src/environment/topology.py:1-120, 369-435, 709-843`; `research/ECHO_topology_authorization_v2.md`; `tests/unit/test_phase0_topology_legality.py` | Anchor / scalable rule exists, but base HOODIE freeze still pending | BASE-002, BASE-019, FIG-001, FIG-003, FIG-004, FIG-005 |
-| Task lifecycle | PARTIALLY COMPLETE | `src/environment/gym_adapter.py:33-100, 228-420, 635-760`; `src/environment/task.py:8-132` | ECHO event-led resolution exists, but faithful base timing still needs freeze | RT-001, RT-002, BASE-005, BASE-006, ECHO-011, ECHO-014 |
-| Event ledger | PARTIALLY COMPLETE | `src/environment/gym_adapter.py:44-67, 635-724, 805-929`; smoke artifacts under `artifacts/smoke/echo_runtime/` | Resolution / reward-delivery separation exists, but must be validated against base and ECHO specs | ECHO-011, ECHO-013, ECHO-014, ECHO-019 |
-| Reward delivery | PARTIALLY COMPLETE | `src/environment/reward_timing.py`; `src/environment/gym_adapter.py:647-724`; `src/training/training_loop.py:59-135` | Delayed reward ledger exists; must remain one reward per resolution and one transition per delivered reward | ECHO-013, ECHO-014, ECHO-015 |
-| Local execution | PARTIALLY COMPLETE | `src/environment/environment.py:40-63`; `src/environment/runtime_model.py:76-132`; `src/environment/private_queue.py:11-37` | Service advances exist, but faithful base slot ordering still needs audit | BASE-005, BASE-007, BASE-017 |
-| Horizontal offloading | PARTIALLY COMPLETE | `src/environment/offloading_queue.py:11-35`; `src/environment/gym_adapter.py:339-438, 566-724` | Selected destination metadata and delayed admission exist; source-only outbound resource still needs freeze validation | BASE-008, BASE-009, BASE-010, ECHO-002, ECHO-004 |
-| Cloud offloading | PARTIALLY COMPLETE | `src/environment/public_queue.py:11-42`; `src/environment/gym_adapter.py:486-560, 566-724` | Source-indexed destination queues exist, but authoritative base-cloud semantics still need freeze validation | BASE-011, BASE-012, ECHO-005 |
-| ERT | PARTIALLY COMPLETE | `src/echo_ert.py:8-61`; `src/environment/gym_adapter.py:960-1088` | Helper formulas exist; live scheduling and masking must still be tied to them | ECHO-003, ECHO-004, ECHO-005, ECHO-007, ECHO-008, ECHO-010 |
-| Action masks | PARTIALLY COMPLETE | `src/echo_action_space.py:16-72`; `src/policies/action_masking.py`; `src/environment/gym_adapter.py:960-1088` | Canonical action mask exists in helper form; must be the live policy mask everywhere | BASE-013, ECHO-009, ECHO-010, EVAL-010 |
-| State schema | PARTIALLY COMPLETE | `src/agents/paper_state_builder.py:11-75`; `src/environment/gym_adapter.py:990-1088`; `artifacts/reports/ECHO_STATE_SCHEMA.md` | Current live state is not yet the authoritative equation-53 tensor everywhere | BASE-014, ECHO-012 |
-| LSTM | PARTIALLY COMPLETE | `src/agents/lstm_dueling_dqn.py`; `src/agents/paper_state_builder.py:57-73`; `src/environment/runtime_model.py:109-132` | LSTM exists in code paths, but load-estimation coupling and stale-data recovery still need end-to-end proof | BASE-015, ECHO-006, ECHO-016 |
-| Learner | PARTIALLY COMPLETE | `src/training/training_loop.py:19-135`; `src/agents/hoodie_agent.py`; `src/agents/hoodie_model.py`; `src/agents/double_dqn.py` | Training path exists, but faithful HOODIE/ECHO learning semantics still need full freeze and isolation | BASE-016, BASE-018, ECHO-015, ECHO-017 |
-| Replay | PARTIALLY COMPLETE | `src/agents/replay_buffer.py:10-51`; `src/training/training_loop.py:59-135` | Replay buffer exists, but semi-Markov timing and exact transition finalization remain to be frozen | BASE-017, ECHO-014, ECHO-015 |
-| Semi-Markov target | PARTIALLY COMPLETE | `src/training/training_loop.py:59-135`; `src/agents/double_dqn.py` | Discounting must still be tied to `gamma ** Delta_i` and delayed reward delivery | BASE-018, ECHO-014, ECHO-015 |
-| Checkpointing | PARTIALLY COMPLETE | `artifacts/checkpoints/echo_smoke/echo_smoke_checkpoint.pt`; `artifacts/smoke/echo_learner/checkpoint_manifest.json` | Checkpoint artifacts exist, but portability and resume semantics still need authoritative freeze | ECHO-017, EVAL-005 |
-| Baselines | PARTIALLY COMPLETE | `src/evaluation/policy_registry.py`; `src/policies/*`; `src/evaluation/comparison_runner.py` | Baseline adapters exist, but HOODIE isolation and paired-trace reuse remain to be validated | BASE-019, EVAL-007, EVAL-011 |
-| Trace pairing | PARTIALLY COMPLETE | `src/evaluation/trace_protocol.py:1-97`; `artifacts/test_triage/current_only_partition_report.md` | Deterministic traces exist, but immutable paired trace bank and hash discipline still need formalization | BASE-003, EVAL-001, EVAL-011 |
-| Evaluation manifests | PARTIALLY COMPLETE | `src/evaluation/runner.py`; `src/evaluation/campaign_runner.py`; `src/evaluation/matrix_runner.py` | Runner and manifest code exist, but authoritative Figures 4–8 matrices are not finished | EVAL-002, EVAL-003, EVAL-004, EVAL-012 |
-| Figure pipeline | PARTIALLY COMPLETE | `src/analysis/controlled_mechanistic_sweeps/*`; `scripts/run_figures_8_11_validation.py`; `research/ECHO_png_export_authorization.md` | Legacy figure machinery exists, but ECHO Figure 4–8 outputs must be regenerated from authoritative raw data | FIG-001, FIG-002, FIG-003, FIG-004, FIG-005, FIG-006 |
-| Reports | PARTIALLY COMPLETE | `artifacts/reports/ECHO_AUTONOMOUS_HANDOFF.md`; `artifacts/reports/ECHO_FULL_TEST_TRIAGE_REPORT.md`; `artifacts/reports/ECHO_STATE_SCHEMA.md`; `artifacts/reports/ECHO_COMPUTE_PLAN.md` | Useful history exists, but final claims and lineage reports still need authoritative completion | REPORT-001, REPORT-002, REPORT-003, HANDOFF-001 |
+| Plan structure | PASS | This document now has 30 required sections plus the dedicated source-lock handoff section | None | PLAN-001 |
+| Base-HOODIE execution | PASS | Phase 1 begins with READY `BASE-001`; later Phase 1 tasks are dependency-blocked until executed | Base simulator and learner work still needs implementation | BASE-001–FREEZE-001 |
+| ECHO source-lock | BLOCKED | Live method was externally verified, but no immutable local snapshot exists in repo | Source-lock bundle and hash still absent | SRC-001 |
+| Full ECHO execution | BLOCKED | FREEZE-001 is incomplete and ECHO depends on both FREEZE-001 and SRC-001 | No authoritative ECHO work may start yet | ECHO-001–ECHO-020 |
+| Evaluation and figures | BLOCKED | Authoritative evaluation and figures require ECHO pilot outputs | No Figure 4–8 lineage yet | EVAL-001–HANDOFF-001 |
 
 ## 8. Confirmed Paper-to-Code Gaps
 
@@ -101,14 +103,80 @@ Superseded document: `research/ECHO_topology_authorization.md`.
 
 ## Live ECHO Source Drift Audit
 
-Source authority validation is blocked until the live Google Docs tab can be fetched successfully. The rows below record offline comparison evidence only; they are not a substitute for live authority.
+Source authority validation is externally verified at the live revision above, but no immutable local snapshot has been committed in this repository. Every row below remains UNRESOLVED until the source-lock handoff completes.
 
-| Item | Live equation/section | Repository-export behavior | Existing plan behavior | Difference | Scientific significance | Affected task IDs | Required correction | Status |
-|---|---|---|---|---|---|---|---|---|
-| Source revision provenance | Live tab `t.iav4589yyeo7` / current live revision must be fetched directly | `research/ECHO_method_spec.md` is a repository snapshot | Plan treated repository snapshot revision as primary authority | Snapshot vs live authority | Live authority must win | `SRC-001`, `PLAN-001`, `ECHO-002`–`ECHO-020`, `REPORT-002`, `REPORT-003`, `HANDOFF-001` | Change source hierarchy, record live-fetch mechanism, and demote snapshot to offline comparison only | UNRESOLVED |
-| Algorithm 1 | Training slot order in live tab | Exported algorithm text is a historical snapshot | Plan already models training order but with snapshot authority | Authority provenance only | No method drift if semantics match | `ECHO-019`, `ECHO-020`, `EVAL-003`–`EVAL-012` | Keep task structure; replace primary authority reference with live tab | UNRESOLVED |
-| Algorithm 2 | Inference slot order in live tab | Exported algorithm text is a historical snapshot | Plan already models inference order but with snapshot authority | Authority provenance only | No method drift if semantics match | `ECHO-019`, `ECHO-020`, `EVAL-003`–`EVAL-012` | Keep task structure; replace primary authority reference with live tab | UNRESOLVED |
-| Equations (1)–(67) | Live tab required | Repository export contains equations, but not live revision | Plan trace matrix references export snapshot as if live-equivalent | Authority mismatch | High, because every ECHO task relies on the source hierarchy | `SRC-001`, `ECHO-002`–`ECHO-015`, `ECHO-018`–`ECHO-020` | Update authority hierarchy and per-task source citations | UNRESOLVED |
+| Audit ID | Live item | Live scientific meaning | Repository-export equivalent | Existing task IDs | Comparison result | Difference description | Scientific consequence | Required plan correction | Verification evidence |
+|---|---|---|---|---|---|---|---|---|---|
+| `A-001` | Equation (1) | Live mathematical contract for Equation (1) | Repository export Equation (1) | SRC-001, ECHO-002–ECHO-020 | UNRESOLVED | Live authority not locally snapshotted | High | Lock arrivals, deadlines, actions, and dispatch semantics to live tab | External live verification only |
+| `A-002` | Equation (2) | Live mathematical contract for Equation (2) | Repository export Equation (2) | SRC-001, ECHO-002–ECHO-020 | UNRESOLVED | Live authority not locally snapshotted | High | Lock arrivals, deadlines, actions, and dispatch semantics to live tab | External live verification only |
+| `A-003` | Equation (3) | Live mathematical contract for Equation (3) | Repository export Equation (3) | SRC-001, ECHO-002–ECHO-020 | UNRESOLVED | Live authority not locally snapshotted | High | Lock arrivals, deadlines, actions, and dispatch semantics to live tab | External live verification only |
+| `A-004` | Equation (4) | Live mathematical contract for Equation (4) | Repository export Equation (4) | SRC-001, ECHO-002–ECHO-020 | UNRESOLVED | Live authority not locally snapshotted | High | Lock arrivals, deadlines, actions, and dispatch semantics to live tab | External live verification only |
+| `A-005` | Equation (5) | Live mathematical contract for Equation (5) | Repository export Equation (5) | SRC-001, ECHO-002–ECHO-020 | UNRESOLVED | Live authority not locally snapshotted | High | Lock arrivals, deadlines, actions, and dispatch semantics to live tab | External live verification only |
+| `A-006` | Equation (6) | Live mathematical contract for Equation (6) | Repository export Equation (6) | SRC-001, ECHO-002–ECHO-020 | UNRESOLVED | Live authority not locally snapshotted | High | Lock arrivals, deadlines, actions, and dispatch semantics to live tab | External live verification only |
+| `A-007` | Equation (7) | Live mathematical contract for Equation (7) | Repository export Equation (7) | SRC-001, ECHO-002–ECHO-020 | UNRESOLVED | Live authority not locally snapshotted | High | Lock arrivals, deadlines, actions, and dispatch semantics to live tab | External live verification only |
+| `A-008` | Equation (8) | Live mathematical contract for Equation (8) | Repository export Equation (8) | SRC-001, ECHO-002–ECHO-020 | UNRESOLVED | Live authority not locally snapshotted | High | Lock arrivals, deadlines, actions, and dispatch semantics to live tab | External live verification only |
+| `A-009` | Equation (9) | Live mathematical contract for Equation (9) | Repository export Equation (9) | SRC-001, ECHO-002–ECHO-020 | UNRESOLVED | Live authority not locally snapshotted | High | Lock queue, service, and transmission lifecycle semantics to live tab | External live verification only |
+| `A-010` | Equation (10) | Live mathematical contract for Equation (10) | Repository export Equation (10) | SRC-001, ECHO-002–ECHO-020 | UNRESOLVED | Live authority not locally snapshotted | High | Lock queue, service, and transmission lifecycle semantics to live tab | External live verification only |
+| `A-011` | Equation (11) | Live mathematical contract for Equation (11) | Repository export Equation (11) | SRC-001, ECHO-002–ECHO-020 | UNRESOLVED | Live authority not locally snapshotted | High | Lock queue, service, and transmission lifecycle semantics to live tab | External live verification only |
+| `A-012` | Equation (12) | Live mathematical contract for Equation (12) | Repository export Equation (12) | SRC-001, ECHO-002–ECHO-020 | UNRESOLVED | Live authority not locally snapshotted | High | Lock queue, service, and transmission lifecycle semantics to live tab | External live verification only |
+| `A-013` | Equation (13) | Live mathematical contract for Equation (13) | Repository export Equation (13) | SRC-001, ECHO-002–ECHO-020 | UNRESOLVED | Live authority not locally snapshotted | High | Lock queue, service, and transmission lifecycle semantics to live tab | External live verification only |
+| `A-014` | Equation (14) | Live mathematical contract for Equation (14) | Repository export Equation (14) | SRC-001, ECHO-002–ECHO-020 | UNRESOLVED | Live authority not locally snapshotted | High | Lock queue, service, and transmission lifecycle semantics to live tab | External live verification only |
+| `A-015` | Equation (15) | Live mathematical contract for Equation (15) | Repository export Equation (15) | SRC-001, ECHO-002–ECHO-020 | UNRESOLVED | Live authority not locally snapshotted | High | Lock queue, service, and transmission lifecycle semantics to live tab | External live verification only |
+| `A-016` | Equation (16) | Live mathematical contract for Equation (16) | Repository export Equation (16) | SRC-001, ECHO-002–ECHO-020 | UNRESOLVED | Live authority not locally snapshotted | High | Lock queue, service, and transmission lifecycle semantics to live tab | External live verification only |
+| `A-017` | Equation (17) | Live mathematical contract for Equation (17) | Repository export Equation (17) | SRC-001, ECHO-002–ECHO-020 | UNRESOLVED | Live authority not locally snapshotted | High | Lock destination workload and LSTM semantics to live tab | External live verification only |
+| `A-018` | Equation (18) | Live mathematical contract for Equation (18) | Repository export Equation (18) | SRC-001, ECHO-002–ECHO-020 | UNRESOLVED | Live authority not locally snapshotted | High | Lock destination workload and LSTM semantics to live tab | External live verification only |
+| `A-019` | Equation (19) | Live mathematical contract for Equation (19) | Repository export Equation (19) | SRC-001, ECHO-002–ECHO-020 | UNRESOLVED | Live authority not locally snapshotted | High | Lock destination workload and LSTM semantics to live tab | External live verification only |
+| `A-020` | Equation (20) | Live mathematical contract for Equation (20) | Repository export Equation (20) | SRC-001, ECHO-002–ECHO-020 | UNRESOLVED | Live authority not locally snapshotted | High | Lock destination workload and LSTM semantics to live tab | External live verification only |
+| `A-021` | Equation (21) | Live mathematical contract for Equation (21) | Repository export Equation (21) | SRC-001, ECHO-002–ECHO-020 | UNRESOLVED | Live authority not locally snapshotted | High | Lock destination workload and LSTM semantics to live tab | External live verification only |
+| `A-022` | Equation (22) | Live mathematical contract for Equation (22) | Repository export Equation (22) | SRC-001, ECHO-002–ECHO-020 | UNRESOLVED | Live authority not locally snapshotted | High | Lock destination workload and LSTM semantics to live tab | External live verification only |
+| `A-023` | Equation (23) | Live mathematical contract for Equation (23) | Repository export Equation (23) | SRC-001, ECHO-002–ECHO-020 | UNRESOLVED | Live authority not locally snapshotted | High | Lock destination workload and LSTM semantics to live tab | External live verification only |
+| `A-024` | Equation (24) | Live mathematical contract for Equation (24) | Repository export Equation (24) | SRC-001, ECHO-002–ECHO-020 | UNRESOLVED | Live authority not locally snapshotted | High | Lock destination workload and LSTM semantics to live tab | External live verification only |
+| `A-025` | Equation (25) | Live mathematical contract for Equation (25) | Repository export Equation (25) | SRC-001, ECHO-002–ECHO-020 | UNRESOLVED | Live authority not locally snapshotted | High | Lock destination workload and LSTM semantics to live tab | External live verification only |
+| `A-026` | Equation (26) | Live mathematical contract for Equation (26) | Repository export Equation (26) | SRC-001, ECHO-002–ECHO-020 | UNRESOLVED | Live authority not locally snapshotted | High | Lock destination workload and LSTM semantics to live tab | External live verification only |
+| `A-027` | Equation (27) | Live mathematical contract for Equation (27) | Repository export Equation (27) | SRC-001, ECHO-002–ECHO-020 | UNRESOLVED | Live authority not locally snapshotted | High | Lock destination workload and LSTM semantics to live tab | External live verification only |
+| `A-028` | Equation (28) | Live mathematical contract for Equation (28) | Repository export Equation (28) | SRC-001, ECHO-002–ECHO-020 | UNRESOLVED | Live authority not locally snapshotted | High | Lock destination workload and LSTM semantics to live tab | External live verification only |
+| `A-029` | Equation (29) | Live mathematical contract for Equation (29) | Repository export Equation (29) | SRC-001, ECHO-002–ECHO-020 | UNRESOLVED | Live authority not locally snapshotted | High | Lock ERT scheduling, fallback, and tie-break semantics to live tab | External live verification only |
+| `A-030` | Equation (30) | Live mathematical contract for Equation (30) | Repository export Equation (30) | SRC-001, ECHO-002–ECHO-020 | UNRESOLVED | Live authority not locally snapshotted | High | Lock ERT scheduling, fallback, and tie-break semantics to live tab | External live verification only |
+| `A-031` | Equation (31) | Live mathematical contract for Equation (31) | Repository export Equation (31) | SRC-001, ECHO-002–ECHO-020 | UNRESOLVED | Live authority not locally snapshotted | High | Lock ERT scheduling, fallback, and tie-break semantics to live tab | External live verification only |
+| `A-032` | Equation (32) | Live mathematical contract for Equation (32) | Repository export Equation (32) | SRC-001, ECHO-002–ECHO-020 | UNRESOLVED | Live authority not locally snapshotted | High | Lock ERT scheduling, fallback, and tie-break semantics to live tab | External live verification only |
+| `A-033` | Equation (33) | Live mathematical contract for Equation (33) | Repository export Equation (33) | SRC-001, ECHO-002–ECHO-020 | UNRESOLVED | Live authority not locally snapshotted | High | Lock ERT scheduling, fallback, and tie-break semantics to live tab | External live verification only |
+| `A-034` | Equation (34) | Live mathematical contract for Equation (34) | Repository export Equation (34) | SRC-001, ECHO-002–ECHO-020 | UNRESOLVED | Live authority not locally snapshotted | High | Lock ERT scheduling, fallback, and tie-break semantics to live tab | External live verification only |
+| `A-035` | Equation (35) | Live mathematical contract for Equation (35) | Repository export Equation (35) | SRC-001, ECHO-002–ECHO-020 | UNRESOLVED | Live authority not locally snapshotted | High | Lock ERT scheduling, fallback, and tie-break semantics to live tab | External live verification only |
+| `A-036` | Equation (36) | Live mathematical contract for Equation (36) | Repository export Equation (36) | SRC-001, ECHO-002–ECHO-020 | UNRESOLVED | Live authority not locally snapshotted | High | Lock ERT scheduling, fallback, and tie-break semantics to live tab | External live verification only |
+| `A-037` | Equation (37) | Live mathematical contract for Equation (37) | Repository export Equation (37) | SRC-001, ECHO-002–ECHO-020 | UNRESOLVED | Live authority not locally snapshotted | High | Lock ERT scheduling, fallback, and tie-break semantics to live tab | External live verification only |
+| `A-038` | Equation (38) | Live mathematical contract for Equation (38) | Repository export Equation (38) | SRC-001, ECHO-002–ECHO-020 | UNRESOLVED | Live authority not locally snapshotted | High | Lock ERT scheduling, fallback, and tie-break semantics to live tab | External live verification only |
+| `A-039` | Equation (39) | Live mathematical contract for Equation (39) | Repository export Equation (39) | SRC-001, ECHO-002–ECHO-020 | UNRESOLVED | Live authority not locally snapshotted | High | Lock ERT scheduling, fallback, and tie-break semantics to live tab | External live verification only |
+| `A-040` | Equation (40) | Live mathematical contract for Equation (40) | Repository export Equation (40) | SRC-001, ECHO-002–ECHO-020 | UNRESOLVED | Live authority not locally snapshotted | High | Lock ERT scheduling, fallback, and tie-break semantics to live tab | External live verification only |
+| `A-041` | Equation (41) | Live mathematical contract for Equation (41) | Repository export Equation (41) | SRC-001, ECHO-002–ECHO-020 | UNRESOLVED | Live authority not locally snapshotted | High | Lock canonical actions, mask, and pending-record semantics to live tab | External live verification only |
+| `A-042` | Equation (42) | Live mathematical contract for Equation (42) | Repository export Equation (42) | SRC-001, ECHO-002–ECHO-020 | UNRESOLVED | Live authority not locally snapshotted | High | Lock canonical actions, mask, and pending-record semantics to live tab | External live verification only |
+| `A-043` | Equation (43) | Live mathematical contract for Equation (43) | Repository export Equation (43) | SRC-001, ECHO-002–ECHO-020 | UNRESOLVED | Live authority not locally snapshotted | High | Lock canonical actions, mask, and pending-record semantics to live tab | External live verification only |
+| `A-044` | Equation (44) | Live mathematical contract for Equation (44) | Repository export Equation (44) | SRC-001, ECHO-002–ECHO-020 | UNRESOLVED | Live authority not locally snapshotted | High | Lock canonical actions, mask, and pending-record semantics to live tab | External live verification only |
+| `A-045` | Equation (45) | Live mathematical contract for Equation (45) | Repository export Equation (45) | SRC-001, ECHO-002–ECHO-020 | UNRESOLVED | Live authority not locally snapshotted | High | Lock canonical actions, mask, and pending-record semantics to live tab | External live verification only |
+| `A-046` | Equation (46) | Live mathematical contract for Equation (46) | Repository export Equation (46) | SRC-001, ECHO-002–ECHO-020 | UNRESOLVED | Live authority not locally snapshotted | High | Lock canonical actions, mask, and pending-record semantics to live tab | External live verification only |
+| `A-047` | Equation (47) | Live mathematical contract for Equation (47) | Repository export Equation (47) | SRC-001, ECHO-002–ECHO-020 | UNRESOLVED | Live authority not locally snapshotted | High | Lock canonical actions, mask, and pending-record semantics to live tab | External live verification only |
+| `A-048` | Equation (48) | Live mathematical contract for Equation (48) | Repository export Equation (48) | SRC-001, ECHO-002–ECHO-020 | UNRESOLVED | Live authority not locally snapshotted | High | Lock canonical actions, mask, and pending-record semantics to live tab | External live verification only |
+| `A-049` | Equation (49) | Live mathematical contract for Equation (49) | Repository export Equation (49) | SRC-001, ECHO-002–ECHO-020 | UNRESOLVED | Live authority not locally snapshotted | High | Lock canonical actions, mask, and pending-record semantics to live tab | External live verification only |
+| `A-050` | Equation (50) | Live mathematical contract for Equation (50) | Repository export Equation (50) | SRC-001, ECHO-002–ECHO-020 | UNRESOLVED | Live authority not locally snapshotted | High | Lock canonical actions, mask, and pending-record semantics to live tab | External live verification only |
+| `A-051` | Equation (51) | Live mathematical contract for Equation (51) | Repository export Equation (51) | SRC-001, ECHO-002–ECHO-020 | UNRESOLVED | Live authority not locally snapshotted | High | Lock state, reward, semi-Markov transition, and masked target semantics to live tab | External live verification only |
+| `A-052` | Equation (52) | Live mathematical contract for Equation (52) | Repository export Equation (52) | SRC-001, ECHO-002–ECHO-020 | UNRESOLVED | Live authority not locally snapshotted | High | Lock state, reward, semi-Markov transition, and masked target semantics to live tab | External live verification only |
+| `A-053` | Equation (53) | Live mathematical contract for Equation (53) | Repository export Equation (53) | SRC-001, ECHO-002–ECHO-020 | UNRESOLVED | Live authority not locally snapshotted | High | Lock state, reward, semi-Markov transition, and masked target semantics to live tab | External live verification only |
+| `A-054` | Equation (54) | Live mathematical contract for Equation (54) | Repository export Equation (54) | SRC-001, ECHO-002–ECHO-020 | UNRESOLVED | Live authority not locally snapshotted | High | Lock state, reward, semi-Markov transition, and masked target semantics to live tab | External live verification only |
+| `A-055` | Equation (55) | Live mathematical contract for Equation (55) | Repository export Equation (55) | SRC-001, ECHO-002–ECHO-020 | UNRESOLVED | Live authority not locally snapshotted | High | Lock state, reward, semi-Markov transition, and masked target semantics to live tab | External live verification only |
+| `A-056` | Equation (56) | Live mathematical contract for Equation (56) | Repository export Equation (56) | SRC-001, ECHO-002–ECHO-020 | UNRESOLVED | Live authority not locally snapshotted | High | Lock state, reward, semi-Markov transition, and masked target semantics to live tab | External live verification only |
+| `A-057` | Equation (57) | Live mathematical contract for Equation (57) | Repository export Equation (57) | SRC-001, ECHO-002–ECHO-020 | UNRESOLVED | Live authority not locally snapshotted | High | Lock state, reward, semi-Markov transition, and masked target semantics to live tab | External live verification only |
+| `A-058` | Equation (58) | Live mathematical contract for Equation (58) | Repository export Equation (58) | SRC-001, ECHO-002–ECHO-020 | UNRESOLVED | Live authority not locally snapshotted | High | Lock state, reward, semi-Markov transition, and masked target semantics to live tab | External live verification only |
+| `A-059` | Equation (59) | Live mathematical contract for Equation (59) | Repository export Equation (59) | SRC-001, ECHO-002–ECHO-020 | UNRESOLVED | Live authority not locally snapshotted | High | Lock state, reward, semi-Markov transition, and masked target semantics to live tab | External live verification only |
+| `A-060` | Equation (60) | Live mathematical contract for Equation (60) | Repository export Equation (60) | SRC-001, ECHO-002–ECHO-020 | UNRESOLVED | Live authority not locally snapshotted | High | Lock state, reward, semi-Markov transition, and masked target semantics to live tab | External live verification only |
+| `A-061` | Equation (61) | Live mathematical contract for Equation (61) | Repository export Equation (61) | SRC-001, ECHO-002–ECHO-020 | UNRESOLVED | Live authority not locally snapshotted | High | Lock state, reward, semi-Markov transition, and masked target semantics to live tab | External live verification only |
+| `A-062` | Equation (62) | Live mathematical contract for Equation (62) | Repository export Equation (62) | SRC-001, ECHO-002–ECHO-020 | UNRESOLVED | Live authority not locally snapshotted | High | Lock state, reward, semi-Markov transition, and masked target semantics to live tab | External live verification only |
+| `A-063` | Equation (63) | Live mathematical contract for Equation (63) | Repository export Equation (63) | SRC-001, ECHO-002–ECHO-020 | UNRESOLVED | Live authority not locally snapshotted | High | Lock state, reward, semi-Markov transition, and masked target semantics to live tab | External live verification only |
+| `A-064` | Equation (64) | Live mathematical contract for Equation (64) | Repository export Equation (64) | SRC-001, ECHO-002–ECHO-020 | UNRESOLVED | Live authority not locally snapshotted | High | Lock state, reward, semi-Markov transition, and masked target semantics to live tab | External live verification only |
+| `A-065` | Equation (65) | Live mathematical contract for Equation (65) | Repository export Equation (65) | SRC-001, ECHO-002–ECHO-020 | UNRESOLVED | Live authority not locally snapshotted | High | Lock state, reward, semi-Markov transition, and masked target semantics to live tab | External live verification only |
+| `A-066` | Equation (66) | Live mathematical contract for Equation (66) | Repository export Equation (66) | SRC-001, ECHO-002–ECHO-020 | UNRESOLVED | Live authority not locally snapshotted | High | Lock state, reward, semi-Markov transition, and masked target semantics to live tab | External live verification only |
+| `A-067` | Equation (67) | Live mathematical contract for Equation (67) | Repository export Equation (67) | SRC-001, ECHO-002–ECHO-020 | UNRESOLVED | Live authority not locally snapshotted | High | Lock state, reward, semi-Markov transition, and masked target semantics to live tab | External live verification only |
+| `A-068` | Algorithm 1 | Live ECHO training algorithm | Exported training algorithm snapshot | ECHO-018–ECHO-020, EVAL-001–EVAL-012 | UNRESOLVED | Live algorithm not locally snapshotted | High | Lock training slot order and replay-finalization order to live tab | External live verification only |
+| `A-069` | Algorithm 2 | Live ECHO inference algorithm | Exported inference algorithm snapshot | ECHO-018–ECHO-020, EVAL-001–EVAL-012 | UNRESOLVED | Live algorithm not locally snapshotted | High | Lock inference slot order and masked argmax semantics to live tab | External live verification only |
+
 ## 9. Target Shared Physical Architecture
 
 ### Shared physical simulator
@@ -220,99 +288,99 @@ Cloud example: same as horizontal, but with cloud destination capacity and cloud
 
 | ID | Status | Title | Dependencies |
 | --- | --- | --- | --- |
-| `SRC-001` | `BLOCKED BY DEPENDENCY` | Fetch and register the current live ECHO method tab and revision | `Live Google Docs tab `t.iav4589yyeo7`; repository snapshot only for offline comparison |
-| `SRC-002` | `PARTIALLY IMPLEMENTED` | Build a HOODIE paper evidence registry by section, equation, table, and figure | `resources/papers/hoodie/ocr/*`; `resources/papers/hoodie/original/HOODIE_paper.pdf` |
-| `AUDIT-001` | `VERIFIED COMPLETE` | Produce the current code-path and dependency inventory | `src/` and `tests/` inventory |
-| `AUDIT-002` | `PARTIALLY IMPLEMENTED` | Reconcile old completion claims against real live paths | `artifacts/reports/ECHO_AUTONOMOUS_HANDOFF.md`; `artifacts/reports/ECHO_FULL_TEST_TRIAGE_REPORT.md` |
+| `SRC-001` | `BLOCKED — EXTERNAL SOURCE ACCESS` | Fetch and register the current live ECHO method tab and revision | External live Google Docs access or trusted source-lock handoff |
+| `SRC-002` | `PARTIALLY IMPLEMENTED` | Build a HOODIE paper evidence registry by section, equation, table, and figure | resources/papers/hoodie/ocr/*; resources/papers/hoodie/original/HOODIE_paper.pdf |
+| `AUDIT-001` | `VERIFIED COMPLETE` | Produce the current code-path and dependency inventory | src/ and tests/ inventory |
+| `AUDIT-002` | `PARTIALLY IMPLEMENTED` | Reconcile old completion claims against real live paths | artifacts/reports/ECHO_AUTONOMOUS_HANDOFF.md; artifacts/reports/ECHO_FULL_TEST_TRIAGE_REPORT.md |
 | `PLAN-001` | `VERIFIED COMPLETE` | Correct version, HEAD, task totals, statuses, dependencies, critical path, and dashboard | existing master plan history |
-| `CLEAN-001` | `VERIFIED COMPLETE` | Classify existing artifacts as authoritative, historical, superseded, or removable later | `artifacts/*`; `research/*` |
+| `CLEAN-001` | `VERIFIED COMPLETE` | Classify existing artifacts as authoritative, historical, superseded, or removable later | artifacts/*; research/* |
 
 ## Phase 1 — Faithful base HOODIE simulator
 
 | ID | Status | Title | Dependencies |
 | --- | --- | --- | --- |
-| `BASE-001` | `READY` | Freeze one canonical Table-4 configuration | `PLAN-001`, `CLEAN-001` |
-| `BASE-002` | `READY` | Freeze the exact approved 20-EA topology and scalable topology rules | `BASE-001` |
-| `BASE-003` | `READY` | Implement per-EA Bernoulli trace generation and 100+10 decision/drain behavior | `BASE-002` |
-| `BASE-004` | `READY` | Make trace objects immutable and directly consumable by all methods | `BASE-003` |
-| `BASE-005` | `NOT STARTED` | Implement the synchronous multi-agent slot engine | `BASE-004` |
-| `BASE-006` | `READY` | Formalize the base HOODIE slot-order and off-by-one contract | `BASE-005` |
-| `BASE-007` | `READY` | Correct private FIFO queue and active private service separation | `BASE-006` |
-| `BASE-008` | `READY` | Correct one outbound FIFO queue/transmission resource per source EA | `BASE-007` |
-| `BASE-009` | `READY` | Preserve the selected destination inside every outbound task | `BASE-008` |
-| `BASE-010` | `READY` | Correct transmission completion and next-slot destination admission | `BASE-009` |
-| `BASE-011` | `READY` | Correct source-indexed destination queues | `BASE-010` |
-| `BASE-012` | `READY` | Implement equal public-CPU sharing among active source queues | `BASE-011` |
-| `BASE-013` | `READY` | Implement the exact destination-specific base action space | `BASE-012` |
-| `BASE-014` | `READY` | Implement the exact HOODIE state and load-history construction | `BASE-013` |
-| `BASE-015` | `READY` | Implement and train the real HOODIE LSTM/load forecast | `BASE-014` |
-| `BASE-016` | `READY` | Implement one independent HOODIE learner per EA | `BASE-015` |
-| `BASE-017` | `READY` | Implement original delayed reward and replay semantics | `BASE-016` |
-| `BASE-018` | `READY` | Implement paper-correct Dueling Double-DQN, epsilon schedule, sign convention, and target copying | `BASE-017` |
-| `BASE-019` | `READY` | Verify RO/FLC/VO/HO/BCO/MLEO against the same physical simulator | `BASE-018` |
-| `BASE-020` | `READY` | Build deterministic unit and integration tests for all base mechanics | `BASE-019` |
-| `BASE-021` | `NOT STARTED` | Run a bounded base-HOODIE runtime and learner smoke | `BASE-020` |
-| `BASE-022` | `READY` | Reproduce the base paper experiment organization and trend-level evidence | `BASE-021` |
-| `FREEZE-001` | `NOT STARTED` | Freeze and version the validated HOODIE physical simulator and HOODIE baseline | `BASE-022` |
+| `BASE-001` | `READY` | Freeze one canonical Table-4 configuration | PLAN-001, CLEAN-001 |
+| `BASE-002` | `BLOCKED BY DEPENDENCY` | Freeze the exact approved 20-EA topology and scalable topology rules | BASE-001 |
+| `BASE-003` | `BLOCKED BY DEPENDENCY` | Implement per-EA Bernoulli trace generation and 100+10 decision/drain behavior | BASE-002 |
+| `BASE-004` | `BLOCKED BY DEPENDENCY` | Make trace objects immutable and directly consumable by all methods | BASE-003 |
+| `BASE-005` | `BLOCKED BY DEPENDENCY` | Implement the synchronous multi-agent slot engine | BASE-004 |
+| `BASE-006` | `BLOCKED BY DEPENDENCY` | Formalize the base HOODIE slot-order and off-by-one contract | BASE-005 |
+| `BASE-007` | `BLOCKED BY DEPENDENCY` | Correct private FIFO queue and active private service separation | BASE-006 |
+| `BASE-008` | `BLOCKED BY DEPENDENCY` | Correct one outbound FIFO queue/transmission resource per source EA | BASE-007 |
+| `BASE-009` | `BLOCKED BY DEPENDENCY` | Preserve the selected destination inside every outbound task | BASE-008 |
+| `BASE-010` | `BLOCKED BY DEPENDENCY` | Correct transmission completion and next-slot destination admission | BASE-009 |
+| `BASE-011` | `BLOCKED BY DEPENDENCY` | Correct source-indexed destination queues | BASE-010 |
+| `BASE-012` | `BLOCKED BY DEPENDENCY` | Implement equal public-CPU sharing among active source queues | BASE-011 |
+| `BASE-013` | `BLOCKED BY DEPENDENCY` | Implement the exact destination-specific base action space | BASE-012 |
+| `BASE-014` | `BLOCKED BY DEPENDENCY` | Implement the exact HOODIE state and load-history construction | BASE-013 |
+| `BASE-015` | `BLOCKED BY DEPENDENCY` | Implement and train the real HOODIE LSTM/load forecast | BASE-014 |
+| `BASE-016` | `BLOCKED BY DEPENDENCY` | Implement one independent HOODIE learner per EA | BASE-015 |
+| `BASE-017` | `BLOCKED BY DEPENDENCY` | Implement original delayed reward and replay semantics | BASE-016 |
+| `BASE-018` | `BLOCKED BY DEPENDENCY` | Implement paper-correct Dueling Double-DQN, epsilon schedule, sign convention, and target copying | BASE-017 |
+| `BASE-019` | `BLOCKED BY DEPENDENCY` | Verify RO/FLC/VO/HO/BCO/MLEO against the same physical simulator | BASE-018 |
+| `BASE-020` | `BLOCKED BY DEPENDENCY` | Build deterministic unit and integration tests for all base mechanics | BASE-019 |
+| `BASE-021` | `BLOCKED BY DEPENDENCY` | Run a bounded base-HOODIE runtime and learner smoke | BASE-020 |
+| `BASE-022` | `BLOCKED BY DEPENDENCY` | Reproduce the base paper experiment organization and trend-level evidence | BASE-021 |
+| `BASE-023` | `BLOCKED BY DEPENDENCY` | Freeze and version the validated HOODIE physical simulator and HOODIE baseline | BASE-022 |
 
 ## Phase 2 — ECHO implementation on frozen base
 
 | ID | Status | Title | Dependencies |
 | --- | --- | --- | --- |
-| `ECHO-001` | `PARTIALLY IMPLEMENTED` | Add explicit ECHO method isolation without changing frozen HOODIE semantics | `FREEZE-001` |
-| `ECHO-002` | `PARTIALLY IMPLEMENTED` | Implement live Equations (1)–(8), task/deadline/action/dispatch lifecycle | `ECHO-001` |
-| `ECHO-003` | `PARTIALLY IMPLEMENTED` | Implement local completion estimates from Equations (9)–(11) | `ECHO-002` |
-| `ECHO-004` | `PARTIALLY IMPLEMENTED` | Implement outbound completion estimates from Equations (12)–(16) | `ECHO-003` |
-| `ECHO-005` | `PARTIALLY IMPLEMENTED` | Implement destination workload/capacity estimates from Equations (17)–(25) | `ECHO-004` |
-| `ECHO-006` | `PARTIALLY IMPLEMENTED` | Implement load history and LSTM integration from Equations (26)–(28) | `ECHO-005` |
-| `ECHO-007` | `PARTIALLY IMPLEMENTED` | Implement local and transfer ERT from Equations (29)–(32) | `ECHO-006` |
-| `ECHO-008` | `PARTIALLY IMPLEMENTED` | Implement iterative ERT source-queue scheduling from Equations (33)–(40) | `ECHO-007` |
-| `ECHO-009` | `PARTIALLY IMPLEMENTED` | Implement the canonical action set from Equation (41) | `ECHO-008` |
-| `ECHO-010` | `PARTIALLY IMPLEMENTED` | Implement valid actions, lateness fallback, and mask from Equations (42)–(46) | `ECHO-009` |
-| `ECHO-011` | `PARTIALLY IMPLEMENTED` | Implement direct decision, admission metadata, and pending records from Equations (47)–(50) | `ECHO-010` |
-| `ECHO-012` | `PARTIALLY IMPLEMENTED` | Implement fixed normalized state and candidate ERT vector from Equations (51)–(54) | `ECHO-011` |
-| `ECHO-013` | `PARTIALLY IMPLEMENTED` | Implement duration, risk, drop, and reward from Equations (55)–(58) | `ECHO-012` |
-| `ECHO-014` | `PARTIALLY IMPLEMENTED` | Implement next-decision semi-Markov transitions from Equations (59)–(60) | `ECHO-013` |
-| `ECHO-015` | `PARTIALLY IMPLEMENTED` | Implement masked Dueling Double-DQL from Equations (61)–(67) | `ECHO-014` |
-| `ECHO-016` | `PARTIALLY IMPLEMENTED` | Implement ECHO-NoLSTM as a controlled one-factor ablation | `ECHO-015` |
-| `ECHO-017` | `PARTIALLY IMPLEMENTED` | Add portable ECHO checkpoints and deterministic resume | `ECHO-016` |
-| `ECHO-018` | `READY` | Add equation-level unit tests and end-to-end integration tests | `ECHO-017` |
-| `ECHO-019` | `VERIFIED COMPLETE` | Run deterministic ECHO runtime and learner smoke | `ECHO-018` |
-| `ECHO-020` | `NOT STARTED` | Run a paired bounded pilot against frozen HOODIE | `ECHO-019` |
+| `ECHO-001` | `BLOCKED BY DEPENDENCY` | Add explicit ECHO method isolation without changing frozen HOODIE semantics | FREEZE-001 AND SRC-001 |
+| `ECHO-002` | `BLOCKED BY DEPENDENCY` | Implement live Equations (1)–(8), task/deadline/action/dispatch lifecycle | ECHO-001 |
+| `ECHO-003` | `BLOCKED BY DEPENDENCY` | Implement local completion estimates from Equations (9)–(11) | ECHO-002 |
+| `ECHO-004` | `BLOCKED BY DEPENDENCY` | Implement outbound completion estimates from Equations (12)–(16) | ECHO-003 |
+| `ECHO-005` | `BLOCKED BY DEPENDENCY` | Implement destination workload/capacity estimates from Equations (17)–(25) | ECHO-004 |
+| `ECHO-006` | `BLOCKED BY DEPENDENCY` | Implement load history and LSTM integration from Equations (26)–(28) | ECHO-005 |
+| `ECHO-007` | `BLOCKED BY DEPENDENCY` | Implement local and transfer ERT from Equations (29)–(32) | ECHO-006 |
+| `ECHO-008` | `BLOCKED BY DEPENDENCY` | Implement iterative ERT source-queue scheduling from Equations (33)–(40) | ECHO-007 |
+| `ECHO-009` | `BLOCKED BY DEPENDENCY` | Implement the canonical action set from Equation (41) | ECHO-008 |
+| `ECHO-010` | `BLOCKED BY DEPENDENCY` | Implement valid actions, lateness fallback, and mask from Equations (42)–(46) | ECHO-009 |
+| `ECHO-011` | `BLOCKED BY DEPENDENCY` | Implement direct decision, admission metadata, and pending records from Equations (47)–(50) | ECHO-010 |
+| `ECHO-012` | `BLOCKED BY DEPENDENCY` | Implement fixed normalized state and candidate ERT vector from Equations (51)–(54) | ECHO-011 |
+| `ECHO-013` | `BLOCKED BY DEPENDENCY` | Implement duration, risk, drop, and reward from Equations (55)–(58) | ECHO-012 |
+| `ECHO-014` | `BLOCKED BY DEPENDENCY` | Implement next-decision semi-Markov transitions from Equations (59)–(60) | ECHO-013 |
+| `ECHO-015` | `BLOCKED BY DEPENDENCY` | Implement masked Dueling Double-DQL from Equations (61)–(67) | ECHO-014 |
+| `ECHO-016` | `BLOCKED BY DEPENDENCY` | Implement ECHO-NoLSTM as a controlled one-factor ablation | ECHO-015 |
+| `ECHO-017` | `BLOCKED BY DEPENDENCY` | Add portable ECHO checkpoints and deterministic resume | ECHO-016 |
+| `ECHO-018` | `BLOCKED BY DEPENDENCY` | Add equation-level unit tests and end-to-end integration tests | ECHO-017 |
+| `ECHO-019` | `BLOCKED BY DEPENDENCY` | Run deterministic ECHO runtime and learner smoke | ECHO-018 |
+| `ECHO-020` | `BLOCKED BY DEPENDENCY` | Run a paired bounded pilot against frozen HOODIE | ECHO-019 |
 
 ## Phase 3 — Authoritative evaluation
 
 | ID | Status | Title | Dependencies |
 | --- | --- | --- | --- |
-| `EVAL-001` | `READY` | Build immutable paired training/validation/test trace banks | `ECHO-020` |
-| `EVAL-002` | `READY` | Define the complete Figures 4–8 job matrix | `EVAL-001` |
-| `EVAL-003` | `NOT STARTED` | Create authoritative configuration and run manifests | `EVAL-002` |
-| `EVAL-004` | `NOT STARTED` | Measure throughput on CUDA when available, otherwise CPU | `EVAL-003` |
-| `EVAL-005` | `READY` | Produce a resumable compute and checkpoint plan | `EVAL-004` |
-| `EVAL-006` | `READY` | Run selected learning-parameter training | `EVAL-005` |
-| `EVAL-007` | `READY` | Train ECHO, HOODIE, and ECHO-NoLSTM with equal budgets where required | `EVAL-006` |
-| `EVAL-008` | `READY` | Run 10 seeds × 200 held-out episodes for reported points | `EVAL-007` |
-| `EVAL-009` | `READY` | Enforce generated = completed + dropped accounting | `EVAL-008` |
-| `EVAL-010` | `READY` | Enforce no masked ECHO action selection | `EVAL-009` |
-| `EVAL-011` | `READY` | Enforce paired trace, topology, and configuration hashes | `EVAL-010` |
-| `EVAL-012` | `READY` | Compute seed-level means and 95% confidence intervals | `EVAL-011` |
+| `EVAL-001` | `BLOCKED BY DEPENDENCY` | Build immutable paired training/validation/test trace banks | ECHO-020 |
+| `EVAL-002` | `BLOCKED BY DEPENDENCY` | Define the complete Figures 4–8 job matrix | EVAL-001 |
+| `EVAL-003` | `BLOCKED BY DEPENDENCY` | Create authoritative configuration and run manifests | EVAL-002 |
+| `EVAL-004` | `BLOCKED BY DEPENDENCY` | Measure throughput on CUDA when available, otherwise CPU | EVAL-003 |
+| `EVAL-005` | `BLOCKED BY DEPENDENCY` | Produce a resumable compute and checkpoint plan | EVAL-004 |
+| `EVAL-006` | `BLOCKED BY DEPENDENCY` | Run selected learning-parameter training | EVAL-005 |
+| `EVAL-007` | `BLOCKED BY DEPENDENCY` | Train ECHO, HOODIE, and ECHO-NoLSTM with equal budgets where required | EVAL-006 |
+| `EVAL-008` | `BLOCKED BY DEPENDENCY` | Run 10 seeds × 200 held-out episodes for reported points | EVAL-007 |
+| `EVAL-009` | `BLOCKED BY DEPENDENCY` | Enforce generated = completed + dropped accounting | EVAL-008 |
+| `EVAL-010` | `BLOCKED BY DEPENDENCY` | Enforce no masked ECHO action selection | EVAL-009 |
+| `EVAL-011` | `BLOCKED BY DEPENDENCY` | Enforce paired trace, topology, and configuration hashes | EVAL-010 |
+| `EVAL-012` | `BLOCKED BY DEPENDENCY` | Compute seed-level means and 95% confidence intervals | EVAL-011 |
 
 ## Phase 4 — Figures, reporting, and cleanup
 
 | ID | Status | Title | Dependencies |
 | --- | --- | --- | --- |
-| `FIG-001` | `NOT STARTED` | Generate Figure 4 from the actual simulator topology | `EVAL-012` |
-| `FIG-002` | `NOT STARTED` | Generate Figure 5(a–b) from real training curves | `FIG-001` |
-| `FIG-003` | `NOT STARTED` | Generate Figure 6(a–e) from real behavioral/scalability outputs | `FIG-002` |
-| `FIG-004` | `NOT STARTED` | Generate Figure 7(a–f) from real paired comparison outputs | `FIG-003` |
-| `FIG-005` | `NOT STARTED` | Generate Figure 8 from ECHO/ECHO-NoLSTM runs | `FIG-004` |
-| `FIG-006` | `NOT STARTED` | Export vector files and 300-dpi PNGs with panel/seed CSV lineage | `FIG-005` |
-| `REPORT-001` | `READY` | Produce the final base-HOODIE reproduction report | `FIG-006` |
-| `REPORT-002` | `READY` | Produce the final ECHO implementation and invariant report | `REPORT-001` |
-| `REPORT-003` | `READY` | Produce the final evaluation and figure-lineage report | `REPORT-002` |
-| `CLEAN-002` | `READY` | Mark stale smoke/checkpoint/figure evidence as superseded | `REPORT-003` |
-| `CLEAN-003` | `READY` | Remove or archive duplicate noncanonical execution paths only after all replacement gates pass | `CLEAN-002` |
-| `HANDOFF-001` | `READY` | Produce the final exact-command handoff and artifact index | `CLEAN-003` |
+| `FIG-001` | `BLOCKED BY DEPENDENCY` | Generate Figure 4 from the actual simulator topology | EVAL-012 |
+| `FIG-002` | `BLOCKED BY DEPENDENCY` | Generate Figure 5(a–b) from real training curves | FIG-001 |
+| `FIG-003` | `BLOCKED BY DEPENDENCY` | Generate Figure 6(a–e) from real behavioral/scalability outputs | FIG-002 |
+| `FIG-004` | `BLOCKED BY DEPENDENCY` | Generate Figure 7(a–f) from real paired comparison outputs | FIG-003 |
+| `FIG-005` | `BLOCKED BY DEPENDENCY` | Generate Figure 8 from ECHO/ECHO-NoLSTM runs | FIG-004 |
+| `FIG-006` | `BLOCKED BY DEPENDENCY` | Export vector files and 300-dpi PNGs with panel/seed CSV lineage | FIG-005 |
+| `REPORT-001` | `BLOCKED BY DEPENDENCY` | Produce the final base-HOODIE reproduction report | FIG-006 |
+| `REPORT-002` | `BLOCKED BY DEPENDENCY` | Produce the final ECHO implementation and invariant report | REPORT-001 |
+| `REPORT-003` | `BLOCKED BY DEPENDENCY` | Produce the final evaluation and figure-lineage report | REPORT-002 |
+| `CLEAN-002` | `BLOCKED BY DEPENDENCY` | Mark stale smoke/checkpoint/figure evidence as superseded | REPORT-003 |
+| `CLEAN-003` | `BLOCKED BY DEPENDENCY` | Remove or archive duplicate noncanonical execution paths only after all replacement gates pass | CLEAN-002 |
+| `HANDOFF-001` | `BLOCKED BY DEPENDENCY` | Produce the final exact-command handoff and artifact index | CLEAN-003 |
 
 ## 18. Dependency Graph
 
@@ -394,11 +462,15 @@ graph TD
 
 ## 19. Critical Path
 
-`SRC-001` → `SRC-002` → `AUDIT-001` → `AUDIT-002` → `PLAN-001` → `CLEAN-001` → `BASE-001` → `BASE-005` → `BASE-010` → `BASE-014` → `BASE-015` → `BASE-016` → `BASE-018` → `FREEZE-001` → `ECHO-001` → `ECHO-012` → `ECHO-015` → `ECHO-017` → `ECHO-019` → `ECHO-020` → `EVAL-001` → `EVAL-004` → `EVAL-008` → `EVAL-012` → `FIG-001` → `FIG-004` → `FIG-005` → `REPORT-003` → `HANDOFF-001`
+- Base implementation critical path: `PLAN-001` → `CLEAN-001` → `BASE-001` → `BASE-002` → `BASE-003` → `BASE-004` → `BASE-005` → `BASE-006` → `BASE-007` → `BASE-008` → `BASE-009` → `BASE-010` → `BASE-011` → `BASE-012` → `BASE-013` → `BASE-014` → `BASE-015` → `BASE-016` → `BASE-017` → `BASE-018` → `BASE-019` → `BASE-020` → `BASE-021` → `BASE-022` → `FREEZE-001`.
+- Source-lock path: `SRC-001` → `SRC-002` → `AUDIT-001` → `AUDIT-002` → source-lock bundle creation and hash confirmation in a trusted environment; this path is external and blocked here until the handoff exists.
+- Joined project critical path: `FREEZE-001` + `SRC-001` → `ECHO-001` → `ECHO-002` → `ECHO-003` → `ECHO-004` → `ECHO-005` → `ECHO-006` → `ECHO-007` → `ECHO-008` → `ECHO-009` → `ECHO-010` → `ECHO-011` → `ECHO-012` → `ECHO-013` → `ECHO-014` → `ECHO-015` → `ECHO-016` → `ECHO-017` → `ECHO-018` → `ECHO-019` → `ECHO-020` → `EVAL-001` → `EVAL-002` → `EVAL-003` → `EVAL-004` → `EVAL-005` → `EVAL-006` → `EVAL-007` → `EVAL-008` → `EVAL-009` → `EVAL-010` → `EVAL-011` → `EVAL-012` → `FIG-001` → `FIG-002` → `FIG-003` → `FIG-004` → `FIG-005` → `FIG-006` → `REPORT-001` → `REPORT-002` → `REPORT-003` → `CLEAN-002` → `CLEAN-003` → `HANDOFF-001`.
+- First READY implementation task after plan approval: `BASE-001`.
+- Parallel task groups: `SRC-001` can proceed independently of `BASE-001`; `AUDIT-001` and `AUDIT-002` only support the source-lock path; later base tasks remain serial by design.
 
 ## 20. Gate Definitions
 
-- Gate 0 — Source and plan consistency: live method revision recorded, base-paper evidence map complete, task totals consistent, no stale HEAD, no impossible ordering.
+- Gate 0 — Source and plan consistency: live method revision recorded externally, base-paper evidence map complete, task totals consistent, no stale HEAD, no impossible ordering.
 - Gate 1 — Base traffic and synchronized slots: per-EA Bernoulli arrivals, same-slot decisions, 100 decision + 10 drain slots, deterministic paired traces.
 - Gate 2 — Base physical mechanics: correct queues, one transmission resource, next-slot destination admission, equal public CPU sharing, exact lifecycle accounting.
 - Gate 3 — Base HOODIE learner: one learner per EA, real LSTM, real Dueling Double-DQN, delayed replay, finite losses, target updates.
@@ -407,6 +479,8 @@ graph TD
 - Gate 6 — ECHO smoke and pilot: all three routes, ERT-driven scheduling, fresh/stale LSTM behavior, gamma^Delta, isolated ECHO-NoLSTM, paired pilot.
 - Gate 7 — Full evaluation: paired trace bank, 10 seeds × 200 episodes, confidence intervals, invariants.
 - Gate 8 — Figures and final reporting: Figures 4–8 from preserved raw outputs, panel CSVs, SVG / PNG exports, no fabricated claims.
+
+No ECHO implementation may begin before the physical base simulator gate is complete. No authoritative ECHO evaluation may begin before the ECHO pilot gate passes.
 
 ## 21. Test Strategy
 
@@ -418,10 +492,6 @@ graph TD
 - LSTM and trainer-binding tests: fresh/stale load estimates, real tensor input, Double-DQL target masking, and checkpoint portability.
 - Integration tests: event-ledger, offload lifecycle, baseline isolation, trace pairing, evaluation manifests, and report schemas.
 - Runtime smoke: deterministic live ECHO runtime path with local / horizontal / cloud / waiting-expire / late-completion / terminal-flush coverage.
-- Learner smoke: tiny device-aware training run on CUDA if available, otherwise CPU, with finite losses and gradients.
-- Checkpoint resume: save / load / resume on the selected device using `map_location=device`.
-- Pilot: bounded paired ECHO / HOODIE / baseline comparison only after smoke and freeze gates pass.
-- Focused regression gates that must stay green: 76-test gate, Gym unit gate, event-ledger integration, transmission-delay wiring gate, actionable current-only cluster, dirty-gate clean-candidate cluster.
 
 ## 22. Smoke and Pilot Strategy
 
@@ -459,7 +529,7 @@ Bounded paired comparison across ECHO, ECHO-NoLSTM, HOODIE, RO, FLC, VO, HO, BCO
 | Risk ID | Description | Probability | Impact | Detection | Mitigation | Contingency | Related task IDs | Current status |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- |
 | R-001 | HOODIE / ECHO contamination | Medium | High | Code review + isolated baselines | Freeze HOODIE before ECHO edits | Keep adapters separate | BASE-019, FREEZE-001, ECHO-001 | Planning |
-| R-002 | Off-by-one deadlines | High | High | Slot-order tests and hand-check cases | Explicit deadline equations | Fix lifecycle order and terminal flush | BASE-006, RT-001, ECHO-002, ECHO-014 | Planning |
+| R-002 | Off-by-one deadlines | High | High | Slot-order tests and hand-check cases | Explicit deadline equations | Fix lifecycle order and terminal flush | BASE-006, ECHO-002, ECHO-014 | Planning |
 | R-003 | Incorrect delayed rewards | High | High | Reward ledger / replay assertions | One reward per resolution | Rebuild pending reward flow | ECHO-013, ECHO-014, ECHO-015 | Planning |
 | R-004 | Mask mismatch | High | High | Mask / action / target selection tests | Canonical mask shared everywhere | Tie exploration, exploitation, target selection to same mask | ECHO-009, ECHO-010, ECHO-015 | Planning |
 | R-005 | Checkpoint incompatibility | High | High | Save / load / resume smoke | Use map_location=device | Version checkpoint schema | ECHO-017, EVAL-005 | Planning |
@@ -470,58 +540,63 @@ Bounded paired comparison across ECHO, ECHO-NoLSTM, HOODIE, RO, FLC, VO, HO, BCO
 
 | Decision ID | Question | Existing evidence | Options | Recommended choice | Scientific consequence | Implementation consequence |
 | --- | --- | --- | --- | --- | --- | --- |
-| D-001 | Refresh live Google Doc revision from the external tab or accept repository export snapshot for execution provenance? | External network access is blocked in this sandbox; repository export records a revision id, but the live tab should be refreshed before implementation. | Use repository export for planning; refresh live tab at execution start. | Use repository export for planning; refresh live tab at execution start. | Scientific authority provenance | Planning proceeds with explicit refresh task and provenance note. |
-| D-002 | What exact compute budget should the authoritative full campaign reserve after pilot throughput is measured? | Smoke / pilot outputs exist, but the final CUDA/CPU budget still needs measured throughput and wall-time estimates. | Set budget after EVAL-004 and EVAL-005. | Set budget after EVAL-004 and EVAL-005. | Campaign sizing and shard plan | Do not launch full evaluation until measured. |
+| D-001 | What exact compute budget should the authoritative full campaign reserve after pilot throughput is measured? | Smoke / pilot outputs exist, but the final CUDA/CPU budget still needs measured throughput and wall-time estimates. | Set budget after EVAL-004 and EVAL-005. | Set budget after EVAL-004 and EVAL-005. | Campaign sizing and shard plan | Do not launch full evaluation until measured. |
 
 ## 27. Progress Dashboard
 
 | Metric | Count / value |
 | --- | --- |
 | Total tasks | 73 |
-| Complete | 4 |
-| Partial | 20 |
-| In progress | 0 |
-| Ready | 37 |
-| Blocked | 0 |
-| Not started | 12 |
+| Verified complete | 3 |
+| Partially implemented | 2 |
+| Ready | 1 |
+| Blocked by dependency | 66 |
+| Blocked — external source access | 1 |
+| Not started | 0 |
 | Superseded | 0 |
-| Implementation completion % | 22.1% |
-| Testing completion % | 75.0% |
-| Smoke completion % | 100.0% |
-| Pilot completion % | 0.0% |
-| Full evaluation completion % | 0.0% |
-| Reporting completion % | 0.0% |
-| Overall weighted completion % | 19.2% |
-| Current critical-path task | `SRC-001` → `SRC-002` → `AUDIT-001` → `AUDIT-002` → `PLAN-001` → `CLEAN-001` → `BASE-001` → `BASE-005` → `BASE-010` → `BASE-014` → `BASE-015` → `BASE-016` → `BASE-018` → `FREEZE-001` → `ECHO-001` → `ECHO-012` → `ECHO-015` → `ECHO-017` → `ECHO-019` → `ECHO-020` → `EVAL-001` → `EVAL-004` → `EVAL-008` → `EVAL-012` → `FIG-001` → `FIG-004` → `FIG-005` → `REPORT-003` → `HANDOFF-001` |
-| Next exact command | `retry live Google Docs tab fetch for t.iav4589yyeo7 and record revision or block status` |
+| Structural plan audit | PASS |
+| Base-HOODIE execution audit | PASS |
+| ECHO source-lock audit | BLOCKED |
+| Full ECHO execution audit | BLOCKED |
+| Overall approval | CONDITIONALLY APPROVED — BASE-HOODIE PHASE ONLY |
+| Current critical-path task | `BASE-001` |
+| Next exact command | `Read artifacts/reports/ECHO_MASTER_EXECUTION_PLAN.md completely. Execute only BASE-001. Do not modify any ECHO-specific implementation. Before editing, mark BASE-001 IN PROGRESS and record the starting HEAD. After validation, attach exact test and artifact evidence and update dependent readiness.` |
 
 ## 28. Next Exact Command
 
-`git fetch origin && git rev-parse --abbrev-ref HEAD && git rev-parse HEAD && git rev-parse origin/main`
+`Read artifacts/reports/ECHO_MASTER_EXECUTION_PLAN.md completely. Execute only BASE-001. Do not modify any ECHO-specific implementation. Before editing, mark BASE-001 IN PROGRESS and record the starting HEAD. After validation, attach exact test and artifact evidence and update dependent readiness.`
 
 ## 29. Append-Only Evidence Log
 
 | Timestamp | Change | Evidence |
 |---|---|---|
-| 2026-07-13T18:30:45Z | Planning pass rewrote `ECHO_MASTER_EXECUTION_PLAN.md` to v2.0 with refreshed authority hierarchy, current repo state, verified current-state inventory, 73-task register, dependency graph, gates, smoke / pilot plan, compute plan, artifact plan, risk register, decision register, dashboard, and audit. | Current git state (`d747b0c1f9dc2c956b7272fa7b4e3b9da0d836d7` on `main`), triage artifacts in `artifacts/test_triage/*`, smoke artifacts in `artifacts/smoke/*`, checkpoint manifest in `artifacts/checkpoints/echo_smoke/*`, and the inspected source / research files listed above. |
-| 2026-07-13T18:30:45Z | Source-authority correction pass attempted three live fetch attempts for the Google Docs tab `t.iav4589yyeo7` and failed in this environment. | No connector-backed live revision could be retrieved; repository export hash remains offline-only evidence. |
+| 2026-07-13T18:30:45Z | v2.0 plan rewrite established 73-task register and base-first architecture. | Current git state, task register, and initial source inventory. |
+| 2026-07-13T18:30:45Z | v2.1 corrected source authority hierarchy but live final validation failed. | External live-source verification was not available inside the coding environment. |
+| 2026-07-13T18:30:45Z | v2.2 recorded the externally verified live revision and the unresolved 69-row audit but left readiness semantics too coarse. | External verification string for the live tab and historical export snapshot. |
+| 2026-07-13T19:30:14Z | v2.3 separates base execution readiness from ECHO source-lock readiness, blocks only source-dependent work, and corrects the critical path. | Externally verified live revision `ALtnJHzzm4hFNZK8DdBeKreoGaZ2RSO7F5oymwXZTjamK8fUxsa71RdvAu-7KkfW25xxeNA3C-Ns0TIbs-kwgO8FwUg1U68nloS7CIA1sg`; repository export `ALtnJHyTLdhKaOnVqfvxB74eKtegK8Hrsx5l2yaYdk68tSHgf-QdYtM6nrsTZrwFDm3DbTUFkeWajyCFP0Eevns2d7r0_twwuuYjD4ZcMQ`; current HEAD `d8dbf131dc4cff3879636853cafa9371a0914d99`. |
 
 ## 30. Plan Quality Audit
 
 | Criterion | Result | Evidence |
 | --- | --- | --- |
-| Source authority consistency | FAIL | Live tab fetch unavailable after retries; repository snapshot remains offline-only evidence. |
-| Current HEAD consistency | PASS | Branch `main`, HEAD `d747b0c1f9dc2c956b7272fa7b4e3b9da0d836d7`, origin/main matches. |
-| Task-count consistency | PASS | 73 tasks total; phase counts 6 / 23 / 20 / 12 / 12; dashboard matches register. |
-| Dependency consistency | PASS | Every dependency points to a real task id; phase chains and cross-phase gates are coherent. |
-| Status consistency | PASS | Statuses limited to planning-approved values and computed into the dashboard. |
-| Base-first enforcement | PASS | All ECHO work depends on the frozen base HOODIE gate. |
-| ECHO isolation | PASS | ECHO tasks are separate from frozen base tasks and baseline adapters. |
-| Equation coverage 1–67 | PASS | Grouped matrix covers every equation number from (1) to (67). |
-| Base-paper mechanism coverage | PASS | Queueing, arrival, state, reward, replay, epsilon, LSTM, and baselines are all mapped. |
-| Figure coverage: five figures, fifteen panels | PASS | Figure 4; Figure 5(a–b); Figure 6(a–e); Figure 7(a–f); Figure 8 are all mapped. |
-| Trace pairing | PASS | Paired-trace bank and identical inputs are required in evaluation and pilot tasks. |
-| Compute sequencing | PASS | Smoke precedes pilot; pilot precedes full evaluation; throughput measurement precedes budgeting. |
-| Artifact lineage | PASS | Every figure / evaluation task requires raw outputs, seed CSVs, manifests, and lineage. |
-| Cleanup safety | PASS | Legacy artifacts are classified as historical or superseded, not deleted first. |
-| No unsupported completion claims | FAIL | Prior pass overstated source authority; correction pass remains unresolved because live fetch failed. |
+| Structural Plan Audit | PASS | Task totals, phase totals, dependency graph, and status counts are internally consistent. |
+| Base-HOODIE Execution Audit | PASS | BASE-001 is the first READY implementation task and the base path is isolated from ECHO semantics. |
+| ECHO Source-Lock Audit | BLOCKED | Live method was externally verified, but no immutable local source-lock bundle exists yet. |
+| Full ECHO Execution Audit | BLOCKED | FREEZE-001 and SRC-001 are both required before any ECHO implementation starts. |
+| Overall Approval | CONDITIONALLY APPROVED — BASE-HOODIE PHASE ONLY | The plan can be executed through the base simulator phase, not through ECHO. |
+| Source authority consistency | PASS | Live tab authority is explicit; repository export is demoted to secondary offline evidence. |
+| Current HEAD consistency | PASS | Branch main; HEAD `d8dbf131dc4cff3879636853cafa9371a0914d99`; origin/main `d8dbf131dc4cff3879636853cafa9371a0914d99`. |
+| Task-count consistency | PASS | 73 tasks total; phase counts 6 / 23 / 20 / 12 / 12; status totals sum to 73. |
+| Dependency consistency | PASS | Dependency graph is acyclic and cross-phase gates are explicit. |
+| Status consistency | PASS | No ECHO or evaluation task is READY; READY remains limited to BASE-001. |
+| Base-first enforcement | PASS | All ECHO work waits on FREEZE-001 and SRC-001; base work starts with BASE-001. |
+| ECHO isolation | PASS | ECHO only changes the decision layer after freeze; base physics remain untouched. |
+| Equation coverage 1–67 | UNRESOLVED | 69-row drift audit exists, but live snapshot is still missing locally. |
+| Base-paper mechanism coverage | PASS | Slot workflow, queues, delayed reward, learner structure, and freeze strategy are explicit. |
+| Figure coverage: five figures, fifteen panels | PASS | Figures 4–8 are mapped to the evaluation and figure traceability matrix. |
+| Trace pairing | PASS | Paired, hashed, immutable trace banks are required before evaluation. |
+| Compute sequencing | PASS | Smoke → pilot → evaluation → figures → reports is enforced. |
+| Artifact lineage | PASS | Panel CSVs, manifests, SVG / PNG exports, and evidence logs are required for final claims. |
+| Cleanup safety | PASS | Historical artifacts are retained or superseded explicitly; deletion is not scheduled early. |
+| No unsupported completion claims | PASS | No task is marked complete without its stated authority and evidence. |
+
