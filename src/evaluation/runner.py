@@ -3,7 +3,7 @@ from __future__ import annotations
 from dataclasses import dataclass
 from typing import Protocol, runtime_checkable
 
-from src.environment.gym_adapter import HoodieGymEnvironment
+from src.environment.evaluation_gym_adapter import EvaluationHoodieGymEnvironment
 from src.environment.runtime_model import SharedRuntimeParameters
 from src.environment.task import Task
 from src.environment.topology import TopologyGraph
@@ -47,13 +47,13 @@ class EvaluationRunner:
 
     def _evaluate_episode(self, trace: EvaluationTrace) -> TraceMetrics:
         runtime_parameters = self.runtime_parameters or SharedRuntimeParameters()
-        env = HoodieGymEnvironment(
+        env = EvaluationHoodieGymEnvironment(
             episode_length=self.config.episode_length,
             topology=self.topology,
             runtime_parameters=runtime_parameters,
             compute_config=runtime_parameters.to_compute_config(),
             policy_name=self.config.policy_name,
-            trace=trace,
+            supplied_trace=trace,
         )
         observation, _info = env.reset(seed=trace.seed)
         records: list[TaskEvaluationRecord] = []
