@@ -166,13 +166,8 @@
     "IMPLEMENTED_PENDING_REVIEW": [],
     "REWORK": [],
     "BLOCKED_EXTERNAL": [],
-    "PLAN_CHANGE_REQUIRED": [
-      "PLAN-001",
-      "SRC-001"
-    ],
-    "STALE_BRANCH": [
-      "SRC-001"
-    ],
+    "PLAN_CHANGE_REQUIRED": [],
+    "STALE_BRANCH": [],
     "MERGE_BLOCKED": []
   },
   "attempts": {

@@ -1186,16 +1186,16 @@ python3 -m pytest tests/unit/test_event_smdp_interval_contract.py -q
 
 - **Dependencies:** ECHO-014.
 - **Required reads:** live equations and revision-280 parameter-sharing paragraph; replay/DQN/state/action/mask/interval modules.
-- **Allowed writes:** `src/agents/echo_model.py`; `src/agents/echo_agent.py`; `src/agents/echo_parameter_server.py`; `src/agents/replay_buffer.py`; `src/agents/double_dqn.py`; `src/agents/target_network.py`; `tests/unit/test_echo_masked_ddql.py`; `tests/unit/test_echo_parameter_sharing.py`; `G1`.
+- **Allowed writes:** `src/agents/echo_model.py`; `src/agents/echo_agent.py`; `src/agents/echo_agent_manager.py`; `src/agents/replay_buffer.py`; `src/agents/double_dqn.py`; `src/agents/target_network.py`; `tests/unit/test_echo_masked_ddql.py`; `tests/unit/test_echo_independent_learners.py`; `G1`.
 - **Ordered operations:**
   1. Dueling N+2 outputs for current N.
   2. masked online argmax/target evaluation/gamma^Delta/terminal/optimizer/target copy.
-  3. share Q/LSTM parameters among EAs inside one run.
+  3. maintain independent Q/LSTM parameters, replay buffers, optimizers, exploration state, forecasting state, and checkpoints per EA.
   4. retain source-specific interval accumulators and provenance.
   5. separate checkpoint per N.
 - **Exact command:**
 ```bash
-python3 -m pytest tests/unit/test_echo_masked_ddql.py tests/unit/test_echo_parameter_sharing.py -q
+python3 -m pytest tests/unit/test_echo_masked_ddql.py tests/unit/test_echo_independent_learners.py -q
 ```
 - **Acceptance:**
   - hand target exact.
@@ -1205,7 +1205,7 @@ python3 -m pytest tests/unit/test_echo_masked_ddql.py tests/unit/test_echo_param
   - all EAs retain independent learners and checkpoint lineage.
   - source-specific interval ownership preserved.
   - checkpoint identity bound to N, EA, training seed, method, and config hash.
-- **Stop/rollback:** Do not create independent ECHO network parameters per EA unless source lock changes.
+- **Stop/rollback:** Do not collapse independent ECHO network parameters per EA.
 
 ### ECHO-016 — Implement fresh/stale status and supervised LSTM training
 
@@ -1253,7 +1253,7 @@ python3 -m pytest tests/integration/test_echo_no_lstm_isolation.py -q
 ### ECHO-018 — Implement exact Algorithm 1 and 2 chronology
 
 - **Dependencies:** ECHO-017.
-- **Required reads:** source-locked 23/12-line algorithms; `src/echo_adapter.py`; `src/training/training_loop.py`; interval logic; neutral hooks.
+- **Required reads:** source-locked 23/14-line algorithms; `src/echo_adapter.py`; `src/training/training_loop.py`; interval logic; neutral hooks.
 - **Allowed writes:** `src/echo_adapter.py`; `src/training/training_loop.py`; `tests/integration/test_echo_algorithm_order.py`; `tests/integration/test_echo_boundary_reward_ownership.py`; `G1`.
 - **Ordered operations:**
   1. Apply boundary resolutions before new decision closure.
@@ -1282,7 +1282,7 @@ python3 -m pytest tests/integration/test_echo_algorithm_order.py tests/integrati
   3. checkpoint reload.
 - **Exact command:**
 ```bash
-python3 -m pytest tests/unit/test_echo_equations_01_08.py tests/unit/test_echo_local_estimate.py tests/unit/test_echo_outbound_estimate.py tests/unit/test_echo_destination_model.py tests/unit/test_echo_load_history.py tests/unit/test_echo_local_queue_ordering.py tests/unit/test_echo_outbound_queue_ordering.py tests/unit/test_echo_canonical_action_space.py tests/unit/test_echo_deadline_mask.py tests/unit/test_echo_pending_records.py tests/unit/test_echo_state_contract.py tests/unit/test_echo_reward.py tests/unit/test_event_smdp_interval_contract.py tests/unit/test_echo_masked_ddql.py tests/unit/test_echo_parameter_sharing.py tests/unit/test_echo_load_lstm.py tests/integration/test_echo_no_lstm_isolation.py tests/integration/test_echo_algorithm_order.py tests/integration/test_echo_boundary_reward_ownership.py tests/integration/test_echo_hand_trace.py -q && python3 scripts/smoke/run_echo_smoke.py --config configs/experiments/echo_smoke.yaml --output artifacts/smoke/echo_v4
+python3 -m pytest tests/unit/test_echo_equations_01_08.py tests/unit/test_echo_local_estimate.py tests/unit/test_echo_outbound_estimate.py tests/unit/test_echo_destination_model.py tests/unit/test_echo_load_history.py tests/unit/test_echo_local_queue_ordering.py tests/unit/test_echo_outbound_queue_ordering.py tests/unit/test_echo_canonical_action_space.py tests/unit/test_echo_deadline_mask.py tests/unit/test_echo_pending_records.py tests/unit/test_echo_state_contract.py tests/unit/test_echo_reward.py tests/unit/test_event_smdp_interval_contract.py tests/unit/test_echo_masked_ddql.py tests/unit/test_echo_independent_learners.py tests/unit/test_echo_load_lstm.py tests/integration/test_echo_no_lstm_isolation.py tests/integration/test_echo_algorithm_order.py tests/integration/test_echo_boundary_reward_ownership.py tests/integration/test_echo_hand_trace.py -q && python3 scripts/smoke/run_echo_smoke.py --config configs/experiments/echo_smoke.yaml --output artifacts/smoke/echo_v4
 ```
 - **Acceptance:**
   - all tests pass.

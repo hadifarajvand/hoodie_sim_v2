@@ -5,6 +5,6 @@
   "task_id": null,
   "attempt": null,
   "branch": null,
-  "reason": "Revision 280 reconciled successfully. Source lock and structural preflight passed, so SRC-001 attempt 3 is authorized on branch task/src-001-r3.",
-  "required_next_action": "independently review and merge the reconciliation, then authorize SRC-001 attempt 3 from the resulting main control commit."
+  "reason": "reconciliation is complete locally but awaits independent review and merge",
+  "required_next_action": "after PASS and merge, authorize SRC-001 attempt 3"
 }
