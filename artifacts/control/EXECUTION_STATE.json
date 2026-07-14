@@ -6,9 +6,10 @@
   "approved_plan_blob_sha": "b85e750969d393614f029f31a956a94e773b0c42",
   "validator_commit": "dcbfd8c581c196ce944031224eb6dd26a8a6a0d0",
   "preflight_commit": "72a398d1877ebba5a0f891a122a1c0a154de7fbd",
-  "preflight_result": "PASS",
+  "preflight_result": "INVALIDATED_BY_SOURCE_AND_MAIN_CHANGE",
   "controller_mode": "SEQUENTIAL_SINGLE_TASK",
-  "global_status": "REWORK_AUTHORIZED",
+  "global_status": "PLAN_CHANGE_REQUIRED",
+  "execution_paused": true,
   "task_order": [
     "SRC-001", "SRC-002", "AUDIT-001", "AUDIT-002", "PLAN-001", "CLEAN-001",
     "BASE-001", "BASE-002", "BASE-003", "BASE-004", "BASE-006", "BASE-005",
@@ -25,10 +26,10 @@
     "REPORT-001", "REPORT-002", "REPORT-003", "CLEAN-002", "CLEAN-003", "HANDOFF-001"
   ],
   "statuses": {
-    "VERIFIED_COMPLETE": ["SRC-002", "AUDIT-001", "AUDIT-002", "PLAN-001", "CLEAN-001"],
-    "READY": ["BASE-001"],
+    "VERIFIED_COMPLETE": ["SRC-002", "AUDIT-001", "AUDIT-002", "CLEAN-001"],
+    "READY": [],
     "BLOCKED": [
-      "BASE-002", "BASE-003", "BASE-004", "BASE-006", "BASE-005", "BASE-007",
+      "BASE-001", "BASE-002", "BASE-003", "BASE-004", "BASE-006", "BASE-005", "BASE-007",
       "BASE-008", "BASE-009", "BASE-010", "BASE-011", "BASE-012", "BASE-013",
       "BASE-014", "BASE-015", "BASE-016", "BASE-017", "BASE-018", "BASE-019",
       "BASE-020", "BASE-021", "BASE-022", "FREEZE-001",
@@ -43,22 +44,37 @@
     ],
     "IN_PROGRESS": [],
     "IMPLEMENTED_PENDING_REVIEW": [],
-    "REWORK": ["SRC-001"],
+    "REWORK": [],
     "BLOCKED_EXTERNAL": [],
-    "PLAN_CHANGE_REQUIRED": [],
-    "STALE_BRANCH": [],
+    "PLAN_CHANGE_REQUIRED": ["PLAN-001", "SRC-001"],
+    "STALE_BRANCH": ["SRC-001"],
     "MERGE_BLOCKED": []
   },
   "attempts": {"SRC-001": 2},
+  "source_state": {
+    "plan_revision": "273",
+    "out_of_band_revision": "278",
+    "current_live_revision": "280",
+    "current_live_modified_time": "2026-07-14T10:49:47.759Z"
+  },
+  "repository_state": {
+    "authorized_attempt_2_base": "d30e3097ea2943fe14100937fbb4de53e8ffd4aa",
+    "reported_local_attempt_2_head": "5433d05c3342b40998f5bd86a9dba3c1a0c8b4ac",
+    "out_of_band_main_commit": "eb302cc33030cdf67ed2bb7797abdb9ac911945e",
+    "out_of_band_paths_reviewed": 6
+  },
   "task_records": {
     "SRC-001": {
-      "authorized_branch": "task/src-001-r2",
       "attempt_1_task_commit": "7afff25fe879c51070351933f72ceab60f52b9a5",
-      "attempt_1_review_commit": "40b2fb805259d97af36bc9124f28a5e09960a25b",
       "attempt_1_verdict": "REWORK",
+      "attempt_2_verdict": "STALE_BRANCH",
+      "attempt_2_task_commit": null,
       "merge_sha": null,
-      "blocker": "Incomplete git_diff.patch and missing git_diff.patch SHA-256",
-      "next_attempt": 2
+      "blocker": "Plan/source mismatch and out-of-band authority commit. Current live revision is 280; plan records 273."
+    },
+    "PLAN-001": {
+      "status": "PLAN_CHANGE_REQUIRED",
+      "blocker": "Reconcile current live revision 280 and audit out-of-band commit eb302cc before any new task authorization."
     }
   }
 }
