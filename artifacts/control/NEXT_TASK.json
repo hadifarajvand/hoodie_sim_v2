@@ -5,6 +5,7 @@
   "preflight_result": "PASS",
   "authorization_status": "AUTHORIZED",
   "task_id": "SRC-001",
+  "task_title": "Lock current live ECHO source and close 69-row audit",
   "attempt": 1,
   "branch": "task/src-001-r1",
   "executor_start_sha": "86e0029b750d3ce9e633b3b04183ecee23bd2859"
