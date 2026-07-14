@@ -1,14 +1,8 @@
 {
   "schema_version": 1,
   "plan_version": "ECHO-MEP-v4.2",
-  "approved_plan_commit": "a99ed28feb2999832738dcdff96bb085629ac546",
-  "preflight_result": "PASS",
-  "authorization_status": "AUTHORIZED",
   "task_id": "SRC-001",
-  "task_title": "Lock current live ECHO source and close 69-row audit",
   "attempt": 1,
   "branch": "task/src-001-r1",
-  "executor_start_sha": "86e0029b750d3ce9e633b3b04183ecee23bd2859",
-  "required_ancestry_root": "a99ed28feb2999832738dcdff96bb085629ac546",
-  "executor_prompt": "Read artifacts/reports/ECHO_MASTER_EXECUTION_PLAN.md version ECHO-MEP-v4.2 and this file from main. Execute SRC-001 attempt 1 only on branch task/src-001-r1 starting from 86e0029b750d3ce9e633b3b04183ecee23bd2859. Follow the SRC-001 card exactly, write only its allowed paths plus G1, run its exact command, commit, and stop. Do not merge, edit the plan, select another task, or continue after the commit."
+  "executor_start_sha": "86e0029b750d3ce9e633b3b04183ecee23bd2859"
 }
