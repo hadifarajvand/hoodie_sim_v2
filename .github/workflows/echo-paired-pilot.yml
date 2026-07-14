@@ -1,0 +1,63 @@
+name: ECHO HOODIE Paired Pilot
+
+on:
+  push:
+    branches:
+      - echo-paired-pilot-evidence
+  pull_request:
+    paths:
+      - "src/**"
+      - "scripts/run_echo_hoodie_paired_pilot.py"
+      - "tests/integration/test_echo_hoodie_paired_pilot.py"
+      - ".github/workflows/echo-paired-pilot.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  paired-pilot:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+          cache: pip
+
+      - name: Install bounded test dependencies
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install pytest numpy cloudpickle gym==0.26.2 torch
+
+      - name: Verify event-SMDP and shared training isolation
+        run: |
+          pytest -q \
+            tests/unit/test_event_smdp.py \
+            tests/integration/test_training_loop.py \
+            tests/integration/test_echo_hoodie_paired_pilot.py
+
+      - name: Run bounded paired simulator pilot
+        run: |
+          python scripts/run_echo_hoodie_paired_pilot.py \
+            --output-dir artifacts/analysis/echo-hoodie-paired-pilot-ci \
+            --train-episodes 3 \
+            --evaluation-episodes 5 \
+            --episode-length 110 \
+            --drain-slots 10 \
+            --training-seed 431 \
+            --evaluation-seed 743 \
+            --arrival-probability 0.5 \
+            --timeout-slots 20 \
+            --json | tee artifacts/analysis/echo-hoodie-paired-pilot-ci/stdout.json
+
+      - name: Upload raw pilot evidence
+        uses: actions/upload-artifact@v4
+        with:
+          name: echo-hoodie-paired-pilot-evidence
+          path: artifacts/analysis/echo-hoodie-paired-pilot-ci
+          if-no-files-found: error
