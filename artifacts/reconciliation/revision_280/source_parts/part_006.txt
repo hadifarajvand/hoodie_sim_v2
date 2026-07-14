@@ -1,0 +1,20 @@
+reeze the selected Q-network and LSTM checkpoints, normalization and clipping bounds, canonical action order, topology, and evaluation configuration.
+2: At the beginning of slot $t$, apply every service-completion and transmission-arrival event recorded at the end of slot $t-1$ and resolve each resulting task outcome exactly once.
+3: Receive the newest destination-load report or use the horizon-specific LSTM forecast when the report is stale or unavailable. Mark every nonempty outbound queue whose relevant destination estimate or information age changed for ERT reconstruction.
+4: Remove expired waiting tasks while allowing active non-preemptive services to retain their resources until completion.
+5: Observe all arrival indicators.
+6: if at least one task arrives then
+7: For each arriving EA $n$, create the task descriptor and deadline, estimate every physical route at the task's expected destination-arrival time, compute candidate ERT, construct the valid set and minimum-lateness fallback, and build the fixed canonical mask.
+8: Construct the complete pre-action observation using the task fields, queue state, destination-load representation, candidate-ERT vector, and current mask.
+9: Select the highest-valued unmasked action, admit the task to the corresponding source queue, store offload destination metadata only when offloading is selected, and retain the decision-time estimate, ERT, lateness, and risk fields for later outcome logging.
+10: end if
+11: Rebuild the deterministic ERT order of every changed local queue and every changed or destination-estimate-affected outbound queue; start service on idle source resources, including newly admitted tasks when possible.
+12: Schedule destination processing according to the frozen source-indexed FIFO and capacity-sharing rule shared by all compared methods.
+13: Execute exactly one slot of active computation and transmission, record end-of-slot completions for the next boundary, and update load history and the next-slot forecast.
+14: Log route, decision-time estimate, information age, realized completion or drop, mask-calibration outcome, and runtime overhead for every resolved task without altering the frozen policy or figure values.
+
+
+3) Method Summary
+
+
+ECHO is fully specified by three interacting controls: end-to-end completion estimation, ERT-based source-queue scheduling, and masked distributed action selection. The local queue is prioritized by local completion slack, whereas the outbound-transfer queue is prioritized by end-to-end offloading slack that includes destination conditions. Every new task is evaluated over local, horizontal, and vertical routes, and no second destination decision is made after admission. Resolved tasks contribute to source-specific interval rewards, and one agent-specific event-epoch semi-Markov replay transition is finalized between consecutive actual route decisions of each EA, so delayed outcomes are included with the correct within-interval and sojourn discounts.
