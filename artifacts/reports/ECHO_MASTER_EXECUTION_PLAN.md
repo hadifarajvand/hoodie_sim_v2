@@ -5,15 +5,16 @@
 | Field | Value |
 |---|---| 
 | Title | ECHO Master Execution Plan |
-| Plan version | `ECHO-MEP-v2.6` |
-| Status | `CONDITIONALLY APPROVED — BASE-HOODIE PHASE ONLY` |
+| Plan version | `ECHO-MEP-v2.7` |
+| Status | `NOT APPROVED FOR IMPLEMENTATION` |
 | Creation time | `2026-07-13T18:30:45Z` |
 | Last updated time | `2026-07-14T00:00:00Z` |
 | Repository branch | `main` |
 | Audited code baseline HEAD | `d8dbf131dc4cff3879636853cafa9371a0914d99` |
 | v2.5 starting / parent HEAD | `5147530d1fe76100cc8edc7adcce834851201b3d` |
 | v2.5 externally observed result | `e48c08e51a8ce54f57b2d7de80e5aeddb1c510ba` |
-| Plan file blob SHA at planning start | `90ef9dad2b48a4d34d26f5e7c92e4432a2079295` |
+| v2.6 plan file blob SHA | `90ef9dad2b48a4d34d26f5e7c92e4432a2079295` |
+| v2.7 planning-start file blob SHA | `90ef9dad2b48a4d34d26f5e7c92e4432a2079295` |
 | Working-tree status | dirty only by this plan file; preserve unrelated drift |
 | Authoritative source identifiers | Live ECHO method tab `t.iav4589yyeo7` (`روش پیشنهادی`), externally verified current revision `ALtnJHzzm4hFNZK8DdBeKreoGaZ2RSO7F5oymwXZTjamK8fUxsa71RdvAu-7KkfW25xxeNA3C-Ns0TIbs-kwgO8FwUg1U68nloS7CIA1sg`; historical repository export `ALtnJHyTLdhKaOnVqfvxB74eKtegK8Hrsx5l2yaYdk68tSHgf-QdYtM6nrsTZrwFDm3DbTUFkeWajyCFP0Eevns2d7r0_twwuuYjD4ZcMQ` for offline comparison only; HOODIE OCR bundle; topology authorization v2; PNG export authorization |
 | Plan owner | Principal research-simulation architect / distributed-systems engineer / deep-RL specialist / scientific execution planner |
@@ -21,11 +22,11 @@
 
 ## 2. Executive Verdict
 
-Plan structural readiness: PASS. Base-HOODIE execution readiness: PASS. ECHO source-lock readiness: BLOCKED — SOURCE LOCK AND BASE FREEZE REQUIRED. Overall approval: CONDITIONALLY APPROVED — BASE-HOODIE PHASE ONLY.
+Plan structural readiness: PASS. Base-HOODIE execution readiness: FAIL. Repository-history compliance: FAIL. Task-card executability: FAIL. BASE-001 readiness: FAIL. ECHO source-lock readiness: BLOCKED — SOURCE LOCK AND BASE FREEZE REQUIRED. Overall approval: NOT APPROVED FOR IMPLEMENTATION.
 
 ECHO-MEP-v2.0 treated the historical export as live authority. ECHO-MEP-v2.1 fixed source hierarchy but could not complete live validation in this environment. ECHO-MEP-v2.2 preserved that limitation but left readiness semantics too coarse. ECHO-MEP-v2.3 separated base execution readiness from ECHO source-lock readiness, preserved external live verification, and blocked only the work that truly depends on an immutable source lock. ECHO-MEP-v2.4 corrected the freeze task name, task-table structure, and dependency joins; ECHO-MEP-v2.5 now corrects registry-driven readiness semantics, graph joins, figure values, and task cards.
 
-The base HOODIE phase may proceed now. ECHO implementation and authoritative evaluation remain blocked until the source-lock bundle exists and FREEZE-001 is complete. The upcoming v2.6 file does not claim a future commit SHA.
+The base HOODIE phase may proceed only after repository-history reconciliation completes and BASE-001 becomes executable. ECHO implementation and authoritative evaluation remain blocked until the source-lock bundle exists and FREEZE-001 is complete. The upcoming v2.7 file does not claim a future commit SHA.
 
 ## 3. Authority Hierarchy
 
@@ -79,10 +80,13 @@ The handoff may be completed by a user or trusted environment that can read the 
 ## 6. Current Repository and Git State
 
 - Branch: `main`.
-- Audited code baseline HEAD: `d8dbf131dc4cff3879636853cafa9371a0914d99`.
+- Audited pre-implementation baseline HEAD: `d8dbf131dc4cff3879636853cafa9371a0914d99`.
+- v2.6 plan blob SHA: `90ef9dad2b48a4d34d26f5e7c92e4432a2079295`.
 - v2.5 starting / parent HEAD: `5147530d1fe76100cc8edc7adcce834851201b3d`.
 - v2.5 externally observed result: `e48c08e51a8ce54f57b2d7de80e5aeddb1c510ba`.
-- Plan file blob SHA at planning start: `90ef9dad2b48a4d34d26f5e7c92e4432a2079295`.
+- Latest observed repository commit: `01176fe` (`Merge branch 'main' of https://github.com/hadifarajvand/hoodie_sim_v2`).
+- Commit range requiring reconciliation: `e48c08e51a8ce54f57b2d7de80e5aeddb1c510ba..01176fe`.
+- Exact changed-file inventory: `src/evaluation/trace_protocol.py`, `src/evaluation/config.py`, `src/evaluation/runner.py`, `src/environment/evaluation_gym_adapter.py`, `tests/unit/test_trace_protocol_paper_semantics.py`, `research/authority/echo/live/README.md`, `research/authority/echo/live/SHA256SUMS`, `research/authority/echo/live/source_metadata.json`, `src/echo_action_space.py`, `tests/unit/test_echo_fixed_action_space.py`, `src/training/event_smdp.py`, `src/config/training_config.py`, `src/training/training_loop.py`, `artifacts/reports/ECHO_MASTER_EXECUTION_PLAN.md`.
 - Worktree was dirty only by this plan file at planning start; preserve unrelated drift.
 - Current repo evidence already includes `artifacts/smoke/echo_runtime/*`, `artifacts/smoke/echo_learner/*`, `artifacts/checkpoints/echo_smoke/*`, and triage artifacts under `artifacts/test_triage/*`.
 ## 7. Verified Current-State Audit
@@ -90,7 +94,9 @@ The handoff may be completed by a user or trusted environment that can read the 
 | Component | Current status | Evidence | Remaining gap | Planned task IDs |
 | --- | --- | --- | --- | --- |
 | Plan structure | PASS | This document preserves the 73-task register, 73-task appendix, and dependency-derived Mermaid graph | No mismatch allowed between register, graph, and appendix | PLAN-001 |
-| Base-HOODIE execution | PASS | Phase 1 begins with READY `BASE-001`; later Phase 1 tasks are dependency-blocked until executed | Base simulator and learner work still needs implementation | BASE-001–FREEZE-001 |
+| Base-HOODIE execution | FAIL | `BASE-001` is not executable until its card is concrete and reconciliation is complete | Base simulator and learner work still needs implementation | BASE-001–FREEZE-001 |
+| Repository-history compliance | FAIL | Later commits after `e48c08e51a8ce54f57b2d7de80e5aeddb1c510ba` require reconciliation; see Section 8.1 | Every later commit must be classified before implementation approval | RECON-001 |
+| Task-card executability | FAIL | `BASE-001` still lacks a fully concrete parameter contract and executable command chain | No READY implementation task may rely on placeholders | BASE-001 |
 | ECHO source-lock | BLOCKED | Live method was externally verified, but no immutable local snapshot exists in repo | Source-lock bundle, metadata, hashes, and 69-row semantic audit still absent | SRC-001 |
 | Full ECHO execution | BLOCKED | FREEZE-001 is incomplete and ECHO depends on both FREEZE-001 and SRC-001 | No authoritative ECHO work may start yet | ECHO-001–ECHO-020 |
 | Evaluation and figures | BLOCKED | Authoritative evaluation and figures require ECHO pilot outputs | No Figure 4–8 lineage yet | EVAL-001–HANDOFF-001 |
@@ -104,6 +110,36 @@ The handoff may be completed by a user or trusted environment that can read the 
 5. `src/training/training_loop.py:59-135` still needs a strict semi-Markov finalization audit so replay inserts exactly one transition per delivered reward with `gamma ** Delta_i`. Fix in `BASE-017`, `BASE-018`, `ECHO-014`, `ECHO-015`.
 6. `src/evaluation/policy_registry.py:1-40` aliases `HOODIE` to `ADAPTIVE`, which is useful for compatibility but not a faithful HOODIE baseline freeze. Fix in `BASE-019` and `FREEZE-001`.
 7. `scripts/run_figures_8_11_validation.py` and the legacy analysis bundles are historical evidence only; they are not authoritative Figure 4–8 outputs. Fix in `CLEAN-002`, `FIG-001`–`FIG-006`.
+
+## 8.1 Repository History Reconciliation
+
+| Commit SHA | Title | Changed files | Plan task IDs | Dependencies satisfied | Authority source available | Class | Reusable | Required verification | Disposition |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| `c50e65f801bf339e2ac515408fe9d62bd9e15e5a` | Align evaluation traces with independent per-EA arrivals and drain slots | `src/evaluation/trace_protocol.py` | `EVAL-001`, `EVAL-002` | No | Yes | Shared infrastructure | Potentially reusable | Paper semantics + trace tests | POTENTIALLY REUSABLE — REQUIRES TASK VALIDATION |
+| `b9a844c6b16ac9440bafc3ba167b77b69172ba21` | Add explicit drain-slot configuration for paper evaluation | `src/evaluation/config.py` | `EVAL-001` | No | Yes | Shared infrastructure | Potentially reusable | Config default audit | POTENTIALLY REUSABLE — REQUIRES TASK VALIDATION |
+| `d60db41d94bd1e741fd932c469b36be1f92cc2fe` | Run policies on the exact paired trace including drain slots | `src/evaluation/runner.py` | `EVAL-002` | No | Yes | ECHO-specific | No | Paired-trace replay audit | PREMATURE ECHO IMPLEMENTATION |
+| `d192cce4264b753f76625361e7405169ecf1370a` | Keep evaluation runner compatible while trace injection is wired into environment | `src/evaluation/runner.py` | `EVAL-002` | No | Yes | Shared infrastructure | Yes | Adapter compatibility test | POTENTIALLY REUSABLE — REQUIRES TASK VALIDATION |
+| `369c8fd9eda8be71f913d68f86c8824bc1acbe97` | Add exact paired-trace adapter for evaluation campaigns | `src/environment/evaluation_gym_adapter.py` | `EVAL-002` | No | Yes | Shared infrastructure | Yes | Trace adapter lineage audit | POTENTIALLY REUSABLE — REQUIRES TASK VALIDATION |
+| `2a7c4255ab777b002724b84136b3bbce0b4a58f6` | Execute policies on the materialized paired trace | `src/evaluation/runner.py` | `EVAL-002` | No | Yes | ECHO-specific | No | Paired-trace execution audit | PREMATURE ECHO IMPLEMENTATION |
+| `1bee42fc9aaa1a6e07dbe0698dc2a1a2672cc564` | Test independent per-EA arrivals, drain slots, and paired trace injection | `tests/unit/test_trace_protocol_paper_semantics.py` | `EVAL-001`, `EVAL-002` | Partial | Yes | Shared infrastructure | Yes | Unit test outcome | POTENTIALLY REUSABLE — REQUIRES TASK VALIDATION |
+| `063cdd9df5f2ac3b805aeb24634089cc8d4fbb7c` | Lock current ECHO method authority revision | `research/authority/echo/live/source_metadata.json` | `SRC-001` | No | Yes | ECHO-specific | No | Source-lock provenance audit | HISTORICAL / NON-AUTHORITATIVE |
+| `bd60b9e4b29c2bd01148ea0697e4abe60e7fbbb9` | Record ECHO method snapshot checksum | `research/authority/echo/live/SHA256SUMS` | `SRC-001` | No | Yes | ECHO-specific | No | Hash provenance audit | HISTORICAL / NON-AUTHORITATIVE |
+| `60b3970e32a1a80f5a44a43a64478aa214e1b6b4` | Document ECHO live source-lock authority | `research/authority/echo/live/README.md` | `SRC-001` | No | Yes | Shared infrastructure | Yes | Documentation audit | POTENTIALLY REUSABLE — REQUIRES TASK VALIDATION |
+| `159c247ee6cdfc9774a57a08ad51455c662a03f6` | Clarify checksum belongs to the external normalized source export | `research/authority/echo/live/SHA256SUMS` | `SRC-001` | No | Yes | Shared infrastructure | Yes | Hash provenance audit | POTENTIALLY REUSABLE — REQUIRES TASK VALIDATION |
+| `e1d5f220ec83fbda6fce20258f414e4d90301f1d` | Use fixed 30-node canonical ECHO action space with absent-node masking | `src/echo_action_space.py` | `ECHO-009` | No | Yes | ECHO-specific | No | Action-space masking audit | PREMATURE ECHO IMPLEMENTATION |
+| `6f087e8194105f4ba7655d67083ea8c8e87a3b94` | Test fixed-size ECHO action padding and physical masks | `tests/unit/test_echo_fixed_action_space.py` | `ECHO-009` | No | Yes | Shared infrastructure | Yes | Unit test outcome | POTENTIALLY REUSABLE — REQUIRES TASK VALIDATION |
+| `1266c725a23e98f5ae54f3662e7fdf1bd8c8e12f` | Process all same-slot arrivals before advancing physical service | `src/environment/evaluation_gym_adapter.py` | `BASE-005`, `BASE-006` | No | Yes | Shared infrastructure | Yes | Slot-order test audit | AUTHORITATIVE AND DEPENDENCY-COMPLIANT |
+| `f43181b3a891f4221ac98ed253d57fa19ffb6fc8` | Use synchronized slot-batched evaluation runner | `src/evaluation/runner.py` | `EVAL-002` | No | Yes | Shared infrastructure | Yes | Runner compatibility audit | POTENTIALLY REUSABLE — REQUIRES TASK VALIDATION |
+| `4b5bdfe96d43fafa35b9468fc5f8a4779fe0dbda` | Finalize unresolved tasks as dropped at the evaluation horizon | `src/environment/evaluation_gym_adapter.py` | `BASE-018`, `EVAL-001` | No | Yes | Shared infrastructure | Yes | Horizon termination audit | POTENTIALLY REUSABLE — REQUIRES TASK VALIDATION |
+| `1a0df5a1f65fe1041477ea906a1372c233051a97` | Expose synchronized decision events for agent-specific SMDP training | `src/environment/evaluation_gym_adapter.py` | `ECHO-014`, `ECHO-015` | No | Yes | Shared infrastructure | Yes | Decision-epoch audit | POTENTIALLY REUSABLE — REQUIRES TASK VALIDATION |
+| `741466fd217a734e1cc9269813fb233b330c6d17` | Implement agent-specific event-epoch SMDP reward accumulation | `src/training/event_smdp.py` | `ECHO-014`, `ECHO-015` | No | Yes | ECHO-specific | No | Reward/transition audit | PREMATURE ECHO IMPLEMENTATION |
+| `92fb4c86087658ec703285fbde07ae19e8c20f1a` | Add discount and drain settings to training configuration | `src/config/training_config.py` | `BASE-017`, `BASE-018` | Partial | Yes | Shared infrastructure | Yes | Configuration provenance audit | POTENTIALLY REUSABLE — REQUIRES TASK VALIDATION |
+| `143211fe984496f8f7aa531a72ebafab38aef02d` | Derive paired trace agent count from the active topology | `src/evaluation/runner.py` | `EVAL-002` | No | Yes | Shared infrastructure | Yes | Topology-to-trace audit | POTENTIALLY REUSABLE — REQUIRES TASK VALIDATION |
+| `93ad74780e6144b7596f68a00c8e165a90665464` | wqd | `artifacts/reports/ECHO_MASTER_EXECUTION_PLAN.md` | `PLAN-001` | Yes | Yes | Unrelated | No | Manual review | HISTORICAL / NON-AUTHORITATIVE |
+| `d2eb38d7928a7e6cd79c59f0415f2cf75595b87b` | Merge branch 'main' of https://github.com/hadifarajvand/hoodie_sim_v2 | `research/authority/echo/live/README.md`, `research/authority/echo/live/SHA256SUMS`, `research/authority/echo/live/source_metadata.json`, `src/config/training_config.py`, `src/echo_action_space.py`, `src/environment/evaluation_gym_adapter.py`, `src/evaluation/config.py`, `src/evaluation/runner.py`, `src/evaluation/trace_protocol.py`, `src/training/event_smdp.py`, `tests/unit/test_echo_fixed_action_space.py`, `tests/unit/test_trace_protocol_paper_semantics.py`, `artifacts/reports/ECHO_MASTER_EXECUTION_PLAN.md` | `SRC-001`, `EVAL-001`, `ECHO-009`, `ECHO-014`, `PLAN-001` | Mixed | Yes | Shared infrastructure / ECHO-specific | Partial | Merge review and task validation | UNRESOLVED |
+| `37debed17bbdf4eb739eb1ee41f622141a95f28e` | Accept environment task-resolution schema in SMDP accumulator | `src/training/event_smdp.py` | `ECHO-014`, `ECHO-015` | No | Yes | ECHO-specific | No | SMDP schema audit | PREMATURE ECHO IMPLEMENTATION |
+| `30cf9d0f98badfdc154eba9061e20f9d0fea8f2b` | Train ECHO with agent-specific event SMDP on synchronized paired traces | `src/training/training_loop.py` | `ECHO-014`, `ECHO-015`, `ECHO-016` | No | Yes | ECHO-specific | No | Training-path audit | PREMATURE ECHO IMPLEMENTATION |
+
 
 ## Live ECHO Source Drift Audit
 
@@ -296,7 +332,7 @@ Base HOODIE uses the HOODIE paper’s slot semantics only. No ECHO semi-Markov s
 3. Validate the HOODIE learner, baselines, and load forecast against the paper evidence registry.
 4. Freeze the faithful HOODIE simulator and baseline as `FREEZE-001`.
 
-`SRC-002` is the paper evidence registry. It is a scientific prerequisite, not an ECHO source-lock gate. It is marked `VERIFIED COMPLETE` so `BASE-001` can remain READY.
+`SRC-002` is the paper evidence registry. It is a scientific prerequisite, not an ECHO source-lock gate. It is marked `VERIFIED COMPLETE`; `BASE-001` still remains not ready until its card is executable.
 
 ## 13. Exact ECHO Delta over Frozen HOODIE
 
@@ -331,11 +367,11 @@ Base HOODIE uses the HOODIE paper’s slot semantics only. No ECHO semi-Markov s
 | Figure 4 | topology illustration | topology | 20 EA | n/a | topology only | BASE-002 | BASE-002 | n/a | n/a | topology snapshot | n/a | panel CSV | SVG/PDF | PNG | manifest | lineage |
 | Figure 5(a) | avg reward | learning rate | alpha_lr in {10^-9, 5x10^-9, 10^-8, 10^-7, 5x10^-7, 7x10^-7} | 5000 training episodes | ECHO | EVAL-006 | EVAL-006 | paired traces | 95% CI | raw sweep outputs | seed CSV | panel CSV | SVG/PDF | PNG | manifest | lineage |
 | Figure 5(b) | avg reward | gamma | gamma in {0.2, 0.4, 0.6, 0.8, 0.99} | 5000 training episodes | ECHO | EVAL-006 | EVAL-006 | paired traces | 95% CI | raw sweep outputs | seed CSV | panel CSV | SVG/PDF | PNG | manifest | lineage |
-| Figure 6(a) | avg reward vs P | P | P in {0.1, 0.3, 0.5, 0.7, 0.9}; N in {10, 15, 20} | not fixed / governed by the evaluation specification | ECHO | EVAL-007 | EVAL-008 | paired traces | 95% CI | raw task logs | seed CSV | panel CSV | SVG/PDF | PNG | manifest | lineage |
-| Figure 6(b) | action counts | P | P in {0.1, 0.3, 0.5, 0.7, 0.9}; 20-EA default topology | not fixed / governed by the evaluation specification | ECHO | EVAL-007 | EVAL-008 | paired traces | 95% CI | raw task logs | seed CSV | panel CSV | SVG/PDF | PNG | manifest | lineage |
-| Figure 6(c) | avg reward vs capacity | EA capacity | EA capacity in {4, 5, 6, 7, 8, 9} GHz; N in {10, 15, 20} | not fixed / governed by the evaluation specification | ECHO | EVAL-007 | EVAL-008 | paired traces | 95% CI | raw task logs | seed CSV | panel CSV | SVG/PDF | PNG | manifest | lineage |
-| Figure 6(d) | avg reward vs EA count | EA count | N in {10, 15, 20, 25, 30}; series = moderate (1-3 Mbits, P = 0.5), heavy (2-5 Mbits, P = 0.7), extreme (3-7 Mbits, P = 0.9) | not fixed / governed by the evaluation specification | ECHO | EVAL-007 | EVAL-008 | paired traces | 95% CI | raw task logs | seed CSV | panel CSV | SVG/PDF | PNG | manifest | lineage |
-| Figure 6(e) | avg reward vs EA count | EA count | N in {10, 15, 20, 25, 30}; series = balanced (R_H = 10 Mbps, R_V = 30 Mbps), horizontal-centric (R_H = 20 Mbps, R_V = 20 Mbps), vertical-centric (R_H = 5 Mbps, R_V = 40 Mbps) | not fixed / governed by the evaluation specification | ECHO | EVAL-007 | EVAL-008 | paired traces | 95% CI | raw task logs | seed CSV | panel CSV | SVG/PDF | PNG | manifest | lineage |
+| Figure 6(a) | avg reward vs P | P | P in {0.1, 0.3, 0.5, 0.7, 0.9}; N in {10, 15, 20} | 20 slots = 2 seconds (Table 2 default) | ECHO | EVAL-007 | EVAL-008 | paired traces | 95% CI | raw task logs | seed CSV | panel CSV | SVG/PDF | PNG | manifest | lineage |
+| Figure 6(b) | action counts | P | P in {0.1, 0.3, 0.5, 0.7, 0.9}; 20-EA default topology | 20 slots = 2 seconds (Table 2 default) | ECHO | EVAL-007 | EVAL-008 | paired traces | 95% CI | raw task logs | seed CSV | panel CSV | SVG/PDF | PNG | manifest | lineage |
+| Figure 6(c) | avg reward vs capacity | EA capacity | EA capacity in {4, 5, 6, 7, 8, 9} GHz; N in {10, 15, 20} | 20 slots = 2 seconds (Table 2 default) | ECHO | EVAL-007 | EVAL-008 | paired traces | 95% CI | raw task logs | seed CSV | panel CSV | SVG/PDF | PNG | manifest | lineage |
+| Figure 6(d) | avg reward vs EA count | EA count | N in {10, 15, 20, 25, 30}; series = moderate (1-3 Mbits, P = 0.5), heavy (2-5 Mbits, P = 0.7), extreme (3-7 Mbits, P = 0.9) | 20 slots = 2 seconds (Table 2 default) | ECHO | EVAL-007 | EVAL-008 | paired traces | 95% CI | raw task logs | seed CSV | panel CSV | SVG/PDF | PNG | manifest | lineage |
+| Figure 6(e) | avg reward vs EA count | EA count | N in {10, 15, 20, 25, 30}; series = balanced (R_H = 10 Mbps, R_V = 30 Mbps), horizontal-centric (R_H = 20 Mbps, R_V = 20 Mbps), vertical-centric (R_H = 5 Mbps, R_V = 40 Mbps) | 20 slots = 2 seconds (Table 2 default) | ECHO | EVAL-007 | EVAL-008 | paired traces | 95% CI | raw task logs | seed CSV | panel CSV | SVG/PDF | PNG | manifest | lineage |
 | Figure 7(a) | average delay | arrival probability | P in {0.1, 0.3, 0.5, 0.7, 0.9} | 10 s | ECHO vs HOODIE / RO / FLC / VO / HO / BCO / MLEO | EVAL-007 | EVAL-008 | paired traces | 95% CI | raw comparison outputs | seed CSV | panel CSV | SVG/PDF | PNG | manifest | lineage |
 | Figure 7(b) | average delay | EA capacity | EA capacity in {3, 4, 5, 6, 7} GHz | 10 s | ECHO vs HOODIE / RO / FLC / VO / HO / BCO / MLEO | EVAL-007 | EVAL-008 | paired traces | 95% CI | raw comparison outputs | seed CSV | panel CSV | SVG/PDF | PNG | manifest | lineage |
 | Figure 7(c) | average delay | task timeout | timeout in {9.6, 9.8, 10.0, 10.2, 10.4} s | swept; no fixed timeout | ECHO vs HOODIE / RO / FLC / VO / HO / BCO / MLEO | EVAL-007 | EVAL-008 | paired traces | 95% CI | raw comparison outputs | seed CSV | panel CSV | SVG/PDF | PNG | manifest | lineage |
@@ -560,7 +596,7 @@ Structural audit rule: `set(graph_edges) == set(registry_dependency_edges)`; fai
 - Parallel task groups: `SRC-001` is independent of `BASE-001`; `SRC-002` and `AUDIT-001` are independent evidence tasks; `BASE-005`, `BASE-007`, `BASE-010`, and `BASE-012` are join prerequisites for `BASE-013`; `FIG-001`–`FIG-005` are parallel figure branches; `REPORT-001`, `REPORT-002`, and `REPORT-003` are parallel reports; `EVAL-009`, `EVAL-010`, and `EVAL-011` are parallel validation gates.
 ## 20. Gate Definitions
 
-- Gate 0A — Base planning and HOODIE authority readiness: HOODIE paper evidence complete; plan/register/graph/task-card consistency complete; `BASE-001` executable.
+- Gate 0A — Base planning and HOODIE authority readiness: HOODIE paper evidence complete; plan/register/graph/task-card consistency complete; `BASE-001` remains not ready until its card is executable.
 - Gate 0B — ECHO source-lock readiness: immutable live snapshot; metadata; hashes; 69-row semantic audit; implementation lock.
 - Gate 0B blocks every ECHO task, not base-HOODIE work.
 - Gate 1 — Base traffic and synchronized slots: per-EA Bernoulli arrivals, same-slot decisions, 100 decision + 10 drain slots, deterministic paired traces.
@@ -610,21 +646,21 @@ No ECHO implementation may begin before the physical base simulator gate is comp
 | Total tasks | 73 |
 | Verified complete | 4 |
 | Partially implemented | 1 |
-| Ready | 1 |
-| Blocked by dependency | 66 |
+| Ready | 0 |
+| Blocked by dependency | 67 |
 | Blocked — external source access | 1 |
 | Not started | 0 |
 | Superseded | 0 |
 | Structural plan audit | PASS |
-| Base-HOODIE execution audit | PASS |
+| Base-HOODIE execution audit | FAIL |
 | ECHO source-lock audit | BLOCKED |
 | Full ECHO execution audit | BLOCKED |
-| Overall approval | CONDITIONALLY APPROVED — BASE-HOODIE PHASE ONLY |
+| Overall approval | NOT APPROVED FOR IMPLEMENTATION |
 | Current critical-path task | `BASE-001` |
-| Next exact command | `Read artifacts/reports/ECHO_MASTER_EXECUTION_PLAN.md completely. Execute only BASE-001. Do not modify any ECHO-specific implementation. Before editing, mark BASE-001 IN PROGRESS and record the starting HEAD. After validation, attach exact test and artifact evidence and update dependent readiness.` |
+| Next exact command | `Reconcile repository-history commit inventory, finalize BASE-001 card evidence, and do not start implementation.` |
 ## 28. Next Exact Command
 
-`Read artifacts/reports/ECHO_MASTER_EXECUTION_PLAN.md completely. Execute only BASE-001. Do not modify any ECHO-specific implementation. Before editing, mark BASE-001 IN PROGRESS and record the starting HEAD. After validation, attach exact test and artifact evidence and update dependent readiness.`
+`Reconcile repository-history commit inventory, finalize BASE-001 card evidence, and do not start implementation.`
 ## 29. Append-Only Evidence Log
 
 | Timestamp | Change | Evidence |
@@ -635,13 +671,14 @@ No ECHO implementation may begin before the physical base simulator gate is comp
 | 2026-07-14T00:00:00Z | v2.4 separates source-lock closure from live verification, renames FREEZE-001, corrects base and ECHO gates, and rebuilds task/evaluation/figure planning. | Externally verified live revision `ALtnJHzzm4hFNZK8DdBeKreoGaZ2RSO7F5oymwXZTjamK8fUxsa71RdvAu-7KkfW25xxeNA3C-Ns0TIbs-kwgO8FwUg1U68nloS7CIA1sg`; repository export `ALtnJHyTLdhKaOnVqfvxB74eKtegK8Hrsx5l2yaYdk68tSHgf-QdYtM6nrsTZrwFDm3DbTUFkeWajyCFP0Eevns2d7r0_twwuuYjD4ZcMQ`; current HEAD `d8dbf131dc4cff3879636853cafa9371a0914d99`. |
 | 2026-07-14T00:00:00Z | v2.5 corrected registry-driven readiness semantics, graph joins, figure values, and task cards. | v2.5 starting/parent HEAD `5147530d1fe76100cc8edc7adcce834851201b3d`; v2.5 externally observed result `e48c08e51a8ce54f57b2d7de80e5aeddb1c510ba`; plan blob SHA `90ef9dad2b48a4d34d26f5e7c92e4432a2079295`. |
 | 2026-07-14T00:00:00Z | v2.6 removes self-referential HEAD claims, enforces graph/register parity, splits Gate 0, and regenerates task cards from the register. | Planning-start file blob SHA `90ef9dad2b48a4d34d26f5e7c92e4432a2079295`; audited code baseline HEAD `d8dbf131dc4cff3879636853cafa9371a0914d99`; v2.5 parent `5147530d1fe76100cc8edc7adcce834851201b3d`; v2.5 observed result `e48c08e51a8ce54f57b2d7de80e5aeddb1c510ba`. |
+| 2026-07-14T00:00:00Z | v2.7 reconciles repository history after `e48c08e51a8ce54f57b2d7de80e5aeddb1c510ba`, marks BASE-001 not ready, and blocks implementation until task cards are executable. | Latest observed repository commit `01176fe`; commit range `e48c08e51a8ce54f57b2d7de80e5aeddb1c510ba..01176fe`; exact changed-file inventory recorded in Section 6 and Section 8.1. |
 ## 30. Plan Quality Audit
 
 - Structural plan audit: PASS.
-- Base-HOODIE execution audit: PASS.
+- Base-HOODIE execution audit: FAIL.
 - ECHO source-lock audit: BLOCKED.
 - Full ECHO execution audit: BLOCKED.
-- Overall approval: CONDITIONALLY APPROVED — BASE-HOODIE PHASE ONLY.
+- Overall approval: NOT APPROVED FOR IMPLEMENTATION.
 - The audit fails if the task register, dependency graph, critical path, dashboard, task cards, or figure matrix disagree. It also fails if `set(graph_edges) != set(registry_dependency_edges)`.
 ## 31. Task Card Appendix
 
@@ -653,7 +690,7 @@ No ECHO implementation may begin before the physical base simulator gate is comp
 | `AUDIT-002` | `PARTIALLY IMPLEMENTED` | Reconcile old completion claims against real live paths | NONE | handoff reports, triage reports, artifact index | repo root | task-scoped files | Execute the task-specific implementation steps using the approved evidence inputs. | task-scoped validation | PLANNED COMMAND — SCRIPT MUST BE CREATED BY THIS TASK | task artifacts | Task evidence is complete. | Task-specific invariants hold. | Medium | Task-local rollback only. | Task complete. | Validation log. | Proceed to the next dependency-complete task. |
 | `PLAN-001` | `VERIFIED COMPLETE` | Correct version, HEAD, task totals, statuses, dependencies, critical path, and dashboard | NONE | prior plan history, git state evidence | repo root | task-scoped files | Execute the task-specific implementation steps using the approved evidence inputs. | task-scoped validation | PLANNED COMMAND — SCRIPT MUST BE CREATED BY THIS TASK | task artifacts | Task evidence is complete. | Task-specific invariants hold. | Medium | Task-local rollback only. | Task complete. | Validation log. | Proceed to the next dependency-complete task. |
 | `CLEAN-001` | `VERIFIED COMPLETE` | Classify existing artifacts as authoritative, historical, superseded, or removable later | NONE | artifacts/* and research/* inventories | repo root | task-scoped files | Execute the task-specific implementation steps using the approved evidence inputs. | task-scoped validation | PLANNED COMMAND — SCRIPT MUST BE CREATED BY THIS TASK | task artifacts | Task evidence is complete. | Task-specific invariants hold. | Medium | Task-local rollback only. | Task complete. | Validation log. | Proceed to the next dependency-complete task. |
-| `BASE-001` | `READY` | Freeze one canonical Table-4 configuration | PLAN-001, CLEAN-001 | HOODIE paper Table 4, OCR bundle, topology authorization v2; canonical config path `configs/authoritative/hoodie_table4.yaml`; validation test `tests/unit/test_hoodie_table4_config.py` | repo root | task-scoped files | Execute the task-specific implementation steps using the approved evidence inputs. | task-scoped validation | PLANNED COMMAND — SCRIPT MUST BE CREATED BY THIS TASK | task artifacts | Task evidence is complete. | Task-specific invariants hold. | Medium | Task-local rollback only. | Task complete. | Validation log. | Proceed to the next dependency-complete task. |
+| `BASE-001` | `NOT READY — TASK CARD INCOMPLETE` | Freeze one canonical Table-4 configuration | PLAN-001, CLEAN-001 | HOODIE paper Table 4, OCR bundle, topology authorization v2; canonical config path `configs/authoritative/hoodie_table4.yaml`; validation test `tests/unit/test_hoodie_table4_config.py` | repo root | task-scoped files | Execute the task-specific implementation steps using the approved evidence inputs. | task-scoped validation | PLANNED COMMAND — CREATED DURING THIS TASK | task artifacts | Task evidence is complete. | Task-specific invariants hold. | Medium | Task-local rollback only. | Task complete. | Validation log. | Do not start implementation until the card is concrete. |
 | `BASE-002` | `BLOCKED BY DEPENDENCY` | Freeze the exact approved 20-EA topology and scalable topology rules | BASE-001 | HOODIE topology evidence, Figure 4, topology authorization v2 | repo root | task-scoped files | Execute the task-specific implementation steps using the approved evidence inputs. | task-scoped validation | PLANNED COMMAND — SCRIPT MUST BE CREATED BY THIS TASK | task artifacts | Task evidence is complete. | Task-specific invariants hold. | Medium | Task-local rollback only. | Task complete. | Validation log. | Proceed to the next dependency-complete task. |
 | `BASE-003` | `BLOCKED BY DEPENDENCY` | Implement per-EA Bernoulli trace generation and 100+10 decision/drain behavior | BASE-002 | trace protocol, paper arrival / drain evidence | repo root | task-scoped files | Execute the task-specific implementation steps using the approved evidence inputs. | task-scoped validation | PLANNED COMMAND — SCRIPT MUST BE CREATED BY THIS TASK | task artifacts | Task evidence is complete. | Task-specific invariants hold. | Medium | Task-local rollback only. | Task complete. | Validation log. | Proceed to the next dependency-complete task. |
 | `BASE-004` | `BLOCKED BY DEPENDENCY` | Make trace objects immutable and directly consumable by all methods | BASE-003 | trace-bank code, training / evaluation trace constructors | repo root | task-scoped files | Execute the task-specific implementation steps using the approved evidence inputs. | task-scoped validation | PLANNED COMMAND — SCRIPT MUST BE CREATED BY THIS TASK | task artifacts | Task evidence is complete. | Task-specific invariants hold. | Medium | Task-local rollback only. | Task complete. | Validation log. | Proceed to the next dependency-complete task. |
