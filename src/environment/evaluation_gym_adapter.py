@@ -48,6 +48,7 @@ class EvaluationHoodieGymEnvironment(HoodieGymEnvironment):
             raise RuntimeError("Environment must be reset before stepping")
 
         reward = 0.0
+        decision_events: list[dict[str, Any]] = []
         task_resolution_events: list[dict[str, Any]] = []
         reward_delivery_events: list[dict[str, Any]] = []
         selected_action_emitted = False
@@ -94,6 +95,18 @@ class EvaluationHoodieGymEnvironment(HoodieGymEnvironment):
                 selected_action,
                 resolved_destination=resolved_destination,
             )
+            decision_events.append(
+                {
+                    "task_id": current_task.task_id,
+                    "source_agent_id": current_task.source_agent_id,
+                    "decision_slot": self.current_slot,
+                    "state": dict(observation),
+                    "action": selected_action,
+                    "legal_action_mask": dict(legal_action_mask),
+                    "resolved_destination": resolved_destination,
+                }
+            )
+
             ledger = OffloadTraceLedger()
             ledger.emit("selected_action")
             self._trace_ledgers[current_task.task_id] = ledger
@@ -155,6 +168,8 @@ class EvaluationHoodieGymEnvironment(HoodieGymEnvironment):
             task_resolution_events=task_resolution_events,
             reward_delivery_events=reward_delivery_events,
         )
+        info["decision_events"] = decision_events
+        info["physical_slot"] = self.current_slot - 1
         return observation, reward, terminated, truncated, info
 
     def _finalize_unresolved_at_horizon(self, horizon_slot: int):
