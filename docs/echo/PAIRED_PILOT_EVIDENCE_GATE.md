@@ -47,13 +47,19 @@ Training and held-out evaluation seeds must be disjoint.
 
 ## Scale handling contract
 
-The article's scalability sweep uses one maximum-size architecture supporting
-30 EAs. For a run with fewer EAs, absent-node feature blocks are zero padded,
-corresponding actions are masked, and a node-presence indicator distinguishes
-an absent node from a present node with zero load. A separate checkpoint is
-trained for each network size; no zero-shot transfer claim is made. This pilot
-uses the approved 20-EA topology and therefore validates the default operating
-point, not the complete scalability sweep.
+The scalability campaign uses a size-specific network for each tested value of
+`N`. For `N` EAs, the canonical policy output has `N + 2` positions: one local
+action, `N` ordered horizontal-destination positions, and one cloud action. The
+source position and disconnected destinations remain in the output but are
+masked. State blocks use the same semantics and ordering for every existing
+node; only the number of destination blocks changes with the experimental
+topology.
+
+A separate checkpoint is trained for every network size with the same training
+budget. Parameter sharing is allowed among EAs inside one run, but no checkpoint
+is transferred zero-shot between different values of `N`. This pilot uses the
+approved 20-EA topology and therefore validates the default operating point,
+not the complete scalability sweep.
 
 ## Gate decision
 
