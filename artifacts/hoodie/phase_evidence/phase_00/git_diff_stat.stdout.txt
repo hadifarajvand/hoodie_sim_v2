@@ -1,0 +1,84 @@
+ artifacts/archive/echo-removal-manifest.json       |   270 +
+ .../artifacts_checkpoints.txt                      |   815 +
+ .../hoodie-redesign-baseline/commands.json         |    59 +
+ .../hoodie-redesign-baseline/configurations.txt    |     5 +
+ .../hoodie-redesign-baseline/documentation.txt     |   102 +
+ .../hoodie-redesign-baseline/echo_candidates.txt   |    55 +
+ .../hoodie-redesign-baseline/echo_source_files.txt |     7 +
+ .../environment.exitcode.txt                       |     1 +
+ .../hoodie-redesign-baseline/environment.json      |     5 +
+ .../environment.stderr.txt                         |     0
+ .../environment.stdout.txt                         |     4 +
+ .../first_party_source_files.txt                   |   980 +
+ .../hoodie-redesign-baseline/git_head.exitcode     |     1 +
+ .../hoodie-redesign-baseline/git_head.exitcode.txt |     1 +
+ .../hoodie-redesign-baseline/git_head.stderr.txt   |     0
+ .../hoodie-redesign-baseline/git_head.stdout.txt   |     1 +
+ .../baseline/hoodie-redesign-baseline/git_head.txt |     1 +
+ .../hoodie-redesign-baseline/git_log.exitcode      |     1 +
+ .../hoodie-redesign-baseline/git_log.exitcode.txt  |     1 +
+ .../hoodie-redesign-baseline/git_log.stderr.txt    |     0
+ .../hoodie-redesign-baseline/git_log.stdout.txt    |     7 +
+ .../baseline/hoodie-redesign-baseline/git_log.txt  |     7 +
+ .../hoodie-redesign-baseline/git_status.exitcode   |     1 +
+ .../git_status.exitcode.txt                        |     1 +
+ .../hoodie-redesign-baseline/git_status.stderr.txt |     0
+ .../hoodie-redesign-baseline/git_status.stdout.txt |     2 +
+ .../hoodie-redesign-baseline/git_status.txt        |     1 +
+ .../hoodie-redesign-baseline/inventories.json      | 37311 +++++++++++++
+ .../hoodie-redesign-baseline/paper_pdfs.txt        |     1 +
+ .../hoodie-redesign-baseline/paper_registry.txt    |     7 +
+ .../hoodie-redesign-baseline/pip_version.exitcode  |     1 +
+ .../pip_version.exitcode.txt                       |     1 +
+ .../pip_version.stderr.txt                         |     0
+ .../pip_version.stdout.txt                         |     1 +
+ .../hoodie-redesign-baseline/pip_version.txt       |     1 +
+ .../hoodie-redesign-baseline/platform.exitcode     |     1 +
+ .../baseline/hoodie-redesign-baseline/platform.txt |     1 +
+ .../hoodie-redesign-baseline/pytest.exitcode.txt   |     1 +
+ .../hoodie-redesign-baseline/pytest.stderr.txt     |     0
+ .../hoodie-redesign-baseline/pytest.stdout.txt     |    30 +
+ .../python_version.exitcode                        |     1 +
+ .../python_version.exitcode.txt                    |     1 +
+ .../python_version.stderr.txt                      |     0
+ .../python_version.stdout.txt                      |     1 +
+ .../hoodie-redesign-baseline/python_version.txt    |     1 +
+ .../baseline/hoodie-redesign-baseline/refs.json    |    83 +
+ .../run_control_scripts.txt                        |    45 +
+ .../hoodie-redesign-baseline/status_snapshot.json  |     3 +
+ .../baseline/hoodie-redesign-baseline/tests.txt    |   473 +
+ .../hoodie-redesign-baseline/tracked_paths.json    | 12138 +++++
+ .../baseline/hoodie-redesign-baseline/vendored.txt |     0
+ .../phase_evidence/phase_00/changed_files.json     |   332 +
+ .../hoodie/phase_evidence/phase_00/commands.txt    |    16 +
+ .../hoodie/phase_evidence/phase_00/diff.patch      | 52782 +++++++++++++++++++
+ .../phase_evidence/phase_00/git_diff.exitcode.txt  |     1 +
+ .../phase_evidence/phase_00/git_diff.stderr.txt    |     0
+ .../phase_evidence/phase_00/git_diff.stdout.txt    |     0
+ .../phase_00/git_diff_cached.exitcode.txt          |     1 +
+ .../phase_00/git_diff_cached.stderr.txt            |     0
+ .../phase_00/git_diff_cached.stdout.txt            | 52782 +++++++++++++++++++
+ .../phase_00/git_diff_check.exitcode.txt           |     1 +
+ .../phase_00/git_diff_check.stderr.txt             |     0
+ .../phase_00/git_diff_check.stdout.txt             |     0
+ .../phase_00/git_diff_check_cached.exitcode.txt    |     1 +
+ .../phase_00/git_diff_check_cached.stderr.txt      |     0
+ .../phase_00/git_diff_check_cached.stdout.txt      |     0
+ .../phase_00/git_diff_name_status.exitcode.txt     |     1 +
+ .../phase_00/git_diff_name_status.stderr.txt       |     0
+ .../phase_00/git_diff_name_status.stdout.txt       |     0
+ .../git_diff_name_status_cached.exitcode.txt       |     1 +
+ .../git_diff_name_status_cached.stderr.txt         |     0
+ .../git_diff_name_status_cached.stdout.txt         |    55 +
+ .../phase_00/git_diff_stat.exitcode.txt            |     1 +
+ .../phase_00/git_diff_stat.stderr.txt              |     0
+ .../phase_00/git_diff_stat.stdout.txt              |     0
+ .../phase_00/git_diff_stat_cached.exitcode.txt     |     1 +
+ .../phase_00/git_diff_stat_cached.stderr.txt       |     0
+ .../phase_00/git_diff_stat_cached.stdout.txt       |    56 +
+ .../hoodie/phase_evidence/phase_00/hashes.json     |    57 +
+ artifacts/hoodie/phase_evidence/phase_00/report.md |     9 +
+ .../hoodie/phase_evidence/phase_00/status.json     |    10 +
+ .../hoodie/phase_evidence/phase_00/test_output.txt |    30 +
+ docs/HOODIE_REDESIGN_STATUS.md                     |    15 +
+ 83 files changed, 158582 insertions(+)
