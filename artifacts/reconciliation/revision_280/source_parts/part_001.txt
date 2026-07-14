@@ -1,0 +1,333 @@
+mally represented in the hybrid offloading decision model.
+Table 2 summarizes the mathematical notation used throughout ECHO.
+
+
+Table 2. Mathematical notation of the ECHO framework.
+
+
+
+
+
+
+
+
+Notation
+	Definition
+	$N$
+	Number of Edge Agents (EAs).
+	$M$
+	Number of Edge Controllers (ECs).
+	$T$
+	Number of time slots in one episode.
+	$n$
+	Index of an Edge Agent or source node.
+	$k$
+	Index of an execution destination.
+	$i$
+	Index of a computational task.
+	$h$
+	Index of another task, typically a predecessor in a queue.
+	$j$
+	Index of a position in the fixed canonical action set.
+	$t$
+	Current time-slot index.
+	$\mathcal{N}$
+	Set of all computing nodes, including the cloud node.
+	$\mathcal{E}$
+	Set of Edge Agents.
+	$\mathcal{M}$
+	Set of Edge Controllers.
+	$\mathcal{T}$
+	Set of time slots in an episode.
+	$\mathcal{H}$
+	Set of admissible task input sizes.
+	$\Delta$
+	Duration of one time slot in seconds.
+	$\mathbf{G}$
+	Edge-layer connectivity matrix.
+	$G(n,k)$
+	Connectivity indicator between EAs $n$ and $k$.
+	$\chi_n(t)$
+	Binary indicator that a new task arrives at EA $n$ in slot $t$.
+	$\xi_i$
+	Computational task indexed by $i$.
+	$s_i$
+	Source EA of task $\xi_i$.
+	$t_i^a$
+	Arrival and offloading-decision slot of task $\xi_i$.
+	$t_i^r$
+	Resolution slot at which task $\xi_i$ completes or is recorded as dropped.
+	$\tau_{n,m}$
+	Slot of the $m$th actual route decision of EA $n$; the final epoch is terminal.
+	$b_i$
+	Input data size of task $\xi_i$ in bits.
+	$b_i^{\mathrm{rem}}(t)$
+	Remaining unprocessed bits of task $\xi_i$ at slot $t$.
+	$\nu_i$
+	Processing density of task $\xi_i$ in CPU cycles per bit.
+	$\delta_i$
+	Relative timeout of task $\xi_i$ in slots.
+	$d_i$
+	Absolute completion deadline of task $\xi_i$.
+	$\alpha$
+	Generic execution or offloading action.
+	$\alpha_n^L$
+	Local-execution action at EA $n$.
+	$\alpha_{n,k}^H$
+	Horizontal-offloading action from EA $n$ to connected EA $k$.
+	$\alpha_n^V$
+	Vertical-offloading action from EA $n$ to the cloud.
+	$\alpha_i$
+	Action selected for task $\xi_i$.
+	$\mathcal{A}_n(t)$
+	Physically available action set of EA $n$ at slot $t$.
+	$\bar{\mathcal{A}}_n$
+	Fixed canonical action-output set of EA $n$.
+	$\bar{\alpha}_{n,j}$
+	Action stored at canonical output position $j$ of EA $n$.
+	$\kappa(\alpha)$
+	Mapping from action $\alpha$ to its execution destination.
+	$k_i$
+	Destination stored with offloaded task $\xi_i$.
+	$\mathbf{g}_i$
+	Stored dispatch metadata of task $\xi_i$.
+	$\mathcal{Q}_i^{\mathrm{src}}(t)$
+	Source-side queue selected for task $\xi_i$ at slot $t$.
+	$\mathcal{Q}_n^L(t)$
+	Local waiting queue of EA $n$.
+	$\mathcal{Q}_n^X(t)$
+	Outbound-transfer waiting queue of EA $n$.
+	$\mathcal{Q}_{n\rightarrow k}^D(t)$
+	Destination queue at node $k$ for tasks received from source EA $n$.
+	$z_{i,k}^D(t)$
+	Indicator that transmission of task $\xi_i$ to destination $k$ finished before slot $t$.
+	$U_k^D(t)$
+	Number of tasks admitted to destination queues of node $k$ at slot $t$.
+	$q_n^L(t)$
+	Occupancy of the local waiting queue at EA $n$.
+	$q_n^X(t)$
+	Occupancy of the outbound-transfer waiting queue at EA $n$.
+	$\varrho_n^L(t)$
+	Residual service time of the active local task at EA $n$.
+	$\varrho_n^X(t)$
+	Residual transmission time of the active outbound task at EA $n$.
+	$\Psi_n^L(t)$
+	Remaining local-side workload at EA $n$.
+	$\Psi_n^X(t)$
+	Remaining outbound-transfer workload at EA $n$.
+	$f_n^L$
+	Local processing capacity of EA $n$.
+	$f_k^{EA}$
+	Processing capacity of edge destination $k$.
+	$f^C$
+	Processing capacity of the cloud.
+	$f_k^D$
+	Unified destination-processing capacity of node $k$.
+	$\bar f_{n,k}^D(t)$
+	Estimated effective destination capacity assigned to source queue $n\rightarrow k$.
+	$R_H$
+	Horizontal edge-to-edge transmission rate.
+	$R_V$
+	Vertical edge-to-cloud transmission rate.
+	$R_{n,k}$
+	Transmission rate from source node $n$ to destination $k$.
+	$\tau_i^L$
+	Local processing duration of task $\xi_i$.
+	$\tau_{i,k}^X$
+	Transmission duration of task $\xi_i$ to destination $k$.
+	$\tau_{i,k}^D(t)$
+	Estimated destination-processing duration of task $\xi_i$ at node $k$.
+	$\mathcal{H}_i^L(t)$
+	Provisional predecessor set of task $\xi_i$ in the local queue.
+	$\mathcal{H}_i^X(t)$
+	Provisional predecessor set of task $\xi_i$ in the outbound-transfer queue.
+	$\widehat W_i^L(t)$
+	Estimated local-queue waiting time of task $\xi_i$.
+	$\widehat W_i^X(t)$
+	Estimated outbound-transfer waiting time of task $\xi_i$.
+	$\widehat T_i^L(t)$
+	Estimated local completion slot of task $\xi_i$.
+	$\widehat T_{i,k}^X(t)$
+	Estimated completion slot of the source-side transmission stage to node $k$.
+	$\widehat t_{i,k}^D(t)$
+	Estimated slot at which task $\xi_i$ reaches destination queue $k$.
+	$\Omega_{n\rightarrow k}(t)$
+	Actual remaining cycle workload in destination queue $n\rightarrow k$.
+	$\widehat\Omega_{n\rightarrow k}(t)$
+	Observed or predicted remaining cycle workload used for estimation.
+	$\mathcal{J}_k(t)$
+	Set of active source-indexed destination queues at node $k$.
+	$p_k(t)$
+	Number of active source-indexed destination queues at node $k$.
+	$\bar p_{n,k}(t)$
+	Adjusted active-queue count after hypothetically admitting source queue $n\rightarrow k$.
+	$\widehat W_{i,k}^D(t)$
+	Estimated destination-queue waiting time of task $\xi_i$ at node $k$.
+	$\widehat T_{i,k}^O(t)$
+	Estimated end-to-end completion slot for offloading task $\xi_i$ to node $k$.
+	$\widehat T_i(\alpha,t)$
+	Unified estimated completion slot of task $\xi_i$ under action $\alpha$.
+	$\mathbf{o}_n(t)$
+	Observed destination-load vector available to EA $n$.
+	$\mathbf{H}_n(t)$
+	Historical load matrix maintained by EA $n$.
+	$W$
+	Length of the load-history lookback window.
+	$F_\psi$
+	LSTM-based load encoder with parameters $\psi$.
+	$\psi$
+	Parameter set of the recurrent load encoder.
+	$\mathbf{z}_n(t)$
+	Fixed-dimensional recurrent load embedding of EA $n$.
+	$\widehat{\mathbf{H}}_n(t+1)$
+	Predicted next-slot load representation.
+	$\mathsf{ERT}_i^L(t)$
+	Queue-level Effective Remaining Time of task $\xi_i$ for local execution.
+	$\mathsf{ERT}_i^X(t)$
+	End-to-end queue-level Effective Remaining Time of task $\xi_i$ in the transfer queue.
+	$\mathsf{ERT}_i^C(\alpha,t)$
+	Candidate-level Effective Remaining Time under action $\alpha$.
+	$\mathcal{F}_n^L(t)$
+	Predicted-feasible task set in the local queue of EA $n$.
+	$\mathcal{F}_n^X(t)$
+	Predicted-feasible task set in the outbound-transfer queue of EA $n$.
+	$\xi_n^{L,*}(t)$
+	Task selected next for local processing at EA $n$.
+	$\xi_n^{X,*}(t)$
+	Task selected next for outbound transmission at EA $n$.
+	$\ell_i^L(t)$
+	Estimated local queue-level lateness of task $\xi_i$.
+	$\ell_i^X(t)$
+	Estimated end-to-end transfer queue-level lateness of task $\xi_i$.
+	$\mathcal{V}_i(t)$
+	Set of physically available actions predicted to meet the deadline of task $\xi_i$.
+	$\Lambda_i(\alpha,t)$
+	Predicted lateness of candidate action $\alpha$ for task $\xi_i$.
+	$\alpha_i^{fb}(t)$
+	Minimum-lateness fallback action for task $\xi_i$.
+	$\mathcal{U}_i(t)$
+	Effective action set used by the learning policy.
+	$\mu_{n,j}(t)$
+	Binary availability indicator for canonical action position $j$.
+	$\boldsymbol{\mu}_n(t)$
+	Fixed-dimensional physical-and-deadline action mask of EA $n$.
+	$\mathbf{s}_n(t)$
+	Normalized DRL state observed by EA $n$.
+	$\tilde{x}$
+	Normalized form of numerical quantity $x$.
+	$\mathsf{ERT}_{n,\min}^L(t)$
+	Minimum local-queue ERT summary at EA $n$.
+	$\mathsf{ERT}_{n,\min}^X(t)$
+	Minimum outbound-transfer-queue ERT summary at EA $n$.
+	$\mathbf{e}_i^C(t)$
+	Fixed-dimensional vector of candidate-level ERT values.
+	$T_i^{\mathrm{sys}}$
+	Realized system duration of task $\xi_i$.
+	$I_i^R$
+	Decision-time indicator that every physical candidate is predicted infeasible.
+	$I_i^D$
+	Realized indicator that task $\xi_i$ fails to achieve deadline-satisfied completion.
+	$\lambda_R$
+	Penalty weight for predicted infeasibility and normalized selected-action lateness.
+	$\lambda_D$
+	Penalty weight for realized task dropping.
+	$r_i$
+	Task-level reward associated with task $\xi_i$.
+	$\mathcal{P}_n$
+	Pending-decision buffer of EA $n$.
+	$\mathbf{p}_i$
+	Pending record maintained for task $\xi_i$.
+	$\mathcal{R}_n$
+	Replay memory of EA $n$.
+	$\zeta_{n,m}$
+	Agent-specific event-epoch semi-Markov replay transition.
+	$\Delta_{n,m}$
+	Sojourn time between consecutive route decisions of EA $n$.
+	$\mathbf{x}_{n,m}$
+	Complete simulator state sampled immediately before EA $n$ acts at $\tau_{n,m}$.
+	$\alpha_{n,m}$
+	Route action selected by EA $n$ at its decision epoch $\tau_{n,m}$.
+	$\rho_{n,m}$
+	Discounted source-$n$ task reward accumulated between consecutive decisions of EA $n$.
+	$\pi_n$
+	Decision policy of EA $n$.
+	$\pi_n^*$
+	Optimal policy sought for EA $n$.
+	$\gamma$
+	Discount factor.
+	$Q_n(\mathbf{s},\alpha;\theta_n)$
+	Online action-value function of EA $n$.
+	$Q_n^-(\mathbf{s},\alpha;\theta_n^-)$
+	Target action-value function of EA $n$.
+	$\theta_n$
+	Parameter vector of the online Q-network at EA $n$.
+	$\theta_n^-$
+	Parameter vector of the target Q-network at EA $n$.
+	$V_n(\mathbf{s};\theta_n)$
+	Dueling-network state-value function.
+	$A_n(\mathbf{s},\alpha;\theta_n)$
+	Dueling-network action-advantage function.
+	$Q_n^\mu(\mathbf{s},\alpha;t)$
+	Action-value function after applying the current mask.
+	$\epsilon$
+	Exploration probability in the masked epsilon-greedy policy.
+	$\alpha_{n,m+1}^+$
+	Masked next action selected for the event-epoch Double-DQL target.
+	$y_{n,m}$
+	Double-DQL target for event-epoch transition $(n,m)$.
+	$\widehat y_{n,m}$
+	Online Q-network prediction for event-epoch transition $(n,m)$.
+	$\mathcal{L}_n(\theta_n)$
+	Mini-batch learning loss of EA $n$.
+	$B$
+	Mini-batch of replayed event-epoch transitions.
+	$|B|$
+	Number of transitions in mini-batch $B$.
+	$N_{\mathrm{copy}}$
+	Target-network copy period.
+	$\alpha_{lr}$
+	Learning rate.
+	$\mathbb{I}[\cdot]$
+	Indicator function, equal to one when its condition is true and zero otherwise.
+	$\mathbb{E}_{\pi_n}[\cdot]$
+	Expectation under policy $\pi_n$.
+	$\lceil x\rceil$
+	Smallest integer greater than or equal to $x$.
+	$|\mathcal{S}|$
+	Cardinality of set $\mathcal{S}$.
+	$\emptyset$
+	Empty set.
+	$-\infty$
+	Value assigned to masked actions so they cannot be selected.
+	
+
+2) Task Characteristics and Deadline Representation
+At the beginning of each time slot $t\in\mathcal{T}$, each EA $n\in\mathcal{E}$ may receive a new computational task from its associated IoT area. The task-arrival process is represented by the binary variable $\chi_n(t)$ as follows:
+
+
+\begin{equation}
+\chi_n(t)=
+\begin{cases}
+1, & \text{if a new task arrives in EA } n \text{ at time slot } t,\\
+0, & \text{otherwise.}
+\end{cases}
+\tag{1}
+\end{equation}
+
+
+When $\chi_n(t)=1$, the arrived task is denoted by $\xi_i$. The task is characterized by its input data size $b_i$, processing density $\nu_i$, and timeout index $\delta_i$. The task size $b_i$ is measured in bits and is drawn from the task-size set $\mathcal{H}$, while $\nu_i$ represents the number of CPU cycles required to process one bit of the task. The timeout index $\delta_i$ indicates the maximum number of time slots within which the task should be completed after its arrival.
+
+
+ECHO converts the relative timeout into an absolute completion deadline so that the same timing boundary can be used in completion estimation, queue scheduling, and route selection. Since task $\xi_i$ arrives at the beginning of time slot $t$, its absolute deadline is defined as
+
+
+\begin{equation}
+d_i=t+\delta_i-1.
+\tag{2}
+\end{equation}
+
+
+Accordingly, under the absolute deadline in (2), task $\xi_i$ is deadline-satisfied only if its realized completion slot does not exceed $d_i$. This explicit deadline representation is later used to define Effective Remaining Time, deadline-aware queue ordering, and deadline-feasible offloading candidate selection.
+
+
+The derivation of the absolute deadline follows from the slot-based interpretation of the timeout. If a task arrives at the beginning of slot $t$ and its timeout is $\delta_i$ slots, then the task can 
