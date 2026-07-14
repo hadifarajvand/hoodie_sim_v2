@@ -6,9 +6,15 @@ The branch is one commit ahead of the authorized control commit and changes only
 
 Evidence-integrity failures:
 
-1. `git_diff.patch` is not the exact branch diff. It contains only a short fragment for `report.md` and omits the remaining changed files and most changed lines.
-2. `hashes.json` verifies five evidence files but omits `git_diff.patch`. A self-hash for `hashes.json` is not required, but every other G1 file must be covered.
+1. `git_diff.patch` is only a short fragment for `report.md`; it omits the complete changes for the five non-self-referential evidence payload files.
+2. `hashes.json` verifies five evidence payload files but omits `git_diff.patch`.
 
 The listed hashes for `report.md`, `status.json`, `commands.txt`, `test_output.txt`, and `changed_files.json` match their committed contents. `changed_files.json` exactly matches the seven changed paths.
 
-No implementation or source-lock work is requested in rework attempt 2. The executor must regenerate a complete `git_diff.patch`, add its SHA-256 to `hashes.json`, retain BLOCKED_EXTERNAL, commit the corrected seven-file G1 package, and stop.
+Attempt 2 uses this non-self-referential convention:
+
+- `git_diff.patch` must contain the complete diff for `report.md`, `status.json`, `commands.txt`, `test_output.txt`, and `changed_files.json` only. It must exclude `hashes.json` and `git_diff.patch` itself.
+- `hashes.json` must contain SHA-256 values for those five payload files plus `git_diff.patch`. It must not hash itself.
+- `changed_files.json` continues to list all seven G1 files.
+
+No implementation or source-lock work is requested. Retain the truthful BLOCKED_EXTERNAL disposition, commit the corrected seven-file G1 package, and stop.
