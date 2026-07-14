@@ -56,35 +56,71 @@ def build_deterministic_trace(
     agent_count: int = 20,
     arrival_probability: float = 1.0,
     timeout_length: int = 20,
+    drain_slots: int = 0,
 ) -> EvaluationTrace:
+    """Build one paired task trace using the paper-compatible arrival process.
+
+    Every EA receives an independent Bernoulli arrival opportunity in every
+    decision slot.  The final ``drain_slots`` contain no arrivals and are kept
+    in the trace metadata so all policies execute the same episode horizon.
+
+    ``drain_slots`` defaults to zero for backward compatibility.  Paper-default
+    experiments call this function with ``episode_length=110`` and
+    ``drain_slots=10``, yielding 100 decision slots followed by 10 drain slots.
+    """
+
+    if episode_length <= 0:
+        raise ValueError("episode_length must be positive")
+    if agent_count <= 0:
+        raise ValueError("agent_count must be positive")
+    if not 0.0 <= float(arrival_probability) <= 1.0:
+        raise ValueError("arrival_probability must be in [0, 1]")
+    if timeout_length <= 0:
+        raise ValueError("timeout_length must be positive")
+    if not 0 <= drain_slots < episode_length:
+        raise ValueError("drain_slots must satisfy 0 <= drain_slots < episode_length")
+
     rng = Random(seed)
     tasks: list[TraceTaskBlueprint] = []
     next_task_id = 1
-    for index in range(episode_length):
-        if rng.random() > float(arrival_probability):
-            continue
-        arrival_slot = index
-        size = round(rng.uniform(2.0, 5.0), 1)
-        processing_density = 0.297
-        absolute_deadline_slot = arrival_slot + timeout_length - 1
-        source_agent_id = (index % agent_count) + 1
-        tasks.append(
-            TraceTaskBlueprint(
-                task_id=next_task_id,
-                source_agent_id=source_agent_id,
-                arrival_slot=arrival_slot,
-                size=size,
-                processing_density=processing_density,
-                timeout_length=timeout_length,
-                absolute_deadline_slot=absolute_deadline_slot,
+    decision_slots = episode_length - drain_slots
+    admissible_sizes = tuple(round(2.0 + 0.1 * index, 1) for index in range(31))
+
+    for arrival_slot in range(decision_slots):
+        for source_agent_id in range(1, agent_count + 1):
+            if rng.random() > float(arrival_probability):
+                continue
+            size = rng.choice(admissible_sizes)
+            processing_density = 0.297
+            absolute_deadline_slot = arrival_slot + timeout_length - 1
+            tasks.append(
+                TraceTaskBlueprint(
+                    task_id=next_task_id,
+                    source_agent_id=source_agent_id,
+                    arrival_slot=arrival_slot,
+                    size=size,
+                    processing_density=processing_density,
+                    timeout_length=timeout_length,
+                    absolute_deadline_slot=absolute_deadline_slot,
+                )
             )
-        )
-        next_task_id += 1
+            next_task_id += 1
+
     return EvaluationTrace(
         trace_id=trace_id,
         seed=seed,
         tasks=tuple(tasks),
-        metadata={"mode": "deterministic_seed", "trace_id": trace_id, "seed": str(seed)},
+        metadata={
+            "mode": "independent_bernoulli_per_ea",
+            "trace_id": trace_id,
+            "seed": str(seed),
+            "agent_count": str(agent_count),
+            "arrival_probability": str(float(arrival_probability)),
+            "episode_length": str(episode_length),
+            "decision_slots": str(decision_slots),
+            "drain_slots": str(drain_slots),
+            "task_count": str(len(tasks)),
+        },
     )
 
 
@@ -92,6 +128,9 @@ def trace_signature(trace: EvaluationTrace) -> dict[str, object]:
     return {
         "trace_id": trace.trace_id,
         "seed": trace.seed,
-        "episode_length": len(trace.tasks),
+        "episode_length": int(trace.metadata.get("episode_length", len(trace.tasks))),
+        "decision_slots": int(trace.metadata.get("decision_slots", len(trace.tasks))),
+        "drain_slots": int(trace.metadata.get("drain_slots", 0)),
+        "task_count": len(trace.tasks),
         "mode": trace.metadata.get("mode", "deterministic_seed"),
     }
