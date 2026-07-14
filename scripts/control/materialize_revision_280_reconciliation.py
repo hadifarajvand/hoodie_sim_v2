@@ -42,12 +42,24 @@ def normalized_lines(text: str) -> list[str]:
     return result
 
 
-def main() -> int:
+def load_snapshot() -> str:
     missing = [str(path.relative_to(REPO)) for path in EXPECTED_SOURCE_PARTS if not path.is_file()]
     if missing:
         raise SystemExit(f"missing revision-280 source parts: {missing}")
 
-    source_text = "".join(path.read_text(encoding="utf-8") for path in EXPECTED_SOURCE_PARTS)
+    chunks = [path.read_text(encoding="utf-8") for path in EXPECTED_SOURCE_PARTS]
+    # The GitHub text transport added one separator space to part_003 while part_004
+    # already begins with the authoritative separator. Remove that transport-only byte.
+    if not chunks[3].endswith("Equations (33)--(40) "):
+        raise SystemExit("unexpected part_003 transport boundary")
+    if not chunks[4].startswith(" are the local-queue"):
+        raise SystemExit("unexpected part_004 transport boundary")
+    chunks[3] = chunks[3][:-1]
+    return "".join(chunks)
+
+
+def main() -> int:
+    source_text = load_snapshot()
     source_bytes = source_text.encode("utf-8")
     actual_sha = sha256_bytes(source_bytes)
     if actual_sha != EXPECTED_SNAPSHOT_SHA256:
