@@ -32,15 +32,11 @@ class SlotEngine:
 
         transmission_started_at = task.metadata.get("transmission_started_at")
         if transmission_started_at is None:
-            # The current head starts when the transmitter is observed idle.
             transmission_started_at = int(completion_slot)
             task.transmission_start_slot = int(completion_slot)
             task.metadata["transmission_start_slot"] = int(completion_slot)
             task.metadata["transmission_started_at"] = int(completion_slot)
 
-        # A d-slot operation started in slot t occupies t,...,t+d-1 and is
-        # complete at the end of slot t+d-1.  This matches the manuscript's
-        # inclusive completion-slot convention.
         finishing_slot = int(transmission_started_at) + int(transmission_delay_slots) - 1
         if completion_slot < finishing_slot:
             return None
@@ -48,5 +44,11 @@ class SlotEngine:
         task.transmission_completion_slot = int(completion_slot)
         task.metadata["transmission_completion_slot"] = int(completion_slot)
         task = offloading_queue.dequeue()
-        public_queue.enqueue(task, slot=completion_slot + 1)
+
+        # Enqueue with the current physical slot so the shared-queue kernel's
+        # "entered this slot" guard prevents same-slot execution.  Externally,
+        # the destination-admission event is the opening of slot t+1.
+        public_queue.enqueue(task, slot=completion_slot)
+        task.destination_admission_slot = int(completion_slot) + 1
+        task.metadata["destination_admission_slot"] = int(completion_slot) + 1
         return task
