@@ -1,0 +1,303 @@
+ are the local-queue and outbound-queue instantiations of this single deterministic scheduler; they do not define separate scheduling algorithms.
+
+
+
+
+D. Deadline-Aware Queue Scheduling
+
+
+ECHO controls the service order of the local and outbound-transfer queues. Scheduling is non-preemptive: an active computation or transmission continues until completion, while waiting tasks may be reordered whenever the corresponding resource becomes idle. Expired waiting tasks are removed before each service selection, and completion estimates are recomputed.
+
+
+1) Local Queue Scheduling
+Let $\mathcal{Q}_n^L(t)$ contain the waiting local tasks, excluding any task currently in service. The predicted-feasible local-task set is
+
+
+\begin{equation}
+\mathcal{F}_n^L(t)=\left\{\xi_i\in\mathcal{Q}_n^L(t)\mid \mathsf{ERT}_i^L(t)\geq0\right\}.
+\tag{33}
+\end{equation}
+
+
+If this set is non-empty, the local processor selects the task with the smallest non-negative ERT:
+
+
+\begin{equation}
+\xi_n^{L,*}(t)=\arg\min_{\xi_i\in\mathcal{F}_n^L(t)}\mathsf{ERT}_i^L(t).
+\tag{34}
+\end{equation}
+
+
+If all waiting tasks are predicted late, ECHO does not give automatic priority to the most negative ERT. Instead, it selects the task with the smallest estimated queue-level lateness,
+
+
+\begin{equation}
+\ell_i^L(t)=\max\left\{0,\widehat T_i^L(t)-d_i\right\},
+\tag{35}
+\end{equation}
+
+
+\begin{equation}
+\xi_n^{L,*}(t)=\arg\min_{\xi_i\in\mathcal{Q}_n^L(t)}\ell_i^L(t),\quad \mathcal{F}_n^L(t)=\emptyset.
+\tag{36}
+\end{equation}
+
+
+FIFO order is used only to break equal ERT or equal-lateness values. After admission, completion, removal, or service selection, the provisional order and all local completion and ERT values are updated.
+
+
+2) Outbound-Transfer Queue Scheduling
+The same non-preemptive rule is applied before transmission. Let $\mathcal{Q}_n^X(t)$ contain the waiting outbound-transfer tasks, each retaining destination $k_i=\kappa(\alpha_i)$. The predicted-feasible transfer set is
+
+
+\begin{equation}
+\mathcal{F}_n^X(t)=\left\{\xi_i\in\mathcal{Q}_n^X(t)\mid \mathsf{ERT}_i^X(t)\geq0\right\}.
+\tag{37}
+\end{equation}
+
+
+When this set is non-empty, the next transmitted task is
+
+
+\begin{equation}
+\xi_n^{X,*}(t)=\arg\min_{\xi_i\in\mathcal{F}_n^X(t)}\mathsf{ERT}_i^X(t).
+\tag{38}
+\end{equation}
+
+
+When every waiting transfer task is predicted late, the source EA uses end-to-end minimum lateness:
+
+
+\begin{equation}
+\ell_i^X(t)=\max\left\{0,\widehat T_{i,k_i}^O(t)-d_i\right\},
+\tag{39}
+\end{equation}
+
+
+\begin{equation}
+\xi_n^{X,*}(t)=\arg\min_{\xi_i\in\mathcal{Q}_n^X(t)}\ell_i^X(t),\quad \mathcal{F}_n^X(t)=\emptyset.
+\tag{40}
+\end{equation}
+
+
+The selected task is transmitted to its stored destination; the dispatch block applies that destination without a new decision. FIFO remains the tie-breaker. This rule prevents an already highly late task from automatically displacing a still-feasible urgent task merely because its ERT is more negative.
+
+
+3) Destination Queue Consideration
+Destination queues remain destination-side processing structures and are not reordered by the source EA. Their remaining computational workload, adjusted active-queue count, and observed or LSTM-predicted load are used to estimate candidate completion time and candidate-level ERT. Thus, ECHO directly controls the service order only in the source local and outbound-transfer queues, while destination-queue conditions influence destination feasibility through completion-time estimation.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+E. Deadline-Aware Candidate Selection
+For each arriving task, ECHO evaluates the direct local, horizontal-edge, and vertical-cloud actions defined in (3). Candidate completion and ERT are computed by (31)-(32) before the task is inserted into a source queue.
+
+
+1) Fixed and Deadline-Valid Action Sets
+
+
+The fixed canonical output set of EA n is defined in (41). The source position and disconnected horizontal destinations remain in the fixed network output but are marked unavailable.
+
+
+\begin{equation}
+\bar{\mathcal{A}}_n=\{\alpha_n^L,\alpha_{n,1}^H,\ldots,\alpha_{n,N}^H,\alpha_n^V\}.
+\tag{41}
+\end{equation}
+
+
+The deadline-valid set for task i is defined in (42).
+
+
+\begin{equation}
+\mathcal{V}_i(t)=\{\alpha\in\mathcal{A}_{s_i}(t)\mid \mathsf{ERT}_i^C(\alpha,t)\geq0\}.
+\tag{42}
+\end{equation}
+
+
+2) Minimum-Lateness Fallback
+
+
+If no action is predicted to satisfy the deadline, candidate lateness and the fallback action are defined in (43)-(44).
+
+
+\begin{equation}
+\Lambda_i(\alpha,t)=\max\{0,\widehat T_i(\alpha,t)-d_i\}.
+\tag{43}
+\end{equation}
+
+
+\begin{equation}
+\alpha_i^{fb}(t)=\arg\min_{\alpha\in\mathcal{A}_{s_i}(t)}\Lambda_i(\alpha,t).
+\tag{44}
+\end{equation}
+
+
+The fallback avoids an arbitrary choice under overload. In addition to storing the empty-valid-set indicator, ECHO retains the selected fallback action's predicted lateness so that two infeasible actions do not receive an identical decision-time penalty when one is substantially less late.
+
+
+3) Effective Set and Action Mask
+
+
+The effective set and the binary canonical-action mask are defined in (45)-(46).
+
+
+\begin{equation}
+\mathcal{U}_i(t)=\begin{cases}\mathcal{V}_i(t), & \mathcal{V}_i(t)\neq\emptyset,\\ \{\alpha_i^{fb}(t)\}, & \mathcal{V}_i(t)=\emptyset.\end{cases}
+\tag{45}
+\end{equation}
+
+
+\begin{equation}
+\mu_{s_i,j}(t)=\mathbb{I}[\bar\alpha_{s_i,j}\in\mathcal{A}_{s_i}(t)]\,\mathbb{I}[\bar\alpha_{s_i,j}\in\mathcal{U}_i(t)],\qquad \boldsymbol{\mu}_{s_i}(t)=[\mu_{s_i,j}(t)]_j.
+\tag{46}
+\end{equation}
+
+
+
+
+The same mask is used in exploration, exploitation, and Double-DQL target-action selection.
+
+
+4) Direct Decision and Queue Admission
+
+
+Action admissibility, source-queue admission, stored dispatch metadata, and the pending decision record are specified in (47)-(50).
+
+
+\begin{equation}
+\alpha_i\in\mathcal{U}_i(t_i^a).
+\tag{47}
+\end{equation}
+
+
+\begin{equation}
+\xi_i\in\mathcal{Q}_i^{src}(t_i^a).
+\tag{48}
+\end{equation}
+
+
+\begin{equation}
+\mathbf{g}_i^{base}=(s_i,t_i^a,b_i,\nu_i,d_i),\qquad \mathbf{g}_i^{off}=(\mathbf{g}_i^{base},k_i)\ \text{only when }\kappa(\alpha_i)\neq s_i.
+\tag{49}
+\end{equation}
+
+
+
+
+\begin{equation}
+\mathbf{p}_i=(\xi_i,\mathbf{s}_{s_i}(t_i^a),\boldsymbol{\mu}_{s_i}(t_i^a),\alpha_i,t_i^a,d_i,\widehat T_i(\alpha_i,t_i^a),\mathsf{ERT}_i^C(\alpha_i,t_i^a),\Lambda_i(\alpha_i,t_i^a),I_i^R)\in\mathcal{P}_{s_i}.
+\tag{50}
+\end{equation}
+
+
+
+
+Thus, action selection occurs once at task arrival. The selected action belongs to the effective set in (47), the task is admitted by (48), and only an offloaded task receives the destination extension in (49). The pending record in (50) preserves all decision-time quantities required to calculate the delayed reward without recomputing them from a later environment state. No second destination optimization is performed.
+
+
+
+
+F. Multi-Agent Distributed DRL Formulation
+
+
+Each EA acts as an autonomous learning agent. The recurrent load encoder, dueling value–advantage decomposition, Double-DQL target separation, replay memory, and target network follow established distributed learning components [37]. ECHO defines its own state, admissible actions, reward semantics, and event-driven semi-Markov interval transition timing.
+
+
+1) State Representation
+
+
+Queue occupancies and remaining source-side workloads are defined in (51)-(52).
+
+
+\begin{equation}
+q_n^L(t)=|\mathcal{Q}_n^L(t)|,\qquad q_n^X(t)=|\mathcal{Q}_n^X(t)|.
+\tag{51}
+\end{equation}
+
+
+\begin{equation}
+\Psi_n^L(t)=\varrho_n^L(t)+\sum_{\xi_h\in\mathcal{Q}_n^L(t)}\tau_h^L,\qquad \Psi_n^X(t)=\varrho_n^X(t)+\sum_{\xi_h\in\mathcal{Q}_n^X(t)}\tau_{h,k_h}^X.
+\tag{52}
+\end{equation}
+
+
+For a fixed network size $N$, the size-specific fixed-dimensional normalized state is defined in (53).
+
+
+\begin{equation}
+\mathbf{s}_n(t)=[\tilde\chi_n(t),\tilde b_i,\tilde\nu_i,\tilde\delta_i,\tilde q_n^L,\tilde q_n^X,\tilde\Psi_n^L,\tilde\Psi_n^X,\tilde\varrho_n^L,\tilde\varrho_n^X,\tilde{\mathbf{o}}_n,\mathbf{z}_n,\widetilde{\mathsf{ERT}}_{n,\min}^L,\widetilde{\mathsf{ERT}}_{n,\min}^X,\widetilde{\bar{\mathbf e}}_i^C,\boldsymbol{\mu}_n].
+\tag{53}
+\end{equation}
+
+
+
+
+When no task arrives, task-specific and candidate-specific entries are zero, while queue, service, and load entries remain active. Queue occupancies distinguish an empty queue from a queue whose minimum ERT is exactly zero. Numerical features are min–max normalized to bounded ranges, ERT values are symmetrically clipped before normalization, and the action mask is zero when no decision is required.
+
+
+The fixed candidate-ERT vector is defined over every canonical output position. Let $E_{\max}>0$ be the symmetric clipping bound. Physically invalid canonical positions are assigned the lower clipped sentinel and remain disabled by the mask:
+\begin{equation}
+\bar e_{i,j}^C(t)=\begin{cases}\operatorname{clip}\!\left(\mathsf{ERT}_i^C(\bar\alpha_{s_i,j},t),-E_{\max},E_{\max}\right), & \bar\alpha_{s_i,j}\in\mathcal{A}_{s_i}(t),\\-E_{\max}, & \bar\alpha_{s_i,j}\notin\mathcal{A}_{s_i}(t),\end{cases}\qquad \bar{\mathbf e}_i^C(t)=[\bar e_{i,j}^C(t)]_j.
+\tag{54}
+\end{equation}
+The accompanying mask distinguishes a genuinely urgent boundary value from a physically unavailable output position.
+
+
+
+
+For the network-size experiments, ECHO uses a size-specific but semantically identical architecture rather than padding all experiments to an arbitrary maximum. For a system with $N$ EAs, the ordered destination-load blocks and candidate-action outputs are constructed for exactly those $N$ nodes, giving a canonical action dimension of $N+2$: one local action, $N$ horizontal-destination positions, and one cloud action. The source position and disconnected destinations remain present but are disabled by the physical-and-deadline mask. For every tested value $N\in\{10,15,20,25,30\}$, a separate size-specific campaign is trained and evaluated. Consistent with the distributed HOODIE foundation, each EA retains its own learner and checkpoint rather than sharing policy parameters across EAs; the same per-agent architecture, hyperparameters, seed policy, and training budget are used at every tested size. State fields retain the same definition and ordering for every existing destination; only the number of destination blocks changes with the experimental topology. Therefore, the scalability study measures independently trained policies at different system sizes and makes no claim that one checkpoint transfers zero-shot between different values of $N$.
+
+
+2) Effective Actions
+
+
+The fixed canonical set, deadline-valid set, fallback, effective set, and action mask are already defined in (41)-(46) and are used without changing the network output dimension.
+
+
+3) Task Outcome and Reward
+
+
+Task i is resolved at slot t_i^r by deadline-satisfied completion or by a dropped outcome. Its realized system duration is defined in (55).
+
+
+\begin{equation}
+T_i^{sys}=t_i^r-t_i^a+1.
+\tag{55}
+\end{equation}
+
+
+The predicted-risk and realized-drop indicators are defined in (56)-(57).
+
+
+\begin{equation}
+I_i^R=\begin{cases}1, & \mathcal{V}_i(t_i^a)=\emptyset,\\0, & \text{otherwise}.\end{cases}
+\tag{56}
+\end{equation}
+
+
+\begin{equation}
+I_i^D=\begin{cases}1, & \xi_i\text{ does not achieve deadline-satisfied completion},\\0, & \text{otherwise}.\end{cases}
+\tag{57}
+\end{equation}
+
+
+The task-level reward is defined in (58).
+
+
+\begin{equation}
+r_i=-T_i^{sys}-\lambda_R\left(I_i^R+\frac{\Lambda_i(\alpha_i,t_i^a)}{\max\{1,\delta_i\}}\right)-\lambda_D I_i^D.
+\tag{58}
+\end{equation}
+
+
+The decision-time term has two complementary parts. The indicator $I_i^R$ marks that every physical action was predicted infeasible, while the deadline-normalized selected-action lateness $\Lambda_i(\alpha_i,t_i^a)/\max\{1,\delta_i\}$ differentiates fallback actions according to the severity of their predicted miss. For a selected deadline-feasible action, this lateness term is zero. The realized-drop term remains separate because changing load may invalidate an initially feasible action, while a fallback action may occasionally achieve deadline-satisfied complet
