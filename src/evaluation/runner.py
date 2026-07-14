@@ -31,7 +31,10 @@ class EvaluationRunner:
 
     def _trace_for_episode(self, episode_index: int) -> EvaluationTrace:
         trace_id = f"{self.config.trace_id}-{episode_index}"
-        agent_count = int(getattr(self.runtime_parameters, "agent_count", 20) or 20)
+        if self.topology is not None:
+            agent_count = len([node for node in self.topology.node_ids if node != "cloud"])
+        else:
+            agent_count = int(getattr(self.runtime_parameters, "agent_count", 20) or 20)
         arrival_probability = float(
             getattr(self.runtime_parameters, "arrival_probability", 1.0) or 1.0
         )
