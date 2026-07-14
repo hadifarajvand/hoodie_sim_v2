@@ -11,6 +11,7 @@ class EvaluationConfig:
     trace_id: str
     episode_count: int = 1
     episode_length: int = 4
+    drain_slots: int = 0
     output_dir: Path | None = None
     trace_mode: str = "deterministic_seed"
     device: str = "cpu"
