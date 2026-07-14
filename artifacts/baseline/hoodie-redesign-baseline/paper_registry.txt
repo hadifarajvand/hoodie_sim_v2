@@ -1,0 +1,7 @@
+resources/papers/hoodie/ocr/merged.json
+resources/papers/hoodie/ocr/merged.md
+resources/papers/hoodie/ocr/merged.tex
+resources/papers/hoodie/ocr/merged.txt
+resources/papers/hoodie/recovered/paper-parameter-registry.json
+resources/papers/hoodie/recovered/topology-g.json
+resources/papers/hoodie/recovered/user-approved-assumption-registry.json

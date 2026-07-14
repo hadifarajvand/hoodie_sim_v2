@@ -1,0 +1,10 @@
+{
+  "authority_commit": "837b6454be62ad6668bd2d734b15f3a5c34a9152",
+  "baseline_main": "3464844b3769fa1275e101165bf19de2cfb0ac3e",
+  "branch": "hoodie-redesign/phase-00-freeze-inventory",
+  "diff_check_exitcode": 0,
+  "phase": "PHASE_0",
+  "phase_status": "IN_PROGRESS",
+  "test_exitcode": 2,
+  "verified": false
+}

@@ -1,0 +1,59 @@
+[
+  {
+    "cmd": [
+      "git",
+      "status",
+      "--short",
+      "--branch"
+    ],
+    "exitcode": 0,
+    "name": "git_status",
+    "stderr": "git_status.stderr.txt",
+    "stdout": "git_status.stdout.txt"
+  },
+  {
+    "cmd": [
+      "git",
+      "rev-parse",
+      "HEAD"
+    ],
+    "exitcode": 0,
+    "name": "git_head",
+    "stderr": "git_head.stderr.txt",
+    "stdout": "git_head.stdout.txt"
+  },
+  {
+    "cmd": [
+      "git",
+      "log",
+      "-1",
+      "--format=fuller"
+    ],
+    "exitcode": 0,
+    "name": "git_log",
+    "stderr": "git_log.stderr.txt",
+    "stdout": "git_log.stdout.txt"
+  },
+  {
+    "cmd": [
+      "python",
+      "--version"
+    ],
+    "exitcode": 0,
+    "name": "python_version",
+    "stderr": "python_version.stderr.txt",
+    "stdout": "python_version.stdout.txt"
+  },
+  {
+    "cmd": [
+      "python",
+      "-m",
+      "pip",
+      "--version"
+    ],
+    "exitcode": 0,
+    "name": "pip_version",
+    "stderr": "pip_version.stderr.txt",
+    "stdout": "pip_version.stdout.txt"
+  }
+]

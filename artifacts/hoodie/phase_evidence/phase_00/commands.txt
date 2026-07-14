@@ -1,0 +1,16 @@
+git status --short --branch
+git remote -v
+git fetch origin --prune
+git fetch origin hoodie-redesign/integration:refs/remotes/origin/hoodie-redesign/integration
+git rev-parse origin/hoodie-redesign/integration
+git switch --detach origin/hoodie-redesign/integration
+git switch -c hoodie-redesign/phase-00-freeze-inventory
+git rev-parse main
+git rev-parse 837b6454be62ad6668bd2d734b15f3a5c34a9152:docs/plans/HOODIE_MODULAR_REDESIGN_IMPLEMENTATION_PLAN.md
+python --version
+python -m pip --version
+python -m pytest -q
+git diff --stat --cached
+git diff --name-status --cached
+git diff --cached
+git diff --check --cached

@@ -1,0 +1,30 @@
+
+==================================== ERRORS ====================================
+_______________ ERROR collecting resources/references/simpy/docs _______________
+/opt/homebrew/Cellar/python@3.14/3.14.3_1/Frameworks/Python.framework/Versions/3.14/lib/python3.14/importlib/__init__.py:88: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+<frozen importlib._bootstrap>:1398: in _gcd_import
+    ???
+<frozen importlib._bootstrap>:1371: in _find_and_load
+    ???
+<frozen importlib._bootstrap>:1342: in _find_and_load_unlocked
+    ???
+<frozen importlib._bootstrap>:938: in _load_unlocked
+    ???
+.venv/lib/python3.14/site-packages/_pytest/assertion/rewrite.py:188: in exec_module
+    exec(co, module.__dict__)
+resources/references/simpy/docs/conftest.py:16: in <module>
+    from _pytest.assertion.util import _diff_text
+E   ImportError: cannot import name '_diff_text' from '_pytest.assertion.util' (/Users/hadi/Documents/GitHub/hoodie_sim_v2/.venv/lib/python3.14/site-packages/_pytest/assertion/util.py)
+______________ ERROR collecting resources/references/simpy/tests _______________
+.venv/lib/python3.14/site-packages/_pytest/config/__init__.py:758: in _importconftest
+    mod = import_path(
+.venv/lib/python3.14/site-packages/_pytest/pathlib.py:619: in import_path
+    raise ImportPathMismatchError(module_name, module_file, path)
+E   _pytest.pathlib.ImportPathMismatchError: ('tests.conftest', '/Users/hadi/Documents/GitHub/hoodie_sim_v2/tests/conftest.py', PosixPath('/Users/hadi/Documents/GitHub/hoodie_sim_v2/resources/references/simpy/tests/conftest.py'))
+=========================== short test summary info ============================
+ERROR resources/references/simpy/docs - ImportError: cannot import name '_dif...
+ERROR resources/references/simpy/tests - _pytest.pathlib.ImportPathMismatchEr...
+!!!!!!!!!!!!!!!!!!! Interrupted: 2 errors during collection !!!!!!!!!!!!!!!!!!!!
+2 errors in 7.32s

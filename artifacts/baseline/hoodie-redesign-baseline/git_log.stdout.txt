@@ -1,0 +1,7 @@
+commit 837b6454be62ad6668bd2d734b15f3a5c34a9152
+Author:     H.Farajvand <hadifarajvand3@gmail.com>
+AuthorDate: Tue Jul 14 20:55:46 2026 +0330
+Commit:     H.Farajvand <hadifarajvand3@gmail.com>
+CommitDate: Tue Jul 14 20:55:46 2026 +0330
+
+    docs: add HOODIE-only modular redesign implementation authority
