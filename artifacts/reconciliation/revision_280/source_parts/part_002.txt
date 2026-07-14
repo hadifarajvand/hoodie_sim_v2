@@ -1,0 +1,235 @@
+use the slots $t,t+1,\ldots,t+\delta_i-1$. Hence, the last acceptable completion slot is $t+\delta_i-1$. This definition avoids an off-by-one ambiguity and makes the deadline condition directly comparable with completion-time estimates expressed in time-slot indexes.
+
+
+The within-slot chronology is fixed as follows. At the boundary opening slot $t$, service completions produced at the end of slot $t-1$ are applied, and a completed transmission enters its stored destination queue as specified in (7). Expired waiting tasks are then removed and the current load observation is formed. New arrivals are observed, their route actions are selected from the pre-action state, and they are admitted to their selected source queues. Affected ERT orders are rebuilt and idle resources are scheduled, allowing a newly arrived task to start in slot $t$ when its resource is idle. Finally, every active operation receives exactly one slot of service. A one-slot operation started at $t$ completes at the end of slot $t$ and its boundary event is applied when slot $t+1$ opens, without adding an extra service slot. The same chronology is used for ECHO, HOODIE, and every baseline.
+
+
+The task lifecycle is applied consistently to all queues. At the beginning of a service decision, a waiting task with current slot greater than its absolute deadline is removed and recorded as dropped. A task that has already started computation or transmission is not preempted; the active operation retains the resource until it finishes, but its result is recorded as dropped if the realized completion slot exceeds the deadline. This rule preserves non-preemptive resource occupancy while ensuring that only deadline-satisfied outcomes are counted as successful.
+
+
+
+
+
+
+
+
+3) Hybrid Offloading Decision Model
+When a new task $\xi_i$ arrives at EA $n$, ECHO selects one direct action from the local, horizontal-edge, and vertical-cloud candidates. The selected action determines both the source queue and, when offloading is chosen, the destination stored with the task. The dispatch block shown in Fig. 2 later applies that stored destination; it does not perform a second destination optimization.
+
+
+The physical candidate action set is
+
+
+\begin{equation}
+\mathcal{A}_n(t)=\{\alpha_n^L\}\cup\{\alpha_{n,k}^H\mid k\in\mathcal{E}\setminus\{n\},\,G(n,k)=1\}\cup\{\alpha_n^V\}.
+\tag{3}
+\end{equation}
+
+
+The execution destination associated with action $\alpha$ is
+
+
+\begin{equation}
+\kappa(\alpha)=\begin{cases}n, & \alpha=\alpha_n^L,\\k, & \alpha=\alpha_{n,k}^H,\\N+1, & \alpha=\alpha_n^V.\end{cases}
+\tag{4}
+\end{equation}
+
+
+The selected source-side queue is therefore
+
+
+\begin{equation}
+\mathcal{Q}_i^{src}(t)=\begin{cases}\mathcal{Q}_{s_i}^L(t), & \kappa(\alpha_i)=s_i,\\\mathcal{Q}_{s_i}^X(t), & \kappa(\alpha_i)\neq s_i.\end{cases}
+\tag{5}
+\end{equation}
+
+
+For an offloaded task, the stored destination metadata is
+
+
+\begin{equation}
+k_i=\kappa(\alpha_i),\qquad k_i\in\mathcal{N}\setminus\{s_i\}.
+\tag{6}
+\end{equation}
+
+
+Selection of an offloading action does not create an immediate arrival at the destination queue. A task enters $\mathcal{Q}_{n\rightarrow k}^D(t)$ only after its source-side transmission finishes. Let
+
+
+\begin{equation}
+z_{i,k}^D(t)=\begin{cases}1, & \text{if transmission of task }\xi_i\text{ to node }k\text{ finishes at }t-1,\\0, & \text{otherwise}.\end{cases}
+\tag{7}
+\end{equation}
+
+
+The number of tasks that actually enter destination queues of node $k$ at slot $t$ is
+
+
+\begin{equation}
+U_k^D(t)=\sum_{i:s_i\neq k}z_{i,k}^D(t).
+\tag{8}
+\end{equation}
+
+
+For an edge destination, the source index excludes the destination itself; for the cloud, all EAs are included. Each received task is placed in the destination queue indexed by its source EA. This timing relation distinguishes the decision slot from the later transmission-completion slot.
+
+
+The direct action is selected once at task arrival. ECHO does not add a new physical route; it changes how the existing local, horizontal, and vertical routes are evaluated through end-to-end completion estimation, ERT, and deadline-aware masking.
+
+
+4) Local Queue Model
+Each EA maintains a local waiting queue and a local processor, following the distributed queue architecture in [37]. ECHO applies non-preemptive ERT-based service selection whenever the local processor becomes idle. Every queue record stores the task identifier, source, arrival slot, size, processing density, deadline, remaining workload, and the information required to recompute completion estimates.
+
+
+Let $\mathcal{Q}_n^L(t)$ contain the waiting local tasks, excluding any task currently in service. The local processing duration of task $\xi_i$ is
+
+
+\begin{equation}
+\tau_i^L=\left\lceil\frac{b_i\nu_i}{f_n^L\Delta}\right\rceil.
+\tag{9}
+\end{equation}
+
+
+Let $\varrho_n^L(t)$ denote the residual service time of the task currently running on the local processor, with $\varrho_n^L(t)=0$ when the CPU is idle. If $\mathcal{H}_i^L(t)$ denotes the waiting tasks placed before $\xi_i$ under the current hypothetical ERT order, the estimated waiting time is
+
+
+\begin{equation}
+\widehat W_i^L(t)=\varrho_n^L(t)+\sum_{\xi_h\in\mathcal{H}_i^L(t)}\tau_h^L,
+\tag{10}
+\end{equation}
+
+
+and the estimated local completion slot is
+
+
+\begin{equation}
+\widehat T_i^L(t)=t+\widehat W_i^L(t)+\tau_i^L-1.
+\tag{11}
+\end{equation}
+
+
+For a newly arrived task, ECHO evaluates a hypothetical insertion into the local queue, computes the resulting order and completion slot, and uses this value as the local candidate completion estimate. Once local execution starts, it is not preempted by a newly arriving task. Waiting tasks can be reordered only at a later service epoch when the CPU is idle.
+
+
+The deadline and completion records remain separate. ECHO does not truncate $\widehat T_i^L(t)$ at $d_i$, because truncation would hide predicted lateness and underestimate resource occupancy. A task is successfully completed only when its realized completion slot does not exceed its absolute deadline. If its deadline expires before successful completion, it is handled according to the task-lifecycle rule: a waiting task is removed, whereas an active non-preemptive operation retains the resource until completion and its result is recorded as dropped.
+
+
+Whenever a task is admitted, completed, removed, or selected for service, the waiting-task order and completion estimates are updated. This local-queue model supplies the local completion value used in queue-level ERT and in the local candidate comparison.
+
+
+
+
+
+
+5) Outbound-Transfer Queue Model
+The outbound-transfer queue stores tasks whose ECHO action selects horizontal or vertical offloading. When such an action is selected, destination $k_i=\kappa(\alpha_i)$ is stored with the task together with its source, arrival slot, size, processing density, and deadline. The dispatch block in Fig. 2 applies this stored destination when the task enters transmission; it does not perform a second destination decision.
+
+
+Let $\mathcal{Q}_n^X(t)$ contain the waiting outbound-transfer tasks, excluding any transmission currently in service. Transmission is non-preemptive. The rate associated with the stored destination is
+
+
+\begin{equation}
+R_{s_i,k_i}=\begin{cases}R_H, & k_i\in\mathcal{E}\setminus\{s_i\},\\ R_V, & k_i=N+1.\end{cases}
+\tag{12}
+\end{equation}
+
+
+A horizontal destination must also satisfy $G(s_i,k_i)=1$. The transmission duration of task $\xi_i$ is
+
+
+\begin{equation}
+\tau_{i,k_i}^X=\left\lceil\frac{b_i}{R_{s_i,k_i}\Delta}\right\rceil.
+\tag{13}
+\end{equation}
+
+
+Let $\varrho_n^X(t)$ be the residual transmission time of the task currently in service, or zero if the transfer resource is idle. If $\mathcal{H}_i^X(t)$ is the set of waiting tasks placed before $\xi_i$ under the current hypothetical ERT order, its estimated waiting and source-stage completion times are
+
+
+\begin{equation}
+\widehat W_i^X(t)=\varrho_n^X(t)+\sum_{\xi_h\in\mathcal{H}_i^X(t)}\tau_{h,k_h}^X,
+\tag{14}
+\end{equation}
+
+
+\begin{equation}
+\widehat T_{i,k_i}^X(t)=t+\widehat W_i^X(t)+\tau_{i,k_i}^X-1.
+\tag{15}
+\end{equation}
+
+
+The estimated arrival slot at the stored destination queue is
+
+
+\begin{equation}
+\widehat t_{i,k_i}^D(t)=\widehat T_{i,k_i}^X(t)+1.
+\tag{16}
+\end{equation}
+
+
+The completion estimate is not truncated at the deadline. Keeping the complete value is necessary for ERT and lateness calculation and for estimating when the transmission resource becomes available. A task that expires before successful transmission or completion is handled according to the task-lifecycle rule and recorded as dropped; an active non-preemptive transmission retains the resource until it finishes, and the deadline remains separate from estimated and realized completion time.
+
+
+When an offloading candidate is evaluated, its destination determines the transmission duration and the task is inserted hypothetically into the outbound-transfer queue to estimate its provisional position, waiting time, and source-stage completion. After the action is chosen, that destination remains attached to the task. Whenever queue membership or active service changes, the hypothetical waiting and completion estimates of waiting tasks are recalculated before the next non-preemptive service decision.
+
+
+
+
+
+
+6) Destination Queue and Load Model
+Destination queues use the source-indexed organization in [37] and represent processing workloads received from other EAs. Each destination node $k$ maintains a source-indexed queue $\mathcal{Q}_{n\rightarrow k}^D(t)$ for tasks originating from EA $n$. This separation prevents collisions between simultaneous arrivals from different sources. A source EA does not reorder a destination queue. FIFO order is retained within each source-indexed destination queue, while the destination processor shares its processing capacity among active queues according to the architecture in [37]. These queues provide workload information for candidate completion estimation.
+
+
+A queue is active when it contains unfinished computational workload. To avoid a notation collision with the action set, the active destination-queue set and its cardinality are denoted by
+
+
+\begin{equation}
+\mathcal{J}_k(t)=\begin{cases}\left\{n\in\mathcal{E}\setminus\{k\}\mid \Omega_{n\rightarrow k}(t)>0\right\}, & k\in\mathcal{E},\\\left\{n\in\mathcal{E}\mid \Omega_{n\rightarrow k}(t)>0\right\}, & k=N+1.\end{cases}
+\tag{17}
+\end{equation}
+
+
+\begin{equation}
+p_k(t)=\left|\mathcal{J}_k(t)\right|.
+\tag{18}
+\end{equation}
+
+
+Because queued tasks may have different processing densities, destination load is represented in remaining CPU cycles rather than only in bits. Let $b_h^{rem}(t)$ be the remaining bits of queued task $\xi_h$ and $\nu_h$ its processing density. The remaining workload in the source-indexed destination queue is
+
+
+\begin{equation}
+\Omega_{n\rightarrow k}(t)=\sum_{\xi_h\in \mathcal{Q}_{n\rightarrow k}^D(t)}b_h^{rem}(t)\nu_h.
+\tag{19}
+\end{equation}
+
+
+When candidate $n\rightarrow k$ is evaluated, admission of the new task may activate a previously inactive source queue. The adjusted number of active queues is
+
+
+\begin{equation}
+\bar p_{n,k}(t)=\max\left\{1,p_k(t)+\mathbb{I}\left[n\notin\mathcal{J}_k(t)\right]\right\}.
+\tag{20}
+\end{equation}
+
+
+Let the total destination processing capacity of node $k$ be
+
+
+\begin{equation}
+f_k^D=\begin{cases}f_k^{EA}, & k\in\mathcal{E},\\ f^C, & k=N+1.\end{cases}
+\tag{21}
+\end{equation}
+
+
+The effective capacity assigned to the candidate source queue is estimated as
+
+
+\begin{equation}
+\bar f_{n,k}^D(t)=\frac{f_k^D}{\bar p_{n,k}(t)}.
+\tag{22}
+\end{equation}
+
+
+This definition is always finite, including when the destination is initially idle. Candidate evaluation must, however, use the destination conditions expected when the task actually arrives rather than silently treating the decision-time workload as unchanged. Let $\widehat\Omega_{s_i\rightarrow k}(\widehat t_{i,k}^D(t)\mid t)$ and $\widehat p_k(\widehat t_{i,k}^D(t)\mid t)$ denote the remaining cycle workloa
