@@ -20,14 +20,20 @@ class OffloadingQueue:
         self.tasks.append(task)
         task.metadata["queue_entered_at"] = slot
         task.queue_state = "offloading_queue"
-        task.transmission_start_slot = task.transmission_start_slot if task.transmission_start_slot is not None else int(slot)
-        task.metadata["transmission_start_slot"] = task.transmission_start_slot
+        # Queue admission is not transmission start.  Only the head receives a
+        # start timestamp when the physical transmitter becomes available.
+        task.transmission_start_slot = None
+        task.metadata.pop("transmission_start_slot", None)
+        task.metadata.pop("transmission_started_at", None)
 
     def dequeue(self) -> Task:
         task = self.tasks.popleft()
         if self.tasks:
             next_head = self.tasks[0]
             self.current_head_entered_at = int(next_head.metadata.get("queue_entered_at", 0))
+            next_head.transmission_start_slot = None
+            next_head.metadata.pop("transmission_start_slot", None)
+            next_head.metadata.pop("transmission_started_at", None)
         else:
             self.current_head_entered_at = None
         return task
