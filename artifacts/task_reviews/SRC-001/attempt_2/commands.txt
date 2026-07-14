@@ -1,0 +1,8 @@
+git rev-parse task/src-001-r2
+git rev-parse main
+git merge-base task/src-001-r2 main
+git diff --name-only task/src-001-r2..main
+Google Drive revisions.list for file 17iqZWA0bF5unbyuVYnRiW1IUcr0Ctb2KFw1f5XE2poE
+inspect artifacts/reports/ECHO_MASTER_EXECUTION_PLAN.md
+inspect research/authority/echo/live/source_metadata.json
+verify research/authority/echo/live/ECHO_PROPOSED_METHOD.md exists
