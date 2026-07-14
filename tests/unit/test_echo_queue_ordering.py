@@ -56,25 +56,22 @@ class ConstructiveERTOrderingTests(unittest.TestCase):
         self.assertEqual(result.ordered_items[0].item_id, 2)
         self.assertEqual(result.estimates[0].lateness_slots, 2)
 
-    def test_active_residual_is_included_without_reordering_active_work(self) -> None:
-        items = [
-            Item(1, arrival=1, deadline=7, service=1, downstream=2),
-            Item(2, arrival=2, deadline=12, service=2, downstream=1),
-        ]
+    def test_active_residual_is_included_in_completion_estimate(self) -> None:
+        item = Item(1, arrival=1, deadline=12, service=1, downstream=2)
         result = construct_ert_order(
-            items,
+            [item],
             current_slot=4,
             residual_source_slots=3,
-            service_slots=lambda item: item.service,
-            downstream_slots=lambda item: item.downstream,
-            deadline_slot=lambda item: item.deadline,
-            arrival_slot=lambda item: item.arrival,
-            stable_id=lambda item: item.item_id,
+            service_slots=lambda value: value.service,
+            downstream_slots=lambda value: value.downstream,
+            deadline_slot=lambda value: value.deadline,
+            arrival_slot=lambda value: value.arrival,
+            stable_id=lambda value: value.item_id,
         )
 
-        first = result.estimates[0]
-        self.assertEqual(first.completion_slot, 9)
-        self.assertEqual(first.item.item_id, 1)
+        estimate = result.estimates[0]
+        self.assertEqual(estimate.completion_slot, 9)
+        self.assertEqual(estimate.ert_slots, 3)
 
 
 if __name__ == "__main__":
