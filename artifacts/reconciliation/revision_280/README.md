@@ -1,13 +1,15 @@
 # ECHO revision-280 reconciliation payload
 
-This directory stores the immutable offline reconciliation bundle produced from the current Google Drive Proposed Method tab.
+This directory stores the offline revision-280 authority and planning-reconciliation payload.
 
-Apply it from a clean repository worktree with:
+Materialize and verify it from a clean repository worktree with:
 
 ```bash
-python3 scripts/control/apply_revision_280_reconciliation_bundle.py
+python3 scripts/control/materialize_revision_280_reconciliation.py
 ```
 
-The script verifies the encoded archive, the revision-280 snapshot SHA-256, revision number, equation count, algorithm counts, and absence of a tab-title assertion before writing the authority, audit, amendment, and agent-prompt files.
+The materializer concatenates the seven ordered files under `source_parts/`, verifies the exact revision-280 snapshot SHA-256, checks equation tags `1..67`, verifies Algorithm 1 has 23 numbered lines and Algorithm 2 has 14, rejects tab-title assertions, and writes the current authority, reconciliation report, revision comparison record, and v4.3 amendment to their repository paths.
 
-Execution remains paused until the agent completes the reconciliation prompt and the updated preflight passes.
+The earlier encoded archive and partial encoded files are legacy transport attempts and are not consumed by the authoritative materializer.
+
+After materialization, the reconciliation agent must read and execute `AGENT_PROMPT.txt`. Execution remains paused until the v4.3 validator and source-lock checks pass.
