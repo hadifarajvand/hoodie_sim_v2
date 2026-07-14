@@ -1,0 +1,14 @@
+{
+  "task_id": "SRC-001",
+  "attempt": 1,
+  "reviewed_commit": "7afff25fe879c51070351933f72ceab60f52b9a5",
+  "authorized_base": "8be8775d6aad8f5466647cb1a6e53041fbf8e726",
+  "verdict": "REWORK",
+  "branch_ancestry_valid": true,
+  "changed_paths_allowed": true,
+  "blocked_external_claim_consistent": true,
+  "exact_diff_evidence_valid": false,
+  "hash_evidence_complete": false,
+  "merge_performed": false,
+  "next_attempt": 2
+}
