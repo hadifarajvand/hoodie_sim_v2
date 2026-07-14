@@ -1,285 +1,210 @@
-# ECHO Master Execution Plan — Closed-Loop Agent Runbook
+# ECHO Master Execution Plan — Final Closed-Loop Agent Runbook
 
 ## 1. Document control
 
 | Field | Value |
 |---|---|
-| Plan version | `ECHO-MEP-v4.1` |
-| Plan status | `FINAL CLOSED-LOOP RUNBOOK — EXECUTOR + INDEPENDENT REVIEWER/CONTROLLER` |
+| Plan version | `ECHO-MEP-v4.2` |
+| Plan status | `FINAL — BOOTSTRAPPABLE CLOSED-LOOP RUNBOOK` |
 | Repository | `hadifarajvand/hoodie_sim_v2` |
-| Planning-start branch | `main` |
-| Planning-start HEAD | `36b2e19ec8dcc422a3ce906e37ef5ff460ac34fe` |
-| Planning-start plan blob | `98bd39843dcfddbec429b7bbca1ff6a368e4e116` |
+| Branch | `main` |
+| Planning-base HEAD | `0a510fc02e335d1f56e604134db8bb6fcf35db7d` |
 | Audited pre-implementation baseline | `d8dbf131dc4cff3879636853cafa9371a0914d99` |
 | Live document title | `مقاله` |
 | Live document ID | `17iqZWA0bF5unbyuVYnRiW1IUcr0Ctb2KFw1f5XE2poE` |
 | Live proposed-method tab ID | `t.iav4589yyeo7` |
 | Live content heading | `III. Proposed Effective Completion via Hybrid Offloading Framework (ECHO)` |
-| Google Drive current revision | `270` |
-| Google Drive modified time | `2026-07-14T05:40:38.691Z` |
-| Connector method revision | `ALtnJHz611-DqkvSCGUC_z6Fe7oTOtKddqKX28Uy-8yxMUchKHt1qIK0ynQUDlus57gMvnBz5VJeXCNzVUVbhwab1h05IlKz0AKes7cQJg` |
-| Superseded connector revision | `ALtnJHzzm4hFNZK8DdBeKreoGaZ2RSO7F5oymwXZTjamK8fUxsa71RdvAu-7KkfW25xxeNA3C-Ns0TIbs-kwgO8FwUg1U68nloS7CIA1sg` |
-| Historical repository-export revision | `ALtnJHyTLdhKaOnVqfvxB74eKtegK8Hrsx5l2yaYdk68tSHgf-QdYtM6nrsTZrwFDm3DbTUFkeWajyCFP0Eevns2d7r0_twwuuYjD4ZcMQ` |
+| Google Drive current revision | `273` |
+| Google Drive modified time | `2026-07-14T07:25:15.431Z` |
+| Connector method revision | `ALtnJHxLEsnZk9if3bNlbe0zzd4pRY_MBM_8-J9Xu2DeAWi0dUyqL3JaM5jIbn0eN2bBmd5xB0zWp-Xz0W8QL0tzGwNRrhdBWduWJxzecg` |
+| Previous Drive revision | `270` |
+| Superseded connector revision | `ALtnJHz611-DqkvSCGUC_z6Fe7oTOtKddqKX28Uy-8yxMUchKHt1qIK0ynQUDlus57gMvnBz5VJeXCNzVUVbhwab1h05IlKz0AKes7cQJg` |
 
-No tab title is asserted. This file supersedes every earlier plan and `resources/ECHO_multi_agent_phase_runbook.md` whenever they disagree.
+No tab title is asserted. This plan supersedes every earlier execution plan and runbook when they disagree.
+
+### 1.1 Bootstrap anchor rule
+
+The plan cannot contain its own future commit SHA. The controller therefore discovers the approved v4.2 plan commit as the unique first descendant of the Planning-base HEAD whose diff changes only `artifacts/reports/ECHO_MASTER_EXECUTION_PLAN.md` and whose content declares `ECHO-MEP-v4.2`. Before the first executor, later bootstrap commits may change only `scripts/control/validate_echo_plan.py` and G3 control files. The controller stores the discovered approved plan commit in `EXECUTION_STATE.json`; all later work must descend from it.
 
 ## 2. Goal and final deliverables
 
-The goal is to reproduce HOODIE faithfully, freeze a neutral cloud-edge physical simulator, attach ECHO without contaminating HOODIE, verify every ECHO equation and algorithm line, run fair paired evaluation, generate Figures 4–8 from retained outputs, and deliver a clean reproducible artifact set.
+The project will faithfully reproduce HOODIE, freeze a neutral synchronized cloud-edge simulator, attach ECHO only through frozen hooks, verify all 67 equations and both algorithms, run fair paired evaluation, generate Figures 4–8 from retained outputs, and deliver exact rerun artifacts.
 
-Final deliverables are:
+Final deliverables:
+- immutable ECHO and HOODIE authority bundles.
+- canonical HOODIE configuration and topology.
+- immutable paired traces and a neutral synchronized physical kernel.
+- faithful per-EA HOODIE learners and six isolated heuristic baselines.
+- a frozen HOODIE/base release manifest.
+- an ECHO adapter implementing ERT scheduling, size-specific state/action spaces, masks, reward, event-SMDP, masked DDQL, LSTM, and ECHO-NoLSTM.
+- equation/algorithm coverage and paired pilot evidence.
+- frozen logging/evaluation schemas, trace bank, lineage, checkpoints, raw logs, metrics, and confidence intervals.
+- Figures 4–8 with fifteen panels in SVG/PDF and deterministic 300-dpi PNG.
+- final reports, archive redirects, artifact index, and exact verification/reproduction scripts.
 
-1. immutable ECHO and HOODIE authority bundles;
-2. canonical HOODIE configuration and topology;
-3. immutable paired traces;
-4. neutral synchronized physical kernel;
-5. faithful per-EA HOODIE learner and six isolated heuristic baselines;
-6. frozen HOODIE/base release manifest;
-7. ECHO adapter, ERT scheduling, masks, state, reward, event-SMDP, masked DDQL, LSTM, and ECHO-NoLSTM;
-8. equation/algorithm coverage and paired pilot evidence;
-9. machine-readable evaluation schemas, immutable trace bank, lineages, checkpoints, raw logs, metrics, and confidence intervals;
-10. Figures 4–8, fifteen panels, vector/PDF and deterministic 300-dpi PNG exports;
-11. final reports, archive redirects, artifact index, and exact rerun script.
+## 3. Live-revision reconciliation and scientific contracts
 
-## 3. Scientific contracts
+### 3.1 Revision 270 → 273 result
 
-### 3.1 Authority order
+Revision 273 is a **material method change**, not metadata-only. It supersedes the former fixed 30-destination/32-output architecture. The current authoritative scalability contract is:
 
-1. current live ECHO proposed-method tab at the identifiers above;
-2. original HOODIE paper PDF/OCR for inherited base mechanics and learning;
-3. `research/ECHO_evaluation_spec.md` when it does not conflict with the current live method;
-4. topology and PNG-export authorizations;
-5. repository code/tests as implementation evidence only;
-6. historical reports, snapshots, smoke outputs, checkpoints, and figures as non-authoritative evidence.
+- for a run with `N` EAs, the canonical action dimension is exactly `N+2`: local, `N` horizontal-destination positions, cloud;
+- the state contains exactly the destination blocks present for that run; smaller systems are not padded to 30 destinations;
+- the source and disconnected positions remain present but are disabled by the physical-and-deadline mask;
+- a separate checkpoint is trained and evaluated for each `N ∈ {10,15,20,25,30}`;
+- EAs within the same ECHO run share model parameters, while source-specific interval accumulators, task ownership, and event provenance remain separate;
+- no zero-shot checkpoint transfer across different values of `N` is claimed.
 
-A test cannot override a paper equation. Existing code cannot define the method. A new live revision blocks ECHO acceptance until `SRC-001` is repeated.
+The old 30/32 implementation is candidate code only and must be superseded or parameterized by `ECHO-009`, `ECHO-012`, and `ECHO-015`. `SRC-001` still performs the complete 69-row audit before any ECHO task is accepted.
 
-### 3.2 ECHO non-negotiable behavior
+### 3.2 Authority order
 
-The source lock must verify Equations (1)–(67), Algorithm 1 with 23 numbered lines, and Algorithm 2 with 12 numbered lines. The implementation must preserve:
+1. current live ECHO proposed-method tab at the identifiers in Section 1.
+2. original HOODIE paper PDF/OCR for inherited base mechanics and HOODIE learning.
+3. `research/ECHO_evaluation_spec.md` when it does not conflict with the current live method.
+4. topology and PNG-export authorizations.
+5. repository code and tests as implementation evidence only.
+6. historical reports, source snapshots, smoke outputs, checkpoints, and figures as non-authoritative evidence.
 
-- independent Bernoulli arrival opportunity for every EA in every decision slot;
-- `d_i = t_i^a + δ_i - 1`;
-- one direct route decision at arrival and no second destination decision;
-- one local waiting queue and one outbound waiting queue per source, excluding active operations;
-- one non-preemptive local CPU and one non-preemptive transmitter per source;
-- transmission finishing at end of slot `t` is admitted to the destination at the boundary opening `t+1`;
-- source-indexed FIFO destination queues and equal public-CPU sharing;
-- remaining destination workload in CPU cycles;
-- fresh status preferred and LSTM used only for stale/missing status;
-- constructive deterministic `O(q²)` ERT ordering: smallest nonnegative ERT, otherwise minimum lateness, then FIFO/stable-ID tie break;
-- 30 padded destination feature blocks and 32 canonical outputs: local, horizontal positions 1–30, cloud;
-- reward from Equations (55)–(58);
-- Equation (59) as one discounted source-EA interval between consecutive actual decisions of that EA;
-- no overlapping task-level replay transitions;
-- target discount `γ^Δ_(n,m)`;
-- masked Dueling Double-DQL from Equations (61)–(67);
-- separate supervised LSTM forecasting and no held-out evaluation data in fitting.
+A passing test cannot override a paper equation. Existing code cannot define the method. A new live revision reopens `SRC-001` and blocks ECHO acceptance.
 
-### 3.3 Boundary chronology
+### 3.3 Non-negotiable ECHO behavior
+- independent Bernoulli arrival opportunity for every EA in every decision slot.
+- `d_i = t_i^a + δ_i - 1`.
+- one direct route decision at arrival and no second destination decision.
+- one local waiting queue and one outbound waiting queue per source, excluding active operations.
+- one non-preemptive local CPU and one non-preemptive transmitter per source.
+- transmission finishing at end of slot `t` is admitted to its stored destination at boundary `t+1`.
+- source-indexed FIFO destination queues and equal public-CPU sharing.
+- destination workload in remaining CPU cycles.
+- fresh status preferred and LSTM used only for stale or missing status.
+- constructive deterministic `O(q²)` ERT ordering: smallest nonnegative ERT, otherwise minimum lateness, FIFO/stable-ID tie break.
+- size-specific `N+2` action output and size-specific destination state blocks.
+- Equations (55)–(58) reward.
+- Equation (59) as one discounted source-EA interval between consecutive actual decisions.
+- no overlapping task-level replay transitions.
+- target discount `γ^Δ_(n,m)`.
+- masked Dueling Double-DQL from Equations (61)–(67).
+- within-run ECHO parameter sharing plus separate source-specific event ownership.
+- separate supervised LSTM forecasting with no held-out fitting.
 
-At the boundary opening slot `t`:
-
-1. apply service/transmission completions generated at the end of `t-1` and admissions due at `t`;
-2. resolve outcomes and attach task rewards to the source-EA interval already open;
-3. obtain fresh status or stale/missing LSTM estimate;
-4. remove expired waiting tasks without preempting active work;
-5. observe all same-slot arrivals;
-6. for each arriving EA, close its previous interval before opening the new decision;
-7. estimate, mask, choose, and admit;
-8. rebuild affected waiting orders and start idle source resources;
-9. schedule destination queues;
-10. execute exactly one slot of active service;
-11. update histories/LSTM and perform learning/target-copy work;
-12. at `T+1`, resolve terminal outcomes and close every open interval.
+### 3.4 Boundary chronology
+1. apply service/transmission completions produced at end of `t-1` and destination admissions due at `t`.
+2. resolve outcomes and add rewards to the already-open source-EA interval.
+3. obtain fresh status or stale/missing LSTM estimate.
+4. remove expired waiting tasks without preempting active work.
+5. observe all same-slot arrivals.
+6. for each arriving EA, close its previous interval before opening the new decision.
+7. estimate, mask, choose, and admit.
+8. rebuild affected waiting orders and start idle source resources.
+9. schedule destination queues.
+10. execute exactly one slot of active service.
+11. update histories/LSTM and perform learning/target-copy work.
+12. at `T+1`, resolve terminal outcomes and close all open intervals.
 
 ## 4. Current code ownership map
 
-| Current repository condition | Owning task |
+| Current condition | Owning task |
 |---|---|
-| `src/environment/gym_adapter.py` imports `src.echo_action_space` and `src.echo_ert` | `BASE-005` removes ECHO imports before freeze |
-| `src/environment/evaluation_gym_adapter.py` contains ECHO-specific conditional scheduling | `BASE-005` extracts neutral hooks; `ECHO-001` later attaches ECHO without changing frozen files |
-| mutable trace dataclasses / possible regeneration | `BASE-004` |
-| one source transmitter not yet proven independently of destination keys | `BASE-008` |
-| next-boundary admission requires exact event staging tests | `BASE-010` |
-| `HOODIE` alias resolves to generic `ADAPTIVE` policy | `BASE-019` |
-| paper-state builder contains placeholder zero forecast behavior | `BASE-015` |
-| shared policy/learner path does not prove one learner per EA | `BASE-016` |
-| 32-output ECHO action code exists but is not source-locked acceptance | `ECHO-009` |
-| event-SMDP accumulator exists but boundary ownership needs full test | `ECHO-014` and `ECHO-018` |
-| ECHO training processes decision events before same-boundary resolution events | `ECHO-018` |
-| logging/evaluation schemas currently appear after pilot in the old sequence | `EVAL-001` now runs before `ECHO-011` |
+| Shared environment imports ECHO modules and has ECHO conditionals | `BASE-005` removes them before freeze |
+| Mutable/recreated traces | `BASE-004` |
+| One-transmitter invariant not fully proven | `BASE-008` |
+| Next-boundary admission requires exact staging tests | `BASE-010` |
+| HOODIE alias resolves to generic ADAPTIVE | `BASE-019` |
+| Paper-state builder has placeholder forecast behavior | `BASE-015` |
+| Shared HOODIE learner path does not prove one learner per EA | `BASE-016` |
+| Existing ECHO action code always exposes 32 outputs | `ECHO-009` supersedes it with N+2 |
+| Existing ECHO state code assumes fixed maximum padding | `ECHO-012` supersedes it with N-specific blocks |
+| Existing ECHO agent architecture does not prove within-run parameter sharing | `ECHO-015` |
+| Event-SMDP exists but boundary ownership remains unproven | `ECHO-014` and `ECHO-018` |
+| Decision events are processed before same-boundary resolution events | `ECHO-018` |
+| Schemas formerly appeared after pilot | `EVAL-001` now precedes `ECHO-011` |
 
-Existing implementation is retained as candidate code. Each owner task must accept unchanged, repair, isolate, or supersede it based on authority and tests.
+Existing implementation is retained as candidate code. The owner task must accept unchanged, repair, isolate, or supersede it using authority and tests.
 
 ## 5. Deterministic path grammars
 
-Directory wildcards are not permissions. A card may write only explicitly listed files or files generated by one of these exact grammars.
+Directory wildcards are never permissions. A task may write only explicit paths or one of these grammars.
 
-### G1 — Executor evidence
+### G1 — executor evidence
+For `<ID>`: `artifacts/task_evidence/<ID>/{report.md,status.json,commands.txt,test_output.txt,changed_files.json,hashes.json,git_diff.patch}`.
 
-For task `<ID>`:
+### G2 — reviewer evidence
+For `<ID>` attempt `<A>`: `artifacts/task_reviews/<ID>/attempt_<A>/{review.md,status.json,commands.txt,test_output.txt,diff_audit.json}`.
 
-- `artifacts/task_evidence/<ID>/report.md`
-- `artifacts/task_evidence/<ID>/status.json`
-- `artifacts/task_evidence/<ID>/commands.txt`
-- `artifacts/task_evidence/<ID>/test_output.txt`
-- `artifacts/task_evidence/<ID>/changed_files.json`
-- `artifacts/task_evidence/<ID>/hashes.json`
-- `artifacts/task_evidence/<ID>/git_diff.patch`
-
-### G2 — Reviewer evidence
-
-For task `<ID>` and attempt `<A>`:
-
-- `artifacts/task_reviews/<ID>/attempt_<A>/review.md`
-- `artifacts/task_reviews/<ID>/attempt_<A>/status.json`
-- `artifacts/task_reviews/<ID>/attempt_<A>/commands.txt`
-- `artifacts/task_reviews/<ID>/attempt_<A>/test_output.txt`
-- `artifacts/task_reviews/<ID>/attempt_<A>/diff_audit.json`
-
-### G3 — Control state
-
+### G3 — control and preflight
+- `artifacts/control/PREFLIGHT_REPORT.json`
 - `artifacts/control/EXECUTION_STATE.json`
 - `artifacts/control/NEXT_TASK.json`
 
-`EXECUTION_STATE.json` stores plan version, current main SHA, status and attempt for all 73 IDs, review SHA, merge SHA, and blocker. `NEXT_TASK.json` stores exactly one authorized task ID or `null`.
+### G4 — trace bank
+For `trace_id=<scenario_id>__seed<two_digit_seed>__<config_sha12>`: `artifacts/evaluation/trace_bank/<trace_id>.json` and `.sha256`; index: `artifacts/evaluation/trace_bank/index.json`.
 
-### G4 — Trace-bank file
+### G5 — run outputs
+For `run_id=<method>__<scenario_id>__n<N>__seed<two_digit_seed>__<config_sha12>`: `run_manifest.json`, `task_log.jsonl`, `decision_log.jsonl`, `episode_metrics.csv`, optional learning-only `training_metrics.csv` and `checkpoint.pt`, and `DONE.sha256` under `artifacts/evaluation/runs/<run_id>/`.
 
-For `trace_id = <scenario_id>__seed<two_digit_seed>__<config_sha12>`:
+### G6 — aggregated outputs
+For panel IDs `f5a,f5b,f6a,f6b,f6c,f6d,f6e,f7a,f7b,f7c,f7d,f7e,f7f,f8`: one CSV under each of `artifacts/metrics/seed_level`, `panel_level`, and `confidence_intervals`.
 
-- `artifacts/evaluation/trace_bank/<trace_id>.json`
-- `artifacts/evaluation/trace_bank/<trace_id>.sha256`
+### G7 — figures
+For figure `<N>`: `artifacts/figures/vector/figure<N>.{svg,pdf}`, `artifacts/figures/png_300dpi/figure<N>.png`, `artifacts/figures/manifests/figure<N>.json`; panel CSV: `artifacts/figures/panel_exports/<panel_id>.csv`.
 
-The index is `artifacts/evaluation/trace_bank/index.json`.
+### G8 — archive
+For approved source SHA `<sha>` and basename `<name>`: `artifacts/archive/superseded/<sha>__<name>`; index: `artifacts/archive/archive_manifest.json`.
 
-### G5 — Run output
+## 6. Closed-loop executor and reviewer/controller
 
-For `run_id = <method>__<scenario_id>__n<N>__seed<two_digit_seed>__<config_sha12>`:
+### 6.1 Roles and status machine
 
-- `artifacts/evaluation/runs/<run_id>/run_manifest.json`
-- `artifacts/evaluation/runs/<run_id>/task_log.jsonl`
-- `artifacts/evaluation/runs/<run_id>/decision_log.jsonl`
-- `artifacts/evaluation/runs/<run_id>/episode_metrics.csv`
-- `artifacts/evaluation/runs/<run_id>/training_metrics.csv` only for learning runs;
-- `artifacts/evaluation/runs/<run_id>/checkpoint.pt` only for learning runs;
-- `artifacts/evaluation/runs/<run_id>/DONE.sha256`
+- Executor: executes exactly one authorized card, writes only its allowlist plus G1, commits, and stops.
+- Independent reviewer/controller: reviews without repairing implementation, reruns exact commands, merges only on PASS, updates the plan and G2/G3, authorizes exactly one next task, and stops.
+- Executor and reviewer are different invocations. Parallel execution is disabled.
 
-No other filename under a run directory is permitted.
+Status flow: `BLOCKED → READY → IN_PROGRESS → IMPLEMENTED_PENDING_REVIEW → VERIFIED_COMPLETE`; failures: `BLOCKED_EXTERNAL`, `REWORK`, `PLAN_CHANGE_REQUIRED`, `STALE_BRANCH`, `MERGE_BLOCKED`.
 
-### G6 — Aggregated panel output
+### 6.2 Preflight and bootstrap
 
-For panel ID in `f5a,f5b,f6a,f6b,f6c,f6d,f6e,f7a,f7b,f7c,f7d,f7e,f7f,f8`:
+Before any executor:
+1. discover and store the approved v4.2 plan commit using Section 1.1.
+2. verify every later bootstrap commit changes only `scripts/control/validate_echo_plan.py` or G3.
+3. run `python3 scripts/control/validate_echo_plan.py --plan artifacts/reports/ECHO_MASTER_EXECUTION_PLAN.md --json artifacts/control/PREFLIGHT_REPORT.json` and require PASS.
+4. initialize all 73 statuses and attempts in `EXECUTION_STATE.json`.
+5. write `NEXT_TASK.json` for `SRC-001`, attempt 1, branch `task/src-001-r1`.
+6. commit control files and stop after printing the exact executor invocation.
 
-- `artifacts/metrics/seed_level/<panel_id>.csv`
-- `artifacts/metrics/panel_level/<panel_id>.csv`
-- `artifacts/metrics/confidence_intervals/<panel_id>.csv`
+The executor branches from the latest `main` only when it descends from the approved plan commit and every intervening path is a permitted bootstrap/control path. The controller records the exact executor start SHA in `NEXT_TASK.json` immediately before launch.
 
-### G7 — Figure output
+### 6.3 Executor algorithm
+1. read this entire plan and G3.
+2. verify plan version, authorized task/attempt/branch/start SHA, clean tree, and ancestry.
+3. create or check out the exact task branch.
+4. read only Required reads and edit only Allowed writes plus G1.
+5. perform Ordered operations exactly.
+6. run Exact command without substitution or suppressed failure.
+7. write complete G1 with exact diff and hashes.
+8. commit `<ID>: <exact title>`.
+9. stop; do not merge, edit plan, start another card, or push implementation to main.
 
-For figure number `<N>`:
-
-- `artifacts/figures/vector/figure<N>.svg`
-- `artifacts/figures/vector/figure<N>.pdf`
-- `artifacts/figures/png_300dpi/figure<N>.png`
-- `artifacts/figures/manifests/figure<N>.json`
-
-Panel CSVs are `artifacts/figures/panel_exports/<panel_id>.csv`.
-
-### G8 — Archive output
-
-For an approved source path with SHA-256 `<sha>` and basename `<name>`:
-
-- `artifacts/archive/superseded/<sha>__<name>`
-
-The only archive index is `artifacts/archive/archive_manifest.json`. Eligibility must come from `artifacts/classification/artifact_inventory.json`.
-
-## 6. Closed-loop execution protocol
-
-### 6.1 Roles
-
-- **Executor:** receives one explicit task ID and attempt, edits only its card allowlist plus G1, commits, and stops.
-- **Independent reviewer/controller:** inspects the task branch read-only, reruns commands, grants PASS/REWORK/BLOCKED, merges only on PASS, updates plan status plus G2/G3, computes one next task, and stops.
-- The executor and reviewer must be different agent invocations. The reviewer must not repair implementation code.
-
-Default execution is sequential. Parallel execution is disabled.
-
-### 6.2 Executor branch and stop rules
-
-The controller authorizes branch `task/<lowercase-id>-r<attempt>` from the `main_head` in `NEXT_TASK.json`.
-
-The executor must:
-
-1. verify the current plan version and `NEXT_TASK.json`;
-2. verify clean tree and exact starting SHA;
-3. create/check out the authorized branch;
-4. read only the card's required reads;
-5. edit only the card's explicit writes plus G1;
-6. run the exact command;
-7. write complete evidence;
-8. set evidence status to `IMPLEMENTED_PENDING_REVIEW`, `BLOCKED_EXTERNAL`, `REWORK`, `PLAN_CHANGE_REQUIRED`, or `STALE_BRANCH`;
-9. commit `<ID>: <exact title>`;
-10. stop without merge, push to main, plan edit, or next-task execution.
-
-A `SRC-001` executor that lacks source access writes `BLOCKED_EXTERNAL` evidence and stops. It must not execute `BASE-001` in that invocation.
-
-### 6.3 Controller bootstrap
-
-Before the first executor, the reviewer/controller runs in `BOOTSTRAP` mode:
-
-1. verify `main` equals the planning-start HEAD or refresh this plan through a planning-only change;
-2. initialize `artifacts/control/EXECUTION_STATE.json` from the 73 registry rows;
-3. set `artifacts/control/NEXT_TASK.json` to `SRC-001`, attempt 1, branch `task/src-001-r1`, and the current main SHA;
-4. commit only G3 with `CONTROL BOOTSTRAP: initialize execution state`;
-5. stop after printing the exact `SRC-001` executor invocation.
+If `SRC-001` lacks access, it records `BLOCKED_EXTERNAL` in G1 and stops. It must not execute `BASE-001` in the same invocation.
 
 ### 6.4 Reviewer/controller algorithm
+1. verify task/attempt/start/main/task SHAs and branch ancestry.
+2. require exact equality between Git diff paths and `changed_files.json`.
+3. expand the card allowlist and reject every unlisted path.
+4. inspect every changed line and evidence claim.
+5. rerun the exact command in a clean review worktree.
+6. evaluate every acceptance criterion and write G2 only.
+7. on PASS merge with `--no-ff`, update only the task status/dashboard plus G3, commit `CONTROL <ID>: verify and advance`.
+8. on REWORK do not merge; increment attempt and reauthorize the same task.
+9. on BLOCKED_EXTERNAL merge evidence-only G1, mark blocked, authorize the earliest unrelated READY task in a new invocation.
+10. on PLAN_CHANGE_REQUIRED or MERGE_BLOCKED set `NEXT_TASK.task_id=null` and stop.
+11. recompute READY iff all dependencies are VERIFIED_COMPLETE; choose the earliest registry task; write exactly one next task or null; stop.
 
-The reviewer/controller is the only actor allowed to write the master plan and G2/G3.
+A changed live revision reopens `SRC-001`; a change to a frozen-base hash reopens its base owner and downstream tasks; any unaudited implementation commit to main reopens `AUDIT-002`.
 
-For task `<ID>` attempt `<A>`:
+## 7. Master task registry
 
-1. read plan, control state, task evidence, task branch, and starting/main SHAs;
-2. verify branch ancestry; if main changed after authorization, record `STALE_BRANCH`, do not merge, and authorize a new attempt from current main;
-3. compute `git diff --name-only <start_sha>..<task_sha>`;
-4. require exact equality with `changed_files.json`;
-5. require every changed path to be in the card allowlist or G1;
-6. inspect every diff and evidence claim;
-7. rerun the exact card command in a clean review worktree;
-8. evaluate every pass criterion;
-9. write G2 only; never edit task implementation;
-10. on failure: do not merge, set `REWORK` or the exact blocker, increment attempt, and authorize the same task when repair is possible;
-11. on PASS: merge with `--no-ff`, write G2/G3, update only the selected registry status and dashboard in this plan, and commit `CONTROL <ID>: verify and advance`;
-12. recompute statuses and exactly one `NEXT_TASK`;
-13. stop after printing the next executor invocation.
-
-If repository policy prevents merge, record `MERGE_BLOCKED` and stop. Do not substitute a different merge process.
-
-### 6.5 Status recomputation
-
-`VERIFIED_COMPLETE` remains complete unless explicitly reopened by source/code invalidation.
-
-For every other task:
-
-- `READY` when every dependency is `VERIFIED_COMPLETE` and the task has no unresolved blocker;
-- `BLOCKED` otherwise;
-- `REWORK` remains selected for the next attempt;
-- `BLOCKED_EXTERNAL` remains blocked until access is restored;
-- `PLAN_CHANGE_REQUIRED` stops the whole controller;
-- `STALE_BRANCH` creates a new attempt from current main.
-
-When multiple tasks are READY, select the earliest task in the registry order. `NEXT_TASK.json` is the sole execution authorization; other READY tasks must not run.
-
-### 6.6 Source change and frozen-base invalidation
-
-- A changed live ECHO revision reopens `SRC-001` and blocks all incomplete ECHO/evaluation/figure tasks.
-- Any change to a file hashed by `FREEZE-001` invalidates the freeze and reopens the owning base task plus downstream tasks.
-- Any unaudited implementation commit to main reopens `AUDIT-002` before further execution.
-
-## 7. Master task registry — source of truth
-
-Initial status totals: 5 `VERIFIED_COMPLETE`, 2 `READY`, 66 `BLOCKED`; total 73.
+Initial totals: 5 `VERIFIED_COMPLETE`, 2 `READY`, 66 `BLOCKED`; total 73.
 
 ### Phase 0 — source, audit, and control (6)
 
@@ -289,7 +214,7 @@ Initial status totals: 5 `VERIFIED_COMPLETE`, 2 `READY`, 66 `BLOCKED`; total 73.
 | SRC-002 | VERIFIED_COMPLETE | NONE | Maintain HOODIE paper evidence registry |
 | AUDIT-001 | VERIFIED_COMPLETE | NONE | Maintain current code-path inventory |
 | AUDIT-002 | VERIFIED_COMPLETE | NONE | Reconcile historical completion claims |
-| PLAN-001 | VERIFIED_COMPLETE | NONE | Maintain closed-form execution plan |
+| PLAN-001 | VERIFIED_COMPLETE | NONE | Maintain closed-loop execution plan |
 | CLEAN-001 | VERIFIED_COMPLETE | NONE | Classify existing artifacts |
 
 ### Phase 1 — faithful base HOODIE (23)
@@ -302,8 +227,8 @@ Initial status totals: 5 `VERIFIED_COMPLETE`, 2 `READY`, 66 `BLOCKED`; total 73.
 | BASE-004 | BLOCKED | BASE-003 | Make paired traces immutable and directly consumable |
 | BASE-006 | BLOCKED | BASE-004 | Freeze hand-calculated base slot contract |
 | BASE-005 | BLOCKED | BASE-006 | Extract neutral synchronized multi-EA kernel and remove ECHO contamination |
-| BASE-007 | BLOCKED | BASE-006 | Implement/accept private FIFO waiting and active separation |
-| BASE-008 | BLOCKED | BASE-006 | Implement/accept one outbound FIFO/transmitter per source |
+| BASE-007 | BLOCKED | BASE-006 | Implement private FIFO waiting and active separation |
+| BASE-008 | BLOCKED | BASE-006 | Implement one outbound FIFO/transmitter per source |
 | BASE-009 | BLOCKED | BASE-008 | Preserve one selected destination through transmission |
 | BASE-010 | BLOCKED | BASE-009 | Enforce next-boundary destination admission |
 | BASE-011 | BLOCKED | BASE-006 | Implement source-indexed destination FIFO queues |
@@ -317,7 +242,7 @@ Initial status totals: 5 `VERIFIED_COMPLETE`, 2 `READY`, 66 `BLOCKED`; total 73.
 | BASE-019 | BLOCKED | BASE-018 | Validate RO/FLC/VO/HO/BCO/MLEO isolation |
 | BASE-020 | BLOCKED | BASE-019 | Run complete deterministic base invariant suite |
 | BASE-021 | BLOCKED | BASE-020 | Run bounded HOODIE runtime/learner smoke |
-| BASE-022 | BLOCKED | BASE-021 | Reproduce HOODIE experiment organization/trends |
+| BASE-022 | BLOCKED | BASE-021 | Reproduce HOODIE experiment organization and trends |
 | FREEZE-001 | BLOCKED | BASE-022 | Freeze validated neutral simulator and HOODIE baseline |
 
 ### Phase 2 — ECHO on frozen base (20)
@@ -325,24 +250,24 @@ Initial status totals: 5 `VERIFIED_COMPLETE`, 2 `READY`, 66 `BLOCKED`; total 73.
 | ID | Status | Dependencies | Title |
 |---|---|---|---|
 | ECHO-001 | BLOCKED | FREEZE-001, SRC-001 | Attach ECHO adapter to frozen neutral hooks |
-| ECHO-002 | BLOCKED | ECHO-001 | Implement Equations (1)–(8) lifecycle/dispatch |
+| ECHO-002 | BLOCKED | ECHO-001 | Implement Equations (1)–(8) lifecycle and dispatch |
 | ECHO-003 | BLOCKED | ECHO-002 | Implement Equations (9)–(11) local estimate |
 | ECHO-004 | BLOCKED | ECHO-003 | Implement Equations (12)–(16) outbound estimate |
 | ECHO-005 | BLOCKED | ECHO-004 | Implement Equations (17)–(25) destination model |
-| ECHO-006 | BLOCKED | ECHO-005 | Implement Equations (26)–(28) history/LSTM inputs |
+| ECHO-006 | BLOCKED | ECHO-005 | Implement Equations (26)–(28) history and LSTM inputs |
 | ECHO-007 | BLOCKED | ECHO-006 | Implement Equation (29) local queue ERT ordering |
 | ECHO-008 | BLOCKED | ECHO-007 | Implement Equation (30) outbound ERT ordering |
-| ECHO-009 | BLOCKED | ECHO-008 | Implement 32-position canonical action space |
-| ECHO-010 | BLOCKED | ECHO-009 | Implement Equations (42)–(46) mask/fallback |
+| ECHO-009 | BLOCKED | ECHO-008 | Implement size-specific N+2 canonical action space |
+| ECHO-010 | BLOCKED | ECHO-009 | Implement Equations (42)–(46) mask and fallback |
 | ECHO-011 | BLOCKED | ECHO-010, EVAL-001 | Implement Equations (47)–(50) pending records and schema-compliant decision logs |
-| ECHO-012 | BLOCKED | ECHO-011 | Implement Equations (51)–(54) normalized state |
+| ECHO-012 | BLOCKED | ECHO-011 | Implement Equations (51)–(54) size-specific normalized state |
 | ECHO-013 | BLOCKED | ECHO-012 | Implement Equations (55)–(58) task reward |
 | ECHO-014 | BLOCKED | ECHO-013 | Implement Equations (59)–(60) event intervals |
-| ECHO-015 | BLOCKED | ECHO-014 | Implement Equations (61)–(67) masked DDQL |
-| ECHO-016 | BLOCKED | ECHO-015 | Implement fresh/stale status and LSTM training |
+| ECHO-015 | BLOCKED | ECHO-014 | Implement Equations (61)–(67) masked DDQL with within-run parameter sharing |
+| ECHO-016 | BLOCKED | ECHO-015 | Implement fresh/stale status and supervised LSTM training |
 | ECHO-017 | BLOCKED | ECHO-016 | Implement isolated ECHO-NoLSTM |
-| ECHO-018 | BLOCKED | ECHO-017 | Implement exact Algorithm 1/2 chronology |
-| ECHO-019 | BLOCKED | ECHO-018 | Run deterministic ECHO unit/smoke suite |
+| ECHO-018 | BLOCKED | ECHO-017 | Implement exact Algorithm 1 and 2 chronology |
+| ECHO-019 | BLOCKED | ECHO-018 | Run deterministic ECHO unit and smoke suite |
 | ECHO-020 | BLOCKED | ECHO-019 | Produce equation coverage and paired pilot gate |
 
 ### Phase 3 — schemas and authoritative evaluation (12)
@@ -351,18 +276,18 @@ Initial status totals: 5 `VERIFIED_COMPLETE`, 2 `READY`, 66 `BLOCKED`; total 73.
 |---|---|---|---|
 | EVAL-001 | BLOCKED | SRC-001, BASE-004 | Freeze logging, evaluation, and 15-panel schemas before ECHO logging |
 | EVAL-002 | BLOCKED | ECHO-020, EVAL-001 | Generate immutable paired trace bank |
-| EVAL-003 | BLOCKED | EVAL-002 | Freeze config/topology/checkpoint lineage |
+| EVAL-003 | BLOCKED | EVAL-002 | Freeze config, topology, and checkpoint lineage |
 | EVAL-004 | BLOCKED | EVAL-003 | Validate all method adapters on common inputs |
 | EVAL-005 | BLOCKED | EVAL-004 | Measure throughput and freeze shard budget |
 | EVAL-006 | BLOCKED | EVAL-005 | Run Figure-5 validation sweeps |
 | EVAL-007 | BLOCKED | EVAL-006 | Train equal-budget final method checkpoints |
 | EVAL-008 | BLOCKED | EVAL-007 | Run 10×200 held-out paired evaluation |
-| EVAL-009 | BLOCKED | EVAL-008 | Validate generated/completed/dropped accounting |
+| EVAL-009 | BLOCKED | EVAL-008 | Validate generated, completed, and dropped accounting |
 | EVAL-010 | BLOCKED | EVAL-008 | Validate no masked ECHO action |
-| EVAL-011 | BLOCKED | EVAL-008 | Validate trace/config/topology/checkpoint hashes |
-| EVAL-012 | BLOCKED | EVAL-009, EVAL-010, EVAL-011 | Aggregate seed metrics and 95% CIs |
+| EVAL-011 | BLOCKED | EVAL-008 | Validate trace, config, topology, and checkpoint hashes |
+| EVAL-012 | BLOCKED | EVAL-009, EVAL-010, EVAL-011 | Aggregate seed metrics and 95% confidence intervals |
 
-### Phase 4 — figures, reports, cleanup, handoff (12)
+### Phase 4 — figures, reports, cleanup, and handoff (12)
 
 | ID | Status | Dependencies | Title |
 |---|---|---|---|
@@ -371,928 +296,1537 @@ Initial status totals: 5 `VERIFIED_COMPLETE`, 2 `READY`, 66 `BLOCKED`; total 73.
 | FIG-003 | BLOCKED | EVAL-012 | Render Figure 6(a–e) |
 | FIG-004 | BLOCKED | EVAL-012 | Render Figure 7(a–f) |
 | FIG-005 | BLOCKED | EVAL-012 | Render Figure 8 |
-| FIG-006 | BLOCKED | FIG-001, FIG-002, FIG-003, FIG-004, FIG-005 | Validate all vector/PNG exports and lineage |
+| FIG-006 | BLOCKED | FIG-001, FIG-002, FIG-003, FIG-004, FIG-005 | Validate all vector and PNG exports and lineage |
 | REPORT-001 | BLOCKED | BASE-022, FREEZE-001 | Write final HOODIE reproduction report |
 | REPORT-002 | BLOCKED | ECHO-020 | Write final ECHO implementation report |
-| REPORT-003 | BLOCKED | EVAL-012, FIG-006 | Write final evaluation/figure report |
+| REPORT-003 | BLOCKED | EVAL-012, FIG-006 | Write final evaluation and figure report |
 | CLEAN-002 | BLOCKED | REPORT-001, REPORT-002, REPORT-003 | Archive superseded artifacts without deletion |
 | CLEAN-003 | BLOCKED | CLEAN-002 | Remove canonical-path ambiguity without deletion |
 | HANDOFF-001 | BLOCKED | CLEAN-003 | Produce final artifact index and exact rerun commands |
 
 ## 8. Complete task cards
 
+Each card is an executable specification. `G1`–`G8` mean only the exact grammars in Section 5.
+
 ### SRC-001 — Lock current live ECHO source and close 69-row audit
 
-- Dependencies: NONE.
-- Required reads: Section 1 identifiers; current live Google Doc tab; `research/ECHO_method_spec.md`; existing `research/authority/echo/live/ECHO_PROPOSED_METHOD.md`; this plan.
-- Allowed writes: `research/authority/echo/live/ECHO_PROPOSED_METHOD.md`; `research/authority/echo/live/source_metadata.json`; `research/authority/echo/live/SHA256SUMS`; `artifacts/audits/echo_live_revision_audit.md`; `scripts/authority/verify_echo_source_lock.py`; `tests/unit/test_echo_source_lock.py`; G1.
-- Ordered operations: Confirm Drive revision remains 270 and connector revision remains the recorded value; export only the proposed-method tab; normalize line endings only; hash raw and normalized content; enumerate Equations 1–67 and Algorithms 1–2; verify line counts 23/12; classify 69 rows as MATCH/CHANGED/ADDED/REMOVED/AMBIGUOUS; map every non-MATCH row to one task and one exact test path.
-- Exact command: `python3 scripts/authority/verify_echo_source_lock.py --snapshot research/authority/echo/live/ECHO_PROPOSED_METHOD.md --metadata research/authority/echo/live/source_metadata.json --checksums research/authority/echo/live/SHA256SUMS --audit artifacts/audits/echo_live_revision_audit.md && python3 -m pytest tests/unit/test_echo_source_lock.py -q`.
-- Acceptance: Identifiers/revisions match; hashes verify; 67 equations and 2 algorithms present; 69/69 rows classified; no unsupported tab title; every change has task/test consequence.
-- Stop/rollback: If access is absent, write G1 with `BLOCKED_EXTERNAL` and stop. If the revision changed, write `PLAN_CHANGE_REQUIRED` and stop without replacing authority files.
+- **Dependencies:** NONE.
+- **Required reads:** Section 1 identifiers; live Google Doc tab t.iav4589yyeo7; `research/ECHO_method_spec.md`; existing authority artifacts; this plan.
+- **Allowed writes:** `research/authority/echo/live/ECHO_PROPOSED_METHOD.md`; `research/authority/echo/live/source_metadata.json`; `research/authority/echo/live/SHA256SUMS`; `artifacts/audits/echo_live_revision_audit.md`; `scripts/authority/verify_echo_source_lock.py`; `tests/unit/test_echo_source_lock.py`; `G1`.
+- **Ordered operations:**
+  1. Confirm Drive revision 273 and connector revision recorded in Section 1.
+  2. Export only the proposed-method tab; do not invent a tab title.
+  3. Normalize line endings only and compute raw/normalized SHA-256.
+  4. Verify Equations 1–67, Algorithm 1 lines 1–23, Algorithm 2 lines 1–12.
+  5. Create 69 audit rows and map every non-MATCH row to one task and one exact test path.
+  6. Explicitly classify the revision-273 scalability change: N+2 size-specific action/state dimensions and parameter sharing among EAs within one run.
+- **Exact command:**
+```bash
+python3 scripts/authority/verify_echo_source_lock.py --snapshot research/authority/echo/live/ECHO_PROPOSED_METHOD.md --metadata research/authority/echo/live/source_metadata.json --checksums research/authority/echo/live/SHA256SUMS --audit artifacts/audits/echo_live_revision_audit.md && python3 -m pytest tests/unit/test_echo_source_lock.py -q
+```
+- **Acceptance:**
+  - Identifiers and revisions match Section 1.
+  - 67 equations and 2 algorithms present.
+  - 69/69 rows classified.
+  - hashes verify.
+  - no unsupported tab title.
+  - all semantic changes have task/test consequences.
+- **Stop/rollback:** If access is absent, write only G1 with BLOCKED_EXTERNAL and stop. If revision differs, write PLAN_CHANGE_REQUIRED and stop.
 
 ### SRC-002 — Maintain HOODIE paper evidence registry
 
-- Dependencies: NONE.
-- Required reads: `resources/papers/hoodie/ocr/merged.md`; `resources/papers/hoodie/ocr/merged.txt`; `artifacts/analysis/paper-mechanism-registry/paper-mechanism-registry.json`; `src/analysis/paper_mechanism_registry.py`.
-- Allowed writes: `src/analysis/paper_mechanism_registry.py`; `artifacts/analysis/paper-mechanism-registry/paper-mechanism-registry.json`; `artifacts/analysis/paper-mechanism-registry/paper-mechanism-registry.md`; `tests/unit/test_paper_mechanism_registry.py`; `tests/integration/test_paper_mechanism_registry_flow.py`; G1.
-- Ordered operations: Preserve exact page/table/equation provenance; classify values PAPER_EXPLICIT/PAPER_DERIVED/APPROVED_CLARIFICATION/UNRESOLVED; exclude ECHO-only semantics.
-- Exact command: `python3 -m pytest tests/unit/test_paper_mechanism_registry.py tests/integration/test_paper_mechanism_registry_flow.py -q`.
-- Acceptance: Every Phase-1 mechanism has a source location and classification; no ECHO behavior is attributed to HOODIE.
-- Stop/rollback: Already VERIFIED_COMPLETE. Execute only when the controller reopens it after a paper-evidence change.
+- **Dependencies:** NONE.
+- **Required reads:** `resources/papers/hoodie/ocr/merged.md`; `resources/papers/hoodie/ocr/merged.txt`; existing paper mechanism registry.
+- **Allowed writes:** `src/analysis/paper_mechanism_registry.py`; `artifacts/analysis/paper-mechanism-registry/paper-mechanism-registry.json`; `artifacts/analysis/paper-mechanism-registry/paper-mechanism-registry.md`; `tests/unit/test_paper_mechanism_registry.py`; `tests/integration/test_paper_mechanism_registry_flow.py`; `G1`.
+- **Ordered operations:**
+  1. Preserve exact page/table/equation provenance.
+  2. Classify each value PAPER_EXPLICIT/PAPER_DERIVED/APPROVED_CLARIFICATION/UNRESOLVED.
+  3. Exclude ECHO-only semantics.
+- **Exact command:**
+```bash
+python3 -m pytest tests/unit/test_paper_mechanism_registry.py tests/integration/test_paper_mechanism_registry_flow.py -q
+```
+- **Acceptance:**
+  - Every Phase-1 mechanism has a source location and classification.
+  - No ECHO behavior is attributed to HOODIE.
+- **Stop/rollback:** Already complete; execute only if controller reopens it.
 
 ### AUDIT-001 — Maintain current code-path inventory
 
-- Dependencies: NONE.
-- Required reads: `src`; `tests`; `src/analysis/hoodie_proposed_fidelity/implementation_scan.py`; existing implementation-scan outputs.
-- Allowed writes: `src/analysis/hoodie_proposed_fidelity/implementation_scan.py`; `tests/unit/test_hoodie_proposed_fidelity_implementation_scan.py`; `artifacts/analysis/hoodie-proposed-fidelity-implementation-scan.json`; `artifacts/analysis/hoodie-proposed-fidelity-implementation-scan.md`; G1.
-- Ordered operations: Enumerate runtime entry points, clocks, queue/resource ownership, policy/learner paths, evaluation runners, and artifact producers; verify every path at the tested SHA.
-- Exact command: `python3 -m pytest tests/unit/test_hoodie_proposed_fidelity_implementation_scan.py -q`.
-- Acceptance: Every implementation area maps to one task owner; no completion inferred from names or commit titles.
-- Stop/rollback: Already VERIFIED_COMPLETE. Reopen after a material path or architecture change.
+- **Dependencies:** NONE.
+- **Required reads:** src; tests; existing implementation-scan artifacts.
+- **Allowed writes:** `src/analysis/hoodie_proposed_fidelity/implementation_scan.py`; `artifacts/analysis/hoodie-proposed-fidelity/implementation_scan.json`; `tests/unit/test_hoodie_proposed_fidelity_implementation_scan.py`; `G1`.
+- **Ordered operations:**
+  1. Enumerate runtime entry points, queues, learner paths, evaluation paths and artifacts.
+  2. Verify claims by opening source.
+- **Exact command:**
+```bash
+python3 -m pytest tests/unit/test_hoodie_proposed_fidelity_implementation_scan.py -q
+```
+- **Acceptance:**
+  - All paths exist at tested SHA.
+  - No completion inferred from names.
+- **Stop/rollback:** Reopen only after material repository restructuring.
 
 ### AUDIT-002 — Reconcile historical completion claims
 
-- Dependencies: NONE.
-- Required reads: Git history after the last audited SHA; `artifacts/reports`; `artifacts/test_triage`; readiness-audit outputs.
-- Allowed writes: `src/analysis/hoodie_training_foundation_readiness_audit/readiness.py`; `tests/unit/test_hoodie_training_foundation_readiness_audit.py`; `artifacts/analysis/hoodie-training-foundation-readiness-audit/hoodie-training-foundation-readiness-audit.json`; `artifacts/analysis/hoodie-training-foundation-readiness-audit/hoodie-training-foundation-readiness-audit.md`; G1.
-- Ordered operations: Classify every implementation commit as accepted evidence, potentially reusable, premature, historical, unresolved, or revert candidate; map changed files to task cards.
-- Exact command: `python3 -m pytest tests/unit/test_hoodie_training_foundation_readiness_audit.py -q`.
-- Acceptance: No unaudited implementation commit remains; every current file has one owner task.
-- Stop/rollback: Already VERIFIED_COMPLETE. Any unaudited implementation commit to main reopens this card.
+- **Dependencies:** NONE.
+- **Required reads:** git history; `artifacts/reports`; `artifacts/test_triage`; readiness audit artifacts.
+- **Allowed writes:** `src/analysis/hoodie_training_foundation_readiness_audit.py`; `artifacts/analysis/hoodie-training-foundation-readiness-audit/report.json`; `tests/unit/test_hoodie_training_foundation_readiness_audit.py`; `G1`.
+- **Ordered operations:**
+  1. Classify claims as authoritative/potentially reusable/premature/historical/revert candidate.
+  2. Assign each implementation area to one owning task.
+- **Exact command:**
+```bash
+python3 -m pytest tests/unit/test_hoodie_training_foundation_readiness_audit.py -q
+```
+- **Acceptance:**
+  - Every current implementation area has one owner and acceptance gate.
+- **Stop/rollback:** Any unaudited implementation commit to main reopens this task.
 
-### PLAN-001 — Maintain closed-form execution plan
+### PLAN-001 — Maintain closed-loop execution plan
 
-- Dependencies: NONE.
-- Required reads: This plan; current Git HEAD; G3 when it exists.
-- Allowed writes: This plan; G1 only.
-- Ordered operations: Validate 73 unique registry IDs, 73 unique cards, dependency existence, acyclic graph, status total, required controller/executor prompts, BASE-005 decontamination, ECHO-001 frozen-hook restriction, ECHO-011 dependency on EVAL-001, and absence of wildcard permissions.
-- Exact command: `python3 - <<'PY'
-import pathlib,re
-p=pathlib.Path('artifacts/reports/ECHO_MASTER_EXECUTION_PLAN.md').read_text()
-reg=re.findall(r'^\| ((?:SRC|AUDIT|PLAN|CLEAN|BASE|FREEZE|ECHO|EVAL|FIG|REPORT|HANDOFF)-\d{3}) \|',p,re.M)
-cards=re.findall(r'^### ((?:SRC|AUDIT|PLAN|CLEAN|BASE|FREEZE|ECHO|EVAL|FIG|REPORT|HANDOFF)-\d{3}) —',p,re.M)
-assert len(reg)==73 and len(set(reg))==73
-assert len(cards)==73 and set(cards)==set(reg)
-assert not any('*' in line for line in p.splitlines() if line.startswith('- Allowed writes:'))
-assert 'ECHO-011 | BLOCKED | ECHO-010, EVAL-001' in p
-assert 'Independent reviewer/controller prompt' in p
-print('plan structure PASS')
-PY`.
-- Acceptance: All assertions pass; registry/card IDs equal; no missing/self dependency; DAG is acyclic; initial totals are 5/2/66.
-- Stop/rollback: Already VERIFIED_COMPLETE for v4.1. Any change requires a planning-only commit and fresh validation.
+- **Dependencies:** NONE.
+- **Required reads:** this plan; current git history; current live source metadata.
+- **Allowed writes:** `artifacts/reports/ECHO_MASTER_EXECUTION_PLAN.md`; `G1`.
+- **Ordered operations:**
+  1. Preserve exactly 73 unique task IDs.
+  2. Maintain valid acyclic dependencies.
+  3. Maintain one exact card per task.
+  4. Run structural preflight.
+- **Exact command:**
+```bash
+python3 scripts/control/validate_echo_plan.py --plan artifacts/reports/ECHO_MASTER_EXECUTION_PLAN.md
+```
+- **Acceptance:**
+  - 73 registry IDs equal 73 card IDs.
+  - no missing/self dependencies.
+  - DAG acyclic.
+  - status totals correct.
+  - no wildcard permissions.
+  - all READY commands exist or are task-created.
+- **Stop/rollback:** Plan changes require a planning-only commit; executors may not edit this file.
 
 ### CLEAN-001 — Classify existing artifacts
 
-- Dependencies: NONE.
-- Required reads: `artifacts`; `research`; existing artifact indexes and triage outputs.
-- Allowed writes: `src/analysis/artifact_classifier.py`; `tests/unit/test_artifact_classification.py`; `artifacts/classification/artifact_inventory.json`; `artifacts/classification/artifact_inventory.md`; `artifacts/classification/reference_inventory.json`; G1.
-- Ordered operations: Classify every artifact authoritative/historical/superseded/smoke/synthetic/unresolved; create exact `archive_eligible_paths` and `editable_reference_files` arrays; never delete.
-- Exact command: `python3 -m pytest tests/unit/test_artifact_classification.py -q`.
-- Acceptance: No historical figure/checkpoint/report is cited as final; every cleanup path is manifest-controlled.
-- Stop/rollback: Already VERIFIED_COMPLETE. Reopen after new unclassified artifact families appear.
+- **Dependencies:** NONE.
+- **Required reads:** artifacts; research; existing indexes.
+- **Allowed writes:** `artifacts/classification/artifact_inventory.json`; `artifacts/classification/artifact_inventory.md`; `scripts/cleanup/classify_artifacts.py`; `tests/unit/test_artifact_classification.py`; `G1`.
+- **Ordered operations:**
+  1. Classify each artifact authoritative/historical/superseded/smoke-only/synthetic/unresolved.
+  2. Do not delete.
+- **Exact command:**
+```bash
+python3 -m pytest tests/unit/test_artifact_classification.py -q
+```
+- **Acceptance:**
+  - No legacy figure/checkpoint/report cited as final evidence.
+  - All archive-eligible paths explicit.
+- **Stop/rollback:** Reopen when new unclassified artifact families appear.
 
 ### BASE-001 — Freeze canonical HOODIE Table-4 configuration
 
-- Dependencies: PLAN-001, CLEAN-001.
-- Required reads: `resources/papers/hoodie/ocr/merged.md`; `resources/papers/hoodie/ocr/merged.txt`; `configs/simulation.yaml`; `configs/runtime_model.yml`; `configs/experiments/exp_small_deterministic.json`; paper registry; topology authorization.
-- Allowed writes: `configs/authoritative/hoodie_table4.yaml`; `configs/authoritative/hoodie_table4.schema.json`; `tests/unit/test_hoodie_table4_config.py`; `artifacts/authority/hoodie/table4_manifest.json`; G1.
-- Ordered operations: Encode 20 EAs; 100 decision + 10 drain slots; independent arrivals P=.5; task sizes 2.0–5.0 Mbits by .1; density .297 Gcycles/Mbit; slot .1s; timeout 20 slots/2s; paper-supported edge/cloud capacities, rates, and learning parameters; classify each value and compare current configs.
-- Exact command: `python3 -m pytest tests/unit/test_hoodie_table4_config.py -q`.
-- Acceptance: Schema validates; every value has unit/source/classification; hashes recorded; no unresolved value promoted; smoke configs remain non-authoritative.
-- Stop/rollback: Unresolved Table-4 value yields REWORK; never guess or borrow ECHO values.
+- **Dependencies:** PLAN-001, CLEAN-001.
+- **Required reads:** `resources/papers/hoodie/ocr/merged.md`; `resources/papers/hoodie/ocr/merged.txt`; `configs/simulation.yaml`; `configs/runtime_model.yml`; `configs/experiments/exp_small_deterministic.json`; paper registry; topology authorization.
+- **Allowed writes:** `configs/authoritative/hoodie_table4.yaml`; `configs/authoritative/hoodie_table4.schema.json`; `tests/unit/test_hoodie_table4_config.py`; `artifacts/authority/hoodie/table4_manifest.json`; `G1`.
+- **Ordered operations:**
+  1. Encode 20 EAs, 100 decision + 10 drain slots, P=.5, task sizes 2.0–5.0 Mbits step .1, density .297 Gcycles/Mbit, slot .1s, timeout 20 slots/2s.
+  2. Copy all rates and learning parameters from exact Table-4 rows.
+  3. Classify all values and compare current configs.
+- **Exact command:**
+```bash
+python3 -m pytest tests/unit/test_hoodie_table4_config.py -q
+```
+- **Acceptance:**
+  - Schema valid.
+  - every value has unit/source/classification.
+  - manifest hashes present.
+  - no unresolved value promoted.
+  - smoke configs remain non-authoritative.
+- **Stop/rollback:** Unresolved paper value => REWORK; do not guess.
 
 ### BASE-002 — Freeze approved topology and scalable topology rule
 
-- Dependencies: BASE-001.
-- Required reads: `src/environment/topology.py`; `resources/papers/hoodie/recovered/user-approved-assumption-registry.json`; topology authorization; BASE-001 outputs.
-- Allowed writes: `configs/authoritative/hoodie_topology.json`; `tests/unit/test_hoodie_topology_authority.py`; `artifacts/authority/hoodie/topology/adjacency.csv`; `artifacts/authority/hoodie/topology/edge_list.csv`; `artifacts/authority/hoodie/topology/topology.json`; `artifacts/authority/hoodie/topology/topology.svg`; `artifacts/authority/hoodie/topology/topology_300dpi.png`; `artifacts/authority/hoodie/topology/SHA256SUMS`; update `src/environment/topology.py` only when the test proves mismatch; G1.
-- Ordered operations: Freeze exact 20-EA anchor; verify `G_N=5K_(N/5)` only for N divisible by 5; deterministic N=10/15/20/25/30 generation, coordinates, metrics, and direct SVG/PNG export.
-- Exact command: `python3 -m pytest tests/unit/test_hoodie_topology_authority.py -q`.
-- Acceptance: N=20 equals approved anchor; deterministic hashes; no self/illegal edge; exact output files exist.
-- Stop/rollback: Never replace the anchor with a visually similar graph.
+- **Dependencies:** BASE-001.
+- **Required reads:** `src/environment/topology.py`; topology authorization; canonical config.
+- **Allowed writes:** `configs/authoritative/hoodie_topology.json`; `artifacts/authority/hoodie/topology_adjacency.csv`; `artifacts/authority/hoodie/topology_edges.csv`; `artifacts/authority/hoodie/topology.svg`; `artifacts/authority/hoodie/topology.png`; `artifacts/authority/hoodie/topology_manifest.json`; `tests/unit/test_hoodie_topology_authority.py`; `G1`.
+- **Ordered operations:**
+  1. Freeze exact N=20 adjacency.
+  2. Verify G_N=5K_(N/5) for N divisible by 5.
+  3. Export deterministic coordinates and hashes.
+- **Exact command:**
+```bash
+python3 -m pytest tests/unit/test_hoodie_topology_authority.py -q
+```
+- **Acceptance:**
+  - N=20 equals approved anchor.
+  - N=10/15/20/25/30 deterministic.
+  - no illegal/self edges.
+  - repeated exports hash identically.
+- **Stop/rollback:** Never replace approved adjacency with a visually similar graph.
 
 ### BASE-003 — Validate independent per-EA arrivals and 100+10 slots
 
-- Dependencies: BASE-002.
-- Required reads: `src/evaluation/trace_protocol.py`; BASE-001/002 outputs; `tests/unit/test_trace_protocol_paper_semantics.py`.
-- Allowed writes: `src/evaluation/trace_protocol.py`; `tests/unit/test_trace_protocol_paper_semantics.py`; `tests/unit/test_trace_expected_arrivals.py`; G1.
-- Ordered operations: Verify one Bernoulli draw per EA per decision slot; no drain arrivals; exact sizes/density/deadline; stable `(arrival,source,task_id)` ordering; deterministic metadata.
-- Exact command: `python3 -m pytest tests/unit/test_trace_protocol_paper_semantics.py tests/unit/test_trace_expected_arrivals.py -q`.
-- Acceptance: P=0 gives 0; P=1 gives N×100; repeated-seed N=20,P=.5 mean is centered on 1000; same seed gives exact blueprints; slots 100–109 contain none.
-- Stop/rollback: Do not alter draw order to force a preferred single-seed count.
+- **Dependencies:** BASE-002.
+- **Required reads:** `src/evaluation/trace_protocol.py`; canonical config/topology; `tests/unit/test_trace_protocol_paper_semantics.py`.
+- **Allowed writes:** `src/evaluation/trace_protocol.py`; `tests/unit/test_trace_protocol_paper_semantics.py`; `tests/unit/test_trace_expected_arrivals.py`; `G1`.
+- **Ordered operations:**
+  1. One Bernoulli draw per EA per decision slot.
+  2. zero drain arrivals.
+  3. exact size/density/deadline.
+  4. stable ordering and metadata.
+- **Exact command:**
+```bash
+python3 -m pytest tests/unit/test_trace_protocol_paper_semantics.py tests/unit/test_trace_expected_arrivals.py -q
+```
+- **Acceptance:**
+  - P=0 => 0 tasks.
+  - P=1 => N×100 tasks.
+  - N=20,P=.5 repeated-seed mean centered on 1000.
+  - slots 100–109 no arrivals.
+- **Stop/rollback:** Do not change draw order to force a preferred sample count.
 
 ### BASE-004 — Make paired traces immutable and directly consumable
 
-- Dependencies: BASE-003.
-- Required reads: `src/evaluation/trace_protocol.py`; `src/environment/trace_source.py`; `src/evaluation/runner.py`; `src/environment/evaluation_gym_adapter.py`.
-- Allowed writes: `src/evaluation/trace_protocol.py`; `src/environment/trace_source.py`; `src/evaluation/runner.py`; `src/environment/evaluation_gym_adapter.py`; `tests/unit/test_trace_immutability.py`; `tests/integration/test_paired_trace_identity.py`; G1.
-- Ordered operations: Make blueprint/trace frozen; add canonical serialization/SHA; consume supplied traces without regeneration; instantiate fresh mutable runtime Task objects per method.
-- Exact command: `python3 -m pytest tests/unit/test_trace_immutability.py tests/integration/test_paired_trace_identity.py -q`.
-- Acceptance: Mutation raises; bytes/hash identical across methods; supplied trace bypasses generation; runtime mutation cannot change blueprint.
-- Stop/rollback: Do not cache mutable runtime Task objects in the trace bank.
+- **Dependencies:** BASE-003.
+- **Required reads:** `src/evaluation/trace_protocol.py`; `src/environment/trace_source.py`; `src/evaluation/runner.py`; `src/environment/evaluation_gym_adapter.py`.
+- **Allowed writes:** `src/evaluation/trace_protocol.py`; `src/environment/trace_source.py`; `src/evaluation/runner.py`; `src/environment/evaluation_gym_adapter.py`; `tests/unit/test_trace_immutability.py`; `tests/integration/test_paired_trace_identity.py`; `G1`.
+- **Ordered operations:**
+  1. Freeze dataclasses.
+  2. add canonical serialization and SHA-256.
+  3. accept supplied trace without regeneration.
+  4. create fresh runtime tasks per method.
+- **Exact command:**
+```bash
+python3 -m pytest tests/unit/test_trace_immutability.py tests/integration/test_paired_trace_identity.py -q
+```
+- **Acceptance:**
+  - Mutation raises.
+  - same bytes/hash across methods.
+  - no regeneration when trace supplied.
+  - runtime mutation does not mutate blueprint.
+- **Stop/rollback:** Do not cache mutable Task objects inside trace bank.
 
 ### BASE-006 — Freeze hand-calculated base slot contract
 
-- Dependencies: BASE-004.
-- Required reads: HOODIE registry; `src/environment/gym_adapter.py`; `src/environment/evaluation_gym_adapter.py`; `src/environment/slot_engine.py`; queue files.
-- Allowed writes: `docs/contracts/hoodie_slot_contract.md`; `tests/fixtures/hoodie_slot_timelines.json`; `tests/unit/test_hoodie_slot_contract_vectors.py`; G1.
-- Ordered operations: Manually specify same-slot arrivals, local service, outbound wait, transmission, next-boundary admission, destination service, waiting expiration, late active completion, and drain chronology without ECHO reward/mask/ERT semantics.
-- Exact command: `python3 -m pytest tests/unit/test_hoodie_slot_contract_vectors.py -q`.
-- Acceptance: All hand vectors are internally consistent and distinguish boundary events from end-of-slot service.
-- Stop/rollback: Runtime code is read-only here; mismatches belong to BASE-005/007–012.
+- **Dependencies:** BASE-004.
+- **Required reads:** HOODIE registry; `src/environment/gym_adapter.py`; `src/environment/evaluation_gym_adapter.py`; `src/environment/slot_engine.py`; queue files.
+- **Allowed writes:** `docs/contracts/hoodie_slot_contract.md`; `tests/fixtures/hoodie_slot_timelines.json`; `tests/unit/test_hoodie_slot_contract_vectors.py`; `G1`.
+- **Ordered operations:**
+  1. Specify boundary/service order for same-slot arrivals, local/transmission/destination service, expiration, late active completion and drain.
+  2. Calculate expected slots manually.
+- **Exact command:**
+```bash
+python3 -m pytest tests/unit/test_hoodie_slot_contract_vectors.py -q
+```
+- **Acceptance:**
+  - fixtures internally consistent.
+  - boundary versus end-of-slot explicit.
+  - no ECHO reward/mask/ERT semantics.
+- **Stop/rollback:** No runtime changes in this task.
 
 ### BASE-005 — Extract neutral synchronized multi-EA kernel and remove ECHO contamination
 
-- Dependencies: BASE-006.
-- Required reads: BASE-006 contract; `src/environment/gym_adapter.py`; `src/environment/evaluation_gym_adapter.py`; `src/environment/slot_engine.py`; `src/echo_action_space.py`; `src/echo_ert.py`; `src/echo_queue_ordering.py`.
-- Allowed writes: `src/environment/gym_adapter.py`; `src/environment/evaluation_gym_adapter.py`; `src/environment/slot_engine.py`; `src/environment/method_hooks.py`; `tests/unit/test_hoodie_slot_engine.py`; `tests/integration/test_same_slot_multi_ea.py`; `tests/integration/test_neutral_kernel_imports.py`; `docs/contracts/neutral_kernel_contract.md`; G1.
-- Ordered operations: Remove every shared-kernel import of `src.echo_*`, event-SMDP, ECHO state/mask/reward, and method-name-prefix branching; define neutral hook protocols with FIFO/no-op defaults; process all same-slot decisions then one physical advance; preserve ECHO modules outside the kernel for later attachment.
-- Exact command: `python3 -m pytest tests/unit/test_hoodie_slot_engine.py tests/integration/test_same_slot_multi_ea.py tests/integration/test_neutral_kernel_imports.py -q`.
-- Acceptance: K arrivals yield K decisions and one advance; previous-boundary events precede decisions; AST/import scan finds zero ECHO imports in shared kernel; base behavior matches BASE-006.
-- Stop/rollback: If neutral hooks cannot support later ECHO without modifying frozen files, return PLAN_CHANGE_REQUIRED now; do not defer decontamination to ECHO-001.
+- **Dependencies:** BASE-006.
+- **Required reads:** BASE-006 contract; `src/environment/gym_adapter.py`; `src/environment/evaluation_gym_adapter.py`; `src/environment/slot_engine.py`; `src/echo_action_space.py`; `src/echo_ert.py`.
+- **Allowed writes:** `src/environment/gym_adapter.py`; `src/environment/evaluation_gym_adapter.py`; `src/environment/slot_engine.py`; `src/environment/method_hooks.py`; `tests/unit/test_hoodie_slot_engine.py`; `tests/integration/test_same_slot_multi_ea.py`; `tests/architecture/test_neutral_kernel_imports.py`; `docs/contracts/neutral_kernel_hooks.md`; `G1`.
+- **Ordered operations:**
+  1. Process all same-slot arrivals before one global service advance.
+  2. Remove all src.echo_* imports and ECHO-name conditionals from shared kernel.
+  3. Expose neutral hooks with no ECHO implementation.
+  4. Preserve base timeline byte-for-byte.
+- **Exact command:**
+```bash
+python3 -m pytest tests/unit/test_hoodie_slot_engine.py tests/integration/test_same_slot_multi_ea.py tests/architecture/test_neutral_kernel_imports.py -q
+```
+- **Acceptance:**
+  - K arrivals => K decisions and one service advance.
+  - no global current-task skip.
+  - zero ECHO imports in frozen kernel candidates.
+  - hook defaults reproduce HOODIE behavior.
+- **Stop/rollback:** Any need to modify ECHO modules is out of scope; stop PLAN_CHANGE_REQUIRED.
 
-### BASE-007 — Implement/accept private FIFO waiting and active separation
+### BASE-007 — Implement private FIFO waiting and active separation
 
-- Dependencies: BASE-006.
-- Required reads: `src/environment/private_queue.py`; `src/environment/execution_helper.py`; `src/environment/evaluation_gym_adapter.py`; BASE-006 vectors.
-- Allowed writes: `src/environment/private_queue.py`; `src/environment/execution_helper.py`; `src/environment/evaluation_gym_adapter.py`; `tests/unit/test_private_queue_lifecycle.py`; `tests/unit/test_fifo_ordering.py`; `tests/unit/test_queue_waiting_time.py`; G1.
-- Ordered operations: Separate waiting and active task; admission is not service start; active non-preemptive; waiting FIFO; expire waiting before selection; late active outcome per contract.
-- Exact command: `python3 -m pytest tests/unit/test_private_queue_lifecycle.py tests/unit/test_fifo_ordering.py tests/unit/test_queue_waiting_time.py -q`.
-- Acceptance: Start timestamp on first CPU slot only; active never reordered; inclusive completion exact; waiting tasks consume no cycles.
-- Stop/rollback: ERT ordering is forbidden in HOODIE private queues.
+- **Dependencies:** BASE-006.
+- **Required reads:** `src/environment/private_queue.py`; `src/environment/execution_helper.py`; `src/environment/evaluation_gym_adapter.py`; BASE-006 fixtures.
+- **Allowed writes:** `src/environment/private_queue.py`; `src/environment/execution_helper.py`; `src/environment/evaluation_gym_adapter.py`; `tests/unit/test_private_queue_lifecycle.py`; `tests/unit/test_fifo_ordering.py`; `tests/unit/test_queue_waiting_time.py`; `G1`.
+- **Ordered operations:**
+  1. Admission does not start computation.
+  2. active task explicit/non-preemptive.
+  3. waiting FIFO excludes active.
+  4. expired waiting removed before service.
+  5. late active result handled by contract.
+- **Exact command:**
+```bash
+python3 -m pytest tests/unit/test_private_queue_lifecycle.py tests/unit/test_fifo_ordering.py tests/unit/test_queue_waiting_time.py -q
+```
+- **Acceptance:**
+  - start timestamp only on first service.
+  - active never reordered.
+  - inclusive completion exact.
+  - waiting task gets no cycles.
+- **Stop/rollback:** ERT ordering forbidden in HOODIE queues.
 
-### BASE-008 — Implement/accept one outbound FIFO/transmitter per source
+### BASE-008 — Implement one outbound FIFO/transmitter per source
 
-- Dependencies: BASE-006.
-- Required reads: `src/environment/offloading_queue.py`; `src/environment/evaluation_gym_adapter.py`; `src/environment/link_rate_config.py`.
-- Allowed writes: `src/environment/offloading_queue.py`; `src/environment/evaluation_gym_adapter.py`; `src/environment/link_rate_config.py`; `tests/unit/test_single_source_transmitter.py`; `tests/integration/test_outbound_fifo.py`; G1.
-- Ordered operations: Represent one physical outbound FIFO/transmitter per source; destination remains task metadata; admission is not transmission start; active transfer non-preemptive; waiting FIFO.
-- Exact command: `python3 -m pytest tests/unit/test_single_source_transmitter.py tests/integration/test_outbound_fifo.py -q`.
-- Acceptance: Different-destination tasks from one source never overlap; different sources may transmit; head starts only when source transmitter is idle.
-- Stop/rollback: Do not use `(source,destination)` as physical resource identity.
+- **Dependencies:** BASE-006.
+- **Required reads:** `src/environment/offloading_queue.py`; `src/environment/evaluation_gym_adapter.py`; `src/environment/link_rate_config.py`.
+- **Allowed writes:** `src/environment/offloading_queue.py`; `src/environment/evaluation_gym_adapter.py`; `src/environment/link_rate_config.py`; `tests/unit/test_single_source_transmitter.py`; `tests/integration/test_outbound_fifo.py`; `G1`.
+- **Ordered operations:**
+  1. One physical transmitter per source.
+  2. destination is metadata not resource identity.
+  3. non-preemptive active transmission.
+  4. FIFO waiting.
+- **Exact command:**
+```bash
+python3 -m pytest tests/unit/test_single_source_transmitter.py tests/integration/test_outbound_fifo.py -q
+```
+- **Acceptance:**
+  - different-destination tasks from one source never overlap.
+  - different sources may transmit concurrently.
+  - start only when source transmitter idle.
+- **Stop/rollback:** Do not key a physical transmitter by (source,destination).
 
 ### BASE-009 — Preserve one selected destination through transmission
 
-- Dependencies: BASE-008.
-- Required reads: `src/environment/task.py`; `src/environment/environment.py`; `src/environment/gym_adapter.py`; `src/environment/evaluation_gym_adapter.py`.
-- Allowed writes: `src/environment/task.py`; `src/environment/environment.py`; `src/environment/gym_adapter.py`; `src/environment/evaluation_gym_adapter.py`; `tests/unit/test_destination_retention.py`; G1.
-- Ordered operations: Store destination at arrival decision; preserve through queue, completion event, admission, serialization, and logs; reject second route choice.
-- Exact command: `python3 -m pytest tests/unit/test_destination_retention.py -q`.
-- Acceptance: Destination immutable after admission; task reaches exactly selected queue; route lineage survives serialization.
-- Stop/rollback: Do not infer destination from current topology later.
+- **Dependencies:** BASE-008.
+- **Required reads:** `src/environment/task.py`; `src/environment/environment.py`; `src/environment/gym_adapter.py`; `src/environment/evaluation_gym_adapter.py`.
+- **Allowed writes:** `src/environment/task.py`; `src/environment/environment.py`; `src/environment/gym_adapter.py`; `src/environment/evaluation_gym_adapter.py`; `tests/unit/test_destination_retention.py`; `G1`.
+- **Ordered operations:**
+  1. Store destination at arrival decision.
+  2. preserve through outbound queue/completion/admission.
+  3. reject second route choice.
+  4. log action/destination lineage.
+- **Exact command:**
+```bash
+python3 -m pytest tests/unit/test_destination_retention.py -q
+```
+- **Acceptance:**
+  - destination immutable.
+  - exact selected queue reached.
+  - lineage survives serialization.
+- **Stop/rollback:** Do not infer destination later from topology.
 
 ### BASE-010 — Enforce next-boundary destination admission
 
-- Dependencies: BASE-009.
-- Required reads: `src/environment/slot_engine.py`; `src/environment/evaluation_gym_adapter.py`; `src/environment/public_queue.py`; BASE-006 vectors.
-- Allowed writes: `src/environment/slot_engine.py`; `src/environment/evaluation_gym_adapter.py`; `src/environment/public_queue.py`; `tests/unit/test_next_boundary_admission.py`; `tests/integration/test_transmission_timeline.py`; G1.
-- Ordered operations: Stage transmission completion at end t; admit at opening t+1; prohibit destination CPU in t; cover one/multi-slot transfer and terminal drain.
-- Exact command: `python3 -m pytest tests/unit/test_next_boundary_admission.py tests/integration/test_transmission_timeline.py -q`.
-- Acceptance: Timestamps match vectors; no same-slot destination processing; no duplicate/lost completion.
-- Stop/rollback: Metadata-only off-by-one fixes are insufficient.
+- **Dependencies:** BASE-009.
+- **Required reads:** `src/environment/slot_engine.py`; `src/environment/evaluation_gym_adapter.py`; `src/environment/public_queue.py`; BASE-006 vectors.
+- **Allowed writes:** `src/environment/slot_engine.py`; `src/environment/evaluation_gym_adapter.py`; `src/environment/public_queue.py`; `tests/unit/test_next_boundary_admission.py`; `tests/integration/test_transmission_timeline.py`; `G1`.
+- **Ordered operations:**
+  1. Transmission finishing in slot t creates staged event.
+  2. admit at boundary t+1.
+  3. no destination service in t.
+  4. cover one/multi-slot transmission.
+- **Exact command:**
+```bash
+python3 -m pytest tests/unit/test_next_boundary_admission.py tests/integration/test_transmission_timeline.py -q
+```
+- **Acceptance:**
+  - timestamps exact.
+  - no same-slot destination processing.
+  - one terminal transmission event.
+  - no lost staged event.
+- **Stop/rollback:** Do not hide off-by-one errors in metadata.
 
 ### BASE-011 — Implement source-indexed destination FIFO queues
 
-- Dependencies: BASE-006.
-- Required reads: `src/environment/public_queue.py`; `src/environment/gym_adapter.py`; `src/environment/evaluation_gym_adapter.py`.
-- Allowed writes: `src/environment/public_queue.py`; `src/environment/gym_adapter.py`; `src/environment/evaluation_gym_adapter.py`; `tests/unit/test_source_indexed_public_queues.py`; G1.
-- Ordered operations: Key destination queues by `(destination,source)`; FIFO within each; explicit active head; one task in one queue.
-- Exact command: `python3 -m pytest tests/unit/test_source_indexed_public_queues.py -q`.
-- Acceptance: Edge destination has N−1 external source queues; cloud N; queues do not merge; FIFO deterministic.
-- Stop/rollback: Source ERT must not reorder destination queues.
+- **Dependencies:** BASE-006.
+- **Required reads:** `src/environment/public_queue.py`; `src/environment/gym_adapter.py`; `src/environment/evaluation_gym_adapter.py`.
+- **Allowed writes:** `src/environment/public_queue.py`; `src/environment/gym_adapter.py`; `src/environment/evaluation_gym_adapter.py`; `tests/unit/test_source_indexed_public_queues.py`; `G1`.
+- **Ordered operations:**
+  1. Key by destination and source.
+  2. FIFO inside source queue.
+  3. active head explicit.
+  4. single location per task.
+- **Exact command:**
+```bash
+python3 -m pytest tests/unit/test_source_indexed_public_queues.py -q
+```
+- **Acceptance:**
+  - edge destination has N-1 external source queues.
+  - cloud has N.
+  - queues do not merge.
+  - FIFO deterministic.
+- **Stop/rollback:** Source-side ERT may not reorder destination queues.
 
 ### BASE-012 — Implement equal public-CPU sharing
 
-- Dependencies: BASE-011.
-- Required reads: `src/environment/execution_helper.py`; `src/environment/runtime_model.py`; `src/environment/evaluation_gym_adapter.py`; `src/environment/public_queue.py`.
-- Allowed writes: `src/environment/execution_helper.py`; `src/environment/runtime_model.py`; `src/environment/evaluation_gym_adapter.py`; `src/environment/public_queue.py`; `tests/unit/test_public_cpu_sharing.py`; `tests/integration/test_destination_capacity_sharing.py`; G1.
-- Ordered operations: Find active nonempty source queues; allocate capacity/k; update remaining cycles; complete simultaneous heads deterministically; recompute after boundary changes.
-- Exact command: `python3 -m pytest tests/unit/test_public_cpu_sharing.py tests/integration/test_destination_capacity_sharing.py -q`.
-- Acceptance: Each of k active queues gets capacity/k; no over-allocation; no empty allocation; deterministic completion.
-- Stop/rollback: Sequential full-capacity approximation fails.
+- **Dependencies:** BASE-011.
+- **Required reads:** `src/environment/execution_helper.py`; `src/environment/runtime_model.py`; `src/environment/evaluation_gym_adapter.py`; `src/environment/public_queue.py`.
+- **Allowed writes:** `src/environment/execution_helper.py`; `src/environment/runtime_model.py`; `src/environment/evaluation_gym_adapter.py`; `src/environment/public_queue.py`; `tests/unit/test_public_cpu_sharing.py`; `tests/integration/test_destination_capacity_sharing.py`; `G1`.
+- **Ordered operations:**
+  1. Identify active source queues.
+  2. split cycles equally.
+  3. update remaining cycles.
+  4. deterministic simultaneous completions.
+- **Exact command:**
+```bash
+python3 -m pytest tests/unit/test_public_cpu_sharing.py tests/integration/test_destination_capacity_sharing.py -q
+```
+- **Acceptance:**
+  - k active queues each get capacity/k.
+  - total allocation bounded.
+  - empty queue gets none.
+  - completion order deterministic.
+- **Stop/rollback:** Do not approximate sharing with sequential full-capacity service.
 
 ### BASE-013 — Implement exact HOODIE action semantics
 
-- Dependencies: BASE-005, BASE-007, BASE-010, BASE-012.
-- Required reads: HOODIE registry; `src/policies/action_masking.py`; `src/policies/policy_interface.py`; `src/environment/gym_adapter.py`; topology.
-- Allowed writes: `src/policies/action_masking.py`; `src/policies/policy_interface.py`; `src/environment/gym_adapter.py`; `src/agents/hoodie_action_space.py`; `tests/unit/test_hoodie_action_space.py`; G1.
-- Ordered operations: Encode local, every legal horizontal destination, and cloud; physical mask only; stable IDs; no ECHO deadline mask or fallback.
-- Exact command: `python3 -m pytest tests/unit/test_hoodie_action_space.py -q`.
-- Acceptance: All connected destinations individually selectable; self/disconnected illegal; no first-neighbor collapse.
-- Stop/rollback: Do not import ECHO action/mask/ERT modules.
+- **Dependencies:** BASE-005, BASE-007, BASE-010, BASE-012.
+- **Required reads:** HOODIE registry; `src/policies/action_masking.py`; `src/policies/policy_interface.py`; `src/environment/gym_adapter.py`; topology.
+- **Allowed writes:** `src/policies/action_masking.py`; `src/policies/policy_interface.py`; `src/environment/gym_adapter.py`; `src/agents/hoodie_action_space.py`; `tests/unit/test_hoodie_action_space.py`; `G1`.
+- **Ordered operations:**
+  1. Encode local, each connected horizontal destination and cloud.
+  2. physical mask only.
+  3. stable indexing.
+  4. no ECHO deadline mask/fallback.
+- **Exact command:**
+```bash
+python3 -m pytest tests/unit/test_hoodie_action_space.py -q
+```
+- **Acceptance:**
+  - each connected destination separately selectable.
+  - self/disconnected illegal.
+  - stable IDs.
+  - no first-neighbor collapse.
+- **Stop/rollback:** No ECHO imports.
 
 ### BASE-014 — Implement exact HOODIE state/history
 
-- Dependencies: BASE-013.
-- Required reads: HOODIE registry; `src/agents/paper_state_builder.py`; `src/agents/history_builder.py`; `src/environment/gym_adapter.py`.
-- Allowed writes: `src/agents/paper_state_builder.py`; `src/agents/history_builder.py`; `src/environment/gym_adapter.py`; `configs/authoritative/hoodie_state_schema.json`; `tests/unit/test_hoodie_state_contract.py`; `tests/unit/test_paper_state_builder.py`; `tests/unit/test_paper_state_vector_real.py`; G1.
-- Ordered operations: Implement paper task one-hot/density, private/offload waits, public queue/load features, W=10 history/forecast, exact order/dimension, and documented no-arrival behavior; exclude ECHO features.
-- Exact command: `python3 -m pytest tests/unit/test_hoodie_state_contract.py tests/unit/test_paper_state_builder.py tests/unit/test_paper_state_vector_real.py -q`.
-- Acceptance: Shape/order/schema exact; features derive from current snapshot; normalization classified.
-- Stop/rollback: Placeholder zero forecasts must be removed by BASE-015.
+- **Dependencies:** BASE-013.
+- **Required reads:** HOODIE registry; `src/agents/paper_state_builder.py`; `src/agents/history_builder.py`; `src/environment/gym_adapter.py`.
+- **Allowed writes:** `src/agents/paper_state_builder.py`; `src/agents/history_builder.py`; `src/environment/gym_adapter.py`; `configs/authoritative/hoodie_state_schema.json`; `tests/unit/test_hoodie_state_contract.py`; `tests/unit/test_paper_state_builder.py`; `tests/unit/test_paper_state_vector_real.py`; `G1`.
+- **Ordered operations:**
+  1. Encode paper task/queue/public-load features and W=10 history.
+  2. fixed order/dimension.
+  3. exclude ECHO features.
+- **Exact command:**
+```bash
+python3 -m pytest tests/unit/test_hoodie_state_contract.py tests/unit/test_paper_state_builder.py tests/unit/test_paper_state_vector_real.py -q
+```
+- **Acceptance:**
+  - shape/order exact.
+  - no-arrival handling documented.
+  - snapshot-only values.
+  - normalization paper-supported or classified.
+- **Stop/rollback:** Placeholder forecasts must be removed by BASE-015.
 
 ### BASE-015 — Implement real HOODIE LSTM forecast
 
-- Dependencies: BASE-014.
-- Required reads: `src/agents/lstm_dueling_dqn.py`; `src/agents/hoodie_model.py`; `src/agents/neural_net_hoodie_model.py`; BASE-014 schema; HOODIE paper.
-- Allowed writes: `src/agents/lstm_dueling_dqn.py`; `src/agents/hoodie_model.py`; `src/agents/neural_net_hoodie_model.py`; `src/agents/hoodie_load_forecaster.py`; `tests/unit/test_hoodie_load_forecaster.py`; `tests/agents/test_lstm_dueling_dqn.py`; G1.
-- Ordered operations: Implement W=10 forecast input/output/loss/optimizer, deterministic initialization, checkpoint save/load, and real state integration; exclude held-out data.
-- Exact command: `python3 -m pytest tests/unit/test_hoodie_load_forecaster.py tests/agents/test_lstm_dueling_dqn.py -q`.
-- Acceptance: Forecast changes with history; finite gradients/loss; exact checkpoint round-trip; no hard-coded zeros/leakage.
-- Stop/rollback: Unresolved paper training detail stops task; do not borrow ECHO behavior.
+- **Dependencies:** BASE-014.
+- **Required reads:** `src/agents/lstm_dueling_dqn.py`; `src/agents/hoodie_model.py`; `src/agents/neural_net_hoodie_model.py`; state schema; HOODIE paper.
+- **Allowed writes:** `src/agents/lstm_dueling_dqn.py`; `src/agents/hoodie_model.py`; `src/agents/neural_net_hoodie_model.py`; `src/agents/hoodie_load_forecaster.py`; `tests/unit/test_hoodie_load_forecaster.py`; `tests/agents/test_lstm_dueling_dqn.py`; `G1`.
+- **Ordered operations:**
+  1. Implement W=10 ordered history, model, loss, optimizer, deterministic init and checkpoint.
+  2. connect real forecast.
+  3. exclude held-out data.
+- **Exact command:**
+```bash
+python3 -m pytest tests/unit/test_hoodie_load_forecaster.py tests/agents/test_lstm_dueling_dqn.py -q
+```
+- **Acceptance:**
+  - forecast changes with history.
+  - finite loss/gradients.
+  - checkpoint round-trip.
+  - no hard-coded zeros.
+  - no test leakage.
+- **Stop/rollback:** Unresolved paper detail => stop; do not borrow ECHO behavior.
 
 ### BASE-016 — Implement one independent HOODIE learner per EA
 
-- Dependencies: BASE-015.
-- Required reads: `src/agents/hoodie_agent.py`; replay/target/model files; `src/training/training_loop.py`.
-- Allowed writes: `src/agents/hoodie_agent.py`; `src/agents/hoodie_agent_manager.py`; `src/agents/replay_buffer.py`; `src/agents/target_network.py`; `src/training/training_loop.py`; `tests/unit/test_per_ea_hoodie_learners.py`; G1.
-- Ordered operations: Instantiate N independent agents with private replay, online/target networks, optimizer, epsilon, seed, and checkpoint namespace; route source events only to its agent.
-- Exact command: `python3 -m pytest tests/unit/test_per_ea_hoodie_learners.py -q`.
-- Acceptance: Mutation/replay for EA n cannot affect m; exactly N states/checkpoints; deterministic per-EA seeds.
-- Stop/rollback: One shared policy/learner object fails.
+- **Dependencies:** BASE-015.
+- **Required reads:** `src/agents/hoodie_agent.py`; replay/target/model files; `src/training/training_loop.py`.
+- **Allowed writes:** `src/agents/hoodie_agent.py`; `src/agents/hoodie_agent_manager.py`; `src/agents/replay_buffer.py`; `src/agents/target_network.py`; `src/training/training_loop.py`; `tests/unit/test_per_ea_hoodie_learners.py`; `G1`.
+- **Ordered operations:**
+  1. Instantiate N independent HOODIE agents with private replay/online/target/optimizer/epsilon/checkpoint.
+  2. route each source event only to its agent.
+- **Exact command:**
+```bash
+python3 -m pytest tests/unit/test_per_ea_hoodie_learners.py -q
+```
+- **Acceptance:**
+  - EA n mutation does not affect m.
+  - exactly N states/checkpoints.
+  - deterministic per-EA seeds.
+- **Stop/rollback:** One shared HOODIE policy object is not acceptable.
 
 ### BASE-017 — Implement original HOODIE reward/replay timing
 
-- Dependencies: BASE-016.
-- Required reads: HOODIE registry; `src/environment/reward_timing.py`; `src/training/delayed_reward_training.py`; `src/training/training_loop.py`; `src/agents/replay_buffer.py`.
-- Allowed writes: `src/environment/reward_timing.py`; `src/training/delayed_reward_training.py`; `src/training/training_loop.py`; `src/agents/replay_buffer.py`; `tests/unit/test_hoodie_reward_replay_timing.py`; G1.
-- Ordered operations: Implement paper reward sign/delivery/next-state/terminal and ordinary discount; remove ECHO interval return, risk, deadline fallback, and gamma-delta from HOODIE.
-- Exact command: `python3 -m pytest tests/unit/test_hoodie_reward_replay_timing.py -q`.
-- Acceptance: Hand trace exact; each decision resolves once in correct EA replay; terminal flush; no ECHO-only field.
-- Stop/rollback: Unresolved Bellman timing yields REWORK.
+- **Dependencies:** BASE-016.
+- **Required reads:** HOODIE registry; `src/environment/reward_timing.py`; `src/training/delayed_reward_training.py`; `src/training/training_loop.py`; `src/agents/replay_buffer.py`.
+- **Allowed writes:** `src/environment/reward_timing.py`; `src/training/delayed_reward_training.py`; `src/training/training_loop.py`; `src/agents/replay_buffer.py`; `tests/unit/test_hoodie_reward_replay_timing.py`; `G1`.
+- **Ordered operations:**
+  1. Reproduce paper reward sign/delivery/next-state/terminal behavior and ordinary discount.
+  2. remove ECHO interval/risk/fallback/gamma^Delta from base.
+- **Exact command:**
+```bash
+python3 -m pytest tests/unit/test_hoodie_reward_replay_timing.py -q
+```
+- **Acceptance:**
+  - hand trace exact.
+  - one replay resolution.
+  - correct EA ownership.
+  - terminal flush complete.
+  - no ECHO-only field required.
+- **Stop/rollback:** Unresolved Bellman timing stops task.
 
 ### BASE-018 — Implement paper-correct HOODIE Dueling Double-DQN
 
-- Dependencies: BASE-017.
-- Required reads: `src/agents/double_dqn.py`; `src/agents/target_network.py`; `src/agents/hoodie_model.py`; `src/agents/neural_net_hoodie_model.py`; `src/agents/torchrl_hoodie_learner.py`; BASE-001 learning config.
-- Allowed writes: `src/agents/double_dqn.py`; `src/agents/target_network.py`; `src/agents/hoodie_model.py`; `src/agents/neural_net_hoodie_model.py`; `src/agents/torchrl_hoodie_learner.py`; `tests/unit/test_hoodie_double_dqn_contract.py`; G1.
-- Ordered operations: Use real online/target networks, dueling aggregation, Double-DQN selection/evaluation, epsilon schedule, target copy, finite optimizer, normal discount; remove heuristic-Q authoritative path.
-- Exact command: `python3 -m pytest tests/unit/test_hoodie_double_dqn_contract.py tests/unit/test_agent_components.py -q`.
-- Acceptance: Online selects/target evaluates; target no gradient; exact epsilon/copy; deterministic-batch loss decreases; checkpoint round-trip.
-- Stop/rollback: Stub or heuristic model cannot be accepted.
+- **Dependencies:** BASE-017.
+- **Required reads:** `src/agents/double_dqn.py`; `src/agents/target_network.py`; `src/agents/hoodie_model.py`; `src/agents/neural_net_hoodie_model.py`; `src/agents/torchrl_hoodie_learner.py`; canonical learning config.
+- **Allowed writes:** `src/agents/double_dqn.py`; `src/agents/target_network.py`; `src/agents/hoodie_model.py`; `src/agents/neural_net_hoodie_model.py`; `src/agents/torchrl_hoodie_learner.py`; `tests/unit/test_hoodie_double_dqn_contract.py`; `G1`.
+- **Ordered operations:**
+  1. Implement online/target networks, dueling aggregation, Double-DQN, epsilon, target copy, optimizer and ordinary discount.
+  2. remove heuristic authoritative path.
+- **Exact command:**
+```bash
+python3 -m pytest tests/unit/test_hoodie_double_dqn_contract.py tests/unit/test_agent_components.py -q
+```
+- **Acceptance:**
+  - online chooses/target evaluates.
+  - target no gradient.
+  - schedule exact.
+  - loss decreases on deterministic batch.
+  - checkpoint round-trip.
+- **Stop/rollback:** Stubs/heuristics cannot be called paper learner.
 
 ### BASE-019 — Validate RO/FLC/VO/HO/BCO/MLEO isolation
 
-- Dependencies: BASE-018.
-- Required reads: `src/policies/ro.py`; `src/policies/flc.py`; `src/policies/vo.py`; `src/policies/ho.py`; `src/policies/bco.py`; `src/policies/mleo.py`; `src/evaluation/policy_registry.py`; shared kernel.
-- Allowed writes: `src/policies/ro.py`; `src/policies/flc.py`; `src/policies/vo.py`; `src/policies/ho.py`; `src/policies/bco.py`; `src/policies/mleo.py`; `src/evaluation/policy_registry.py`; `tests/integration/test_baseline_method_isolation.py`; `docs/contracts/baseline_definitions.md`; G1.
-- Ordered operations: Define allowed information/action/tie/fallback; replace HOODIE→ADAPTIVE alias with real HOODIE adapter; heuristics do not train/import ECHO.
-- Exact command: `python3 -m pytest tests/integration/test_baseline_method_isolation.py -q`.
-- Acceptance: FLC local; VO cloud; HO horizontal/fallback; RO physical; BCO deterministic; MLEO own latency; same traces/accounting; no ECHO import.
-- Stop/rollback: ECHO mask/ERT/reward import fails.
+- **Dependencies:** BASE-018.
+- **Required reads:** `src/policies/ro.py`; `src/policies/flc.py`; `src/policies/vo.py`; `src/policies/ho.py`; `src/policies/bco.py`; `src/policies/mleo.py`; `src/evaluation/policy_registry.py`; shared simulator.
+- **Allowed writes:** `src/policies/ro.py`; `src/policies/flc.py`; `src/policies/vo.py`; `src/policies/ho.py`; `src/policies/bco.py`; `src/policies/mleo.py`; `src/evaluation/policy_registry.py`; `tests/integration/test_baseline_method_isolation.py`; `docs/contracts/baseline_definitions.md`; `G1`.
+- **Ordered operations:**
+  1. Define information/action/tie/fallback per baseline.
+  2. replace HOODIE alias-to-ADAPTIVE with real adapter.
+  3. no heuristic training or ECHO imports.
+- **Exact command:**
+```bash
+python3 -m pytest tests/integration/test_baseline_method_isolation.py -q
+```
+- **Acceptance:**
+  - FLC local.
+  - VO cloud.
+  - HO horizontal/documented physical fallback.
+  - RO physical only.
+  - BCO deterministic.
+  - MLEO own latency.
+  - same traces/accounting.
+- **Stop/rollback:** Any ECHO import fails task.
 
 ### BASE-020 — Run complete deterministic base invariant suite
 
-- Dependencies: BASE-019.
-- Required reads: All Phase-1 cards/tests and BASE-006 fixtures.
-- Allowed writes: `tests/integration/test_base_physical_invariants.py`; `tests/integration/test_base_differential_trace.py`; `artifacts/validation/base/invariant_results.json`; `artifacts/validation/base/differential_trace.md`; `artifacts/validation/base/test_manifest.json`; G1.
-- Ordered operations: Run local/horizontal/cloud lifecycles, simultaneous arrivals, expiration, late active, drain, accounting, one-location, trace identity, neutral-kernel import scan, and method isolation; runtime code is read-only.
-- Exact command: `python3 -m pytest tests/unit/test_hoodie_table4_config.py tests/unit/test_hoodie_topology_authority.py tests/unit/test_trace_protocol_paper_semantics.py tests/unit/test_trace_immutability.py tests/unit/test_hoodie_slot_contract_vectors.py tests/unit/test_hoodie_slot_engine.py tests/integration/test_neutral_kernel_imports.py tests/unit/test_private_queue_lifecycle.py tests/unit/test_single_source_transmitter.py tests/unit/test_destination_retention.py tests/unit/test_next_boundary_admission.py tests/unit/test_source_indexed_public_queues.py tests/unit/test_public_cpu_sharing.py tests/unit/test_hoodie_action_space.py tests/unit/test_hoodie_state_contract.py tests/unit/test_hoodie_load_forecaster.py tests/unit/test_per_ea_hoodie_learners.py tests/unit/test_hoodie_reward_replay_timing.py tests/unit/test_hoodie_double_dqn_contract.py tests/integration/test_baseline_method_isolation.py tests/integration/test_base_physical_invariants.py tests/integration/test_base_differential_trace.py -q`.
-- Acceptance: All pass; generated=completed+dropped; one outcome/location; no invalid action/NaN/Inf/ECHO import.
-- Stop/rollback: Failures reopen owning task; BASE-020 cannot patch runtime.
+- **Dependencies:** BASE-019.
+- **Required reads:** all Phase-1 code/tests; BASE-006 fixtures.
+- **Allowed writes:** `tests/integration/test_base_physical_invariants.py`; `tests/integration/test_base_differential_trace.py`; `artifacts/validation/base/summary.json`; `artifacts/validation/base/test_output.txt`; `G1`.
+- **Ordered operations:**
+  1. Add local/horizontal/cloud hand traces, simultaneous arrivals, expiration, late active, drain, accounting, single-location, trace identity, method isolation.
+  2. Run full Phase-1 suite.
+- **Exact command:**
+```bash
+python3 -m pytest tests/unit/test_hoodie_table4_config.py tests/unit/test_hoodie_topology_authority.py tests/unit/test_trace_protocol_paper_semantics.py tests/unit/test_trace_immutability.py tests/unit/test_hoodie_slot_contract_vectors.py tests/unit/test_hoodie_slot_engine.py tests/unit/test_private_queue_lifecycle.py tests/unit/test_single_source_transmitter.py tests/unit/test_destination_retention.py tests/unit/test_next_boundary_admission.py tests/unit/test_source_indexed_public_queues.py tests/unit/test_public_cpu_sharing.py tests/unit/test_hoodie_action_space.py tests/unit/test_hoodie_state_contract.py tests/unit/test_hoodie_load_forecaster.py tests/unit/test_per_ea_hoodie_learners.py tests/unit/test_hoodie_reward_replay_timing.py tests/unit/test_hoodie_double_dqn_contract.py tests/integration/test_baseline_method_isolation.py tests/integration/test_base_physical_invariants.py tests/integration/test_base_differential_trace.py -q
+```
+- **Acceptance:**
+  - all tests pass.
+  - generated=completed+dropped.
+  - one outcome/task.
+  - no invalid action.
+  - no NaN/Inf.
+  - zero ECHO imports in neutral kernel.
+- **Stop/rollback:** Failures reopen owning task; no runtime patches here.
 
 ### BASE-021 — Run bounded HOODIE runtime/learner smoke
 
-- Dependencies: BASE-020.
-- Required reads: Phase-1 implementation; BASE-020 evidence; smoke conventions.
-- Allowed writes: `configs/experiments/hoodie_smoke.yaml`; `scripts/smoke/run_hoodie_smoke.py`; `tests/integration/test_hoodie_smoke_runner.py`; G5 for method `hoodie`, scenario `hoodie_smoke`, N=20, seed=00; G1.
-- Ordered operations: Run bounded real-learning smoke with all route types, checkpoint save/load, task/decision/episode/training logs using schemas when available.
-- Exact command: `python3 -m pytest tests/integration/test_hoodie_smoke_runner.py -q && python3 scripts/smoke/run_hoodie_smoke.py --config configs/experiments/hoodie_smoke.yaml --output-root artifacts/evaluation/runs`.
-- Acceptance: Finite loss/Q/reward; replay grows; target copies; reload deterministic; accounting exact; run labeled smoke.
-- Stop/rollback: Do not tune from smoke.
+- **Dependencies:** BASE-020.
+- **Required reads:** Phase-1 code; smoke conventions.
+- **Allowed writes:** `configs/experiments/hoodie_smoke.yaml`; `scripts/smoke/run_hoodie_smoke.py`; `tests/integration/test_hoodie_smoke_runner.py`; `artifacts/smoke/hoodie_v4/run_manifest.json`; `artifacts/smoke/hoodie_v4/task_log.jsonl`; `artifacts/smoke/hoodie_v4/episode_metrics.csv`; `artifacts/smoke/hoodie_v4/checkpoint.pt`; `G1`.
+- **Ordered operations:**
+  1. Run fixed seed/bounded episodes.
+  2. exercise routes.
+  3. real updates.
+  4. save/load checkpoint.
+  5. retain raw logs.
+- **Exact command:**
+```bash
+python3 -m pytest tests/integration/test_hoodie_smoke_runner.py -q && python3 scripts/smoke/run_hoodie_smoke.py --config configs/experiments/hoodie_smoke.yaml --output artifacts/smoke/hoodie_v4
+```
+- **Acceptance:**
+  - finite loss/Q/reward.
+  - replay grows.
+  - target copies.
+  - reload reproduces inference.
+  - accounting exact.
+  - smoke labels present.
+- **Stop/rollback:** Do not tune hyperparameters from smoke.
 
-### BASE-022 — Reproduce HOODIE experiment organization/trends
+### BASE-022 — Reproduce HOODIE experiment organization and trends
 
-- Dependencies: BASE-021.
-- Required reads: HOODIE paper figure/table registry; BASE-021 run; frozen candidate config.
-- Allowed writes: `configs/experiments/hoodie_reproduction.yaml`; `scripts/reproduction/run_hoodie_reproduction.py`; `artifacts/reproduction/hoodie/run_manifest.json`; `artifacts/reproduction/hoodie/task_log.jsonl`; `artifacts/reproduction/hoodie/episode_metrics.csv`; `artifacts/reproduction/hoodie/trend_comparison.csv`; `artifacts/reproduction/hoodie/SHA256SUMS`; `docs/reports/hoodie_reproduction_evidence.md`; G1.
-- Ordered operations: Reproduce paper experiment organization and direction/trend using real simulation; retain configs/seeds/raw outputs; document deviations without fabricating pixel-perfect values.
-- Exact command: `python3 scripts/reproduction/run_hoodie_reproduction.py --config configs/experiments/hoodie_reproduction.yaml --output artifacts/reproduction/hoodie`.
-- Acceptance: Every trend has raw lineage; deviations explicit; no hard-coded paper result; paired inputs.
-- Stop/rollback: Failed trend blocks freeze and cannot be described as reproduced.
+- **Dependencies:** BASE-021.
+- **Required reads:** HOODIE paper figure/table registry; candidate base; smoke evidence.
+- **Allowed writes:** `configs/experiments/hoodie_reproduction.yaml`; `scripts/reproduction/run_hoodie_reproduction.py`; `artifacts/reproduction/hoodie/run_manifest.json`; `artifacts/reproduction/hoodie/raw_metrics.csv`; `docs/reports/hoodie_reproduction_evidence.md`; `G1`.
+- **Ordered operations:**
+  1. Run real simulation matching paper organization.
+  2. preserve outputs/config/seeds.
+  3. compare trends not pixels.
+- **Exact command:**
+```bash
+python3 scripts/reproduction/run_hoodie_reproduction.py --config configs/experiments/hoodie_reproduction.yaml --output artifacts/reproduction/hoodie
+```
+- **Acceptance:**
+  - every trend has raw lineage.
+  - deviations documented.
+  - no hard-coded paper values.
+  - paired inputs.
+- **Stop/rollback:** Failed trend blocks freeze.
 
 ### FREEZE-001 — Freeze validated neutral simulator and HOODIE baseline
 
-- Dependencies: BASE-022.
-- Required reads: All Phase-1 evidence; BASE-022; tested commit.
-- Allowed writes: `scripts/release/freeze_hoodie_baseline.py`; `artifacts/releases/hoodie_base_v1/manifest.json`; `artifacts/releases/hoodie_base_v1/SHA256SUMS`; `docs/contracts/hoodie_base_freeze.md`; G1.
-- Ordered operations: Record commit, config, topology, trace/schema, test results, checkpoints, neutral hook interfaces, forbidden imports, limitations, and exact hashes; verify shared files contain no ECHO imports.
-- Exact command: `python3 scripts/release/freeze_hoodie_baseline.py --manifest artifacts/releases/hoodie_base_v1/manifest.json --checksums artifacts/releases/hoodie_base_v1/SHA256SUMS`.
-- Acceptance: Hashes verify; Phase-1 suite passes; no unresolved S0/S1; neutral interfaces versioned; frozen file list explicit.
-- Stop/rollback: Any later frozen-file change invalidates release and reopens owner task.
+- **Dependencies:** BASE-022.
+- **Required reads:** all Phase-1 evidence; reproduction report; tested commit.
+- **Allowed writes:** `scripts/release/freeze_hoodie_baseline.py`; `artifacts/releases/hoodie_base_v1/manifest.json`; `artifacts/releases/hoodie_base_v1/SHA256SUMS`; `docs/contracts/hoodie_base_freeze.md`; `G1`.
+- **Ordered operations:**
+  1. Record commit/config/topology/trace schemas/tests/checkpoints/interfaces/forbidden ECHO imports/limitations.
+  2. hash every frozen file.
+- **Exact command:**
+```bash
+python3 scripts/release/freeze_hoodie_baseline.py --manifest artifacts/releases/hoodie_base_v1/manifest.json --checksums artifacts/releases/hoodie_base_v1/SHA256SUMS
+```
+- **Acceptance:**
+  - hashes verify.
+  - full suite passes.
+  - no unresolved S0/S1.
+  - neutral interfaces versioned.
+- **Stop/rollback:** Any later frozen-file change invalidates freeze and reopens owner.
 
 ### ECHO-001 — Attach ECHO adapter to frozen neutral hooks
 
-- Dependencies: FREEZE-001, SRC-001.
-- Required reads: `artifacts/releases/hoodie_base_v1/manifest.json`; `docs/contracts/neutral_kernel_contract.md`; `src/environment/method_hooks.py`; `src/echo_action_space.py`; `src/echo_ert.py`; `src/echo_queue_ordering.py`; current policy registry.
-- Allowed writes: `src/echo_adapter.py`; `src/evaluation/method_registry.py`; `tests/integration/test_echo_adapter_attachment.py`; `docs/contracts/echo_adapter_contract.md`; G1.
-- Ordered operations: Implement an ECHO adapter satisfying the frozen neutral hooks; register ECHO explicitly; do not edit any file listed in the freeze manifest; verify HOODIE path remains byte-identical.
-- Exact command: `python3 -m pytest tests/integration/test_echo_adapter_attachment.py tests/integration/test_base_physical_invariants.py -q`.
-- Acceptance: ECHO can be selected through adapter; frozen-file hashes unchanged; shared/HOODIE modules import no ECHO code.
-- Stop/rollback: If frozen hooks are insufficient, return PLAN_CHANGE_REQUIRED and reopen BASE-005; never patch frozen shared files here.
+- **Dependencies:** FREEZE-001, SRC-001.
+- **Required reads:** frozen base contract; `src/environment/method_hooks.py`; current src/echo_*; policy/training paths.
+- **Allowed writes:** `src/echo_adapter.py`; `src/evaluation/policy_registry.py`; `tests/integration/test_echo_method_isolation.py`; `docs/contracts/echo_isolation_matrix.md`; `G1`.
+- **Ordered operations:**
+  1. Implement ECHO adapter only through frozen hooks.
+  2. do not edit frozen files.
+  3. register explicit ECHO selection.
+  4. prove HOODIE regression unchanged.
+- **Exact command:**
+```bash
+python3 -m pytest tests/integration/test_echo_method_isolation.py tests/integration/test_base_physical_invariants.py -q
+```
+- **Acceptance:**
+  - no frozen file changed.
+  - HOODIE bytes/results unchanged.
+  - ECHO selectable explicitly.
+  - shared kernel imports no ECHO modules.
+- **Stop/rollback:** Any required frozen-file change reopens base task and freeze.
 
-### ECHO-002 — Implement Equations (1)–(8) lifecycle/dispatch
+### ECHO-002 — Implement Equations (1)–(8) lifecycle and dispatch
 
-- Dependencies: ECHO-001.
-- Required reads: `research/authority/echo/live/ECHO_PROPOSED_METHOD.md`; `artifacts/audits/echo_live_revision_audit.md`; `src/echo_types.py`; `src/echo_ert.py`; `src/environment/task.py`; `src/echo_adapter.py`.
-- Allowed writes: `src/echo_types.py`; `src/echo_ert.py`; `src/environment/task.py`; `src/echo_adapter.py`; `tests/unit/test_echo_equations_01_08.py`; G1.
-- Ordered operations: Encode task variables, deadline, route set, one-time direct dispatch, stored destination, success/drop lifecycle, and inclusive slot arithmetic exactly as Equations 1–8.
-- Exact command: `python3 -m pytest tests/unit/test_echo_equations_01_08.py -q`.
-- Acceptance: Equation examples/edges exact; no second action; deadline off-by-one exact; one terminal resolution.
-- Stop/rollback: No queue estimator or learner changes.
+- **Dependencies:** ECHO-001.
+- **Required reads:** source snapshot/audit; `src/echo_types.py`; `src/echo_ert.py`; `src/environment/task.py`; ECHO adapter.
+- **Allowed writes:** `src/echo_types.py`; `src/echo_ert.py`; `src/environment/task.py`; `src/echo_adapter.py`; `tests/unit/test_echo_equations_01_08.py`; `G1`.
+- **Ordered operations:**
+  1. Encode task variables/deadline/route set/direct dispatch/stored destination/lifecycle/inclusive slots.
+- **Exact command:**
+```bash
+python3 -m pytest tests/unit/test_echo_equations_01_08.py -q
+```
+- **Acceptance:**
+  - equation examples exact.
+  - no second action.
+  - deadline off-by-one exact.
+  - one terminal resolution.
+- **Stop/rollback:** No queue estimator or learner changes.
 
 ### ECHO-003 — Implement Equations (9)–(11) local estimate
 
-- Dependencies: ECHO-002.
-- Required reads: Live Equations 9–11; `src/echo_ert.py`; private queue and active state.
-- Allowed writes: `src/echo_ert.py`; `tests/unit/test_echo_local_estimate.py`; G1.
-- Ordered operations: Compute local service slots, active residual, predecessor wait, inclusive completion, ERT, and lateness using correct units/remaining cycles.
-- Exact command: `python3 -m pytest tests/unit/test_echo_local_estimate.py -q`.
-- Acceptance: Empty/active/multiple-predecessor hand cases exact; no deadline truncation; units consistent.
-- Stop/rollback: Do not reorder queues.
+- **Dependencies:** ECHO-002.
+- **Required reads:** live equations; `src/echo_ert.py`; private queue/active state.
+- **Allowed writes:** `src/echo_ert.py`; `tests/unit/test_echo_local_estimate.py`; `G1`.
+- **Ordered operations:**
+  1. Compute service slots/residual/predecessors/inclusive completion/ERT/lateness.
+- **Exact command:**
+```bash
+python3 -m pytest tests/unit/test_echo_local_estimate.py -q
+```
+- **Acceptance:**
+  - empty/active/multi-predecessor hand calculations exact.
+  - units consistent.
+  - no truncation.
+- **Stop/rollback:** Do not reorder queues.
 
 ### ECHO-004 — Implement Equations (12)–(16) outbound estimate
 
-- Dependencies: ECHO-003.
-- Required reads: Live Equations 12–16; `src/echo_ert.py`; link rates; outbound state; next-boundary contract.
-- Allowed writes: `src/echo_ert.py`; `tests/unit/test_echo_outbound_estimate.py`; G1.
-- Ordered operations: Compute residual/predecessor transmission, horizontal/cloud rate, inclusive transfer, explicit next-boundary admission, destination contribution, completion, ERT, and lateness.
-- Exact command: `python3 -m pytest tests/unit/test_echo_outbound_estimate.py -q`.
-- Acceptance: Horizontal/cloud hand cases exact; boundary +1 applied exactly once; destination work not omitted.
-- Stop/rollback: Destination workload details belong to ECHO-005.
+- **Dependencies:** ECHO-003.
+- **Required reads:** live equations; `src/echo_ert.py`; link rates; outbound state; boundary contract.
+- **Allowed writes:** `src/echo_ert.py`; `tests/unit/test_echo_outbound_estimate.py`; `G1`.
+- **Ordered operations:**
+  1. Compute residual/predecessor transmission, rates, inclusive slots, +1 destination admission, completion/ERT/lateness.
+- **Exact command:**
+```bash
+python3 -m pytest tests/unit/test_echo_outbound_estimate.py -q
+```
+- **Acceptance:**
+  - horizontal/cloud hand examples exact.
+  - +1 counted once.
+  - destination stage not omitted.
+- **Stop/rollback:** Destination workload belongs to ECHO-005.
 
 ### ECHO-005 — Implement Equations (17)–(25) destination model
 
-- Dependencies: ECHO-004.
-- Required reads: Live Equations 17–25; public queues; runtime capacity; status interface.
-- Allowed writes: `src/echo_destination_model.py`; `src/echo_ert.py`; `tests/unit/test_echo_destination_model.py`; G1.
-- Ordered operations: Compute remaining workload in cycles, active source-queue count, hypothetical admission, effective capacity, waiting/service, and destination completion without future information.
-- Exact command: `python3 -m pytest tests/unit/test_echo_destination_model.py -q`.
-- Acceptance: Cycles and cycles/slot units; active count adjustment exact; zero/one/many queues; no future leakage.
-- Stop/rollback: Destination FIFO must remain unchanged.
+- **Dependencies:** ECHO-004.
+- **Required reads:** live equations; public queues; runtime capacity; status interface.
+- **Allowed writes:** `src/echo_destination_model.py`; `src/echo_ert.py`; `tests/unit/test_echo_destination_model.py`; `G1`.
+- **Ordered operations:**
+  1. Remaining workload in cycles.
+  2. active queue count/hypothetical admission/effective capacity/wait/service/completion.
+  3. fresh-or-estimated input interface.
+- **Exact command:**
+```bash
+python3 -m pytest tests/unit/test_echo_destination_model.py -q
+```
+- **Acceptance:**
+  - cycle units exact.
+  - active-count adjustment exact.
+  - zero/one/many queues.
+  - no future information.
+- **Stop/rollback:** Do not reorder destination FIFO.
 
-### ECHO-006 — Implement Equations (26)–(28) history/LSTM inputs
+### ECHO-006 — Implement Equations (26)–(28) history and LSTM inputs
 
-- Dependencies: ECHO-005.
-- Required reads: Live Equations 26–28; `src/environment/runtime_model.py`; current history/load code.
-- Allowed writes: `src/echo_load_forecast.py`; `src/echo_status.py`; `tests/unit/test_echo_load_history.py`; G1.
-- Ordered operations: Create ordered fixed-length history, freshness timestamp/status, stale/missing flag, forecasting target record, and deterministic bootstrap; no model fitting.
-- Exact command: `python3 -m pytest tests/unit/test_echo_load_history.py -q`.
-- Acceptance: W/order exact; fresh chosen over prediction; stale/missing explicit; held-out trace IDs excluded.
-- Stop/rollback: Neural architecture/optimizer belongs to ECHO-016.
+- **Dependencies:** ECHO-005.
+- **Required reads:** live equations; `src/environment/runtime_model.py`; current load/history code.
+- **Allowed writes:** `src/echo_load_forecast.py`; `src/echo_status.py`; `tests/unit/test_echo_load_history.py`; `G1`.
+- **Ordered operations:**
+  1. Fixed ordered history.
+  2. freshness timestamp/status.
+  3. stale/missing flag.
+  4. training target record.
+  5. bootstrap behavior.
+- **Exact command:**
+```bash
+python3 -m pytest tests/unit/test_echo_load_history.py -q
+```
+- **Acceptance:**
+  - history order exact.
+  - fresh preferred.
+  - stale/missing explicit.
+  - no evaluation IDs in training store.
+- **Stop/rollback:** Neural fitting belongs to ECHO-016.
 
 ### ECHO-007 — Implement Equation (29) local queue ERT ordering
 
-- Dependencies: ECHO-006.
-- Required reads: Live Equation 29/ties; `src/echo_queue_ordering.py`; private queue.
-- Allowed writes: `src/echo_queue_ordering.py`; `tests/unit/test_echo_local_queue_ordering.py`; G1.
-- Ordered operations: Freeze active task; construct waiting order position-by-position; smallest nonnegative ERT else minimum lateness; arrival/stable-ID final tie; count evaluations.
-- Exact command: `python3 -m pytest tests/unit/test_echo_local_queue_ordering.py -q`.
-- Acceptance: Hand order/all-late exact; active untouched; evaluations q(q+1)/2.
-- Stop/rollback: HOODIE FIFO path unchanged.
+- **Dependencies:** ECHO-006.
+- **Required reads:** live equation/ties; `src/echo_queue_ordering.py`; private queue.
+- **Allowed writes:** `src/echo_queue_ordering.py`; `tests/unit/test_echo_local_queue_ordering.py`; `G1`.
+- **Ordered operations:**
+  1. Freeze active head.
+  2. construct position-by-position.
+  3. smallest nonnegative else minimum lateness.
+  4. FIFO/stable ID tie.
+  5. count evaluations.
+- **Exact command:**
+```bash
+python3 -m pytest tests/unit/test_echo_local_queue_ordering.py -q
+```
+- **Acceptance:**
+  - hand order exact.
+  - all-late fallback exact.
+  - active untouched.
+  - q(q+1)/2 evaluations.
+- **Stop/rollback:** HOODIE FIFO unchanged.
 
 ### ECHO-008 — Implement Equation (30) outbound ERT ordering
 
-- Dependencies: ECHO-007.
-- Required reads: Live Equation 30; `src/echo_queue_ordering.py`; outbound queue; destination model.
-- Allowed writes: `src/echo_queue_ordering.py`; `tests/unit/test_echo_outbound_queue_ordering.py`; G1.
-- Ordered operations: Freeze active transfer; include cumulative source transmission plus destination workload/service for each provisional position; same feasible/lateness/tie rules; retain destination.
-- Exact command: `python3 -m pytest tests/unit/test_echo_outbound_queue_ordering.py -q`.
-- Acceptance: Mixed-destination/all-late hand cases exact; one transmitter; O(q²) count.
-- Stop/rollback: Do not create one physical queue/transmitter per destination.
+- **Dependencies:** ECHO-007.
+- **Required reads:** live equation; `src/echo_queue_ordering.py`; offloading queue; destination model.
+- **Allowed writes:** `src/echo_queue_ordering.py`; `tests/unit/test_echo_outbound_queue_ordering.py`; `G1`.
+- **Ordered operations:**
+  1. Freeze active transmission.
+  2. include cumulative transmission and destination estimate.
+  3. same feasible/lateness/tie rules.
+  4. preserve destination.
+- **Exact command:**
+```bash
+python3 -m pytest tests/unit/test_echo_outbound_queue_ordering.py -q
+```
+- **Acceptance:**
+  - mixed-destination/all-late hand cases exact.
+  - one transmitter/source.
+  - O(q²) count.
+- **Stop/rollback:** No per-destination physical transmitter.
 
-### ECHO-009 — Implement 32-position canonical action space
+### ECHO-009 — Implement size-specific N+2 canonical action space
 
-- Dependencies: ECHO-008.
-- Required reads: Live scalability/action section; `src/echo_action_space.py`; `src/echo_types.py`; frozen topology.
-- Allowed writes: `src/echo_action_space.py`; `src/echo_types.py`; `tests/unit/test_echo_canonical_action_space.py`; G1.
-- Ordered operations: Map index 0 local, 1–30 horizontal positions, 31 cloud; mask absent/self/disconnected positions physically; maintain shape 32 and separate checkpoint per tested N.
-- Exact command: `python3 -m pytest tests/unit/test_echo_canonical_action_space.py -q`.
-- Acceptance: 32 outputs for N=10/15/20/25/30; stable mapping; padding masked; cloud final.
-- Stop/rollback: Do not use runtime-varying N+2 tensor.
+- **Dependencies:** ECHO-008.
+- **Required reads:** revision-273 source section; `src/echo_action_space.py`; `src/echo_types.py`; topology.
+- **Allowed writes:** `src/echo_action_space.py`; `src/echo_types.py`; `tests/unit/test_echo_canonical_action_space.py`; `G1`.
+- **Ordered operations:**
+  1. For each N build local + N horizontal positions + cloud.
+  2. retain source/disconnected positions but mask them.
+  3. no padding to 30 for smaller N.
+  4. stable mapping within N.
+  5. separate checkpoint per N.
+- **Exact command:**
+```bash
+python3 -m pytest tests/unit/test_echo_canonical_action_space.py -q
+```
+- **Acceptance:**
+  - dimensions 12/17/22/27/32 for N=10/15/20/25/30.
+  - source/disconnected masked.
+  - cloud final.
+  - mapping deterministic.
+  - existing fixed-32 code superseded where N<30.
+- **Stop/rollback:** Do not claim zero-shot transfer across N.
 
-### ECHO-010 — Implement Equations (42)–(46) mask/fallback
+### ECHO-010 — Implement Equations (42)–(46) mask and fallback
 
-- Dependencies: ECHO-009.
-- Required reads: Live Equations 42–46; candidate estimates; canonical action space.
-- Allowed writes: `src/echo_action_mask.py`; `src/echo_action_space.py`; `tests/unit/test_echo_deadline_mask.py`; G1.
-- Ordered operations: Intersect physical candidates with ERT>=0; when empty choose singleton minimum-lateness candidate with deterministic tie; expose one immutable decision-time mask for exploration/exploitation/target.
-- Exact command: `python3 -m pytest tests/unit/test_echo_deadline_mask.py -q`.
-- Acceptance: Feasible set/fallback exact; never all-zero on arrival; invalid physical actions absent; same mask hash across selection paths.
-- Stop/rollback: No behavior leaks into HOODIE/baselines.
+- **Dependencies:** ECHO-009.
+- **Required reads:** live equations; candidate estimates; N+2 action space.
+- **Allowed writes:** `src/echo_action_mask.py`; `src/echo_action_space.py`; `tests/unit/test_echo_deadline_mask.py`; `G1`.
+- **Ordered operations:**
+  1. Intersect physical candidates with ERT>=0.
+  2. empty set => singleton minimum-lateness with tie.
+  3. same mask exploration/exploitation/target.
+- **Exact command:**
+```bash
+python3 -m pytest tests/unit/test_echo_deadline_mask.py -q
+```
+- **Acceptance:**
+  - feasible set exact.
+  - fallback exact.
+  - never all-zero on arrival.
+  - same mask hash in all selection paths.
+- **Stop/rollback:** No leak to HOODIE/baselines.
 
 ### ECHO-011 — Implement Equations (47)–(50) pending records and schema-compliant decision logs
 
-- Dependencies: ECHO-010, EVAL-001.
-- Required reads: Live Equations 47–50; `experiments/schemas/decision_log.schema.json`; `experiments/schemas/task_log.schema.json`; action/mask/estimate types; ECHO adapter.
-- Allowed writes: `src/echo_pending.py`; `src/echo_logging.py`; `src/echo_types.py`; `src/echo_adapter.py`; `tests/unit/test_echo_pending_records.py`; `tests/unit/test_echo_decision_log_schema.py`; G1.
-- Ordered operations: At decision store source, state hash, action, mask hash, candidate estimates, risk, decision slot, task, destination, and schema version; emit schema-valid decision/task log records; one pending record per task.
-- Exact command: `python3 -m pytest tests/unit/test_echo_pending_records.py tests/unit/test_echo_decision_log_schema.py -q`.
-- Acceptance: Fields and hashes exact; no duplicate/overwritten pending record; logs validate against EVAL-001 schemas.
-- Stop/rollback: If schema is insufficient, return PLAN_CHANGE_REQUIRED and reopen EVAL-001; do not invent fields.
+- **Dependencies:** ECHO-010, EVAL-001.
+- **Required reads:** live equations; EVAL-001 schemas; task lifecycle; action/mask/estimate types.
+- **Allowed writes:** `src/echo_pending.py`; `src/echo_types.py`; `src/echo_adapter.py`; `tests/unit/test_echo_pending_records.py`; `G1`.
+- **Ordered operations:**
+  1. Store source/state/action/mask/candidate estimates/risk/decision slot/deadline/destination.
+  2. emit decision log matching frozen schema.
+  3. one record/task.
+- **Exact command:**
+```bash
+python3 -m pytest tests/unit/test_echo_pending_records.py -q
+```
+- **Acceptance:**
+  - all fields immutable.
+  - one record/task.
+  - decision-time values not recomputed at resolution.
+  - schema valid.
+- **Stop/rollback:** Schema change requires reopening EVAL-001.
 
-### ECHO-012 — Implement Equations (51)–(54) normalized state
+### ECHO-012 — Implement Equations (51)–(54) size-specific normalized state
 
-- Dependencies: ECHO-011.
-- Required reads: Live Equations 51–54; schema/log contract; status/candidate/pending modules.
-- Allowed writes: `src/echo_state.py`; `src/echo_types.py`; `configs/authoritative/echo_state_schema.json`; `tests/unit/test_echo_state_contract.py`; G1.
-- Ordered operations: Build normalized fixed state with task, local/outbound queue/residual, destination workload/load, history/LSTM, min ERT, candidate ERT, and mask; zero task/candidate on no arrival while queue/load remain live.
-- Exact command: `python3 -m pytest tests/unit/test_echo_state_contract.py -q`.
-- Acceptance: Exact order/shape for N=10/15/20/25/30; bounds and clipping exact; no-arrival distinction; no future leakage.
-- Stop/rollback: Do not alter action dimension or logging schema here.
+- **Dependencies:** ECHO-011.
+- **Required reads:** live equations and revision-273 scalability paragraph; EVAL-001 schemas; state/history/status modules.
+- **Allowed writes:** `src/echo_state.py`; `src/echo_types.py`; `tests/unit/test_echo_state_contract.py`; `G1`.
+- **Ordered operations:**
+  1. Build task/queue/workload/residual/load/LSTM/min-ERT/candidate-ERT/mask.
+  2. destination blocks and candidate vector scale with N.
+  3. fixed order within N.
+  4. no-arrival zeros only for task/candidate/mask.
+- **Exact command:**
+```bash
+python3 -m pytest tests/unit/test_echo_state_contract.py -q
+```
+- **Acceptance:**
+  - schema/order exact per N.
+  - N-specific dimensions tested for 10/15/20/25/30.
+  - no 30-node padding for smaller N.
+  - bounded normalization.
+  - no-arrival semantics exact.
+- **Stop/rollback:** Do not reuse one checkpoint across different N.
 
 ### ECHO-013 — Implement Equations (55)–(58) task reward
 
-- Dependencies: ECHO-012.
-- Required reads: Live Equations 55–58; task resolutions; pending records; evaluation log schemas.
-- Allowed writes: `src/echo_reward.py`; `src/echo_pending.py`; `src/echo_logging.py`; `tests/unit/test_echo_reward.py`; G1.
-- Ordered operations: Compute realized system duration, predicted-risk indicator, realized-drop indicator, and `-duration-lambda_R*risk-lambda_D*drop`; attach exactly once at resolution and log components.
-- Exact command: `python3 -m pytest tests/unit/test_echo_reward.py -q`.
-- Acceptance: Hand rewards exact; one reward/task; success/drop/late-active cases; schema-valid fields.
-- Stop/rollback: Do not close replay intervals here.
+- **Dependencies:** ECHO-012.
+- **Required reads:** live reward equations; pending/outcome events.
+- **Allowed writes:** `src/echo_reward.py`; `src/echo_types.py`; `tests/unit/test_echo_reward.py`; `G1`.
+- **Ordered operations:**
+  1. Compute inclusive system duration, decision risk indicator, realized failure indicator and reward.
+  2. emit resolution log schema.
+- **Exact command:**
+```bash
+python3 -m pytest tests/unit/test_echo_reward.py -q
+```
+- **Acceptance:**
+  - hand rewards exact.
+  - risk/drop distinct.
+  - one reward/task.
+  - late active and waiting expiry exact.
+- **Stop/rollback:** Do not finalize replay here.
 
 ### ECHO-014 — Implement Equations (59)–(60) event intervals
 
-- Dependencies: ECHO-013.
-- Required reads: Live Equations 59–60; `src/training/event_smdp.py`; pending/reward events; boundary contract.
-- Allowed writes: `src/training/event_smdp.py`; `tests/unit/test_event_smdp_interval_contract.py`; G1.
-- Ordered operations: Maintain one open interval per source EA; add each resolving task reward with within-interval discount; close only at next actual decision of same EA or T+1; emit one non-overlapping transition with delta.
-- Exact command: `python3 -m pytest tests/unit/test_event_smdp_interval_contract.py -q`.
-- Acceptance: Multiple rewards aggregate; other-EA decisions do not close; no overlapping task transitions; terminal and boundary-before-decision ownership exact.
-- Stop/rollback: Older task-level next-decision interpretation is forbidden.
+- **Dependencies:** ECHO-013.
+- **Required reads:** live interval equations; `src/training/event_smdp.py`; pending/reward events.
+- **Allowed writes:** `src/training/event_smdp.py`; `tests/unit/test_event_smdp_interval_contract.py`; `G1`.
+- **Ordered operations:**
+  1. One open interval per source EA.
+  2. discount rewards within interval.
+  3. close at next actual decision of same EA or T+1.
+  4. one non-overlapping transition.
+  5. preserve Delta.
+- **Exact command:**
+```bash
+python3 -m pytest tests/unit/test_event_smdp_interval_contract.py -q
+```
+- **Acceptance:**
+  - multiple rewards aggregate.
+  - other-EA decision does not close.
+  - no overlapping task transitions.
+  - terminal exact.
+  - boundary-before-decision ownership.
+- **Stop/rollback:** Existing tests are insufficient without boundary ownership.
 
-### ECHO-015 — Implement Equations (61)–(67) masked DDQL
+### ECHO-015 — Implement Equations (61)–(67) masked DDQL with within-run parameter sharing
 
-- Dependencies: ECHO-014.
-- Required reads: Live Equations 61–67; replay/DQN utilities; ECHO state/action/mask/interval modules.
-- Allowed writes: `src/agents/echo_model.py`; `src/agents/echo_agent.py`; `src/agents/replay_buffer.py`; `src/agents/double_dqn.py`; `src/agents/target_network.py`; `tests/unit/test_echo_masked_ddql.py`; G1.
-- Ordered operations: Implement 32-output dueling network, mean advantage, online masked argmax, target evaluation, gamma^delta, terminal mask, optimizer, target copy, and exploration inside mask only.
-- Exact command: `python3 -m pytest tests/unit/test_echo_masked_ddql.py -q`.
-- Acceptance: Hand target exact; masked high-Q never selected; target no gradient; finite update; checkpoint round-trip; separate agent/checkpoint per EA and N.
-- Stop/rollback: No heuristic-Q fallback.
+- **Dependencies:** ECHO-014.
+- **Required reads:** live equations and revision-273 parameter-sharing paragraph; replay/DQN/state/action/mask/interval modules.
+- **Allowed writes:** `src/agents/echo_model.py`; `src/agents/echo_agent.py`; `src/agents/echo_parameter_server.py`; `src/agents/replay_buffer.py`; `src/agents/double_dqn.py`; `src/agents/target_network.py`; `tests/unit/test_echo_masked_ddql.py`; `tests/unit/test_echo_parameter_sharing.py`; `G1`.
+- **Ordered operations:**
+  1. Dueling N+2 outputs for current N.
+  2. masked online argmax/target evaluation/gamma^Delta/terminal/optimizer/target copy.
+  3. share Q/LSTM parameters among EAs inside one run.
+  4. retain source-specific interval accumulators and provenance.
+  5. separate checkpoint per N.
+- **Exact command:**
+```bash
+python3 -m pytest tests/unit/test_echo_masked_ddql.py tests/unit/test_echo_parameter_sharing.py -q
+```
+- **Acceptance:**
+  - hand target exact.
+  - masked action never selected.
+  - target no gradient.
+  - finite update.
+  - all EAs reference shared parameters within run.
+  - source-specific interval ownership preserved.
+  - checkpoint incompatible across N.
+- **Stop/rollback:** Do not create independent ECHO network parameters per EA unless source lock changes.
 
-### ECHO-016 — Implement fresh/stale status and LSTM training
+### ECHO-016 — Implement fresh/stale status and supervised LSTM training
 
-- Dependencies: ECHO-015.
-- Required reads: Live LSTM section; `src/echo_load_forecast.py`; `src/echo_status.py`; ECHO state/model/config.
-- Allowed writes: `src/echo_load_forecast.py`; `src/echo_status.py`; `src/agents/echo_load_lstm.py`; `tests/unit/test_echo_load_lstm.py`; G1.
-- Ordered operations: Implement supervised forecasting loss, separate optimizer/state, training-only histories, freshness threshold, fresh override, stale/missing prediction, deterministic checkpoint, and held-out guard.
-- Exact command: `python3 -m pytest tests/unit/test_echo_load_lstm.py -q`.
-- Acceptance: Fresh ignores prediction; stale/missing uses it; finite loss/gradients; no held-out IDs; checkpoint reproducible.
-- Stop/rollback: Do not hide forecast loss in Q loss unless source requires it.
+- **Dependencies:** ECHO-015.
+- **Required reads:** live LSTM section; `src/echo_load_forecast.py`; `src/echo_status.py`; state/model/training config.
+- **Allowed writes:** `src/echo_load_forecast.py`; `src/echo_status.py`; `src/agents/echo_load_lstm.py`; `tests/unit/test_echo_load_lstm.py`; `G1`.
+- **Ordered operations:**
+  1. Separate forecasting loss/optimizer.
+  2. training-only histories.
+  3. fresh override.
+  4. stale/missing prediction.
+  5. shared parameters within run.
+  6. deterministic checkpoint.
+  7. held-out guard.
+- **Exact command:**
+```bash
+python3 -m pytest tests/unit/test_echo_load_lstm.py -q
+```
+- **Acceptance:**
+  - fresh ignores prediction.
+  - stale/missing uses it.
+  - finite loss/gradients.
+  - no held-out IDs.
+  - checkpoint reproducible.
+  - shared-within-run behavior verified.
+- **Stop/rollback:** Do not hide forecast loss inside Q loss.
 
 ### ECHO-017 — Implement isolated ECHO-NoLSTM
 
-- Dependencies: ECHO-016.
-- Required reads: Live ablation definition; ECHO adapter/status/state/model; method registry.
-- Allowed writes: `src/policies/echo_no_lstm.py`; `src/evaluation/method_registry.py`; `tests/integration/test_echo_no_lstm_isolation.py`; G1.
-- Ordered operations: Create ECHO-NoLSTM identical to ECHO except the source-defined load-estimate replacement; same kernel/state/action/mask/reward/learner/budget.
-- Exact command: `python3 -m pytest tests/integration/test_echo_no_lstm_isolation.py -q`.
-- Acceptance: Differential trace shows only load-estimation-dependent fields/actions differ; no hidden parameter/budget change.
-- Stop/rollback: Do not classify as generic heuristic.
+- **Dependencies:** ECHO-016.
+- **Required reads:** live ablation definition; ECHO adapter/status/state/model.
+- **Allowed writes:** `src/policies/echo_no_lstm.py`; `src/evaluation/policy_registry.py`; `tests/integration/test_echo_no_lstm_isolation.py`; `G1`.
+- **Ordered operations:**
+  1. Identical to ECHO except approved load estimate replacement.
+  2. same kernel/state ordering/action/mask/reward/learner/budget.
+- **Exact command:**
+```bash
+python3 -m pytest tests/integration/test_echo_no_lstm_isolation.py -q
+```
+- **Acceptance:**
+  - differential trace shows only load-estimation-dependent fields/actions differ.
+  - no hidden budget/parameter difference.
+- **Stop/rollback:** Not a generic heuristic baseline.
 
-### ECHO-018 — Implement exact Algorithm 1/2 chronology
+### ECHO-018 — Implement exact Algorithm 1 and 2 chronology
 
-- Dependencies: ECHO-017.
-- Required reads: Source-locked Algorithm 1/2; `src/echo_adapter.py`; `src/training/training_loop.py`; interval/reward logic; neutral hooks.
-- Allowed writes: `src/echo_adapter.py`; `src/training/training_loop.py`; `tests/integration/test_echo_algorithm_order.py`; `tests/integration/test_echo_boundary_reward_ownership.py`; G1.
-- Ordered operations: Implement Section 3.3 order; resolutions before new decision closure; decisions then scheduling/service; T+1 flush; inference same physical order without learning and highest masked Q.
-- Exact command: `python3 -m pytest tests/integration/test_echo_algorithm_order.py tests/integration/test_echo_boundary_reward_ownership.py -q`.
-- Acceptance: Event trace maps every 23/12 algorithm line; boundary reward belongs to old interval; no same-slot double service; train/inference physical order equal.
-- Stop/rollback: Formula defects reopen owner equation task; no shared frozen-file edit.
+- **Dependencies:** ECHO-017.
+- **Required reads:** source-locked 23/12-line algorithms; `src/echo_adapter.py`; `src/training/training_loop.py`; interval logic; neutral hooks.
+- **Allowed writes:** `src/echo_adapter.py`; `src/training/training_loop.py`; `tests/integration/test_echo_algorithm_order.py`; `tests/integration/test_echo_boundary_reward_ownership.py`; `G1`.
+- **Ordered operations:**
+  1. Apply boundary resolutions before new decision closure.
+  2. then decisions/scheduling/service/history/learning.
+  3. terminal T+1.
+  4. inference same physical order without learning/highest masked Q.
+- **Exact command:**
+```bash
+python3 -m pytest tests/integration/test_echo_algorithm_order.py tests/integration/test_echo_boundary_reward_ownership.py -q
+```
+- **Acceptance:**
+  - event trace matches all algorithm lines.
+  - reward belongs old interval.
+  - no double service.
+  - training/inference physical order identical.
+- **Stop/rollback:** Formula defects reopen owning ECHO task.
 
-### ECHO-019 — Run deterministic ECHO unit/smoke suite
+### ECHO-019 — Run deterministic ECHO unit and smoke suite
 
-- Dependencies: ECHO-018.
-- Required reads: All Phase-2 tests; source lock; frozen base; EVAL-001 schemas.
-- Allowed writes: `tests/integration/test_echo_hand_trace.py`; `configs/experiments/echo_smoke.yaml`; `scripts/smoke/run_echo_smoke.py`; G5 for method `echo`, scenario `echo_smoke`, N=2, seed=00; G1.
-- Ordered operations: Run 2-EA+cloud hand trace with all routes, contention, feasible/late candidates, fallback, ERT reorder, expiration, late active; short finite learner/checkpoint smoke with schema-valid logs.
-- Exact command: `python3 -m pytest tests/unit/test_echo_equations_01_08.py tests/unit/test_echo_local_estimate.py tests/unit/test_echo_outbound_estimate.py tests/unit/test_echo_destination_model.py tests/unit/test_echo_load_history.py tests/unit/test_echo_local_queue_ordering.py tests/unit/test_echo_outbound_queue_ordering.py tests/unit/test_echo_canonical_action_space.py tests/unit/test_echo_deadline_mask.py tests/unit/test_echo_pending_records.py tests/unit/test_echo_decision_log_schema.py tests/unit/test_echo_state_contract.py tests/unit/test_echo_reward.py tests/unit/test_event_smdp_interval_contract.py tests/unit/test_echo_masked_ddql.py tests/unit/test_echo_load_lstm.py tests/integration/test_echo_no_lstm_isolation.py tests/integration/test_echo_algorithm_order.py tests/integration/test_echo_boundary_reward_ownership.py tests/integration/test_echo_hand_trace.py -q && python3 scripts/smoke/run_echo_smoke.py --config configs/experiments/echo_smoke.yaml --output-root artifacts/evaluation/runs`.
-- Acceptance: All pass; manual trace exact; finite metrics; all routes; no masked action; accounting exact; deterministic reload; logs validate.
-- Stop/rollback: Failures reopen owner task; no runtime patches here.
+- **Dependencies:** ECHO-018.
+- **Required reads:** all Phase-2 tests; source lock; frozen base.
+- **Allowed writes:** `tests/integration/test_echo_hand_trace.py`; `configs/experiments/echo_smoke.yaml`; `scripts/smoke/run_echo_smoke.py`; `artifacts/smoke/echo_v4/run_manifest.json`; `artifacts/smoke/echo_v4/task_log.jsonl`; `artifacts/smoke/echo_v4/decision_log.jsonl`; `artifacts/smoke/echo_v4/episode_metrics.csv`; `artifacts/smoke/echo_v4/checkpoint.pt`; `G1`.
+- **Ordered operations:**
+  1. Run 2-EA+cloud hand trace and short learning smoke.
+  2. cover all routes/contention/masks/ERT/expiry/late active.
+  3. checkpoint reload.
+- **Exact command:**
+```bash
+python3 -m pytest tests/unit/test_echo_equations_01_08.py tests/unit/test_echo_local_estimate.py tests/unit/test_echo_outbound_estimate.py tests/unit/test_echo_destination_model.py tests/unit/test_echo_load_history.py tests/unit/test_echo_local_queue_ordering.py tests/unit/test_echo_outbound_queue_ordering.py tests/unit/test_echo_canonical_action_space.py tests/unit/test_echo_deadline_mask.py tests/unit/test_echo_pending_records.py tests/unit/test_echo_state_contract.py tests/unit/test_echo_reward.py tests/unit/test_event_smdp_interval_contract.py tests/unit/test_echo_masked_ddql.py tests/unit/test_echo_parameter_sharing.py tests/unit/test_echo_load_lstm.py tests/integration/test_echo_no_lstm_isolation.py tests/integration/test_echo_algorithm_order.py tests/integration/test_echo_boundary_reward_ownership.py tests/integration/test_echo_hand_trace.py -q && python3 scripts/smoke/run_echo_smoke.py --config configs/experiments/echo_smoke.yaml --output artifacts/smoke/echo_v4
+```
+- **Acceptance:**
+  - all tests pass.
+  - manual trace exact.
+  - finite metrics.
+  - all routes.
+  - no masked action.
+  - accounting exact.
+  - reload deterministic.
+- **Stop/rollback:** Failures reopen owner; no runtime patches here.
 
 ### ECHO-020 — Produce equation coverage and paired pilot gate
 
-- Dependencies: ECHO-019.
-- Required reads: Source audit; all Phase-2 evidence; frozen base; ECHO/HOODIE smoke; schemas.
-- Allowed writes: `scripts/audit/build_echo_coverage.py`; `artifacts/audits/echo_equation_coverage.json`; `artifacts/audits/echo_equation_coverage.md`; `configs/experiments/echo_pilot.yaml`; `scripts/pilot/run_echo_pilot.py`; `artifacts/pilot/echo_v4/run_manifest.json`; `artifacts/pilot/echo_v4/task_log.jsonl`; `artifacts/pilot/echo_v4/decision_log.jsonl`; `artifacts/pilot/echo_v4/episode_metrics.csv`; `artifacts/pilot/echo_v4/SHA256SUMS`; G1.
-- Ordered operations: Map every equation/algorithm line to code/test/evidence; run paired ECHO/HOODIE/ECHO-NoLSTM pilot on same traces; audit route, mask, reward, interval, accounting, stability, and schema.
-- Exact command: `python3 scripts/audit/build_echo_coverage.py --source-audit artifacts/audits/echo_live_revision_audit.md --output-json artifacts/audits/echo_equation_coverage.json --output-md artifacts/audits/echo_equation_coverage.md && python3 scripts/pilot/run_echo_pilot.py --config configs/experiments/echo_pilot.yaml --output artifacts/pilot/echo_v4`.
-- Acceptance: 69/69 rows have code+test; no unresolved S0/S1; paired hashes equal; finite pilot; no superiority claim.
-- Stop/rollback: Any uncovered row/invariant blocks evaluation.
+- **Dependencies:** ECHO-019.
+- **Required reads:** source audit; all Phase-2 evidence; frozen base; smokes; EVAL-001 schemas.
+- **Allowed writes:** `scripts/audit/build_echo_coverage.py`; `artifacts/audits/echo_equation_coverage.md`; `artifacts/audits/echo_equation_coverage.json`; `configs/experiments/echo_pilot.yaml`; `scripts/pilot/run_echo_pilot.py`; `artifacts/pilot/echo_v4/run_manifest.json`; `artifacts/pilot/echo_v4/task_log.jsonl`; `artifacts/pilot/echo_v4/decision_log.jsonl`; `artifacts/pilot/echo_v4/episode_metrics.csv`; `G1`.
+- **Ordered operations:**
+  1. Map each equation/algorithm line to symbol/test/evidence.
+  2. run paired ECHO/HOODIE/NoLSTM pilot.
+  3. check route/mask/reward/replay/accounting/stability and N-specific architecture.
+- **Exact command:**
+```bash
+python3 scripts/audit/build_echo_coverage.py --source-audit artifacts/audits/echo_live_revision_audit.md --output artifacts/audits/echo_equation_coverage.json && python3 scripts/pilot/run_echo_pilot.py --config configs/experiments/echo_pilot.yaml --output artifacts/pilot/echo_v4
+```
+- **Acceptance:**
+  - 69/69 code+test coverage.
+  - no unresolved S0/S1.
+  - paired hashes equal.
+  - finite pilot.
+  - no superiority claim.
+- **Stop/rollback:** Any uncovered row blocks evaluation.
 
 ### EVAL-001 — Freeze logging, evaluation, and 15-panel schemas before ECHO logging
 
-- Dependencies: SRC-001, BASE-004.
-- Required reads: `research/ECHO_evaluation_spec.md`; SRC-001 snapshot/audit; BASE-004 trace schema; Section 9 constants.
-- Allowed writes: `experiments/manifest.yaml`; `experiments/figure_manifest.yaml`; `experiments/schemas/run_manifest.schema.json`; `experiments/schemas/task_log.schema.json`; `experiments/schemas/decision_log.schema.json`; `experiments/schemas/resolution_event.schema.json`; `experiments/schemas/episode_metrics.schema.json`; `experiments/schemas/seed_metrics.schema.json`; `experiments/schemas/panel_values.schema.json`; `experiments/schemas/artifact_manifest.schema.json`; `experiments/schemas/checkpoint_manifest.schema.json`; `src/evaluation/config.py`; `src/evaluation/log_schema.py`; `tests/unit/test_evaluation_manifests.py`; `tests/unit/test_log_schemas.py`; `docs/contracts/evaluation_logging_contract.md`; G1.
-- Ordered operations: Encode all 15 panels, exact methods/x/fixed values, retraining/checkpoint rule, seeds, 200 held-out episodes, metrics, CI, raw/export paths; freeze decision/task/resolution log fields before ECHO-011; define training/validation/test split and held-out guard; do not run experiments.
-- Exact command: `python3 -m pytest tests/unit/test_evaluation_manifests.py tests/unit/test_log_schemas.py -q`.
-- Acceptance: 15 unique panels; no placeholder; Figure-6 timeout 2s; Figure-7 c/f swept; Figure-8 exact; all schemas validate; ECHO-011 required fields represented.
-- Stop/rollback: Unresolved retraining/checkpoint/log field yields PLAN_CHANGE_REQUIRED; do not guess.
+- **Dependencies:** SRC-001, BASE-004.
+- **Required reads:** `research/ECHO_evaluation_spec.md`; source lock; immutable trace schema.
+- **Allowed writes:** `experiments/manifest.yaml`; `experiments/figure_manifest.yaml`; `experiments/schemas/run_manifest.schema.json`; `experiments/schemas/task_log.schema.json`; `experiments/schemas/decision_log.schema.json`; `experiments/schemas/resolution_event.schema.json`; `experiments/schemas/checkpoint_manifest.schema.json`; `experiments/schemas/episode_metrics.schema.json`; `experiments/schemas/seed_metrics.schema.json`; `experiments/schemas/panel_values.schema.json`; `experiments/schemas/artifact_manifest.schema.json`; `src/evaluation/config.py`; `tests/unit/test_evaluation_manifests.py`; `G1`.
+- **Ordered operations:**
+  1. Encode all 15 panels, methods, N-specific checkpoints, exact fields for action/ERT/mask/pending/reward/Delta, seeds, held-out protocol, metrics/CI/paths.
+  2. protect held-out data.
+- **Exact command:**
+```bash
+python3 -m pytest tests/unit/test_evaluation_manifests.py -q
+```
+- **Acceptance:**
+  - 15 unique panels.
+  - no placeholders.
+  - Figure 6 timeout 2s.
+  - Figure 7 c/f swept.
+  - Figure 8 exact.
+  - schemas validate.
+  - N+2 and checkpoint-per-N represented.
+- **Stop/rollback:** Unresolved retraining/checkpoint rule blocks task.
 
 ### EVAL-002 — Generate immutable paired trace bank
 
-- Dependencies: ECHO-020, EVAL-001.
-- Required reads: BASE-004 immutable trace protocol; EVAL-001 manifests.
-- Allowed writes: `scripts/evaluation/build_trace_bank.py`; `tests/integration/test_trace_bank.py`; G4 for every manifest scenario/seed; `artifacts/evaluation/trace_bank/index.json`; G1.
-- Ordered operations: Generate each required trace once using G4; canonical JSON; stable hashes; read-only consumption; no per-method regeneration; include drain/arrival metadata.
-- Exact command: `python3 -m pytest tests/integration/test_trace_bank.py -q && python3 scripts/evaluation/build_trace_bank.py --manifest experiments/manifest.yaml --output artifacts/evaluation/trace_bank`.
-- Acceptance: Expected scenario/seed count; stable hashes; methods load same bytes; no duplicate ID with different bytes.
-- Stop/rollback: Never overwrite an existing trace ID with different content.
+- **Dependencies:** ECHO-020, EVAL-001.
+- **Required reads:** immutable trace protocol; evaluation manifest.
+- **Allowed writes:** `scripts/evaluation/build_trace_bank.py`; `tests/integration/test_trace_bank.py`; `artifacts/evaluation/trace_bank/index.json`; `G1`; `G4`.
+- **Ordered operations:**
+  1. Generate every seed/scenario once.
+  2. canonical JSON and SHA.
+  3. read-only consumption.
+- **Exact command:**
+```bash
+python3 -m pytest tests/integration/test_trace_bank.py -q && python3 scripts/evaluation/build_trace_bank.py --manifest experiments/manifest.yaml --output artifacts/evaluation/trace_bank
+```
+- **Acceptance:**
+  - expected count.
+  - stable hashes.
+  - all methods load same bytes.
+  - arrival/drain valid.
+- **Stop/rollback:** Never overwrite trace ID with different bytes.
 
-### EVAL-003 — Freeze config/topology/checkpoint lineage
+### EVAL-003 — Freeze config, topology, and checkpoint lineage
 
-- Dependencies: EVAL-002.
-- Required reads: EVAL-002 index; frozen base; ECHO pilot; manifests; environment metadata.
-- Allowed writes: `scripts/evaluation/build_lineage_manifest.py`; `tests/unit/test_lineage_manifest.py`; `artifacts/evaluation/lineage/lineage_manifest.json`; `artifacts/evaluation/lineage/SHA256SUMS`; G1.
-- Ordered operations: Map every planned run to config, topology, trace, method/code, checkpoint, source revision, software environment, and schema hashes; assign deterministic run IDs per G5.
-- Exact command: `python3 -m pytest tests/unit/test_lineage_manifest.py -q && python3 scripts/evaluation/build_lineage_manifest.py --manifest experiments/manifest.yaml --trace-index artifacts/evaluation/trace_bank/index.json --output artifacts/evaluation/lineage/lineage_manifest.json --checksums artifacts/evaluation/lineage/SHA256SUMS`.
-- Acceptance: No missing hash; unique/resumable IDs; checkpoint compatible with method/N/scenario.
-- Stop/rollback: No mutable latest-checkpoint reference.
+- **Dependencies:** EVAL-002.
+- **Required reads:** trace bank; frozen base; pilot checkpoints; manifests.
+- **Allowed writes:** `scripts/evaluation/build_lineage_manifest.py`; `artifacts/evaluation/lineage/index.json`; `tests/unit/test_lineage_manifest.py`; `G1`.
+- **Ordered operations:**
+  1. Map every run to config/topology/trace/method/code/checkpoint/source/environment hashes.
+  2. enforce checkpoint N compatibility and within-run sharing metadata.
+- **Exact command:**
+```bash
+python3 -m pytest tests/unit/test_lineage_manifest.py -q && python3 scripts/evaluation/build_lineage_manifest.py --manifest experiments/manifest.yaml --output artifacts/evaluation/lineage
+```
+- **Acceptance:**
+  - no missing hash.
+  - unique resumable run IDs.
+  - checkpoint method/N/scenario compatible.
+- **Stop/rollback:** No mutable latest-checkpoint references.
 
 ### EVAL-004 — Validate all method adapters on common inputs
 
-- Dependencies: EVAL-003.
-- Required reads: Method registry; frozen neutral kernel; EVAL-003 lineage; trace bank.
-- Allowed writes: `tests/integration/test_all_method_common_inputs.py`; `artifacts/evaluation/adapter_validation/validation.json`; `artifacts/evaluation/adapter_validation/differential_trace.md`; G1.
-- Ordered operations: Run one deterministic common trace for ECHO, ECHO-NoLSTM, HOODIE, RO, FLC, VO, HO, BCO, MLEO; compare input hashes, physical accounting, and method isolation; runtime source is read-only.
-- Exact command: `python3 -m pytest tests/integration/test_all_method_common_inputs.py -q`.
-- Acceptance: Identical inputs; method-specific behavior only; heuristics do not train; no ECHO import in HOODIE/heuristics.
-- Stop/rollback: Runtime defect reopens owning BASE/ECHO card; EVAL-004 does not patch it.
+- **Dependencies:** EVAL-003.
+- **Required reads:** policy registry; shared kernel; lineage; trace bank.
+- **Allowed writes:** `tests/integration/test_all_method_common_inputs.py`; `artifacts/evaluation/adapter_validation/summary.json`; `G1`.
+- **Ordered operations:**
+  1. Run one deterministic trace for all methods.
+  2. compare input hashes/accounting.
+  3. prove method-specific behavior only.
+- **Exact command:**
+```bash
+python3 -m pytest tests/integration/test_all_method_common_inputs.py -q
+```
+- **Acceptance:**
+  - identical inputs.
+  - no heuristic training.
+  - no ECHO import in HOODIE/heuristics.
+  - accounting exact.
+- **Stop/rollback:** Runtime fix reopens owning task.
 
 ### EVAL-005 — Measure throughput and freeze shard budget
 
-- Dependencies: EVAL-004.
-- Required reads: Validated adapters; manifests; available compute; expected run count.
-- Allowed writes: `scripts/evaluation/benchmark_throughput.py`; `artifacts/evaluation/compute_budget.json`; `artifacts/evaluation/compute_budget.md`; `experiments/shard_plan.yaml`; G1.
-- Ordered operations: Benchmark representative train/eval jobs; calculate exact job count, CPU/GPU/RAM/storage/wall time; define shard IDs, checkpoint frequency, completion marker, retry/resume rules; launch no full job.
-- Exact command: `python3 scripts/evaluation/benchmark_throughput.py --manifest experiments/manifest.yaml --lineage artifacts/evaluation/lineage/lineage_manifest.json --output-json artifacts/evaluation/compute_budget.json --output-md artifacts/evaluation/compute_budget.md --shards experiments/shard_plan.yaml`.
-- Acceptance: Budget derives from measured throughput; every run assigned once; resume/rerun deterministic; feasibility explicit.
-- Stop/rollback: Infeasible matrix blocks EVAL-006 pending plan-approved reduction.
+- **Dependencies:** EVAL-004.
+- **Required reads:** validated adapters; manifest; available compute.
+- **Allowed writes:** `scripts/evaluation/benchmark_throughput.py`; `artifacts/evaluation/compute_budget.json`; `artifacts/evaluation/compute_budget.md`; `experiments/shard_plan.yaml`; `G1`.
+- **Ordered operations:**
+  1. Benchmark representative jobs.
+  2. estimate total resources.
+  3. define shard/checkpoint/resume/rerun rules.
+- **Exact command:**
+```bash
+python3 scripts/evaluation/benchmark_throughput.py --manifest experiments/manifest.yaml --output artifacts/evaluation/compute_budget.json --shards experiments/shard_plan.yaml
+```
+- **Acceptance:**
+  - measured estimate.
+  - full matrix feasible or explicitly blocked.
+  - no full job launched.
+- **Stop/rollback:** Infeasible budget requires approved matrix change.
 
 ### EVAL-006 — Run Figure-5 validation sweeps
 
-- Dependencies: EVAL-005.
-- Required reads: Figure-5 manifest; trace bank; shard plan; validation split.
-- Allowed writes: `configs/experiments/figure5_sweep.yaml`; `scripts/evaluation/run_figure5_sweep.py`; G5 for each Figure-5 learning run; `artifacts/evaluation/figure5/selection.json`; `artifacts/evaluation/figure5/SHA256SUMS`; G1.
-- Ordered operations: Run learning rates 1e-9,5e-9,1e-8,1e-7,5e-7,7e-7 and gamma .2,.4,.6,.8,.99 with source-locked budget; select using validation only; retain all runs/checkpoints.
-- Exact command: `python3 scripts/evaluation/run_figure5_sweep.py --config configs/experiments/figure5_sweep.yaml --output-root artifacts/evaluation/runs --selection artifacts/evaluation/figure5/selection.json --checksums artifacts/evaluation/figure5/SHA256SUMS`.
-- Acceptance: All points complete/resumable; no held-out trace; finite metrics; deterministic documented selection.
-- Stop/rollback: Never select from final test performance.
+- **Dependencies:** EVAL-005.
+- **Required reads:** Figure-5 manifest; trace bank; shard plan.
+- **Allowed writes:** `configs/experiments/figure5_sweep.yaml`; `scripts/evaluation/run_figure5_sweep.py`; `artifacts/evaluation/figure5/sweep_manifest.json`; `artifacts/evaluation/figure5/results.csv`; `G1`; `G5`.
+- **Ordered operations:**
+  1. Run LR and gamma points with validation-only selection.
+  2. preserve seeds/logs/checkpoints.
+  3. separate N checkpoints where applicable.
+- **Exact command:**
+```bash
+python3 scripts/evaluation/run_figure5_sweep.py --config configs/experiments/figure5_sweep.yaml --output artifacts/evaluation/figure5
+```
+- **Acceptance:**
+  - all points complete/resumable.
+  - no held-out selection.
+  - finite metrics.
+- **Stop/rollback:** Do not select by final-test performance.
 
 ### EVAL-007 — Train equal-budget final method checkpoints
 
-- Dependencies: EVAL-006.
-- Required reads: EVAL-006 selection; manifests; shard plan; training trace bank.
-- Allowed writes: `configs/experiments/final_training.yaml`; `scripts/evaluation/run_final_training.py`; G5 for every ECHO/HOODIE/ECHO-NoLSTM training run; `artifacts/checkpoints/final/index.json`; `artifacts/checkpoints/final/SHA256SUMS`; G1.
-- Ordered operations: Train required learning methods with equal declared budgets and separate seeds/N/scenarios; exclude heuristics; write immutable completion markers and checkpoint index.
-- Exact command: `python3 scripts/evaluation/run_final_training.py --config configs/experiments/final_training.yaml --output-root artifacts/evaluation/runs --checkpoint-index artifacts/checkpoints/final/index.json --checksums artifacts/checkpoints/final/SHA256SUMS`.
-- Acceptance: Every checkpoint has config/source/code/trace lineage; no budget mismatch/NaN/Inf; resume stable.
-- Stop/rollback: Failed shard resumes only from same-hash checkpoint.
+- **Dependencies:** EVAL-006.
+- **Required reads:** selected hyperparameters; manifest; shard plan; trace bank.
+- **Allowed writes:** `configs/experiments/final_training.yaml`; `scripts/evaluation/run_final_training.py`; `artifacts/checkpoints/final/index.json`; `G1`; `G5`.
+- **Ordered operations:**
+  1. Train ECHO/HOODIE/NoLSTM with equal budgets and separate seeds/N/scenarios.
+  2. heuristics excluded.
+  3. immutable completion markers.
+- **Exact command:**
+```bash
+python3 scripts/evaluation/run_final_training.py --config configs/experiments/final_training.yaml --output artifacts/checkpoints/final
+```
+- **Acceptance:**
+  - lineage complete.
+  - no budget mismatch.
+  - no NaN/Inf.
+  - resume reproducible.
+  - ECHO parameters shared within run and checkpoints separate by N.
+- **Stop/rollback:** Rerun failed shard only from same-hash checkpoint.
 
 ### EVAL-008 — Run 10×200 held-out paired evaluation
 
-- Dependencies: EVAL-007.
-- Required reads: Final checkpoint index; held-out G4 traces; evaluation manifest; schemas.
-- Allowed writes: `configs/experiments/heldout_evaluation.yaml`; `scripts/evaluation/run_heldout_evaluation.py`; G5 for every method/panel/seed held-out run; `artifacts/evaluation/heldout_index.json`; G1.
-- Ordered operations: For every reported point/method run 10 fixed seeds × 200 held-out episodes on identical paired traces; no optimizer/training; log action/mask/ERT/outcome/reward/delta and all hashes.
-- Exact command: `python3 scripts/evaluation/run_heldout_evaluation.py --config configs/experiments/heldout_evaluation.yaml --output-root artifacts/evaluation/runs --index artifacts/evaluation/heldout_index.json`.
-- Acceptance: Expected run count complete; no training calls; manifests immutable; every log validates.
-- Stop/rollback: Partial shard is not averaged or relabeled.
+- **Dependencies:** EVAL-007.
+- **Required reads:** final checkpoints; held-out trace bank; evaluation manifest.
+- **Allowed writes:** `configs/experiments/heldout_evaluation.yaml`; `scripts/evaluation/run_heldout_evaluation.py`; `G1`; `G5`.
+- **Ordered operations:**
+  1. For every point/method run 10 fixed seeds × 200 held-out episodes.
+  2. same trace per seed/point.
+  3. log actions/masks/ERT/outcomes/rewards/Delta/hashes.
+  4. no optimizer calls.
+- **Exact command:**
+```bash
+python3 scripts/evaluation/run_heldout_evaluation.py --config configs/experiments/heldout_evaluation.yaml --output artifacts/evaluation/runs
+```
+- **Acceptance:**
+  - full job count.
+  - no training call.
+  - immutable manifests.
+  - schema-valid outputs.
+- **Stop/rollback:** Partial shard is not averaged.
 
-### EVAL-009 — Validate generated/completed/dropped accounting
+### EVAL-009 — Validate generated, completed, and dropped accounting
 
-- Dependencies: EVAL-008.
-- Required reads: EVAL-008 index and G5 logs.
-- Allowed writes: `scripts/evaluation/audit_accounting.py`; `tests/unit/test_evaluation_accounting.py`; `artifacts/evaluation/audits/accounting.json`; `artifacts/evaluation/audits/accounting.md`; G1.
-- Ordered operations: Audit generated=successful+dropped; one terminal outcome; no duplicate/missing task; horizon/drain; pooled task counts.
-- Exact command: `python3 -m pytest tests/unit/test_evaluation_accounting.py -q && python3 scripts/evaluation/audit_accounting.py --index artifacts/evaluation/heldout_index.json --output-json artifacts/evaluation/audits/accounting.json --output-md artifacts/evaluation/audits/accounting.md`.
-- Acceptance: Zero invariant violation across all runs.
-- Stop/rollback: Any violation blocks aggregation and reopens owner runtime card.
+- **Dependencies:** EVAL-008.
+- **Required reads:** EVAL-008 run outputs.
+- **Allowed writes:** `scripts/evaluation/audit_accounting.py`; `tests/unit/test_evaluation_accounting.py`; `artifacts/evaluation/audits/accounting.json`; `artifacts/evaluation/audits/accounting.md`; `G1`.
+- **Ordered operations:**
+  1. Verify generated=successful+dropped, one outcome, no duplicate/missing task, horizon/drain, pooled counts.
+- **Exact command:**
+```bash
+python3 -m pytest tests/unit/test_evaluation_accounting.py -q && python3 scripts/evaluation/audit_accounting.py --input artifacts/evaluation/runs --output artifacts/evaluation/audits/accounting.json
+```
+- **Acceptance:**
+  - zero violations.
+- **Stop/rollback:** Any violation blocks aggregation and reopens runtime owner.
 
 ### EVAL-010 — Validate no masked ECHO action
 
-- Dependencies: EVAL-008.
-- Required reads: EVAL-008 ECHO decision/task logs.
-- Allowed writes: `scripts/evaluation/audit_masks.py`; `tests/unit/test_evaluation_mask_audit.py`; `artifacts/evaluation/audits/masks.json`; `artifacts/evaluation/audits/masks.md`; G1.
-- Ordered operations: Verify selected mask bit=1, physical legality, fallback identity, and same mask hash for decision/exploration/exploitation/target metadata.
-- Exact command: `python3 -m pytest tests/unit/test_evaluation_mask_audit.py -q && python3 scripts/evaluation/audit_masks.py --index artifacts/evaluation/heldout_index.json --output-json artifacts/evaluation/audits/masks.json --output-md artifacts/evaluation/audits/masks.md`.
-- Acceptance: Zero masked/invalid/disconnected/self action.
-- Stop/rollback: Violation reopens ECHO-009/010/015/018.
+- **Dependencies:** EVAL-008.
+- **Required reads:** EVAL-008 ECHO decision logs.
+- **Allowed writes:** `scripts/evaluation/audit_masks.py`; `tests/unit/test_evaluation_mask_audit.py`; `artifacts/evaluation/audits/masks.json`; `artifacts/evaluation/audits/masks.md`; `G1`.
+- **Ordered operations:**
+  1. Verify selected mask=1, legality, fallback, same decision mask used in exploration/exploitation/target.
+- **Exact command:**
+```bash
+python3 -m pytest tests/unit/test_evaluation_mask_audit.py -q && python3 scripts/evaluation/audit_masks.py --input artifacts/evaluation/runs --output artifacts/evaluation/audits/masks.json
+```
+- **Acceptance:**
+  - zero masked/invalid/self/disconnected action.
+- **Stop/rollback:** Violation reopens ECHO-009/010/015/018.
 
-### EVAL-011 — Validate trace/config/topology/checkpoint hashes
+### EVAL-011 — Validate trace, config, topology, and checkpoint hashes
 
-- Dependencies: EVAL-008.
-- Required reads: Run/lineage manifests; G5 logs; checkpoint/trace/config/topology/source hashes.
-- Allowed writes: `scripts/evaluation/audit_lineage.py`; `tests/unit/test_evaluation_lineage_audit.py`; `artifacts/evaluation/audits/lineage.json`; `artifacts/evaluation/audits/lineage.md`; G1.
-- Ordered operations: Cross-check every row/run against expected hashes; verify paired methods share inputs and no held-out trace trained a checkpoint.
-- Exact command: `python3 -m pytest tests/unit/test_evaluation_lineage_audit.py -q && python3 scripts/evaluation/audit_lineage.py --lineage artifacts/evaluation/lineage/lineage_manifest.json --index artifacts/evaluation/heldout_index.json --output-json artifacts/evaluation/audits/lineage.json --output-md artifacts/evaluation/audits/lineage.md`.
-- Acceptance: Zero missing/mismatched hash and zero leakage.
-- Stop/rollback: Exclude/rerun mismatched run; never relabel.
+- **Dependencies:** EVAL-008.
+- **Required reads:** run and lineage manifests.
+- **Allowed writes:** `scripts/evaluation/audit_lineage.py`; `tests/unit/test_evaluation_lineage_audit.py`; `artifacts/evaluation/audits/lineage.json`; `artifacts/evaluation/audits/lineage.md`; `G1`.
+- **Ordered operations:**
+  1. Cross-check all hashes.
+  2. verify paired inputs and no held-out training.
+  3. verify N-specific checkpoint.
+- **Exact command:**
+```bash
+python3 -m pytest tests/unit/test_evaluation_lineage_audit.py -q && python3 scripts/evaluation/audit_lineage.py --lineage artifacts/evaluation/lineage --runs artifacts/evaluation/runs --output artifacts/evaluation/audits/lineage.json
+```
+- **Acceptance:**
+  - zero missing/mismatch.
+  - no held-out checkpoint fitting.
+  - N compatibility exact.
+- **Stop/rollback:** Exclude and rerun mismatched run; never relabel.
 
-### EVAL-012 — Aggregate seed metrics and 95% CIs
+### EVAL-012 — Aggregate seed metrics and 95% confidence intervals
 
-- Dependencies: EVAL-009, EVAL-010, EVAL-011.
-- Required reads: PASS accounting/mask/lineage audits; G5 logs; figure manifest.
-- Allowed writes: `src/evaluation/statistics.py`; `scripts/evaluation/aggregate_results.py`; `tests/unit/test_evaluation_statistics.py`; G6 for all 14 metric panel IDs; `artifacts/metrics/aggregation_manifest.json`; G1.
-- Ordered operations: Aggregate task→episode→seed; preserve negative-delay convention; pool drop counts within seed; seed means and 95% CIs; no episode pseudo-replication; deterministic sort/serialization.
-- Exact command: `python3 -m pytest tests/unit/test_evaluation_statistics.py -q && python3 scripts/evaluation/aggregate_results.py --manifest experiments/figure_manifest.yaml --run-index artifacts/evaluation/heldout_index.json --output artifacts/metrics --aggregation-manifest artifacts/metrics/aggregation_manifest.json`.
-- Acceptance: Each point has 10 seed rows and CI; formulas tested; byte-identical regeneration.
-- Stop/rollback: No imputation or partial-job averaging.
+- **Dependencies:** EVAL-009, EVAL-010, EVAL-011.
+- **Required reads:** three PASS audits; run outputs; figure manifest.
+- **Allowed writes:** `src/evaluation/statistics.py`; `scripts/evaluation/aggregate_results.py`; `tests/unit/test_evaluation_statistics.py`; `G1`; `G6`.
+- **Ordered operations:**
+  1. Task→episode→seed aggregation.
+  2. negative delay convention.
+  3. pooled drop counts before seed ratio.
+  4. seed-level mean/95% CI.
+- **Exact command:**
+```bash
+python3 -m pytest tests/unit/test_evaluation_statistics.py -q && python3 scripts/evaluation/aggregate_results.py --manifest experiments/figure_manifest.yaml --input artifacts/evaluation/runs --output artifacts/metrics
+```
+- **Acceptance:**
+  - 10 seed rows per point.
+  - CI present.
+  - formulas tested.
+  - byte-identical regeneration.
+- **Stop/rollback:** Do not impute missing seeds.
 
 ### FIG-001 — Render Figure 4 topology
 
-- Dependencies: BASE-002.
-- Required reads: BASE-002 frozen topology files and hash.
-- Allowed writes: `scripts/figures/render_figure4.py`; G7 for figure 4; `artifacts/figures/panel_exports/f4.csv`; G1.
-- Ordered operations: Render actual 20-EA topology from JSON using deterministic coordinates; no hand-drawn edges.
-- Exact command: `python3 scripts/figures/render_figure4.py --topology configs/authoritative/hoodie_topology.json --svg artifacts/figures/vector/figure4.svg --pdf artifacts/figures/vector/figure4.pdf --png artifacts/figures/png_300dpi/figure4.png --panel-csv artifacts/figures/panel_exports/f4.csv --manifest artifacts/figures/manifests/figure4.json`.
-- Acceptance: Edge list/hash match topology; vector/PDF/300-dpi PNG exist; repeat hashes equal.
-- Stop/rollback: No visual-only data alteration.
+- **Dependencies:** BASE-002.
+- **Required reads:** frozen topology.
+- **Allowed writes:** `scripts/figures/render_figure4.py`; `artifacts/figures/vector/figure4.svg`; `artifacts/figures/vector/figure4.pdf`; `artifacts/figures/png_300dpi/figure4.png`; `artifacts/figures/manifests/figure4.json`; `artifacts/figures/panel_exports/f4.csv`; `G1`.
+- **Ordered operations:**
+  1. Render actual topology with deterministic coordinates.
+- **Exact command:**
+```bash
+python3 scripts/figures/render_figure4.py --topology configs/authoritative/hoodie_topology.json --output artifacts/figures
+```
+- **Acceptance:**
+  - edge list/hash exact.
+  - SVG/PDF/300dpi PNG exist.
+  - repeated hashes equal.
+- **Stop/rollback:** No hand-drawn correction.
 
 ### FIG-002 — Render Figure 5(a–b)
 
-- Dependencies: EVAL-006.
-- Required reads: EVAL-006 G5 outputs and selection.
-- Allowed writes: `scripts/figures/render_figure5.py`; G7 for figure 5; `artifacts/figures/panel_exports/f5a.csv`; `artifacts/figures/panel_exports/f5b.csv`; G1.
-- Ordered operations: Plot reward vs learning rate and gamma from retained CSV/metrics; include configured seed summaries; mark selected values.
-- Exact command: `python3 scripts/figures/render_figure5.py --run-root artifacts/evaluation/runs --selection artifacts/evaluation/figure5/selection.json --svg artifacts/figures/vector/figure5.svg --pdf artifacts/figures/vector/figure5.pdf --png artifacts/figures/png_300dpi/figure5.png --panel-a artifacts/figures/panel_exports/f5a.csv --panel-b artifacts/figures/panel_exports/f5b.csv --manifest artifacts/figures/manifests/figure5.json`.
-- Acceptance: 2 panels/all points; plotted values equal CSV; vector/PDF/300-dpi and lineage.
-- Stop/rollback: No manually entered y-values.
+- **Dependencies:** EVAL-006.
+- **Required reads:** EVAL-006 outputs.
+- **Allowed writes:** `scripts/figures/render_figure5.py`; `artifacts/figures/vector/figure5.svg`; `artifacts/figures/vector/figure5.pdf`; `artifacts/figures/png_300dpi/figure5.png`; `artifacts/figures/manifests/figure5.json`; `artifacts/figures/panel_exports/f5a.csv`; `artifacts/figures/panel_exports/f5b.csv`; `G1`.
+- **Ordered operations:**
+  1. Plot reward vs LR and gamma from retained CSV with CI.
+- **Exact command:**
+```bash
+python3 scripts/figures/render_figure5.py --input artifacts/evaluation/figure5 --output artifacts/figures
+```
+- **Acceptance:**
+  - 2 panels/all points.
+  - values equal CSV.
+  - lineage complete.
+- **Stop/rollback:** No manual y-values.
 
 ### FIG-003 — Render Figure 6(a–e)
 
-- Dependencies: EVAL-012.
-- Required reads: EVAL-012 G6 f6a–f6e and Figure-6 manifest.
-- Allowed writes: `scripts/figures/render_figure6.py`; G7 for figure 6; `artifacts/figures/panel_exports/f6a.csv`; `artifacts/figures/panel_exports/f6b.csv`; `artifacts/figures/panel_exports/f6c.csv`; `artifacts/figures/panel_exports/f6d.csv`; `artifacts/figures/panel_exports/f6e.csv`; G1.
-- Ordered operations: Render five exact P/capacity/N/traffic/rate-profile panels with timeout 2s and seed CIs.
-- Exact command: `python3 scripts/figures/render_figure6.py --metrics artifacts/metrics --manifest experiments/figure_manifest.yaml --svg artifacts/figures/vector/figure6.svg --pdf artifacts/figures/vector/figure6.pdf --png artifacts/figures/png_300dpi/figure6.png --panel-dir artifacts/figures/panel_exports --figure-manifest artifacts/figures/manifests/figure6.json`.
-- Acceptance: 5 panels; x/series exact; each point traces to 10 seed rows; files obey G7.
-- Stop/rollback: No unapproved smoothing/interpolation.
+- **Dependencies:** EVAL-012.
+- **Required reads:** EVAL-012 panel metrics; Figure-6 manifest.
+- **Allowed writes:** `scripts/figures/render_figure6.py`; `artifacts/figures/vector/figure6.svg`; `artifacts/figures/vector/figure6.pdf`; `artifacts/figures/png_300dpi/figure6.png`; `artifacts/figures/manifests/figure6.json`; `artifacts/figures/panel_exports/f6a.csv`; `artifacts/figures/panel_exports/f6b.csv`; `artifacts/figures/panel_exports/f6c.csv`; `artifacts/figures/panel_exports/f6d.csv`; `artifacts/figures/panel_exports/f6e.csv`; `G1`.
+- **Ordered operations:**
+  1. Render exact P/capacity/N/traffic/rate profiles with 2s default timeout and CI.
+- **Exact command:**
+```bash
+python3 scripts/figures/render_figure6.py --input artifacts/metrics --manifest experiments/figure_manifest.yaml --output artifacts/figures
+```
+- **Acceptance:**
+  - 5 panels.
+  - definitions exact.
+  - each point traces to 10 seeds.
+- **Stop/rollback:** No unapproved smoothing/interpolation.
 
 ### FIG-004 — Render Figure 7(a–f)
 
-- Dependencies: EVAL-012.
-- Required reads: EVAL-012 G6 f7a–f7f and Figure-7 manifest.
-- Allowed writes: `scripts/figures/render_figure7.py`; G7 for figure 7; `artifacts/figures/panel_exports/f7a.csv`; `artifacts/figures/panel_exports/f7b.csv`; `artifacts/figures/panel_exports/f7c.csv`; `artifacts/figures/panel_exports/f7d.csv`; `artifacts/figures/panel_exports/f7e.csv`; `artifacts/figures/panel_exports/f7f.csv`; G1.
-- Ordered operations: Render delay a–c and pooled-drop d–f with exact fixed/swept timeout rules, methods, and seed CIs.
-- Exact command: `python3 scripts/figures/render_figure7.py --metrics artifacts/metrics --manifest experiments/figure_manifest.yaml --svg artifacts/figures/vector/figure7.svg --pdf artifacts/figures/vector/figure7.pdf --png artifacts/figures/png_300dpi/figure7.png --panel-dir artifacts/figures/panel_exports --figure-manifest artifacts/figures/manifests/figure7.json`.
-- Acceptance: 6 panels; negative-delay and pooled-drop preserved; no timeout contradiction; G7 valid.
-- Stop/rollback: Do not average episode drop ratios instead of pooled counts.
+- **Dependencies:** EVAL-012.
+- **Required reads:** EVAL-012 metrics; Figure-7 manifest.
+- **Allowed writes:** `scripts/figures/render_figure7.py`; `artifacts/figures/vector/figure7.svg`; `artifacts/figures/vector/figure7.pdf`; `artifacts/figures/png_300dpi/figure7.png`; `artifacts/figures/manifests/figure7.json`; `artifacts/figures/panel_exports/f7a.csv`; `artifacts/figures/panel_exports/f7b.csv`; `artifacts/figures/panel_exports/f7c.csv`; `artifacts/figures/panel_exports/f7d.csv`; `artifacts/figures/panel_exports/f7e.csv`; `artifacts/figures/panel_exports/f7f.csv`; `G1`.
+- **Ordered operations:**
+  1. Render delay a-c and pooled-drop d-f with exact fixed/swept timeout and CI.
+- **Exact command:**
+```bash
+python3 scripts/figures/render_figure7.py --input artifacts/metrics --manifest experiments/figure_manifest.yaml --output artifacts/figures
+```
+- **Acceptance:**
+  - 6 panels.
+  - negative-delay and pooled-drop preserved.
+  - no timeout contradiction.
+- **Stop/rollback:** Do not average episode drop ratios.
 
 ### FIG-005 — Render Figure 8
 
-- Dependencies: EVAL-012.
-- Required reads: EVAL-012 G6 f8 and Figure-8 manifest.
-- Allowed writes: `scripts/figures/render_figure8.py`; G7 for figure 8; `artifacts/figures/panel_exports/f8.csv`; G1.
-- Ordered operations: Render ECHO vs ECHO-NoLSTM at N=20,P=.3,timeout 1s, episodes 0–3000 with selected LR/gamma and seed convergence/final-delay/stability.
-- Exact command: `python3 scripts/figures/render_figure8.py --metrics artifacts/metrics --manifest experiments/figure_manifest.yaml --svg artifacts/figures/vector/figure8.svg --pdf artifacts/figures/vector/figure8.pdf --png artifacts/figures/png_300dpi/figure8.png --panel artifacts/figures/panel_exports/f8.csv --figure-manifest artifacts/figures/manifests/figure8.json`.
-- Acceptance: Exact two methods; values equal CSV; no hidden smoothing; G7 valid.
-- Stop/rollback: No LSTM-superiority claim without statistics.
+- **Dependencies:** EVAL-012.
+- **Required reads:** EVAL-012 ECHO/NoLSTM metrics.
+- **Allowed writes:** `scripts/figures/render_figure8.py`; `artifacts/figures/vector/figure8.svg`; `artifacts/figures/vector/figure8.pdf`; `artifacts/figures/png_300dpi/figure8.png`; `artifacts/figures/manifests/figure8.json`; `artifacts/figures/panel_exports/f8.csv`; `G1`.
+- **Ordered operations:**
+  1. Render N=20,P=.3,timeout1s,episodes0–3000 two-series ablation.
+- **Exact command:**
+```bash
+python3 scripts/figures/render_figure8.py --input artifacts/metrics --manifest experiments/figure_manifest.yaml --output artifacts/figures
+```
+- **Acceptance:**
+  - exact two series.
+  - values equal CSV.
+  - no hidden smoothing.
+  - vector/300dpi.
+- **Stop/rollback:** No LSTM superiority claim without statistics.
 
-### FIG-006 — Validate all vector/PNG exports and lineage
+### FIG-006 — Validate all vector and PNG exports and lineage
 
-- Dependencies: FIG-001, FIG-002, FIG-003, FIG-004, FIG-005.
-- Required reads: All G7 figure files and 15 panel CSVs.
-- Allowed writes: `scripts/figures/validate_figure_exports.py`; `tests/unit/test_figure_lineage.py`; `artifacts/figures/figure_lineage_index.json`; G1.
-- Ordered operations: Validate 15 panels, CSV→plot equality, SVG/PDF, PNG 300 dpi, hashes, run IDs, labels/units, deterministic regeneration.
-- Exact command: `python3 -m pytest tests/unit/test_figure_lineage.py -q && python3 scripts/figures/validate_figure_exports.py --figures artifacts/figures --output artifacts/figures/figure_lineage_index.json`.
-- Acceptance: 15/15 valid; no missing lineage; deterministic hashes.
-- Stop/rollback: Invalid panel reopens its FIG task.
+- **Dependencies:** FIG-001, FIG-002, FIG-003, FIG-004, FIG-005.
+- **Required reads:** all figure artifacts/manifests/panel CSVs.
+- **Allowed writes:** `scripts/figures/validate_figure_exports.py`; `tests/unit/test_figure_lineage.py`; `artifacts/figures/figure_lineage_index.json`; `G1`.
+- **Ordered operations:**
+  1. Verify 15 panels, CSV equality, SVG/PDF, PNG 300dpi, hashes, run IDs, labels/units.
+- **Exact command:**
+```bash
+python3 -m pytest tests/unit/test_figure_lineage.py -q && python3 scripts/figures/validate_figure_exports.py --figures artifacts/figures --output artifacts/figures/figure_lineage_index.json
+```
+- **Acceptance:**
+  - 15/15 valid.
+  - no missing lineage.
+  - deterministic regeneration.
+- **Stop/rollback:** Invalid panel reopens owner.
 
 ### REPORT-001 — Write final HOODIE reproduction report
 
-- Dependencies: BASE-022, FREEZE-001.
-- Required reads: Freeze manifest; BASE-022 evidence; base tests/smoke.
-- Allowed writes: `docs/reports/HOODIE_REPRODUCTION_REPORT.md`; `artifacts/reports/hoodie_reproduction_lineage.json`; G1.
-- Ordered operations: Describe exact base mechanics, evidence, trends, deviations, limitations, frozen SHA; cite raw/test/freeze evidence; no ECHO results.
-- Exact command: `python3 - <<'PY'
+- **Dependencies:** BASE-022, FREEZE-001.
+- **Required reads:** freeze manifest; BASE-022 evidence; base tests/smoke.
+- **Allowed writes:** `docs/reports/HOODIE_REPRODUCTION_REPORT.md`; `artifacts/reports/hoodie_reproduction_lineage.json`; `G1`.
+- **Ordered operations:**
+  1. Describe mechanics/evidence/trends/deviations/limitations/frozen SHA.
+  2. exclude ECHO results.
+- **Exact command:**
+```bash
+python3 - <<'PY'
 from pathlib import Path
-p=Path('docs/reports/HOODIE_REPRODUCTION_REPORT.md'); assert p.exists() and 'Lineage' in p.read_text(); print('PASS')
-PY`.
-- Acceptance: Every claim cites evidence; no unsupported exact-match claim.
-- Stop/rollback: Report cannot compensate for failed reproduction.
+p=Path('docs/reports/HOODIE_REPRODUCTION_REPORT.md'); assert p.exists() and 'Lineage' in p.read_text()
+PY
+```
+- **Acceptance:**
+  - every claim cites raw/test/freeze evidence.
+  - no unsupported exact-match claim.
+- **Stop/rollback:** Report cannot compensate for failed reproduction.
 
 ### REPORT-002 — Write final ECHO implementation report
 
-- Dependencies: ECHO-020.
-- Required reads: SRC-001/ECHO coverage; ECHO-020 pilot; all Phase-2 evidence.
-- Allowed writes: `docs/reports/ECHO_IMPLEMENTATION_REPORT.md`; `artifacts/reports/echo_implementation_lineage.json`; G1.
-- Ordered operations: Document equation/algorithm map, chronology, state/mask/reward/interval/DDQL/LSTM, isolation, tests, limitations; no final superiority claim.
-- Exact command: `python3 - <<'PY'
+- **Dependencies:** ECHO-020.
+- **Required reads:** source/coverage audits; pilot; Phase-2 evidence.
+- **Allowed writes:** `docs/reports/ECHO_IMPLEMENTATION_REPORT.md`; `artifacts/reports/echo_implementation_lineage.json`; `G1`.
+- **Ordered operations:**
+  1. Document equation/algorithm map, chronology, N+2 size-specific architecture, within-run parameter sharing, state/mask/reward/SMDP/DDQL/LSTM/isolation/tests/limits.
+- **Exact command:**
+```bash
+python3 - <<'PY'
 from pathlib import Path
-p=Path('docs/reports/ECHO_IMPLEMENTATION_REPORT.md'); assert p.exists() and 'Equations (1)–(67)' in p.read_text(); print('PASS')
-PY`.
-- Acceptance: 69 source rows linked; current revisions/frozen base recorded; no historical authority.
-- Stop/rollback: Uncovered equation blocks completion.
+p=Path('docs/reports/ECHO_IMPLEMENTATION_REPORT.md'); assert p.exists() and 'Equations (1)–(67)' in p.read_text()
+PY
+```
+- **Acceptance:**
+  - 69 rows linked.
+  - current revisions/frozen base recorded.
+  - no historical authority.
+  - revision-273 architecture explicit.
+- **Stop/rollback:** Uncovered equation blocks report.
 
-### REPORT-003 — Write final evaluation/figure report
+### REPORT-003 — Write final evaluation and figure report
 
-- Dependencies: EVAL-012, FIG-006.
-- Required reads: EVAL-012 metrics/audits; FIG-006 lineage; run manifests.
-- Allowed writes: `docs/reports/ECHO_EVALUATION_REPORT.md`; `artifacts/reports/evaluation_lineage.json`; G1.
-- Ordered operations: Document methods, budgets, held-out protocol, statistics, 15 panels, invariants, limitations; derive every number from preserved artifacts.
-- Exact command: `python3 - <<'PY'
+- **Dependencies:** EVAL-012, FIG-006.
+- **Required reads:** metrics/audits; figure lineage; run manifests.
+- **Allowed writes:** `docs/reports/ECHO_EVALUATION_REPORT.md`; `artifacts/reports/evaluation_lineage.json`; `G1`.
+- **Ordered operations:**
+  1. Document methods/budgets/held-out/statistics/15 panels/invariants/limitations with artifact lineage.
+- **Exact command:**
+```bash
+python3 - <<'PY'
 from pathlib import Path
-p=Path('docs/reports/ECHO_EVALUATION_REPORT.md'); assert p.exists() and '15 panels' in p.read_text(); print('PASS')
-PY`.
-- Acceptance: Every numerical claim has run/CSV/figure lineage; all seeds present; claims bounded by evidence.
-- Stop/rollback: Failed audit/figure blocks report.
+p=Path('docs/reports/ECHO_EVALUATION_REPORT.md'); assert p.exists() and '15 panels' in p.read_text()
+PY
+```
+- **Acceptance:**
+  - all numbers have lineage.
+  - no missing seed.
+  - claims bounded by evidence.
+- **Stop/rollback:** Failed audit/figure blocks report.
 
 ### CLEAN-002 — Archive superseded artifacts without deletion
 
-- Dependencies: REPORT-001, REPORT-002, REPORT-003.
-- Required reads: Three final reports; `artifacts/classification/artifact_inventory.json`; replacement hashes.
-- Allowed writes: `scripts/cleanup/archive_superseded_artifacts.py`; G8 only for paths listed in `archive_eligible_paths`; `artifacts/archive/archive_manifest.json`; `artifacts/classification/artifact_inventory.json`; `artifacts/classification/artifact_inventory.md`; G1.
-- Ordered operations: Read exact eligible list; archive each to G8; record source/replacement/reason/time/hashes; never delete; canonical paths untouched.
-- Exact command: `python3 scripts/cleanup/archive_superseded_artifacts.py --inventory artifacts/classification/artifact_inventory.json --archive-root artifacts/archive/superseded --manifest artifacts/archive/archive_manifest.json`.
-- Acceptance: Actual changed paths equal script plus inventory files plus G8 expansion; every archive has replacement and hashes; no raw authoritative data removed.
-- Stop/rollback: Ambiguous item remains and is marked unresolved.
+- **Dependencies:** REPORT-001, REPORT-002, REPORT-003.
+- **Required reads:** three final reports; artifact inventory.
+- **Allowed writes:** `scripts/cleanup/archive_superseded_artifacts.py`; `artifacts/archive/archive_manifest.json`; `G1`; `G8`.
+- **Ordered operations:**
+  1. Archive only inventory entries with archive_eligible=true.
+  2. preserve old hash/replacement/reason/timestamp.
+  3. no delete.
+- **Exact command:**
+```bash
+python3 scripts/cleanup/archive_superseded_artifacts.py --inventory artifacts/classification/artifact_inventory.json --archive artifacts/archive/superseded --manifest artifacts/archive/archive_manifest.json
+```
+- **Acceptance:**
+  - every archived item mapped to canonical replacement.
+  - no authoritative raw/checkpoint removed.
+- **Stop/rollback:** Ambiguous item remains and is listed unresolved.
 
 ### CLEAN-003 — Remove canonical-path ambiguity without deletion
 
-- Dependencies: CLEAN-002.
-- Required reads: `artifacts/archive/archive_manifest.json`; `artifacts/classification/reference_inventory.json`; final reports/index candidates.
-- Allowed writes: `scripts/cleanup/update_canonical_references.py`; `artifacts/archive/path_redirects.json`; `artifacts/FINAL_CANONICAL_PATHS.json`; exactly the paths listed in `editable_reference_files` in `artifacts/classification/reference_inventory.json`; G1.
-- Ordered operations: Update only manifest-listed reference files to canonical paths; generate redirects and canonical-path index; verify final reports contain no legacy target; preserve archived bytes.
-- Exact command: `python3 scripts/cleanup/update_canonical_references.py --references artifacts/classification/reference_inventory.json --archive-manifest artifacts/archive/archive_manifest.json --redirects artifacts/archive/path_redirects.json --canonical-index artifacts/FINAL_CANONICAL_PATHS.json`.
-- Acceptance: Actual diff equals script, two exact outputs, manifest-listed editable files, and G1; one canonical path/type; all redirects resolve.
-- Stop/rollback: Any behavior/source algorithm change yields PLAN_CHANGE_REQUIRED.
+- **Dependencies:** CLEAN-002.
+- **Required reads:** archive manifest; artifact inventory field editable_reference_files; final reports.
+- **Allowed writes:** `artifacts/archive/path_redirects.json`; `docs/reports/FINAL_ARTIFACT_PATHS.md`; `G1`.
+- **Ordered operations:**
+  1. Update only explicit editable_reference_files from inventory.
+  2. write redirect map.
+  3. verify final reports use canonical paths.
+- **Exact command:**
+```bash
+python3 - <<'PY'
+import json
+from pathlib import Path
+p=Path('artifacts/archive/path_redirects.json'); assert p.exists(); json.loads(p.read_text())
+PY
+```
+- **Acceptance:**
+  - one canonical path/type.
+  - redirects resolve.
+  - no permanent deletion.
+- **Stop/rollback:** Any unlisted reference file => PLAN_CHANGE_REQUIRED.
 
 ### HANDOFF-001 — Produce final artifact index and exact rerun commands
 
-- Dependencies: CLEAN-003.
-- Required reads: All final manifests/reports/figures/archive maps/tested SHAs/environment.
-- Allowed writes: `artifacts/FINAL_ARTIFACT_INDEX.md`; `artifacts/FINAL_ARTIFACT_INDEX.json`; `scripts/reproduce_all.sh`; `docs/reports/FINAL_HANDOFF.md`; G1.
-- Ordered operations: Enumerate source locks, configs, topology, traces, checkpoints, G5 runs, G6 metrics, G7 figures, reports, hashes, environment, and exact commands; script validates/reproduces in dependency order and rejects hash mismatch.
-- Exact command: `bash scripts/reproduce_all.sh --verify-only`.
-- Acceptance: All paths/hashes resolve from clean checkout; no hidden manual step; final handoff distinguishes facts/limitations.
-- Stop/rollback: Missing artifact/hash blocks handoff.
+- **Dependencies:** CLEAN-003.
+- **Required reads:** all final manifests/reports/figures/archive maps/tested SHAs.
+- **Allowed writes:** `artifacts/FINAL_ARTIFACT_INDEX.md`; `artifacts/FINAL_ARTIFACT_INDEX.json`; `scripts/reproduce_all.sh`; `docs/reports/FINAL_HANDOFF.md`; `G1`.
+- **Ordered operations:**
+  1. Enumerate all source/config/topology/trace/checkpoint/log/metric/figure/report hashes and environment.
+  2. verify-only script checks dependency order/hashes.
+- **Exact command:**
+```bash
+bash scripts/reproduce_all.sh --verify-only
+```
+- **Acceptance:**
+  - all paths/hashes resolve.
+  - clean-checkout verify succeeds.
+  - no hidden manual step.
+  - limitations explicit.
+- **Stop/rollback:** Missing artifact/hash blocks handoff.
 
 ## 9. Evaluation and figure constants
-
-- Figure 4: actual frozen 20-EA topology.
-- Figure 5(a): learning rate `{1e-9,5e-9,1e-8,1e-7,5e-7,7e-7}`.
-- Figure 5(b): gamma `{0.2,0.4,0.6,0.8,0.99}`.
+- Figure 4: actual default 20-EA topology.
+- Figure 5(a): learning rates `{1e-9,5e-9,1e-8,1e-7,5e-7,7e-7}`.
+- Figure 5(b): gamma `{.2,.4,.6,.8,.99}`.
 - Figure 6(a): reward vs P `{.1,.3,.5,.7,.9}`, N `{10,15,20}`.
-- Figure 6(b): local/horizontal/cloud action counts vs P, N=20.
+- Figure 6(b): action counts vs P, N=20.
 - Figure 6(c): reward vs EA capacity `{4,5,6,7,8,9}` GHz, N `{10,15,20}`.
-- Figure 6(d): reward vs N `{10,15,20,25,30}` with moderate `(1–3 Mbits,P=.5)`, heavy `(2–5,P=.7)`, extreme `(3–7,P=.9)`.
-- Figure 6(e): reward vs N with balanced `(R_H=10,R_V=30)`, horizontal-centric `(20,20)`, vertical-centric `(5,40)` Mbps.
+- Figure 6(d): reward vs N `{10,15,20,25,30}` under moderate `(1–3 Mbits,P=.5)`, heavy `(2–5,P=.7)`, extreme `(3–7,P=.9)`.
+- Figure 6(e): reward vs N under balanced `(R_H=10,R_V=30)`, horizontal-centric `(20,20)`, vertical-centric `(5,40)` Mbps.
 - Figure 6 default timeout: 20 slots = 2 seconds.
-- Figure 7(a): delay vs P `{.1,.3,.5,.7,.9}`, timeout 10s.
-- Figure 7(b): delay vs capacity `{3,4,5,6,7}` GHz, timeout 10s.
-- Figure 7(c): delay vs timeout `{9.6,9.8,10.0,10.2,10.4}`s; no fixed timeout.
-- Figure 7(d): pooled drop ratio vs P, timeout 2s.
-- Figure 7(e): pooled drop ratio vs capacity, timeout 2s.
-- Figure 7(f): pooled drop ratio vs timeout `{1.6,1.8,2.0,2.2,2.4}`s; no fixed timeout.
-- Figure 8: ECHO vs ECHO-NoLSTM; N=20, P=.3, timeout 1s, episodes 0–3000.
-- Methods: ECHO, HOODIE, RO, FLC, VO, HO, BCO, MLEO; ECHO-NoLSTM only where specified.
-- Every reported point: 10 fixed seeds × 200 held-out paired episodes.
-- Confidence intervals: across seed-level metrics.
-- Average delay: approved negative-delay convention.
-- Drop ratio: pool task counts within each seed before cross-seed summaries.
+- Figure 7(a): delay vs P, timeout 10 s.
+- Figure 7(b): delay vs capacity `{3,4,5,6,7}` GHz, timeout 10 s.
+- Figure 7(c): delay vs timeout `{9.6,9.8,10.0,10.2,10.4}` s.
+- Figure 7(d): pooled drop ratio vs P, timeout 2 s.
+- Figure 7(e): pooled drop ratio vs capacity, timeout 2 s.
+- Figure 7(f): pooled drop ratio vs timeout `{1.6,1.8,2.0,2.2,2.4}` s.
+- Figure 8: ECHO vs ECHO-NoLSTM, N=20, P=.3, timeout 1 s, episodes 0–3000.
+- comparison methods: ECHO, HOODIE, RO, FLC, VO, HO, BCO, MLEO; ECHO-NoLSTM where specified.
+- every point: 10 fixed seeds × 200 held-out paired episodes.
+- confidence intervals across seed-level metrics; negative-delay convention; pooled drop counts within seed.
+- for each tested N, ECHO uses an independently trained N-specific checkpoint with N+2 action outputs and within-run parameter sharing.
 
 ## 10. Exact executor prompt
 
 ```text
-You are the single-task executor for repository hadifarajvand/hoodie_sim_v2.
-
-Inputs:
-- TASK_ID=<exact ID from artifacts/control/NEXT_TASK.json>
-- ATTEMPT=<exact integer from artifacts/control/NEXT_TASK.json>
-- PLAN=artifacts/reports/ECHO_MASTER_EXECUTION_PLAN.md
-- PLAN_VERSION=ECHO-MEP-v4.1
-
-Execute exactly TASK_ID and nothing else.
-
-1. Read the entire plan and NEXT_TASK.json.
-2. Verify NEXT_TASK.task_id, attempt, plan_version, main_head, and authorized branch.
-3. Verify clean working tree and HEAD==NEXT_TASK.main_head.
-4. Create/check out task/<lowercase-task-id>-r<attempt>.
-5. Read only the task card's Required reads.
-6. Edit only the task card's Allowed writes and G1(TASK_ID).
-7. Perform Ordered operations exactly.
-8. Run Exact command without substitution, suppression, xfail, or skip.
-9. Verify every Acceptance item.
-10. Write all seven G1 files. changed_files.json must equal the actual diff.
-11. Set evidence status to one of IMPLEMENTED_PENDING_REVIEW, BLOCKED_EXTERNAL, REWORK, PLAN_CHANGE_REQUIRED, or STALE_BRANCH.
-12. Commit `<TASK_ID>: <exact registry title>`.
-13. Stop. Do not merge, push to main, edit the plan, select another task, or execute a fallback.
-
-For SRC-001 source-access failure: write BLOCKED_EXTERNAL evidence, commit, and stop. BASE-001 requires a separate controller authorization and separate executor invocation.
+You are the single-task executor for hadifarajvand/hoodie_sim_v2.
+The sole authority is artifacts/reports/ECHO_MASTER_EXECUTION_PLAN.md version ECHO-MEP-v4.2 and artifacts/control/NEXT_TASK.json.
+Execute exactly the authorized task ID and attempt. Follow its reads, writes, operations, command, acceptance, evidence, branch, and stop rules literally.
+Do not choose another task, edit the plan, merge, modify unlisted files, substitute commands, invent source values, or continue after commit.
+On missing authority use BLOCKED_EXTERNAL; on unlisted required file use PLAN_CHANGE_REQUIRED; on changed start SHA use STALE_BRANCH; otherwise produce G1, commit, and stop.
 ```
 
-## 11. Independent reviewer/controller prompt
+## 11. Exact reviewer/controller prompt
 
 ```text
-You are the independent reviewer/controller for repository hadifarajvand/hoodie_sim_v2.
-You did not implement the task.
-
-Mode:
-- BOOTSTRAP, or
-- REVIEW with TASK_ID, ATTEMPT, and TASK_BRANCH.
-
-Inputs in REVIEW mode:
-- TASK_ID=<ID reviewed>
-- ATTEMPT=<attempt reviewed>
-- TASK_BRANCH=task/<lowercase-task-id>-r<attempt>
-- PLAN=artifacts/reports/ECHO_MASTER_EXECUTION_PLAN.md
-- PLAN_VERSION=ECHO-MEP-v4.1
-
-Allowed writes:
-- G2(TASK_ID,ATTEMPT)
-- artifacts/control/EXECUTION_STATE.json
-- artifacts/control/NEXT_TASK.json
-- artifacts/reports/ECHO_MASTER_EXECUTION_PLAN.md
-
-You must not modify implementation, tests, configs, generated scientific outputs, or task evidence.
-
-BOOTSTRAP:
-1. Require G3 to be absent.
-2. Verify main equals the planning-start HEAD.
-3. Initialize all 73 statuses/attempts from the registry.
-4. Write NEXT_TASK for SRC-001 attempt 1 on branch task/src-001-r1.
-5. Commit `CONTROL BOOTSTRAP: initialize execution state`.
-6. Stop and print the exact executor invocation.
-
-REVIEW:
-1. Verify current main SHA, task start SHA, branch ancestry, plan version, task ID, and attempt.
-2. If main changed after authorization, record STALE_BRANCH, do not merge, increment attempt, authorize the same task from current main, and stop.
-3. Compare `git diff --name-only <start_sha>..<task_sha>` to changed_files.json; require exact equality.
-4. Expand the card allowlist and G1 path grammar; reject every unlisted path.
-5. Inspect every changed line and every evidence claim.
-6. Re-run the card's Exact command in a clean review worktree.
-7. Verify all Acceptance criteria, hashes, command output, and rollback statement.
-8. Write G2 only.
-
-Decision:
-- PASS: merge TASK_BRANCH into main with `git merge --no-ff`; then update the task row to VERIFIED_COMPLETE, update the dashboard/status totals, write G3, commit `CONTROL <TASK_ID>: verify and advance`, recompute statuses, choose one next task, and stop.
-- REWORK: do not merge; set task REWORK in plan/G3, increment attempt, authorize the same task, and stop.
-- BLOCKED_EXTERNAL: require the task diff to contain G1 files only; merge that evidence-only branch with `--no-ff`; set task BLOCKED_EXTERNAL in plan/G3; recompute unrelated readiness; authorize the earliest unrelated READY task in a new invocation; and stop.
-- PLAN_CHANGE_REQUIRED: do not merge; set global execution blocked, NEXT_TASK.task_id=null, and stop.
-- MERGE_BLOCKED: record blocker, NEXT_TASK.task_id=null, and stop.
-
-Status recomputation:
-- keep VERIFIED_COMPLETE;
-- READY iff all dependencies are VERIFIED_COMPLETE and no blocker exists;
-- otherwise BLOCKED;
-- REWORK keeps priority over other READY tasks;
-- select the earliest registry task among eligible tasks;
-- write exactly one NEXT_TASK or null.
-
-Print only:
-- verdict;
-- reviewed task/attempt/SHAs;
-- merge SHA or none;
-- plan/control commit SHA or none;
-- changed-path audit result;
-- test result;
-- updated status totals;
-- next authorized task and exact executor invocation.
+You are the independent reviewer/controller for hadifarajvand/hoodie_sim_v2.
+Use artifacts/reports/ECHO_MASTER_EXECUTION_PLAN.md version ECHO-MEP-v4.2 and G2/G3 as the sole control authority.
+In BOOTSTRAP mode, discover the approved plan commit by the Section 1.1 rule, run the structural preflight, initialize G3, authorize SRC-001 attempt 1, commit control files, print the executor invocation, and stop.
+In REVIEW mode, review exactly one task branch: verify ancestry and changed paths, inspect all changes/evidence, rerun the exact command, decide PASS/REWORK/BLOCKED, never repair implementation, merge only on PASS or evidence-only BLOCKED_EXTERNAL, update the plan and G2/G3, authorize exactly one next task, print its executor invocation, and stop.
 ```
 
-## 12. Structural validation and dashboard
+## 12. Structural preflight requirements
 
-The v4.1 plan is valid only when all checks below pass:
+- 73 unique registry IDs.
+- 73 unique card IDs and exact ID-set equality.
+- phase totals 6/23/20/12/12.
+- status totals 5/2/66.
+- zero missing dependency IDs, self-dependencies, and DAG cycles.
+- zero wildcard permissions.
+- all READY commands exist or the card creates their executable/test.
+- BASE-005 owns pre-freeze ECHO decontamination.
+- ECHO-001 cannot modify frozen files.
+- ECHO-009/012/015 implement revision-273 N+2, N-specific checkpoints, and within-run sharing.
+- ECHO-011 depends on early EVAL-001.
+- same-invocation SRC fallback prohibited.
+- reviewer/controller prompt present.
+- permanent deletion prohibited.
 
-| Check | Required result |
-|---|---|
-| Registry task IDs | 73 unique |
-| Card task IDs | same 73 unique IDs |
-| Phase totals | 6 / 23 / 20 / 12 / 12 |
-| Initial statuses | 5 VERIFIED_COMPLETE / 2 READY / 66 BLOCKED |
-| Missing dependency IDs | 0 |
-| Self dependencies | 0 |
-| DAG cycles | 0 |
-| Wildcards in Allowed writes | 0 |
-| Default parallel executors | disabled |
-| SRC blocked fallback in same executor | prohibited |
-| Reviewer/controller prompt | present |
-| Pre-freeze ECHO decontamination owner | BASE-005 |
-| Post-freeze ECHO attachment owner | ECHO-001 |
-| Frozen shared files writable by ECHO-001 | no |
-| Early schema dependency | ECHO-011 depends on EVAL-001 |
-| Evaluation execution before ECHO-020 | no |
-| Permanent deletion | prohibited |
+## 13. Initial authorization
 
-Initial next authorization is `SRC-001`, attempt 1. `BASE-001` is logically READY but is not executable until the controller writes it into `NEXT_TASK.json`.
-
-## 13. Final execution meaning
-
-Following this runbook will:
-
-1. lock the current manuscript rather than implement from memory;
-2. validate and freeze HOODIE before accepting ECHO;
-3. remove current ECHO imports/conditionals from the shared kernel before the freeze;
-4. attach ECHO afterward only through frozen neutral hooks;
-5. freeze logs and evaluation schemas before pending/reward/interval logging;
-6. implement ECHO in equation/algorithm dependency order;
-7. review and merge one task at a time through an independent controller;
-8. stop rather than improvise on missing authority, files, permissions, or failed tests;
-9. evaluate all methods on paired immutable traces without held-out leakage;
-10. generate all 15 panels from retained machine-readable evidence;
-11. archive superseded outputs without deletion;
-12. finish with hashes, reports, artifact index, and exact verification/reproduction commands.
+After bootstrap, `NEXT_TASK.json` authorizes only `SRC-001`, attempt 1, branch `task/src-001-r1`. `BASE-001` is logically READY but is not executable until the controller explicitly authorizes it. The entire plan then advances one reviewed and merged card at a time through `HANDOFF-001`. Permanent deletion is prohibited.
