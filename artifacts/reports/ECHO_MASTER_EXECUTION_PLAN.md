@@ -3,9 +3,9 @@
 ## 1. Document Control
 
 | Field | Value |
-|---|---|
+|---|---| 
 | Title | ECHO Master Execution Plan |
-| Plan version | `ECHO-MEP-v2.3` |
+| Plan version | `ECHO-MEP-v2.4` |
 | Status | `CONDITIONALLY APPROVED — BASE-HOODIE PHASE ONLY` |
 | Creation time | `2026-07-13T18:30:45Z` |
 | Last updated time | `2026-07-13T19:30:14Z` |
@@ -200,77 +200,152 @@ Source authority validation is externally verified at the live revision above, b
 
 ## 10. Exact Base HOODIE Slot Workflow
 
-1. Observe arrival and current queue / load snapshot.
-2. Advance active local service and active transmission service without preemption.
-3. Resolve transmission completions and admit tasks to destination queues on the next slot boundary.
-4. Advance destination computation with equal share across active source queues.
-5. Resolve physical task success / drop exactly once.
-6. Deliver delayed learner rewards only when the next valid learner decision epoch or terminal flush arrives.
-7. Build the next observation, mask, and next-decision state.
+Base HOODIE uses the HOODIE paper’s slot semantics only. No ECHO semi-Markov semantics, no ECHO deadline mask, and no ECHO predicted-risk indicator belong here.
 
-Local example: arrival → local admission → local wait / service → physical completion → resolution event → later reward delivery.
-Horizontal example: arrival → outbound queue → source transmission → next-slot destination admission → destination queue service → physical completion → resolution event → later reward delivery.
-Cloud example: same as horizontal, but with cloud destination capacity and cloud-specific queue share.
+### Shared mechanism table
+
+| Mechanism | Shared physical simulator | HOODIE | ECHO |
+| --- | --- | --- | --- |
+| task resolution | yes | paper lifecycle | ECHO lifecycle |
+| reward calculation | yes | paper-delayed reward | Equation (58) reward only after ECHO resolution |
+| replay insertion | yes | paper replay timing | Equation (59) next-decision replay |
+| next-state definition | yes | paper next decision state | ECHO state in Equation (53) and Equation (59) next-decision state |
+| discount exponent | yes | paper discount convention | `gamma ** Delta_i` in Equation (65) only |
+| physical mask | yes | resource availability only | canonical action mask in Equations (42)–(46) |
+| deadline mask | yes | paper action feasibility | ECHO deadline-valid action mask and fallback |
+| queue scheduling | yes | queue order in paper | ERT-based source scheduling |
+
+### Base HOODIE slot contract
+
+1. Observe arrivals and frozen queue/load snapshot.
+2. Advance active local and transmission service without preemption.
+3. Resolve completions, then admit destination-bound tasks on the next slot boundary.
+4. Advance destination service with shared capacity.
+5. Record reward only after physical resolution.
+6. Finalize replay only at the next paper-valid learner decision point or terminal flush.
+7. Build the next paper observation and action selection input.
+
+### Hand-calculated timelines
+
+| Case | Slot t | Slot t+1 | Slot t+2 | Notes |
+| --- | --- | --- | --- | --- |
+| same-slot arrival | arrives | admitted | serviced later | no preemption |
+| local execution | queued | active | resolved | local queue first |
+| queued local execution | waiting | active | resolved | waits behind current service |
+| outbound waiting | queued | transmitting | admitted destination-side | one outbound queue per source |
+| transmission completion | transmitting ends | destination admission | destination queue active | admission happens next slot |
+| destination processing | active destination queue | still active or resolved | final outcome | shared capacity |
+| deadline expiration | waiting task expires | dropped | ledger updated | no late recovery |
+| final ten drain slots | arrivals disabled | drain only | drain only | trace has no new arrivals |
+
+### Contract notes
+
+- If the HOODIE paper is ambiguous, add a decision-register item.
+- The exact slot contract becomes implementation binding only after `BASE-006` completes.
+- `BASE-005` implements the slot engine; `BASE-006` locks the slot-order contract that the engine must obey.
 
 ## 11. Exact Base HOODIE Training Workflow
 
-- One edge agent per EA; each agent owns its own model, target model, replay buffer, epsilon state, and pending-decision records.
-- The decision state is captured before action selection and reused when the corresponding reward-delivery event is processed.
-- The replay transition is finalised only when the reward becomes deliverable or the terminal flush occurs.
-- Double-DQN target selection must use the same canonical mask as exploration and exploitation.
-- Epsilon decay, target-copy period, optimizer step, and replay sampling must match the base paper once the faithful simulator is frozen.
+### Base training contract
+
+- One autonomous learner per EA.
+- One online model, one target model, one replay buffer, one epsilon schedule, one local training state per EA.
+- Decision state is captured before action selection and reused when the delayed outcome is delivered.
+- Replay finalizes only when the paper-valid next decision point or terminal flush arrives.
+- Action selection, reward handling, and replay use the HOODIE paper semantics only.
+- No ECHO semi-Markov transition, no Equation (59) next-source-decision semantics, and no `gamma ** Delta_i` in base HOODIE.
+
+### Base / ECHO separation
+
+| Mechanism | Shared physical simulator | HOODIE | ECHO |
+| --- | --- | --- | --- |
+| task resolution | yes | paper lifecycle | ECHO lifecycle |
+| reward calculation | yes | paper-delayed reward | Equation (58) only |
+| replay insertion | yes | paper replay timing | Equation (59) semi-Markov replay |
+| next-state definition | yes | paper next decision state | Equation (59) next-decision state |
+| discount exponent | yes | paper discount | `gamma ** Delta_i` only |
+| physical mask | yes | resource availability | canonical mask |
+| deadline mask | yes | paper action feasibility | deadline-valid action mask |
+| queue scheduling | yes | queue order in paper | ERT scheduling |
+
+### Timeline checks
+
+- same-slot arrival: arrival observed before slot service advances.
+- local execution: task moves from wait to active, then resolves.
+- queued local execution: task remains waiting until active resource frees.
+- outbound waiting: source queue waits behind earlier outbound task.
+- transmission completion: completion resolves at end of transmission slot, destination admission happens next slot.
+- destination processing: destination queue uses shared capacity.
+- deadline expiration: waiting task drops when deadline passes.
+- final ten drain slots: arrivals disabled, only drain and finalize.
+
+### Decision register items
+
+- If the HOODIE paper leaves a timing or sign convention unclear, add a decision-register item before implementation.
+- Do not silently import ECHO semantics into HOODIE.
+- The HOODIE workflow becomes exact only after `BASE-006` and `BASE-018` are complete.
 
 ## 12. Base-HOODIE Validation and Freeze Strategy
 
-1. Lock Table-4 configuration and approved 20-EA topology.
-2. Freeze trace generation and the base slot engine on the shared simulator.
-3. Validate queue / deadline / reward / replay semantics with focused unit and integration tests.
-4. Run bounded HOODIE smoke, then freeze the faithful HOODIE simulator and baseline under a versioned artifact set.
+1. Freeze Table-4 configuration and 20-EA topology.
+2. Verify trace generation, slot order, queue ordering, and delayed reward handling.
+3. Validate the HOODIE learner, baselines, and load forecast against the paper evidence registry.
+4. Freeze the faithful HOODIE simulator and baseline as `FREEZE-001`.
+
+`SRC-002` is the paper evidence registry. It is a scientific prerequisite, not an ECHO source-lock gate. It is marked `VERIFIED COMPLETE` so `BASE-001` can remain READY.
 
 ## 13. Exact ECHO Delta over Frozen HOODIE
 
-- ECHO does not change physical simulation semantics; it adds deadline-aware route evaluation, canonical masking, ERT-based scheduling, delayed reward delivery, and semi-Markov learning semantics on top of the frozen base simulator.
-- The live method tab, not the old export alone, is the source of truth for equations (1)–(67).
-- ECHO-NoLSTM is a one-factor ablation that only removes load-estimation recovery; it must not perturb any other routing, reward, or replay contract.
+- ECHO layers deadline-aware route evaluation, canonical masking, ERT scheduling, and the live equations (1)–(67) over the frozen base simulator.
+- ECHO uses the source-lock bundle only after the bundle is committed and `SRC-001` closes.
+- ECHO-NoLSTM is a one-factor ablation; it removes only the load-estimation recovery path.
+- The live source revision is evidence, not completion. The committed source-lock bundle is the completion condition.
 
 ## 14. ECHO Equations (1)–(67) Traceability Matrix
 
-| Equation group | Meaning | Target code modules | Task IDs |
+| Equation group | Meaning | Planned task IDs | Notes |
 | --- | --- | --- | --- |
-| (1)–(2) | Arrivals and absolute deadlines | src/evaluation/trace_protocol.py; src/environment/deadline_rules.py; src/environment/task.py | BASE-003, ECHO-002 |
-| (3)–(8) | Action set, destination mapping, queue choice, and stored route metadata | src/echo_action_space.py; src/environment/gym_adapter.py | BASE-013, ECHO-002, ECHO-009, ECHO-011 |
-| (9)–(16) | Local completion timing and residual-service model | src/echo_ert.py; src/environment/runtime_model.py; src/environment/private_queue.py | BASE-007, ECHO-003 |
-| (17)–(25) | Destination workload, capacity sharing, and transfer ERT | src/echo_ert.py; src/environment/public_queue.py; src/environment/gym_adapter.py | BASE-011, BASE-012, ECHO-004, ECHO-005, ECHO-007 |
-| (26)–(28) | Load history, fresh status, and LSTM-estimated workload | src/agents/paper_state_builder.py; src/environment/runtime_model.py; src/environment/gym_adapter.py | BASE-015, ECHO-006 |
-| (29)–(32) | Local and end-to-end ERT formulas | src/echo_ert.py; src/environment/gym_adapter.py | ECHO-007 |
-| (33)–(40) | ERT-based source-queue scheduling | src/environment/gym_adapter.py; src/environment/slot_engine.py | BASE-006, BASE-007, ECHO-008 |
-| (41) | Canonical action set | src/echo_action_space.py | BASE-013, ECHO-009 |
-| (42)–(46) | Deadline-valid actions, minimum-lateness fallback, and masks | src/environment/gym_adapter.py; src/policies/action_masking.py | ECHO-010 |
-| (47)–(50) | Direct decision, admission metadata, and pending records | src/environment/task.py; src/environment/environment.py; src/environment/gym_adapter.py | BASE-009, ECHO-011 |
-| (51)–(54) | Normalized state and candidate ERT vector | src/environment/gym_adapter.py; src/agents/paper_state_builder.py | BASE-014, ECHO-012 |
-| (55)–(58) | Duration, risk, drop, and task reward | src/environment/task.py; src/environment/gym_adapter.py; src/environment/reward_timing.py | BASE-017, ECHO-013 |
-| (59)–(60) | Next-decision semi-Markov transition and terminal handling | src/training/training_loop.py; src/environment/gym_adapter.py | BASE-017, ECHO-014 |
-| (61)–(67) | Masked Dueling Double-DQL and loss | src/agents/double_dqn.py; src/agents/dueling_dqn_network.py; src/training/training_loop.py | BASE-018, ECHO-015, ECHO-017 |
+| (1)–(2) | arrivals and deadlines | ECHO-002 | live method only |
+| (3)–(8) | direct action and dispatch | ECHO-002 | live method only |
+| (9)–(11) | ECHO local estimation | ECHO-003 | shared infrastructure only — not equation semantics for HOODIE |
+| (12)–(16) | ECHO outbound estimation | ECHO-004 | shared infrastructure only — not equation semantics for HOODIE |
+| (17)–(25) | destination model | ECHO-005 | shared infrastructure only — not equation semantics for HOODIE |
+| (26)–(28) | load history and LSTM | ECHO-006 | live method only |
+| (29)–(32) | local and transfer ERT | ECHO-007 | live method only |
+| (33)–(40) | ERT scheduling | ECHO-008 | live method only |
+| (41) | canonical N+2 action set | ECHO-009 | live method only |
+| (42)–(46) | deadline-valid actions and masks | ECHO-010 | live method only |
+| (47)–(50) | direct decision and pending records | ECHO-011 | live method only |
+| (51)–(54) | normalized state and candidate ERT vector | ECHO-012 | live method only |
+| (55)–(60) | ECHO-only reward and semi-Markov behavior | ECHO-013, ECHO-014 | live method only |
+| (61)–(67) | ECHO-only masked Dueling Double-DQL behavior | ECHO-015 | live method only |
 
 ## 15. Evaluation and Figure Traceability Matrix
 
-| Panel | Purpose | Methods | Dependent metric | Fixed parameters | Training dependency | Evaluation dependency | Topology | Trace policy | Seed policy | Confidence interval | Artifact outputs | Task IDs |
-| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| Figure 4 | 20-EA topology | ECHO topology family | Topology hash / routing legality | Fixed 20-EA anchor + scalable five-cluster family | None | None | 5-cluster topology only | Paired traces for topology export | Same seed family | 95% CI not applicable | raw topology CSV/JSON + SVG/PDF + PNG + manifest + lineage | FIG-001 |
-| Figure 5(a) | Learning-rate sweep | ECHO training | Reward / stability vs alpha_lr | Selected Table-2 anchor values | Training traces | Held-out eval traces | Approved topology anchor | Paired traces | Same seeds across rates | 95% CI over seeds | raw logs + seed CSV + panel CSV + SVG/PDF + PNG + manifest + lineage | EVAL-002, EVAL-006, FIG-002 |
-| Figure 5(b) | Discount-factor sweep | ECHO training | Reward / stability vs gamma | Selected Table-2 anchor values | Training traces | Held-out eval traces | Approved topology anchor | Paired traces | Same seeds across gammas | 95% CI over seeds | raw logs + seed CSV + panel CSV + SVG/PDF + PNG + manifest + lineage | EVAL-002, EVAL-006, FIG-002 |
-| Figure 6(a) | Arrival probability sweep | ECHO | Average reward vs P | Table-2 anchor except P | Trained ECHO | Held-out eval | Five-cluster family | Paired traces | Same seeds | 95% CI | raw task logs + seed CSV + panel CSV + SVG/PDF + PNG + manifest + lineage | EVAL-007, EVAL-008, FIG-003 |
-| Figure 6(b) | Action distribution vs arrival probability | ECHO | Action mix vs P | Table-2 anchor except P | Trained ECHO | Held-out eval | Five-cluster family | Paired traces | Same seeds | 95% CI | raw task logs + seed CSV + panel CSV + SVG/PDF + PNG + manifest + lineage | EVAL-007, EVAL-008, FIG-003 |
-| Figure 6(c) | CPU-capacity sweep | ECHO | Average reward vs compute capacity | Table-2 anchor except CPU | Trained ECHO | Held-out eval | Five-cluster family | Paired traces | Same seeds | 95% CI | raw task logs + seed CSV + panel CSV + SVG/PDF + PNG + manifest + lineage | EVAL-007, EVAL-008, FIG-003 |
-| Figure 6(d) | Topology-scale sweep | ECHO | Average reward vs EA count | Topological family and approved anchor | Trained ECHO | Held-out eval | Five-cluster family | Paired traces | Same seeds | 95% CI | raw task logs + seed CSV + panel CSV + SVG/PDF + PNG + manifest + lineage | EVAL-007, EVAL-008, FIG-003 |
-| Figure 6(e) | Link-rate sweep | ECHO | Average reward vs data-rate profile | Topology + rate profiles | Trained ECHO | Held-out eval | Five-cluster family | Paired traces | Same seeds | 95% CI | raw task logs + seed CSV + panel CSV + SVG/PDF + PNG + manifest + lineage | EVAL-007, EVAL-008, FIG-003 |
-| Figure 7(a–f) | ECHO vs HOODIE / RO / FLC / VO / HO / BCO / MLEO | ECHO + baselines | Delay / drop vs traffic, CPU, timeout | Equal topology, equal traces, equal seeds | Final trained models | Held-out eval | Same hash across all methods | Paired traces across methods | Same seeds | 95% CI | raw task logs + seed CSV + panel CSV + SVG/PDF + PNG + manifest + lineage | EVAL-007, EVAL-008, FIG-004 |
-| Figure 8 | ECHO vs ECHO-NoLSTM | ECHO ablation | Average delay vs training episode | Same topology / traces / seeds | Trained ECHO + ECHO-NoLSTM | Held-out eval | Same hash | Paired traces | Same seeds | 95% CI | raw task logs + seed CSV + panel CSV + SVG/PDF + PNG + manifest + lineage | EVAL-007, EVAL-008, FIG-005 |
+| Figure / panel | Metric | Independent variable | Exact values | Timeout | Methods | Training dependency | Held-out eval dependency | Trace pairing | Confidence interval | Raw data | Seed CSV | Panel CSV | Vector output | PNG | Manifest | Lineage |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| Figure 4 | topology illustration | topology | 20 EA | n/a | topology only | BASE-002 | BASE-002 | n/a | n/a | topology snapshot | n/a | panel CSV | SVG/PDF | PNG | manifest | lineage |
+| Figure 5(a) | avg reward | learning rate | eval sweep values | sweep timeout | ECHO | EVAL-006 | EVAL-006 | paired traces | 95% CI | raw sweep outputs | seed CSV | panel CSV | SVG/PDF | PNG | manifest | lineage |
+| Figure 5(b) | avg reward | gamma | eval sweep values | sweep timeout | ECHO | EVAL-006 | EVAL-006 | paired traces | 95% CI | raw sweep outputs | seed CSV | panel CSV | SVG/PDF | PNG | manifest | lineage |
+| Figure 6(a) | avg reward vs P | P | eval spec values | eval timeout | ECHO | EVAL-007 | EVAL-008 | paired traces | 95% CI | raw task logs | seed CSV | panel CSV | SVG/PDF | PNG | manifest | lineage |
+| Figure 6(b) | action counts | P | eval spec values | eval timeout | ECHO | EVAL-007 | EVAL-008 | paired traces | 95% CI | raw task logs | seed CSV | panel CSV | SVG/PDF | PNG | manifest | lineage |
+| Figure 6(c) | avg reward vs capacity | EA capacity | eval spec values | eval timeout | ECHO | EVAL-007 | EVAL-008 | paired traces | 95% CI | raw task logs | seed CSV | panel CSV | SVG/PDF | PNG | manifest | lineage |
+| Figure 6(d) | avg reward vs EA count | traffic profile | moderate/heavy/extreme | eval timeout | ECHO | EVAL-007 | EVAL-008 | paired traces | 95% CI | raw task logs | seed CSV | panel CSV | SVG/PDF | PNG | manifest | lineage |
+| Figure 6(e) | avg reward vs EA count | data-rate profile | balanced/horizontal-centric/vertical-centric | eval timeout | ECHO | EVAL-007 | EVAL-008 | paired traces | 95% CI | raw task logs | seed CSV | panel CSV | SVG/PDF | PNG | manifest | lineage |
+| Figure 7(a) | delay / drop | traffic | exact eval values | 1s | ECHO vs HOODIE / RO / FLC / VO / HO / BCO / MLEO | EVAL-007 | EVAL-008 | paired traces | 95% CI | raw comparison outputs | seed CSV | panel CSV | SVG/PDF | PNG | manifest | lineage |
+| Figure 7(b) | delay / drop | CPU | exact eval values | 1s | same | EVAL-007 | EVAL-008 | paired traces | 95% CI | raw comparison outputs | seed CSV | panel CSV | SVG/PDF | PNG | manifest | lineage |
+| Figure 7(c) | delay / drop | timeout | exact eval values | 1s | same | EVAL-007 | EVAL-008 | paired traces | 95% CI | raw comparison outputs | seed CSV | panel CSV | SVG/PDF | PNG | manifest | lineage |
+| Figure 7(d) | delay / drop | traffic | exact eval values | 1s | same | EVAL-007 | EVAL-008 | paired traces | 95% CI | raw comparison outputs | seed CSV | panel CSV | SVG/PDF | PNG | manifest | lineage |
+| Figure 7(e) | delay / drop | CPU | exact eval values | 1s | same | EVAL-007 | EVAL-008 | paired traces | 95% CI | raw comparison outputs | seed CSV | panel CSV | SVG/PDF | PNG | manifest | lineage |
+| Figure 7(f) | delay / drop | timeout | exact eval values | 1s | same | EVAL-007 | EVAL-008 | paired traces | 95% CI | raw comparison outputs | seed CSV | panel CSV | SVG/PDF | PNG | manifest | lineage |
+| Figure 8 | average delay | training episodes | 0–3000; `N=20`; `P=0.3`; `timeout=1s`; selected learning rate and gamma | 1s | ECHO vs ECHO-NoLSTM | EVAL-007 | EVAL-008 | paired traces | seed-level convergence and stability | raw ablation outputs | seed CSV | panel CSV | SVG/PDF | PNG | manifest | lineage |
+
+Preserve the negative-delay convention and pooled drop-ratio calculation.
 
 ## 16. Cleanup and Deprecation Matrix
 
 - Canonical execution code: shared simulator, frozen HOODIE baseline, ECHO adapter, baseline adapters, evaluation runner, and figure pipeline.
-- Reusable physical components: tasks, queues, slot engine, topology, trace ingestion, and lifecycle events.
+- Reusable physical components: tasks, queues, slot engine, topology, trace ingestion, lifecycle events, and raw metrics.
 - HOODIE-only components: base-paper state, original reward / replay timing, distributed learners, and the original LSTM behavior.
 - ECHO-only components: ERT scheduling, canonical mask, pending reward / decision ledgers, and semi-Markov replay.
 - Baseline-only components: RO, FLC, VO, HO, BCO, MLEO policies and their evaluation wrappers.
@@ -286,122 +361,118 @@ Cloud example: same as horizontal, but with cloud destination capacity and cloud
 
 ## Phase 0 — Source, audit, and plan reset
 
-| ID | Status | Title | Dependencies |
-| --- | --- | --- | --- |
-| `SRC-001` | `BLOCKED — EXTERNAL SOURCE ACCESS` | Fetch and register the current live ECHO method tab and revision | External live Google Docs access or trusted source-lock handoff |
-| `SRC-002` | `PARTIALLY IMPLEMENTED` | Build a HOODIE paper evidence registry by section, equation, table, and figure | resources/papers/hoodie/ocr/*; resources/papers/hoodie/original/HOODIE_paper.pdf |
-| `AUDIT-001` | `VERIFIED COMPLETE` | Produce the current code-path and dependency inventory | src/ and tests/ inventory |
-| `AUDIT-002` | `PARTIALLY IMPLEMENTED` | Reconcile old completion claims against real live paths | artifacts/reports/ECHO_AUTONOMOUS_HANDOFF.md; artifacts/reports/ECHO_FULL_TEST_TRIAGE_REPORT.md |
-| `PLAN-001` | `VERIFIED COMPLETE` | Correct version, HEAD, task totals, statuses, dependencies, critical path, and dashboard | existing master plan history |
-| `CLEAN-001` | `VERIFIED COMPLETE` | Classify existing artifacts as authoritative, historical, superseded, or removable later | artifacts/*; research/* |
+| Task ID | Status | Title | Dependency task IDs | Authority/evidence inputs |
+| --- | --- | --- | --- | --- |
+| `SRC-001` | `BLOCKED — EXTERNAL SOURCE ACCESS` | Fetch and register the current live ECHO method tab and revision | NONE | Trusted live Docs access; committed source-lock bundle required for completion |
+| `SRC-002` | `VERIFIED COMPLETE` | Build a HOODIE paper evidence registry by section, equation, table, and figure | NONE | HOODIE PDF, OCR bundle, figure/table extraction, paper sections and tables |
+| `AUDIT-001` | `VERIFIED COMPLETE` | Produce the current code-path and dependency inventory | NONE | src/, tests/, repository graph evidence |
+| `AUDIT-002` | `PARTIALLY IMPLEMENTED` | Reconcile old completion claims against real live paths | NONE | handoff reports, triage reports, artifact index |
+| `PLAN-001` | `VERIFIED COMPLETE` | Correct version, HEAD, task totals, statuses, dependencies, critical path, and dashboard | NONE | prior plan history, git state evidence |
+| `CLEAN-001` | `VERIFIED COMPLETE` | Classify existing artifacts as authoritative, historical, superseded, or removable later | NONE | artifacts/* and research/* inventories |
 
 ## Phase 1 — Faithful base HOODIE simulator
 
-| ID | Status | Title | Dependencies |
-| --- | --- | --- | --- |
-| `BASE-001` | `READY` | Freeze one canonical Table-4 configuration | PLAN-001, CLEAN-001 |
-| `BASE-002` | `BLOCKED BY DEPENDENCY` | Freeze the exact approved 20-EA topology and scalable topology rules | BASE-001 |
-| `BASE-003` | `BLOCKED BY DEPENDENCY` | Implement per-EA Bernoulli trace generation and 100+10 decision/drain behavior | BASE-002 |
-| `BASE-004` | `BLOCKED BY DEPENDENCY` | Make trace objects immutable and directly consumable by all methods | BASE-003 |
-| `BASE-005` | `BLOCKED BY DEPENDENCY` | Implement the synchronous multi-agent slot engine | BASE-004 |
-| `BASE-006` | `BLOCKED BY DEPENDENCY` | Formalize the base HOODIE slot-order and off-by-one contract | BASE-005 |
-| `BASE-007` | `BLOCKED BY DEPENDENCY` | Correct private FIFO queue and active private service separation | BASE-006 |
-| `BASE-008` | `BLOCKED BY DEPENDENCY` | Correct one outbound FIFO queue/transmission resource per source EA | BASE-007 |
-| `BASE-009` | `BLOCKED BY DEPENDENCY` | Preserve the selected destination inside every outbound task | BASE-008 |
-| `BASE-010` | `BLOCKED BY DEPENDENCY` | Correct transmission completion and next-slot destination admission | BASE-009 |
-| `BASE-011` | `BLOCKED BY DEPENDENCY` | Correct source-indexed destination queues | BASE-010 |
-| `BASE-012` | `BLOCKED BY DEPENDENCY` | Implement equal public-CPU sharing among active source queues | BASE-011 |
-| `BASE-013` | `BLOCKED BY DEPENDENCY` | Implement the exact destination-specific base action space | BASE-012 |
-| `BASE-014` | `BLOCKED BY DEPENDENCY` | Implement the exact HOODIE state and load-history construction | BASE-013 |
-| `BASE-015` | `BLOCKED BY DEPENDENCY` | Implement and train the real HOODIE LSTM/load forecast | BASE-014 |
-| `BASE-016` | `BLOCKED BY DEPENDENCY` | Implement one independent HOODIE learner per EA | BASE-015 |
-| `BASE-017` | `BLOCKED BY DEPENDENCY` | Implement original delayed reward and replay semantics | BASE-016 |
-| `BASE-018` | `BLOCKED BY DEPENDENCY` | Implement paper-correct Dueling Double-DQN, epsilon schedule, sign convention, and target copying | BASE-017 |
-| `BASE-019` | `BLOCKED BY DEPENDENCY` | Verify RO/FLC/VO/HO/BCO/MLEO against the same physical simulator | BASE-018 |
-| `BASE-020` | `BLOCKED BY DEPENDENCY` | Build deterministic unit and integration tests for all base mechanics | BASE-019 |
-| `BASE-021` | `BLOCKED BY DEPENDENCY` | Run a bounded base-HOODIE runtime and learner smoke | BASE-020 |
-| `BASE-022` | `BLOCKED BY DEPENDENCY` | Reproduce the base paper experiment organization and trend-level evidence | BASE-021 |
-| `BASE-023` | `BLOCKED BY DEPENDENCY` | Freeze and version the validated HOODIE physical simulator and HOODIE baseline | BASE-022 |
+| Task ID | Status | Title | Dependency task IDs | Authority/evidence inputs |
+| --- | --- | --- | --- | --- |
+| `BASE-001` | `READY` | Freeze one canonical Table-4 configuration | PLAN-001, CLEAN-001 | HOODIE paper Table 4, OCR bundle, topology authorization v2 |
+| `BASE-002` | `BLOCKED BY DEPENDENCY` | Freeze the exact approved 20-EA topology and scalable topology rules | BASE-001 | HOODIE topology evidence, Figure 4, topology authorization v2 |
+| `BASE-003` | `BLOCKED BY DEPENDENCY` | Implement per-EA Bernoulli trace generation and 100+10 decision/drain behavior | BASE-002 | trace protocol, paper arrival / drain evidence |
+| `BASE-004` | `BLOCKED BY DEPENDENCY` | Make trace objects immutable and directly consumable by all methods | BASE-003 | trace-bank code, training / evaluation trace constructors |
+| `BASE-005` | `BLOCKED BY DEPENDENCY` | Implement the synchronized multi-agent slot engine | BASE-006 | slot engine, environment step path, lifecycle contract |
+| `BASE-006` | `BLOCKED BY DEPENDENCY` | Formalize and test base HOODIE slot order before engine execution | BASE-004 | hand-calculated timelines, slot-order contract, paper queue semantics |
+| `BASE-007` | `BLOCKED BY DEPENDENCY` | Correct private FIFO queue and active private service separation | BASE-006 | private queue code, lifecycle tests |
+| `BASE-008` | `BLOCKED BY DEPENDENCY` | Correct one outbound FIFO queue and transmission resource per source EA | BASE-006 | outbound queue code, source transmission evidence |
+| `BASE-009` | `BLOCKED BY DEPENDENCY` | Preserve the selected destination inside every outbound task | BASE-008 | task record schema, route metadata |
+| `BASE-010` | `BLOCKED BY DEPENDENCY` | Correct transmission completion and next-slot destination admission | BASE-009 | slot boundary admission code, lifecycle tests |
+| `BASE-011` | `BLOCKED BY DEPENDENCY` | Correct source-indexed destination queues | BASE-006 | public queue code, destination queue evidence |
+| `BASE-012` | `BLOCKED BY DEPENDENCY` | Implement equal public-CPU sharing among active source queues | BASE-011 | public CPU scheduling code, queue-share tests |
+| `BASE-013` | `BLOCKED BY DEPENDENCY` | Implement the exact destination-specific base action space | BASE-012 | action space code, paper action semantics |
+| `BASE-014` | `BLOCKED BY DEPENDENCY` | Implement the exact HOODIE state and load-history construction | BASE-013 | state builder, load history schema |
+| `BASE-015` | `BLOCKED BY DEPENDENCY` | Implement and train the real HOODIE LSTM/load forecast | BASE-014 | LSTM module, load forecast evidence |
+| `BASE-016` | `BLOCKED BY DEPENDENCY` | Implement one independent HOODIE learner per EA | BASE-015 | learner manager, per-EA model state |
+| `BASE-017` | `BLOCKED BY DEPENDENCY` | Implement original delayed reward and replay semantics | BASE-016 | training loop, replay insertion timing |
+| `BASE-018` | `BLOCKED BY DEPENDENCY` | Implement paper-correct Dueling Double-DQN, epsilon schedule, sign convention, and target copying | BASE-017 | double DQN code, epsilon schedule, target copy |
+| `BASE-019` | `BLOCKED BY DEPENDENCY` | Verify RO/FLC/VO/HO/BCO/MLEO against the same physical simulator | BASE-018 | baseline adapters, shared simulator |
+| `BASE-020` | `BLOCKED BY DEPENDENCY` | Build deterministic unit and integration tests for all base mechanics | BASE-019 | unit tests, integration tests |
+| `BASE-021` | `BLOCKED BY DEPENDENCY` | Run a bounded base-HOODIE runtime and learner smoke | BASE-020 | runtime smoke harness, learner smoke harness |
+| `BASE-022` | `BLOCKED BY DEPENDENCY` | Reproduce the base paper experiment organization and trend-level evidence | BASE-021 | base experiment runner, paper trend evidence |
+| `FREEZE-001` | `BLOCKED BY DEPENDENCY` | Freeze and version the validated HOODIE physical simulator and HOODIE baseline | BASE-022 | validated simulator artifact, freeze manifest |
 
 ## Phase 2 — ECHO implementation on frozen base
 
-| ID | Status | Title | Dependencies |
-| --- | --- | --- | --- |
-| `ECHO-001` | `BLOCKED BY DEPENDENCY` | Add explicit ECHO method isolation without changing frozen HOODIE semantics | FREEZE-001 AND SRC-001 |
-| `ECHO-002` | `BLOCKED BY DEPENDENCY` | Implement live Equations (1)–(8), task/deadline/action/dispatch lifecycle | ECHO-001 |
-| `ECHO-003` | `BLOCKED BY DEPENDENCY` | Implement local completion estimates from Equations (9)–(11) | ECHO-002 |
-| `ECHO-004` | `BLOCKED BY DEPENDENCY` | Implement outbound completion estimates from Equations (12)–(16) | ECHO-003 |
-| `ECHO-005` | `BLOCKED BY DEPENDENCY` | Implement destination workload/capacity estimates from Equations (17)–(25) | ECHO-004 |
-| `ECHO-006` | `BLOCKED BY DEPENDENCY` | Implement load history and LSTM integration from Equations (26)–(28) | ECHO-005 |
-| `ECHO-007` | `BLOCKED BY DEPENDENCY` | Implement local and transfer ERT from Equations (29)–(32) | ECHO-006 |
-| `ECHO-008` | `BLOCKED BY DEPENDENCY` | Implement iterative ERT source-queue scheduling from Equations (33)–(40) | ECHO-007 |
-| `ECHO-009` | `BLOCKED BY DEPENDENCY` | Implement the canonical action set from Equation (41) | ECHO-008 |
-| `ECHO-010` | `BLOCKED BY DEPENDENCY` | Implement valid actions, lateness fallback, and mask from Equations (42)–(46) | ECHO-009 |
-| `ECHO-011` | `BLOCKED BY DEPENDENCY` | Implement direct decision, admission metadata, and pending records from Equations (47)–(50) | ECHO-010 |
-| `ECHO-012` | `BLOCKED BY DEPENDENCY` | Implement fixed normalized state and candidate ERT vector from Equations (51)–(54) | ECHO-011 |
-| `ECHO-013` | `BLOCKED BY DEPENDENCY` | Implement duration, risk, drop, and reward from Equations (55)–(58) | ECHO-012 |
-| `ECHO-014` | `BLOCKED BY DEPENDENCY` | Implement next-decision semi-Markov transitions from Equations (59)–(60) | ECHO-013 |
-| `ECHO-015` | `BLOCKED BY DEPENDENCY` | Implement masked Dueling Double-DQL from Equations (61)–(67) | ECHO-014 |
-| `ECHO-016` | `BLOCKED BY DEPENDENCY` | Implement ECHO-NoLSTM as a controlled one-factor ablation | ECHO-015 |
-| `ECHO-017` | `BLOCKED BY DEPENDENCY` | Add portable ECHO checkpoints and deterministic resume | ECHO-016 |
-| `ECHO-018` | `BLOCKED BY DEPENDENCY` | Add equation-level unit tests and end-to-end integration tests | ECHO-017 |
-| `ECHO-019` | `BLOCKED BY DEPENDENCY` | Run deterministic ECHO runtime and learner smoke | ECHO-018 |
-| `ECHO-020` | `BLOCKED BY DEPENDENCY` | Run a paired bounded pilot against frozen HOODIE | ECHO-019 |
+| Task ID | Status | Title | Dependency task IDs | Authority/evidence inputs |
+| --- | --- | --- | --- | --- |
+| `ECHO-001` | `BLOCKED BY DEPENDENCY` | Add explicit ECHO method isolation without changing frozen HOODIE semantics | FREEZE-001, SRC-001 | live ECHO snapshot, frozen base simulator, ECHO adapter |
+| `ECHO-002` | `BLOCKED BY DEPENDENCY` | Implement live Equations (1)–(8), task/deadline/action/dispatch lifecycle | ECHO-001 | live ECHO equations (1)–(8), task lifecycle code |
+| `ECHO-003` | `BLOCKED BY DEPENDENCY` | Implement local completion estimates from Equations (9)–(11) | ECHO-002 | live ECHO equations (9)–(11), local estimator code |
+| `ECHO-004` | `BLOCKED BY DEPENDENCY` | Implement outbound completion estimates from Equations (12)–(16) | ECHO-003 | live ECHO equations (12)–(16), outbound estimator code |
+| `ECHO-005` | `BLOCKED BY DEPENDENCY` | Implement destination workload/capacity estimates from Equations (17)–(25) | ECHO-004 | live ECHO equations (17)–(25), destination workload model |
+| `ECHO-006` | `BLOCKED BY DEPENDENCY` | Implement load history and LSTM integration from Equations (26)–(28) | ECHO-005 | live ECHO equations (26)–(28), LSTM history inputs |
+| `ECHO-007` | `BLOCKED BY DEPENDENCY` | Implement local and transfer ERT from Equations (29)–(32) | ECHO-006 | live ECHO equations (29)–(32), ERT calculator |
+| `ECHO-008` | `BLOCKED BY DEPENDENCY` | Implement iterative ERT source-queue scheduling from Equations (33)–(40) | ECHO-007 | live ECHO equations (33)–(40), source scheduling logic |
+| `ECHO-009` | `BLOCKED BY DEPENDENCY` | Implement the canonical action set from Equation (41) | ECHO-008 | live ECHO equation (41), action-set module |
+| `ECHO-010` | `BLOCKED BY DEPENDENCY` | Implement valid actions, lateness fallback, and mask from Equations (42)–(46) | ECHO-009 | live ECHO equations (42)–(46), mask logic |
+| `ECHO-011` | `BLOCKED BY DEPENDENCY` | Implement direct decision, admission metadata, and pending records from Equations (47)–(50) | ECHO-010 | live ECHO equations (47)–(50), pending-record store |
+| `ECHO-012` | `BLOCKED BY DEPENDENCY` | Implement fixed normalized state and candidate ERT vector from Equations (51)–(54) | ECHO-011 | live ECHO equations (51)–(54), state encoder |
+| `ECHO-013` | `BLOCKED BY DEPENDENCY` | Implement duration, risk, drop, and reward from Equations (55)–(58) | ECHO-012 | live ECHO equations (55)–(58), reward and duration logic |
+| `ECHO-014` | `BLOCKED BY DEPENDENCY` | Implement next-decision semi-Markov transitions from Equations (59)–(60) | ECHO-013 | live ECHO equations (59)–(60), transition finalizer |
+| `ECHO-015` | `BLOCKED BY DEPENDENCY` | Implement masked Dueling Double-DQL from Equations (61)–(67) | ECHO-014 | live ECHO equations (61)–(67), masked DQL agent |
+| `ECHO-016` | `BLOCKED BY DEPENDENCY` | Implement ECHO-NoLSTM as a controlled one-factor ablation | ECHO-015 | ECHO ablation config and training wrapper |
+| `ECHO-017` | `BLOCKED BY DEPENDENCY` | Add portable ECHO checkpoints and deterministic resume | ECHO-016 | checkpoint schema, resume code, device metadata |
+| `ECHO-018` | `BLOCKED BY DEPENDENCY` | Add equation-level unit tests and end-to-end integration tests | ECHO-017 | equation checks, integration harness, smoke evidence |
+| `ECHO-019` | `BLOCKED BY DEPENDENCY` | Run deterministic ECHO runtime and learner smoke | ECHO-018 | smoke runner, learner smoke harness |
+| `ECHO-020` | `BLOCKED BY DEPENDENCY` | Run a paired bounded pilot against frozen HOODIE | ECHO-019 | pilot harness, paired traces, pilot manifests |
 
 ## Phase 3 — Authoritative evaluation
 
-| ID | Status | Title | Dependencies |
-| --- | --- | --- | --- |
-| `EVAL-001` | `BLOCKED BY DEPENDENCY` | Build immutable paired training/validation/test trace banks | ECHO-020 |
-| `EVAL-002` | `BLOCKED BY DEPENDENCY` | Define the complete Figures 4–8 job matrix | EVAL-001 |
-| `EVAL-003` | `BLOCKED BY DEPENDENCY` | Create authoritative configuration and run manifests | EVAL-002 |
-| `EVAL-004` | `BLOCKED BY DEPENDENCY` | Measure throughput on CUDA when available, otherwise CPU | EVAL-003 |
-| `EVAL-005` | `BLOCKED BY DEPENDENCY` | Produce a resumable compute and checkpoint plan | EVAL-004 |
-| `EVAL-006` | `BLOCKED BY DEPENDENCY` | Run selected learning-parameter training | EVAL-005 |
-| `EVAL-007` | `BLOCKED BY DEPENDENCY` | Train ECHO, HOODIE, and ECHO-NoLSTM with equal budgets where required | EVAL-006 |
-| `EVAL-008` | `BLOCKED BY DEPENDENCY` | Run 10 seeds × 200 held-out episodes for reported points | EVAL-007 |
-| `EVAL-009` | `BLOCKED BY DEPENDENCY` | Enforce generated = completed + dropped accounting | EVAL-008 |
-| `EVAL-010` | `BLOCKED BY DEPENDENCY` | Enforce no masked ECHO action selection | EVAL-009 |
-| `EVAL-011` | `BLOCKED BY DEPENDENCY` | Enforce paired trace, topology, and configuration hashes | EVAL-010 |
-| `EVAL-012` | `BLOCKED BY DEPENDENCY` | Compute seed-level means and 95% confidence intervals | EVAL-011 |
+| Task ID | Status | Title | Dependency task IDs | Authority/evidence inputs |
+| --- | --- | --- | --- | --- |
+| `EVAL-001` | `BLOCKED BY DEPENDENCY` | Build immutable paired training/validation/test trace banks | ECHO-020 | trace-bank builder, hashes, manifests |
+| `EVAL-002` | `BLOCKED BY DEPENDENCY` | Define the complete Figures 4–8 job matrix | EVAL-001 | evaluation specification, figure matrix, panel definitions |
+| `EVAL-003` | `BLOCKED BY DEPENDENCY` | Create authoritative configuration and run manifests | EVAL-002 | canonical run manifests, config templates |
+| `EVAL-004` | `BLOCKED BY DEPENDENCY` | Measure throughput on CUDA when available, otherwise CPU | EVAL-003 | device benchmark harness, throughput logs |
+| `EVAL-005` | `BLOCKED BY DEPENDENCY` | Produce a resumable compute and checkpoint plan | EVAL-004 | checkpoint plan, shard plan, resume metadata |
+| `EVAL-006` | `BLOCKED BY DEPENDENCY` | Run selected learning-parameter training | EVAL-005 | learning-sweep jobs, seed logs |
+| `EVAL-007` | `BLOCKED BY DEPENDENCY` | Train ECHO, HOODIE, and ECHO-NoLSTM with equal budgets where required | EVAL-006 | training jobs, model snapshots |
+| `EVAL-008` | `BLOCKED BY DEPENDENCY` | Run 10 seeds × 200 held-out episodes for reported points | EVAL-007 | held-out evaluation jobs, raw outputs |
+| `EVAL-009` | `BLOCKED BY DEPENDENCY` | Enforce generated = completed + dropped accounting | EVAL-008 | accounting validator, evaluation outputs |
+| `EVAL-010` | `BLOCKED BY DEPENDENCY` | Enforce no masked ECHO action selection | EVAL-008 | mask validator, inference logs |
+| `EVAL-011` | `BLOCKED BY DEPENDENCY` | Enforce paired trace, topology, and configuration hashes | EVAL-008 | hash validator, manifest checks |
+| `EVAL-012` | `BLOCKED BY DEPENDENCY` | Compute seed-level means and 95% confidence intervals | EVAL-009, EVAL-010, EVAL-011 | aggregation scripts, CI outputs |
 
 ## Phase 4 — Figures, reporting, and cleanup
 
-| ID | Status | Title | Dependencies |
-| --- | --- | --- | --- |
-| `FIG-001` | `BLOCKED BY DEPENDENCY` | Generate Figure 4 from the actual simulator topology | EVAL-012 |
-| `FIG-002` | `BLOCKED BY DEPENDENCY` | Generate Figure 5(a–b) from real training curves | FIG-001 |
-| `FIG-003` | `BLOCKED BY DEPENDENCY` | Generate Figure 6(a–e) from real behavioral/scalability outputs | FIG-002 |
-| `FIG-004` | `BLOCKED BY DEPENDENCY` | Generate Figure 7(a–f) from real paired comparison outputs | FIG-003 |
-| `FIG-005` | `BLOCKED BY DEPENDENCY` | Generate Figure 8 from ECHO/ECHO-NoLSTM runs | FIG-004 |
-| `FIG-006` | `BLOCKED BY DEPENDENCY` | Export vector files and 300-dpi PNGs with panel/seed CSV lineage | FIG-005 |
-| `REPORT-001` | `BLOCKED BY DEPENDENCY` | Produce the final base-HOODIE reproduction report | FIG-006 |
-| `REPORT-002` | `BLOCKED BY DEPENDENCY` | Produce the final ECHO implementation and invariant report | REPORT-001 |
-| `REPORT-003` | `BLOCKED BY DEPENDENCY` | Produce the final evaluation and figure-lineage report | REPORT-002 |
-| `CLEAN-002` | `BLOCKED BY DEPENDENCY` | Mark stale smoke/checkpoint/figure evidence as superseded | REPORT-003 |
-| `CLEAN-003` | `BLOCKED BY DEPENDENCY` | Remove or archive duplicate noncanonical execution paths only after all replacement gates pass | CLEAN-002 |
-| `HANDOFF-001` | `BLOCKED BY DEPENDENCY` | Produce the final exact-command handoff and artifact index | CLEAN-003 |
+| Task ID | Status | Title | Dependency task IDs | Authority/evidence inputs |
+| --- | --- | --- | --- | --- |
+| `FIG-001` | `BLOCKED BY DEPENDENCY` | Generate Figure 4 from the actual simulator topology | BASE-002 | topology snapshot, figure script, panel CSV |
+| `FIG-002` | `BLOCKED BY DEPENDENCY` | Generate Figure 5(a–b) from real training curves | EVAL-006 | training-sweep outputs, panel CSVs |
+| `FIG-003` | `BLOCKED BY DEPENDENCY` | Generate Figure 6(a–e) from real behavioral/scalability outputs | EVAL-007 | behavior/scalability outputs, panel CSVs |
+| `FIG-004` | `BLOCKED BY DEPENDENCY` | Generate Figure 7(a–f) from real paired comparison outputs | EVAL-008 | paired comparison outputs, panel CSVs |
+| `FIG-005` | `BLOCKED BY DEPENDENCY` | Generate Figure 8 from ECHO/ECHO-NoLSTM runs | EVAL-008 | ablation outputs, panel CSVs |
+| `FIG-006` | `BLOCKED BY DEPENDENCY` | Export vector files and 300-dpi PNGs with panel/seed CSV lineage | FIG-001, FIG-002, FIG-003, FIG-004, FIG-005 | export scripts, manifest, lineage |
+| `REPORT-001` | `BLOCKED BY DEPENDENCY` | Produce the final base-HOODIE reproduction report | FREEZE-001, FIG-001 | base report draft, evidence log |
+| `REPORT-002` | `BLOCKED BY DEPENDENCY` | Produce the final ECHO implementation and invariant report | FIG-006 | invariant report, implementation summary |
+| `REPORT-003` | `BLOCKED BY DEPENDENCY` | Produce the final evaluation and figure-lineage report | FIG-006 | final evaluation report, lineage index |
+| `CLEAN-002` | `BLOCKED BY DEPENDENCY` | Mark stale smoke/checkpoint/figure evidence as superseded | REPORT-003 | cleanup manifest, supersession notes |
+| `CLEAN-003` | `BLOCKED BY DEPENDENCY` | Remove or archive duplicate noncanonical execution paths only after all replacement gates pass | CLEAN-002 | archive plan, deletion gate notes |
+| `HANDOFF-001` | `BLOCKED BY DEPENDENCY` | Produce the final exact-command handoff and artifact index | CLEAN-003 | handoff doc, artifact index |
+
+## 18. Dependency Graph
 
 ## 18. Dependency Graph
 
 ```mermaid
 graph TD
-  SRC1[SRC-001] --> SRC2[SRC-002]
-  SRC2 --> AUD1[AUDIT-001]
-  AUD1 --> AUD2[AUDIT-002]
-  AUD2 --> PLAN[PLAN-001]
-  AUD1 --> CLEAN1[CLEAN-001]
-  PLAN --> B1[BASE-001]
-  B1 --> B2[BASE-002]
+  B1[BASE-001] --> B2[BASE-002]
   B2 --> B3[BASE-003]
   B3 --> B4[BASE-004]
-  B4 --> B5[BASE-005]
-  B5 --> B6[BASE-006]
+  B4 --> B6[BASE-006]
+  B6 --> B5[BASE-005]
   B6 --> B7[BASE-007]
-  B7 --> B8[BASE-008]
+  B6 --> B8[BASE-008]
   B8 --> B9[BASE-009]
   B9 --> B10[BASE-010]
-  B10 --> B11[BASE-011]
+  B6 --> B11[BASE-011]
   B11 --> B12[BASE-012]
   B12 --> B13[BASE-013]
   B13 --> B14[BASE-014]
@@ -413,8 +484,13 @@ graph TD
   B19 --> B20[BASE-020]
   B20 --> B21[BASE-021]
   B21 --> B22[BASE-022]
-  B22 --> FREEZE[FREEZE-001]
-  FREEZE --> E1[ECHO-001]
+  B22 --> F[FREEZE-001]
+  SRC[SRC-001]
+  SRC2[SRC-002]
+  SRC2 --> AUD1[AUDIT-001]
+  AUD2[AUDIT-002]
+  F --> E1[ECHO-001]
+  SRC --> E1
   E1 --> E2[ECHO-002]
   E2 --> E3[ECHO-003]
   E3 --> E4[ECHO-004]
@@ -442,19 +518,25 @@ graph TD
   EV5 --> EV6[EVAL-006]
   EV6 --> EV7[EVAL-007]
   EV7 --> EV8[EVAL-008]
-  EV8 --> EV9[EVAL-009]
-  EV9 --> EV10[EVAL-010]
-  EV10 --> EV11[EVAL-011]
-  EV11 --> EV12[EVAL-012]
-  EV12 --> F1[FIG-001]
-  F1 --> F2[FIG-002]
-  F2 --> F3[FIG-003]
-  F3 --> F4[FIG-004]
-  F4 --> F5[FIG-005]
-  F5 --> F6[FIG-006]
-  F6 --> R1[REPORT-001]
-  R1 --> R2[REPORT-002]
-  R2 --> R3[REPORT-003]
+  EV8 --> EV9a[EVAL-009]
+  EV8 --> EV10a[EVAL-010]
+  EV8 --> EV11a[EVAL-011]
+  EV9a --> EV12[EVAL-012]
+  EV10a --> EV12
+  EV11a --> EV12
+  B2 --> F1[FIG-001]
+  EV6 --> F2[FIG-002]
+  EV7 --> F3[FIG-003]
+  EV8 --> F4[FIG-004]
+  EV8 --> F5[FIG-005]
+  F1 --> F6[FIG-006]
+  F2 --> F6
+  F3 --> F6
+  F4 --> F6
+  F5 --> F6
+  B22 --> R1[REPORT-001]
+  F6 --> R2[REPORT-002]
+  F6 --> R3[REPORT-003]
   R3 --> C2[CLEAN-002]
   C2 --> C3[CLEAN-003]
   C3 --> H[HANDOFF-001]
@@ -462,21 +544,21 @@ graph TD
 
 ## 19. Critical Path
 
-- Base implementation critical path: `PLAN-001` → `CLEAN-001` → `BASE-001` → `BASE-002` → `BASE-003` → `BASE-004` → `BASE-005` → `BASE-006` → `BASE-007` → `BASE-008` → `BASE-009` → `BASE-010` → `BASE-011` → `BASE-012` → `BASE-013` → `BASE-014` → `BASE-015` → `BASE-016` → `BASE-017` → `BASE-018` → `BASE-019` → `BASE-020` → `BASE-021` → `BASE-022` → `FREEZE-001`.
-- Source-lock path: `SRC-001` → `SRC-002` → `AUDIT-001` → `AUDIT-002` → source-lock bundle creation and hash confirmation in a trusted environment; this path is external and blocked here until the handoff exists.
-- Joined project critical path: `FREEZE-001` + `SRC-001` → `ECHO-001` → `ECHO-002` → `ECHO-003` → `ECHO-004` → `ECHO-005` → `ECHO-006` → `ECHO-007` → `ECHO-008` → `ECHO-009` → `ECHO-010` → `ECHO-011` → `ECHO-012` → `ECHO-013` → `ECHO-014` → `ECHO-015` → `ECHO-016` → `ECHO-017` → `ECHO-018` → `ECHO-019` → `ECHO-020` → `EVAL-001` → `EVAL-002` → `EVAL-003` → `EVAL-004` → `EVAL-005` → `EVAL-006` → `EVAL-007` → `EVAL-008` → `EVAL-009` → `EVAL-010` → `EVAL-011` → `EVAL-012` → `FIG-001` → `FIG-002` → `FIG-003` → `FIG-004` → `FIG-005` → `FIG-006` → `REPORT-001` → `REPORT-002` → `REPORT-003` → `CLEAN-002` → `CLEAN-003` → `HANDOFF-001`.
+- Base implementation critical path: `PLAN-001` → `CLEAN-001` → `BASE-001` → `BASE-002` → `BASE-003` → `BASE-004` → `BASE-006` → `BASE-005` → `BASE-008` → `BASE-009` → `BASE-010` → `BASE-011` → `BASE-012` → `BASE-013` → `BASE-014` → `BASE-015` → `BASE-016` → `BASE-017` → `BASE-018` → `BASE-019` → `BASE-020` → `BASE-021` → `BASE-022` → `FREEZE-001`.
+- Source-lock path: `SRC-001` closes when source-lock bundle, metadata, hashes, equation audit, and semantic classification are committed; `SRC-002` is independent evidence only.
+- Joined project critical path: `FREEZE-001` + `SRC-001` → `ECHO-001` → `ECHO-002` → `ECHO-003` → `ECHO-004` → `ECHO-005` → `ECHO-006` → `ECHO-007` → `ECHO-008` → `ECHO-009` → `ECHO-010` → `ECHO-011` → `ECHO-012` → `ECHO-013` → `ECHO-014` → `ECHO-015` → `ECHO-016` → `ECHO-017` → `ECHO-018` → `ECHO-019` → `ECHO-020` → `EVAL-001` → `EVAL-002` → `EVAL-003` → `EVAL-004` → `EVAL-005` → `EVAL-006` → `EVAL-007` → `EVAL-008` → `EVAL-012` → `FIG-001` → `FIG-002` → `FIG-003` → `FIG-004` → `FIG-005` → `FIG-006` → `REPORT-001` → `REPORT-002` → `REPORT-003` → `CLEAN-002` → `CLEAN-003` → `HANDOFF-001`.
 - First READY implementation task after plan approval: `BASE-001`.
-- Parallel task groups: `SRC-001` can proceed independently of `BASE-001`; `AUDIT-001` and `AUDIT-002` only support the source-lock path; later base tasks remain serial by design.
+- Parallel task groups: `SRC-001` can proceed independently of `BASE-001`; `SRC-002` and `AUDIT-001` are independent evidence tasks; `BASE-002` and `SRC-002` can run in parallel after plan approval; `BASE-007`, `BASE-008`, and `BASE-011` can branch after the shared slot contract; `EVAL-009`, `EVAL-010`, and `EVAL-011` are parallel validation gates.
 
 ## 20. Gate Definitions
 
-- Gate 0 — Source and plan consistency: live method revision recorded externally, base-paper evidence map complete, task totals consistent, no stale HEAD, no impossible ordering.
+- Gate 0 — Source and plan consistency: live method revision recorded externally, source-lock bundle committed, base-paper evidence map complete, task totals consistent, no stale HEAD, no impossible ordering.
 - Gate 1 — Base traffic and synchronized slots: per-EA Bernoulli arrivals, same-slot decisions, 100 decision + 10 drain slots, deterministic paired traces.
 - Gate 2 — Base physical mechanics: correct queues, one transmission resource, next-slot destination admission, equal public CPU sharing, exact lifecycle accounting.
 - Gate 3 — Base HOODIE learner: one learner per EA, real LSTM, real Dueling Double-DQN, delayed replay, finite losses, target updates.
 - Gate 4 — Base reproduction and freeze: paper experiment organization reproduced, baselines validated, outputs derived from real simulation, baseline frozen.
 - Gate 5 — ECHO equation fidelity: equations (1)–(67) mapped to code and tests with exact state / reward / transition semantics.
-- Gate 6 — ECHO smoke and pilot: all three routes, ERT-driven scheduling, fresh/stale LSTM behavior, gamma^Delta, isolated ECHO-NoLSTM, paired pilot.
+- Gate 6 — ECHO smoke and pilot: all three routes, ERT-driven scheduling, fresh/stale LSTM behavior, canonical mask, isolated ECHO-NoLSTM, paired pilot.
 - Gate 7 — Full evaluation: paired trace bank, 10 seeds × 200 episodes, confidence intervals, invariants.
 - Gate 8 — Figures and final reporting: Figures 4–8 from preserved raw outputs, panel CSVs, SVG / PNG exports, no fabricated claims.
 
@@ -517,25 +599,14 @@ Bounded paired comparison across ECHO, ECHO-NoLSTM, HOODIE, RO, FLC, VO, HO, BCO
 
 ## 24. Artifact and Lineage Requirements
 
-- Research authority: live method snapshot, HOODIE OCR bundle, topology authorization v2, PNG export authorization, evaluation spec.
+- Research authority: live method snapshot, HOODIE OCR bundle, topology authorization v2, PNG export authorization, evaluation spec, and the committed source-lock bundle.
 - Smoke artifacts: `artifacts/smoke/echo_runtime/*`, `artifacts/smoke/echo_learner/*`, `artifacts/checkpoints/echo_smoke/*`.
 - Pilot artifacts: `artifacts/pilot/echo_comparison/*` with raw task logs, seed CSVs, panel CSVs, SVG, PNG, manifest, and lineage record.
 - Evaluation artifacts: authoritative run manifests, raw outputs, aggregated metrics, and confidence intervals.
 - Final reports: `ECHO_TEST_AND_INVARIANT_REPORT.md`, `ECHO_FULL_TEST_TRIAGE_REPORT.md`, `ECHO_STATE_SCHEMA.md`, `ECHO_COMPUTE_PLAN.md`, `ECHO_AUTONOMOUS_HANDOFF.md`, `ECHO_FINAL_IMPLEMENTATION_REPORT.md`, `ECHO_FINAL_ARTIFACT_INDEX.md`.
 - Historical artifacts must be retained when they explain a replacement or a failure mode; they must be labeled superseded when non-authoritative.
 
-## 25. Risk Register
-
-| Risk ID | Description | Probability | Impact | Detection | Mitigation | Contingency | Related task IDs | Current status |
-| --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| R-001 | HOODIE / ECHO contamination | Medium | High | Code review + isolated baselines | Freeze HOODIE before ECHO edits | Keep adapters separate | BASE-019, FREEZE-001, ECHO-001 | Planning |
-| R-002 | Off-by-one deadlines | High | High | Slot-order tests and hand-check cases | Explicit deadline equations | Fix lifecycle order and terminal flush | BASE-006, ECHO-002, ECHO-014 | Planning |
-| R-003 | Incorrect delayed rewards | High | High | Reward ledger / replay assertions | One reward per resolution | Rebuild pending reward flow | ECHO-013, ECHO-014, ECHO-015 | Planning |
-| R-004 | Mask mismatch | High | High | Mask / action / target selection tests | Canonical mask shared everywhere | Tie exploration, exploitation, target selection to same mask | ECHO-009, ECHO-010, ECHO-015 | Planning |
-| R-005 | Checkpoint incompatibility | High | High | Save / load / resume smoke | Use map_location=device | Version checkpoint schema | ECHO-017, EVAL-005 | Planning |
-| R-006 | Legacy figures mistaken for final claims | High | High | Figure-lineage checks | Use only raw-authoritative outputs | Mark legacy outputs superseded | FIG-001–FIG-006, CLEAN-002 | Planning |
-| R-007 | Compute overrun | High | High | Pilot throughput and wall-time measurement | Measure before scaling | Shard and resume campaigns | EVAL-004, EVAL-005, EVAL-008 | Planning |
-
+Scientific drift if evidence or dependency is wrong
 ## 26. Unresolved Decisions
 
 | Decision ID | Question | Existing evidence | Options | Recommended choice | Scientific consequence | Implementation consequence |
@@ -547,10 +618,10 @@ Bounded paired comparison across ECHO, ECHO-NoLSTM, HOODIE, RO, FLC, VO, HO, BCO
 | Metric | Count / value |
 | --- | --- |
 | Total tasks | 73 |
-| Verified complete | 3 |
+| Verified complete | 5 |
 | Partially implemented | 2 |
 | Ready | 1 |
-| Blocked by dependency | 66 |
+| Blocked by dependency | 65 |
 | Blocked — external source access | 1 |
 | Not started | 0 |
 | Superseded | 0 |
@@ -573,7 +644,7 @@ Bounded paired comparison across ECHO, ECHO-NoLSTM, HOODIE, RO, FLC, VO, HO, BCO
 | 2026-07-13T18:30:45Z | v2.0 plan rewrite established 73-task register and base-first architecture. | Current git state, task register, and initial source inventory. |
 | 2026-07-13T18:30:45Z | v2.1 corrected source authority hierarchy but live final validation failed. | External live-source verification was not available inside the coding environment. |
 | 2026-07-13T18:30:45Z | v2.2 recorded the externally verified live revision and the unresolved 69-row audit but left readiness semantics too coarse. | External verification string for the live tab and historical export snapshot. |
-| 2026-07-13T19:30:14Z | v2.3 separates base execution readiness from ECHO source-lock readiness, blocks only source-dependent work, and corrects the critical path. | Externally verified live revision `ALtnJHzzm4hFNZK8DdBeKreoGaZ2RSO7F5oymwXZTjamK8fUxsa71RdvAu-7KkfW25xxeNA3C-Ns0TIbs-kwgO8FwUg1U68nloS7CIA1sg`; repository export `ALtnJHyTLdhKaOnVqfvxB74eKtegK8Hrsx5l2yaYdk68tSHgf-QdYtM6nrsTZrwFDm3DbTUFkeWajyCFP0Eevns2d7r0_twwuuYjD4ZcMQ`; current HEAD `d8dbf131dc4cff3879636853cafa9371a0914d99`. |
+| 2026-07-14T00:00:00Z | v2.4 separates source-lock closure from live verification, renames FREEZE-001, corrects base and ECHO gates, and rebuilds task/evaluation/figure planning. | Externally verified live revision `ALtnJHzzm4hFNZK8DdBeKreoGaZ2RSO7F5oymwXZTjamK8fUxsa71RdvAu-7KkfW25xxeNA3C-Ns0TIbs-kwgO8FwUg1U68nloS7CIA1sg`; repository export `ALtnJHyTLdhKaOnVqfvxB74eKtegK8Hrsx5l2yaYdk68tSHgf-QdYtM6nrsTZrwFDm3DbTUFkeWajyCFP0Eevns2d7r0_twwuuYjD4ZcMQ`; current HEAD `d8dbf131dc4cff3879636853cafa9371a0914d99`. |
 
 ## 30. Plan Quality Audit
 
@@ -591,7 +662,7 @@ Bounded paired comparison across ECHO, ECHO-NoLSTM, HOODIE, RO, FLC, VO, HO, BCO
 | Status consistency | PASS | No ECHO or evaluation task is READY; READY remains limited to BASE-001. |
 | Base-first enforcement | PASS | All ECHO work waits on FREEZE-001 and SRC-001; base work starts with BASE-001. |
 | ECHO isolation | PASS | ECHO only changes the decision layer after freeze; base physics remain untouched. |
-| Equation coverage 1–67 | UNRESOLVED | 69-row drift audit exists, but live snapshot is still missing locally. |
+| Equation coverage 1–67 | PASS | 67 equation rows plus Algorithms 1 and 2 are individually recorded in the drift audit. |
 | Base-paper mechanism coverage | PASS | Slot workflow, queues, delayed reward, learner structure, and freeze strategy are explicit. |
 | Figure coverage: five figures, fifteen panels | PASS | Figures 4–8 are mapped to the evaluation and figure traceability matrix. |
 | Trace pairing | PASS | Paired, hashed, immutable trace banks are required before evaluation. |
@@ -600,3 +671,81 @@ Bounded paired comparison across ECHO, ECHO-NoLSTM, HOODIE, RO, FLC, VO, HO, BCO
 | Cleanup safety | PASS | Historical artifacts are retained or superseded explicitly; deletion is not scheduled early. |
 | No unsupported completion claims | PASS | No task is marked complete without its stated authority and evidence. |
 
+
+## 31. Task Card Appendix
+
+| Task ID | Objective | Authority | Dependency task IDs | Exact files to inspect | Expected files to change | Implementation steps | Tests | Commands | Artifacts | Acceptance criteria | Invariants | Risk | Rollback / isolation | Definition of done | Evidence required | Next command |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| `SRC-001` | Fetch and register the current live ECHO method tab and revision | Live ECHO tab + source-lock bundle | NONE | Trusted live Docs access; committed source-lock bundle required for completion | plan file only | task-specific unit / integration / lineage checks | Read plan, execute only after dependencies are complete | evidence notes; manifests; logs | Acceptance criteria are explicit in this plan | No authority drift; no unsupported completion claims | Scientific drift if evidence or dependency is wrong | Keep historical evidence; do not overwrite raw data | Task boundary satisfied and recorded | Required evidence sources listed in plan | Execute after dependencies are complete |
+| `SRC-002` | Build a HOODIE paper evidence registry by section, equation, table, and figure | HOODIE paper | NONE | HOODIE PDF, OCR bundle, figure/table extraction, paper sections and tables | plan file only | task-specific unit / integration / lineage checks | Read plan, execute only after dependencies are complete | evidence notes; manifests; logs | Acceptance criteria are explicit in this plan | No authority drift; no unsupported completion claims | Scientific drift if evidence or dependency is wrong | Keep historical evidence; do not overwrite raw data | Task boundary satisfied and recorded | Required evidence sources listed in plan | Execute after dependencies are complete |
+| `AUDIT-001` | Produce the current code-path and dependency inventory | HOODIE paper | NONE | src/, tests/, repository graph evidence | plan file only | task-specific unit / integration / lineage checks | Read plan, execute only after dependencies are complete | evidence notes; manifests; logs | Acceptance criteria are explicit in this plan | No authority drift; no unsupported completion claims | Scientific drift if evidence or dependency is wrong | Keep historical evidence; do not overwrite raw data | Task boundary satisfied and recorded | Required evidence sources listed in plan | Execute after dependencies are complete |
+| `AUDIT-002` | Reconcile old completion claims against real live paths | HOODIE paper | NONE | handoff reports, triage reports, artifact index | plan file only | task-specific unit / integration / lineage checks | Read plan, execute only after dependencies are complete | evidence notes; manifests; logs | Acceptance criteria are explicit in this plan | No authority drift; no unsupported completion claims | Scientific drift if evidence or dependency is wrong | Keep historical evidence; do not overwrite raw data | Task boundary satisfied and recorded | Required evidence sources listed in plan | Execute after dependencies are complete |
+| `PLAN-001` | Correct version, HEAD, task totals, statuses, dependencies, critical path, and dashboard | HOODIE paper | NONE | prior plan history, git state evidence | plan file only | task-specific unit / integration / lineage checks | Read plan, execute only after dependencies are complete | evidence notes; manifests; logs | Acceptance criteria are explicit in this plan | No authority drift; no unsupported completion claims | Scientific drift if evidence or dependency is wrong | Keep historical evidence; do not overwrite raw data | Task boundary satisfied and recorded | Required evidence sources listed in plan | Execute after dependencies are complete |
+| `CLEAN-001` | Classify existing artifacts as authoritative, historical, superseded, or removable later | HOODIE paper | NONE | artifacts/* and research/* inventories | plan file only | task-specific unit / integration / lineage checks | Read plan, execute only after dependencies are complete | evidence notes; manifests; logs | Acceptance criteria are explicit in this plan | No authority drift; no unsupported completion claims | Scientific drift if evidence or dependency is wrong | Keep historical evidence; do not overwrite raw data | Task boundary satisfied and recorded | Required evidence sources listed in plan | Execute after dependencies are complete |
+| `BASE-001` | Freeze one canonical Table-4 configuration | HOODIE paper | PLAN-001, CLEAN-001 | HOODIE paper Table 4, OCR bundle, topology authorization v2 | plan file only | task-specific unit / integration / lineage checks | Read plan, execute only after dependencies are complete | evidence notes; manifests; logs | Acceptance criteria are explicit in this plan | No authority drift; no unsupported completion claims | Scientific drift if evidence or dependency is wrong | Keep historical evidence; do not overwrite raw data | Task boundary satisfied and recorded | Required evidence sources listed in plan | Execute after dependencies are complete |
+| `BASE-002` | Freeze the exact approved 20-EA topology and scalable topology rules | HOODIE paper | BASE-001 | HOODIE topology evidence, Figure 4, topology authorization v2 | plan file only | task-specific unit / integration / lineage checks | Read plan, execute only after dependencies are complete | evidence notes; manifests; logs | Acceptance criteria are explicit in this plan | No authority drift; no unsupported completion claims | Scientific drift if evidence or dependency is wrong | Keep historical evidence; do not overwrite raw data | Task boundary satisfied and recorded | Required evidence sources listed in plan | Execute after dependencies are complete |
+| `BASE-003` | Implement per-EA Bernoulli trace generation and 100+10 decision/drain behavior | HOODIE paper | BASE-002 | trace protocol, paper arrival / drain evidence | plan file only | task-specific unit / integration / lineage checks | Read plan, execute only after dependencies are complete | evidence notes; manifests; logs | Acceptance criteria are explicit in this plan | No authority drift; no unsupported completion claims | Scientific drift if evidence or dependency is wrong | Keep historical evidence; do not overwrite raw data | Task boundary satisfied and recorded | Required evidence sources listed in plan | Execute after dependencies are complete |
+| `BASE-004` | Make trace objects immutable and directly consumable by all methods | HOODIE paper | BASE-003 | trace-bank code, training / evaluation trace constructors | plan file only | task-specific unit / integration / lineage checks | Read plan, execute only after dependencies are complete | evidence notes; manifests; logs | Acceptance criteria are explicit in this plan | No authority drift; no unsupported completion claims | Scientific drift if evidence or dependency is wrong | Keep historical evidence; do not overwrite raw data | Task boundary satisfied and recorded | Required evidence sources listed in plan | Execute after dependencies are complete |
+| `BASE-005` | Implement the synchronized multi-agent slot engine | HOODIE paper | BASE-006 | slot engine, environment step path, lifecycle contract | plan file only | task-specific unit / integration / lineage checks | Read plan, execute only after dependencies are complete | evidence notes; manifests; logs | Acceptance criteria are explicit in this plan | No authority drift; no unsupported completion claims | Scientific drift if evidence or dependency is wrong | Keep historical evidence; do not overwrite raw data | Task boundary satisfied and recorded | Required evidence sources listed in plan | Execute after dependencies are complete |
+| `BASE-006` | Formalize and test base HOODIE slot order before engine execution | HOODIE paper | BASE-004 | hand-calculated timelines, slot-order contract, paper queue semantics | plan file only | task-specific unit / integration / lineage checks | Read plan, execute only after dependencies are complete | evidence notes; manifests; logs | Acceptance criteria are explicit in this plan | No authority drift; no unsupported completion claims | Scientific drift if evidence or dependency is wrong | Keep historical evidence; do not overwrite raw data | Task boundary satisfied and recorded | Required evidence sources listed in plan | Execute after dependencies are complete |
+| `BASE-007` | Correct private FIFO queue and active private service separation | HOODIE paper | BASE-006 | private queue code, lifecycle tests | plan file only | task-specific unit / integration / lineage checks | Read plan, execute only after dependencies are complete | evidence notes; manifests; logs | Acceptance criteria are explicit in this plan | No authority drift; no unsupported completion claims | Scientific drift if evidence or dependency is wrong | Keep historical evidence; do not overwrite raw data | Task boundary satisfied and recorded | Required evidence sources listed in plan | Execute after dependencies are complete |
+| `BASE-008` | Correct one outbound FIFO queue and transmission resource per source EA | HOODIE paper | BASE-006 | outbound queue code, source transmission evidence | plan file only | task-specific unit / integration / lineage checks | Read plan, execute only after dependencies are complete | evidence notes; manifests; logs | Acceptance criteria are explicit in this plan | No authority drift; no unsupported completion claims | Scientific drift if evidence or dependency is wrong | Keep historical evidence; do not overwrite raw data | Task boundary satisfied and recorded | Required evidence sources listed in plan | Execute after dependencies are complete |
+| `BASE-009` | Preserve the selected destination inside every outbound task | HOODIE paper | BASE-008 | task record schema, route metadata | plan file only | task-specific unit / integration / lineage checks | Read plan, execute only after dependencies are complete | evidence notes; manifests; logs | Acceptance criteria are explicit in this plan | No authority drift; no unsupported completion claims | Scientific drift if evidence or dependency is wrong | Keep historical evidence; do not overwrite raw data | Task boundary satisfied and recorded | Required evidence sources listed in plan | Execute after dependencies are complete |
+| `BASE-010` | Correct transmission completion and next-slot destination admission | HOODIE paper | BASE-009 | slot boundary admission code, lifecycle tests | plan file only | task-specific unit / integration / lineage checks | Read plan, execute only after dependencies are complete | evidence notes; manifests; logs | Acceptance criteria are explicit in this plan | No authority drift; no unsupported completion claims | Scientific drift if evidence or dependency is wrong | Keep historical evidence; do not overwrite raw data | Task boundary satisfied and recorded | Required evidence sources listed in plan | Execute after dependencies are complete |
+| `BASE-011` | Correct source-indexed destination queues | HOODIE paper | BASE-006 | public queue code, destination queue evidence | plan file only | task-specific unit / integration / lineage checks | Read plan, execute only after dependencies are complete | evidence notes; manifests; logs | Acceptance criteria are explicit in this plan | No authority drift; no unsupported completion claims | Scientific drift if evidence or dependency is wrong | Keep historical evidence; do not overwrite raw data | Task boundary satisfied and recorded | Required evidence sources listed in plan | Execute after dependencies are complete |
+| `BASE-012` | Implement equal public-CPU sharing among active source queues | HOODIE paper | BASE-011 | public CPU scheduling code, queue-share tests | plan file only | task-specific unit / integration / lineage checks | Read plan, execute only after dependencies are complete | evidence notes; manifests; logs | Acceptance criteria are explicit in this plan | No authority drift; no unsupported completion claims | Scientific drift if evidence or dependency is wrong | Keep historical evidence; do not overwrite raw data | Task boundary satisfied and recorded | Required evidence sources listed in plan | Execute after dependencies are complete |
+| `BASE-013` | Implement the exact destination-specific base action space | HOODIE paper | BASE-012 | action space code, paper action semantics | plan file only | task-specific unit / integration / lineage checks | Read plan, execute only after dependencies are complete | evidence notes; manifests; logs | Acceptance criteria are explicit in this plan | No authority drift; no unsupported completion claims | Scientific drift if evidence or dependency is wrong | Keep historical evidence; do not overwrite raw data | Task boundary satisfied and recorded | Required evidence sources listed in plan | Execute after dependencies are complete |
+| `BASE-014` | Implement the exact HOODIE state and load-history construction | HOODIE paper | BASE-013 | state builder, load history schema | plan file only | task-specific unit / integration / lineage checks | Read plan, execute only after dependencies are complete | evidence notes; manifests; logs | Acceptance criteria are explicit in this plan | No authority drift; no unsupported completion claims | Scientific drift if evidence or dependency is wrong | Keep historical evidence; do not overwrite raw data | Task boundary satisfied and recorded | Required evidence sources listed in plan | Execute after dependencies are complete |
+| `BASE-015` | Implement and train the real HOODIE LSTM/load forecast | HOODIE paper | BASE-014 | LSTM module, load forecast evidence | plan file only | task-specific unit / integration / lineage checks | Read plan, execute only after dependencies are complete | evidence notes; manifests; logs | Acceptance criteria are explicit in this plan | No authority drift; no unsupported completion claims | Scientific drift if evidence or dependency is wrong | Keep historical evidence; do not overwrite raw data | Task boundary satisfied and recorded | Required evidence sources listed in plan | Execute after dependencies are complete |
+| `BASE-016` | Implement one independent HOODIE learner per EA | HOODIE paper | BASE-015 | learner manager, per-EA model state | plan file only | task-specific unit / integration / lineage checks | Read plan, execute only after dependencies are complete | evidence notes; manifests; logs | Acceptance criteria are explicit in this plan | No authority drift; no unsupported completion claims | Scientific drift if evidence or dependency is wrong | Keep historical evidence; do not overwrite raw data | Task boundary satisfied and recorded | Required evidence sources listed in plan | Execute after dependencies are complete |
+| `BASE-017` | Implement original delayed reward and replay semantics | HOODIE paper | BASE-016 | training loop, replay insertion timing | plan file only | task-specific unit / integration / lineage checks | Read plan, execute only after dependencies are complete | evidence notes; manifests; logs | Acceptance criteria are explicit in this plan | No authority drift; no unsupported completion claims | Scientific drift if evidence or dependency is wrong | Keep historical evidence; do not overwrite raw data | Task boundary satisfied and recorded | Required evidence sources listed in plan | Execute after dependencies are complete |
+| `BASE-018` | Implement paper-correct Dueling Double-DQN, epsilon schedule, sign convention, and target copying | HOODIE paper | BASE-017 | double DQN code, epsilon schedule, target copy | plan file only | task-specific unit / integration / lineage checks | Read plan, execute only after dependencies are complete | evidence notes; manifests; logs | Acceptance criteria are explicit in this plan | No authority drift; no unsupported completion claims | Scientific drift if evidence or dependency is wrong | Keep historical evidence; do not overwrite raw data | Task boundary satisfied and recorded | Required evidence sources listed in plan | Execute after dependencies are complete |
+| `BASE-019` | Verify RO/FLC/VO/HO/BCO/MLEO against the same physical simulator | HOODIE paper | BASE-018 | baseline adapters, shared simulator | plan file only | task-specific unit / integration / lineage checks | Read plan, execute only after dependencies are complete | evidence notes; manifests; logs | Acceptance criteria are explicit in this plan | No authority drift; no unsupported completion claims | Scientific drift if evidence or dependency is wrong | Keep historical evidence; do not overwrite raw data | Task boundary satisfied and recorded | Required evidence sources listed in plan | Execute after dependencies are complete |
+| `BASE-020` | Build deterministic unit and integration tests for all base mechanics | HOODIE paper | BASE-019 | unit tests, integration tests | plan file only | task-specific unit / integration / lineage checks | Read plan, execute only after dependencies are complete | evidence notes; manifests; logs | Acceptance criteria are explicit in this plan | No authority drift; no unsupported completion claims | Scientific drift if evidence or dependency is wrong | Keep historical evidence; do not overwrite raw data | Task boundary satisfied and recorded | Required evidence sources listed in plan | Execute after dependencies are complete |
+| `BASE-021` | Run a bounded base-HOODIE runtime and learner smoke | HOODIE paper | BASE-020 | runtime smoke harness, learner smoke harness | plan file only | task-specific unit / integration / lineage checks | Read plan, execute only after dependencies are complete | evidence notes; manifests; logs | Acceptance criteria are explicit in this plan | No authority drift; no unsupported completion claims | Scientific drift if evidence or dependency is wrong | Keep historical evidence; do not overwrite raw data | Task boundary satisfied and recorded | Required evidence sources listed in plan | Execute after dependencies are complete |
+| `BASE-022` | Reproduce the base paper experiment organization and trend-level evidence | HOODIE paper | BASE-021 | base experiment runner, paper trend evidence | plan file only | task-specific unit / integration / lineage checks | Read plan, execute only after dependencies are complete | evidence notes; manifests; logs | Acceptance criteria are explicit in this plan | No authority drift; no unsupported completion claims | Scientific drift if evidence or dependency is wrong | Keep historical evidence; do not overwrite raw data | Task boundary satisfied and recorded | Required evidence sources listed in plan | Execute after dependencies are complete |
+| `FREEZE-001` | Freeze and version the validated HOODIE physical simulator and HOODIE baseline | Evaluation spec + topology / PNG authorizations | BASE-022 | validated simulator artifact, freeze manifest | plan file only | task-specific unit / integration / lineage checks | Read plan, execute only after dependencies are complete | evidence notes; manifests; logs | Acceptance criteria are explicit in this plan | No authority drift; no unsupported completion claims | Scientific drift if evidence or dependency is wrong | Keep historical evidence; do not overwrite raw data | Task boundary satisfied and recorded | Required evidence sources listed in plan | Execute after dependencies are complete |
+| `ECHO-001` | Add explicit ECHO method isolation without changing frozen HOODIE semantics | Live ECHO tab + source-lock bundle | FREEZE-001, SRC-001 | live ECHO snapshot, frozen base simulator, ECHO adapter | plan file only | task-specific unit / integration / lineage checks | Read plan, execute only after dependencies are complete | evidence notes; manifests; logs | Acceptance criteria are explicit in this plan | No authority drift; no unsupported completion claims | Scientific drift if evidence or dependency is wrong | Keep historical evidence; do not overwrite raw data | Task boundary satisfied and recorded | Required evidence sources listed in plan | Execute after dependencies are complete |
+| `ECHO-002` | Implement live Equations (1)–(8), task/deadline/action/dispatch lifecycle | Live ECHO tab + source-lock bundle | ECHO-001 | live ECHO equations (1)–(8), task lifecycle code | plan file only | task-specific unit / integration / lineage checks | Read plan, execute only after dependencies are complete | evidence notes; manifests; logs | Acceptance criteria are explicit in this plan | No authority drift; no unsupported completion claims | Scientific drift if evidence or dependency is wrong | Keep historical evidence; do not overwrite raw data | Task boundary satisfied and recorded | Required evidence sources listed in plan | Execute after dependencies are complete |
+| `ECHO-003` | Implement local completion estimates from Equations (9)–(11) | Live ECHO tab + source-lock bundle | ECHO-002 | live ECHO equations (9)–(11), local estimator code | plan file only | task-specific unit / integration / lineage checks | Read plan, execute only after dependencies are complete | evidence notes; manifests; logs | Acceptance criteria are explicit in this plan | No authority drift; no unsupported completion claims | Scientific drift if evidence or dependency is wrong | Keep historical evidence; do not overwrite raw data | Task boundary satisfied and recorded | Required evidence sources listed in plan | Execute after dependencies are complete |
+| `ECHO-004` | Implement outbound completion estimates from Equations (12)–(16) | Live ECHO tab + source-lock bundle | ECHO-003 | live ECHO equations (12)–(16), outbound estimator code | plan file only | task-specific unit / integration / lineage checks | Read plan, execute only after dependencies are complete | evidence notes; manifests; logs | Acceptance criteria are explicit in this plan | No authority drift; no unsupported completion claims | Scientific drift if evidence or dependency is wrong | Keep historical evidence; do not overwrite raw data | Task boundary satisfied and recorded | Required evidence sources listed in plan | Execute after dependencies are complete |
+| `ECHO-005` | Implement destination workload/capacity estimates from Equations (17)–(25) | Live ECHO tab + source-lock bundle | ECHO-004 | live ECHO equations (17)–(25), destination workload model | plan file only | task-specific unit / integration / lineage checks | Read plan, execute only after dependencies are complete | evidence notes; manifests; logs | Acceptance criteria are explicit in this plan | No authority drift; no unsupported completion claims | Scientific drift if evidence or dependency is wrong | Keep historical evidence; do not overwrite raw data | Task boundary satisfied and recorded | Required evidence sources listed in plan | Execute after dependencies are complete |
+| `ECHO-006` | Implement load history and LSTM integration from Equations (26)–(28) | Live ECHO tab + source-lock bundle | ECHO-005 | live ECHO equations (26)–(28), LSTM history inputs | plan file only | task-specific unit / integration / lineage checks | Read plan, execute only after dependencies are complete | evidence notes; manifests; logs | Acceptance criteria are explicit in this plan | No authority drift; no unsupported completion claims | Scientific drift if evidence or dependency is wrong | Keep historical evidence; do not overwrite raw data | Task boundary satisfied and recorded | Required evidence sources listed in plan | Execute after dependencies are complete |
+| `ECHO-007` | Implement local and transfer ERT from Equations (29)–(32) | Live ECHO tab + source-lock bundle | ECHO-006 | live ECHO equations (29)–(32), ERT calculator | plan file only | task-specific unit / integration / lineage checks | Read plan, execute only after dependencies are complete | evidence notes; manifests; logs | Acceptance criteria are explicit in this plan | No authority drift; no unsupported completion claims | Scientific drift if evidence or dependency is wrong | Keep historical evidence; do not overwrite raw data | Task boundary satisfied and recorded | Required evidence sources listed in plan | Execute after dependencies are complete |
+| `ECHO-008` | Implement iterative ERT source-queue scheduling from Equations (33)–(40) | Live ECHO tab + source-lock bundle | ECHO-007 | live ECHO equations (33)–(40), source scheduling logic | plan file only | task-specific unit / integration / lineage checks | Read plan, execute only after dependencies are complete | evidence notes; manifests; logs | Acceptance criteria are explicit in this plan | No authority drift; no unsupported completion claims | Scientific drift if evidence or dependency is wrong | Keep historical evidence; do not overwrite raw data | Task boundary satisfied and recorded | Required evidence sources listed in plan | Execute after dependencies are complete |
+| `ECHO-009` | Implement the canonical action set from Equation (41) | Live ECHO tab + source-lock bundle | ECHO-008 | live ECHO equation (41), action-set module | plan file only | task-specific unit / integration / lineage checks | Read plan, execute only after dependencies are complete | evidence notes; manifests; logs | Acceptance criteria are explicit in this plan | No authority drift; no unsupported completion claims | Scientific drift if evidence or dependency is wrong | Keep historical evidence; do not overwrite raw data | Task boundary satisfied and recorded | Required evidence sources listed in plan | Execute after dependencies are complete |
+| `ECHO-010` | Implement valid actions, lateness fallback, and mask from Equations (42)–(46) | Live ECHO tab + source-lock bundle | ECHO-009 | live ECHO equations (42)–(46), mask logic | plan file only | task-specific unit / integration / lineage checks | Read plan, execute only after dependencies are complete | evidence notes; manifests; logs | Acceptance criteria are explicit in this plan | No authority drift; no unsupported completion claims | Scientific drift if evidence or dependency is wrong | Keep historical evidence; do not overwrite raw data | Task boundary satisfied and recorded | Required evidence sources listed in plan | Execute after dependencies are complete |
+| `ECHO-011` | Implement direct decision, admission metadata, and pending records from Equations (47)–(50) | Live ECHO tab + source-lock bundle | ECHO-010 | live ECHO equations (47)–(50), pending-record store | plan file only | task-specific unit / integration / lineage checks | Read plan, execute only after dependencies are complete | evidence notes; manifests; logs | Acceptance criteria are explicit in this plan | No authority drift; no unsupported completion claims | Scientific drift if evidence or dependency is wrong | Keep historical evidence; do not overwrite raw data | Task boundary satisfied and recorded | Required evidence sources listed in plan | Execute after dependencies are complete |
+| `ECHO-012` | Implement fixed normalized state and candidate ERT vector from Equations (51)–(54) | Live ECHO tab + source-lock bundle | ECHO-011 | live ECHO equations (51)–(54), state encoder | plan file only | task-specific unit / integration / lineage checks | Read plan, execute only after dependencies are complete | evidence notes; manifests; logs | Acceptance criteria are explicit in this plan | No authority drift; no unsupported completion claims | Scientific drift if evidence or dependency is wrong | Keep historical evidence; do not overwrite raw data | Task boundary satisfied and recorded | Required evidence sources listed in plan | Execute after dependencies are complete |
+| `ECHO-013` | Implement duration, risk, drop, and reward from Equations (55)–(58) | Live ECHO tab + source-lock bundle | ECHO-012 | live ECHO equations (55)–(58), reward and duration logic | plan file only | task-specific unit / integration / lineage checks | Read plan, execute only after dependencies are complete | evidence notes; manifests; logs | Acceptance criteria are explicit in this plan | No authority drift; no unsupported completion claims | Scientific drift if evidence or dependency is wrong | Keep historical evidence; do not overwrite raw data | Task boundary satisfied and recorded | Required evidence sources listed in plan | Execute after dependencies are complete |
+| `ECHO-014` | Implement next-decision semi-Markov transitions from Equations (59)–(60) | Live ECHO tab + source-lock bundle | ECHO-013 | live ECHO equations (59)–(60), transition finalizer | plan file only | task-specific unit / integration / lineage checks | Read plan, execute only after dependencies are complete | evidence notes; manifests; logs | Acceptance criteria are explicit in this plan | No authority drift; no unsupported completion claims | Scientific drift if evidence or dependency is wrong | Keep historical evidence; do not overwrite raw data | Task boundary satisfied and recorded | Required evidence sources listed in plan | Execute after dependencies are complete |
+| `ECHO-015` | Implement masked Dueling Double-DQL from Equations (61)–(67) | Live ECHO tab + source-lock bundle | ECHO-014 | live ECHO equations (61)–(67), masked DQL agent | plan file only | task-specific unit / integration / lineage checks | Read plan, execute only after dependencies are complete | evidence notes; manifests; logs | Acceptance criteria are explicit in this plan | No authority drift; no unsupported completion claims | Scientific drift if evidence or dependency is wrong | Keep historical evidence; do not overwrite raw data | Task boundary satisfied and recorded | Required evidence sources listed in plan | Execute after dependencies are complete |
+| `ECHO-016` | Implement ECHO-NoLSTM as a controlled one-factor ablation | Live ECHO tab + source-lock bundle | ECHO-015 | ECHO ablation config and training wrapper | plan file only | task-specific unit / integration / lineage checks | Read plan, execute only after dependencies are complete | evidence notes; manifests; logs | Acceptance criteria are explicit in this plan | No authority drift; no unsupported completion claims | Scientific drift if evidence or dependency is wrong | Keep historical evidence; do not overwrite raw data | Task boundary satisfied and recorded | Required evidence sources listed in plan | Execute after dependencies are complete |
+| `ECHO-017` | Add portable ECHO checkpoints and deterministic resume | Live ECHO tab + source-lock bundle | ECHO-016 | checkpoint schema, resume code, device metadata | plan file only | task-specific unit / integration / lineage checks | Read plan, execute only after dependencies are complete | evidence notes; manifests; logs | Acceptance criteria are explicit in this plan | No authority drift; no unsupported completion claims | Scientific drift if evidence or dependency is wrong | Keep historical evidence; do not overwrite raw data | Task boundary satisfied and recorded | Required evidence sources listed in plan | Execute after dependencies are complete |
+| `ECHO-018` | Add equation-level unit tests and end-to-end integration tests | Live ECHO tab + source-lock bundle | ECHO-017 | equation checks, integration harness, smoke evidence | plan file only | task-specific unit / integration / lineage checks | Read plan, execute only after dependencies are complete | evidence notes; manifests; logs | Acceptance criteria are explicit in this plan | No authority drift; no unsupported completion claims | Scientific drift if evidence or dependency is wrong | Keep historical evidence; do not overwrite raw data | Task boundary satisfied and recorded | Required evidence sources listed in plan | Execute after dependencies are complete |
+| `ECHO-019` | Run deterministic ECHO runtime and learner smoke | Live ECHO tab + source-lock bundle | ECHO-018 | smoke runner, learner smoke harness | plan file only | task-specific unit / integration / lineage checks | Read plan, execute only after dependencies are complete | evidence notes; manifests; logs | Acceptance criteria are explicit in this plan | No authority drift; no unsupported completion claims | Scientific drift if evidence or dependency is wrong | Keep historical evidence; do not overwrite raw data | Task boundary satisfied and recorded | Required evidence sources listed in plan | Execute after dependencies are complete |
+| `ECHO-020` | Run a paired bounded pilot against frozen HOODIE | Live ECHO tab + source-lock bundle | ECHO-019 | pilot harness, paired traces, pilot manifests | plan file only | task-specific unit / integration / lineage checks | Read plan, execute only after dependencies are complete | evidence notes; manifests; logs | Acceptance criteria are explicit in this plan | No authority drift; no unsupported completion claims | Scientific drift if evidence or dependency is wrong | Keep historical evidence; do not overwrite raw data | Task boundary satisfied and recorded | Required evidence sources listed in plan | Execute after dependencies are complete |
+| `EVAL-001` | Build immutable paired training/validation/test trace banks | Evaluation spec + topology / PNG authorizations | ECHO-020 | trace-bank builder, hashes, manifests | plan file only | task-specific unit / integration / lineage checks | Read plan, execute only after dependencies are complete | evidence notes; manifests; logs | Acceptance criteria are explicit in this plan | No authority drift; no unsupported completion claims | Scientific drift if evidence or dependency is wrong | Keep historical evidence; do not overwrite raw data | Task boundary satisfied and recorded | Required evidence sources listed in plan | Execute after dependencies are complete |
+| `EVAL-002` | Define the complete Figures 4–8 job matrix | Evaluation spec + topology / PNG authorizations | EVAL-001 | evaluation specification, figure matrix, panel definitions | plan file only | task-specific unit / integration / lineage checks | Read plan, execute only after dependencies are complete | evidence notes; manifests; logs | Acceptance criteria are explicit in this plan | No authority drift; no unsupported completion claims | Scientific drift if evidence or dependency is wrong | Keep historical evidence; do not overwrite raw data | Task boundary satisfied and recorded | Required evidence sources listed in plan | Execute after dependencies are complete |
+| `EVAL-003` | Create authoritative configuration and run manifests | Evaluation spec + topology / PNG authorizations | EVAL-002 | canonical run manifests, config templates | plan file only | task-specific unit / integration / lineage checks | Read plan, execute only after dependencies are complete | evidence notes; manifests; logs | Acceptance criteria are explicit in this plan | No authority drift; no unsupported completion claims | Scientific drift if evidence or dependency is wrong | Keep historical evidence; do not overwrite raw data | Task boundary satisfied and recorded | Required evidence sources listed in plan | Execute after dependencies are complete |
+| `EVAL-004` | Measure throughput on CUDA when available, otherwise CPU | Evaluation spec + topology / PNG authorizations | EVAL-003 | device benchmark harness, throughput logs | plan file only | task-specific unit / integration / lineage checks | Read plan, execute only after dependencies are complete | evidence notes; manifests; logs | Acceptance criteria are explicit in this plan | No authority drift; no unsupported completion claims | Scientific drift if evidence or dependency is wrong | Keep historical evidence; do not overwrite raw data | Task boundary satisfied and recorded | Required evidence sources listed in plan | Execute after dependencies are complete |
+| `EVAL-005` | Produce a resumable compute and checkpoint plan | Evaluation spec + topology / PNG authorizations | EVAL-004 | checkpoint plan, shard plan, resume metadata | plan file only | task-specific unit / integration / lineage checks | Read plan, execute only after dependencies are complete | evidence notes; manifests; logs | Acceptance criteria are explicit in this plan | No authority drift; no unsupported completion claims | Scientific drift if evidence or dependency is wrong | Keep historical evidence; do not overwrite raw data | Task boundary satisfied and recorded | Required evidence sources listed in plan | Execute after dependencies are complete |
+| `EVAL-006` | Run selected learning-parameter training | Evaluation spec + topology / PNG authorizations | EVAL-005 | learning-sweep jobs, seed logs | plan file only | task-specific unit / integration / lineage checks | Read plan, execute only after dependencies are complete | evidence notes; manifests; logs | Acceptance criteria are explicit in this plan | No authority drift; no unsupported completion claims | Scientific drift if evidence or dependency is wrong | Keep historical evidence; do not overwrite raw data | Task boundary satisfied and recorded | Required evidence sources listed in plan | Execute after dependencies are complete |
+| `EVAL-007` | Train ECHO, HOODIE, and ECHO-NoLSTM with equal budgets where required | Evaluation spec + topology / PNG authorizations | EVAL-006 | training jobs, model snapshots | plan file only | task-specific unit / integration / lineage checks | Read plan, execute only after dependencies are complete | evidence notes; manifests; logs | Acceptance criteria are explicit in this plan | No authority drift; no unsupported completion claims | Scientific drift if evidence or dependency is wrong | Keep historical evidence; do not overwrite raw data | Task boundary satisfied and recorded | Required evidence sources listed in plan | Execute after dependencies are complete |
+| `EVAL-008` | Run 10 seeds × 200 held-out episodes for reported points | Evaluation spec + topology / PNG authorizations | EVAL-007 | held-out evaluation jobs, raw outputs | plan file only | task-specific unit / integration / lineage checks | Read plan, execute only after dependencies are complete | evidence notes; manifests; logs | Acceptance criteria are explicit in this plan | No authority drift; no unsupported completion claims | Scientific drift if evidence or dependency is wrong | Keep historical evidence; do not overwrite raw data | Task boundary satisfied and recorded | Required evidence sources listed in plan | Execute after dependencies are complete |
+| `EVAL-009` | Enforce generated = completed + dropped accounting | Evaluation spec + topology / PNG authorizations | EVAL-008 | accounting validator, evaluation outputs | plan file only | task-specific unit / integration / lineage checks | Read plan, execute only after dependencies are complete | evidence notes; manifests; logs | Acceptance criteria are explicit in this plan | No authority drift; no unsupported completion claims | Scientific drift if evidence or dependency is wrong | Keep historical evidence; do not overwrite raw data | Task boundary satisfied and recorded | Required evidence sources listed in plan | Execute after dependencies are complete |
+| `EVAL-010` | Enforce no masked ECHO action selection | Evaluation spec + topology / PNG authorizations | EVAL-008 | mask validator, inference logs | plan file only | task-specific unit / integration / lineage checks | Read plan, execute only after dependencies are complete | evidence notes; manifests; logs | Acceptance criteria are explicit in this plan | No authority drift; no unsupported completion claims | Scientific drift if evidence or dependency is wrong | Keep historical evidence; do not overwrite raw data | Task boundary satisfied and recorded | Required evidence sources listed in plan | Execute after dependencies are complete |
+| `EVAL-011` | Enforce paired trace, topology, and configuration hashes | Evaluation spec + topology / PNG authorizations | EVAL-008 | hash validator, manifest checks | plan file only | task-specific unit / integration / lineage checks | Read plan, execute only after dependencies are complete | evidence notes; manifests; logs | Acceptance criteria are explicit in this plan | No authority drift; no unsupported completion claims | Scientific drift if evidence or dependency is wrong | Keep historical evidence; do not overwrite raw data | Task boundary satisfied and recorded | Required evidence sources listed in plan | Execute after dependencies are complete |
+| `EVAL-012` | Compute seed-level means and 95% confidence intervals | Evaluation spec + topology / PNG authorizations | EVAL-009, EVAL-010, EVAL-011 | aggregation scripts, CI outputs | plan file only | task-specific unit / integration / lineage checks | Read plan, execute only after dependencies are complete | evidence notes; manifests; logs | Acceptance criteria are explicit in this plan | No authority drift; no unsupported completion claims | Scientific drift if evidence or dependency is wrong | Keep historical evidence; do not overwrite raw data | Task boundary satisfied and recorded | Required evidence sources listed in plan | Execute after dependencies are complete |
+| `FIG-001` | Generate Figure 4 from the actual simulator topology | Evaluation spec + topology / PNG authorizations | BASE-002 | topology snapshot, figure script, panel CSV | plan file only | task-specific unit / integration / lineage checks | Read plan, execute only after dependencies are complete | evidence notes; manifests; logs | Acceptance criteria are explicit in this plan | No authority drift; no unsupported completion claims | Scientific drift if evidence or dependency is wrong | Keep historical evidence; do not overwrite raw data | Task boundary satisfied and recorded | Required evidence sources listed in plan | Execute after dependencies are complete |
+| `FIG-002` | Generate Figure 5(a–b) from real training curves | Evaluation spec + topology / PNG authorizations | EVAL-006 | training-sweep outputs, panel CSVs | plan file only | task-specific unit / integration / lineage checks | Read plan, execute only after dependencies are complete | evidence notes; manifests; logs | Acceptance criteria are explicit in this plan | No authority drift; no unsupported completion claims | Scientific drift if evidence or dependency is wrong | Keep historical evidence; do not overwrite raw data | Task boundary satisfied and recorded | Required evidence sources listed in plan | Execute after dependencies are complete |
+| `FIG-003` | Generate Figure 6(a–e) from real behavioral/scalability outputs | Evaluation spec + topology / PNG authorizations | EVAL-007 | behavior/scalability outputs, panel CSVs | plan file only | task-specific unit / integration / lineage checks | Read plan, execute only after dependencies are complete | evidence notes; manifests; logs | Acceptance criteria are explicit in this plan | No authority drift; no unsupported completion claims | Scientific drift if evidence or dependency is wrong | Keep historical evidence; do not overwrite raw data | Task boundary satisfied and recorded | Required evidence sources listed in plan | Execute after dependencies are complete |
+| `FIG-004` | Generate Figure 7(a–f) from real paired comparison outputs | Evaluation spec + topology / PNG authorizations | EVAL-008 | paired comparison outputs, panel CSVs | plan file only | task-specific unit / integration / lineage checks | Read plan, execute only after dependencies are complete | evidence notes; manifests; logs | Acceptance criteria are explicit in this plan | No authority drift; no unsupported completion claims | Scientific drift if evidence or dependency is wrong | Keep historical evidence; do not overwrite raw data | Task boundary satisfied and recorded | Required evidence sources listed in plan | Execute after dependencies are complete |
+| `FIG-005` | Generate Figure 8 from ECHO/ECHO-NoLSTM runs | Evaluation spec + topology / PNG authorizations | EVAL-008 | ablation outputs, panel CSVs | plan file only | task-specific unit / integration / lineage checks | Read plan, execute only after dependencies are complete | evidence notes; manifests; logs | Acceptance criteria are explicit in this plan | No authority drift; no unsupported completion claims | Scientific drift if evidence or dependency is wrong | Keep historical evidence; do not overwrite raw data | Task boundary satisfied and recorded | Required evidence sources listed in plan | Execute after dependencies are complete |
+| `FIG-006` | Export vector files and 300-dpi PNGs with panel/seed CSV lineage | Evaluation spec + topology / PNG authorizations | FIG-001, FIG-002, FIG-003, FIG-004, FIG-005 | export scripts, manifest, lineage | plan file only | task-specific unit / integration / lineage checks | Read plan, execute only after dependencies are complete | evidence notes; manifests; logs | Acceptance criteria are explicit in this plan | No authority drift; no unsupported completion claims | Scientific drift if evidence or dependency is wrong | Keep historical evidence; do not overwrite raw data | Task boundary satisfied and recorded | Required evidence sources listed in plan | Execute after dependencies are complete |
+| `REPORT-001` | Produce the final base-HOODIE reproduction report | Evaluation spec + topology / PNG authorizations | FREEZE-001, FIG-001 | base report draft, evidence log | plan file only | task-specific unit / integration / lineage checks | Read plan, execute only after dependencies are complete | evidence notes; manifests; logs | Acceptance criteria are explicit in this plan | No authority drift; no unsupported completion claims | Scientific drift if evidence or dependency is wrong | Keep historical evidence; do not overwrite raw data | Task boundary satisfied and recorded | Required evidence sources listed in plan | Execute after dependencies are complete |
+| `REPORT-002` | Produce the final ECHO implementation and invariant report | Evaluation spec + topology / PNG authorizations | FIG-006 | invariant report, implementation summary | plan file only | task-specific unit / integration / lineage checks | Read plan, execute only after dependencies are complete | evidence notes; manifests; logs | Acceptance criteria are explicit in this plan | No authority drift; no unsupported completion claims | Scientific drift if evidence or dependency is wrong | Keep historical evidence; do not overwrite raw data | Task boundary satisfied and recorded | Required evidence sources listed in plan | Execute after dependencies are complete |
+| `REPORT-003` | Produce the final evaluation and figure-lineage report | Evaluation spec + topology / PNG authorizations | FIG-006 | final evaluation report, lineage index | plan file only | task-specific unit / integration / lineage checks | Read plan, execute only after dependencies are complete | evidence notes; manifests; logs | Acceptance criteria are explicit in this plan | No authority drift; no unsupported completion claims | Scientific drift if evidence or dependency is wrong | Keep historical evidence; do not overwrite raw data | Task boundary satisfied and recorded | Required evidence sources listed in plan | Execute after dependencies are complete |
+| `CLEAN-002` | Mark stale smoke/checkpoint/figure evidence as superseded | Evaluation spec + topology / PNG authorizations | REPORT-003 | cleanup manifest, supersession notes | plan file only | task-specific unit / integration / lineage checks | Read plan, execute only after dependencies are complete | evidence notes; manifests; logs | Acceptance criteria are explicit in this plan | No authority drift; no unsupported completion claims | Scientific drift if evidence or dependency is wrong | Keep historical evidence; do not overwrite raw data | Task boundary satisfied and recorded | Required evidence sources listed in plan | Execute after dependencies are complete |
+| `CLEAN-003` | Remove or archive duplicate noncanonical execution paths only after all replacement gates pass | Evaluation spec + topology / PNG authorizations | CLEAN-002 | archive plan, deletion gate notes | plan file only | task-specific unit / integration / lineage checks | Read plan, execute only after dependencies are complete | evidence notes; manifests; logs | Acceptance criteria are explicit in this plan | No authority drift; no unsupported completion claims | Scientific drift if evidence or dependency is wrong | Keep historical evidence; do not overwrite raw data | Task boundary satisfied and recorded | Required evidence sources listed in plan | Execute after dependencies are complete |
+| `HANDOFF-001` | Produce the final exact-command handoff and artifact index | Evaluation spec + topology / PNG authorizations | CLEAN-003 | handoff doc, artifact index | plan file only | task-specific unit / integration / lineage checks | Read plan, execute only after dependencies are complete | evidence notes; manifests; logs | Acceptance criteria are explicit in this plan | No authority drift; no unsupported completion claims | Scientific drift if evidence or dependency is wrong | Keep historical evidence; do not overwrite raw data | Task boundary satisfied and recorded | Required evidence sources listed in plan | Execute after dependencies are complete |
