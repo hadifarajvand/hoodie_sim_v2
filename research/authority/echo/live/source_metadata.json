@@ -1,9 +1,24 @@
 {
   "document_id": "17iqZWA0bF5unbyuVYnRiW1IUcr0Ctb2KFw1f5XE2poE",
+  "document_title": "مقاله",
   "tab_id": "t.iav4589yyeo7",
-  "tab_title": "Proposed Method",
-  "revision_id": "ALtnJHyEus2Vs4Up-9ZqLNFq1998a_yLvdaiYkpbiOY8etdAu1b2Npq8WKC_H4fJcZvx01gKJpvCF2hdjUnPBnx5z7173lfT45j6yJMTOA",
-  "normalized_sha256": "9569e9219ef6050bcd842893180aaf49fc55f66e1be4272f96a4c5051c7f90cb",
+  "tab_title": "روش پیشنهادی",
+  "google_docs_revision_id": "ALtnJHxKuWTfnBcjPCeSPP06anGT3bPsF6qFzt-OoiWoStczzCLVV7ng9q1CdUCcrjGw04Mjgyim8MdxPId4f5mXWj0Q-51pVHz96iVzwQ",
+  "google_drive_revision_id": "278",
+  "source_modified_time": "2026-07-14T09:40:46.552Z",
+  "retrieval_timestamp_utc": "2026-07-14T10:35:43+00:00",
+  "snapshot_file": "ECHO_PROPOSED_METHOD.md",
+  "snapshot_drive_file_id": "1oyR4rnKStPjkzw6B0FJ3uCWDT03KK3_c",
+  "snapshot_drive_folder_id": "1YqJXTa9s5sAGp-lNPBva7EHeEqnJA1nh",
+  "normalized_sha256": "dd782a6403360ba98f51d00bce511dfbc42470c0ffa743343418208769fd1816",
+  "source_container_sha256": "1290733d5598fbf21bcafb3bbe81361f834e1ccb2f0b7cbbc85937d6ad8c0abb",
+  "raw_tab_bytes_available": false,
   "equation_range": "1-67",
-  "authority_status": "LOCKED_LIVE_SNAPSHOT"
+  "equation_count": 67,
+  "equation_sequence_complete": true,
+  "algorithm_1_present": true,
+  "algorithm_2_present": true,
+  "authority_status": "LOCKED_LIVE_SNAPSHOT",
+  "approval_basis": "Explicit user instruction in the current conversation",
+  "legacy_comparison_excluded": ["proposed_method_v3 and earlier method versions"]
 }
