@@ -1,0 +1,17 @@
+{
+  "task_id": "SRC-001",
+  "attempt": 2,
+  "verdict": "STALE_BRANCH",
+  "plan_change_required": true,
+  "authorized_branch": "task/src-001-r2",
+  "authorized_start_commit": "d30e3097ea2943fe14100937fbb4de53e8ffd4aa",
+  "reported_local_head": "5433d05c3342b40998f5bd86a9dba3c1a0c8b4ac",
+  "remote_task_branch_head": "d30e3097ea2943fe14100937fbb4de53e8ffd4aa",
+  "out_of_band_main_commit": "eb302cc33030cdf67ed2bb7797abdb9ac911945e",
+  "plan_source_revision": "273",
+  "out_of_band_source_revision": "278",
+  "current_live_source_revision": "280",
+  "task_commit_sha": null,
+  "merge_performed": false,
+  "next_task_authorized": false
+}
