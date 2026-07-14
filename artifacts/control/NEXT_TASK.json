@@ -8,5 +8,12 @@
   "task_title": "Lock current live ECHO source and close 69-row audit",
   "attempt": 1,
   "branch": "task/src-001-r1",
-  "executor_start_sha": "86e0029b750d3ce9e633b3b04183ecee23bd2859"
+  "authorized_parent_sha": "866489f1fb906adccccd0a50dc1c7ee9d013334e",
+  "executor_start_rule": {
+    "branch_from": "the current main commit containing this NEXT_TASK.json",
+    "required_parent": "866489f1fb906adccccd0a50dc1c7ee9d013334e",
+    "required_last_commit_changed_paths": ["artifacts/control/NEXT_TASK.json"],
+    "required_ancestry_root": "a99ed28feb2999832738dcdff96bb085629ac546"
+  },
+  "executor_prompt": "Read the v4.2 plan and this authorization from main, then execute SRC-001 attempt 1 only on task/src-001-r1 from the current main commit containing this file. Follow the SRC-001 card exactly, write only allowed paths plus G1, run the exact command, commit, and stop. Do not merge, edit the plan, select another task, or continue after the commit."
 }
