@@ -1,0 +1,22 @@
+{
+  "task_id": "SRC-001",
+  "attempt": 2,
+  "remote_task_branch_head": "d30e3097ea2943fe14100937fbb4de53e8ffd4aa",
+  "reported_local_head": "5433d05c3342b40998f5bd86a9dba3c1a0c8b4ac",
+  "current_main_head_before_review": "eb302cc33030cdf67ed2bb7797abdb9ac911945e",
+  "task_branch_ahead_of_authorized_start": 0,
+  "task_commit_available_for_review": false,
+  "main_changed_after_authorization": true,
+  "out_of_band_changed_paths": [
+    "research/authority/echo/audit/ECHO_ALGORITHM_NECESSITY_AUDIT.md",
+    "research/authority/echo/audit/ECHO_EQUATION_NECESSITY_AUDIT.csv",
+    "research/authority/echo/audit/ECHO_EQUATION_NECESSITY_AUDIT.md",
+    "research/authority/echo/audit/README.md",
+    "research/authority/echo/live/SHA256SUMS",
+    "research/authority/echo/live/source_metadata.json"
+  ],
+  "declared_snapshot_missing": true,
+  "source_revision_mismatch": true,
+  "verdict": "STALE_BRANCH",
+  "plan_change_required": true
+}
