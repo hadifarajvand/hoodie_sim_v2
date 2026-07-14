@@ -25,8 +25,6 @@ class EvaluationHoodieGymEnvironment(HoodieGymEnvironment):
     supplied_trace: EvaluationTrace | None = None
 
     def reset(self, seed: int | None = None):
-        # Reuse the base reset for queues, runtime objects, metrics, and ledgers,
-        # then replace only the generated trace before the first decision.
         super().reset(seed=seed)
         if self.supplied_trace is None:
             return self.observe(), self._build_info()
@@ -44,12 +42,7 @@ class EvaluationHoodieGymEnvironment(HoodieGymEnvironment):
         return self.observe(), self._build_info()
 
     def step_slot(self, policy: Any):
-        """Execute one synchronized physical slot for one shared policy.
-
-        The policy is called once for every task arriving in ``current_slot``.
-        All those decisions observe the same slot index and are admitted before
-        queue execution progresses exactly once.
-        """
+        """Execute one synchronized physical slot for one shared policy."""
 
         if self.trace is None:
             raise RuntimeError("Environment must be reset before stepping")
@@ -63,8 +56,8 @@ class EvaluationHoodieGymEnvironment(HoodieGymEnvironment):
         if reward_delivery_events:
             reward += sum(float(event["reward"]) for event in reward_delivery_events)
 
-        # Decision phase: exhaust every blueprint eligible at this slot without
-        # changing the physical clock or advancing any queue.
+        # Decision phase: all same-slot arrivals are decided before any queue
+        # or service resource advances.
         while self._current_task is not None and self._current_task.arrival_slot <= self.current_slot:
             current_task = self._current_task
             observation = self.observe_flat(current_task)
@@ -110,15 +103,13 @@ class EvaluationHoodieGymEnvironment(HoodieGymEnvironment):
             self._current_task = None
             self._current_task = self._load_current_task()
 
-        # Service phase: all source and destination resources advance exactly
-        # once regardless of the number of decisions made above.
+        # Service phase: all physical resources advance exactly once.
         finalized_tasks = self._progress_offloading_queues()
         finalized_tasks.extend(self._progress_execution_queues())
-        if finalized_tasks:
-            self._last_finalized_tasks = list(finalized_tasks)
         for task in finalized_tasks:
-            event = self._build_task_resolution_event(task, resolution_slot=self.current_slot)
-            task_resolution_events.append(event)
+            task_resolution_events.append(
+                self._build_task_resolution_event(task, resolution_slot=self.current_slot)
+            )
             self._register_pending_reward(task)
 
         if (
@@ -135,17 +126,29 @@ class EvaluationHoodieGymEnvironment(HoodieGymEnvironment):
         truncated = self.current_slot >= self.episode_length
         terminated = self._is_terminated() and not truncated
 
+        if truncated:
+            horizon_slot = max(0, self.episode_length - 1)
+            horizon_drops = self._finalize_unresolved_at_horizon(horizon_slot)
+            for task in horizon_drops:
+                task_resolution_events.append(
+                    self._build_task_resolution_event(task, resolution_slot=horizon_slot)
+                )
+                self._register_pending_reward(task)
+            finalized_tasks.extend(horizon_drops)
+            self._pending_arrivals.clear()
+            self._current_task = None
+
+        if finalized_tasks:
+            self._last_finalized_tasks = list(finalized_tasks)
+
         if terminated or truncated:
             reward_delivery_events.extend(self._flush_pending_rewards(self.current_slot))
             if reward_delivery_events:
                 reward = sum(float(event["reward"]) for event in reward_delivery_events)
-        if truncated and not terminated:
-            self._record_pending_at_horizon_events()
 
         observation = self.observe()
         info = self._build_info(
-            finalized_tasks=finalized_tasks
-            or (self._last_finalized_tasks if (terminated or truncated) else []),
+            finalized_tasks=finalized_tasks,
             reward=reward,
             terminated=terminated,
             truncated=truncated,
@@ -153,6 +156,20 @@ class EvaluationHoodieGymEnvironment(HoodieGymEnvironment):
             reward_delivery_events=reward_delivery_events,
         )
         return observation, reward, terminated, truncated, info
+
+    def _finalize_unresolved_at_horizon(self, horizon_slot: int):
+        finalized = []
+        for task_id in sorted(self._active_tasks):
+            task = self._active_tasks[task_id]
+            if task.terminal_outcome is not None:
+                continue
+            task.mark_resolution(
+                slot=horizon_slot,
+                outcome="dropped",
+                reason="episode_horizon_unresolved",
+            )
+            finalized.append(task)
+        return finalized
 
     @staticmethod
     def _canonical_action_index(selected_action: str) -> int:
