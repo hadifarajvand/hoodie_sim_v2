@@ -1,0 +1,63 @@
+You are the planning/source-reconciliation agent for hoodie_sim_v2.
+
+Use the supplied `echo_revision_280_reconciliation` bundle as offline authority.
+Do not require Google Drive access. Verify all bundle SHA-256 values before use.
+
+Your only task is to reconcile repository planning and authority state against
+Google Drive revision 280. Do not implement BASE, ECHO, evaluation, or figure code.
+
+Required actions:
+
+1. Preserve `ruvector.db` and every unrelated local modification. Never use
+   `git add .`, `git add -A`, `git clean`, or `git reset --hard`.
+
+2. Verify remote access. When fetch remains unavailable, work on a new local
+   planning branch from the newest locally verified `main` ancestry and do not push
+   until authentication is restored.
+
+3. Inspect out-of-band commit `eb302cc33030cdf67ed2bb7797abdb9ac911945e`.
+   Treat its revision-278 files as historical evidence, not current authority.
+
+4. Copy the bundle files:
+   - `ECHO_PROPOSED_METHOD.md` to
+     `research/authority/echo/live/ECHO_PROPOSED_METHOD.md`
+   - `source_metadata.json` to
+     `research/authority/echo/live/source_metadata.json`
+   - `SHA256SUMS` to
+     `research/authority/echo/live/SHA256SUMS`
+   - the reconciliation report and revision diff to explicit audit paths.
+
+5. Remove every unsupported tab-title assertion from current authority metadata and README files.
+
+6. Add `ECHO_MEP_V4_3_AMENDMENT.md` under `artifacts/reports/` and update control files so
+   v4.2 plus this amendment form the composite v4.3 authority.
+
+7. Update `scripts/control/validate_echo_plan.py` to validate:
+   - Drive revision 280;
+   - exact snapshot SHA;
+   - 67 equations;
+   - Algorithm 1 = 23 lines;
+   - Algorithm 2 = 14 lines;
+   - no asserted tab title;
+   - independent per-EA ECHO learners/checkpoints;
+   - size-specific N+2 action/state architecture;
+   - all v4.3 task-card overrides;
+   - NEXT_TASK remains null until reconciliation passes.
+
+8. Reclassify revision-278 audits against revision 280 as ACCEPT, REVISE, REJECT,
+   or SUPERSEDED. Do not delete them.
+
+9. Run the structural validator and source-lock verifier. If any check fails,
+   keep `PLAN_CHANGE_REQUIRED`, leave NEXT_TASK null, commit only truthful evidence,
+   and stop.
+
+10. When all checks pass, update control state to authorize:
+    `SRC-001`, attempt 3, branch `task/src-001-r3`.
+    Do not execute attempt 3.
+
+11. Commit only authority, audit, plan-amendment, validator, review, and control files.
+    Stop after the planning commit. Push only when GitHub authentication works.
+
+Final response: report the commit SHA, exact changed files, validator results,
+revision-280 hashes/counts, disposition of revision-278 artifacts, and whether
+SRC-001 attempt 3 was authorized.
