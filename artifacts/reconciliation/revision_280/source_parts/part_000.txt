@@ -1,0 +1,85 @@
+III. Proposed Effective Completion via Hybrid Offloading Framework (ECHO)
+
+
+A. Framework Overview and Design Scope
+
+
+
+
+Cloud-edge continuum environments provide a distributed computing substrate for delay-sensitive computational tasks, where computation can be performed across local edge nodes, neighboring edge servers, and remote cloud resources. In this setting, hybrid computation offloading is required because relying only on local execution may overload edge nodes, while relying only on vertical cloud offloading may introduce excessive transmission and processing delay. Therefore, each arriving task must be assigned to an appropriate execution path, such as local computation, horizontal edge offloading, or vertical cloud offloading, according to the current task characteristics, queue status, communication condition, and available processing capacity. However, the offloading decision becomes more challenging when tasks are associated with strict completion bounds. A task that experiences excessive waiting time in a local or outbound-transfer queue, or is forwarded to a congested destination, may miss its allowed completion time and consequently be removed from successful execution. This makes the task drop ratio a critical performance indicator, particularly under dynamic traffic, limited edge resources, and fluctuating cloud-edge network conditions. Accordingly, this paper proposes Effective Completion via Hybrid Offloading (ECHO), a deadline-aware hybrid computation offloading method where the objective is not only to select a computationally feasible execution path, but also to guide the decision process toward timely task completion and reduced risk of task dropping. In ECHO, effective completion denotes the use of estimated end-to-end completion feasibility to guide source-queue scheduling and hybrid offloading decisions before the task outcome is observed.
+
+
+
+
+Although hybrid offloading frameworks can reduce delay by distributing workloads across local, edge, and cloud resources, deadline handling must be integrated before task completion is evaluated. Existing distributed hybrid offloading agents can observe local task characteristics and forecasted load information to learn decisions that reduce execution latency and timeout-related task loss [37]. That learning foundation does not itself specify how each task's remaining completion slack should control queue order and route feasibility before action selection. If deadline information is only reflected after a task has waited, been transmitted, or failed to finish within its completion bound, the learning agent may still choose actions that are reasonable from an average-delay perspective but risky for tasks with tighter time constraints. The design rationale of the proposed framework is therefore to move deadline awareness earlier in the decision pipeline. Specifically, task urgency is introduced into queue scheduling, candidate evaluation, and reward feedback so that deadline-related risk is visible before the final execution outcome is observed.
+
+
+
+
+The core idea of the proposed framework is to use Effective Remaining Time (ERT) as a unified temporal indicator for deadline-aware task handling. A raw deadline or timeout value alone is not sufficient for offloading decisions, because two tasks with similar deadlines may have different violation risks depending on their queue position, expected waiting time, transmission requirement, destination load, and processing demand. Therefore, the proposed framework interprets deadline urgency through the remaining feasible time after the expected execution conditions are considered. In this view, ERT acts as a bridge between task-level timing constraints and offloading-level decision making.
+
+
+At the queue level, ERT indicates which pending task should be served earlier to avoid unnecessary deadline miss. At the candidate-selection level, it indicates whether a local, horizontal edge, or vertical cloud execution option is likely to complete the task within its allowable completion bound. This temporal signal does not replace the distributed DRL decision module; rather, it provides deadline-aware information that can be incorporated into queue ordering, feasible-action filtering, state representation, and reward feedback. As a result, the learning agent is guided not only by average delay and load-related observations, but also by the remaining time available for successful task completion.
+
+
+
+
+
+
+
+
+The proposed framework consists of interdependent modeling and decision-making components that translate deadline awareness into the hybrid offloading process. The task and deadline model provides the timing basis of the framework by describing each arriving task through its arrival time, data size, processing demand, and allowable completion bound. Based on this timing information, the ERT estimation component evaluates how much effective time remains after the expected queueing, transmission, and processing conditions are considered. This temporal urgency is then used by the deadline-aware queue scheduling component to reorder pending tasks in the local and outbound-transfer queues when their risk of deadline violation differs. In parallel, the candidate-selection component evaluates local execution, horizontal edge offloading, and vertical cloud offloading according to their estimated completion behaviour and deadline feasibility. The distributed DRL decision module uses these observations together with local task information, queue status, and load-related indicators to select the final execution action at each edge agent. The reward feedback component closes the decision loop by penalizing realized duration, selection under predicted deadline infeasibility, and actual task dropping, thereby aligning learning with the objective of reducing deadline-related task loss under dynamic cloud-edge conditions.
+
+
+
+
+The remainder of this section formalizes the proposed framework in a stepwise manner. First, the cloud-edge system model is defined to specify the computing nodes, communication layers, time-slotted operation, and hybrid execution paths. Then, the task model and deadline representation are introduced to describe task arrivals, task characteristics, and completion bounds. After that, the Effective Remaining Time model is formulated as the central deadline-aware timing indicator. The following subsections then explain how ERT is used for queue scheduling and candidate execution evaluation before the final offloading action is selected by the distributed DRL agent. Finally, the state space, action space, reward model, and algorithmic workflow are presented to show how the proposed deadline-aware mechanism is integrated into multi-agent distributed deep reinforcement learning. This organization separates conceptual framework design from simulation and performance evaluation, which are addressed in Section IV rather than in the proposed-method section.
+
+
+
+
+
+
+  
+
+Figure 1. Overall ECHO architecture in the IoT–edge–cloud continuum, supporting local execution, horizontal edge offloading, and vertical cloud offloading.
+
+
+B. Cloud–Edge System Model
+
+
+This section defines the cloud-edge system model used as the basis of the proposed deadline-aware hybrid offloading framework. The model specifies the computing entities, communication structure, task and deadline representation, offloading decision variables, and queueing components required before introducing Effective Remaining Time and the deadline-aware control logic. The main mathematical symbols introduced in this section are summarized after the architectural definitions to keep the subsequent formulations consistent and readable.
+
+
+ECHO considers a distributed cloud-edge architecture with local, horizontal-edge, and vertical-cloud execution paths [37]. Its distinctive control variables are estimated end-to-end completion time, ERT, queue urgency, route feasibility, and task-level delayed outcomes. Each computational task is non-divisible and is assigned to one execution path.
+
+
+At the moment a task arrives, its descriptor is assumed to be available to the source EA. This descriptor includes the input size, the processing density, and the relative timeout of the task. The model does not assume knowledge of future task arrivals. Instead, each EA makes its decision from its current local observation, the status of its own queues, and compact load information obtained from the monitoring layer. The system is represented in synchronized time slots with a fixed slot length $\Delta$, so waiting, transmission, and processing durations are expressed as integer numbers of slots. This slot-based representation makes deadline satisfaction directly comparable with estimated completion time.
+
+
+Horizontal offloading is allowed only between connected edge agents, while vertical offloading to the cloud remains available as a high-capacity but potentially higher-latency execution path. The queue waiting times and candidate completion times used in the proposed method are estimates computed at the decision time. These estimates may change as the workload evolves, but they provide the temporal basis required for ERT calculation, deadline-aware queue scheduling, and candidate feasibility checking.
+
+
+Under these assumptions, the physical paths and queue locations remain fixed during operation. ECHO changes the decision and service logic by evaluating deadline, end-to-end completion time, and ERT before execution, so urgency affects both queue service and route selection before a task becomes late or is dropped.
+
+
+
+
+
+
+
+
+
+
+1) System Architecture
+As shown in Fig. 1, ECHO operates over a three-layer IoT-edge-cloud continuum consisting of an IoT layer, an edge layer, and a cloud layer [37]. The IoT layer represents multiple task-generating service areas, while the edge layer contains $N$ Edge Agents (EAs) that provide near-user computational capacity. A remote cloud node is also available as a high-capacity computing resource for tasks that cannot be efficiently processed at the edge. Let $\mathcal{N}=\{1,2,\ldots,N,N+1\}$ denote the set of all computing nodes, where $N+1$ represents the cloud node. The set of edge agents is denoted by $\mathcal{E}=\mathcal{N}\setminus\{N+1\}=\{1,2,\ldots,N\}$. Each EA $n\in\mathcal{E}$ is associated with a corresponding IoT service area and is able to participate in both local task execution and cooperative offloading.
+
+
+
+
+
+
+To support distributed monitoring and information exchange, the edge layer is assumed to include a set of Edge Controllers (ECs), denoted by $\mathcal{M}=\{1,2,\ldots,M\}$. An EC may monitor a single EA or a cluster of EAs, depending on the deployment structure. The ECs collect compact status information such as queue load and node-level activity, and this information can be shared with the corresponding EAs for load-aware decision making. This monitoring role does not imply centralized control of the offloading policy; instead, each EA remains responsible for its own local decision process while using locally observed and shared system information.
+
+
+The system is observed over a finite episode composed of time slots $\mathcal{T}=\{1,2,\ldots,T\}$, where each time slot has duration $\Delta$ seconds. At the beginning of a time slot, an EA may receive a new computational task from its associated IoT area and observe the current queue and load conditions available to it. Communication from IoT devices to their area-specific base station is performed through wireless links, while the connection from the base station to the corresponding EA is assumed to rely on a wired fronthaul link. Horizontal offloading is enabled through edge-to-edge communication among EAs, and vertical offloading is enabled through the connection between EAs and the cloud node. This architecture provides the computational substrate for local execution, horizontal edge offloading, and vertical cloud offloading, which are for
