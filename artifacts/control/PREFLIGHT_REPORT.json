@@ -1,42 +1,20 @@
 {
-  "approved_plan_commit": "a99ed28feb2999832738dcdff96bb085629ac546",
-  "approved_plan_blob_sha": "b85e750969d393614f029f31a956a94e773b0c42",
-  "validator_commit": "dcbfd8c581c196ce944031224eb6dd26a8a6a0d0",
-  "validator_path": "scripts/control/validate_echo_plan.py",
-  "plan_path": "artifacts/reports/ECHO_MASTER_EXECUTION_PLAN.md",
-  "plan_version": "ECHO-MEP-v4.2",
-  "live_source": {
-    "document_id": "17iqZWA0bF5unbyuVYnRiW1IUcr0Ctb2KFw1f5XE2poE",
-    "tab_id": "t.iav4589yyeo7",
-    "drive_revision": "273",
-    "connector_revision": "ALtnJHxLEsnZk9if3bNlbe0zzd4pRY_MBM_8-J9Xu2DeAWi0dUyqL3JaM5jIbn0eN2bBmd5xB0zWp-Xz0W8QL0tzGwNRrhdBWduWJxzecg",
-    "algorithm_1_lines": 23,
-    "algorithm_2_lines": 12,
-    "equation_count": 67
-  },
-  "result": "PASS",
-  "registry_task_count": 73,
   "card_task_count": 73,
-  "phase_totals": [6, 23, 20, 12, 12],
+  "errors": [],
+  "phase_totals": [
+    6,
+    23,
+    20,
+    12,
+    12
+  ],
+  "plan": "artifacts/reports/ECHO_MASTER_EXECUTION_PLAN.md",
+  "plan_version": "ECHO-MEP-v4.2",
+  "registry_task_count": 73,
+  "result": "PASS",
   "status_totals": {
-    "VERIFIED_COMPLETE": 5,
+    "BLOCKED": 66,
     "READY": 2,
-    "BLOCKED": 66
-  },
-  "checks": {
-    "registry_card_id_set_equal": true,
-    "missing_dependency_ids": 0,
-    "self_dependencies": 0,
-    "dag_cycles": 0,
-    "wildcard_write_permissions": 0,
-    "pre_freeze_decontamination_owner": "BASE-005",
-    "post_freeze_echo_attachment_owner": "ECHO-001",
-    "early_schema_dependency_present": true,
-    "same_invocation_source_fallback_prohibited": true,
-    "reviewer_controller_loop_present": true,
-    "revision_273_n_plus_2_contract_present": true,
-    "within_run_parameter_sharing_contract_present": true,
-    "permanent_deletion_prohibited": true
-  },
-  "errors": []
+    "VERIFIED_COMPLETE": 5
+  }
 }

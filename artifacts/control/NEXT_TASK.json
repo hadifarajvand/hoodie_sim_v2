@@ -1,13 +1,13 @@
 {
   "schema_version": 1,
   "plan_version": "ECHO-MEP-v4.2",
-  "authorization_status": "PAUSED_PLAN_CHANGE_REQUIRED",
-  "task_id": null,
-  "attempt": null,
-  "branch": null,
-  "reason": "The authorized SRC-001 attempt became stale, main advanced through an out-of-band authority commit, and the live Google Drive document advanced to revision 280 while the plan records revision 273.",
+  "authorization_status": "AUTHORIZED",
+  "task_id": "SRC-001",
+  "attempt": 3,
+  "branch": "task/src-001-r3",
+  "reason": "Revision 280 reconciled successfully. Source lock and structural preflight passed, so SRC-001 attempt 3 is authorized on branch task/src-001-r3.",
   "current_live_source_revision": "280",
-  "plan_source_revision": "273",
+  "plan_source_revision": "280",
   "out_of_band_main_commit": "eb302cc33030cdf67ed2bb7797abdb9ac911945e",
-  "required_next_action": "Run a planning/source reconciliation before authorizing any executor. Audit the out-of-band commit, refresh the plan against revision 280, repair the source-lock contract, rerun structural preflight, then bootstrap a new SRC-001 attempt."
+  "required_next_action": "Do not execute SRC-001 attempt 3 in this turn. Human-controlled launch may proceed on branch task/src-001-r3 after review."
 }
