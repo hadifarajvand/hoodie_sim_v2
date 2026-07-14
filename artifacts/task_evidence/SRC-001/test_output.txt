@@ -1,0 +1,1 @@
+NOT RUN — blocked external source access; no verification command executed.

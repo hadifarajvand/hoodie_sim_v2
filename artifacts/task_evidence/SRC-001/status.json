@@ -1,0 +1,14 @@
+{
+  "task_id": "SRC-001",
+  "attempt": 1,
+  "branch": "task/src-001-r1",
+  "status": "BLOCKED_EXTERNAL",
+  "reason": "Live ECHO proposed-method export unavailable in this execution environment.",
+  "authorized_control_commit": "8be8775d6aad8f5466647cb1a6e53041fbf8e726",
+  "repository_head": "8be8775d6aad8f5466647cb1a6e53041fbf8e726",
+  "task_branch_matches_control_commit": true,
+  "snapshot_created": false,
+  "verification_script_created": false,
+  "test_created": false,
+  "audit_completed": false
+}

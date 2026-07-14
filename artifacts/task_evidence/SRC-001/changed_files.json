@@ -1,0 +1,11 @@
+{
+  "changed_files": [
+    "artifacts/task_evidence/SRC-001/report.md",
+    "artifacts/task_evidence/SRC-001/status.json",
+    "artifacts/task_evidence/SRC-001/commands.txt",
+    "artifacts/task_evidence/SRC-001/test_output.txt",
+    "artifacts/task_evidence/SRC-001/changed_files.json",
+    "artifacts/task_evidence/SRC-001/hashes.json",
+    "artifacts/task_evidence/SRC-001/git_diff.patch"
+  ]
+}

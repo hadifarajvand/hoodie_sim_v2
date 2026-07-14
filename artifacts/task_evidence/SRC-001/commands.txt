@@ -1,0 +1,7 @@
+git status --short --branch
+git rev-parse --abbrev-ref HEAD
+git rev-parse HEAD
+git branch -avv
+sed -n "311,334p" artifacts/reports/ECHO_MASTER_EXECUTION_PLAN.md
+cat research/authority/echo/live/source_metadata.json
+cat research/authority/echo/live/SHA256SUMS
