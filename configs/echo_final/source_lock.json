@@ -1,0 +1,119 @@
+{
+  "schema_version": 1,
+  "authority": {
+    "manuscript_document_id": "17iqZWA0bF5unbyuVYnRiW1IUcr0Ctb2KFw1f5XE2poE",
+    "hoodie_source": "resources/papers/hoodie/HOODIE_paper.pdf",
+    "topology_registry": "resources/papers/hoodie/recovered/user-approved-assumption-registry.json",
+    "repository_role": "implementation_evidence_only"
+  },
+  "method_contract": {
+    "hoodie_inherited": [
+      "physical_cloud_edge_model",
+      "private_offloading_and_source_indexed_public_queues",
+      "destination_fifo_equal_capacity_sharing",
+      "state_vector",
+      "lstm_load_representation",
+      "dueling_double_dqn",
+      "replay_memory",
+      "target_network",
+      "epsilon_greedy",
+      "training_procedure"
+    ],
+    "echo_deltas": [
+      "ert_source_queue_scheduling",
+      "deadline_feasible_route_filtering",
+      "minimum_lateness_fallback",
+      "fixed_deadline_drop_penalty"
+    ],
+    "excluded": [
+      "smdp",
+      "semi_markov_transitions",
+      "new_state_vector",
+      "new_lstm_architecture",
+      "new_q_target",
+      "new_replay_semantics"
+    ]
+  },
+  "hoodie_defaults": {
+    "task_arrival_probability": 0.5,
+    "horizontal_rate_mbps": 30.0,
+    "vertical_rate_mbps": 10.0,
+    "task_size_mbits": {"start": 2.0, "stop": 5.0, "step": 0.1},
+    "processing_density_gcycles_per_mbit": 0.297,
+    "edge_agents": 20,
+    "private_cpu_ghz": 5.0,
+    "public_edge_cpu_ghz": 5.0,
+    "cloud_cpu_ghz": 30.0,
+    "training_episodes": 5000,
+    "arrival_slots_per_episode": 100,
+    "slot_duration_seconds": 0.1,
+    "default_timeout_slots": 20,
+    "learning_rate": 7e-7,
+    "discount_factor": 0.99,
+    "q_hidden_layers": [1024, 1024, 1024],
+    "optimizer": "Adam",
+    "loss": "MSE",
+    "target_copy_iterations": 2000,
+    "lstm_lookback_slots": 10,
+    "lstm_hidden_cells": 20,
+    "replay_capacity": 10000,
+    "hoodie_drop_penalty": 40.0,
+    "batch_size": 64
+  },
+  "deadline_contract": {
+    "absolute_deadline": "arrival_slot + timeout_slots - 1",
+    "completion_at_deadline_is_success": true,
+    "unfinished_at_deadline_is_removed": true,
+    "violation_ratio_equals_drop_ratio": true,
+    "drain_slots_rule": "max_timeout_slots_at_operating_point"
+  },
+  "topology": {
+    "node_count": 20,
+    "undirected_edge_count": 30,
+    "degree": 3,
+    "edge_list": [[1,6],[2,7],[3,8],[4,9],[5,10],[1,11],[2,12],[3,13],[4,14],[5,15],[6,16],[7,17],[8,18],[9,19],[10,20],[11,16],[12,17],[13,18],[14,19],[15,20],[1,16],[2,17],[3,18],[4,19],[5,20],[6,11],[7,12],[8,13],[9,14],[10,15]],
+    "cloud_is_vertically_available_to_every_ea": true
+  },
+  "methods": ["ECHO","HOODIE","BCO","FLC","HO","VO","RO","MLEO"],
+  "ablation_methods": ["ECHO","ECHO-FIFO","ECHO-NoFilter","ECHO-NoFallback","ECHO-NoDeadlinePenalty"],
+  "reward": {
+    "formula": "r_E = r_H - lambda_D * I_drop",
+    "lambda_d_validation_grid": [0.0, 5.0, 10.0, 20.0, 40.0],
+    "selection_data": "validation_only",
+    "freeze_before_test": true
+  },
+  "figures": {
+    "figure_4_topology": {"action": "reuse_verified"},
+    "figure_5_arrival": {
+      "x_values": [0.1,0.3,0.5,0.7,0.9],
+      "delay_panel_timeout_seconds": 10.0,
+      "drop_panel_timeout_seconds": 2.0
+    },
+    "figure_6_capacity": {
+      "x_values_ghz": [3.0,4.0,5.0,6.0,7.0],
+      "delay_panel_timeout_seconds": 10.0,
+      "drop_panel_timeout_seconds": 2.0
+    },
+    "figure_7_timeout": {
+      "delay_panel_x_seconds": [9.6,9.8,10.0,10.2,10.4],
+      "drop_panel_x_seconds": [1.6,1.8,2.0,2.2,2.4]
+    },
+    "figure_8_ablation": {
+      "operating_points": ["high_load","low_capacity","tight_timeout"]
+    }
+  },
+  "statistics": {
+    "seeds": [0,1,2,3,4,5,6,7,8,9],
+    "held_out_episodes_per_seed": 200,
+    "paired_task_traces": true,
+    "confidence_interval": 0.95,
+    "aggregation_unit": "seed",
+    "report_equal_or_worse_echo_points": true
+  },
+  "integrity": {
+    "generated_equals_success_plus_drop": true,
+    "no_surrogate_or_digitized_values_as_simulation_output": true,
+    "render_only_from_frozen_panel_datasets": true,
+    "required_lineage": ["config","seed","trace_hash","checkpoint","task_log","episode_aggregate","seed_aggregate","confidence_interval","panel_dataset","figure"]
+  }
+}
