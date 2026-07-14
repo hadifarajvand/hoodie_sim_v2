@@ -8,14 +8,7 @@
   "task_title": "Lock current live ECHO source and close 69-row audit",
   "attempt": 1,
   "branch": "task/src-001-r1",
-  "authorized_parent_sha": "5ce9bb50bbe7e2eb925827580c80ef4b6442d0cf",
-  "executor_start_rule": {
-    "branch_from": "the current main commit containing this NEXT_TASK.json",
-    "required_parent": "5ce9bb50bbe7e2eb925827580c80ef4b6442d0cf",
-    "required_last_commit_changed_paths": [
-      "artifacts/control/NEXT_TASK.json"
-    ],
-    "required_ancestry_root": "a99ed28feb2999832738dcdff96bb085629ac546"
-  },
-  "executor_prompt": "Read artifacts/reports/ECHO_MASTER_EXECUTION_PLAN.md version ECHO-MEP-v4.2 and this file. Execute SRC-001 attempt 1 only on branch task/src-001-r1. Follow the SRC-001 card exactly, write only its allowed paths plus G1, run its exact command, commit, and stop. Do not merge, edit the plan, select another task, or continue after the commit."
+  "executor_start_sha": "86e0029b750d3ce9e633b3b04183ecee23bd2859",
+  "required_ancestry_root": "a99ed28feb2999832738dcdff96bb085629ac546",
+  "executor_prompt": "Read artifacts/reports/ECHO_MASTER_EXECUTION_PLAN.md version ECHO-MEP-v4.2 and this file from main. Execute SRC-001 attempt 1 only on branch task/src-001-r1 starting from 86e0029b750d3ce9e633b3b04183ecee23bd2859. Follow the SRC-001 card exactly, write only its allowed paths plus G1, run its exact command, commit, and stop. Do not merge, edit the plan, select another task, or continue after the commit."
 }
