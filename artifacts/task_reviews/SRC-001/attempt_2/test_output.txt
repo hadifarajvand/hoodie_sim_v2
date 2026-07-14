@@ -1,0 +1,10 @@
+REVIEW RESULT: STALE_BRANCH / PLAN_CHANGE_REQUIRED
+
+- No attempt-2 task commit exists on the remote branch.
+- Remote task/src-001-r2 remains at d30e3097ea2943fe14100937fbb4de53e8ffd4aa.
+- main advanced through out-of-band commit eb302cc33030cdf67ed2bb7797abdb9ac911945e.
+- The approved v4.2 plan records live revision 273.
+- The out-of-band metadata records revision 278.
+- Google Drive currently reports revision 280.
+- The declared live snapshot file is absent on main.
+- No merge or next-task authorization was performed.
