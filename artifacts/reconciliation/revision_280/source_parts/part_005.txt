@@ -1,0 +1,137 @@
+ion.
+
+
+4) Agent-Specific Event-Driven Semi-Markov Formulation and Markov Property
+For each EA $n$, let $\tau_{n,m}$ denote the slot of its $m$th actual route decision, namely the $m$th slot in which $\chi_n(t)=1$. The terminal epoch is set to the first terminal decision state after the episode, and the agent-specific sojourn is $\Delta_{n,m}=\tau_{n,m+1}-\tau_{n,m}$. This construction avoids introducing an artificial no-decision action for EAs that receive no task at a global arrival slot.
+
+
+Let $\mathbf{x}_{n,m}$ denote the complete simulator state sampled immediately before the action of EA $n$ at $\tau_{n,m}$. It contains the topology, all waiting and active task records, absolute deadlines, stored destinations, residual local and transmission services, source-indexed destination workloads, current processing and link conditions, load histories, and unresolved outcome records. The policy observation $\mathbf{s}_n(\tau_{n,m})$ in (53) is the decentralized compression $h_n(\mathbf{x}_{n,m})$ supplied to the learner.
+
+
+The action $\alpha_{n,m}$ is the route selected for the task arriving at epoch $\tau_{n,m}$. Boundary outcomes applied before the next action at $\tau_{n,m+1}$ close the preceding interval. Consequently, every source-$n$ task reward produced after the action at $\tau_{n,m}$ and no later than the pre-action boundary of $\tau_{n,m+1}$ contributes to that interval. The discounted interval reward is
+\begin{equation}
+\rho_{n,m}=\sum_{\substack{\xi_i:s_i=n,\\\tau_{n,m}<t_i^r\leq\tau_{n,m+1}}}\gamma^{t_i^r-\tau_{n,m}}r_i,\qquad \Delta_{n,m}=\tau_{n,m+1}-\tau_{n,m}.
+\tag{59}
+\end{equation}
+The replay transition is therefore
+$\zeta_{n,m}=(\mathbf{s}_n(\tau_{n,m}),\alpha_{n,m},\rho_{n,m},\mathbf{s}_n(\tau_{n,m+1}),\Delta_{n,m})$,
+with the next-state mask stored as part of $\mathbf{s}_n(\tau_{n,m+1})$. The first route decision of an EA opens an interval but does not finalize a predecessor transition. At every later route decision, the current task descriptor, candidate ERT values, and mask are computed first; the resulting complete pre-action observation then closes the previous interval. At terminal epoch $T+1$, all end-of-episode outcomes are resolved exactly once, the terminal observation and terminal flag are formed, and the last open interval is finalized with $\Delta_{n,m}=T+1-\tau_{n,m}$. Pending task records determine source, decision-time quantities, outcome time, and reward, but they never create overlapping task-level replay transitions. Each resolved reward is assigned to exactly one source-specific interval.
+
+
+
+
+Proposition 1 (agent-epoch embedded Markov property). Assume that exogenous arrivals and time-varying resource processes are Markov and included in the complete state, service and transmission evolution depends only on current queue and residual-work records, and the finite history required by the predictor is included in $\mathbf{x}_{n,m}$. Then the process sampled at the stopping times $\{\tau_{n,m}\}$ satisfies
+\begin{equation}
+\Pr(\mathbf{x}_{n,m+1},\Delta_{n,m},\rho_{n,m}\mid \mathbf{x}_{n,0},\alpha_{n,0},\ldots,\mathbf{x}_{n,m},\alpha_{n,m})
+=\Pr(\mathbf{x}_{n,m+1},\Delta_{n,m},\rho_{n,m}\mid \mathbf{x}_{n,m},\alpha_{n,m}).
+\tag{60}
+\end{equation}
+Proof. The slot-level simulator is Markov in the complete state because that state contains every variable required to determine the next boundary event, service progression, arrival distribution, and task outcome. Each $\tau_{n,m}$ is a stopping time with respect to this process. By the strong Markov property, conditional on $\mathbf{x}_{n,m}$ and action $\alpha_{n,m}$, the distribution of the next decision state of EA $n$, its sojourn time, and all source-$n$ rewards accumulated before that state is independent of states and actions preceding $\tau_{n,m}$. Hence the embedded decision process is an SMDP on the complete state.
+
+
+The induced semi-Markov transition kernel is $K_n(B,\delta,r\mid\mathbf{x},\alpha)=\Pr(\mathbf{x}_{n,m+1}\in B,\Delta_{n,m}=\delta,\rho_{n,m}=r\mid\mathbf{x}_{n,m}=\mathbf{x},\alpha_{n,m}=\alpha)$. Therefore, on the complete state, the optimal action-value function satisfies the SMDP Bellman relation $Q_n^*(\mathbf{x},\alpha)=\mathbb{E}[\rho_{n,m}+\gamma^{\Delta_{n,m}}\max_{\alpha'}Q_n^*(\mathbf{x}_{n,m+1},\alpha')\mid\mathbf{x}_{n,m}=\mathbf{x},\alpha_{n,m}=\alpha]$, with the continuation term omitted at the terminal epoch. This establishes the mathematical basis for the $\gamma^{\Delta_{n,m}}$ target rather than treating it as an ad hoc delayed-reward correction.
+
+
+The decentralized learner does not observe $\mathbf{x}_{n,m}$ directly. It uses $\mathbf{s}_n=h_n(\mathbf{x}_{n,m})$ and is therefore a partially observed function approximation to the proven SMDP. The mathematical Markov claim applies to the complete simulator state, while the empirical evaluation determines whether the chosen decentralized observation is sufficiently informative. This formulation retains delayed credit assignment, avoids unsupported overlapping task transitions, requires no learned no-operation action, and yields the Bellman discount $\gamma^{\Delta_{n,m}}$ used below.
+
+
+5) Dueling Double-DQL Model
+
+
+The LSTM embedding in (28) is concatenated with the remaining state features before the fully connected layers. The Dueling-DQL and Double-DQL components follow [37], while ECHO uses the state, mask, reward, and semi-Markov target defined here.
+
+
+\begin{equation}
+Q_n(\mathbf{s},\alpha;\theta_n)=V_n(\mathbf{s};\theta_n)+A_n(\mathbf{s},\alpha;\theta_n)-\frac{1}{|\bar{\mathcal{A}}_n|}\sum_{\alpha'\in\bar{\mathcal{A}}_n}A_n(\mathbf{s},\alpha';\theta_n).
+\tag{61}
+\end{equation}
+
+
+\begin{equation}
+Q_n^\mu(\mathbf{s},\alpha;t)=\begin{cases}Q_n(\mathbf{s},\alpha;\theta_n), & \alpha\in\mathcal{U}_i(t),\\-\infty, & \alpha\notin\mathcal{U}_i(t).\end{cases}
+\tag{62}
+\end{equation}
+
+
+During training, action selection follows the masked epsilon-greedy rule in (63).
+
+
+\begin{equation}
+\alpha_i=\begin{cases}\text{uniform sample from }\mathcal{U}_i(t_i^a), & \text{with probability }\epsilon,\\\arg\max_{\alpha\in\bar{\mathcal{A}}_{s_i}}Q_{s_i}^\mu(\mathbf{s}_{s_i}(t_i^a),\alpha;t_i^a), & \text{with probability }1-\epsilon.\end{cases}
+\tag{63}
+\end{equation}
+
+
+For a replayed transition, the masked next action, Double-DQL target, online prediction, and mini-batch loss are defined in (64)-(67).
+
+
+\begin{equation}
+\alpha_{n,m+1}^+=\arg\max_{\alpha'\in\bar{\mathcal{A}}_n}Q_n^\mu(\mathbf{s}_n(\tau_{n,m+1}),\alpha';\tau_{n,m+1}).
+\tag{64}
+\end{equation}
+
+
+\begin{equation}
+y_{n,m}=\begin{cases}\rho_{n,m}, & \text{if the stored next state is terminal},\\\rho_{n,m}+\gamma^{\Delta_{n,m}}Q_n^-(\mathbf{s}_n(\tau_{n,m+1}),\alpha_{n,m+1}^+;\theta_n^-), & \text{otherwise},\end{cases}
+\tag{65}
+\end{equation}
+The action $\alpha_{n,m+1}^+$ is computed from the mask stored with the fully constructed next decision observation. A terminal transition carries an explicit terminal flag and no continuation value; an all-zero terminal mask is therefore never passed to the argmax in (64).
+
+
+
+
+\begin{equation}
+\widehat y_{n,m}=Q_n(\mathbf{s}_n(\tau_{n,m}),\alpha_{n,m};\theta_n).
+\tag{66}
+\end{equation}
+
+
+\begin{equation}
+\mathcal{L}_n(\theta_n)=\frac{1}{|B|}\sum_{(n,m)\in B}(y_{n,m}-\widehat y_{n,m})^2.
+\tag{67}
+\end{equation}
+
+
+The target parameters are copied from the online parameters every target-copy period. The same action mask is applied during exploration, exploitation, and target-action selection.
+
+
+G. Algorithmic Workflow of ECHO
+
+
+The training and inference procedures use the same slot-level environment sequence. Service is non-preemptive, an offloaded task carries its selected destination until dispatch, transfer-queue priority uses end-to-end ERT, and learning finalizes one event-epoch semi-Markov transition per EA between consecutive actual route decisions of the same EA as defined in (59)–(60).
+
+
+1) Training Procedure
+
+
+Algorithm 1. Training procedure of ECHO
+1: Initialize replay memory, queues, active-service records, task records, load histories, online and target Q-networks, LSTM parameters, and one open-interval record and reward accumulator for each EA.
+2: for each training episode do
+3: Reset the synchronized environment; clear every open interval; set each source-specific interval-reward accumulator to zero.
+4: for each slot $t=1,\ldots,T$ do
+5: Apply all boundary events produced at the end of slot $t-1$: admit completed transmissions to their stored destination queues, resolve completed computations, and add every resulting task reward from (55)--(58) to the accumulator of its source EA.
+6: Receive the newest destination-load report. When a horizon-specific report is unavailable, obtain the required arrival-time workload estimate from the LSTM model in (28). Mark every nonempty outbound queue whose relevant destination estimate or information age changed for ERT reconstruction.
+7: Remove waiting tasks for which $t>d_i$, record each as dropped exactly once, and add its reward to the corresponding source accumulator. Active non-preemptive operations are not removed.
+8: Observe all EA arrival indicators $\{\chi_n(t)\}_{n\in\mathcal{E}}$.
+9: if at least one task arrives then
+10: For each arriving EA $n$, create the task descriptor and deadline using (2); evaluate local, horizontal, and vertical completion at the appropriate service and destination-arrival times; compute candidate ERT by (32); construct the valid, fallback, and effective sets by (42)--(45); build the candidate-ERT vector and canonical mask by (46), (53), and (54); and only then construct the complete pre-action state $\mathbf{x}_{n,m}$ and decentralized observation $\mathbf{s}_n(\tau_{n,m})$.
+11: If EA $n$ has an open previous interval, finalize its preceding transition using the stored state and action, the accumulated source-$n$ interval reward, the fully constructed current observation and mask, and $\Delta_{n,m-1}=\tau_{n,m}-\tau_{n,m-1}$; append the transition to replay memory and reset only the accumulator of EA $n$.
+12: Select the current action using the masked epsilon-greedy rule in (63).
+13: Admit the task to the selected source queue; store destination metadata only for an offloaded task; store the pending record in (50), including its decision-time completion estimate, candidate ERT, selected lateness, mask, and risk indicator; and open the current interval with the current state, action, and epoch.
+14: end if
+15: Remove any newly invalidated waiting records. Rebuild the deterministic ERT order of every changed local queue and every changed or destination-estimate-affected outbound queue, then schedule each idle source resource. Newly admitted tasks may start in the same slot when the corresponding resource is idle.
+16: Schedule destination processing according to the frozen source-indexed FIFO and capacity-sharing rule.
+17: Execute exactly one slot of all active local, transmission, and destination services. Record operations that finish at the end of slot $t$ for application at the boundary of slot $t+1$.
+18: Update observed loads, history matrices, supervised LSTM targets, and the next-slot prediction.
+19: When replay memory contains at least one complete mini-batch, compute the masked event-epoch targets in (64)--(67), update the online Q-networks, and update the LSTM only with its separate prediction loss in (28).
+20: Every target-copy period, copy the online Q-network parameters to the target networks.
+21: end for
+22: At terminal epoch $T+1$, first apply all events produced at the end of slot $T$, then mark every still-unresolved admitted task as dropped exactly once, add all terminal rewards to the appropriate source accumulators, construct the terminal observation and terminal flag, and finalize the last open interval of every EA with $\Delta=(T+1)-\tau_{n,m}$. The continuation term is zero at this terminal transition. Decay the exploration probability.
+23: end for
+
+
+2) Inference Procedure
+
+
+Algorithm 2. Inference procedure of ECHO
+1: F
