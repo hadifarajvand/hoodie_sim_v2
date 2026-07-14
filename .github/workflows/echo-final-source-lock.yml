@@ -1,0 +1,31 @@
+name: ECHO Final Source Lock
+
+on:
+  push:
+    branches:
+      - echo-final-evaluation
+  pull_request:
+    branches:
+      - main
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  source-lock:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - name: Install test dependency
+        run: python -m pip install --upgrade pytest
+      - name: Validate JSON
+        run: python -m json.tool configs/echo_final/source_lock.json > /dev/null
+      - name: Run source-lock tests
+        run: python -m pytest tests/unit/test_echo_final_source_lock.py -q
