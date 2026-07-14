@@ -1,0 +1,187 @@
+d and active-queue count predicted at the estimated destination-arrival slot using information available at decision time $t$. The corresponding adjusted active-queue count and effective capacity are
+$\widehat{\bar p}_{s_i,k}(\widehat t_{i,k}^D(t)\mid t)=\max\{1,\widehat p_k(\widehat t_{i,k}^D(t)\mid t)+\mathbb I[s_i\notin\widehat{\mathcal J}_k(\widehat t_{i,k}^D(t)\mid t)]\}$ and $\widehat{\bar f}_{s_i,k}^D(\widehat t_{i,k}^D(t)\mid t)=f_k^D/\widehat{\bar p}_{s_i,k}(\widehat t_{i,k}^D(t)\mid t)$. When no horizon-specific forecast is available, the newest observed quantities are used as an explicitly logged fallback and their information age is retained.
+
+
+The destination-side waiting time and processing duration of candidate task $\xi_i$ are
+\begin{equation}
+\widehat W_{i,k}^D(t)=\left\lceil\frac{\widehat\Omega_{s_i\rightarrow k}(\widehat t_{i,k}^D(t)\mid t)}{\widehat{\bar f}_{s_i,k}^D(\widehat t_{i,k}^D(t)\mid t)\Delta}\right\rceil,
+\tag{23}
+\end{equation}
+\begin{equation}
+\tau_{i,k}^D(t)=\left\lceil\frac{b_i\nu_i}{\widehat{\bar f}_{s_i,k}^D(\widehat t_{i,k}^D(t)\mid t)\Delta}\right\rceil.
+\tag{24}
+\end{equation}
+If task $\xi_i$ is expected to reach destination queue $k$ at $\widehat t_{i,k}^D(t)$, its estimated end-to-end offloading completion slot is
+\begin{equation}
+\widehat T_{i,k}^O(t)=\widehat t_{i,k}^D(t)+\widehat W_{i,k}^D(t)+\tau_{i,k}^D(t)-1.
+\tag{25}
+\end{equation}
+This estimator includes source waiting, transmission, predicted arrival-time destination workload, the capacity reduction caused by concurrent active destination queues, and candidate processing. Actual destination admission still occurs only after source-side transmission completes; selecting an offloading action does not immediately place the task in a destination queue.
+
+
+Destination information may remain imperfect because ECHO is distributed and future unobserved arrivals cannot be known. The arrival-time estimator is therefore a decision-time forecast rather than an oracle. Its adequacy is evaluated from signed and absolute completion-time errors, false-feasible and false-infeasible mask rates, and calibration stratified by route, load, forecast horizon, and information age. No deterministic deadline guarantee is claimed under unobserved future events.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+7) Historical Load and Load Estimation
+Historical load captures the recent destination-side workload observed by an EA without requiring global knowledge of future task arrivals. Consistent with the destination-queue model, each destination entry includes the remaining computational workload in CPU cycles and the number of active destination queues. The observed load vector available to EA $n$ is
+
+
+\begin{equation}
+\mathbf{o}_n(t)=\left[\widehat\Omega_{n\rightarrow k}(t),p_k(t)\right]_{k\in\mathcal{N}\setminus\{n\}}.
+\tag{26}
+\end{equation}
+
+
+Using a lookback window of length $W$, the historical matrix is
+
+
+\begin{equation}
+\mathbf{H}_n(t)=\left[\mathbf{o}_n(t-W+1),\ldots,\mathbf{o}_n(t)\right].
+\tag{27}
+\end{equation}
+
+
+The recurrent load encoder follows the distributed forecasting design in [37], but its representation and prediction outputs are trained explicitly. For a history matrix $\mathbf H_n(t)$,
+\begin{equation}
+\left(\mathbf{z}_n(t),\widehat{\mathbf{H}}_n(t+1)\right)=F_\psi\!\left(\mathbf{H}_n(t)\right),\qquad \mathcal{L}_{pred}(\psi)=\frac{1}{|\mathcal{B}_{pred}|}\sum_{u\in\mathcal{B}_{pred}}\left\|\widehat{\mathbf{H}}_n^{(u)}(t+1)-\mathbf{o}_n^{(u)}(t+1)\right\|_2^2.
+\tag{28}
+\end{equation}
+Here $\mathbf z_n(t)$ is the fixed-dimensional embedding supplied to the Q-network, while $\widehat{\mathbf H}_n(t+1)$ is the decoded next-slot destination-load representation used to extrapolate workload and active-queue conditions to a candidate's estimated destination-arrival slot. A fresh controller report replaces the forecast for every horizon it directly covers. When a report is delayed or unavailable, the latest history and recurrent forecast supply the arrival-time workload estimate and its information age.
+
+
+The recurrent model uses a separate supervised optimizer and one-step forecasting targets drawn only from training traces. The Q-network consumes a detached copy of $\mathbf z_n(t)$, so DQL gradients do not update the forecasting model. Validation traces determine the forecasting checkpoint, clipping choices, and early stopping; held-out evaluation traces are never used for fitting. Every forecast consumed by completion estimation records its prediction horizon and report age so that calibration can be stratified by route, load, horizon, and information age.
+
+
+
+
+  
+
+Figure 2. Internal structure of an ECHO-enabled Edge Agent, including local, outbound-transfer, and destination queues, end-to-end completion estimation, ERT-based scheduling, and masked hybrid decisions.
+
+
+  
+
+Figure 3. Workflow of the proposed ECHO method, from task arrival and deadline-aware route evaluation to ERT-based scheduling, execution, and delayed learning update.
+
+
+Figure 3 summarizes the operational workflow of ECHO, beginning with task arrival, deadline construction, and completion-time estimation for local, horizontal-edge, and vertical-cloud routes, and continuing through candidate-level ERT evaluation, queue scheduling, execution, and learning update. At each decision epoch, ECHO first checks whether any deadline-feasible route exists; when one or more valid routes are available, the learned policy selects among them through the action mask, whereas an empty valid set invokes the minimum-lateness fallback before the task outcome is recorded for reward and replay generation.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+C. Effective Remaining Time Model
+
+
+The central timing variable of the proposed framework is Effective Remaining Time (ERT). A raw timeout value only specifies the maximum allowed completion bound of a task, but it does not show how much feasible time remains after queueing, transmission, destination load, and processing requirements are considered. Therefore, ERT is introduced to convert deadline information into an operational urgency indicator that can be used before the task is completed or dropped.
+
+
+Two complementary forms of ERT are defined. Queue-level ERT is used to rank pending tasks inside a source-side queue, while candidate-level ERT is used to evaluate whether a local, horizontal edge, or vertical cloud execution path is feasible before the final offloading action is selected.
+
+
+1) Queue-Level ERT
+Queue-level ERT measures the urgency of a task waiting in a source-side local or outbound-transfer queue. Local ERT uses the local completion estimate, whereas transfer ERT uses the end-to-end offloading estimate that includes source waiting, transmission, destination waiting, and destination processing.
+
+
+For a task $\xi_i$ waiting in the local queue, queue-level ERT is
+
+
+\begin{equation}
+\mathsf{ERT}_i^L(t)=d_i-\widehat T_i^L(t).
+\tag{29}
+\end{equation}
+
+
+For a task in the outbound-transfer queue with stored destination $k_i=\kappa(\alpha_i)$, end-to-end queue ERT is defined in (30).
+
+
+Unlike a source-stage transmission slack, the transfer ERT in (30) is end-to-end:
+
+
+\begin{equation}
+\mathsf{ERT}_i^X(t)=d_i-\widehat T_{i,k_i}^O(t).
+\tag{30}
+\end{equation}
+
+
+A positive value indicates predicted completion before the deadline, zero denotes the feasibility boundary, and a negative value indicates predicted lateness. A negative estimate is not the same as actual expiration; expiration depends on the current slot and the realized task lifecycle.
+
+
+The provisional order is constructed iteratively. Starting after the residual active service, ECHO evaluates each unscheduled task in the next position, selects the smallest non-negative ERT or the minimum-lateness task when none is feasible, appends it to the provisional order, and repeats. Completion estimates and ERT values are recomputed whenever queue membership or service state changes.
+
+
+
+
+
+
+2) Candidate-Level ERT
+Candidate-level ERT compares the local, horizontal-edge, and vertical-cloud routes for the same arriving task. The unified route-completion estimate is
+
+
+\begin{equation}
+\widehat T_i(\alpha,t)=\begin{cases}\widehat T_i^L(t), & \alpha=\alpha_{s_i}^L,\\\widehat T_{i,k}^O(t), & \kappa(\alpha)=k\neq s_i.\end{cases}
+\tag{31}
+\end{equation}
+
+
+Candidate-level Effective Remaining Time is then defined as
+
+
+For every physically available action $\alpha\in\mathcal{A}_{s_i}(t)$,
+
+
+\begin{equation}
+\mathsf{ERT}_i^C(\alpha,t)=
+d_i-\widehat T_i(\alpha,t).
+\tag{32}
+\end{equation}
+
+
+A non-negative candidate ERT is exactly equivalent to the estimated deadline-feasibility condition $\widehat T_i(\alpha,t)\leq d_i$. The valid action set is defined once in Section E from this condition.
+
+
+ERT is therefore a completion-slack variable rather than an unrelated heuristic score: it directly measures the deadline remaining after the estimated route completion requirement is accounted for.
+
+
+
+
+
+
+3) ERT Interpretation
+The sign and magnitude of ERT provide a compact interpretation of task urgency. A large positive ERT means that the task has sufficient remaining time and can tolerate some queueing or transmission delay. A small positive ERT indicates that the task is still feasible but urgent. A zero ERT represents a boundary condition in which any additional delay may cause deadline violation. A negative ERT indicates that the task is estimated to miss its deadline under the current queue or candidate condition.
+
+
+ECHO uses this interpretation consistently across the decision pipeline. At the queue level, the smallest non-negative ERT identifies the most urgent predicted-feasible task, while minimum lateness is used when all waiting tasks are predicted late. At candidate selection, negative-ERT actions are masked whenever at least one valid action exists; if all actions are negative, the minimum-lateness fallback is selected and its predicted miss risk is stored for reward calculation. Actual task removal is penalized separately. Thus, ERT connects deadline representation, queue scheduling, candidate filtering, and distributed DRL learning.
+
+
+
+
+
+
+4) Deterministic ERT-Order Construction and Complexity
+Because the completion estimate of a waiting task depends on the predecessors placed before it, ERT ordering is defined by a constructive procedure rather than by evaluating all tasks under an unspecified final order. For a queue containing $q$ waiting tasks, ECHO initializes a cumulative source workload with the residual time of the active non-preemptive operation. At provisional position $r=1,\ldots,q$, it performs the following steps: (i) evaluate every unscheduled task as the next task after the already fixed prefix; (ii) compute its provisional completion time and ERT using the current cumulative workload and, for a transfer task, its stored destination and the current destination estimate; (iii) form the subset with non-negative ERT; (iv) select the smallest non-negative ERT when that subset is non-empty, otherwise select the smallest estimated lateness; (v) break exact ties by original FIFO arrival order; and (vi) append the selected task to the fixed prefix and update the cumulative source workload. The procedure terminates after every waiting task has exactly one position. Thus, the predecessor sets in (10) and (14) are outputs of the constructive order and are not assumed in advance.
+
+
+With cumulative source workload maintained incrementally, at most $q+(q-1)+\cdots+1=q(q+1)/2$ candidate evaluations are required, giving $O(q^2)$ time and $O(q)$ temporary storage per queue rebuild. Candidate-level route evaluation for one arriving task requires $O(|\mathcal{A}_n(t)|)$ completion and mask evaluations, and the canonical action output has $O(N)$ positions. Neural inference retains the complexity of one forward pass through the LSTM and Dueling-DQL networks. These costs are measured separately in the evaluation through decision latency and queue-rebuild time rather than being assumed negligible.
+Equations (33)--(40) 
