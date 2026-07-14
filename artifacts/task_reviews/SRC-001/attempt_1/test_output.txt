@@ -1,0 +1,7 @@
+REVIEW RESULT: REWORK
+
+Passed checks: valid ancestry, one task commit, exact allowed changed-file list, internally consistent BLOCKED_EXTERNAL status, and matching hashes for the five files listed in hashes.json.
+
+Failed checks: git_diff.patch is incomplete, and hashes.json does not include git_diff.patch.
+
+No implementation files were merged.
