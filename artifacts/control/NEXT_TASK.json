@@ -1,1 +1,13 @@
-{"schema_version":1,"plan_version":"ECHO-MEP-v4.2","authorization_status":"AUTHORIZED_REWORK","task_id":"SRC-001","attempt":2,"branch":"task/src-001-r2","authorized_parent_sha":"475b99fec7e312ac2518363a4938898fd352f600","review_path":"artifacts/task_reviews/SRC-001/attempt_1/review.md"}
+{
+  "schema_version": 1,
+  "plan_version": "ECHO-MEP-v4.2",
+  "authorization_status": "PAUSED_PLAN_CHANGE_REQUIRED",
+  "task_id": null,
+  "attempt": null,
+  "branch": null,
+  "reason": "The authorized SRC-001 attempt became stale, main advanced through an out-of-band authority commit, and the live Google Drive document advanced to revision 280 while the plan records revision 273.",
+  "current_live_source_revision": "280",
+  "plan_source_revision": "273",
+  "out_of_band_main_commit": "eb302cc33030cdf67ed2bb7797abdb9ac911945e",
+  "required_next_action": "Run a planning/source reconciliation before authorizing any executor. Audit the out-of-band commit, refresh the plan against revision 280, repair the source-lock contract, rerun structural preflight, then bootstrap a new SRC-001 attempt."
+}
