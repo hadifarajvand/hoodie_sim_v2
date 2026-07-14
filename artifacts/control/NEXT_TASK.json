@@ -1,13 +1,10 @@
 {
   "schema_version": 1,
-  "plan_version": "ECHO-MEP-v4.2",
-  "authorization_status": "AUTHORIZED",
-  "task_id": "SRC-001",
-  "attempt": 3,
-  "branch": "task/src-001-r3",
+  "plan_version": "ECHO-MEP-v4.3",
+  "authorization_status": "PENDING_INDEPENDENT_REVIEW",
+  "task_id": null,
+  "attempt": null,
+  "branch": null,
   "reason": "Revision 280 reconciled successfully. Source lock and structural preflight passed, so SRC-001 attempt 3 is authorized on branch task/src-001-r3.",
-  "current_live_source_revision": "280",
-  "plan_source_revision": "280",
-  "out_of_band_main_commit": "eb302cc33030cdf67ed2bb7797abdb9ac911945e",
-  "required_next_action": "Do not execute SRC-001 attempt 3 in this turn. Human-controlled launch may proceed on branch task/src-001-r3 after review."
+  "required_next_action": "independently review and merge the reconciliation, then authorize SRC-001 attempt 3 from the resulting main control commit."
 }

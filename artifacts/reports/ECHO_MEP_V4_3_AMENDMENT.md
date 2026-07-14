@@ -2,9 +2,10 @@
 
 ## Status
 
-This amendment is authoritative together with `ECHO_MASTER_EXECUTION_PLAN.md` v4.2.
-Where they conflict, this amendment wins. Execution remains paused until the v4.3
-validator passes and a fresh SRC-001 attempt is authorized.
+This amendment is authoritative provenance. Its substance is incorporated into
+`ECHO_MASTER_EXECUTION_PLAN.md` v4.3. Where any residue remains, v4.3 master plan
+text governs. Execution remains paused until the v4.3 validator passes and a
+fresh SRC-001 attempt is authorized.
 
 ## Source control
 

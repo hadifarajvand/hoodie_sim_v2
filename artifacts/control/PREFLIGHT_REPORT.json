@@ -9,9 +9,11 @@
     12
   ],
   "plan": "artifacts/reports/ECHO_MASTER_EXECUTION_PLAN.md",
-  "plan_version": "ECHO-MEP-v4.2",
+  "plan_version": "ECHO-MEP-v4.3",
   "registry_task_count": 73,
   "result": "PASS",
+  "snapshot_sha256": "3a3382e0ab0a49fb10bda7cc1740ea3a771032d7962e1957fa105eae5a5c06cc",
+  "source_revision": "280",
   "status_totals": {
     "BLOCKED": 66,
     "READY": 2,
