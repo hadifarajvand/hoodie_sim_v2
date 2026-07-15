@@ -1,0 +1,34 @@
+{
+  "scan_commit": "d1637f0a89e7f24d5fe169f065b03ee132682027",
+  "supported_surface_manifest_hash": "b20c28e7989ad6695170c99cd12c74b08c4997cce8a2399bc308e0c793afffc0",
+  "terms": [
+    "echo",
+    "ert",
+    "event_smdp",
+    "event-smdp",
+    "deadline mask",
+    "deadline_mask",
+    "predicted risk",
+    "predicted_risk",
+    "normalized lateness",
+    "normalized_lateness",
+    "risk penalty",
+    "risk_penalty",
+    "terminal exposure",
+    "terminal_exposure"
+  ],
+  "files_scanned": [
+    "src/agents",
+    "src/policies",
+    "src/evaluation",
+    "src/config",
+    "src/repro",
+    "src/analysis/distributed_multi_agent_hoodie_training",
+    "tests_supported/hoodie"
+  ],
+  "prohibited_references_before": 0,
+  "prohibited_references_after": 0,
+  "neutral_collisions": [],
+  "historical_matches_excluded": [],
+  "validator_result": "passed"
+}
