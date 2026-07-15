@@ -90,32 +90,38 @@ class AdaptiveOffloadingPolicy(SharedPolicy):
         preferred = _family_preference(adaptive_context)
 
         ranked: list[tuple[tuple[float, float, float, int], str]] = []
+        has_real_metrics = False
         for action in legal:
             family = _family(action)
             family_rank = float(preferred.index(family)) if family in preferred else float(len(preferred))
             latency_estimates = adaptive_context.latency_estimates or {}
             balance_hint = adaptive_context.balance_hint or {}
             fallback_hints = adaptive_context.observation.get("fallback_hints", {})
-            metric = _numeric_signal(
+            actual_metric = _numeric_signal(
                 latency_estimates.get(action),
                 latency_estimates.get(family),
                 balance_hint.get(action),
                 balance_hint.get(family),
-                fallback_hints.get(action),
-                fallback_hints.get(family),
             )
-            if metric is None:
-                metric = {"local": 1.0, "horizontal": 2.0, "vertical": 3.0}.get(family, 4.0)
+            if actual_metric is None:
+                metric = _numeric_signal(fallback_hints.get(action), fallback_hints.get(family))
+                if metric is None:
+                    metric = {"local": 1.0, "horizontal": 2.0, "vertical": 3.0}.get(family, 4.0)
+            else:
+                metric = actual_metric
+                has_real_metrics = True
             cycles_remaining = float(adaptive_context.cycles_remaining or adaptive_context.cycles_required or 0.0)
             deadline_slack = None
             if adaptive_context.absolute_deadline_slot is not None and adaptive_context.current_slot is not None:
                 deadline_slack = max(0, adaptive_context.absolute_deadline_slot - adaptive_context.current_slot)
             urgency = cycles_remaining / float(max(1, deadline_slack or 1))
+            primary = metric if has_real_metrics else family_rank
+            secondary = family_rank if has_real_metrics else metric
             ranked.append(
                 (
                     (
-                        family_rank,
-                        metric,
+                        primary,
+                        secondary,
                         -float(urgency if family != "local" else 0.0),
                         float(_canonical_index(action)),
                     ),

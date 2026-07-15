@@ -134,14 +134,14 @@
     "feature_060_recommended_next_feature": "Feature 061 — Campaign Result Integrity and Comparison Readiness Audit",
     "feature_060_remaining_blockers": []
   },
-  "feature_060a_audit_verified": false,
+  "feature_060a_audit_verified": true,
   "feature_id": "060b-bind-full-campaign-real-torch-trainer",
-  "final_verdict": "feature_060a_prerequisite_blocked",
+  "final_verdict": "real_torch_trainer_binding_repair_passed",
   "prerequisite_tags_verified": [
     {
       "details": "artifacts/analysis/real-torch-trainer-binding-audit/real-torch-trainer-binding-audit-report.json",
       "name": "feature_060a_audit_verified",
-      "verified": false
+      "verified": true
     },
     {
       "details": "artifacts/analysis/full-paper-default-training-campaign-execution/full-paper-default-training-campaign-report.json",
@@ -171,11 +171,8 @@
     "torch_import_used": true,
     "torchrl_available": true
   },
-  "recommended_next_feature": "Repair Feature 060A audit prerequisite before Feature 060B can proceed",
-  "remaining_blockers": [
-    "feature_060a_audit_not_verified",
-    "feature_060a_audit_verified"
-  ],
+  "recommended_next_feature": "Feature 061 — Campaign Result Integrity and Comparison Readiness Audit",
+  "remaining_blockers": [],
   "safety_summary": {
     "no_baseline_superiority_claim": true,
     "no_dependency_drift": true,

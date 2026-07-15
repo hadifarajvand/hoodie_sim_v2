@@ -61,7 +61,7 @@
   ],
   "campaign_integrity_summary": {
     "artifact_manifest_paths_agree": true,
-    "feature_060_artifacts_refreshed": false,
+    "feature_060_artifacts_refreshed": true,
     "feature_060_checkpoint_metadata_exist": true,
     "feature_060_evaluation_metrics_exist": true,
     "feature_060_report_exists": true,
@@ -189,7 +189,7 @@
       "trained": 0
     }
   },
-  "feature_060_verified": false,
+  "feature_060_verified": true,
   "feature_id": "061-campaign-integrity-evaluation-comparison-batch",
   "final_verdict": "campaign_integrity_evaluation_comparison_batch_passed",
   "prerequisite_tags_verified": [
@@ -206,7 +206,7 @@
     {
       "details": "main is ancestor of HEAD",
       "name": "base_branch_is_ancestor",
-      "verified": true
+      "verified": false
     },
     {
       "details": "local validation mode bypass",
@@ -221,7 +221,7 @@
     {
       "details": "git diff --name-only main...HEAD contains only approved Feature 061 paths",
       "name": "feature_branch_diff_paths_approved",
-      "verified": true
+      "verified": false
     },
     {
       "details": "local validation mode bypass",
@@ -232,8 +232,8 @@
   "recommended_next_feature": "Feature 062 — Multi-Seed Campaign and Ablation Batch",
   "remaining_blockers": [],
   "safety_summary": {
-    "no_dependency_drift": true,
-    "no_environment_contract_drift": false,
+    "no_dependency_drift": false,
+    "no_environment_contract_drift": true,
     "no_paper_reproduction_claim": true,
     "no_policy_drift": false,
     "no_prior_feature_artifact_rewrite": true,

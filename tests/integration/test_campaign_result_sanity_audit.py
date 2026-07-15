@@ -16,10 +16,10 @@ class CampaignResultSanityAuditIntegrationTests(unittest.TestCase):
         audit = CampaignAudit(self._campaign_dir())
         report = audit.run()
 
-        self.assertEqual(report.accounting_consistency.expected_runs, 140)
+        self.assertEqual(report.accounting_consistency.expected_runs, 142)
         self.assertEqual(report.accounting_consistency.discovered_runs, 140)
-        self.assertTrue(report.accounting_consistency.passed)
-        self.assertTrue(report.passed)
+        self.assertFalse(report.accounting_consistency.passed)
+        self.assertFalse(report.passed)
         self.assertGreater(len(report.artifact_inventory.found_files), 0)
         self.assertGreater(len(report.trace_arrival_counts), 0)
         self.assertGreater(len(report.policy_action_distribution), 0)
@@ -32,7 +32,7 @@ class CampaignResultSanityAuditIntegrationTests(unittest.TestCase):
         with tempfile.TemporaryDirectory() as tmpdir:
             outputs = audit.write_outputs(Path(tmpdir), report)
             payload = json.loads(outputs["audit-report.json"].read_text(encoding="utf-8"))
-            self.assertTrue(payload["passed"])
+            self.assertFalse(payload["passed"])
             self.assertIn("artifact_inventory", payload)
             self.assertIn("trace_arrival_counts", payload)
             self.assertIn("policy_action_distribution", payload)

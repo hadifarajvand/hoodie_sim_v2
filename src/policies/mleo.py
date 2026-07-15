@@ -218,9 +218,11 @@ def _total_delay(
     explicit = _numeric(observation.get(f"{family}_total_delay"))
     if explicit is not None:
         return explicit
-    components = (queue_delay, transmission_delay, compute_delay)
-    if all(component is not None for component in components):
-        return float(sum(component for component in components if component is not None))
+    propagation = _numeric(observation.get(f"{family}_propagation_delay") or observation.get("propagation_delay"))
+    load = _numeric(observation.get(f"{family}_destination_load") or observation.get("destination_load"))
+    components = [component for component in (queue_delay, transmission_delay, propagation, compute_delay, load) if component is not None]
+    if components:
+        return float(sum(components))
     return None
 
 

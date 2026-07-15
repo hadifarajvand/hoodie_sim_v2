@@ -1,0 +1,8 @@
+artifacts/hoodie/implementation_run/tests/root_suite_before.txt
+artifacts/task_reviews/SRC-001/attempt_1/test_output.txt
+artifacts/task_reviews/SRC-001/attempt_2/test_output.txt
+artifacts/test_triage/actionable_after_event_model_remaining_pytest.txt
+artifacts/test_triage/actionable_current_only_nodeids_pytest.txt
+artifacts/test_triage/clean_head_pytest.log
+artifacts/test_triage/current_worktree_pytest.log
+artifacts/test_triage/dirty_gate_only_nodeids_pytest.txt

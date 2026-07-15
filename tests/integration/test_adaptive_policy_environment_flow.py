@@ -82,7 +82,6 @@ class AdaptivePolicyEnvironmentFlowTests(unittest.TestCase):
                     seen_finalization = True
                     self.assertEqual(final_info["finalized_tasks"][0]["terminal_outcome"], "completed")
                     self.assertEqual(final_info["finalized_tasks"][0]["selected_action"], "local")
-                    break
                 if terminated or truncated:
                     break
 

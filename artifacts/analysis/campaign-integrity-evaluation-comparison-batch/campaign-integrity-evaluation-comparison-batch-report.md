@@ -7,7 +7,7 @@
 ## Campaign Integrity Summary
 {
   "artifact_manifest_paths_agree": true,
-  "feature_060_artifacts_refreshed": false,
+  "feature_060_artifacts_refreshed": true,
   "feature_060_checkpoint_metadata_exist": true,
   "feature_060_evaluation_metrics_exist": true,
   "feature_060_report_exists": true,
@@ -270,8 +270,8 @@
 
 ## Safety Summary
 {
-  "no_dependency_drift": true,
-  "no_environment_contract_drift": false,
+  "no_dependency_drift": false,
+  "no_environment_contract_drift": true,
   "no_paper_reproduction_claim": true,
   "no_policy_drift": false,
   "no_prior_feature_artifact_rewrite": true,

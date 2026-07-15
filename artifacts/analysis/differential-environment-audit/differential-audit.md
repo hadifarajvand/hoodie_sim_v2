@@ -24,7 +24,7 @@
 ## Environment Observed Lifecycle Summary
 - `case-local-compute`: created, selected_action, execution_started, execution_completed, reward_emitted
 - `case-horizontal-offload`: selected_action:horizontal, selected_action:horizontal, selected_action:horizontal, selected_action:horizontal, selected_action:horizontal, selected_action:horizontal
-- `case-vertical-offload`: created, selected_action, offloaded_cloud, transmission_started, transmission_completed, execution_started, execution_completed, reward_emitted
+- `case-vertical-offload`: selected_action:vertical, selected_action:vertical, selected_action:vertical, selected_action:vertical, selected_action:vertical, selected_action:vertical
 - `case-timeout-drop`: selected_action:local
 - `case-delayed-reward`: created, selected_action, execution_started, execution_completed, reward_emitted
 - `case-deterministic-ordering`: created, selected_action, execution_started, execution_completed, reward_emitted
@@ -32,7 +32,7 @@
 ## Comparison Results
 - `case-local-compute`: match / expected_scope_difference
 - `case-horizontal-offload`: unsupported_by_environment_trace / instrumentation_gap
-- `case-vertical-offload`: match / expected_scope_difference
+- `case-vertical-offload`: unsupported_by_environment_trace / instrumentation_gap
 - `case-timeout-drop`: divergence / likely_environment_bug
 - `case-delayed-reward`: assumption_gap / paper_assumption_gap
 - `case-deterministic-ordering`: match / expected_scope_difference
@@ -40,7 +40,7 @@
 ## Findings
 - `F-case-local-compute` `case-local-compute`: match / expected_scope_difference
 - `F-case-horizontal-offload` `case-horizontal-offload`: unsupported_by_environment_trace / instrumentation_gap
-- `F-case-vertical-offload` `case-vertical-offload`: match / expected_scope_difference
+- `F-case-vertical-offload` `case-vertical-offload`: unsupported_by_environment_trace / instrumentation_gap
 - `F-case-timeout-drop` `case-timeout-drop`: divergence / likely_environment_bug
 - `F-case-delayed-reward` `case-delayed-reward`: assumption_gap / paper_assumption_gap
 - `F-case-deterministic-ordering` `case-deterministic-ordering`: match / expected_scope_difference
@@ -49,6 +49,7 @@
 
 ## Instrumentation Gaps
 - `case-horizontal-offload`: Environment public interface did not expose enough trace evidence for full lifecycle comparison.
+- `case-vertical-offload`: Environment public interface did not expose enough trace evidence for full lifecycle comparison.
 - `case-timeout-drop`: Environment public interface did not expose enough trace evidence for full lifecycle comparison.
 
 ## Unsupported Cases
@@ -60,7 +61,7 @@ No fixes were applied to HoodieGymEnvironment, SlotEngine, simulator lifecycle c
 - output_root: `artifacts/analysis/differential-environment-audit`
 - approved_python: `/Users/hadi/Documents/GitHub/hoodie_sim_v2/src/.venvmac/bin/python`
 - case_count: `6`
-- report_hash: `5f9aa48e722a5cb0476a36437076ba93293cabe08ffe59c6b1daa827ac52ad4a`
+- report_hash: `0d50a593e07558316370117052cc98b6df35ab5cc1a24e62a9d6e0ff1dde0fba`
 
 ## Overall Status
 

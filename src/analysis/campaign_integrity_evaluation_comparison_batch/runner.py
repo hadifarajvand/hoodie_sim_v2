@@ -46,6 +46,12 @@ def _git_output(*args: str) -> str:
 def _git_bool(*args: str) -> bool:
     return subprocess.run(["git", *args], check=False, capture_output=True, text=True).returncode == 0
 
+def _diff_base_ref() -> str:
+    for candidate in (BASE_BRANCH, f"origin/{BASE_BRANCH}", "origin/HEAD"):
+        if _git_bool("rev-parse", "--verify", candidate):
+            return candidate
+    return BASE_BRANCH
+
 
 def _status_paths() -> list[str]:
     return [line[3:].strip() for line in subprocess.run(["git", "status", "--short"], check=True, capture_output=True, text=True).stdout.splitlines() if line.strip()]
@@ -56,7 +62,8 @@ def _staged_paths() -> list[str]:
 
 
 def _diff_paths() -> list[str]:
-    return [line for line in _git_output("diff", "--name-only", f"{BASE_BRANCH}...HEAD").splitlines() if line]
+    base_ref = _diff_base_ref()
+    return [line for line in _git_output("diff", "--name-only", f"{base_ref}...HEAD").splitlines() if line]
 
 
 def _approved(paths: list[str]) -> bool:
