@@ -1,14 +1,22 @@
-[tool.pytest.ini_options]
-testpaths = ["tests_supported/hoodie"]
-norecursedirs = [
-  ".git",
-  ".venv",
-  "venv",
-  "build",
-  "dist",
-  "artifacts",
-  "resources",
-  "tests_historical",
-  "tests",
-]
-addopts = "-ra"
+[build-system]
+requires = ["setuptools>=81", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "hoodie-sim-v2"
+version = "0.1.0"
+description = "Deterministic HOODIE kernel and evaluation harness"
+requires-python = ">=3.11"
+readme = "README.md"
+license = { text = "Proprietary" }
+dependencies = []
+
+[project.scripts]
+hoodie-smoke = "hoodie.cli:main"
+
+[tool.setuptools]
+package-dir = {"" = "src"}
+
+[tool.setuptools.packages.find]
+where = ["src"]
+include = ["hoodie*"]
