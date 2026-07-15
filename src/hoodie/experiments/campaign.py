@@ -92,7 +92,7 @@ def _write_csv(path: Path, rows: list[dict[str, Any]]) -> None:
         writer.writerows(rows)
 
 
-def run_smoke_campaign(*, campaign_id: str, output_dir: Path, smoke: bool = True) -> dict[str, Any]:
+def _run_campaign(*, campaign_id: str, output_dir: Path, smoke: bool, source_hash: str) -> dict[str, Any]:
     source_contract = build_figures_8_11_source_contract()
     source_contract_path = write_figures_8_11_source_contract(output_dir / "source_contract_snapshot.json")
     campaign_dir = output_dir / campaign_id
@@ -152,7 +152,7 @@ def run_smoke_campaign(*, campaign_id: str, output_dir: Path, smoke: bool = True
             (job_dir / 'task_records.schema.json').write_text(json.dumps({'fields': list(asdict(raw_records[0]).keys()) if raw_records else []}, indent=2), encoding='utf-8')
             (job_dir / 'evaluation_metrics.json').write_text(json.dumps(result, indent=2, sort_keys=True), encoding='utf-8')
             (job_dir / 'aggregate.json').write_text(json.dumps(asdict(aggregate), indent=2, sort_keys=True), encoding='utf-8')
-            provenance = build_provenance_manifest(config_hash='config', source_hash='source', trace_hash=trace.hash(), checkpoint_hash='checkpoint')
+            provenance = build_provenance_manifest(config_hash='config', source_hash=source_hash, trace_hash=trace.hash(), checkpoint_hash='checkpoint')
             (job_dir / 'provenance.json').write_text(json.dumps({'manifest': asdict(provenance), 'hash': provenance_hash(provenance)}, indent=2, sort_keys=True), encoding='utf-8')
             (job_dir / 'completion.marker').write_text('complete\n', encoding='utf-8')
             status['jobs'].append({'panel_id': panel_id, 'job_id': job_id, 'completed': True, 'output_dir': str(job_dir)})
@@ -161,9 +161,17 @@ def run_smoke_campaign(*, campaign_id: str, output_dir: Path, smoke: bool = True
     (campaign_dir / 'job_plan.json').write_text(json.dumps(status['jobs'], indent=2), encoding='utf-8')
     (campaign_dir / 'status.json').write_text(json.dumps({'campaign_id': campaign_id, 'completed_jobs': len(status['jobs'])}, indent=2), encoding='utf-8')
     (campaign_dir / 'environment_manifest.json').write_text(json.dumps({'python': __import__('platform').python_version()}, indent=2), encoding='utf-8')
-    (campaign_dir / 'source_manifest.json').write_text(json.dumps({'source_commit': __import__('subprocess').run(['git','rev-parse','HEAD'], capture_output=True, text=True).stdout.strip()}, indent=2), encoding='utf-8')
+    (campaign_dir / 'source_manifest.json').write_text(json.dumps({'source_commit': __import__('subprocess').run(['git','rev-parse','HEAD'], capture_output=True, text=True).stdout.strip(), 'source_hash': source_hash}, indent=2), encoding='utf-8')
     (campaign_dir / 'trace_registry.json').write_text(json.dumps({'trace_ids': [job['job_id'] for job in status['jobs']]}, indent=2), encoding='utf-8')
     (campaign_dir / 'checkpoint_registry.json').write_text(json.dumps({'checkpoints': []}, indent=2), encoding='utf-8')
     (campaign_dir / 'aggregation_manifest.json').write_text(json.dumps({'aggregated_jobs': len(status['jobs'])}, indent=2), encoding='utf-8')
     (campaign_dir / 'verification_report.json').write_text(json.dumps({'fairness': 'not_yet_implemented', 'sanity': 'not_yet_implemented'}, indent=2), encoding='utf-8')
     return status
+
+
+def run_smoke_campaign(*, campaign_id: str, output_dir: Path, smoke: bool = True) -> dict[str, Any]:
+    return _run_campaign(campaign_id=campaign_id, output_dir=output_dir, smoke=smoke, source_hash='smoke-source')
+
+
+def run_production_campaign(*, campaign_id: str, output_dir: Path) -> dict[str, Any]:
+    return _run_campaign(campaign_id=campaign_id, output_dir=output_dir, smoke=False, source_hash='production-source')

@@ -1,0 +1,22 @@
+{
+  "campaign_id": "figures-8-11",
+  "current_head": "362cf2076ecf0f79acada02f56170b289eb9a001",
+  "quarantined_campaign_dir": "artifacts/hoodie/campaigns/invalid-production-smoke-362cf20",
+  "quarantined_release_dir": "artifacts/hoodie/releases/invalid-production-smoke-362cf20",
+  "verified_defects": [
+    "production CLI routes to smoke runner",
+    "runner uses smoke trace source",
+    "production horizon reduced to smoke scale",
+    "production evaluation uses one episode",
+    "only first policy executed per panel",
+    "source-contract grids not expanded for production matrix",
+    "training sweeps not executed",
+    "provenance hashes use placeholders",
+    "checkpoint registry empty",
+    "verification report contains not_yet_implemented markers",
+    "resume/status not implemented",
+    "aggregate/verify/render read manifests instead of recomputing datasets",
+    "panel registry does not match Figure 8-11 source contracts",
+    "renderer plots generic completion_ratio versus index"
+  ]
+}

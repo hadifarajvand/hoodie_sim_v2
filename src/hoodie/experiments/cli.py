@@ -11,7 +11,7 @@ import subprocess
 import time
 from shutil import copy2
 
-from .campaign import run_smoke_campaign
+from .campaign import run_production_campaign
 from .panel_registry import PANEL_REGISTRY
 from .source_contracts import build_figures_8_11_source_contract
 
@@ -61,7 +61,7 @@ def main(argv: list[str] | None = None) -> int:
     if args.command == 'run':
         campaign_name = args.campaign_id or args.campaign or 'figures-8-11'
         output_dir = Path('artifacts/hoodie/campaigns')
-        result = run_smoke_campaign(campaign_id=campaign_name, output_dir=output_dir, smoke=False)
+        result = run_production_campaign(campaign_id=campaign_name, output_dir=output_dir)
         _print_json(result)
         return 0
     if args.command == 'plan':
