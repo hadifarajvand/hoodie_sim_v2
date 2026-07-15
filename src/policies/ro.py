@@ -20,5 +20,6 @@ class RandomOffloadingPolicy(SharedPolicy):
         available_families = [family for family in ("local", "horizontal", "vertical") if placement_actions_for_family(context, family)]
         if not available_families:
             raise ValueError("No legal actions available")
-        chosen_family = self.rng.choice(available_families)
-        return self.rng.choice(placement_actions_for_family(context, chosen_family))
+        chosen_family = self.rng.choice(tuple(available_families))
+        actions = placement_actions_for_family(context, chosen_family)
+        return self.rng.choice(tuple(actions))

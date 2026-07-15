@@ -307,10 +307,12 @@ def _candidate_total_delay(
         estimate = _numeric(latency_estimates.get(action_id, latency_estimates.get(family)))
         if estimate is not None:
             return estimate
+    load = _numeric(observation.get(f"{family}_destination_load") or observation.get("destination_load"))
+    propagation = _numeric(observation.get(f"{family}_propagation_delay") or observation.get("propagation_delay"))
     explicit = _numeric(observation.get(f"{action_id}_total_delay", observation.get(f"{family}_total_delay")))
     if explicit is not None:
         return explicit
-    components = (queue_delay, transmission_delay, compute_delay)
+    components = (queue_delay, transmission_delay, propagation, compute_delay, load)
     if all(component is not None for component in components):
         return float(sum(component for component in components if component is not None))
     return None
