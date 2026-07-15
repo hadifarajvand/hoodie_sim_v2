@@ -1,0 +1,40 @@
+{
+  "supported_surface": {
+    "source_roots": [
+      "src/hoodie/",
+      "src/analysis/",
+      "src/" 
+    ],
+    "included_capabilities": [
+      "original HOODIE simulation",
+      "training",
+      "LSTM and no-LSTM variants",
+      "FLC",
+      "RO",
+      "HO",
+      "VO",
+      "BCO",
+      "MLEO",
+      "paired evaluation",
+      "campaign runner",
+      "dataset generation",
+      "reporting",
+      "rendering",
+      "reproducibility verification"
+    ],
+    "excluded_historical_areas": [
+      "completion_root_cause_diagnosis",
+      "paper_default_training_smoke_run",
+      "terminal_exposure probes",
+      "historical report gates",
+      "old campaign batches",
+      "ECHO-era analysis modules",
+      "legacy main...HEAD scope guards"
+    ],
+    "supported_test_tree": [
+      "tests_supported/hoodie/unit/",
+      "tests_supported/hoodie/integration/",
+      "tests_supported/hoodie/reproducibility/"
+    ]
+  }
+}
