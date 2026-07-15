@@ -8,7 +8,7 @@
   "expected_cpu_hours": 1.12,
   "expected_disk_gb": 3.5,
   "expected_gpu_hours": 0.28,
-  "generated_at": 1784111009.8714392,
+  "generated_at": 1784112734.7795572,
   "maximum_safe_parallelism": 2,
   "peak_ram_gb": 4.0,
   "peak_vram_gb": 0.0,

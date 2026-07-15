@@ -1,252 +1,299 @@
 {
-  "panels": [
+  "figures": [
     {
+      "averaging": "accumulated reward averaged across distributed HOODIE agents; no smoothing stated",
+      "checkpoint_rule": "use optimally trained Q-models from Section A",
       "compared_policies": [
-        "FLC",
-        "RO",
-        "HO",
-        "VO",
-        "BCO",
-        "MLEO"
+        "HOODIE"
       ],
       "confidence_level": 0.95,
-      "dependent_metric": "reward",
-      "fixed_topology": {},
-      "independent_values": [],
-      "independent_variable": "policy",
+      "dependent_metric": "accumulated_reward",
+      "fixed_topology": "Figure 7 adjacency matrix",
+      "independent_values": [
+        0,
+        500,
+        1000,
+        1500,
+        2000,
+        2500,
+        3000,
+        3500,
+        4000,
+        4500,
+        5000
+      ],
+      "independent_variable": "training_episode",
       "panel_id": "figure_8a",
-      "scientific_question": "Engineering smoke reproduction contract for figure_8a",
-      "source_citation": "docs/reports/2026-07-01-hoodie-paper-to-code-gap-audit.md",
-      "unresolved_fields": [
-        {
-          "field": "independent_values",
-          "reason": "panel grid not fully extractable from accessible repository docs",
-          "searched_sources": [
-            "docs/reports/2026-07-01-hoodie-paper-to-code-gap-audit.md",
-            "docs/plans/2026-06-28-phase1-master-paper-faithful-hoodie-reproduction-plan.md"
-          ]
-        },
-        {
-          "field": "fixed_topology",
-          "reason": "exact panel-specific topology contract not isolated in canonical docs",
-          "searched_sources": [
-            "docs/analysis/hoodie_superiority_gap.md"
-          ]
-        }
-      ]
+      "scientific_question": "Training convergence versus learning rate",
+      "series": [
+        1e-09,
+        5e-09,
+        1e-08,
+        1e-07,
+        5e-07,
+        7e-07
+      ],
+      "sign_convention": "reward negative because delay is negative metric; curves negative and increasing",
+      "source_citation": "/Users/hadi/Documents/GitHub/hoodie_sim_v2/resources/papers/hoodie/original/HOODIE_paper.pdf",
+      "source_page": 18,
+      "source_section": "A. Learning Parameters and Convergence Curves",
+      "status": "paper_explicit",
+      "training_episodes": 5000,
+      "unresolved_fields": []
     },
     {
+      "averaging": "accumulated reward averaged across distributed HOODIE agents; no smoothing stated",
+      "checkpoint_rule": "use optimally trained Q-models from Section A",
       "compared_policies": [
-        "FLC",
-        "RO",
-        "HO",
-        "VO",
-        "BCO",
-        "MLEO"
+        "HOODIE"
       ],
       "confidence_level": 0.95,
-      "dependent_metric": "reward",
-      "fixed_topology": {},
-      "independent_values": [],
-      "independent_variable": "seed",
+      "dependent_metric": "accumulated_reward",
+      "fixed_topology": "Figure 7 adjacency matrix",
+      "independent_values": [
+        0,
+        500,
+        1000,
+        1500,
+        2000,
+        2500,
+        3000,
+        3500,
+        4000,
+        4500,
+        5000
+      ],
+      "independent_variable": "training_episode",
       "panel_id": "figure_8b",
-      "scientific_question": "Engineering smoke reproduction contract for figure_8b",
-      "source_citation": "docs/reports/2026-07-01-hoodie-paper-to-code-gap-audit.md",
-      "unresolved_fields": [
-        {
-          "field": "independent_values",
-          "reason": "panel grid not fully extractable from accessible repository docs",
-          "searched_sources": [
-            "docs/reports/2026-07-01-hoodie-paper-to-code-gap-audit.md",
-            "docs/plans/2026-06-28-phase1-master-paper-faithful-hoodie-reproduction-plan.md"
-          ]
-        },
-        {
-          "field": "fixed_topology",
-          "reason": "exact panel-specific topology contract not isolated in canonical docs",
-          "searched_sources": [
-            "docs/analysis/hoodie_superiority_gap.md"
-          ]
-        }
-      ]
+      "scientific_question": "Training convergence versus discount factor",
+      "series": [
+        0.2,
+        0.4,
+        0.6,
+        0.8,
+        0.99
+      ],
+      "sign_convention": "reward negative because delay is negative metric; curves negative and increasing",
+      "source_citation": "/Users/hadi/Documents/GitHub/hoodie_sim_v2/resources/papers/hoodie/original/HOODIE_paper.pdf",
+      "source_page": 18,
+      "source_section": "A. Learning Parameters and Convergence Curves",
+      "status": "paper_explicit",
+      "training_episodes": 5000,
+      "unresolved_fields": []
     },
     {
+      "agent_counts": [
+        10,
+        15,
+        20
+      ],
+      "checkpoint_rule": "optimally trained Q models from Section A",
       "compared_policies": [
-        "FLC",
-        "RO",
-        "HO",
-        "VO",
-        "BCO",
-        "MLEO"
+        "HOODIE"
       ],
       "confidence_level": 0.95,
-      "dependent_metric": "reward",
-      "fixed_topology": {},
-      "independent_values": [],
-      "independent_variable": "policy",
+      "dependent_metric": "average_reward",
+      "fixed_topology": "Figure 7 adjacency matrix",
+      "independent_values": [
+        0.1,
+        0.3,
+        0.5,
+        0.7,
+        0.9
+      ],
+      "independent_variable": "task_arrival_probability",
       "panel_id": "figure_9a",
-      "scientific_question": "Engineering smoke reproduction contract for figure_9a",
-      "source_citation": "docs/reports/2026-07-01-hoodie-paper-to-code-gap-audit.md",
-      "unresolved_fields": [
-        {
-          "field": "independent_values",
-          "reason": "panel grid not fully extractable from accessible repository docs",
-          "searched_sources": [
-            "docs/reports/2026-07-01-hoodie-paper-to-code-gap-audit.md",
-            "docs/plans/2026-06-28-phase1-master-paper-faithful-hoodie-reproduction-plan.md"
-          ]
-        },
-        {
-          "field": "fixed_topology",
-          "reason": "exact panel-specific topology contract not isolated in canonical docs",
-          "searched_sources": [
-            "docs/analysis/hoodie_superiority_gap.md"
-          ]
-        }
-      ]
+      "policy_mode": "exploitative",
+      "scientific_question": "Average reward versus task arrival probability",
+      "source_citation": "/Users/hadi/Documents/GitHub/hoodie_sim_v2/resources/papers/hoodie/original/HOODIE_paper.pdf",
+      "source_page": 19,
+      "source_section": "B. HOODIE Behavior and Scalability Analysis",
+      "status": "paper_explicit",
+      "unresolved_fields": [],
+      "validation_episodes": 200
     },
     {
+      "action_categories": [
+        "Local",
+        "Horizontal",
+        "Vertical"
+      ],
+      "agent_counts": [
+        10,
+        15,
+        20
+      ],
+      "checkpoint_rule": "optimally trained Q models from Section A",
       "compared_policies": [
-        "FLC",
-        "RO",
-        "HO",
-        "VO",
-        "BCO",
-        "MLEO"
+        "HOODIE"
       ],
       "confidence_level": 0.95,
-      "dependent_metric": "reward",
-      "fixed_topology": {},
-      "independent_values": [],
-      "independent_variable": "policy",
+      "dependent_metric": "action_count",
+      "fixed_topology": "Figure 7 adjacency matrix",
+      "independent_values": [
+        0.1,
+        0.3,
+        0.5,
+        0.7,
+        0.9
+      ],
+      "independent_variable": "task_arrival_probability",
       "panel_id": "figure_9b",
-      "scientific_question": "Engineering smoke reproduction contract for figure_9b",
-      "source_citation": "docs/reports/2026-07-01-hoodie-paper-to-code-gap-audit.md",
-      "unresolved_fields": [
-        {
-          "field": "independent_values",
-          "reason": "panel grid not fully extractable from accessible repository docs",
-          "searched_sources": [
-            "docs/reports/2026-07-01-hoodie-paper-to-code-gap-audit.md",
-            "docs/plans/2026-06-28-phase1-master-paper-faithful-hoodie-reproduction-plan.md"
-          ]
-        },
-        {
-          "field": "fixed_topology",
-          "reason": "exact panel-specific topology contract not isolated in canonical docs",
-          "searched_sources": [
-            "docs/analysis/hoodie_superiority_gap.md"
-          ]
-        }
-      ]
+      "policy_mode": "exploitative",
+      "scientific_question": "Action type distribution across task arrival probabilities",
+      "source_citation": "/Users/hadi/Documents/GitHub/hoodie_sim_v2/resources/papers/hoodie/original/HOODIE_paper.pdf",
+      "source_page": 19,
+      "source_section": "B. HOODIE Behavior and Scalability Analysis",
+      "status": "paper_explicit",
+      "unresolved_fields": [],
+      "validation_episodes": 200
     },
     {
+      "agent_counts": [
+        10,
+        15,
+        20
+      ],
+      "checkpoint_rule": "optimally trained Q models from Section A",
       "compared_policies": [
-        "FLC",
-        "RO",
-        "HO",
-        "VO",
-        "BCO",
-        "MLEO"
+        "HOODIE"
       ],
       "confidence_level": 0.95,
-      "dependent_metric": "reward",
-      "fixed_topology": {},
-      "independent_values": [],
-      "independent_variable": "policy",
+      "dependent_metric": "average_reward",
+      "fixed_topology": "Figure 7 adjacency matrix",
+      "independent_values": [
+        4,
+        5,
+        6,
+        7,
+        8,
+        9
+      ],
+      "independent_variable": "cpu_computation_capacity_ghz",
       "panel_id": "figure_9c",
-      "scientific_question": "Engineering smoke reproduction contract for figure_9c",
-      "source_citation": "docs/reports/2026-07-01-hoodie-paper-to-code-gap-audit.md",
-      "unresolved_fields": [
-        {
-          "field": "independent_values",
-          "reason": "panel grid not fully extractable from accessible repository docs",
-          "searched_sources": [
-            "docs/reports/2026-07-01-hoodie-paper-to-code-gap-audit.md",
-            "docs/plans/2026-06-28-phase1-master-paper-faithful-hoodie-reproduction-plan.md"
-          ]
-        },
-        {
-          "field": "fixed_topology",
-          "reason": "exact panel-specific topology contract not isolated in canonical docs",
-          "searched_sources": [
-            "docs/analysis/hoodie_superiority_gap.md"
-          ]
-        }
-      ]
+      "policy_mode": "exploitative",
+      "scientific_question": "Average reward versus CPU computation capacity",
+      "source_citation": "/Users/hadi/Documents/GitHub/hoodie_sim_v2/resources/papers/hoodie/original/HOODIE_paper.pdf",
+      "source_page": 19,
+      "source_section": "B. HOODIE Behavior and Scalability Analysis",
+      "status": "paper_explicit",
+      "unresolved_fields": [],
+      "validation_episodes": 200
     },
     {
+      "checkpoint_rule": "optimally trained Q models from Section A",
       "compared_policies": [
-        "FLC",
-        "RO",
-        "HO",
-        "VO",
-        "BCO",
-        "MLEO"
+        "HOODIE"
       ],
       "confidence_level": 0.95,
-      "dependent_metric": "reward",
-      "fixed_topology": {},
-      "independent_values": [],
-      "independent_variable": "policy",
+      "dependent_metric": "average_reward",
+      "fixed_topology": "Figure 7 adjacency matrix",
+      "independent_values": [
+        10,
+        15,
+        20,
+        25,
+        30
+      ],
+      "independent_variable": "number_of_agents",
+      "notes": [
+        "Task-size increments are integer Mbits as shown in the prose and panel context."
+      ],
       "panel_id": "figure_9d",
-      "scientific_question": "Engineering smoke reproduction contract for figure_9d",
-      "source_citation": "docs/reports/2026-07-01-hoodie-paper-to-code-gap-audit.md",
-      "unresolved_fields": [
+      "policy_mode": "exploitative",
+      "scientific_question": "Average reward versus number of agents under traffic scenarios",
+      "source_citation": "/Users/hadi/Documents/GitHub/hoodie_sim_v2/resources/papers/hoodie/original/HOODIE_paper.pdf",
+      "source_page": 19,
+      "source_section": "B. HOODIE Behavior and Scalability Analysis",
+      "status": "paper_explicit",
+      "traffic_scenarios": [
         {
-          "field": "independent_values",
-          "reason": "panel grid not fully extractable from accessible repository docs",
-          "searched_sources": [
-            "docs/reports/2026-07-01-hoodie-paper-to-code-gap-audit.md",
-            "docs/plans/2026-06-28-phase1-master-paper-faithful-hoodie-reproduction-plan.md"
+          "arrival_probability": 0.5,
+          "name": "Moderate Traffic",
+          "task_size_mbits": [
+            1,
+            2,
+            3
           ]
         },
         {
-          "field": "fixed_topology",
-          "reason": "exact panel-specific topology contract not isolated in canonical docs",
-          "searched_sources": [
-            "docs/analysis/hoodie_superiority_gap.md"
+          "arrival_probability": 0.7,
+          "name": "Heavy Traffic",
+          "task_size_mbits": [
+            2,
+            3,
+            4,
+            5
+          ]
+        },
+        {
+          "arrival_probability": 0.9,
+          "name": "Extreme Traffic",
+          "task_size_mbits": [
+            3,
+            4,
+            5,
+            6,
+            7
           ]
         }
-      ]
+      ],
+      "unresolved_fields": [],
+      "validation_episodes": 200
     },
     {
+      "checkpoint_rule": "optimally trained Q models from Section A",
       "compared_policies": [
-        "FLC",
-        "RO",
-        "HO",
-        "VO",
-        "BCO",
-        "MLEO"
+        "HOODIE"
       ],
       "confidence_level": 0.95,
-      "dependent_metric": "reward",
-      "fixed_topology": {},
-      "independent_values": [],
-      "independent_variable": "policy",
+      "dependent_metric": "average_reward",
+      "fixed_topology": "Figure 7 adjacency matrix",
+      "independent_values": [
+        10,
+        15,
+        20,
+        25,
+        30
+      ],
+      "independent_variable": "number_of_agents",
+      "notes": [
+        "Paper wording preserved verbatim, even where labels look counterintuitive."
+      ],
+      "offloading_rate_scenarios": [
+        {
+          "R_H_mbps": 10,
+          "R_V_mbps": 30,
+          "name": "Balanced",
+          "paper_wording": "Balanced Capacity"
+        },
+        {
+          "R_H_mbps": 20,
+          "R_V_mbps": 20,
+          "name": "Horizontal-centric",
+          "paper_wording": "Horizontal-centric Capacity"
+        },
+        {
+          "R_H_mbps": 5,
+          "R_V_mbps": 40,
+          "name": "Vertical-centric",
+          "paper_wording": "Vertical-centric Capacity"
+        }
+      ],
       "panel_id": "figure_9e",
-      "scientific_question": "Engineering smoke reproduction contract for figure_9e",
-      "source_citation": "docs/reports/2026-07-01-hoodie-paper-to-code-gap-audit.md",
-      "unresolved_fields": [
-        {
-          "field": "independent_values",
-          "reason": "panel grid not fully extractable from accessible repository docs",
-          "searched_sources": [
-            "docs/reports/2026-07-01-hoodie-paper-to-code-gap-audit.md",
-            "docs/plans/2026-06-28-phase1-master-paper-faithful-hoodie-reproduction-plan.md"
-          ]
-        },
-        {
-          "field": "fixed_topology",
-          "reason": "exact panel-specific topology contract not isolated in canonical docs",
-          "searched_sources": [
-            "docs/analysis/hoodie_superiority_gap.md"
-          ]
-        }
-      ]
+      "policy_mode": "exploitative",
+      "scientific_question": "Average reward versus number of agents under offloading data rate scenarios",
+      "source_citation": "/Users/hadi/Documents/GitHub/hoodie_sim_v2/resources/papers/hoodie/original/HOODIE_paper.pdf",
+      "source_page": 20,
+      "source_section": "B. HOODIE Behavior and Scalability Analysis",
+      "status": "paper_explicit",
+      "unresolved_fields": [],
+      "validation_episodes": 200
     },
     {
+      "checkpoint_rule": "optimally trained Q models from Section A",
       "compared_policies": [
+        "HOODIE",
         "FLC",
         "RO",
         "HO",
@@ -255,33 +302,31 @@
         "MLEO"
       ],
       "confidence_level": 0.95,
-      "dependent_metric": "reward",
-      "fixed_topology": {},
-      "independent_values": [],
-      "independent_variable": "seed",
+      "dependent_metric": "average_delay",
+      "fixed_timeout_seconds": 2.0,
+      "fixed_topology": "Figure 7 adjacency matrix",
+      "independent_values": [
+        0.1,
+        0.3,
+        0.5,
+        0.7,
+        0.9
+      ],
+      "independent_variable": "task_arrival_probability",
+      "metric_sign_convention": "average delay is negative by convention",
       "panel_id": "figure_10a",
-      "scientific_question": "Engineering smoke reproduction contract for figure_10a",
-      "source_citation": "docs/reports/2026-07-01-hoodie-paper-to-code-gap-audit.md",
-      "unresolved_fields": [
-        {
-          "field": "independent_values",
-          "reason": "panel grid not fully extractable from accessible repository docs",
-          "searched_sources": [
-            "docs/reports/2026-07-01-hoodie-paper-to-code-gap-audit.md",
-            "docs/plans/2026-06-28-phase1-master-paper-faithful-hoodie-reproduction-plan.md"
-          ]
-        },
-        {
-          "field": "fixed_topology",
-          "reason": "exact panel-specific topology contract not isolated in canonical docs",
-          "searched_sources": [
-            "docs/analysis/hoodie_superiority_gap.md"
-          ]
-        }
-      ]
+      "scientific_question": "Average delay versus task arrival probability",
+      "source_citation": "/Users/hadi/Documents/GitHub/hoodie_sim_v2/resources/papers/hoodie/original/HOODIE_paper.pdf",
+      "source_page": 21,
+      "source_section": "C. Comparative Analysis",
+      "status": "paper_explicit",
+      "unresolved_fields": [],
+      "validation_episodes": 200
     },
     {
+      "checkpoint_rule": "optimally trained Q models from Section A",
       "compared_policies": [
+        "HOODIE",
         "FLC",
         "RO",
         "HO",
@@ -290,33 +335,32 @@
         "MLEO"
       ],
       "confidence_level": 0.95,
-      "dependent_metric": "reward",
-      "fixed_topology": {},
-      "independent_values": [],
-      "independent_variable": "seed",
+      "dependent_metric": "average_delay",
+      "fixed_arrival_probability": 0.5,
+      "fixed_timeout_seconds": 2.0,
+      "fixed_topology": "Figure 7 adjacency matrix",
+      "independent_values": [
+        3,
+        4,
+        5,
+        6,
+        7
+      ],
+      "independent_variable": "cpu_computation_capacity_ghz",
+      "metric_sign_convention": "average delay is negative by convention",
       "panel_id": "figure_10b",
-      "scientific_question": "Engineering smoke reproduction contract for figure_10b",
-      "source_citation": "docs/reports/2026-07-01-hoodie-paper-to-code-gap-audit.md",
-      "unresolved_fields": [
-        {
-          "field": "independent_values",
-          "reason": "panel grid not fully extractable from accessible repository docs",
-          "searched_sources": [
-            "docs/reports/2026-07-01-hoodie-paper-to-code-gap-audit.md",
-            "docs/plans/2026-06-28-phase1-master-paper-faithful-hoodie-reproduction-plan.md"
-          ]
-        },
-        {
-          "field": "fixed_topology",
-          "reason": "exact panel-specific topology contract not isolated in canonical docs",
-          "searched_sources": [
-            "docs/analysis/hoodie_superiority_gap.md"
-          ]
-        }
-      ]
+      "scientific_question": "Average delay versus CPU computation capacity",
+      "source_citation": "/Users/hadi/Documents/GitHub/hoodie_sim_v2/resources/papers/hoodie/original/HOODIE_paper.pdf",
+      "source_page": 21,
+      "source_section": "C. Comparative Analysis",
+      "status": "paper_explicit",
+      "unresolved_fields": [],
+      "validation_episodes": 200
     },
     {
+      "checkpoint_rule": "optimally trained Q models from Section A",
       "compared_policies": [
+        "HOODIE",
         "FLC",
         "RO",
         "HO",
@@ -325,33 +369,31 @@
         "MLEO"
       ],
       "confidence_level": 0.95,
-      "dependent_metric": "reward",
-      "fixed_topology": {},
-      "independent_values": [],
-      "independent_variable": "seed",
+      "dependent_metric": "average_delay",
+      "fixed_arrival_probability": 0.5,
+      "fixed_topology": "Figure 7 adjacency matrix",
+      "independent_values": [
+        9.6,
+        9.8,
+        10.0,
+        10.2,
+        10.4
+      ],
+      "independent_variable": "task_timeout_seconds",
+      "metric_sign_convention": "average delay is negative by convention",
       "panel_id": "figure_10c",
-      "scientific_question": "Engineering smoke reproduction contract for figure_10c",
-      "source_citation": "docs/reports/2026-07-01-hoodie-paper-to-code-gap-audit.md",
-      "unresolved_fields": [
-        {
-          "field": "independent_values",
-          "reason": "panel grid not fully extractable from accessible repository docs",
-          "searched_sources": [
-            "docs/reports/2026-07-01-hoodie-paper-to-code-gap-audit.md",
-            "docs/plans/2026-06-28-phase1-master-paper-faithful-hoodie-reproduction-plan.md"
-          ]
-        },
-        {
-          "field": "fixed_topology",
-          "reason": "exact panel-specific topology contract not isolated in canonical docs",
-          "searched_sources": [
-            "docs/analysis/hoodie_superiority_gap.md"
-          ]
-        }
-      ]
+      "scientific_question": "Average delay versus task timeout",
+      "source_citation": "/Users/hadi/Documents/GitHub/hoodie_sim_v2/resources/papers/hoodie/original/HOODIE_paper.pdf",
+      "source_page": 21,
+      "source_section": "C. Comparative Analysis",
+      "status": "paper_explicit",
+      "unresolved_fields": [],
+      "validation_episodes": 200
     },
     {
+      "checkpoint_rule": "optimally trained Q models from Section A",
       "compared_policies": [
+        "HOODIE",
         "FLC",
         "RO",
         "HO",
@@ -360,33 +402,31 @@
         "MLEO"
       ],
       "confidence_level": 0.95,
-      "dependent_metric": "reward",
-      "fixed_topology": {},
-      "independent_values": [],
-      "independent_variable": "seed",
+      "dependent_metric": "drop_ratio",
+      "drop_ratio_definition": "dropped tasks / total generated tasks",
+      "fixed_timeout_seconds": 2.0,
+      "fixed_topology": "Figure 7 adjacency matrix",
+      "independent_values": [
+        0.1,
+        0.3,
+        0.5,
+        0.7,
+        0.9
+      ],
+      "independent_variable": "task_arrival_probability",
       "panel_id": "figure_10d",
-      "scientific_question": "Engineering smoke reproduction contract for figure_10d",
-      "source_citation": "docs/reports/2026-07-01-hoodie-paper-to-code-gap-audit.md",
-      "unresolved_fields": [
-        {
-          "field": "independent_values",
-          "reason": "panel grid not fully extractable from accessible repository docs",
-          "searched_sources": [
-            "docs/reports/2026-07-01-hoodie-paper-to-code-gap-audit.md",
-            "docs/plans/2026-06-28-phase1-master-paper-faithful-hoodie-reproduction-plan.md"
-          ]
-        },
-        {
-          "field": "fixed_topology",
-          "reason": "exact panel-specific topology contract not isolated in canonical docs",
-          "searched_sources": [
-            "docs/analysis/hoodie_superiority_gap.md"
-          ]
-        }
-      ]
+      "scientific_question": "Drop ratio versus task arrival probability",
+      "source_citation": "/Users/hadi/Documents/GitHub/hoodie_sim_v2/resources/papers/hoodie/original/HOODIE_paper.pdf",
+      "source_page": 21,
+      "source_section": "C. Comparative Analysis",
+      "status": "paper_explicit",
+      "unresolved_fields": [],
+      "validation_episodes": 200
     },
     {
+      "checkpoint_rule": "optimally trained Q models from Section A",
       "compared_policies": [
+        "HOODIE",
         "FLC",
         "RO",
         "HO",
@@ -395,33 +435,32 @@
         "MLEO"
       ],
       "confidence_level": 0.95,
-      "dependent_metric": "reward",
-      "fixed_topology": {},
-      "independent_values": [],
-      "independent_variable": "seed",
+      "dependent_metric": "drop_ratio",
+      "drop_ratio_definition": "dropped tasks / total generated tasks",
+      "fixed_arrival_probability": 0.5,
+      "fixed_timeout_seconds": 2.0,
+      "fixed_topology": "Figure 7 adjacency matrix",
+      "independent_values": [
+        3,
+        4,
+        5,
+        6,
+        7
+      ],
+      "independent_variable": "cpu_computation_capacity_ghz",
       "panel_id": "figure_10e",
-      "scientific_question": "Engineering smoke reproduction contract for figure_10e",
-      "source_citation": "docs/reports/2026-07-01-hoodie-paper-to-code-gap-audit.md",
-      "unresolved_fields": [
-        {
-          "field": "independent_values",
-          "reason": "panel grid not fully extractable from accessible repository docs",
-          "searched_sources": [
-            "docs/reports/2026-07-01-hoodie-paper-to-code-gap-audit.md",
-            "docs/plans/2026-06-28-phase1-master-paper-faithful-hoodie-reproduction-plan.md"
-          ]
-        },
-        {
-          "field": "fixed_topology",
-          "reason": "exact panel-specific topology contract not isolated in canonical docs",
-          "searched_sources": [
-            "docs/analysis/hoodie_superiority_gap.md"
-          ]
-        }
-      ]
+      "scientific_question": "Drop ratio versus CPU computation capacity",
+      "source_citation": "/Users/hadi/Documents/GitHub/hoodie_sim_v2/resources/papers/hoodie/original/HOODIE_paper.pdf",
+      "source_page": 21,
+      "source_section": "C. Comparative Analysis",
+      "status": "paper_explicit",
+      "unresolved_fields": [],
+      "validation_episodes": 200
     },
     {
+      "checkpoint_rule": "optimally trained Q models from Section A",
       "compared_policies": [
+        "HOODIE",
         "FLC",
         "RO",
         "HO",
@@ -430,65 +469,1647 @@
         "MLEO"
       ],
       "confidence_level": 0.95,
-      "dependent_metric": "reward",
-      "fixed_topology": {},
-      "independent_values": [],
-      "independent_variable": "seed",
+      "dependent_metric": "drop_ratio",
+      "drop_ratio_definition": "dropped tasks / total generated tasks",
+      "fixed_arrival_probability": 0.5,
+      "fixed_topology": "Figure 7 adjacency matrix",
+      "independent_values": [
+        1.6,
+        1.8,
+        2.0,
+        2.2,
+        2.4
+      ],
+      "independent_variable": "task_timeout_seconds",
       "panel_id": "figure_10f",
-      "scientific_question": "Engineering smoke reproduction contract for figure_10f",
-      "source_citation": "docs/reports/2026-07-01-hoodie-paper-to-code-gap-audit.md",
-      "unresolved_fields": [
-        {
-          "field": "independent_values",
-          "reason": "panel grid not fully extractable from accessible repository docs",
-          "searched_sources": [
-            "docs/reports/2026-07-01-hoodie-paper-to-code-gap-audit.md",
-            "docs/plans/2026-06-28-phase1-master-paper-faithful-hoodie-reproduction-plan.md"
-          ]
-        },
-        {
-          "field": "fixed_topology",
-          "reason": "exact panel-specific topology contract not isolated in canonical docs",
-          "searched_sources": [
-            "docs/analysis/hoodie_superiority_gap.md"
-          ]
-        }
-      ]
+      "scientific_question": "Drop ratio versus task timeout",
+      "source_citation": "/Users/hadi/Documents/GitHub/hoodie_sim_v2/resources/papers/hoodie/original/HOODIE_paper.pdf",
+      "source_page": 21,
+      "source_section": "C. Comparative Analysis",
+      "status": "paper_explicit",
+      "unresolved_fields": [],
+      "validation_episodes": 200
     },
     {
+      "checkpoint_rule": "optimally trained Q models from Section A",
       "compared_policies": [
-        "FLC",
-        "RO",
-        "HO",
-        "VO",
-        "BCO",
-        "MLEO"
+        "HOODIE"
       ],
       "confidence_level": 0.95,
-      "dependent_metric": "reward",
-      "fixed_topology": {},
-      "independent_values": [],
-      "independent_variable": "seed",
+      "dependent_metric": "average_delay",
+      "discount_factor": 0.99,
+      "fixed_topology": "Figure 7 adjacency matrix",
+      "independent_values": [
+        0,
+        250,
+        500,
+        750,
+        1000,
+        1250,
+        1500,
+        1750,
+        2000,
+        2250,
+        2500,
+        2750,
+        3000
+      ],
+      "independent_variable": "training_episode",
+      "learning_rate": 7e-07,
+      "notes": [
+        "No-LSTM path must not retain forecast outputs."
+      ],
       "panel_id": "figure_11",
-      "scientific_question": "Engineering smoke reproduction contract for figure_11",
-      "source_citation": "docs/reports/2026-07-01-hoodie-paper-to-code-gap-audit.md",
-      "unresolved_fields": [
-        {
-          "field": "independent_values",
-          "reason": "panel grid not fully extractable from accessible repository docs",
-          "searched_sources": [
-            "docs/reports/2026-07-01-hoodie-paper-to-code-gap-audit.md",
-            "docs/plans/2026-06-28-phase1-master-paper-faithful-hoodie-reproduction-plan.md"
-          ]
-        },
-        {
-          "field": "fixed_topology",
-          "reason": "exact panel-specific topology contract not isolated in canonical docs",
-          "searched_sources": [
-            "docs/analysis/hoodie_superiority_gap.md"
-          ]
-        }
+      "scientific_question": "Average task delay with and without LSTM",
+      "seed_count": 1,
+      "source_citation": "/Users/hadi/Documents/GitHub/hoodie_sim_v2/resources/papers/hoodie/original/HOODIE_paper.pdf",
+      "source_page": 22,
+      "source_section": "D. The Impact of LSTM Inclusion",
+      "status": "paper_explicit",
+      "task_arrival_probability": 0.3,
+      "task_timeout_seconds": 1.0,
+      "training_episodes": 3000,
+      "unresolved_fields": [],
+      "variant_difference": "use_lstm only",
+      "variants": [
+        "hoodie_lstm",
+        "hoodie_no_lstm"
       ]
     }
-  ]
+  ],
+  "notes": [
+    "Canonical HOODIE uses original PDF, OCR, recovered registries, and approved assumption registry.",
+    "No ECHO, ERT, or event-SMDP behavior is part of canonical supported surface."
+  ],
+  "panel_readiness_matrix": {
+    "figure_10a": {
+      "blocked": false,
+      "reason": null,
+      "status": "production_ready"
+    },
+    "figure_10b": {
+      "blocked": false,
+      "reason": null,
+      "status": "production_ready"
+    },
+    "figure_10c": {
+      "blocked": false,
+      "reason": null,
+      "status": "production_ready"
+    },
+    "figure_10d": {
+      "blocked": false,
+      "reason": null,
+      "status": "production_ready"
+    },
+    "figure_10e": {
+      "blocked": false,
+      "reason": null,
+      "status": "production_ready"
+    },
+    "figure_10f": {
+      "blocked": false,
+      "reason": null,
+      "status": "production_ready"
+    },
+    "figure_11": {
+      "blocked": false,
+      "reason": null,
+      "status": "production_ready"
+    },
+    "figure_8a": {
+      "blocked": false,
+      "reason": null,
+      "status": "production_ready"
+    },
+    "figure_8b": {
+      "blocked": false,
+      "reason": null,
+      "status": "production_ready"
+    },
+    "figure_9a": {
+      "blocked": false,
+      "reason": null,
+      "status": "production_ready"
+    },
+    "figure_9b": {
+      "blocked": false,
+      "reason": null,
+      "status": "production_ready"
+    },
+    "figure_9c": {
+      "blocked": false,
+      "reason": null,
+      "status": "production_ready"
+    },
+    "figure_9d": {
+      "blocked": false,
+      "reason": null,
+      "status": "production_ready"
+    },
+    "figure_9e": {
+      "blocked": false,
+      "reason": null,
+      "status": "production_ready"
+    }
+  },
+  "panels": [
+    {
+      "averaging": "accumulated reward averaged across distributed HOODIE agents; no smoothing stated",
+      "checkpoint_rule": "use optimally trained Q-models from Section A",
+      "compared_policies": [
+        "HOODIE"
+      ],
+      "confidence_level": 0.95,
+      "dependent_metric": "accumulated_reward",
+      "fixed_topology": "Figure 7 adjacency matrix",
+      "independent_values": [
+        0,
+        500,
+        1000,
+        1500,
+        2000,
+        2500,
+        3000,
+        3500,
+        4000,
+        4500,
+        5000
+      ],
+      "independent_variable": "training_episode",
+      "panel_id": "figure_8a",
+      "scientific_question": "Training convergence versus learning rate",
+      "series": [
+        1e-09,
+        5e-09,
+        1e-08,
+        1e-07,
+        5e-07,
+        7e-07
+      ],
+      "sign_convention": "reward negative because delay is negative metric; curves negative and increasing",
+      "source_citation": "/Users/hadi/Documents/GitHub/hoodie_sim_v2/resources/papers/hoodie/original/HOODIE_paper.pdf",
+      "source_page": 18,
+      "source_section": "A. Learning Parameters and Convergence Curves",
+      "status": "paper_explicit",
+      "training_episodes": 5000,
+      "unresolved_fields": []
+    },
+    {
+      "averaging": "accumulated reward averaged across distributed HOODIE agents; no smoothing stated",
+      "checkpoint_rule": "use optimally trained Q-models from Section A",
+      "compared_policies": [
+        "HOODIE"
+      ],
+      "confidence_level": 0.95,
+      "dependent_metric": "accumulated_reward",
+      "fixed_topology": "Figure 7 adjacency matrix",
+      "independent_values": [
+        0,
+        500,
+        1000,
+        1500,
+        2000,
+        2500,
+        3000,
+        3500,
+        4000,
+        4500,
+        5000
+      ],
+      "independent_variable": "training_episode",
+      "panel_id": "figure_8b",
+      "scientific_question": "Training convergence versus discount factor",
+      "series": [
+        0.2,
+        0.4,
+        0.6,
+        0.8,
+        0.99
+      ],
+      "sign_convention": "reward negative because delay is negative metric; curves negative and increasing",
+      "source_citation": "/Users/hadi/Documents/GitHub/hoodie_sim_v2/resources/papers/hoodie/original/HOODIE_paper.pdf",
+      "source_page": 18,
+      "source_section": "A. Learning Parameters and Convergence Curves",
+      "status": "paper_explicit",
+      "training_episodes": 5000,
+      "unresolved_fields": []
+    },
+    {
+      "agent_counts": [
+        10,
+        15,
+        20
+      ],
+      "checkpoint_rule": "optimally trained Q models from Section A",
+      "compared_policies": [
+        "HOODIE"
+      ],
+      "confidence_level": 0.95,
+      "dependent_metric": "average_reward",
+      "fixed_topology": "Figure 7 adjacency matrix",
+      "independent_values": [
+        0.1,
+        0.3,
+        0.5,
+        0.7,
+        0.9
+      ],
+      "independent_variable": "task_arrival_probability",
+      "panel_id": "figure_9a",
+      "policy_mode": "exploitative",
+      "scientific_question": "Average reward versus task arrival probability",
+      "source_citation": "/Users/hadi/Documents/GitHub/hoodie_sim_v2/resources/papers/hoodie/original/HOODIE_paper.pdf",
+      "source_page": 19,
+      "source_section": "B. HOODIE Behavior and Scalability Analysis",
+      "status": "paper_explicit",
+      "unresolved_fields": [],
+      "validation_episodes": 200
+    },
+    {
+      "action_categories": [
+        "Local",
+        "Horizontal",
+        "Vertical"
+      ],
+      "agent_counts": [
+        10,
+        15,
+        20
+      ],
+      "checkpoint_rule": "optimally trained Q models from Section A",
+      "compared_policies": [
+        "HOODIE"
+      ],
+      "confidence_level": 0.95,
+      "dependent_metric": "action_count",
+      "fixed_topology": "Figure 7 adjacency matrix",
+      "independent_values": [
+        0.1,
+        0.3,
+        0.5,
+        0.7,
+        0.9
+      ],
+      "independent_variable": "task_arrival_probability",
+      "panel_id": "figure_9b",
+      "policy_mode": "exploitative",
+      "scientific_question": "Action type distribution across task arrival probabilities",
+      "source_citation": "/Users/hadi/Documents/GitHub/hoodie_sim_v2/resources/papers/hoodie/original/HOODIE_paper.pdf",
+      "source_page": 19,
+      "source_section": "B. HOODIE Behavior and Scalability Analysis",
+      "status": "paper_explicit",
+      "unresolved_fields": [],
+      "validation_episodes": 200
+    },
+    {
+      "agent_counts": [
+        10,
+        15,
+        20
+      ],
+      "checkpoint_rule": "optimally trained Q models from Section A",
+      "compared_policies": [
+        "HOODIE"
+      ],
+      "confidence_level": 0.95,
+      "dependent_metric": "average_reward",
+      "fixed_topology": "Figure 7 adjacency matrix",
+      "independent_values": [
+        4,
+        5,
+        6,
+        7,
+        8,
+        9
+      ],
+      "independent_variable": "cpu_computation_capacity_ghz",
+      "panel_id": "figure_9c",
+      "policy_mode": "exploitative",
+      "scientific_question": "Average reward versus CPU computation capacity",
+      "source_citation": "/Users/hadi/Documents/GitHub/hoodie_sim_v2/resources/papers/hoodie/original/HOODIE_paper.pdf",
+      "source_page": 19,
+      "source_section": "B. HOODIE Behavior and Scalability Analysis",
+      "status": "paper_explicit",
+      "unresolved_fields": [],
+      "validation_episodes": 200
+    },
+    {
+      "checkpoint_rule": "optimally trained Q models from Section A",
+      "compared_policies": [
+        "HOODIE"
+      ],
+      "confidence_level": 0.95,
+      "dependent_metric": "average_reward",
+      "fixed_topology": "Figure 7 adjacency matrix",
+      "independent_values": [
+        10,
+        15,
+        20,
+        25,
+        30
+      ],
+      "independent_variable": "number_of_agents",
+      "notes": [
+        "Task-size increments are integer Mbits as shown in the prose and panel context."
+      ],
+      "panel_id": "figure_9d",
+      "policy_mode": "exploitative",
+      "scientific_question": "Average reward versus number of agents under traffic scenarios",
+      "source_citation": "/Users/hadi/Documents/GitHub/hoodie_sim_v2/resources/papers/hoodie/original/HOODIE_paper.pdf",
+      "source_page": 19,
+      "source_section": "B. HOODIE Behavior and Scalability Analysis",
+      "status": "paper_explicit",
+      "traffic_scenarios": [
+        {
+          "arrival_probability": 0.5,
+          "name": "Moderate Traffic",
+          "task_size_mbits": [
+            1,
+            2,
+            3
+          ]
+        },
+        {
+          "arrival_probability": 0.7,
+          "name": "Heavy Traffic",
+          "task_size_mbits": [
+            2,
+            3,
+            4,
+            5
+          ]
+        },
+        {
+          "arrival_probability": 0.9,
+          "name": "Extreme Traffic",
+          "task_size_mbits": [
+            3,
+            4,
+            5,
+            6,
+            7
+          ]
+        }
+      ],
+      "unresolved_fields": [],
+      "validation_episodes": 200
+    },
+    {
+      "checkpoint_rule": "optimally trained Q models from Section A",
+      "compared_policies": [
+        "HOODIE"
+      ],
+      "confidence_level": 0.95,
+      "dependent_metric": "average_reward",
+      "fixed_topology": "Figure 7 adjacency matrix",
+      "independent_values": [
+        10,
+        15,
+        20,
+        25,
+        30
+      ],
+      "independent_variable": "number_of_agents",
+      "notes": [
+        "Paper wording preserved verbatim, even where labels look counterintuitive."
+      ],
+      "offloading_rate_scenarios": [
+        {
+          "R_H_mbps": 10,
+          "R_V_mbps": 30,
+          "name": "Balanced",
+          "paper_wording": "Balanced Capacity"
+        },
+        {
+          "R_H_mbps": 20,
+          "R_V_mbps": 20,
+          "name": "Horizontal-centric",
+          "paper_wording": "Horizontal-centric Capacity"
+        },
+        {
+          "R_H_mbps": 5,
+          "R_V_mbps": 40,
+          "name": "Vertical-centric",
+          "paper_wording": "Vertical-centric Capacity"
+        }
+      ],
+      "panel_id": "figure_9e",
+      "policy_mode": "exploitative",
+      "scientific_question": "Average reward versus number of agents under offloading data rate scenarios",
+      "source_citation": "/Users/hadi/Documents/GitHub/hoodie_sim_v2/resources/papers/hoodie/original/HOODIE_paper.pdf",
+      "source_page": 20,
+      "source_section": "B. HOODIE Behavior and Scalability Analysis",
+      "status": "paper_explicit",
+      "unresolved_fields": [],
+      "validation_episodes": 200
+    },
+    {
+      "checkpoint_rule": "optimally trained Q models from Section A",
+      "compared_policies": [
+        "HOODIE",
+        "FLC",
+        "RO",
+        "HO",
+        "VO",
+        "BCO",
+        "MLEO"
+      ],
+      "confidence_level": 0.95,
+      "dependent_metric": "average_delay",
+      "fixed_timeout_seconds": 2.0,
+      "fixed_topology": "Figure 7 adjacency matrix",
+      "independent_values": [
+        0.1,
+        0.3,
+        0.5,
+        0.7,
+        0.9
+      ],
+      "independent_variable": "task_arrival_probability",
+      "metric_sign_convention": "average delay is negative by convention",
+      "panel_id": "figure_10a",
+      "scientific_question": "Average delay versus task arrival probability",
+      "source_citation": "/Users/hadi/Documents/GitHub/hoodie_sim_v2/resources/papers/hoodie/original/HOODIE_paper.pdf",
+      "source_page": 21,
+      "source_section": "C. Comparative Analysis",
+      "status": "paper_explicit",
+      "unresolved_fields": [],
+      "validation_episodes": 200
+    },
+    {
+      "checkpoint_rule": "optimally trained Q models from Section A",
+      "compared_policies": [
+        "HOODIE",
+        "FLC",
+        "RO",
+        "HO",
+        "VO",
+        "BCO",
+        "MLEO"
+      ],
+      "confidence_level": 0.95,
+      "dependent_metric": "average_delay",
+      "fixed_arrival_probability": 0.5,
+      "fixed_timeout_seconds": 2.0,
+      "fixed_topology": "Figure 7 adjacency matrix",
+      "independent_values": [
+        3,
+        4,
+        5,
+        6,
+        7
+      ],
+      "independent_variable": "cpu_computation_capacity_ghz",
+      "metric_sign_convention": "average delay is negative by convention",
+      "panel_id": "figure_10b",
+      "scientific_question": "Average delay versus CPU computation capacity",
+      "source_citation": "/Users/hadi/Documents/GitHub/hoodie_sim_v2/resources/papers/hoodie/original/HOODIE_paper.pdf",
+      "source_page": 21,
+      "source_section": "C. Comparative Analysis",
+      "status": "paper_explicit",
+      "unresolved_fields": [],
+      "validation_episodes": 200
+    },
+    {
+      "checkpoint_rule": "optimally trained Q models from Section A",
+      "compared_policies": [
+        "HOODIE",
+        "FLC",
+        "RO",
+        "HO",
+        "VO",
+        "BCO",
+        "MLEO"
+      ],
+      "confidence_level": 0.95,
+      "dependent_metric": "average_delay",
+      "fixed_arrival_probability": 0.5,
+      "fixed_topology": "Figure 7 adjacency matrix",
+      "independent_values": [
+        9.6,
+        9.8,
+        10.0,
+        10.2,
+        10.4
+      ],
+      "independent_variable": "task_timeout_seconds",
+      "metric_sign_convention": "average delay is negative by convention",
+      "panel_id": "figure_10c",
+      "scientific_question": "Average delay versus task timeout",
+      "source_citation": "/Users/hadi/Documents/GitHub/hoodie_sim_v2/resources/papers/hoodie/original/HOODIE_paper.pdf",
+      "source_page": 21,
+      "source_section": "C. Comparative Analysis",
+      "status": "paper_explicit",
+      "unresolved_fields": [],
+      "validation_episodes": 200
+    },
+    {
+      "checkpoint_rule": "optimally trained Q models from Section A",
+      "compared_policies": [
+        "HOODIE",
+        "FLC",
+        "RO",
+        "HO",
+        "VO",
+        "BCO",
+        "MLEO"
+      ],
+      "confidence_level": 0.95,
+      "dependent_metric": "drop_ratio",
+      "drop_ratio_definition": "dropped tasks / total generated tasks",
+      "fixed_timeout_seconds": 2.0,
+      "fixed_topology": "Figure 7 adjacency matrix",
+      "independent_values": [
+        0.1,
+        0.3,
+        0.5,
+        0.7,
+        0.9
+      ],
+      "independent_variable": "task_arrival_probability",
+      "panel_id": "figure_10d",
+      "scientific_question": "Drop ratio versus task arrival probability",
+      "source_citation": "/Users/hadi/Documents/GitHub/hoodie_sim_v2/resources/papers/hoodie/original/HOODIE_paper.pdf",
+      "source_page": 21,
+      "source_section": "C. Comparative Analysis",
+      "status": "paper_explicit",
+      "unresolved_fields": [],
+      "validation_episodes": 200
+    },
+    {
+      "checkpoint_rule": "optimally trained Q models from Section A",
+      "compared_policies": [
+        "HOODIE",
+        "FLC",
+        "RO",
+        "HO",
+        "VO",
+        "BCO",
+        "MLEO"
+      ],
+      "confidence_level": 0.95,
+      "dependent_metric": "drop_ratio",
+      "drop_ratio_definition": "dropped tasks / total generated tasks",
+      "fixed_arrival_probability": 0.5,
+      "fixed_timeout_seconds": 2.0,
+      "fixed_topology": "Figure 7 adjacency matrix",
+      "independent_values": [
+        3,
+        4,
+        5,
+        6,
+        7
+      ],
+      "independent_variable": "cpu_computation_capacity_ghz",
+      "panel_id": "figure_10e",
+      "scientific_question": "Drop ratio versus CPU computation capacity",
+      "source_citation": "/Users/hadi/Documents/GitHub/hoodie_sim_v2/resources/papers/hoodie/original/HOODIE_paper.pdf",
+      "source_page": 21,
+      "source_section": "C. Comparative Analysis",
+      "status": "paper_explicit",
+      "unresolved_fields": [],
+      "validation_episodes": 200
+    },
+    {
+      "checkpoint_rule": "optimally trained Q models from Section A",
+      "compared_policies": [
+        "HOODIE",
+        "FLC",
+        "RO",
+        "HO",
+        "VO",
+        "BCO",
+        "MLEO"
+      ],
+      "confidence_level": 0.95,
+      "dependent_metric": "drop_ratio",
+      "drop_ratio_definition": "dropped tasks / total generated tasks",
+      "fixed_arrival_probability": 0.5,
+      "fixed_topology": "Figure 7 adjacency matrix",
+      "independent_values": [
+        1.6,
+        1.8,
+        2.0,
+        2.2,
+        2.4
+      ],
+      "independent_variable": "task_timeout_seconds",
+      "panel_id": "figure_10f",
+      "scientific_question": "Drop ratio versus task timeout",
+      "source_citation": "/Users/hadi/Documents/GitHub/hoodie_sim_v2/resources/papers/hoodie/original/HOODIE_paper.pdf",
+      "source_page": 21,
+      "source_section": "C. Comparative Analysis",
+      "status": "paper_explicit",
+      "unresolved_fields": [],
+      "validation_episodes": 200
+    },
+    {
+      "checkpoint_rule": "optimally trained Q models from Section A",
+      "compared_policies": [
+        "HOODIE"
+      ],
+      "confidence_level": 0.95,
+      "dependent_metric": "average_delay",
+      "discount_factor": 0.99,
+      "fixed_topology": "Figure 7 adjacency matrix",
+      "independent_values": [
+        0,
+        250,
+        500,
+        750,
+        1000,
+        1250,
+        1500,
+        1750,
+        2000,
+        2250,
+        2500,
+        2750,
+        3000
+      ],
+      "independent_variable": "training_episode",
+      "learning_rate": 7e-07,
+      "notes": [
+        "No-LSTM path must not retain forecast outputs."
+      ],
+      "panel_id": "figure_11",
+      "scientific_question": "Average task delay with and without LSTM",
+      "seed_count": 1,
+      "source_citation": "/Users/hadi/Documents/GitHub/hoodie_sim_v2/resources/papers/hoodie/original/HOODIE_paper.pdf",
+      "source_page": 22,
+      "source_section": "D. The Impact of LSTM Inclusion",
+      "status": "paper_explicit",
+      "task_arrival_probability": 0.3,
+      "task_timeout_seconds": 1.0,
+      "training_episodes": 3000,
+      "unresolved_fields": [],
+      "variant_difference": "use_lstm only",
+      "variants": [
+        "hoodie_lstm",
+        "hoodie_no_lstm"
+      ]
+    }
+  ],
+  "resolved_counts": {
+    "approved_assumption": 1,
+    "implementation_choice": 0,
+    "paper_derived": 3,
+    "paper_explicit": 43,
+    "unresolved": 0
+  },
+  "source_manifest": {
+    "authority_order": [
+      "resources/papers/hoodie/original/HOODIE_paper.pdf",
+      "resources/papers/hoodie/ocr/",
+      "resources/papers/hoodie/recovered/",
+      "resources/papers/hoodie/recovered/user-approved-assumption-registry.json",
+      "resources/papers/hoodie/recovered/paper-parameter-registry.json"
+    ],
+    "sources": [
+      {
+        "kind": "authoritative_pdf",
+        "path": "/Users/hadi/Documents/GitHub/hoodie_sim_v2/resources/papers/hoodie/original/HOODIE_paper.pdf",
+        "sha256": "362ad3c4f61a69211a572fda6b9238bfeae00686b41233ebc70cbdd19bf558f4"
+      },
+      {
+        "kind": "ocr_json",
+        "path": "/Users/hadi/Documents/GitHub/hoodie_sim_v2/resources/papers/hoodie/ocr/merged.json",
+        "sha256": "9f0833dfffe80a7baed0de6ae96ce418454d8f204dc68d416254619f64d192ca"
+      },
+      {
+        "kind": "ocr_markdown",
+        "path": "/Users/hadi/Documents/GitHub/hoodie_sim_v2/resources/papers/hoodie/ocr/merged.md",
+        "sha256": "8b8b939269c159daeb4c797f8834b30ca6f654d69663ea9d88085d433dc22101"
+      },
+      {
+        "kind": "ocr_tex",
+        "path": "/Users/hadi/Documents/GitHub/hoodie_sim_v2/resources/papers/hoodie/ocr/merged.tex",
+        "sha256": "e8ad1d3b0afaed03636e87c5435d25bb9a3dcb7cd7912d3f0481eb1278c8556d"
+      },
+      {
+        "kind": "recovered_parameter_registry",
+        "path": "/Users/hadi/Documents/GitHub/hoodie_sim_v2/resources/papers/hoodie/recovered/paper-parameter-registry.json",
+        "sha256": "6a6af081b06c4c4b9809a28b914fb7d667f4918c65b086c56dcccf91ba6ddfbe"
+      },
+      {
+        "kind": "recovered_topology_registry",
+        "path": "/Users/hadi/Documents/GitHub/hoodie_sim_v2/resources/papers/hoodie/recovered/topology-g.json",
+        "sha256": "ba73a4fbf8f8a90cfdaaebaab18bbd385580942259fbee7964970f2e9505296c"
+      },
+      {
+        "kind": "approved_assumption_registry",
+        "path": "/Users/hadi/Documents/GitHub/hoodie_sim_v2/resources/papers/hoodie/recovered/user-approved-assumption-registry.json",
+        "sha256": "d1b76e9f96059ce7815cf2de862b270a82d829dd995c89088a95e6c17b207160"
+      }
+    ]
+  },
+  "table_4": {
+    "fields": [
+      {
+        "concise_evidence_summary": "Table 4 Task Arrival Probability",
+        "evidence": "Table 4 / page 17",
+        "name": "task_arrival_probability",
+        "parser_validation_test": "test_task_arrival_probability",
+        "status": "paper_explicit",
+        "symbol": "P",
+        "unit": "probability",
+        "value": 0.5
+      },
+      {
+        "concise_evidence_summary": "Table 4 Horizontal Data Rate",
+        "evidence": "Table 4 / page 17",
+        "name": "horizontal_data_rate_mbps",
+        "parser_validation_test": "test_horizontal_data_rate_mbps",
+        "status": "paper_explicit",
+        "symbol": "R_H",
+        "unit": "Mbps",
+        "value": 30
+      },
+      {
+        "concise_evidence_summary": "Table 4 Vertical Data Rate",
+        "evidence": "Table 4 / page 17",
+        "name": "vertical_data_rate_mbps",
+        "parser_validation_test": "test_vertical_data_rate_mbps",
+        "status": "paper_explicit",
+        "symbol": "R_V",
+        "unit": "Mbps",
+        "value": 10
+      },
+      {
+        "concise_evidence_summary": "Table 4 Task size",
+        "evidence": "Table 4 / page 17",
+        "name": "task_size_mbits",
+        "parser_validation_test": "test_task_size_mbits",
+        "status": "paper_explicit",
+        "symbol": "eta_n(t)",
+        "unit": "Mbits",
+        "value": [
+          2.0,
+          2.1,
+          2.2,
+          2.3,
+          2.4,
+          2.5,
+          2.6,
+          2.7,
+          2.8,
+          2.9,
+          3.0,
+          3.1,
+          3.2,
+          3.3,
+          3.4,
+          3.5,
+          3.6,
+          3.7,
+          3.8,
+          3.9,
+          4.0,
+          4.1,
+          4.2,
+          4.3,
+          4.4,
+          4.5,
+          4.6,
+          4.7,
+          4.8,
+          4.9,
+          5.0
+        ]
+      },
+      {
+        "concise_evidence_summary": "Table 4 Task processing density",
+        "evidence": "Table 4 / page 17",
+        "name": "processing_density_gcycles_per_mbit",
+        "parser_validation_test": "test_processing_density_gcycles_per_mbit",
+        "status": "paper_explicit",
+        "symbol": "rho_n(t)",
+        "unit": "gigacycles/Mbit",
+        "value": 0.297
+      },
+      {
+        "concise_evidence_summary": "Table 4 Number of EAs",
+        "evidence": "Table 4 / page 17",
+        "name": "number_of_edge_agents",
+        "parser_validation_test": "test_number_of_edge_agents",
+        "status": "paper_explicit",
+        "symbol": "N",
+        "unit": "count",
+        "value": 20
+      },
+      {
+        "concise_evidence_summary": "derived",
+        "evidence": "Table 4 + Figure 7 / page 17",
+        "name": "topology",
+        "parser_validation_test": "test_topology",
+        "status": "paper_derived",
+        "symbol": "G",
+        "unit": "matrix",
+        "value": "Figure 7 adjacency matrix"
+      },
+      {
+        "concise_evidence_summary": "Table 4 CPU frequency in private queues",
+        "evidence": "Table 4 / page 17",
+        "name": "private_edge_cpu_ghz",
+        "parser_validation_test": "test_private_edge_cpu_ghz",
+        "status": "paper_explicit",
+        "symbol": "f_n^{EA,priv}",
+        "unit": "GHz",
+        "value": 5
+      },
+      {
+        "concise_evidence_summary": "Table 4 CPU frequency in public queues",
+        "evidence": "Table 4 / page 17",
+        "name": "public_edge_cpu_ghz",
+        "parser_validation_test": "test_public_edge_cpu_ghz",
+        "status": "paper_explicit",
+        "symbol": "f_n^{EA,pub}",
+        "unit": "GHz",
+        "value": 5
+      },
+      {
+        "concise_evidence_summary": "Table 4 CPU frequency in Cloud",
+        "evidence": "Table 4 / page 17",
+        "name": "cloud_cpu_ghz",
+        "parser_validation_test": "test_cloud_cpu_ghz",
+        "status": "paper_explicit",
+        "symbol": "f^{Cloud}",
+        "unit": "GHz",
+        "value": 30
+      },
+      {
+        "concise_evidence_summary": "Table 4 Number of Training Episodes",
+        "evidence": "Table 4 / page 17",
+        "name": "training_episodes",
+        "parser_validation_test": "test_training_episodes",
+        "status": "paper_explicit",
+        "symbol": "N_E",
+        "unit": "episodes",
+        "value": 5000
+      },
+      {
+        "concise_evidence_summary": "Table 4 Number of Time slots",
+        "evidence": "Table 4 / page 17",
+        "name": "slots_per_episode",
+        "parser_validation_test": "test_slots_per_episode",
+        "status": "paper_explicit",
+        "symbol": "T",
+        "unit": "slots",
+        "value": 110
+      },
+      {
+        "concise_evidence_summary": "derived",
+        "evidence": "Section V.A / page 17",
+        "name": "decision_slots",
+        "parser_validation_test": "test_decision_slots",
+        "status": "paper_derived",
+        "symbol": "decision horizon",
+        "unit": "slots",
+        "value": 100
+      },
+      {
+        "concise_evidence_summary": "derived",
+        "evidence": "Section V.A / page 17",
+        "name": "drain_slots",
+        "parser_validation_test": "test_drain_slots",
+        "status": "paper_derived",
+        "symbol": "drain horizon",
+        "unit": "slots",
+        "value": 10
+      },
+      {
+        "concise_evidence_summary": "Table 4 Time slot duration",
+        "evidence": "Table 4 / page 17",
+        "name": "slot_duration_seconds",
+        "parser_validation_test": "test_slot_duration_seconds",
+        "status": "paper_explicit",
+        "symbol": "Delta",
+        "unit": "sec",
+        "value": 0.1
+      },
+      {
+        "concise_evidence_summary": "Table 4 Task timeout",
+        "evidence": "Table 4 / page 17",
+        "name": "default_timeout_slots",
+        "parser_validation_test": "test_default_timeout_slots",
+        "status": "paper_explicit",
+        "symbol": "phi_n",
+        "unit": "slots",
+        "value": 20
+      },
+      {
+        "concise_evidence_summary": "Table 4 Task timeout converted to seconds",
+        "evidence": "Table 4 / page 17",
+        "name": "default_timeout_seconds",
+        "parser_validation_test": "test_default_timeout_seconds",
+        "status": "paper_explicit",
+        "symbol": "phi_n",
+        "unit": "sec",
+        "value": 2.0
+      },
+      {
+        "concise_evidence_summary": "Table 4 Learning rate",
+        "evidence": "Table 4 / page 17",
+        "name": "default_learning_rate",
+        "parser_validation_test": "test_default_learning_rate",
+        "status": "paper_explicit",
+        "symbol": "alpha_lr",
+        "unit": "rate",
+        "value": 7e-07
+      },
+      {
+        "concise_evidence_summary": "Table 4 Discount factor",
+        "evidence": "Table 4 / page 17",
+        "name": "default_discount_factor",
+        "parser_validation_test": "test_default_discount_factor",
+        "status": "paper_explicit",
+        "symbol": "gamma",
+        "unit": "dimensionless",
+        "value": 0.99
+      },
+      {
+        "concise_evidence_summary": "Table 4 Q-network hidden layers",
+        "evidence": "Table 4 / page 17",
+        "name": "q_network_hidden_layers",
+        "parser_validation_test": "test_q_network_hidden_layers",
+        "status": "paper_explicit",
+        "symbol": "N_L",
+        "unit": "neurons",
+        "value": [
+          1024,
+          1024,
+          1024
+        ]
+      },
+      {
+        "concise_evidence_summary": "Table 4 Optimizer",
+        "evidence": "Table 4 / page 17",
+        "name": "optimizer",
+        "parser_validation_test": "test_optimizer",
+        "status": "paper_explicit",
+        "symbol": "Opt",
+        "unit": "optimizer",
+        "value": "Adam"
+      },
+      {
+        "concise_evidence_summary": "Table 4 Loss function",
+        "evidence": "Table 4 / page 17",
+        "name": "loss",
+        "parser_validation_test": "test_loss",
+        "status": "paper_explicit",
+        "symbol": "MSE",
+        "unit": "loss",
+        "value": "MSE"
+      },
+      {
+        "concise_evidence_summary": "Table 4 Update frequency",
+        "evidence": "Table 4 / page 17",
+        "name": "target_copy_frequency_iterations",
+        "parser_validation_test": "test_target_copy_frequency_iterations",
+        "status": "paper_explicit",
+        "symbol": "Ncopy",
+        "unit": "iterations",
+        "value": 2000
+      },
+      {
+        "concise_evidence_summary": "Table 4 LSTM lookback window",
+        "evidence": "Table 4 / page 17",
+        "name": "lstm_lookback_steps",
+        "parser_validation_test": "test_lstm_lookback_steps",
+        "status": "paper_explicit",
+        "symbol": "W",
+        "unit": "steps",
+        "value": 10
+      },
+      {
+        "concise_evidence_summary": "Table 4 LSTM hidden layers",
+        "evidence": "Table 4 / page 17",
+        "name": "lstm_hidden_cells",
+        "parser_validation_test": "test_lstm_hidden_cells",
+        "status": "paper_explicit",
+        "symbol": "NL",
+        "unit": "cells",
+        "value": 20
+      },
+      {
+        "concise_evidence_summary": "Table 4 LSTM hidden layers",
+        "evidence": "Table 4 / page 17",
+        "name": "lstm_layers",
+        "parser_validation_test": "test_lstm_layers",
+        "status": "paper_explicit",
+        "symbol": "NL",
+        "unit": "layers",
+        "value": 1
+      },
+      {
+        "concise_evidence_summary": "Table 4 Replay Memory size",
+        "evidence": "Table 4 / page 17",
+        "name": "replay_capacity",
+        "parser_validation_test": "test_replay_capacity",
+        "status": "paper_explicit",
+        "symbol": "N_R",
+        "unit": "samples",
+        "value": 10000
+      },
+      {
+        "concise_evidence_summary": "Table 4 Task Drop Penalty",
+        "evidence": "Table 4 / page 17",
+        "name": "task_drop_penalty",
+        "parser_validation_test": "test_task_drop_penalty",
+        "status": "paper_explicit",
+        "symbol": "C",
+        "unit": "reward units",
+        "value": 40
+      },
+      {
+        "concise_evidence_summary": "Table 4 Batch size",
+        "evidence": "Table 4 / page 17",
+        "name": "batch_size",
+        "parser_validation_test": "test_batch_size",
+        "status": "paper_explicit",
+        "symbol": "N_B",
+        "unit": "samples",
+        "value": 64
+      }
+    ],
+    "page": 17,
+    "section": "V.A Learning Parameters and Convergence Curves",
+    "source_file": "/Users/hadi/Documents/GitHub/hoodie_sim_v2/resources/papers/hoodie/original/HOODIE_paper.pdf",
+    "topology": {
+      "degree_regular": 3,
+      "edge_count": 30,
+      "edge_list": [
+        [
+          1,
+          6
+        ],
+        [
+          2,
+          7
+        ],
+        [
+          3,
+          8
+        ],
+        [
+          4,
+          9
+        ],
+        [
+          5,
+          10
+        ],
+        [
+          1,
+          11
+        ],
+        [
+          2,
+          12
+        ],
+        [
+          3,
+          13
+        ],
+        [
+          4,
+          14
+        ],
+        [
+          5,
+          15
+        ],
+        [
+          6,
+          16
+        ],
+        [
+          7,
+          17
+        ],
+        [
+          8,
+          18
+        ],
+        [
+          9,
+          19
+        ],
+        [
+          10,
+          20
+        ],
+        [
+          11,
+          16
+        ],
+        [
+          12,
+          17
+        ],
+        [
+          13,
+          18
+        ],
+        [
+          14,
+          19
+        ],
+        [
+          15,
+          20
+        ],
+        [
+          1,
+          16
+        ],
+        [
+          2,
+          17
+        ],
+        [
+          3,
+          18
+        ],
+        [
+          4,
+          19
+        ],
+        [
+          5,
+          20
+        ],
+        [
+          6,
+          11
+        ],
+        [
+          7,
+          12
+        ],
+        [
+          8,
+          13
+        ],
+        [
+          9,
+          14
+        ],
+        [
+          10,
+          15
+        ]
+      ],
+      "graph_type": "undirected_unweighted",
+      "item_id": "Figure_7_adjacency",
+      "node_count": 20,
+      "note": "Approved assumption used because OCR does not recover full Figure 7 matrix cleanly.",
+      "paper_confidence": "invalid",
+      "paper_status": "unrecoverable_after_evidence_exhaustion",
+      "status": "approved_assumption",
+      "value": [
+        [
+          0,
+          0,
+          0,
+          0,
+          0,
+          1,
+          0,
+          0,
+          0,
+          0,
+          1,
+          0,
+          0,
+          0,
+          0,
+          1,
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          1,
+          0,
+          0,
+          0,
+          0,
+          1,
+          0,
+          0,
+          0,
+          0,
+          1,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          1,
+          0,
+          0,
+          0,
+          0,
+          1,
+          0,
+          0,
+          0,
+          0,
+          1,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          1,
+          0,
+          0,
+          0,
+          0,
+          1,
+          0,
+          0,
+          0,
+          0,
+          1,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          1,
+          0,
+          0,
+          0,
+          0,
+          1,
+          0,
+          0,
+          0,
+          0,
+          1
+        ],
+        [
+          1,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          1,
+          0,
+          0,
+          0,
+          0,
+          1,
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          1,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          1,
+          0,
+          0,
+          0,
+          0,
+          1,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          1,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          1,
+          0,
+          0,
+          0,
+          0,
+          1,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          1,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          1,
+          0,
+          0,
+          0,
+          0,
+          1,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0,
+          1,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          1,
+          0,
+          0,
+          0,
+          0,
+          1
+        ],
+        [
+          1,
+          0,
+          0,
+          0,
+          0,
+          1,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          1,
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          1,
+          0,
+          0,
+          0,
+          0,
+          1,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          1,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          1,
+          0,
+          0,
+          0,
+          0,
+          1,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          1,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          1,
+          0,
+          0,
+          0,
+          0,
+          1,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          1,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0,
+          1,
+          0,
+          0,
+          0,
+          0,
+          1,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          1
+        ],
+        [
+          1,
+          0,
+          0,
+          0,
+          0,
+          1,
+          0,
+          0,
+          0,
+          0,
+          1,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          1,
+          0,
+          0,
+          0,
+          0,
+          1,
+          0,
+          0,
+          0,
+          0,
+          1,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          1,
+          0,
+          0,
+          0,
+          0,
+          1,
+          0,
+          0,
+          0,
+          0,
+          1,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          1,
+          0,
+          0,
+          0,
+          0,
+          1,
+          0,
+          0,
+          0,
+          0,
+          1,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0,
+          1,
+          0,
+          0,
+          0,
+          0,
+          1,
+          0,
+          0,
+          0,
+          0,
+          1,
+          0,
+          0,
+          0,
+          0,
+          0
+        ]
+      ]
+    }
+  }
 }

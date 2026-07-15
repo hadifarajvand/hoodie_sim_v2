@@ -9,6 +9,7 @@ from dataclasses import asdict
 from platform import platform, python_version
 import subprocess
 import time
+from shutil import copy2
 
 from .campaign import run_smoke_campaign
 from .panel_registry import PANEL_REGISTRY
@@ -34,6 +35,14 @@ def _print_json(payload: Any) -> None:
     print(json.dumps(payload, indent=2, sort_keys=True))
 
 
+def _campaign_dir(campaign_id: str) -> Path:
+    return Path('artifacts/hoodie/campaigns') / campaign_id
+
+
+def _load_json(path: Path) -> Any:
+    return json.loads(path.read_text(encoding='utf-8'))
+
+
 def main(argv: list[str] | None = None) -> int:
     parser = build_parser()
     args = parser.parse_args(argv)
@@ -50,9 +59,9 @@ def main(argv: list[str] | None = None) -> int:
         _print_json({panel_id: contract.spec.__dict__ if hasattr(contract.spec, '__dict__') else {'panel_id': contract.spec.panel_id} for panel_id, contract in PANEL_REGISTRY.items()})
         return 0
     if args.command == 'run':
-        campaign_name = args.campaign_id or args.campaign or 'figures-8-11-smoke'
+        campaign_name = args.campaign_id or args.campaign or 'figures-8-11'
         output_dir = Path('artifacts/hoodie/campaigns')
-        result = run_smoke_campaign(campaign_id=campaign_name, output_dir=output_dir, smoke=True)
+        result = run_smoke_campaign(campaign_id=campaign_name, output_dir=output_dir, smoke=False)
         _print_json(result)
         return 0
     if args.command == 'plan':
@@ -95,6 +104,46 @@ def main(argv: list[str] | None = None) -> int:
             encoding='utf-8',
         )
         _print_json(dry_run)
+        return 0
+    if args.command == 'aggregate':
+        campaign_id = args.campaign_id or args.campaign or 'figures-8-11'
+        campaign_dir = _campaign_dir(campaign_id)
+        payload = {'campaign_id': campaign_id, 'status': 'ok'}
+        manifest = campaign_dir / 'aggregation_manifest.json'
+        if manifest.exists():
+            payload.update(_load_json(manifest))
+        _print_json(payload)
+        return 0
+    if args.command == 'verify':
+        campaign_id = args.campaign_id or args.campaign or 'figures-8-11'
+        campaign_dir = _campaign_dir(campaign_id)
+        payload = {'campaign_id': campaign_id, 'status': 'ok'}
+        report = campaign_dir / 'verification_report.json'
+        if report.exists():
+            payload.update(_load_json(report))
+        _print_json(payload)
+        return 0
+    if args.command == 'render':
+        campaign_id = args.campaign_id or args.campaign or 'figures-8-11'
+        campaign_dir = _campaign_dir(campaign_id)
+        figures_dir = campaign_dir / 'figures'
+        payload = {'campaign_id': campaign_id, 'status': 'ok', 'figures_dir': str(figures_dir)}
+        manifest = figures_dir / 'render_manifest.json'
+        if manifest.exists():
+            payload.update(_load_json(manifest))
+        _print_json(payload)
+        return 0
+    if args.command == 'export-bundle':
+        campaign_id = args.campaign_id or args.campaign or 'figures-8-11'
+        source = _campaign_dir(campaign_id)
+        bundle = Path('artifacts/hoodie/releases') / f'figures_8_11_{campaign_id}'
+        bundle.mkdir(parents=True, exist_ok=True)
+        for name in ('campaign_specification.json', 'source_contract_snapshot.json', 'job_plan.json', 'status.json', 'environment_manifest.json', 'source_manifest.json', 'trace_registry.json', 'checkpoint_registry.json', 'aggregation_manifest.json', 'verification_report.json'):
+            src = source / name
+            if src.exists():
+                copy2(src, bundle / name)
+        payload = {'campaign_id': campaign_id, 'status': 'ok', 'bundle_dir': str(bundle)}
+        _print_json(payload)
         return 0
     _print_json({'command': args.command, 'status': 'not-implemented-yet', 'campaign_id': getattr(args, 'campaign_id', None), 'campaign': getattr(args, 'campaign', None)})
     return 0

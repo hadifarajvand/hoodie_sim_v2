@@ -1,0 +1,13 @@
+{
+  "available_cpu_count": 8,
+  "available_ram_gb": null,
+  "available_vram_gb": 0.0,
+  "backend": "cpu",
+  "chosen_parallelism": 2,
+  "free_disk_gb": 112.69,
+  "launch_authorization_result": "authorized",
+  "projected_duration_hours": 0.56,
+  "source_sha": "acd0c7d6ad8ee88dd50a930ddf440e50163cfd4f",
+  "timestamp": 1784112750.125355,
+  "warnings": []
+}
