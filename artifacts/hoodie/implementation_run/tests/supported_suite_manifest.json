@@ -1,0 +1,14 @@
+{
+  "supported_test_files": [
+    "tests_supported/hoodie/unit/test_git_base_ref.py"
+  ],
+  "number_passed": 2,
+  "command": "python3 -m pytest -q",
+  "result": "2 passed in 0.78s",
+  "python_version": "3.14.3",
+  "numpy_version": "2.5.0",
+  "torch_version": "2.12.1",
+  "backend": "pytest",
+  "operating_system": "macOS-26.5.1-arm64-arm-64bit-Mach-O",
+  "source_commit": "dfd77be182621c58ededfa8d661e9a17bb68e972"
+}

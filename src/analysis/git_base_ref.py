@@ -45,9 +45,14 @@ def resolve_base_ref(
 ) -> str:
     repo = Path(repo_path)
     candidates: list[str] = []
-    for candidate in (explicit_base, configured_base, "origin/main", "main", "origin/HEAD"):
-        if candidate and candidate not in candidates:
-            candidates.append(candidate)
+    if explicit_base:
+        candidates.append(explicit_base)
+    elif configured_base:
+        candidates.append(configured_base)
+    else:
+        for candidate in ("origin/main", "main", "origin/HEAD"):
+            if candidate not in candidates:
+                candidates.append(candidate)
     for candidate in candidates:
         if candidate == "origin/HEAD":
             resolved = _resolve_origin_head(repo)
@@ -56,6 +61,8 @@ def resolve_base_ref(
             continue
         if _verify_commit(repo, candidate):
             return candidate
+    if explicit_base or configured_base:
+        raise GitBaseRefResolutionError(str(repo), explicit_base, configured_base, tuple(candidates), "explicit or configured base ref is invalid")
     raise GitBaseRefResolutionError(str(repo), explicit_base, configured_base, tuple(candidates), "unable to resolve valid base ref")
 
 
