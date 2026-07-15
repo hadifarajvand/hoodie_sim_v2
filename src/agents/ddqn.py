@@ -268,3 +268,33 @@ class DDQNLearner:
 
     def load(self, path: str) -> None:
         self.load_state_dict(torch.load(path, map_location=self.device, weights_only=False))
+
+
+ReplayTransition = Transition
+
+
+class DoubleDQNAgent:
+    def __init__(self, input_dim: int = 5, action_dim: int = 22, *, seed: int = 0) -> None:
+        self.learner = DDQNLearner(input_dim=input_dim, action_dim=action_dim, seed=seed)
+        self.replay = self.learner.replay_buffer
+
+    def select(self, features, legal_actions):
+        if not legal_actions:
+            raise ValueError("no legal actions available")
+        return legal_actions[0]
+
+    def update(self) -> int:
+        result = self.learner.learn_from_replay()
+        return 0 if result is None else 1
+
+    def sync_target_network(self) -> None:
+        self.learner.sync_target_network()
+
+    def export_state(self) -> dict[str, object]:
+        return self.learner.state_dict()
+
+    @classmethod
+    def from_state(cls, state: dict[str, object]) -> "DoubleDQNAgent":
+        agent = cls(input_dim=int(state.get("input_dim", 5)), action_dim=int(state.get("action_dim", 22)), seed=int(state.get("seed", 0)))
+        agent.learner.load_state_dict(state)
+        return agent

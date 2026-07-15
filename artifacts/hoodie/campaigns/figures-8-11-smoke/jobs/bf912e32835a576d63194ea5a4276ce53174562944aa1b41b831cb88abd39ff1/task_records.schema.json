@@ -1,0 +1,31 @@
+{
+  "fields": [
+    "campaign_id",
+    "panel_id",
+    "job_id",
+    "run_id",
+    "policy",
+    "variant",
+    "seed",
+    "trace_hash",
+    "task_id",
+    "source_agent",
+    "arrival_slot",
+    "workload",
+    "deadline",
+    "decision_slot",
+    "selected_action",
+    "destination",
+    "completion_or_drop_slot",
+    "outcome",
+    "queue_delay",
+    "transmission_delay",
+    "service_delay",
+    "end_to_end_delay",
+    "reward",
+    "learner_owner",
+    "config_hash",
+    "source_hash",
+    "checkpoint_hash"
+  ]
+}

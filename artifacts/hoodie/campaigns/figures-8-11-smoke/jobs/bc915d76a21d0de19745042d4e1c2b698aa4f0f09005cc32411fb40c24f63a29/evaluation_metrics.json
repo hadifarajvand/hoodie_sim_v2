@@ -1,0 +1,1476 @@
+{
+  "aggregate": {
+    "average_delay": 2.9482758620689653,
+    "drop_ratio": 0.6375,
+    "throughput": 58
+  },
+  "metadata": {
+    "device": "cpu",
+    "policy_name": "FLC",
+    "seed": 0,
+    "trace_id": "2afaa35e0ae8e9b3c0b0b1cb899bfc9983e86d2cc88054bee204babff793bc4d",
+    "trace_mode": "deterministic_seed"
+  },
+  "per_trace": [
+    {
+      "average_delay": 2.9482758620689653,
+      "completed_tasks": 58,
+      "device": "cpu",
+      "drop_ratio": 0.6375,
+      "dropped_tasks": 102,
+      "metadata": {
+        "device": "cpu",
+        "policy_name": "FLC",
+        "seed": 0,
+        "trace_id": "2afaa35e0ae8e9b3c0b0b1cb899bfc9983e86d2cc88054bee204babff793bc4d-0"
+      },
+      "policy_name": "FLC",
+      "raw_records": [
+        {
+          "arrival_slot": 0,
+          "completion_slot": 2,
+          "delay": 2,
+          "resolved_destination": "self",
+          "selected_action": "local",
+          "task_id": 1,
+          "terminal_outcome": "completed"
+        },
+        {
+          "arrival_slot": 0,
+          "completion_slot": 1,
+          "delay": 1,
+          "resolved_destination": "self",
+          "selected_action": "local",
+          "task_id": 2,
+          "terminal_outcome": "completed"
+        },
+        {
+          "arrival_slot": 0,
+          "completion_slot": 2,
+          "delay": 2,
+          "resolved_destination": "self",
+          "selected_action": "local",
+          "task_id": 3,
+          "terminal_outcome": "completed"
+        },
+        {
+          "arrival_slot": 0,
+          "completion_slot": 2,
+          "delay": 2,
+          "resolved_destination": "self",
+          "selected_action": "local",
+          "task_id": 4,
+          "terminal_outcome": "completed"
+        },
+        {
+          "arrival_slot": 0,
+          "completion_slot": 1,
+          "delay": 1,
+          "resolved_destination": "self",
+          "selected_action": "local",
+          "task_id": 5,
+          "terminal_outcome": "completed"
+        },
+        {
+          "arrival_slot": 0,
+          "completion_slot": 1,
+          "delay": 1,
+          "resolved_destination": "self",
+          "selected_action": "local",
+          "task_id": 6,
+          "terminal_outcome": "completed"
+        },
+        {
+          "arrival_slot": 0,
+          "completion_slot": 2,
+          "delay": 2,
+          "resolved_destination": "self",
+          "selected_action": "local",
+          "task_id": 7,
+          "terminal_outcome": "completed"
+        },
+        {
+          "arrival_slot": 0,
+          "completion_slot": 1,
+          "delay": 1,
+          "resolved_destination": "self",
+          "selected_action": "local",
+          "task_id": 8,
+          "terminal_outcome": "completed"
+        },
+        {
+          "arrival_slot": 0,
+          "completion_slot": 2,
+          "delay": 2,
+          "resolved_destination": "self",
+          "selected_action": "local",
+          "task_id": 9,
+          "terminal_outcome": "completed"
+        },
+        {
+          "arrival_slot": 0,
+          "completion_slot": 2,
+          "delay": 2,
+          "resolved_destination": "self",
+          "selected_action": "local",
+          "task_id": 10,
+          "terminal_outcome": "completed"
+        },
+        {
+          "arrival_slot": 0,
+          "completion_slot": 2,
+          "delay": 2,
+          "resolved_destination": "self",
+          "selected_action": "local",
+          "task_id": 11,
+          "terminal_outcome": "completed"
+        },
+        {
+          "arrival_slot": 0,
+          "completion_slot": 2,
+          "delay": 2,
+          "resolved_destination": "self",
+          "selected_action": "local",
+          "task_id": 12,
+          "terminal_outcome": "completed"
+        },
+        {
+          "arrival_slot": 0,
+          "completion_slot": 2,
+          "delay": 2,
+          "resolved_destination": "self",
+          "selected_action": "local",
+          "task_id": 13,
+          "terminal_outcome": "completed"
+        },
+        {
+          "arrival_slot": 0,
+          "completion_slot": 1,
+          "delay": 1,
+          "resolved_destination": "self",
+          "selected_action": "local",
+          "task_id": 14,
+          "terminal_outcome": "completed"
+        },
+        {
+          "arrival_slot": 0,
+          "completion_slot": 2,
+          "delay": 2,
+          "resolved_destination": "self",
+          "selected_action": "local",
+          "task_id": 15,
+          "terminal_outcome": "completed"
+        },
+        {
+          "arrival_slot": 0,
+          "completion_slot": 1,
+          "delay": 1,
+          "resolved_destination": "self",
+          "selected_action": "local",
+          "task_id": 16,
+          "terminal_outcome": "completed"
+        },
+        {
+          "arrival_slot": 0,
+          "completion_slot": 1,
+          "delay": 1,
+          "resolved_destination": "self",
+          "selected_action": "local",
+          "task_id": 17,
+          "terminal_outcome": "completed"
+        },
+        {
+          "arrival_slot": 0,
+          "completion_slot": 1,
+          "delay": 1,
+          "resolved_destination": "self",
+          "selected_action": "local",
+          "task_id": 18,
+          "terminal_outcome": "completed"
+        },
+        {
+          "arrival_slot": 0,
+          "completion_slot": 2,
+          "delay": 2,
+          "resolved_destination": "self",
+          "selected_action": "local",
+          "task_id": 19,
+          "terminal_outcome": "completed"
+        },
+        {
+          "arrival_slot": 0,
+          "completion_slot": 2,
+          "delay": 2,
+          "resolved_destination": "self",
+          "selected_action": "local",
+          "task_id": 20,
+          "terminal_outcome": "completed"
+        },
+        {
+          "arrival_slot": 1,
+          "completion_slot": 5,
+          "delay": 4,
+          "resolved_destination": "self",
+          "selected_action": "local",
+          "task_id": 21,
+          "terminal_outcome": "completed"
+        },
+        {
+          "arrival_slot": 1,
+          "completion_slot": 3,
+          "delay": 2,
+          "resolved_destination": "self",
+          "selected_action": "local",
+          "task_id": 22,
+          "terminal_outcome": "completed"
+        },
+        {
+          "arrival_slot": 1,
+          "completion_slot": 5,
+          "delay": 4,
+          "resolved_destination": "self",
+          "selected_action": "local",
+          "task_id": 23,
+          "terminal_outcome": "completed"
+        },
+        {
+          "arrival_slot": 1,
+          "completion_slot": 4,
+          "delay": 3,
+          "resolved_destination": "self",
+          "selected_action": "local",
+          "task_id": 24,
+          "terminal_outcome": "completed"
+        },
+        {
+          "arrival_slot": 1,
+          "completion_slot": 3,
+          "delay": 2,
+          "resolved_destination": "self",
+          "selected_action": "local",
+          "task_id": 25,
+          "terminal_outcome": "completed"
+        },
+        {
+          "arrival_slot": 1,
+          "completion_slot": 4,
+          "delay": 3,
+          "resolved_destination": "self",
+          "selected_action": "local",
+          "task_id": 26,
+          "terminal_outcome": "completed"
+        },
+        {
+          "arrival_slot": 1,
+          "completion_slot": 4,
+          "delay": 3,
+          "resolved_destination": "self",
+          "selected_action": "local",
+          "task_id": 27,
+          "terminal_outcome": "completed"
+        },
+        {
+          "arrival_slot": 1,
+          "completion_slot": 4,
+          "delay": 3,
+          "resolved_destination": "self",
+          "selected_action": "local",
+          "task_id": 28,
+          "terminal_outcome": "completed"
+        },
+        {
+          "arrival_slot": 1,
+          "completion_slot": 4,
+          "delay": 3,
+          "resolved_destination": "self",
+          "selected_action": "local",
+          "task_id": 29,
+          "terminal_outcome": "completed"
+        },
+        {
+          "arrival_slot": 1,
+          "completion_slot": 5,
+          "delay": 4,
+          "resolved_destination": "self",
+          "selected_action": "local",
+          "task_id": 30,
+          "terminal_outcome": "completed"
+        },
+        {
+          "arrival_slot": 1,
+          "completion_slot": 4,
+          "delay": 3,
+          "resolved_destination": "self",
+          "selected_action": "local",
+          "task_id": 31,
+          "terminal_outcome": "completed"
+        },
+        {
+          "arrival_slot": 1,
+          "completion_slot": 4,
+          "delay": 3,
+          "resolved_destination": "self",
+          "selected_action": "local",
+          "task_id": 32,
+          "terminal_outcome": "completed"
+        },
+        {
+          "arrival_slot": 1,
+          "completion_slot": 5,
+          "delay": 4,
+          "resolved_destination": "self",
+          "selected_action": "local",
+          "task_id": 33,
+          "terminal_outcome": "completed"
+        },
+        {
+          "arrival_slot": 1,
+          "completion_slot": 4,
+          "delay": 3,
+          "resolved_destination": "self",
+          "selected_action": "local",
+          "task_id": 34,
+          "terminal_outcome": "completed"
+        },
+        {
+          "arrival_slot": 1,
+          "completion_slot": 4,
+          "delay": 3,
+          "resolved_destination": "self",
+          "selected_action": "local",
+          "task_id": 35,
+          "terminal_outcome": "completed"
+        },
+        {
+          "arrival_slot": 1,
+          "completion_slot": 4,
+          "delay": 3,
+          "resolved_destination": "self",
+          "selected_action": "local",
+          "task_id": 36,
+          "terminal_outcome": "completed"
+        },
+        {
+          "arrival_slot": 1,
+          "completion_slot": 4,
+          "delay": 3,
+          "resolved_destination": "self",
+          "selected_action": "local",
+          "task_id": 37,
+          "terminal_outcome": "completed"
+        },
+        {
+          "arrival_slot": 1,
+          "completion_slot": 3,
+          "delay": 2,
+          "resolved_destination": "self",
+          "selected_action": "local",
+          "task_id": 38,
+          "terminal_outcome": "completed"
+        },
+        {
+          "arrival_slot": 1,
+          "completion_slot": 5,
+          "delay": 4,
+          "resolved_destination": "self",
+          "selected_action": "local",
+          "task_id": 39,
+          "terminal_outcome": "completed"
+        },
+        {
+          "arrival_slot": 1,
+          "completion_slot": 4,
+          "delay": 3,
+          "resolved_destination": "self",
+          "selected_action": "local",
+          "task_id": 40,
+          "terminal_outcome": "completed"
+        },
+        {
+          "arrival_slot": 2,
+          "completion_slot": 7,
+          "delay": null,
+          "resolved_destination": "self",
+          "selected_action": "local",
+          "task_id": 41,
+          "terminal_outcome": "dropped"
+        },
+        {
+          "arrival_slot": 2,
+          "completion_slot": 6,
+          "delay": 4,
+          "resolved_destination": "self",
+          "selected_action": "local",
+          "task_id": 42,
+          "terminal_outcome": "completed"
+        },
+        {
+          "arrival_slot": 2,
+          "completion_slot": 7,
+          "delay": null,
+          "resolved_destination": "self",
+          "selected_action": "local",
+          "task_id": 43,
+          "terminal_outcome": "dropped"
+        },
+        {
+          "arrival_slot": 2,
+          "completion_slot": 6,
+          "delay": 4,
+          "resolved_destination": "self",
+          "selected_action": "local",
+          "task_id": 44,
+          "terminal_outcome": "completed"
+        },
+        {
+          "arrival_slot": 2,
+          "completion_slot": 5,
+          "delay": 3,
+          "resolved_destination": "self",
+          "selected_action": "local",
+          "task_id": 45,
+          "terminal_outcome": "completed"
+        },
+        {
+          "arrival_slot": 2,
+          "completion_slot": 6,
+          "delay": 4,
+          "resolved_destination": "self",
+          "selected_action": "local",
+          "task_id": 46,
+          "terminal_outcome": "completed"
+        },
+        {
+          "arrival_slot": 2,
+          "completion_slot": 6,
+          "delay": 4,
+          "resolved_destination": "self",
+          "selected_action": "local",
+          "task_id": 47,
+          "terminal_outcome": "completed"
+        },
+        {
+          "arrival_slot": 2,
+          "completion_slot": 6,
+          "delay": 4,
+          "resolved_destination": "self",
+          "selected_action": "local",
+          "task_id": 48,
+          "terminal_outcome": "completed"
+        },
+        {
+          "arrival_slot": 2,
+          "completion_slot": 7,
+          "delay": 5,
+          "resolved_destination": "self",
+          "selected_action": "local",
+          "task_id": 49,
+          "terminal_outcome": "completed"
+        },
+        {
+          "arrival_slot": 2,
+          "completion_slot": 7,
+          "delay": 5,
+          "resolved_destination": "self",
+          "selected_action": "local",
+          "task_id": 50,
+          "terminal_outcome": "completed"
+        },
+        {
+          "arrival_slot": 2,
+          "completion_slot": 7,
+          "delay": 5,
+          "resolved_destination": "self",
+          "selected_action": "local",
+          "task_id": 51,
+          "terminal_outcome": "completed"
+        },
+        {
+          "arrival_slot": 2,
+          "completion_slot": 6,
+          "delay": 4,
+          "resolved_destination": "self",
+          "selected_action": "local",
+          "task_id": 52,
+          "terminal_outcome": "completed"
+        },
+        {
+          "arrival_slot": 2,
+          "completion_slot": 7,
+          "delay": null,
+          "resolved_destination": "self",
+          "selected_action": "local",
+          "task_id": 53,
+          "terminal_outcome": "dropped"
+        },
+        {
+          "arrival_slot": 2,
+          "completion_slot": 7,
+          "delay": 5,
+          "resolved_destination": "self",
+          "selected_action": "local",
+          "task_id": 54,
+          "terminal_outcome": "completed"
+        },
+        {
+          "arrival_slot": 2,
+          "completion_slot": 7,
+          "delay": 5,
+          "resolved_destination": "self",
+          "selected_action": "local",
+          "task_id": 55,
+          "terminal_outcome": "completed"
+        },
+        {
+          "arrival_slot": 2,
+          "completion_slot": 7,
+          "delay": 5,
+          "resolved_destination": "self",
+          "selected_action": "local",
+          "task_id": 56,
+          "terminal_outcome": "completed"
+        },
+        {
+          "arrival_slot": 2,
+          "completion_slot": 6,
+          "delay": 4,
+          "resolved_destination": "self",
+          "selected_action": "local",
+          "task_id": 57,
+          "terminal_outcome": "completed"
+        },
+        {
+          "arrival_slot": 2,
+          "completion_slot": 5,
+          "delay": 3,
+          "resolved_destination": "self",
+          "selected_action": "local",
+          "task_id": 58,
+          "terminal_outcome": "completed"
+        },
+        {
+          "arrival_slot": 2,
+          "completion_slot": 7,
+          "delay": null,
+          "resolved_destination": "self",
+          "selected_action": "local",
+          "task_id": 59,
+          "terminal_outcome": "dropped"
+        },
+        {
+          "arrival_slot": 2,
+          "completion_slot": 7,
+          "delay": 5,
+          "resolved_destination": "self",
+          "selected_action": "local",
+          "task_id": 60,
+          "terminal_outcome": "completed"
+        },
+        {
+          "arrival_slot": 3,
+          "completion_slot": 7,
+          "delay": null,
+          "resolved_destination": "self",
+          "selected_action": "local",
+          "task_id": 61,
+          "terminal_outcome": "dropped"
+        },
+        {
+          "arrival_slot": 3,
+          "completion_slot": 7,
+          "delay": null,
+          "resolved_destination": "self",
+          "selected_action": "local",
+          "task_id": 62,
+          "terminal_outcome": "dropped"
+        },
+        {
+          "arrival_slot": 3,
+          "completion_slot": 7,
+          "delay": null,
+          "resolved_destination": "self",
+          "selected_action": "local",
+          "task_id": 63,
+          "terminal_outcome": "dropped"
+        },
+        {
+          "arrival_slot": 3,
+          "completion_slot": 7,
+          "delay": null,
+          "resolved_destination": "self",
+          "selected_action": "local",
+          "task_id": 64,
+          "terminal_outcome": "dropped"
+        },
+        {
+          "arrival_slot": 3,
+          "completion_slot": 7,
+          "delay": 4,
+          "resolved_destination": "self",
+          "selected_action": "local",
+          "task_id": 65,
+          "terminal_outcome": "completed"
+        },
+        {
+          "arrival_slot": 3,
+          "completion_slot": 7,
+          "delay": null,
+          "resolved_destination": "self",
+          "selected_action": "local",
+          "task_id": 66,
+          "terminal_outcome": "dropped"
+        },
+        {
+          "arrival_slot": 3,
+          "completion_slot": 7,
+          "delay": null,
+          "resolved_destination": "self",
+          "selected_action": "local",
+          "task_id": 67,
+          "terminal_outcome": "dropped"
+        },
+        {
+          "arrival_slot": 3,
+          "completion_slot": 7,
+          "delay": null,
+          "resolved_destination": "self",
+          "selected_action": "local",
+          "task_id": 68,
+          "terminal_outcome": "dropped"
+        },
+        {
+          "arrival_slot": 3,
+          "completion_slot": 7,
+          "delay": null,
+          "resolved_destination": "self",
+          "selected_action": "local",
+          "task_id": 69,
+          "terminal_outcome": "dropped"
+        },
+        {
+          "arrival_slot": 3,
+          "completion_slot": 7,
+          "delay": null,
+          "resolved_destination": "self",
+          "selected_action": "local",
+          "task_id": 70,
+          "terminal_outcome": "dropped"
+        },
+        {
+          "arrival_slot": 3,
+          "completion_slot": 7,
+          "delay": null,
+          "resolved_destination": "self",
+          "selected_action": "local",
+          "task_id": 71,
+          "terminal_outcome": "dropped"
+        },
+        {
+          "arrival_slot": 3,
+          "completion_slot": 7,
+          "delay": null,
+          "resolved_destination": "self",
+          "selected_action": "local",
+          "task_id": 72,
+          "terminal_outcome": "dropped"
+        },
+        {
+          "arrival_slot": 3,
+          "completion_slot": 7,
+          "delay": null,
+          "resolved_destination": "self",
+          "selected_action": "local",
+          "task_id": 73,
+          "terminal_outcome": "dropped"
+        },
+        {
+          "arrival_slot": 3,
+          "completion_slot": 7,
+          "delay": null,
+          "resolved_destination": "self",
+          "selected_action": "local",
+          "task_id": 74,
+          "terminal_outcome": "dropped"
+        },
+        {
+          "arrival_slot": 3,
+          "completion_slot": 7,
+          "delay": null,
+          "resolved_destination": "self",
+          "selected_action": "local",
+          "task_id": 75,
+          "terminal_outcome": "dropped"
+        },
+        {
+          "arrival_slot": 3,
+          "completion_slot": 7,
+          "delay": null,
+          "resolved_destination": "self",
+          "selected_action": "local",
+          "task_id": 76,
+          "terminal_outcome": "dropped"
+        },
+        {
+          "arrival_slot": 3,
+          "completion_slot": 7,
+          "delay": null,
+          "resolved_destination": "self",
+          "selected_action": "local",
+          "task_id": 77,
+          "terminal_outcome": "dropped"
+        },
+        {
+          "arrival_slot": 3,
+          "completion_slot": 7,
+          "delay": 4,
+          "resolved_destination": "self",
+          "selected_action": "local",
+          "task_id": 78,
+          "terminal_outcome": "completed"
+        },
+        {
+          "arrival_slot": 3,
+          "completion_slot": 7,
+          "delay": null,
+          "resolved_destination": "self",
+          "selected_action": "local",
+          "task_id": 79,
+          "terminal_outcome": "dropped"
+        },
+        {
+          "arrival_slot": 3,
+          "completion_slot": 7,
+          "delay": null,
+          "resolved_destination": "self",
+          "selected_action": "local",
+          "task_id": 80,
+          "terminal_outcome": "dropped"
+        },
+        {
+          "arrival_slot": 4,
+          "completion_slot": 7,
+          "delay": null,
+          "resolved_destination": "self",
+          "selected_action": "local",
+          "task_id": 81,
+          "terminal_outcome": "dropped"
+        },
+        {
+          "arrival_slot": 4,
+          "completion_slot": 7,
+          "delay": null,
+          "resolved_destination": "self",
+          "selected_action": "local",
+          "task_id": 82,
+          "terminal_outcome": "dropped"
+        },
+        {
+          "arrival_slot": 4,
+          "completion_slot": 7,
+          "delay": null,
+          "resolved_destination": "self",
+          "selected_action": "local",
+          "task_id": 83,
+          "terminal_outcome": "dropped"
+        },
+        {
+          "arrival_slot": 4,
+          "completion_slot": 7,
+          "delay": null,
+          "resolved_destination": "self",
+          "selected_action": "local",
+          "task_id": 84,
+          "terminal_outcome": "dropped"
+        },
+        {
+          "arrival_slot": 4,
+          "completion_slot": 7,
+          "delay": null,
+          "resolved_destination": "self",
+          "selected_action": "local",
+          "task_id": 85,
+          "terminal_outcome": "dropped"
+        },
+        {
+          "arrival_slot": 4,
+          "completion_slot": 7,
+          "delay": null,
+          "resolved_destination": "self",
+          "selected_action": "local",
+          "task_id": 86,
+          "terminal_outcome": "dropped"
+        },
+        {
+          "arrival_slot": 4,
+          "completion_slot": 7,
+          "delay": null,
+          "resolved_destination": "self",
+          "selected_action": "local",
+          "task_id": 87,
+          "terminal_outcome": "dropped"
+        },
+        {
+          "arrival_slot": 4,
+          "completion_slot": 7,
+          "delay": null,
+          "resolved_destination": "self",
+          "selected_action": "local",
+          "task_id": 88,
+          "terminal_outcome": "dropped"
+        },
+        {
+          "arrival_slot": 4,
+          "completion_slot": 7,
+          "delay": null,
+          "resolved_destination": "self",
+          "selected_action": "local",
+          "task_id": 89,
+          "terminal_outcome": "dropped"
+        },
+        {
+          "arrival_slot": 4,
+          "completion_slot": 7,
+          "delay": null,
+          "resolved_destination": "self",
+          "selected_action": "local",
+          "task_id": 90,
+          "terminal_outcome": "dropped"
+        },
+        {
+          "arrival_slot": 4,
+          "completion_slot": 7,
+          "delay": null,
+          "resolved_destination": "self",
+          "selected_action": "local",
+          "task_id": 91,
+          "terminal_outcome": "dropped"
+        },
+        {
+          "arrival_slot": 4,
+          "completion_slot": 7,
+          "delay": null,
+          "resolved_destination": "self",
+          "selected_action": "local",
+          "task_id": 92,
+          "terminal_outcome": "dropped"
+        },
+        {
+          "arrival_slot": 4,
+          "completion_slot": 7,
+          "delay": null,
+          "resolved_destination": "self",
+          "selected_action": "local",
+          "task_id": 93,
+          "terminal_outcome": "dropped"
+        },
+        {
+          "arrival_slot": 4,
+          "completion_slot": 7,
+          "delay": null,
+          "resolved_destination": "self",
+          "selected_action": "local",
+          "task_id": 94,
+          "terminal_outcome": "dropped"
+        },
+        {
+          "arrival_slot": 4,
+          "completion_slot": 7,
+          "delay": null,
+          "resolved_destination": "self",
+          "selected_action": "local",
+          "task_id": 95,
+          "terminal_outcome": "dropped"
+        },
+        {
+          "arrival_slot": 4,
+          "completion_slot": 7,
+          "delay": null,
+          "resolved_destination": "self",
+          "selected_action": "local",
+          "task_id": 96,
+          "terminal_outcome": "dropped"
+        },
+        {
+          "arrival_slot": 4,
+          "completion_slot": 7,
+          "delay": null,
+          "resolved_destination": "self",
+          "selected_action": "local",
+          "task_id": 97,
+          "terminal_outcome": "dropped"
+        },
+        {
+          "arrival_slot": 4,
+          "completion_slot": 7,
+          "delay": null,
+          "resolved_destination": "self",
+          "selected_action": "local",
+          "task_id": 98,
+          "terminal_outcome": "dropped"
+        },
+        {
+          "arrival_slot": 4,
+          "completion_slot": 7,
+          "delay": null,
+          "resolved_destination": "self",
+          "selected_action": "local",
+          "task_id": 99,
+          "terminal_outcome": "dropped"
+        },
+        {
+          "arrival_slot": 4,
+          "completion_slot": 7,
+          "delay": null,
+          "resolved_destination": "self",
+          "selected_action": "local",
+          "task_id": 100,
+          "terminal_outcome": "dropped"
+        },
+        {
+          "arrival_slot": 5,
+          "completion_slot": 7,
+          "delay": null,
+          "resolved_destination": "self",
+          "selected_action": "local",
+          "task_id": 101,
+          "terminal_outcome": "dropped"
+        },
+        {
+          "arrival_slot": 5,
+          "completion_slot": 7,
+          "delay": null,
+          "resolved_destination": "self",
+          "selected_action": "local",
+          "task_id": 102,
+          "terminal_outcome": "dropped"
+        },
+        {
+          "arrival_slot": 5,
+          "completion_slot": 7,
+          "delay": null,
+          "resolved_destination": "self",
+          "selected_action": "local",
+          "task_id": 103,
+          "terminal_outcome": "dropped"
+        },
+        {
+          "arrival_slot": 5,
+          "completion_slot": 7,
+          "delay": null,
+          "resolved_destination": "self",
+          "selected_action": "local",
+          "task_id": 104,
+          "terminal_outcome": "dropped"
+        },
+        {
+          "arrival_slot": 5,
+          "completion_slot": 7,
+          "delay": null,
+          "resolved_destination": "self",
+          "selected_action": "local",
+          "task_id": 105,
+          "terminal_outcome": "dropped"
+        },
+        {
+          "arrival_slot": 5,
+          "completion_slot": 7,
+          "delay": null,
+          "resolved_destination": "self",
+          "selected_action": "local",
+          "task_id": 106,
+          "terminal_outcome": "dropped"
+        },
+        {
+          "arrival_slot": 5,
+          "completion_slot": 7,
+          "delay": null,
+          "resolved_destination": "self",
+          "selected_action": "local",
+          "task_id": 107,
+          "terminal_outcome": "dropped"
+        },
+        {
+          "arrival_slot": 5,
+          "completion_slot": 7,
+          "delay": null,
+          "resolved_destination": "self",
+          "selected_action": "local",
+          "task_id": 108,
+          "terminal_outcome": "dropped"
+        },
+        {
+          "arrival_slot": 5,
+          "completion_slot": 7,
+          "delay": null,
+          "resolved_destination": "self",
+          "selected_action": "local",
+          "task_id": 109,
+          "terminal_outcome": "dropped"
+        },
+        {
+          "arrival_slot": 5,
+          "completion_slot": 7,
+          "delay": null,
+          "resolved_destination": "self",
+          "selected_action": "local",
+          "task_id": 110,
+          "terminal_outcome": "dropped"
+        },
+        {
+          "arrival_slot": 5,
+          "completion_slot": 7,
+          "delay": null,
+          "resolved_destination": "self",
+          "selected_action": "local",
+          "task_id": 111,
+          "terminal_outcome": "dropped"
+        },
+        {
+          "arrival_slot": 5,
+          "completion_slot": 7,
+          "delay": null,
+          "resolved_destination": "self",
+          "selected_action": "local",
+          "task_id": 112,
+          "terminal_outcome": "dropped"
+        },
+        {
+          "arrival_slot": 5,
+          "completion_slot": 7,
+          "delay": null,
+          "resolved_destination": "self",
+          "selected_action": "local",
+          "task_id": 113,
+          "terminal_outcome": "dropped"
+        },
+        {
+          "arrival_slot": 5,
+          "completion_slot": 7,
+          "delay": null,
+          "resolved_destination": "self",
+          "selected_action": "local",
+          "task_id": 114,
+          "terminal_outcome": "dropped"
+        },
+        {
+          "arrival_slot": 5,
+          "completion_slot": 7,
+          "delay": null,
+          "resolved_destination": "self",
+          "selected_action": "local",
+          "task_id": 115,
+          "terminal_outcome": "dropped"
+        },
+        {
+          "arrival_slot": 5,
+          "completion_slot": 7,
+          "delay": null,
+          "resolved_destination": "self",
+          "selected_action": "local",
+          "task_id": 116,
+          "terminal_outcome": "dropped"
+        },
+        {
+          "arrival_slot": 5,
+          "completion_slot": 7,
+          "delay": null,
+          "resolved_destination": "self",
+          "selected_action": "local",
+          "task_id": 117,
+          "terminal_outcome": "dropped"
+        },
+        {
+          "arrival_slot": 5,
+          "completion_slot": 7,
+          "delay": null,
+          "resolved_destination": "self",
+          "selected_action": "local",
+          "task_id": 118,
+          "terminal_outcome": "dropped"
+        },
+        {
+          "arrival_slot": 5,
+          "completion_slot": 7,
+          "delay": null,
+          "resolved_destination": "self",
+          "selected_action": "local",
+          "task_id": 119,
+          "terminal_outcome": "dropped"
+        },
+        {
+          "arrival_slot": 5,
+          "completion_slot": 7,
+          "delay": null,
+          "resolved_destination": "self",
+          "selected_action": "local",
+          "task_id": 120,
+          "terminal_outcome": "dropped"
+        },
+        {
+          "arrival_slot": 6,
+          "completion_slot": 7,
+          "delay": null,
+          "resolved_destination": "self",
+          "selected_action": "local",
+          "task_id": 121,
+          "terminal_outcome": "dropped"
+        },
+        {
+          "arrival_slot": 6,
+          "completion_slot": 7,
+          "delay": null,
+          "resolved_destination": "self",
+          "selected_action": "local",
+          "task_id": 122,
+          "terminal_outcome": "dropped"
+        },
+        {
+          "arrival_slot": 6,
+          "completion_slot": 7,
+          "delay": null,
+          "resolved_destination": "self",
+          "selected_action": "local",
+          "task_id": 123,
+          "terminal_outcome": "dropped"
+        },
+        {
+          "arrival_slot": 6,
+          "completion_slot": 7,
+          "delay": null,
+          "resolved_destination": "self",
+          "selected_action": "local",
+          "task_id": 124,
+          "terminal_outcome": "dropped"
+        },
+        {
+          "arrival_slot": 6,
+          "completion_slot": 7,
+          "delay": null,
+          "resolved_destination": "self",
+          "selected_action": "local",
+          "task_id": 125,
+          "terminal_outcome": "dropped"
+        },
+        {
+          "arrival_slot": 6,
+          "completion_slot": 7,
+          "delay": null,
+          "resolved_destination": "self",
+          "selected_action": "local",
+          "task_id": 126,
+          "terminal_outcome": "dropped"
+        },
+        {
+          "arrival_slot": 6,
+          "completion_slot": 7,
+          "delay": null,
+          "resolved_destination": "self",
+          "selected_action": "local",
+          "task_id": 127,
+          "terminal_outcome": "dropped"
+        },
+        {
+          "arrival_slot": 6,
+          "completion_slot": 7,
+          "delay": null,
+          "resolved_destination": "self",
+          "selected_action": "local",
+          "task_id": 128,
+          "terminal_outcome": "dropped"
+        },
+        {
+          "arrival_slot": 6,
+          "completion_slot": 7,
+          "delay": null,
+          "resolved_destination": "self",
+          "selected_action": "local",
+          "task_id": 129,
+          "terminal_outcome": "dropped"
+        },
+        {
+          "arrival_slot": 6,
+          "completion_slot": 7,
+          "delay": null,
+          "resolved_destination": "self",
+          "selected_action": "local",
+          "task_id": 130,
+          "terminal_outcome": "dropped"
+        },
+        {
+          "arrival_slot": 6,
+          "completion_slot": 7,
+          "delay": null,
+          "resolved_destination": "self",
+          "selected_action": "local",
+          "task_id": 131,
+          "terminal_outcome": "dropped"
+        },
+        {
+          "arrival_slot": 6,
+          "completion_slot": 7,
+          "delay": null,
+          "resolved_destination": "self",
+          "selected_action": "local",
+          "task_id": 132,
+          "terminal_outcome": "dropped"
+        },
+        {
+          "arrival_slot": 6,
+          "completion_slot": 7,
+          "delay": null,
+          "resolved_destination": "self",
+          "selected_action": "local",
+          "task_id": 133,
+          "terminal_outcome": "dropped"
+        },
+        {
+          "arrival_slot": 6,
+          "completion_slot": 7,
+          "delay": null,
+          "resolved_destination": "self",
+          "selected_action": "local",
+          "task_id": 134,
+          "terminal_outcome": "dropped"
+        },
+        {
+          "arrival_slot": 6,
+          "completion_slot": 7,
+          "delay": null,
+          "resolved_destination": "self",
+          "selected_action": "local",
+          "task_id": 135,
+          "terminal_outcome": "dropped"
+        },
+        {
+          "arrival_slot": 6,
+          "completion_slot": 7,
+          "delay": null,
+          "resolved_destination": "self",
+          "selected_action": "local",
+          "task_id": 136,
+          "terminal_outcome": "dropped"
+        },
+        {
+          "arrival_slot": 6,
+          "completion_slot": 7,
+          "delay": null,
+          "resolved_destination": "self",
+          "selected_action": "local",
+          "task_id": 137,
+          "terminal_outcome": "dropped"
+        },
+        {
+          "arrival_slot": 6,
+          "completion_slot": 7,
+          "delay": null,
+          "resolved_destination": "self",
+          "selected_action": "local",
+          "task_id": 138,
+          "terminal_outcome": "dropped"
+        },
+        {
+          "arrival_slot": 6,
+          "completion_slot": 7,
+          "delay": null,
+          "resolved_destination": "self",
+          "selected_action": "local",
+          "task_id": 139,
+          "terminal_outcome": "dropped"
+        },
+        {
+          "arrival_slot": 6,
+          "completion_slot": 7,
+          "delay": null,
+          "resolved_destination": "self",
+          "selected_action": "local",
+          "task_id": 140,
+          "terminal_outcome": "dropped"
+        },
+        {
+          "arrival_slot": 7,
+          "completion_slot": 7,
+          "delay": null,
+          "resolved_destination": "self",
+          "selected_action": "local",
+          "task_id": 141,
+          "terminal_outcome": "dropped"
+        },
+        {
+          "arrival_slot": 7,
+          "completion_slot": 7,
+          "delay": null,
+          "resolved_destination": "self",
+          "selected_action": "local",
+          "task_id": 142,
+          "terminal_outcome": "dropped"
+        },
+        {
+          "arrival_slot": 7,
+          "completion_slot": 7,
+          "delay": null,
+          "resolved_destination": "self",
+          "selected_action": "local",
+          "task_id": 143,
+          "terminal_outcome": "dropped"
+        },
+        {
+          "arrival_slot": 7,
+          "completion_slot": 7,
+          "delay": null,
+          "resolved_destination": "self",
+          "selected_action": "local",
+          "task_id": 144,
+          "terminal_outcome": "dropped"
+        },
+        {
+          "arrival_slot": 7,
+          "completion_slot": 7,
+          "delay": null,
+          "resolved_destination": "self",
+          "selected_action": "local",
+          "task_id": 145,
+          "terminal_outcome": "dropped"
+        },
+        {
+          "arrival_slot": 7,
+          "completion_slot": 7,
+          "delay": null,
+          "resolved_destination": "self",
+          "selected_action": "local",
+          "task_id": 146,
+          "terminal_outcome": "dropped"
+        },
+        {
+          "arrival_slot": 7,
+          "completion_slot": 7,
+          "delay": null,
+          "resolved_destination": "self",
+          "selected_action": "local",
+          "task_id": 147,
+          "terminal_outcome": "dropped"
+        },
+        {
+          "arrival_slot": 7,
+          "completion_slot": 7,
+          "delay": null,
+          "resolved_destination": "self",
+          "selected_action": "local",
+          "task_id": 148,
+          "terminal_outcome": "dropped"
+        },
+        {
+          "arrival_slot": 7,
+          "completion_slot": 7,
+          "delay": null,
+          "resolved_destination": "self",
+          "selected_action": "local",
+          "task_id": 149,
+          "terminal_outcome": "dropped"
+        },
+        {
+          "arrival_slot": 7,
+          "completion_slot": 7,
+          "delay": null,
+          "resolved_destination": "self",
+          "selected_action": "local",
+          "task_id": 150,
+          "terminal_outcome": "dropped"
+        },
+        {
+          "arrival_slot": 7,
+          "completion_slot": 7,
+          "delay": null,
+          "resolved_destination": "self",
+          "selected_action": "local",
+          "task_id": 151,
+          "terminal_outcome": "dropped"
+        },
+        {
+          "arrival_slot": 7,
+          "completion_slot": 7,
+          "delay": null,
+          "resolved_destination": "self",
+          "selected_action": "local",
+          "task_id": 152,
+          "terminal_outcome": "dropped"
+        },
+        {
+          "arrival_slot": 7,
+          "completion_slot": 7,
+          "delay": null,
+          "resolved_destination": "self",
+          "selected_action": "local",
+          "task_id": 153,
+          "terminal_outcome": "dropped"
+        },
+        {
+          "arrival_slot": 7,
+          "completion_slot": 7,
+          "delay": null,
+          "resolved_destination": "self",
+          "selected_action": "local",
+          "task_id": 154,
+          "terminal_outcome": "dropped"
+        },
+        {
+          "arrival_slot": 7,
+          "completion_slot": 7,
+          "delay": null,
+          "resolved_destination": "self",
+          "selected_action": "local",
+          "task_id": 155,
+          "terminal_outcome": "dropped"
+        },
+        {
+          "arrival_slot": 7,
+          "completion_slot": 7,
+          "delay": null,
+          "resolved_destination": "self",
+          "selected_action": "local",
+          "task_id": 156,
+          "terminal_outcome": "dropped"
+        },
+        {
+          "arrival_slot": 7,
+          "completion_slot": 7,
+          "delay": null,
+          "resolved_destination": "self",
+          "selected_action": "local",
+          "task_id": 157,
+          "terminal_outcome": "dropped"
+        },
+        {
+          "arrival_slot": 7,
+          "completion_slot": 7,
+          "delay": null,
+          "resolved_destination": "self",
+          "selected_action": "local",
+          "task_id": 158,
+          "terminal_outcome": "dropped"
+        },
+        {
+          "arrival_slot": 7,
+          "completion_slot": 7,
+          "delay": null,
+          "resolved_destination": "self",
+          "selected_action": "local",
+          "task_id": 159,
+          "terminal_outcome": "dropped"
+        },
+        {
+          "arrival_slot": 7,
+          "completion_slot": 7,
+          "delay": null,
+          "resolved_destination": "self",
+          "selected_action": "local",
+          "task_id": 160,
+          "terminal_outcome": "dropped"
+        }
+      ],
+      "seed": 0,
+      "throughput": 58,
+      "total_tasks": 160,
+      "trace_id": "2afaa35e0ae8e9b3c0b0b1cb899bfc9983e86d2cc88054bee204babff793bc4d-0"
+    }
+  ]
+}

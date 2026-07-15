@@ -1,0 +1,9 @@
+{
+  "hash": "48d4e2739bb06a8fbf8b74b4b34252e47d5a46f1ca7231b9b07fb181105fb665",
+  "manifest": {
+    "checkpoint_hash": "checkpoint",
+    "config_hash": "config",
+    "source_hash": "source",
+    "trace_hash": "e0b1258513a475ba0978ac020f1c659a064f2f6a57f87e0b0a611bc386ab78c9"
+  }
+}

@@ -27,3 +27,15 @@ class SharedPolicy(Protocol):
 
     def choose(self, context: PolicyContext) -> PolicyDecision:
         return PolicyDecision(action=self.choose_action(context), policy_name=self.policy_name)
+
+
+@runtime_checkable
+class ReplayTrainablePolicy(SharedPolicy, Protocol):
+    def record_transition(self, state, action, reward, next_state, done, *, delta_slots: int = 1) -> None:
+        ...
+
+    def learn_from_replay(self, batch_size: int, learning_rate: float) -> int:
+        ...
+
+    def sync_target_network(self) -> None:
+        ...

@@ -1,0 +1,24 @@
+{
+  "composites": {
+    "figure_11": {
+      "pdf": "artifacts/hoodie/campaigns/figures-8-11-smoke/figures/figure_11.pdf",
+      "png": "artifacts/hoodie/campaigns/figures-8-11-smoke/figures/figure_11.png",
+      "svg": "artifacts/hoodie/campaigns/figures-8-11-smoke/figures/figure_11.svg"
+    }
+  },
+  "panels": {
+    "figure_11": {
+      "dataset_hash": "f7033dfe93d1b7287f2625b79c9c301be5ad9f806e31c2f6630719f18028f844",
+      "dimensions": {
+        "height": 3,
+        "width": 4
+      },
+      "dpi": 300,
+      "outputs": {
+        "pdf": "artifacts/hoodie/campaigns/figures-8-11-smoke/figures/e741d9d9033f557fd4bb4db1e9f00529ff64a6371b56b7116fdf39c3769ec974.pdf",
+        "png": "artifacts/hoodie/campaigns/figures-8-11-smoke/figures/e741d9d9033f557fd4bb4db1e9f00529ff64a6371b56b7116fdf39c3769ec974.png",
+        "svg": "artifacts/hoodie/campaigns/figures-8-11-smoke/figures/e741d9d9033f557fd4bb4db1e9f00529ff64a6371b56b7116fdf39c3769ec974.svg"
+      }
+    }
+  }
+}

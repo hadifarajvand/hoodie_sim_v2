@@ -1,0 +1,86 @@
+[
+  {
+    "panel_id": "figure_8a",
+    "job_id": "bc915d76a21d0de19745042d4e1c2b698aa4f0f09005cc32411fb40c24f63a29",
+    "completed": true,
+    "output_dir": "artifacts/hoodie/campaigns/figures-8-11-smoke/jobs/bc915d76a21d0de19745042d4e1c2b698aa4f0f09005cc32411fb40c24f63a29"
+  },
+  {
+    "panel_id": "figure_8b",
+    "job_id": "e145247d32b1a691090a8575fa02a5060bbffa8ce439a77753a585b571521034",
+    "completed": true,
+    "output_dir": "artifacts/hoodie/campaigns/figures-8-11-smoke/jobs/e145247d32b1a691090a8575fa02a5060bbffa8ce439a77753a585b571521034"
+  },
+  {
+    "panel_id": "figure_9a",
+    "job_id": "e741d9d9033f557fd4bb4db1e9f00529ff64a6371b56b7116fdf39c3769ec974",
+    "completed": true,
+    "output_dir": "artifacts/hoodie/campaigns/figures-8-11-smoke/jobs/e741d9d9033f557fd4bb4db1e9f00529ff64a6371b56b7116fdf39c3769ec974"
+  },
+  {
+    "panel_id": "figure_9b",
+    "job_id": "d1afc2f3c1e1146153b5ccb76d8314da2a78fe3c2915c46916cdb84524692635",
+    "completed": true,
+    "output_dir": "artifacts/hoodie/campaigns/figures-8-11-smoke/jobs/d1afc2f3c1e1146153b5ccb76d8314da2a78fe3c2915c46916cdb84524692635"
+  },
+  {
+    "panel_id": "figure_9c",
+    "job_id": "703fe37dc3964d0f501d6605a21de0c8efa5d3aa37804b96d7c3a51910d21a3f",
+    "completed": true,
+    "output_dir": "artifacts/hoodie/campaigns/figures-8-11-smoke/jobs/703fe37dc3964d0f501d6605a21de0c8efa5d3aa37804b96d7c3a51910d21a3f"
+  },
+  {
+    "panel_id": "figure_9d",
+    "job_id": "9df3c4bb744bfd2da608d59d6e7a95654d174f22fc9baff1fc66a1501314e46a",
+    "completed": true,
+    "output_dir": "artifacts/hoodie/campaigns/figures-8-11-smoke/jobs/9df3c4bb744bfd2da608d59d6e7a95654d174f22fc9baff1fc66a1501314e46a"
+  },
+  {
+    "panel_id": "figure_9e",
+    "job_id": "1ceae3f67da0f3dbfa2f0fa8071a7fe0bc44e3d92b39c046b3f56a5fd1182543",
+    "completed": true,
+    "output_dir": "artifacts/hoodie/campaigns/figures-8-11-smoke/jobs/1ceae3f67da0f3dbfa2f0fa8071a7fe0bc44e3d92b39c046b3f56a5fd1182543"
+  },
+  {
+    "panel_id": "figure_10a",
+    "job_id": "d7621115d38aca7c4e449b1a3b5735f99ba2ec78d443ae87504043b5abea3b3c",
+    "completed": true,
+    "output_dir": "artifacts/hoodie/campaigns/figures-8-11-smoke/jobs/d7621115d38aca7c4e449b1a3b5735f99ba2ec78d443ae87504043b5abea3b3c"
+  },
+  {
+    "panel_id": "figure_10b",
+    "job_id": "89f24edadf3c68a1a79bd5b310f9b420d9480888495425d666f303ed43afd90e",
+    "completed": true,
+    "output_dir": "artifacts/hoodie/campaigns/figures-8-11-smoke/jobs/89f24edadf3c68a1a79bd5b310f9b420d9480888495425d666f303ed43afd90e"
+  },
+  {
+    "panel_id": "figure_10c",
+    "job_id": "26ea7290373fc15005199c7be2cac75211f9cbd9a783b89903649460f71db340",
+    "completed": true,
+    "output_dir": "artifacts/hoodie/campaigns/figures-8-11-smoke/jobs/26ea7290373fc15005199c7be2cac75211f9cbd9a783b89903649460f71db340"
+  },
+  {
+    "panel_id": "figure_10d",
+    "job_id": "bd0ba229432bb8082dfa2c154b2fd74d7e64890fe3f8f04bfad257af5275f238",
+    "completed": true,
+    "output_dir": "artifacts/hoodie/campaigns/figures-8-11-smoke/jobs/bd0ba229432bb8082dfa2c154b2fd74d7e64890fe3f8f04bfad257af5275f238"
+  },
+  {
+    "panel_id": "figure_10e",
+    "job_id": "bf912e32835a576d63194ea5a4276ce53174562944aa1b41b831cb88abd39ff1",
+    "completed": true,
+    "output_dir": "artifacts/hoodie/campaigns/figures-8-11-smoke/jobs/bf912e32835a576d63194ea5a4276ce53174562944aa1b41b831cb88abd39ff1"
+  },
+  {
+    "panel_id": "figure_10f",
+    "job_id": "ba95a366306ea0d1d6a92582b0c7b48257c3ef2cdb299ee7fd3856fc36bc58ad",
+    "completed": true,
+    "output_dir": "artifacts/hoodie/campaigns/figures-8-11-smoke/jobs/ba95a366306ea0d1d6a92582b0c7b48257c3ef2cdb299ee7fd3856fc36bc58ad"
+  },
+  {
+    "panel_id": "figure_11",
+    "job_id": "c17f585bf936b7605da3ed7c46f5c7f0dc0de6b19f4359180a3f29d64c21146e",
+    "completed": true,
+    "output_dir": "artifacts/hoodie/campaigns/figures-8-11-smoke/jobs/c17f585bf936b7605da3ed7c46f5c7f0dc0de6b19f4359180a3f29d64c21146e"
+  }
+]

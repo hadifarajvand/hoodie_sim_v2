@@ -1,0 +1,7 @@
+{
+  "all_required_checks_passed": true,
+  "no_nan_or_inf": true,
+  "no_negative_delays": true,
+  "offered_equals_completed_plus_dropped": true,
+  "paired_trace_hashes_match": true
+}

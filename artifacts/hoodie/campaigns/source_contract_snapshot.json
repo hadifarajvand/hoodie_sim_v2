@@ -1,0 +1,494 @@
+{
+  "panels": [
+    {
+      "compared_policies": [
+        "FLC",
+        "RO",
+        "HO",
+        "VO",
+        "BCO",
+        "MLEO"
+      ],
+      "confidence_level": 0.95,
+      "dependent_metric": "reward",
+      "fixed_topology": {},
+      "independent_values": [],
+      "independent_variable": "policy",
+      "panel_id": "figure_8a",
+      "scientific_question": "Engineering smoke reproduction contract for figure_8a",
+      "source_citation": "docs/reports/2026-07-01-hoodie-paper-to-code-gap-audit.md",
+      "unresolved_fields": [
+        {
+          "field": "independent_values",
+          "reason": "panel grid not fully extractable from accessible repository docs",
+          "searched_sources": [
+            "docs/reports/2026-07-01-hoodie-paper-to-code-gap-audit.md",
+            "docs/plans/2026-06-28-phase1-master-paper-faithful-hoodie-reproduction-plan.md"
+          ]
+        },
+        {
+          "field": "fixed_topology",
+          "reason": "exact panel-specific topology contract not isolated in canonical docs",
+          "searched_sources": [
+            "docs/analysis/hoodie_superiority_gap.md"
+          ]
+        }
+      ]
+    },
+    {
+      "compared_policies": [
+        "FLC",
+        "RO",
+        "HO",
+        "VO",
+        "BCO",
+        "MLEO"
+      ],
+      "confidence_level": 0.95,
+      "dependent_metric": "reward",
+      "fixed_topology": {},
+      "independent_values": [],
+      "independent_variable": "seed",
+      "panel_id": "figure_8b",
+      "scientific_question": "Engineering smoke reproduction contract for figure_8b",
+      "source_citation": "docs/reports/2026-07-01-hoodie-paper-to-code-gap-audit.md",
+      "unresolved_fields": [
+        {
+          "field": "independent_values",
+          "reason": "panel grid not fully extractable from accessible repository docs",
+          "searched_sources": [
+            "docs/reports/2026-07-01-hoodie-paper-to-code-gap-audit.md",
+            "docs/plans/2026-06-28-phase1-master-paper-faithful-hoodie-reproduction-plan.md"
+          ]
+        },
+        {
+          "field": "fixed_topology",
+          "reason": "exact panel-specific topology contract not isolated in canonical docs",
+          "searched_sources": [
+            "docs/analysis/hoodie_superiority_gap.md"
+          ]
+        }
+      ]
+    },
+    {
+      "compared_policies": [
+        "FLC",
+        "RO",
+        "HO",
+        "VO",
+        "BCO",
+        "MLEO"
+      ],
+      "confidence_level": 0.95,
+      "dependent_metric": "reward",
+      "fixed_topology": {},
+      "independent_values": [],
+      "independent_variable": "policy",
+      "panel_id": "figure_9a",
+      "scientific_question": "Engineering smoke reproduction contract for figure_9a",
+      "source_citation": "docs/reports/2026-07-01-hoodie-paper-to-code-gap-audit.md",
+      "unresolved_fields": [
+        {
+          "field": "independent_values",
+          "reason": "panel grid not fully extractable from accessible repository docs",
+          "searched_sources": [
+            "docs/reports/2026-07-01-hoodie-paper-to-code-gap-audit.md",
+            "docs/plans/2026-06-28-phase1-master-paper-faithful-hoodie-reproduction-plan.md"
+          ]
+        },
+        {
+          "field": "fixed_topology",
+          "reason": "exact panel-specific topology contract not isolated in canonical docs",
+          "searched_sources": [
+            "docs/analysis/hoodie_superiority_gap.md"
+          ]
+        }
+      ]
+    },
+    {
+      "compared_policies": [
+        "FLC",
+        "RO",
+        "HO",
+        "VO",
+        "BCO",
+        "MLEO"
+      ],
+      "confidence_level": 0.95,
+      "dependent_metric": "reward",
+      "fixed_topology": {},
+      "independent_values": [],
+      "independent_variable": "policy",
+      "panel_id": "figure_9b",
+      "scientific_question": "Engineering smoke reproduction contract for figure_9b",
+      "source_citation": "docs/reports/2026-07-01-hoodie-paper-to-code-gap-audit.md",
+      "unresolved_fields": [
+        {
+          "field": "independent_values",
+          "reason": "panel grid not fully extractable from accessible repository docs",
+          "searched_sources": [
+            "docs/reports/2026-07-01-hoodie-paper-to-code-gap-audit.md",
+            "docs/plans/2026-06-28-phase1-master-paper-faithful-hoodie-reproduction-plan.md"
+          ]
+        },
+        {
+          "field": "fixed_topology",
+          "reason": "exact panel-specific topology contract not isolated in canonical docs",
+          "searched_sources": [
+            "docs/analysis/hoodie_superiority_gap.md"
+          ]
+        }
+      ]
+    },
+    {
+      "compared_policies": [
+        "FLC",
+        "RO",
+        "HO",
+        "VO",
+        "BCO",
+        "MLEO"
+      ],
+      "confidence_level": 0.95,
+      "dependent_metric": "reward",
+      "fixed_topology": {},
+      "independent_values": [],
+      "independent_variable": "policy",
+      "panel_id": "figure_9c",
+      "scientific_question": "Engineering smoke reproduction contract for figure_9c",
+      "source_citation": "docs/reports/2026-07-01-hoodie-paper-to-code-gap-audit.md",
+      "unresolved_fields": [
+        {
+          "field": "independent_values",
+          "reason": "panel grid not fully extractable from accessible repository docs",
+          "searched_sources": [
+            "docs/reports/2026-07-01-hoodie-paper-to-code-gap-audit.md",
+            "docs/plans/2026-06-28-phase1-master-paper-faithful-hoodie-reproduction-plan.md"
+          ]
+        },
+        {
+          "field": "fixed_topology",
+          "reason": "exact panel-specific topology contract not isolated in canonical docs",
+          "searched_sources": [
+            "docs/analysis/hoodie_superiority_gap.md"
+          ]
+        }
+      ]
+    },
+    {
+      "compared_policies": [
+        "FLC",
+        "RO",
+        "HO",
+        "VO",
+        "BCO",
+        "MLEO"
+      ],
+      "confidence_level": 0.95,
+      "dependent_metric": "reward",
+      "fixed_topology": {},
+      "independent_values": [],
+      "independent_variable": "policy",
+      "panel_id": "figure_9d",
+      "scientific_question": "Engineering smoke reproduction contract for figure_9d",
+      "source_citation": "docs/reports/2026-07-01-hoodie-paper-to-code-gap-audit.md",
+      "unresolved_fields": [
+        {
+          "field": "independent_values",
+          "reason": "panel grid not fully extractable from accessible repository docs",
+          "searched_sources": [
+            "docs/reports/2026-07-01-hoodie-paper-to-code-gap-audit.md",
+            "docs/plans/2026-06-28-phase1-master-paper-faithful-hoodie-reproduction-plan.md"
+          ]
+        },
+        {
+          "field": "fixed_topology",
+          "reason": "exact panel-specific topology contract not isolated in canonical docs",
+          "searched_sources": [
+            "docs/analysis/hoodie_superiority_gap.md"
+          ]
+        }
+      ]
+    },
+    {
+      "compared_policies": [
+        "FLC",
+        "RO",
+        "HO",
+        "VO",
+        "BCO",
+        "MLEO"
+      ],
+      "confidence_level": 0.95,
+      "dependent_metric": "reward",
+      "fixed_topology": {},
+      "independent_values": [],
+      "independent_variable": "policy",
+      "panel_id": "figure_9e",
+      "scientific_question": "Engineering smoke reproduction contract for figure_9e",
+      "source_citation": "docs/reports/2026-07-01-hoodie-paper-to-code-gap-audit.md",
+      "unresolved_fields": [
+        {
+          "field": "independent_values",
+          "reason": "panel grid not fully extractable from accessible repository docs",
+          "searched_sources": [
+            "docs/reports/2026-07-01-hoodie-paper-to-code-gap-audit.md",
+            "docs/plans/2026-06-28-phase1-master-paper-faithful-hoodie-reproduction-plan.md"
+          ]
+        },
+        {
+          "field": "fixed_topology",
+          "reason": "exact panel-specific topology contract not isolated in canonical docs",
+          "searched_sources": [
+            "docs/analysis/hoodie_superiority_gap.md"
+          ]
+        }
+      ]
+    },
+    {
+      "compared_policies": [
+        "FLC",
+        "RO",
+        "HO",
+        "VO",
+        "BCO",
+        "MLEO"
+      ],
+      "confidence_level": 0.95,
+      "dependent_metric": "reward",
+      "fixed_topology": {},
+      "independent_values": [],
+      "independent_variable": "seed",
+      "panel_id": "figure_10a",
+      "scientific_question": "Engineering smoke reproduction contract for figure_10a",
+      "source_citation": "docs/reports/2026-07-01-hoodie-paper-to-code-gap-audit.md",
+      "unresolved_fields": [
+        {
+          "field": "independent_values",
+          "reason": "panel grid not fully extractable from accessible repository docs",
+          "searched_sources": [
+            "docs/reports/2026-07-01-hoodie-paper-to-code-gap-audit.md",
+            "docs/plans/2026-06-28-phase1-master-paper-faithful-hoodie-reproduction-plan.md"
+          ]
+        },
+        {
+          "field": "fixed_topology",
+          "reason": "exact panel-specific topology contract not isolated in canonical docs",
+          "searched_sources": [
+            "docs/analysis/hoodie_superiority_gap.md"
+          ]
+        }
+      ]
+    },
+    {
+      "compared_policies": [
+        "FLC",
+        "RO",
+        "HO",
+        "VO",
+        "BCO",
+        "MLEO"
+      ],
+      "confidence_level": 0.95,
+      "dependent_metric": "reward",
+      "fixed_topology": {},
+      "independent_values": [],
+      "independent_variable": "seed",
+      "panel_id": "figure_10b",
+      "scientific_question": "Engineering smoke reproduction contract for figure_10b",
+      "source_citation": "docs/reports/2026-07-01-hoodie-paper-to-code-gap-audit.md",
+      "unresolved_fields": [
+        {
+          "field": "independent_values",
+          "reason": "panel grid not fully extractable from accessible repository docs",
+          "searched_sources": [
+            "docs/reports/2026-07-01-hoodie-paper-to-code-gap-audit.md",
+            "docs/plans/2026-06-28-phase1-master-paper-faithful-hoodie-reproduction-plan.md"
+          ]
+        },
+        {
+          "field": "fixed_topology",
+          "reason": "exact panel-specific topology contract not isolated in canonical docs",
+          "searched_sources": [
+            "docs/analysis/hoodie_superiority_gap.md"
+          ]
+        }
+      ]
+    },
+    {
+      "compared_policies": [
+        "FLC",
+        "RO",
+        "HO",
+        "VO",
+        "BCO",
+        "MLEO"
+      ],
+      "confidence_level": 0.95,
+      "dependent_metric": "reward",
+      "fixed_topology": {},
+      "independent_values": [],
+      "independent_variable": "seed",
+      "panel_id": "figure_10c",
+      "scientific_question": "Engineering smoke reproduction contract for figure_10c",
+      "source_citation": "docs/reports/2026-07-01-hoodie-paper-to-code-gap-audit.md",
+      "unresolved_fields": [
+        {
+          "field": "independent_values",
+          "reason": "panel grid not fully extractable from accessible repository docs",
+          "searched_sources": [
+            "docs/reports/2026-07-01-hoodie-paper-to-code-gap-audit.md",
+            "docs/plans/2026-06-28-phase1-master-paper-faithful-hoodie-reproduction-plan.md"
+          ]
+        },
+        {
+          "field": "fixed_topology",
+          "reason": "exact panel-specific topology contract not isolated in canonical docs",
+          "searched_sources": [
+            "docs/analysis/hoodie_superiority_gap.md"
+          ]
+        }
+      ]
+    },
+    {
+      "compared_policies": [
+        "FLC",
+        "RO",
+        "HO",
+        "VO",
+        "BCO",
+        "MLEO"
+      ],
+      "confidence_level": 0.95,
+      "dependent_metric": "reward",
+      "fixed_topology": {},
+      "independent_values": [],
+      "independent_variable": "seed",
+      "panel_id": "figure_10d",
+      "scientific_question": "Engineering smoke reproduction contract for figure_10d",
+      "source_citation": "docs/reports/2026-07-01-hoodie-paper-to-code-gap-audit.md",
+      "unresolved_fields": [
+        {
+          "field": "independent_values",
+          "reason": "panel grid not fully extractable from accessible repository docs",
+          "searched_sources": [
+            "docs/reports/2026-07-01-hoodie-paper-to-code-gap-audit.md",
+            "docs/plans/2026-06-28-phase1-master-paper-faithful-hoodie-reproduction-plan.md"
+          ]
+        },
+        {
+          "field": "fixed_topology",
+          "reason": "exact panel-specific topology contract not isolated in canonical docs",
+          "searched_sources": [
+            "docs/analysis/hoodie_superiority_gap.md"
+          ]
+        }
+      ]
+    },
+    {
+      "compared_policies": [
+        "FLC",
+        "RO",
+        "HO",
+        "VO",
+        "BCO",
+        "MLEO"
+      ],
+      "confidence_level": 0.95,
+      "dependent_metric": "reward",
+      "fixed_topology": {},
+      "independent_values": [],
+      "independent_variable": "seed",
+      "panel_id": "figure_10e",
+      "scientific_question": "Engineering smoke reproduction contract for figure_10e",
+      "source_citation": "docs/reports/2026-07-01-hoodie-paper-to-code-gap-audit.md",
+      "unresolved_fields": [
+        {
+          "field": "independent_values",
+          "reason": "panel grid not fully extractable from accessible repository docs",
+          "searched_sources": [
+            "docs/reports/2026-07-01-hoodie-paper-to-code-gap-audit.md",
+            "docs/plans/2026-06-28-phase1-master-paper-faithful-hoodie-reproduction-plan.md"
+          ]
+        },
+        {
+          "field": "fixed_topology",
+          "reason": "exact panel-specific topology contract not isolated in canonical docs",
+          "searched_sources": [
+            "docs/analysis/hoodie_superiority_gap.md"
+          ]
+        }
+      ]
+    },
+    {
+      "compared_policies": [
+        "FLC",
+        "RO",
+        "HO",
+        "VO",
+        "BCO",
+        "MLEO"
+      ],
+      "confidence_level": 0.95,
+      "dependent_metric": "reward",
+      "fixed_topology": {},
+      "independent_values": [],
+      "independent_variable": "seed",
+      "panel_id": "figure_10f",
+      "scientific_question": "Engineering smoke reproduction contract for figure_10f",
+      "source_citation": "docs/reports/2026-07-01-hoodie-paper-to-code-gap-audit.md",
+      "unresolved_fields": [
+        {
+          "field": "independent_values",
+          "reason": "panel grid not fully extractable from accessible repository docs",
+          "searched_sources": [
+            "docs/reports/2026-07-01-hoodie-paper-to-code-gap-audit.md",
+            "docs/plans/2026-06-28-phase1-master-paper-faithful-hoodie-reproduction-plan.md"
+          ]
+        },
+        {
+          "field": "fixed_topology",
+          "reason": "exact panel-specific topology contract not isolated in canonical docs",
+          "searched_sources": [
+            "docs/analysis/hoodie_superiority_gap.md"
+          ]
+        }
+      ]
+    },
+    {
+      "compared_policies": [
+        "FLC",
+        "RO",
+        "HO",
+        "VO",
+        "BCO",
+        "MLEO"
+      ],
+      "confidence_level": 0.95,
+      "dependent_metric": "reward",
+      "fixed_topology": {},
+      "independent_values": [],
+      "independent_variable": "seed",
+      "panel_id": "figure_11",
+      "scientific_question": "Engineering smoke reproduction contract for figure_11",
+      "source_citation": "docs/reports/2026-07-01-hoodie-paper-to-code-gap-audit.md",
+      "unresolved_fields": [
+        {
+          "field": "independent_values",
+          "reason": "panel grid not fully extractable from accessible repository docs",
+          "searched_sources": [
+            "docs/reports/2026-07-01-hoodie-paper-to-code-gap-audit.md",
+            "docs/plans/2026-06-28-phase1-master-paper-faithful-hoodie-reproduction-plan.md"
+          ]
+        },
+        {
+          "field": "fixed_topology",
+          "reason": "exact panel-specific topology contract not isolated in canonical docs",
+          "searched_sources": [
+            "docs/analysis/hoodie_superiority_gap.md"
+          ]
+        }
+      ]
+    }
+  ]
+}

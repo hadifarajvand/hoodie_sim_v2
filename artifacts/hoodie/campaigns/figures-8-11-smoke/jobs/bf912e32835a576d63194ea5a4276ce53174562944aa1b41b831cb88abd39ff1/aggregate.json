@@ -1,0 +1,23 @@
+{
+  "action_distribution": {
+    "local": 160
+  },
+  "average_delay": 2.9482758620689653,
+  "completed_tasks": 58,
+  "completion_ratio": 0.3625,
+  "component_delays": {
+    "delay": 1.2376620589546974
+  },
+  "confidence_interval": [
+    1.710613803114268,
+    4.185937921023663
+  ],
+  "denominator_contract": "offered",
+  "drop_ratio": 0.6375,
+  "dropped_tasks": 102,
+  "offered_tasks": 160,
+  "reward_aggregates": {
+    "reward": -171.0
+  },
+  "seed_count": 1
+}

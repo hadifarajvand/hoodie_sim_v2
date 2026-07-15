@@ -20,3 +20,18 @@ package-dir = {"" = "src"}
 [tool.setuptools.packages.find]
 where = ["src"]
 include = ["hoodie*"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests_supported/hoodie"]
+norecursedirs = [
+  ".git",
+  ".venv",
+  "venv",
+  "build",
+  "dist",
+  "artifacts",
+  "resources",
+  "tests_historical",
+  "tests",
+]
+addopts = "-ra"
