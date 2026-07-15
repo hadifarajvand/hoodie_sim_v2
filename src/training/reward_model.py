@@ -28,6 +28,14 @@ class RewardEvent:
     ownership: str
 
 
+@dataclass(frozen=True, slots=True)
+class RewardResult:
+    reward: float
+    resolved_slot: int
+    terminal: bool
+    ownership: str
+
+
 def reward_for_task(task: Task, contract: RewardContract, action_family: str) -> float:
     if task.terminal_outcome == "completed" and task.completion_slot is not None:
         reward = contract.completion_reward - float(task.completion_slot - task.arrival_slot)

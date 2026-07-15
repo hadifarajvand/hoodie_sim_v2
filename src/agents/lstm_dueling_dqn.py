@@ -1,54 +1,88 @@
 from __future__ import annotations
 
-import warnings
+from dataclasses import dataclass, field
 from typing import Any
 
 import torch
 import torch.nn as nn
 
-from src.analysis.paper_hoodie_network_implementation import PaperHoodieDuelingNetwork, PaperHoodieNetworkConfig
+
+@dataclass(slots=True)
+class LSTMState:
+    hidden: tuple[torch.Tensor, torch.Tensor] | None = None
 
 
 class LSTM_Dueling_DQN(nn.Module):
-    """Delegation wrapper around PaperHoodieDuelingNetwork.
-
-    Maintains backward compatibility with existing tests.
-    The canonical implementation lives in
-    src/analysis/paper_hoodie_network_implementation/network.py
-    """
-
-    def __init__(self, state_dim: int = 74, lookback: int = 10, num_actions: int = 22,
-                 hidden_sizes: list[int] | None = None, lstm_hidden: int = 20):
+    def __init__(
+        self,
+        state_dim: int = 74,
+        lookback: int = 10,
+        num_actions: int = 22,
+        hidden_sizes: list[int] | None = None,
+        lstm_hidden: int = 20,
+        lstm_layers: int = 1,
+    ):
         super().__init__()
         if hidden_sizes is None:
             hidden_sizes = [1024, 1024, 1024]
-        config = PaperHoodieNetworkConfig.standard(
-            state_dim=state_dim, action_count=num_actions,
-        )
-        self._impl = PaperHoodieDuelingNetwork(config)
-        self.lstm = self._impl.encoder
         self.input_size = state_dim
-        self.lstm_hidden = lstm_hidden
         self.lookback = lookback
-        self.hidden_sizes = hidden_sizes
         self.num_actions = num_actions
+        self.lstm_hidden = lstm_hidden
+        self.hidden_sizes = hidden_sizes
+        self.lstm = nn.LSTM(state_dim, lstm_hidden, num_layers=lstm_layers, batch_first=True)
+        layers: list[nn.Module] = []
+        in_features = lstm_hidden
+        for size in hidden_sizes:
+            layers.extend([nn.Linear(in_features, size), nn.ReLU()])
+            in_features = size
+        self.fc_layers = nn.Sequential(*layers)
+        self.value_stream = nn.Sequential(nn.Linear(in_features, in_features), nn.ReLU(), nn.Linear(in_features, 1))
+        self.advantage_stream = nn.Sequential(nn.Linear(in_features, in_features), nn.ReLU(), nn.Linear(in_features, num_actions))
+        self._reset_parameters()
+        self._forecast_history: list[torch.Tensor] = []
 
-    @property
-    def fc_layers(self) -> nn.Sequential:
-        return self._impl.q_body
+    def _reset_parameters(self) -> None:
+        for module in self.modules():
+            if isinstance(module, nn.Linear):
+                nn.init.kaiming_uniform_(module.weight, a=5 ** 0.5)
+                if module.bias is not None:
+                    nn.init.zeros_(module.bias)
+            if isinstance(module, nn.LSTM):
+                for name, param in module.named_parameters():
+                    if "weight" in name:
+                        nn.init.xavier_uniform_(param)
+                    elif "bias" in name:
+                        nn.init.zeros_(param)
 
-    @property
-    def value_stream(self) -> nn.Sequential:
-        warnings.warn("value_stream accessed via wrapper; use _impl directly", stacklevel=2)
-        return nn.Sequential(self._impl.value_head)
+    def reset_forecast_state(self) -> None:
+        self._forecast_history.clear()
 
-    @property
-    def advantage_stream(self) -> nn.Sequential:
-        warnings.warn("advantage_stream accessed via wrapper; use _impl directly", stacklevel=2)
-        return nn.Sequential(self._impl.advantage_head)
+    def forecast_features(self, x: torch.Tensor) -> torch.Tensor:
+        if x.dim() != 3:
+            raise ValueError("Expected [batch, lookback, state_dim]")
+        output, _hidden = self.lstm(x)
+        forecast = output[:, -1, :]
+        self._forecast_history.append(forecast.detach())
+        return forecast
 
     def forward(self, x: torch.Tensor) -> torch.Tensor:
-        return self._impl(x)
+        forecast = self.forecast_features(x)
+        latent = self.fc_layers(forecast)
+        value = self.value_stream(latent)
+        advantage = self.advantage_stream(latent)
+        return value + advantage - advantage.mean(dim=-1, keepdim=True)
 
+    def export_state(self) -> dict[str, Any]:
+        return {
+            "state_dict": self.state_dict(),
+            "input_size": self.input_size,
+            "lookback": self.lookback,
+            "num_actions": self.num_actions,
+            "lstm_hidden": self.lstm_hidden,
+            "hidden_sizes": list(self.hidden_sizes),
+            "forecast_history_length": len(self._forecast_history),
+        }
 
-__all__ = ["LSTM_Dueling_DQN"]
+    def load_export_state(self, state: dict[str, Any]) -> None:
+        self.load_state_dict(state["state_dict"])
