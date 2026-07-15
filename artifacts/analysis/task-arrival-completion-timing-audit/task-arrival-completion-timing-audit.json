@@ -1,14 +1,14 @@
 {
   "bounded_constraint": "3 episodes x 200 slots",
   "bridge": {
-    "bridged_lifecycle_event_count": 6706,
+    "bridged_lifecycle_event_count": 7850,
     "completion_accounting_mismatch": false,
     "duplicate_bridge_guard_enabled": true,
-    "execution_completed_count": 1192,
+    "execution_completed_count": 1190,
     "service_completed_observable": true,
-    "service_progress_count": 3154,
+    "service_progress_count": 3196,
     "service_progress_observable": true,
-    "service_started_count": 3154
+    "service_started_count": 3196
   },
   "config_summary": {
     "action_count": 22,
@@ -25,8 +25,8 @@
   "diagnostic_type": "task_arrival_completion_timing_audit",
   "episode_summaries": [
     {
-      "completed_task_count": 199,
-      "dropped_task_count": 0,
+      "completed_task_count": 13,
+      "dropped_task_count": 185,
       "episode_id": 0,
       "illegal_action_count": 0,
       "loss_count": 137,
@@ -34,8 +34,8 @@
       "transition_count": 200
     },
     {
-      "completed_task_count": 198,
-      "dropped_task_count": 0,
+      "completed_task_count": 16,
+      "dropped_task_count": 183,
       "episode_id": 1,
       "illegal_action_count": 0,
       "loss_count": 200,
@@ -43,8 +43,8 @@
       "transition_count": 200
     },
     {
-      "completed_task_count": 199,
-      "dropped_task_count": 0,
+      "completed_task_count": 14,
+      "dropped_task_count": 184,
       "episode_id": 2,
       "illegal_action_count": 0,
       "loss_count": 200,
@@ -55,26 +55,26 @@
   "inferred_findings": {
     "arrival_slot_statistics": {
       "count": 600,
-      "max": 199,
-      "mean": 99.5,
+      "max": 9,
+      "mean": 4.5,
       "min": 0
     },
     "most_likely_next_hypothesis": "",
     "terminal_reason_distribution": {
-      "completed": 425,
-      "none": 174,
-      "pending_at_horizon": 1
+      "completed": 31,
+      "dropped": 390,
+      "none": 179
     },
     "what_is_not_observable": [],
     "what_is_proven": [
-      "Task arrivals occur as early as slot 0 (mean 99.5)",
-      "All rewards are negative (total=-2703.0, avg=-6.36) — drop penalties dominate, no completion rewards"
+      "Task arrivals occur as early as slot 0 (mean 4.5)",
+      "All rewards are negative (total=-14544.0, avg=-34.55) — drop penalties dominate, no completion rewards"
     ]
   },
   "metrics": {
-    "average_reward": -6.36,
-    "completed_task_count": 596,
-    "dropped_task_count": 0,
+    "average_reward": -34.54631828978622,
+    "completed_task_count": 43,
+    "dropped_task_count": 552,
     "episode_length": 200,
     "episodes_completed": 3,
     "illegal_action_count": 0,
@@ -87,34 +87,34 @@
     },
     "pending_at_horizon_count": 3,
     "replay_size": 600,
-    "reward_count": 425,
+    "reward_count": 421,
     "total_transition_count": 600
   },
   "observability_matrix": {
     "action_distribution": {
       "observable": true,
       "value": {
-        "0": 320,
-        "1": 19,
-        "2": 14,
-        "3": 13,
-        "4": 11,
-        "5": 14,
-        "6": 15,
-        "7": 16,
-        "8": 19,
-        "9": 14,
-        "10": 15,
-        "11": 9,
-        "12": 9,
-        "13": 21,
-        "14": 9,
-        "15": 16,
-        "16": 16,
-        "17": 14,
-        "18": 13,
-        "19": 11,
-        "20": 12
+        "0": 323,
+        "1": 17,
+        "2": 25,
+        "3": 11,
+        "4": 9,
+        "5": 12,
+        "6": 13,
+        "7": 18,
+        "8": 13,
+        "9": 13,
+        "10": 14,
+        "11": 11,
+        "12": 12,
+        "13": 14,
+        "14": 19,
+        "15": 14,
+        "16": 14,
+        "17": 12,
+        "18": 16,
+        "19": 9,
+        "20": 11
       }
     },
     "first_arrival_slot": {
@@ -129,13 +129,13 @@
       "observable": true,
       "value": [
         4,
-        4,
-        9
+        8,
+        7
       ]
     },
     "first_service_start_slot": {
       "observable": true,
-      "value": 3
+      "value": 2
     },
     "queue_lengths": {
       "observable": true,
@@ -144,9 +144,9 @@
     "reward_events": {
       "observable": true,
       "value": {
-        "average": -6.36,
-        "count": 425,
-        "total": -2703.0
+        "average": -34.54631828978622,
+        "count": 421,
+        "total": -14544.0
       }
     },
     "service_started_observable": {
@@ -156,53 +156,59 @@
   },
   "recommended_next_step": "service progress audit",
   "trace_info": {
-    "bridged_lifecycle_event_count": 6706,
+    "bridged_lifecycle_event_count": 7850,
     "completion_accounting_mismatch": false,
     "duplicate_bridge_guard_enabled": true,
-    "execution_completed_count": 1192,
-    "first_service_start_slot": 3,
+    "execution_completed_count": 1190,
+    "first_service_start_slot": 2,
     "lifecycle_event_counts": {
       "action_selected": 600,
-      "execution_completed": 1192,
-      "execution_progress": 3154,
-      "execution_started": 1577,
-      "pending_at_horizon": 8,
+      "deadline_expired": 1104,
+      "deadline_reached": 1104,
+      "execution_completed": 1190,
+      "execution_progress": 3196,
+      "execution_started": 1598,
+      "pending_at_horizon": 16,
       "queue_length_sampled": 12000,
-      "reward_emitted": 1192,
-      "reward_released": 425,
-      "service_started": 1577,
+      "reward_emitted": 1190,
+      "reward_released": 421,
+      "service_started": 1598,
       "task_admitted": 1200,
-      "task_arrived": 600,
-      "task_completed": 1788,
-      "task_generated": 1200,
+      "task_arrived": 30,
+      "task_completed": 129,
+      "task_dropped": 1656,
+      "task_generated": 1206,
       "task_pending_at_horizon": 3,
-      "transmission_completed": 560,
-      "transmission_started": 560
+      "transmission_completed": 554,
+      "transmission_started": 554
     },
     "lifecycle_events_absent_even_when_trace_enabled": false,
     "queue_length_samples": 12000,
     "service_completed_observable": true,
-    "service_progress_count": 3154,
+    "service_progress_count": 3196,
     "service_progress_observable": true,
-    "service_started_count": 3154,
+    "service_started_count": 3196,
     "service_started_observable": true,
     "trace_collector_enabled": true,
     "trace_event_counts": {
       "action_selected": 600,
-      "execution_completed": 1192,
-      "execution_progress": 3154,
-      "pending_at_horizon": 8,
+      "deadline_expired": 1104,
+      "deadline_reached": 1104,
+      "execution_completed": 1190,
+      "execution_progress": 3196,
+      "pending_at_horizon": 16,
       "queue_length_sampled": 12000,
-      "reward_emitted": 1192,
-      "reward_released": 425,
-      "service_started": 3154,
+      "reward_emitted": 1190,
+      "reward_released": 421,
+      "service_started": 3196,
       "task_admitted": 1200,
-      "task_arrived": 600,
-      "task_completed": 1788,
-      "task_generated": 1200,
+      "task_arrived": 30,
+      "task_completed": 129,
+      "task_dropped": 1656,
+      "task_generated": 1206,
       "task_pending_at_horizon": 3,
-      "transmission_completed": 560,
-      "transmission_started": 560
+      "transmission_completed": 554,
+      "transmission_started": 554
     }
   },
   "verdict": "bridge_needs_service_progress_audit"

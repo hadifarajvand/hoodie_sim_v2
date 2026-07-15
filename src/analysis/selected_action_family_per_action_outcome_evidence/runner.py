@@ -41,7 +41,7 @@ def _prerequisite_tags_verified() -> list[dict[str, Any]]:
         {"name": "prerequisite_diff_empty", "verified": _git_output("diff", "--name-only", "049-exposure-matrix-paper-mechanism-alignment-complete^{}", "main") == "", "details": "diff between 049-exposure-matrix-paper-mechanism-alignment-complete^{} and main is empty"},
         {"name": "pointer_correct", "verified": "specs/050-selected-action-family-per-action-outcome-evidence" in Path(".specify/feature.json").read_text(encoding="utf-8"), "details": ".specify/feature.json points at Feature 050"},
         {"name": "pointer_not_staged", "verified": _git_output("diff", "--cached", "--name-only", "--", ".specify/feature.json") == "", "details": ".specify/feature.json is not staged"},
-        {"name": "pointer_not_in_main_head", "verified": ".specify/feature.json" not in _git_output("diff", "--name-only", "main...HEAD").splitlines(), "details": ".specify/feature.json is not in main...HEAD diff"},
+        {"name": "pointer_not_in_main_head", "verified": ".specify/feature.json" not in _git_output("diff", "--name-only", "origin/main...HEAD").splitlines(), "details": ".specify/feature.json is not in origin/main...HEAD diff"},
         {"name": "agents_clean_before_report", "verified": _git_output("status", "--short").find("AGENTS.md") == -1, "details": "AGENTS.md clean before report generation"},
     ]
 

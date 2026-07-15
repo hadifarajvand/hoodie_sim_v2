@@ -51,7 +51,7 @@ def _prerequisite_tags_verified() -> list[dict[str, Any]]:
         {"name": "main_equals_feature_050", "verified": _git_output("rev-parse", "main") == _git_output("rev-parse", "050-selected-action-family-per-action-outcome-evidence-complete^{}"), "details": "main matches 050-selected-action-family-per-action-outcome-evidence-complete^{}"},
         {"name": "prerequisite_diff_empty", "verified": _git_output("diff", "--name-only", "050-selected-action-family-per-action-outcome-evidence-complete^{}", "main") == "", "details": "diff between 050-selected-action-family-per-action-outcome-evidence-complete^{} and main is empty"},
         {"name": "pointer_not_staged", "verified": _git_output("diff", "--cached", "--name-only", "--", ".specify/feature.json") == "", "details": ".specify/feature.json is not staged"},
-        {"name": "pointer_not_in_main_head", "verified": ".specify/feature.json" not in _git_output("diff", "--name-only", "main...HEAD").splitlines(), "details": ".specify/feature.json is not in main...HEAD diff"},
+        {"name": "pointer_not_in_main_head", "verified": ".specify/feature.json" not in _git_output("diff", "--name-only", "origin/main...HEAD").splitlines(), "details": ".specify/feature.json is not in origin/main...HEAD diff"},
         {"name": "agents_clean_before_report", "verified": "AGENTS.md" not in " ".join(dirty_paths), "details": "AGENTS.md is not staged or dirty before report generation"},
     ]
 

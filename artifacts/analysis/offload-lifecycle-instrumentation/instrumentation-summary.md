@@ -20,7 +20,7 @@
 ## Observed Default Audit Events
 - `created`
 - `selected_action:horizontal`
-- `created`
+- `selected_action:vertical`
 - `selected_action:local`
 - `created`
 - `created`

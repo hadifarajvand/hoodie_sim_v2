@@ -34,7 +34,7 @@ VALIDATION_COMMANDS = (
     "/Users/hadi/Documents/GitHub/hoodie_sim_v2/src/.venvmac/bin/python -m unittest discover tests.unit -p 'test_topology_timeout_reward_fidelity_*.py'",
     "/Users/hadi/Documents/GitHub/hoodie_sim_v2/src/.venvmac/bin/python -m unittest discover tests.integration -p 'test_topology_timeout_reward_fidelity_*.py'",
     "git diff --check",
-    "git diff --name-only origin/main...HEAD",
+    "git diff --name-only origin/origin/main...HEAD",
 )
 
 ALLOWED_PATH_PREFIXES = (

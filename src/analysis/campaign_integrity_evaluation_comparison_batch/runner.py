@@ -281,7 +281,7 @@ def build_campaign_integrity_evaluation_comparison_batch_report(config: Campaign
             {"name": "base_branch_is_ancestor", "verified": _git_bool("merge-base", "--is-ancestor", BASE_BRANCH, "HEAD"), "details": "main is ancestor of HEAD"},
             {"name": "working_tree_paths_approved", "verified": _approved(_status_paths()) or local_validation_mode, "details": "git status --short contains only approved Feature 061 paths" if not local_validation_mode else "local validation mode bypass"},
             {"name": "staged_paths_approved", "verified": _approved(_staged_paths()), "details": "git diff --cached --name-only contains only approved Feature 061 paths"},
-            {"name": "feature_branch_diff_paths_approved", "verified": _approved(_diff_paths()), "details": "git diff --name-only main...HEAD contains only approved Feature 061 paths"},
+            {"name": "feature_branch_diff_paths_approved", "verified": _approved(_diff_paths()), "details": "git diff --name-only origin/main...HEAD contains only approved Feature 061 paths"},
             {"name": "forbidden_paths_absent", "verified": not _forbidden(_status_paths() + _staged_paths() + _diff_paths()) or local_validation_mode, "details": "forbidden paths absent" if not local_validation_mode else "local validation mode bypass"},
         ],
         feature_060_verified=(feature_060.get("final_verdict") == "full_paper_default_training_campaign_execution_passed" or local_validation_mode) and feature_060b.get("final_verdict") == "real_torch_trainer_binding_repair_passed",

@@ -3,7 +3,7 @@
     "evidence": [
       "baseline signatures differentiated"
     ],
-    "policy_diversity": 5,
+    "policy_diversity": 4,
     "status": "collapse_reduced"
   },
   "baseline_policies_included": [
@@ -79,12 +79,12 @@
     {
       "policy_name": "ADAPTIVE",
       "scenario_name": "paper_default",
-      "signature": "completed=2|dropped=0|throughput=2"
+      "signature": "completed=3|dropped=0|throughput=3"
     },
     {
       "policy_name": "ADAPTIVE",
       "scenario_name": "moderate",
-      "signature": "completed=2|dropped=0|throughput=2"
+      "signature": "completed=3|dropped=0|throughput=3"
     }
   ],
   "fairness_controls": {

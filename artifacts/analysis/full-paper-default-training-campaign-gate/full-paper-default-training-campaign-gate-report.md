@@ -106,24 +106,24 @@
 {
   "no_baseline_superiority_claim": true,
   "no_checkpoint_binary_written": true,
-  "no_dependency_drift": true,
-  "no_environment_contract_drift": false,
+  "no_dependency_drift": false,
+  "no_environment_contract_drift": true,
   "no_full_campaign_execution": true,
   "no_optimizer_execution": true,
   "no_paper_reproduction_claim": true,
   "no_performance_claim": true,
   "no_policy_drift": false,
-  "no_prior_artifact_rewrite": true,
+  "no_prior_artifact_rewrite": false,
   "no_replay_mutation": true,
-  "no_reward_timing_change": false,
+  "no_reward_timing_change": true,
   "no_training_execution": true
 }
 
 ## Remaining Blockers
 [
   "branch",
-  "not_main",
-  "main_contains_feature_058_complete",
+  "base_contains_feature_058_complete",
   "feature_058_report_valid",
-  "working_tree_paths_approved"
+  "working_tree_paths_approved",
+  "main_head_diff_approved"
 ]

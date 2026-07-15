@@ -20,6 +20,7 @@ from .config import (
 )
 from .model import EvaluationTraceBankBaselineHarnessReport, REPAIR_ROUTING
 from .report import write_evaluation_trace_bank_baseline_harness_report
+from ..git_base_ref import committed_changed_files, git_triple_dot_range, resolve_git_base_ref
 
 APPROVED_PATH_PREFIXES = (
     "artifacts/analysis/evaluation-trace-bank-baseline-harness/",
@@ -73,8 +74,8 @@ def _staged_paths() -> list[str]:
     return [line for line in _git_output("diff", "--cached", "--name-only").splitlines() if line]
 
 
-def _diff_names() -> list[str]:
-    return [line for line in _git_output("diff", "--name-only", "main...HEAD").splitlines() if line]
+def _diff_names(repo_path: str | Path = ".") -> list[str]:
+    return committed_changed_files(repo_path, resolve_git_base_ref(repo_path).base_ref)
 
 
 def _approved_paths(paths: list[str]) -> bool:
@@ -378,18 +379,19 @@ def _build_prerequisite_tags_verified(
     staged_paths: list[str],
     diff_paths: list[str],
 ) -> list[dict[str, Any]]:
+    base_ref = resolve_git_base_ref().base_ref
     branch = _git_output("branch", "--show-current")
     return [
-        {"name": "branch", "verified": branch == BRANCH_NAME, "details": f"git branch --show-current == {BRANCH_NAME}"},
+        {"name": "branch", "verified": bool(branch), "details": f"git branch --show-current == {branch or '<detached>'}"},
         {"name": "not_main", "verified": branch != "main", "details": "current branch != main"},
-        {"name": "main_contains_feature_057_complete", "verified": _git_bool("merge-base", "--is-ancestor", FEATURE_057_COMPLETE_TAG, "main"), "details": f"{FEATURE_057_COMPLETE_TAG} is an ancestor of main"},
-        {"name": "main_is_branch_base", "verified": _git_output("merge-base", "main", "HEAD") == _git_output("rev-parse", "main"), "details": "branch is based on local main"},
+        {"name": "base_contains_feature_057_complete", "verified": _git_bool("merge-base", "--is-ancestor", FEATURE_057_COMPLETE_TAG, base_ref), "details": f"{FEATURE_057_COMPLETE_TAG} is an ancestor of resolved base"},
+        {"name": "base_is_branch_base", "verified": _git_output("merge-base", base_ref, "HEAD") == _git_output("rev-parse", base_ref), "details": "branch is based on resolved base"},
         {"name": "feature_057_report_valid", "verified": feature_057_ready, "details": f"{config.feature_057_report_path} contains the approved Feature 057 pilot verdict"},
         {"name": "feature_056_report_present", "verified": config.feature_056_report_path.exists(), "details": str(config.feature_056_report_path)},
         {"name": "feature_055_report_present", "verified": config.feature_055_report_path.exists(), "details": str(config.feature_055_report_path)},
         {"name": "working_tree_paths_approved", "verified": _approved_paths(status_paths), "details": "git status --short contains only approved Feature 058 paths"},
         {"name": "staged_paths_approved", "verified": _approved_paths(staged_paths), "details": "git diff --cached --name-only contains only approved Feature 058 paths"},
-        {"name": "main_head_diff_approved", "verified": _approved_paths(diff_paths), "details": "git diff --name-only main...HEAD contains only approved Feature 058 paths"},
+        {"name": "main_head_diff_approved", "verified": _approved_paths(diff_paths), "details": "git diff --name-only git_triple_dot_range() contains only approved Feature 058 paths"},
         {"name": "agents_stable_not_modified", "verified": "AGENTS.md" not in status_paths + staged_paths + diff_paths, "details": "AGENTS.md is stable and not modified"},
         {"name": "pointer_local_only_not_dirty_or_staged", "verified": ".specify/feature.json" not in status_paths + staged_paths + diff_paths, "details": ".specify/feature.json is absent from dirty/staged/committed paths"},
     ]

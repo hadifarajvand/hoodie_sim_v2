@@ -8,7 +8,7 @@
   "observed_default_audit_events": [
     "created",
     "selected_action:horizontal",
-    "created",
+    "selected_action:vertical",
     "selected_action:local",
     "created",
     "created"

@@ -255,7 +255,7 @@ def _prerequisite_tags() -> list[dict[str, Any]]:
         {"name": "main_equals_045", "verified": True, "details": "main matches 045-completion-root-cause-diagnosis-complete^{}"},
         {"name": "prerequisite_diff_empty", "verified": True, "details": "diff between 045-completion-root-cause-diagnosis-complete^{} and main is empty"},
         {"name": "pointer_not_staged", "verified": True, "details": ".specify/feature.json not staged"},
-        {"name": "pointer_not_in_main_head", "verified": True, "details": ".specify/feature.json absent from main...HEAD"},
+        {"name": "pointer_not_in_main_head", "verified": True, "details": ".specify/feature.json absent from git_triple_dot_range()"},
         {"name": "agents_clean_before_report", "verified": True, "details": "AGENTS.md clean before regeneration"},
         {"name": "no_unrelated_dirty_files", "verified": True, "details": "no unrelated dirty files"},
     ]

@@ -1,0 +1,88 @@
+## hoodie-redesign/local-implementation-20260715-075600...origin/hoodie-redesign/full-implementation-active [ahead 3, behind 4]
+ M artifacts/analysis/baseline-fairness-rebuild/baseline-fairness-rebuild.csv
+ M artifacts/analysis/baseline-fairness-rebuild/baseline-fairness-rebuild.json
+ M artifacts/analysis/baseline-fairness-rebuild/baseline-fairness-rebuild.md
+ M artifacts/analysis/baseline-rebuild-sensitivity-audit/baseline-rebuild-sensitivity-audit.csv
+ M artifacts/analysis/baseline-rebuild-sensitivity-audit/baseline-rebuild-sensitivity-audit.json
+ M artifacts/analysis/baseline-rebuild-sensitivity-audit/baseline-rebuild-sensitivity-audit.md
+ M artifacts/analysis/bind-full-campaign-real-torch-trainer/bind-full-campaign-real-torch-trainer-report.json
+ M artifacts/analysis/campaign-integrity-evaluation-comparison-batch/baseline-vs-trained-policy-comparison.json
+ M artifacts/analysis/campaign-integrity-evaluation-comparison-batch/baseline-vs-trained-policy-comparison.md
+ M artifacts/analysis/campaign-integrity-evaluation-comparison-batch/campaign-integrity-evaluation-comparison-batch-report.json
+ M artifacts/analysis/campaign-integrity-evaluation-comparison-batch/campaign-integrity-evaluation-comparison-batch-report.md
+ M artifacts/analysis/campaign-integrity-evaluation-comparison-batch/trained-policy-evaluation-results.json
+ M artifacts/analysis/full-paper-default-training-campaign-execution/evaluation-metrics.json
+ M artifacts/analysis/full-paper-default-training-campaign-execution/full-paper-default-training-campaign-report.json
+ M artifacts/analysis/full-paper-default-training-campaign-execution/full-paper-default-training-campaign-report.md
+ M artifacts/analysis/full-paper-default-training-campaign-execution/training-metrics.json
+ M artifacts/analysis/full-paper-default-training-campaign-gate/full-paper-default-training-campaign-gate-report.json
+ M artifacts/analysis/full-paper-default-training-campaign-gate/full-paper-default-training-campaign-gate-report.md
+ M artifacts/analysis/load-admission-action-exposure-review/load-admission-action-exposure-report.json
+ M artifacts/analysis/load-admission-action-exposure-review/load-admission-action-exposure-report.md
+ M artifacts/analysis/multi-seed-campaign-ablation-batch/multi-seed-campaign-ablation-batch-report.json
+ M artifacts/analysis/multi-seed-campaign-ablation-batch/multi-seed-campaign-ablation-batch-report.md
+ M artifacts/analysis/offload-lifecycle-instrumentation/instrumentation-summary.json
+ M artifacts/analysis/offload-lifecycle-instrumentation/instrumentation-summary.md
+ M artifacts/analysis/paper-default-pilot-training-run/paper-default-pilot-training-run-report.json
+ M artifacts/analysis/paper-default-pilot-training-run/paper-default-pilot-training-run-report.md
+ M artifacts/analysis/paper-faithful-state-action-space-batch/paper-faithful-state-action-space-batch-report.json
+ M artifacts/analysis/paper-faithful-state-action-space-batch/paper-faithful-state-action-space-batch-report.md
+ M artifacts/analysis/real-torch-trainer-binding-audit/real-torch-trainer-binding-audit-report.json
+ M artifacts/analysis/real-torch-trainer-binding-audit/real-torch-trainer-binding-audit-report.md
+ M artifacts/analysis/results-export-reproducibility-documentation-batch/results-export-reproducibility-documentation-batch-report.json
+ M artifacts/analysis/results-export-reproducibility-documentation-batch/results-export-reproducibility-documentation-batch-report.md
+ M artifacts/analysis/task-arrival-completion-timing-audit/task-arrival-completion-timing-audit.json
+ M artifacts/analysis/task-arrival-completion-timing-audit/task-arrival-completion-timing-audit.md
+ M src/analysis/campaign_integrity_evaluation_comparison_batch/runner.py
+ M src/analysis/completion_root_cause_diagnosis/report.py
+ M src/analysis/evaluation_trace_bank_baseline_harness/runner.py
+ M src/analysis/exposure_matrix_paper_mechanism_alignment/runner.py
+ M src/analysis/exposure_matrix_review/runner.py
+ M src/analysis/full_hoodie_mechanism_fidelity_batch/config.py
+ M src/analysis/full_hoodie_mechanism_fidelity_batch/runner.py
+ M src/analysis/full_paper_default_training_campaign_execution/runner.py
+ M src/analysis/full_paper_default_training_campaign_gate/runner.py
+ M src/analysis/full_training_reproduction_campaign/report.py
+ M src/analysis/legality_evidence_expansion/runner.py
+ M src/analysis/load_admission_action_exposure_review/runner.py
+ M src/analysis/paper_default_pilot_training_run/runner.py
+ M src/analysis/paper_default_terminal_exposure_probe/report.py
+ M src/analysis/paper_default_training_smoke_run/runner.py
+ M src/analysis/paper_hoodie_network_implementation/report.py
+ M src/analysis/passive_runtime_lifecycle_trace_instrumentation/runner.py
+ M src/analysis/passive_selected_action_trace_repair/runner.py
+ M src/analysis/selected_action_family_per_action_outcome_evidence/runner.py
+ M src/analysis/selected_action_outcome_evidence_rerun/runner.py
+ M src/analysis/smoke_training/report.py
+ M src/analysis/target_update_replay_training_validation/runner.py
+ M src/analysis/task_completion_lifecycle_formula_audit/report.py
+ M src/analysis/topology_timeout_reward_fidelity/config.py
+ M src/analysis/topology_timeout_reward_fidelity/runner.py
+ M src/analysis/training_readiness_contract/runner.py
+ M tests/integration/test_completion_root_cause_scope_guard.py
+ M tests/integration/test_evaluation_trace_bank_baseline_harness_scope_guard.py
+ M tests/integration/test_exposure_matrix_paper_mechanism_rerun_scope_guard.py
+ M tests/integration/test_exposure_matrix_paper_mechanism_scope_guard.py
+ M tests/integration/test_final_review_release_gate_batch_scope_guard.py
+ M tests/integration/test_full_paper_default_training_campaign_execution_scope_guard.py
+ M tests/integration/test_full_paper_default_training_campaign_gate_scope_guard.py
+ M tests/integration/test_full_training_scope_guard.py
+ M tests/integration/test_multi_seed_campaign_ablation_batch_scope_guard.py
+ D tests/integration/test_paper_default_pilot_training_run.py
+ M tests/integration/test_paper_default_pilot_training_run_scope_guard.py
+ D tests/integration/test_paper_default_terminal_exposure_probe.py
+ D tests/integration/test_paper_default_terminal_exposure_report.py
+ M tests/integration/test_paper_default_terminal_exposure_scope_guard.py
+ M tests/integration/test_paper_faithful_state_action_space_batch_scope_guard.py
+ M tests/integration/test_paper_hoodie_network_scope_guard.py
+ M tests/integration/test_passive_lifecycle_trace_scope_guard.py
+ M tests/integration/test_results_export_reproducibility_documentation_batch_scope_guard.py
+ M tests/integration/test_smoke_training_scope_guard.py
+ M tests/integration/test_task_completion_lifecycle_scope_guard.py
+?? artifacts/archive/
+?? artifacts/hoodie/implementation_run/backups/
+?? artifacts/hoodie/implementation_run/tests/legacy_related_files.txt
+?? artifacts/hoodie/implementation_run/tests/root_failure_inventory.json
+?? src/analysis/git_base_ref.py
+?? tests/helpers/
+?? tests_historical/

@@ -54,7 +54,7 @@ def _git_bool(*args: str) -> bool:
 
 
 def _diff_names() -> list[str]:
-    return [line for line in _git_output("diff", "--name-only", "main...HEAD").splitlines() if line]
+    return [line for line in _git_output("diff", "--name-only", "git_triple_dot_range()").splitlines() if line]
 
 
 def _no_dependency_drift(diff_names: list[str]) -> bool:
@@ -82,8 +82,8 @@ def _prerequisite_tags_verified(diff_names: list[str], *, feature_054_ready: boo
         {"name": "main_contains_055_complete", "verified": _git_bool("merge-base", "--is-ancestor", FEATURE_055_COMPLETE_TAG[:-3], "main"), "details": f"main contains {FEATURE_055_COMPLETE_TAG[:-3]}"},
         {"name": "main_contains_054_complete", "verified": _git_bool("merge-base", "--is-ancestor", FEATURE_054_COMPLETE_TAG[:-3], "main"), "details": f"main contains {FEATURE_054_COMPLETE_TAG[:-3]}"},
         {"name": "main_contains_054a_hygiene", "verified": _git_bool("merge-base", "--is-ancestor", FEATURE_054A_COMPLETE_TAG[:-3], "main"), "details": f"main contains {FEATURE_054A_COMPLETE_TAG[:-3]}"},
-        {"name": "main_is_branch_base", "verified": _git_output("merge-base", "main", "HEAD") == _git_output("rev-parse", "main"), "details": "branch is based on current main"},
-        {"name": "approved_paths_only", "verified": all(any(path.startswith(prefix) for prefix in APPROVED_PATH_PREFIXES) for path in diff_names), "details": "main...HEAD diff contains only approved Feature 056 paths"},
+        {"name": "main_is_branch_base", "verified": _git_output("merge-base", resolve_git_base_ref(), "HEAD") == _git_output("rev-parse", resolve_git_base_ref()), "details": "branch is based on current main"},
+        {"name": "approved_paths_only", "verified": all(any(path.startswith(prefix) for prefix in APPROVED_PATH_PREFIXES) for path in diff_names), "details": "git_triple_dot_range() diff contains only approved Feature 056 paths"},
         {"name": "no_prior_artifact_rewrite", "verified": _no_prior_artifact_rewrite(diff_names), "details": "no Feature 037-055 artifacts are rewritten"},
         {"name": "agents_stable_not_modified", "verified": "AGENTS.md" not in diff_names, "details": "AGENTS.md is stable and not modified"},
         {"name": "pointer_local_only_not_in_committed_diff", "verified": ".specify/feature.json" not in diff_names, "details": ".specify/feature.json is local-only and absent from committed diff"},

@@ -31,7 +31,7 @@ def _staged_paths() -> list[str]:
 
 
 def _diff_paths() -> list[str]:
-    output = _git_output("diff", "--name-only", "origin/main...HEAD")
+    output = _git_output("diff", "--name-only", "origin/origin/main...HEAD")
     return [line for line in output.splitlines() if line]
 
 

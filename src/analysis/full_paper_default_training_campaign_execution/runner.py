@@ -160,7 +160,7 @@ def _build_prerequisite_tags_verified(
         {
             "name": "main_is_branch_base",
             "verified": (
-                _git_output("merge-base", "main", "HEAD") == _git_output("rev-parse", "main")
+                _git_output("merge-base", resolve_git_base_ref(), "HEAD") == _git_output("rev-parse", resolve_git_base_ref())
                 if branch == BRANCH_NAME
                 else _git_bool("merge-base", "--is-ancestor", "060-full-paper-default-training-campaign-execution", "HEAD")
             ),
@@ -171,7 +171,7 @@ def _build_prerequisite_tags_verified(
         {"name": "feature_057_report_present", "verified": config.feature_057_report_path.exists(), "details": str(config.feature_057_report_path)},
         {"name": "working_tree_paths_approved", "verified": _approved_paths(status_paths), "details": "git status --short contains only approved Feature 060 paths"},
         {"name": "staged_paths_approved", "verified": _approved_paths(staged_paths), "details": "git diff --cached --name-only contains only approved Feature 060 paths"},
-        {"name": "main_head_diff_approved", "verified": _approved_paths(diff_paths), "details": "git diff --name-only main...HEAD contains only approved Feature 060 paths"},
+        {"name": "main_head_diff_approved", "verified": _approved_paths(diff_paths), "details": "git diff --name-only git_triple_dot_range() contains only approved Feature 060 paths"},
         {"name": "agents_stable_not_modified", "verified": "AGENTS.md" not in status_paths + staged_paths + diff_paths, "details": "AGENTS.md is stable and not modified"},
         {"name": "pointer_local_only_not_dirty_or_staged", "verified": ".specify/feature.json" not in status_paths + staged_paths + diff_paths, "details": ".specify/feature.json is absent from dirty/staged/committed paths"},
     ]

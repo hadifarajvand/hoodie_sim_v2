@@ -1,0 +1,40 @@
+[
+  {
+    "original_path": "tests/integration/test_paper_default_pilot_training_run.py",
+    "archive_path": "tests_historical/legacy_architecture/test_paper_default_pilot_training_run.py",
+    "classification": "obsolete_legacy_architecture_test",
+    "obsolete_production_contract": "paper_default pilot training report gate with main...HEAD and legacy Feature 057/056 artifact layout",
+    "retained_scientific_assertions": [
+      "live environment training used",
+      "legal action enforcement",
+      "checkpoint provenance"
+    ],
+    "replacement_active_test_path": "tests/integration/test_hoodie_paired_campaign.py",
+    "reason_active_collection_must_exclude": "depends on obsolete paper_default report gate and legacy artifact schema"
+  },
+  {
+    "original_path": "tests/integration/test_paper_default_terminal_exposure_probe.py",
+    "archive_path": "tests_historical/legacy_architecture/test_paper_default_terminal_exposure_probe.py",
+    "classification": "obsolete_legacy_architecture_test",
+    "obsolete_production_contract": "terminal exposure probe for ECHO-era runtime and reward exposure reports",
+    "retained_scientific_assertions": [
+      "legal action enforcement",
+      "pending-at-horizon accounting",
+      "reward-bearing transition accounting"
+    ],
+    "replacement_active_test_path": "tests/unit/test_paired_evaluation.py",
+    "reason_active_collection_must_exclude": "ECHO/terminal-exposure architecture no longer active surface"
+  },
+  {
+    "original_path": "tests/integration/test_paper_default_terminal_exposure_report.py",
+    "archive_path": "tests_historical/legacy_architecture/test_paper_default_terminal_exposure_report.py",
+    "classification": "obsolete_legacy_architecture_test",
+    "obsolete_production_contract": "terminal exposure report schema with ECHO fields and legacy pointer gates",
+    "retained_scientific_assertions": [
+      "report artifact generation provenance",
+      "no training loop execution in probe path"
+    ],
+    "replacement_active_test_path": "tests/unit/test_paired_evaluation.py",
+    "reason_active_collection_must_exclude": "schema bound to obsolete terminal-exposure report contract"
+  }
+]

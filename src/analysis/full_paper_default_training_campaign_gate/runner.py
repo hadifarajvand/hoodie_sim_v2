@@ -6,6 +6,7 @@ import subprocess
 from pathlib import Path
 from typing import Any
 
+from ..git_base_ref import git_triple_dot_range, resolve_git_base_ref
 from .config import (
     BRANCH_NAME,
     CAMPAIGN_RUN_COUNT_OR_EPISODE_BUDGET,
@@ -21,6 +22,7 @@ from .config import (
 )
 from .model import FullPaperDefaultTrainingCampaignGateReport, REPAIR_ROUTING
 from .report import write_full_paper_default_training_campaign_gate_report
+from ..git_base_ref import git_triple_dot_range, resolve_git_base_ref
 
 APPROVED_PATH_PREFIXES = (
     "artifacts/analysis/full-paper-default-training-campaign-gate/",
@@ -61,7 +63,7 @@ def _staged_paths() -> list[str]:
 
 
 def _diff_names() -> list[str]:
-    return [line for line in _git_output("diff", "--name-only", "main...HEAD").splitlines() if line]
+    return [line for line in _git_output("diff", "--name-only", git_triple_dot_range()).splitlines() if line]
 
 
 def _approved_paths(paths: list[str]) -> bool:
@@ -126,15 +128,15 @@ def _build_prerequisite_tags_verified(
     return [
         {"name": "branch", "verified": branch == BRANCH_NAME, "details": f"git branch --show-current == {BRANCH_NAME}"},
         {"name": "not_main", "verified": branch != "main", "details": "current branch != main"},
-        {"name": "main_contains_feature_058_complete", "verified": _git_bool("merge-base", "--is-ancestor", FEATURE_058_COMPLETE_TAG, "main"), "details": f"{FEATURE_058_COMPLETE_TAG} is an ancestor of main"},
-        {"name": "main_is_branch_base", "verified": _git_output("merge-base", "main", "HEAD") == _git_output("rev-parse", "main"), "details": "branch is based on local main"},
+        {"name": "base_contains_feature_058_complete", "verified": _git_bool("merge-base", "--is-ancestor", FEATURE_058_COMPLETE_TAG, resolve_git_base_ref().base_ref), "details": f"{FEATURE_058_COMPLETE_TAG} is an ancestor of resolved base"},
+        {"name": "base_is_branch_base", "verified": _git_output("merge-base", resolve_git_base_ref().base_ref, "HEAD") == _git_output("rev-parse", resolve_git_base_ref().base_ref), "details": "branch is based on resolved base"},
         {"name": "feature_058_report_valid", "verified": feature_058_ready, "details": f"{config.feature_058_report_path} contains the approved Feature 058 readiness verdict"},
         {"name": "feature_057_report_present", "verified": config.feature_057_report_path.exists(), "details": str(config.feature_057_report_path)},
         {"name": "feature_056_report_present", "verified": config.feature_056_report_path.exists(), "details": str(config.feature_056_report_path)},
         {"name": "feature_055_report_present", "verified": config.feature_055_report_path.exists(), "details": str(config.feature_055_report_path)},
         {"name": "working_tree_paths_approved", "verified": _approved_paths(status_paths), "details": "git status --short contains only approved Feature 059 paths"},
         {"name": "staged_paths_approved", "verified": _approved_paths(staged_paths), "details": "git diff --cached --name-only contains only approved Feature 059 paths"},
-        {"name": "main_head_diff_approved", "verified": _approved_paths(diff_paths), "details": "git diff --name-only main...HEAD contains only approved Feature 059 paths"},
+        {"name": "main_head_diff_approved", "verified": _approved_paths(diff_paths), "details": "git diff --name-only git_triple_dot_range() contains only approved Feature 059 paths"},
         {"name": "agents_stable_not_modified", "verified": "AGENTS.md" not in status_paths + staged_paths + diff_paths, "details": "AGENTS.md is stable and not modified"},
         {"name": "pointer_local_only_not_dirty_or_staged", "verified": ".specify/feature.json" not in status_paths + staged_paths + diff_paths, "details": ".specify/feature.json is absent from dirty/staged/committed paths"},
     ]

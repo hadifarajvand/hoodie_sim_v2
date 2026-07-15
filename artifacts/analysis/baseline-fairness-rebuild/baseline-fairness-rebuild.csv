@@ -11,5 +11,5 @@ BCO,paper_default,completed=3|dropped=0|throughput=3
 BCO,moderate,completed=3|dropped=0|throughput=3
 MLEO,paper_default,completed=3|dropped=0|throughput=3
 MLEO,moderate,completed=3|dropped=0|throughput=3
-ADAPTIVE,paper_default,completed=2|dropped=0|throughput=2
-ADAPTIVE,moderate,completed=2|dropped=0|throughput=2
+ADAPTIVE,paper_default,completed=3|dropped=0|throughput=3
+ADAPTIVE,moderate,completed=3|dropped=0|throughput=3

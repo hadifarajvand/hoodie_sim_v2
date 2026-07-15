@@ -79,16 +79,16 @@
     {
       "details": "current branch != main",
       "name": "not_main",
+      "verified": true
+    },
+    {
+      "details": "058-evaluation-trace-bank-baseline-harness-complete is an ancestor of resolved base",
+      "name": "base_contains_feature_058_complete",
       "verified": false
     },
     {
-      "details": "058-evaluation-trace-bank-baseline-harness-complete is an ancestor of main",
-      "name": "main_contains_feature_058_complete",
-      "verified": false
-    },
-    {
-      "details": "branch is based on local main",
-      "name": "main_is_branch_base",
+      "details": "branch is based on resolved base",
+      "name": "base_is_branch_base",
       "verified": true
     },
     {
@@ -122,9 +122,9 @@
       "verified": true
     },
     {
-      "details": "git diff --name-only main...HEAD contains only approved Feature 059 paths",
+      "details": "git diff --name-only git_triple_dot_range() contains only approved Feature 059 paths",
       "name": "main_head_diff_approved",
-      "verified": true
+      "verified": false
     },
     {
       "details": "AGENTS.md is stable and not modified",
@@ -140,10 +140,10 @@
   "recommended_next_feature": "Repair Feature 058 prerequisite evidence before Feature 059 can proceed",
   "remaining_blockers": [
     "branch",
-    "not_main",
-    "main_contains_feature_058_complete",
+    "base_contains_feature_058_complete",
     "feature_058_report_valid",
-    "working_tree_paths_approved"
+    "working_tree_paths_approved",
+    "main_head_diff_approved"
   ],
   "resource_control_summary": {
     "controlled_output_directory": "artifacts/analysis/full-paper-default-training-campaign-execution/",
@@ -156,16 +156,16 @@
   "safety_summary": {
     "no_baseline_superiority_claim": true,
     "no_checkpoint_binary_written": true,
-    "no_dependency_drift": true,
-    "no_environment_contract_drift": false,
+    "no_dependency_drift": false,
+    "no_environment_contract_drift": true,
     "no_full_campaign_execution": true,
     "no_optimizer_execution": true,
     "no_paper_reproduction_claim": true,
     "no_performance_claim": true,
     "no_policy_drift": false,
-    "no_prior_artifact_rewrite": true,
+    "no_prior_artifact_rewrite": false,
     "no_replay_mutation": true,
-    "no_reward_timing_change": false,
+    "no_reward_timing_change": true,
     "no_training_execution": true
   },
   "training_execution_gate_summary": {

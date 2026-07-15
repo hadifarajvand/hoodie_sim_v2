@@ -29,7 +29,7 @@ VALIDATION_COMMANDS = (
     "/Users/hadi/Documents/GitHub/hoodie_sim_v2/src/.venvmac/bin/python -m unittest tests.unit.test_policy_registry tests.unit.test_baseline_policy_fidelity tests.unit.test_mleo_policy tests.integration.test_baseline_policy_fidelity_flow",
     "/Users/hadi/Documents/GitHub/hoodie_sim_v2/src/.venvmac/bin/python -m unittest tests.unit.test_full_hoodie_mechanism_fidelity_batch_report tests.unit.test_full_hoodie_mechanism_fidelity_batch_scope_guard tests.integration.test_full_hoodie_mechanism_fidelity_batch_report",
     "git diff --check",
-    "git diff --name-only origin/main...HEAD",
+    "git diff --name-only origin/origin/main...HEAD",
 )
 
 ALLOWED_PATH_PREFIXES = (

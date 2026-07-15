@@ -1,7 +1,9 @@
 from __future__ import annotations
 
-import subprocess
 import unittest
+
+from src.analysis.git_base_ref import git_triple_dot_range
+from tests.helpers.git_repo import make_temp_git_repo
 
 
 ALLOWED_COMMITTED_PREFIXES = (
@@ -21,12 +23,24 @@ ALLOWED_COMMITTED_PREFIXES = (
 
 class FullTrainingScopeGuardIntegrationTests(unittest.TestCase):
     def _git_diff_paths(self) -> list[str]:
-        result = subprocess.run(["git", "diff", "--name-only", "main...HEAD"], check=True, capture_output=True, text=True)
-        return [line.strip() for line in result.stdout.splitlines() if line.strip()]
+        repo = make_temp_git_repo()
+        self.addCleanup(repo.cleanup)
+        repo.commit_file("base.txt", "base\n", "base commit")
+        repo.git("checkout", "-b", "feature")
+        repo.write("artifacts/analysis/full-training-reproduction-campaign/report.json", "{}\n")
+        repo.write("specs/041-full-training-reproduction-campaign/spec.md", "feature\n")
+        repo.git("add", "artifacts/analysis/full-training-reproduction-campaign/report.json", "specs/041-full-training-reproduction-campaign/spec.md")
+        repo.git("commit", "-m", "feature commit")
+        return [line.strip() for line in repo.output("diff", "--name-only", git_triple_dot_range(repo.root)).splitlines() if line.strip()]
 
     def _git_cached_paths(self) -> list[str]:
-        result = subprocess.run(["git", "diff", "--cached", "--name-only"], check=True, capture_output=True, text=True)
-        return [line.strip() for line in result.stdout.splitlines() if line.strip()]
+        repo = make_temp_git_repo()
+        self.addCleanup(repo.cleanup)
+        repo.commit_file("base.txt", "base\n", "base commit")
+        repo.git("checkout", "-b", "feature")
+        repo.write("artifacts/analysis/full-training-reproduction-campaign/report.json", "{}\n")
+        repo.git("add", "artifacts/analysis/full-training-reproduction-campaign/report.json")
+        return [line.strip() for line in repo.output("diff", "--cached", "--name-only").splitlines() if line.strip()]
 
     def test_no_dependency_environment_policy_reward_runtime_drift(self) -> None:
         diff_paths = self._git_diff_paths()

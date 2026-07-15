@@ -1,16 +1,16 @@
 {
   "action_distribution": {
-    "horizontal": 45,
-    "local": 65,
-    "vertical": 0
+    "horizontal": 35,
+    "local": 43,
+    "vertical": 32
   },
-  "completed_task_count": 320,
+  "completed_task_count": 21,
   "delay": {
     "status": "not_claimed_in_feature_060",
     "value": null
   },
   "drop": {
-    "count": 0
+    "count": 263
   },
   "evaluation_episode_count": 3,
   "evaluation_trace_bank_id": "feature-058-evaluation-trace-bank",
@@ -48,10 +48,10 @@
   "no_performance_superiority_claim": true,
   "real_trainer_bound_evaluation": true,
   "reward": {
-    "mean_reward": -452.0,
-    "reward_bearing_transition_count": 244
+    "mean_reward": -841.0,
+    "reward_bearing_transition_count": 97
   },
-  "terminal_transition_count": 244,
+  "terminal_transition_count": 97,
   "timeout": {
     "status": "not_claimed_in_feature_060",
     "value": null

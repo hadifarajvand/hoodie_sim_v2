@@ -77,7 +77,7 @@ def build_campaign_prerequisite_tags_verified() -> list[dict[str, Any]]:
         except Exception:
             payload = {}
         pointer = payload.get("feature_directory") if isinstance(payload, dict) else None
-    diff_main_head = _git_output("diff", "--name-only", "main...HEAD").splitlines()
+    diff_main_head = _git_output("diff", "--name-only", "origin/main...HEAD").splitlines()
     cached_pointer = _git_output("diff", "--cached", "--name-only", "--", ".specify/feature.json")
     dirty_paths = [line[2:].strip() for line in _git_output("status", "--short").splitlines() if line.strip()]
     current_branch = _git_output("branch", "--show-current")
@@ -91,7 +91,7 @@ def build_campaign_prerequisite_tags_verified() -> list[dict[str, Any]]:
         ("feature_dir_exists", (Path("specs") / FEATURE_ID).exists(), "specs/041-full-training-reproduction-campaign/ exists"),
         ("pointer_matches_feature", pointer == "specs/041-full-training-reproduction-campaign", ".specify/feature.json points to specs/041-full-training-reproduction-campaign"),
         ("pointer_not_staged", cached_pointer == "", ".specify/feature.json must not be staged"),
-        ("pointer_not_in_main_head", ".specify/feature.json" not in diff_main_head, ".specify/feature.json must not appear in git diff --name-only main...HEAD"),
+        ("pointer_not_in_main_head", ".specify/feature.json" not in diff_main_head, ".specify/feature.json must not appear in git diff --name-only origin/main...HEAD"),
         (
             "no_unrelated_dirty_files",
             allowed_local_dirty_pointer and all(path == ".specify/feature.json" for path in dirty_paths),

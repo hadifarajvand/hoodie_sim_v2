@@ -36,18 +36,18 @@ def _read_feature_pointer() -> str | None:
 def build_smoke_training_prerequisite_tags_verified() -> list[dict[str, Any]]:
     pointer = _read_feature_pointer()
     cached_pointer_status = _git_output("diff", "--cached", "--name-only", "--", ".specify/feature.json")
-    diff_main_head = _git_output("diff", "--name-only", "main...HEAD").splitlines()
+    diff_main_head = _git_output("diff", "--name-only", "git_triple_dot_range()").splitlines()
     current_branch = _git_output("branch", "--show-current")
     checks = [
         ("branch", current_branch == FEATURE_ID, f"git branch --show-current == {FEATURE_ID}"),
         ("not_main", current_branch != "main", "current branch != main"),
-        ("main_equals_origin_main", _git_output("rev-parse", "main") == _git_output("rev-parse", "origin/main"), "main == origin/main"),
-        ("main_equals_feature_039", _git_output("rev-parse", "main") == _git_output("rev-parse", "039-paper-hoodie-network-implementation-complete^{}"), "main == 039-paper-hoodie-network-implementation-complete^{}"),
+        ("main_equals_origin_main", _git_output("rev-parse", resolve_git_base_ref()) == _git_output("rev-parse", "origin/main"), "main == origin/main"),
+        ("main_equals_feature_039", _git_output("rev-parse", resolve_git_base_ref()) == _git_output("rev-parse", "039-paper-hoodie-network-implementation-complete^{}"), "main == 039-paper-hoodie-network-implementation-complete^{}"),
         ("prerequisite_diff_empty", _git_output("diff", "--name-only", "039-paper-hoodie-network-implementation-complete^{}", "main") == "", "diff between 039-paper-hoodie-network-implementation-complete^{} and main is empty"),
         ("feature_dir_exists", (Path("specs") / FEATURE_ID).exists(), "specs/040-smoke-training/ exists"),
         ("pointer_matches_feature", pointer == "specs/040-smoke-training", ".specify/feature.json points to specs/040-smoke-training"),
         ("pointer_not_staged", cached_pointer_status == "", ".specify/feature.json must not be staged"),
-        ("pointer_not_in_main_head", ".specify/feature.json" not in diff_main_head, ".specify/feature.json must not appear in git diff --name-only main...HEAD"),
+        ("pointer_not_in_main_head", ".specify/feature.json" not in diff_main_head, ".specify/feature.json must not appear in git diff --name-only git_triple_dot_range()"),
     ]
     return [{"name": name, "verified": bool(verified), "details": details} for name, verified, details in checks]
 

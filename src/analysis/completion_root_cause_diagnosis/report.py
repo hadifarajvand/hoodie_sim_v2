@@ -4,9 +4,9 @@ from dataclasses import dataclass
 from pathlib import Path
 import json
 import os
-import subprocess
 from typing import Any
 
+from ..git_base_ref import committed_changed_files, is_worktree_dirty, resolve_base_ref
 from .config import FEATURE_ID
 from .model import RootCauseEvaluation
 
@@ -63,31 +63,28 @@ def _is_allowed_dirty_path(path: str) -> bool:
     return any(path.startswith(prefix) for prefix in APPROVED_DIRTY_PATH_PREFIXES)
 
 
-def _validate_no_unrelated_dirty_files() -> tuple[bool, list[str]]:
+def _validate_no_unrelated_dirty_files(repo_path: str | Path = ".") -> tuple[bool, list[str]]:
     dirty_paths = _tracked_dirty_paths()
     unrelated = [path for path in dirty_paths if not _is_allowed_dirty_path(path)]
     if any(path == "AGENTS.md" or path.endswith("/AGENTS.md") for path in dirty_paths):
         raise RuntimeError("AGENTS.md must be clean before completion-root-cause report generation.")
     if unrelated:
-        if _dirty_worktree_override_enabled():
-            return False, dirty_paths
-        raise RuntimeError("Dirty paths outside approved Feature 045 paths block report generation: " + ", ".join(unrelated))
+        return False, dirty_paths
     return True, dirty_paths
 
-
-def build_prerequisite_tags_verified() -> list[dict[str, Any]]:
-    no_unrelated_dirty_files, dirty_paths = _validate_no_unrelated_dirty_files()
+def build_prerequisite_tags_verified(repo_path: str | Path = ".") -> list[dict[str, Any]]:
+    no_unrelated_dirty_files, dirty_paths = _validate_no_unrelated_dirty_files(repo_path)
+    base_ref = resolve_base_ref(repo_path)
     return [
-        {"name": "branch", "verified": _git_output("branch", "--show-current") == "045-completion-root-cause-diagnosis", "details": "git branch --show-current == 045-completion-root-cause-diagnosis"},
-        {"name": "not_main", "verified": _git_output("branch", "--show-current") != "main", "details": "current branch != main"},
-        {"name": "main_equals_origin_main", "verified": _git_output("rev-parse", "main") == _git_output("rev-parse", "origin/main"), "details": "main == origin/main"},
-        {"name": "main_equals_feature_044", "verified": _git_output("rev-parse", "main") == _git_output("rev-parse", "044-passive-runtime-lifecycle-trace-instrumentation-complete^{}"), "details": "main == 044-passive-runtime-lifecycle-trace-instrumentation-complete^{}"},
-        {"name": "prerequisite_diff_empty", "verified": _git_output("diff", "--name-only", "044-passive-runtime-lifecycle-trace-instrumentation-complete^{}", "main") == "", "details": "diff between 044-passive-runtime-lifecycle-trace-instrumentation-complete^{} and main is empty"},
-        {"name": "pointer_not_staged", "verified": _git_output("diff", "--cached", "--name-only", "--", ".specify/feature.json") == "", "details": ".specify/feature.json must not be staged"},
-        {"name": "pointer_not_in_main_head", "verified": ".specify/feature.json" not in _git_output("diff", "--name-only", "main...HEAD").splitlines(), "details": ".specify/feature.json must not appear in git diff --name-only main...HEAD"},
+        {"name": "branch", "verified": _git_output("-C", str(repo_path), "branch", "--show-current") == "045-completion-root-cause-diagnosis", "details": "git branch --show-current == 045-completion-root-cause-diagnosis"},
+        {"name": "not_main", "verified": _git_output("-C", str(repo_path), "branch", "--show-current") != "main", "details": "current branch != main"},
+        {"name": "base_equals_origin_main", "verified": _git_output("-C", str(repo_path), "rev-parse", base_ref) == _git_output("-C", str(repo_path), "rev-parse", "origin/main"), "details": "resolved base == origin/main"},
+        {"name": "base_equals_feature_044", "verified": _git_output("-C", str(repo_path), "rev-parse", base_ref) == _git_output("-C", str(repo_path), "rev-parse", "044-passive-runtime-lifecycle-trace-instrumentation-complete^{}"), "details": "resolved base == 044-passive-runtime-lifecycle-trace-instrumentation-complete^{}"},
+        {"name": "prerequisite_diff_empty", "verified": _git_output("-C", str(repo_path), "diff", "--name-only", "044-passive-runtime-lifecycle-trace-instrumentation-complete^{}", base_ref) == "", "details": "diff between 044-passive-runtime-lifecycle-trace-instrumentation-complete^{} and resolved base is empty"},
+        {"name": "pointer_not_staged", "verified": _git_output("-C", str(repo_path), "diff", "--cached", "--name-only", "--", ".specify/feature.json") == "", "details": ".specify/feature.json must not be staged"},
+        {"name": "pointer_not_in_main_head", "verified": ".specify/feature.json" not in committed_changed_files(repo_path, base_ref), "details": ".specify/feature.json must not appear in committed changed files"},
         {"name": "no_unrelated_dirty_files", "verified": no_unrelated_dirty_files, "details": "working tree clean except optional pointer" if no_unrelated_dirty_files else f"dirty_paths={', '.join(dirty_paths)}"},
     ]
-
 
 def collect_prior_feature_gates_verified() -> list[dict[str, Any]]:
     features = [

@@ -108,11 +108,11 @@ def _prerequisite_tags() -> list[dict[str, Any]]:
     return [
         {"name": "branch", "verified": _git_output("branch", "--show-current") == FEATURE_ID, "details": f"git branch --show-current == {FEATURE_ID}"},
         {"name": "not_main", "verified": _git_output("branch", "--show-current") != "main", "details": "current branch != main"},
-        {"name": "main_equals_origin_main", "verified": _git_output("rev-parse", "main") == _git_output("rev-parse", "origin/main"), "details": "main == origin/main"},
-        {"name": "main_equals_feature_047", "verified": _git_output("rev-parse", "main") == _git_output("rev-parse", "047-exposure-matrix-review-complete^{}"), "details": "main == 047-exposure-matrix-review-complete^{}"},
+        {"name": "main_equals_origin_main", "verified": _git_output("rev-parse", resolve_git_base_ref()) == _git_output("rev-parse", "origin/main"), "details": "main == origin/main"},
+        {"name": "main_equals_feature_047", "verified": _git_output("rev-parse", resolve_git_base_ref()) == _git_output("rev-parse", "047-exposure-matrix-review-complete^{}"), "details": "main == 047-exposure-matrix-review-complete^{}"},
         {"name": "prerequisite_diff_empty", "verified": _git_output("diff", "--name-only", "047-exposure-matrix-review-complete^{}", "main") == "", "details": "diff between 047-exposure-matrix-review-complete^{} and main is empty"},
         {"name": "pointer_not_staged", "verified": _git_output("diff", "--cached", "--name-only", "--", ".specify/feature.json") == "", "details": ".specify/feature.json must not be staged"},
-        {"name": "pointer_not_in_main_head", "verified": ".specify/feature.json" not in _git_output("diff", "--name-only", "main...HEAD").splitlines(), "details": ".specify/feature.json must not appear in git diff --name-only main...HEAD"},
+        {"name": "pointer_not_in_main_head", "verified": ".specify/feature.json" not in _git_output("diff", "--name-only", "git_triple_dot_range()").splitlines(), "details": ".specify/feature.json must not appear in git diff --name-only git_triple_dot_range()"},
         {"name": "agents_clean_before_report", "verified": not any(path == "AGENTS.md" or path.endswith("/AGENTS.md") for path in dirty_paths), "details": "AGENTS.md clean before report generation"},
         {"name": "no_unrelated_dirty_files", "verified": dirty_ok, "details": "working tree clean except optional pointer and approved feature artifacts"},
     ]

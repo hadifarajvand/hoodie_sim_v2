@@ -131,20 +131,20 @@
       "trace_bank_id": "feature-058-evaluation-trace-bank",
       "trained_policy_results": {
         "action_distribution": {
-          "horizontal": 45,
-          "local": 65,
-          "vertical": 0
+          "horizontal": 35,
+          "local": 43,
+          "vertical": 32
         },
         "delay": {
           "status": "not_claimed_in_feature_060",
           "value": null
         },
         "drop": {
-          "count": 0
+          "count": 263
         },
         "reward": {
-          "mean_reward": -452.0,
-          "reward_bearing_transition_count": 244
+          "mean_reward": -841.0,
+          "reward_bearing_transition_count": 97
         },
         "timeout": {
           "status": "not_claimed_in_feature_060",
@@ -213,20 +213,20 @@
       "trace_bank_id": "feature-058-evaluation-trace-bank",
       "trained_policy_results": {
         "action_distribution": {
-          "horizontal": 45,
-          "local": 65,
-          "vertical": 0
+          "horizontal": 35,
+          "local": 43,
+          "vertical": 32
         },
         "delay": {
           "status": "not_claimed_in_feature_060",
           "value": null
         },
         "drop": {
-          "count": 0
+          "count": 263
         },
         "reward": {
-          "mean_reward": -452.0,
-          "reward_bearing_transition_count": 244
+          "mean_reward": -841.0,
+          "reward_bearing_transition_count": 97
         },
         "timeout": {
           "status": "not_claimed_in_feature_060",
@@ -295,20 +295,20 @@
       "trace_bank_id": "feature-058-evaluation-trace-bank",
       "trained_policy_results": {
         "action_distribution": {
-          "horizontal": 45,
-          "local": 65,
-          "vertical": 0
+          "horizontal": 35,
+          "local": 43,
+          "vertical": 32
         },
         "delay": {
           "status": "not_claimed_in_feature_060",
           "value": null
         },
         "drop": {
-          "count": 0
+          "count": 263
         },
         "reward": {
-          "mean_reward": -452.0,
-          "reward_bearing_transition_count": 244
+          "mean_reward": -841.0,
+          "reward_bearing_transition_count": 97
         },
         "timeout": {
           "status": "not_claimed_in_feature_060",
@@ -334,18 +334,18 @@
       "status": "schema_only_not_claimed"
     },
     "trained_drop_count": {
-      "max": 0,
-      "mean": 0,
-      "min": 0,
+      "max": 263,
+      "mean": 263,
+      "min": 263,
       "not_claimed": false,
       "sample_count": 3,
       "std": 0.0,
       "variance": 0.0
     },
     "trained_reward": {
-      "max": -452.0,
-      "mean": -452.0,
-      "min": -452.0,
+      "max": -841.0,
+      "mean": -841.0,
+      "min": -841.0,
       "not_claimed": false,
       "sample_count": 3,
       "std": 0.0,
@@ -504,20 +504,20 @@
             "trace_bank_id": "feature-058-evaluation-trace-bank",
             "trained_policy_results": {
               "action_distribution": {
-                "horizontal": 45,
-                "local": 65,
-                "vertical": 0
+                "horizontal": 35,
+                "local": 43,
+                "vertical": 32
               },
               "delay": {
                 "status": "not_claimed_in_feature_060",
                 "value": null
               },
               "drop": {
-                "count": 0
+                "count": 263
               },
               "reward": {
-                "mean_reward": -452.0,
-                "reward_bearing_transition_count": 244
+                "mean_reward": -841.0,
+                "reward_bearing_transition_count": 97
               },
               "timeout": {
                 "status": "not_claimed_in_feature_060",
@@ -586,20 +586,20 @@
             "trace_bank_id": "feature-058-evaluation-trace-bank",
             "trained_policy_results": {
               "action_distribution": {
-                "horizontal": 45,
-                "local": 65,
-                "vertical": 0
+                "horizontal": 35,
+                "local": 43,
+                "vertical": 32
               },
               "delay": {
                 "status": "not_claimed_in_feature_060",
                 "value": null
               },
               "drop": {
-                "count": 0
+                "count": 263
               },
               "reward": {
-                "mean_reward": -452.0,
-                "reward_bearing_transition_count": 244
+                "mean_reward": -841.0,
+                "reward_bearing_transition_count": 97
               },
               "timeout": {
                 "status": "not_claimed_in_feature_060",
@@ -668,20 +668,20 @@
             "trace_bank_id": "feature-058-evaluation-trace-bank",
             "trained_policy_results": {
               "action_distribution": {
-                "horizontal": 45,
-                "local": 65,
-                "vertical": 0
+                "horizontal": 35,
+                "local": 43,
+                "vertical": 32
               },
               "delay": {
                 "status": "not_claimed_in_feature_060",
                 "value": null
               },
               "drop": {
-                "count": 0
+                "count": 263
               },
               "reward": {
-                "mean_reward": -452.0,
-                "reward_bearing_transition_count": 244
+                "mean_reward": -841.0,
+                "reward_bearing_transition_count": 97
               },
               "timeout": {
                 "status": "not_claimed_in_feature_060",
@@ -791,20 +791,20 @@
             "trace_bank_id": "feature-058-evaluation-trace-bank",
             "trained_policy_results": {
               "action_distribution": {
-                "horizontal": 45,
-                "local": 65,
-                "vertical": 0
+                "horizontal": 35,
+                "local": 43,
+                "vertical": 32
               },
               "delay": {
                 "status": "not_claimed_in_feature_060",
                 "value": null
               },
               "drop": {
-                "count": 0
+                "count": 263
               },
               "reward": {
-                "mean_reward": -452.0,
-                "reward_bearing_transition_count": 244
+                "mean_reward": -841.0,
+                "reward_bearing_transition_count": 97
               },
               "timeout": {
                 "status": "not_claimed_in_feature_060",
@@ -873,20 +873,20 @@
             "trace_bank_id": "feature-058-evaluation-trace-bank",
             "trained_policy_results": {
               "action_distribution": {
-                "horizontal": 45,
-                "local": 65,
-                "vertical": 0
+                "horizontal": 35,
+                "local": 43,
+                "vertical": 32
               },
               "delay": {
                 "status": "not_claimed_in_feature_060",
                 "value": null
               },
               "drop": {
-                "count": 0
+                "count": 263
               },
               "reward": {
-                "mean_reward": -452.0,
-                "reward_bearing_transition_count": 244
+                "mean_reward": -841.0,
+                "reward_bearing_transition_count": 97
               },
               "timeout": {
                 "status": "not_claimed_in_feature_060",
@@ -955,20 +955,20 @@
             "trace_bank_id": "feature-058-evaluation-trace-bank",
             "trained_policy_results": {
               "action_distribution": {
-                "horizontal": 45,
-                "local": 65,
-                "vertical": 0
+                "horizontal": 35,
+                "local": 43,
+                "vertical": 32
               },
               "delay": {
                 "status": "not_claimed_in_feature_060",
                 "value": null
               },
               "drop": {
-                "count": 0
+                "count": 263
               },
               "reward": {
-                "mean_reward": -452.0,
-                "reward_bearing_transition_count": 244
+                "mean_reward": -841.0,
+                "reward_bearing_transition_count": 97
               },
               "timeout": {
                 "status": "not_claimed_in_feature_060",
@@ -1078,20 +1078,20 @@
             "trace_bank_id": "feature-058-evaluation-trace-bank",
             "trained_policy_results": {
               "action_distribution": {
-                "horizontal": 45,
-                "local": 65,
-                "vertical": 0
+                "horizontal": 35,
+                "local": 43,
+                "vertical": 32
               },
               "delay": {
                 "status": "not_claimed_in_feature_060",
                 "value": null
               },
               "drop": {
-                "count": 0
+                "count": 263
               },
               "reward": {
-                "mean_reward": -452.0,
-                "reward_bearing_transition_count": 244
+                "mean_reward": -841.0,
+                "reward_bearing_transition_count": 97
               },
               "timeout": {
                 "status": "not_claimed_in_feature_060",
@@ -1160,20 +1160,20 @@
             "trace_bank_id": "feature-058-evaluation-trace-bank",
             "trained_policy_results": {
               "action_distribution": {
-                "horizontal": 45,
-                "local": 65,
-                "vertical": 0
+                "horizontal": 35,
+                "local": 43,
+                "vertical": 32
               },
               "delay": {
                 "status": "not_claimed_in_feature_060",
                 "value": null
               },
               "drop": {
-                "count": 0
+                "count": 263
               },
               "reward": {
-                "mean_reward": -452.0,
-                "reward_bearing_transition_count": 244
+                "mean_reward": -841.0,
+                "reward_bearing_transition_count": 97
               },
               "timeout": {
                 "status": "not_claimed_in_feature_060",
@@ -1242,20 +1242,20 @@
             "trace_bank_id": "feature-058-evaluation-trace-bank",
             "trained_policy_results": {
               "action_distribution": {
-                "horizontal": 45,
-                "local": 65,
-                "vertical": 0
+                "horizontal": 35,
+                "local": 43,
+                "vertical": 32
               },
               "delay": {
                 "status": "not_claimed_in_feature_060",
                 "value": null
               },
               "drop": {
-                "count": 0
+                "count": 263
               },
               "reward": {
-                "mean_reward": -452.0,
-                "reward_bearing_transition_count": 244
+                "mean_reward": -841.0,
+                "reward_bearing_transition_count": 97
               },
               "timeout": {
                 "status": "not_claimed_in_feature_060",
@@ -1365,20 +1365,20 @@
             "trace_bank_id": "feature-058-evaluation-trace-bank",
             "trained_policy_results": {
               "action_distribution": {
-                "horizontal": 45,
-                "local": 65,
-                "vertical": 0
+                "horizontal": 35,
+                "local": 43,
+                "vertical": 32
               },
               "delay": {
                 "status": "not_claimed_in_feature_060",
                 "value": null
               },
               "drop": {
-                "count": 0
+                "count": 263
               },
               "reward": {
-                "mean_reward": -452.0,
-                "reward_bearing_transition_count": 244
+                "mean_reward": -841.0,
+                "reward_bearing_transition_count": 97
               },
               "timeout": {
                 "status": "not_claimed_in_feature_060",
@@ -1447,20 +1447,20 @@
             "trace_bank_id": "feature-058-evaluation-trace-bank",
             "trained_policy_results": {
               "action_distribution": {
-                "horizontal": 45,
-                "local": 65,
-                "vertical": 0
+                "horizontal": 35,
+                "local": 43,
+                "vertical": 32
               },
               "delay": {
                 "status": "not_claimed_in_feature_060",
                 "value": null
               },
               "drop": {
-                "count": 0
+                "count": 263
               },
               "reward": {
-                "mean_reward": -452.0,
-                "reward_bearing_transition_count": 244
+                "mean_reward": -841.0,
+                "reward_bearing_transition_count": 97
               },
               "timeout": {
                 "status": "not_claimed_in_feature_060",
@@ -1529,20 +1529,20 @@
             "trace_bank_id": "feature-058-evaluation-trace-bank",
             "trained_policy_results": {
               "action_distribution": {
-                "horizontal": 45,
-                "local": 65,
-                "vertical": 0
+                "horizontal": 35,
+                "local": 43,
+                "vertical": 32
               },
               "delay": {
                 "status": "not_claimed_in_feature_060",
                 "value": null
               },
               "drop": {
-                "count": 0
+                "count": 263
               },
               "reward": {
-                "mean_reward": -452.0,
-                "reward_bearing_transition_count": 244
+                "mean_reward": -841.0,
+                "reward_bearing_transition_count": 97
               },
               "timeout": {
                 "status": "not_claimed_in_feature_060",
@@ -1589,10 +1589,10 @@
 {
   "no_checkpoint_binary_created": true,
   "no_dependency_drift": true,
-  "no_environment_contract_drift": false,
+  "no_environment_contract_drift": true,
   "no_paper_reproduction_claim": true,
   "no_policy_drift": false,
-  "no_prior_feature_artifact_rewrite": false,
+  "no_prior_feature_artifact_rewrite": true,
   "no_reward_timing_change": true,
   "no_uncontrolled_campaign_loop": true,
   "no_unsupported_superiority_claim": true

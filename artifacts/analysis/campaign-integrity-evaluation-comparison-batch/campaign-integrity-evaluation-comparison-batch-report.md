@@ -108,20 +108,20 @@
   ],
   "trained_policy_metrics": {
     "action_distribution": {
-      "horizontal": 45,
-      "local": 65,
-      "vertical": 0
+      "horizontal": 35,
+      "local": 43,
+      "vertical": 32
     },
     "delay": {
       "status": "not_claimed_in_feature_060",
       "value": null
     },
     "drop": {
-      "count": 0
+      "count": 263
     },
     "reward": {
-      "mean_reward": -452.0,
-      "reward_bearing_transition_count": 244
+      "mean_reward": -841.0,
+      "reward_bearing_transition_count": 97
     },
     "timeout": {
       "status": "not_claimed_in_feature_060",
@@ -154,9 +154,9 @@
   "action_distribution": {
     "baseline": null,
     "trained": {
-      "horizontal": 45,
-      "local": 65,
-      "vertical": 0
+      "horizontal": 35,
+      "local": 43,
+      "vertical": 32
     }
   },
   "baseline_policy_metrics": {},
@@ -171,16 +171,16 @@
   "drop": {
     "baseline": null,
     "trained": {
-      "count": 0
+      "count": 263
     }
   },
   "horizontal_action_count": {
     "baseline": null,
-    "trained": 45
+    "trained": 35
   },
   "local_action_count": {
     "baseline": null,
-    "trained": 65
+    "trained": 43
   },
   "paper_reproduction_claim": false,
   "per_episode_summary": {
@@ -197,8 +197,8 @@
   "reward": {
     "baseline": null,
     "trained": {
-      "mean_reward": -452.0,
-      "reward_bearing_transition_count": 244
+      "mean_reward": -841.0,
+      "reward_bearing_transition_count": 97
     }
   },
   "single_run_limitation": true,
@@ -220,20 +220,20 @@
   },
   "trained_policy_metrics": {
     "action_distribution": {
-      "horizontal": 45,
-      "local": 65,
-      "vertical": 0
+      "horizontal": 35,
+      "local": 43,
+      "vertical": 32
     },
     "delay": {
       "status": "not_claimed_in_feature_060",
       "value": null
     },
     "drop": {
-      "count": 0
+      "count": 263
     },
     "reward": {
-      "mean_reward": -452.0,
-      "reward_bearing_transition_count": 244
+      "mean_reward": -841.0,
+      "reward_bearing_transition_count": 97
     },
     "timeout": {
       "status": "not_claimed_in_feature_060",
@@ -250,7 +250,7 @@
   },
   "vertical_action_count": {
     "baseline": null,
-    "trained": 0
+    "trained": 32
   }
 }
 

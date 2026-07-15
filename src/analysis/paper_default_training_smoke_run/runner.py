@@ -3,7 +3,6 @@ from __future__ import annotations
 from pathlib import Path
 import argparse
 import json
-import subprocess
 from typing import Any
 
 from .config import BRANCH_NAME, FEATURE_054A_COMPLETE_TAG, FEATURE_054_COMPLETE_TAG, FEATURE_ID, READY_NEXT_FEATURE, PaperDefaultTrainingSmokeConfig
@@ -31,10 +30,8 @@ def _git_bool(*args: str) -> bool:
     return subprocess.run(["git", *args], check=False, capture_output=True, text=True).returncode == 0
 
 
-def _diff_names() -> list[str]:
-    output = _git_output("diff", "--name-only", "main...HEAD")
-    return [line for line in output.splitlines() if line]
-
+def _diff_names(repo_path: str | Path = ".") -> list[str]:
+    return committed_changed_files(repo_path, resolve_base_ref(repo_path))
 
 def _no_dependency_drift(diff_names: list[str]) -> bool:
     return not any(Path(path).name in {"pyproject.toml", "requirements.txt", "requirements-dev.txt", "poetry.lock", "uv.lock", "Pipfile"} for path in diff_names)
@@ -64,37 +61,37 @@ def _feature_054_readiness_verified(payload: dict[str, Any]) -> bool:
     )
 
 
-def _prerequisite_tags_verified(diff_names: list[str]) -> list[dict[str, Any]]:
+def _prerequisite_tags_verified(diff_names: list[str], repo_path: str | Path = ".") -> list[dict[str, Any]]:
     return [
         {
             "name": "branch",
-            "verified": _git_output("branch", "--show-current") == BRANCH_NAME,
+            "verified": _git_output("-C", str(repo_path), "branch", "--show-current") == BRANCH_NAME,
             "details": f"git branch --show-current == {BRANCH_NAME}",
         },
         {
             "name": "not_main",
-            "verified": _git_output("branch", "--show-current") != "main",
+            "verified": _git_output("-C", str(repo_path), "branch", "--show-current") != "main",
             "details": "current branch != main",
         },
         {
             "name": "main_contains_054_complete",
-            "verified": _git_bool("merge-base", "--is-ancestor", FEATURE_054_COMPLETE_TAG[:-3], "main"),
+            "verified": _git_bool("-C", str(repo_path), "merge-base", "--is-ancestor", FEATURE_054_COMPLETE_TAG[:-3], resolve_base_ref(repo_path)),
             "details": f"main contains {FEATURE_054_COMPLETE_TAG[:-3]}",
         },
         {
             "name": "main_contains_054a_hygiene",
-            "verified": _git_bool("merge-base", "--is-ancestor", FEATURE_054A_COMPLETE_TAG[:-3], "main"),
+            "verified": _git_bool("-C", str(repo_path), "merge-base", "--is-ancestor", FEATURE_054A_COMPLETE_TAG[:-3], resolve_base_ref(repo_path)),
             "details": f"main contains {FEATURE_054A_COMPLETE_TAG[:-3]}",
         },
         {
             "name": "main_is_branch_base",
-            "verified": _git_output("merge-base", "main", "HEAD") == _git_output("rev-parse", "main"),
+            "verified": _git_output("-C", str(repo_path), "merge-base", resolve_base_ref(repo_path), "HEAD") == _git_output("-C", str(repo_path), "rev-parse", resolve_base_ref(repo_path)),
             "details": "branch is based on current main",
         },
         {
             "name": "approved_paths_only",
             "verified": all(any(path.startswith(prefix) for prefix in APPROVED_PATH_PREFIXES) for path in diff_names),
-            "details": "main...HEAD diff contains only approved Feature 055 paths",
+            "details": "resolved-base...HEAD diff contains only approved Feature 055 paths",
         },
         {
             "name": "no_prior_artifact_rewrite",
@@ -209,7 +206,7 @@ def _build_smoke_summaries(result: Any) -> tuple[dict[str, Any], dict[str, Any],
     )
 
 
-def run_paper_default_training_smoke(config: PaperDefaultTrainingSmokeConfig | None = None) -> PaperDefaultTrainingSmokeReport:
+def run_paper_default_training_smoke(config: PaperDefaultTrainingSmokeConfig | None = None, repo_path: str | Path = ".") -> PaperDefaultTrainingSmokeReport:
     smoke_config = config or PaperDefaultTrainingSmokeConfig()
     diff_names = _diff_names()
     readiness_payload = _load_json(smoke_config.readiness_report_path)
@@ -314,7 +311,7 @@ def run_paper_default_training_smoke(config: PaperDefaultTrainingSmokeConfig | N
 def build_paper_default_training_smoke_report(
     config: PaperDefaultTrainingSmokeConfig | None = None,
 ) -> PaperDefaultTrainingSmokeReport:
-    return run_paper_default_training_smoke(config)
+    return run_paper_default_training_smoke(config, repo_path=repo_path)
 
 
 def generate_paper_default_training_smoke_artifacts(

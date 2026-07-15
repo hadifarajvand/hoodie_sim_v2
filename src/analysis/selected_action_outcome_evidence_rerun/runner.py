@@ -71,7 +71,7 @@ def _prerequisite_tags_verified() -> list[dict[str, Any]]:
     main_contains_feature_051 = _git_bool("merge-base", "--is-ancestor", "051-passive-selected-action-trace-repair-complete^{}", "main")
     main_contains_workflow_contract = _git_bool("merge-base", "--is-ancestor", "spec-kit-workflow-operating-contract-complete^{}", "main")
     branch_based_on_current_main = _git_output("merge-base", "main", "HEAD") == _git_output("rev-parse", "main")
-    feature_diff = set(_git_output("diff", "--name-only", "main...HEAD").splitlines())
+    feature_diff = set(_git_output("diff", "--name-only", "origin/main...HEAD").splitlines())
     only_approved_feature_paths = feature_diff <= approved_paths and bool(feature_diff)
     no_feature_037_051_artifact_rewrites = not any(
         path.startswith("artifacts/analysis/") and not path.startswith("artifacts/analysis/selected-action-outcome-evidence-rerun/")
@@ -86,10 +86,10 @@ def _prerequisite_tags_verified() -> list[dict[str, Any]]:
         {"name": "main_contains_051_passive_selected_action_trace_repair_complete", "verified": main_contains_feature_051, "details": "main contains 051-passive-selected-action-trace-repair-complete"},
         {"name": "main_contains_spec_kit_workflow_operating_contract_complete", "verified": main_contains_workflow_contract, "details": "main contains spec-kit-workflow-operating-contract-complete"},
         {"name": "branch_based_on_current_main", "verified": branch_based_on_current_main, "details": "main is an ancestor of HEAD"},
-        {"name": "feature_diff_contains_only_approved_feature_paths", "verified": only_approved_feature_paths, "details": "main...HEAD diff contains only approved Feature 052 paths"},
+        {"name": "feature_diff_contains_only_approved_feature_paths", "verified": only_approved_feature_paths, "details": "origin/main...HEAD diff contains only approved Feature 052 paths"},
         {"name": "no_feature_037_051_artifact_rewrites", "verified": no_feature_037_051_artifact_rewrites, "details": "no Feature 037-051 artifact path is rewritten in the Feature 052 diff"},
         {"name": "pointer_not_staged", "verified": pointer_not_staged, "details": ".specify/feature.json is not staged"},
-        {"name": "pointer_not_in_main_head", "verified": pointer_not_in_main_head, "details": ".specify/feature.json is not in main...HEAD diff"},
+        {"name": "pointer_not_in_main_head", "verified": pointer_not_in_main_head, "details": ".specify/feature.json is not in origin/main...HEAD diff"},
         {"name": "agents_clean_before_report", "verified": agents_clean_before_report, "details": "AGENTS.md clean before report generation"},
     ]
 

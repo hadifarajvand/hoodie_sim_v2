@@ -1,0 +1,20 @@
+
+==================================== ERRORS ====================================
+_ ERROR collecting tests/integration/test_evaluation_trace_bank_baseline_harness.py _
+ImportError while importing test module '/Users/hadi/Documents/GitHub/hoodie_sim_v2/tests/integration/test_evaluation_trace_bank_baseline_harness.py'.
+Hint: make sure your test modules/packages have valid Python names.
+Traceback:
+/opt/homebrew/Cellar/python@3.14/3.14.3_1/Frameworks/Python.framework/Versions/3.14/lib/python3.14/importlib/__init__.py:88: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+tests/integration/test_evaluation_trace_bank_baseline_harness.py:8: in <module>
+    from src.analysis.evaluation_trace_bank_baseline_harness import (
+src/analysis/evaluation_trace_bank_baseline_harness/__init__.py:6: in <module>
+    from .runner import (
+src/analysis/evaluation_trace_bank_baseline_harness/runner.py:23: in <module>
+    from ..git_base_ref import git_triple_dot_range, resolve_git_base_ref
+E   ImportError: cannot import name 'resolve_git_base_ref' from 'src.analysis.git_base_ref' (/Users/hadi/Documents/GitHub/hoodie_sim_v2/src/analysis/git_base_ref.py)
+=========================== short test summary info ============================
+ERROR tests/integration/test_evaluation_trace_bank_baseline_harness.py
+!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!
+1 error in 28.29s

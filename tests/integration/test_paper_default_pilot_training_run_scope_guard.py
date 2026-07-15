@@ -1,14 +1,24 @@
 from __future__ import annotations
 
-import subprocess
 import unittest
+
+from src.analysis.git_base_ref import git_triple_dot_range
+from tests.helpers.git_repo import make_temp_git_repo
 
 
 class PaperDefaultPilotTrainingRunScopeGuardTests(unittest.TestCase):
     def test_git_status_and_diff_only_show_feature_057_paths(self) -> None:
-        status_output = subprocess.run(["git", "status", "--short"], check=True, capture_output=True, text=True).stdout.splitlines()
-        diff_output = subprocess.run(["git", "diff", "--name-only", "main...HEAD"], check=True, capture_output=True, text=True).stdout.splitlines()
-        cached_output = subprocess.run(["git", "diff", "--cached", "--name-only"], check=True, capture_output=True, text=True).stdout.splitlines()
+        repo = make_temp_git_repo()
+        self.addCleanup(repo.cleanup)
+        repo.commit_file("base.txt", "base\n", "base commit")
+        repo.git("checkout", "-b", "feature")
+        repo.write("artifacts/analysis/paper-default-pilot-training-run/report.json", "{}\n")
+        repo.write("specs/057-paper-default-pilot-training-run/spec.md", "feature\n")
+        repo.git("add", "artifacts/analysis/paper-default-pilot-training-run/report.json", "specs/057-paper-default-pilot-training-run/spec.md")
+        repo.git("commit", "-m", "feature commit")
+        status_output = repo.output("status", "--short").splitlines()
+        diff_output = repo.output("diff", "--name-only", git_triple_dot_range(repo.root)).splitlines()
+        cached_output = repo.output("diff", "--cached", "--name-only").splitlines()
 
         forbidden_prefixes = (
             ".specify/feature.json",

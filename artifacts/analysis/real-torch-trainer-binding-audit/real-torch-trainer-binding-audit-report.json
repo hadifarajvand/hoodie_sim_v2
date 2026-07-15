@@ -36,7 +36,7 @@
     {
       "details": "current branch != main",
       "name": "not_main",
-      "verified": false
+      "verified": true
     },
     {
       "details": "060-full-paper-default-training-campaign-execution is an ancestor of HEAD",
@@ -84,8 +84,6 @@
     },
     {
       "details": [
-        "artifacts/analysis/evaluation-trace-bank-baseline-harness/evaluation-trace-bank-baseline-harness-report.json",
-        "artifacts/analysis/evaluation-trace-bank-baseline-harness/evaluation-trace-bank-baseline-harness-report.md",
         "artifacts/analysis/full-paper-default-training-campaign-execution/evaluation-metrics.json",
         "artifacts/analysis/full-paper-default-training-campaign-execution/full-paper-default-training-campaign-report.json",
         "artifacts/analysis/full-paper-default-training-campaign-execution/full-paper-default-training-campaign-report.md",
@@ -95,16 +93,6 @@
         "artifacts/analysis/paper-default-pilot-training-run/paper-default-pilot-training-run-report.json",
         "artifacts/analysis/paper-default-pilot-training-run/paper-default-pilot-training-run-report.md",
         "src/analysis/full_paper_default_training_campaign_execution/runner.py",
-        "src/environment/environment.py",
-        "src/environment/gym_adapter.py",
-        "src/environment/offloading_queue.py",
-        "src/environment/private_queue.py",
-        "src/environment/public_queue.py",
-        "src/environment/runtime_model.py",
-        "src/environment/task.py",
-        "src/environment/topology.py",
-        "src/policies/policy_interface.py",
-        "src/environment/topology_scaling.py",
         ".gitignore",
         ".specify/feature.json",
         "AGENTS.md",
@@ -124,6 +112,7 @@
         "artifacts/analysis/paper-default-training-smoke-run/paper-default-training-smoke-run-report.md",
         "artifacts/analysis/target-update-replay-training-validation/target-update-replay-validation-report.json",
         "artifacts/analysis/target-update-replay-training-validation/target-update-replay-validation-report.md",
+        "pyproject.toml",
         "requirements.txt",
         "src/analysis/full_paper_default_training_campaign_execution/__init__.py",
         "src/analysis/full_paper_default_training_campaign_execution/__main__.py",
@@ -133,8 +122,11 @@
         "src/analysis/full_paper_default_training_campaign_execution/report.py",
         "src/analysis/full_paper_default_training_campaign_execution/runner.py",
         "src/environment/deadline_rules.py",
+        "src/environment/environment.py",
+        "src/environment/evaluation_gym_adapter.py",
         "src/environment/gym_adapter.py",
         "src/environment/lifecycle_trace.py",
+        "src/environment/offloading_queue.py",
         "src/environment/paper_action_space.py",
         "src/environment/paper_link_delay.py",
         "src/environment/paper_load_history.py",
@@ -145,14 +137,22 @@
         "src/environment/paper_state.py",
         "src/environment/paper_timeout.py",
         "src/environment/paper_traffic.py",
+        "src/environment/private_queue.py",
+        "src/environment/public_queue.py",
         "src/environment/reward_timing.py",
         "src/environment/runtime_model.py",
+        "src/environment/slot_engine.py",
+        "src/environment/task.py",
+        "src/environment/topology.py",
+        "src/environment/topology_scaling.py",
         "src/policies/action_masking.py",
+        "src/policies/adaptive_offloading.py",
         "src/policies/bco.py",
         "src/policies/common.py",
         "src/policies/flc.py",
         "src/policies/ho.py",
         "src/policies/mleo.py",
+        "src/policies/policy_interface.py",
         "src/policies/ro.py",
         "src/policies/vo.py"
       ],
@@ -169,8 +169,8 @@
     "expected_python3": "src/.venvmac/bin/python3",
     "expected_python3_exists": false,
     "same_interpreter_expected": false,
-    "sys_executable": "/Users/hadi/Documents/GitHub/hoodie_sim_v2/.venv/bin/python",
-    "torch_probe_interpreter": "/Users/hadi/Documents/GitHub/hoodie_sim_v2/.venv/bin/python",
+    "sys_executable": "/Users/hadi/Documents/GitHub/hoodie_sim_v2/.venv/bin/python3",
+    "torch_probe_interpreter": "/Users/hadi/Documents/GitHub/hoodie_sim_v2/.venv/bin/python3",
     "which_python3": "/Users/hadi/Documents/GitHub/hoodie_sim_v2/.venv/bin/python3"
   },
   "real_trainer_candidate_summary": {
@@ -234,7 +234,6 @@
   "recommended_next_feature": "Repair Feature 060A audit scope hygiene",
   "remaining_blockers": [
     "branch",
-    "not_main",
     "base_branch_is_ancestor",
     "working_tree_paths_approved",
     "feature_branch_diff_paths_approved",
@@ -250,7 +249,7 @@
     "torch_tensor_module_optimizer_absent": true
   },
   "torch_availability_summary": {
-    "interpreter_used": "/Users/hadi/Documents/GitHub/hoodie_sim_v2/.venv/bin/python",
+    "interpreter_used": "/Users/hadi/Documents/GitHub/hoodie_sim_v2/.venv/bin/python3",
     "torch_find_spec_available": true,
     "torch_import_available": true,
     "torch_pip_show_present": true,

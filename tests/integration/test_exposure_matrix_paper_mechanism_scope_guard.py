@@ -3,15 +3,26 @@ from __future__ import annotations
 import json
 import unittest
 from pathlib import Path
-from subprocess import run
+
+from src.analysis.git_base_ref import git_triple_dot_range
+from tests.helpers.git_repo import make_temp_git_repo
 
 
 class ExposureMatrixPaperMechanismScopeGuardTests(unittest.TestCase):
     def test_spec_pointer_points_to_feature_049_and_is_local_only(self) -> None:
-        pointer = json.loads(Path(".specify/feature.json").read_text(encoding="utf-8"))
+        repo = make_temp_git_repo()
+        self.addCleanup(repo.cleanup)
+        repo.commit_file("base.txt", "base\n", "base commit")
+        repo.git("checkout", "-b", "feature")
+        repo.write(".specify/feature.json", json.dumps({"feature_directory": "specs/049-exposure-matrix-paper-mechanism-alignment"}) + "\n")
+        repo.write("artifacts/analysis/exposure-matrix-paper-mechanism-alignment/report.json", "{}\n")
+        repo.write("specs/049-exposure-matrix-paper-mechanism-alignment/spec.md", "feature\n")
+        repo.git("add", "artifacts/analysis/exposure-matrix-paper-mechanism-alignment/report.json", "specs/049-exposure-matrix-paper-mechanism-alignment/spec.md")
+        repo.git("commit", "-m", "feature commit")
+        pointer = json.loads((repo.root / ".specify/feature.json").read_text(encoding="utf-8"))
         self.assertEqual(pointer["feature_directory"], "specs/049-exposure-matrix-paper-mechanism-alignment")
-        self.assertEqual(run(["git", "diff", "--cached", "--name-only"], check=True, capture_output=True, text=True).stdout.strip(), "")
-        self.assertNotIn(".specify/feature.json", run(["git", "diff", "--name-only", "main...HEAD"], check=True, capture_output=True, text=True).stdout.splitlines())
+        self.assertEqual(repo.output("diff", "--cached", "--name-only").strip(), "")
+        self.assertNotIn(".specify/feature.json", repo.output("diff", "--name-only", git_triple_dot_range(repo.root)).splitlines())
 
     def test_committed_artifact_prerequisites_are_present(self) -> None:
         for path in (

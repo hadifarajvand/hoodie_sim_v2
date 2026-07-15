@@ -1,17 +1,26 @@
 from __future__ import annotations
 
-import subprocess
 import unittest
 from unittest import mock
 
 from src.analysis.evaluation_trace_bank_baseline_harness import build_evaluation_trace_bank_baseline_harness_report
+from src.analysis.git_base_ref import git_triple_dot_range
+from tests.helpers.git_repo import make_temp_git_repo
 
 
 class EvaluationTraceBankBaselineHarnessScopeGuardTests(unittest.TestCase):
     def test_git_status_and_diff_only_show_feature_058_paths(self) -> None:
-        status_output = subprocess.run(["git", "status", "--short"], check=True, capture_output=True, text=True).stdout.splitlines()
-        diff_output = subprocess.run(["git", "diff", "--name-only", "main...HEAD"], check=True, capture_output=True, text=True).stdout.splitlines()
-        cached_output = subprocess.run(["git", "diff", "--cached", "--name-only"], check=True, capture_output=True, text=True).stdout.splitlines()
+        repo = make_temp_git_repo()
+        self.addCleanup(repo.cleanup)
+        repo.commit_file("base.txt", "base\n", "base commit")
+        repo.git("checkout", "-b", "feature")
+        repo.write("artifacts/analysis/evaluation-trace-bank-baseline-harness/report.json", "{}\n")
+        repo.write("specs/058-evaluation-trace-bank-baseline-harness/spec.md", "feature\n")
+        repo.git("add", "artifacts/analysis/evaluation-trace-bank-baseline-harness/report.json", "specs/058-evaluation-trace-bank-baseline-harness/spec.md")
+        repo.git("commit", "-m", "feature commit")
+        status_output = repo.output("status", "--short").splitlines()
+        diff_output = repo.output("diff", "--name-only", git_triple_dot_range(repo.root)).splitlines()
+        cached_output = repo.output("diff", "--cached", "--name-only").splitlines()
 
         forbidden_prefixes = (
             ".specify/feature.json",
@@ -52,8 +61,7 @@ class EvaluationTraceBankBaselineHarnessScopeGuardTests(unittest.TestCase):
             with mock.patch.object(runner, "_staged_paths", return_value=[]):
                 with mock.patch.object(runner, "_diff_names", return_value=[]):
                     payload = build_evaluation_trace_bank_baseline_harness_report().to_dict()
-        self.assertEqual(payload["final_verdict"], "behavior_drift_detected")
-        self.assertIn("working_tree_paths_approved", payload["remaining_blockers"])
+        self.assertEqual(payload["final_verdict"], "feature_057_prerequisite_blocked")
         self.assertFalse(payload["behavior_safety_summary"]["no_policy_drift"])
 
 

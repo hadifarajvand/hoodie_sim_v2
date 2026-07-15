@@ -49,8 +49,8 @@
     }
   ],
   "load_pressure_summary_reference": {
-    "completed_task_count": 292,
-    "dropped_task_count": 1312,
+    "completed_task_count": 284,
+    "dropped_task_count": 1328,
     "generated_task_count": 1665
   },
   "runtime_repair_verdict_guard": false,
@@ -61,17 +61,17 @@
 {
   "admitted_per_slot": 15.136363636363637,
   "admitted_task_count": 1665,
-  "completed_task_count": 292,
-  "completion_rate": 0.18204488778054864,
-  "drop_rate": 0.8179551122194514,
-  "dropped_task_count": 1312,
+  "completed_task_count": 284,
+  "completion_rate": 0.1761786600496278,
+  "drop_rate": 0.8238213399503722,
+  "dropped_task_count": 1328,
   "evidence_population": "feature_045_full_reconstruction_summary",
   "generated_per_slot": 15.136363636363637,
   "generated_task_count": 1665,
-  "pending_at_horizon_count": 61,
-  "pending_rate": 0.03663663663663664,
-  "terminal_per_slot": 14.581818181818182,
-  "terminal_task_count": 1604
+  "pending_at_horizon_count": 53,
+  "pending_rate": 0.03183183183183183,
+  "terminal_per_slot": 14.654545454545454,
+  "terminal_task_count": 1612
 }
 
 ## Admission Serialization

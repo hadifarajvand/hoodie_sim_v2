@@ -9,14 +9,14 @@
   "expected_python3": "src/.venvmac/bin/python3",
   "expected_python3_exists": false,
   "same_interpreter_expected": false,
-  "sys_executable": "/Users/hadi/Documents/GitHub/hoodie_sim_v2/.venv/bin/python",
-  "torch_probe_interpreter": "/Users/hadi/Documents/GitHub/hoodie_sim_v2/.venv/bin/python",
+  "sys_executable": "/Users/hadi/Documents/GitHub/hoodie_sim_v2/.venv/bin/python3",
+  "torch_probe_interpreter": "/Users/hadi/Documents/GitHub/hoodie_sim_v2/.venv/bin/python3",
   "which_python3": "/Users/hadi/Documents/GitHub/hoodie_sim_v2/.venv/bin/python3"
 }
 
 ## Torch Availability Summary
 {
-  "interpreter_used": "/Users/hadi/Documents/GitHub/hoodie_sim_v2/.venv/bin/python",
+  "interpreter_used": "/Users/hadi/Documents/GitHub/hoodie_sim_v2/.venv/bin/python3",
   "torch_find_spec_available": true,
   "torch_import_available": true,
   "torch_pip_show_present": true,
@@ -131,7 +131,6 @@
 ## Remaining Blockers
 [
   "branch",
-  "not_main",
   "base_branch_is_ancestor",
   "working_tree_paths_approved",
   "feature_branch_diff_paths_approved",

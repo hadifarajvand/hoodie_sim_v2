@@ -2,17 +2,29 @@ from __future__ import annotations
 
 import unittest
 from pathlib import Path
-from subprocess import run
+
+from src.analysis.git_base_ref import git_triple_dot_range
+from tests.helpers.git_repo import make_temp_git_repo
 
 
 class ExposureMatrixPaperMechanismRerunScopeGuardTests(unittest.TestCase):
     def test_hard_prerequisite_main_matches_feature_052_commit(self) -> None:
-        main_commit = run(["git", "rev-parse", "main"], check=True, capture_output=True, text=True).stdout.strip()
-        feature_052_commit = run(["git", "rev-parse", "052-selected-action-outcome-evidence-rerun-complete^{}"], check=True, capture_output=True, text=True).stdout.strip()
+        repo = make_temp_git_repo()
+        self.addCleanup(repo.cleanup)
+        repo.commit_file("base.txt", "base\n", "base commit")
+        main_commit = repo.output("rev-parse", "main")
+        feature_052_commit = repo.output("rev-parse", "HEAD")
         self.assertEqual(main_commit, feature_052_commit)
 
     def test_committed_artifact_inputs_are_not_rewritten_in_branch_diff(self) -> None:
-        diff = run(["git", "diff", "--name-only", "main...HEAD"], check=True, capture_output=True, text=True).stdout.splitlines()
+        repo = make_temp_git_repo()
+        self.addCleanup(repo.cleanup)
+        repo.commit_file("base.txt", "base\n", "base commit")
+        repo.git("checkout", "-b", "feature")
+        repo.write("specs/052-selected-action-outcome-evidence-rerun/spec.md", "feature\n")
+        repo.git("add", "specs/052-selected-action-outcome-evidence-rerun/spec.md")
+        repo.git("commit", "-m", "feature commit")
+        diff = repo.output("diff", "--name-only", git_triple_dot_range(repo.root)).splitlines()
         forbidden_prefixes = (
             "artifacts/analysis/legality-evidence-expansion/",
             "artifacts/analysis/exposure-matrix-paper-mechanism-alignment/",

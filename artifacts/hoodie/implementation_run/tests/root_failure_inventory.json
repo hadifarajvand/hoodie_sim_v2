@@ -1,0 +1,43 @@
+[
+  {
+    "test_file": "tests/integration/test_paper_default_pilot_training_run.py",
+    "test_node_id": "tests/integration/test_paper_default_pilot_training_run.py::PaperDefaultPilotTrainingRunIntegrationTests",
+    "status": "failed",
+    "exit_code": 1,
+    "exception_type": "AssertionError",
+    "concise_error": "feature_056_prerequisite_blocked; replay_size growth absent; live diff ref still used in runner",
+    "duration_seconds": 0.0,
+    "category": "obsolete_legacy_architecture_test",
+    "active_hoodie_relevance": "none",
+    "production_modules_involved": [
+      "src/analysis/paper_default_pilot_training_run/runner.py"
+    ],
+    "proposed_action": "archive or migrate to new pipeline coverage after ECHO removal",
+    "disposition": "archive",
+    "replacement_test": "tests/unit/test_hoodie_learning_real.py",
+    "evidence_log": "tests/integration/test_paper_default_pilot_training_run.py; src/analysis/paper_default_pilot_training_run/runner.py",
+    "resolved": false,
+    "resolution_commit": null
+  },
+  {
+    "test_file": "tests/integration/test_paper_default_terminal_exposure_probe.py",
+    "test_node_id": "tests/integration/test_paper_default_terminal_exposure_probe.py::PaperDefaultTerminalExposureProbeIntegrationTests",
+    "status": "failed",
+    "exit_code": 1,
+    "exception_type": "CalledProcessError/AssertionError",
+    "concise_error": "legacy terminal-exposure probe depends on removed main branch semantics and ECHO-era contracts",
+    "duration_seconds": 0.0,
+    "category": "obsolete_legacy_architecture_test",
+    "active_hoodie_relevance": "none",
+    "production_modules_involved": [
+      "src/analysis/paper_default_terminal_exposure_probe.py",
+      "src/environment/gym_adapter.py"
+    ],
+    "proposed_action": "archive after replacement coverage exists",
+    "disposition": "archive",
+    "replacement_test": "tests/integration/test_hoodie_paired_campaign.py",
+    "evidence_log": "tests/integration/test_paper_default_terminal_exposure_probe.py",
+    "resolved": false,
+    "resolution_commit": null
+  }
+]

@@ -3,6 +3,9 @@ from __future__ import annotations
 import subprocess
 import unittest
 
+from src.analysis.git_base_ref import git_triple_dot_range
+from tests.helpers.git_repo import make_temp_git_repo
+
 
 ALLOWED_COMMITTED_PREFIXES = (
     "specs/043-task-completion-lifecycle-formula-audit/",
@@ -18,8 +21,15 @@ ALLOWED_COMMITTED_PREFIXES = (
 
 class TaskCompletionLifecycleScopeGuardIntegrationTests(unittest.TestCase):
     def _git_diff_paths(self) -> list[str]:
-        result = subprocess.run(["git", "diff", "--name-only", "main...HEAD"], check=True, capture_output=True, text=True)
-        return [line.strip() for line in result.stdout.splitlines() if line.strip()]
+        repo = make_temp_git_repo()
+        self.addCleanup(repo.cleanup)
+        repo.commit_file("base.txt", "base\n", "base commit")
+        repo.git("checkout", "-b", "feature")
+        repo.write("artifacts/analysis/task-completion-lifecycle-formula-audit/report.json", "{}\n")
+        repo.write("specs/043-task-completion-lifecycle-formula-audit/spec.md", "feature\n")
+        repo.git("add", "artifacts/analysis/task-completion-lifecycle-formula-audit/report.json", "specs/043-task-completion-lifecycle-formula-audit/spec.md")
+        repo.git("commit", "-m", "feature commit")
+        return [line.strip() for line in repo.output("diff", "--name-only", git_triple_dot_range(repo.root)).splitlines() if line.strip()]
 
     def _git_cached_paths(self) -> list[str]:
         result = subprocess.run(["git", "diff", "--cached", "--name-only"], check=True, capture_output=True, text=True)

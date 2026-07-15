@@ -22,6 +22,7 @@ from .config import (
 )
 from .model import BehaviorEquivalenceSummary, TrainingReadinessContractReport
 from .report import write_training_readiness_contract_report
+from ..git_base_ref import git_triple_dot_range, resolve_git_base_ref
 
 BLOCKED_NEXT_FEATURES = {
     "evidence_chain_prerequisite_blocked": "prerequisite evidence repair before training",
@@ -71,13 +72,13 @@ def _load_committed_inputs(config: TrainingReadinessContractConfig) -> dict[str,
 
 
 def _prerequisite_tags_verified() -> list[dict[str, Any]]:
-    diff_names = _git_output("diff", "--name-only", "main...HEAD").splitlines()
+    diff_names = _git_output("diff", "--name-only", "git_triple_dot_range()").splitlines()
     return [
         {"name": "branch", "verified": _git_output("branch", "--show-current") == FEATURE_ID, "details": f"git branch --show-current == {FEATURE_ID}"},
         {"name": "not_main", "verified": _git_output("branch", "--show-current") != "main", "details": "current branch != main"},
         {"name": "main_contains_feature_053", "verified": _git_bool("merge-base", "--is-ancestor", FEATURE_053_PREREQUISITE_TAG[:-3], "main"), "details": f"main contains {FEATURE_053_PREREQUISITE_TAG[:-3]}"},
         {"name": "main_contains_054a_hygiene", "verified": _git_bool("merge-base", "--is-ancestor", FEATURE_054A_PREREQUISITE_TAG[:-3], "main"), "details": f"main contains {FEATURE_054A_PREREQUISITE_TAG[:-3]}"},
-        {"name": "main_is_branch_base", "verified": _git_output("merge-base", "main", "HEAD") == _git_output("rev-parse", "main"), "details": "branch is based on current main"},
+        {"name": "main_is_branch_base", "verified": _git_output("merge-base", resolve_git_base_ref(), "HEAD") == _git_output("rev-parse", resolve_git_base_ref()), "details": "branch is based on current main"},
         {"name": "feature_diff_contains_only_approved_paths", "verified": all(
             path.startswith("specs/054-training-readiness-contract/")
             or path.startswith("src/analysis/training_readiness_contract/")
@@ -85,7 +86,7 @@ def _prerequisite_tags_verified() -> list[dict[str, Any]]:
             or path.startswith("tests/integration/test_training_readiness_contract")
             or path.startswith("artifacts/analysis/training-readiness-contract/")
             for path in diff_names
-        ), "details": "main...HEAD diff contains only approved Feature 054 paths"},
+        ), "details": "git_triple_dot_range() diff contains only approved Feature 054 paths"},
         {"name": "no_feature_037_053_artifact_rewrites", "verified": not any(path.startswith("artifacts/analysis/") and not path.startswith("artifacts/analysis/training-readiness-contract/") for path in diff_names), "details": "no Feature 037-053 artifacts are rewritten"},
         {"name": "agents_stable_not_modified", "verified": "AGENTS.md" not in diff_names, "details": "AGENTS.md is stable and not modified"},
         {"name": "pointer_local_only_not_in_committed_diff", "verified": ".specify/feature.json" not in diff_names, "details": ".specify/feature.json is ignored/local-only and absent from committed diff"},
@@ -148,7 +149,7 @@ def _feature_053_readiness_verified(feature_053: dict[str, Any]) -> bool:
 
 
 def _current_feature_diff() -> list[str]:
-    return _git_output("diff", "--name-only", "main...HEAD").splitlines()
+    return _git_output("diff", "--name-only", "git_triple_dot_range()").splitlines()
 
 
 def _no_dependency_drift(diff_names: list[str]) -> bool:

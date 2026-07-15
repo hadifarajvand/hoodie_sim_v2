@@ -38,20 +38,20 @@
   ],
   "trained_policy_metrics": {
     "action_distribution": {
-      "horizontal": 45,
-      "local": 65,
-      "vertical": 0
+      "horizontal": 35,
+      "local": 43,
+      "vertical": 32
     },
     "delay": {
       "status": "not_claimed_in_feature_060",
       "value": null
     },
     "drop": {
-      "count": 0
+      "count": 263
     },
     "reward": {
-      "mean_reward": -452.0,
-      "reward_bearing_transition_count": 244
+      "mean_reward": -841.0,
+      "reward_bearing_transition_count": 97
     },
     "timeout": {
       "status": "not_claimed_in_feature_060",

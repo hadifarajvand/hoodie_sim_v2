@@ -19,6 +19,7 @@ from .config import (
 )
 from .model import PaperDefaultPilotTrainingRunReport
 from .report import write_paper_default_pilot_training_run_report
+from ..git_base_ref import git_triple_dot_range, resolve_git_base_ref
 
 APPROVED_PATH_PREFIXES = (
     "artifacts/analysis/paper-default-pilot-training-run/",
@@ -75,7 +76,7 @@ def _staged_paths() -> list[str]:
 
 
 def _diff_names() -> list[str]:
-    output = _git_output("diff", "--name-only", "main...HEAD")
+    output = _git_output("diff", "--name-only", "git_triple_dot_range()")
     return [line for line in output.splitlines() if line]
 
 
@@ -179,17 +180,17 @@ def _build_prerequisite_tags_verified(
     return [
         {"name": "branch", "verified": _git_output("branch", "--show-current") == BRANCH_NAME, "details": f"git branch --show-current == {BRANCH_NAME}"},
         {"name": "not_main", "verified": _git_output("branch", "--show-current") != "main", "details": "current branch != main"},
-        {"name": "origin_main_contains_056_complete", "verified": _git_bool("merge-base", "--is-ancestor", "056-target-update-replay-validation", "origin/main"), "details": "origin/main contains the 056 validation branch commit"},
-        {"name": "origin_main_contains_055_complete", "verified": _git_bool("merge-base", "--is-ancestor", "055-paper-default-smoke-run", "origin/main"), "details": "origin/main contains the 055 smoke branch commit"},
-        {"name": "origin_main_contains_054_complete", "verified": _git_bool("merge-base", "--is-ancestor", "054-training-readiness-contract", "origin/main"), "details": "origin/main contains the 054 readiness branch commit"},
-        {"name": "origin_main_contains_054a_hygiene", "verified": _git_bool("merge-base", "--is-ancestor", "054a-speckit-local-state-hygiene-recovery", "origin/main"), "details": "origin/main contains the 054A hygiene branch commit"},
-        {"name": "origin_main_is_branch_base", "verified": _git_output("merge-base", "origin/main", "HEAD") == _git_output("rev-parse", "origin/main"), "details": "branch is based on current origin/main"},
+        {"name": "origin_main_contains_056_complete", "verified": _git_bool("merge-base", "--is-ancestor", "056-target-update-replay-validation", "resolve_git_base_ref()"), "details": "resolve_git_base_ref() contains the 056 validation branch commit"},
+        {"name": "origin_main_contains_055_complete", "verified": _git_bool("merge-base", "--is-ancestor", "055-paper-default-smoke-run", "resolve_git_base_ref()"), "details": "resolve_git_base_ref() contains the 055 smoke branch commit"},
+        {"name": "origin_main_contains_054_complete", "verified": _git_bool("merge-base", "--is-ancestor", "054-training-readiness-contract", "resolve_git_base_ref()"), "details": "resolve_git_base_ref() contains the 054 readiness branch commit"},
+        {"name": "origin_main_contains_054a_hygiene", "verified": _git_bool("merge-base", "--is-ancestor", "054a-speckit-local-state-hygiene-recovery", "resolve_git_base_ref()"), "details": "resolve_git_base_ref() contains the 054A hygiene branch commit"},
+        {"name": "origin_main_is_branch_base", "verified": _git_output("merge-base", "resolve_git_base_ref()", "HEAD") == _git_output("rev-parse", "resolve_git_base_ref()"), "details": "branch is based on current resolve_git_base_ref()"},
         {"name": "feature_056_report_valid", "verified": feature_056_ready, "details": f"{FEATURE_056_REPORT} exists and contains the approved 056 readiness verdict"},
         {"name": "feature_055_report_valid", "verified": feature_055_ready, "details": f"{FEATURE_055_REPORT} exists and contains the approved 055 smoke verdict"},
         {"name": "feature_054_report_valid", "verified": feature_054_ready, "details": f"{FEATURE_054_REPORT} exists and contains the approved 054 readiness verdict"},
         {"name": "working_tree_paths_approved", "verified": approved_dirty, "details": "git status --short contains only approved Feature 057 paths"},
         {"name": "staged_paths_approved", "verified": approved_staged, "details": "git diff --cached --name-only contains only approved Feature 057 paths"},
-        {"name": "main_head_diff_approved", "verified": approved_diff, "details": "git diff --name-only main...HEAD contains only approved Feature 057 paths"},
+        {"name": "main_head_diff_approved", "verified": approved_diff, "details": "git diff --name-only git_triple_dot_range() contains only approved Feature 057 paths"},
         {"name": "no_prior_artifact_rewrite", "verified": _no_prior_artifact_rewrite(diff_paths), "details": "no Feature 037-056 artifacts are rewritten"},
         {"name": "agents_stable_not_modified", "verified": "AGENTS.md" not in dirty_paths and "AGENTS.md" not in staged_paths and "AGENTS.md" not in diff_paths, "details": "AGENTS.md is stable and not modified"},
         {"name": "pointer_local_only_not_dirty_or_staged", "verified": ".specify/feature.json" not in dirty_paths and ".specify/feature.json" not in staged_paths and ".specify/feature.json" not in diff_paths, "details": ".specify/feature.json is ignored/local-only and absent from dirty/staged/committed paths"},
