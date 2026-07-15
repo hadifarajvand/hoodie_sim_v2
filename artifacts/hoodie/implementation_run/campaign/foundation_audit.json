@@ -1,0 +1,75 @@
+{
+  "modules": [
+    {
+      "path": "src/hoodie/experiments",
+      "implemented_behavior": "experiment specification, IDs, trace registry, checkpoint registry, storage, aggregation, provenance, runner skeleton",
+      "callable_entry_points": [
+        "ExperimentSpec",
+        "PanelSpec",
+        "compute_job_id",
+        "TraceRegistry",
+        "AtomicJobStorage",
+        "CampaignRunner"
+      ],
+      "production_dependencies": [
+        "src.reference_model",
+        "matplotlib",
+        "torch"
+      ],
+      "tests": [
+        "tests_supported/hoodie/experiments/*",
+        "tests_supported/hoodie/integration/*",
+        "tests_supported/hoodie/rendering/*",
+        "tests_supported/hoodie/reproducibility/*"
+      ],
+      "placeholder_or_incomplete_behavior": "campaign runner still skeletonized; storage writes only specification.json; resume logic simplified; no real simulator execution yet",
+      "source_contract_dependencies": [
+        "figures_8_11_source_contract.json"
+      ],
+      "required_correction": "complete source-locked CLI, full job datasets, real simulator execution"
+    },
+    {
+      "path": "src/hoodie/rendering",
+      "implemented_behavior": "single-panel and composite render helpers",
+      "callable_entry_points": [
+        "render_panel",
+        "render_composite"
+      ],
+      "production_dependencies": [
+        "matplotlib",
+        "src.hoodie.experiments.schemas"
+      ],
+      "tests": [
+        "tests_supported/hoodie/rendering/test_rendering.py"
+      ],
+      "placeholder_or_incomplete_behavior": "renders synthetic aggregates directly rather than loading saved datasets from campaign artifacts",
+      "source_contract_dependencies": [
+        "figures_8_11_source_contract.json"
+      ],
+      "required_correction": "load validated aggregate datasets and export manifest-driven render products"
+    },
+    {
+      "path": "src/hoodie/reproducibility/supported_surface_scan.py",
+      "implemented_behavior": "supported-surface scanner",
+      "callable_entry_points": [
+        "scan_supported_surface",
+        "validate_supported_surface"
+      ],
+      "production_dependencies": [
+        "json",
+        "pathlib",
+        "re"
+      ],
+      "tests": [
+        "tests_supported/hoodie/reproducibility/test_supported_surface_has_no_echo.py"
+      ],
+      "placeholder_or_incomplete_behavior": "only scans declared supported roots; no import graph resolution beyond direct file text",
+      "source_contract_dependencies": [
+        "supported_surface.json"
+      ],
+      "required_correction": "extend to campaign release bundle validator later"
+    }
+  ],
+  "audit_status": "incomplete",
+  "defects_found": true
+}
