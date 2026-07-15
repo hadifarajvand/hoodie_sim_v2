@@ -1,0 +1,268 @@
+[
+  {
+    "original_path": "tests_supported/hoodie/integration/test_campaign_config.py",
+    "classification": "campaign",
+    "canonical_source_modules": [
+      "src/agents",
+      "src/environment",
+      "src/policies",
+      "src/evaluation",
+      "src/config",
+      "src/repro",
+      "src/training"
+    ],
+    "reusable_assertions": true,
+    "obsolete_assertions": false,
+    "migration_target": "tests_supported/hoodie/integration/test_campaign_config.py",
+    "migrated": true,
+    "migration_commit": "8119fec",
+    "notes": ""
+  },
+  {
+    "original_path": "tests_supported/hoodie/integration/test_hoodie_paired_campaign.py",
+    "classification": "paired_evaluation",
+    "canonical_source_modules": [
+      "src/agents",
+      "src/environment",
+      "src/policies",
+      "src/evaluation",
+      "src/config",
+      "src/repro",
+      "src/training"
+    ],
+    "reusable_assertions": true,
+    "obsolete_assertions": false,
+    "migration_target": "tests_supported/hoodie/integration/test_hoodie_paired_campaign.py",
+    "migrated": true,
+    "migration_commit": "8119fec",
+    "notes": ""
+  },
+  {
+    "original_path": "tests_supported/hoodie/reproducibility/test_reproducibility_bundle.py",
+    "classification": "reproducibility",
+    "canonical_source_modules": [
+      "src/agents",
+      "src/environment",
+      "src/policies",
+      "src/evaluation",
+      "src/config",
+      "src/repro",
+      "src/training"
+    ],
+    "reusable_assertions": true,
+    "obsolete_assertions": false,
+    "migration_target": "tests_supported/hoodie/reproducibility/test_reproducibility_bundle.py",
+    "migrated": true,
+    "migration_commit": "8119fec",
+    "notes": ""
+  },
+  {
+    "original_path": "tests_supported/hoodie/reproducibility/test_supported_surface_groups.py",
+    "classification": "other",
+    "canonical_source_modules": [
+      "src/agents",
+      "src/environment",
+      "src/policies",
+      "src/evaluation",
+      "src/config",
+      "src/repro",
+      "src/training"
+    ],
+    "reusable_assertions": true,
+    "obsolete_assertions": false,
+    "migration_target": "tests_supported/hoodie/reproducibility/test_supported_surface_groups.py",
+    "migrated": true,
+    "migration_commit": "8119fec",
+    "notes": ""
+  },
+  {
+    "original_path": "tests_supported/hoodie/unit/test_baseline_fidelity.py",
+    "classification": "baseline_policy",
+    "canonical_source_modules": [
+      "src/agents",
+      "src/environment",
+      "src/policies",
+      "src/evaluation",
+      "src/config",
+      "src/repro",
+      "src/training"
+    ],
+    "reusable_assertions": true,
+    "obsolete_assertions": false,
+    "migration_target": "tests_supported/hoodie/unit/test_baseline_fidelity.py",
+    "migrated": true,
+    "migration_commit": "8119fec",
+    "notes": ""
+  },
+  {
+    "original_path": "tests_supported/hoodie/unit/test_checkpoint_roundtrip.py",
+    "classification": "checkpoint",
+    "canonical_source_modules": [
+      "src/agents",
+      "src/environment",
+      "src/policies",
+      "src/evaluation",
+      "src/config",
+      "src/repro",
+      "src/training"
+    ],
+    "reusable_assertions": true,
+    "obsolete_assertions": false,
+    "migration_target": "tests_supported/hoodie/unit/test_checkpoint_roundtrip.py",
+    "migrated": true,
+    "migration_commit": "8119fec",
+    "notes": ""
+  },
+  {
+    "original_path": "tests_supported/hoodie/unit/test_delayed_reward.py",
+    "classification": "reward",
+    "canonical_source_modules": [
+      "src/agents",
+      "src/environment",
+      "src/policies",
+      "src/evaluation",
+      "src/config",
+      "src/repro",
+      "src/training"
+    ],
+    "reusable_assertions": true,
+    "obsolete_assertions": false,
+    "migration_target": "tests_supported/hoodie/unit/test_delayed_reward.py",
+    "migrated": true,
+    "migration_commit": "8119fec",
+    "notes": ""
+  },
+  {
+    "original_path": "tests_supported/hoodie/unit/test_distributed_training.py",
+    "classification": "distributed_training",
+    "canonical_source_modules": [
+      "src/agents",
+      "src/environment",
+      "src/policies",
+      "src/evaluation",
+      "src/config",
+      "src/repro",
+      "src/training"
+    ],
+    "reusable_assertions": true,
+    "obsolete_assertions": false,
+    "migration_target": "tests_supported/hoodie/unit/test_distributed_training.py",
+    "migrated": true,
+    "migration_commit": "8119fec",
+    "notes": ""
+  },
+  {
+    "original_path": "tests_supported/hoodie/unit/test_git_base_ref.py",
+    "classification": "other",
+    "canonical_source_modules": [
+      "src/agents",
+      "src/environment",
+      "src/policies",
+      "src/evaluation",
+      "src/config",
+      "src/repro",
+      "src/training"
+    ],
+    "reusable_assertions": true,
+    "obsolete_assertions": false,
+    "migration_target": "tests_supported/hoodie/unit/test_git_base_ref.py",
+    "migrated": true,
+    "migration_commit": "8119fec",
+    "notes": ""
+  },
+  {
+    "original_path": "tests_supported/hoodie/unit/test_hoodie_learning_real.py",
+    "classification": "learner",
+    "canonical_source_modules": [
+      "src/agents",
+      "src/environment",
+      "src/policies",
+      "src/evaluation",
+      "src/config",
+      "src/repro",
+      "src/training"
+    ],
+    "reusable_assertions": true,
+    "obsolete_assertions": false,
+    "migration_target": "tests_supported/hoodie/unit/test_hoodie_learning_real.py",
+    "migrated": true,
+    "migration_commit": "8119fec",
+    "notes": ""
+  },
+  {
+    "original_path": "tests_supported/hoodie/unit/test_lstm_dueling_dqn.py",
+    "classification": "lstm",
+    "canonical_source_modules": [
+      "src/agents",
+      "src/environment",
+      "src/policies",
+      "src/evaluation",
+      "src/config",
+      "src/repro",
+      "src/training"
+    ],
+    "reusable_assertions": true,
+    "obsolete_assertions": false,
+    "migration_target": "tests_supported/hoodie/unit/test_lstm_dueling_dqn.py",
+    "migrated": true,
+    "migration_commit": "8119fec",
+    "notes": ""
+  },
+  {
+    "original_path": "tests_supported/hoodie/unit/test_paired_evaluation.py",
+    "classification": "paired_evaluation",
+    "canonical_source_modules": [
+      "src/agents",
+      "src/environment",
+      "src/policies",
+      "src/evaluation",
+      "src/config",
+      "src/repro",
+      "src/training"
+    ],
+    "reusable_assertions": true,
+    "obsolete_assertions": false,
+    "migration_target": "tests_supported/hoodie/unit/test_paired_evaluation.py",
+    "migrated": true,
+    "migration_commit": "8119fec",
+    "notes": ""
+  },
+  {
+    "original_path": "tests_supported/hoodie/unit/test_policy_interface.py",
+    "classification": "policy_interface",
+    "canonical_source_modules": [
+      "src/agents",
+      "src/environment",
+      "src/policies",
+      "src/evaluation",
+      "src/config",
+      "src/repro",
+      "src/training"
+    ],
+    "reusable_assertions": true,
+    "obsolete_assertions": false,
+    "migration_target": "tests_supported/hoodie/unit/test_policy_interface.py",
+    "migrated": true,
+    "migration_commit": "8119fec",
+    "notes": ""
+  },
+  {
+    "original_path": "tests_supported/hoodie/unit/test_reference_task_lifecycle_kernel.py",
+    "classification": "kernel",
+    "canonical_source_modules": [
+      "src/agents",
+      "src/environment",
+      "src/policies",
+      "src/evaluation",
+      "src/config",
+      "src/repro",
+      "src/training"
+    ],
+    "reusable_assertions": true,
+    "obsolete_assertions": false,
+    "migration_target": "tests_supported/hoodie/unit/test_reference_task_lifecycle_kernel.py",
+    "migrated": true,
+    "migration_commit": "8119fec",
+    "notes": ""
+  }
+]

@@ -1,9 +1,13 @@
 {
   "supported_surface": {
     "source_roots": [
-      "src/hoodie/",
-      "src/analysis/",
-      "src/" 
+      "src/agents",
+      "src/policies",
+      "src/evaluation",
+      "src/config",
+      "src/repro",
+      "src/analysis/distributed_multi_agent_hoodie_training",
+      "tests_supported/hoodie"
     ],
     "included_capabilities": [
       "original HOODIE simulation",

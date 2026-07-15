@@ -2,22 +2,21 @@
 
 Canonical supported surface contains only code needed to reproduce original HOODIE behavior and publication artifacts:
 
-- `src/hoodie/`
-- canonical simulation, topology, queue, physical, and domain modules under `src/`
-- real DDQN learner and LSTM forecasting code
-- delayed reward and transition ownership logic
-- distributed learner code
-- six baseline policies: FLC, RO, HO, VO, BCO, MLEO
+- `src/agents/`
+- `src/policies/`
+- `src/evaluation/`
+- `src/config/`
+- `src/repro/`
+- `src/analysis/distributed_multi_agent_hoodie_training/`
+- `tests_supported/hoodie/`
+
+Supported capabilities:
+
+- original HOODIE simulation and training
+- LSTM and no-LSTM variants
+- six baseline policies
 - paired evaluation
-- experiment runner and campaign orchestration for Figures 8–11
-- dataset generation, reporting, rendering, and reproducibility verification
+- dataset generation
+- reporting, rendering, and reproducibility verification
 
-Outside supported surface:
-
-- historical analysis batches not called by canonical CLI or campaign runner
-- ECHO-era analysis modules
-- legacy paper_default / terminal_exposure / scope-guard batches
-- old main...HEAD gate tests
-- archived history under `tests_historical/`
-
-Historical code may remain in repository for provenance, but it is not part of publication-critical supported execution.
+Historical analysis batches, legacy gates, and archived tests remain outside supported execution.

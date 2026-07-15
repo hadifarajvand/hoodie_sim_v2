@@ -1,14 +1,67 @@
 {
   "supported_test_files": [
-    "tests_supported/hoodie/unit/test_git_base_ref.py"
+    "tests_supported/hoodie/integration/test_campaign_config.py",
+    "tests_supported/hoodie/integration/test_hoodie_paired_campaign.py",
+    "tests_supported/hoodie/reproducibility/test_reproducibility_bundle.py",
+    "tests_supported/hoodie/reproducibility/test_supported_surface_groups.py",
+    "tests_supported/hoodie/reproducibility/test_supported_surface_has_no_echo.py",
+    "tests_supported/hoodie/unit/test_baseline_fidelity.py",
+    "tests_supported/hoodie/unit/test_checkpoint_roundtrip.py",
+    "tests_supported/hoodie/unit/test_delayed_reward.py",
+    "tests_supported/hoodie/unit/test_distributed_training.py",
+    "tests_supported/hoodie/unit/test_git_base_ref.py",
+    "tests_supported/hoodie/unit/test_hoodie_learning_real.py",
+    "tests_supported/hoodie/unit/test_lstm_dueling_dqn.py",
+    "tests_supported/hoodie/unit/test_paired_evaluation.py",
+    "tests_supported/hoodie/unit/test_policy_interface.py",
+    "tests_supported/hoodie/unit/test_reference_task_lifecycle_kernel.py"
   ],
-  "number_passed": 2,
+  "subsystems": [
+    "baseline_policy",
+    "campaign",
+    "checkpoint",
+    "distributed_training",
+    "kernel",
+    "learner",
+    "lstm",
+    "other",
+    "paired_evaluation",
+    "policy_interface",
+    "reproducibility",
+    "reward"
+  ],
+  "source_modules_covered": [
+    "src/agents",
+    "src/config",
+    "src/environment",
+    "src/evaluation",
+    "src/policies",
+    "src/repro",
+    "src/training"
+  ],
+  "migrated_from_paths": [
+    "tests_supported/hoodie/integration/test_campaign_config.py",
+    "tests_supported/hoodie/integration/test_hoodie_paired_campaign.py",
+    "tests_supported/hoodie/reproducibility/test_reproducibility_bundle.py",
+    "tests_supported/hoodie/reproducibility/test_supported_surface_groups.py",
+    "tests_supported/hoodie/unit/test_baseline_fidelity.py",
+    "tests_supported/hoodie/unit/test_checkpoint_roundtrip.py",
+    "tests_supported/hoodie/unit/test_delayed_reward.py",
+    "tests_supported/hoodie/unit/test_distributed_training.py",
+    "tests_supported/hoodie/unit/test_git_base_ref.py",
+    "tests_supported/hoodie/unit/test_hoodie_learning_real.py",
+    "tests_supported/hoodie/unit/test_lstm_dueling_dqn.py",
+    "tests_supported/hoodie/unit/test_paired_evaluation.py",
+    "tests_supported/hoodie/unit/test_policy_interface.py",
+    "tests_supported/hoodie/unit/test_reference_task_lifecycle_kernel.py"
+  ],
   "command": "python3 -m pytest -q",
-  "result": "2 passed in 0.78s",
+  "result": "49 passed",
+  "duration": null,
   "python_version": "3.14.3",
   "numpy_version": "2.5.0",
   "torch_version": "2.12.1",
   "backend": "pytest",
   "operating_system": "macOS-26.5.1-arm64-arm-64bit-Mach-O",
-  "source_commit": "dfd77be182621c58ededfa8d661e9a17bb68e972"
+  "commit_SHA": "8119fec0f329464425688b462b5cfe477d7c43a4"
 }
