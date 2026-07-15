@@ -15,8 +15,8 @@
     },
     "episode_summaries": [
       {
-        "completed_task_count": 49,
-        "dropped_task_count": 0,
+        "completed_task_count": 18,
+        "dropped_task_count": 29,
         "episode_id": 0,
         "illegal_action_count": 0,
         "loss_count": 0,
@@ -24,8 +24,8 @@
         "transition_count": 50
       },
       {
-        "completed_task_count": 47,
-        "dropped_task_count": 0,
+        "completed_task_count": 18,
+        "dropped_task_count": 32,
         "episode_id": 1,
         "illegal_action_count": 0,
         "loss_count": 37,
@@ -33,8 +33,8 @@
         "transition_count": 50
       },
       {
-        "completed_task_count": 47,
-        "dropped_task_count": 0,
+        "completed_task_count": 18,
+        "dropped_task_count": 31,
         "episode_id": 2,
         "illegal_action_count": 0,
         "loss_count": 50,
@@ -43,27 +43,27 @@
       }
     ],
     "metrics": {
-      "average_reward": -4.514285714285714,
-      "completed_task_count": 143,
-      "dropped_task_count": 0,
+      "average_reward": -24.642105263157895,
+      "completed_task_count": 54,
+      "dropped_task_count": 92,
       "episodes_completed": 3,
       "illegal_action_count": 0,
       "legal_action_only": true,
       "loss_summary": {
         "all_finite": true,
         "count": 87,
-        "max": 23.08195686340332,
-        "mean": 18.253358884789478,
-        "min": 12.803314208984375,
+        "max": 1136.5068359375,
+        "mean": 751.9430454297998,
+        "min": 362.9549560546875,
         "no_inf": true,
         "no_nan": true
       },
       "optimizer_step_count": 87,
       "pending_at_horizon_count": 3,
       "replay_size": 150,
-      "reward_count": 105,
+      "reward_count": 95,
       "target_sync_count": 0,
-      "total_reward": -474.0,
+      "total_reward": -2341.0,
       "total_transition_count": 150
     },
     "path_name": "legacy",
@@ -84,8 +84,8 @@
     },
     "episode_summaries": [
       {
-        "completed_task_count": 42,
-        "dropped_task_count": 0,
+        "completed_task_count": 13,
+        "dropped_task_count": 31,
         "episode_id": 0,
         "illegal_action_count": 0,
         "loss_count": 0,
@@ -93,8 +93,8 @@
         "transition_count": 50
       },
       {
-        "completed_task_count": 45,
-        "dropped_task_count": 0,
+        "completed_task_count": 16,
+        "dropped_task_count": 29,
         "episode_id": 1,
         "illegal_action_count": 0,
         "loss_count": 37,
@@ -102,8 +102,8 @@
         "transition_count": 50
       },
       {
-        "completed_task_count": 45,
-        "dropped_task_count": 0,
+        "completed_task_count": 13,
+        "dropped_task_count": 31,
         "episode_id": 2,
         "illegal_action_count": 0,
         "loss_count": 50,
@@ -112,27 +112,27 @@
       }
     ],
     "metrics": {
-      "average_reward": -8.724489795918368,
-      "completed_task_count": 132,
-      "dropped_task_count": 0,
+      "average_reward": -28.28125,
+      "completed_task_count": 42,
+      "dropped_task_count": 91,
       "episodes_completed": 3,
       "illegal_action_count": 0,
       "legal_action_only": true,
       "loss_summary": {
         "all_finite": true,
         "count": 87,
-        "max": 69.2023696899414,
-        "mean": 55.0221658465506,
-        "min": 41.22209548950195,
+        "max": 1884.0321044921875,
+        "mean": 1171.7736297256645,
+        "min": 337.815185546875,
         "no_inf": true,
         "no_nan": true
       },
       "optimizer_step_count": 87,
       "pending_at_horizon_count": 3,
       "replay_size": 150,
-      "reward_count": 98,
+      "reward_count": 96,
       "target_sync_count": 0,
-      "total_reward": -855.0,
+      "total_reward": -2715.0,
       "total_transition_count": 150
     },
     "path_name": "paper_default",

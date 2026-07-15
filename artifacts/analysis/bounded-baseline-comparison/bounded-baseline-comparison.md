@@ -15,16 +15,16 @@
 ### Metrics
 - episodes_completed: `3`
 - total_transition_count: `150`
-- average_reward: `-4.514286`
+- average_reward: `-24.642105`
 - loss_count: `87`
 - loss_all_finite: `True`
 - loss_no_nan: `True`
 - loss_no_inf: `True` 
-- loss_mean: `18.253358884789478`
-- loss_min: `12.803314208984375`
-- loss_max: `23.08195686340332`
-- completed_task_count: `143`
-- dropped_task_count: `0`
+- loss_mean: `751.9430454297998`
+- loss_min: `362.9549560546875`
+- loss_max: `1136.5068359375`
+- completed_task_count: `54`
+- dropped_task_count: `92`
 - pending_at_horizon_count: `3`
 - illegal_action_count: `0`
 - legal_action_only: `True`
@@ -44,16 +44,16 @@
 ### Metrics
 - episodes_completed: `3`
 - total_transition_count: `150`
-- average_reward: `-8.724490`
+- average_reward: `-28.281250`
 - loss_count: `87`
 - loss_all_finite: `True`
 - loss_no_nan: `True`
 - loss_no_inf: `True` 
-- loss_mean: `55.0221658465506`
-- loss_min: `41.22209548950195`
-- loss_max: `69.2023696899414`
-- completed_task_count: `132`
-- dropped_task_count: `0`
+- loss_mean: `1171.7736297256645`
+- loss_min: `337.815185546875`
+- loss_max: `1884.0321044921875`
+- completed_task_count: `42`
+- dropped_task_count: `91`
 - pending_at_horizon_count: `3`
 - illegal_action_count: `0`
 - legal_action_only: `True`

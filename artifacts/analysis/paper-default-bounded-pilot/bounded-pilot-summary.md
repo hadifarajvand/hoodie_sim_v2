@@ -15,14 +15,14 @@
 
 - episodes_completed: `3`
 - total_transition_count: `150`
-- average_reward: `-8.724490`
+- average_reward: `-28.281250`
 - loss_count: `87`
 - loss_all_finite: `True`
 - loss_no_nan: `True`
 - loss_no_inf: `True`
-- loss_mean: `55.0221658465506`
-- completed_task_count: `132`
-- dropped_task_count: `0`
+- loss_mean: `1171.7736297256645`
+- completed_task_count: `42`
+- dropped_task_count: `91`
 - pending_at_horizon_count: `3`
 - illegal_action_count: `0`
 - legal_action_only: `True`

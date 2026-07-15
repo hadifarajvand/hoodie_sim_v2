@@ -3,7 +3,7 @@
     "evidence": [
       "baseline signatures differentiated"
     ],
-    "policy_diversity": 3,
+    "policy_diversity": 5,
     "status": "collapse_reduced"
   },
   "baseline_policies_included": [
@@ -29,12 +29,12 @@
     {
       "policy_name": "VO",
       "scenario_name": "paper_default",
-      "signature": "completed=3|dropped=0|throughput=3"
+      "signature": "completed=0|dropped=0|throughput=0"
     },
     {
       "policy_name": "VO",
       "scenario_name": "moderate",
-      "signature": "completed=3|dropped=0|throughput=3"
+      "signature": "completed=0|dropped=0|throughput=0"
     },
     {
       "policy_name": "HO",
@@ -49,12 +49,12 @@
     {
       "policy_name": "RO",
       "scenario_name": "paper_default",
-      "signature": "completed=2|dropped=0|throughput=2"
+      "signature": "completed=4|dropped=0|throughput=4"
     },
     {
       "policy_name": "RO",
       "scenario_name": "moderate",
-      "signature": "completed=2|dropped=0|throughput=2"
+      "signature": "completed=4|dropped=0|throughput=4"
     },
     {
       "policy_name": "BCO",

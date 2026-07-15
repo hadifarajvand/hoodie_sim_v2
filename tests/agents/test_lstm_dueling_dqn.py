@@ -1,9 +1,5 @@
 import torch
 import torch.nn as nn
-import pytest
-
-# Superseded by PaperHoodieDuelingNetwork in analysis/paper_hoodie_network_implementation/
-pytestmark = pytest.mark.xfail(reason="LSTM_Dueling_DQN stub superseded by PaperHoodieDuelingNetwork")
 
 # We'll try to import the class; if it doesn't exist, the test will fail
 try:
@@ -44,9 +40,9 @@ def test_network_initialization():
     
     # Check FC layers
     assert hasattr(net, 'fc_layers')
-    assert len(net.fc_layers) == len(hidden_sizes)
-    assert net.fc_layers[0].in_features == lstm_hidden
-    assert net.fc_layers[-1].out_features == hidden_sizes[-1]
+    assert len(net.fc_layers) == len(hidden_sizes) * 2
+    assert net.fc_layers[0].in_features == state_dim
+    assert net.fc_layers[-2].out_features == hidden_sizes[-1]
     
     # Check dueling heads
     assert hasattr(net, 'value_stream')

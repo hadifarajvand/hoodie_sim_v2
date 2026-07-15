@@ -10,10 +10,10 @@
     },
     {
       "episode_length": 6,
-      "note": "reduced collapse survived this setting and improved differentiation",
+      "note": "baseline diversity remained materially unchanged",
       "scenario_name": "paper_default",
       "seed": 7,
-      "status": "robust_collapse_reduced",
+      "status": "collapse_unchanged",
       "support_level": "full"
     },
     {
@@ -26,10 +26,10 @@
     },
     {
       "episode_length": 6,
-      "note": "reduced collapse survived this setting and improved differentiation",
+      "note": "baseline diversity remained materially unchanged",
       "scenario_name": "moderate",
       "seed": 7,
-      "status": "robust_collapse_reduced",
+      "status": "collapse_unchanged",
       "support_level": "full"
     },
     {
@@ -42,10 +42,10 @@
     },
     {
       "episode_length": 6,
-      "note": "reduced collapse survived this setting and improved differentiation",
+      "note": "baseline diversity remained materially unchanged",
       "scenario_name": "heavy",
       "seed": 7,
-      "status": "robust_collapse_reduced",
+      "status": "collapse_unchanged",
       "support_level": "full"
     },
     {
@@ -74,10 +74,10 @@
     },
     {
       "episode_length": 6,
-      "note": "reduced collapse survived this setting and improved differentiation",
+      "note": "baseline diversity remained materially unchanged",
       "scenario_name": "moderate",
       "seed": 11,
-      "status": "robust_collapse_reduced",
+      "status": "collapse_unchanged",
       "support_level": "full"
     },
     {
@@ -122,10 +122,10 @@
     },
     {
       "episode_length": 6,
-      "note": "reduced collapse survived this setting and improved differentiation",
+      "note": "baseline diversity remained materially unchanged",
       "scenario_name": "moderate",
       "seed": 13,
-      "status": "robust_collapse_reduced",
+      "status": "collapse_unchanged",
       "support_level": "full"
     },
     {
@@ -195,10 +195,10 @@
         "FLC": "completed=3::dropped=0::throughput=3::delay=2.0",
         "HO": "completed=2::dropped=0::throughput=2::delay=2.5",
         "MLEO": "completed=3::dropped=0::throughput=3::delay=2.0",
-        "RO": "completed=2::dropped=0::throughput=2::delay=2.0",
-        "VO": "completed=3::dropped=0::throughput=3::delay=2.0"
+        "RO": "completed=4::dropped=0::throughput=4::delay=2.0",
+        "VO": "completed=0::dropped=0::throughput=0::delay=0.0"
       },
-      "distinct_signatures": 3,
+      "distinct_signatures": 5,
       "episode_length": 4,
       "notes": [
         "reduced collapse survived this setting and improved differentiation"
@@ -214,13 +214,13 @@
         "FLC": "completed=5::dropped=0::throughput=5::delay=3.0",
         "HO": "completed=4::dropped=0::throughput=4::delay=3.5",
         "MLEO": "completed=5::dropped=0::throughput=5::delay=3.0",
-        "RO": "completed=4::dropped=0::throughput=4::delay=3.25",
-        "VO": "completed=5::dropped=0::throughput=5::delay=3.0"
+        "RO": "completed=4::dropped=0::throughput=4::delay=3.5",
+        "VO": "completed=0::dropped=0::throughput=0::delay=0.0"
       },
-      "distinct_signatures": 3,
+      "distinct_signatures": 4,
       "episode_length": 6,
       "notes": [
-        "reduced collapse survived this setting and improved differentiation"
+        "baseline diversity remained materially unchanged"
       ],
       "reference_match": false,
       "scenario_name": "paper_default",
@@ -233,10 +233,10 @@
         "FLC": "completed=3::dropped=0::throughput=3::delay=2.0",
         "HO": "completed=2::dropped=0::throughput=2::delay=2.5",
         "MLEO": "completed=3::dropped=0::throughput=3::delay=2.0",
-        "RO": "completed=2::dropped=0::throughput=2::delay=2.0",
-        "VO": "completed=3::dropped=0::throughput=3::delay=2.0"
+        "RO": "completed=4::dropped=0::throughput=4::delay=2.0",
+        "VO": "completed=0::dropped=0::throughput=0::delay=0.0"
       },
-      "distinct_signatures": 3,
+      "distinct_signatures": 5,
       "episode_length": 4,
       "notes": [
         "reduced collapse survived this setting and improved differentiation"
@@ -253,12 +253,12 @@
         "HO": "completed=4::dropped=0::throughput=4::delay=3.5",
         "MLEO": "completed=5::dropped=0::throughput=5::delay=3.0",
         "RO": "completed=4::dropped=0::throughput=4::delay=3.25",
-        "VO": "completed=5::dropped=0::throughput=5::delay=3.0"
+        "VO": "completed=4::dropped=0::throughput=4::delay=5.0"
       },
-      "distinct_signatures": 3,
+      "distinct_signatures": 4,
       "episode_length": 6,
       "notes": [
-        "reduced collapse survived this setting and improved differentiation"
+        "baseline diversity remained materially unchanged"
       ],
       "reference_match": false,
       "scenario_name": "moderate",
@@ -271,10 +271,10 @@
         "FLC": "completed=3::dropped=0::throughput=3::delay=2.0",
         "HO": "completed=2::dropped=0::throughput=2::delay=2.5",
         "MLEO": "completed=3::dropped=0::throughput=3::delay=2.0",
-        "RO": "completed=2::dropped=0::throughput=2::delay=2.0",
-        "VO": "completed=3::dropped=0::throughput=3::delay=2.0"
+        "RO": "completed=4::dropped=0::throughput=4::delay=2.0",
+        "VO": "completed=0::dropped=0::throughput=0::delay=0.0"
       },
-      "distinct_signatures": 3,
+      "distinct_signatures": 5,
       "episode_length": 4,
       "notes": [
         "reduced collapse survived this setting and improved differentiation"
@@ -290,13 +290,13 @@
         "FLC": "completed=5::dropped=0::throughput=5::delay=3.0",
         "HO": "completed=4::dropped=0::throughput=4::delay=3.5",
         "MLEO": "completed=5::dropped=0::throughput=5::delay=3.0",
-        "RO": "completed=4::dropped=0::throughput=4::delay=3.25",
-        "VO": "completed=5::dropped=0::throughput=5::delay=3.0"
+        "RO": "completed=4::dropped=0::throughput=4::delay=3.5",
+        "VO": "completed=0::dropped=0::throughput=0::delay=0.0"
       },
-      "distinct_signatures": 3,
+      "distinct_signatures": 4,
       "episode_length": 6,
       "notes": [
-        "reduced collapse survived this setting and improved differentiation"
+        "baseline diversity remained materially unchanged"
       ],
       "reference_match": false,
       "scenario_name": "heavy",
@@ -304,21 +304,97 @@
     },
     {
       "baseline_signatures": {
-        "ADAPTIVE": "completed=1::dropped=0::throughput=1::delay=1.0",
+        "ADAPTIVE": "completed=2::dropped=0::throughput=2::delay=1.0",
         "BCO": "completed=3::dropped=0::throughput=3::delay=2.0",
         "FLC": "completed=3::dropped=0::throughput=3::delay=2.0",
         "HO": "completed=1::dropped=0::throughput=1::delay=3.0",
         "MLEO": "completed=3::dropped=0::throughput=3::delay=2.0",
         "RO": "completed=2::dropped=0::throughput=2::delay=2.5",
-        "VO": "completed=3::dropped=0::throughput=3::delay=2.0"
+        "VO": "completed=0::dropped=0::throughput=0::delay=0.0"
       },
-      "distinct_signatures": 4,
+      "distinct_signatures": 5,
       "episode_length": 4,
       "notes": [
         "reduced collapse survived this setting and improved differentiation"
       ],
       "reference_match": false,
       "scenario_name": "paper_default",
+      "seed": 11
+    },
+    {
+      "baseline_signatures": {
+        "ADAPTIVE": "completed=3::dropped=0::throughput=3::delay=3.0",
+        "BCO": "completed=4::dropped=0::throughput=4::delay=2.75",
+        "FLC": "completed=4::dropped=0::throughput=4::delay=2.75",
+        "HO": "completed=3::dropped=0::throughput=3::delay=3.6666666666666665",
+        "MLEO": "completed=4::dropped=0::throughput=4::delay=2.75",
+        "RO": "completed=3::dropped=0::throughput=3::delay=2.6666666666666665",
+        "VO": "completed=0::dropped=0::throughput=0::delay=0.0"
+      },
+      "distinct_signatures": 5,
+      "episode_length": 6,
+      "notes": [
+        "reduced collapse survived this setting and improved differentiation"
+      ],
+      "reference_match": false,
+      "scenario_name": "paper_default",
+      "seed": 11
+    },
+    {
+      "baseline_signatures": {
+        "ADAPTIVE": "completed=2::dropped=0::throughput=2::delay=2.0",
+        "BCO": "completed=3::dropped=0::throughput=3::delay=2.0",
+        "FLC": "completed=3::dropped=0::throughput=3::delay=2.0",
+        "HO": "completed=2::dropped=0::throughput=2::delay=2.5",
+        "MLEO": "completed=3::dropped=0::throughput=3::delay=2.0",
+        "RO": "completed=4::dropped=0::throughput=4::delay=2.0",
+        "VO": "completed=0::dropped=0::throughput=0::delay=0.0"
+      },
+      "distinct_signatures": 5,
+      "episode_length": 4,
+      "notes": [
+        "reduced collapse survived this setting and improved differentiation"
+      ],
+      "reference_match": false,
+      "scenario_name": "moderate",
+      "seed": 11
+    },
+    {
+      "baseline_signatures": {
+        "ADAPTIVE": "completed=4::dropped=0::throughput=4::delay=3.5",
+        "BCO": "completed=5::dropped=0::throughput=5::delay=3.0",
+        "FLC": "completed=5::dropped=0::throughput=5::delay=3.0",
+        "HO": "completed=4::dropped=0::throughput=4::delay=3.75",
+        "MLEO": "completed=5::dropped=0::throughput=5::delay=3.0",
+        "RO": "completed=4::dropped=0::throughput=4::delay=3.5",
+        "VO": "completed=0::dropped=0::throughput=0::delay=0.0"
+      },
+      "distinct_signatures": 4,
+      "episode_length": 6,
+      "notes": [
+        "baseline diversity remained materially unchanged"
+      ],
+      "reference_match": false,
+      "scenario_name": "moderate",
+      "seed": 11
+    },
+    {
+      "baseline_signatures": {
+        "ADAPTIVE": "completed=2::dropped=0::throughput=2::delay=1.0",
+        "BCO": "completed=3::dropped=0::throughput=3::delay=2.0",
+        "FLC": "completed=3::dropped=0::throughput=3::delay=2.0",
+        "HO": "completed=1::dropped=0::throughput=1::delay=3.0",
+        "MLEO": "completed=3::dropped=0::throughput=3::delay=2.0",
+        "RO": "completed=2::dropped=0::throughput=2::delay=2.5",
+        "VO": "completed=0::dropped=0::throughput=0::delay=0.0"
+      },
+      "distinct_signatures": 5,
+      "episode_length": 4,
+      "notes": [
+        "reduced collapse survived this setting and improved differentiation"
+      ],
+      "reference_match": false,
+      "scenario_name": "heavy",
       "seed": 11
     },
     {
@@ -328,86 +404,10 @@
         "FLC": "completed=4::dropped=0::throughput=4::delay=2.75",
         "HO": "completed=3::dropped=0::throughput=3::delay=4.0",
         "MLEO": "completed=4::dropped=0::throughput=4::delay=2.75",
-        "RO": "completed=3::dropped=0::throughput=3::delay=3.3333333333333335",
-        "VO": "completed=4::dropped=0::throughput=4::delay=2.75"
+        "RO": "completed=3::dropped=0::throughput=3::delay=2.6666666666666665",
+        "VO": "completed=0::dropped=0::throughput=0::delay=0.0"
       },
-      "distinct_signatures": 3,
-      "episode_length": 6,
-      "notes": [
-        "reduced collapse survived this setting and improved differentiation"
-      ],
-      "reference_match": false,
-      "scenario_name": "paper_default",
-      "seed": 11
-    },
-    {
-      "baseline_signatures": {
-        "ADAPTIVE": "completed=2::dropped=0::throughput=2::delay=2.0",
-        "BCO": "completed=3::dropped=0::throughput=3::delay=2.0",
-        "FLC": "completed=3::dropped=0::throughput=3::delay=2.0",
-        "HO": "completed=2::dropped=0::throughput=2::delay=2.5",
-        "MLEO": "completed=3::dropped=0::throughput=3::delay=2.0",
-        "RO": "completed=2::dropped=0::throughput=2::delay=2.0",
-        "VO": "completed=3::dropped=0::throughput=3::delay=2.0"
-      },
-      "distinct_signatures": 3,
-      "episode_length": 4,
-      "notes": [
-        "reduced collapse survived this setting and improved differentiation"
-      ],
-      "reference_match": false,
-      "scenario_name": "moderate",
-      "seed": 11
-    },
-    {
-      "baseline_signatures": {
-        "ADAPTIVE": "completed=4::dropped=0::throughput=4::delay=3.25",
-        "BCO": "completed=5::dropped=0::throughput=5::delay=3.0",
-        "FLC": "completed=5::dropped=0::throughput=5::delay=3.0",
-        "HO": "completed=4::dropped=0::throughput=4::delay=3.5",
-        "MLEO": "completed=5::dropped=0::throughput=5::delay=3.0",
-        "RO": "completed=4::dropped=0::throughput=4::delay=3.25",
-        "VO": "completed=5::dropped=0::throughput=5::delay=3.0"
-      },
-      "distinct_signatures": 3,
-      "episode_length": 6,
-      "notes": [
-        "reduced collapse survived this setting and improved differentiation"
-      ],
-      "reference_match": false,
-      "scenario_name": "moderate",
-      "seed": 11
-    },
-    {
-      "baseline_signatures": {
-        "ADAPTIVE": "completed=1::dropped=0::throughput=1::delay=1.0",
-        "BCO": "completed=3::dropped=0::throughput=3::delay=2.0",
-        "FLC": "completed=3::dropped=0::throughput=3::delay=2.0",
-        "HO": "completed=1::dropped=0::throughput=1::delay=3.0",
-        "MLEO": "completed=3::dropped=0::throughput=3::delay=2.0",
-        "RO": "completed=2::dropped=0::throughput=2::delay=2.5",
-        "VO": "completed=3::dropped=0::throughput=3::delay=2.0"
-      },
-      "distinct_signatures": 4,
-      "episode_length": 4,
-      "notes": [
-        "reduced collapse survived this setting and improved differentiation"
-      ],
-      "reference_match": false,
-      "scenario_name": "heavy",
-      "seed": 11
-    },
-    {
-      "baseline_signatures": {
-        "ADAPTIVE": "completed=3::dropped=0::throughput=3::delay=3.3333333333333335",
-        "BCO": "completed=4::dropped=0::throughput=4::delay=2.75",
-        "FLC": "completed=4::dropped=0::throughput=4::delay=2.75",
-        "HO": "completed=3::dropped=0::throughput=3::delay=4.0",
-        "MLEO": "completed=4::dropped=0::throughput=4::delay=2.75",
-        "RO": "completed=3::dropped=0::throughput=3::delay=3.3333333333333335",
-        "VO": "completed=4::dropped=0::throughput=4::delay=2.75"
-      },
-      "distinct_signatures": 3,
+      "distinct_signatures": 5,
       "episode_length": 6,
       "notes": [
         "reduced collapse survived this setting and improved differentiation"
@@ -418,15 +418,15 @@
     },
     {
       "baseline_signatures": {
-        "ADAPTIVE": "completed=1::dropped=0::throughput=1::delay=1.0",
+        "ADAPTIVE": "completed=2::dropped=0::throughput=2::delay=1.0",
         "BCO": "completed=2::dropped=0::throughput=2::delay=2.0",
         "FLC": "completed=2::dropped=0::throughput=2::delay=2.0",
         "HO": "completed=1::dropped=0::throughput=1::delay=3.0",
         "MLEO": "completed=2::dropped=0::throughput=2::delay=2.0",
         "RO": "completed=2::dropped=0::throughput=2::delay=3.0",
-        "VO": "completed=2::dropped=0::throughput=2::delay=2.0"
+        "VO": "completed=0::dropped=0::throughput=0::delay=0.0"
       },
-      "distinct_signatures": 4,
+      "distinct_signatures": 5,
       "episode_length": 4,
       "notes": [
         "reduced collapse survived this setting and improved differentiation"
@@ -442,10 +442,10 @@
         "FLC": "completed=4::dropped=0::throughput=4::delay=3.25",
         "HO": "completed=2::dropped=0::throughput=2::delay=4.0",
         "MLEO": "completed=4::dropped=0::throughput=4::delay=3.25",
-        "RO": "completed=2::dropped=0::throughput=2::delay=3.0",
-        "VO": "completed=4::dropped=0::throughput=4::delay=3.25"
+        "RO": "completed=4::dropped=0::throughput=4::delay=3.0",
+        "VO": "completed=0::dropped=0::throughput=0::delay=0.0"
       },
-      "distinct_signatures": 3,
+      "distinct_signatures": 5,
       "episode_length": 6,
       "notes": [
         "reduced collapse survived this setting and improved differentiation"
@@ -461,10 +461,10 @@
         "FLC": "completed=3::dropped=0::throughput=3::delay=2.0",
         "HO": "completed=2::dropped=0::throughput=2::delay=2.5",
         "MLEO": "completed=3::dropped=0::throughput=3::delay=2.0",
-        "RO": "completed=2::dropped=0::throughput=2::delay=2.0",
-        "VO": "completed=3::dropped=0::throughput=3::delay=2.0"
+        "RO": "completed=4::dropped=0::throughput=4::delay=2.0",
+        "VO": "completed=0::dropped=0::throughput=0::delay=0.0"
       },
-      "distinct_signatures": 3,
+      "distinct_signatures": 5,
       "episode_length": 4,
       "notes": [
         "reduced collapse survived this setting and improved differentiation"
@@ -480,13 +480,13 @@
         "FLC": "completed=5::dropped=0::throughput=5::delay=3.0",
         "HO": "completed=4::dropped=0::throughput=4::delay=3.5",
         "MLEO": "completed=5::dropped=0::throughput=5::delay=3.0",
-        "RO": "completed=4::dropped=0::throughput=4::delay=3.25",
-        "VO": "completed=5::dropped=0::throughput=5::delay=3.0"
+        "RO": "completed=4::dropped=0::throughput=4::delay=3.5",
+        "VO": "completed=0::dropped=0::throughput=0::delay=0.0"
       },
-      "distinct_signatures": 3,
+      "distinct_signatures": 4,
       "episode_length": 6,
       "notes": [
-        "reduced collapse survived this setting and improved differentiation"
+        "baseline diversity remained materially unchanged"
       ],
       "reference_match": false,
       "scenario_name": "moderate",
@@ -494,15 +494,15 @@
     },
     {
       "baseline_signatures": {
-        "ADAPTIVE": "completed=1::dropped=0::throughput=1::delay=1.0",
+        "ADAPTIVE": "completed=2::dropped=0::throughput=2::delay=1.0",
         "BCO": "completed=2::dropped=0::throughput=2::delay=2.0",
         "FLC": "completed=2::dropped=0::throughput=2::delay=2.0",
         "HO": "completed=1::dropped=0::throughput=1::delay=3.0",
         "MLEO": "completed=2::dropped=0::throughput=2::delay=2.0",
         "RO": "completed=2::dropped=0::throughput=2::delay=3.0",
-        "VO": "completed=2::dropped=0::throughput=2::delay=2.0"
+        "VO": "completed=0::dropped=0::throughput=0::delay=0.0"
       },
-      "distinct_signatures": 4,
+      "distinct_signatures": 5,
       "episode_length": 4,
       "notes": [
         "reduced collapse survived this setting and improved differentiation"
@@ -518,10 +518,10 @@
         "FLC": "completed=4::dropped=0::throughput=4::delay=3.25",
         "HO": "completed=2::dropped=0::throughput=2::delay=4.0",
         "MLEO": "completed=4::dropped=0::throughput=4::delay=3.25",
-        "RO": "completed=2::dropped=0::throughput=2::delay=3.0",
-        "VO": "completed=4::dropped=0::throughput=4::delay=3.25"
+        "RO": "completed=4::dropped=0::throughput=4::delay=3.0",
+        "VO": "completed=0::dropped=0::throughput=0::delay=0.0"
       },
-      "distinct_signatures": 3,
+      "distinct_signatures": 5,
       "episode_length": 6,
       "notes": [
         "reduced collapse survived this setting and improved differentiation"
@@ -569,7 +569,7 @@
     "notes": [
       "reduced collapse survived all supported settings and improved in at least one"
     ],
-    "reference_signature_count": 2,
+    "reference_signature_count": 4,
     "setting_signatures": [
       {
         "baseline_signatures": {
@@ -578,10 +578,10 @@
           "FLC": "completed=3::dropped=0::throughput=3::delay=2.0",
           "HO": "completed=2::dropped=0::throughput=2::delay=2.5",
           "MLEO": "completed=3::dropped=0::throughput=3::delay=2.0",
-          "RO": "completed=2::dropped=0::throughput=2::delay=2.0",
-          "VO": "completed=3::dropped=0::throughput=3::delay=2.0"
+          "RO": "completed=4::dropped=0::throughput=4::delay=2.0",
+          "VO": "completed=0::dropped=0::throughput=0::delay=0.0"
         },
-        "distinct_signatures": 3,
+        "distinct_signatures": 5,
         "episode_length": 4,
         "notes": [
           "reduced collapse survived this setting and improved differentiation"
@@ -597,13 +597,13 @@
           "FLC": "completed=5::dropped=0::throughput=5::delay=3.0",
           "HO": "completed=4::dropped=0::throughput=4::delay=3.5",
           "MLEO": "completed=5::dropped=0::throughput=5::delay=3.0",
-          "RO": "completed=4::dropped=0::throughput=4::delay=3.25",
-          "VO": "completed=5::dropped=0::throughput=5::delay=3.0"
+          "RO": "completed=4::dropped=0::throughput=4::delay=3.5",
+          "VO": "completed=0::dropped=0::throughput=0::delay=0.0"
         },
-        "distinct_signatures": 3,
+        "distinct_signatures": 4,
         "episode_length": 6,
         "notes": [
-          "reduced collapse survived this setting and improved differentiation"
+          "baseline diversity remained materially unchanged"
         ],
         "reference_match": false,
         "scenario_name": "paper_default",
@@ -616,10 +616,10 @@
           "FLC": "completed=3::dropped=0::throughput=3::delay=2.0",
           "HO": "completed=2::dropped=0::throughput=2::delay=2.5",
           "MLEO": "completed=3::dropped=0::throughput=3::delay=2.0",
-          "RO": "completed=2::dropped=0::throughput=2::delay=2.0",
-          "VO": "completed=3::dropped=0::throughput=3::delay=2.0"
+          "RO": "completed=4::dropped=0::throughput=4::delay=2.0",
+          "VO": "completed=0::dropped=0::throughput=0::delay=0.0"
         },
-        "distinct_signatures": 3,
+        "distinct_signatures": 5,
         "episode_length": 4,
         "notes": [
           "reduced collapse survived this setting and improved differentiation"
@@ -636,12 +636,12 @@
           "HO": "completed=4::dropped=0::throughput=4::delay=3.5",
           "MLEO": "completed=5::dropped=0::throughput=5::delay=3.0",
           "RO": "completed=4::dropped=0::throughput=4::delay=3.25",
-          "VO": "completed=5::dropped=0::throughput=5::delay=3.0"
+          "VO": "completed=4::dropped=0::throughput=4::delay=5.0"
         },
-        "distinct_signatures": 3,
+        "distinct_signatures": 4,
         "episode_length": 6,
         "notes": [
-          "reduced collapse survived this setting and improved differentiation"
+          "baseline diversity remained materially unchanged"
         ],
         "reference_match": false,
         "scenario_name": "moderate",
@@ -654,10 +654,10 @@
           "FLC": "completed=3::dropped=0::throughput=3::delay=2.0",
           "HO": "completed=2::dropped=0::throughput=2::delay=2.5",
           "MLEO": "completed=3::dropped=0::throughput=3::delay=2.0",
-          "RO": "completed=2::dropped=0::throughput=2::delay=2.0",
-          "VO": "completed=3::dropped=0::throughput=3::delay=2.0"
+          "RO": "completed=4::dropped=0::throughput=4::delay=2.0",
+          "VO": "completed=0::dropped=0::throughput=0::delay=0.0"
         },
-        "distinct_signatures": 3,
+        "distinct_signatures": 5,
         "episode_length": 4,
         "notes": [
           "reduced collapse survived this setting and improved differentiation"
@@ -673,13 +673,13 @@
           "FLC": "completed=5::dropped=0::throughput=5::delay=3.0",
           "HO": "completed=4::dropped=0::throughput=4::delay=3.5",
           "MLEO": "completed=5::dropped=0::throughput=5::delay=3.0",
-          "RO": "completed=4::dropped=0::throughput=4::delay=3.25",
-          "VO": "completed=5::dropped=0::throughput=5::delay=3.0"
+          "RO": "completed=4::dropped=0::throughput=4::delay=3.5",
+          "VO": "completed=0::dropped=0::throughput=0::delay=0.0"
         },
-        "distinct_signatures": 3,
+        "distinct_signatures": 4,
         "episode_length": 6,
         "notes": [
-          "reduced collapse survived this setting and improved differentiation"
+          "baseline diversity remained materially unchanged"
         ],
         "reference_match": false,
         "scenario_name": "heavy",
@@ -687,21 +687,97 @@
       },
       {
         "baseline_signatures": {
-          "ADAPTIVE": "completed=1::dropped=0::throughput=1::delay=1.0",
+          "ADAPTIVE": "completed=2::dropped=0::throughput=2::delay=1.0",
           "BCO": "completed=3::dropped=0::throughput=3::delay=2.0",
           "FLC": "completed=3::dropped=0::throughput=3::delay=2.0",
           "HO": "completed=1::dropped=0::throughput=1::delay=3.0",
           "MLEO": "completed=3::dropped=0::throughput=3::delay=2.0",
           "RO": "completed=2::dropped=0::throughput=2::delay=2.5",
-          "VO": "completed=3::dropped=0::throughput=3::delay=2.0"
+          "VO": "completed=0::dropped=0::throughput=0::delay=0.0"
         },
-        "distinct_signatures": 4,
+        "distinct_signatures": 5,
         "episode_length": 4,
         "notes": [
           "reduced collapse survived this setting and improved differentiation"
         ],
         "reference_match": false,
         "scenario_name": "paper_default",
+        "seed": 11
+      },
+      {
+        "baseline_signatures": {
+          "ADAPTIVE": "completed=3::dropped=0::throughput=3::delay=3.0",
+          "BCO": "completed=4::dropped=0::throughput=4::delay=2.75",
+          "FLC": "completed=4::dropped=0::throughput=4::delay=2.75",
+          "HO": "completed=3::dropped=0::throughput=3::delay=3.6666666666666665",
+          "MLEO": "completed=4::dropped=0::throughput=4::delay=2.75",
+          "RO": "completed=3::dropped=0::throughput=3::delay=2.6666666666666665",
+          "VO": "completed=0::dropped=0::throughput=0::delay=0.0"
+        },
+        "distinct_signatures": 5,
+        "episode_length": 6,
+        "notes": [
+          "reduced collapse survived this setting and improved differentiation"
+        ],
+        "reference_match": false,
+        "scenario_name": "paper_default",
+        "seed": 11
+      },
+      {
+        "baseline_signatures": {
+          "ADAPTIVE": "completed=2::dropped=0::throughput=2::delay=2.0",
+          "BCO": "completed=3::dropped=0::throughput=3::delay=2.0",
+          "FLC": "completed=3::dropped=0::throughput=3::delay=2.0",
+          "HO": "completed=2::dropped=0::throughput=2::delay=2.5",
+          "MLEO": "completed=3::dropped=0::throughput=3::delay=2.0",
+          "RO": "completed=4::dropped=0::throughput=4::delay=2.0",
+          "VO": "completed=0::dropped=0::throughput=0::delay=0.0"
+        },
+        "distinct_signatures": 5,
+        "episode_length": 4,
+        "notes": [
+          "reduced collapse survived this setting and improved differentiation"
+        ],
+        "reference_match": false,
+        "scenario_name": "moderate",
+        "seed": 11
+      },
+      {
+        "baseline_signatures": {
+          "ADAPTIVE": "completed=4::dropped=0::throughput=4::delay=3.5",
+          "BCO": "completed=5::dropped=0::throughput=5::delay=3.0",
+          "FLC": "completed=5::dropped=0::throughput=5::delay=3.0",
+          "HO": "completed=4::dropped=0::throughput=4::delay=3.75",
+          "MLEO": "completed=5::dropped=0::throughput=5::delay=3.0",
+          "RO": "completed=4::dropped=0::throughput=4::delay=3.5",
+          "VO": "completed=0::dropped=0::throughput=0::delay=0.0"
+        },
+        "distinct_signatures": 4,
+        "episode_length": 6,
+        "notes": [
+          "baseline diversity remained materially unchanged"
+        ],
+        "reference_match": false,
+        "scenario_name": "moderate",
+        "seed": 11
+      },
+      {
+        "baseline_signatures": {
+          "ADAPTIVE": "completed=2::dropped=0::throughput=2::delay=1.0",
+          "BCO": "completed=3::dropped=0::throughput=3::delay=2.0",
+          "FLC": "completed=3::dropped=0::throughput=3::delay=2.0",
+          "HO": "completed=1::dropped=0::throughput=1::delay=3.0",
+          "MLEO": "completed=3::dropped=0::throughput=3::delay=2.0",
+          "RO": "completed=2::dropped=0::throughput=2::delay=2.5",
+          "VO": "completed=0::dropped=0::throughput=0::delay=0.0"
+        },
+        "distinct_signatures": 5,
+        "episode_length": 4,
+        "notes": [
+          "reduced collapse survived this setting and improved differentiation"
+        ],
+        "reference_match": false,
+        "scenario_name": "heavy",
         "seed": 11
       },
       {
@@ -711,86 +787,10 @@
           "FLC": "completed=4::dropped=0::throughput=4::delay=2.75",
           "HO": "completed=3::dropped=0::throughput=3::delay=4.0",
           "MLEO": "completed=4::dropped=0::throughput=4::delay=2.75",
-          "RO": "completed=3::dropped=0::throughput=3::delay=3.3333333333333335",
-          "VO": "completed=4::dropped=0::throughput=4::delay=2.75"
+          "RO": "completed=3::dropped=0::throughput=3::delay=2.6666666666666665",
+          "VO": "completed=0::dropped=0::throughput=0::delay=0.0"
         },
-        "distinct_signatures": 3,
-        "episode_length": 6,
-        "notes": [
-          "reduced collapse survived this setting and improved differentiation"
-        ],
-        "reference_match": false,
-        "scenario_name": "paper_default",
-        "seed": 11
-      },
-      {
-        "baseline_signatures": {
-          "ADAPTIVE": "completed=2::dropped=0::throughput=2::delay=2.0",
-          "BCO": "completed=3::dropped=0::throughput=3::delay=2.0",
-          "FLC": "completed=3::dropped=0::throughput=3::delay=2.0",
-          "HO": "completed=2::dropped=0::throughput=2::delay=2.5",
-          "MLEO": "completed=3::dropped=0::throughput=3::delay=2.0",
-          "RO": "completed=2::dropped=0::throughput=2::delay=2.0",
-          "VO": "completed=3::dropped=0::throughput=3::delay=2.0"
-        },
-        "distinct_signatures": 3,
-        "episode_length": 4,
-        "notes": [
-          "reduced collapse survived this setting and improved differentiation"
-        ],
-        "reference_match": false,
-        "scenario_name": "moderate",
-        "seed": 11
-      },
-      {
-        "baseline_signatures": {
-          "ADAPTIVE": "completed=4::dropped=0::throughput=4::delay=3.25",
-          "BCO": "completed=5::dropped=0::throughput=5::delay=3.0",
-          "FLC": "completed=5::dropped=0::throughput=5::delay=3.0",
-          "HO": "completed=4::dropped=0::throughput=4::delay=3.5",
-          "MLEO": "completed=5::dropped=0::throughput=5::delay=3.0",
-          "RO": "completed=4::dropped=0::throughput=4::delay=3.25",
-          "VO": "completed=5::dropped=0::throughput=5::delay=3.0"
-        },
-        "distinct_signatures": 3,
-        "episode_length": 6,
-        "notes": [
-          "reduced collapse survived this setting and improved differentiation"
-        ],
-        "reference_match": false,
-        "scenario_name": "moderate",
-        "seed": 11
-      },
-      {
-        "baseline_signatures": {
-          "ADAPTIVE": "completed=1::dropped=0::throughput=1::delay=1.0",
-          "BCO": "completed=3::dropped=0::throughput=3::delay=2.0",
-          "FLC": "completed=3::dropped=0::throughput=3::delay=2.0",
-          "HO": "completed=1::dropped=0::throughput=1::delay=3.0",
-          "MLEO": "completed=3::dropped=0::throughput=3::delay=2.0",
-          "RO": "completed=2::dropped=0::throughput=2::delay=2.5",
-          "VO": "completed=3::dropped=0::throughput=3::delay=2.0"
-        },
-        "distinct_signatures": 4,
-        "episode_length": 4,
-        "notes": [
-          "reduced collapse survived this setting and improved differentiation"
-        ],
-        "reference_match": false,
-        "scenario_name": "heavy",
-        "seed": 11
-      },
-      {
-        "baseline_signatures": {
-          "ADAPTIVE": "completed=3::dropped=0::throughput=3::delay=3.3333333333333335",
-          "BCO": "completed=4::dropped=0::throughput=4::delay=2.75",
-          "FLC": "completed=4::dropped=0::throughput=4::delay=2.75",
-          "HO": "completed=3::dropped=0::throughput=3::delay=4.0",
-          "MLEO": "completed=4::dropped=0::throughput=4::delay=2.75",
-          "RO": "completed=3::dropped=0::throughput=3::delay=3.3333333333333335",
-          "VO": "completed=4::dropped=0::throughput=4::delay=2.75"
-        },
-        "distinct_signatures": 3,
+        "distinct_signatures": 5,
         "episode_length": 6,
         "notes": [
           "reduced collapse survived this setting and improved differentiation"
@@ -801,15 +801,15 @@
       },
       {
         "baseline_signatures": {
-          "ADAPTIVE": "completed=1::dropped=0::throughput=1::delay=1.0",
+          "ADAPTIVE": "completed=2::dropped=0::throughput=2::delay=1.0",
           "BCO": "completed=2::dropped=0::throughput=2::delay=2.0",
           "FLC": "completed=2::dropped=0::throughput=2::delay=2.0",
           "HO": "completed=1::dropped=0::throughput=1::delay=3.0",
           "MLEO": "completed=2::dropped=0::throughput=2::delay=2.0",
           "RO": "completed=2::dropped=0::throughput=2::delay=3.0",
-          "VO": "completed=2::dropped=0::throughput=2::delay=2.0"
+          "VO": "completed=0::dropped=0::throughput=0::delay=0.0"
         },
-        "distinct_signatures": 4,
+        "distinct_signatures": 5,
         "episode_length": 4,
         "notes": [
           "reduced collapse survived this setting and improved differentiation"
@@ -825,10 +825,10 @@
           "FLC": "completed=4::dropped=0::throughput=4::delay=3.25",
           "HO": "completed=2::dropped=0::throughput=2::delay=4.0",
           "MLEO": "completed=4::dropped=0::throughput=4::delay=3.25",
-          "RO": "completed=2::dropped=0::throughput=2::delay=3.0",
-          "VO": "completed=4::dropped=0::throughput=4::delay=3.25"
+          "RO": "completed=4::dropped=0::throughput=4::delay=3.0",
+          "VO": "completed=0::dropped=0::throughput=0::delay=0.0"
         },
-        "distinct_signatures": 3,
+        "distinct_signatures": 5,
         "episode_length": 6,
         "notes": [
           "reduced collapse survived this setting and improved differentiation"
@@ -844,10 +844,10 @@
           "FLC": "completed=3::dropped=0::throughput=3::delay=2.0",
           "HO": "completed=2::dropped=0::throughput=2::delay=2.5",
           "MLEO": "completed=3::dropped=0::throughput=3::delay=2.0",
-          "RO": "completed=2::dropped=0::throughput=2::delay=2.0",
-          "VO": "completed=3::dropped=0::throughput=3::delay=2.0"
+          "RO": "completed=4::dropped=0::throughput=4::delay=2.0",
+          "VO": "completed=0::dropped=0::throughput=0::delay=0.0"
         },
-        "distinct_signatures": 3,
+        "distinct_signatures": 5,
         "episode_length": 4,
         "notes": [
           "reduced collapse survived this setting and improved differentiation"
@@ -863,13 +863,13 @@
           "FLC": "completed=5::dropped=0::throughput=5::delay=3.0",
           "HO": "completed=4::dropped=0::throughput=4::delay=3.5",
           "MLEO": "completed=5::dropped=0::throughput=5::delay=3.0",
-          "RO": "completed=4::dropped=0::throughput=4::delay=3.25",
-          "VO": "completed=5::dropped=0::throughput=5::delay=3.0"
+          "RO": "completed=4::dropped=0::throughput=4::delay=3.5",
+          "VO": "completed=0::dropped=0::throughput=0::delay=0.0"
         },
-        "distinct_signatures": 3,
+        "distinct_signatures": 4,
         "episode_length": 6,
         "notes": [
-          "reduced collapse survived this setting and improved differentiation"
+          "baseline diversity remained materially unchanged"
         ],
         "reference_match": false,
         "scenario_name": "moderate",
@@ -877,15 +877,15 @@
       },
       {
         "baseline_signatures": {
-          "ADAPTIVE": "completed=1::dropped=0::throughput=1::delay=1.0",
+          "ADAPTIVE": "completed=2::dropped=0::throughput=2::delay=1.0",
           "BCO": "completed=2::dropped=0::throughput=2::delay=2.0",
           "FLC": "completed=2::dropped=0::throughput=2::delay=2.0",
           "HO": "completed=1::dropped=0::throughput=1::delay=3.0",
           "MLEO": "completed=2::dropped=0::throughput=2::delay=2.0",
           "RO": "completed=2::dropped=0::throughput=2::delay=3.0",
-          "VO": "completed=2::dropped=0::throughput=2::delay=2.0"
+          "VO": "completed=0::dropped=0::throughput=0::delay=0.0"
         },
-        "distinct_signatures": 4,
+        "distinct_signatures": 5,
         "episode_length": 4,
         "notes": [
           "reduced collapse survived this setting and improved differentiation"
@@ -901,10 +901,10 @@
           "FLC": "completed=4::dropped=0::throughput=4::delay=3.25",
           "HO": "completed=2::dropped=0::throughput=2::delay=4.0",
           "MLEO": "completed=4::dropped=0::throughput=4::delay=3.25",
-          "RO": "completed=2::dropped=0::throughput=2::delay=3.0",
-          "VO": "completed=4::dropped=0::throughput=4::delay=3.25"
+          "RO": "completed=4::dropped=0::throughput=4::delay=3.0",
+          "VO": "completed=0::dropped=0::throughput=0::delay=0.0"
         },
-        "distinct_signatures": 3,
+        "distinct_signatures": 5,
         "episode_length": 6,
         "notes": [
           "reduced collapse survived this setting and improved differentiation"
