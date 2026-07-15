@@ -1,0 +1,205 @@
+{
+  "figure_id": "figure_10",
+  "panels": [
+    {
+      "checkpoint_rule": "optimally trained Q models from Section A",
+      "compared_policies": [
+        "HOODIE",
+        "FLC",
+        "RO",
+        "HO",
+        "VO",
+        "BCO",
+        "MLEO"
+      ],
+      "confidence_level": 0.95,
+      "dependent_metric": "average_delay",
+      "fixed_timeout_seconds": 2.0,
+      "fixed_topology": "Figure 7 adjacency matrix",
+      "independent_values": [
+        0.1,
+        0.3,
+        0.5,
+        0.7,
+        0.9
+      ],
+      "independent_variable": "task_arrival_probability",
+      "metric_sign_convention": "average delay is negative by convention",
+      "panel_id": "figure_10a",
+      "scientific_question": "Average delay versus task arrival probability",
+      "source_citation": "/Users/hadi/Documents/GitHub/hoodie_sim_v2/resources/papers/hoodie/original/HOODIE_paper.pdf",
+      "source_page": 21,
+      "source_section": "C. Comparative Analysis",
+      "status": "paper_explicit",
+      "unresolved_fields": [],
+      "validation_episodes": 200
+    },
+    {
+      "checkpoint_rule": "optimally trained Q models from Section A",
+      "compared_policies": [
+        "HOODIE",
+        "FLC",
+        "RO",
+        "HO",
+        "VO",
+        "BCO",
+        "MLEO"
+      ],
+      "confidence_level": 0.95,
+      "dependent_metric": "average_delay",
+      "fixed_arrival_probability": 0.5,
+      "fixed_timeout_seconds": 2.0,
+      "fixed_topology": "Figure 7 adjacency matrix",
+      "independent_values": [
+        3,
+        4,
+        5,
+        6,
+        7
+      ],
+      "independent_variable": "cpu_computation_capacity_ghz",
+      "metric_sign_convention": "average delay is negative by convention",
+      "panel_id": "figure_10b",
+      "scientific_question": "Average delay versus CPU computation capacity",
+      "source_citation": "/Users/hadi/Documents/GitHub/hoodie_sim_v2/resources/papers/hoodie/original/HOODIE_paper.pdf",
+      "source_page": 21,
+      "source_section": "C. Comparative Analysis",
+      "status": "paper_explicit",
+      "unresolved_fields": [],
+      "validation_episodes": 200
+    },
+    {
+      "checkpoint_rule": "optimally trained Q models from Section A",
+      "compared_policies": [
+        "HOODIE",
+        "FLC",
+        "RO",
+        "HO",
+        "VO",
+        "BCO",
+        "MLEO"
+      ],
+      "confidence_level": 0.95,
+      "dependent_metric": "average_delay",
+      "fixed_arrival_probability": 0.5,
+      "fixed_topology": "Figure 7 adjacency matrix",
+      "independent_values": [
+        9.6,
+        9.8,
+        10.0,
+        10.2,
+        10.4
+      ],
+      "independent_variable": "task_timeout_seconds",
+      "metric_sign_convention": "average delay is negative by convention",
+      "panel_id": "figure_10c",
+      "scientific_question": "Average delay versus task timeout",
+      "source_citation": "/Users/hadi/Documents/GitHub/hoodie_sim_v2/resources/papers/hoodie/original/HOODIE_paper.pdf",
+      "source_page": 21,
+      "source_section": "C. Comparative Analysis",
+      "status": "paper_explicit",
+      "unresolved_fields": [],
+      "validation_episodes": 200
+    },
+    {
+      "checkpoint_rule": "optimally trained Q models from Section A",
+      "compared_policies": [
+        "HOODIE",
+        "FLC",
+        "RO",
+        "HO",
+        "VO",
+        "BCO",
+        "MLEO"
+      ],
+      "confidence_level": 0.95,
+      "dependent_metric": "drop_ratio",
+      "drop_ratio_definition": "dropped tasks / total generated tasks",
+      "fixed_timeout_seconds": 2.0,
+      "fixed_topology": "Figure 7 adjacency matrix",
+      "independent_values": [
+        0.1,
+        0.3,
+        0.5,
+        0.7,
+        0.9
+      ],
+      "independent_variable": "task_arrival_probability",
+      "panel_id": "figure_10d",
+      "scientific_question": "Drop ratio versus task arrival probability",
+      "source_citation": "/Users/hadi/Documents/GitHub/hoodie_sim_v2/resources/papers/hoodie/original/HOODIE_paper.pdf",
+      "source_page": 21,
+      "source_section": "C. Comparative Analysis",
+      "status": "paper_explicit",
+      "unresolved_fields": [],
+      "validation_episodes": 200
+    },
+    {
+      "checkpoint_rule": "optimally trained Q models from Section A",
+      "compared_policies": [
+        "HOODIE",
+        "FLC",
+        "RO",
+        "HO",
+        "VO",
+        "BCO",
+        "MLEO"
+      ],
+      "confidence_level": 0.95,
+      "dependent_metric": "drop_ratio",
+      "drop_ratio_definition": "dropped tasks / total generated tasks",
+      "fixed_arrival_probability": 0.5,
+      "fixed_timeout_seconds": 2.0,
+      "fixed_topology": "Figure 7 adjacency matrix",
+      "independent_values": [
+        3,
+        4,
+        5,
+        6,
+        7
+      ],
+      "independent_variable": "cpu_computation_capacity_ghz",
+      "panel_id": "figure_10e",
+      "scientific_question": "Drop ratio versus CPU computation capacity",
+      "source_citation": "/Users/hadi/Documents/GitHub/hoodie_sim_v2/resources/papers/hoodie/original/HOODIE_paper.pdf",
+      "source_page": 21,
+      "source_section": "C. Comparative Analysis",
+      "status": "paper_explicit",
+      "unresolved_fields": [],
+      "validation_episodes": 200
+    },
+    {
+      "checkpoint_rule": "optimally trained Q models from Section A",
+      "compared_policies": [
+        "HOODIE",
+        "FLC",
+        "RO",
+        "HO",
+        "VO",
+        "BCO",
+        "MLEO"
+      ],
+      "confidence_level": 0.95,
+      "dependent_metric": "drop_ratio",
+      "drop_ratio_definition": "dropped tasks / total generated tasks",
+      "fixed_arrival_probability": 0.5,
+      "fixed_topology": "Figure 7 adjacency matrix",
+      "independent_values": [
+        1.6,
+        1.8,
+        2.0,
+        2.2,
+        2.4
+      ],
+      "independent_variable": "task_timeout_seconds",
+      "panel_id": "figure_10f",
+      "scientific_question": "Drop ratio versus task timeout",
+      "source_citation": "/Users/hadi/Documents/GitHub/hoodie_sim_v2/resources/papers/hoodie/original/HOODIE_paper.pdf",
+      "source_page": 21,
+      "source_section": "C. Comparative Analysis",
+      "status": "paper_explicit",
+      "unresolved_fields": [],
+      "validation_episodes": 200
+    }
+  ]
+}

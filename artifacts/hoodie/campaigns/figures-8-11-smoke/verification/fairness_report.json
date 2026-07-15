@@ -1,0 +1,129 @@
+{
+  "all_fairness_checks_passed": true,
+  "campaign_id": "figures-8-11-smoke",
+  "checks": [
+    "each job has provenance manifest",
+    "each job has completion marker",
+    "trace hashes are recorded per job",
+    "smoke campaign uses canonical source-contract snapshot"
+  ],
+  "completed_jobs": 14,
+  "job_rows": [
+    {
+      "completed": true,
+      "job_id": "1ceae3f67da0f3dbfa2f0fa8071a7fe0bc44e3d92b39c046b3f56a5fd1182543",
+      "provenance_hash": "76f6e5dd81180da9534e2d8e2ad13bf0ab610cc37df4a137488767ed11cd4f7f",
+      "task_rows": 160,
+      "trace_hash": "15a3f742bd137dd03bf62deb3c6cbe26702796e8fa146b1a42eb74d55b063d9d"
+    },
+    {
+      "completed": true,
+      "job_id": "26ea7290373fc15005199c7be2cac75211f9cbd9a783b89903649460f71db340",
+      "provenance_hash": "b5938f098254153ea8b8d7b89bf689a3bd90a856a3d57e13ee0a10250c44523e",
+      "task_rows": 160,
+      "trace_hash": "a5bce7a8633d0f26f34e907c006c62d31dfa0d5e003f30c09717997868b6b1e4"
+    },
+    {
+      "completed": true,
+      "job_id": "703fe37dc3964d0f501d6605a21de0c8efa5d3aa37804b96d7c3a51910d21a3f",
+      "provenance_hash": "120ce5a10af0dba5d6f913ede55dc08b6b88b98fffe502d6fd615c2b42a07731",
+      "task_rows": 160,
+      "trace_hash": "3042ad66d9807287b4c2491628ffb87e6ed49f2270123481d70f652e4b95b7f9"
+    },
+    {
+      "completed": true,
+      "job_id": "89f24edadf3c68a1a79bd5b310f9b420d9480888495425d666f303ed43afd90e",
+      "provenance_hash": "6929120984d01433206c2552a511927c4e437ead79fcf2dfe0103b445e7b064b",
+      "task_rows": 160,
+      "trace_hash": "d08ceaf72f3d6389713bb0be31f51f2f983b64d15daa36d02d05c1d730b66a87"
+    },
+    {
+      "completed": true,
+      "job_id": "9df3c4bb744bfd2da608d59d6e7a95654d174f22fc9baff1fc66a1501314e46a",
+      "provenance_hash": "30ae9b48ff4648f459131617a11f32dedffde5caa2336f65c92ff23dadc309eb",
+      "task_rows": 160,
+      "trace_hash": "8c51fabf70f61d39fddb4a568e0216dcfbe09813b5ea6b46ff74b676fc55aa9e"
+    },
+    {
+      "completed": true,
+      "job_id": "ba95a366306ea0d1d6a92582b0c7b48257c3ef2cdb299ee7fd3856fc36bc58ad",
+      "provenance_hash": "0e8bd513e19f676c242dcdd7a5c746d9372e4ff52752c84a272b9194b2ec6641",
+      "task_rows": 160,
+      "trace_hash": "06ad2737352ceb60f733c9673ecf6022046c3a054ce8a3b5c8acd5c3c1557062"
+    },
+    {
+      "completed": true,
+      "job_id": "bc915d76a21d0de19745042d4e1c2b698aa4f0f09005cc32411fb40c24f63a29",
+      "provenance_hash": "ae4fde18f7ef2330869e1be9740b01ca965b3a9921bfb68158ac8c847015d782",
+      "task_rows": 160,
+      "trace_hash": "2afaa35e0ae8e9b3c0b0b1cb899bfc9983e86d2cc88054bee204babff793bc4d"
+    },
+    {
+      "completed": true,
+      "job_id": "bd0ba229432bb8082dfa2c154b2fd74d7e64890fe3f8f04bfad257af5275f238",
+      "provenance_hash": "f55a13a7678fff0fd04808a2af35d68c32285d05d919fc186284a44c3b957041",
+      "task_rows": 160,
+      "trace_hash": "eeeae97364e4dc53fc80eb98ce8eedd137a3420a3ef2c181060957d985577903"
+    },
+    {
+      "completed": true,
+      "job_id": "bf912e32835a576d63194ea5a4276ce53174562944aa1b41b831cb88abd39ff1",
+      "provenance_hash": "2886f50f3d136704fdfdfc307439f6ed071f4779f79190ecdac64b80b8df1fbc",
+      "task_rows": 160,
+      "trace_hash": "87b5c36737fbc55ebc43939a76cb19194de1496be30c2515b569191bd1fda42f"
+    },
+    {
+      "completed": true,
+      "job_id": "c17f585bf936b7605da3ed7c46f5c7f0dc0de6b19f4359180a3f29d64c21146e",
+      "provenance_hash": "a699a58b7d40634f588bffbeecb6d46cf74e349f38aa98b040150e6f27f57448",
+      "task_rows": 160,
+      "trace_hash": "5f7071c895dd0e8582e1843421d3cf2d8fee21344d32ea8339e9fd9abb469d1d"
+    },
+    {
+      "completed": true,
+      "job_id": "d1afc2f3c1e1146153b5ccb76d8314da2a78fe3c2915c46916cdb84524692635",
+      "provenance_hash": "f4b661a51f7f888dc84b0c0e2971f579f54150d6fa9864fac77159540e6aacc4",
+      "task_rows": 160,
+      "trace_hash": "121f3fc8f0ae21c5110933b6f07957a9bc6d21b74af9e786e2bb1c2f50304a31"
+    },
+    {
+      "completed": true,
+      "job_id": "d7621115d38aca7c4e449b1a3b5735f99ba2ec78d443ae87504043b5abea3b3c",
+      "provenance_hash": "40cfb38dd51930575af193bc43ca2f680b7448e17b765b37b79d307250fe7792",
+      "task_rows": 160,
+      "trace_hash": "24d8246a4715979c5b3f48c76ce8a9ab0b9602f4633d079ae2d8ea8a825fa95e"
+    },
+    {
+      "completed": true,
+      "job_id": "e145247d32b1a691090a8575fa02a5060bbffa8ce439a77753a585b571521034",
+      "provenance_hash": "48d4e2739bb06a8fbf8b74b4b34252e47d5a46f1ca7231b9b07fb181105fb665",
+      "task_rows": 160,
+      "trace_hash": "e0b1258513a475ba0978ac020f1c659a064f2f6a57f87e0b0a611bc386ab78c9"
+    },
+    {
+      "completed": true,
+      "job_id": "e741d9d9033f557fd4bb4db1e9f00529ff64a6371b56b7116fdf39c3769ec974",
+      "provenance_hash": "5af4fe9467abc17f462209943512d1e2932e79637e866d5b9150eb004d455c57",
+      "task_rows": 160,
+      "trace_hash": "82dbf8f249a57a5d697ade2a55b5123e05d0582eca7240009e69db623b910fe3"
+    }
+  ],
+  "quarantined_jobs": 0,
+  "resumed_jobs": 0,
+  "unique_trace_hashes": [
+    "06ad2737352ceb60f733c9673ecf6022046c3a054ce8a3b5c8acd5c3c1557062",
+    "121f3fc8f0ae21c5110933b6f07957a9bc6d21b74af9e786e2bb1c2f50304a31",
+    "15a3f742bd137dd03bf62deb3c6cbe26702796e8fa146b1a42eb74d55b063d9d",
+    "24d8246a4715979c5b3f48c76ce8a9ab0b9602f4633d079ae2d8ea8a825fa95e",
+    "2afaa35e0ae8e9b3c0b0b1cb899bfc9983e86d2cc88054bee204babff793bc4d",
+    "3042ad66d9807287b4c2491628ffb87e6ed49f2270123481d70f652e4b95b7f9",
+    "5f7071c895dd0e8582e1843421d3cf2d8fee21344d32ea8339e9fd9abb469d1d",
+    "82dbf8f249a57a5d697ade2a55b5123e05d0582eca7240009e69db623b910fe3",
+    "87b5c36737fbc55ebc43939a76cb19194de1496be30c2515b569191bd1fda42f",
+    "8c51fabf70f61d39fddb4a568e0216dcfbe09813b5ea6b46ff74b676fc55aa9e",
+    "a5bce7a8633d0f26f34e907c006c62d31dfa0d5e003f30c09717997868b6b1e4",
+    "d08ceaf72f3d6389713bb0be31f51f2f983b64d15daa36d02d05c1d730b66a87",
+    "e0b1258513a475ba0978ac020f1c659a064f2f6a57f87e0b0a611bc386ab78c9",
+    "eeeae97364e4dc53fc80eb98ce8eedd137a3420a3ef2c181060957d985577903"
+  ]
+}

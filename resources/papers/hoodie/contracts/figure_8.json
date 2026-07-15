@@ -1,0 +1,86 @@
+{
+  "figure_id": "figure_8",
+  "panels": [
+    {
+      "averaging": "accumulated reward averaged across distributed HOODIE agents; no smoothing stated",
+      "checkpoint_rule": "use optimally trained Q-models from Section A",
+      "compared_policies": [
+        "HOODIE"
+      ],
+      "confidence_level": 0.95,
+      "dependent_metric": "accumulated_reward",
+      "fixed_topology": "Figure 7 adjacency matrix",
+      "independent_values": [
+        0,
+        500,
+        1000,
+        1500,
+        2000,
+        2500,
+        3000,
+        3500,
+        4000,
+        4500,
+        5000
+      ],
+      "independent_variable": "training_episode",
+      "panel_id": "figure_8a",
+      "scientific_question": "Training convergence versus learning rate",
+      "series": [
+        1e-09,
+        5e-09,
+        1e-08,
+        1e-07,
+        5e-07,
+        7e-07
+      ],
+      "sign_convention": "reward negative because delay is negative metric; curves negative and increasing",
+      "source_citation": "/Users/hadi/Documents/GitHub/hoodie_sim_v2/resources/papers/hoodie/original/HOODIE_paper.pdf",
+      "source_page": 18,
+      "source_section": "A. Learning Parameters and Convergence Curves",
+      "status": "paper_explicit",
+      "training_episodes": 5000,
+      "unresolved_fields": []
+    },
+    {
+      "averaging": "accumulated reward averaged across distributed HOODIE agents; no smoothing stated",
+      "checkpoint_rule": "use optimally trained Q-models from Section A",
+      "compared_policies": [
+        "HOODIE"
+      ],
+      "confidence_level": 0.95,
+      "dependent_metric": "accumulated_reward",
+      "fixed_topology": "Figure 7 adjacency matrix",
+      "independent_values": [
+        0,
+        500,
+        1000,
+        1500,
+        2000,
+        2500,
+        3000,
+        3500,
+        4000,
+        4500,
+        5000
+      ],
+      "independent_variable": "training_episode",
+      "panel_id": "figure_8b",
+      "scientific_question": "Training convergence versus discount factor",
+      "series": [
+        0.2,
+        0.4,
+        0.6,
+        0.8,
+        0.99
+      ],
+      "sign_convention": "reward negative because delay is negative metric; curves negative and increasing",
+      "source_citation": "/Users/hadi/Documents/GitHub/hoodie_sim_v2/resources/papers/hoodie/original/HOODIE_paper.pdf",
+      "source_page": 18,
+      "source_section": "A. Learning Parameters and Convergence Curves",
+      "status": "paper_explicit",
+      "training_episodes": 5000,
+      "unresolved_fields": []
+    }
+  ]
+}

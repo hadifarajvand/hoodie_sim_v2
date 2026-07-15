@@ -1,0 +1,46 @@
+{
+  "authority_order": [
+    "resources/papers/hoodie/original/HOODIE_paper.pdf",
+    "resources/papers/hoodie/ocr/",
+    "resources/papers/hoodie/recovered/",
+    "resources/papers/hoodie/recovered/user-approved-assumption-registry.json",
+    "resources/papers/hoodie/recovered/paper-parameter-registry.json"
+  ],
+  "sources": [
+    {
+      "kind": "authoritative_pdf",
+      "path": "/Users/hadi/Documents/GitHub/hoodie_sim_v2/resources/papers/hoodie/original/HOODIE_paper.pdf",
+      "sha256": "362ad3c4f61a69211a572fda6b9238bfeae00686b41233ebc70cbdd19bf558f4"
+    },
+    {
+      "kind": "ocr_json",
+      "path": "/Users/hadi/Documents/GitHub/hoodie_sim_v2/resources/papers/hoodie/ocr/merged.json",
+      "sha256": "9f0833dfffe80a7baed0de6ae96ce418454d8f204dc68d416254619f64d192ca"
+    },
+    {
+      "kind": "ocr_markdown",
+      "path": "/Users/hadi/Documents/GitHub/hoodie_sim_v2/resources/papers/hoodie/ocr/merged.md",
+      "sha256": "8b8b939269c159daeb4c797f8834b30ca6f654d69663ea9d88085d433dc22101"
+    },
+    {
+      "kind": "ocr_tex",
+      "path": "/Users/hadi/Documents/GitHub/hoodie_sim_v2/resources/papers/hoodie/ocr/merged.tex",
+      "sha256": "e8ad1d3b0afaed03636e87c5435d25bb9a3dcb7cd7912d3f0481eb1278c8556d"
+    },
+    {
+      "kind": "recovered_parameter_registry",
+      "path": "/Users/hadi/Documents/GitHub/hoodie_sim_v2/resources/papers/hoodie/recovered/paper-parameter-registry.json",
+      "sha256": "6a6af081b06c4c4b9809a28b914fb7d667f4918c65b086c56dcccf91ba6ddfbe"
+    },
+    {
+      "kind": "recovered_topology_registry",
+      "path": "/Users/hadi/Documents/GitHub/hoodie_sim_v2/resources/papers/hoodie/recovered/topology-g.json",
+      "sha256": "ba73a4fbf8f8a90cfdaaebaab18bbd385580942259fbee7964970f2e9505296c"
+    },
+    {
+      "kind": "approved_assumption_registry",
+      "path": "/Users/hadi/Documents/GitHub/hoodie_sim_v2/resources/papers/hoodie/recovered/user-approved-assumption-registry.json",
+      "sha256": "d1b76e9f96059ce7815cf2de862b270a82d829dd995c89088a95e6c17b207160"
+    }
+  ]
+}

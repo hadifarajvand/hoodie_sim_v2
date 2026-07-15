@@ -1,0 +1,214 @@
+{
+  "figure_id": "figure_9",
+  "panels": [
+    {
+      "agent_counts": [
+        10,
+        15,
+        20
+      ],
+      "checkpoint_rule": "optimally trained Q models from Section A",
+      "compared_policies": [
+        "HOODIE"
+      ],
+      "confidence_level": 0.95,
+      "dependent_metric": "average_reward",
+      "fixed_topology": "Figure 7 adjacency matrix",
+      "independent_values": [
+        0.1,
+        0.3,
+        0.5,
+        0.7,
+        0.9
+      ],
+      "independent_variable": "task_arrival_probability",
+      "panel_id": "figure_9a",
+      "policy_mode": "exploitative",
+      "scientific_question": "Average reward versus task arrival probability",
+      "source_citation": "/Users/hadi/Documents/GitHub/hoodie_sim_v2/resources/papers/hoodie/original/HOODIE_paper.pdf",
+      "source_page": 19,
+      "source_section": "B. HOODIE Behavior and Scalability Analysis",
+      "status": "paper_explicit",
+      "unresolved_fields": [],
+      "validation_episodes": 200
+    },
+    {
+      "action_categories": [
+        "Local",
+        "Horizontal",
+        "Vertical"
+      ],
+      "agent_counts": [
+        10,
+        15,
+        20
+      ],
+      "checkpoint_rule": "optimally trained Q models from Section A",
+      "compared_policies": [
+        "HOODIE"
+      ],
+      "confidence_level": 0.95,
+      "dependent_metric": "action_count",
+      "fixed_topology": "Figure 7 adjacency matrix",
+      "independent_values": [
+        0.1,
+        0.3,
+        0.5,
+        0.7,
+        0.9
+      ],
+      "independent_variable": "task_arrival_probability",
+      "panel_id": "figure_9b",
+      "policy_mode": "exploitative",
+      "scientific_question": "Action type distribution across task arrival probabilities",
+      "source_citation": "/Users/hadi/Documents/GitHub/hoodie_sim_v2/resources/papers/hoodie/original/HOODIE_paper.pdf",
+      "source_page": 19,
+      "source_section": "B. HOODIE Behavior and Scalability Analysis",
+      "status": "paper_explicit",
+      "unresolved_fields": [],
+      "validation_episodes": 200
+    },
+    {
+      "agent_counts": [
+        10,
+        15,
+        20
+      ],
+      "checkpoint_rule": "optimally trained Q models from Section A",
+      "compared_policies": [
+        "HOODIE"
+      ],
+      "confidence_level": 0.95,
+      "dependent_metric": "average_reward",
+      "fixed_topology": "Figure 7 adjacency matrix",
+      "independent_values": [
+        4,
+        5,
+        6,
+        7,
+        8,
+        9
+      ],
+      "independent_variable": "cpu_computation_capacity_ghz",
+      "panel_id": "figure_9c",
+      "policy_mode": "exploitative",
+      "scientific_question": "Average reward versus CPU computation capacity",
+      "source_citation": "/Users/hadi/Documents/GitHub/hoodie_sim_v2/resources/papers/hoodie/original/HOODIE_paper.pdf",
+      "source_page": 19,
+      "source_section": "B. HOODIE Behavior and Scalability Analysis",
+      "status": "paper_explicit",
+      "unresolved_fields": [],
+      "validation_episodes": 200
+    },
+    {
+      "checkpoint_rule": "optimally trained Q models from Section A",
+      "compared_policies": [
+        "HOODIE"
+      ],
+      "confidence_level": 0.95,
+      "dependent_metric": "average_reward",
+      "fixed_topology": "Figure 7 adjacency matrix",
+      "independent_values": [
+        10,
+        15,
+        20,
+        25,
+        30
+      ],
+      "independent_variable": "number_of_agents",
+      "notes": [
+        "Task-size increments are integer Mbits as shown in the prose and panel context."
+      ],
+      "panel_id": "figure_9d",
+      "policy_mode": "exploitative",
+      "scientific_question": "Average reward versus number of agents under traffic scenarios",
+      "source_citation": "/Users/hadi/Documents/GitHub/hoodie_sim_v2/resources/papers/hoodie/original/HOODIE_paper.pdf",
+      "source_page": 19,
+      "source_section": "B. HOODIE Behavior and Scalability Analysis",
+      "status": "paper_explicit",
+      "traffic_scenarios": [
+        {
+          "arrival_probability": 0.5,
+          "name": "Moderate Traffic",
+          "task_size_mbits": [
+            1,
+            2,
+            3
+          ]
+        },
+        {
+          "arrival_probability": 0.7,
+          "name": "Heavy Traffic",
+          "task_size_mbits": [
+            2,
+            3,
+            4,
+            5
+          ]
+        },
+        {
+          "arrival_probability": 0.9,
+          "name": "Extreme Traffic",
+          "task_size_mbits": [
+            3,
+            4,
+            5,
+            6,
+            7
+          ]
+        }
+      ],
+      "unresolved_fields": [],
+      "validation_episodes": 200
+    },
+    {
+      "checkpoint_rule": "optimally trained Q models from Section A",
+      "compared_policies": [
+        "HOODIE"
+      ],
+      "confidence_level": 0.95,
+      "dependent_metric": "average_reward",
+      "fixed_topology": "Figure 7 adjacency matrix",
+      "independent_values": [
+        10,
+        15,
+        20,
+        25,
+        30
+      ],
+      "independent_variable": "number_of_agents",
+      "notes": [
+        "Paper wording preserved verbatim, even where labels look counterintuitive."
+      ],
+      "offloading_rate_scenarios": [
+        {
+          "R_H_mbps": 10,
+          "R_V_mbps": 30,
+          "name": "Balanced",
+          "paper_wording": "Balanced Capacity"
+        },
+        {
+          "R_H_mbps": 20,
+          "R_V_mbps": 20,
+          "name": "Horizontal-centric",
+          "paper_wording": "Horizontal-centric Capacity"
+        },
+        {
+          "R_H_mbps": 5,
+          "R_V_mbps": 40,
+          "name": "Vertical-centric",
+          "paper_wording": "Vertical-centric Capacity"
+        }
+      ],
+      "panel_id": "figure_9e",
+      "policy_mode": "exploitative",
+      "scientific_question": "Average reward versus number of agents under offloading data rate scenarios",
+      "source_citation": "/Users/hadi/Documents/GitHub/hoodie_sim_v2/resources/papers/hoodie/original/HOODIE_paper.pdf",
+      "source_page": 20,
+      "source_section": "B. HOODIE Behavior and Scalability Analysis",
+      "status": "paper_explicit",
+      "unresolved_fields": [],
+      "validation_episodes": 200
+    }
+  ]
+}

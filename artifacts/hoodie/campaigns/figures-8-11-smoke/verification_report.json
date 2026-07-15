@@ -1,4 +1,6 @@
 {
-  "fairness": "not_yet_implemented",
+  "fairness": "real",
+  "fairness_report_path": "artifacts/hoodie/campaigns/figures-8-11-smoke/verification/fairness_report.json",
+  "fairness_report_sha256": "1f8871c344eda150ee08b3fa05ed9c0435bbb3d4609dcaf4ee297dd0bf006851",
   "sanity": "not_yet_implemented"
 }

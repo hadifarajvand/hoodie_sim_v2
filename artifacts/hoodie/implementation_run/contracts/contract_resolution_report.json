@@ -1,0 +1,100 @@
+{
+  "affected_panels": [
+    "figure_8a",
+    "figure_8b",
+    "figure_9a",
+    "figure_9b",
+    "figure_9c",
+    "figure_9d",
+    "figure_9e",
+    "figure_10a",
+    "figure_10b",
+    "figure_10c",
+    "figure_10d",
+    "figure_10e",
+    "figure_10f",
+    "figure_11"
+  ],
+  "approved_assumptions_used": 1,
+  "implementation_choices": 0,
+  "notes": [
+    "Table 4 defaults are paper-explicit except derived decision/drain slots, timeout seconds, and topology linkage.",
+    "Figure 7 adjacency is approved-assumption backed."
+  ],
+  "original_unresolved_count": 28,
+  "production_readiness_by_panel": {
+    "figure_10a": {
+      "blocked": false,
+      "reason": null,
+      "status": "production_ready"
+    },
+    "figure_10b": {
+      "blocked": false,
+      "reason": null,
+      "status": "production_ready"
+    },
+    "figure_10c": {
+      "blocked": false,
+      "reason": null,
+      "status": "production_ready"
+    },
+    "figure_10d": {
+      "blocked": false,
+      "reason": null,
+      "status": "production_ready"
+    },
+    "figure_10e": {
+      "blocked": false,
+      "reason": null,
+      "status": "production_ready"
+    },
+    "figure_10f": {
+      "blocked": false,
+      "reason": null,
+      "status": "production_ready"
+    },
+    "figure_11": {
+      "blocked": false,
+      "reason": null,
+      "status": "production_ready"
+    },
+    "figure_8a": {
+      "blocked": false,
+      "reason": null,
+      "status": "production_ready"
+    },
+    "figure_8b": {
+      "blocked": false,
+      "reason": null,
+      "status": "production_ready"
+    },
+    "figure_9a": {
+      "blocked": false,
+      "reason": null,
+      "status": "production_ready"
+    },
+    "figure_9b": {
+      "blocked": false,
+      "reason": null,
+      "status": "production_ready"
+    },
+    "figure_9c": {
+      "blocked": false,
+      "reason": null,
+      "status": "production_ready"
+    },
+    "figure_9d": {
+      "blocked": false,
+      "reason": null,
+      "status": "production_ready"
+    },
+    "figure_9e": {
+      "blocked": false,
+      "reason": null,
+      "status": "production_ready"
+    }
+  },
+  "remaining_unresolved_count": 0,
+  "resolved_as_paper_derived": 3,
+  "resolved_as_paper_explicit": 40
+}
