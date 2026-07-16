@@ -140,6 +140,16 @@ def export_shards_storage_safe(
     return bundles
 
 
+def sha256_file(path: Path) -> str:
+    import hashlib
+
+    digest = hashlib.sha256()
+    with path.open("rb") as handle:
+        for block in iter(lambda: handle.read(1024 * 1024), b""):
+            digest.update(block)
+    return digest.hexdigest()
+
+
 def install_bundle_checkpoints_without_copy(
     bundle_dir: Path, campaign_dir: Path
 ) -> None:
@@ -171,16 +181,6 @@ def install_bundle_checkpoints_without_copy(
             campaign_dir / "checkpoint_registry.json",
             {"campaign_id": campaign_dir.name, "checkpoints": records},
         )
-
-
-def sha256_file(path: Path) -> str:
-    import hashlib
-
-    digest = hashlib.sha256()
-    with path.open("rb") as handle:
-        for block in iter(lambda: handle.read(1024 * 1024), b""):
-            digest.update(block)
-    return digest.hexdigest()
 
 
 def _replace_derived_result_root(staged: Path, destination: Path) -> None:
@@ -251,7 +251,7 @@ def run_shard_storage_safe(
     )
     result_parent = work_dir / "results"
     result_parent.mkdir(parents=True, exist_ok=True)
-    staged = Path(
+    staged: Path | None = Path(
         tempfile.mkdtemp(prefix=f".{manifest['shard_id']}-", dir=result_parent)
     )
     try:
@@ -299,10 +299,10 @@ def run_shard_storage_safe(
         distributed_v2._validate_checksums(staged)
         destination = result_parent / manifest["shard_id"]
         _replace_derived_result_root(staged, destination)
-        staged = Path()
+        staged = None
         return bundle
     finally:
-        if staged and staged.exists() and staged.is_dir():
+        if staged is not None and staged.exists():
             shutil.rmtree(staged, ignore_errors=True)
 
 
