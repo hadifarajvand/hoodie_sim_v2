@@ -15,14 +15,26 @@ Produce one correct, reproducible path from the frozen paper contracts to:
 
 ECHO thesis development is downstream of this baseline. Generic agent frameworks, runtime orchestration state, historical reports, and generated experiment outputs are not part of the scientific runtime.
 
-## Quick validation
+## Repository-consolidation gate
+
+The paper-scale experiment is locked until the active tree has one canonical package and one implementation of each scientific responsibility:
+
+```bash
+python scripts/audit/repository_consolidation_gate.py --check
+```
+
+This gate rejects tracked generated artifacts, legacy active test/package roots, `*_patch.py` and `*_v2.py` execution modules, `src.*` imports inside the canonical package, active ECHO dependencies, noncanonical packaging, and missing canonical executor/verification/visualization paths.
+
+## Full validation
+
+After the consolidation gate passes:
 
 ```bash
 python scripts/audit/full_repository_audit.py --check
 bash scripts/hoodie/corrected_campaign.sh validate
 ```
 
-Do not start a paper-scale run unless both commands pass.
+Do not start a paper-scale run unless all three commands pass from a clean checkout at the exact remote commit.
 
 ## Run storage
 
@@ -44,6 +56,6 @@ Do not use process-killing commands. Workers stop cooperatively at completed-epi
 
 Keep source, tests, configs, scientific contracts, approved paper references, concise architecture documents, and small reproducibility manifests in Git.
 
-Do not commit generated runs, checkpoints, replay buffers, raw datasets, PID files, daemon state, large logs, temporary transport payloads, caches, or generic agent-framework distributions.
+Do not commit generated runs, checkpoints, replay buffers, raw datasets, PID files, daemon state, large logs, temporary transport payloads, caches, generic agent-framework distributions, or historical generated artifacts under the active `artifacts/` tree.
 
 See [docs/tracking-policy.md](docs/tracking-policy.md), [docs/architecture/project-scope.md](docs/architecture/project-scope.md), and [docs/runbooks/hoodie-corrected-campaign.md](docs/runbooks/hoodie-corrected-campaign.md).
