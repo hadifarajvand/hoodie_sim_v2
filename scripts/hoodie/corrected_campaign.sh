@@ -5,21 +5,68 @@ ROOT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/../.." && pwd)"
 cd "$ROOT_DIR"
 
 LEGACY_CAMPAIGN_ID="figures-8-11-7587c7c6382c"
-STATE_DIR="${HOODIE_STATE_DIR:-artifacts/hoodie/implementation_run/corrected_campaign}"
-MATRIX_PATH="${HOODIE_MATRIX_PATH:-$STATE_DIR/expected_production_job_matrix.json}"
-SHARD_PLAN_PATH="${HOODIE_SHARD_PLAN_PATH:-$STATE_DIR/shard_plan.json}"
-CAMPAIGN_ENV_PATH="${HOODIE_CAMPAIGN_ENV_PATH:-$STATE_DIR/campaign.env}"
-BUNDLE_ROOT="${HOODIE_BUNDLE_ROOT:-artifacts/hoodie/distributed/corrected/input}"
-TRAINING_RESULTS_DIR="${HOODIE_TRAINING_RESULTS_DIR:-artifacts/hoodie/distributed/corrected/results-training}"
-EVALUATION_RESULTS_DIR="${HOODIE_EVALUATION_RESULTS_DIR:-artifacts/hoodie/distributed/corrected/results-evaluation}"
 TRAINING_SHARDS="${HOODIE_TRAINING_SHARDS:-17}"
 EVALUATION_SHARDS="${HOODIE_EVALUATION_SHARDS:-48}"
-
-mkdir -p "$STATE_DIR"
+MAX_CAPTURE_BYTES="${HOODIE_MAX_COMMAND_CAPTURE_BYTES:-2097152}"
 
 fail() {
   printf 'ERROR: %s\n' "$*" >&2
   exit 1
+}
+
+require_external_run_root() {
+  [[ -n "${HOODIE_RUN_ROOT:-}" ]] || fail "HOODIE_RUN_ROOT must be set to an absolute path on large external storage"
+  [[ "$HOODIE_RUN_ROOT" = /* ]] || fail "HOODIE_RUN_ROOT must be absolute"
+
+  RUN_ROOT="$(python - "$ROOT_DIR" "$HOODIE_RUN_ROOT" <<'PY'
+from pathlib import Path
+import shutil
+import sys
+repo = Path(sys.argv[1]).resolve()
+root = Path(sys.argv[2]).expanduser().resolve()
+if root == repo or repo in root.parents:
+    raise SystemExit("HOODIE_RUN_ROOT must be outside the Git repository")
+root.mkdir(parents=True, exist_ok=True)
+usage = shutil.disk_usage(root)
+required = max(20 * 1024**3, int(usage.total * 0.10))
+if usage.free < required:
+    raise SystemExit(
+        f"insufficient free storage: free={usage.free}, required={required}"
+    )
+print(root)
+PY
+  )" || fail "external run-root validation failed"
+  export HOODIE_RUN_ROOT="$RUN_ROOT"
+
+  STATE_DIR="${HOODIE_STATE_DIR:-$RUN_ROOT/implementation_run/corrected_campaign}"
+  MATRIX_PATH="${HOODIE_MATRIX_PATH:-$STATE_DIR/expected_production_job_matrix.json}"
+  SHARD_PLAN_PATH="${HOODIE_SHARD_PLAN_PATH:-$STATE_DIR/shard_plan.json}"
+  CAMPAIGN_ENV_PATH="${HOODIE_CAMPAIGN_ENV_PATH:-$STATE_DIR/campaign.env}"
+  VALIDATION_MARKER="${HOODIE_VALIDATION_MARKER:-$STATE_DIR/validation-complete.json}"
+  AUDIT_DIR="${HOODIE_AUDIT_DIR:-$RUN_ROOT/audits/repository}"
+  BUNDLE_ROOT="${HOODIE_BUNDLE_ROOT:-$RUN_ROOT/distributed/corrected/input}"
+  TRAINING_RESULTS_DIR="${HOODIE_TRAINING_RESULTS_DIR:-$RUN_ROOT/distributed/corrected/results-training}"
+  EVALUATION_RESULTS_DIR="${HOODIE_EVALUATION_RESULTS_DIR:-$RUN_ROOT/distributed/corrected/results-evaluation}"
+  CAMPAIGN_ROOT="$RUN_ROOT/campaigns"
+  mkdir -p "$STATE_DIR" "$AUDIT_DIR"
+}
+
+require_external_run_root
+
+run_bounded() {
+  local output="$1"
+  shift
+  python scripts/hoodie/run_bounded_command.py \
+    --output "$output" \
+    --max-bytes "$MAX_CAPTURE_BYTES" \
+    -- "$@"
+}
+
+require_empty_or_absent() {
+  local path="$1"
+  if [[ -d "$path" ]] && [[ -n "$(find "$path" -mindepth 1 -maxdepth 1 -print -quit 2>/dev/null)" ]]; then
+    fail "refusing to overwrite nonempty runtime directory: $path"
+  fi
 }
 
 load_campaign_id() {
@@ -38,14 +85,29 @@ load_campaign_id() {
   export CAMPAIGN_ID
 }
 
+require_validated_head() {
+  load_campaign_id
+  [[ -f "$VALIDATION_MARKER" ]] || fail "validation marker is missing; run '$0 validate'"
+  python - "$VALIDATION_MARKER" "$(git rev-parse HEAD)" "$CAMPAIGN_ID" <<'PY'
+import json
+import pathlib
+import sys
+payload = json.loads(pathlib.Path(sys.argv[1]).read_text(encoding="utf-8"))
+assert payload["validated_head"] == sys.argv[2], payload
+assert payload["campaign_id"] == sys.argv[3], payload
+assert payload["repository_audit_passed"] is True, payload
+assert payload["full_test_suite_passed"] is True, payload
+PY
+}
+
 plan_campaign() {
   local output="$STATE_DIR/plan-output.json"
-  python -m hoodie.experiments plan \
+  run_bounded "$output" python -m hoodie.experiments plan \
     --matrix "$MATRIX_PATH" \
     --shard-plan "$SHARD_PLAN_PATH" \
-    --campaign-root artifacts/hoodie/campaigns \
+    --campaign-root "$CAMPAIGN_ROOT" \
     --training-shards "$TRAINING_SHARDS" \
-    --evaluation-shards "$EVALUATION_SHARDS" | tee "$output"
+    --evaluation-shards "$EVALUATION_SHARDS"
   CAMPAIGN_ID="$(python - "$output" <<'PY'
 import json
 import pathlib
@@ -53,30 +115,76 @@ import sys
 payload = json.loads(pathlib.Path(sys.argv[1]).read_text(encoding="utf-8"))
 print(payload["campaign_id"])
 PY
-)"
+  )"
   [[ "$CAMPAIGN_ID" != "$LEGACY_CAMPAIGN_ID" ]] || fail "Planner resolved the paused legacy campaign"
   [[ "$CAMPAIGN_ID" == figures-8-11-corrected-* ]] || fail "Planner returned an unexpected campaign ID: $CAMPAIGN_ID"
   printf 'CAMPAIGN_ID=%q\n' "$CAMPAIGN_ID" > "$CAMPAIGN_ENV_PATH"
   export CAMPAIGN_ID
 }
 
+storage_check() {
+  python - "$RUN_ROOT" <<'PY'
+from pathlib import Path
+import json
+import shutil
+import sys
+root = Path(sys.argv[1])
+usage = shutil.disk_usage(root)
+required = max(20 * 1024**3, int(usage.total * 0.10))
+checkpoints = [
+    path for path in root.rglob("checkpoint.pt")
+    if path.is_file()
+]
+sizes = [path.stat().st_size for path in checkpoints]
+payload = {
+    "run_root": str(root),
+    "free_bytes": usage.free,
+    "total_bytes": usage.total,
+    "required_free_bytes": required,
+    "checkpoint_count": len(checkpoints),
+    "checkpoint_bytes": sum(sizes),
+    "largest_checkpoint_bytes": max(sizes, default=0),
+    "passed": usage.free >= required,
+}
+print(json.dumps(payload, sort_keys=True))
+if not payload["passed"]:
+    raise SystemExit(1)
+PY
+}
+
 validate() {
   bash -n scripts/hoodie/corrected_campaign.sh
   bash -n scripts/hoodie/run_shard_worker.sh
-  python -m pip install -e ".[dev]"
-  python -m compileall -q src hoodie
-  python -m hoodie.experiments preflight | tee "$STATE_DIR/preflight.json"
+
+  run_bounded "$STATE_DIR/pip-install.txt" python -m pip install -e ".[dev]"
+  run_bounded "$STATE_DIR/repository-audit.txt" \
+    python scripts/audit/full_repository_audit.py \
+      --check \
+      --output-dir "$AUDIT_DIR"
+  run_bounded "$STATE_DIR/compileall.txt" python -m compileall -q src hoodie scripts
+  run_bounded "$STATE_DIR/preflight.json" python -m hoodie.experiments preflight
+
   plan_campaign
-  python -m hoodie.experiments validate-contracts \
-    --campaign-id "$CAMPAIGN_ID" \
-    --matrix "$MATRIX_PATH" | tee "$STATE_DIR/contract-validation.json"
-  python -m pytest tests_supported/hoodie -q | tee "$STATE_DIR/pytest-supported.txt"
-  python - "$MATRIX_PATH" "$SHARD_PLAN_PATH" <<'PY'
+
+  run_bounded "$STATE_DIR/contract-validation.json" \
+    python -m hoodie.experiments validate-contracts \
+      --campaign-id "$CAMPAIGN_ID" \
+      --matrix "$MATRIX_PATH"
+  run_bounded "$STATE_DIR/pytest-full.txt" python -m pytest -q
+  storage_check > "$STATE_DIR/storage-check.json"
+
+  python - "$MATRIX_PATH" "$SHARD_PLAN_PATH" "$VALIDATION_MARKER" "$CAMPAIGN_ID" "$(git rev-parse HEAD)" <<'PY'
+import hashlib
 import json
 import pathlib
 import sys
-matrix = json.loads(pathlib.Path(sys.argv[1]).read_text(encoding="utf-8"))
-plan = json.loads(pathlib.Path(sys.argv[2]).read_text(encoding="utf-8"))
+matrix_path = pathlib.Path(sys.argv[1])
+plan_path = pathlib.Path(sys.argv[2])
+marker_path = pathlib.Path(sys.argv[3])
+campaign_id = sys.argv[4]
+head = sys.argv[5]
+matrix = json.loads(matrix_path.read_text(encoding="utf-8"))
+plan = json.loads(plan_path.read_text(encoding="utf-8"))
 training = [row for row in matrix if row["job_type"] == "training"]
 evaluation = [row for row in matrix if row["job_type"] == "evaluation"]
 assert len(matrix) == 305, len(matrix)
@@ -85,37 +193,55 @@ assert len(evaluation) == 288, len(evaluation)
 assert plan["total_jobs"] == 305
 assert plan["training_jobs"] == 17
 assert plan["evaluation_jobs"] == 288
-assert plan["campaign_id"].startswith("figures-8-11-corrected-")
-assert plan["campaign_id"] != "figures-8-11-7587c7c6382c"
+assert plan["campaign_id"] == campaign_id
+assert campaign_id.startswith("figures-8-11-corrected-")
+assert campaign_id != "figures-8-11-7587c7c6382c"
 assert all(
     row["physical_contract"].get("backend") == "worker-selected"
     for row in matrix
 )
-print(json.dumps({"status": "validated", "campaign_id": plan["campaign_id"], "jobs": 305}))
+payload = {
+    "validated_head": head,
+    "campaign_id": campaign_id,
+    "matrix_sha256": hashlib.sha256(matrix_path.read_bytes()).hexdigest(),
+    "shard_plan_sha256": hashlib.sha256(plan_path.read_bytes()).hexdigest(),
+    "training_jobs": 17,
+    "evaluation_jobs": 288,
+    "total_jobs": 305,
+    "repository_audit_passed": True,
+    "full_test_suite_passed": True,
+    "production_started": False,
+}
+marker_path.write_text(json.dumps(payload, indent=2, sort_keys=True) + "\n", encoding="utf-8")
+print(json.dumps(payload, sort_keys=True))
 PY
-  printf '\nValidated corrected campaign: %s\n' "$CAMPAIGN_ID"
+  printf 'Validated corrected campaign %s at %s\n' "$CAMPAIGN_ID" "$(git rev-parse HEAD)"
 }
 
 export_training() {
-  load_campaign_id
-  rm -rf "$BUNDLE_ROOT/training"
-  python -m hoodie.experiments export-shards \
-    --campaign-id "$CAMPAIGN_ID" \
-    --plan "$SHARD_PLAN_PATH" \
-    --output-dir "$BUNDLE_ROOT/training" \
-    --phase training
-  printf 'Training bundles: %s\n' "$BUNDLE_ROOT/training"
+  require_validated_head
+  storage_check
+  local destination="$BUNDLE_ROOT/$CAMPAIGN_ID/training"
+  require_empty_or_absent "$destination"
+  run_bounded "$STATE_DIR/export-training.json" \
+    python -m hoodie.experiments export-shards \
+      --campaign-id "$CAMPAIGN_ID" \
+      --plan "$SHARD_PLAN_PATH" \
+      --output-dir "$destination" \
+      --phase training
+  printf 'Training bundles: %s\n' "$destination"
 }
 
 import_training() {
-  load_campaign_id
+  require_validated_head
   [[ -d "$TRAINING_RESULTS_DIR" ]] || fail "Training results directory is missing: $TRAINING_RESULTS_DIR"
-  python -m hoodie.experiments import-results-directory \
-    --campaign-id "$CAMPAIGN_ID" \
-    --results-dir "$TRAINING_RESULTS_DIR"
+  run_bounded "$STATE_DIR/import-training.json" \
+    python -m hoodie.experiments import-results-directory \
+      --campaign-id "$CAMPAIGN_ID" \
+      --results-dir "$TRAINING_RESULTS_DIR"
   local audit="$STATE_DIR/backend-audit.json"
-  python -m hoodie.experiments backend-audit \
-    --campaign-id "$CAMPAIGN_ID" | tee "$audit"
+  run_bounded "$audit" python -m hoodie.experiments backend-audit \
+    --campaign-id "$CAMPAIGN_ID"
   python - "$audit" <<'PY'
 import json
 import pathlib
@@ -134,42 +260,50 @@ print(json.dumps({
     "checkpoint_count": 17,
 }))
 PY
-  python -m hoodie.experiments shard-status --campaign-id "$CAMPAIGN_ID"
+  run_bounded "$STATE_DIR/shard-status-after-training.json" \
+    python -m hoodie.experiments shard-status --campaign-id "$CAMPAIGN_ID"
 }
 
 export_evaluation() {
-  load_campaign_id
+  require_validated_head
+  storage_check
   [[ -f "$STATE_DIR/backend-audit.json" ]] || fail "Import and audit all training results before exporting evaluation shards"
-  rm -rf "$BUNDLE_ROOT/evaluation"
-  python -m hoodie.experiments export-shards \
-    --campaign-id "$CAMPAIGN_ID" \
-    --plan "$SHARD_PLAN_PATH" \
-    --output-dir "$BUNDLE_ROOT/evaluation" \
-    --phase evaluation
-  printf 'Evaluation bundles: %s\n' "$BUNDLE_ROOT/evaluation"
+  local destination="$BUNDLE_ROOT/$CAMPAIGN_ID/evaluation"
+  require_empty_or_absent "$destination"
+  run_bounded "$STATE_DIR/export-evaluation.json" \
+    python -m hoodie.experiments export-shards \
+      --campaign-id "$CAMPAIGN_ID" \
+      --plan "$SHARD_PLAN_PATH" \
+      --output-dir "$destination" \
+      --phase evaluation
+  printf 'Evaluation bundles: %s\n' "$destination"
 }
 
 import_evaluation() {
-  load_campaign_id
+  require_validated_head
   [[ -d "$EVALUATION_RESULTS_DIR" ]] || fail "Evaluation results directory is missing: $EVALUATION_RESULTS_DIR"
-  python -m hoodie.experiments import-results-directory \
-    --campaign-id "$CAMPAIGN_ID" \
-    --results-dir "$EVALUATION_RESULTS_DIR"
-  python -m hoodie.experiments shard-status --campaign-id "$CAMPAIGN_ID"
+  run_bounded "$STATE_DIR/import-evaluation.json" \
+    python -m hoodie.experiments import-results-directory \
+      --campaign-id "$CAMPAIGN_ID" \
+      --results-dir "$EVALUATION_RESULTS_DIR"
+  run_bounded "$STATE_DIR/shard-status-after-evaluation.json" \
+    python -m hoodie.experiments shard-status --campaign-id "$CAMPAIGN_ID"
 }
 
 status() {
-  load_campaign_id
+  require_validated_head
   python -m hoodie.experiments shard-status --campaign-id "$CAMPAIGN_ID"
 }
 
 finalize() {
-  load_campaign_id
-  python -m hoodie.experiments finalize --campaign-id "$CAMPAIGN_ID"
+  require_validated_head
+  run_bounded "$STATE_DIR/finalize.json" \
+    python -m hoodie.experiments finalize --campaign-id "$CAMPAIGN_ID"
 }
 
 case "${1:-}" in
   validate) validate ;;
+  storage-check) storage_check ;;
   export-training) export_training ;;
   import-training) import_training ;;
   export-evaluation) export_evaluation ;;
@@ -178,10 +312,11 @@ case "${1:-}" in
   finalize) finalize ;;
   *)
     cat >&2 <<USAGE
-Usage: $0 {validate|export-training|import-training|export-evaluation|import-evaluation|status|finalize}
+Usage: $0 {validate|storage-check|export-training|import-training|export-evaluation|import-evaluation|status|finalize}
 
-The script never operates on $LEGACY_CAMPAIGN_ID and never starts a worker by itself.
-Worker execution must use scripts/hoodie/run_shard_worker.sh on assigned compute.
+HOODIE_RUN_ROOT must be an absolute path outside the Git repository with at least
+20 GiB and 10% free space. This script never operates on $LEGACY_CAMPAIGN_ID and
+never starts a worker by itself. Workers use scripts/hoodie/run_shard_worker.sh.
 USAGE
     exit 2
     ;;
