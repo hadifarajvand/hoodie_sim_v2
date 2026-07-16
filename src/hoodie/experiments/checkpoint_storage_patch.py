@@ -1,7 +1,5 @@
 from __future__ import annotations
 
-from hashlib import sha256
-import json
 from pathlib import Path
 from typing import Any, Callable
 
@@ -11,11 +9,12 @@ from src.agents.distributed_hoodie import DistributedHoodiePolicy
 from src.agents.hoodie_agent import HoodieAgent
 from src.environment.topology import TopologyGraph
 
-from hoodie.storage.checkpoints import hydrate_replay_snapshot, save_bounded_checkpoint
+from ..storage.checkpoints import hydrate_replay_snapshot, save_bounded_checkpoint
 
 
 _INSTALLED = False
 _ORIGINAL_POLICY_FROM_CHECKPOINT: Callable[..., Any] | None = None
+_ORIGINAL_LOAD_INTERNAL_CHECKPOINT_STATE: Callable[..., Any] | None = None
 
 
 def _agent_count(row: Any) -> int:
@@ -42,7 +41,27 @@ def _checkpoint_job_dir(checkpoint_state: dict[str, Any]) -> Path | None:
         return None
 
 
-def _load_agent_from_compact_state(agent_state: dict[str, Any], *, device_name: str | None) -> HoodieAgent:
+def load_internal_checkpoint_state(job_dir: Path) -> dict[str, Any] | None:
+    """Load and hydrate the latest resumable checkpoint for training.
+
+    The legacy training loop calls this function before constructing the policy.
+    Hydrating here ensures external replay state is present when
+    ``DistributedHoodiePolicy.from_state`` restores a schema-v3 checkpoint.
+    """
+
+    if _ORIGINAL_LOAD_INTERNAL_CHECKPOINT_STATE is None:
+        raise RuntimeError("checkpoint storage patch is not installed")
+    state = _ORIGINAL_LOAD_INTERNAL_CHECKPOINT_STATE(job_dir)
+    if not isinstance(state, dict):
+        return state
+    if int(state.get("schema_version", 0)) >= 3 and bool(state.get("resume_capable")):
+        return hydrate_replay_snapshot(Path(job_dir), state)
+    return state
+
+
+def _load_agent_from_compact_state(
+    agent_state: dict[str, Any], *, device_name: str | None
+) -> HoodieAgent:
     learner_state = agent_state.get("learner")
     if not isinstance(learner_state, dict):
         raise ValueError("compact checkpoint agent is missing learner state")
@@ -58,7 +77,10 @@ def _load_agent_from_compact_state(agent_state: dict[str, Any], *, device_name: 
         replay_capacity=int(learner_state.get("capacity", 10_000)),
         target_update_interval=int(learner_state.get("target_update_interval", 2_000)),
         device_name=device_name,
-        hidden_dims=tuple(int(value) for value in learner_state.get("hidden_dims", (1024, 1024, 1024))),
+        hidden_dims=tuple(
+            int(value)
+            for value in learner_state.get("hidden_dims", (1024, 1024, 1024))
+        ),
         lookback=int(learner_state.get("lookback", 10)),
         lstm_hidden=int(learner_state.get("lstm_hidden", 20)),
         action_order=action_order,
@@ -69,7 +91,9 @@ def _load_agent_from_compact_state(agent_state: dict[str, Any], *, device_name: 
         raise ValueError("compact checkpoint learner is missing online_state_dict")
     inner.online_network.load_state_dict(online_state)
     target_state = learner_state.get("target_state_dict")
-    inner.target_network.load_state_dict(target_state if isinstance(target_state, dict) else online_state)
+    inner.target_network.load_state_dict(
+        target_state if isinstance(target_state, dict) else online_state
+    )
     inner.target_network.eval()
     optimizer_state = learner_state.get("optimizer_state_dict")
     if isinstance(optimizer_state, dict):
@@ -96,7 +120,9 @@ def _load_agent_from_compact_state(agent_state: dict[str, Any], *, device_name: 
     return agent
 
 
-def _load_compact_policy(row: Any, checkpoint_state: dict[str, Any]) -> DistributedHoodiePolicy:
+def _load_compact_policy(
+    row: Any, checkpoint_state: dict[str, Any]
+) -> DistributedHoodiePolicy:
     job_dir = _checkpoint_job_dir(checkpoint_state)
     if bool(checkpoint_state.get("resume_capable")):
         if job_dir is None:
@@ -113,10 +139,14 @@ def _load_compact_policy(row: Any, checkpoint_state: dict[str, Any]) -> Distribu
     if backend and backend != "worker-selected":
         requested_device = backend
     agents = {
-        str(agent_id): _load_agent_from_compact_state(agent_state, device_name=requested_device)
+        str(agent_id): _load_agent_from_compact_state(
+            agent_state, device_name=requested_device
+        )
         for agent_id, agent_state in agents_payload.items()
         if isinstance(agent_state, dict)
     }
+    if len(agents) != len(agents_payload):
+        raise ValueError("checkpoint contains a non-dictionary learner state")
     policy = DistributedHoodiePolicy(agents=agents)
     topology = TopologyGraph.for_agent_count(_agent_count(row))
     policy.validate_topology(topology)
@@ -166,10 +196,22 @@ def bounded_checkpoint_policy(
     required_episodes = int(row.training_contract.get("training_episodes", next_episode))
     final = next_episode >= required_episodes
     agents_state = policy_state["agents"]
-    online = {key: value["learner"]["online_state_dict"] for key, value in agents_state.items()}
-    target = {key: value["learner"]["target_state_dict"] for key, value in agents_state.items()}
-    optimizer = {key: value["learner"]["optimizer_state_dict"] for key, value in agents_state.items()}
-    replay = {key: value["learner"]["replay_buffer"] for key, value in agents_state.items()}
+    online = {
+        key: value["learner"]["online_state_dict"]
+        for key, value in agents_state.items()
+    }
+    target = {
+        key: value["learner"]["target_state_dict"]
+        for key, value in agents_state.items()
+    }
+    optimizer = {
+        key: value["learner"]["optimizer_state_dict"]
+        for key, value in agents_state.items()
+    }
+    replay = {
+        key: value["learner"]["replay_buffer"]
+        for key, value in agents_state.items()
+    }
     checkpoint_state = {
         "schema_version": 3,
         "checkpoint_id": checkpoint_id,
@@ -222,11 +264,17 @@ def bounded_checkpoint_policy(
 def install_checkpoint_storage_patch() -> None:
     global _INSTALLED
     global _ORIGINAL_POLICY_FROM_CHECKPOINT
+    global _ORIGINAL_LOAD_INTERNAL_CHECKPOINT_STATE
     if _INSTALLED:
         return
+    from . import production_campaign
     from . import production_patch
 
     _ORIGINAL_POLICY_FROM_CHECKPOINT = production_patch._policy_from_checkpoint
+    _ORIGINAL_LOAD_INTERNAL_CHECKPOINT_STATE = (
+        production_campaign._load_internal_checkpoint_state
+    )
     production_patch._policy_from_checkpoint = policy_from_checkpoint
     production_patch._checkpoint_policy = bounded_checkpoint_policy
+    production_campaign._load_internal_checkpoint_state = load_internal_checkpoint_state
     _INSTALLED = True
