@@ -1,0 +1,148 @@
+name: HOODIE manual smoke
+
+on:
+  issue_comment:
+    types: [created]
+
+permissions:
+  contents: read
+  issues: write
+  pull-requests: write
+
+jobs:
+  smoke:
+    if: >-
+      github.event.issue.pull_request &&
+      startsWith(github.event.comment.body, '/hoodie-smoke ')
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    env:
+      HOODIE_RUN_ROOT: /tmp/hoodie-smoke-runs
+      HOODIE_DEVICE: cpu
+      CI: "true"
+      HOODIE_MIN_FREE_GB: "1"
+      HOODIE_MIN_FREE_FRACTION: "0.01"
+    steps:
+      - name: Resolve requested ref
+        id: ref
+        shell: bash
+        run: |
+          set -euo pipefail
+          requested="${{ github.event.comment.body }}"
+          ref="${requested#/hoodie-smoke }"
+          ref="$(printf '%s' "$ref" | xargs)"
+          test -n "$ref"
+          case "$ref" in
+            *[!A-Za-z0-9._/-]*)
+              echo "Unsafe ref: $ref" >&2
+              exit 1
+              ;;
+          esac
+          printf 'ref=%s\n' "$ref" >> "$GITHUB_OUTPUT"
+
+      - name: Checkout requested branch
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ steps.ref.outputs.ref }}
+          fetch-depth: 0
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+          cache: pip
+
+      - name: Install package
+        shell: bash
+        run: |
+          set -euo pipefail
+          python -m pip install --upgrade pip
+          python -m pip install -e '.[dev]'
+
+      - name: Import smoke
+        shell: bash
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          import hoodie
+          import hoodie.experiments
+          import src.agents.hoodie_agent
+          import src.hoodie.experiments.production_campaign
+          import src.hoodie.experiments.cli
+          print('IMPORT_SMOKE_OK')
+          PY
+
+      - name: Learner and matrix smoke
+        shell: bash
+        run: |
+          set -euo pipefail
+          python -m pytest -q \
+            tests_supported/hoodie/unit/test_experiment_correctness_v2.py \
+            tests_supported/hoodie/unit/test_destination_action_fidelity.py \
+            tests/unit/test_run_root_validation.py
+
+      - name: CLI preflight and corrected plan smoke
+        shell: bash
+        run: |
+          set -euo pipefail
+          rm -rf "$HOODIE_RUN_ROOT"
+          mkdir -p "$HOODIE_RUN_ROOT"
+          python -m hoodie.experiments preflight > "$HOODIE_RUN_ROOT/preflight.json"
+          python -m hoodie.experiments plan \
+            --matrix "$HOODIE_RUN_ROOT/expected_production_job_matrix.json" \
+            --shard-plan "$HOODIE_RUN_ROOT/shard_plan.json" \
+            --campaign-root "$HOODIE_RUN_ROOT/campaigns" \
+            --training-shards 17 \
+            --evaluation-shards 48 \
+            > "$HOODIE_RUN_ROOT/plan.json"
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          root = Path('/tmp/hoodie-smoke-runs')
+          matrix = json.loads((root / 'expected_production_job_matrix.json').read_text())
+          plan = json.loads((root / 'shard_plan.json').read_text())
+          training = [row for row in matrix if row['job_type'] == 'training']
+          evaluation = [row for row in matrix if row['job_type'] == 'evaluation']
+          assert len(matrix) == 305, len(matrix)
+          assert len(training) == 17, len(training)
+          assert len(evaluation) == 288, len(evaluation)
+          assert plan['total_jobs'] == 305, plan
+          assert plan['training_jobs'] == 17, plan
+          assert plan['evaluation_jobs'] == 288, plan
+          assert all(row['physical_contract'].get('backend') == 'worker-selected' for row in matrix)
+          print('PLAN_SMOKE_OK')
+          PY
+
+      - name: Capture tested SHA
+        if: always()
+        id: sha
+        shell: bash
+        run: printf 'sha=%s\n' "$(git rev-parse HEAD)" >> "$GITHUB_OUTPUT"
+
+      - name: Report success
+        if: success()
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const ref = `${{ steps.ref.outputs.ref }}`;
+            const sha = `${{ steps.sha.outputs.sha }}`;
+            await github.rest.issues.createComment({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: context.issue.number,
+              body: `HOODIE_SMOKE_PASSED\n\nRef: \`${ref}\`\nSHA: \`${sha}\`\n\nValidated: editable install, runtime imports, recurrent-DDQN learner update, destination action fidelity, output-root probe, scientific preflight, and corrected 17/288/305 matrix planning. No paper-scale simulation was started.`
+            });
+
+      - name: Report failure
+        if: failure()
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const ref = `${{ steps.ref.outputs.ref }}`;
+            const sha = `${{ steps.sha.outputs.sha }}`;
+            await github.rest.issues.createComment({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: context.issue.number,
+              body: `HOODIE_SMOKE_FAILED\n\nRef: \`${ref}\`\nSHA: \`${sha}\`\n\nOpen the failed workflow run for the exact failing step. No paper-scale simulation was started.`
+            });
