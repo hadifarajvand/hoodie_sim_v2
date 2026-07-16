@@ -32,8 +32,38 @@ class PanelContract:
     source_contract: dict[str, Any]
 
 
+def _normalize_source_path(value: object) -> object:
+    if not isinstance(value, str):
+        return value
+    marker = "resources/papers/hoodie/"
+    if marker in value:
+        return marker + value.split(marker, 1)[1]
+    return value
+
+
+def _normalize_panel(panel: dict[str, Any]) -> dict[str, Any]:
+    normalized = dict(panel)
+    normalized["source_citation"] = _normalize_source_path(
+        normalized.get("source_citation")
+    )
+    # Figure 8 and Figure 11 use ``independent_values`` for the plotted
+    # training-episode coordinates. Keep one explicit alias for downstream
+    # aggregation code rather than duplicating the values in source JSON.
+    if normalized.get("independent_variable") == "training_episode":
+        normalized["training_episode_points"] = list(
+            normalized.get("independent_values", ())
+        )
+    if "offloading_rate_scenarios" in normalized:
+        normalized["rate_scenarios"] = list(
+            normalized["offloading_rate_scenarios"]
+        )
+    return normalized
+
+
 def _load(name: str) -> dict[str, Any]:
-    return json.loads((_CONTRACT_DIR / name).read_text(encoding="utf-8"))
+    payload = json.loads((_CONTRACT_DIR / name).read_text(encoding="utf-8"))
+    payload["panels"] = [_normalize_panel(panel) for panel in payload["panels"]]
+    return payload
 
 
 def _panel_files(panel_id: str) -> tuple[str, str, str]:
@@ -53,6 +83,7 @@ def _fixed_parameters(panel: dict[str, Any]) -> dict[str, Any]:
         "action_categories",
         "traffic_scenarios",
         "rate_scenarios",
+        "offloading_rate_scenarios",
         "compared_policies",
         "series",
         "variants",
@@ -105,9 +136,16 @@ FIGURE_10 = _load("figure_10.json")
 FIGURE_11 = _load("figure_11.json")
 
 PANEL_REGISTRY: dict[str, PanelContract] = {}
-for payload in (*FIGURE_8["panels"], *FIGURE_9["panels"], *FIGURE_10["panels"], *FIGURE_11["panels"]):
+for payload in (
+    *FIGURE_8["panels"],
+    *FIGURE_9["panels"],
+    *FIGURE_10["panels"],
+    *FIGURE_11["panels"],
+):
     spec = _make_spec(payload)
-    PANEL_REGISTRY[spec.panel_id] = PanelContract(spec=spec, source_contract=payload)
+    PANEL_REGISTRY[spec.panel_id] = PanelContract(
+        spec=spec, source_contract=payload
+    )
 
 missing = set(_PANEL_ORDER) - set(PANEL_REGISTRY)
 if missing:
