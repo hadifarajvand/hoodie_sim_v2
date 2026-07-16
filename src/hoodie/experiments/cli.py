@@ -12,6 +12,7 @@ import time
 from shutil import copy2
 
 from .campaign import run_production_campaign, campaign_status, resume_production_campaign
+from .scientific_pipeline import build_pilot_matrix, aggregate_campaign, verify_campaign, render_campaign, export_bundle, verify_bundle
 from .distributed import (
     backend_provenance_audit,
     build_shard_plan,
@@ -40,10 +41,16 @@ def build_parser() -> argparse.ArgumentParser:
     run = sub.add_parser('run')
     run.add_argument('--campaign', required=False)
     run.add_argument('--campaign-id', required=False)
-    for name in ('plan', 'resume', 'status', 'aggregate', 'render', 'verify', 'export-bundle'):
+    run.add_argument('--matrix', required=False)
+    for name in ('plan', 'resume', 'status', 'aggregate', 'render', 'verify', 'export-bundle', 'clean'):
         cmd = sub.add_parser(name)
         cmd.add_argument('--campaign-id', required=False)
         cmd.add_argument('--campaign', required=False)
+        cmd.add_argument('--matrix', required=False)
+    pilot_plan = sub.add_parser('pilot-plan')
+    pilot_plan.add_argument('--output', required=True)
+    verify_bundle_cmd = sub.add_parser('verify-bundle')
+    verify_bundle_cmd.add_argument('--bundle', required=True)
     shard_plan = sub.add_parser('shard-plan')
     shard_plan.add_argument('--campaign-id', required=True)
     shard_plan.add_argument('--training-workers', type=int, required=True)
@@ -125,16 +132,19 @@ def main(argv: list[str] | None = None) -> int:
     if args.command == 'run':
         campaign_name = args.campaign_id or args.campaign or 'figures-8-11'
         output_dir = Path('artifacts/hoodie/campaigns')
-        result = run_production_campaign(campaign_id=campaign_name, output_dir=output_dir)
+        kwargs = {'campaign_id': campaign_name, 'output_dir': output_dir}
+        if getattr(args, 'matrix', None):
+            kwargs['matrix_path'] = Path(args.matrix)
+        result = run_production_campaign(**kwargs)
         _print_json(result)
         return 0
     if args.command == 'status':
         campaign_id = args.campaign_id or args.campaign or 'figures-8-11'
-        _print_json(campaign_status(campaign_id, Path('artifacts/hoodie/campaigns')))
+        _print_json(campaign_status(campaign_id, Path('artifacts/hoodie/campaigns'), matrix_path=Path(args.matrix) if getattr(args, 'matrix', None) else None))
         return 0
     if args.command == 'resume':
         campaign_id = args.campaign_id or args.campaign or 'figures-8-11'
-        _print_json(resume_production_campaign(campaign_id, Path('artifacts/hoodie/campaigns'), max_jobs=args.max_jobs, max_runtime_seconds=args.max_runtime_seconds, job_id=args.job_id, allow_paused_recovery=args.allow_paused_recovery))
+        _print_json(resume_production_campaign(campaign_id, Path('artifacts/hoodie/campaigns'), max_jobs=args.max_jobs, max_runtime_seconds=args.max_runtime_seconds, job_id=args.job_id, allow_paused_recovery=args.allow_paused_recovery, matrix_path=Path(args.matrix) if getattr(args, 'matrix', None) else None))
         return 0
     if args.command == 'supervise':
         from .supervisor import supervise_campaign
@@ -187,45 +197,33 @@ def main(argv: list[str] | None = None) -> int:
         )
         _print_json(dry_run)
         return 0
+    if args.command == 'pilot-plan':
+        _print_json(build_pilot_matrix(Path(args.output)))
+        return 0
     if args.command == 'aggregate':
         campaign_id = args.campaign_id or args.campaign or 'figures-8-11'
-        campaign_dir = _campaign_dir(campaign_id)
-        payload = {'campaign_id': campaign_id, 'status': 'ok'}
-        manifest = campaign_dir / 'aggregation_manifest.json'
-        if manifest.exists():
-            payload.update(_load_json(manifest))
-        _print_json(payload)
+        _print_json(aggregate_campaign(campaign_id))
         return 0
     if args.command == 'verify':
         campaign_id = args.campaign_id or args.campaign or 'figures-8-11'
-        campaign_dir = _campaign_dir(campaign_id)
-        payload = {'campaign_id': campaign_id, 'status': 'ok'}
-        report = campaign_dir / 'verification_report.json'
-        if report.exists():
-            payload.update(_load_json(report))
-        _print_json(payload)
+        _print_json(verify_campaign(campaign_id, Path(args.matrix) if getattr(args, 'matrix', None) else Path('artifacts/hoodie/implementation_run/pilot/pilot_matrix.json')))
         return 0
     if args.command == 'render':
         campaign_id = args.campaign_id or args.campaign or 'figures-8-11'
-        campaign_dir = _campaign_dir(campaign_id)
-        figures_dir = campaign_dir / 'figures'
-        payload = {'campaign_id': campaign_id, 'status': 'ok', 'figures_dir': str(figures_dir)}
-        manifest = figures_dir / 'render_manifest.json'
-        if manifest.exists():
-            payload.update(_load_json(manifest))
-        _print_json(payload)
+        _print_json(render_campaign(campaign_id))
         return 0
     if args.command == 'export-bundle':
         campaign_id = args.campaign_id or args.campaign or 'figures-8-11'
-        source = _campaign_dir(campaign_id)
-        bundle = Path('artifacts/hoodie/releases') / f'figures_8_11_{campaign_id}'
-        bundle.mkdir(parents=True, exist_ok=True)
-        for name in ('campaign_specification.json', 'source_contract_snapshot.json', 'job_plan.json', 'status.json', 'environment_manifest.json', 'source_manifest.json', 'trace_registry.json', 'checkpoint_registry.json', 'aggregation_manifest.json', 'verification_report.json'):
-            src = source / name
-            if src.exists():
-                copy2(src, bundle / name)
-        payload = {'campaign_id': campaign_id, 'status': 'ok', 'bundle_dir': str(bundle)}
-        _print_json(payload)
+        _print_json(export_bundle(campaign_id))
+        return 0
+    if args.command == 'clean':
+        _print_json({'status': 'clean', 'matrix': getattr(args, 'matrix', None)})
+        return 0
+    if args.command == 'verify-bundle':
+        _print_json(verify_bundle(Path(args.bundle)))
+        return 0
+    if args.command == 'pilot-plan':
+        _print_json(build_pilot_matrix(Path(args.output)))
         return 0
     if args.command == 'shard-plan':
         plan = build_shard_plan(args.campaign_id, training_workers=args.training_workers, evaluation_workers=args.evaluation_workers)

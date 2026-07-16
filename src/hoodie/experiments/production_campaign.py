@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from dataclasses import asdict, dataclass
+from dataclasses import asdict, dataclass, fields
 from hashlib import sha256
 import csv
 import faulthandler
@@ -44,6 +44,7 @@ from .schemas import AggregateRecord, DecisionRecord, TaskRecord, TrainingHistor
 from .source_contracts import build_figures_8_11_source_contract
 from .storage import AtomicJobStorage
 from .trace_registry import TraceRecord, TraceRegistry
+from .process_safety import assert_safe_owned_child_pid
 
 _MATRIX_PATH = Path("artifacts/hoodie/implementation_run/campaign/expected_production_job_matrix.json")
 _CAMPAIGNS_ROOT = Path("artifacts/hoodie/campaigns")
@@ -60,6 +61,14 @@ class JobExecutionResult:
     trace_hash: str | None = None
     dataset_hashes: tuple[str, ...] = ()
     metrics: dict[str, Any] | None = None
+
+
+@dataclass(frozen=True, slots=True)
+class CheckpointResolver:
+    campaign_dir: Path
+
+    def resolve(self, row: ProductionJobRow) -> dict[str, Any] | None:
+        return _resolve_training_checkpoint(self.campaign_dir, row)
 
 
 def _job_status_payload(
@@ -106,8 +115,17 @@ def _write_completion_marker(job_dir: Path) -> None:
     (job_dir / "completion.marker").write_text("complete\n", encoding="utf-8")
 
 
+def _invalidate_completion_marker(job_dir: Path) -> None:
+    marker = job_dir / "completion.marker"
+    invalid = job_dir / "completion.marker.invalid"
+    if marker.exists():
+        marker.replace(invalid)
+    elif not invalid.exists():
+        invalid.write_text("invalidated\n", encoding="utf-8")
+
+
 def _canonical(payload: object) -> str:
-    return json.dumps(payload, sort_keys=True, separators=(",", ":"))
+    return json.dumps(payload, sort_keys=True, separators=(",", ":"), default=str)
 
 
 def _hash(payload: object) -> str:
@@ -122,9 +140,11 @@ def _job_storage(campaign_dir: Path) -> AtomicJobStorage:
     return AtomicJobStorage(campaign_dir / "jobs")
 
 
-def _read_matrix() -> list[ProductionJobRow]:
-    rows = json.loads(_MATRIX_PATH.read_text(encoding="utf-8"))
-    return [ProductionJobRow(**row) for row in rows]
+def _read_matrix(matrix_path: Path | None = None) -> list[ProductionJobRow]:
+    path = matrix_path or _MATRIX_PATH
+    rows = json.loads(path.read_text(encoding="utf-8"))
+    allowed = {field.name for field in fields(ProductionJobRow)}
+    return [ProductionJobRow(**{key: value for key, value in row.items() if key in allowed}) for row in rows]
 
 
 def _validate_matrix(rows: list[ProductionJobRow]) -> None:
@@ -288,6 +308,47 @@ def _job_internal_checkpoint_dir(job_dir: Path) -> Path:
     return job_dir / "internal_checkpoints"
 
 
+def _campaign_checkpoint_registry_path(campaign_dir: Path) -> Path:
+    return campaign_dir / "checkpoint_registry.json"
+
+
+def _load_campaign_checkpoint_registry(campaign_dir: Path) -> list[dict[str, Any]]:
+    path = _campaign_checkpoint_registry_path(campaign_dir)
+    if not path.exists():
+        return []
+    payload = json.loads(path.read_text(encoding="utf-8"))
+    checkpoints = payload.get("checkpoints", [])
+    return list(checkpoints if isinstance(checkpoints, list) else [])
+
+
+def _write_campaign_checkpoint_registry(campaign_dir: Path, checkpoints: list[dict[str, Any]]) -> None:
+    _write_json(_campaign_checkpoint_registry_path(campaign_dir), {"campaign_id": campaign_dir.name, "checkpoints": checkpoints})
+
+
+def _resolve_training_checkpoint(campaign_dir: Path, row: ProductionJobRow) -> dict[str, Any] | None:
+    dependency = row.checkpoint_dependency
+    if not dependency:
+        return None
+    for record in _load_campaign_checkpoint_registry(campaign_dir):
+        if record.get("training_job_id") != dependency:
+            continue
+        checkpoint_path = Path(str(record.get("checkpoint_path", "")))
+        if not checkpoint_path.exists():
+            raise ValueError(f"missing checkpoint dependency: {dependency}")
+        if not bool(record.get("scientifically_complete", False)):
+            raise ValueError(f"underfilled checkpoint dependency: {dependency}")
+        if str(record.get("policy", "")) != row.policy:
+            raise ValueError("checkpoint policy mismatch")
+        if row.variant is not None and str(record.get("variant", "")) != row.variant:
+            raise ValueError("checkpoint variant mismatch")
+        if int(record.get("seed", int(row.seed or 0))) != int(row.seed or 0):
+            raise ValueError("checkpoint seed mismatch")
+        if str(record.get("source_contract_hash", "")) != str(row.source_contract_hash):
+            raise ValueError("checkpoint contract mismatch")
+        return {**record, "checkpoint_path": str(checkpoint_path)}
+    raise ValueError(f"missing checkpoint dependency: {dependency}")
+
+
 def _latest_internal_checkpoint(job_dir: Path) -> Path | None:
     latest = _job_internal_checkpoint_dir(job_dir) / "latest.json"
     if not latest.exists():
@@ -341,6 +402,34 @@ def _write_internal_checkpoint(job_dir: Path, *, checkpoint_state: dict[str, Any
     return metadata["checkpoint_id"]
 
 
+def _register_training_checkpoint(job_dir: Path, row: ProductionJobRow, *, source_commit: str, checkpoint_id: str) -> dict[str, Any]:
+    checkpoint_dir = _job_internal_checkpoint_dir(job_dir) / checkpoint_id
+    checkpoint_path = checkpoint_dir / "checkpoint.pt"
+    checkpoint_state = torch.load(checkpoint_path, map_location="cpu", weights_only=False)
+    checkpoint_hash = _hash(checkpoint_state)
+    campaign_dir = job_dir.parent.parent
+    registry = _load_campaign_checkpoint_registry(campaign_dir)
+    record = {
+        "training_job_id": row.job_id,
+        "checkpoint_id": checkpoint_id,
+        "checkpoint_path": str(checkpoint_path),
+        "checkpoint_hash": checkpoint_hash,
+        "policy": row.policy,
+        "variant": row.variant,
+        "seed": int(row.seed or 0),
+        "backend_type": str(checkpoint_state.get("backend_type", "legacy_unknown")),
+        "source_commit": source_commit,
+        "source_contract_hash": row.source_contract_hash,
+        "job_spec_hash": _hash(asdict(row)),
+        "scientifically_complete": True,
+    }
+    registry = [item for item in registry if item.get("training_job_id") != row.job_id]
+    registry.append(record)
+    _write_campaign_checkpoint_registry(campaign_dir, registry)
+    _write_json(job_dir / "selected_checkpoint.json", record)
+    return record
+
+
 def _write_progress(job_dir: Path, payload: dict[str, Any]) -> None:
     _write_json(job_dir / "progress.json", payload)
 
@@ -362,20 +451,15 @@ def _trace_bank_spec(row: ProductionJobRow) -> dict[str, Any]:
 
 def _build_trace(row: ProductionJobRow, *, episode_index: int = 0) -> tuple[TraceRegistry, dict[str, Any]]:
     panel_payload = _panel_contract(row.panel_id)
-    topology = row.topology_contract
-    agent_count = int(panel_payload.get("agent_counts", [20])[0] if panel_payload.get("agent_counts") else 20)
-    if row.independent_variable == "task_arrival_probability" and isinstance(row.independent_value, (int, float)):
+    agent_count = int((row.topology_contract.get("agent_counts") or panel_payload.get("agent_counts") or [20])[0])
+    decision_slots = int(panel_payload.get("decision_slots", panel_payload.get("slots_per_episode", 10) - panel_payload.get("drain_slots", 0)))
+    drain_slots = int(panel_payload.get("drain_slots", 0))
+    episode_length = int(panel_payload.get("slots_per_episode", decision_slots + drain_slots))
+    if row.independent_variable in {"task_arrival_probability", "arrival_probability"}:
         arrival_probability = float(row.independent_value)
     else:
         arrival_probability = float(panel_payload.get("task_arrival_probability", 0.5) or 0.5)
-    if row.independent_variable == "task_timeout_seconds" and isinstance(row.independent_value, (int, float)):
-        timeout_slots = max(1, int(round(float(row.independent_value) / 0.1)))
-    else:
-        timeout_slots = int(panel_payload.get("task_timeout_slots", 20) or 20)
-    if row.independent_variable == "task_arrival_probability" and row.panel_id.startswith("figure_10"):
-        arrival_probability = float(row.independent_value)
-    episode_length = int(panel_payload.get("training_episodes", 110) if row.job_type == "training" else panel_payload.get("validation_episodes", 200))
-    drain_slots = 10 if episode_length >= 10 else 0
+    timeout_slots = int(panel_payload.get("task_timeout_slots", panel_payload.get("task_timeout_seconds", 20) or 20))
     trace = build_deterministic_trace(
         trace_id=f"{row.trace_bank_id}-{episode_index}",
         seed=int(row.seed or 0) + episode_index,
@@ -394,7 +478,7 @@ def _build_trace(row: ProductionJobRow, *, episode_index: int = 0) -> tuple[Trac
         for task in trace.tasks
     ]
     registry = TraceRegistry.from_records(trace.trace_id, records, source_hash=row.source_contract_hash)
-    return registry, {"trace": trace, "records": records, "trace_hash": registry.hash(), "spec": _trace_bank_spec(row)}
+    return registry, {"trace": trace, "records": records, "trace_hash": registry.hash(), "spec": {**_trace_bank_spec(row), "decision_slots": decision_slots, "drain_slots": drain_slots, "episode_length": episode_length, "agent_count": agent_count, "arrival_probability": arrival_probability, "timeout_slots": timeout_slots}}
 
 
 def _policy_for_row(row: ProductionJobRow, *, checkpoint_state: dict[str, Any] | None = None):
@@ -439,17 +523,18 @@ def _ensure_schema(path: Path, rows: list[dict[str, Any]]) -> str:
 
 def _scientific_completion_requirements(row: ProductionJobRow) -> dict[str, Any]:
     panel_payload = _panel_contract(row.panel_id)
+    job_payload = row.training_contract if row.job_type == "training" else row.evaluation_contract
     return {
-        "required_training_episodes": int(panel_payload.get("training_episodes", 0)),
-        "required_validation_episodes": int(panel_payload.get("validation_episodes", 0)),
-        "required_slots_per_episode": 110 if row.panel_id.startswith("figure_8") else int(panel_payload.get("validation_episodes", 200)),
+        "required_training_episodes": int(job_payload.get("training_episodes", panel_payload.get("training_episodes", 0)) if row.job_type == "training" else 0),
+        "required_validation_episodes": int(job_payload.get("validation_episodes", panel_payload.get("validation_episodes", 0)) if row.job_type == "evaluation" else 0),
+        "required_slots_per_episode": int(job_payload.get("slots_per_episode", panel_payload.get("slots_per_episode", 0))),
     }
 
 
 def _job_scientifically_complete(job_dir: Path, row: ProductionJobRow) -> bool:
     requirements = _scientific_completion_requirements(row)
     if row.job_type != "training":
-        return True
+        return _evaluation_job_scientifically_complete(job_dir, row)
     training_history = _load_csv_rows(job_dir / "training_history.csv")
     episodes = sorted({int(record.get("episode_or_step", -1)) for record in training_history})
     if len(episodes) != requirements["required_training_episodes"]:
@@ -460,6 +545,67 @@ def _job_scientifically_complete(job_dir: Path, row: ProductionJobRow) -> bool:
     if checkpoint is None or not checkpoint.exists():
         return False
     if not (job_dir / "checkpoint_selection.json").exists():
+        return False
+    return True
+
+
+def validate_training_outputs_before_completion(job_dir: Path, row: ProductionJobRow) -> None:
+    if row.job_type != "training":
+        raise ValueError("job is not training")
+    requirements = _scientific_completion_requirements(row)
+    training_history = _load_csv_rows(job_dir / "training_history.csv")
+    episodes = sorted({int(record.get("episode_or_step", -1)) for record in training_history})
+    if len(episodes) != requirements["required_training_episodes"] or episodes != list(range(requirements["required_training_episodes"])):
+        raise ValueError("episode range mismatch")
+    if not (job_dir / "checkpoint_selection.json").exists():
+        raise ValueError("missing checkpoint selection")
+    if not (job_dir / "provenance.json").exists():
+        raise ValueError("missing provenance")
+
+
+def validate_completed_training_job(job_dir: Path, row: ProductionJobRow) -> None:
+    validate_training_outputs_before_completion(job_dir, row)
+    if not (job_dir / "status.json").exists():
+        raise ValueError("missing completed status")
+    marker = job_dir / "completion.marker"
+    if not marker.exists():
+        raise ValueError("missing completion marker")
+    marker_time = marker.stat().st_mtime
+    for path in job_dir.rglob("*"):
+        if path.is_file() and path.name != "completion.marker" and path.stat().st_mtime > marker_time:
+            raise ValueError("completion marker written before outputs")
+
+
+def validate_evaluation_outputs_before_completion(job_dir: Path, row: ProductionJobRow) -> None:
+    if row.job_type != "evaluation":
+        raise ValueError("job is not evaluation")
+    if not _load_csv_rows(job_dir / "evaluation_metrics.csv"):
+        raise ValueError("missing evaluation metrics")
+    if not _load_csv_rows(job_dir / "task_records.csv"):
+        raise ValueError("missing task records")
+    if not (job_dir / "provenance.json").exists():
+        raise ValueError("missing provenance")
+
+
+def validate_completed_evaluation_job(job_dir: Path, row: ProductionJobRow) -> None:
+    validate_evaluation_outputs_before_completion(job_dir, row)
+    if not (job_dir / "status.json").exists():
+        raise ValueError("missing completed status")
+    if not (job_dir / "completion.marker").exists():
+        raise ValueError("missing completion marker")
+
+
+def _evaluation_job_scientifically_complete(job_dir: Path, row: ProductionJobRow) -> bool:
+    validation_metrics = _load_csv_rows(job_dir / "evaluation_metrics.csv")
+    task_rows = _load_csv_rows(job_dir / "task_records.csv")
+    if not validation_metrics or not task_rows:
+        return False
+    requirements = _scientific_completion_requirements(row)
+    if requirements["required_validation_episodes"] <= 0:
+        return False
+    if any(record.get("checkpoint_hash") in {None, ""} for record in task_rows):
+        return False
+    if not (job_dir / "provenance.json").exists():
         return False
     if not (job_dir / "completion.marker").exists():
         return False
@@ -726,13 +872,11 @@ def _run_training_job(row: ProductionJobRow, job_dir: Path, *, source_commit: st
         _ensure_schema(job_dir / "decision_records.schema.json", [asdict(row) for row in decision_rows])
         _ensure_schema(job_dir / "transition_records.schema.json", [asdict(row) for row in transition_rows])
         _ensure_schema(job_dir / "training_history.schema.json", [asdict(row) for row in training_rows])
-        scientific_complete = _job_scientifically_complete(job_dir, row)
-        if interrupted or not scientific_complete:
-            status_value = "interrupted_resumable" if interrupted or max_runtime_seconds is not None else "scientifically_incomplete"
+        if interrupted:
+            status_value = "interrupted_resumable"
             _write_json(job_dir / "status.json", _job_status_payload(campaign_id=row.campaign_id, row=row, status=status_value, source_commit=source_commit, attempt=attempt, started_at=time.time(), dataset_hashes={"task_records": task_hash, "decision_records": decision_hash, "transition_records": transition_hash, "training_history": training_hash}))
             return JobExecutionResult(job_id=row.job_id, job_type=row.job_type, status=status_value, output_dir=job_dir, checkpoint_id=last_checkpoint_id, trace_hash=registry.hash(), dataset_hashes=(task_hash, decision_hash, transition_hash, training_hash), metrics={"episode_rewards": episode_rewards})
         checkpoint_selection = {"checkpoint_id": last_checkpoint_id, "selection_rule": "final_episode", "selection_metric": "accumulated_reward", "selection_value": float(episode_rewards[-1] if episode_rewards else 0.0)}
-        _write_json(job_dir / "checkpoint_selection.json", checkpoint_selection)
         provenance = build_provenance_manifest(
             source_commit=source_commit,
             source_contract_hash=row.source_contract_hash,
@@ -749,6 +893,26 @@ def _run_training_job(row: ProductionJobRow, job_dir: Path, *, source_commit: st
         )
         provenance_hash_value = provenance_hash(provenance)
         _write_json(job_dir / "provenance.json", {"manifest": asdict(provenance), "hash": provenance_hash_value})
+        _write_json(job_dir / "checkpoint_selection.json", checkpoint_selection)
+        try:
+            validate_training_outputs_before_completion(job_dir, row)
+        except ValueError as exc:
+            status_payload = {
+                **_job_status_payload(
+                    campaign_id=row.campaign_id,
+                    row=row,
+                    status="scientifically_incomplete",
+                    source_commit=source_commit,
+                    checkpoint_hash=_hash({"checkpoint_id": last_checkpoint_id}),
+                    trace_hash=registry.hash(),
+                    dataset_hashes={"task_records": task_hash, "decision_records": decision_hash, "transition_records": transition_hash, "training_history": training_hash},
+                    completed_at=time.time(),
+                ),
+                "completion_marker": False,
+                "validation_failure": str(exc),
+            }
+            _write_json(job_dir / "status.json", status_payload)
+            return JobExecutionResult(job_id=row.job_id, job_type=row.job_type, status="scientifically_incomplete", output_dir=job_dir, checkpoint_id=last_checkpoint_id, trace_hash=registry.hash(), dataset_hashes=(task_hash, decision_hash, transition_hash, training_hash), metrics={"episode_rewards": episode_rewards})
         _write_json(job_dir / "status.json", {
             **_job_status_payload(
                 campaign_id=row.campaign_id,
@@ -762,7 +926,9 @@ def _run_training_job(row: ProductionJobRow, job_dir: Path, *, source_commit: st
             ),
             "completion_marker": True,
         })
+        _register_training_checkpoint(job_dir, row, source_commit=source_commit, checkpoint_id=last_checkpoint_id)
         _write_completion_marker(job_dir)
+        validate_completed_training_job(job_dir, row)
         return JobExecutionResult(job_id=row.job_id, job_type=row.job_type, status="completed", output_dir=job_dir, checkpoint_id=last_checkpoint_id, trace_hash=registry.hash(), dataset_hashes=(task_hash, decision_hash, transition_hash, training_hash), metrics={"episode_rewards": episode_rewards})
     finally:
         signal.signal(signal.SIGINT, previous_int)
@@ -771,6 +937,7 @@ def _run_evaluation_job(row: ProductionJobRow, job_dir: Path, *, source_commit: 
     registry, trace_bundle = _build_trace(row)
     trace = trace_bundle["trace"]
     trace_meta = {blueprint.task_id: blueprint for blueprint in trace.tasks}
+    checkpoint_hash_value = _hash(checkpoint_state or {}) if checkpoint_state is not None else ""
     if row.policy == "HOODIE":
         policy = _policy_for_row(row, checkpoint_state=checkpoint_state)
     else:
@@ -812,7 +979,7 @@ def _run_evaluation_job(row: ProductionJobRow, job_dir: Path, *, source_commit: 
                     learner_owner=row.policy,
                     config_hash=row.config_hash,
                     source_hash=row.source_contract_hash,
-                    checkpoint_hash=checkpoint_state and _hash(checkpoint_state) or "",
+                    checkpoint_hash=checkpoint_hash_value,
                 )
             )
     agg = aggregate_records(task_rows)
@@ -838,6 +1005,7 @@ def _run_evaluation_job(row: ProductionJobRow, job_dir: Path, *, source_commit: 
     )
     _write_json(job_dir / "provenance.json", {"manifest": asdict(provenance), "hash": provenance_hash(provenance)})
     _write_json(job_dir / "aggregate.json", asdict(agg))
+    validate_evaluation_outputs_before_completion(job_dir, row)
     _write_json(job_dir / "status.json", {
         **_job_status_payload(
             campaign_id=row.campaign_id,
@@ -849,8 +1017,10 @@ def _run_evaluation_job(row: ProductionJobRow, job_dir: Path, *, source_commit: 
             dataset_hashes={"task_records": task_hash, "evaluation_metrics": eval_hash},
             completed_at=time.time(),
         ),
-        "completion_marker": True,
-    })
+            "completion_marker": True,
+        })
+    _write_completion_marker(job_dir)
+    validate_completed_evaluation_job(job_dir, row)
     return JobExecutionResult(job_id=row.job_id, job_type=row.job_type, status="completed", output_dir=job_dir, trace_hash=registry.hash(), dataset_hashes=(task_hash, eval_hash), metrics=result)
 
 
@@ -899,9 +1069,20 @@ def _update_campaign_registry(campaign_dir: Path, rows: list[ProductionJobRow], 
     _write_json(campaign_dir / "status.json", {"campaign_id": campaign_dir.name, "total_jobs": len(rows), "completed_jobs": sum(1 for result in results if result.status == "completed"), "pending_jobs": 0, "running_jobs": 0, "failed_jobs": 0, "corrupt_jobs": 0, "stale_jobs": 0, "quarantined_jobs": 0, "blocked_dependency_jobs": 0})
 
 
-def run_production_campaign(*, campaign_id: str, output_dir: Path | None = None, max_jobs: int | None = None, max_runtime_seconds: float | None = None, job_id: str | None = None, allow_paused_recovery: bool = False) -> dict[str, Any]:
-    rows = _read_matrix()
-    _validate_matrix(rows)
+def execute_matrix_job(*, row: ProductionJobRow, campaign_dir: Path, source_commit: str, max_runtime_seconds: float | None, checkpoint_resolver: CheckpointResolver | None = None) -> JobExecutionResult:
+    job_dir = campaign_dir / "jobs" / row.job_id
+    job_dir.mkdir(parents=True, exist_ok=True)
+    _write_json(job_dir / "status.json", _job_status_payload(campaign_id=campaign_dir.name, row=row, status="running", source_commit=source_commit, started_at=time.time()))
+    if row.job_type == "training":
+        return _run_training_job(row, job_dir, source_commit=source_commit, max_runtime_seconds=max_runtime_seconds)
+    checkpoint_state = checkpoint_resolver.resolve(row) if checkpoint_resolver is not None else _resolve_training_checkpoint(campaign_dir, row)
+    return _run_evaluation_job(row, job_dir, source_commit=source_commit, checkpoint_state=checkpoint_state)
+
+
+def run_production_campaign(*, campaign_id: str, output_dir: Path | None = None, max_jobs: int | None = None, max_runtime_seconds: float | None = None, job_id: str | None = None, allow_paused_recovery: bool = False, matrix_path: Path | None = None) -> dict[str, Any]:
+    rows = _read_matrix(matrix_path)
+    if matrix_path is None:
+        _validate_matrix(rows)
     pause_request = (Path('artifacts/hoodie/campaigns') / campaign_id / 'pause.request')
     if allow_paused_recovery and not pause_request.exists():
         raise ValueError("allow_paused_recovery requires active pause.request")
@@ -912,7 +1093,7 @@ def run_production_campaign(*, campaign_id: str, output_dir: Path | None = None,
     campaign_dir = (_CAMPAIGNS_ROOT if output_dir is None else output_dir) / actual_campaign_id
     campaign_dir.mkdir(parents=True, exist_ok=True)
     results: list[JobExecutionResult] = []
-    checkpoint_state: dict[str, Any] | None = None
+    checkpoint_resolver = CheckpointResolver(campaign_dir)
     start_time = time.time()
     for row in rows:
         if max_jobs is not None and len(results) >= max_jobs:
@@ -925,15 +1106,8 @@ def run_production_campaign(*, campaign_id: str, output_dir: Path | None = None,
         if status.value == "completed" and (job_dir / "completion.marker").exists():
             continue
         try:
-            _write_json(job_dir / "status.json", _job_status_payload(campaign_id=actual_campaign_id, row=row, status="running", source_commit=source_commit, started_at=time.time()))
-            if row.job_type == "training":
-                result = _run_training_job(row, job_dir, source_commit=source_commit, max_runtime_seconds=max_runtime_seconds)
-            else:
-                if checkpoint_state is None:
-                    checkpoint_state = _load_checkpoint_state(campaign_dir)
-                result = _run_evaluation_job(row, job_dir, source_commit=source_commit, checkpoint_state=checkpoint_state)
+            result = execute_matrix_job(row=row, campaign_dir=campaign_dir, source_commit=source_commit, max_runtime_seconds=max_runtime_seconds, checkpoint_resolver=checkpoint_resolver)
             results.append(result)
-            _write_completion_marker(job_dir)
         except Exception as exc:  # pragma: no cover - exercised in runtime not unit tests
             _write_json(job_dir / "status.json", _job_status_payload(campaign_id=actual_campaign_id, row=row, status="failed", source_commit=source_commit, started_at=time.time(), failure_type=exc.__class__.__name__, failure_message=str(exc), failure_traceback=traceback.format_exc()))
             continue
@@ -941,9 +1115,9 @@ def run_production_campaign(*, campaign_id: str, output_dir: Path | None = None,
     return {"campaign_id": actual_campaign_id, "total_jobs": len(rows), "completed_jobs": len(results), "source_commit": source_commit, "max_jobs": max_jobs, "max_runtime_seconds": max_runtime_seconds}
 
 
-def campaign_status(campaign_id: str, output_dir: Path | None = None) -> dict[str, Any]:
+def campaign_status(campaign_id: str, output_dir: Path | None = None, matrix_path: Path | None = None) -> dict[str, Any]:
     campaign_dir = (_CAMPAIGNS_ROOT if output_dir is None else output_dir) / campaign_id
-    rows = _read_matrix()
+    rows = _read_matrix(matrix_path)
     counts = {key: 0 for key in ("pending", "running", "completed", "failed", "stale", "corrupt", "quarantined", "blocked_dependency", "interrupted_resumable", "current_scientifically_incomplete", "historical_scientifically_incomplete_attempts", "invalidated_completion_attempts")}
     job_root = campaign_dir / "jobs"
     for row in rows:
@@ -972,5 +1146,8 @@ def campaign_status(campaign_id: str, output_dir: Path | None = None) -> dict[st
     return {"campaign_id": campaign_id, "total": total, "current_total": current_total, **{f"{key}_jobs": value for key, value in counts.items()}}
 
 
-def resume_production_campaign(campaign_id: str, output_dir: Path | None = None, *, max_jobs: int | None = None, max_runtime_seconds: float | None = None, job_id: str | None = None, allow_paused_recovery: bool = False) -> dict[str, Any]:
-    return run_production_campaign(campaign_id=campaign_id, output_dir=output_dir, max_jobs=max_jobs, max_runtime_seconds=max_runtime_seconds, job_id=job_id, allow_paused_recovery=allow_paused_recovery)
+def resume_production_campaign(campaign_id: str, output_dir: Path | None = None, *, max_jobs: int | None = None, max_runtime_seconds: float | None = None, job_id: str | None = None, allow_paused_recovery: bool = False, matrix_path: Path | None = None) -> dict[str, Any]:
+    kwargs = dict(campaign_id=campaign_id, output_dir=output_dir, max_jobs=max_jobs, max_runtime_seconds=max_runtime_seconds, job_id=job_id, allow_paused_recovery=allow_paused_recovery)
+    if matrix_path is not None:
+        kwargs['matrix_path'] = matrix_path
+    return run_production_campaign(**kwargs)

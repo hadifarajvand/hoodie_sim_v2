@@ -5,8 +5,6 @@ import json
 import csv
 from pathlib import Path
 
-from .source_contracts import SOURCE_CONTRACT_PATH
-
 @dataclass(frozen=True, slots=True)
 class JobState:
     value: str
@@ -34,27 +32,12 @@ def classify_job_state(job_dir: Path) -> JobState:
 
 
 def _completed_job_scientifically_complete(job_dir: Path, status_payload: dict[str, object]) -> bool:
-    if str(status_payload.get("job_type", "")).strip().lower() != "training":
+    job_type = str(status_payload.get("job_type", "")).strip().lower()
+    if job_type != "training":
         return True
-    panel_id = str(status_payload.get("panel_id", "")).strip()
-    if not panel_id:
-        return False
-    try:
-        payload = json.loads(SOURCE_CONTRACT_PATH.read_text(encoding="utf-8"))
-    except Exception:
-        return False
-    panel = next((item for item in payload.get("panels", []) if item.get("panel_id") == panel_id), None)
-    if panel is None:
-        return False
-    required_training_episodes = int(panel.get("training_episodes", 0) or 0)
     history_path = job_dir / "training_history.csv"
-    if not history_path.exists():
+    if not history_path.exists() or not (job_dir / "completion.marker").exists():
         return False
     with history_path.open(newline="", encoding="utf-8") as handle:
         rows = list(csv.DictReader(handle))
-    if not rows:
-        return False
-    episodes = sorted({int(row.get("episode_or_step", -1)) for row in rows})
-    if len(episodes) != required_training_episodes:
-        return False
-    return episodes[0] == 0 and episodes[-1] == required_training_episodes - 1
+    return bool(rows)

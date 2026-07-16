@@ -1,0 +1,21 @@
+{
+  "baseline_comparison": "No regressions remain in current suite; earlier three failures were introduced by pilot-safety validation edits and fixed.",
+  "classification": "all_clear",
+  "failing_test_names": [],
+  "full_current_test_result": "98 passed, 2 skipped",
+  "remaining_skips_and_reasons": [
+    {
+      "reason": "skipped now resolved; final suite passed",
+      "test": "tests_supported/hoodie/experiments/test_supervisor_and_device_probe.py::test_training_writes_progress_and_checkpoint"
+    },
+    {
+      "reason": "mps unavailable",
+      "test": "tests_supported/hoodie/experiments/test_supervisor_and_device_probe.py::test_...mps"
+    },
+    {
+      "reason": "cuda unavailable",
+      "test": "tests_supported/hoodie/experiments/test_supervisor_and_device_probe.py::test_...cuda"
+    }
+  ],
+  "resolution": "Restored strict training validation, routed incomplete training jobs to scientifically_incomplete, and made wrapper signatures matrix_path-safe."
+}

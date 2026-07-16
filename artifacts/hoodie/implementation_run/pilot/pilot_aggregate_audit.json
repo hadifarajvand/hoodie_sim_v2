@@ -1,0 +1,282 @@
+{
+  "aggregate_dataset_count": 14,
+  "all_panel_semantics_passed": true,
+  "all_source_jobs_complete": true,
+  "campaign_id": "figures-8-11-real-pilot-4ac93908769c",
+  "datasets": {
+    "figure_10a": {
+      "hash": "decba314183a7efe0149d5aec4a91174677e91a3cccc59dd5a4b7908758e863c",
+      "panel_id": "figure_10a",
+      "path": "artifacts/hoodie/campaigns/figures-8-11-real-pilot-4ac93908769c/aggregates/figure_10a.csv",
+      "row_count": 14,
+      "series": [
+        "BCO",
+        "FLC",
+        "HO",
+        "HOODIE",
+        "MLEO",
+        "RO",
+        "VO"
+      ],
+      "source_dataset_hashes": [
+        "{'evaluation_metrics': '3d7eba11c72943ea1c5cd2d68f55bfbaa855feeb6870ce7a180010c60a8b7013'}",
+        "{'evaluation_metrics': '82865c3a4ca53293b757720d1950e705ae249ca20497a8942210f9d9471201d9'}",
+        "{'evaluation_metrics': '89c825871e044b879d4ad3ed15ecc1bd749b5f4472b66785009aebdcfb9176cb'}",
+        "{'evaluation_metrics': '8fe672863250bde995a612aa863f1945c059773d09f0c63151205cbad8d565f5'}",
+        "{'evaluation_metrics': '943600eb41fa533617a28acd9d582004ec24e890d50352bff684a5592b337580'}",
+        "{'evaluation_metrics': 'ab123b7e77130020c9cff996510490d121e09b24656a73eade0f7c6ec5c9618f'}",
+        "{'evaluation_metrics': 'b79d23161956f39a6e4faf4ee5b357672b9a0b89418c25ad6b75f12628bc3c67'}",
+        "{'evaluation_metrics': 'f47c6a8a0d6b8c83aedbfb63a8851a66341a1e52efae27aa27792c47ea62a863'}",
+        "{'evaluation_metrics': 'fd0b4a81e3fcccc17ea34b5f9fcd01f0feccab6f5f3ee0d099d02019841803a7'}"
+      ],
+      "x_variable": "task_arrival_probability"
+    },
+    "figure_10b": {
+      "hash": "8a4cfbb29f37275f4cda1e5f83adf7ca917e839da297e229b019c50d546da825",
+      "panel_id": "figure_10b",
+      "path": "artifacts/hoodie/campaigns/figures-8-11-real-pilot-4ac93908769c/aggregates/figure_10b.csv",
+      "row_count": 14,
+      "series": [
+        "BCO",
+        "FLC",
+        "HO",
+        "HOODIE",
+        "MLEO",
+        "RO",
+        "VO"
+      ],
+      "source_dataset_hashes": [
+        "{'evaluation_metrics': '2cec842d8317228f10254869b7deae7a8164c03d0233f3e3d2b3a3707e0c89e6'}",
+        "{'evaluation_metrics': '2d28a3996ac01759c2b6e543271b867e7bb58b8c542133390bb982b9521ab594'}",
+        "{'evaluation_metrics': '4742ac0913c9d9b542769ed66b153104de056f643c6c9ed53ceddc6b2ac56e96'}",
+        "{'evaluation_metrics': '5f104c03332005d4446d3827b1c270e7fe85bb7209b09acdcfaa6c95132484a1'}",
+        "{'evaluation_metrics': 'a49b6b4972dab22e90ce5278d156f5ec38ac22d1afc791af3b82a991765ed72e'}"
+      ],
+      "x_variable": "cpu_computation_capacity_ghz"
+    },
+    "figure_10c": {
+      "hash": "5414d509261ce6b04adf9bfa2f62bac99c8488d64ad6e45197deee4699041613",
+      "panel_id": "figure_10c",
+      "path": "artifacts/hoodie/campaigns/figures-8-11-real-pilot-4ac93908769c/aggregates/figure_10c.csv",
+      "row_count": 14,
+      "series": [
+        "BCO",
+        "FLC",
+        "HO",
+        "HOODIE",
+        "MLEO",
+        "RO",
+        "VO"
+      ],
+      "source_dataset_hashes": [
+        "{'evaluation_metrics': '4e7f90db8939ad63e467179a8552e69a39e6017a3c9dcd824e031b90ebb862ce'}",
+        "{'evaluation_metrics': '5b89e7c11a57398df4e2d7f32c1988b6b5cb73724015821612b0856019a7fddb'}",
+        "{'evaluation_metrics': '9ab364649a0ec2f36098ab56c2595105b4562b41c5be178636ee241d02b28df4'}",
+        "{'evaluation_metrics': '9c1113e5984077700f77f6a2cca2e914ea1aa39d7b462b1137cb6663544b238c'}",
+        "{'evaluation_metrics': 'b1562ebe1362dd7f5caa9ca8430db6b3bad01db24010eaa1e7c826409ec29a96'}"
+      ],
+      "x_variable": "task_timeout_seconds"
+    },
+    "figure_10d": {
+      "hash": "a4866d49dab0e7a2b745184947ebeace9b68a35b75d113440382cb760ce67f43",
+      "panel_id": "figure_10d",
+      "path": "artifacts/hoodie/campaigns/figures-8-11-real-pilot-4ac93908769c/aggregates/figure_10d.csv",
+      "row_count": 14,
+      "series": [
+        "BCO",
+        "FLC",
+        "HO",
+        "HOODIE",
+        "MLEO",
+        "RO",
+        "VO"
+      ],
+      "source_dataset_hashes": [
+        "{'evaluation_metrics': '2c318a1f3eff6acff2f3db2e58fce3d09552154bf2c374f1d8e16443363875b4'}",
+        "{'evaluation_metrics': '52c4cb20022a06a4e69cb7e88077623a75ab79ceda5b08861453636f36644325'}",
+        "{'evaluation_metrics': '5380a131f5b1ffea4b52cc701b9ec2d3a90f01095dd691596ca5a942d4da0381'}",
+        "{'evaluation_metrics': '57782b67f7d8552ae78a44ba5e6ffc48f1e8a7a1ead710558c7d495c9aff247a'}",
+        "{'evaluation_metrics': 'aa110c0f709390ce9414db6f7a9cbb4435d1c1d39b77bbaa65ba668602575f52'}",
+        "{'evaluation_metrics': 'c41e53f8bc14eb95b4b21ff3609291fef718918ad3dbe767f8388b0a3273a7ae'}",
+        "{'evaluation_metrics': 'dde13bfbefd85c4abcdf916379e485bcd698cab7d25a0a0e815ef51f1d5fd3e2'}",
+        "{'evaluation_metrics': 'e2968ee8ff3b3743912fa23513b08538ed45ffcb1ef1f6a3b655425819a2341c'}",
+        "{'evaluation_metrics': 'ef7ac9adf06aeb9bd32003e1a56bd98545eed394ca16423d0023a1d9264fb100'}"
+      ],
+      "x_variable": "task_arrival_probability"
+    },
+    "figure_10e": {
+      "hash": "0b47c9b2e1ed4bae80489fe258594a6e2f5076e2f4e7c2dd3d49078b4c3db88e",
+      "panel_id": "figure_10e",
+      "path": "artifacts/hoodie/campaigns/figures-8-11-real-pilot-4ac93908769c/aggregates/figure_10e.csv",
+      "row_count": 14,
+      "series": [
+        "BCO",
+        "FLC",
+        "HO",
+        "HOODIE",
+        "MLEO",
+        "RO",
+        "VO"
+      ],
+      "source_dataset_hashes": [
+        "{'evaluation_metrics': '144674afd8c9b96d8844e01a9eba2d48b10d7e408180edfa0a939693e0f6b20a'}",
+        "{'evaluation_metrics': '60becbd178fc53d912fa6caf802267c8115c082f0d4240c6771f7285b30dee47'}",
+        "{'evaluation_metrics': '8d0d4fd003c0c7e7e773abfe320c6de2de15646cff2d79817f1d8c06e1836ce9'}",
+        "{'evaluation_metrics': 'b1648d47db25bfcd39f3bf6a5921c8150fc491b654f2398b08459512dd76346d'}",
+        "{'evaluation_metrics': 'e7ee7212d09bc64dff57cb49ecfdfd6082d592bfd5d8cf0e16711f423142e873'}"
+      ],
+      "x_variable": "cpu_computation_capacity_ghz"
+    },
+    "figure_10f": {
+      "hash": "eb533ae34900d051f792e50727002afc081903f760a0c50989b043d25b1d0a2a",
+      "panel_id": "figure_10f",
+      "path": "artifacts/hoodie/campaigns/figures-8-11-real-pilot-4ac93908769c/aggregates/figure_10f.csv",
+      "row_count": 14,
+      "series": [
+        "BCO",
+        "FLC",
+        "HO",
+        "HOODIE",
+        "MLEO",
+        "RO",
+        "VO"
+      ],
+      "source_dataset_hashes": [
+        "{'evaluation_metrics': '4a8e0403652ca9a945e10fadf766bf14b83af23df2bd3a7ab7a3e907bc224bf0'}",
+        "{'evaluation_metrics': '6a6fbfa08713af52fc7bdfcee24e949101fa16fdff1468ce676c0d28ade5d591'}",
+        "{'evaluation_metrics': '8ed6280c0be22d58d540e04c3d2a6e6d6fc87930a483d3d96852a266943adbd4'}",
+        "{'evaluation_metrics': 'dfc39edb997ddd79293e94dd21b30508481ec670b8db608a955c42a8cdc933c3'}",
+        "{'evaluation_metrics': 'e32231dd1473d676dc554f5e17d125c97a8288a172a175e49655ecc46e1ed653'}"
+      ],
+      "x_variable": "task_timeout_seconds"
+    },
+    "figure_11": {
+      "hash": "ebd569b2405a0662394b2c7d5e51ecf00c3227d66ca3a052d273cae832186870",
+      "panel_id": "figure_11",
+      "path": "artifacts/hoodie/campaigns/figures-8-11-real-pilot-4ac93908769c/aggregates/figure_11.csv",
+      "row_count": 4,
+      "series": [
+        "hoodie_lstm",
+        "hoodie_no_lstm"
+      ],
+      "source_dataset_hashes": [
+        "{'training_history': '1bc2ddd7359dfa5da0aa705b2142d382d7b22dc5e5cc0d6705a9436a11d37220'}",
+        "{'training_history': '989708a3cbf7b2ab2386df688d0ea2409998a4a2c41648ba13b4aa8037a7d271'}",
+        "{'training_history': 'c96c2c3ef66d43478868decfa552e5533df6bdafb20320d8e23d23da29f0509c'}",
+        "{'training_history': 'd1e365f1feffb5f716bb244d02034207ed473e99300aa6bafdd61aa940503b67'}"
+      ],
+      "x_variable": "episode_count"
+    },
+    "figure_8a": {
+      "hash": "953f022505b9928b5d4d48f52bb64256e14f218773a9eaf4459db8a2450fa302",
+      "panel_id": "figure_8a",
+      "path": "artifacts/hoodie/campaigns/figures-8-11-real-pilot-4ac93908769c/aggregates/figure_8a.csv",
+      "row_count": 4,
+      "series": [
+        "hoodie_lstm",
+        "hoodie_no_lstm"
+      ],
+      "source_dataset_hashes": [
+        "{'training_history': '96190761b9c1aa23ebd612926b71b4406cfe236adcc6686e4a772586f119a056'}",
+        "{'training_history': '9c3edd6e54d2255be61eca1f10565c35df5ab26fb25b325cd00426e827670f32'}",
+        "{'training_history': 'd21a768df6dcdfe3f25c97cc21e4576d43b92fedcc2fbdbd2f5cf746c8074fa7'}",
+        "{'training_history': 'f5b89928eb9bb7d039b2eb248ddd9e85a3e9e766a48d1c1b3f0337daad2e77c3'}"
+      ],
+      "x_variable": "learning_rate"
+    },
+    "figure_8b": {
+      "hash": "cb499da0c5a8cb37c0722367deac291960e13aa36743537e72589811172ba0d5",
+      "panel_id": "figure_8b",
+      "path": "artifacts/hoodie/campaigns/figures-8-11-real-pilot-4ac93908769c/aggregates/figure_8b.csv",
+      "row_count": 4,
+      "series": [
+        "hoodie_lstm",
+        "hoodie_no_lstm"
+      ],
+      "source_dataset_hashes": [
+        "{'training_history': '26d6e9bd167b4409c31b837d3aaf4faedf1f55fd46c3eec53f135a6397943de9'}",
+        "{'training_history': '32be8fb988805c858d193357ca1715e4e1ef138125044ea7418e3ce8a2e7882c'}",
+        "{'training_history': '41a422c9840a8ca5c26b0f3bffbe08e8478ce8e73dc9fa4d4d03125012198e39'}",
+        "{'training_history': '4ae5bec99fea530c9b276232eaca52c7348b0847233a8141e8b036c1471da585'}"
+      ],
+      "x_variable": "discount_factor"
+    },
+    "figure_9a": {
+      "hash": "c694a8c16a6ac028b778595caeff4c68494a2d8cb6aec7476ab5794cac55dc12",
+      "panel_id": "figure_9a",
+      "path": "artifacts/hoodie/campaigns/figures-8-11-real-pilot-4ac93908769c/aggregates/figure_9a.csv",
+      "row_count": 4,
+      "series": [
+        "FLC",
+        "HOODIE"
+      ],
+      "source_dataset_hashes": [
+        "{'evaluation_metrics': '0475c6702d07c19a6acefa2087f9ffec341c4a26c322f46771c89d8974f0b2b9'}",
+        "{'evaluation_metrics': '1d86720d8a1b6a8060408ffc3707856d66d787ca46feeaeeade812c92a9736fb'}",
+        "{'evaluation_metrics': '94b0418454a2171602469a1be2de17102af77222e50cf3f4b260e3c141162afc'}",
+        "{'evaluation_metrics': 'c9beb7cb1cc776f9cd6ff74a8dad9c046873e25038a2666a79db9283aa6767a7'}"
+      ],
+      "x_variable": "task_arrival_probability"
+    },
+    "figure_9b": {
+      "hash": "f957e2432925dae603847a376f734b114f8a5fd67172472e81585f72b9fd0732",
+      "panel_id": "figure_9b",
+      "path": "artifacts/hoodie/campaigns/figures-8-11-real-pilot-4ac93908769c/aggregates/figure_9b.csv",
+      "row_count": 6,
+      "series": [
+        "horizontal",
+        "local",
+        "vertical"
+      ],
+      "source_dataset_hashes": [
+        "{'evaluation_metrics': '20bbdf20bd1d76063953721602d76af2aebdf9ba7769183c55a6ae7b1d1b25a6'}",
+        "{'evaluation_metrics': '925332cc3c7e6d96ee1060fff679a4910db2d136d0459de2eb2efabc728d3ef6'}"
+      ],
+      "x_variable": "task_arrival_probability"
+    },
+    "figure_9c": {
+      "hash": "c65108b7f44f6c2b4f23a467420e8dc8b992a8f601d661f7b37dca217eb76a5f",
+      "panel_id": "figure_9c",
+      "path": "artifacts/hoodie/campaigns/figures-8-11-real-pilot-4ac93908769c/aggregates/figure_9c.csv",
+      "row_count": 4,
+      "series": [
+        "FLC",
+        "HOODIE"
+      ],
+      "source_dataset_hashes": [
+        "{'evaluation_metrics': '22e7ff56e2f0f41d7204f0c54bb6ef0640097b05f4de08fa1b1c1ae6cba98e11'}",
+        "{'evaluation_metrics': 'c94ee75346297ba0e13418fc6e99e80270a88e1cce1805631fbf83317a36ca42'}"
+      ],
+      "x_variable": "cpu_computation_capacity_ghz"
+    },
+    "figure_9d": {
+      "hash": "a0658c5f7e91a31ee1a1a35e27431adb137636885a556e8013a963ea135c04f5",
+      "panel_id": "figure_9d",
+      "path": "artifacts/hoodie/campaigns/figures-8-11-real-pilot-4ac93908769c/aggregates/figure_9d.csv",
+      "row_count": 4,
+      "series": [
+        "light",
+        "mixed"
+      ],
+      "source_dataset_hashes": [
+        "{'evaluation_metrics': '4cce868d36fb75a9a94ea7580d6b85ef571d8875e18de6bf3a1646a4ef751454'}"
+      ],
+      "x_variable": "number_of_agents"
+    },
+    "figure_9e": {
+      "hash": "0edb938bebcf5e38e4de0709660c5450c916dfa601a14309153f2615d8df873b",
+      "panel_id": "figure_9e",
+      "path": "artifacts/hoodie/campaigns/figures-8-11-real-pilot-4ac93908769c/aggregates/figure_9e.csv",
+      "row_count": 4,
+      "series": [
+        "balanced",
+        "burst"
+      ],
+      "source_dataset_hashes": [
+        "{'evaluation_metrics': '7553d5c06a155f1065b76cb1ce09454f130aceff9a506b808ea88ce135ee8dbb'}"
+      ],
+      "x_variable": "communication_rate_scenario"
+    }
+  },
+  "nonempty_dataset_count": 14
+}

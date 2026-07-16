@@ -1,0 +1,235 @@
+{
+  "all_composite_images_passed": true,
+  "all_panel_images_passed": true,
+  "campaign_id": "figures-8-11-real-pilot-4ac93908769c",
+  "composite_pdf_count": 4,
+  "composite_png_count": 4,
+  "composite_svg_count": 4,
+  "inspections": [
+    {
+      "avg_rgb": [
+        246.1302777777778,
+        245.42459537037038,
+        246.0550800925926
+      ],
+      "height": 1200,
+      "nonwhite_ratio": 0.06683240740740741,
+      "path": "artifacts/hoodie/campaigns/figures-8-11-real-pilot-4ac93908769c/figures/figure_10a.png",
+      "size_bytes": 106148,
+      "unique_sampled_colors": 1,
+      "width": 1800
+    },
+    {
+      "avg_rgb": [
+        245.8658212962963,
+        245.72085694444445,
+        245.9968925925926
+      ],
+      "height": 1200,
+      "nonwhite_ratio": 0.06568055555555556,
+      "path": "artifacts/hoodie/campaigns/figures-8-11-real-pilot-4ac93908769c/figures/figure_10b.png",
+      "size_bytes": 74068,
+      "unique_sampled_colors": 1,
+      "width": 1800
+    },
+    {
+      "avg_rgb": [
+        245.73016203703705,
+        245.09541712962962,
+        245.7702287037037
+      ],
+      "height": 1200,
+      "nonwhite_ratio": 0.06971990740740741,
+      "path": "artifacts/hoodie/campaigns/figures-8-11-real-pilot-4ac93908769c/figures/figure_10c.png",
+      "size_bytes": 77132,
+      "unique_sampled_colors": 1,
+      "width": 1800
+    },
+    {
+      "avg_rgb": [
+        246.1241875,
+        245.4185050925926,
+        246.0489898148148
+      ],
+      "height": 1200,
+      "nonwhite_ratio": 0.06692592592592593,
+      "path": "artifacts/hoodie/campaigns/figures-8-11-real-pilot-4ac93908769c/figures/figure_10d.png",
+      "size_bytes": 106101,
+      "unique_sampled_colors": 1,
+      "width": 1800
+    },
+    {
+      "avg_rgb": [
+        245.87196574074073,
+        245.72700138888888,
+        246.00303703703705
+      ],
+      "height": 1200,
+      "nonwhite_ratio": 0.06558009259259259,
+      "path": "artifacts/hoodie/campaigns/figures-8-11-real-pilot-4ac93908769c/figures/figure_10e.png",
+      "size_bytes": 73384,
+      "unique_sampled_colors": 1,
+      "width": 1800
+    },
+    {
+      "avg_rgb": [
+        245.72896342592594,
+        245.09421851851852,
+        245.7690300925926
+      ],
+      "height": 1200,
+      "nonwhite_ratio": 0.06979212962962963,
+      "path": "artifacts/hoodie/campaigns/figures-8-11-real-pilot-4ac93908769c/figures/figure_10f.png",
+      "size_bytes": 76778,
+      "unique_sampled_colors": 1,
+      "width": 1800
+    },
+    {
+      "avg_rgb": [
+        249.6126361111111,
+        249.02218796296296,
+        248.4899875
+      ],
+      "height": 1200,
+      "nonwhite_ratio": 0.03760046296296296,
+      "path": "artifacts/hoodie/campaigns/figures-8-11-real-pilot-4ac93908769c/figures/figure_8a.png",
+      "size_bytes": 64610,
+      "unique_sampled_colors": 1,
+      "width": 1800
+    },
+    {
+      "avg_rgb": [
+        248.7660888888889,
+        248.17564074074073,
+        247.64344027777778
+      ],
+      "height": 1200,
+      "nonwhite_ratio": 0.041959722222222225,
+      "path": "artifacts/hoodie/campaigns/figures-8-11-real-pilot-4ac93908769c/figures/figure_8b.png",
+      "size_bytes": 75993,
+      "unique_sampled_colors": 1,
+      "width": 1800
+    },
+    {
+      "avg_rgb": [
+        248.33899768518518,
+        248.29772824074075,
+        248.14166435185186
+      ],
+      "height": 1200,
+      "nonwhite_ratio": 0.04396712962962963,
+      "path": "artifacts/hoodie/campaigns/figures-8-11-real-pilot-4ac93908769c/figures/figure_9a.png",
+      "size_bytes": 82209,
+      "unique_sampled_colors": 1,
+      "width": 1800
+    },
+    {
+      "avg_rgb": [
+        248.05161203703705,
+        248.84734351851853,
+        247.9574601851852
+      ],
+      "height": 1200,
+      "nonwhite_ratio": 0.041020370370370374,
+      "path": "artifacts/hoodie/campaigns/figures-8-11-real-pilot-4ac93908769c/figures/figure_9b.png",
+      "size_bytes": 88890,
+      "unique_sampled_colors": 1,
+      "width": 1800
+    },
+    {
+      "avg_rgb": [
+        247.83224907407407,
+        247.96760972222222,
+        247.9360074074074
+      ],
+      "height": 1200,
+      "nonwhite_ratio": 0.047681481481481484,
+      "path": "artifacts/hoodie/campaigns/figures-8-11-real-pilot-4ac93908769c/figures/figure_9c.png",
+      "size_bytes": 57575,
+      "unique_sampled_colors": 1,
+      "width": 1800
+    },
+    {
+      "avg_rgb": [
+        249.8999986111111,
+        248.7860898148148,
+        247.7895087962963
+      ],
+      "height": 1200,
+      "nonwhite_ratio": 0.040688888888888886,
+      "path": "artifacts/hoodie/campaigns/figures-8-11-real-pilot-4ac93908769c/figures/figure_9d.png",
+      "size_bytes": 59267,
+      "unique_sampled_colors": 1,
+      "width": 1800
+    },
+    {
+      "avg_rgb": [
+        249.7960949074074,
+        248.68202685185184,
+        247.6852939814815
+      ],
+      "height": 1200,
+      "nonwhite_ratio": 0.04152962962962963,
+      "path": "artifacts/hoodie/campaigns/figures-8-11-real-pilot-4ac93908769c/figures/figure_9e.png",
+      "size_bytes": 56317,
+      "unique_sampled_colors": 1,
+      "width": 1800
+    },
+    {
+      "avg_rgb": [
+        244.51821199294534,
+        243.58327239858906,
+        244.164851675485
+      ],
+      "height": 5400,
+      "nonwhite_ratio": 0.0804031746031746,
+      "path": "artifacts/hoodie/campaigns/figures-8-11-real-pilot-4ac93908769c/figures/figure_10.png",
+      "size_bytes": 498117,
+      "unique_sampled_colors": 1,
+      "width": 2100
+    },
+    {
+      "avg_rgb": [
+        248.81496243386243,
+        248.54631005291006,
+        248.29742804232805
+      ],
+      "height": 900,
+      "nonwhite_ratio": 0.039144973544973545,
+      "path": "artifacts/hoodie/campaigns/figures-8-11-real-pilot-4ac93908769c/figures/figure_11.png",
+      "size_bytes": 63679,
+      "unique_sampled_colors": 1,
+      "width": 2100
+    },
+    {
+      "avg_rgb": [
+        248.3325626984127,
+        247.54536534391534,
+        246.83744576719576
+      ],
+      "height": 1800,
+      "nonwhite_ratio": 0.04689814814814815,
+      "path": "artifacts/hoodie/campaigns/figures-8-11-real-pilot-4ac93908769c/figures/figure_8.png",
+      "size_bytes": 141840,
+      "unique_sampled_colors": 1,
+      "width": 2100
+    },
+    {
+      "avg_rgb": [
+        247.90876264550263,
+        247.5757765079365,
+        246.85725968253968
+      ],
+      "height": 4500,
+      "nonwhite_ratio": 0.04909915343915344,
+      "path": "artifacts/hoodie/campaigns/figures-8-11-real-pilot-4ac93908769c/figures/figure_9.png",
+      "size_bytes": 326667,
+      "unique_sampled_colors": 1,
+      "width": 2100
+    }
+  ],
+  "panel_pdf_count": 14,
+  "panel_png_count": 14,
+  "panel_svg_count": 14,
+  "pilot_label_present_everywhere": true
+}

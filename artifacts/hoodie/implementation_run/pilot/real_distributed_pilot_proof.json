@@ -1,0 +1,39 @@
+{
+  "aggregate_outputs_created": true,
+  "bundle_dir_sha256": null,
+  "bundle_verification_result": {
+    "status": "passed"
+  },
+  "bundle_verified": true,
+  "dependency_blocking_proved": true,
+  "dependency_unblocking_proved": true,
+  "evaluation_metrics_sha256": "07657853cf5e60c758c2efd61b9bdb6c7337e9e5c8d1eeaf0ca810e5a6f4b2a9",
+  "evaluation_outputs_imported": true,
+  "evaluation_shard_count": 2,
+  "evidence_paths": {
+    "bundle_dir": "artifacts/hoodie/releases/figures-8-11-real-pilot-4ac93908769c-bundle",
+    "evaluation_metrics": "artifacts/hoodie/campaigns/figures-8-11-real-pilot-4ac93908769c/jobs/figure_9a-0-HOODIE/evaluation_metrics.csv",
+    "interrupted_attempt_history": "artifacts/hoodie/campaigns/figures-8-11-real-pilot-4ac93908769c/jobs/figure_11-0-hoodie_lstm/training_history.csv",
+    "interrupted_attempt_status": "artifacts/hoodie/campaigns/figures-8-11-real-pilot-4ac93908769c/jobs/figure_11-0-hoodie_lstm/status.json",
+    "post_resume_history": "artifacts/hoodie/campaigns/figures-8-11-real-pilot-4ac93908769c/jobs/figure_11-0-hoodie_lstm/training_history.csv",
+    "resume_checkpoint_path": "artifacts/hoodie/campaigns/figures-8-11-real-pilot-4ac93908769c/jobs/figure_11-0-hoodie_lstm/internal_checkpoints/latest.json"
+  },
+  "figures_rendered": true,
+  "final_bundle_verification_result": {
+    "status": "passed"
+  },
+  "interrupted_attempt_history_sha256": "c458b0e77725646458888b0872ecbe7b062387a10c287031b88c7272f753e694",
+  "interrupted_attempt_status_sha256": "c74ec304216aee15e062bf13625e70f3e96b01e3a749a2f347cda8efb8b378e9",
+  "interrupted_shard_id": "none",
+  "interrupted_status": "interrupted_resumable",
+  "matrix_job_count": 4,
+  "no_process_killed": true,
+  "post_resume_history_sha256": "c458b0e77725646458888b0872ecbe7b062387a10c287031b88c7272f753e694",
+  "real_executor_used": true,
+  "resume_checkpoint": "none",
+  "resume_checkpoint_path_sha256": "f2efc8010c03bd50158a8bccf1d55bd23e1582d23bab21dd8675b405916f2d7f",
+  "resumed_without_duplicate_episodes": true,
+  "source_commit": "9843029238c21d55f9eb7f3f83a23040d0be7153",
+  "training_outputs_imported": true,
+  "training_shard_count": 2
+}

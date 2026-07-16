@@ -1,0 +1,8 @@
+{
+  "bundle_path": "artifacts/hoodie/releases/figures-8-11-real-pilot-4ac93908769c-bundle",
+  "campaign_id": "figures-8-11-real-pilot-4ac93908769c",
+  "clean_bundle_verified": true,
+  "render_lineage_passed": true,
+  "required_file_coverage_passed": true,
+  "tampered_bundle_rejected": true
+}
