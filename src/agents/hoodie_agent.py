@@ -8,21 +8,17 @@ import numpy as np
 from src.policies.interface import PolicyContext, ReplayTrainablePolicy
 
 from .ddqn import DoubleDQNAgent, ReplayTransition
+from .destination_recurrent_ddqn import DestinationRecurrentDoubleDQNAgent
 from .history_builder import HistoryBuilder
 from .observation_schema import ObservationSchema
 from .recurrent_ddqn import RecurrentDoubleDQNAgent
 
-_ACTION_INDEX = {
-    "local": 0,
-    "compute_local": 0,
-    "horizontal": 1,
-    "offload_horizontal": 1,
-    "vertical": 2,
-    "offload_vertical": 2,
-    "cloud": 2,
-}
 
-Learner = DoubleDQNAgent | RecurrentDoubleDQNAgent
+Learner = (
+    DoubleDQNAgent
+    | RecurrentDoubleDQNAgent
+    | DestinationRecurrentDoubleDQNAgent
+)
 
 
 @dataclass(slots=True)
@@ -35,6 +31,7 @@ class HoodieAgent(ReplayTrainablePolicy):
     exploration_epsilon: float = 0.0
     causal_history: list[tuple[float, ...]] = field(default_factory=list)
     decision_windows: dict[str, list[list[float]]] = field(default_factory=dict)
+    active_trace_id: str | None = None
 
     @classmethod
     def configured(
@@ -51,10 +48,12 @@ class HoodieAgent(ReplayTrainablePolicy):
         hidden_dims: tuple[int, ...] = (1024, 1024, 1024),
         lookback: int = 10,
         lstm_hidden: int = 20,
+        action_order: tuple[str, ...] = ("local", "horizontal", "cloud"),
     ) -> "HoodieAgent":
         schema = ObservationSchema()
-        learner = RecurrentDoubleDQNAgent(
+        learner = DestinationRecurrentDoubleDQNAgent(
             state_dim=len(schema.feature_names),
+            action_order=action_order,
             lookback=lookback,
             seed=seed,
             hidden_dims=hidden_dims,
@@ -70,17 +69,46 @@ class HoodieAgent(ReplayTrainablePolicy):
         )
         return cls(
             observation_schema=schema,
+            history_builder=HistoryBuilder(window_size=lookback),
             learner=learner,
             use_lstm=use_lstm,
         )
 
+    @property
+    def action_order(self) -> tuple[str, ...]:
+        if isinstance(self.learner, DestinationRecurrentDoubleDQNAgent):
+            return self.learner.action_order
+        if isinstance(self.learner, RecurrentDoubleDQNAgent):
+            return tuple(self.learner.ACTION_ORDER)
+        return ("local", "horizontal", "vertical")
+
     def _history_limit(self) -> int:
-        return self.learner.lookback if isinstance(self.learner, RecurrentDoubleDQNAgent) else 1
+        return (
+            self.learner.lookback
+            if isinstance(self.learner, RecurrentDoubleDQNAgent)
+            else 1
+        )
 
     def _trim_history(self) -> None:
         limit = self._history_limit()
         if len(self.causal_history) > limit:
             del self.causal_history[:-limit]
+
+    def reset_episode_history(self, trace_id: str | None = None) -> None:
+        """Reset causal state at an episode boundary without touching replay memory."""
+
+        self.causal_history.clear()
+        self.decision_windows.clear()
+        self.history_builder.observation_history.clear()
+        self.history_builder.legal_action_history.clear()
+        self.active_trace_id = trace_id
+
+    def _prepare_trace(self, context: PolicyContext) -> None:
+        trace_id = (
+            str(context.trace_history[-1]) if context.trace_history else None
+        )
+        if trace_id != self.active_trace_id:
+            self.reset_episode_history(trace_id)
 
     def _feature_vector(
         self, context: PolicyContext | dict[str, object]
@@ -116,27 +144,84 @@ class HoodieAgent(ReplayTrainablePolicy):
         return np.asarray(current, dtype=np.float32)
 
     @staticmethod
-    def _canonical_legal_actions(mask: dict[str, bool]) -> tuple[str, ...]:
+    def _topology_destinations(observation: dict[str, object]) -> set[str]:
+        raw = observation.get("topology", ())
+        if isinstance(raw, (list, tuple, set)):
+            return {str(value) for value in raw}
+        return set()
+
+    def _legal_actions(
+        self,
+        mask: dict[str, bool],
+        observation: dict[str, object],
+    ) -> tuple[str, ...]:
+        local_allowed = bool(mask.get("local") or mask.get("compute_local"))
+        horizontal_allowed = bool(
+            mask.get("horizontal")
+            or mask.get("offload_horizontal")
+            or any(
+                key.startswith("horizontal_") and allowed
+                for key, allowed in mask.items()
+            )
+        )
+        cloud_allowed = bool(
+            mask.get("vertical")
+            or mask.get("offload_vertical")
+            or mask.get("cloud")
+        )
+        destinations = self._topology_destinations(observation)
         legal: list[str] = []
-        if mask.get("local") or mask.get("compute_local"):
-            legal.append("local")
-        if mask.get("horizontal") or mask.get("offload_horizontal") or any(
-            key.startswith("horizontal_") and allowed
-            for key, allowed in mask.items()
-        ):
-            legal.append("horizontal")
-        if mask.get("vertical") or mask.get("offload_vertical") or mask.get("cloud"):
-            legal.append("vertical")
+        for action in self.action_order:
+            if action == "local" and local_allowed:
+                legal.append(action)
+            elif action == "horizontal" and horizontal_allowed:
+                legal.append(action)
+            elif action.startswith("horizontal_"):
+                destination = action.removeprefix("horizontal_")
+                exact_allowed = mask.get(action)
+                if bool(exact_allowed) or (
+                    horizontal_allowed and destination in destinations
+                ):
+                    legal.append(action)
+            elif action in {"cloud", "vertical"} and cloud_allowed:
+                legal.append(action)
+        if not legal:
+            raise ValueError("no destination-specific legal actions are available")
         return tuple(legal)
 
+    def _normalize_action(self, action: str) -> str:
+        value = str(action)
+        if value in {"local", "compute_local"}:
+            candidate = "local"
+        elif value in {"cloud", "vertical", "offload_vertical"}:
+            candidate = "cloud" if "cloud" in self.action_order else "vertical"
+        elif value in {"horizontal", "offload_horizontal"}:
+            candidate = "horizontal"
+        else:
+            candidate = value
+        if candidate not in self.action_order:
+            raise ValueError(
+                f"action {action!r} is absent from learner vocabulary {self.action_order}"
+            )
+        return candidate
+
     def choose_action(self, context: PolicyContext) -> str:
-        legal_actions = self._canonical_legal_actions(context.legal_action_mask)
+        self._prepare_trace(context)
+        task_id_value = context.observation.get("task_id")
+        if task_id_value is None:
+            raise ValueError("task_id is required for replay-safe HOODIE decisions")
+        task_id = str(task_id_value)
+        if task_id in self.decision_windows:
+            raise RuntimeError(f"duplicate unresolved HOODIE decision for task {task_id}")
+
+        legal_actions = self._legal_actions(
+            context.legal_action_mask, context.observation
+        )
         features = self._feature_vector(context)
         state = self._window(features)
         action = self.learner.select(
             state, legal_actions, epsilon=self.exploration_epsilon
         )
-        task_id = str(context.observation.get("task_id", len(self.decision_windows)))
         self.decision_windows[task_id] = state.tolist()
         self.history_builder.record(context)
         self.causal_history.append(features)
@@ -154,39 +239,56 @@ class HoodieAgent(ReplayTrainablePolicy):
         delta_slots: int = 1,
     ) -> None:
         del delta_slots
-        action_index = _ACTION_INDEX.get(str(action))
-        if action_index is None:
-            raise ValueError(f"unsupported action for replay: {action!r}")
-        task_id = str(state.get("task_id", ""))
+        task_id_value = state.get("task_id")
+        if task_id_value is None:
+            raise ValueError("task_id is required to join a delayed reward to its decision")
+        task_id = str(task_id_value)
+        normalized_action = self._normalize_action(action)
+        action_index = self.action_order.index(normalized_action)
         current_vector = self._feature_vector(state)
+
         if isinstance(self.learner, RecurrentDoubleDQNAgent):
             remembered = self.decision_windows.pop(task_id, None)
-            state_value = (
-                np.asarray(remembered, dtype=np.float32)
-                if remembered is not None
-                else self._window(current_vector)
+            if remembered is None:
+                raise RuntimeError(
+                    f"missing decision window for delayed reward of task {task_id}"
+                )
+            state_value = np.asarray(remembered, dtype=np.float32)
+            next_task_id = next_state.get("task_id")
+            next_remembered = (
+                self.decision_windows.get(str(next_task_id))
+                if next_task_id is not None
+                else None
             )
-            next_value = self._window(self._feature_vector(next_state))
+            next_value = (
+                np.asarray(next_remembered, dtype=np.float32)
+                if next_remembered is not None
+                else self._window(self._feature_vector(next_state))
+            )
         else:
             state_value = np.asarray(current_vector, dtype=np.float32)
             next_value = np.asarray(
                 self._feature_vector(next_state), dtype=np.float32
             )
+
         raw_mask = next_state.get("legal_action_mask", {})
-        if isinstance(raw_mask, dict):
-            legal = set(
-                self._canonical_legal_actions(
-                    {str(key): bool(value) for key, value in raw_mask.items()}
-                )
-            )
-        else:
-            legal = {"local", "horizontal", "vertical"}
-        if not legal:
-            legal = {"local", "horizontal", "vertical"}
-        legal_mask = np.asarray(
-            [name in legal for name in ("local", "horizontal", "vertical")],
-            dtype=bool,
+        mask = (
+            {str(key): bool(value) for key, value in raw_mask.items()}
+            if isinstance(raw_mask, dict)
+            else {}
         )
+        try:
+            legal = set(self._legal_actions(mask, next_state))
+        except ValueError:
+            # A terminal observation may be empty.  The mask is irrelevant when
+            # done=True, but a correctly shaped replay value is still required.
+            if not done:
+                raise
+            legal = set(self.action_order)
+        legal_mask = np.asarray(
+            [name in legal for name in self.action_order], dtype=bool
+        )
+
         if isinstance(self.learner, RecurrentDoubleDQNAgent):
             self.learner.learner.record_transition(
                 state_value,
@@ -221,7 +323,12 @@ class HoodieAgent(ReplayTrainablePolicy):
 
     def attach_learner(self, learner: object, enabled: bool = True) -> None:
         if enabled and isinstance(
-            learner, (DoubleDQNAgent, RecurrentDoubleDQNAgent)
+            learner,
+            (
+                DoubleDQNAgent,
+                RecurrentDoubleDQNAgent,
+                DestinationRecurrentDoubleDQNAgent,
+            ),
         ):
             self.learner = learner
             self._trim_history()
@@ -229,7 +336,7 @@ class HoodieAgent(ReplayTrainablePolicy):
     def export_state(self) -> dict[str, Any]:
         self._trim_history()
         return {
-            "schema_version": 5,
+            "schema_version": 6,
             "policy_name": self.policy_name,
             "use_lstm": self.use_lstm,
             "exploration_epsilon": self.exploration_epsilon,
@@ -249,7 +356,9 @@ class HoodieAgent(ReplayTrainablePolicy):
             if "online_state_dict" in state and "target_state_dict" in state
             else {}
         )
-        use_lstm = bool(state.get("use_lstm", learner_state.get("use_lstm", True)))
+        use_lstm = bool(
+            state.get("use_lstm", learner_state.get("use_lstm", True))
+        )
         agent = cls(use_lstm=use_lstm)
         agent.exploration_epsilon = float(
             state.get("exploration_epsilon", 0.0)
@@ -259,10 +368,17 @@ class HoodieAgent(ReplayTrainablePolicy):
             for row in state.get("causal_history", [])
         ]
         if learner_state:
-            if learner_state.get("learner_kind") == "recurrent_ddqn":
+            learner_kind = learner_state.get("learner_kind")
+            if learner_kind == "destination_recurrent_ddqn":
+                agent.learner = DestinationRecurrentDoubleDQNAgent.from_state(
+                    learner_state
+                )
+                agent.learner.use_lstm = use_lstm
+            elif learner_kind == "recurrent_ddqn":
                 agent.learner = RecurrentDoubleDQNAgent.from_state(learner_state)
                 agent.learner.use_lstm = use_lstm
             else:
                 agent.learner = DoubleDQNAgent.from_state(learner_state)
+        agent.history_builder.window_size = agent._history_limit()
         agent._trim_history()
         return agent
