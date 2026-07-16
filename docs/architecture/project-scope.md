@@ -2,7 +2,7 @@
 
 ## Primary scientific objective
 
-The repository exists to implement and reproduce the HOODIE paper through a single traceable path:
+The repository exists to implement and reproduce the HOODIE paper through one traceable path:
 
 1. frozen source contracts;
 2. deterministic environment and traffic traces;
@@ -27,33 +27,34 @@ A green status file is not a scientific result. Every pass condition must be der
 - scientific aggregation, verification, rendering, and release packaging;
 - active unit, integration, and acceptance tests.
 
-### Downstream or archived
+### Downstream or external
 
 - ECHO thesis extensions;
 - prior diagnostic campaigns;
 - obsolete pilots and readiness reports;
-- historical specifications and reconciliation transports.
+- historical specifications and reconciliation transports;
+- generic agent and orchestration frameworks.
 
-### External tooling
-
-Claude, RuFlo, OpenCode, Graphify, and similar tools are installed and configured outside this repository. Their generated agents, commands, daemon state, metrics, and PID files are not project source.
+ECHO may consume the completed HOODIE baseline later, but it must not alter the active HOODIE execution package or verification path.
 
 ## Canonical layout
 
 ```text
 src/
-  hoodie/                 scientific orchestration and public package
-  agents/                 current learner implementations during migration
-  environment/            physical simulator
-  policies/               baseline policy implementations
-  training/               training primitives
-  evaluation/             evaluation primitives
+  hoodie/
+    agents/
+    environment/
+    policies/
+    training/
+    evaluation/
+    experiments/
+    storage/
+    visualization/
 
 tests/
   unit/
   integration/
   acceptance/
-tests_supported/hoodie/   active compatibility suite during migration
 
 configs/
   paper/
@@ -73,13 +74,13 @@ resources/
 
 scripts/
   audit/
-  hoodie/
+  experiments/
 
 artifacts/
-  approved/               small immutable manifests only
+  approved/
 ```
 
-The temporary top-level `src.agents`, `src.environment`, and related imports remain compatibility paths while migration to `hoodie.*` is completed. New modules must use `hoodie.*` package paths where practical. No second implementation of a scientific responsibility may be introduced.
+The active package imports as `hoodie.*` from the `src/` layout. Top-level `hoodie/`, `tests_supported/`, `tests_historical/`, `*_patch.py`, and `*_v2.py` are not accepted in an execution-ready tree.
 
 ## Runtime layout
 
@@ -93,30 +94,42 @@ $HOODIE_RUN_ROOT/
   checkpoint-store/
   releases/
   logs/
+  audits/
 ```
 
-Production execution must refuse a run root inside the tracked repository unless an explicit test-only override is active.
+Production execution must refuse a run root inside the tracked repository. The run root must retain at least 20 GiB and 10% free space after each checkpoint write.
 
 ## Authoritative responsibilities
 
 - campaign planning and state: `hoodie.experiments.campaign`
-- matrix-job execution: one authoritative executor selected by the CLI
+- matrix-job execution: `hoodie.experiments.executor`
 - distributed bundles: `hoodie.experiments.distributed`
-- verification and rendering: the scientific pipeline selected by the CLI
+- verification: `hoodie.experiments.verification`
+- rendering: `hoodie.visualization.figures_8_11`
 - checkpoint storage: `hoodie.storage.checkpoints`
 
-Legacy compatibility modules may delegate to these implementations, but they must not implement competing behavior.
+There must be one implementation of each responsibility. Import-time monkey patches and competing v2 modules are not canonical architecture.
+
+## Mandatory consolidation gate
+
+```bash
+python scripts/audit/repository_consolidation_gate.py --check
+```
+
+The gate blocks experiment execution while tracked generated artifacts, legacy package/test roots, compatibility patches, legacy `src.*` imports, active ECHO dependencies, packaging inconsistencies, or missing canonical modules remain.
 
 ## Completion definition
 
 Repository consolidation is complete when:
 
 - the repository audit classifies every tracked file;
-- runtime/tool state is absent from Git;
-- all active tests are discovered by one pytest configuration;
-- a clean editable install imports the package;
+- the consolidation gate reports zero issues;
+- runtime/tool state and historical generated artifacts are absent from Git;
+- one package imports cleanly as `hoodie.*`;
+- one pytest configuration discovers all active tests;
+- one implementation owns each scientific responsibility;
 - checkpoint writes are atomic and storage-bounded;
 - a tiny clean-checkout pilot passes end to end;
 - the immutable production matrix is unchanged after it is frozen;
-- the production run uses external storage and external compute;
+- production runs use external storage and external compute;
 - no unique scientific reference or evidence is lost.
