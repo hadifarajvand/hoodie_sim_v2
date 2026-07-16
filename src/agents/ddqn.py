@@ -274,14 +274,31 @@ ReplayTransition = Transition
 
 
 class DoubleDQNAgent:
-    def __init__(self, input_dim: int = 5, action_dim: int = 22, *, seed: int = 0) -> None:
+    def __init__(self, input_dim: int = 5, action_dim: int = 3, *, seed: int = 0) -> None:
         self.learner = DDQNLearner(input_dim=input_dim, action_dim=action_dim, seed=seed)
         self.replay = self.learner.replay_buffer
 
-    def select(self, features, legal_actions):
+    def select(self, features, legal_actions, *, epsilon: float = 0.0):
         if not legal_actions:
             raise ValueError("no legal actions available")
-        return legal_actions[0]
+        action_order = ("local", "horizontal", "vertical")
+        legal_indices = [index for index, name in enumerate(action_order) if name in legal_actions]
+        if not legal_indices:
+            return legal_actions[0]
+        if len(features) != self.learner.input_dim:
+            raise ValueError(
+                f"feature length {len(features)} does not match input_dim {self.learner.input_dim}"
+            )
+        state = torch.tensor(features, dtype=torch.float32, device=self.learner.device)
+        with torch.no_grad():
+            q_values = self.learner.online_network(state.unsqueeze(0)).squeeze(0).detach().cpu()
+        if self.learner.rng.random() < float(epsilon):
+            return action_order[self.learner.rng.choice(legal_indices)]
+        masked = q_values.clone()
+        for index in range(len(action_order)):
+            if index not in legal_indices:
+                masked[index] = float("-inf")
+        return action_order[int(torch.argmax(masked).item())]
 
     def update(self) -> int:
         result = self.learner.learn_from_replay()
@@ -295,6 +312,6 @@ class DoubleDQNAgent:
 
     @classmethod
     def from_state(cls, state: dict[str, object]) -> "DoubleDQNAgent":
-        agent = cls(input_dim=int(state.get("input_dim", 5)), action_dim=int(state.get("action_dim", 22)), seed=int(state.get("seed", 0)))
+        agent = cls(input_dim=int(state.get("input_dim", 5)), action_dim=int(state.get("action_dim", 3)), seed=int(state.get("seed", 0)))
         agent.learner.load_state_dict(state)
         return agent

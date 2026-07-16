@@ -11,7 +11,8 @@ import subprocess
 import time
 from shutil import copy2
 
-from .campaign import run_production_campaign
+from .campaign import run_production_campaign, campaign_status, resume_production_campaign
+from .job_matrix import build_production_job_matrix, write_production_job_matrix
 from .panel_registry import PANEL_REGISTRY
 from .source_contracts import build_figures_8_11_source_contract
 
@@ -28,6 +29,15 @@ def build_parser() -> argparse.ArgumentParser:
         cmd = sub.add_parser(name)
         cmd.add_argument('--campaign-id', required=False)
         cmd.add_argument('--campaign', required=False)
+    resume = sub.choices['resume']
+    resume.add_argument('--job-id', required=False)
+    resume.add_argument('--max-jobs', type=int, required=False)
+    resume.add_argument('--max-runtime-seconds', type=float, required=False)
+    resume.add_argument('--allow-paused-recovery', action='store_true')
+    supervise = sub.add_parser('supervise')
+    supervise.add_argument('--campaign-id', required=False)
+    supervise.add_argument('--campaign', required=False)
+    supervise.add_argument('--max-runtime-seconds', type=float, required=False)
     return parser
 
 
@@ -64,32 +74,50 @@ def main(argv: list[str] | None = None) -> int:
         result = run_production_campaign(campaign_id=campaign_name, output_dir=output_dir)
         _print_json(result)
         return 0
+    if args.command == 'status':
+        campaign_id = args.campaign_id or args.campaign or 'figures-8-11'
+        _print_json(campaign_status(campaign_id, Path('artifacts/hoodie/campaigns')))
+        return 0
+    if args.command == 'resume':
+        campaign_id = args.campaign_id or args.campaign or 'figures-8-11'
+        _print_json(resume_production_campaign(campaign_id, Path('artifacts/hoodie/campaigns'), max_jobs=args.max_jobs, max_runtime_seconds=args.max_runtime_seconds, job_id=args.job_id, allow_paused_recovery=args.allow_paused_recovery))
+        return 0
+    if args.command == 'supervise':
+        from .supervisor import supervise_campaign
+        campaign_id = args.campaign_id or args.campaign or 'figures-8-11'
+        _print_json(supervise_campaign(campaign_id, Path('artifacts/hoodie/campaigns'), max_runtime_seconds=args.max_runtime_seconds))
+        return 0
     if args.command == 'plan':
         contract = build_figures_8_11_source_contract()
         campaign_id = args.campaign_id or args.campaign or 'figures-8-11-production'
         base_dir = Path('artifacts/hoodie/implementation_run/campaign')
         base_dir.mkdir(parents=True, exist_ok=True)
+        matrix_path = base_dir / 'expected_production_job_matrix.json'
+        rows = build_production_job_matrix(campaign_id)
+        write_production_job_matrix(matrix_path, campaign_id)
         panel_count = len(contract.panels)
         dry_run = {
             'campaign_id': campaign_id,
             'resolved_panel_count': contract.resolved_panel_count(),
             'blocked_panel_count': len(contract.unresolved_fields()),
-            'training_jobs': len(contract.panels),
-            'evaluation_jobs': len(contract.panels),
-            'checkpoints': len(contract.panels),
-            'trace_banks': len(contract.panels),
-            'seed_count': 1,
+            'training_jobs': sum(1 for row in rows if row.job_type == 'training'),
+            'evaluation_jobs': sum(1 for row in rows if row.job_type == 'evaluation'),
+            'checkpoints': len({row.checkpoint_dependency for row in rows}),
+            'trace_banks': len({row.trace_bank_id for row in rows}),
+            'seed_count': len({row.seed for row in rows if row.seed is not None}),
             'episodes': 5000,
-            'expected_cpu_hours': round(panel_count * 0.08, 3),
-            'expected_gpu_hours': round(panel_count * 0.02, 3),
+            'expected_cpu_hours': round(len(rows) * 0.08, 3),
+            'expected_gpu_hours': round(len(rows) * 0.02, 3),
             'peak_ram_gb': 4.0,
             'peak_vram_gb': 0.0,
-            'expected_disk_gb': round(panel_count * 0.25, 3),
+            'expected_disk_gb': round(len(rows) * 0.25, 3),
             'maximum_safe_parallelism': 2,
             'checkpoint_reuse': True,
             'retraining_requirements': 'required for training-dependent panels',
             'resume_strategy': 'skip completed jobs, rerun incomplete or corrupt jobs',
             'generated_at': time.time(),
+            'job_matrix_path': str(matrix_path),
+            'expanded_job_count': len(rows),
         }
         (base_dir / 'production_dry_run.json').write_text(json.dumps(dry_run, indent=2, sort_keys=True) + '\n', encoding='utf-8')
         (base_dir / 'production_dry_run.md').write_text(

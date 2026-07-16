@@ -3,6 +3,8 @@ from __future__ import annotations
 from dataclasses import dataclass, field
 from typing import Any
 
+import numpy as np
+
 from src.policies.interface import PolicyContext, ReplayTrainablePolicy
 
 from .ddqn import DoubleDQNAgent, ReplayTransition
@@ -17,6 +19,7 @@ class HoodieAgent(ReplayTrainablePolicy):
     history_builder: HistoryBuilder = field(default_factory=HistoryBuilder)
     learner: DoubleDQNAgent = field(default_factory=DoubleDQNAgent)
     use_lstm: bool = True
+    exploration_epsilon: float = 0.0
     causal_history: list[dict[str, Any]] = field(default_factory=list)
 
     def _features(self, context: PolicyContext) -> tuple[float, ...]:
@@ -27,7 +30,7 @@ class HoodieAgent(ReplayTrainablePolicy):
     def choose_action(self, context: PolicyContext) -> str:
         legal_actions = tuple(action for action, allowed in context.legal_action_mask.items() if allowed)
         features = self._features(context)
-        action = self.learner.select(features, legal_actions)
+        action = self.learner.select(features, legal_actions, epsilon=self.exploration_epsilon)
         self.history_builder.record(context)
         self.causal_history.append(dict(context.observation))
         return action
@@ -45,7 +48,10 @@ class HoodieAgent(ReplayTrainablePolicy):
         del delta_slots
         state_tuple = self.observation_schema.encode(state)
         next_state_tuple = self.observation_schema.encode(next_state)
-        self.learner.replay.add(ReplayTransition(state_tuple, action, reward, next_state_tuple, done))
+        action_index = {"local": 0, "horizontal": 1, "vertical": 2}.get(str(action))
+        if action_index is None:
+            raise ValueError(f"unsupported action for replay: {action!r}")
+        self.learner.replay.add(ReplayTransition(state_tuple, action_index, reward, next_state_tuple, done, np.array([True, True, True])))
 
     def learn_from_replay(self, batch_size: int, learning_rate: float) -> int:
         self.learner.learning_rate = learning_rate

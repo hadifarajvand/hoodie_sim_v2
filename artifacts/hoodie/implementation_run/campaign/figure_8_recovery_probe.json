@@ -1,0 +1,19 @@
+{
+  "campaign_id": "figures-8-11-7587c7c6382c",
+  "completion_validator_result": false,
+  "current_episode": 166,
+  "duplicate_row_count": 0,
+  "ending_checkpoint": "08a27b183ad38817e682e8e5",
+  "ending_episode": 166,
+  "job_id": "figure_8a-1-HOODIE-None",
+  "next_resume_cursor": 167,
+  "optimizer_steps_after": 165520,
+  "optimizer_steps_before": 162200,
+  "recovery_probe_passed": true,
+  "required_episode_count": 5000,
+  "rows_after": 167,
+  "rows_before": 163,
+  "starting_checkpoint": "d1b66f6606f9cf396e34d17a",
+  "starting_episode": 163,
+  "status": "interrupted_resumable"
+}

@@ -1,0 +1,13 @@
+{
+  "campaign_id": "figures-8-11-7587c7c6382c",
+  "completed_unique_episodes": 142,
+  "executor_defect": "episode_count derived from x-axis sampling point instead of source-contract training_episodes",
+  "invalid_completion_marker_path": "artifacts/hoodie/campaigns/figures-8-11-7587c7c6382c/jobs/figure_8a-1-HOODIE-None/completion.marker.invalid",
+  "job_id": "figure_8a-1-HOODIE-None",
+  "next_episode": 142,
+  "original_attempt": 1,
+  "recovery_action": "preserve episodes 0-120 and resume from next required episode without duplicate rows",
+  "required_episodes": 5000,
+  "retained_checkpoint_id": "2d3c63079e79171554a4fea7",
+  "retained_history_hash": "d217d81ec9c987902933209ece6e91de8094528557f447272267b93f7f223674"
+}

@@ -9,4 +9,4 @@ from .schemas import AggregateRecord, DecisionRecord, TaskRecord, TrainingHistor
 from .specification import ExperimentSpec, PanelId, PanelVariant, PanelIDError, PanelSpec, PolicyName
 from .storage import AtomicJobStorage
 from .trace_registry import TraceRecord, TraceRegistry
-from .campaign import run_production_campaign, run_smoke_campaign
+from .campaign import campaign_status, resume_production_campaign, run_production_campaign, run_smoke_campaign
