@@ -1,53 +1,26 @@
-# Claude Code execution prompt
+# Claude Code HOODIE run-and-watch prompt
 
-You are operating the HOODIE repository at the exact checked-out remote commit.
+You are the execution agent for the corrected HOODIE Figures 8–11 campaign.
 
-## Objective
+Repository branch:
+`chatgpt/experiment-correctness-20260716`
 
-Finish repository consolidation and scientific validation, then execute the corrected Figures 8–11 workflow only after every fail-closed gate passes. Do not merely write readiness reports. Change code, run real tests, and produce executable evidence.
+Paused legacy campaign — never touch:
+`figures-8-11-7587c7c6382c`
 
-## Mandatory interactive output-root gate
+## First interaction: select and test output storage
 
-Your **first response to the user** must ask them to provide or confirm the absolute output root for all simulation data.
+Your first response must ask the user for the absolute output-root path. Even if `HOODIE_RUN_ROOT` is already present, show it only as a candidate and ask the user to confirm or replace it.
 
-Use this wording closely:
-
-> What absolute output-root path should I use for the HOODIE run? It must be outside this Git repository, writable, support atomic file replacement, and have at least 20 GiB and 10% free space. I will test it and show you the result before starting any simulation.
-
-Rules:
-
-1. Do not assume `/tmp`, the repository, the current directory, the home directory, or any previously used path.
-2. If `HOODIE_RUN_ROOT` is already set, show it only as a candidate and still ask the user to confirm or replace it.
-3. Do not start training, evaluation, a pilot, acceptance simulation, shard execution, checkpoint creation, or any command that creates campaign output before the user supplies a path.
-4. After the user supplies a path, run exactly this validator from the repository root:
+Run:
 
 ```bash
-python scripts/hoodie/validate_run_root.py --path '<USER_SUPPLIED_PATH>'
+python scripts/hoodie/validate_run_root.py --path '<USER_PATH>'
 ```
 
-5. The validator must prove all of the following:
-   - the resolved path is absolute;
-   - it is outside the Git repository;
-   - it is a directory or can be created safely;
-   - it is writable and searchable;
-   - a 4 KiB write/read integrity probe succeeds;
-   - atomic replacement succeeds on that filesystem;
-   - free space after applying the stricter threshold is at least 20 GiB and 10% of the filesystem.
-6. Show the user a concise summary containing:
-   - resolved path;
-   - outside-repository result;
-   - write/read result;
-   - atomic-replace result;
-   - free bytes or GiB;
-   - required free bytes or GiB;
-   - pass/fail.
-7. Then ask a second explicit question:
+Show the resolved path, outside-repository check, write/read probe, atomic-replace probe, free space, required reserve, and pass/fail. Ask for an explicit yes before proceeding.
 
-> The output root passed all checks. Should I use this exact path and proceed? Please answer yes or no.
-
-8. Do not proceed until the user explicitly answers yes.
-9. If the check fails or the user answers no, ask for another path. Never weaken the limits.
-10. After confirmation, run the validator again and atomically create a sourceable environment file inside the selected output root:
+After confirmation:
 
 ```bash
 python scripts/hoodie/validate_run_root.py \
@@ -55,107 +28,127 @@ python scripts/hoodie/validate_run_root.py \
   --write-env-file '<CONFIRMED_PATH>/.hoodie-run-root.env'
 ```
 
-11. Every subsequent Bash command that can create runtime output must source that file in the same shell invocation, for example:
+Source that file in every later Bash call that creates runtime output. Do not assume environment persistence across Claude Code tool calls.
+
+## Preserve the tested runtime package
+
+The tested branch intentionally installs the complete current runtime surface:
+
+- `src.*` scientific implementation packages;
+- the public `hoodie` forwarding package;
+- entry point `src.hoodie.experiments.cli:main`.
+
+Do not partially migrate `pyproject.toml` to install only `hoodie*`. That previously removed `src.agents`, `src.environment`, and other production dependencies and broke `production_campaign.py`.
+
+Do not begin a repository-wide namespace migration during the simulation run. Fix a concrete failing import only when the bounded smoke or validation reproduces it.
+
+## Safe checkout
+
+Require a clean worktree. Do not reset, clean, stash, discard, or overwrite local changes.
+
+```bash
+git fetch origin chatgpt/experiment-correctness-20260716
+git switch chatgpt/experiment-correctness-20260716 2>/dev/null \
+  || git switch --track -c chatgpt/experiment-correctness-20260716 \
+     origin/chatgpt/experiment-correctness-20260716
+git merge --ff-only origin/chatgpt/experiment-correctness-20260716
+git rev-parse HEAD
+git rev-parse origin/chatgpt/experiment-correctness-20260716
+```
+
+The two SHAs must match.
+
+## Mandatory bounded smoke
+
+Before campaign validation, run:
+
+```bash
+bash scripts/hoodie/run_runtime_smoke.sh
+```
+
+This must genuinely execute:
+
+- editable installation;
+- public and runtime package imports;
+- `production_campaign.py` import;
+- one real recurrent-DDQN replay update with finite MSE loss;
+- deterministic LSTM forward calls;
+- destination-action fidelity tests;
+- output-root validator tests;
+- corrected matrix planning with exactly 17 training, 288 evaluation, and 305 total jobs;
+- worker-selected backend contracts;
+- valid HOODIE checkpoint dependencies and no baseline dependencies.
+
+Do not continue when it fails. Diagnose the exact error, make the smallest correct fix, add regression coverage, commit, push normally to the same branch, fetch the resulting remote SHA, and rerun the smoke from a clean checkout.
+
+Do not stop after saying “next fix.” Continue until the smoke passes or a true external resource/permission blocker requires the user.
+
+## Full validation
+
+After the smoke passes:
 
 ```bash
 source '<CONFIRMED_PATH>/.hoodie-run-root.env'
 bash scripts/hoodie/corrected_campaign.sh validate
 ```
 
-Do not rely on environment variables persisting between separate Claude Code Bash tool calls.
+Do not weaken scientific counts, episodes, slots, model dimensions, replay capacity, policies, or parameter sweeps. Fix concrete validation defects and rerun the smoke and complete validation.
 
-## Mandatory safety
+## Start and watch the corrected campaign
 
-- Never run, resume, rename, import into, delete, or modify the paused legacy campaign `figures-8-11-7587c7c6382c`.
-- Never use `kill`, `killall`, `pkill`, negative PID signals, process-group signals, or broad process matching.
-- Never force-push.
-- Never reduce scientific episode counts, slot counts, matrix rows, model dimensions, policy coverage, or parameter grids.
-- Never place generated runs, checkpoints, replay buffers, worker state, raw datasets, or large logs in Git.
-- Use only the user-confirmed and validated `HOODIE_RUN_ROOT` outside the repository.
-- Keep one physical checkpoint per training job by default and one latest replay snapshot only.
+This prompt authorizes the corrected run after the smoke and full validation pass.
 
-## Repository and validation actions
-
-Only after the output root has passed and the user has explicitly confirmed it:
-
-1. Confirm the working tree is clean. If dirty, stop without reset, clean, stash, delete, or overwrite.
-2. Record branch, HEAD, remote branch SHA, disk free space, and the confirmed `HOODIE_RUN_ROOT`.
-3. Run:
+Immediately revalidate storage:
 
 ```bash
 source '<CONFIRMED_PATH>/.hoodie-run-root.env'
-python scripts/audit/repository_consolidation_gate.py --check \
-  --report "$HOODIE_RUN_ROOT/audits/repository/consolidation_gate.json"
-python scripts/audit/full_repository_audit.py --check \
-  --output-dir "$HOODIE_RUN_ROOT/audits/repository"
+python scripts/hoodie/validate_run_root.py --path "$HOODIE_RUN_ROOT"
+bash scripts/hoodie/corrected_campaign.sh storage-check
+bash scripts/hoodie/corrected_campaign.sh export-training
 ```
 
-4. Resolve every reported repository issue. Do not bypass, weaken, or delete the gates.
+Read `campaign.env` and the exported training bundle directory from the validated run root. Choose one compatible backend family for every training shard. Prefer CUDA, then MPS; use CPU only when the assigned host is practical.
 
-## Required consolidation
+For each training bundle, use a unique persistent work directory and run:
 
-- Canonical installed package: `src/hoodie/` imported as `hoodie.*`.
-- Canonical tests only: `tests/unit`, `tests/integration`, `tests/acceptance`.
-- Remove active use of `tests_supported`, `tests_historical`, top-level `hoodie/`, `*_patch.py`, `*_v2.py`, import-time monkey patching, `src.*` imports inside `src/hoodie`, and active ECHO dependencies.
-- Fold behavior into exactly one authoritative implementation for campaign state, job execution, distributed transport, checkpoint storage, verification, aggregation, rendering, and finalization.
-- Preserve unique historical evidence externally with SHA-256 manifests before untracking it.
-- Keep only source, tests, configs, scientific contracts, approved references, concise docs, and small immutable manifests in Git.
+```bash
+HOODIE_DEVICE='<DEVICE>' \
+bash scripts/hoodie/run_shard_worker.sh \
+  '<ABSOLUTE_BUNDLE_DIR>' \
+  '<PERSISTENT_WORK_DIR>'
+```
 
-## Required validation
+When a worker exits resumably, preserve the exact work directory and rerun the same command. Never import interrupted results.
 
-From a clean checkout of the pushed commit and with the confirmed root sourced:
+Watch progress without signalling processes. Periodically run read-only status/storage commands and report concise milestones. Never use `kill`, `killall`, `pkill`, negative PID signals, process-group signals, or broad process matching.
+
+After all 17 training bundles complete:
 
 ```bash
 source '<CONFIRMED_PATH>/.hoodie-run-root.env'
-python -m pip install -e '.[dev]'
-python -c 'import hoodie; import hoodie.experiments; import hoodie.storage.checkpoints'
-python -m compileall -q src scripts
-python -m pytest -q
-python scripts/audit/repository_consolidation_gate.py --check
-python scripts/audit/full_repository_audit.py --check \
-  --output-dir "$HOODIE_RUN_ROOT/audits/repository"
-bash scripts/hoodie/corrected_campaign.sh validate
+bash scripts/hoodie/corrected_campaign.sh import-training
+bash scripts/hoodie/corrected_campaign.sh export-evaluation
 ```
 
-Also run a tiny acceptance-only workflow proving:
+Execute every evaluation shard with persistent work directories. Then:
 
-- real training;
-- bounded atomic checkpoint creation;
-- cooperative completed-episode interruption and resume;
-- one exact dependent evaluation;
-- aggregation;
-- executable verification;
-- rendering;
-- bundle export and verification;
-- tamper rejection;
-- bounded stdout/stderr;
-- no more than the configured physical checkpoint count.
+```bash
+source '<CONFIRMED_PATH>/.hoodie-run-root.env'
+bash scripts/hoodie/corrected_campaign.sh import-evaluation
+bash scripts/hoodie/corrected_campaign.sh status
+```
 
-Label all tiny outputs `ACCEPTANCE ONLY — NOT PAPER-SCALE RESULT`.
+Finalize only when status proves 305/305 completed, zero failed, zero interrupted, zero missing, complete panel coverage, and exact checkpoint SHA dependencies:
 
-## Production transition
+```bash
+source '<CONFIRMED_PATH>/.hoodie-run-root.env'
+bash scripts/hoodie/corrected_campaign.sh finalize
+```
 
-Only after all validation and the tiny clean-checkout acceptance workflow pass:
+## Storage and checkpoint safety
 
-1. ask the user for explicit approval to begin the paper-scale run;
-2. rerun `validate_run_root.py` against the same confirmed path immediately before export;
-3. freeze the exact runtime SHA, matrix hash, source-contract hash, and shard plan;
-4. export training shards;
-5. run training before evaluation on the configured Claude Code/worker environment;
-6. import only completed checksum-verified result bundles;
-7. audit all selected checkpoints and their exact SHA-256 dependencies;
-8. export and run evaluation shards;
-9. aggregate panel-specific datasets;
-10. run executable scientific verification;
-11. render Figures 8–11;
-12. create and verify the reproducibility bundle.
+Maintain at least 20 GiB and 10% free space. Use one physical checkpoint per training job by default and one latest replay snapshot at most. Checkpoints must be atomic and must not embed task, decision, transition, aggregate, or figure datasets. Never write runtime output into Git.
 
-Do not start the paper-scale workload on an unsuitable local CPU host. Never claim completion from metadata-only or manually assigned success booleans.
+## Final evidence
 
-## Git workflow
-
-Work only on `chatgpt/experiment-correctness-20260716`. Use small coherent commits and normal pushes. Do not merge into target or main. Do not mark the PR ready until all gates and clean-checkout validation pass.
-
-## Final report
-
-Report the exact branch/SHA, confirmed output root, output-root validation results, changed files, commands, complete test counts, gate results, clean-checkout evidence, checkpoint size/retention, campaign and shard counts, training/evaluation dependency proof, aggregate/figure/bundle paths, and confirmation that no PID was killed and the paused legacy campaign was untouched.
+Report exact remote SHA, output root, smoke output, full validation result and pytest counts, corrected campaign ID, 17/288/305 counts, backend, training and evaluation completion counts, checkpoint sizes/hashes, final status, aggregate/verification/figure/bundle paths, and confirmation that no PID was killed and the paused legacy campaign was untouched.
