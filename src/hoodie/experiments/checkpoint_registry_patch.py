@@ -2,6 +2,7 @@ from __future__ import annotations
 
 from dataclasses import asdict
 from hashlib import sha256
+import json
 from pathlib import Path
 from typing import Any
 
@@ -39,7 +40,7 @@ def register_training_checkpoint(
         raise ValueError("selected checkpoint must contain a dictionary")
     metadata_path = checkpoint_dir / "metadata.json"
     metadata = (
-        production.json.loads(metadata_path.read_text(encoding="utf-8"))
+        json.loads(metadata_path.read_text(encoding="utf-8"))
         if metadata_path.is_file()
         else {}
     )
