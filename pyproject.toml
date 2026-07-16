@@ -4,22 +4,34 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "hoodie-sim-v2"
-version = "0.1.0"
-description = "Deterministic HOODIE kernel and evaluation harness"
+version = "0.2.0"
+description = "Deterministic distributed HOODIE training, evaluation, and reproduction harness"
 requires-python = ">=3.11"
 readme = "README.md"
 license = { text = "Proprietary" }
-dependencies = []
+dependencies = [
+  "matplotlib>=3.8",
+  "numpy>=1.26",
+  "torch>=2.2",
+]
+
+[project.optional-dependencies]
+dev = [
+  "pytest>=8.0",
+]
 
 [project.scripts]
+hoodie-experiments = "src.hoodie.experiments.cli:main"
 hoodie-smoke = "hoodie.cli:main"
 
 [tool.setuptools]
-package-dir = {"" = "src"}
+package-dir = {"" = "."}
+include-package-data = true
 
 [tool.setuptools.packages.find]
-where = ["src"]
-include = ["hoodie*"]
+where = ["."]
+include = ["src*", "hoodie*"]
+exclude = ["tests*", "tests_historical*", "artifacts*", "resources*"]
 
 [tool.pytest.ini_options]
 testpaths = ["tests_supported/hoodie"]
