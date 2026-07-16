@@ -13,3 +13,7 @@ from .campaign import campaign_status, resume_production_campaign, run_productio
 from .distributed_import_patch import install_distributed_import_patch
 
 install_distributed_import_patch()
+
+from .runtime_path_patch import install_runtime_path_patch
+
+install_runtime_path_patch()
