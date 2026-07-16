@@ -1,10 +1,10 @@
 #!/usr/bin/env python3
 """Inventory every tracked and untracked repository file and enforce policy.
 
-The command is read-only except for its optional report directory. Ignored
-virtual environments, caches, and runtime trees are counted but are not hashed;
-this prevents an audit from reading hundreds of gigabytes of intentionally
-ignored checkpoint data.
+The audit is read-only except for its optional report directory. Ignored files
+are counted but never opened or hashed, so an old checkpoint tree or virtual
+environment cannot make the audit consume the disk or memory it is meant to
+protect.
 """
 
 from __future__ import annotations
@@ -60,6 +60,7 @@ CRITICAL_TOP_LEVEL_FUNCTIONS = {
     "run_shard",
     "import_shard_results",
     "finalize_campaign",
+    "verify_campaign",
 }
 MACHINE_LOCAL_PATTERN = re.compile(
     r"(?:/Users/[^/]+/|/home/[^/]+/|[A-Za-z]:\\Users\\)"
@@ -74,7 +75,12 @@ ACTIVE_PORTABILITY_PREFIXES = (
     "docs/architecture/",
     "docs/runbooks/",
 )
-ACTIVE_PORTABILITY_EXACT = {"README.md", "AGENTS.md", "pyproject.toml"}
+ACTIVE_PORTABILITY_EXACT = {
+    "README.md",
+    "AGENTS.md",
+    "pyproject.toml",
+    "requirements.txt",
+}
 
 
 @dataclass(frozen=True, slots=True)
@@ -155,12 +161,16 @@ def classify(path: str) -> tuple[str, str, str]:
         "requirements.txt",
         "requirements-dev.txt",
         ".gitignore",
+        ".gitattributes",
+        ".editorconfig",
         "AGENTS.md",
         "Dockerfile",
         "Makefile",
         "package.json",
         "package-lock.json",
         "uv.lock",
+        "tox.ini",
+        "pytest.ini",
     }:
         return "active configuration", "keep", "not removable"
     if path.startswith(("resources/papers/hoodie/", "references/")):
@@ -179,6 +189,7 @@ def classify(path: str) -> tuple[str, str, str]:
         ".jpg",
         ".jpeg",
         ".svg",
+        ".gif",
     }:
         return (
             "required documentation",
@@ -198,6 +209,7 @@ def classify(path: str) -> tuple[str, str, str]:
             "artifacts/reports/",
             "artifacts/smoke/",
             "artifacts/test_triage/",
+            "artifacts/reconciliation/",
         )
     ):
         return (
@@ -205,11 +217,23 @@ def classify(path: str) -> tuple[str, str, str]:
             "move to archive or external release storage",
             "safe after hash/index verification",
         )
+    if path.startswith("artifacts/hoodie/source_contracts/"):
+        return (
+            "approved scientific reference",
+            "migrate to resources/papers/hoodie/contracts when references permit",
+            "manual review",
+        )
     if path.startswith("artifacts/hoodie/"):
         return (
             "generated experiment output",
             "untrack and store under HOODIE_RUN_ROOT",
             "safe after reference verification",
+        )
+    if path.startswith("artifacts/"):
+        return (
+            "historical evidence",
+            "archive or move to external release storage",
+            "safe after hash/index verification",
         )
     if path.startswith(
         (".claude/", ".claude-flow/", ".opencode/", ".swarm/")
@@ -228,7 +252,16 @@ def classify(path: str) -> tuple[str, str, str]:
             "safe after hash/index verification",
         )
     if lower.endswith(
-        (".log", ".pid", ".sock", ".pt", ".pth", ".ckpt", ".safetensors", ".jsonl")
+        (
+            ".log",
+            ".pid",
+            ".sock",
+            ".pt",
+            ".pth",
+            ".ckpt",
+            ".safetensors",
+            ".jsonl",
+        )
     ):
         return (
             "runtime state",
@@ -241,21 +274,31 @@ def classify(path: str) -> tuple[str, str, str]:
         ".js",
         ".cjs",
         ".mjs",
+        ".ts",
     }:
         return "core source", "keep", "not removable"
-    if suffix in {".toml", ".yaml", ".yml", ".json", ".ini", ".cfg"}:
+    if suffix in {
+        ".toml",
+        ".yaml",
+        ".yml",
+        ".json",
+        ".ini",
+        ".cfg",
+        ".lock",
+        ".conf",
+    }:
         return (
             "active configuration",
             "review and keep if referenced",
             "manual review",
         )
-    if suffix in {".csv", ".tsv", ".xml", ".html"}:
+    if suffix in {".csv", ".tsv", ".xml", ".html", ".parquet"}:
         return (
             "historical evidence",
             "review data provenance and archive",
             "manual review",
         )
-    if name in {"LICENSE", "NOTICE", "CITATION.cff"}:
+    if name in {"LICENSE", "NOTICE", "CITATION.cff", "CODEOWNERS"}:
         return "required documentation", "keep", "not removable"
     return "unknown/manual review", "classify manually", "unsafe"
 
@@ -266,7 +309,9 @@ def last_commit_map(root: Path, tracked: set[str]) -> dict[str, str]:
     output = run_git(root, "log", "--format=%x1e%H", "--name-only", check=False)
     current: str | None = None
     result: dict[str, str] = {}
-    for raw_line in output.decode("utf-8", errors="replace").splitlines():
+    # Do not use splitlines(): Python treats the record separator as a line
+    # boundary and would discard the marker used to identify commits.
+    for raw_line in output.decode("utf-8", errors="replace").split("\n"):
         if raw_line.startswith("\x1e"):
             current = raw_line[1:].strip()
             continue
@@ -369,18 +414,15 @@ def inventory(root: Path) -> tuple[list[FileRecord], dict[str, object]]:
     untracked = sorted(
         nul_paths(run_git(root, "ls-files", "--others", "--exclude-standard", "-z"))
     )
-    ignored_count = len(
-        nul_paths(
-            run_git(
-                root,
-                "ls-files",
-                "--others",
-                "--ignored",
-                "--exclude-standard",
-                "-z",
-            )
-        )
+    ignored_payload = run_git(
+        root,
+        "ls-files",
+        "--others",
+        "--ignored",
+        "--exclude-standard",
+        "-z",
     )
+    ignored_count = ignored_payload.count(b"\0")
 
     tracked_set = set(tracked)
     all_paths = sorted(tracked_set | set(untracked))
@@ -424,6 +466,9 @@ def inventory(root: Path) -> tuple[list[FileRecord], dict[str, object]]:
     )
     duplicate_issues = python_duplicate_issues(root, tracked)
     machine_paths, blocking_machine_paths = machine_local_path_issues(root, tracked)
+    dirty_entries = nul_paths(
+        run_git(root, "status", "--porcelain=v1", "-z", "--untracked-files=all")
+    )
     category_counts: dict[str, int] = {}
     for record in records:
         category_counts[record.category] = category_counts.get(record.category, 0) + 1
@@ -432,6 +477,8 @@ def inventory(root: Path) -> tuple[list[FileRecord], dict[str, object]]:
         "repository_root": str(root),
         "head": run_git(root, "rev-parse", "HEAD").decode().strip(),
         "branch": run_git(root, "branch", "--show-current").decode().strip(),
+        "working_tree_clean": not dirty_entries,
+        "dirty_entries": dirty_entries,
         "tracked_files": len(tracked),
         "untracked_files": len(untracked),
         "ignored_files_not_hashed": ignored_count,
@@ -445,7 +492,8 @@ def inventory(root: Path) -> tuple[list[FileRecord], dict[str, object]]:
         "duplicate_python_definitions": duplicate_issues,
         "machine_local_paths_all": machine_paths,
         "machine_local_paths_blocking": blocking_machine_paths,
-        "passed": not forbidden_tracked
+        "passed": not dirty_entries
+        and not forbidden_tracked
         and not unknown_tracked
         and not duplicate_issues
         and not blocking_machine_paths,
@@ -517,6 +565,7 @@ def main() -> int:
     concise = {
         "passed": summary["passed"],
         "head": summary["head"],
+        "working_tree_clean": summary["working_tree_clean"],
         "tracked_files": summary["tracked_files"],
         "untracked_files": summary["untracked_files"],
         "forbidden_tracked_count": len(summary["forbidden_tracked_paths"]),
