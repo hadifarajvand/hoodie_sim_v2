@@ -80,7 +80,7 @@ def test_each_learner_uses_exact_topology_destinations() -> None:
         assert agent.learner.learner.online_network.num_actions == len(expected)
 
 
-def test_destination_specific_action_is_selected_and_validated() -> None:
+def test_destination_specific_action_is_selected_and_evidenced() -> None:
     policy = _policy(10)
     agent = policy.learner_for(1)
     assert agent.action_order == ("local", "horizontal_6", "cloud")
@@ -95,6 +95,20 @@ def test_destination_specific_action_is_selected_and_validated() -> None:
     selected = policy.choose_action(context)
     assert selected == "horizontal_6"
     assert select_legal_action(context, selected) == selected
+    assert context.observation["hoodie_action_order"] == (
+        "local",
+        "horizontal_6",
+        "cloud",
+    )
+    assert context.observation["hoodie_legal_actions"] == (
+        "local",
+        "horizontal_6",
+        "cloud",
+    )
+    q_values = context.observation["hoodie_q_value_summary"]
+    assert isinstance(q_values, dict)
+    assert q_values["horizontal_6"] > q_values["local"]
+    assert q_values["horizontal_6"] > q_values["cloud"]
 
     with pytest.raises(ValueError, match="Illegal horizontal destination"):
         select_legal_action(context, "horizontal_2")
@@ -151,6 +165,23 @@ def test_checkpoint_roundtrip_preserves_destination_vocabulary() -> None:
         "cloud",
     )
     assert restored.learner_for(1).learner.learner.action_dim == 3
+    restored.validate_topology(TopologyGraph.for_agent_count(10))
+
+
+def test_checkpoint_action_vocabulary_must_match_evaluation_topology() -> None:
+    policy = _policy(10)
+    policy.learner_for(1).learner.action_order = (
+        "local",
+        "horizontal_2",
+        "cloud",
+    )
+    policy.learner_for(1).learner.ACTION_ORDER = (
+        "local",
+        "horizontal_2",
+        "cloud",
+    )
+    with pytest.raises(ValueError, match="action vocabulary mismatch"):
+        policy.validate_topology(TopologyGraph.for_agent_count(10))
 
 
 def test_new_trace_resets_recurrent_history_without_erasing_replay() -> None:
