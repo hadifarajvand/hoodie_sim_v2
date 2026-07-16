@@ -16,6 +16,7 @@ class TaskEvaluationRecord:
     selected_action: str | None
     resolved_destination: str | None
     delay: int | None
+    source_agent_id: int | None = None
 
 
 @dataclass(slots=True)
