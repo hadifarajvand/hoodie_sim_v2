@@ -13,25 +13,32 @@ BUNDLE_DIR="$(cd "$1" && pwd)"
 WORK_DIR="$2"
 MAX_RUNTIME="${3:-}"
 MANIFEST="$BUNDLE_DIR/shard_manifest.json"
-[[ -f "$MANIFEST" ]] || { echo "Missing shard manifest: $MANIFEST" >&2; exit 1; }
+[[ -f "$MANIFEST" ]] || {
+  echo "Missing shard manifest: $MANIFEST" >&2
+  exit 1
+}
 mkdir -p "$WORK_DIR"
 
-readarray -t IDENTIFIERS < <(python - "$MANIFEST" <<'PY'
+IFS=$'\t' read -r CAMPAIGN_ID SHARD_ID PHASE SOURCE_COMMIT < <(
+  python - "$MANIFEST" <<'PY'
 import json
 import pathlib
 import sys
 payload = json.loads(pathlib.Path(sys.argv[1]).read_text(encoding="utf-8"))
-print(payload["campaign_id"])
-print(payload["shard_id"])
-print(payload["phase"])
-print(payload["source_commit"])
+values = (
+    payload["campaign_id"],
+    payload["shard_id"],
+    payload["phase"],
+    payload["source_commit"],
+)
+print("\t".join(str(value) for value in values))
 PY
 )
-CAMPAIGN_ID="${IDENTIFIERS[0]}"
-SHARD_ID="${IDENTIFIERS[1]}"
-PHASE="${IDENTIFIERS[2]}"
-SOURCE_COMMIT="${IDENTIFIERS[3]}"
 
+[[ -n "$CAMPAIGN_ID" && -n "$SHARD_ID" && -n "$PHASE" && -n "$SOURCE_COMMIT" ]] || {
+  echo "Shard manifest identifiers are incomplete" >&2
+  exit 1
+}
 [[ "$CAMPAIGN_ID" == figures-8-11-corrected-* ]] || {
   echo "Refusing unexpected campaign: $CAMPAIGN_ID" >&2
   exit 1
@@ -47,19 +54,41 @@ CURRENT_COMMIT="$(git rev-parse HEAD)"
   exit 1
 }
 
-python - <<'PY'
+export HOODIE_DEVICE="${HOODIE_DEVICE:-cpu}"
+python - "$HOODIE_DEVICE" <<'PY'
 import json
 import platform
+import sys
 import torch
+
+device = sys.argv[1].lower()
+family = device.split(":", 1)[0]
+if family == "cuda" and not torch.cuda.is_available():
+    raise SystemExit(f"CUDA device requested but unavailable: {device}")
+if family == "mps" and not (
+    getattr(torch.backends, "mps", None) is not None
+    and torch.backends.mps.is_available()
+):
+    raise SystemExit("MPS device requested but unavailable")
+if family not in {"cpu", "cuda", "mps"}:
+    raise SystemExit(f"Unsupported HOODIE_DEVICE: {device}")
 print(json.dumps({
     "python": platform.python_version(),
     "pytorch": torch.__version__,
+    "hoodie_device": device,
     "cuda_available": torch.cuda.is_available(),
-    "mps_available": bool(getattr(torch.backends, "mps", None) and torch.backends.mps.is_available()),
+    "mps_available": bool(
+        getattr(torch.backends, "mps", None)
+        and torch.backends.mps.is_available()
+    ),
 }, sort_keys=True))
 PY
 
-COMMAND=(python -m hoodie.experiments run-shard --bundle "$BUNDLE_DIR" --work-dir "$WORK_DIR")
+COMMAND=(
+  python -m hoodie.experiments run-shard
+  --bundle "$BUNDLE_DIR"
+  --work-dir "$WORK_DIR"
+)
 if [[ -n "$MAX_RUNTIME" ]]; then
   COMMAND+=(--max-runtime-seconds "$MAX_RUNTIME")
 fi
@@ -83,7 +112,8 @@ PY
 if [[ "$STATUS" != "completed" ]]; then
   cat >&2 <<EOF
 Shard $SHARD_ID ($PHASE) is $STATUS.
-Preserve this exact work directory and run the same command again to resume it.
+Preserve this exact work directory and run the same command again. The executor
+rolls back to its latest completed episode boundary before resuming.
 Do not import this result bundle until status is completed.
 EOF
   exit 3
