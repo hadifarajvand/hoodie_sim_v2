@@ -31,9 +31,10 @@ class ReplayTrainablePolicy(SharedPolicy, Protocol):
     ) -> None:
         """Persist one replay transition."""
 
-    def learn_from_replay(self, batch_size: int, learning_rate: float) -> int:
-        """Run one replay-backed learner step when enough data exists."""
+    def learn_from_replay(
+        self, batch_size: int, learning_rate: float
+    ) -> float | None:
+        """Run one replay-backed learner step and return its loss when available."""
 
     def sync_target_network(self) -> None:
         """Synchronize online and target parameters when policy uses them."""
-
