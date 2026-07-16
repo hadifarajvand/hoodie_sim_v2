@@ -7,6 +7,12 @@ from .production_patch import install_production_patch
 
 install_production_patch()
 
+from .exact_horizontal_runtime_patch import (
+    install_exact_horizontal_runtime_patch,
+)
+
+install_exact_horizontal_runtime_patch()
+
 from .backend_resolution_patch import install_backend_resolution_patch
 
 install_backend_resolution_patch()
