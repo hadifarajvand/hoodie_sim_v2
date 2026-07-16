@@ -87,15 +87,22 @@ def test_contract_sweeps_reach_runtime_configuration() -> None:
         and row.independent_value == 7
     )
     runtime = build_environment_config(cpu, PANEL_REGISTRY[cpu.panel_id].source_contract)
-    assert runtime.local_service_capacity == 7
-    assert runtime.public_service_capacity == 7
+    assert runtime.local_service_capacity == 0.7
+    assert runtime.public_service_capacity == 0.7
+    assert runtime.cloud_service_capacity == 3.0
 
-    rate = next(row for row in rows if row.panel_id == "figure_9e" and row.series_name == "Balanced")
+    rate = next(
+        row
+        for row in rows
+        if row.panel_id == "figure_9e" and row.series_name == "Balanced"
+    )
     links = build_link_rate_config(rate, PANEL_REGISTRY[rate.panel_id].source_contract)
     assert links.horizontal_data_rate_mbps == 10
     assert links.vertical_data_rate_mbps == 30
 
-    training = next(row for row in rows if row.job_id == "train-figure8a-lr-7e-07")
+    training = next(
+        row for row in rows if row.job_id == "train-figure8a-lr-7e-07"
+    )
     config = build_training_config(
         training,
         PANEL_REGISTRY[training.panel_id].source_contract,
