@@ -38,10 +38,13 @@ class EvaluationRunner:
         agent_count = (
             self.topology.node_count()
             if self.topology is not None
-            else int(getattr(self.runtime_parameters, "agent_count", 20) or 20)
+            else int(
+                getattr(self.runtime_parameters, "agent_count", 20) or 20
+            )
         )
         arrival_probability = float(
-            getattr(self.runtime_parameters, "arrival_probability", 1.0) or 1.0
+            getattr(self.runtime_parameters, "arrival_probability", 1.0)
+            or 1.0
         )
         timeout_slots = int(
             getattr(self.runtime_parameters, "timeout_slots", 20) or 20
@@ -58,15 +61,29 @@ class EvaluationRunner:
             processing_density=self.processing_density,
         )
 
+    def _validate_policy_topology(self) -> None:
+        validator = getattr(self.policy, "validate_topology", None)
+        if callable(validator):
+            if self.topology is None:
+                raise ValueError(
+                    "a destination-aware policy requires an explicit topology"
+                )
+            validator(self.topology)
+
     def _evaluate_episode(self, trace: EvaluationTrace) -> TraceMetrics:
-        runtime_parameters = self.runtime_parameters or SharedRuntimeParameters()
+        self._validate_policy_topology()
+        runtime_parameters = (
+            self.runtime_parameters or SharedRuntimeParameters()
+        )
         env = EvaluationHoodieGymEnvironment(
             episode_length=self.config.episode_length,
             topology=self.topology,
             runtime_parameters=runtime_parameters,
             compute_config=runtime_parameters.to_compute_config(),
             link_rate_config=self.link_rate_config
-            or LinkRateConfig(slot_duration_seconds=runtime_parameters.slot_duration),
+            or LinkRateConfig(
+                slot_duration_seconds=runtime_parameters.slot_duration
+            ),
             policy_name=self.config.policy_name,
             supplied_trace=trace,
         )
@@ -75,7 +92,9 @@ class EvaluationRunner:
         decision_by_task: dict[int, dict[str, object]] = {}
 
         while True:
-            _observation, _reward, terminated, truncated, info = env.step_slot(self.policy)
+            _observation, _reward, terminated, truncated, info = env.step_slot(
+                self.policy
+            )
             for decision in info.get("decision_events", []):
                 decision_by_task[int(decision["task_id"])] = dict(decision)
             for finalized in info.get("finalized_tasks", []):
@@ -87,16 +106,36 @@ class EvaluationRunner:
                     else None
                 )
                 decision = decision_by_task.get(task_id, {})
+                state = decision.get("state", {})
+                decision_observation = (
+                    {str(key): value for key, value in state.items()}
+                    if isinstance(state, dict)
+                    else {}
+                )
+                raw_mask = decision.get("legal_action_mask", {})
+                legal_action_mask = (
+                    {
+                        str(key): bool(value)
+                        for key, value in raw_mask.items()
+                    }
+                    if isinstance(raw_mask, dict)
+                    else {}
+                )
                 records_by_task[task_id] = TaskEvaluationRecord(
                     task_id=task_id,
                     arrival_slot=int(finalized["arrival_slot"]),
                     completion_slot=completion_slot,
                     terminal_outcome=terminal_outcome,
                     selected_action=finalized.get("selected_action"),
-                    resolved_destination=finalized.get("resolved_destination"),
+                    resolved_destination=finalized.get(
+                        "resolved_destination"
+                    ),
                     delay=(
-                        completion_slot - int(finalized["arrival_slot"]) + 1
-                        if terminal_outcome == "completed" and completion_slot is not None
+                        completion_slot
+                        - int(finalized["arrival_slot"])
+                        + 1
+                        if terminal_outcome == "completed"
+                        and completion_slot is not None
                         else None
                     ),
                     source_agent_id=(
@@ -104,6 +143,13 @@ class EvaluationRunner:
                         if decision.get("source_agent_id") is not None
                         else None
                     ),
+                    decision_slot=(
+                        int(decision["decision_slot"])
+                        if decision.get("decision_slot") is not None
+                        else None
+                    ),
+                    legal_action_mask=legal_action_mask,
+                    decision_observation=decision_observation,
                 )
             if terminated or truncated:
                 break
