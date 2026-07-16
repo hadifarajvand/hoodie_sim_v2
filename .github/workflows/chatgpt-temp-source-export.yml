@@ -1,0 +1,25 @@
+name: ChatGPT temporary source export
+
+on:
+  pull_request:
+    branches:
+      - main
+
+permissions:
+  contents: read
+
+jobs:
+  export:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Create source archive
+        run: tar --exclude=.git -czf hoodie_sim_v2-source.tar.gz .
+      - name: Upload source archive
+        uses: actions/upload-artifact@v4
+        with:
+          name: hoodie_sim_v2-source
+          path: hoodie_sim_v2-source.tar.gz
+          if-no-files-found: error
+          retention-days: 1
