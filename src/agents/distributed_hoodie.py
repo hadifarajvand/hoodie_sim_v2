@@ -6,16 +6,12 @@ from typing import Any
 from src.policies.policy_interface import PolicyContext
 
 from .hoodie_agent import HoodieAgent
+from .recurrent_ddqn import RecurrentDoubleDQNAgent
 
 
 @dataclass(slots=True)
 class DistributedHoodiePolicy:
-    """One independently trained HOODIE learner per Edge Agent.
-
-    The simulator presents tasks sequentially at a synchronized slot boundary. This
-    dispatcher uses ``source_agent_id`` to route every decision and delayed reward to
-    the learner that owns that source EA, while retaining one shared physical environment.
-    """
+    """One independently trained HOODIE learner per Edge Agent."""
 
     agents: dict[str, HoodieAgent]
     policy_name: str = "HOODIE"
@@ -34,6 +30,9 @@ class DistributedHoodiePolicy:
         replay_capacity: int,
         target_update_interval: int,
         device_name: str | None = None,
+        hidden_dims: tuple[int, ...] = (1024, 1024, 1024),
+        lookback: int = 10,
+        lstm_hidden: int = 20,
     ) -> "DistributedHoodiePolicy":
         if agent_count <= 0:
             raise ValueError("agent_count must be positive")
@@ -48,6 +47,9 @@ class DistributedHoodiePolicy:
                     replay_capacity=replay_capacity,
                     target_update_interval=target_update_interval,
                     device_name=device_name,
+                    hidden_dims=hidden_dims,
+                    lookback=lookback,
+                    lstm_hidden=lstm_hidden,
                 )
                 for index in range(1, agent_count + 1)
             }
@@ -61,6 +63,8 @@ class DistributedHoodiePolicy:
     def use_lstm(self, enabled: bool) -> None:
         for agent in self.agents.values():
             agent.use_lstm = bool(enabled)
+            if isinstance(agent.learner, RecurrentDoubleDQNAgent):
+                agent.learner.use_lstm = bool(enabled)
 
     @property
     def exploration_epsilon(self) -> float:
@@ -127,36 +131,51 @@ class DistributedHoodiePolicy:
         return sum(len(agent.learner.replay) for agent in self.agents.values())
 
     def optimizer_step_count(self) -> int:
-        return sum(agent.learner.learner.training_steps for agent in self.agents.values())
+        return sum(
+            agent.learner.learner.training_steps for agent in self.agents.values()
+        )
 
     def target_copy_count(self) -> int:
-        return sum(agent.learner.learner.target_update_steps for agent in self.agents.values())
+        return sum(
+            agent.learner.learner.target_update_steps for agent in self.agents.values()
+        )
 
     def device_string(self) -> str:
-        devices = {str(agent.learner.learner.device) for agent in self.agents.values()}
+        devices = {
+            str(agent.learner.learner.device) for agent in self.agents.values()
+        }
         if len(devices) != 1:
-            raise ValueError(f"mixed learner devices are unsupported: {sorted(devices)}")
+            raise ValueError(
+                f"mixed learner devices are unsupported: {sorted(devices)}"
+            )
         return next(iter(devices))
 
     def export_state(self) -> dict[str, Any]:
         device_string = self.device_string()
         return {
-            "schema_version": 1,
+            "schema_version": 2,
             "policy_name": self.policy_name,
             "policy_kind": "distributed_hoodie",
             "agent_count": len(self.agents),
-            "agents": {key: agent.export_state() for key, agent in sorted(self.agents.items())},
+            "agents": {
+                key: agent.export_state()
+                for key, agent in sorted(self.agents.items())
+            },
             "backend_type": device_string.split(":", 1)[0],
             "device_string": device_string,
         }
 
     @classmethod
     def from_state(cls, state: dict[str, Any]) -> "DistributedHoodiePolicy":
-        policy_state = state.get("policy_state") if isinstance(state.get("policy_state"), dict) else state
-        agents_payload = policy_state.get("agents") if isinstance(policy_state, dict) else None
+        policy_state = (
+            state.get("policy_state")
+            if isinstance(state.get("policy_state"), dict)
+            else state
+        )
+        agents_payload = (
+            policy_state.get("agents") if isinstance(policy_state, dict) else None
+        )
         if not isinstance(agents_payload, dict) or not agents_payload:
-            # Backward compatibility: a legacy single learner becomes EA 1 only. The
-            # readiness gate prevents using this conversion for a different topology.
             return cls(agents={"1": HoodieAgent.from_state(policy_state)})
         return cls(
             agents={
