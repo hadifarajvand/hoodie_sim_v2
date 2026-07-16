@@ -212,7 +212,9 @@ class HoodieAgent(ReplayTrainablePolicy):
             raise ValueError("task_id is required for replay-safe HOODIE decisions")
         task_id = str(task_id_value)
         if task_id in self.decision_windows:
-            raise RuntimeError(f"duplicate unresolved HOODIE decision for task {task_id}")
+            raise RuntimeError(
+                f"duplicate unresolved HOODIE decision for task {task_id}"
+            )
 
         legal_actions = self._legal_actions(
             context.legal_action_mask, context.observation
@@ -222,6 +224,14 @@ class HoodieAgent(ReplayTrainablePolicy):
         action = self.learner.select(
             state, legal_actions, epsilon=self.exploration_epsilon
         )
+        q_summary = getattr(self.learner, "q_value_summary", None)
+        context.observation["hoodie_action_order"] = self.action_order
+        context.observation["hoodie_legal_actions"] = legal_actions
+        context.observation["hoodie_exploration_epsilon"] = float(
+            self.exploration_epsilon
+        )
+        if callable(q_summary):
+            context.observation["hoodie_q_value_summary"] = q_summary()
         self.decision_windows[task_id] = state.tolist()
         self.history_builder.record(context)
         self.causal_history.append(features)
@@ -241,7 +251,9 @@ class HoodieAgent(ReplayTrainablePolicy):
         del delta_slots
         task_id_value = state.get("task_id")
         if task_id_value is None:
-            raise ValueError("task_id is required to join a delayed reward to its decision")
+            raise ValueError(
+                "task_id is required to join a delayed reward to its decision"
+            )
         task_id = str(task_id_value)
         normalized_action = self._normalize_action(action)
         action_index = self.action_order.index(normalized_action)
@@ -280,7 +292,7 @@ class HoodieAgent(ReplayTrainablePolicy):
         try:
             legal = set(self._legal_actions(mask, next_state))
         except ValueError:
-            # A terminal observation may be empty.  The mask is irrelevant when
+            # A terminal observation may be empty. The mask is irrelevant when
             # done=True, but a correctly shaped replay value is still required.
             if not done:
                 raise
