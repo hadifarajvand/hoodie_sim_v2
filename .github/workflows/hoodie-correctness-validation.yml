@@ -1,5 +1,7 @@
 name: HOODIE repository and scientific validation
 
+# This workflow validates repository policy and scientific preflight only.
+# It never launches the paper-scale campaign.
 on:
   push:
     branches:
@@ -46,6 +48,12 @@ jobs:
 
       - name: Upgrade packaging tools
         run: python -m pip install --upgrade pip
+
+      - name: Enforce canonical repository consolidation
+        run: |
+          python scripts/audit/repository_consolidation_gate.py \
+            --check \
+            --report /tmp/hoodie-runs/audits/repository/consolidation_gate.json
 
       - name: Run bounded full validation
         run: bash scripts/hoodie/corrected_campaign.sh validate
