@@ -11,6 +11,10 @@ from .checkpoint_storage_patch import install_checkpoint_storage_patch
 
 install_checkpoint_storage_patch()
 
+from .checkpoint_registry_patch import install_checkpoint_registry_patch
+
+install_checkpoint_registry_patch()
+
 from .episode_atomic_checkpoint_patch import (
     install_episode_atomic_checkpoint_patch,
 )
