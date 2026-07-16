@@ -4,6 +4,7 @@
   "finalization_runs_real_stages": true,
   "import_promotes_real_outputs": true,
   "matrix_hash": "d783f1a606a609c3e29d6bb11df975c0fed44dabf048801cc69f47d3a1feda09",
+  "packaging_commit_sha": null,
   "placeholder_execution_paths_remaining": 0,
   "production_campaign_executed_locally": false,
   "production_job_count": 284,
@@ -11,8 +12,8 @@
   "resource_plan_total_jobs": 284,
   "result_bundles_contain_real_outputs": true,
   "run_shard_executes_real_jobs": true,
+  "runtime_code_sha": "d78d120ad6f9fb5d4271bbda30c826fde205258a",
   "shard_plan_path": "artifacts/hoodie/implementation_run/campaign/shard_plan.json",
-  "source_commit": "ref: refs/heads/hoodie-redesign/local-implementation-20260715-075600",
   "total_shard_count": 96,
   "training_shard_count": 48
 }
