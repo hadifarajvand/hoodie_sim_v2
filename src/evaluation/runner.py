@@ -4,6 +4,7 @@ from dataclasses import dataclass
 from typing import Protocol, runtime_checkable
 
 from src.environment.evaluation_gym_adapter import EvaluationHoodieGymEnvironment
+from src.environment.link_rate_config import LinkRateConfig
 from src.environment.runtime_model import SharedRuntimeParameters
 from src.environment.topology import TopologyGraph
 
@@ -22,23 +23,29 @@ class PolicyProtocol(Protocol):
 
 @dataclass(slots=True)
 class EvaluationRunner:
-    """Run one policy on paired, synchronized cloud-edge task traces."""
+    """Run one policy on deterministic, paired cloud-edge task traces."""
 
     policy: PolicyProtocol
     config: EvaluationConfig
     topology: TopologyGraph | None = None
     runtime_parameters: SharedRuntimeParameters | None = None
+    link_rate_config: LinkRateConfig | None = None
+    task_sizes: tuple[float, ...] | None = None
+    processing_density: float = 0.297
 
     def _trace_for_episode(self, episode_index: int) -> EvaluationTrace:
         trace_id = f"{self.config.trace_id}-{episode_index}"
-        if self.topology is not None:
-            agent_count = len([node for node in self.topology.node_ids if node != "cloud"])
-        else:
-            agent_count = int(getattr(self.runtime_parameters, "agent_count", 20) or 20)
+        agent_count = (
+            self.topology.node_count()
+            if self.topology is not None
+            else int(getattr(self.runtime_parameters, "agent_count", 20) or 20)
+        )
         arrival_probability = float(
             getattr(self.runtime_parameters, "arrival_probability", 1.0) or 1.0
         )
-        timeout_slots = int(getattr(self.runtime_parameters, "timeout_slots", 20) or 20)
+        timeout_slots = int(
+            getattr(self.runtime_parameters, "timeout_slots", 20) or 20
+        )
         return build_deterministic_trace(
             trace_id,
             self.config.seed + episode_index,
@@ -47,6 +54,8 @@ class EvaluationRunner:
             arrival_probability=arrival_probability,
             timeout_length=timeout_slots,
             drain_slots=self.config.drain_slots,
+            task_sizes=self.task_sizes,
+            processing_density=self.processing_density,
         )
 
     def _evaluate_episode(self, trace: EvaluationTrace) -> TraceMetrics:
@@ -56,6 +65,9 @@ class EvaluationRunner:
             topology=self.topology,
             runtime_parameters=runtime_parameters,
             compute_config=runtime_parameters.to_compute_config(),
+            link_rate_config=self.link_rate_config or LinkRateConfig(
+                slot_duration_seconds=runtime_parameters.slot_duration
+            ),
             policy_name=self.config.policy_name,
             supplied_trace=trace,
         )
@@ -80,7 +92,7 @@ class EvaluationRunner:
                     selected_action=finalized.get("selected_action"),
                     resolved_destination=finalized.get("resolved_destination"),
                     delay=(
-                        completion_slot - int(finalized["arrival_slot"])
+                        completion_slot - int(finalized["arrival_slot"]) + 1
                         if terminal_outcome == "completed" and completion_slot is not None
                         else None
                     ),
