@@ -74,6 +74,14 @@ class HoodieAgent(ReplayTrainablePolicy):
             use_lstm=use_lstm,
         )
 
+    def _history_limit(self) -> int:
+        return self.learner.lookback if isinstance(self.learner, RecurrentDoubleDQNAgent) else 1
+
+    def _trim_history(self) -> None:
+        limit = self._history_limit()
+        if len(self.causal_history) > limit:
+            del self.causal_history[:-limit]
+
     def _feature_vector(
         self, context: PolicyContext | dict[str, object]
     ) -> tuple[float, ...]:
@@ -132,6 +140,7 @@ class HoodieAgent(ReplayTrainablePolicy):
         self.decision_windows[task_id] = state.tolist()
         self.history_builder.record(context)
         self.causal_history.append(features)
+        self._trim_history()
         return action
 
     def record_transition(
@@ -215,10 +224,12 @@ class HoodieAgent(ReplayTrainablePolicy):
             learner, (DoubleDQNAgent, RecurrentDoubleDQNAgent)
         ):
             self.learner = learner
+            self._trim_history()
 
     def export_state(self) -> dict[str, Any]:
+        self._trim_history()
         return {
-            "schema_version": 4,
+            "schema_version": 5,
             "policy_name": self.policy_name,
             "use_lstm": self.use_lstm,
             "exploration_epsilon": self.exploration_epsilon,
@@ -253,4 +264,5 @@ class HoodieAgent(ReplayTrainablePolicy):
                 agent.learner.use_lstm = use_lstm
             else:
                 agent.learner = DoubleDQNAgent.from_state(learner_state)
+        agent._trim_history()
         return agent
