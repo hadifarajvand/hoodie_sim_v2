@@ -2,12 +2,14 @@ from __future__ import annotations
 
 import importlib.util
 from pathlib import Path
+import sys
 
 
 MODULE_PATH = Path(__file__).parents[2] / "scripts" / "audit" / "repository_consolidation_gate.py"
 SPEC = importlib.util.spec_from_file_location("repository_consolidation_gate", MODULE_PATH)
 assert SPEC is not None and SPEC.loader is not None
 GATE = importlib.util.module_from_spec(SPEC)
+sys.modules[SPEC.name] = GATE
 SPEC.loader.exec_module(GATE)
 
 
@@ -75,4 +77,4 @@ testpaths = ["tests_supported/hoodie", "tests/unit"]
         encoding="utf-8",
     )
     issues = GATE._packaging_issues(tmp_path)
-    assert len(issues) == 4
+    assert len(issues) == 5
