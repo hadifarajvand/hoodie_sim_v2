@@ -1,77 +1,74 @@
-# Project AI Agent Instructions
+# HOODIE scientific execution instructions
 
 ## Mission
 
-Use a precision-first workflow. Optimize for correctness, speed of implementation, repeatability, and verifiable results. Do not optimize primarily for token reduction.
+Build one scientifically defensible and reproducible HOODIE simulator that implements the paper environment, learning method, baselines, frozen Figures 8–11 experiments, traceable datasets, and verified figures.
 
-## Stack
+The active priority is the HOODIE paper reproduction. ECHO development, generic agent frameworks, orchestration state, historical reports, and generated run artifacts must not alter or obscure the HOODIE execution path.
 
-- OpenCode is the main executor.
-- Graphify is the structural memory and architecture map.
-- RuFlo is used for swarm coordination, hooks, procedural memory, routing, and background workers.
-- CI/test/build output is the final truth.
-- Humans approve production and irreversible actions.
+## Non-negotiable safety
 
-OpenCode commands are the command surface.
-RuFlo built-in agents are the real swarm workers.
-Do not create duplicate OpenCode agents for RuFlo roles.
-Custom OpenCode agents are allowed only for project-specific roles not covered by RuFlo.
-Duplicate custom agents must stay archived under `.opencode/agents/_archived-ruflo-duplicates/`.
+- Never run, resume, import into, rename, or mutate the paused legacy campaign `figures-8-11-7587c7c6382c`.
+- Never relabel `legacy_unknown` checkpoints.
+- Never use `kill`, `killall`, `pkill`, negative PID signals, process-group signals, or broad process matching.
+- Use foreground commands, cooperative stop requests, completed-episode checkpoint boundaries, and normal process exit.
+- Never force-push and never push experiment work directly to `main`.
+- Never reduce scientific episodes, slots, model dimensions, matrix rows, or policy coverage to make a production run finish faster.
+- Never substitute smoke, pilot, cached, or fabricated outputs for paper-scale results.
 
-## Safety
+## Repository boundaries
 
-Do not read or print secrets.
-Do not edit `.env*`, private keys, certificates, or credential files.
-Do not deploy production.
-Do not modify DNS, billing, cloud resources, or production databases.
-Do not delete files.
-Do not commit or push unless explicitly asked.
+Git contains source, tests, configs, scientific contracts, approved references, concise documentation, and small reproducibility manifests.
 
-## Default workflow
+Git must not contain:
 
-1. Inspect.
-2. Create or update a plan in `docs/plans/`.
-3. Use Graphify for architecture or cross-module tasks.
-4. Use RuFlo only for large multi-agent work, audits, refactors, or repeated project workflows.
-5. Implement minimal changes.
-6. Run tests/build/lint/typecheck where available.
-7. Review diff.
-8. Write a run log in `docs/run-logs/`.
+- PID files or daemon state;
+- generic Claude/RuFlo/OpenCode distributions;
+- checkpoints, replay buffers, raw run datasets, worker directories, or campaign directories;
+- large logs, temporary transport parts, caches, generated figures, historical diagnostic outputs, or superseded readiness reports.
 
-## Task routing
+Generated runs belong under `HOODIE_RUN_ROOT`, which must point outside the tracked repository for production execution.
 
-Small/local bug:
-- OpenCode only.
+## Consolidation requirement
 
-Unknown architecture:
-- Use Graphify first.
+Do not execute any experiment while the repository still contains competing execution paths or compatibility layers. The mandatory first gate is:
 
-Feature touching multiple modules:
-- Use `/graph-plan`, then `/swarm-feature`.
+```bash
+python scripts/audit/repository_consolidation_gate.py --check
+```
 
-Security/auth/payment/backend/secrets:
-- Add security-auditor review.
-- Use read-only mode first.
+A nonzero exit means the repository remains in audit/consolidation mode. Resolve every listed path before running training. In particular, remove or migrate:
 
-Production/deployment:
-- Use `/production-check`.
-- No autonomous production deployment.
+- tracked generated artifacts outside `artifacts/approved/`;
+- top-level `hoodie/`, `tests_supported/`, and `tests_historical/` active roots;
+- `*_patch.py`, `*_v2.py`, and competing production-campaign implementations;
+- `src.*` imports inside `src/hoodie/`;
+- active ECHO dependencies in the HOODIE package;
+- noncanonical setuptools and pytest configuration;
+- missing canonical executor and visualization modules.
+
+## Required workflow
+
+1. Confirm a clean worktree and exact remote commit.
+2. Run `python scripts/audit/repository_consolidation_gate.py --check`.
+3. Run `python scripts/audit/full_repository_audit.py --check`.
+4. Run `bash scripts/hoodie/corrected_campaign.sh validate`.
+5. Inspect free disk space and configured run root.
+6. Stop on any failed audit, test, contract, dependency, checksum, backend, or storage-budget check.
+7. Execute training shards before evaluation shards.
+8. Import completed shard bundles only.
+9. Finalize only after the complete immutable matrix is scientifically complete.
 
 ## Required proof
 
 Before claiming completion, report:
-- files created/changed
-- commands run
-- tests/build/lint/typecheck result
-- known failures
-- manual follow-up
 
-<!-- AI_PRECISION_STACK_START -->
-## AI Precision Stack Notes
-
-- Keep the workflow layer project-local.
-- Prefer `docs/ai-stack/` and `.opencode/` as the canonical sources for future agents.
-- Use `docs/plans/` for every non-trivial task.
-- Use `docs/run-logs/` for outcome capture after implementation or validation.
-- Preserve unrelated worktree drift unless explicitly asked to resolve it.
-<!-- AI_PRECISION_STACK_END -->
+- exact branch and commit;
+- consolidation-gate and repository-audit results;
+- full active test result;
+- matrix and shard counts;
+- run-root and disk-budget result;
+- training checkpoint inventory and backend audit;
+- evaluation dependency and trace-fairness result;
+- aggregate, verification, rendering, and release-bundle paths;
+- confirmation that no PID was killed and the legacy campaign was untouched.
