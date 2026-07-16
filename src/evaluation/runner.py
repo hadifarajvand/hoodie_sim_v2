@@ -65,17 +65,19 @@ class EvaluationRunner:
             topology=self.topology,
             runtime_parameters=runtime_parameters,
             compute_config=runtime_parameters.to_compute_config(),
-            link_rate_config=self.link_rate_config or LinkRateConfig(
-                slot_duration_seconds=runtime_parameters.slot_duration
-            ),
+            link_rate_config=self.link_rate_config
+            or LinkRateConfig(slot_duration_seconds=runtime_parameters.slot_duration),
             policy_name=self.config.policy_name,
             supplied_trace=trace,
         )
         env.reset(seed=trace.seed)
         records_by_task: dict[int, TaskEvaluationRecord] = {}
+        decision_by_task: dict[int, dict[str, object]] = {}
 
         while True:
             _observation, _reward, terminated, truncated, info = env.step_slot(self.policy)
+            for decision in info.get("decision_events", []):
+                decision_by_task[int(decision["task_id"])] = dict(decision)
             for finalized in info.get("finalized_tasks", []):
                 task_id = int(finalized["task_id"])
                 terminal_outcome = finalized.get("terminal_outcome")
@@ -84,6 +86,7 @@ class EvaluationRunner:
                     if finalized.get("completion_slot") is not None
                     else None
                 )
+                decision = decision_by_task.get(task_id, {})
                 records_by_task[task_id] = TaskEvaluationRecord(
                     task_id=task_id,
                     arrival_slot=int(finalized["arrival_slot"]),
@@ -94,6 +97,11 @@ class EvaluationRunner:
                     delay=(
                         completion_slot - int(finalized["arrival_slot"]) + 1
                         if terminal_outcome == "completed" and completion_slot is not None
+                        else None
+                    ),
+                    source_agent_id=(
+                        int(decision["source_agent_id"])
+                        if decision.get("source_agent_id") is not None
                         else None
                     ),
                 )
