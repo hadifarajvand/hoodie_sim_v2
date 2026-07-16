@@ -8,27 +8,49 @@ LEGACY_CAMPAIGN_ID="figures-8-11-7587c7c6382c"
 TRAINING_SHARDS="${HOODIE_TRAINING_SHARDS:-17}"
 EVALUATION_SHARDS="${HOODIE_EVALUATION_SHARDS:-48}"
 MAX_CAPTURE_BYTES="${HOODIE_MAX_COMMAND_CAPTURE_BYTES:-2097152}"
+MIN_FREE_GB="${HOODIE_MIN_FREE_GB:-20}"
+MIN_FREE_FRACTION="${HOODIE_MIN_FREE_FRACTION:-0.10}"
 
 fail() {
   printf 'ERROR: %s\n' "$*" >&2
   exit 1
 }
 
+validate_storage_thresholds() {
+  python - "$MIN_FREE_GB" "$MIN_FREE_FRACTION" "${CI:-false}" <<'PY'
+import sys
+minimum_gb = int(sys.argv[1])
+minimum_fraction = float(sys.argv[2])
+ci = sys.argv[3].lower() == "true"
+if minimum_gb <= 0:
+    raise SystemExit("HOODIE_MIN_FREE_GB must be positive")
+if not 0.0 < minimum_fraction < 1.0:
+    raise SystemExit("HOODIE_MIN_FREE_FRACTION must be in (0, 1)")
+if not ci and minimum_gb < 20:
+    raise SystemExit("non-CI execution may not reserve less than 20 GiB")
+if not ci and minimum_fraction < 0.10:
+    raise SystemExit("non-CI execution may not reserve less than 10% free space")
+PY
+}
+
 require_external_run_root() {
+  validate_storage_thresholds
   [[ -n "${HOODIE_RUN_ROOT:-}" ]] || fail "HOODIE_RUN_ROOT must be set to an absolute path on large external storage"
   [[ "$HOODIE_RUN_ROOT" = /* ]] || fail "HOODIE_RUN_ROOT must be absolute"
 
-  RUN_ROOT="$(python - "$ROOT_DIR" "$HOODIE_RUN_ROOT" <<'PY'
+  RUN_ROOT="$(python - "$ROOT_DIR" "$HOODIE_RUN_ROOT" "$MIN_FREE_GB" "$MIN_FREE_FRACTION" <<'PY'
 from pathlib import Path
 import shutil
 import sys
 repo = Path(sys.argv[1]).resolve()
 root = Path(sys.argv[2]).expanduser().resolve()
+minimum_gb = int(sys.argv[3])
+minimum_fraction = float(sys.argv[4])
 if root == repo or repo in root.parents:
     raise SystemExit("HOODIE_RUN_ROOT must be outside the Git repository")
 root.mkdir(parents=True, exist_ok=True)
 usage = shutil.disk_usage(root)
-required = max(20 * 1024**3, int(usage.total * 0.10))
+required = max(minimum_gb * 1024**3, int(usage.total * minimum_fraction))
 if usage.free < required:
     raise SystemExit(
         f"insufficient free storage: free={usage.free}, required={required}"
@@ -62,6 +84,15 @@ run_bounded() {
     -- "$@"
 }
 
+require_clean_worktree() {
+  local dirty
+  dirty="$(git status --porcelain=v1 --untracked-files=all)"
+  [[ -z "$dirty" ]] || {
+    printf '%s\n' "$dirty" >&2
+    fail "working tree must be clean before validation or execution"
+  }
+}
+
 require_empty_or_absent() {
   local path="$1"
   if [[ -d "$path" ]] && [[ -n "$(find "$path" -mindepth 1 -maxdepth 1 -print -quit 2>/dev/null)" ]]; then
@@ -86,6 +117,7 @@ load_campaign_id() {
 }
 
 require_validated_head() {
+  require_clean_worktree
   load_campaign_id
   [[ -f "$VALIDATION_MARKER" ]] || fail "validation marker is missing; run '$0 validate'"
   python - "$VALIDATION_MARKER" "$(git rev-parse HEAD)" "$CAMPAIGN_ID" <<'PY'
@@ -97,6 +129,7 @@ assert payload["validated_head"] == sys.argv[2], payload
 assert payload["campaign_id"] == sys.argv[3], payload
 assert payload["repository_audit_passed"] is True, payload
 assert payload["full_test_suite_passed"] is True, payload
+assert payload["production_started"] is False, payload
 PY
 }
 
@@ -123,27 +156,39 @@ PY
 }
 
 storage_check() {
-  python - "$RUN_ROOT" <<'PY'
+  python - "$RUN_ROOT" "$MIN_FREE_GB" "$MIN_FREE_FRACTION" <<'PY'
 from pathlib import Path
 import json
+import os
 import shutil
 import sys
 root = Path(sys.argv[1])
+minimum_gb = int(sys.argv[2])
+minimum_fraction = float(sys.argv[3])
 usage = shutil.disk_usage(root)
-required = max(20 * 1024**3, int(usage.total * 0.10))
-checkpoints = [
-    path for path in root.rglob("checkpoint.pt")
-    if path.is_file()
-]
-sizes = [path.stat().st_size for path in checkpoints]
+required = max(minimum_gb * 1024**3, int(usage.total * minimum_fraction))
+checkpoint_count = 0
+checkpoint_bytes = 0
+largest = 0
+for directory, _subdirs, filenames in os.walk(root):
+    if "checkpoint.pt" not in filenames:
+        continue
+    path = Path(directory) / "checkpoint.pt"
+    try:
+        size = path.stat().st_size
+    except FileNotFoundError:
+        continue
+    checkpoint_count += 1
+    checkpoint_bytes += size
+    largest = max(largest, size)
 payload = {
     "run_root": str(root),
     "free_bytes": usage.free,
     "total_bytes": usage.total,
     "required_free_bytes": required,
-    "checkpoint_count": len(checkpoints),
-    "checkpoint_bytes": sum(sizes),
-    "largest_checkpoint_bytes": max(sizes, default=0),
+    "checkpoint_count": checkpoint_count,
+    "checkpoint_bytes": checkpoint_bytes,
+    "largest_checkpoint_bytes": largest,
     "passed": usage.free >= required,
 }
 print(json.dumps(payload, sort_keys=True))
@@ -153,6 +198,7 @@ PY
 }
 
 validate() {
+  require_clean_worktree
   bash -n scripts/hoodie/corrected_campaign.sh
   bash -n scripts/hoodie/run_shard_worker.sh
 
@@ -212,7 +258,9 @@ payload = {
     "full_test_suite_passed": True,
     "production_started": False,
 }
-marker_path.write_text(json.dumps(payload, indent=2, sort_keys=True) + "\n", encoding="utf-8")
+marker_path.write_text(
+    json.dumps(payload, indent=2, sort_keys=True) + "\n", encoding="utf-8"
+)
 print(json.dumps(payload, sort_keys=True))
 PY
   printf 'Validated corrected campaign %s at %s\n' "$CAMPAIGN_ID" "$(git rev-parse HEAD)"
@@ -314,9 +362,10 @@ case "${1:-}" in
     cat >&2 <<USAGE
 Usage: $0 {validate|storage-check|export-training|import-training|export-evaluation|import-evaluation|status|finalize}
 
-HOODIE_RUN_ROOT must be an absolute path outside the Git repository with at least
-20 GiB and 10% free space. This script never operates on $LEGACY_CAMPAIGN_ID and
-never starts a worker by itself. Workers use scripts/hoodie/run_shard_worker.sh.
+HOODIE_RUN_ROOT must be an absolute path outside the Git repository. Non-CI
+execution reserves at least 20 GiB and 10% free space. This script never operates
+on $LEGACY_CAMPAIGN_ID and never starts a worker by itself. Workers use
+scripts/hoodie/run_shard_worker.sh.
 USAGE
     exit 2
     ;;
