@@ -14,6 +14,19 @@ import torch
 
 GIB = 1024**3
 MIB = 1024**2
+FORBIDDEN_DATASET_KEYS = {
+    "task_rows",
+    "task_records",
+    "decision_rows",
+    "decision_records",
+    "transition_rows",
+    "transition_records",
+    "training_history",
+    "training_metrics",
+    "evaluation_metrics",
+    "aggregate_rows",
+    "rendered_figures",
+}
 
 
 @dataclass(frozen=True, slots=True)
@@ -108,7 +121,7 @@ def _atomic_json(path: Path, payload: object) -> None:
             temporary.unlink(missing_ok=True)
 
 
-def _required_reserve(target: Path, policy: CheckpointStoragePolicy) -> tuple[shutil._ntuple_diskusage, int]:
+def _required_reserve(target: Path, policy: CheckpointStoragePolicy):
     usage = shutil.disk_usage(target)
     reserve = max(policy.minimum_free_bytes, int(usage.total * policy.minimum_free_fraction))
     return usage, reserve
@@ -187,6 +200,20 @@ def _atomic_torch_save(
             temporary.unlink(missing_ok=True)
 
 
+def _reject_embedded_datasets(value: Any, *, path: str = "checkpoint") -> None:
+    if isinstance(value, dict):
+        for key, nested in value.items():
+            key_text = str(key)
+            if key_text in FORBIDDEN_DATASET_KEYS:
+                raise ValueError(
+                    f"scientific dataset {key_text!r} must not be embedded in {path}"
+                )
+            _reject_embedded_datasets(nested, path=f"{path}.{key_text}")
+    elif isinstance(value, (list, tuple)):
+        for index, nested in enumerate(value):
+            _reject_embedded_datasets(nested, path=f"{path}[{index}]")
+
+
 def _split_replay_state(policy_state: dict[str, Any]) -> dict[str, Any]:
     replay: dict[str, Any] = {}
     agents = policy_state.get("agents", {})
@@ -262,6 +289,7 @@ def save_bounded_checkpoint(
     metadata are durably installed.
     """
 
+    _reject_embedded_datasets(checkpoint_state)
     storage_policy = policy or checkpoint_storage_policy()
     job_dir = job_dir.resolve()
     checkpoint_root = job_dir / "internal_checkpoints"
