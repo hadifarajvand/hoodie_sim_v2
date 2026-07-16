@@ -61,6 +61,12 @@ class HoodieAgent(ReplayTrainablePolicy):
     def sync_target_network(self) -> None:
         self.learner.sync_target_network()
 
+    def attach_learner(self, learner: object, enabled: bool = True) -> None:
+        if not enabled:
+            return
+        if hasattr(learner, "to_state_dict") and hasattr(learner, "from_state_dict"):
+            self.learner = learner  # type: ignore[assignment]
+
     def export_state(self) -> dict[str, Any]:
         return {
             "schema_version": 2,

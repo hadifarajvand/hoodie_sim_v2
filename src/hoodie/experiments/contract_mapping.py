@@ -33,8 +33,16 @@ def _slot_duration(panel_contract: dict[str, Any]) -> float:
     return float(panel_contract.get("slot_duration", 0.1))
 
 
+def _override_contract(matrix_row: ProductionJobRow, source_contract: dict[str, Any], kind: str) -> dict[str, Any]:
+    contract = dict(source_contract)
+    override = getattr(matrix_row, f"{kind}_contract", None) or {}
+    if isinstance(override, dict) and override:
+        contract.update(override)
+    return contract
+
+
 def build_environment_config(row: ProductionJobRow, source_contract: dict[str, Any]) -> SharedRuntimeParameters:
-    panel_contract = source_contract
+    panel_contract = _override_contract(row, source_contract, "workload") if getattr(row, "training_contract", None) or getattr(row, "evaluation_contract", None) else source_contract
     slot_duration = _slot_duration(panel_contract)
     arrival_probability = float(panel_contract.get("task_arrival_probability", 0.5) or 0.5)
     timeout_seconds = float(panel_contract.get("task_timeout_seconds", 2.0) or 2.0)
@@ -72,14 +80,15 @@ def build_environment_config(row: ProductionJobRow, source_contract: dict[str, A
 
 
 def build_training_config(matrix_row: ProductionJobRow, source_contract: dict[str, Any], *, trace_hash: str, output_dir) -> TrainingConfig:
-    training_episodes = int(source_contract.get("training_episodes", matrix_row.topology_contract.get("training_episodes", 0)))
-    episode_length = int(source_contract.get("slots_per_episode", 110 if matrix_row.panel_id.startswith("figure_8") else source_contract.get("validation_episodes", 200)))
-    learning_rate = float(source_contract.get("learning_rate", 7e-7))
-    discount_factor = float(source_contract.get("discount_factor", 0.99))
-    batch_size = int(source_contract.get("batch_size", 64))
-    replay_capacity = int(source_contract.get("replay_capacity", 10000))
-    target_copy_frequency = int(source_contract.get("target_copy_frequency", 2000))
-    drain_slots = int(source_contract.get("drain_slots", 10))
+    panel_contract = _override_contract(matrix_row, source_contract, "training")
+    training_episodes = int(panel_contract.get("training_episodes", matrix_row.topology_contract.get("training_episodes", 0)))
+    episode_length = int(panel_contract.get("slots_per_episode", 110 if matrix_row.panel_id.startswith("figure_8") else panel_contract.get("validation_episodes", 200)))
+    learning_rate = float(panel_contract.get("learning_rate", 7e-7))
+    discount_factor = float(panel_contract.get("discount_factor", 0.99))
+    batch_size = int(panel_contract.get("batch_size", 64))
+    replay_capacity = int(panel_contract.get("replay_capacity", 10000))
+    target_copy_frequency = int(panel_contract.get("target_copy_frequency", 2000))
+    drain_slots = int(panel_contract.get("drain_slots", 10))
     return TrainingConfig(
         learning_rate=learning_rate,
         batch_size=batch_size,
@@ -97,9 +106,10 @@ def build_training_config(matrix_row: ProductionJobRow, source_contract: dict[st
 
 
 def build_evaluation_config(matrix_row: ProductionJobRow, source_contract: dict[str, Any], *, trace_id: str, output_dir) -> EvaluationConfig:
-    validation_episodes = int(source_contract.get("validation_episodes", 200))
-    episode_length = int(source_contract.get("slots_per_episode", 110 if matrix_row.panel_id.startswith("figure_8") else validation_episodes))
-    drain_slots = int(source_contract.get("drain_slots", 10))
+    panel_contract = _override_contract(matrix_row, source_contract, "evaluation")
+    validation_episodes = int(panel_contract.get("validation_episodes", 200))
+    episode_length = int(panel_contract.get("slots_per_episode", 110 if matrix_row.panel_id.startswith("figure_8") else validation_episodes))
+    drain_slots = int(panel_contract.get("drain_slots", 10))
     return EvaluationConfig(
         policy_name=matrix_row.policy,
         seed=int(matrix_row.seed or 0),

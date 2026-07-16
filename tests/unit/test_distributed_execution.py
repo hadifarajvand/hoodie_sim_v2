@@ -95,11 +95,17 @@ class DistributedExecutionTests(unittest.TestCase):
             campaign_dir.mkdir(parents=True, exist_ok=True)
             with patch("src.hoodie.experiments.distributed.CAMPAIGN_ROOT", tmp_path / "campaigns"):
                 with patch("src.hoodie.experiments.distributed.campaign_status", return_value={"campaign_id": CAMPAIGN_ID, "total": 284, "pending_jobs": 0, "running_jobs": 0, "blocked_dependency_jobs": 0, "interrupted_resumable_jobs": 0, "current_scientifically_incomplete_jobs": 0, "completed_jobs": 284, "failed_jobs": 0, "stale_jobs": 0, "corrupt_jobs": 0}):
-                    first = finalize_campaign(CAMPAIGN_ID)
-                    second = finalize_campaign(CAMPAIGN_ID)
-                    self.assertEqual(first["status"], "completed")
-                    self.assertEqual(second["status"], "completed")
-                    self.assertTrue((campaign_dir / "finalization" / "status.json").exists())
+                    with patch("src.hoodie.experiments.distributed.aggregate_campaign", return_value={"status": "ok"}):
+                        with patch("src.hoodie.experiments.distributed.verify_campaign", return_value={"status": "ok"}):
+                            with patch("src.hoodie.experiments.distributed.render_campaign", return_value={"status": "ok"}):
+                                with patch("src.hoodie.experiments.distributed.export_bundle", return_value={"status": "ok"}):
+                                    with patch("src.hoodie.experiments.distributed.verify_bundle", return_value={"status": "ok"}):
+                                        (campaign_dir / "job_plan.json").write_text("[]\n", encoding="utf-8")
+                                        first = finalize_campaign(CAMPAIGN_ID)
+                                        second = finalize_campaign(CAMPAIGN_ID)
+                                        self.assertEqual(first["status"], "completed")
+                                        self.assertEqual(second["status"], "completed")
+                                        self.assertTrue((campaign_dir / "finalization" / "status.json").exists())
 
 
 if __name__ == "__main__":  # pragma: no cover

@@ -1,0 +1,180 @@
+{
+  "files": [
+    {
+      "included_in_next_commit": true,
+      "local_differs_from_remote": true,
+      "local_sha256": "7244bdcc2dc62326ef8504a22cb9689ba6073c0bdbd3b14fd73f790b5c6add23",
+      "path": "src/agents/hoodie_agent.py",
+      "remote_sha256": "31f27afa08d879990d9f08644d47d7fa7c3e24f2c1d3840ff77517bc65df7986",
+      "required_for_actual_pilot_execution": false,
+      "required_for_distributed_execution": false,
+      "status": "M",
+      "tracked": true
+    },
+    {
+      "included_in_next_commit": true,
+      "local_differs_from_remote": true,
+      "local_sha256": "22c14ea4ec6bd3352c65cd1845c5ea237b8d2155ed941e2d7a9a3c0c2a9752d4",
+      "path": "src/hoodie/experiments/campaign.py",
+      "remote_sha256": "5283856277000aa662f68c777f231ca83ed01137acfe48f3261c9608a8c6897f",
+      "required_for_actual_pilot_execution": true,
+      "required_for_distributed_execution": true,
+      "status": "M",
+      "tracked": true
+    },
+    {
+      "included_in_next_commit": true,
+      "local_differs_from_remote": true,
+      "local_sha256": "f3662ea1f071c0b78e4c4273ef1aca8211e65f94d1cbede85ab9e54d7d427847",
+      "path": "src/hoodie/experiments/contract_mapping.py",
+      "remote_sha256": "4a561fa5bf62585b94b7b68bbc468971f3ff2ece2a4c39185e6baad0dd1084d9",
+      "required_for_actual_pilot_execution": true,
+      "required_for_distributed_execution": true,
+      "status": "M",
+      "tracked": true
+    },
+    {
+      "included_in_next_commit": true,
+      "local_differs_from_remote": true,
+      "local_sha256": "eefcfae4cb0d1f2d5e69721429cbf6e2b28727f957fdb5de2380cee060a43a96",
+      "path": "src/hoodie/experiments/distributed.py",
+      "remote_sha256": "7641e034a25b51a99c9be7b817f99b7ba30d4408a22207e11d4ed62e6a4aa14d",
+      "required_for_actual_pilot_execution": true,
+      "required_for_distributed_execution": true,
+      "status": "M",
+      "tracked": true
+    },
+    {
+      "included_in_next_commit": true,
+      "local_differs_from_remote": false,
+      "local_sha256": "4d8763d918f9c5e8de725c8665bb7f2d7917f781614fb7492a3a65ebea54708c",
+      "path": "src/hoodie/experiments/process_safety.py",
+      "remote_sha256": null,
+      "required_for_actual_pilot_execution": true,
+      "required_for_distributed_execution": true,
+      "status": "??",
+      "tracked": false
+    },
+    {
+      "included_in_next_commit": true,
+      "local_differs_from_remote": false,
+      "local_sha256": "d411c855f6291ba17a90f76aa45ea871178f987df6f315a3cfa01224b1cefcbe",
+      "path": "src/hoodie/experiments/scientific_pipeline.py",
+      "remote_sha256": null,
+      "required_for_actual_pilot_execution": true,
+      "required_for_distributed_execution": true,
+      "status": "??",
+      "tracked": false
+    },
+    {
+      "included_in_next_commit": true,
+      "local_differs_from_remote": true,
+      "local_sha256": "387b5f59b32e103b8502b03258c68d985b382f11712ed8f8d5313cc5d7bf8c0c",
+      "path": "tests/unit/test_distributed_execution.py",
+      "remote_sha256": "0092df303b83be60697e2920689db7632a229ee1771370f78894dfa758eabb92",
+      "required_for_actual_pilot_execution": false,
+      "required_for_distributed_execution": true,
+      "status": "M",
+      "tracked": true
+    },
+    {
+      "included_in_next_commit": true,
+      "local_differs_from_remote": false,
+      "local_sha256": "6524c5050630d71b74be66508f25e182e7e377bcc49f820d84f257c8d8a72fa6",
+      "path": "tests/unit/test_process_safety_and_completion_ordering.py",
+      "remote_sha256": null,
+      "required_for_actual_pilot_execution": false,
+      "required_for_distributed_execution": true,
+      "status": "??",
+      "tracked": false
+    },
+    {
+      "included_in_next_commit": true,
+      "local_differs_from_remote": true,
+      "local_sha256": "cb18fa22d7cc24442e8674868908c6acbd29574f8fd575ceedd647f75f9eca88",
+      "path": "artifacts/hoodie/implementation_run/campaign/evaluation_contract_audit.json",
+      "remote_sha256": "37517e5f3dc66819f61f5a7bb8ace1921282415f10551d2defa5c3eb0985b570",
+      "required_for_actual_pilot_execution": false,
+      "required_for_distributed_execution": false,
+      "status": "M",
+      "tracked": true
+    },
+    {
+      "included_in_next_commit": true,
+      "local_differs_from_remote": true,
+      "local_sha256": "308c885ba7249a86ca2867987aab28dd2da68a69b1d5c7b245b36e5effff5aae",
+      "path": "artifacts/hoodie/implementation_run/campaign/production_dry_run.json",
+      "remote_sha256": "3fef3fef3eb6613fa6b1ecbd707d444287e50f4ae80abc19b4797841771c9611",
+      "required_for_actual_pilot_execution": false,
+      "required_for_distributed_execution": false,
+      "status": "M",
+      "tracked": true
+    },
+    {
+      "included_in_next_commit": true,
+      "local_differs_from_remote": true,
+      "local_sha256": "d4a2f62188482549e61fbd6faa5830469685379611b288ce6c06b400bf0eca26",
+      "path": "artifacts/hoodie/implementation_run/campaign/production_dry_run.md",
+      "remote_sha256": "475158c40c2fc093643a00d345c0a4051e9521b709d9b477e8163176d19f59c3",
+      "required_for_actual_pilot_execution": false,
+      "required_for_distributed_execution": false,
+      "status": "M",
+      "tracked": true
+    },
+    {
+      "included_in_next_commit": true,
+      "local_differs_from_remote": true,
+      "local_sha256": "95d102f00e71ee187987be06f138a349b88344f49d34d1db2c610d2f920a2dcb",
+      "path": "artifacts/hoodie/implementation_run/campaign/training_contract_audit.json",
+      "remote_sha256": "c47be51341dd97ab6fd6f1b563a86f03475f6cc63f91691a8880c7f8d1c45bda",
+      "required_for_actual_pilot_execution": false,
+      "required_for_distributed_execution": false,
+      "status": "M",
+      "tracked": true
+    },
+    {
+      "included_in_next_commit": true,
+      "local_differs_from_remote": false,
+      "local_sha256": "31d8bf84f5bd6fe3ad0aded36c8b87d66d01bb52bd1ea31b39bde20d07c31542",
+      "path": "artifacts/hoodie/implementation_run/campaign/backend_provenance_audit.json",
+      "remote_sha256": null,
+      "required_for_actual_pilot_execution": false,
+      "required_for_distributed_execution": false,
+      "status": "??",
+      "tracked": false
+    },
+    {
+      "included_in_next_commit": true,
+      "local_differs_from_remote": false,
+      "local_sha256": "ca09b60e03ea45741e18df631377583cf3cf090136281889f4d9668a102d37bd",
+      "path": "artifacts/hoodie/implementation_run/campaign/distributed_resource_plan.json",
+      "remote_sha256": null,
+      "required_for_actual_pilot_execution": false,
+      "required_for_distributed_execution": false,
+      "status": "??",
+      "tracked": false
+    },
+    {
+      "included_in_next_commit": true,
+      "local_differs_from_remote": false,
+      "local_sha256": "c4fb88785c2daeb161623ef91df43a6636336f02a7ce6bb368b5b6eefc7f1657",
+      "path": "artifacts/hoodie/implementation_run/campaign/shard_plan.json",
+      "remote_sha256": null,
+      "required_for_actual_pilot_execution": false,
+      "required_for_distributed_execution": false,
+      "status": "??",
+      "tracked": false
+    },
+    {
+      "included_in_next_commit": true,
+      "local_differs_from_remote": false,
+      "local_sha256": "f7e71d736e75b23b28f0b460a52c863a6cfb28468e8de2f731890ec2d7848e23",
+      "path": "artifacts/hoodie/implementation_run/pilot/pilot_matrix.json",
+      "remote_sha256": null,
+      "required_for_actual_pilot_execution": true,
+      "required_for_distributed_execution": false,
+      "status": "??",
+      "tracked": false
+    }
+  ]
+}

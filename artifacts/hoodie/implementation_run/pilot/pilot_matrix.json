@@ -1,0 +1,5430 @@
+[
+  {
+    "campaign_id": "",
+    "checkpoint_dependency": null,
+    "config_hash": "addce4b25a53255e5bdb8dfa9a898f54283d0a35e102f29d6aed1d0c57feb8d0",
+    "evaluation_contract": {
+      "drain_slots": 0,
+      "slots_per_episode": 10,
+      "validation_episodes": 2
+    },
+    "independent_value": 7e-07,
+    "independent_variable": "learning_rate",
+    "job_id": "figure_8a-0-hoodie_lstm",
+    "job_type": "training",
+    "panel_id": "figure_8a",
+    "physical_contract": {
+      "backend": "cpu"
+    },
+    "policy": "HOODIE",
+    "result_label": "PILOT \u2014 NOT PAPER-SCALE RESULT",
+    "scale": "pilot",
+    "scientific_unit_id": "figure_8a-0-hoodie_lstm",
+    "seed": 7,
+    "series_name": "hoodie_lstm",
+    "source_contract_hash": "093c68a5e6242550c00dcf3dc6a798060a759e1a772057e5bc6e9cc265aee420",
+    "topology_contract": {
+      "agent_counts": [
+        4
+      ]
+    },
+    "trace_bank_id": "figure_8a-bank",
+    "training_contract": {
+      "drain_slots": 0,
+      "slots_per_episode": 10,
+      "training_episodes": 3
+    },
+    "variant": "hoodie_lstm",
+    "workload_contract": {
+      "batch_size": 4,
+      "drain_slots": 0,
+      "replay_capacity": 32,
+      "slots_per_episode": 10,
+      "target_copy_frequency": 2,
+      "training_episodes": 3,
+      "validation_episodes": 2
+    }
+  },
+  {
+    "campaign_id": "",
+    "checkpoint_dependency": null,
+    "config_hash": "8d0ae89c89fe18c5046ec7ad5cf25acff926fe732d9a9abfa85b110b96eb163f",
+    "evaluation_contract": {
+      "drain_slots": 0,
+      "slots_per_episode": 10,
+      "validation_episodes": 2
+    },
+    "independent_value": 7e-07,
+    "independent_variable": "learning_rate",
+    "job_id": "figure_8a-0-hoodie_no_lstm",
+    "job_type": "training",
+    "panel_id": "figure_8a",
+    "physical_contract": {
+      "backend": "cpu"
+    },
+    "policy": "HOODIE",
+    "result_label": "PILOT \u2014 NOT PAPER-SCALE RESULT",
+    "scale": "pilot",
+    "scientific_unit_id": "figure_8a-0-hoodie_no_lstm",
+    "seed": 7,
+    "series_name": "hoodie_no_lstm",
+    "source_contract_hash": "093c68a5e6242550c00dcf3dc6a798060a759e1a772057e5bc6e9cc265aee420",
+    "topology_contract": {
+      "agent_counts": [
+        4
+      ]
+    },
+    "trace_bank_id": "figure_8a-bank",
+    "training_contract": {
+      "drain_slots": 0,
+      "slots_per_episode": 10,
+      "training_episodes": 3
+    },
+    "variant": "hoodie_no_lstm",
+    "workload_contract": {
+      "batch_size": 4,
+      "drain_slots": 0,
+      "replay_capacity": 32,
+      "slots_per_episode": 10,
+      "target_copy_frequency": 2,
+      "training_episodes": 3,
+      "validation_episodes": 2
+    }
+  },
+  {
+    "campaign_id": "",
+    "checkpoint_dependency": null,
+    "config_hash": "b6e7399871780af56bbfa1e0903a83eb35d5176d63d1a07238b7c2a0ddd01bd0",
+    "evaluation_contract": {
+      "drain_slots": 0,
+      "slots_per_episode": 10,
+      "validation_episodes": 2
+    },
+    "independent_value": 1e-06,
+    "independent_variable": "learning_rate",
+    "job_id": "figure_8a-1-hoodie_lstm",
+    "job_type": "training",
+    "panel_id": "figure_8a",
+    "physical_contract": {
+      "backend": "cpu"
+    },
+    "policy": "HOODIE",
+    "result_label": "PILOT \u2014 NOT PAPER-SCALE RESULT",
+    "scale": "pilot",
+    "scientific_unit_id": "figure_8a-1-hoodie_lstm",
+    "seed": 7,
+    "series_name": "hoodie_lstm",
+    "source_contract_hash": "093c68a5e6242550c00dcf3dc6a798060a759e1a772057e5bc6e9cc265aee420",
+    "topology_contract": {
+      "agent_counts": [
+        4
+      ]
+    },
+    "trace_bank_id": "figure_8a-bank",
+    "training_contract": {
+      "drain_slots": 0,
+      "slots_per_episode": 10,
+      "training_episodes": 3
+    },
+    "variant": "hoodie_lstm",
+    "workload_contract": {
+      "batch_size": 4,
+      "drain_slots": 0,
+      "replay_capacity": 32,
+      "slots_per_episode": 10,
+      "target_copy_frequency": 2,
+      "training_episodes": 3,
+      "validation_episodes": 2
+    }
+  },
+  {
+    "campaign_id": "",
+    "checkpoint_dependency": null,
+    "config_hash": "3450f0018ce36aee53788ca17a8516ba8319d34223bafe326c30725f4526350f",
+    "evaluation_contract": {
+      "drain_slots": 0,
+      "slots_per_episode": 10,
+      "validation_episodes": 2
+    },
+    "independent_value": 1e-06,
+    "independent_variable": "learning_rate",
+    "job_id": "figure_8a-1-hoodie_no_lstm",
+    "job_type": "training",
+    "panel_id": "figure_8a",
+    "physical_contract": {
+      "backend": "cpu"
+    },
+    "policy": "HOODIE",
+    "result_label": "PILOT \u2014 NOT PAPER-SCALE RESULT",
+    "scale": "pilot",
+    "scientific_unit_id": "figure_8a-1-hoodie_no_lstm",
+    "seed": 7,
+    "series_name": "hoodie_no_lstm",
+    "source_contract_hash": "093c68a5e6242550c00dcf3dc6a798060a759e1a772057e5bc6e9cc265aee420",
+    "topology_contract": {
+      "agent_counts": [
+        4
+      ]
+    },
+    "trace_bank_id": "figure_8a-bank",
+    "training_contract": {
+      "drain_slots": 0,
+      "slots_per_episode": 10,
+      "training_episodes": 3
+    },
+    "variant": "hoodie_no_lstm",
+    "workload_contract": {
+      "batch_size": 4,
+      "drain_slots": 0,
+      "replay_capacity": 32,
+      "slots_per_episode": 10,
+      "target_copy_frequency": 2,
+      "training_episodes": 3,
+      "validation_episodes": 2
+    }
+  },
+  {
+    "campaign_id": "",
+    "checkpoint_dependency": null,
+    "config_hash": "ef70579c5950aa94c6947e44a3eb4c302a9e836c5227d7b9b7a187c3e074d92f",
+    "evaluation_contract": {
+      "drain_slots": 0,
+      "slots_per_episode": 10,
+      "validation_episodes": 2
+    },
+    "independent_value": 0.95,
+    "independent_variable": "discount_factor",
+    "job_id": "figure_8b-0-hoodie_lstm",
+    "job_type": "training",
+    "panel_id": "figure_8b",
+    "physical_contract": {
+      "backend": "cpu"
+    },
+    "policy": "HOODIE",
+    "result_label": "PILOT \u2014 NOT PAPER-SCALE RESULT",
+    "scale": "pilot",
+    "scientific_unit_id": "figure_8b-0-hoodie_lstm",
+    "seed": 7,
+    "series_name": "hoodie_lstm",
+    "source_contract_hash": "093c68a5e6242550c00dcf3dc6a798060a759e1a772057e5bc6e9cc265aee420",
+    "topology_contract": {
+      "agent_counts": [
+        4
+      ]
+    },
+    "trace_bank_id": "figure_8b-bank",
+    "training_contract": {
+      "drain_slots": 0,
+      "slots_per_episode": 10,
+      "training_episodes": 3
+    },
+    "variant": "hoodie_lstm",
+    "workload_contract": {
+      "batch_size": 4,
+      "drain_slots": 0,
+      "replay_capacity": 32,
+      "slots_per_episode": 10,
+      "target_copy_frequency": 2,
+      "training_episodes": 3,
+      "validation_episodes": 2
+    }
+  },
+  {
+    "campaign_id": "",
+    "checkpoint_dependency": null,
+    "config_hash": "085c5ce99a6552f64839b3cce14ce3f18a1781c46d9f525ada67f2ff96565574",
+    "evaluation_contract": {
+      "drain_slots": 0,
+      "slots_per_episode": 10,
+      "validation_episodes": 2
+    },
+    "independent_value": 0.95,
+    "independent_variable": "discount_factor",
+    "job_id": "figure_8b-0-hoodie_no_lstm",
+    "job_type": "training",
+    "panel_id": "figure_8b",
+    "physical_contract": {
+      "backend": "cpu"
+    },
+    "policy": "HOODIE",
+    "result_label": "PILOT \u2014 NOT PAPER-SCALE RESULT",
+    "scale": "pilot",
+    "scientific_unit_id": "figure_8b-0-hoodie_no_lstm",
+    "seed": 7,
+    "series_name": "hoodie_no_lstm",
+    "source_contract_hash": "093c68a5e6242550c00dcf3dc6a798060a759e1a772057e5bc6e9cc265aee420",
+    "topology_contract": {
+      "agent_counts": [
+        4
+      ]
+    },
+    "trace_bank_id": "figure_8b-bank",
+    "training_contract": {
+      "drain_slots": 0,
+      "slots_per_episode": 10,
+      "training_episodes": 3
+    },
+    "variant": "hoodie_no_lstm",
+    "workload_contract": {
+      "batch_size": 4,
+      "drain_slots": 0,
+      "replay_capacity": 32,
+      "slots_per_episode": 10,
+      "target_copy_frequency": 2,
+      "training_episodes": 3,
+      "validation_episodes": 2
+    }
+  },
+  {
+    "campaign_id": "",
+    "checkpoint_dependency": null,
+    "config_hash": "44f4261ce90afe99cc31f1c187fc2b5067dea0873897f3e879cb677e70868186",
+    "evaluation_contract": {
+      "drain_slots": 0,
+      "slots_per_episode": 10,
+      "validation_episodes": 2
+    },
+    "independent_value": 0.99,
+    "independent_variable": "discount_factor",
+    "job_id": "figure_8b-1-hoodie_lstm",
+    "job_type": "training",
+    "panel_id": "figure_8b",
+    "physical_contract": {
+      "backend": "cpu"
+    },
+    "policy": "HOODIE",
+    "result_label": "PILOT \u2014 NOT PAPER-SCALE RESULT",
+    "scale": "pilot",
+    "scientific_unit_id": "figure_8b-1-hoodie_lstm",
+    "seed": 7,
+    "series_name": "hoodie_lstm",
+    "source_contract_hash": "093c68a5e6242550c00dcf3dc6a798060a759e1a772057e5bc6e9cc265aee420",
+    "topology_contract": {
+      "agent_counts": [
+        4
+      ]
+    },
+    "trace_bank_id": "figure_8b-bank",
+    "training_contract": {
+      "drain_slots": 0,
+      "slots_per_episode": 10,
+      "training_episodes": 3
+    },
+    "variant": "hoodie_lstm",
+    "workload_contract": {
+      "batch_size": 4,
+      "drain_slots": 0,
+      "replay_capacity": 32,
+      "slots_per_episode": 10,
+      "target_copy_frequency": 2,
+      "training_episodes": 3,
+      "validation_episodes": 2
+    }
+  },
+  {
+    "campaign_id": "",
+    "checkpoint_dependency": null,
+    "config_hash": "981e400d4dd97e6e582876690695ee1b14650fc539dac9a8f749edeb122c3922",
+    "evaluation_contract": {
+      "drain_slots": 0,
+      "slots_per_episode": 10,
+      "validation_episodes": 2
+    },
+    "independent_value": 0.99,
+    "independent_variable": "discount_factor",
+    "job_id": "figure_8b-1-hoodie_no_lstm",
+    "job_type": "training",
+    "panel_id": "figure_8b",
+    "physical_contract": {
+      "backend": "cpu"
+    },
+    "policy": "HOODIE",
+    "result_label": "PILOT \u2014 NOT PAPER-SCALE RESULT",
+    "scale": "pilot",
+    "scientific_unit_id": "figure_8b-1-hoodie_no_lstm",
+    "seed": 7,
+    "series_name": "hoodie_no_lstm",
+    "source_contract_hash": "093c68a5e6242550c00dcf3dc6a798060a759e1a772057e5bc6e9cc265aee420",
+    "topology_contract": {
+      "agent_counts": [
+        4
+      ]
+    },
+    "trace_bank_id": "figure_8b-bank",
+    "training_contract": {
+      "drain_slots": 0,
+      "slots_per_episode": 10,
+      "training_episodes": 3
+    },
+    "variant": "hoodie_no_lstm",
+    "workload_contract": {
+      "batch_size": 4,
+      "drain_slots": 0,
+      "replay_capacity": 32,
+      "slots_per_episode": 10,
+      "target_copy_frequency": 2,
+      "training_episodes": 3,
+      "validation_episodes": 2
+    }
+  },
+  {
+    "campaign_id": "",
+    "checkpoint_dependency": null,
+    "config_hash": "98ccd5d9f2ead30d09e9e8a1a4f47b4c342883120e2aa98193315ec44fc79b7c",
+    "evaluation_contract": {
+      "drain_slots": 0,
+      "slots_per_episode": 10,
+      "validation_episodes": 2
+    },
+    "independent_value": 0.25,
+    "independent_variable": "task_arrival_probability",
+    "job_id": "figure_9a-0-HOODIE",
+    "job_type": "evaluation",
+    "panel_id": "figure_9a",
+    "physical_contract": {
+      "backend": "cpu"
+    },
+    "policy": "HOODIE",
+    "result_label": "PILOT \u2014 NOT PAPER-SCALE RESULT",
+    "scale": "pilot",
+    "scientific_unit_id": "figure_9a-0-HOODIE",
+    "seed": 7,
+    "series_name": "HOODIE",
+    "source_contract_hash": "093c68a5e6242550c00dcf3dc6a798060a759e1a772057e5bc6e9cc265aee420",
+    "topology_contract": {
+      "agent_counts": [
+        4
+      ]
+    },
+    "trace_bank_id": "figure_9a-bank",
+    "training_contract": {
+      "drain_slots": 0,
+      "slots_per_episode": 10,
+      "training_episodes": 3
+    },
+    "variant": "hoodie_lstm",
+    "workload_contract": {
+      "batch_size": 4,
+      "drain_slots": 0,
+      "replay_capacity": 32,
+      "slots_per_episode": 10,
+      "target_copy_frequency": 2,
+      "training_episodes": 3,
+      "validation_episodes": 2
+    }
+  },
+  {
+    "campaign_id": "",
+    "checkpoint_dependency": null,
+    "config_hash": "513ddf8ea480be93568997f66f54573ebd8b1468a68434ee5a2cc240da81207f",
+    "evaluation_contract": {
+      "drain_slots": 0,
+      "slots_per_episode": 10,
+      "validation_episodes": 2
+    },
+    "independent_value": 0.25,
+    "independent_variable": "task_arrival_probability",
+    "job_id": "figure_9a-0-FLC",
+    "job_type": "evaluation",
+    "panel_id": "figure_9a",
+    "physical_contract": {
+      "backend": "cpu"
+    },
+    "policy": "FLC",
+    "result_label": "PILOT \u2014 NOT PAPER-SCALE RESULT",
+    "scale": "pilot",
+    "scientific_unit_id": "figure_9a-0-FLC",
+    "seed": 7,
+    "series_name": "FLC",
+    "source_contract_hash": "093c68a5e6242550c00dcf3dc6a798060a759e1a772057e5bc6e9cc265aee420",
+    "topology_contract": {
+      "agent_counts": [
+        4
+      ]
+    },
+    "trace_bank_id": "figure_9a-bank",
+    "training_contract": {
+      "drain_slots": 0,
+      "slots_per_episode": 10,
+      "training_episodes": 3
+    },
+    "variant": null,
+    "workload_contract": {
+      "batch_size": 4,
+      "drain_slots": 0,
+      "replay_capacity": 32,
+      "slots_per_episode": 10,
+      "target_copy_frequency": 2,
+      "training_episodes": 3,
+      "validation_episodes": 2
+    }
+  },
+  {
+    "campaign_id": "",
+    "checkpoint_dependency": null,
+    "config_hash": "a822501dac1262d8d9e68a8aca49889c7d43ac575f466c8839e80bc0d8261306",
+    "evaluation_contract": {
+      "drain_slots": 0,
+      "slots_per_episode": 10,
+      "validation_episodes": 2
+    },
+    "independent_value": 0.5,
+    "independent_variable": "task_arrival_probability",
+    "job_id": "figure_9a-1-HOODIE",
+    "job_type": "evaluation",
+    "panel_id": "figure_9a",
+    "physical_contract": {
+      "backend": "cpu"
+    },
+    "policy": "HOODIE",
+    "result_label": "PILOT \u2014 NOT PAPER-SCALE RESULT",
+    "scale": "pilot",
+    "scientific_unit_id": "figure_9a-1-HOODIE",
+    "seed": 7,
+    "series_name": "HOODIE",
+    "source_contract_hash": "093c68a5e6242550c00dcf3dc6a798060a759e1a772057e5bc6e9cc265aee420",
+    "topology_contract": {
+      "agent_counts": [
+        4
+      ]
+    },
+    "trace_bank_id": "figure_9a-bank",
+    "training_contract": {
+      "drain_slots": 0,
+      "slots_per_episode": 10,
+      "training_episodes": 3
+    },
+    "variant": "hoodie_lstm",
+    "workload_contract": {
+      "batch_size": 4,
+      "drain_slots": 0,
+      "replay_capacity": 32,
+      "slots_per_episode": 10,
+      "target_copy_frequency": 2,
+      "training_episodes": 3,
+      "validation_episodes": 2
+    }
+  },
+  {
+    "campaign_id": "",
+    "checkpoint_dependency": null,
+    "config_hash": "4eac3bbd831b9d83d369042973bcc8f531fe9a250a8bf8ded328124733100630",
+    "evaluation_contract": {
+      "drain_slots": 0,
+      "slots_per_episode": 10,
+      "validation_episodes": 2
+    },
+    "independent_value": 0.5,
+    "independent_variable": "task_arrival_probability",
+    "job_id": "figure_9a-1-FLC",
+    "job_type": "evaluation",
+    "panel_id": "figure_9a",
+    "physical_contract": {
+      "backend": "cpu"
+    },
+    "policy": "FLC",
+    "result_label": "PILOT \u2014 NOT PAPER-SCALE RESULT",
+    "scale": "pilot",
+    "scientific_unit_id": "figure_9a-1-FLC",
+    "seed": 7,
+    "series_name": "FLC",
+    "source_contract_hash": "093c68a5e6242550c00dcf3dc6a798060a759e1a772057e5bc6e9cc265aee420",
+    "topology_contract": {
+      "agent_counts": [
+        4
+      ]
+    },
+    "trace_bank_id": "figure_9a-bank",
+    "training_contract": {
+      "drain_slots": 0,
+      "slots_per_episode": 10,
+      "training_episodes": 3
+    },
+    "variant": null,
+    "workload_contract": {
+      "batch_size": 4,
+      "drain_slots": 0,
+      "replay_capacity": 32,
+      "slots_per_episode": 10,
+      "target_copy_frequency": 2,
+      "training_episodes": 3,
+      "validation_episodes": 2
+    }
+  },
+  {
+    "campaign_id": "",
+    "checkpoint_dependency": null,
+    "config_hash": "9041010da71144d85a72d9c1b09aec16533ef80f390dbf6edea76e8926239554",
+    "evaluation_contract": {
+      "drain_slots": 0,
+      "slots_per_episode": 10,
+      "validation_episodes": 2
+    },
+    "independent_value": 0.25,
+    "independent_variable": "task_arrival_probability",
+    "job_id": "figure_9b-0-local",
+    "job_type": "evaluation",
+    "panel_id": "figure_9b",
+    "physical_contract": {
+      "backend": "cpu"
+    },
+    "policy": "HOODIE",
+    "result_label": "PILOT \u2014 NOT PAPER-SCALE RESULT",
+    "scale": "pilot",
+    "scientific_unit_id": "figure_9b-0-local",
+    "seed": 7,
+    "series_name": "local",
+    "source_contract_hash": "093c68a5e6242550c00dcf3dc6a798060a759e1a772057e5bc6e9cc265aee420",
+    "topology_contract": {
+      "agent_counts": [
+        4
+      ]
+    },
+    "trace_bank_id": "figure_9b-bank",
+    "training_contract": {
+      "drain_slots": 0,
+      "slots_per_episode": 10,
+      "training_episodes": 3
+    },
+    "variant": "hoodie_lstm",
+    "workload_contract": {
+      "batch_size": 4,
+      "drain_slots": 0,
+      "replay_capacity": 32,
+      "slots_per_episode": 10,
+      "target_copy_frequency": 2,
+      "training_episodes": 3,
+      "validation_episodes": 2
+    }
+  },
+  {
+    "campaign_id": "",
+    "checkpoint_dependency": null,
+    "config_hash": "11c43b9ca153610735d4787287a636269977c8f9b52797ac1f7457d26fa762c1",
+    "evaluation_contract": {
+      "drain_slots": 0,
+      "slots_per_episode": 10,
+      "validation_episodes": 2
+    },
+    "independent_value": 0.25,
+    "independent_variable": "task_arrival_probability",
+    "job_id": "figure_9b-0-horizontal",
+    "job_type": "evaluation",
+    "panel_id": "figure_9b",
+    "physical_contract": {
+      "backend": "cpu"
+    },
+    "policy": "HOODIE",
+    "result_label": "PILOT \u2014 NOT PAPER-SCALE RESULT",
+    "scale": "pilot",
+    "scientific_unit_id": "figure_9b-0-horizontal",
+    "seed": 7,
+    "series_name": "horizontal",
+    "source_contract_hash": "093c68a5e6242550c00dcf3dc6a798060a759e1a772057e5bc6e9cc265aee420",
+    "topology_contract": {
+      "agent_counts": [
+        4
+      ]
+    },
+    "trace_bank_id": "figure_9b-bank",
+    "training_contract": {
+      "drain_slots": 0,
+      "slots_per_episode": 10,
+      "training_episodes": 3
+    },
+    "variant": "hoodie_lstm",
+    "workload_contract": {
+      "batch_size": 4,
+      "drain_slots": 0,
+      "replay_capacity": 32,
+      "slots_per_episode": 10,
+      "target_copy_frequency": 2,
+      "training_episodes": 3,
+      "validation_episodes": 2
+    }
+  },
+  {
+    "campaign_id": "",
+    "checkpoint_dependency": null,
+    "config_hash": "1d83e1608505c1ff38e2c60568f7c16a585ee4c163f8bf8aa2a689c33bfff98a",
+    "evaluation_contract": {
+      "drain_slots": 0,
+      "slots_per_episode": 10,
+      "validation_episodes": 2
+    },
+    "independent_value": 0.25,
+    "independent_variable": "task_arrival_probability",
+    "job_id": "figure_9b-0-vertical",
+    "job_type": "evaluation",
+    "panel_id": "figure_9b",
+    "physical_contract": {
+      "backend": "cpu"
+    },
+    "policy": "HOODIE",
+    "result_label": "PILOT \u2014 NOT PAPER-SCALE RESULT",
+    "scale": "pilot",
+    "scientific_unit_id": "figure_9b-0-vertical",
+    "seed": 7,
+    "series_name": "vertical",
+    "source_contract_hash": "093c68a5e6242550c00dcf3dc6a798060a759e1a772057e5bc6e9cc265aee420",
+    "topology_contract": {
+      "agent_counts": [
+        4
+      ]
+    },
+    "trace_bank_id": "figure_9b-bank",
+    "training_contract": {
+      "drain_slots": 0,
+      "slots_per_episode": 10,
+      "training_episodes": 3
+    },
+    "variant": "hoodie_lstm",
+    "workload_contract": {
+      "batch_size": 4,
+      "drain_slots": 0,
+      "replay_capacity": 32,
+      "slots_per_episode": 10,
+      "target_copy_frequency": 2,
+      "training_episodes": 3,
+      "validation_episodes": 2
+    }
+  },
+  {
+    "campaign_id": "",
+    "checkpoint_dependency": null,
+    "config_hash": "e2f61fbf1935250d40932b84bb0ee1ab2b64619fbcf46a6ad7b153619e71c36f",
+    "evaluation_contract": {
+      "drain_slots": 0,
+      "slots_per_episode": 10,
+      "validation_episodes": 2
+    },
+    "independent_value": 0.5,
+    "independent_variable": "task_arrival_probability",
+    "job_id": "figure_9b-1-local",
+    "job_type": "evaluation",
+    "panel_id": "figure_9b",
+    "physical_contract": {
+      "backend": "cpu"
+    },
+    "policy": "HOODIE",
+    "result_label": "PILOT \u2014 NOT PAPER-SCALE RESULT",
+    "scale": "pilot",
+    "scientific_unit_id": "figure_9b-1-local",
+    "seed": 7,
+    "series_name": "local",
+    "source_contract_hash": "093c68a5e6242550c00dcf3dc6a798060a759e1a772057e5bc6e9cc265aee420",
+    "topology_contract": {
+      "agent_counts": [
+        4
+      ]
+    },
+    "trace_bank_id": "figure_9b-bank",
+    "training_contract": {
+      "drain_slots": 0,
+      "slots_per_episode": 10,
+      "training_episodes": 3
+    },
+    "variant": "hoodie_lstm",
+    "workload_contract": {
+      "batch_size": 4,
+      "drain_slots": 0,
+      "replay_capacity": 32,
+      "slots_per_episode": 10,
+      "target_copy_frequency": 2,
+      "training_episodes": 3,
+      "validation_episodes": 2
+    }
+  },
+  {
+    "campaign_id": "",
+    "checkpoint_dependency": null,
+    "config_hash": "77bf650b25fb10b771b62a21aa290cd56d06a666895726b83d978fec699d202c",
+    "evaluation_contract": {
+      "drain_slots": 0,
+      "slots_per_episode": 10,
+      "validation_episodes": 2
+    },
+    "independent_value": 0.5,
+    "independent_variable": "task_arrival_probability",
+    "job_id": "figure_9b-1-horizontal",
+    "job_type": "evaluation",
+    "panel_id": "figure_9b",
+    "physical_contract": {
+      "backend": "cpu"
+    },
+    "policy": "HOODIE",
+    "result_label": "PILOT \u2014 NOT PAPER-SCALE RESULT",
+    "scale": "pilot",
+    "scientific_unit_id": "figure_9b-1-horizontal",
+    "seed": 7,
+    "series_name": "horizontal",
+    "source_contract_hash": "093c68a5e6242550c00dcf3dc6a798060a759e1a772057e5bc6e9cc265aee420",
+    "topology_contract": {
+      "agent_counts": [
+        4
+      ]
+    },
+    "trace_bank_id": "figure_9b-bank",
+    "training_contract": {
+      "drain_slots": 0,
+      "slots_per_episode": 10,
+      "training_episodes": 3
+    },
+    "variant": "hoodie_lstm",
+    "workload_contract": {
+      "batch_size": 4,
+      "drain_slots": 0,
+      "replay_capacity": 32,
+      "slots_per_episode": 10,
+      "target_copy_frequency": 2,
+      "training_episodes": 3,
+      "validation_episodes": 2
+    }
+  },
+  {
+    "campaign_id": "",
+    "checkpoint_dependency": null,
+    "config_hash": "e747a760f4effc6c3360f99a1d7a2b367a4f84c4f8ebbeeea738d9f244fbc49b",
+    "evaluation_contract": {
+      "drain_slots": 0,
+      "slots_per_episode": 10,
+      "validation_episodes": 2
+    },
+    "independent_value": 0.5,
+    "independent_variable": "task_arrival_probability",
+    "job_id": "figure_9b-1-vertical",
+    "job_type": "evaluation",
+    "panel_id": "figure_9b",
+    "physical_contract": {
+      "backend": "cpu"
+    },
+    "policy": "HOODIE",
+    "result_label": "PILOT \u2014 NOT PAPER-SCALE RESULT",
+    "scale": "pilot",
+    "scientific_unit_id": "figure_9b-1-vertical",
+    "seed": 7,
+    "series_name": "vertical",
+    "source_contract_hash": "093c68a5e6242550c00dcf3dc6a798060a759e1a772057e5bc6e9cc265aee420",
+    "topology_contract": {
+      "agent_counts": [
+        4
+      ]
+    },
+    "trace_bank_id": "figure_9b-bank",
+    "training_contract": {
+      "drain_slots": 0,
+      "slots_per_episode": 10,
+      "training_episodes": 3
+    },
+    "variant": "hoodie_lstm",
+    "workload_contract": {
+      "batch_size": 4,
+      "drain_slots": 0,
+      "replay_capacity": 32,
+      "slots_per_episode": 10,
+      "target_copy_frequency": 2,
+      "training_episodes": 3,
+      "validation_episodes": 2
+    }
+  },
+  {
+    "campaign_id": "",
+    "checkpoint_dependency": null,
+    "config_hash": "468bcc5505464b049585683404b35aa896f2a32c238ddeb7462813faf30a65cf",
+    "evaluation_contract": {
+      "drain_slots": 0,
+      "slots_per_episode": 10,
+      "validation_episodes": 2
+    },
+    "independent_value": 1.5,
+    "independent_variable": "cpu_computation_capacity_ghz",
+    "job_id": "figure_9c-0-HOODIE",
+    "job_type": "evaluation",
+    "panel_id": "figure_9c",
+    "physical_contract": {
+      "backend": "cpu"
+    },
+    "policy": "HOODIE",
+    "result_label": "PILOT \u2014 NOT PAPER-SCALE RESULT",
+    "scale": "pilot",
+    "scientific_unit_id": "figure_9c-0-HOODIE",
+    "seed": 7,
+    "series_name": "HOODIE",
+    "source_contract_hash": "093c68a5e6242550c00dcf3dc6a798060a759e1a772057e5bc6e9cc265aee420",
+    "topology_contract": {
+      "agent_counts": [
+        4
+      ]
+    },
+    "trace_bank_id": "figure_9c-bank",
+    "training_contract": {
+      "drain_slots": 0,
+      "slots_per_episode": 10,
+      "training_episodes": 3
+    },
+    "variant": "hoodie_lstm",
+    "workload_contract": {
+      "batch_size": 4,
+      "drain_slots": 0,
+      "replay_capacity": 32,
+      "slots_per_episode": 10,
+      "target_copy_frequency": 2,
+      "training_episodes": 3,
+      "validation_episodes": 2
+    }
+  },
+  {
+    "campaign_id": "",
+    "checkpoint_dependency": null,
+    "config_hash": "d879eeb1fecd0238667ed210f724144641f41bfbf0f0d6253772ad1308e2f41b",
+    "evaluation_contract": {
+      "drain_slots": 0,
+      "slots_per_episode": 10,
+      "validation_episodes": 2
+    },
+    "independent_value": 1.5,
+    "independent_variable": "cpu_computation_capacity_ghz",
+    "job_id": "figure_9c-0-FLC",
+    "job_type": "evaluation",
+    "panel_id": "figure_9c",
+    "physical_contract": {
+      "backend": "cpu"
+    },
+    "policy": "FLC",
+    "result_label": "PILOT \u2014 NOT PAPER-SCALE RESULT",
+    "scale": "pilot",
+    "scientific_unit_id": "figure_9c-0-FLC",
+    "seed": 7,
+    "series_name": "FLC",
+    "source_contract_hash": "093c68a5e6242550c00dcf3dc6a798060a759e1a772057e5bc6e9cc265aee420",
+    "topology_contract": {
+      "agent_counts": [
+        4
+      ]
+    },
+    "trace_bank_id": "figure_9c-bank",
+    "training_contract": {
+      "drain_slots": 0,
+      "slots_per_episode": 10,
+      "training_episodes": 3
+    },
+    "variant": null,
+    "workload_contract": {
+      "batch_size": 4,
+      "drain_slots": 0,
+      "replay_capacity": 32,
+      "slots_per_episode": 10,
+      "target_copy_frequency": 2,
+      "training_episodes": 3,
+      "validation_episodes": 2
+    }
+  },
+  {
+    "campaign_id": "",
+    "checkpoint_dependency": null,
+    "config_hash": "77da306da4be8c1bc621e67b04fe10b1a89d26bef2d0f4881c4ac824e21af2df",
+    "evaluation_contract": {
+      "drain_slots": 0,
+      "slots_per_episode": 10,
+      "validation_episodes": 2
+    },
+    "independent_value": 3.0,
+    "independent_variable": "cpu_computation_capacity_ghz",
+    "job_id": "figure_9c-1-HOODIE",
+    "job_type": "evaluation",
+    "panel_id": "figure_9c",
+    "physical_contract": {
+      "backend": "cpu"
+    },
+    "policy": "HOODIE",
+    "result_label": "PILOT \u2014 NOT PAPER-SCALE RESULT",
+    "scale": "pilot",
+    "scientific_unit_id": "figure_9c-1-HOODIE",
+    "seed": 7,
+    "series_name": "HOODIE",
+    "source_contract_hash": "093c68a5e6242550c00dcf3dc6a798060a759e1a772057e5bc6e9cc265aee420",
+    "topology_contract": {
+      "agent_counts": [
+        4
+      ]
+    },
+    "trace_bank_id": "figure_9c-bank",
+    "training_contract": {
+      "drain_slots": 0,
+      "slots_per_episode": 10,
+      "training_episodes": 3
+    },
+    "variant": "hoodie_lstm",
+    "workload_contract": {
+      "batch_size": 4,
+      "drain_slots": 0,
+      "replay_capacity": 32,
+      "slots_per_episode": 10,
+      "target_copy_frequency": 2,
+      "training_episodes": 3,
+      "validation_episodes": 2
+    }
+  },
+  {
+    "campaign_id": "",
+    "checkpoint_dependency": null,
+    "config_hash": "545d4271364298dc69b0cbc75e77d122ec5bb515b7f1c026c2e8b49c17854ded",
+    "evaluation_contract": {
+      "drain_slots": 0,
+      "slots_per_episode": 10,
+      "validation_episodes": 2
+    },
+    "independent_value": 3.0,
+    "independent_variable": "cpu_computation_capacity_ghz",
+    "job_id": "figure_9c-1-FLC",
+    "job_type": "evaluation",
+    "panel_id": "figure_9c",
+    "physical_contract": {
+      "backend": "cpu"
+    },
+    "policy": "FLC",
+    "result_label": "PILOT \u2014 NOT PAPER-SCALE RESULT",
+    "scale": "pilot",
+    "scientific_unit_id": "figure_9c-1-FLC",
+    "seed": 7,
+    "series_name": "FLC",
+    "source_contract_hash": "093c68a5e6242550c00dcf3dc6a798060a759e1a772057e5bc6e9cc265aee420",
+    "topology_contract": {
+      "agent_counts": [
+        4
+      ]
+    },
+    "trace_bank_id": "figure_9c-bank",
+    "training_contract": {
+      "drain_slots": 0,
+      "slots_per_episode": 10,
+      "training_episodes": 3
+    },
+    "variant": null,
+    "workload_contract": {
+      "batch_size": 4,
+      "drain_slots": 0,
+      "replay_capacity": 32,
+      "slots_per_episode": 10,
+      "target_copy_frequency": 2,
+      "training_episodes": 3,
+      "validation_episodes": 2
+    }
+  },
+  {
+    "campaign_id": "",
+    "checkpoint_dependency": null,
+    "config_hash": "6c2ff43c082485f42b7b4f6a33bc361f26da081f039d14c3bdfd089b48324be2",
+    "evaluation_contract": {
+      "drain_slots": 0,
+      "slots_per_episode": 10,
+      "validation_episodes": 2
+    },
+    "independent_value": 4,
+    "independent_variable": "number_of_agents",
+    "job_id": "figure_9d-0-light",
+    "job_type": "evaluation",
+    "panel_id": "figure_9d",
+    "physical_contract": {
+      "backend": "cpu"
+    },
+    "policy": "HOODIE",
+    "result_label": "PILOT \u2014 NOT PAPER-SCALE RESULT",
+    "scale": "pilot",
+    "scientific_unit_id": "figure_9d-0-light",
+    "seed": 7,
+    "series_name": "light",
+    "source_contract_hash": "093c68a5e6242550c00dcf3dc6a798060a759e1a772057e5bc6e9cc265aee420",
+    "topology_contract": {
+      "agent_counts": [
+        4
+      ]
+    },
+    "trace_bank_id": "figure_9d-bank",
+    "training_contract": {
+      "drain_slots": 0,
+      "slots_per_episode": 10,
+      "training_episodes": 3
+    },
+    "variant": "hoodie_lstm",
+    "workload_contract": {
+      "batch_size": 4,
+      "drain_slots": 0,
+      "replay_capacity": 32,
+      "slots_per_episode": 10,
+      "target_copy_frequency": 2,
+      "training_episodes": 3,
+      "validation_episodes": 2
+    }
+  },
+  {
+    "campaign_id": "",
+    "checkpoint_dependency": null,
+    "config_hash": "a9e11794f9ac3cb91adfd34f774f125fe2dc334ce7f990b9589cfc11c180dd4a",
+    "evaluation_contract": {
+      "drain_slots": 0,
+      "slots_per_episode": 10,
+      "validation_episodes": 2
+    },
+    "independent_value": 4,
+    "independent_variable": "number_of_agents",
+    "job_id": "figure_9d-0-mixed",
+    "job_type": "evaluation",
+    "panel_id": "figure_9d",
+    "physical_contract": {
+      "backend": "cpu"
+    },
+    "policy": "HOODIE",
+    "result_label": "PILOT \u2014 NOT PAPER-SCALE RESULT",
+    "scale": "pilot",
+    "scientific_unit_id": "figure_9d-0-mixed",
+    "seed": 7,
+    "series_name": "mixed",
+    "source_contract_hash": "093c68a5e6242550c00dcf3dc6a798060a759e1a772057e5bc6e9cc265aee420",
+    "topology_contract": {
+      "agent_counts": [
+        4
+      ]
+    },
+    "trace_bank_id": "figure_9d-bank",
+    "training_contract": {
+      "drain_slots": 0,
+      "slots_per_episode": 10,
+      "training_episodes": 3
+    },
+    "variant": "hoodie_lstm",
+    "workload_contract": {
+      "batch_size": 4,
+      "drain_slots": 0,
+      "replay_capacity": 32,
+      "slots_per_episode": 10,
+      "target_copy_frequency": 2,
+      "training_episodes": 3,
+      "validation_episodes": 2
+    }
+  },
+  {
+    "campaign_id": "",
+    "checkpoint_dependency": null,
+    "config_hash": "065bac7e8568f5b7379d60a4f385a5b4b4924c242aef01756d5fa8b86ae04832",
+    "evaluation_contract": {
+      "drain_slots": 0,
+      "slots_per_episode": 10,
+      "validation_episodes": 2
+    },
+    "independent_value": 8,
+    "independent_variable": "number_of_agents",
+    "job_id": "figure_9d-1-light",
+    "job_type": "evaluation",
+    "panel_id": "figure_9d",
+    "physical_contract": {
+      "backend": "cpu"
+    },
+    "policy": "HOODIE",
+    "result_label": "PILOT \u2014 NOT PAPER-SCALE RESULT",
+    "scale": "pilot",
+    "scientific_unit_id": "figure_9d-1-light",
+    "seed": 7,
+    "series_name": "light",
+    "source_contract_hash": "093c68a5e6242550c00dcf3dc6a798060a759e1a772057e5bc6e9cc265aee420",
+    "topology_contract": {
+      "agent_counts": [
+        4
+      ]
+    },
+    "trace_bank_id": "figure_9d-bank",
+    "training_contract": {
+      "drain_slots": 0,
+      "slots_per_episode": 10,
+      "training_episodes": 3
+    },
+    "variant": "hoodie_lstm",
+    "workload_contract": {
+      "batch_size": 4,
+      "drain_slots": 0,
+      "replay_capacity": 32,
+      "slots_per_episode": 10,
+      "target_copy_frequency": 2,
+      "training_episodes": 3,
+      "validation_episodes": 2
+    }
+  },
+  {
+    "campaign_id": "",
+    "checkpoint_dependency": null,
+    "config_hash": "90dec118186263edda43eecf4ba099d8c8e975d275136ef8262f57a83907cd6a",
+    "evaluation_contract": {
+      "drain_slots": 0,
+      "slots_per_episode": 10,
+      "validation_episodes": 2
+    },
+    "independent_value": 8,
+    "independent_variable": "number_of_agents",
+    "job_id": "figure_9d-1-mixed",
+    "job_type": "evaluation",
+    "panel_id": "figure_9d",
+    "physical_contract": {
+      "backend": "cpu"
+    },
+    "policy": "HOODIE",
+    "result_label": "PILOT \u2014 NOT PAPER-SCALE RESULT",
+    "scale": "pilot",
+    "scientific_unit_id": "figure_9d-1-mixed",
+    "seed": 7,
+    "series_name": "mixed",
+    "source_contract_hash": "093c68a5e6242550c00dcf3dc6a798060a759e1a772057e5bc6e9cc265aee420",
+    "topology_contract": {
+      "agent_counts": [
+        4
+      ]
+    },
+    "trace_bank_id": "figure_9d-bank",
+    "training_contract": {
+      "drain_slots": 0,
+      "slots_per_episode": 10,
+      "training_episodes": 3
+    },
+    "variant": "hoodie_lstm",
+    "workload_contract": {
+      "batch_size": 4,
+      "drain_slots": 0,
+      "replay_capacity": 32,
+      "slots_per_episode": 10,
+      "target_copy_frequency": 2,
+      "training_episodes": 3,
+      "validation_episodes": 2
+    }
+  },
+  {
+    "campaign_id": "",
+    "checkpoint_dependency": null,
+    "config_hash": "4780bbc952927725e90aceb031f8d0b39986d08c90c0059c2c6005abdca60330",
+    "evaluation_contract": {
+      "drain_slots": 0,
+      "slots_per_episode": 10,
+      "validation_episodes": 2
+    },
+    "independent_value": "low",
+    "independent_variable": "communication_rate_scenario",
+    "job_id": "figure_9e-0-balanced",
+    "job_type": "evaluation",
+    "panel_id": "figure_9e",
+    "physical_contract": {
+      "backend": "cpu"
+    },
+    "policy": "HOODIE",
+    "result_label": "PILOT \u2014 NOT PAPER-SCALE RESULT",
+    "scale": "pilot",
+    "scientific_unit_id": "figure_9e-0-balanced",
+    "seed": 7,
+    "series_name": "balanced",
+    "source_contract_hash": "093c68a5e6242550c00dcf3dc6a798060a759e1a772057e5bc6e9cc265aee420",
+    "topology_contract": {
+      "agent_counts": [
+        4
+      ]
+    },
+    "trace_bank_id": "figure_9e-bank",
+    "training_contract": {
+      "drain_slots": 0,
+      "slots_per_episode": 10,
+      "training_episodes": 3
+    },
+    "variant": "hoodie_lstm",
+    "workload_contract": {
+      "batch_size": 4,
+      "drain_slots": 0,
+      "replay_capacity": 32,
+      "slots_per_episode": 10,
+      "target_copy_frequency": 2,
+      "training_episodes": 3,
+      "validation_episodes": 2
+    }
+  },
+  {
+    "campaign_id": "",
+    "checkpoint_dependency": null,
+    "config_hash": "e1a8350c43b91a3914757fc534aa79efcc29047736f3b99898a482bc953c5517",
+    "evaluation_contract": {
+      "drain_slots": 0,
+      "slots_per_episode": 10,
+      "validation_episodes": 2
+    },
+    "independent_value": "low",
+    "independent_variable": "communication_rate_scenario",
+    "job_id": "figure_9e-0-burst",
+    "job_type": "evaluation",
+    "panel_id": "figure_9e",
+    "physical_contract": {
+      "backend": "cpu"
+    },
+    "policy": "HOODIE",
+    "result_label": "PILOT \u2014 NOT PAPER-SCALE RESULT",
+    "scale": "pilot",
+    "scientific_unit_id": "figure_9e-0-burst",
+    "seed": 7,
+    "series_name": "burst",
+    "source_contract_hash": "093c68a5e6242550c00dcf3dc6a798060a759e1a772057e5bc6e9cc265aee420",
+    "topology_contract": {
+      "agent_counts": [
+        4
+      ]
+    },
+    "trace_bank_id": "figure_9e-bank",
+    "training_contract": {
+      "drain_slots": 0,
+      "slots_per_episode": 10,
+      "training_episodes": 3
+    },
+    "variant": "hoodie_lstm",
+    "workload_contract": {
+      "batch_size": 4,
+      "drain_slots": 0,
+      "replay_capacity": 32,
+      "slots_per_episode": 10,
+      "target_copy_frequency": 2,
+      "training_episodes": 3,
+      "validation_episodes": 2
+    }
+  },
+  {
+    "campaign_id": "",
+    "checkpoint_dependency": null,
+    "config_hash": "eae8880584c45594a20b85156066943dfbdd093642d7c556201bfb18b19c3903",
+    "evaluation_contract": {
+      "drain_slots": 0,
+      "slots_per_episode": 10,
+      "validation_episodes": 2
+    },
+    "independent_value": "high",
+    "independent_variable": "communication_rate_scenario",
+    "job_id": "figure_9e-1-balanced",
+    "job_type": "evaluation",
+    "panel_id": "figure_9e",
+    "physical_contract": {
+      "backend": "cpu"
+    },
+    "policy": "HOODIE",
+    "result_label": "PILOT \u2014 NOT PAPER-SCALE RESULT",
+    "scale": "pilot",
+    "scientific_unit_id": "figure_9e-1-balanced",
+    "seed": 7,
+    "series_name": "balanced",
+    "source_contract_hash": "093c68a5e6242550c00dcf3dc6a798060a759e1a772057e5bc6e9cc265aee420",
+    "topology_contract": {
+      "agent_counts": [
+        4
+      ]
+    },
+    "trace_bank_id": "figure_9e-bank",
+    "training_contract": {
+      "drain_slots": 0,
+      "slots_per_episode": 10,
+      "training_episodes": 3
+    },
+    "variant": "hoodie_lstm",
+    "workload_contract": {
+      "batch_size": 4,
+      "drain_slots": 0,
+      "replay_capacity": 32,
+      "slots_per_episode": 10,
+      "target_copy_frequency": 2,
+      "training_episodes": 3,
+      "validation_episodes": 2
+    }
+  },
+  {
+    "campaign_id": "",
+    "checkpoint_dependency": null,
+    "config_hash": "a6765e884407db21d3646358c4afd2cdb9498ebdaec003a170061a82ee79d424",
+    "evaluation_contract": {
+      "drain_slots": 0,
+      "slots_per_episode": 10,
+      "validation_episodes": 2
+    },
+    "independent_value": "high",
+    "independent_variable": "communication_rate_scenario",
+    "job_id": "figure_9e-1-burst",
+    "job_type": "evaluation",
+    "panel_id": "figure_9e",
+    "physical_contract": {
+      "backend": "cpu"
+    },
+    "policy": "HOODIE",
+    "result_label": "PILOT \u2014 NOT PAPER-SCALE RESULT",
+    "scale": "pilot",
+    "scientific_unit_id": "figure_9e-1-burst",
+    "seed": 7,
+    "series_name": "burst",
+    "source_contract_hash": "093c68a5e6242550c00dcf3dc6a798060a759e1a772057e5bc6e9cc265aee420",
+    "topology_contract": {
+      "agent_counts": [
+        4
+      ]
+    },
+    "trace_bank_id": "figure_9e-bank",
+    "training_contract": {
+      "drain_slots": 0,
+      "slots_per_episode": 10,
+      "training_episodes": 3
+    },
+    "variant": "hoodie_lstm",
+    "workload_contract": {
+      "batch_size": 4,
+      "drain_slots": 0,
+      "replay_capacity": 32,
+      "slots_per_episode": 10,
+      "target_copy_frequency": 2,
+      "training_episodes": 3,
+      "validation_episodes": 2
+    }
+  },
+  {
+    "campaign_id": "",
+    "checkpoint_dependency": null,
+    "config_hash": "1be969cd10b0811a3f096625c6ebcbf84f6dd0245fd960a7b4e7c940d48e14de",
+    "evaluation_contract": {
+      "drain_slots": 0,
+      "slots_per_episode": 10,
+      "validation_episodes": 2
+    },
+    "independent_value": 0.25,
+    "independent_variable": "task_arrival_probability",
+    "job_id": "figure_10a-0-HOODIE",
+    "job_type": "evaluation",
+    "panel_id": "figure_10a",
+    "physical_contract": {
+      "backend": "cpu"
+    },
+    "policy": "HOODIE",
+    "result_label": "PILOT \u2014 NOT PAPER-SCALE RESULT",
+    "scale": "pilot",
+    "scientific_unit_id": "figure_10a-0-HOODIE",
+    "seed": 7,
+    "series_name": "HOODIE",
+    "source_contract_hash": "093c68a5e6242550c00dcf3dc6a798060a759e1a772057e5bc6e9cc265aee420",
+    "topology_contract": {
+      "agent_counts": [
+        4
+      ]
+    },
+    "trace_bank_id": "figure_10a-bank",
+    "training_contract": {
+      "drain_slots": 0,
+      "slots_per_episode": 10,
+      "training_episodes": 3
+    },
+    "variant": "hoodie_lstm",
+    "workload_contract": {
+      "batch_size": 4,
+      "drain_slots": 0,
+      "replay_capacity": 32,
+      "slots_per_episode": 10,
+      "target_copy_frequency": 2,
+      "training_episodes": 3,
+      "validation_episodes": 2
+    }
+  },
+  {
+    "campaign_id": "",
+    "checkpoint_dependency": null,
+    "config_hash": "b72b2b687eef89d462f50fe22973875546b6094b82902c5c42fa307a85a0065e",
+    "evaluation_contract": {
+      "drain_slots": 0,
+      "slots_per_episode": 10,
+      "validation_episodes": 2
+    },
+    "independent_value": 0.25,
+    "independent_variable": "task_arrival_probability",
+    "job_id": "figure_10a-0-FLC",
+    "job_type": "evaluation",
+    "panel_id": "figure_10a",
+    "physical_contract": {
+      "backend": "cpu"
+    },
+    "policy": "FLC",
+    "result_label": "PILOT \u2014 NOT PAPER-SCALE RESULT",
+    "scale": "pilot",
+    "scientific_unit_id": "figure_10a-0-FLC",
+    "seed": 7,
+    "series_name": "FLC",
+    "source_contract_hash": "093c68a5e6242550c00dcf3dc6a798060a759e1a772057e5bc6e9cc265aee420",
+    "topology_contract": {
+      "agent_counts": [
+        4
+      ]
+    },
+    "trace_bank_id": "figure_10a-bank",
+    "training_contract": {
+      "drain_slots": 0,
+      "slots_per_episode": 10,
+      "training_episodes": 3
+    },
+    "variant": null,
+    "workload_contract": {
+      "batch_size": 4,
+      "drain_slots": 0,
+      "replay_capacity": 32,
+      "slots_per_episode": 10,
+      "target_copy_frequency": 2,
+      "training_episodes": 3,
+      "validation_episodes": 2
+    }
+  },
+  {
+    "campaign_id": "",
+    "checkpoint_dependency": null,
+    "config_hash": "108c667a0f76984deb2ecde933c5e33f54da5491249634c5fc6923455969c059",
+    "evaluation_contract": {
+      "drain_slots": 0,
+      "slots_per_episode": 10,
+      "validation_episodes": 2
+    },
+    "independent_value": 0.25,
+    "independent_variable": "task_arrival_probability",
+    "job_id": "figure_10a-0-RO",
+    "job_type": "evaluation",
+    "panel_id": "figure_10a",
+    "physical_contract": {
+      "backend": "cpu"
+    },
+    "policy": "RO",
+    "result_label": "PILOT \u2014 NOT PAPER-SCALE RESULT",
+    "scale": "pilot",
+    "scientific_unit_id": "figure_10a-0-RO",
+    "seed": 7,
+    "series_name": "RO",
+    "source_contract_hash": "093c68a5e6242550c00dcf3dc6a798060a759e1a772057e5bc6e9cc265aee420",
+    "topology_contract": {
+      "agent_counts": [
+        4
+      ]
+    },
+    "trace_bank_id": "figure_10a-bank",
+    "training_contract": {
+      "drain_slots": 0,
+      "slots_per_episode": 10,
+      "training_episodes": 3
+    },
+    "variant": null,
+    "workload_contract": {
+      "batch_size": 4,
+      "drain_slots": 0,
+      "replay_capacity": 32,
+      "slots_per_episode": 10,
+      "target_copy_frequency": 2,
+      "training_episodes": 3,
+      "validation_episodes": 2
+    }
+  },
+  {
+    "campaign_id": "",
+    "checkpoint_dependency": null,
+    "config_hash": "991213a8e211e95557f1122f616d9310421b3fa29dba1e8f497eafa4d40e635e",
+    "evaluation_contract": {
+      "drain_slots": 0,
+      "slots_per_episode": 10,
+      "validation_episodes": 2
+    },
+    "independent_value": 0.25,
+    "independent_variable": "task_arrival_probability",
+    "job_id": "figure_10a-0-HO",
+    "job_type": "evaluation",
+    "panel_id": "figure_10a",
+    "physical_contract": {
+      "backend": "cpu"
+    },
+    "policy": "HO",
+    "result_label": "PILOT \u2014 NOT PAPER-SCALE RESULT",
+    "scale": "pilot",
+    "scientific_unit_id": "figure_10a-0-HO",
+    "seed": 7,
+    "series_name": "HO",
+    "source_contract_hash": "093c68a5e6242550c00dcf3dc6a798060a759e1a772057e5bc6e9cc265aee420",
+    "topology_contract": {
+      "agent_counts": [
+        4
+      ]
+    },
+    "trace_bank_id": "figure_10a-bank",
+    "training_contract": {
+      "drain_slots": 0,
+      "slots_per_episode": 10,
+      "training_episodes": 3
+    },
+    "variant": null,
+    "workload_contract": {
+      "batch_size": 4,
+      "drain_slots": 0,
+      "replay_capacity": 32,
+      "slots_per_episode": 10,
+      "target_copy_frequency": 2,
+      "training_episodes": 3,
+      "validation_episodes": 2
+    }
+  },
+  {
+    "campaign_id": "",
+    "checkpoint_dependency": null,
+    "config_hash": "ef49f036e11fb1bbc925269f7870a6838fa0b3308b16a7d1e50ba86a839dc97a",
+    "evaluation_contract": {
+      "drain_slots": 0,
+      "slots_per_episode": 10,
+      "validation_episodes": 2
+    },
+    "independent_value": 0.25,
+    "independent_variable": "task_arrival_probability",
+    "job_id": "figure_10a-0-VO",
+    "job_type": "evaluation",
+    "panel_id": "figure_10a",
+    "physical_contract": {
+      "backend": "cpu"
+    },
+    "policy": "VO",
+    "result_label": "PILOT \u2014 NOT PAPER-SCALE RESULT",
+    "scale": "pilot",
+    "scientific_unit_id": "figure_10a-0-VO",
+    "seed": 7,
+    "series_name": "VO",
+    "source_contract_hash": "093c68a5e6242550c00dcf3dc6a798060a759e1a772057e5bc6e9cc265aee420",
+    "topology_contract": {
+      "agent_counts": [
+        4
+      ]
+    },
+    "trace_bank_id": "figure_10a-bank",
+    "training_contract": {
+      "drain_slots": 0,
+      "slots_per_episode": 10,
+      "training_episodes": 3
+    },
+    "variant": null,
+    "workload_contract": {
+      "batch_size": 4,
+      "drain_slots": 0,
+      "replay_capacity": 32,
+      "slots_per_episode": 10,
+      "target_copy_frequency": 2,
+      "training_episodes": 3,
+      "validation_episodes": 2
+    }
+  },
+  {
+    "campaign_id": "",
+    "checkpoint_dependency": null,
+    "config_hash": "820aeed136c3f2568f50fef5e3ed1ad43db09105a9f2ba33393b4975e360c183",
+    "evaluation_contract": {
+      "drain_slots": 0,
+      "slots_per_episode": 10,
+      "validation_episodes": 2
+    },
+    "independent_value": 0.25,
+    "independent_variable": "task_arrival_probability",
+    "job_id": "figure_10a-0-BCO",
+    "job_type": "evaluation",
+    "panel_id": "figure_10a",
+    "physical_contract": {
+      "backend": "cpu"
+    },
+    "policy": "BCO",
+    "result_label": "PILOT \u2014 NOT PAPER-SCALE RESULT",
+    "scale": "pilot",
+    "scientific_unit_id": "figure_10a-0-BCO",
+    "seed": 7,
+    "series_name": "BCO",
+    "source_contract_hash": "093c68a5e6242550c00dcf3dc6a798060a759e1a772057e5bc6e9cc265aee420",
+    "topology_contract": {
+      "agent_counts": [
+        4
+      ]
+    },
+    "trace_bank_id": "figure_10a-bank",
+    "training_contract": {
+      "drain_slots": 0,
+      "slots_per_episode": 10,
+      "training_episodes": 3
+    },
+    "variant": null,
+    "workload_contract": {
+      "batch_size": 4,
+      "drain_slots": 0,
+      "replay_capacity": 32,
+      "slots_per_episode": 10,
+      "target_copy_frequency": 2,
+      "training_episodes": 3,
+      "validation_episodes": 2
+    }
+  },
+  {
+    "campaign_id": "",
+    "checkpoint_dependency": null,
+    "config_hash": "0b3f790623d7d0336e7ece950c4b30ce9dea9a512b8ca62b6816944b647a5951",
+    "evaluation_contract": {
+      "drain_slots": 0,
+      "slots_per_episode": 10,
+      "validation_episodes": 2
+    },
+    "independent_value": 0.25,
+    "independent_variable": "task_arrival_probability",
+    "job_id": "figure_10a-0-MLEO",
+    "job_type": "evaluation",
+    "panel_id": "figure_10a",
+    "physical_contract": {
+      "backend": "cpu"
+    },
+    "policy": "MLEO",
+    "result_label": "PILOT \u2014 NOT PAPER-SCALE RESULT",
+    "scale": "pilot",
+    "scientific_unit_id": "figure_10a-0-MLEO",
+    "seed": 7,
+    "series_name": "MLEO",
+    "source_contract_hash": "093c68a5e6242550c00dcf3dc6a798060a759e1a772057e5bc6e9cc265aee420",
+    "topology_contract": {
+      "agent_counts": [
+        4
+      ]
+    },
+    "trace_bank_id": "figure_10a-bank",
+    "training_contract": {
+      "drain_slots": 0,
+      "slots_per_episode": 10,
+      "training_episodes": 3
+    },
+    "variant": null,
+    "workload_contract": {
+      "batch_size": 4,
+      "drain_slots": 0,
+      "replay_capacity": 32,
+      "slots_per_episode": 10,
+      "target_copy_frequency": 2,
+      "training_episodes": 3,
+      "validation_episodes": 2
+    }
+  },
+  {
+    "campaign_id": "",
+    "checkpoint_dependency": null,
+    "config_hash": "8219106915854947edb35179d412602e831173e0c5aeb243871221765d02bfbc",
+    "evaluation_contract": {
+      "drain_slots": 0,
+      "slots_per_episode": 10,
+      "validation_episodes": 2
+    },
+    "independent_value": 0.5,
+    "independent_variable": "task_arrival_probability",
+    "job_id": "figure_10a-1-HOODIE",
+    "job_type": "evaluation",
+    "panel_id": "figure_10a",
+    "physical_contract": {
+      "backend": "cpu"
+    },
+    "policy": "HOODIE",
+    "result_label": "PILOT \u2014 NOT PAPER-SCALE RESULT",
+    "scale": "pilot",
+    "scientific_unit_id": "figure_10a-1-HOODIE",
+    "seed": 7,
+    "series_name": "HOODIE",
+    "source_contract_hash": "093c68a5e6242550c00dcf3dc6a798060a759e1a772057e5bc6e9cc265aee420",
+    "topology_contract": {
+      "agent_counts": [
+        4
+      ]
+    },
+    "trace_bank_id": "figure_10a-bank",
+    "training_contract": {
+      "drain_slots": 0,
+      "slots_per_episode": 10,
+      "training_episodes": 3
+    },
+    "variant": "hoodie_lstm",
+    "workload_contract": {
+      "batch_size": 4,
+      "drain_slots": 0,
+      "replay_capacity": 32,
+      "slots_per_episode": 10,
+      "target_copy_frequency": 2,
+      "training_episodes": 3,
+      "validation_episodes": 2
+    }
+  },
+  {
+    "campaign_id": "",
+    "checkpoint_dependency": null,
+    "config_hash": "272bb4cf6ba99a5f4b055878fceb088d8b34bb340bbf66fa1a90c5ef8db7249d",
+    "evaluation_contract": {
+      "drain_slots": 0,
+      "slots_per_episode": 10,
+      "validation_episodes": 2
+    },
+    "independent_value": 0.5,
+    "independent_variable": "task_arrival_probability",
+    "job_id": "figure_10a-1-FLC",
+    "job_type": "evaluation",
+    "panel_id": "figure_10a",
+    "physical_contract": {
+      "backend": "cpu"
+    },
+    "policy": "FLC",
+    "result_label": "PILOT \u2014 NOT PAPER-SCALE RESULT",
+    "scale": "pilot",
+    "scientific_unit_id": "figure_10a-1-FLC",
+    "seed": 7,
+    "series_name": "FLC",
+    "source_contract_hash": "093c68a5e6242550c00dcf3dc6a798060a759e1a772057e5bc6e9cc265aee420",
+    "topology_contract": {
+      "agent_counts": [
+        4
+      ]
+    },
+    "trace_bank_id": "figure_10a-bank",
+    "training_contract": {
+      "drain_slots": 0,
+      "slots_per_episode": 10,
+      "training_episodes": 3
+    },
+    "variant": null,
+    "workload_contract": {
+      "batch_size": 4,
+      "drain_slots": 0,
+      "replay_capacity": 32,
+      "slots_per_episode": 10,
+      "target_copy_frequency": 2,
+      "training_episodes": 3,
+      "validation_episodes": 2
+    }
+  },
+  {
+    "campaign_id": "",
+    "checkpoint_dependency": null,
+    "config_hash": "c3066641e89e076fe91eae6cd1ba2dec93561547d5c191aeaa87fcf86fa13c56",
+    "evaluation_contract": {
+      "drain_slots": 0,
+      "slots_per_episode": 10,
+      "validation_episodes": 2
+    },
+    "independent_value": 0.5,
+    "independent_variable": "task_arrival_probability",
+    "job_id": "figure_10a-1-RO",
+    "job_type": "evaluation",
+    "panel_id": "figure_10a",
+    "physical_contract": {
+      "backend": "cpu"
+    },
+    "policy": "RO",
+    "result_label": "PILOT \u2014 NOT PAPER-SCALE RESULT",
+    "scale": "pilot",
+    "scientific_unit_id": "figure_10a-1-RO",
+    "seed": 7,
+    "series_name": "RO",
+    "source_contract_hash": "093c68a5e6242550c00dcf3dc6a798060a759e1a772057e5bc6e9cc265aee420",
+    "topology_contract": {
+      "agent_counts": [
+        4
+      ]
+    },
+    "trace_bank_id": "figure_10a-bank",
+    "training_contract": {
+      "drain_slots": 0,
+      "slots_per_episode": 10,
+      "training_episodes": 3
+    },
+    "variant": null,
+    "workload_contract": {
+      "batch_size": 4,
+      "drain_slots": 0,
+      "replay_capacity": 32,
+      "slots_per_episode": 10,
+      "target_copy_frequency": 2,
+      "training_episodes": 3,
+      "validation_episodes": 2
+    }
+  },
+  {
+    "campaign_id": "",
+    "checkpoint_dependency": null,
+    "config_hash": "818030b8fbe49affbe2a95f0f0e26680364d3ae99887063d99319e59aecb30ff",
+    "evaluation_contract": {
+      "drain_slots": 0,
+      "slots_per_episode": 10,
+      "validation_episodes": 2
+    },
+    "independent_value": 0.5,
+    "independent_variable": "task_arrival_probability",
+    "job_id": "figure_10a-1-HO",
+    "job_type": "evaluation",
+    "panel_id": "figure_10a",
+    "physical_contract": {
+      "backend": "cpu"
+    },
+    "policy": "HO",
+    "result_label": "PILOT \u2014 NOT PAPER-SCALE RESULT",
+    "scale": "pilot",
+    "scientific_unit_id": "figure_10a-1-HO",
+    "seed": 7,
+    "series_name": "HO",
+    "source_contract_hash": "093c68a5e6242550c00dcf3dc6a798060a759e1a772057e5bc6e9cc265aee420",
+    "topology_contract": {
+      "agent_counts": [
+        4
+      ]
+    },
+    "trace_bank_id": "figure_10a-bank",
+    "training_contract": {
+      "drain_slots": 0,
+      "slots_per_episode": 10,
+      "training_episodes": 3
+    },
+    "variant": null,
+    "workload_contract": {
+      "batch_size": 4,
+      "drain_slots": 0,
+      "replay_capacity": 32,
+      "slots_per_episode": 10,
+      "target_copy_frequency": 2,
+      "training_episodes": 3,
+      "validation_episodes": 2
+    }
+  },
+  {
+    "campaign_id": "",
+    "checkpoint_dependency": null,
+    "config_hash": "5058a979b42f341231e894d0661583f843d044eafc55ceb341703d884ffdd7ea",
+    "evaluation_contract": {
+      "drain_slots": 0,
+      "slots_per_episode": 10,
+      "validation_episodes": 2
+    },
+    "independent_value": 0.5,
+    "independent_variable": "task_arrival_probability",
+    "job_id": "figure_10a-1-VO",
+    "job_type": "evaluation",
+    "panel_id": "figure_10a",
+    "physical_contract": {
+      "backend": "cpu"
+    },
+    "policy": "VO",
+    "result_label": "PILOT \u2014 NOT PAPER-SCALE RESULT",
+    "scale": "pilot",
+    "scientific_unit_id": "figure_10a-1-VO",
+    "seed": 7,
+    "series_name": "VO",
+    "source_contract_hash": "093c68a5e6242550c00dcf3dc6a798060a759e1a772057e5bc6e9cc265aee420",
+    "topology_contract": {
+      "agent_counts": [
+        4
+      ]
+    },
+    "trace_bank_id": "figure_10a-bank",
+    "training_contract": {
+      "drain_slots": 0,
+      "slots_per_episode": 10,
+      "training_episodes": 3
+    },
+    "variant": null,
+    "workload_contract": {
+      "batch_size": 4,
+      "drain_slots": 0,
+      "replay_capacity": 32,
+      "slots_per_episode": 10,
+      "target_copy_frequency": 2,
+      "training_episodes": 3,
+      "validation_episodes": 2
+    }
+  },
+  {
+    "campaign_id": "",
+    "checkpoint_dependency": null,
+    "config_hash": "e029d32b7e8f8ed14b5fe862a91482133e2a146909b63c372aa1108fc865082f",
+    "evaluation_contract": {
+      "drain_slots": 0,
+      "slots_per_episode": 10,
+      "validation_episodes": 2
+    },
+    "independent_value": 0.5,
+    "independent_variable": "task_arrival_probability",
+    "job_id": "figure_10a-1-BCO",
+    "job_type": "evaluation",
+    "panel_id": "figure_10a",
+    "physical_contract": {
+      "backend": "cpu"
+    },
+    "policy": "BCO",
+    "result_label": "PILOT \u2014 NOT PAPER-SCALE RESULT",
+    "scale": "pilot",
+    "scientific_unit_id": "figure_10a-1-BCO",
+    "seed": 7,
+    "series_name": "BCO",
+    "source_contract_hash": "093c68a5e6242550c00dcf3dc6a798060a759e1a772057e5bc6e9cc265aee420",
+    "topology_contract": {
+      "agent_counts": [
+        4
+      ]
+    },
+    "trace_bank_id": "figure_10a-bank",
+    "training_contract": {
+      "drain_slots": 0,
+      "slots_per_episode": 10,
+      "training_episodes": 3
+    },
+    "variant": null,
+    "workload_contract": {
+      "batch_size": 4,
+      "drain_slots": 0,
+      "replay_capacity": 32,
+      "slots_per_episode": 10,
+      "target_copy_frequency": 2,
+      "training_episodes": 3,
+      "validation_episodes": 2
+    }
+  },
+  {
+    "campaign_id": "",
+    "checkpoint_dependency": null,
+    "config_hash": "df35f60b5c9a6bb3216beadebbeaea09b141727e756bbf1f244f9088342aef8e",
+    "evaluation_contract": {
+      "drain_slots": 0,
+      "slots_per_episode": 10,
+      "validation_episodes": 2
+    },
+    "independent_value": 0.5,
+    "independent_variable": "task_arrival_probability",
+    "job_id": "figure_10a-1-MLEO",
+    "job_type": "evaluation",
+    "panel_id": "figure_10a",
+    "physical_contract": {
+      "backend": "cpu"
+    },
+    "policy": "MLEO",
+    "result_label": "PILOT \u2014 NOT PAPER-SCALE RESULT",
+    "scale": "pilot",
+    "scientific_unit_id": "figure_10a-1-MLEO",
+    "seed": 7,
+    "series_name": "MLEO",
+    "source_contract_hash": "093c68a5e6242550c00dcf3dc6a798060a759e1a772057e5bc6e9cc265aee420",
+    "topology_contract": {
+      "agent_counts": [
+        4
+      ]
+    },
+    "trace_bank_id": "figure_10a-bank",
+    "training_contract": {
+      "drain_slots": 0,
+      "slots_per_episode": 10,
+      "training_episodes": 3
+    },
+    "variant": null,
+    "workload_contract": {
+      "batch_size": 4,
+      "drain_slots": 0,
+      "replay_capacity": 32,
+      "slots_per_episode": 10,
+      "target_copy_frequency": 2,
+      "training_episodes": 3,
+      "validation_episodes": 2
+    }
+  },
+  {
+    "campaign_id": "",
+    "checkpoint_dependency": null,
+    "config_hash": "55df2fb28b8729b67dcbd0b06be7c4f407813ca8d6d81106c585f9ebff704a0e",
+    "evaluation_contract": {
+      "drain_slots": 0,
+      "slots_per_episode": 10,
+      "validation_episodes": 2
+    },
+    "independent_value": 1.5,
+    "independent_variable": "cpu_computation_capacity_ghz",
+    "job_id": "figure_10b-0-HOODIE",
+    "job_type": "evaluation",
+    "panel_id": "figure_10b",
+    "physical_contract": {
+      "backend": "cpu"
+    },
+    "policy": "HOODIE",
+    "result_label": "PILOT \u2014 NOT PAPER-SCALE RESULT",
+    "scale": "pilot",
+    "scientific_unit_id": "figure_10b-0-HOODIE",
+    "seed": 7,
+    "series_name": "HOODIE",
+    "source_contract_hash": "093c68a5e6242550c00dcf3dc6a798060a759e1a772057e5bc6e9cc265aee420",
+    "topology_contract": {
+      "agent_counts": [
+        4
+      ]
+    },
+    "trace_bank_id": "figure_10b-bank",
+    "training_contract": {
+      "drain_slots": 0,
+      "slots_per_episode": 10,
+      "training_episodes": 3
+    },
+    "variant": "hoodie_lstm",
+    "workload_contract": {
+      "batch_size": 4,
+      "drain_slots": 0,
+      "replay_capacity": 32,
+      "slots_per_episode": 10,
+      "target_copy_frequency": 2,
+      "training_episodes": 3,
+      "validation_episodes": 2
+    }
+  },
+  {
+    "campaign_id": "",
+    "checkpoint_dependency": null,
+    "config_hash": "c4087538f5638d990aeaf0382a5839e37b6b94aa3067c9015c659fab8f270d6e",
+    "evaluation_contract": {
+      "drain_slots": 0,
+      "slots_per_episode": 10,
+      "validation_episodes": 2
+    },
+    "independent_value": 1.5,
+    "independent_variable": "cpu_computation_capacity_ghz",
+    "job_id": "figure_10b-0-FLC",
+    "job_type": "evaluation",
+    "panel_id": "figure_10b",
+    "physical_contract": {
+      "backend": "cpu"
+    },
+    "policy": "FLC",
+    "result_label": "PILOT \u2014 NOT PAPER-SCALE RESULT",
+    "scale": "pilot",
+    "scientific_unit_id": "figure_10b-0-FLC",
+    "seed": 7,
+    "series_name": "FLC",
+    "source_contract_hash": "093c68a5e6242550c00dcf3dc6a798060a759e1a772057e5bc6e9cc265aee420",
+    "topology_contract": {
+      "agent_counts": [
+        4
+      ]
+    },
+    "trace_bank_id": "figure_10b-bank",
+    "training_contract": {
+      "drain_slots": 0,
+      "slots_per_episode": 10,
+      "training_episodes": 3
+    },
+    "variant": null,
+    "workload_contract": {
+      "batch_size": 4,
+      "drain_slots": 0,
+      "replay_capacity": 32,
+      "slots_per_episode": 10,
+      "target_copy_frequency": 2,
+      "training_episodes": 3,
+      "validation_episodes": 2
+    }
+  },
+  {
+    "campaign_id": "",
+    "checkpoint_dependency": null,
+    "config_hash": "98b5c7c79c48bb9b99436ef9afec835283e969bf679f5b7dce94273816548fc3",
+    "evaluation_contract": {
+      "drain_slots": 0,
+      "slots_per_episode": 10,
+      "validation_episodes": 2
+    },
+    "independent_value": 1.5,
+    "independent_variable": "cpu_computation_capacity_ghz",
+    "job_id": "figure_10b-0-RO",
+    "job_type": "evaluation",
+    "panel_id": "figure_10b",
+    "physical_contract": {
+      "backend": "cpu"
+    },
+    "policy": "RO",
+    "result_label": "PILOT \u2014 NOT PAPER-SCALE RESULT",
+    "scale": "pilot",
+    "scientific_unit_id": "figure_10b-0-RO",
+    "seed": 7,
+    "series_name": "RO",
+    "source_contract_hash": "093c68a5e6242550c00dcf3dc6a798060a759e1a772057e5bc6e9cc265aee420",
+    "topology_contract": {
+      "agent_counts": [
+        4
+      ]
+    },
+    "trace_bank_id": "figure_10b-bank",
+    "training_contract": {
+      "drain_slots": 0,
+      "slots_per_episode": 10,
+      "training_episodes": 3
+    },
+    "variant": null,
+    "workload_contract": {
+      "batch_size": 4,
+      "drain_slots": 0,
+      "replay_capacity": 32,
+      "slots_per_episode": 10,
+      "target_copy_frequency": 2,
+      "training_episodes": 3,
+      "validation_episodes": 2
+    }
+  },
+  {
+    "campaign_id": "",
+    "checkpoint_dependency": null,
+    "config_hash": "506f9f65d142561ab675b58e4102ca042110fae5c0d8af65acf6583339af2e29",
+    "evaluation_contract": {
+      "drain_slots": 0,
+      "slots_per_episode": 10,
+      "validation_episodes": 2
+    },
+    "independent_value": 1.5,
+    "independent_variable": "cpu_computation_capacity_ghz",
+    "job_id": "figure_10b-0-HO",
+    "job_type": "evaluation",
+    "panel_id": "figure_10b",
+    "physical_contract": {
+      "backend": "cpu"
+    },
+    "policy": "HO",
+    "result_label": "PILOT \u2014 NOT PAPER-SCALE RESULT",
+    "scale": "pilot",
+    "scientific_unit_id": "figure_10b-0-HO",
+    "seed": 7,
+    "series_name": "HO",
+    "source_contract_hash": "093c68a5e6242550c00dcf3dc6a798060a759e1a772057e5bc6e9cc265aee420",
+    "topology_contract": {
+      "agent_counts": [
+        4
+      ]
+    },
+    "trace_bank_id": "figure_10b-bank",
+    "training_contract": {
+      "drain_slots": 0,
+      "slots_per_episode": 10,
+      "training_episodes": 3
+    },
+    "variant": null,
+    "workload_contract": {
+      "batch_size": 4,
+      "drain_slots": 0,
+      "replay_capacity": 32,
+      "slots_per_episode": 10,
+      "target_copy_frequency": 2,
+      "training_episodes": 3,
+      "validation_episodes": 2
+    }
+  },
+  {
+    "campaign_id": "",
+    "checkpoint_dependency": null,
+    "config_hash": "6129ed5d00027aea9b1e2c06644436a0b8c8109484b512fe5eed415058214c30",
+    "evaluation_contract": {
+      "drain_slots": 0,
+      "slots_per_episode": 10,
+      "validation_episodes": 2
+    },
+    "independent_value": 1.5,
+    "independent_variable": "cpu_computation_capacity_ghz",
+    "job_id": "figure_10b-0-VO",
+    "job_type": "evaluation",
+    "panel_id": "figure_10b",
+    "physical_contract": {
+      "backend": "cpu"
+    },
+    "policy": "VO",
+    "result_label": "PILOT \u2014 NOT PAPER-SCALE RESULT",
+    "scale": "pilot",
+    "scientific_unit_id": "figure_10b-0-VO",
+    "seed": 7,
+    "series_name": "VO",
+    "source_contract_hash": "093c68a5e6242550c00dcf3dc6a798060a759e1a772057e5bc6e9cc265aee420",
+    "topology_contract": {
+      "agent_counts": [
+        4
+      ]
+    },
+    "trace_bank_id": "figure_10b-bank",
+    "training_contract": {
+      "drain_slots": 0,
+      "slots_per_episode": 10,
+      "training_episodes": 3
+    },
+    "variant": null,
+    "workload_contract": {
+      "batch_size": 4,
+      "drain_slots": 0,
+      "replay_capacity": 32,
+      "slots_per_episode": 10,
+      "target_copy_frequency": 2,
+      "training_episodes": 3,
+      "validation_episodes": 2
+    }
+  },
+  {
+    "campaign_id": "",
+    "checkpoint_dependency": null,
+    "config_hash": "687ecc3e948e291e69b2709af140ad9eeee9c0ab008b45f5cdd9b0128046c263",
+    "evaluation_contract": {
+      "drain_slots": 0,
+      "slots_per_episode": 10,
+      "validation_episodes": 2
+    },
+    "independent_value": 1.5,
+    "independent_variable": "cpu_computation_capacity_ghz",
+    "job_id": "figure_10b-0-BCO",
+    "job_type": "evaluation",
+    "panel_id": "figure_10b",
+    "physical_contract": {
+      "backend": "cpu"
+    },
+    "policy": "BCO",
+    "result_label": "PILOT \u2014 NOT PAPER-SCALE RESULT",
+    "scale": "pilot",
+    "scientific_unit_id": "figure_10b-0-BCO",
+    "seed": 7,
+    "series_name": "BCO",
+    "source_contract_hash": "093c68a5e6242550c00dcf3dc6a798060a759e1a772057e5bc6e9cc265aee420",
+    "topology_contract": {
+      "agent_counts": [
+        4
+      ]
+    },
+    "trace_bank_id": "figure_10b-bank",
+    "training_contract": {
+      "drain_slots": 0,
+      "slots_per_episode": 10,
+      "training_episodes": 3
+    },
+    "variant": null,
+    "workload_contract": {
+      "batch_size": 4,
+      "drain_slots": 0,
+      "replay_capacity": 32,
+      "slots_per_episode": 10,
+      "target_copy_frequency": 2,
+      "training_episodes": 3,
+      "validation_episodes": 2
+    }
+  },
+  {
+    "campaign_id": "",
+    "checkpoint_dependency": null,
+    "config_hash": "5fb608a6f899f989ad0ef3ed0c8c9be686956ca373978100251ee2760badc9b3",
+    "evaluation_contract": {
+      "drain_slots": 0,
+      "slots_per_episode": 10,
+      "validation_episodes": 2
+    },
+    "independent_value": 1.5,
+    "independent_variable": "cpu_computation_capacity_ghz",
+    "job_id": "figure_10b-0-MLEO",
+    "job_type": "evaluation",
+    "panel_id": "figure_10b",
+    "physical_contract": {
+      "backend": "cpu"
+    },
+    "policy": "MLEO",
+    "result_label": "PILOT \u2014 NOT PAPER-SCALE RESULT",
+    "scale": "pilot",
+    "scientific_unit_id": "figure_10b-0-MLEO",
+    "seed": 7,
+    "series_name": "MLEO",
+    "source_contract_hash": "093c68a5e6242550c00dcf3dc6a798060a759e1a772057e5bc6e9cc265aee420",
+    "topology_contract": {
+      "agent_counts": [
+        4
+      ]
+    },
+    "trace_bank_id": "figure_10b-bank",
+    "training_contract": {
+      "drain_slots": 0,
+      "slots_per_episode": 10,
+      "training_episodes": 3
+    },
+    "variant": null,
+    "workload_contract": {
+      "batch_size": 4,
+      "drain_slots": 0,
+      "replay_capacity": 32,
+      "slots_per_episode": 10,
+      "target_copy_frequency": 2,
+      "training_episodes": 3,
+      "validation_episodes": 2
+    }
+  },
+  {
+    "campaign_id": "",
+    "checkpoint_dependency": null,
+    "config_hash": "9e506bafe22bfdb52873ee1f638fc562477ab31bc584b84d5a2efbb0dff97f6d",
+    "evaluation_contract": {
+      "drain_slots": 0,
+      "slots_per_episode": 10,
+      "validation_episodes": 2
+    },
+    "independent_value": 3.0,
+    "independent_variable": "cpu_computation_capacity_ghz",
+    "job_id": "figure_10b-1-HOODIE",
+    "job_type": "evaluation",
+    "panel_id": "figure_10b",
+    "physical_contract": {
+      "backend": "cpu"
+    },
+    "policy": "HOODIE",
+    "result_label": "PILOT \u2014 NOT PAPER-SCALE RESULT",
+    "scale": "pilot",
+    "scientific_unit_id": "figure_10b-1-HOODIE",
+    "seed": 7,
+    "series_name": "HOODIE",
+    "source_contract_hash": "093c68a5e6242550c00dcf3dc6a798060a759e1a772057e5bc6e9cc265aee420",
+    "topology_contract": {
+      "agent_counts": [
+        4
+      ]
+    },
+    "trace_bank_id": "figure_10b-bank",
+    "training_contract": {
+      "drain_slots": 0,
+      "slots_per_episode": 10,
+      "training_episodes": 3
+    },
+    "variant": "hoodie_lstm",
+    "workload_contract": {
+      "batch_size": 4,
+      "drain_slots": 0,
+      "replay_capacity": 32,
+      "slots_per_episode": 10,
+      "target_copy_frequency": 2,
+      "training_episodes": 3,
+      "validation_episodes": 2
+    }
+  },
+  {
+    "campaign_id": "",
+    "checkpoint_dependency": null,
+    "config_hash": "b0a7ed4ff7a3097df667e02d1a87b8e9483d023730466f9efa2d7e1db1bb9588",
+    "evaluation_contract": {
+      "drain_slots": 0,
+      "slots_per_episode": 10,
+      "validation_episodes": 2
+    },
+    "independent_value": 3.0,
+    "independent_variable": "cpu_computation_capacity_ghz",
+    "job_id": "figure_10b-1-FLC",
+    "job_type": "evaluation",
+    "panel_id": "figure_10b",
+    "physical_contract": {
+      "backend": "cpu"
+    },
+    "policy": "FLC",
+    "result_label": "PILOT \u2014 NOT PAPER-SCALE RESULT",
+    "scale": "pilot",
+    "scientific_unit_id": "figure_10b-1-FLC",
+    "seed": 7,
+    "series_name": "FLC",
+    "source_contract_hash": "093c68a5e6242550c00dcf3dc6a798060a759e1a772057e5bc6e9cc265aee420",
+    "topology_contract": {
+      "agent_counts": [
+        4
+      ]
+    },
+    "trace_bank_id": "figure_10b-bank",
+    "training_contract": {
+      "drain_slots": 0,
+      "slots_per_episode": 10,
+      "training_episodes": 3
+    },
+    "variant": null,
+    "workload_contract": {
+      "batch_size": 4,
+      "drain_slots": 0,
+      "replay_capacity": 32,
+      "slots_per_episode": 10,
+      "target_copy_frequency": 2,
+      "training_episodes": 3,
+      "validation_episodes": 2
+    }
+  },
+  {
+    "campaign_id": "",
+    "checkpoint_dependency": null,
+    "config_hash": "fd6c620a32dd9e22f4c45f1f4ac92be14f976313c9e88743615e69d553a648cf",
+    "evaluation_contract": {
+      "drain_slots": 0,
+      "slots_per_episode": 10,
+      "validation_episodes": 2
+    },
+    "independent_value": 3.0,
+    "independent_variable": "cpu_computation_capacity_ghz",
+    "job_id": "figure_10b-1-RO",
+    "job_type": "evaluation",
+    "panel_id": "figure_10b",
+    "physical_contract": {
+      "backend": "cpu"
+    },
+    "policy": "RO",
+    "result_label": "PILOT \u2014 NOT PAPER-SCALE RESULT",
+    "scale": "pilot",
+    "scientific_unit_id": "figure_10b-1-RO",
+    "seed": 7,
+    "series_name": "RO",
+    "source_contract_hash": "093c68a5e6242550c00dcf3dc6a798060a759e1a772057e5bc6e9cc265aee420",
+    "topology_contract": {
+      "agent_counts": [
+        4
+      ]
+    },
+    "trace_bank_id": "figure_10b-bank",
+    "training_contract": {
+      "drain_slots": 0,
+      "slots_per_episode": 10,
+      "training_episodes": 3
+    },
+    "variant": null,
+    "workload_contract": {
+      "batch_size": 4,
+      "drain_slots": 0,
+      "replay_capacity": 32,
+      "slots_per_episode": 10,
+      "target_copy_frequency": 2,
+      "training_episodes": 3,
+      "validation_episodes": 2
+    }
+  },
+  {
+    "campaign_id": "",
+    "checkpoint_dependency": null,
+    "config_hash": "adb3d2d0a99dac6d6e27957bcbf867bcdb724b567ea60de0709605af04f50c65",
+    "evaluation_contract": {
+      "drain_slots": 0,
+      "slots_per_episode": 10,
+      "validation_episodes": 2
+    },
+    "independent_value": 3.0,
+    "independent_variable": "cpu_computation_capacity_ghz",
+    "job_id": "figure_10b-1-HO",
+    "job_type": "evaluation",
+    "panel_id": "figure_10b",
+    "physical_contract": {
+      "backend": "cpu"
+    },
+    "policy": "HO",
+    "result_label": "PILOT \u2014 NOT PAPER-SCALE RESULT",
+    "scale": "pilot",
+    "scientific_unit_id": "figure_10b-1-HO",
+    "seed": 7,
+    "series_name": "HO",
+    "source_contract_hash": "093c68a5e6242550c00dcf3dc6a798060a759e1a772057e5bc6e9cc265aee420",
+    "topology_contract": {
+      "agent_counts": [
+        4
+      ]
+    },
+    "trace_bank_id": "figure_10b-bank",
+    "training_contract": {
+      "drain_slots": 0,
+      "slots_per_episode": 10,
+      "training_episodes": 3
+    },
+    "variant": null,
+    "workload_contract": {
+      "batch_size": 4,
+      "drain_slots": 0,
+      "replay_capacity": 32,
+      "slots_per_episode": 10,
+      "target_copy_frequency": 2,
+      "training_episodes": 3,
+      "validation_episodes": 2
+    }
+  },
+  {
+    "campaign_id": "",
+    "checkpoint_dependency": null,
+    "config_hash": "c34da079332ceeb26664885e6da685b7bc3d1d7afad5efb25235cd46a675faf8",
+    "evaluation_contract": {
+      "drain_slots": 0,
+      "slots_per_episode": 10,
+      "validation_episodes": 2
+    },
+    "independent_value": 3.0,
+    "independent_variable": "cpu_computation_capacity_ghz",
+    "job_id": "figure_10b-1-VO",
+    "job_type": "evaluation",
+    "panel_id": "figure_10b",
+    "physical_contract": {
+      "backend": "cpu"
+    },
+    "policy": "VO",
+    "result_label": "PILOT \u2014 NOT PAPER-SCALE RESULT",
+    "scale": "pilot",
+    "scientific_unit_id": "figure_10b-1-VO",
+    "seed": 7,
+    "series_name": "VO",
+    "source_contract_hash": "093c68a5e6242550c00dcf3dc6a798060a759e1a772057e5bc6e9cc265aee420",
+    "topology_contract": {
+      "agent_counts": [
+        4
+      ]
+    },
+    "trace_bank_id": "figure_10b-bank",
+    "training_contract": {
+      "drain_slots": 0,
+      "slots_per_episode": 10,
+      "training_episodes": 3
+    },
+    "variant": null,
+    "workload_contract": {
+      "batch_size": 4,
+      "drain_slots": 0,
+      "replay_capacity": 32,
+      "slots_per_episode": 10,
+      "target_copy_frequency": 2,
+      "training_episodes": 3,
+      "validation_episodes": 2
+    }
+  },
+  {
+    "campaign_id": "",
+    "checkpoint_dependency": null,
+    "config_hash": "3e525877bad4ed26342b533afe60b12764be8bf5520fb713ac419af3a01ab3b9",
+    "evaluation_contract": {
+      "drain_slots": 0,
+      "slots_per_episode": 10,
+      "validation_episodes": 2
+    },
+    "independent_value": 3.0,
+    "independent_variable": "cpu_computation_capacity_ghz",
+    "job_id": "figure_10b-1-BCO",
+    "job_type": "evaluation",
+    "panel_id": "figure_10b",
+    "physical_contract": {
+      "backend": "cpu"
+    },
+    "policy": "BCO",
+    "result_label": "PILOT \u2014 NOT PAPER-SCALE RESULT",
+    "scale": "pilot",
+    "scientific_unit_id": "figure_10b-1-BCO",
+    "seed": 7,
+    "series_name": "BCO",
+    "source_contract_hash": "093c68a5e6242550c00dcf3dc6a798060a759e1a772057e5bc6e9cc265aee420",
+    "topology_contract": {
+      "agent_counts": [
+        4
+      ]
+    },
+    "trace_bank_id": "figure_10b-bank",
+    "training_contract": {
+      "drain_slots": 0,
+      "slots_per_episode": 10,
+      "training_episodes": 3
+    },
+    "variant": null,
+    "workload_contract": {
+      "batch_size": 4,
+      "drain_slots": 0,
+      "replay_capacity": 32,
+      "slots_per_episode": 10,
+      "target_copy_frequency": 2,
+      "training_episodes": 3,
+      "validation_episodes": 2
+    }
+  },
+  {
+    "campaign_id": "",
+    "checkpoint_dependency": null,
+    "config_hash": "0dedb8c5e792cc6f857aaa7bdf7e43e57324ac2629ed293ed2969e5eb69eac2c",
+    "evaluation_contract": {
+      "drain_slots": 0,
+      "slots_per_episode": 10,
+      "validation_episodes": 2
+    },
+    "independent_value": 3.0,
+    "independent_variable": "cpu_computation_capacity_ghz",
+    "job_id": "figure_10b-1-MLEO",
+    "job_type": "evaluation",
+    "panel_id": "figure_10b",
+    "physical_contract": {
+      "backend": "cpu"
+    },
+    "policy": "MLEO",
+    "result_label": "PILOT \u2014 NOT PAPER-SCALE RESULT",
+    "scale": "pilot",
+    "scientific_unit_id": "figure_10b-1-MLEO",
+    "seed": 7,
+    "series_name": "MLEO",
+    "source_contract_hash": "093c68a5e6242550c00dcf3dc6a798060a759e1a772057e5bc6e9cc265aee420",
+    "topology_contract": {
+      "agent_counts": [
+        4
+      ]
+    },
+    "trace_bank_id": "figure_10b-bank",
+    "training_contract": {
+      "drain_slots": 0,
+      "slots_per_episode": 10,
+      "training_episodes": 3
+    },
+    "variant": null,
+    "workload_contract": {
+      "batch_size": 4,
+      "drain_slots": 0,
+      "replay_capacity": 32,
+      "slots_per_episode": 10,
+      "target_copy_frequency": 2,
+      "training_episodes": 3,
+      "validation_episodes": 2
+    }
+  },
+  {
+    "campaign_id": "",
+    "checkpoint_dependency": null,
+    "config_hash": "be8a140d6db2eb110bc3d008d6b44f009e47289196537eba1fb1559206445a20",
+    "evaluation_contract": {
+      "drain_slots": 0,
+      "slots_per_episode": 10,
+      "validation_episodes": 2
+    },
+    "independent_value": 2,
+    "independent_variable": "task_timeout_seconds",
+    "job_id": "figure_10c-0-HOODIE",
+    "job_type": "evaluation",
+    "panel_id": "figure_10c",
+    "physical_contract": {
+      "backend": "cpu"
+    },
+    "policy": "HOODIE",
+    "result_label": "PILOT \u2014 NOT PAPER-SCALE RESULT",
+    "scale": "pilot",
+    "scientific_unit_id": "figure_10c-0-HOODIE",
+    "seed": 7,
+    "series_name": "HOODIE",
+    "source_contract_hash": "093c68a5e6242550c00dcf3dc6a798060a759e1a772057e5bc6e9cc265aee420",
+    "topology_contract": {
+      "agent_counts": [
+        4
+      ]
+    },
+    "trace_bank_id": "figure_10c-bank",
+    "training_contract": {
+      "drain_slots": 0,
+      "slots_per_episode": 10,
+      "training_episodes": 3
+    },
+    "variant": "hoodie_lstm",
+    "workload_contract": {
+      "batch_size": 4,
+      "drain_slots": 0,
+      "replay_capacity": 32,
+      "slots_per_episode": 10,
+      "target_copy_frequency": 2,
+      "training_episodes": 3,
+      "validation_episodes": 2
+    }
+  },
+  {
+    "campaign_id": "",
+    "checkpoint_dependency": null,
+    "config_hash": "e01a9e3209dc40a7007e799c2d542f9bf1229e0d0bbb82501019286684dfbb46",
+    "evaluation_contract": {
+      "drain_slots": 0,
+      "slots_per_episode": 10,
+      "validation_episodes": 2
+    },
+    "independent_value": 2,
+    "independent_variable": "task_timeout_seconds",
+    "job_id": "figure_10c-0-FLC",
+    "job_type": "evaluation",
+    "panel_id": "figure_10c",
+    "physical_contract": {
+      "backend": "cpu"
+    },
+    "policy": "FLC",
+    "result_label": "PILOT \u2014 NOT PAPER-SCALE RESULT",
+    "scale": "pilot",
+    "scientific_unit_id": "figure_10c-0-FLC",
+    "seed": 7,
+    "series_name": "FLC",
+    "source_contract_hash": "093c68a5e6242550c00dcf3dc6a798060a759e1a772057e5bc6e9cc265aee420",
+    "topology_contract": {
+      "agent_counts": [
+        4
+      ]
+    },
+    "trace_bank_id": "figure_10c-bank",
+    "training_contract": {
+      "drain_slots": 0,
+      "slots_per_episode": 10,
+      "training_episodes": 3
+    },
+    "variant": null,
+    "workload_contract": {
+      "batch_size": 4,
+      "drain_slots": 0,
+      "replay_capacity": 32,
+      "slots_per_episode": 10,
+      "target_copy_frequency": 2,
+      "training_episodes": 3,
+      "validation_episodes": 2
+    }
+  },
+  {
+    "campaign_id": "",
+    "checkpoint_dependency": null,
+    "config_hash": "19b4fb5fbce90982cc2c368a95c45b1f2c39f7755b7a5a9b05da08931a47a847",
+    "evaluation_contract": {
+      "drain_slots": 0,
+      "slots_per_episode": 10,
+      "validation_episodes": 2
+    },
+    "independent_value": 2,
+    "independent_variable": "task_timeout_seconds",
+    "job_id": "figure_10c-0-RO",
+    "job_type": "evaluation",
+    "panel_id": "figure_10c",
+    "physical_contract": {
+      "backend": "cpu"
+    },
+    "policy": "RO",
+    "result_label": "PILOT \u2014 NOT PAPER-SCALE RESULT",
+    "scale": "pilot",
+    "scientific_unit_id": "figure_10c-0-RO",
+    "seed": 7,
+    "series_name": "RO",
+    "source_contract_hash": "093c68a5e6242550c00dcf3dc6a798060a759e1a772057e5bc6e9cc265aee420",
+    "topology_contract": {
+      "agent_counts": [
+        4
+      ]
+    },
+    "trace_bank_id": "figure_10c-bank",
+    "training_contract": {
+      "drain_slots": 0,
+      "slots_per_episode": 10,
+      "training_episodes": 3
+    },
+    "variant": null,
+    "workload_contract": {
+      "batch_size": 4,
+      "drain_slots": 0,
+      "replay_capacity": 32,
+      "slots_per_episode": 10,
+      "target_copy_frequency": 2,
+      "training_episodes": 3,
+      "validation_episodes": 2
+    }
+  },
+  {
+    "campaign_id": "",
+    "checkpoint_dependency": null,
+    "config_hash": "942f54f896c229c7e7dadd272f8440909baf416dcf11e272cb8cf5bbfb180364",
+    "evaluation_contract": {
+      "drain_slots": 0,
+      "slots_per_episode": 10,
+      "validation_episodes": 2
+    },
+    "independent_value": 2,
+    "independent_variable": "task_timeout_seconds",
+    "job_id": "figure_10c-0-HO",
+    "job_type": "evaluation",
+    "panel_id": "figure_10c",
+    "physical_contract": {
+      "backend": "cpu"
+    },
+    "policy": "HO",
+    "result_label": "PILOT \u2014 NOT PAPER-SCALE RESULT",
+    "scale": "pilot",
+    "scientific_unit_id": "figure_10c-0-HO",
+    "seed": 7,
+    "series_name": "HO",
+    "source_contract_hash": "093c68a5e6242550c00dcf3dc6a798060a759e1a772057e5bc6e9cc265aee420",
+    "topology_contract": {
+      "agent_counts": [
+        4
+      ]
+    },
+    "trace_bank_id": "figure_10c-bank",
+    "training_contract": {
+      "drain_slots": 0,
+      "slots_per_episode": 10,
+      "training_episodes": 3
+    },
+    "variant": null,
+    "workload_contract": {
+      "batch_size": 4,
+      "drain_slots": 0,
+      "replay_capacity": 32,
+      "slots_per_episode": 10,
+      "target_copy_frequency": 2,
+      "training_episodes": 3,
+      "validation_episodes": 2
+    }
+  },
+  {
+    "campaign_id": "",
+    "checkpoint_dependency": null,
+    "config_hash": "507b10bb80317f523171a3e5c0e1f4ac10d107586a9dfcbaab85f9af4e50ee33",
+    "evaluation_contract": {
+      "drain_slots": 0,
+      "slots_per_episode": 10,
+      "validation_episodes": 2
+    },
+    "independent_value": 2,
+    "independent_variable": "task_timeout_seconds",
+    "job_id": "figure_10c-0-VO",
+    "job_type": "evaluation",
+    "panel_id": "figure_10c",
+    "physical_contract": {
+      "backend": "cpu"
+    },
+    "policy": "VO",
+    "result_label": "PILOT \u2014 NOT PAPER-SCALE RESULT",
+    "scale": "pilot",
+    "scientific_unit_id": "figure_10c-0-VO",
+    "seed": 7,
+    "series_name": "VO",
+    "source_contract_hash": "093c68a5e6242550c00dcf3dc6a798060a759e1a772057e5bc6e9cc265aee420",
+    "topology_contract": {
+      "agent_counts": [
+        4
+      ]
+    },
+    "trace_bank_id": "figure_10c-bank",
+    "training_contract": {
+      "drain_slots": 0,
+      "slots_per_episode": 10,
+      "training_episodes": 3
+    },
+    "variant": null,
+    "workload_contract": {
+      "batch_size": 4,
+      "drain_slots": 0,
+      "replay_capacity": 32,
+      "slots_per_episode": 10,
+      "target_copy_frequency": 2,
+      "training_episodes": 3,
+      "validation_episodes": 2
+    }
+  },
+  {
+    "campaign_id": "",
+    "checkpoint_dependency": null,
+    "config_hash": "65d4d23b72c15d55fc5f9acac8879982be42d42d633722efc4feb3323b8166bc",
+    "evaluation_contract": {
+      "drain_slots": 0,
+      "slots_per_episode": 10,
+      "validation_episodes": 2
+    },
+    "independent_value": 2,
+    "independent_variable": "task_timeout_seconds",
+    "job_id": "figure_10c-0-BCO",
+    "job_type": "evaluation",
+    "panel_id": "figure_10c",
+    "physical_contract": {
+      "backend": "cpu"
+    },
+    "policy": "BCO",
+    "result_label": "PILOT \u2014 NOT PAPER-SCALE RESULT",
+    "scale": "pilot",
+    "scientific_unit_id": "figure_10c-0-BCO",
+    "seed": 7,
+    "series_name": "BCO",
+    "source_contract_hash": "093c68a5e6242550c00dcf3dc6a798060a759e1a772057e5bc6e9cc265aee420",
+    "topology_contract": {
+      "agent_counts": [
+        4
+      ]
+    },
+    "trace_bank_id": "figure_10c-bank",
+    "training_contract": {
+      "drain_slots": 0,
+      "slots_per_episode": 10,
+      "training_episodes": 3
+    },
+    "variant": null,
+    "workload_contract": {
+      "batch_size": 4,
+      "drain_slots": 0,
+      "replay_capacity": 32,
+      "slots_per_episode": 10,
+      "target_copy_frequency": 2,
+      "training_episodes": 3,
+      "validation_episodes": 2
+    }
+  },
+  {
+    "campaign_id": "",
+    "checkpoint_dependency": null,
+    "config_hash": "3695b1d9e2637354510f8ebf7063194bc095365d2dd9da22470a38dba6366a6f",
+    "evaluation_contract": {
+      "drain_slots": 0,
+      "slots_per_episode": 10,
+      "validation_episodes": 2
+    },
+    "independent_value": 2,
+    "independent_variable": "task_timeout_seconds",
+    "job_id": "figure_10c-0-MLEO",
+    "job_type": "evaluation",
+    "panel_id": "figure_10c",
+    "physical_contract": {
+      "backend": "cpu"
+    },
+    "policy": "MLEO",
+    "result_label": "PILOT \u2014 NOT PAPER-SCALE RESULT",
+    "scale": "pilot",
+    "scientific_unit_id": "figure_10c-0-MLEO",
+    "seed": 7,
+    "series_name": "MLEO",
+    "source_contract_hash": "093c68a5e6242550c00dcf3dc6a798060a759e1a772057e5bc6e9cc265aee420",
+    "topology_contract": {
+      "agent_counts": [
+        4
+      ]
+    },
+    "trace_bank_id": "figure_10c-bank",
+    "training_contract": {
+      "drain_slots": 0,
+      "slots_per_episode": 10,
+      "training_episodes": 3
+    },
+    "variant": null,
+    "workload_contract": {
+      "batch_size": 4,
+      "drain_slots": 0,
+      "replay_capacity": 32,
+      "slots_per_episode": 10,
+      "target_copy_frequency": 2,
+      "training_episodes": 3,
+      "validation_episodes": 2
+    }
+  },
+  {
+    "campaign_id": "",
+    "checkpoint_dependency": null,
+    "config_hash": "d4d3b63452d95f152d9c1e7882099ba83a3eb9417c2e2782d73f3dc1277d92b8",
+    "evaluation_contract": {
+      "drain_slots": 0,
+      "slots_per_episode": 10,
+      "validation_episodes": 2
+    },
+    "independent_value": 4,
+    "independent_variable": "task_timeout_seconds",
+    "job_id": "figure_10c-1-HOODIE",
+    "job_type": "evaluation",
+    "panel_id": "figure_10c",
+    "physical_contract": {
+      "backend": "cpu"
+    },
+    "policy": "HOODIE",
+    "result_label": "PILOT \u2014 NOT PAPER-SCALE RESULT",
+    "scale": "pilot",
+    "scientific_unit_id": "figure_10c-1-HOODIE",
+    "seed": 7,
+    "series_name": "HOODIE",
+    "source_contract_hash": "093c68a5e6242550c00dcf3dc6a798060a759e1a772057e5bc6e9cc265aee420",
+    "topology_contract": {
+      "agent_counts": [
+        4
+      ]
+    },
+    "trace_bank_id": "figure_10c-bank",
+    "training_contract": {
+      "drain_slots": 0,
+      "slots_per_episode": 10,
+      "training_episodes": 3
+    },
+    "variant": "hoodie_lstm",
+    "workload_contract": {
+      "batch_size": 4,
+      "drain_slots": 0,
+      "replay_capacity": 32,
+      "slots_per_episode": 10,
+      "target_copy_frequency": 2,
+      "training_episodes": 3,
+      "validation_episodes": 2
+    }
+  },
+  {
+    "campaign_id": "",
+    "checkpoint_dependency": null,
+    "config_hash": "c831775eabf20d7a2cae4c97f7b25d3c1eb73ca0e90d0f8e4092602c2d524ccd",
+    "evaluation_contract": {
+      "drain_slots": 0,
+      "slots_per_episode": 10,
+      "validation_episodes": 2
+    },
+    "independent_value": 4,
+    "independent_variable": "task_timeout_seconds",
+    "job_id": "figure_10c-1-FLC",
+    "job_type": "evaluation",
+    "panel_id": "figure_10c",
+    "physical_contract": {
+      "backend": "cpu"
+    },
+    "policy": "FLC",
+    "result_label": "PILOT \u2014 NOT PAPER-SCALE RESULT",
+    "scale": "pilot",
+    "scientific_unit_id": "figure_10c-1-FLC",
+    "seed": 7,
+    "series_name": "FLC",
+    "source_contract_hash": "093c68a5e6242550c00dcf3dc6a798060a759e1a772057e5bc6e9cc265aee420",
+    "topology_contract": {
+      "agent_counts": [
+        4
+      ]
+    },
+    "trace_bank_id": "figure_10c-bank",
+    "training_contract": {
+      "drain_slots": 0,
+      "slots_per_episode": 10,
+      "training_episodes": 3
+    },
+    "variant": null,
+    "workload_contract": {
+      "batch_size": 4,
+      "drain_slots": 0,
+      "replay_capacity": 32,
+      "slots_per_episode": 10,
+      "target_copy_frequency": 2,
+      "training_episodes": 3,
+      "validation_episodes": 2
+    }
+  },
+  {
+    "campaign_id": "",
+    "checkpoint_dependency": null,
+    "config_hash": "5986bbac4a89af7382bd09fda3eb7f6defc6ddb77e27c49334a53181ebf28f66",
+    "evaluation_contract": {
+      "drain_slots": 0,
+      "slots_per_episode": 10,
+      "validation_episodes": 2
+    },
+    "independent_value": 4,
+    "independent_variable": "task_timeout_seconds",
+    "job_id": "figure_10c-1-RO",
+    "job_type": "evaluation",
+    "panel_id": "figure_10c",
+    "physical_contract": {
+      "backend": "cpu"
+    },
+    "policy": "RO",
+    "result_label": "PILOT \u2014 NOT PAPER-SCALE RESULT",
+    "scale": "pilot",
+    "scientific_unit_id": "figure_10c-1-RO",
+    "seed": 7,
+    "series_name": "RO",
+    "source_contract_hash": "093c68a5e6242550c00dcf3dc6a798060a759e1a772057e5bc6e9cc265aee420",
+    "topology_contract": {
+      "agent_counts": [
+        4
+      ]
+    },
+    "trace_bank_id": "figure_10c-bank",
+    "training_contract": {
+      "drain_slots": 0,
+      "slots_per_episode": 10,
+      "training_episodes": 3
+    },
+    "variant": null,
+    "workload_contract": {
+      "batch_size": 4,
+      "drain_slots": 0,
+      "replay_capacity": 32,
+      "slots_per_episode": 10,
+      "target_copy_frequency": 2,
+      "training_episodes": 3,
+      "validation_episodes": 2
+    }
+  },
+  {
+    "campaign_id": "",
+    "checkpoint_dependency": null,
+    "config_hash": "00b7e60893f4f3d120e9b77affb295c158ece8bdf92704e20bf6ec820ea6ae8d",
+    "evaluation_contract": {
+      "drain_slots": 0,
+      "slots_per_episode": 10,
+      "validation_episodes": 2
+    },
+    "independent_value": 4,
+    "independent_variable": "task_timeout_seconds",
+    "job_id": "figure_10c-1-HO",
+    "job_type": "evaluation",
+    "panel_id": "figure_10c",
+    "physical_contract": {
+      "backend": "cpu"
+    },
+    "policy": "HO",
+    "result_label": "PILOT \u2014 NOT PAPER-SCALE RESULT",
+    "scale": "pilot",
+    "scientific_unit_id": "figure_10c-1-HO",
+    "seed": 7,
+    "series_name": "HO",
+    "source_contract_hash": "093c68a5e6242550c00dcf3dc6a798060a759e1a772057e5bc6e9cc265aee420",
+    "topology_contract": {
+      "agent_counts": [
+        4
+      ]
+    },
+    "trace_bank_id": "figure_10c-bank",
+    "training_contract": {
+      "drain_slots": 0,
+      "slots_per_episode": 10,
+      "training_episodes": 3
+    },
+    "variant": null,
+    "workload_contract": {
+      "batch_size": 4,
+      "drain_slots": 0,
+      "replay_capacity": 32,
+      "slots_per_episode": 10,
+      "target_copy_frequency": 2,
+      "training_episodes": 3,
+      "validation_episodes": 2
+    }
+  },
+  {
+    "campaign_id": "",
+    "checkpoint_dependency": null,
+    "config_hash": "a5b4321553e5546d8cbd9519c3c4ea7a957cbb1b9285cd4e32869719a95ad3f7",
+    "evaluation_contract": {
+      "drain_slots": 0,
+      "slots_per_episode": 10,
+      "validation_episodes": 2
+    },
+    "independent_value": 4,
+    "independent_variable": "task_timeout_seconds",
+    "job_id": "figure_10c-1-VO",
+    "job_type": "evaluation",
+    "panel_id": "figure_10c",
+    "physical_contract": {
+      "backend": "cpu"
+    },
+    "policy": "VO",
+    "result_label": "PILOT \u2014 NOT PAPER-SCALE RESULT",
+    "scale": "pilot",
+    "scientific_unit_id": "figure_10c-1-VO",
+    "seed": 7,
+    "series_name": "VO",
+    "source_contract_hash": "093c68a5e6242550c00dcf3dc6a798060a759e1a772057e5bc6e9cc265aee420",
+    "topology_contract": {
+      "agent_counts": [
+        4
+      ]
+    },
+    "trace_bank_id": "figure_10c-bank",
+    "training_contract": {
+      "drain_slots": 0,
+      "slots_per_episode": 10,
+      "training_episodes": 3
+    },
+    "variant": null,
+    "workload_contract": {
+      "batch_size": 4,
+      "drain_slots": 0,
+      "replay_capacity": 32,
+      "slots_per_episode": 10,
+      "target_copy_frequency": 2,
+      "training_episodes": 3,
+      "validation_episodes": 2
+    }
+  },
+  {
+    "campaign_id": "",
+    "checkpoint_dependency": null,
+    "config_hash": "56e3a7466725f98d40e18147baf3fca360940d4027e40c06bac1e319d2024755",
+    "evaluation_contract": {
+      "drain_slots": 0,
+      "slots_per_episode": 10,
+      "validation_episodes": 2
+    },
+    "independent_value": 4,
+    "independent_variable": "task_timeout_seconds",
+    "job_id": "figure_10c-1-BCO",
+    "job_type": "evaluation",
+    "panel_id": "figure_10c",
+    "physical_contract": {
+      "backend": "cpu"
+    },
+    "policy": "BCO",
+    "result_label": "PILOT \u2014 NOT PAPER-SCALE RESULT",
+    "scale": "pilot",
+    "scientific_unit_id": "figure_10c-1-BCO",
+    "seed": 7,
+    "series_name": "BCO",
+    "source_contract_hash": "093c68a5e6242550c00dcf3dc6a798060a759e1a772057e5bc6e9cc265aee420",
+    "topology_contract": {
+      "agent_counts": [
+        4
+      ]
+    },
+    "trace_bank_id": "figure_10c-bank",
+    "training_contract": {
+      "drain_slots": 0,
+      "slots_per_episode": 10,
+      "training_episodes": 3
+    },
+    "variant": null,
+    "workload_contract": {
+      "batch_size": 4,
+      "drain_slots": 0,
+      "replay_capacity": 32,
+      "slots_per_episode": 10,
+      "target_copy_frequency": 2,
+      "training_episodes": 3,
+      "validation_episodes": 2
+    }
+  },
+  {
+    "campaign_id": "",
+    "checkpoint_dependency": null,
+    "config_hash": "8dc4ca791b6988e9ea3868c7daf85bff01a013b009f5e6879ed75d827d5fb4ca",
+    "evaluation_contract": {
+      "drain_slots": 0,
+      "slots_per_episode": 10,
+      "validation_episodes": 2
+    },
+    "independent_value": 4,
+    "independent_variable": "task_timeout_seconds",
+    "job_id": "figure_10c-1-MLEO",
+    "job_type": "evaluation",
+    "panel_id": "figure_10c",
+    "physical_contract": {
+      "backend": "cpu"
+    },
+    "policy": "MLEO",
+    "result_label": "PILOT \u2014 NOT PAPER-SCALE RESULT",
+    "scale": "pilot",
+    "scientific_unit_id": "figure_10c-1-MLEO",
+    "seed": 7,
+    "series_name": "MLEO",
+    "source_contract_hash": "093c68a5e6242550c00dcf3dc6a798060a759e1a772057e5bc6e9cc265aee420",
+    "topology_contract": {
+      "agent_counts": [
+        4
+      ]
+    },
+    "trace_bank_id": "figure_10c-bank",
+    "training_contract": {
+      "drain_slots": 0,
+      "slots_per_episode": 10,
+      "training_episodes": 3
+    },
+    "variant": null,
+    "workload_contract": {
+      "batch_size": 4,
+      "drain_slots": 0,
+      "replay_capacity": 32,
+      "slots_per_episode": 10,
+      "target_copy_frequency": 2,
+      "training_episodes": 3,
+      "validation_episodes": 2
+    }
+  },
+  {
+    "campaign_id": "",
+    "checkpoint_dependency": null,
+    "config_hash": "c50ff2ecc8b1637dae637a45b34704393299fb100ba5e3de93f6c8c25c8d027c",
+    "evaluation_contract": {
+      "drain_slots": 0,
+      "slots_per_episode": 10,
+      "validation_episodes": 2
+    },
+    "independent_value": 0.25,
+    "independent_variable": "task_arrival_probability",
+    "job_id": "figure_10d-0-HOODIE",
+    "job_type": "evaluation",
+    "panel_id": "figure_10d",
+    "physical_contract": {
+      "backend": "cpu"
+    },
+    "policy": "HOODIE",
+    "result_label": "PILOT \u2014 NOT PAPER-SCALE RESULT",
+    "scale": "pilot",
+    "scientific_unit_id": "figure_10d-0-HOODIE",
+    "seed": 7,
+    "series_name": "HOODIE",
+    "source_contract_hash": "093c68a5e6242550c00dcf3dc6a798060a759e1a772057e5bc6e9cc265aee420",
+    "topology_contract": {
+      "agent_counts": [
+        4
+      ]
+    },
+    "trace_bank_id": "figure_10d-bank",
+    "training_contract": {
+      "drain_slots": 0,
+      "slots_per_episode": 10,
+      "training_episodes": 3
+    },
+    "variant": "hoodie_lstm",
+    "workload_contract": {
+      "batch_size": 4,
+      "drain_slots": 0,
+      "replay_capacity": 32,
+      "slots_per_episode": 10,
+      "target_copy_frequency": 2,
+      "training_episodes": 3,
+      "validation_episodes": 2
+    }
+  },
+  {
+    "campaign_id": "",
+    "checkpoint_dependency": null,
+    "config_hash": "9e33cb6f9cfe7ea50bd22102a47aae78b3d8531e17a36a124bd1160a36946b17",
+    "evaluation_contract": {
+      "drain_slots": 0,
+      "slots_per_episode": 10,
+      "validation_episodes": 2
+    },
+    "independent_value": 0.25,
+    "independent_variable": "task_arrival_probability",
+    "job_id": "figure_10d-0-FLC",
+    "job_type": "evaluation",
+    "panel_id": "figure_10d",
+    "physical_contract": {
+      "backend": "cpu"
+    },
+    "policy": "FLC",
+    "result_label": "PILOT \u2014 NOT PAPER-SCALE RESULT",
+    "scale": "pilot",
+    "scientific_unit_id": "figure_10d-0-FLC",
+    "seed": 7,
+    "series_name": "FLC",
+    "source_contract_hash": "093c68a5e6242550c00dcf3dc6a798060a759e1a772057e5bc6e9cc265aee420",
+    "topology_contract": {
+      "agent_counts": [
+        4
+      ]
+    },
+    "trace_bank_id": "figure_10d-bank",
+    "training_contract": {
+      "drain_slots": 0,
+      "slots_per_episode": 10,
+      "training_episodes": 3
+    },
+    "variant": null,
+    "workload_contract": {
+      "batch_size": 4,
+      "drain_slots": 0,
+      "replay_capacity": 32,
+      "slots_per_episode": 10,
+      "target_copy_frequency": 2,
+      "training_episodes": 3,
+      "validation_episodes": 2
+    }
+  },
+  {
+    "campaign_id": "",
+    "checkpoint_dependency": null,
+    "config_hash": "533e89ef6567955b7a703e34af4d10ce322518b5d42ad7963e124e0dc93d79c3",
+    "evaluation_contract": {
+      "drain_slots": 0,
+      "slots_per_episode": 10,
+      "validation_episodes": 2
+    },
+    "independent_value": 0.25,
+    "independent_variable": "task_arrival_probability",
+    "job_id": "figure_10d-0-RO",
+    "job_type": "evaluation",
+    "panel_id": "figure_10d",
+    "physical_contract": {
+      "backend": "cpu"
+    },
+    "policy": "RO",
+    "result_label": "PILOT \u2014 NOT PAPER-SCALE RESULT",
+    "scale": "pilot",
+    "scientific_unit_id": "figure_10d-0-RO",
+    "seed": 7,
+    "series_name": "RO",
+    "source_contract_hash": "093c68a5e6242550c00dcf3dc6a798060a759e1a772057e5bc6e9cc265aee420",
+    "topology_contract": {
+      "agent_counts": [
+        4
+      ]
+    },
+    "trace_bank_id": "figure_10d-bank",
+    "training_contract": {
+      "drain_slots": 0,
+      "slots_per_episode": 10,
+      "training_episodes": 3
+    },
+    "variant": null,
+    "workload_contract": {
+      "batch_size": 4,
+      "drain_slots": 0,
+      "replay_capacity": 32,
+      "slots_per_episode": 10,
+      "target_copy_frequency": 2,
+      "training_episodes": 3,
+      "validation_episodes": 2
+    }
+  },
+  {
+    "campaign_id": "",
+    "checkpoint_dependency": null,
+    "config_hash": "20e64eec10260d4c3c25921b3b19595b6bf2de43fd9aa9647470e852cd046b3d",
+    "evaluation_contract": {
+      "drain_slots": 0,
+      "slots_per_episode": 10,
+      "validation_episodes": 2
+    },
+    "independent_value": 0.25,
+    "independent_variable": "task_arrival_probability",
+    "job_id": "figure_10d-0-HO",
+    "job_type": "evaluation",
+    "panel_id": "figure_10d",
+    "physical_contract": {
+      "backend": "cpu"
+    },
+    "policy": "HO",
+    "result_label": "PILOT \u2014 NOT PAPER-SCALE RESULT",
+    "scale": "pilot",
+    "scientific_unit_id": "figure_10d-0-HO",
+    "seed": 7,
+    "series_name": "HO",
+    "source_contract_hash": "093c68a5e6242550c00dcf3dc6a798060a759e1a772057e5bc6e9cc265aee420",
+    "topology_contract": {
+      "agent_counts": [
+        4
+      ]
+    },
+    "trace_bank_id": "figure_10d-bank",
+    "training_contract": {
+      "drain_slots": 0,
+      "slots_per_episode": 10,
+      "training_episodes": 3
+    },
+    "variant": null,
+    "workload_contract": {
+      "batch_size": 4,
+      "drain_slots": 0,
+      "replay_capacity": 32,
+      "slots_per_episode": 10,
+      "target_copy_frequency": 2,
+      "training_episodes": 3,
+      "validation_episodes": 2
+    }
+  },
+  {
+    "campaign_id": "",
+    "checkpoint_dependency": null,
+    "config_hash": "3bc37af53a08f888758a217e9251a300ed99a01835ab5ba7786f0e225c94914e",
+    "evaluation_contract": {
+      "drain_slots": 0,
+      "slots_per_episode": 10,
+      "validation_episodes": 2
+    },
+    "independent_value": 0.25,
+    "independent_variable": "task_arrival_probability",
+    "job_id": "figure_10d-0-VO",
+    "job_type": "evaluation",
+    "panel_id": "figure_10d",
+    "physical_contract": {
+      "backend": "cpu"
+    },
+    "policy": "VO",
+    "result_label": "PILOT \u2014 NOT PAPER-SCALE RESULT",
+    "scale": "pilot",
+    "scientific_unit_id": "figure_10d-0-VO",
+    "seed": 7,
+    "series_name": "VO",
+    "source_contract_hash": "093c68a5e6242550c00dcf3dc6a798060a759e1a772057e5bc6e9cc265aee420",
+    "topology_contract": {
+      "agent_counts": [
+        4
+      ]
+    },
+    "trace_bank_id": "figure_10d-bank",
+    "training_contract": {
+      "drain_slots": 0,
+      "slots_per_episode": 10,
+      "training_episodes": 3
+    },
+    "variant": null,
+    "workload_contract": {
+      "batch_size": 4,
+      "drain_slots": 0,
+      "replay_capacity": 32,
+      "slots_per_episode": 10,
+      "target_copy_frequency": 2,
+      "training_episodes": 3,
+      "validation_episodes": 2
+    }
+  },
+  {
+    "campaign_id": "",
+    "checkpoint_dependency": null,
+    "config_hash": "a7c3d6976fbca1d544a7537c2513d6dbfca62be44b72673f2eba83d1b6f11a10",
+    "evaluation_contract": {
+      "drain_slots": 0,
+      "slots_per_episode": 10,
+      "validation_episodes": 2
+    },
+    "independent_value": 0.25,
+    "independent_variable": "task_arrival_probability",
+    "job_id": "figure_10d-0-BCO",
+    "job_type": "evaluation",
+    "panel_id": "figure_10d",
+    "physical_contract": {
+      "backend": "cpu"
+    },
+    "policy": "BCO",
+    "result_label": "PILOT \u2014 NOT PAPER-SCALE RESULT",
+    "scale": "pilot",
+    "scientific_unit_id": "figure_10d-0-BCO",
+    "seed": 7,
+    "series_name": "BCO",
+    "source_contract_hash": "093c68a5e6242550c00dcf3dc6a798060a759e1a772057e5bc6e9cc265aee420",
+    "topology_contract": {
+      "agent_counts": [
+        4
+      ]
+    },
+    "trace_bank_id": "figure_10d-bank",
+    "training_contract": {
+      "drain_slots": 0,
+      "slots_per_episode": 10,
+      "training_episodes": 3
+    },
+    "variant": null,
+    "workload_contract": {
+      "batch_size": 4,
+      "drain_slots": 0,
+      "replay_capacity": 32,
+      "slots_per_episode": 10,
+      "target_copy_frequency": 2,
+      "training_episodes": 3,
+      "validation_episodes": 2
+    }
+  },
+  {
+    "campaign_id": "",
+    "checkpoint_dependency": null,
+    "config_hash": "b44ae5cdf0b33e271da4a4050577cd14c40b89a77675d9481623094831a173d0",
+    "evaluation_contract": {
+      "drain_slots": 0,
+      "slots_per_episode": 10,
+      "validation_episodes": 2
+    },
+    "independent_value": 0.25,
+    "independent_variable": "task_arrival_probability",
+    "job_id": "figure_10d-0-MLEO",
+    "job_type": "evaluation",
+    "panel_id": "figure_10d",
+    "physical_contract": {
+      "backend": "cpu"
+    },
+    "policy": "MLEO",
+    "result_label": "PILOT \u2014 NOT PAPER-SCALE RESULT",
+    "scale": "pilot",
+    "scientific_unit_id": "figure_10d-0-MLEO",
+    "seed": 7,
+    "series_name": "MLEO",
+    "source_contract_hash": "093c68a5e6242550c00dcf3dc6a798060a759e1a772057e5bc6e9cc265aee420",
+    "topology_contract": {
+      "agent_counts": [
+        4
+      ]
+    },
+    "trace_bank_id": "figure_10d-bank",
+    "training_contract": {
+      "drain_slots": 0,
+      "slots_per_episode": 10,
+      "training_episodes": 3
+    },
+    "variant": null,
+    "workload_contract": {
+      "batch_size": 4,
+      "drain_slots": 0,
+      "replay_capacity": 32,
+      "slots_per_episode": 10,
+      "target_copy_frequency": 2,
+      "training_episodes": 3,
+      "validation_episodes": 2
+    }
+  },
+  {
+    "campaign_id": "",
+    "checkpoint_dependency": null,
+    "config_hash": "4ddb0e1ce583644276943a6cabe8bd0282137fa91465e11fe1d21574d204c238",
+    "evaluation_contract": {
+      "drain_slots": 0,
+      "slots_per_episode": 10,
+      "validation_episodes": 2
+    },
+    "independent_value": 0.5,
+    "independent_variable": "task_arrival_probability",
+    "job_id": "figure_10d-1-HOODIE",
+    "job_type": "evaluation",
+    "panel_id": "figure_10d",
+    "physical_contract": {
+      "backend": "cpu"
+    },
+    "policy": "HOODIE",
+    "result_label": "PILOT \u2014 NOT PAPER-SCALE RESULT",
+    "scale": "pilot",
+    "scientific_unit_id": "figure_10d-1-HOODIE",
+    "seed": 7,
+    "series_name": "HOODIE",
+    "source_contract_hash": "093c68a5e6242550c00dcf3dc6a798060a759e1a772057e5bc6e9cc265aee420",
+    "topology_contract": {
+      "agent_counts": [
+        4
+      ]
+    },
+    "trace_bank_id": "figure_10d-bank",
+    "training_contract": {
+      "drain_slots": 0,
+      "slots_per_episode": 10,
+      "training_episodes": 3
+    },
+    "variant": "hoodie_lstm",
+    "workload_contract": {
+      "batch_size": 4,
+      "drain_slots": 0,
+      "replay_capacity": 32,
+      "slots_per_episode": 10,
+      "target_copy_frequency": 2,
+      "training_episodes": 3,
+      "validation_episodes": 2
+    }
+  },
+  {
+    "campaign_id": "",
+    "checkpoint_dependency": null,
+    "config_hash": "7051bdd1435d0a3cd2e9a4d5a593b1ab20e06ae71b27ff9b0dd39b259ddbb911",
+    "evaluation_contract": {
+      "drain_slots": 0,
+      "slots_per_episode": 10,
+      "validation_episodes": 2
+    },
+    "independent_value": 0.5,
+    "independent_variable": "task_arrival_probability",
+    "job_id": "figure_10d-1-FLC",
+    "job_type": "evaluation",
+    "panel_id": "figure_10d",
+    "physical_contract": {
+      "backend": "cpu"
+    },
+    "policy": "FLC",
+    "result_label": "PILOT \u2014 NOT PAPER-SCALE RESULT",
+    "scale": "pilot",
+    "scientific_unit_id": "figure_10d-1-FLC",
+    "seed": 7,
+    "series_name": "FLC",
+    "source_contract_hash": "093c68a5e6242550c00dcf3dc6a798060a759e1a772057e5bc6e9cc265aee420",
+    "topology_contract": {
+      "agent_counts": [
+        4
+      ]
+    },
+    "trace_bank_id": "figure_10d-bank",
+    "training_contract": {
+      "drain_slots": 0,
+      "slots_per_episode": 10,
+      "training_episodes": 3
+    },
+    "variant": null,
+    "workload_contract": {
+      "batch_size": 4,
+      "drain_slots": 0,
+      "replay_capacity": 32,
+      "slots_per_episode": 10,
+      "target_copy_frequency": 2,
+      "training_episodes": 3,
+      "validation_episodes": 2
+    }
+  },
+  {
+    "campaign_id": "",
+    "checkpoint_dependency": null,
+    "config_hash": "42cacf20eace621f55ca0eae5939503973532a4b8e409c9c1d0dffbd9ead4dc2",
+    "evaluation_contract": {
+      "drain_slots": 0,
+      "slots_per_episode": 10,
+      "validation_episodes": 2
+    },
+    "independent_value": 0.5,
+    "independent_variable": "task_arrival_probability",
+    "job_id": "figure_10d-1-RO",
+    "job_type": "evaluation",
+    "panel_id": "figure_10d",
+    "physical_contract": {
+      "backend": "cpu"
+    },
+    "policy": "RO",
+    "result_label": "PILOT \u2014 NOT PAPER-SCALE RESULT",
+    "scale": "pilot",
+    "scientific_unit_id": "figure_10d-1-RO",
+    "seed": 7,
+    "series_name": "RO",
+    "source_contract_hash": "093c68a5e6242550c00dcf3dc6a798060a759e1a772057e5bc6e9cc265aee420",
+    "topology_contract": {
+      "agent_counts": [
+        4
+      ]
+    },
+    "trace_bank_id": "figure_10d-bank",
+    "training_contract": {
+      "drain_slots": 0,
+      "slots_per_episode": 10,
+      "training_episodes": 3
+    },
+    "variant": null,
+    "workload_contract": {
+      "batch_size": 4,
+      "drain_slots": 0,
+      "replay_capacity": 32,
+      "slots_per_episode": 10,
+      "target_copy_frequency": 2,
+      "training_episodes": 3,
+      "validation_episodes": 2
+    }
+  },
+  {
+    "campaign_id": "",
+    "checkpoint_dependency": null,
+    "config_hash": "66303d04a8bceadaccd126b830d8a0c585d988cdaf5b423831831fb5228197bf",
+    "evaluation_contract": {
+      "drain_slots": 0,
+      "slots_per_episode": 10,
+      "validation_episodes": 2
+    },
+    "independent_value": 0.5,
+    "independent_variable": "task_arrival_probability",
+    "job_id": "figure_10d-1-HO",
+    "job_type": "evaluation",
+    "panel_id": "figure_10d",
+    "physical_contract": {
+      "backend": "cpu"
+    },
+    "policy": "HO",
+    "result_label": "PILOT \u2014 NOT PAPER-SCALE RESULT",
+    "scale": "pilot",
+    "scientific_unit_id": "figure_10d-1-HO",
+    "seed": 7,
+    "series_name": "HO",
+    "source_contract_hash": "093c68a5e6242550c00dcf3dc6a798060a759e1a772057e5bc6e9cc265aee420",
+    "topology_contract": {
+      "agent_counts": [
+        4
+      ]
+    },
+    "trace_bank_id": "figure_10d-bank",
+    "training_contract": {
+      "drain_slots": 0,
+      "slots_per_episode": 10,
+      "training_episodes": 3
+    },
+    "variant": null,
+    "workload_contract": {
+      "batch_size": 4,
+      "drain_slots": 0,
+      "replay_capacity": 32,
+      "slots_per_episode": 10,
+      "target_copy_frequency": 2,
+      "training_episodes": 3,
+      "validation_episodes": 2
+    }
+  },
+  {
+    "campaign_id": "",
+    "checkpoint_dependency": null,
+    "config_hash": "cdf58b65351c3ce9b1b84caee72c520800f45983ad3e5f6401de80155c39e58b",
+    "evaluation_contract": {
+      "drain_slots": 0,
+      "slots_per_episode": 10,
+      "validation_episodes": 2
+    },
+    "independent_value": 0.5,
+    "independent_variable": "task_arrival_probability",
+    "job_id": "figure_10d-1-VO",
+    "job_type": "evaluation",
+    "panel_id": "figure_10d",
+    "physical_contract": {
+      "backend": "cpu"
+    },
+    "policy": "VO",
+    "result_label": "PILOT \u2014 NOT PAPER-SCALE RESULT",
+    "scale": "pilot",
+    "scientific_unit_id": "figure_10d-1-VO",
+    "seed": 7,
+    "series_name": "VO",
+    "source_contract_hash": "093c68a5e6242550c00dcf3dc6a798060a759e1a772057e5bc6e9cc265aee420",
+    "topology_contract": {
+      "agent_counts": [
+        4
+      ]
+    },
+    "trace_bank_id": "figure_10d-bank",
+    "training_contract": {
+      "drain_slots": 0,
+      "slots_per_episode": 10,
+      "training_episodes": 3
+    },
+    "variant": null,
+    "workload_contract": {
+      "batch_size": 4,
+      "drain_slots": 0,
+      "replay_capacity": 32,
+      "slots_per_episode": 10,
+      "target_copy_frequency": 2,
+      "training_episodes": 3,
+      "validation_episodes": 2
+    }
+  },
+  {
+    "campaign_id": "",
+    "checkpoint_dependency": null,
+    "config_hash": "e82ac5c5d80be040d6edc487ac4c18c5516ac5f05f0625de4f41ed9421d755a1",
+    "evaluation_contract": {
+      "drain_slots": 0,
+      "slots_per_episode": 10,
+      "validation_episodes": 2
+    },
+    "independent_value": 0.5,
+    "independent_variable": "task_arrival_probability",
+    "job_id": "figure_10d-1-BCO",
+    "job_type": "evaluation",
+    "panel_id": "figure_10d",
+    "physical_contract": {
+      "backend": "cpu"
+    },
+    "policy": "BCO",
+    "result_label": "PILOT \u2014 NOT PAPER-SCALE RESULT",
+    "scale": "pilot",
+    "scientific_unit_id": "figure_10d-1-BCO",
+    "seed": 7,
+    "series_name": "BCO",
+    "source_contract_hash": "093c68a5e6242550c00dcf3dc6a798060a759e1a772057e5bc6e9cc265aee420",
+    "topology_contract": {
+      "agent_counts": [
+        4
+      ]
+    },
+    "trace_bank_id": "figure_10d-bank",
+    "training_contract": {
+      "drain_slots": 0,
+      "slots_per_episode": 10,
+      "training_episodes": 3
+    },
+    "variant": null,
+    "workload_contract": {
+      "batch_size": 4,
+      "drain_slots": 0,
+      "replay_capacity": 32,
+      "slots_per_episode": 10,
+      "target_copy_frequency": 2,
+      "training_episodes": 3,
+      "validation_episodes": 2
+    }
+  },
+  {
+    "campaign_id": "",
+    "checkpoint_dependency": null,
+    "config_hash": "ad10a2451442034f82c99744511033e8038efa1fa9c60aac48e7e399c3794973",
+    "evaluation_contract": {
+      "drain_slots": 0,
+      "slots_per_episode": 10,
+      "validation_episodes": 2
+    },
+    "independent_value": 0.5,
+    "independent_variable": "task_arrival_probability",
+    "job_id": "figure_10d-1-MLEO",
+    "job_type": "evaluation",
+    "panel_id": "figure_10d",
+    "physical_contract": {
+      "backend": "cpu"
+    },
+    "policy": "MLEO",
+    "result_label": "PILOT \u2014 NOT PAPER-SCALE RESULT",
+    "scale": "pilot",
+    "scientific_unit_id": "figure_10d-1-MLEO",
+    "seed": 7,
+    "series_name": "MLEO",
+    "source_contract_hash": "093c68a5e6242550c00dcf3dc6a798060a759e1a772057e5bc6e9cc265aee420",
+    "topology_contract": {
+      "agent_counts": [
+        4
+      ]
+    },
+    "trace_bank_id": "figure_10d-bank",
+    "training_contract": {
+      "drain_slots": 0,
+      "slots_per_episode": 10,
+      "training_episodes": 3
+    },
+    "variant": null,
+    "workload_contract": {
+      "batch_size": 4,
+      "drain_slots": 0,
+      "replay_capacity": 32,
+      "slots_per_episode": 10,
+      "target_copy_frequency": 2,
+      "training_episodes": 3,
+      "validation_episodes": 2
+    }
+  },
+  {
+    "campaign_id": "",
+    "checkpoint_dependency": null,
+    "config_hash": "0deaba6693a4b2ed6316265ac65528b91bdfc4cb90faa873116721eebbe4ad4f",
+    "evaluation_contract": {
+      "drain_slots": 0,
+      "slots_per_episode": 10,
+      "validation_episodes": 2
+    },
+    "independent_value": 1.5,
+    "independent_variable": "cpu_computation_capacity_ghz",
+    "job_id": "figure_10e-0-HOODIE",
+    "job_type": "evaluation",
+    "panel_id": "figure_10e",
+    "physical_contract": {
+      "backend": "cpu"
+    },
+    "policy": "HOODIE",
+    "result_label": "PILOT \u2014 NOT PAPER-SCALE RESULT",
+    "scale": "pilot",
+    "scientific_unit_id": "figure_10e-0-HOODIE",
+    "seed": 7,
+    "series_name": "HOODIE",
+    "source_contract_hash": "093c68a5e6242550c00dcf3dc6a798060a759e1a772057e5bc6e9cc265aee420",
+    "topology_contract": {
+      "agent_counts": [
+        4
+      ]
+    },
+    "trace_bank_id": "figure_10e-bank",
+    "training_contract": {
+      "drain_slots": 0,
+      "slots_per_episode": 10,
+      "training_episodes": 3
+    },
+    "variant": "hoodie_lstm",
+    "workload_contract": {
+      "batch_size": 4,
+      "drain_slots": 0,
+      "replay_capacity": 32,
+      "slots_per_episode": 10,
+      "target_copy_frequency": 2,
+      "training_episodes": 3,
+      "validation_episodes": 2
+    }
+  },
+  {
+    "campaign_id": "",
+    "checkpoint_dependency": null,
+    "config_hash": "e8ed0cfc1bbdb30702ca16a7fc99c6321269ca4b31d905c8865262733ea3b6a0",
+    "evaluation_contract": {
+      "drain_slots": 0,
+      "slots_per_episode": 10,
+      "validation_episodes": 2
+    },
+    "independent_value": 1.5,
+    "independent_variable": "cpu_computation_capacity_ghz",
+    "job_id": "figure_10e-0-FLC",
+    "job_type": "evaluation",
+    "panel_id": "figure_10e",
+    "physical_contract": {
+      "backend": "cpu"
+    },
+    "policy": "FLC",
+    "result_label": "PILOT \u2014 NOT PAPER-SCALE RESULT",
+    "scale": "pilot",
+    "scientific_unit_id": "figure_10e-0-FLC",
+    "seed": 7,
+    "series_name": "FLC",
+    "source_contract_hash": "093c68a5e6242550c00dcf3dc6a798060a759e1a772057e5bc6e9cc265aee420",
+    "topology_contract": {
+      "agent_counts": [
+        4
+      ]
+    },
+    "trace_bank_id": "figure_10e-bank",
+    "training_contract": {
+      "drain_slots": 0,
+      "slots_per_episode": 10,
+      "training_episodes": 3
+    },
+    "variant": null,
+    "workload_contract": {
+      "batch_size": 4,
+      "drain_slots": 0,
+      "replay_capacity": 32,
+      "slots_per_episode": 10,
+      "target_copy_frequency": 2,
+      "training_episodes": 3,
+      "validation_episodes": 2
+    }
+  },
+  {
+    "campaign_id": "",
+    "checkpoint_dependency": null,
+    "config_hash": "241cc3682f7776774e05259e70051e1815f64d5fe621f320b05e7957c1718889",
+    "evaluation_contract": {
+      "drain_slots": 0,
+      "slots_per_episode": 10,
+      "validation_episodes": 2
+    },
+    "independent_value": 1.5,
+    "independent_variable": "cpu_computation_capacity_ghz",
+    "job_id": "figure_10e-0-RO",
+    "job_type": "evaluation",
+    "panel_id": "figure_10e",
+    "physical_contract": {
+      "backend": "cpu"
+    },
+    "policy": "RO",
+    "result_label": "PILOT \u2014 NOT PAPER-SCALE RESULT",
+    "scale": "pilot",
+    "scientific_unit_id": "figure_10e-0-RO",
+    "seed": 7,
+    "series_name": "RO",
+    "source_contract_hash": "093c68a5e6242550c00dcf3dc6a798060a759e1a772057e5bc6e9cc265aee420",
+    "topology_contract": {
+      "agent_counts": [
+        4
+      ]
+    },
+    "trace_bank_id": "figure_10e-bank",
+    "training_contract": {
+      "drain_slots": 0,
+      "slots_per_episode": 10,
+      "training_episodes": 3
+    },
+    "variant": null,
+    "workload_contract": {
+      "batch_size": 4,
+      "drain_slots": 0,
+      "replay_capacity": 32,
+      "slots_per_episode": 10,
+      "target_copy_frequency": 2,
+      "training_episodes": 3,
+      "validation_episodes": 2
+    }
+  },
+  {
+    "campaign_id": "",
+    "checkpoint_dependency": null,
+    "config_hash": "4158c1fdf35a24f3ff44458bb6cecbe78130d1f436c4f16a25d7a5c4a56f08fe",
+    "evaluation_contract": {
+      "drain_slots": 0,
+      "slots_per_episode": 10,
+      "validation_episodes": 2
+    },
+    "independent_value": 1.5,
+    "independent_variable": "cpu_computation_capacity_ghz",
+    "job_id": "figure_10e-0-HO",
+    "job_type": "evaluation",
+    "panel_id": "figure_10e",
+    "physical_contract": {
+      "backend": "cpu"
+    },
+    "policy": "HO",
+    "result_label": "PILOT \u2014 NOT PAPER-SCALE RESULT",
+    "scale": "pilot",
+    "scientific_unit_id": "figure_10e-0-HO",
+    "seed": 7,
+    "series_name": "HO",
+    "source_contract_hash": "093c68a5e6242550c00dcf3dc6a798060a759e1a772057e5bc6e9cc265aee420",
+    "topology_contract": {
+      "agent_counts": [
+        4
+      ]
+    },
+    "trace_bank_id": "figure_10e-bank",
+    "training_contract": {
+      "drain_slots": 0,
+      "slots_per_episode": 10,
+      "training_episodes": 3
+    },
+    "variant": null,
+    "workload_contract": {
+      "batch_size": 4,
+      "drain_slots": 0,
+      "replay_capacity": 32,
+      "slots_per_episode": 10,
+      "target_copy_frequency": 2,
+      "training_episodes": 3,
+      "validation_episodes": 2
+    }
+  },
+  {
+    "campaign_id": "",
+    "checkpoint_dependency": null,
+    "config_hash": "39732d8b08641ac72eb17a12af60c85a32480de8c68fd19b7ffe233c8d636c16",
+    "evaluation_contract": {
+      "drain_slots": 0,
+      "slots_per_episode": 10,
+      "validation_episodes": 2
+    },
+    "independent_value": 1.5,
+    "independent_variable": "cpu_computation_capacity_ghz",
+    "job_id": "figure_10e-0-VO",
+    "job_type": "evaluation",
+    "panel_id": "figure_10e",
+    "physical_contract": {
+      "backend": "cpu"
+    },
+    "policy": "VO",
+    "result_label": "PILOT \u2014 NOT PAPER-SCALE RESULT",
+    "scale": "pilot",
+    "scientific_unit_id": "figure_10e-0-VO",
+    "seed": 7,
+    "series_name": "VO",
+    "source_contract_hash": "093c68a5e6242550c00dcf3dc6a798060a759e1a772057e5bc6e9cc265aee420",
+    "topology_contract": {
+      "agent_counts": [
+        4
+      ]
+    },
+    "trace_bank_id": "figure_10e-bank",
+    "training_contract": {
+      "drain_slots": 0,
+      "slots_per_episode": 10,
+      "training_episodes": 3
+    },
+    "variant": null,
+    "workload_contract": {
+      "batch_size": 4,
+      "drain_slots": 0,
+      "replay_capacity": 32,
+      "slots_per_episode": 10,
+      "target_copy_frequency": 2,
+      "training_episodes": 3,
+      "validation_episodes": 2
+    }
+  },
+  {
+    "campaign_id": "",
+    "checkpoint_dependency": null,
+    "config_hash": "b049ece61d66bdca1c10200af8ec52ac8f3b17d1cfe810e32e0e2d25b45e6b6c",
+    "evaluation_contract": {
+      "drain_slots": 0,
+      "slots_per_episode": 10,
+      "validation_episodes": 2
+    },
+    "independent_value": 1.5,
+    "independent_variable": "cpu_computation_capacity_ghz",
+    "job_id": "figure_10e-0-BCO",
+    "job_type": "evaluation",
+    "panel_id": "figure_10e",
+    "physical_contract": {
+      "backend": "cpu"
+    },
+    "policy": "BCO",
+    "result_label": "PILOT \u2014 NOT PAPER-SCALE RESULT",
+    "scale": "pilot",
+    "scientific_unit_id": "figure_10e-0-BCO",
+    "seed": 7,
+    "series_name": "BCO",
+    "source_contract_hash": "093c68a5e6242550c00dcf3dc6a798060a759e1a772057e5bc6e9cc265aee420",
+    "topology_contract": {
+      "agent_counts": [
+        4
+      ]
+    },
+    "trace_bank_id": "figure_10e-bank",
+    "training_contract": {
+      "drain_slots": 0,
+      "slots_per_episode": 10,
+      "training_episodes": 3
+    },
+    "variant": null,
+    "workload_contract": {
+      "batch_size": 4,
+      "drain_slots": 0,
+      "replay_capacity": 32,
+      "slots_per_episode": 10,
+      "target_copy_frequency": 2,
+      "training_episodes": 3,
+      "validation_episodes": 2
+    }
+  },
+  {
+    "campaign_id": "",
+    "checkpoint_dependency": null,
+    "config_hash": "f49ec1dbe7e7439a4470a2fdf1769a49998fc575a4add7c50dabb33f13194cba",
+    "evaluation_contract": {
+      "drain_slots": 0,
+      "slots_per_episode": 10,
+      "validation_episodes": 2
+    },
+    "independent_value": 1.5,
+    "independent_variable": "cpu_computation_capacity_ghz",
+    "job_id": "figure_10e-0-MLEO",
+    "job_type": "evaluation",
+    "panel_id": "figure_10e",
+    "physical_contract": {
+      "backend": "cpu"
+    },
+    "policy": "MLEO",
+    "result_label": "PILOT \u2014 NOT PAPER-SCALE RESULT",
+    "scale": "pilot",
+    "scientific_unit_id": "figure_10e-0-MLEO",
+    "seed": 7,
+    "series_name": "MLEO",
+    "source_contract_hash": "093c68a5e6242550c00dcf3dc6a798060a759e1a772057e5bc6e9cc265aee420",
+    "topology_contract": {
+      "agent_counts": [
+        4
+      ]
+    },
+    "trace_bank_id": "figure_10e-bank",
+    "training_contract": {
+      "drain_slots": 0,
+      "slots_per_episode": 10,
+      "training_episodes": 3
+    },
+    "variant": null,
+    "workload_contract": {
+      "batch_size": 4,
+      "drain_slots": 0,
+      "replay_capacity": 32,
+      "slots_per_episode": 10,
+      "target_copy_frequency": 2,
+      "training_episodes": 3,
+      "validation_episodes": 2
+    }
+  },
+  {
+    "campaign_id": "",
+    "checkpoint_dependency": null,
+    "config_hash": "3565bfe47a5024a81278719c80ce1ca10773f0cd7ed2f8bad4351eb4fb6803f2",
+    "evaluation_contract": {
+      "drain_slots": 0,
+      "slots_per_episode": 10,
+      "validation_episodes": 2
+    },
+    "independent_value": 3.0,
+    "independent_variable": "cpu_computation_capacity_ghz",
+    "job_id": "figure_10e-1-HOODIE",
+    "job_type": "evaluation",
+    "panel_id": "figure_10e",
+    "physical_contract": {
+      "backend": "cpu"
+    },
+    "policy": "HOODIE",
+    "result_label": "PILOT \u2014 NOT PAPER-SCALE RESULT",
+    "scale": "pilot",
+    "scientific_unit_id": "figure_10e-1-HOODIE",
+    "seed": 7,
+    "series_name": "HOODIE",
+    "source_contract_hash": "093c68a5e6242550c00dcf3dc6a798060a759e1a772057e5bc6e9cc265aee420",
+    "topology_contract": {
+      "agent_counts": [
+        4
+      ]
+    },
+    "trace_bank_id": "figure_10e-bank",
+    "training_contract": {
+      "drain_slots": 0,
+      "slots_per_episode": 10,
+      "training_episodes": 3
+    },
+    "variant": "hoodie_lstm",
+    "workload_contract": {
+      "batch_size": 4,
+      "drain_slots": 0,
+      "replay_capacity": 32,
+      "slots_per_episode": 10,
+      "target_copy_frequency": 2,
+      "training_episodes": 3,
+      "validation_episodes": 2
+    }
+  },
+  {
+    "campaign_id": "",
+    "checkpoint_dependency": null,
+    "config_hash": "12fe8fead9a249385ce58c755c7ad6293bf168c67b3398b5e0df142a1547fb45",
+    "evaluation_contract": {
+      "drain_slots": 0,
+      "slots_per_episode": 10,
+      "validation_episodes": 2
+    },
+    "independent_value": 3.0,
+    "independent_variable": "cpu_computation_capacity_ghz",
+    "job_id": "figure_10e-1-FLC",
+    "job_type": "evaluation",
+    "panel_id": "figure_10e",
+    "physical_contract": {
+      "backend": "cpu"
+    },
+    "policy": "FLC",
+    "result_label": "PILOT \u2014 NOT PAPER-SCALE RESULT",
+    "scale": "pilot",
+    "scientific_unit_id": "figure_10e-1-FLC",
+    "seed": 7,
+    "series_name": "FLC",
+    "source_contract_hash": "093c68a5e6242550c00dcf3dc6a798060a759e1a772057e5bc6e9cc265aee420",
+    "topology_contract": {
+      "agent_counts": [
+        4
+      ]
+    },
+    "trace_bank_id": "figure_10e-bank",
+    "training_contract": {
+      "drain_slots": 0,
+      "slots_per_episode": 10,
+      "training_episodes": 3
+    },
+    "variant": null,
+    "workload_contract": {
+      "batch_size": 4,
+      "drain_slots": 0,
+      "replay_capacity": 32,
+      "slots_per_episode": 10,
+      "target_copy_frequency": 2,
+      "training_episodes": 3,
+      "validation_episodes": 2
+    }
+  },
+  {
+    "campaign_id": "",
+    "checkpoint_dependency": null,
+    "config_hash": "e84290686dc63061fe0190acbf245d29d90914138bfc65b31055ba3b24bb6f7e",
+    "evaluation_contract": {
+      "drain_slots": 0,
+      "slots_per_episode": 10,
+      "validation_episodes": 2
+    },
+    "independent_value": 3.0,
+    "independent_variable": "cpu_computation_capacity_ghz",
+    "job_id": "figure_10e-1-RO",
+    "job_type": "evaluation",
+    "panel_id": "figure_10e",
+    "physical_contract": {
+      "backend": "cpu"
+    },
+    "policy": "RO",
+    "result_label": "PILOT \u2014 NOT PAPER-SCALE RESULT",
+    "scale": "pilot",
+    "scientific_unit_id": "figure_10e-1-RO",
+    "seed": 7,
+    "series_name": "RO",
+    "source_contract_hash": "093c68a5e6242550c00dcf3dc6a798060a759e1a772057e5bc6e9cc265aee420",
+    "topology_contract": {
+      "agent_counts": [
+        4
+      ]
+    },
+    "trace_bank_id": "figure_10e-bank",
+    "training_contract": {
+      "drain_slots": 0,
+      "slots_per_episode": 10,
+      "training_episodes": 3
+    },
+    "variant": null,
+    "workload_contract": {
+      "batch_size": 4,
+      "drain_slots": 0,
+      "replay_capacity": 32,
+      "slots_per_episode": 10,
+      "target_copy_frequency": 2,
+      "training_episodes": 3,
+      "validation_episodes": 2
+    }
+  },
+  {
+    "campaign_id": "",
+    "checkpoint_dependency": null,
+    "config_hash": "b4fc5e49cb671193532abce759ffd2287a5b6556a3aa6a38ae6c8356f3c8768b",
+    "evaluation_contract": {
+      "drain_slots": 0,
+      "slots_per_episode": 10,
+      "validation_episodes": 2
+    },
+    "independent_value": 3.0,
+    "independent_variable": "cpu_computation_capacity_ghz",
+    "job_id": "figure_10e-1-HO",
+    "job_type": "evaluation",
+    "panel_id": "figure_10e",
+    "physical_contract": {
+      "backend": "cpu"
+    },
+    "policy": "HO",
+    "result_label": "PILOT \u2014 NOT PAPER-SCALE RESULT",
+    "scale": "pilot",
+    "scientific_unit_id": "figure_10e-1-HO",
+    "seed": 7,
+    "series_name": "HO",
+    "source_contract_hash": "093c68a5e6242550c00dcf3dc6a798060a759e1a772057e5bc6e9cc265aee420",
+    "topology_contract": {
+      "agent_counts": [
+        4
+      ]
+    },
+    "trace_bank_id": "figure_10e-bank",
+    "training_contract": {
+      "drain_slots": 0,
+      "slots_per_episode": 10,
+      "training_episodes": 3
+    },
+    "variant": null,
+    "workload_contract": {
+      "batch_size": 4,
+      "drain_slots": 0,
+      "replay_capacity": 32,
+      "slots_per_episode": 10,
+      "target_copy_frequency": 2,
+      "training_episodes": 3,
+      "validation_episodes": 2
+    }
+  },
+  {
+    "campaign_id": "",
+    "checkpoint_dependency": null,
+    "config_hash": "b54aaa3c9af2d28c0adf63ac1c1d87ae156fc6946502aaeedbcb28aa999e6241",
+    "evaluation_contract": {
+      "drain_slots": 0,
+      "slots_per_episode": 10,
+      "validation_episodes": 2
+    },
+    "independent_value": 3.0,
+    "independent_variable": "cpu_computation_capacity_ghz",
+    "job_id": "figure_10e-1-VO",
+    "job_type": "evaluation",
+    "panel_id": "figure_10e",
+    "physical_contract": {
+      "backend": "cpu"
+    },
+    "policy": "VO",
+    "result_label": "PILOT \u2014 NOT PAPER-SCALE RESULT",
+    "scale": "pilot",
+    "scientific_unit_id": "figure_10e-1-VO",
+    "seed": 7,
+    "series_name": "VO",
+    "source_contract_hash": "093c68a5e6242550c00dcf3dc6a798060a759e1a772057e5bc6e9cc265aee420",
+    "topology_contract": {
+      "agent_counts": [
+        4
+      ]
+    },
+    "trace_bank_id": "figure_10e-bank",
+    "training_contract": {
+      "drain_slots": 0,
+      "slots_per_episode": 10,
+      "training_episodes": 3
+    },
+    "variant": null,
+    "workload_contract": {
+      "batch_size": 4,
+      "drain_slots": 0,
+      "replay_capacity": 32,
+      "slots_per_episode": 10,
+      "target_copy_frequency": 2,
+      "training_episodes": 3,
+      "validation_episodes": 2
+    }
+  },
+  {
+    "campaign_id": "",
+    "checkpoint_dependency": null,
+    "config_hash": "4734a9d727b1678aa1bd2212c85ee601561783c9309d35e7a90dc5752212d073",
+    "evaluation_contract": {
+      "drain_slots": 0,
+      "slots_per_episode": 10,
+      "validation_episodes": 2
+    },
+    "independent_value": 3.0,
+    "independent_variable": "cpu_computation_capacity_ghz",
+    "job_id": "figure_10e-1-BCO",
+    "job_type": "evaluation",
+    "panel_id": "figure_10e",
+    "physical_contract": {
+      "backend": "cpu"
+    },
+    "policy": "BCO",
+    "result_label": "PILOT \u2014 NOT PAPER-SCALE RESULT",
+    "scale": "pilot",
+    "scientific_unit_id": "figure_10e-1-BCO",
+    "seed": 7,
+    "series_name": "BCO",
+    "source_contract_hash": "093c68a5e6242550c00dcf3dc6a798060a759e1a772057e5bc6e9cc265aee420",
+    "topology_contract": {
+      "agent_counts": [
+        4
+      ]
+    },
+    "trace_bank_id": "figure_10e-bank",
+    "training_contract": {
+      "drain_slots": 0,
+      "slots_per_episode": 10,
+      "training_episodes": 3
+    },
+    "variant": null,
+    "workload_contract": {
+      "batch_size": 4,
+      "drain_slots": 0,
+      "replay_capacity": 32,
+      "slots_per_episode": 10,
+      "target_copy_frequency": 2,
+      "training_episodes": 3,
+      "validation_episodes": 2
+    }
+  },
+  {
+    "campaign_id": "",
+    "checkpoint_dependency": null,
+    "config_hash": "04266b6fdab052adc6fbbca58de415197a0a867bffc38b0e4809e1aa768d4aa9",
+    "evaluation_contract": {
+      "drain_slots": 0,
+      "slots_per_episode": 10,
+      "validation_episodes": 2
+    },
+    "independent_value": 3.0,
+    "independent_variable": "cpu_computation_capacity_ghz",
+    "job_id": "figure_10e-1-MLEO",
+    "job_type": "evaluation",
+    "panel_id": "figure_10e",
+    "physical_contract": {
+      "backend": "cpu"
+    },
+    "policy": "MLEO",
+    "result_label": "PILOT \u2014 NOT PAPER-SCALE RESULT",
+    "scale": "pilot",
+    "scientific_unit_id": "figure_10e-1-MLEO",
+    "seed": 7,
+    "series_name": "MLEO",
+    "source_contract_hash": "093c68a5e6242550c00dcf3dc6a798060a759e1a772057e5bc6e9cc265aee420",
+    "topology_contract": {
+      "agent_counts": [
+        4
+      ]
+    },
+    "trace_bank_id": "figure_10e-bank",
+    "training_contract": {
+      "drain_slots": 0,
+      "slots_per_episode": 10,
+      "training_episodes": 3
+    },
+    "variant": null,
+    "workload_contract": {
+      "batch_size": 4,
+      "drain_slots": 0,
+      "replay_capacity": 32,
+      "slots_per_episode": 10,
+      "target_copy_frequency": 2,
+      "training_episodes": 3,
+      "validation_episodes": 2
+    }
+  },
+  {
+    "campaign_id": "",
+    "checkpoint_dependency": null,
+    "config_hash": "9043725ccab432a9c09527e40516e91cbb12688e602151a1fbb9227339b4c6f4",
+    "evaluation_contract": {
+      "drain_slots": 0,
+      "slots_per_episode": 10,
+      "validation_episodes": 2
+    },
+    "independent_value": 2,
+    "independent_variable": "task_timeout_seconds",
+    "job_id": "figure_10f-0-HOODIE",
+    "job_type": "evaluation",
+    "panel_id": "figure_10f",
+    "physical_contract": {
+      "backend": "cpu"
+    },
+    "policy": "HOODIE",
+    "result_label": "PILOT \u2014 NOT PAPER-SCALE RESULT",
+    "scale": "pilot",
+    "scientific_unit_id": "figure_10f-0-HOODIE",
+    "seed": 7,
+    "series_name": "HOODIE",
+    "source_contract_hash": "093c68a5e6242550c00dcf3dc6a798060a759e1a772057e5bc6e9cc265aee420",
+    "topology_contract": {
+      "agent_counts": [
+        4
+      ]
+    },
+    "trace_bank_id": "figure_10f-bank",
+    "training_contract": {
+      "drain_slots": 0,
+      "slots_per_episode": 10,
+      "training_episodes": 3
+    },
+    "variant": "hoodie_lstm",
+    "workload_contract": {
+      "batch_size": 4,
+      "drain_slots": 0,
+      "replay_capacity": 32,
+      "slots_per_episode": 10,
+      "target_copy_frequency": 2,
+      "training_episodes": 3,
+      "validation_episodes": 2
+    }
+  },
+  {
+    "campaign_id": "",
+    "checkpoint_dependency": null,
+    "config_hash": "33c103a5f46ae3555457c42974721a3f5409a8d01b96d65e389ad8deffd607ee",
+    "evaluation_contract": {
+      "drain_slots": 0,
+      "slots_per_episode": 10,
+      "validation_episodes": 2
+    },
+    "independent_value": 2,
+    "independent_variable": "task_timeout_seconds",
+    "job_id": "figure_10f-0-FLC",
+    "job_type": "evaluation",
+    "panel_id": "figure_10f",
+    "physical_contract": {
+      "backend": "cpu"
+    },
+    "policy": "FLC",
+    "result_label": "PILOT \u2014 NOT PAPER-SCALE RESULT",
+    "scale": "pilot",
+    "scientific_unit_id": "figure_10f-0-FLC",
+    "seed": 7,
+    "series_name": "FLC",
+    "source_contract_hash": "093c68a5e6242550c00dcf3dc6a798060a759e1a772057e5bc6e9cc265aee420",
+    "topology_contract": {
+      "agent_counts": [
+        4
+      ]
+    },
+    "trace_bank_id": "figure_10f-bank",
+    "training_contract": {
+      "drain_slots": 0,
+      "slots_per_episode": 10,
+      "training_episodes": 3
+    },
+    "variant": null,
+    "workload_contract": {
+      "batch_size": 4,
+      "drain_slots": 0,
+      "replay_capacity": 32,
+      "slots_per_episode": 10,
+      "target_copy_frequency": 2,
+      "training_episodes": 3,
+      "validation_episodes": 2
+    }
+  },
+  {
+    "campaign_id": "",
+    "checkpoint_dependency": null,
+    "config_hash": "00047ab9a8f20b781d38b37491c15a11512f4bb7276bc5d674a8fcbac200fb21",
+    "evaluation_contract": {
+      "drain_slots": 0,
+      "slots_per_episode": 10,
+      "validation_episodes": 2
+    },
+    "independent_value": 2,
+    "independent_variable": "task_timeout_seconds",
+    "job_id": "figure_10f-0-RO",
+    "job_type": "evaluation",
+    "panel_id": "figure_10f",
+    "physical_contract": {
+      "backend": "cpu"
+    },
+    "policy": "RO",
+    "result_label": "PILOT \u2014 NOT PAPER-SCALE RESULT",
+    "scale": "pilot",
+    "scientific_unit_id": "figure_10f-0-RO",
+    "seed": 7,
+    "series_name": "RO",
+    "source_contract_hash": "093c68a5e6242550c00dcf3dc6a798060a759e1a772057e5bc6e9cc265aee420",
+    "topology_contract": {
+      "agent_counts": [
+        4
+      ]
+    },
+    "trace_bank_id": "figure_10f-bank",
+    "training_contract": {
+      "drain_slots": 0,
+      "slots_per_episode": 10,
+      "training_episodes": 3
+    },
+    "variant": null,
+    "workload_contract": {
+      "batch_size": 4,
+      "drain_slots": 0,
+      "replay_capacity": 32,
+      "slots_per_episode": 10,
+      "target_copy_frequency": 2,
+      "training_episodes": 3,
+      "validation_episodes": 2
+    }
+  },
+  {
+    "campaign_id": "",
+    "checkpoint_dependency": null,
+    "config_hash": "ff0caa8eac0fc3cc930dd33c625c990c2e63b4bb3cdf2421f31af21bb5c40e00",
+    "evaluation_contract": {
+      "drain_slots": 0,
+      "slots_per_episode": 10,
+      "validation_episodes": 2
+    },
+    "independent_value": 2,
+    "independent_variable": "task_timeout_seconds",
+    "job_id": "figure_10f-0-HO",
+    "job_type": "evaluation",
+    "panel_id": "figure_10f",
+    "physical_contract": {
+      "backend": "cpu"
+    },
+    "policy": "HO",
+    "result_label": "PILOT \u2014 NOT PAPER-SCALE RESULT",
+    "scale": "pilot",
+    "scientific_unit_id": "figure_10f-0-HO",
+    "seed": 7,
+    "series_name": "HO",
+    "source_contract_hash": "093c68a5e6242550c00dcf3dc6a798060a759e1a772057e5bc6e9cc265aee420",
+    "topology_contract": {
+      "agent_counts": [
+        4
+      ]
+    },
+    "trace_bank_id": "figure_10f-bank",
+    "training_contract": {
+      "drain_slots": 0,
+      "slots_per_episode": 10,
+      "training_episodes": 3
+    },
+    "variant": null,
+    "workload_contract": {
+      "batch_size": 4,
+      "drain_slots": 0,
+      "replay_capacity": 32,
+      "slots_per_episode": 10,
+      "target_copy_frequency": 2,
+      "training_episodes": 3,
+      "validation_episodes": 2
+    }
+  },
+  {
+    "campaign_id": "",
+    "checkpoint_dependency": null,
+    "config_hash": "19ff43129161f93bac5cca51b1b73c034deb859587665eba7f0890d9de172672",
+    "evaluation_contract": {
+      "drain_slots": 0,
+      "slots_per_episode": 10,
+      "validation_episodes": 2
+    },
+    "independent_value": 2,
+    "independent_variable": "task_timeout_seconds",
+    "job_id": "figure_10f-0-VO",
+    "job_type": "evaluation",
+    "panel_id": "figure_10f",
+    "physical_contract": {
+      "backend": "cpu"
+    },
+    "policy": "VO",
+    "result_label": "PILOT \u2014 NOT PAPER-SCALE RESULT",
+    "scale": "pilot",
+    "scientific_unit_id": "figure_10f-0-VO",
+    "seed": 7,
+    "series_name": "VO",
+    "source_contract_hash": "093c68a5e6242550c00dcf3dc6a798060a759e1a772057e5bc6e9cc265aee420",
+    "topology_contract": {
+      "agent_counts": [
+        4
+      ]
+    },
+    "trace_bank_id": "figure_10f-bank",
+    "training_contract": {
+      "drain_slots": 0,
+      "slots_per_episode": 10,
+      "training_episodes": 3
+    },
+    "variant": null,
+    "workload_contract": {
+      "batch_size": 4,
+      "drain_slots": 0,
+      "replay_capacity": 32,
+      "slots_per_episode": 10,
+      "target_copy_frequency": 2,
+      "training_episodes": 3,
+      "validation_episodes": 2
+    }
+  },
+  {
+    "campaign_id": "",
+    "checkpoint_dependency": null,
+    "config_hash": "18e9eb446768dcbcae9e4c419ed10dd796fe6e936085634c7808de6e5cf8f70a",
+    "evaluation_contract": {
+      "drain_slots": 0,
+      "slots_per_episode": 10,
+      "validation_episodes": 2
+    },
+    "independent_value": 2,
+    "independent_variable": "task_timeout_seconds",
+    "job_id": "figure_10f-0-BCO",
+    "job_type": "evaluation",
+    "panel_id": "figure_10f",
+    "physical_contract": {
+      "backend": "cpu"
+    },
+    "policy": "BCO",
+    "result_label": "PILOT \u2014 NOT PAPER-SCALE RESULT",
+    "scale": "pilot",
+    "scientific_unit_id": "figure_10f-0-BCO",
+    "seed": 7,
+    "series_name": "BCO",
+    "source_contract_hash": "093c68a5e6242550c00dcf3dc6a798060a759e1a772057e5bc6e9cc265aee420",
+    "topology_contract": {
+      "agent_counts": [
+        4
+      ]
+    },
+    "trace_bank_id": "figure_10f-bank",
+    "training_contract": {
+      "drain_slots": 0,
+      "slots_per_episode": 10,
+      "training_episodes": 3
+    },
+    "variant": null,
+    "workload_contract": {
+      "batch_size": 4,
+      "drain_slots": 0,
+      "replay_capacity": 32,
+      "slots_per_episode": 10,
+      "target_copy_frequency": 2,
+      "training_episodes": 3,
+      "validation_episodes": 2
+    }
+  },
+  {
+    "campaign_id": "",
+    "checkpoint_dependency": null,
+    "config_hash": "2d3ee595a193ab41112557faa1fec24c77d6d4b7b02cd05fa3c3177ebbef3745",
+    "evaluation_contract": {
+      "drain_slots": 0,
+      "slots_per_episode": 10,
+      "validation_episodes": 2
+    },
+    "independent_value": 2,
+    "independent_variable": "task_timeout_seconds",
+    "job_id": "figure_10f-0-MLEO",
+    "job_type": "evaluation",
+    "panel_id": "figure_10f",
+    "physical_contract": {
+      "backend": "cpu"
+    },
+    "policy": "MLEO",
+    "result_label": "PILOT \u2014 NOT PAPER-SCALE RESULT",
+    "scale": "pilot",
+    "scientific_unit_id": "figure_10f-0-MLEO",
+    "seed": 7,
+    "series_name": "MLEO",
+    "source_contract_hash": "093c68a5e6242550c00dcf3dc6a798060a759e1a772057e5bc6e9cc265aee420",
+    "topology_contract": {
+      "agent_counts": [
+        4
+      ]
+    },
+    "trace_bank_id": "figure_10f-bank",
+    "training_contract": {
+      "drain_slots": 0,
+      "slots_per_episode": 10,
+      "training_episodes": 3
+    },
+    "variant": null,
+    "workload_contract": {
+      "batch_size": 4,
+      "drain_slots": 0,
+      "replay_capacity": 32,
+      "slots_per_episode": 10,
+      "target_copy_frequency": 2,
+      "training_episodes": 3,
+      "validation_episodes": 2
+    }
+  },
+  {
+    "campaign_id": "",
+    "checkpoint_dependency": null,
+    "config_hash": "9b255af97a2a35cf395418a276057a69477d59ab7731ef72ac99ce1ef99fe7d2",
+    "evaluation_contract": {
+      "drain_slots": 0,
+      "slots_per_episode": 10,
+      "validation_episodes": 2
+    },
+    "independent_value": 4,
+    "independent_variable": "task_timeout_seconds",
+    "job_id": "figure_10f-1-HOODIE",
+    "job_type": "evaluation",
+    "panel_id": "figure_10f",
+    "physical_contract": {
+      "backend": "cpu"
+    },
+    "policy": "HOODIE",
+    "result_label": "PILOT \u2014 NOT PAPER-SCALE RESULT",
+    "scale": "pilot",
+    "scientific_unit_id": "figure_10f-1-HOODIE",
+    "seed": 7,
+    "series_name": "HOODIE",
+    "source_contract_hash": "093c68a5e6242550c00dcf3dc6a798060a759e1a772057e5bc6e9cc265aee420",
+    "topology_contract": {
+      "agent_counts": [
+        4
+      ]
+    },
+    "trace_bank_id": "figure_10f-bank",
+    "training_contract": {
+      "drain_slots": 0,
+      "slots_per_episode": 10,
+      "training_episodes": 3
+    },
+    "variant": "hoodie_lstm",
+    "workload_contract": {
+      "batch_size": 4,
+      "drain_slots": 0,
+      "replay_capacity": 32,
+      "slots_per_episode": 10,
+      "target_copy_frequency": 2,
+      "training_episodes": 3,
+      "validation_episodes": 2
+    }
+  },
+  {
+    "campaign_id": "",
+    "checkpoint_dependency": null,
+    "config_hash": "e0b23bdf4380518816b8c8c0b1b275ddc44c1ead6b3c27f7c3218bef312448c1",
+    "evaluation_contract": {
+      "drain_slots": 0,
+      "slots_per_episode": 10,
+      "validation_episodes": 2
+    },
+    "independent_value": 4,
+    "independent_variable": "task_timeout_seconds",
+    "job_id": "figure_10f-1-FLC",
+    "job_type": "evaluation",
+    "panel_id": "figure_10f",
+    "physical_contract": {
+      "backend": "cpu"
+    },
+    "policy": "FLC",
+    "result_label": "PILOT \u2014 NOT PAPER-SCALE RESULT",
+    "scale": "pilot",
+    "scientific_unit_id": "figure_10f-1-FLC",
+    "seed": 7,
+    "series_name": "FLC",
+    "source_contract_hash": "093c68a5e6242550c00dcf3dc6a798060a759e1a772057e5bc6e9cc265aee420",
+    "topology_contract": {
+      "agent_counts": [
+        4
+      ]
+    },
+    "trace_bank_id": "figure_10f-bank",
+    "training_contract": {
+      "drain_slots": 0,
+      "slots_per_episode": 10,
+      "training_episodes": 3
+    },
+    "variant": null,
+    "workload_contract": {
+      "batch_size": 4,
+      "drain_slots": 0,
+      "replay_capacity": 32,
+      "slots_per_episode": 10,
+      "target_copy_frequency": 2,
+      "training_episodes": 3,
+      "validation_episodes": 2
+    }
+  },
+  {
+    "campaign_id": "",
+    "checkpoint_dependency": null,
+    "config_hash": "27c4332134b7061baf6433cb7e9435ec5d3d58c814a164df44b8b12a9ba7f0ac",
+    "evaluation_contract": {
+      "drain_slots": 0,
+      "slots_per_episode": 10,
+      "validation_episodes": 2
+    },
+    "independent_value": 4,
+    "independent_variable": "task_timeout_seconds",
+    "job_id": "figure_10f-1-RO",
+    "job_type": "evaluation",
+    "panel_id": "figure_10f",
+    "physical_contract": {
+      "backend": "cpu"
+    },
+    "policy": "RO",
+    "result_label": "PILOT \u2014 NOT PAPER-SCALE RESULT",
+    "scale": "pilot",
+    "scientific_unit_id": "figure_10f-1-RO",
+    "seed": 7,
+    "series_name": "RO",
+    "source_contract_hash": "093c68a5e6242550c00dcf3dc6a798060a759e1a772057e5bc6e9cc265aee420",
+    "topology_contract": {
+      "agent_counts": [
+        4
+      ]
+    },
+    "trace_bank_id": "figure_10f-bank",
+    "training_contract": {
+      "drain_slots": 0,
+      "slots_per_episode": 10,
+      "training_episodes": 3
+    },
+    "variant": null,
+    "workload_contract": {
+      "batch_size": 4,
+      "drain_slots": 0,
+      "replay_capacity": 32,
+      "slots_per_episode": 10,
+      "target_copy_frequency": 2,
+      "training_episodes": 3,
+      "validation_episodes": 2
+    }
+  },
+  {
+    "campaign_id": "",
+    "checkpoint_dependency": null,
+    "config_hash": "447c8647edacdf0f635ff2675692c38709f1938058b70ad924f60d86e7cd44ec",
+    "evaluation_contract": {
+      "drain_slots": 0,
+      "slots_per_episode": 10,
+      "validation_episodes": 2
+    },
+    "independent_value": 4,
+    "independent_variable": "task_timeout_seconds",
+    "job_id": "figure_10f-1-HO",
+    "job_type": "evaluation",
+    "panel_id": "figure_10f",
+    "physical_contract": {
+      "backend": "cpu"
+    },
+    "policy": "HO",
+    "result_label": "PILOT \u2014 NOT PAPER-SCALE RESULT",
+    "scale": "pilot",
+    "scientific_unit_id": "figure_10f-1-HO",
+    "seed": 7,
+    "series_name": "HO",
+    "source_contract_hash": "093c68a5e6242550c00dcf3dc6a798060a759e1a772057e5bc6e9cc265aee420",
+    "topology_contract": {
+      "agent_counts": [
+        4
+      ]
+    },
+    "trace_bank_id": "figure_10f-bank",
+    "training_contract": {
+      "drain_slots": 0,
+      "slots_per_episode": 10,
+      "training_episodes": 3
+    },
+    "variant": null,
+    "workload_contract": {
+      "batch_size": 4,
+      "drain_slots": 0,
+      "replay_capacity": 32,
+      "slots_per_episode": 10,
+      "target_copy_frequency": 2,
+      "training_episodes": 3,
+      "validation_episodes": 2
+    }
+  },
+  {
+    "campaign_id": "",
+    "checkpoint_dependency": null,
+    "config_hash": "b83e9375e1ce0e4afc47ece900beb17e138934218239bef0bad4fe0547f9198f",
+    "evaluation_contract": {
+      "drain_slots": 0,
+      "slots_per_episode": 10,
+      "validation_episodes": 2
+    },
+    "independent_value": 4,
+    "independent_variable": "task_timeout_seconds",
+    "job_id": "figure_10f-1-VO",
+    "job_type": "evaluation",
+    "panel_id": "figure_10f",
+    "physical_contract": {
+      "backend": "cpu"
+    },
+    "policy": "VO",
+    "result_label": "PILOT \u2014 NOT PAPER-SCALE RESULT",
+    "scale": "pilot",
+    "scientific_unit_id": "figure_10f-1-VO",
+    "seed": 7,
+    "series_name": "VO",
+    "source_contract_hash": "093c68a5e6242550c00dcf3dc6a798060a759e1a772057e5bc6e9cc265aee420",
+    "topology_contract": {
+      "agent_counts": [
+        4
+      ]
+    },
+    "trace_bank_id": "figure_10f-bank",
+    "training_contract": {
+      "drain_slots": 0,
+      "slots_per_episode": 10,
+      "training_episodes": 3
+    },
+    "variant": null,
+    "workload_contract": {
+      "batch_size": 4,
+      "drain_slots": 0,
+      "replay_capacity": 32,
+      "slots_per_episode": 10,
+      "target_copy_frequency": 2,
+      "training_episodes": 3,
+      "validation_episodes": 2
+    }
+  },
+  {
+    "campaign_id": "",
+    "checkpoint_dependency": null,
+    "config_hash": "867404248389b05827396d4366983a4d08e691504bad35c23d21a7612cbe3177",
+    "evaluation_contract": {
+      "drain_slots": 0,
+      "slots_per_episode": 10,
+      "validation_episodes": 2
+    },
+    "independent_value": 4,
+    "independent_variable": "task_timeout_seconds",
+    "job_id": "figure_10f-1-BCO",
+    "job_type": "evaluation",
+    "panel_id": "figure_10f",
+    "physical_contract": {
+      "backend": "cpu"
+    },
+    "policy": "BCO",
+    "result_label": "PILOT \u2014 NOT PAPER-SCALE RESULT",
+    "scale": "pilot",
+    "scientific_unit_id": "figure_10f-1-BCO",
+    "seed": 7,
+    "series_name": "BCO",
+    "source_contract_hash": "093c68a5e6242550c00dcf3dc6a798060a759e1a772057e5bc6e9cc265aee420",
+    "topology_contract": {
+      "agent_counts": [
+        4
+      ]
+    },
+    "trace_bank_id": "figure_10f-bank",
+    "training_contract": {
+      "drain_slots": 0,
+      "slots_per_episode": 10,
+      "training_episodes": 3
+    },
+    "variant": null,
+    "workload_contract": {
+      "batch_size": 4,
+      "drain_slots": 0,
+      "replay_capacity": 32,
+      "slots_per_episode": 10,
+      "target_copy_frequency": 2,
+      "training_episodes": 3,
+      "validation_episodes": 2
+    }
+  },
+  {
+    "campaign_id": "",
+    "checkpoint_dependency": null,
+    "config_hash": "cb9de97bf54262a04558fa9d637989cb25013e63a504c6aba7086aa078dc2582",
+    "evaluation_contract": {
+      "drain_slots": 0,
+      "slots_per_episode": 10,
+      "validation_episodes": 2
+    },
+    "independent_value": 4,
+    "independent_variable": "task_timeout_seconds",
+    "job_id": "figure_10f-1-MLEO",
+    "job_type": "evaluation",
+    "panel_id": "figure_10f",
+    "physical_contract": {
+      "backend": "cpu"
+    },
+    "policy": "MLEO",
+    "result_label": "PILOT \u2014 NOT PAPER-SCALE RESULT",
+    "scale": "pilot",
+    "scientific_unit_id": "figure_10f-1-MLEO",
+    "seed": 7,
+    "series_name": "MLEO",
+    "source_contract_hash": "093c68a5e6242550c00dcf3dc6a798060a759e1a772057e5bc6e9cc265aee420",
+    "topology_contract": {
+      "agent_counts": [
+        4
+      ]
+    },
+    "trace_bank_id": "figure_10f-bank",
+    "training_contract": {
+      "drain_slots": 0,
+      "slots_per_episode": 10,
+      "training_episodes": 3
+    },
+    "variant": null,
+    "workload_contract": {
+      "batch_size": 4,
+      "drain_slots": 0,
+      "replay_capacity": 32,
+      "slots_per_episode": 10,
+      "target_copy_frequency": 2,
+      "training_episodes": 3,
+      "validation_episodes": 2
+    }
+  },
+  {
+    "campaign_id": "",
+    "checkpoint_dependency": null,
+    "config_hash": "9d9ba0213a825e64bcc14133831001b71dddbb0d208b0837e68034b908809776",
+    "evaluation_contract": {
+      "drain_slots": 0,
+      "slots_per_episode": 10,
+      "validation_episodes": 2
+    },
+    "independent_value": 3,
+    "independent_variable": "episode_count",
+    "job_id": "figure_11-0-hoodie_lstm",
+    "job_type": "training",
+    "panel_id": "figure_11",
+    "physical_contract": {
+      "backend": "cpu"
+    },
+    "policy": "HOODIE",
+    "result_label": "PILOT \u2014 NOT PAPER-SCALE RESULT",
+    "scale": "pilot",
+    "scientific_unit_id": "figure_11-0-hoodie_lstm",
+    "seed": 7,
+    "series_name": "hoodie_lstm",
+    "source_contract_hash": "093c68a5e6242550c00dcf3dc6a798060a759e1a772057e5bc6e9cc265aee420",
+    "topology_contract": {
+      "agent_counts": [
+        4
+      ]
+    },
+    "trace_bank_id": "figure_11-bank",
+    "training_contract": {
+      "drain_slots": 0,
+      "slots_per_episode": 10,
+      "training_episodes": 3
+    },
+    "variant": "hoodie_lstm",
+    "workload_contract": {
+      "batch_size": 4,
+      "drain_slots": 0,
+      "replay_capacity": 32,
+      "slots_per_episode": 10,
+      "target_copy_frequency": 2,
+      "training_episodes": 3,
+      "validation_episodes": 2
+    }
+  },
+  {
+    "campaign_id": "",
+    "checkpoint_dependency": null,
+    "config_hash": "fb8dc84655e19af0fbedb362e69bf1fc861d66eb2cd8de4903b621889a4e75c0",
+    "evaluation_contract": {
+      "drain_slots": 0,
+      "slots_per_episode": 10,
+      "validation_episodes": 2
+    },
+    "independent_value": 3,
+    "independent_variable": "episode_count",
+    "job_id": "figure_11-0-hoodie_no_lstm",
+    "job_type": "training",
+    "panel_id": "figure_11",
+    "physical_contract": {
+      "backend": "cpu"
+    },
+    "policy": "HOODIE",
+    "result_label": "PILOT \u2014 NOT PAPER-SCALE RESULT",
+    "scale": "pilot",
+    "scientific_unit_id": "figure_11-0-hoodie_no_lstm",
+    "seed": 7,
+    "series_name": "hoodie_no_lstm",
+    "source_contract_hash": "093c68a5e6242550c00dcf3dc6a798060a759e1a772057e5bc6e9cc265aee420",
+    "topology_contract": {
+      "agent_counts": [
+        4
+      ]
+    },
+    "trace_bank_id": "figure_11-bank",
+    "training_contract": {
+      "drain_slots": 0,
+      "slots_per_episode": 10,
+      "training_episodes": 3
+    },
+    "variant": "hoodie_no_lstm",
+    "workload_contract": {
+      "batch_size": 4,
+      "drain_slots": 0,
+      "replay_capacity": 32,
+      "slots_per_episode": 10,
+      "target_copy_frequency": 2,
+      "training_episodes": 3,
+      "validation_episodes": 2
+    }
+  },
+  {
+    "campaign_id": "",
+    "checkpoint_dependency": null,
+    "config_hash": "9d9ba0213a825e64bcc14133831001b71dddbb0d208b0837e68034b908809776",
+    "evaluation_contract": {
+      "drain_slots": 0,
+      "slots_per_episode": 10,
+      "validation_episodes": 2
+    },
+    "independent_value": 3,
+    "independent_variable": "episode_count",
+    "job_id": "figure_11-1-hoodie_lstm",
+    "job_type": "training",
+    "panel_id": "figure_11",
+    "physical_contract": {
+      "backend": "cpu"
+    },
+    "policy": "HOODIE",
+    "result_label": "PILOT \u2014 NOT PAPER-SCALE RESULT",
+    "scale": "pilot",
+    "scientific_unit_id": "figure_11-1-hoodie_lstm",
+    "seed": 7,
+    "series_name": "hoodie_lstm",
+    "source_contract_hash": "093c68a5e6242550c00dcf3dc6a798060a759e1a772057e5bc6e9cc265aee420",
+    "topology_contract": {
+      "agent_counts": [
+        4
+      ]
+    },
+    "trace_bank_id": "figure_11-bank",
+    "training_contract": {
+      "drain_slots": 0,
+      "slots_per_episode": 10,
+      "training_episodes": 3
+    },
+    "variant": "hoodie_lstm",
+    "workload_contract": {
+      "batch_size": 4,
+      "drain_slots": 0,
+      "replay_capacity": 32,
+      "slots_per_episode": 10,
+      "target_copy_frequency": 2,
+      "training_episodes": 3,
+      "validation_episodes": 2
+    }
+  },
+  {
+    "campaign_id": "",
+    "checkpoint_dependency": null,
+    "config_hash": "fb8dc84655e19af0fbedb362e69bf1fc861d66eb2cd8de4903b621889a4e75c0",
+    "evaluation_contract": {
+      "drain_slots": 0,
+      "slots_per_episode": 10,
+      "validation_episodes": 2
+    },
+    "independent_value": 3,
+    "independent_variable": "episode_count",
+    "job_id": "figure_11-1-hoodie_no_lstm",
+    "job_type": "training",
+    "panel_id": "figure_11",
+    "physical_contract": {
+      "backend": "cpu"
+    },
+    "policy": "HOODIE",
+    "result_label": "PILOT \u2014 NOT PAPER-SCALE RESULT",
+    "scale": "pilot",
+    "scientific_unit_id": "figure_11-1-hoodie_no_lstm",
+    "seed": 7,
+    "series_name": "hoodie_no_lstm",
+    "source_contract_hash": "093c68a5e6242550c00dcf3dc6a798060a759e1a772057e5bc6e9cc265aee420",
+    "topology_contract": {
+      "agent_counts": [
+        4
+      ]
+    },
+    "trace_bank_id": "figure_11-bank",
+    "training_contract": {
+      "drain_slots": 0,
+      "slots_per_episode": 10,
+      "training_episodes": 3
+    },
+    "variant": "hoodie_no_lstm",
+    "workload_contract": {
+      "batch_size": 4,
+      "drain_slots": 0,
+      "replay_capacity": 32,
+      "slots_per_episode": 10,
+      "target_copy_frequency": 2,
+      "training_episodes": 3,
+      "validation_episodes": 2
+    }
+  }
+]

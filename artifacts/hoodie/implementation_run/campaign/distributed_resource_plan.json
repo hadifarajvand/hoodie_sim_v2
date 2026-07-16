@@ -1,0 +1,15 @@
+{
+  "campaign_id": "figures-8-11-7587c7c6382c",
+  "estimated_current_job_seconds": 1000000.0,
+  "estimated_remaining_evaluation_seconds": 259600.0,
+  "estimated_remaining_training_seconds": 48000000.0,
+  "estimated_total_campaign_seconds": 48259600.0,
+  "lower_bounds": {
+    "24h_worker_equivalents": 778,
+    "72h_worker_equivalents": 260,
+    "7d_worker_equivalents": 112
+  },
+  "measured_seconds_per_episode": 200.0,
+  "running_jobs": 2,
+  "total_jobs": 284
+}

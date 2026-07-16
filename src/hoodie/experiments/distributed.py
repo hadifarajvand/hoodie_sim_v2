@@ -19,6 +19,7 @@ from .job_matrix import ProductionJobRow, build_production_job_matrix, write_pro
 from .panel_registry import PANEL_REGISTRY
 from .provenance import build_provenance_manifest, provenance_hash
 from .production_campaign import campaign_status
+from .scientific_pipeline import aggregate_campaign, verify_campaign, render_campaign, export_bundle, verify_bundle
 
 CAMPAIGN_ROOT = Path("artifacts/hoodie/campaigns")
 IMPLEMENTATION_ROOT = Path("artifacts/hoodie/implementation_run/campaign")
@@ -276,22 +277,65 @@ def _validate_bundle(bundle_dir: Path) -> dict[str, Any]:
     return manifest
 
 
+def _validate_bundle(bundle_dir: Path) -> dict[str, Any]:
+    manifest_path = bundle_dir / "shard_manifest.json"
+    if not manifest_path.exists():
+        raise FileNotFoundError(f"missing shard manifest: {manifest_path}")
+    manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
+    return manifest
+
+
+def _result_bundle_path(work_dir: Path) -> Path:
+    return work_dir / "results" / "result_bundle.json"
+
+
+def _job_output_root(work_dir: Path) -> Path:
+    return work_dir / "results" / "job_outputs"
+
+
+def _copy_tree(source: Path, destination: Path) -> None:
+    if destination.exists():
+        shutil.rmtree(destination)
+    shutil.copytree(source, destination)
+
+
 def run_shard(bundle_dir: Path, work_dir: Path) -> dict[str, Any]:
     manifest = _validate_bundle(bundle_dir)
+    from .production_campaign import execute_matrix_job, CheckpointResolver
+
     work_dir.mkdir(parents=True, exist_ok=True)
     result_dir = work_dir / "results"
     result_dir.mkdir(parents=True, exist_ok=True)
+    campaign_id = str(manifest["campaign_id"])
+    campaign_dir = work_dir / campaign_id
+    campaign_dir.mkdir(parents=True, exist_ok=True)
+    rows = [ProductionJobRow(**row) for row in manifest.get("rows", [])]
+    checkpoint_resolver = CheckpointResolver(campaign_dir)
+    runtime_limit = float(manifest.get("max_runtime_seconds", 0.05) or 0.05)
+    job_outputs: list[dict[str, Any]] = []
+    completed = 0
+    interrupted = False
+    for row in rows:
+        try:
+            result = execute_matrix_job(row=row, campaign_dir=campaign_dir, source_commit=str(manifest["source_commit"]), max_runtime_seconds=runtime_limit, checkpoint_resolver=checkpoint_resolver)
+            job_outputs.append({"job_id": row.job_id, "status": result.status, "output_dir": str(result.output_dir), "checkpoint_id": result.checkpoint_id, "trace_hash": result.trace_hash, "dataset_hashes": list(result.dataset_hashes)})
+            completed += 1
+        except KeyboardInterrupt:
+            interrupted = True
+            break
     result_bundle = {
-        "campaign_id": manifest["campaign_id"],
+        "campaign_id": campaign_id,
         "shard_id": manifest["assignment"]["shard_id"],
         "plan_hash": manifest["plan_hash"],
         "job_ids": manifest["assignment"]["job_ids"],
-        "status": "ready",
+        "status": "interrupted_resumable" if interrupted else "completed",
         "created_at": time.time(),
         "environment_manifest": json.loads((bundle_dir / "environment_manifest.json").read_text(encoding="utf-8")),
         "source_commit": manifest["source_commit"],
         "source_contract_hash": manifest["source_contract_hash"],
         "matrix_hash": manifest["matrix_hash"],
+        "job_outputs": job_outputs,
+        "completed_jobs": completed,
     }
     result_bundle["result_hash"] = _hash(result_bundle)
     (result_dir / "result_bundle.json").write_text(json.dumps(result_bundle, indent=2, sort_keys=True) + "\n", encoding="utf-8")
@@ -309,8 +353,9 @@ def import_shard_results(campaign_id: str, result_bundle: Path) -> dict[str, Any
         existing = json.loads(import_path.read_text(encoding="utf-8"))
         if existing.get("result_hash") != payload.get("result_hash"):
             raise ValueError("conflicting shard import for same shard_id")
+        return {"campaign_id": campaign_id, "imported": True, "shard_id": payload["shard_id"], "job_count": len(payload.get("job_ids", ())), "idempotent": True}
     import_path.write_text(json.dumps(payload, indent=2, sort_keys=True) + "\n", encoding="utf-8")
-    return {"campaign_id": campaign_id, "imported": True, "shard_id": payload["shard_id"], "job_count": len(payload.get("job_ids", ())) }
+    return {"campaign_id": campaign_id, "imported": True, "shard_id": payload["shard_id"], "job_count": len(payload.get("job_ids", ())), "idempotent": False}
 
 
 def import_results_directory(campaign_id: str, results_dir: Path) -> dict[str, Any]:
@@ -350,7 +395,9 @@ def backend_provenance_audit(campaign_id: str) -> dict[str, Any]:
     checkpoint_backend = None
     checkpoint_loadable = False
     if latest_checkpoint is not None:
-        checkpoint_backend = latest_checkpoint.get("backend") or latest_checkpoint.get("device")
+        checkpoint_backend = latest_checkpoint.get("backend") or latest_checkpoint.get("device") or latest_checkpoint.get("backend_type")
+        if checkpoint_backend == "legacy_unknown":
+            checkpoint_backend = None
         checkpoint_loadable = True
     env = {
         "hostname": platform.node(),
@@ -425,6 +472,51 @@ def write_resource_plan(campaign_id: str) -> Path:
     return out
 
 
+def _load_completion_reports(campaign_dir: Path) -> list[dict[str, Any]]:
+    reports: list[dict[str, Any]] = []
+    for job_dir in sorted((campaign_dir / "jobs").glob("*")):
+        status_path = job_dir / "status.json"
+        if status_path.exists():
+            reports.append(json.loads(status_path.read_text(encoding="utf-8")))
+    return reports
+
+
+def _panel_aggregate_rows(campaign_dir: Path, rows: list[ProductionJobRow]) -> list[dict[str, Any]]:
+    panel_rows: list[dict[str, Any]] = []
+    for row in rows:
+        job_dir = campaign_dir / "jobs" / row.job_id
+        if not (job_dir / "status.json").exists():
+            continue
+        status = json.loads((job_dir / "status.json").read_text(encoding="utf-8"))
+        if status.get("status") != "completed":
+            continue
+        if row.job_type == "training":
+            data_path = job_dir / "training_history.csv"
+            if not data_path.exists():
+                continue
+            lines = data_path.read_text(encoding="utf-8").strip().splitlines()
+            if len(lines) < 2:
+                continue
+            header = lines[0].split(",")
+            for line in lines[1:]:
+                values = line.split(",")
+                payload = dict(zip(header, values))
+                panel_rows.append({"panel_id": row.panel_id, "x_value": int(payload.get("episode_or_step", 0)), "series": row.series_name or row.policy, "policy": row.policy, "variant": row.variant, "seed": row.seed, "mean": float(payload.get("loss", 0.0) or 0.0), "std": 0.0, "ci_low": float(payload.get("loss", 0.0) or 0.0), "ci_high": float(payload.get("loss", 0.0) or 0.0), "job_id": row.job_id, "source_dataset_hash": status.get("dataset_hashes", {})})
+        else:
+            data_path = job_dir / "evaluation_metrics.csv"
+            if not data_path.exists():
+                continue
+            lines = data_path.read_text(encoding="utf-8").strip().splitlines()
+            if len(lines) < 2:
+                continue
+            header = lines[0].split(",")
+            for line in lines[1:]:
+                values = line.split(",")
+                payload = dict(zip(header, values))
+                panel_rows.append({"panel_id": row.panel_id, "x_value": row.independent_value, "series": row.series_name or row.policy, "policy": row.policy, "variant": row.variant, "seed": row.seed, "mean": float(payload.get("average_delay", 0.0) or 0.0), "std": 0.0, "ci_low": float(payload.get("average_delay", 0.0) or 0.0), "ci_high": float(payload.get("average_delay", 0.0) or 0.0), "job_id": row.job_id, "source_dataset_hash": status.get("dataset_hashes", {})})
+    return panel_rows
+
+
 def finalize_campaign(campaign_id: str) -> dict[str, Any]:
     campaign_dir = CAMPAIGN_ROOT / campaign_id
     rows = _campaign_rows_from_dir(campaign_dir, campaign_id)
@@ -436,13 +528,32 @@ def finalize_campaign(campaign_id: str) -> dict[str, Any]:
     final_dir = campaign_dir / "finalization"
     final_dir.mkdir(parents=True, exist_ok=True)
     state_path = final_dir / "status.json"
-    stages = ["waiting_for_jobs", "aggregating", "verifying", "rendering", "exporting_bundle", "verifying_bundle", "testing", "completed"]
-    state = {"campaign_id": campaign_id, "stages": stages, "current_stage": None, "updated_at": time.time()}
-    for stage in stages:
-        state["current_stage"] = stage
+    stages = [
+        ("aggregation", lambda: aggregate_campaign(campaign_id)),
+        ("scientific_verification", lambda: verify_campaign(campaign_id, campaign_dir / "pilot_matrix.json")),
+        ("rendering", lambda: render_campaign(campaign_id)),
+        ("bundle_export", lambda: export_bundle(campaign_id)),
+        ("bundle_verification", lambda: verify_bundle(Path("artifacts/hoodie/releases") / f"{campaign_id}-bundle")),
+    ]
+    state = {"campaign_id": campaign_id, "stages": [name for name, _ in stages], "current_stage": None, "completed": [], "updated_at": time.time()}
+    existing = json.loads(state_path.read_text(encoding="utf-8")) if state_path.exists() else state
+    completed = set(existing.get("completed", []))
+    for stage_name, runner in stages:
+        if stage_name in completed:
+            continue
+        state["current_stage"] = stage_name
         state["updated_at"] = time.time()
         state_path.write_text(json.dumps(state, indent=2, sort_keys=True) + "\n", encoding="utf-8")
-    return {"campaign_id": campaign_id, "status": "completed", "finalization_path": str(state_path)}
+        result = runner()
+        state.setdefault("results", {})[stage_name] = result
+        completed.add(stage_name)
+        state["completed"] = sorted(completed)
+        state["updated_at"] = time.time()
+        state_path.write_text(json.dumps(state, indent=2, sort_keys=True) + "\n", encoding="utf-8")
+    state["current_stage"] = "completed"
+    state["updated_at"] = time.time()
+    state_path.write_text(json.dumps(state, indent=2, sort_keys=True) + "\n", encoding="utf-8")
+    return {"campaign_id": campaign_id, "status": "completed", "finalization_path": str(state_path), "results": state.get("results", {})}
 
 
 def integration_finalize(campaign_id: str) -> dict[str, Any]:

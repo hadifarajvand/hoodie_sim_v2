@@ -4,11 +4,13 @@
   "checkpoint_reuse": true,
   "checkpoints": 14,
   "episodes": 5000,
-  "evaluation_jobs": 14,
-  "expected_cpu_hours": 1.12,
-  "expected_disk_gb": 3.5,
-  "expected_gpu_hours": 0.28,
-  "generated_at": 1784112734.7795572,
+  "evaluation_jobs": 236,
+  "expanded_job_count": 284,
+  "expected_cpu_hours": 22.72,
+  "expected_disk_gb": 71.0,
+  "expected_gpu_hours": 5.68,
+  "generated_at": 1784120172.871733,
+  "job_matrix_path": "artifacts/hoodie/implementation_run/campaign/expected_production_job_matrix.json",
   "maximum_safe_parallelism": 2,
   "peak_ram_gb": 4.0,
   "peak_vram_gb": 0.0,
@@ -17,5 +19,5 @@
   "retraining_requirements": "required for training-dependent panels",
   "seed_count": 1,
   "trace_banks": 14,
-  "training_jobs": 14
+  "training_jobs": 48
 }

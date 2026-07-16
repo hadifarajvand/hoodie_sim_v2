@@ -1,0 +1,32 @@
+{
+  "campaign_id": "figures-8-11-7587c7c6382c",
+  "checkpoint_backend": null,
+  "checkpoint_loadable": true,
+  "conclusion": "current_environment_can_reload_existing_checkpoint",
+  "current_host_can_reload_checkpoint": true,
+  "current_host_is_mps_capable": false,
+  "environment": {
+    "architecture": [
+      "64bit",
+      "Mach-O"
+    ],
+    "env_vars": {
+      "VIRTUAL_ENV": "/Users/hadi/Documents/GitHub/hoodie_sim_v2/.venv"
+    },
+    "hostname": "Hadis-MacBook-4.local",
+    "mac_ver": "26.5.1",
+    "machine": "arm64",
+    "mps_available": false,
+    "mps_built": true,
+    "platform": "macOS-26.5.1-arm64-arm-64bit-Mach-O",
+    "process_start_command": "/Users/hadi/Documents/GitHub/hoodie_sim_v2/.venv/lib/python3.14/site-packages/pytest/__main__.py -q tests/unit/test_process_safety_and_completion_ordering.py tests/unit/test_distributed_execution.py tests/unit/test_distributed_agent_registry.py tests/unit/test_distributed_agent_replay.py",
+    "processor": "arm",
+    "python_executable": "/Users/hadi/Documents/GitHub/hoodie_sim_v2/.venv/bin/python",
+    "python_version": "3.14.3",
+    "pytorch_version": "2.12.1",
+    "selected_device": "cpu",
+    "source_commit": "a415059854c0f23a3f4c69272b54c34b4de1e1ba",
+    "venv_path": "/Users/hadi/Documents/GitHub/hoodie_sim_v2/.venv"
+  },
+  "latest_job": "job-a"
+}

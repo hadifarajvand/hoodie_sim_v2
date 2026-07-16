@@ -13,13 +13,13 @@ def run_smoke_campaign(*, campaign_id: str, output_dir: Path, smoke: bool = True
     return {"campaign_id": campaign_id, "output_dir": str(output_dir), "status": "smoke-runner-retained"}
 
 
-def run_production_campaign(*, campaign_id: str, output_dir: Path, max_jobs: int | None = None, max_runtime_seconds: float | None = None, job_id: str | None = None, allow_paused_recovery: bool = False) -> dict[str, Any]:
-    return _run_production_campaign(campaign_id=campaign_id, output_dir=output_dir, max_jobs=max_jobs, max_runtime_seconds=max_runtime_seconds, job_id=job_id, allow_paused_recovery=allow_paused_recovery)
+def run_production_campaign(*, campaign_id: str, output_dir: Path, max_jobs: int | None = None, max_runtime_seconds: float | None = None, job_id: str | None = None, allow_paused_recovery: bool = False, matrix_path: Path | None = None) -> dict[str, Any]:
+    return _run_production_campaign(campaign_id=campaign_id, output_dir=output_dir, max_jobs=max_jobs, max_runtime_seconds=max_runtime_seconds, job_id=job_id, allow_paused_recovery=allow_paused_recovery, matrix_path=matrix_path)
 
 
-def campaign_status(campaign_id: str, output_dir: Path | None = None) -> dict[str, Any]:
-    return _campaign_status(campaign_id, output_dir)
+def campaign_status(campaign_id: str, output_dir: Path | None = None, matrix_path: Path | None = None) -> dict[str, Any]:
+    return _campaign_status(campaign_id, output_dir, matrix_path=matrix_path)
 
 
-def resume_production_campaign(campaign_id: str, output_dir: Path | None = None, *, max_jobs: int | None = None, max_runtime_seconds: float | None = None, job_id: str | None = None, allow_paused_recovery: bool = False) -> dict[str, Any]:
-    return _resume_production_campaign(campaign_id, output_dir, max_jobs=max_jobs, max_runtime_seconds=max_runtime_seconds, job_id=job_id, allow_paused_recovery=allow_paused_recovery)
+def resume_production_campaign(campaign_id: str, output_dir: Path | None = None, *, max_jobs: int | None = None, max_runtime_seconds: float | None = None, job_id: str | None = None, allow_paused_recovery: bool = False, matrix_path: Path | None = None) -> dict[str, Any]:
+    return _resume_production_campaign(campaign_id, output_dir, max_jobs=max_jobs, max_runtime_seconds=max_runtime_seconds, job_id=job_id, allow_paused_recovery=allow_paused_recovery, matrix_path=matrix_path)
