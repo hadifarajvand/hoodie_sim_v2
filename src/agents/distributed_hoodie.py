@@ -10,6 +10,25 @@ from .hoodie_agent import HoodieAgent
 from .recurrent_ddqn import RecurrentDoubleDQNAgent
 
 
+def _training_topology(agent_count: int) -> TopologyGraph:
+    """Resolve the approved production topology or a tiny deterministic test graph."""
+
+    if agent_count % 5 == 0:
+        return TopologyGraph.for_agent_count(agent_count)
+    # Unit/preflight configurations use small N to keep checkpoint tests cheap.
+    # Production job-matrix validation only permits the approved 5-cluster sizes.
+    node_ids = tuple(str(index) for index in range(1, agent_count + 1))
+    adjacency = {
+        source: tuple(destination for destination in node_ids if destination != source)
+        for source in node_ids
+    }
+    return TopologyGraph(
+        node_ids=node_ids,
+        legal_adjacency=adjacency,
+        metadata={"non_production_test_topology": True},
+    )
+
+
 @dataclass(slots=True)
 class DistributedHoodiePolicy:
     """One independently trained, destination-aware HOODIE learner per Edge Agent."""
@@ -34,16 +53,22 @@ class DistributedHoodiePolicy:
         hidden_dims: tuple[int, ...] = (1024, 1024, 1024),
         lookback: int = 10,
         lstm_hidden: int = 20,
+        topology: TopologyGraph | None = None,
     ) -> "DistributedHoodiePolicy":
         if agent_count <= 0:
             raise ValueError("agent_count must be positive")
-        topology = TopologyGraph.for_agent_count(agent_count)
+        resolved_topology = topology or _training_topology(agent_count)
+        if resolved_topology.node_count() != agent_count:
+            raise ValueError("learner count must match topology node count")
+
         agents: dict[str, HoodieAgent] = {}
         for index in range(1, agent_count + 1):
             agent_id = str(index)
             horizontal_actions = tuple(
                 f"horizontal_{destination}"
-                for destination in topology.legal_horizontal_destinations(agent_id)
+                for destination in resolved_topology.legal_horizontal_destinations(
+                    agent_id
+                )
             )
             agents[agent_id] = HoodieAgent.configured(
                 seed=seed + index - 1,
