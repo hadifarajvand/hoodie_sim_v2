@@ -10,3 +10,6 @@ from .specification import ExperimentSpec, PanelId, PanelVariant, PanelIDError, 
 from .storage import AtomicJobStorage
 from .trace_registry import TraceRecord, TraceRegistry
 from .campaign import campaign_status, resume_production_campaign, run_production_campaign, run_smoke_campaign
+from .distributed_import_patch import install_distributed_import_patch
+
+install_distributed_import_patch()
