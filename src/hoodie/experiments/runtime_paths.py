@@ -47,7 +47,7 @@ def assert_external_run_root(*, minimum_free_gb: int = 20) -> dict[str, object]:
         raise RuntimeError("HOODIE_RUN_ROOT must be an absolute path")
     root = root.resolve()
     repository = REPOSITORY_ROOT.resolve()
-    if root == repository or repository in root.parents or root in repository.parents:
+    if root == repository or repository in root.parents:
         raise RuntimeError("HOODIE_RUN_ROOT must be outside the Git repository")
     root.mkdir(parents=True, exist_ok=True)
 
