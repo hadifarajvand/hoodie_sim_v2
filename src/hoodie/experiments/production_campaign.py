@@ -301,7 +301,15 @@ def _load_internal_checkpoint_state(job_dir: Path) -> dict[str, Any] | None:
     checkpoint_path = _latest_internal_checkpoint(job_dir)
     if checkpoint_path is None or not checkpoint_path.exists():
         return None
-    return torch.load(checkpoint_path, map_location="cpu", weights_only=False)
+    state = torch.load(checkpoint_path, map_location="cpu", weights_only=False)
+    backend_type = str(state.get("backend_type", "legacy_unknown"))
+    if backend_type not in {"legacy_unknown", "cpu", "mps", "cuda"}:
+        raise ValueError(f"unsupported checkpoint backend: {backend_type}")
+    if backend_type != "legacy_unknown":
+        device_string = str(state.get("device_string", ""))
+        if not device_string:
+            raise ValueError("checkpoint missing device_string")
+    return state
 
 
 def _write_internal_checkpoint(job_dir: Path, *, checkpoint_state: dict[str, Any], metadata: dict[str, Any]) -> str:
@@ -309,7 +317,25 @@ def _write_internal_checkpoint(job_dir: Path, *, checkpoint_state: dict[str, Any
     checkpoint_dir.mkdir(parents=True, exist_ok=True)
     checkpoint_path = checkpoint_dir / "checkpoint.pt"
     torch.save(checkpoint_state, checkpoint_path)
-    _write_json(checkpoint_dir / "metadata.json", metadata)
+    backend_metadata = {
+        "backend_type": checkpoint_state.get("backend_type", "legacy_unknown"),
+        "device_string": checkpoint_state.get("device_string", str(checkpoint_state.get("backend_device", "unknown"))),
+        "architecture": platform.machine(),
+        "hostname": platform.node(),
+        "operating_system": platform.platform(),
+        "python_version": platform.python_version(),
+        "pytorch_version": torch.__version__,
+        "mps_built": bool(torch.backends.mps.is_built()) if hasattr(torch.backends, "mps") else False,
+        "mps_available": bool(torch.backends.mps.is_available()) if hasattr(torch.backends, "mps") else False,
+        "cuda_available": bool(torch.cuda.is_available()),
+        "cuda_device_identity": torch.cuda.get_device_name(0) if torch.cuda.is_available() else None,
+        "source_commit": metadata.get("source_commit"),
+        "contract_hash": metadata.get("source_contract_hash"),
+        "matrix_row_hash": metadata.get("configuration_hash"),
+        "attempt_id": metadata.get("attempt_id", 1),
+        "checkpoint_schema_version": 1,
+    }
+    _write_json(checkpoint_dir / "metadata.json", {**metadata, **backend_metadata})
     latest_payload = {"checkpoint_id": metadata["checkpoint_id"], "checkpoint_path": str(checkpoint_path), "updated_at": time.time()}
     _write_json(_job_internal_checkpoint_dir(job_dir) / "latest.json", latest_payload)
     return metadata["checkpoint_id"]
@@ -853,7 +879,11 @@ def _load_checkpoint_state(campaign_dir: Path) -> dict[str, Any] | None:
     if not checkpoint_paths:
         return None
     checkpoint_path = checkpoint_paths[-1]
-    return torch.load(checkpoint_path, map_location="cpu", weights_only=False)
+    state = torch.load(checkpoint_path, map_location="cpu", weights_only=False)
+    backend_type = str(state.get("backend_type", "legacy_unknown"))
+    if backend_type not in {"legacy_unknown", "cpu", "mps", "cuda"}:
+        raise ValueError(f"unsupported checkpoint backend: {backend_type}")
+    return state
 
 
 def _update_campaign_registry(campaign_dir: Path, rows: list[ProductionJobRow], results: list[JobExecutionResult], source_commit: str) -> None:

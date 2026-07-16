@@ -1,0 +1,12 @@
+{
+  "cpu_launch_command": "python3 -m hoodie.experiments run-shard --bundle <cpu-shard-bundle> --work-dir <work-dir>",
+  "cuda_launch_command": "python3 -m hoodie.experiments run-shard --bundle <cuda-shard-bundle> --work-dir <work-dir>",
+  "mps_launch_command": "python3 -m hoodie.experiments run-shard --bundle <mps-shard-bundle> --work-dir <work-dir>",
+  "production_bundle_total": 96,
+  "production_campaign_id": "figures-8-11-7587c7c6382c",
+  "production_command": "python3 -m hoodie.experiments export-shards --campaign-id figures-8-11-7587c7c6382c --plan artifacts/hoodie/implementation_run/campaign/shard_plan.json --output-dir artifacts/hoodie/distributed/figures-8-11-7587c7c6382c/input",
+  "production_evaluation_bundle_count": 48,
+  "production_finalization_command": "python3 -m hoodie.experiments finalize --campaign-id <campaign-id>",
+  "production_training_bundle_count": 48,
+  "results_directory_import_command": "python3 -m hoodie.experiments import-results-directory --campaign-id <campaign-id> --results-dir <results-dir>"
+}

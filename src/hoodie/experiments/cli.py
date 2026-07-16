@@ -12,6 +12,21 @@ import time
 from shutil import copy2
 
 from .campaign import run_production_campaign, campaign_status, resume_production_campaign
+from .distributed import (
+    backend_provenance_audit,
+    build_shard_plan,
+    build_integration_campaign,
+    export_shards,
+    finalize_campaign,
+    import_shard_results,
+    import_results_directory,
+    resource_plan,
+    run_shard,
+    shard_status,
+    write_resource_plan,
+    write_shard_plan,
+    build_shard_plan_from_rows,
+)
 from .job_matrix import build_production_job_matrix, write_production_job_matrix
 from .panel_registry import PANEL_REGISTRY
 from .source_contracts import build_figures_8_11_source_contract
@@ -29,6 +44,45 @@ def build_parser() -> argparse.ArgumentParser:
         cmd = sub.add_parser(name)
         cmd.add_argument('--campaign-id', required=False)
         cmd.add_argument('--campaign', required=False)
+    shard_plan = sub.add_parser('shard-plan')
+    shard_plan.add_argument('--campaign-id', required=True)
+    shard_plan.add_argument('--training-workers', type=int, required=True)
+    shard_plan.add_argument('--evaluation-workers', type=int, required=True)
+    shard_plan.add_argument('--output', required=True)
+    export_shard = sub.add_parser('export-shards')
+    export_shard.add_argument('--campaign-id', required=True)
+    export_shard.add_argument('--plan', required=True)
+    export_shard.add_argument('--output-dir', required=True)
+    run_shard_cmd = sub.add_parser('run-shard')
+    run_shard_cmd.add_argument('--bundle', required=True)
+    run_shard_cmd.add_argument('--work-dir', required=True)
+    import_shard = sub.add_parser('import-shard-results')
+    import_shard.add_argument('--campaign-id', required=True)
+    import_shard.add_argument('--result-bundle', required=True)
+    shard_status_cmd = sub.add_parser('shard-status')
+    shard_status_cmd.add_argument('--campaign-id', required=True)
+    finalize = sub.add_parser('finalize')
+    finalize.add_argument('--campaign-id', required=True)
+    backend_audit = sub.add_parser('backend-provenance-audit')
+    backend_audit.add_argument('--campaign-id', required=True)
+    resource = sub.add_parser('resource-plan')
+    resource.add_argument('--campaign-id', required=True)
+    integration_plan = sub.add_parser('integration-plan')
+    integration_plan.add_argument('--output-root', required=True)
+    integration_plan.add_argument('--seed', type=int, default=7)
+    integration_export = sub.add_parser('integration-export-shards')
+    integration_export.add_argument('--output-root', required=True)
+    integration_export.add_argument('--plan-output', required=True)
+    integration_export.add_argument('--training-workers', type=int, required=True)
+    integration_export.add_argument('--evaluation-workers', type=int, required=True)
+    integration_run = sub.add_parser('integration-run-shard')
+    integration_run.add_argument('--bundle', required=True)
+    integration_run.add_argument('--work-dir', required=True)
+    integration_import = sub.add_parser('import-results-directory')
+    integration_import.add_argument('--campaign-id', required=True)
+    integration_import.add_argument('--results-dir', required=True)
+    integration_finalize_cmd = sub.add_parser('integration-finalize')
+    integration_finalize_cmd.add_argument('--campaign-id', required=True)
     resume = sub.choices['resume']
     resume.add_argument('--job-id', required=False)
     resume.add_argument('--max-jobs', type=int, required=False)
@@ -172,6 +226,58 @@ def main(argv: list[str] | None = None) -> int:
                 copy2(src, bundle / name)
         payload = {'campaign_id': campaign_id, 'status': 'ok', 'bundle_dir': str(bundle)}
         _print_json(payload)
+        return 0
+    if args.command == 'shard-plan':
+        plan = build_shard_plan(args.campaign_id, training_workers=args.training_workers, evaluation_workers=args.evaluation_workers)
+        out = write_shard_plan(plan, Path(args.output))
+        _print_json({'campaign_id': args.campaign_id, 'output': str(out), 'plan': plan.to_dict()})
+        return 0
+    if args.command == 'export-shards':
+        bundles = export_shards(args.campaign_id, Path(args.plan), Path(args.output_dir))
+        _print_json({'campaign_id': args.campaign_id, 'bundles': [str(bundle) for bundle in bundles]})
+        return 0
+    if args.command == 'run-shard':
+        _print_json(run_shard(Path(args.bundle), Path(args.work_dir)))
+        return 0
+    if args.command == 'import-shard-results':
+        _print_json(import_shard_results(args.campaign_id, Path(args.result_bundle)))
+        return 0
+    if args.command == 'shard-status':
+        _print_json(shard_status(args.campaign_id))
+        return 0
+    if args.command == 'finalize':
+        _print_json(finalize_campaign(args.campaign_id))
+        return 0
+    if args.command == 'backend-provenance-audit':
+        _print_json(backend_provenance_audit(args.campaign_id))
+        return 0
+    if args.command == 'resource-plan':
+        out = write_resource_plan(args.campaign_id)
+        _print_json({'campaign_id': args.campaign_id, 'path': str(out), 'plan': resource_plan(args.campaign_id)})
+        return 0
+    if args.command == 'integration-plan':
+        integration = build_integration_campaign(Path(args.output_root), seed=args.seed)
+        _print_json({'campaign_id': integration.campaign_id, 'matrix_path': str(integration.matrix_path), 'rows': [asdict(row) for row in integration.rows]})
+        return 0
+    if args.command == 'integration-export-shards':
+        integration = build_integration_campaign(Path(args.output_root))
+        plan = build_shard_plan_from_rows(integration.campaign_id, list(integration.rows), training_workers=args.training_workers, evaluation_workers=args.evaluation_workers)
+        plan_payload = plan.to_dict()
+        plan_payload["rows"] = [asdict(row) for row in integration.rows]
+        out = Path(args.plan_output)
+        out.parent.mkdir(parents=True, exist_ok=True)
+        out.write_text(json.dumps(plan_payload, indent=2, sort_keys=True) + "\n", encoding='utf-8')
+        bundles = export_shards(integration.campaign_id, out, Path(args.output_root) / 'bundles')
+        _print_json({'campaign_id': integration.campaign_id, 'plan': str(out), 'bundles': [str(bundle) for bundle in bundles]})
+        return 0
+    if args.command == 'integration-run-shard':
+        _print_json(run_shard(Path(args.bundle), Path(args.work_dir)))
+        return 0
+    if args.command == 'import-results-directory':
+        _print_json(import_results_directory(args.campaign_id, Path(args.results_dir)))
+        return 0
+    if args.command == 'integration-finalize':
+        _print_json(finalize_campaign(args.campaign_id))
         return 0
     _print_json({'command': args.command, 'status': 'not-implemented-yet', 'campaign_id': getattr(args, 'campaign_id', None), 'campaign': getattr(args, 'campaign', None)})
     return 0
