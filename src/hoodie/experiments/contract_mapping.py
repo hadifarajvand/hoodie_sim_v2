@@ -1,15 +1,21 @@
 from __future__ import annotations
 
 from dataclasses import dataclass
+import json
+from pathlib import Path
 from typing import Any
 
 from src.config.training_config import TrainingConfig
 from src.evaluation.config import EvaluationConfig
+from src.environment.link_rate_config import LinkRateConfig
 from src.environment.runtime_model import SharedRuntimeParameters
 from src.training.seed_management import SeedManagement
 
 from .job_matrix import ProductionJobRow
 from .panel_registry import PANEL_REGISTRY
+
+_TABLE4_PATH = Path("resources/papers/hoodie/contracts/table_4.json")
+
 
 @dataclass(frozen=True, slots=True)
 class ContractAuditResult:
@@ -25,154 +31,248 @@ class ContractAuditResult:
     valid: bool
 
 
+def _table4_values() -> dict[str, Any]:
+    payload = json.loads(_TABLE4_PATH.read_text(encoding="utf-8"))
+    return {str(field["name"]): field.get("value") for field in payload["fields"]}
+
+
 def _panel_contract(row: ProductionJobRow) -> dict[str, Any]:
     return PANEL_REGISTRY[row.panel_id].source_contract
 
 
-def _slot_duration(panel_contract: dict[str, Any]) -> float:
-    return float(panel_contract.get("slot_duration", 0.1))
+def _merged_contract(row: ProductionJobRow, source_contract: dict[str, Any]) -> dict[str, Any]:
+    table = _table4_values()
+    contract: dict[str, Any] = {
+        "slot_duration_seconds": table["slot_duration_seconds"],
+        "slots_per_episode": table["slots_per_episode"],
+        "decision_slots": table["decision_slots"],
+        "drain_slots": table["drain_slots"],
+        "task_arrival_probability": table["task_arrival_probability"],
+        "task_timeout_seconds": table["default_timeout_seconds"],
+        "default_timeout_slots": table["default_timeout_slots"],
+        "learning_rate": table["default_learning_rate"],
+        "discount_factor": table["default_discount_factor"],
+        "batch_size": table["batch_size"],
+        "replay_capacity": table["replay_capacity"],
+        "target_copy_frequency": table["target_copy_frequency_iterations"],
+        "local_service_capacity": table["private_edge_cpu_ghz"],
+        "public_service_capacity": table["public_edge_cpu_ghz"],
+        "cloud_service_capacity": table["cloud_cpu_ghz"],
+        "horizontal_data_rate_mbps": table["horizontal_data_rate_mbps"],
+        "vertical_data_rate_mbps": table["vertical_data_rate_mbps"],
+        "agent_counts": [table["number_of_edge_agents"]],
+    }
+    contract.update(source_contract)
+    contract.update(row.topology_contract)
+    contract.update(row.physical_contract)
+    contract.update(row.workload_contract)
+    if row.job_type == "training":
+        contract.update(row.training_contract)
+    else:
+        contract.update(row.evaluation_contract)
 
-
-def _override_contract(matrix_row: ProductionJobRow, source_contract: dict[str, Any], kind: str) -> dict[str, Any]:
-    contract = dict(source_contract)
-    override = getattr(matrix_row, f"{kind}_contract", None) or {}
-    if isinstance(override, dict) and override:
-        contract.update(override)
+    key = row.independent_variable
+    value = row.independent_value
+    if key in {"learning_rate", "discount_factor", "task_arrival_probability", "task_timeout_seconds"}:
+        contract[key] = value
+    elif key in {"number_of_agents", "agent_count"}:
+        contract["agent_counts"] = [int(value)]
+    elif key == "cpu_computation_capacity_ghz":
+        contract["local_service_capacity"] = float(value)
+        contract["public_service_capacity"] = float(value)
+        contract["cpu_computation_capacity_ghz"] = float(value)
+    elif key == "traffic_scenario":
+        if not isinstance(value, str):
+            raise ValueError("traffic_scenario independent value must be a scenario name")
+        scenario = row.workload_contract.get("traffic_scenario")
+        if not isinstance(scenario, dict):
+            raise ValueError("traffic scenario row is missing its resolved workload contract")
+        contract.update(scenario)
+    elif key == "communication_rate_scenario":
+        scenario = row.physical_contract.get("communication_rate_scenario")
+        if not isinstance(scenario, dict):
+            raise ValueError("communication-rate row is missing its resolved physical contract")
+        contract.update(scenario)
+    elif key in {"training_episode", "action_category", "metric", "variant"}:
+        # These are plot/derived dimensions; they do not mutate the physical executor.
+        pass
+    else:
+        raise ValueError(f"unsupported matrix independent variable: {key!r}")
     return contract
 
 
-def build_environment_config(row: ProductionJobRow, source_contract: dict[str, Any]) -> SharedRuntimeParameters:
-    panel_contract = _override_contract(row, source_contract, "workload") if getattr(row, "training_contract", None) or getattr(row, "evaluation_contract", None) else source_contract
-    slot_duration = _slot_duration(panel_contract)
-    arrival_probability = float(panel_contract.get("task_arrival_probability", 0.5) or 0.5)
-    timeout_seconds = float(panel_contract.get("task_timeout_seconds", 2.0) or 2.0)
-    agent_count = int((panel_contract.get("agent_counts") or [20])[0])
-    cpu_capacity = panel_contract.get("cpu_computation_capacity_ghz")
+def _slot_duration(contract: dict[str, Any]) -> float:
+    return float(contract.get("slot_duration_seconds", contract.get("slot_duration", 0.1)))
+
+
+def _agent_count(contract: dict[str, Any]) -> int:
+    values = contract.get("agent_counts", [20])
+    if isinstance(values, (list, tuple)):
+        if len(values) != 1:
+            raise ValueError("one matrix row must resolve to exactly one agent count")
+        return int(values[0])
+    return int(values)
+
+
+def build_environment_config(
+    row: ProductionJobRow, source_contract: dict[str, Any]
+) -> SharedRuntimeParameters:
+    contract = _merged_contract(row, source_contract)
+    slot_duration = _slot_duration(contract)
+    timeout_seconds = float(contract.get("task_timeout_seconds", 2.0))
+    timeout_slots = max(1, int(round(timeout_seconds / slot_duration)))
     metadata: dict[str, object] = {
         "panel_id": row.panel_id,
         "independent_variable": row.independent_variable,
         "independent_value": row.independent_value,
-        "topology_hash": row.topology_contract,
+        "topology_contract": row.topology_contract,
+        "physical_contract": row.physical_contract,
+        "workload_contract": row.workload_contract,
+        "slot_duration_seconds": slot_duration,
     }
-    if row.independent_variable == "task_arrival_probability":
-        arrival_probability = float(row.independent_value)
-    elif row.independent_variable == "cpu_computation_capacity_ghz":
-        cpu_capacity = float(row.independent_value)
-        metadata["cpu_computation_capacity_ghz"] = cpu_capacity
-    elif row.independent_variable in {"number_of_agents", "agent_count"}:
-        agent_count = int(row.independent_value)
-    elif row.independent_variable == "task_timeout_seconds":
-        timeout_seconds = float(row.independent_value)
-    elif row.independent_variable in {"traffic_scenario", "communication_rate_scenario"}:
-        metadata[row.independent_variable] = row.independent_value
-    timeout_slots = max(1, int(round(timeout_seconds / slot_duration)))
-    if cpu_capacity is not None:
-        metadata["cpu_computation_capacity_ghz"] = float(cpu_capacity)
     return SharedRuntimeParameters(
-        arrival_probability=arrival_probability,
-        agent_count=agent_count,
+        arrival_probability=float(contract.get("task_arrival_probability", 0.5)),
+        agent_count=_agent_count(contract),
         timeout_slots=timeout_slots,
-        local_service_capacity=float(cpu_capacity if cpu_capacity is not None else panel_contract.get("local_service_capacity", 0.5) or 0.5),
-        public_service_capacity=float(panel_contract.get("public_service_capacity", 0.5) or 0.5),
-        cloud_service_capacity=float(panel_contract.get("cloud_service_capacity", 3.0) or 3.0),
+        local_service_capacity=float(contract.get("local_service_capacity", 5.0)),
+        public_service_capacity=float(contract.get("public_service_capacity", 5.0)),
+        cloud_service_capacity=float(contract.get("cloud_service_capacity", 30.0)),
+        slot_duration=slot_duration,
         metadata=metadata,
     )
 
 
-def build_training_config(matrix_row: ProductionJobRow, source_contract: dict[str, Any], *, trace_hash: str, output_dir) -> TrainingConfig:
-    panel_contract = _override_contract(matrix_row, source_contract, "training")
-    training_episodes = int(panel_contract.get("training_episodes", matrix_row.topology_contract.get("training_episodes", 0)))
-    episode_length = int(panel_contract.get("slots_per_episode", 110 if matrix_row.panel_id.startswith("figure_8") else panel_contract.get("validation_episodes", 200)))
-    learning_rate = float(panel_contract.get("learning_rate", 7e-7))
-    discount_factor = float(panel_contract.get("discount_factor", 0.99))
-    batch_size = int(panel_contract.get("batch_size", 64))
-    replay_capacity = int(panel_contract.get("replay_capacity", 10000))
-    target_copy_frequency = int(panel_contract.get("target_copy_frequency", 2000))
-    drain_slots = int(panel_contract.get("drain_slots", 10))
-    return TrainingConfig(
-        learning_rate=learning_rate,
-        batch_size=batch_size,
-        replay_buffer_capacity=replay_capacity,
-        target_network_update_frequency=target_copy_frequency,
-        episode_count=training_episodes,
-        episode_length=episode_length,
-        discount_factor=discount_factor,
-        drain_slots=drain_slots,
-        seed_management=SeedManagement(training_seed=int(matrix_row.seed or 0), evaluation_seed=int(matrix_row.seed or 0)),
-        policy_name=matrix_row.policy,
-        trace_id=trace_hash,
-        output_dir=output_dir,
+def build_link_rate_config(
+    row: ProductionJobRow, source_contract: dict[str, Any]
+) -> LinkRateConfig:
+    contract = _merged_contract(row, source_contract)
+    return LinkRateConfig(
+        horizontal_data_rate_mbps=float(contract.get("R_H_mbps", contract.get("horizontal_data_rate_mbps", 30.0))),
+        vertical_data_rate_mbps=float(contract.get("R_V_mbps", contract.get("vertical_data_rate_mbps", 10.0))),
+        slot_duration_seconds=_slot_duration(contract),
+        metadata={
+            "panel_id": row.panel_id,
+            "independent_variable": row.independent_variable,
+            "independent_value": row.independent_value,
+        },
     )
 
 
-def build_evaluation_config(matrix_row: ProductionJobRow, source_contract: dict[str, Any], *, trace_id: str, output_dir) -> EvaluationConfig:
-    panel_contract = _override_contract(matrix_row, source_contract, "evaluation")
-    validation_episodes = int(panel_contract.get("validation_episodes", 200))
-    episode_length = int(panel_contract.get("slots_per_episode", 110 if matrix_row.panel_id.startswith("figure_8") else validation_episodes))
-    drain_slots = int(panel_contract.get("drain_slots", 10))
+def build_training_config(
+    matrix_row: ProductionJobRow,
+    source_contract: dict[str, Any],
+    *,
+    trace_hash: str,
+    output_dir: Path | None,
+) -> TrainingConfig:
+    contract = _merged_contract(matrix_row, source_contract)
+    episodes = int(contract.get("training_episodes", 0))
+    if episodes <= 0:
+        raise ValueError(f"training row {matrix_row.job_id} has no positive training_episodes")
+    slots = int(contract.get("slots_per_episode", 110))
+    drain = int(contract.get("drain_slots", 10))
+    if slots <= 0 or not 0 <= drain < slots:
+        raise ValueError("invalid slots_per_episode/drain_slots contract")
+    backend = str(matrix_row.physical_contract.get("backend", "cpu"))
+    seed = int(matrix_row.seed or 0)
+    return TrainingConfig(
+        learning_rate=float(contract.get("learning_rate", 7e-7)),
+        batch_size=int(contract.get("batch_size", 64)),
+        replay_buffer_capacity=int(contract.get("replay_capacity", 10_000)),
+        target_network_update_frequency=int(contract.get("target_copy_frequency", 2_000)),
+        episode_count=episodes,
+        episode_length=slots,
+        discount_factor=float(contract.get("discount_factor", 0.99)),
+        drain_slots=drain,
+        seed_management=SeedManagement(training_seed=seed, evaluation_seed=seed),
+        policy_name=matrix_row.policy,
+        trace_id=trace_hash,
+        output_dir=output_dir,
+        device=backend,
+        learner_type="distributed_ddqn",
+        replay_seed=seed,
+        torch_seed=seed,
+    )
+
+
+def build_evaluation_config(
+    matrix_row: ProductionJobRow,
+    source_contract: dict[str, Any],
+    *,
+    trace_id: str,
+    output_dir: Path | None,
+) -> EvaluationConfig:
+    contract = _merged_contract(matrix_row, source_contract)
+    episodes = int(contract.get("validation_episodes", 200))
+    slots = int(contract.get("slots_per_episode", 110))
+    drain = int(contract.get("drain_slots", 10))
+    if episodes <= 0:
+        raise ValueError("validation_episodes must be positive")
+    if slots <= 0 or not 0 <= drain < slots:
+        raise ValueError("invalid slots_per_episode/drain_slots contract")
     return EvaluationConfig(
         policy_name=matrix_row.policy,
         seed=int(matrix_row.seed or 0),
         trace_id=trace_id,
-        episode_count=validation_episodes,
-        episode_length=episode_length,
-        drain_slots=drain_slots,
+        episode_count=episodes,
+        episode_length=slots,
+        drain_slots=drain,
         output_dir=output_dir,
         trace_mode="deterministic_seed",
-        device="cpu",
+        device=str(matrix_row.physical_contract.get("backend", "cpu")),
     )
 
 
-def apply_panel_sweep(base_config: dict[str, Any], panel_contract: dict[str, Any], matrix_row: ProductionJobRow) -> dict[str, Any]:
-    sweep_key = matrix_row.independent_variable
+def apply_panel_sweep(
+    base_config: dict[str, Any],
+    panel_contract: dict[str, Any],
+    matrix_row: ProductionJobRow,
+) -> dict[str, Any]:
+    del panel_contract
     result = dict(base_config)
-    allowed: set[str]
-    if matrix_row.panel_id == "figure_8a":
-        allowed = {"training_episode", "learning_rate"}
-    elif matrix_row.panel_id == "figure_8b":
-        allowed = {"training_episode", "discount_factor"}
-    elif matrix_row.panel_id == "figure_9a":
-        allowed = {"task_arrival_probability"}
-    elif matrix_row.panel_id == "figure_9b":
-        allowed = {"action_category", "metric"}
-    elif matrix_row.panel_id == "figure_9c":
-        allowed = {"cpu_computation_capacity_ghz"}
-    elif matrix_row.panel_id == "figure_9d":
-        allowed = {"agent_count"}
-    elif matrix_row.panel_id == "figure_9e":
-        allowed = {"communication_rate_scenario"}
-    elif matrix_row.panel_id in {"figure_10a", "figure_10d"}:
-        allowed = {"task_arrival_probability"}
-    elif matrix_row.panel_id in {"figure_10b", "figure_10e"}:
-        allowed = {"cpu_computation_capacity_ghz"}
-    elif matrix_row.panel_id in {"figure_10c", "figure_10f"}:
-        allowed = {"task_timeout_seconds"}
-    elif matrix_row.panel_id == "figure_11":
-        allowed = {"training_episode", "variant"}
-    else:
-        raise ValueError(f"unknown panel {matrix_row.panel_id!r}")
-    if sweep_key not in allowed:
-        raise ValueError(f"unexpected sweep key {sweep_key!r} for panel {matrix_row.panel_id!r}")
-    result["panel_id"] = matrix_row.panel_id
-    result["independent_variable"] = sweep_key
-    result["independent_value"] = matrix_row.independent_value
-    result["policy"] = matrix_row.policy
-    result["variant"] = matrix_row.variant
+    result.update(
+        {
+            "panel_id": matrix_row.panel_id,
+            "independent_variable": matrix_row.independent_variable,
+            "independent_value": matrix_row.independent_value,
+            "policy": matrix_row.policy,
+            "variant": matrix_row.variant,
+            "series_name": matrix_row.series_name,
+        }
+    )
     return result
 
 
-def validate_contract_mapping(row: ProductionJobRow, source_contract: dict[str, Any]) -> list[str]:
+def validate_contract_mapping(
+    row: ProductionJobRow, source_contract: dict[str, Any]
+) -> list[str]:
     mismatches: list[str] = []
-    if row.job_type == "training":
-        config = build_training_config(row, source_contract, trace_hash="trace", output_dir=None)
-        if config.episode_count != int(source_contract.get("training_episodes", config.episode_count)):
-            mismatches.append("episode_count")
-        if row.panel_id == "figure_8a" and config.episode_count != 5000:
-            mismatches.append("figure_8a_training_episodes")
-        if row.panel_id == "figure_11" and config.episode_count != int(source_contract.get("training_episodes", config.episode_count)):
-            mismatches.append("figure_11_training_episodes")
-    else:
-        config = build_evaluation_config(row, source_contract, trace_id="trace", output_dir=None)
-        if config.episode_count != int(source_contract.get("validation_episodes", config.episode_count)):
-            mismatches.append("validation_episodes")
+    try:
+        contract = _merged_contract(row, source_contract)
+        if row.job_type == "training":
+            config = build_training_config(row, source_contract, trace_hash="trace", output_dir=None)
+            if config.episode_count != int(contract["training_episodes"]):
+                mismatches.append("episode_count")
+            if config.learning_rate != float(contract["learning_rate"]):
+                mismatches.append("learning_rate")
+            if config.discount_factor != float(contract["discount_factor"]):
+                mismatches.append("discount_factor")
+            if config.batch_size != int(contract["batch_size"]):
+                mismatches.append("batch_size")
+        else:
+            config = build_evaluation_config(row, source_contract, trace_id="trace", output_dir=None)
+            if config.episode_count != int(contract.get("validation_episodes", 200)):
+                mismatches.append("validation_episodes")
+        environment = build_environment_config(row, source_contract)
+        if environment.agent_count != _agent_count(contract):
+            mismatches.append("agent_count")
+        if row.independent_variable == "task_arrival_probability" and environment.arrival_probability != float(row.independent_value):
+            mismatches.append("task_arrival_probability")
+        if row.independent_variable == "task_timeout_seconds":
+            expected = max(1, int(round(float(row.independent_value) / _slot_duration(contract))))
+            if environment.timeout_slots != expected:
+                mismatches.append("task_timeout_seconds")
+        build_link_rate_config(row, source_contract)
+    except (KeyError, TypeError, ValueError) as exc:
+        mismatches.append(f"configuration_error:{exc}")
     return mismatches
