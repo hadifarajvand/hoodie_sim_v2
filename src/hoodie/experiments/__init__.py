@@ -21,3 +21,7 @@ install_runtime_path_patch()
 from .verification import install_verification_patch
 
 install_verification_patch()
+
+from .finalization import install_finalization_patch
+
+install_finalization_patch()
