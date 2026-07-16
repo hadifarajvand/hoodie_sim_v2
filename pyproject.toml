@@ -4,15 +4,21 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "hoodie-sim-v2"
-version = "0.2.0"
-description = "Deterministic distributed HOODIE training, evaluation, and reproduction harness"
+version = "0.3.0"
+description = "Scientifically reproducible HOODIE training, evaluation, and Figures 8-11 pipeline"
 requires-python = ">=3.11"
 readme = "README.md"
 license = { text = "Proprietary" }
 dependencies = [
+  "gym>=0.26,<0.27",
   "matplotlib>=3.8",
+  "networkx>=3.2",
   "numpy>=1.26",
+  "pandas>=2.2",
+  "scipy>=1.12",
+  "tensordict>=0.6",
   "torch>=2.2",
+  "torchrl>=0.6",
 ]
 
 [project.optional-dependencies]
@@ -31,10 +37,15 @@ include-package-data = true
 [tool.setuptools.packages.find]
 where = ["."]
 include = ["src*", "hoodie*"]
-exclude = ["tests*", "tests_historical*", "artifacts*", "resources*"]
+exclude = ["tests*", "tests_historical*", "artifacts*", "resources*", "runs*"]
 
 [tool.pytest.ini_options]
-testpaths = ["tests_supported/hoodie"]
+testpaths = [
+  "tests_supported/hoodie",
+  "tests/unit",
+  "tests/integration",
+  "tests/acceptance",
+]
 norecursedirs = [
   ".git",
   ".venv",
@@ -43,7 +54,14 @@ norecursedirs = [
   "dist",
   "artifacts",
   "resources",
+  "runs",
   "tests_historical",
-  "tests",
 ]
-addopts = "-ra"
+addopts = "-ra --strict-markers"
+markers = [
+  "acceptance: end-to-end scientific acceptance checks",
+  "integration: multi-module integration checks",
+  "requires_cuda: requires a CUDA backend",
+  "requires_mps: requires an Apple MPS backend",
+  "slow: intentionally long-running validation",
+]
