@@ -1,0 +1,65 @@
+name: ChatGPT full repository audit export
+
+on:
+  pull_request:
+    branches:
+      - hoodie-redesign/full-implementation-active
+
+permissions:
+  contents: read
+
+jobs:
+  export:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout candidate branch
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Build complete tracked-file inventory
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 - <<'PY'
+          from __future__ import annotations
+          import hashlib, json, subprocess
+          from pathlib import Path
+          root = Path.cwd()
+          records = []
+          totals = {"files": 0, "bytes": 0}
+          by_top = {}
+          for raw in subprocess.check_output(["git", "ls-files", "-z"]).split(b"\0"):
+              if not raw:
+                  continue
+              rel = raw.decode("utf-8", errors="surrogateescape")
+              path = root / rel
+              if not path.is_file():
+                  continue
+              data = path.read_bytes()
+              size = len(data)
+              top = rel.split("/", 1)[0]
+              by_top.setdefault(top, {"files": 0, "bytes": 0})
+              by_top[top]["files"] += 1
+              by_top[top]["bytes"] += size
+              totals["files"] += 1
+              totals["bytes"] += size
+              records.append({"path": rel, "size_bytes": size, "sha256": hashlib.sha256(data).hexdigest(), "extension": path.suffix.lower(), "top_level": top})
+          Path("repository_inventory.json").write_text(json.dumps({"head_sha": subprocess.check_output(["git", "rev-parse", "HEAD"], text=True).strip(), "totals": totals, "by_top_level": dict(sorted(by_top.items())), "files": records}, indent=2, sort_keys=True) + "\n", encoding="utf-8")
+          PY
+
+      - name: Create source archive
+        shell: bash
+        run: |
+          set -euo pipefail
+          tar --exclude=.git --exclude='*.pt' --exclude='*.pth' --exclude='*.ckpt' -czf hoodie_sim_v2-audit-source.tar.gz .
+
+      - name: Upload audit source
+        uses: actions/upload-artifact@v4
+        with:
+          name: hoodie_sim_v2-full-audit-source
+          path: |
+            hoodie_sim_v2-audit-source.tar.gz
+            repository_inventory.json
+          if-no-files-found: error
+          retention-days: 1
