@@ -1,6 +1,9 @@
 name: HOODIE correctness validation
 
 on:
+  push:
+    branches:
+      - chatgpt/experiment-correctness-20260716
   pull_request:
     branches:
       - hoodie-redesign/full-implementation-active
@@ -34,13 +37,16 @@ jobs:
           python -m pip install --upgrade pip
           python -m pip install -e ".[dev]"
 
-      - name: Compile all supported Python modules
+      - name: Validate shell entrypoints
         run: |
-          python -m compileall -q src hoodie
+          bash -n scripts/hoodie/corrected_campaign.sh
+          bash -n scripts/hoodie/run_shard_worker.sh
+
+      - name: Compile all supported Python modules
+        run: python -m compileall -q src hoodie
 
       - name: Run scientific preflight
-        run: |
-          python -m hoodie.experiments preflight | tee preflight.json
+        run: python -m hoodie.experiments preflight | tee preflight.json
 
       - name: Validate full scientific matrix
         run: |
@@ -53,8 +59,7 @@ jobs:
             --matrix /tmp/expected_production_job_matrix_v2.json | tee contract-validation.json
 
       - name: Run supported test suite
-        run: |
-          python -m pytest tests_supported/hoodie -q | tee pytest-supported.txt
+        run: python -m pytest tests_supported/hoodie -q | tee pytest-supported.txt
 
       - name: Upload validation evidence
         if: always()
