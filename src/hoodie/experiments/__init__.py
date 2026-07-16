@@ -17,3 +17,7 @@ install_distributed_import_patch()
 from .runtime_path_patch import install_runtime_path_patch
 
 install_runtime_path_patch()
+
+from .verification import install_verification_patch
+
+install_verification_patch()
