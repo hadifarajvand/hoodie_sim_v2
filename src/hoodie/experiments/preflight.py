@@ -1,6 +1,5 @@
 from __future__ import annotations
 
-from dataclasses import replace
 import json
 from pathlib import Path
 import tempfile
@@ -58,19 +57,29 @@ def run_preflight() -> dict[str, Any]:
     _check(not contract_errors, f"contract mapping errors: {contract_errors}")
 
     _check(paper_epsilon(0, 5000) == 1.0, "epsilon must start at one")
-    _check(paper_epsilon(2499, 5000) > 0.0, "epsilon must remain positive before midpoint")
-    _check(paper_epsilon(2500, 5000) == 0.0, "epsilon must be zero at midpoint")
+    _check(
+        paper_epsilon(2499, 5000) > 0.0,
+        "epsilon must remain positive before midpoint",
+    )
+    _check(
+        paper_epsilon(2500, 5000) == 0.0,
+        "epsilon must be zero at midpoint",
+    )
     _check(paper_epsilon(4999, 5000) == 0.0, "epsilon must stay zero")
 
     topology_metrics: dict[str, dict[str, int | bool]] = {}
     for agent_count in (10, 15, 20, 25, 30):
         topology = TopologyGraph.for_agent_count(agent_count)
         _check(topology.node_count() == agent_count, "topology node count mismatch")
-        _check(topology.is_connected(), f"topology N={agent_count} must be connected")
+        _check(
+            topology.connected_component_count() == 5,
+            f"approved modular topology N={agent_count} must preserve five clusters",
+        )
         topology_metrics[str(agent_count)] = {
             "node_count": topology.node_count(),
             "edge_count": topology.edge_count(),
             "connected": topology.is_connected(),
+            "component_count": topology.connected_component_count(),
         }
 
     trace = build_deterministic_trace(
@@ -85,7 +94,10 @@ def run_preflight() -> dict[str, Any]:
         processing_density=0.297,
     )
     _check(len(trace.tasks) == 25, "trace task count mismatch")
-    _check({task.size for task in trace.tasks}.issubset({1.0, 3.0}), "trace ignored task-size contract")
+    _check(
+        {task.size for task in trace.tasks}.issubset({1.0, 3.0}),
+        "trace ignored task-size contract",
+    )
 
     learner = RecurrentDoubleDQNAgent(
         state_dim=5,
@@ -115,8 +127,14 @@ def run_preflight() -> dict[str, Any]:
             legal_mask=legal_mask,
         )
     loss = learner.update(batch_size=2)
-    _check(loss is not None and np.isfinite(loss), "recurrent DDQN did not produce a finite loss")
-    _check(abs(learner.learner.optimizer.param_groups[0]["lr"] - 1e-3) < 1e-15, "optimizer learning rate not wired")
+    _check(
+        loss is not None and np.isfinite(loss),
+        "recurrent DDQN did not produce a finite loss",
+    )
+    _check(
+        abs(learner.learner.optimizer.param_groups[0]["lr"] - 1e-3) < 1e-15,
+        "optimizer learning rate not wired",
+    )
 
     policy = DistributedHoodiePolicy.configured(
         agent_count=2,
@@ -141,7 +159,10 @@ def run_preflight() -> dict[str, Any]:
         torch.save(exported, path)
         loaded = torch.load(path, map_location="cpu", weights_only=False)
         roundtrip = DistributedHoodiePolicy.from_state(loaded)
-        _check(len(roundtrip.agents) == 2, "serialized checkpoint roundtrip failed")
+        _check(
+            len(roundtrip.agents) == 2,
+            "serialized checkpoint roundtrip failed",
+        )
 
     source_paths = {
         panel_id: contract.source_contract.get("source_citation")
@@ -169,7 +190,16 @@ def main() -> int:
         print(json.dumps(run_preflight(), indent=2, sort_keys=True))
         return 0
     except Exception as exc:
-        print(json.dumps({"status": "failed", "error": f"{exc.__class__.__name__}: {exc}"}, indent=2, sort_keys=True))
+        print(
+            json.dumps(
+                {
+                    "status": "failed",
+                    "error": f"{exc.__class__.__name__}: {exc}",
+                },
+                indent=2,
+                sort_keys=True,
+            )
+        )
         return 1
 
 
