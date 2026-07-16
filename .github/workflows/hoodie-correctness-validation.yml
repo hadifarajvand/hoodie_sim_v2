@@ -1,5 +1,7 @@
 name: HOODIE repository and scientific validation
 
+# This workflow validates repository policy and scientific preflight only.
+# It never launches the paper-scale campaign.
 on:
   push:
     branches:
