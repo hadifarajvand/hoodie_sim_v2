@@ -1,24 +1,31 @@
+# OS and editor files
 .DS_Store
-__pycache__/
-*.pyc
-*.pyo
-*.pyd
-*.log
-*.tmp
 *.swp
-.ipynb_checkpoints/
+*.tmp
+*.bak
+*.backup
+* copy.*
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
 .pytest_cache/
 .mypy_cache/
 .ruff_cache/
 .coverage
 .coverage.*
 htmlcov/
-dist/
+.ipynb_checkpoints/
+.venv/
+venv/
+
+# Packaging and generated documentation
 build/
+dist/
 site/
-outputs/
-references/simpy/venv_mac/
-.specify/feature.json
+*.egg-info/
+
 # Secrets and credentials
 .env
 .env.*
@@ -30,27 +37,62 @@ references/simpy/venv_mac/
 *.pfx
 id_rsa
 id_ed25519
-# Runtime folders and caches
-.venv
-__pycache__/
-*.py[cod]
-*$py.class
-.cache
-.mssecrets
-.SPICKETS
-.spotlights
+
+# Generic local caches
+.cache/
 instance/
-.webassets-cache
-# Orchestration runtime assets
-.swarm/
-# Generated Graphify outputs
+.webassets-cache/
+.mssecrets/
+.SPICKETS/
+.spotlights/
 graphify-out/
 .graphify_*
-# Local backups and duplicate scratch files
-*.bak
-*.backup
-* copy.*
 
-.opencode/*
-.claude/*
-.claude-flow/*
+# Local AI/orchestration tool state. Install tools outside this repository.
+.claude/
+.claude-flow/
+.opencode/
+.swarm/
+.mcp.json
+
+# Scientific runtime state. Production must set HOODIE_RUN_ROOT outside Git.
+runs/
+outputs/
+worker-state/
+result-bundles/
+checkpoints/
+checkpoint_store/
+replay_snapshots/
+*.pt
+*.pth
+*.ckpt
+*.safetensors
+
+# Runtime logs and process state
+*.log
+*.pid
+*.sock
+*.jsonl
+
+# Generated HOODIE campaign/output trees retained only outside Git
+artifacts/hoodie/campaigns/
+artifacts/hoodie/distributed/
+artifacts/hoodie/releases/
+artifacts/hoodie/runtime/
+artifacts/hoodie/worker-state/
+artifacts/hoodie/checkpoint_store/
+
+# Temporary transport and export payloads
+temp_head.txt
+temp_middle.txt
+*.part
+*.transport
+*.payload
+
+# Vendored reference environment noise
+references/simpy/venv_mac/
+resources/references/**/.git/
+resources/references/**/.venv/
+
+# Specify local state
+.specify/feature.json
