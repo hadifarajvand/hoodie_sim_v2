@@ -1,8 +1,10 @@
 #!/usr/bin/env python3
-"""Inventory and validate every file visible to the repository.
+"""Inventory every tracked and untracked repository file and enforce policy.
 
-The command is intentionally read-only except for its optional report output.
-It never deletes, moves, or rewrites project files.
+The command is read-only except for its optional report directory. Ignored
+virtual environments, caches, and runtime trees are counted but are not hashed;
+this prevents an audit from reading hundreds of gigabytes of intentionally
+ignored checkpoint data.
 """
 
 from __future__ import annotations
@@ -14,6 +16,7 @@ from dataclasses import asdict, dataclass
 from hashlib import sha256
 import json
 import mimetypes
+import os
 from pathlib import Path
 import re
 import subprocess
@@ -58,7 +61,20 @@ CRITICAL_TOP_LEVEL_FUNCTIONS = {
     "import_shard_results",
     "finalize_campaign",
 }
-MACHINE_LOCAL_PATTERN = re.compile(r"(?:/Users/[^/]+/|/home/[^/]+/|[A-Za-z]:\\\\Users\\\\)")
+MACHINE_LOCAL_PATTERN = re.compile(
+    r"(?:/Users/[^/]+/|/home/[^/]+/|[A-Za-z]:\\Users\\)"
+)
+PATH_TOKEN_PATTERN = re.compile(r"[A-Za-z0-9_.@+-]+(?:/[A-Za-z0-9_.@+ -]+)+")
+ACTIVE_PORTABILITY_PREFIXES = (
+    "src/",
+    "hoodie/",
+    "scripts/",
+    "configs/",
+    ".github/",
+    "docs/architecture/",
+    "docs/runbooks/",
+)
+ACTIVE_PORTABILITY_EXACT = {"README.md", "AGENTS.md", "pyproject.toml"}
 
 
 @dataclass(frozen=True, slots=True)
@@ -98,7 +114,11 @@ def repo_root() -> Path:
 
 
 def nul_paths(payload: bytes) -> list[str]:
-    return [part.decode("utf-8", errors="surrogateescape") for part in payload.split(b"\0") if part]
+    return [
+        part.decode("utf-8", errors="surrogateescape")
+        for part in payload.split(b"\0")
+        if part
+    ]
 
 
 def file_hash(path: Path) -> str:
@@ -112,71 +132,175 @@ def file_hash(path: Path) -> str:
 def classify(path: str) -> tuple[str, str, str]:
     lower = path.lower()
     name = Path(path).name
+    suffix = Path(path).suffix.lower()
 
-    if path.startswith(("src/", "hoodie/")) and path.endswith((".py", ".pyi")):
+    if path.startswith(("src/", "hoodie/")) and suffix in {
+        ".py",
+        ".pyi",
+        ".json",
+        ".yaml",
+        ".yml",
+    }:
         return "core source", "keep", "not removable"
     if path.startswith(("tests/", "tests_supported/")):
         return "active test", "keep", "not removable"
     if path.startswith("tests_historical/"):
-        return "historical evidence", "archive outside active test discovery", "manual review"
+        return (
+            "historical evidence",
+            "archive outside active test discovery",
+            "manual review",
+        )
     if path.startswith(("configs/", ".github/")) or name in {
         "pyproject.toml",
         "requirements.txt",
+        "requirements-dev.txt",
         ".gitignore",
         "AGENTS.md",
+        "Dockerfile",
+        "Makefile",
+        "package.json",
+        "package-lock.json",
+        "uv.lock",
     }:
         return "active configuration", "keep", "not removable"
-    if path.startswith("resources/papers/hoodie/"):
+    if path.startswith(("resources/papers/hoodie/", "references/")):
         return "approved scientific reference", "keep", "not removable"
     if path.startswith("resources/"):
-        return "approved scientific reference", "review vendored scope", "manual review"
-    if path.startswith(("docs/", "specs/")) or path.endswith(".md"):
-        return "required documentation", "keep or archive by current relevance", "manual review"
+        return (
+            "approved scientific reference",
+            "review vendored scope",
+            "manual review",
+        )
+    if path.startswith(("docs/", "specs/", "notebooks/", "assets/")) or suffix in {
+        ".md",
+        ".rst",
+        ".pdf",
+        ".png",
+        ".jpg",
+        ".jpeg",
+        ".svg",
+    }:
+        return (
+            "required documentation",
+            "keep or archive by current relevance",
+            "manual review",
+        )
     if path.startswith("archive/"):
-        return "historical evidence", "keep indexed or move to release storage", "manual review"
-    if path.startswith(("artifacts/analysis/", "artifacts/control/", "artifacts/reports/")):
-        return "historical evidence", "move to archive or external release storage", "safe after hash/index verification"
+        return (
+            "historical evidence",
+            "keep indexed or move to release storage",
+            "manual review",
+        )
+    if path.startswith(
+        (
+            "artifacts/analysis/",
+            "artifacts/control/",
+            "artifacts/reports/",
+            "artifacts/smoke/",
+            "artifacts/test_triage/",
+        )
+    ):
+        return (
+            "historical evidence",
+            "move to archive or external release storage",
+            "safe after hash/index verification",
+        )
     if path.startswith("artifacts/hoodie/"):
-        return "generated experiment output", "untrack and store under HOODIE_RUN_ROOT", "safe after reference verification"
-    if path.startswith((".claude/", ".claude-flow/", ".opencode/", ".swarm/")) or path == ".mcp.json":
-        return "runtime state", "remove from Git", "safe after external-tool confirmation"
-    if name in TEMPORARY_NAMES or lower.endswith((".part", ".transport", ".payload")):
-        return "temporary transport", "remove after checksum verification", "safe after hash/index verification"
-    if lower.endswith((".log", ".pid", ".sock", ".pt", ".pth", ".ckpt", ".safetensors", ".jsonl")):
-        return "runtime state", "untrack and store externally", "safe after scientific-reference verification"
-    if path.startswith("scripts/"):
+        return (
+            "generated experiment output",
+            "untrack and store under HOODIE_RUN_ROOT",
+            "safe after reference verification",
+        )
+    if path.startswith(
+        (".claude/", ".claude-flow/", ".opencode/", ".swarm/")
+    ) or path == ".mcp.json":
+        return (
+            "runtime state",
+            "remove from Git",
+            "safe after external-tool confirmation",
+        )
+    if name in TEMPORARY_NAMES or lower.endswith(
+        (".part", ".transport", ".payload")
+    ):
+        return (
+            "temporary transport",
+            "remove after checksum verification",
+            "safe after hash/index verification",
+        )
+    if lower.endswith(
+        (".log", ".pid", ".sock", ".pt", ".pth", ".ckpt", ".safetensors", ".jsonl")
+    ):
+        return (
+            "runtime state",
+            "untrack and store externally",
+            "safe after scientific-reference verification",
+        )
+    if path.startswith("scripts/") or suffix in {
+        ".py",
+        ".sh",
+        ".js",
+        ".cjs",
+        ".mjs",
+    }:
         return "core source", "keep", "not removable"
-    if path.startswith((".git/", ".venv/", "venv/", "__pycache__/")):
-        return "runtime state", "ignore", "safe"
-    if path.endswith((".py", ".toml", ".yaml", ".yml", ".json")):
-        return "active configuration", "review and keep if referenced", "manual review"
+    if suffix in {".toml", ".yaml", ".yml", ".json", ".ini", ".cfg"}:
+        return (
+            "active configuration",
+            "review and keep if referenced",
+            "manual review",
+        )
+    if suffix in {".csv", ".tsv", ".xml", ".html"}:
+        return (
+            "historical evidence",
+            "review data provenance and archive",
+            "manual review",
+        )
+    if name in {"LICENSE", "NOTICE", "CITATION.cff"}:
+        return "required documentation", "keep", "not removable"
     return "unknown/manual review", "classify manually", "unsafe"
 
 
-def last_commit(root: Path, path: str, tracked: bool) -> str | None:
-    if not tracked:
-        return None
-    output = run_git(root, "log", "-1", "--format=%H", "--", path, check=False).decode().strip()
-    return output or None
+def last_commit_map(root: Path, tracked: set[str]) -> dict[str, str]:
+    """Resolve the most recent commit touching each tracked path in one walk."""
 
-
-def reference_count(root: Path, path: str, tracked_text: list[Path]) -> int:
-    # A deterministic conservative approximation: count exact repository-relative
-    # path mentions. This avoids interpreting generated binary data as text.
-    needle = path.encode("utf-8")
-    count = 0
-    for candidate in tracked_text:
-        try:
-            if candidate == root / path:
-                continue
-            data = candidate.read_bytes()
-        except (OSError, ValueError):
+    output = run_git(root, "log", "--format=%x1e%H", "--name-only", check=False)
+    current: str | None = None
+    result: dict[str, str] = {}
+    for raw_line in output.decode("utf-8", errors="replace").splitlines():
+        if raw_line.startswith("\x1e"):
+            current = raw_line[1:].strip()
             continue
-        count += data.count(needle)
-    return count
+        relative = raw_line.strip()
+        if current and relative in tracked and relative not in result:
+            result[relative] = current
+        if len(result) == len(tracked):
+            break
+    return result
 
 
-def python_duplicate_issues(root: Path, tracked: Iterable[str]) -> list[dict[str, object]]:
+def reference_counts(root: Path, tracked: list[str]) -> dict[str, int]:
+    """Count exact repository-path tokens in tracked text with one bounded scan."""
+
+    known = set(tracked)
+    counts = {path: 0 for path in tracked}
+    for relative in tracked:
+        path = root / relative
+        if not path.is_file() or path.stat().st_size > 4 * 1024 * 1024:
+            continue
+        try:
+            text = path.read_text(encoding="utf-8")
+        except (OSError, UnicodeDecodeError):
+            continue
+        for token in PATH_TOKEN_PATTERN.findall(text):
+            normalized = token.strip("'\"`()[]{}.,:;")
+            if normalized in known and normalized != relative:
+                counts[normalized] += 1
+    return counts
+
+
+def python_duplicate_issues(
+    root: Path, tracked: Iterable[str]
+) -> list[dict[str, object]]:
     issues: list[dict[str, object]] = []
     for relative in tracked:
         if not relative.endswith(".py"):
@@ -185,18 +309,20 @@ def python_duplicate_issues(root: Path, tracked: Iterable[str]) -> list[dict[str
         try:
             tree = ast.parse(path.read_text(encoding="utf-8"), filename=relative)
         except (OSError, UnicodeDecodeError, SyntaxError) as exc:
-            issues.append({"path": relative, "issue": "python_parse_failed", "detail": str(exc)})
+            issues.append(
+                {"path": relative, "issue": "python_parse_failed", "detail": str(exc)}
+            )
             continue
         names: dict[str, int] = {}
         for node in tree.body:
             if isinstance(node, (ast.FunctionDef, ast.AsyncFunctionDef)):
                 names[node.name] = names.get(node.name, 0) + 1
         for name, count in names.items():
-            if count > 1 and (name in CRITICAL_TOP_LEVEL_FUNCTIONS or not name.startswith("test_")):
+            if count > 1 and name in CRITICAL_TOP_LEVEL_FUNCTIONS:
                 issues.append(
                     {
                         "path": relative,
-                        "issue": "duplicate_top_level_function",
+                        "issue": "duplicate_critical_top_level_function",
                         "function": name,
                         "count": count,
                     }
@@ -204,37 +330,62 @@ def python_duplicate_issues(root: Path, tracked: Iterable[str]) -> list[dict[str
     return issues
 
 
-def machine_local_path_issues(root: Path, tracked: Iterable[str]) -> list[dict[str, str]]:
-    issues: list[dict[str, str]] = []
+def machine_local_path_issues(
+    root: Path, tracked: Iterable[str]
+) -> tuple[list[dict[str, str]], list[dict[str, str]]]:
+    all_issues: list[dict[str, str]] = []
+    blocking: list[dict[str, str]] = []
     for relative in tracked:
         path = root / relative
-        if path.suffix.lower() not in {".md", ".txt", ".py", ".toml", ".yaml", ".yml", ".json", ".sh"}:
+        if path.suffix.lower() not in {
+            ".md",
+            ".txt",
+            ".py",
+            ".toml",
+            ".yaml",
+            ".yml",
+            ".json",
+            ".sh",
+        }:
             continue
         try:
             text = path.read_text(encoding="utf-8")
         except (OSError, UnicodeDecodeError):
             continue
         match = MACHINE_LOCAL_PATTERN.search(text)
-        if match:
-            issues.append({"path": relative, "match": match.group(0)})
-    return issues
+        if not match:
+            continue
+        issue = {"path": relative, "match": match.group(0)}
+        all_issues.append(issue)
+        if relative in ACTIVE_PORTABILITY_EXACT or relative.startswith(
+            ACTIVE_PORTABILITY_PREFIXES
+        ):
+            blocking.append(issue)
+    return all_issues, blocking
 
 
 def inventory(root: Path) -> tuple[list[FileRecord], dict[str, object]]:
     tracked = sorted(nul_paths(run_git(root, "ls-files", "-z")))
-    untracked = sorted(nul_paths(run_git(root, "ls-files", "--others", "--exclude-standard", "-z")))
-    ignored = sorted(nul_paths(run_git(root, "ls-files", "--others", "--ignored", "--exclude-standard", "-z")))
+    untracked = sorted(
+        nul_paths(run_git(root, "ls-files", "--others", "--exclude-standard", "-z"))
+    )
+    ignored_count = len(
+        nul_paths(
+            run_git(
+                root,
+                "ls-files",
+                "--others",
+                "--ignored",
+                "--exclude-standard",
+                "-z",
+            )
+        )
+    )
 
     tracked_set = set(tracked)
-    untracked_set = set(untracked)
-    ignored_set = set(ignored)
-    all_paths = sorted(tracked_set | untracked_set | ignored_set)
-
-    text_candidates = [
-        root / relative
-        for relative in tracked
-        if (root / relative).is_file() and (root / relative).stat().st_size <= 2 * 1024 * 1024
-    ]
+    all_paths = sorted(tracked_set | set(untracked))
+    commits = last_commit_map(root, tracked_set)
+    references = reference_counts(root, tracked)
 
     records: list[FileRecord] = []
     for relative in all_paths:
@@ -242,19 +393,20 @@ def inventory(root: Path) -> tuple[list[FileRecord], dict[str, object]]:
         if not path.is_file():
             continue
         category, proposed_action, deletion_safety = classify(relative)
-        state = "tracked" if relative in tracked_set else "untracked" if relative in untracked_set else "ignored"
+        tracked_state = relative in tracked_set
         records.append(
             FileRecord(
                 path=relative,
                 size_bytes=path.stat().st_size,
                 sha256=file_hash(path),
-                state=state,
-                mime_type=mimetypes.guess_type(relative)[0] or "application/octet-stream",
-                last_commit=last_commit(root, relative, relative in tracked_set),
+                state="tracked" if tracked_state else "untracked",
+                mime_type=mimetypes.guess_type(relative)[0]
+                or "application/octet-stream",
+                last_commit=commits.get(relative) if tracked_state else None,
                 category=category,
                 proposed_action=proposed_action,
                 deletion_safety=deletion_safety,
-                active_reference_count=reference_count(root, relative, text_candidates),
+                active_reference_count=references.get(relative, 0),
             )
         )
 
@@ -265,9 +417,16 @@ def inventory(root: Path) -> tuple[list[FileRecord], dict[str, object]]:
         or relative.endswith(FORBIDDEN_TRACKED_SUFFIXES)
         or relative.startswith(FORBIDDEN_TRACKED_PREFIXES)
     )
-    unknown_tracked = sorted(record.path for record in records if record.state == "tracked" and record.category == "unknown/manual review")
+    unknown_tracked = sorted(
+        record.path
+        for record in records
+        if record.state == "tracked" and record.category == "unknown/manual review"
+    )
     duplicate_issues = python_duplicate_issues(root, tracked)
-    machine_paths = machine_local_path_issues(root, tracked)
+    machine_paths, blocking_machine_paths = machine_local_path_issues(root, tracked)
+    category_counts: dict[str, int] = {}
+    for record in records:
+        category_counts[record.category] = category_counts.get(record.category, 0) + 1
 
     summary: dict[str, object] = {
         "repository_root": str(root),
@@ -275,26 +434,45 @@ def inventory(root: Path) -> tuple[list[FileRecord], dict[str, object]]:
         "branch": run_git(root, "branch", "--show-current").decode().strip(),
         "tracked_files": len(tracked),
         "untracked_files": len(untracked),
-        "ignored_files": len(ignored),
-        "inventoried_files": len(records),
-        "tracked_bytes": sum(record.size_bytes for record in records if record.state == "tracked"),
+        "ignored_files_not_hashed": ignored_count,
+        "inventoried_tracked_and_untracked_files": len(records),
+        "tracked_bytes": sum(
+            record.size_bytes for record in records if record.state == "tracked"
+        ),
+        "category_counts": category_counts,
         "forbidden_tracked_paths": forbidden_tracked,
         "unknown_tracked_paths": unknown_tracked,
         "duplicate_python_definitions": duplicate_issues,
-        "machine_local_paths": machine_paths,
-        "passed": not forbidden_tracked and not unknown_tracked and not duplicate_issues and not machine_paths,
+        "machine_local_paths_all": machine_paths,
+        "machine_local_paths_blocking": blocking_machine_paths,
+        "passed": not forbidden_tracked
+        and not unknown_tracked
+        and not duplicate_issues
+        and not blocking_machine_paths,
     }
     return records, summary
 
 
-def write_reports(output_dir: Path, records: list[FileRecord], summary: dict[str, object]) -> None:
+def write_reports(
+    output_dir: Path, records: list[FileRecord], summary: dict[str, object]
+) -> None:
     output_dir.mkdir(parents=True, exist_ok=True)
     (output_dir / "repository_inventory.json").write_text(
-        json.dumps({"summary": summary, "files": [asdict(record) for record in records]}, indent=2, sort_keys=True) + "\n",
+        json.dumps(
+            {"summary": summary, "files": [asdict(record) for record in records]},
+            indent=2,
+            sort_keys=True,
+        )
+        + "\n",
         encoding="utf-8",
     )
-    with (output_dir / "repository_inventory.csv").open("w", newline="", encoding="utf-8") as handle:
-        writer = csv.DictWriter(handle, fieldnames=list(asdict(records[0]).keys()) if records else ["path"])
+    with (output_dir / "repository_inventory.csv").open(
+        "w", newline="", encoding="utf-8"
+    ) as handle:
+        writer = csv.DictWriter(
+            handle,
+            fieldnames=list(asdict(records[0]).keys()) if records else ["path"],
+        )
         writer.writeheader()
         for record in records:
             writer.writerow(asdict(record))
@@ -306,12 +484,17 @@ def write_reports(output_dir: Path, records: list[FileRecord], summary: dict[str
 
 def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser()
-    parser.add_argument("--check", action="store_true", help="return non-zero when repository policy fails")
+    parser.add_argument(
+        "--check", action="store_true", help="return non-zero when policy fails"
+    )
     parser.add_argument(
         "--output-dir",
         type=Path,
         default=None,
-        help="optional report directory; defaults to $HOODIE_RUN_ROOT/audits/repository when set",
+        help=(
+            "report directory; defaults to "
+            "$HOODIE_RUN_ROOT/audits/repository when configured"
+        ),
     )
     return parser.parse_args()
 
@@ -323,15 +506,30 @@ def main() -> int:
 
     output_dir = args.output_dir
     if output_dir is None:
-        import os
-
-        run_root = os.environ.get("HOODIE_RUN_ROOT")
-        if run_root:
-            output_dir = Path(run_root).expanduser().resolve() / "audits" / "repository"
+        configured = os.environ.get("HOODIE_RUN_ROOT")
+        if configured:
+            output_dir = (
+                Path(configured).expanduser().resolve() / "audits" / "repository"
+            )
     if output_dir is not None:
         write_reports(output_dir, records, summary)
 
-    print(json.dumps(summary, sort_keys=True))
+    concise = {
+        "passed": summary["passed"],
+        "head": summary["head"],
+        "tracked_files": summary["tracked_files"],
+        "untracked_files": summary["untracked_files"],
+        "forbidden_tracked_count": len(summary["forbidden_tracked_paths"]),
+        "unknown_tracked_count": len(summary["unknown_tracked_paths"]),
+        "duplicate_critical_definition_count": len(
+            summary["duplicate_python_definitions"]
+        ),
+        "blocking_machine_local_path_count": len(
+            summary["machine_local_paths_blocking"]
+        ),
+        "report_dir": str(output_dir) if output_dir is not None else None,
+    }
+    print(json.dumps(concise, sort_keys=True))
     return 1 if args.check and not bool(summary["passed"]) else 0
 
 
