@@ -19,7 +19,9 @@ def _training_topology(agent_count: int) -> TopologyGraph:
     # Production job-matrix validation only permits the approved 5-cluster sizes.
     node_ids = tuple(str(index) for index in range(1, agent_count + 1))
     adjacency = {
-        source: tuple(destination for destination in node_ids if destination != source)
+        source: tuple(
+            destination for destination in node_ids if destination != source
+        )
         for source in node_ids
     }
     return TopologyGraph(
@@ -84,7 +86,9 @@ class DistributedHoodiePolicy:
                 lstm_hidden=lstm_hidden,
                 action_order=("local", *horizontal_actions, "cloud"),
             )
-        return cls(agents=agents)
+        policy = cls(agents=agents)
+        policy.validate_topology(resolved_topology)
+        return policy
 
     @property
     def use_lstm(self) -> bool:
@@ -140,6 +144,35 @@ class DistributedHoodiePolicy:
     def reset_episode_history(self, trace_id: str | None = None) -> None:
         for agent in self.agents.values():
             agent.reset_episode_history(trace_id)
+
+    def validate_topology(self, topology: TopologyGraph) -> None:
+        expected_agents = {
+            str(node_id)
+            for node_id in topology.node_ids
+            if str(node_id) != "cloud"
+        }
+        actual_agents = set(self.agents)
+        if actual_agents != expected_agents:
+            raise ValueError(
+                "checkpoint learner IDs do not match evaluation topology: "
+                f"expected={sorted(expected_agents)}, actual={sorted(actual_agents)}"
+            )
+        for agent_id, agent in self.agents.items():
+            expected_order = (
+                "local",
+                *(
+                    f"horizontal_{destination}"
+                    for destination in topology.legal_horizontal_destinations(
+                        agent_id
+                    )
+                ),
+                "cloud",
+            )
+            if agent.action_order != expected_order:
+                raise ValueError(
+                    f"checkpoint action vocabulary mismatch for EA {agent_id}: "
+                    f"expected={expected_order}, actual={agent.action_order}"
+                )
 
     def record_transition(
         self,
