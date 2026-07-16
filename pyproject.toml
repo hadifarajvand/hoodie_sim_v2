@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "hoodie-sim-v2"
-version = "0.3.0"
+version = "0.3.1"
 description = "Scientifically reproducible HOODIE training, evaluation, and Figures 8-11 pipeline"
 requires-python = ">=3.11"
 readme = "README.md"
@@ -27,10 +27,17 @@ dev = [
 ]
 
 [project.scripts]
+# The active runtime still uses the repository's established `src.*` package
+# namespace. Keep this entry point aligned with that tested import surface until
+# the scientific run is complete; do not partially migrate packaging while a
+# campaign is being validated or executed.
 hoodie-experiments = "src.hoodie.experiments.cli:main"
-hoodie-smoke = "hoodie.cli:main"
 
 [tool.setuptools]
+# Compatibility layout: the repository contains a real Python package named
+# `src` plus the public `hoodie` forwarding package. Installing both avoids the
+# broken half-migration where `hoodie` is installed but `src.agents`,
+# `src.environment`, and the executor dependencies are not.
 package-dir = {"" = "."}
 include-package-data = true
 
