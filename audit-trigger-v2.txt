@@ -1,0 +1,1 @@
+Trigger the repository-wide audit export after the workflow was installed on the target branch.
