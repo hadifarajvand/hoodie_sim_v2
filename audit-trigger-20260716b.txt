@@ -1,0 +1,1 @@
+Trigger repository-wide audit workflow after the audit workflow and script were installed on the target branch.
