@@ -7,6 +7,19 @@ from .production_patch import install_production_patch
 
 install_production_patch()
 
+from .checkpoint_storage_patch import install_checkpoint_storage_patch
+
+install_checkpoint_storage_patch()
+
+from .episode_atomic_checkpoint_patch import (
+    install_episode_atomic_checkpoint_patch,
+)
+
+# Episode atomicity wraps the bounded checkpoint policy. This order is
+# intentional: interruption may request a checkpoint, but a partial episode must
+# never serialize mutated learner state.
+install_episode_atomic_checkpoint_patch()
+
 from .exact_horizontal_runtime_patch import (
     install_exact_horizontal_runtime_patch,
 )
@@ -16,12 +29,6 @@ install_exact_horizontal_runtime_patch()
 from .backend_resolution_patch import install_backend_resolution_patch
 
 install_backend_resolution_patch()
-
-from .episode_atomic_checkpoint_patch import (
-    install_episode_atomic_checkpoint_patch,
-)
-
-install_episode_atomic_checkpoint_patch()
 
 from .evaluation_record_patch import install_evaluation_record_patch
 
