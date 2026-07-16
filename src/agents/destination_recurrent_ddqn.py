@@ -12,10 +12,10 @@ class DestinationRecurrentDoubleDQNAgent(RecurrentDoubleDQNAgent):
     """Recurrent DDQN with a destination-specific action vocabulary.
 
     The legacy learner exposed only three action families (local, horizontal, and
-    vertical).  HOODIE's decision, however, must identify the actual horizontal
-    destination.  This adapter keeps the proven recurrent learner implementation
-    while sizing its output layer and replay masks to one local action, every legal
-    horizontal destination of the owning Edge Agent, and one cloud action.
+    vertical). HOODIE's decision must identify the actual horizontal destination.
+    This adapter keeps the recurrent learner implementation while sizing its output
+    layer and replay masks to one local action, every legal horizontal destination
+    of the owning Edge Agent, and one cloud action.
     """
 
     def __init__(
@@ -38,7 +38,9 @@ class DestinationRecurrentDoubleDQNAgent(RecurrentDoubleDQNAgent):
     ) -> None:
         order = tuple(str(action) for action in action_order)
         if len(order) < 2:
-            raise ValueError("destination-specific action_order must contain at least two actions")
+            raise ValueError(
+                "destination-specific action_order must contain at least two actions"
+            )
         if len(order) != len(set(order)):
             raise ValueError("destination-specific action_order must be unique")
         if order[0] != "local":
@@ -48,7 +50,7 @@ class DestinationRecurrentDoubleDQNAgent(RecurrentDoubleDQNAgent):
         invalid = [
             action
             for action in order[1:-1]
-            if not action.startswith("horizontal_")
+            if action != "horizontal" and not action.startswith("horizontal_")
         ]
         if invalid:
             raise ValueError(f"unsupported destination actions: {invalid}")
@@ -86,7 +88,8 @@ class DestinationRecurrentDoubleDQNAgent(RecurrentDoubleDQNAgent):
         unsupported = legal - set(self.action_order)
         if unsupported:
             raise ValueError(
-                f"legal actions are absent from this learner's action vocabulary: {sorted(unsupported)}"
+                "legal actions are absent from this learner's action vocabulary: "
+                f"{sorted(unsupported)}"
             )
         return super().select(window, legal, epsilon=epsilon)
 
@@ -97,7 +100,9 @@ class DestinationRecurrentDoubleDQNAgent(RecurrentDoubleDQNAgent):
         return payload
 
     @classmethod
-    def from_state(cls, state: dict[str, Any]) -> "DestinationRecurrentDoubleDQNAgent":
+    def from_state(
+        cls, state: dict[str, Any]
+    ) -> "DestinationRecurrentDoubleDQNAgent":
         saved_device = str(state.get("device_name", "cpu"))
         if saved_device.startswith("cuda") and not torch.cuda.is_available():
             saved_device = "cpu"
@@ -114,7 +119,7 @@ class DestinationRecurrentDoubleDQNAgent(RecurrentDoubleDQNAgent):
                 raise ValueError(
                     "destination checkpoint is missing action_order for a non-legacy action dimension"
                 )
-            raw_order = ("local", "horizontal_legacy", "cloud")
+            raw_order = ("local", "horizontal", "cloud")
         action_order = tuple(str(action) for action in raw_order)
         if int(state.get("action_dim", len(action_order))) != len(action_order):
             raise ValueError("checkpoint action_dim does not match action_order")
@@ -124,7 +129,9 @@ class DestinationRecurrentDoubleDQNAgent(RecurrentDoubleDQNAgent):
             action_order=action_order,
             lookback=int(state.get("lookback", 10)),
             seed=int(state.get("seed", 0)),
-            hidden_dims=tuple(state.get("hidden_dims", (1024, 1024, 1024))),
+            hidden_dims=tuple(
+                state.get("hidden_dims", (1024, 1024, 1024))
+            ),
             lstm_hidden=int(state.get("lstm_hidden", 20)),
             use_lstm=bool(state.get("use_lstm", True)),
             learning_rate=float(state.get("learning_rate", 7e-7)),
@@ -132,7 +139,9 @@ class DestinationRecurrentDoubleDQNAgent(RecurrentDoubleDQNAgent):
             batch_size=int(state.get("batch_size", 64)),
             capacity=int(state.get("capacity", 10_000)),
             warmup_size=int(state.get("warmup_size", 64)),
-            target_update_interval=int(state.get("target_update_interval", 2_000)),
+            target_update_interval=int(
+                state.get("target_update_interval", 2_000)
+            ),
             device_name=saved_device,
         )
         agent.learner.load_state_dict(state)
