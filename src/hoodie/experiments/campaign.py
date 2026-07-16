@@ -7,12 +7,18 @@ from .production_patch import install_production_patch
 
 install_production_patch()
 
+from .evaluation_record_patch import install_evaluation_record_patch
+
+install_evaluation_record_patch()
+
 from .production_campaign import campaign_status as _campaign_status
 from .production_campaign import resume_production_campaign as _resume_production_campaign
 from .production_campaign import run_production_campaign as _run_production_campaign
 
 
-def run_smoke_campaign(*, campaign_id: str, output_dir: Path, smoke: bool = True) -> dict[str, Any]:
+def run_smoke_campaign(
+    *, campaign_id: str, output_dir: Path, smoke: bool = True
+) -> dict[str, Any]:
     del smoke
     return {
         "campaign_id": campaign_id,
@@ -47,7 +53,9 @@ def campaign_status(
     output_dir: Path | None = None,
     matrix_path: Path | None = None,
 ) -> dict[str, Any]:
-    return _campaign_status(campaign_id, output_dir, matrix_path=matrix_path)
+    return _campaign_status(
+        campaign_id, output_dir, matrix_path=matrix_path
+    )
 
 
 def resume_production_campaign(
