@@ -26,6 +26,7 @@ def _resolved_row(
     independent_variable: str | object = ...,
     independent_value: Any = ...,
     series_name: str | None | object = ...,
+    physical_contract: dict[str, object] | object = ...,
 ) -> matrix.ProductionJobRow:
     return matrix._row(
         campaign_id=row.campaign_id,
@@ -38,16 +39,24 @@ def _resolved_row(
             else str(independent_variable)
         ),
         independent_value=(
-            row.independent_value if independent_value is ... else independent_value
+            row.independent_value
+            if independent_value is ...
+            else independent_value
         ),
         series_name=(
-            row.series_name if series_name is ... else series_name  # type: ignore[arg-type]
+            row.series_name
+            if series_name is ...
+            else series_name  # type: ignore[arg-type]
         ),
         policy=row.policy,
         variant=row.variant,
         seed=int(row.seed or 0),
         topology_contract=dict(row.topology_contract),
-        physical_contract=dict(row.physical_contract),
+        physical_contract=(
+            dict(row.physical_contract)
+            if physical_contract is ...
+            else dict(physical_contract)  # type: ignore[arg-type]
+        ),
         workload_contract=dict(row.workload_contract),
         training_contract=dict(row.training_contract),
         evaluation_contract=dict(row.evaluation_contract),
@@ -66,10 +75,14 @@ def _agent_count(row: matrix.ProductionJobRow) -> int:
     return int(counts[0] if isinstance(counts, (list, tuple)) else counts)
 
 
-def build_production_job_matrix(campaign_id: str) -> list[matrix.ProductionJobRow]:
+def build_production_job_matrix(
+    campaign_id: str,
+) -> list[matrix.ProductionJobRow]:
     rows = _ORIGINAL_BUILD(campaign_id)
     canonical = next(
-        row for row in rows if row.job_id == matrix.CANONICAL_CHECKPOINT_JOB_ID
+        row
+        for row in rows
+        if row.job_id == matrix.CANONICAL_CHECKPOINT_JOB_ID
     )
     for agent_count in (10, 15, 25, 30):
         job_id = reference_checkpoint_job_id(agent_count)
@@ -122,17 +135,32 @@ def build_production_job_matrix(campaign_id: str) -> list[matrix.ProductionJobRo
                 row,
                 checkpoint_dependency=reference_checkpoint_job_id(agent_count),
             )
+        # Tensor execution hardware is operational, not a paper sweep variable.
+        # Record a portable contract in the immutable matrix and resolve the
+        # concrete CPU/CUDA/MPS device on each worker through HOODIE_DEVICE.
+        row = _resolved_row(
+            row,
+            physical_contract={
+                **row.physical_contract,
+                "backend": "worker-selected",
+            },
+        )
         resolved.append(row)
     matrix.validate_production_job_matrix(resolved)
     return resolved
 
 
-def write_production_job_matrix(path: str | Path, campaign_id: str) -> Path:
+def write_production_job_matrix(
+    path: str | Path, campaign_id: str
+) -> Path:
     destination = Path(path)
     destination.parent.mkdir(parents=True, exist_ok=True)
     destination.write_text(
         json.dumps(
-            [asdict(row) for row in build_production_job_matrix(campaign_id)],
+            [
+                asdict(row)
+                for row in build_production_job_matrix(campaign_id)
+            ],
             indent=2,
             sort_keys=True,
         )
