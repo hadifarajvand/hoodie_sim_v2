@@ -5,18 +5,12 @@ from typing import Any, Iterable
 import numpy as np
 import torch
 
+from .ddqn import masked_epsilon_greedy
 from .recurrent_ddqn import RecurrentDDQNLearner, RecurrentDoubleDQNAgent
 
 
 class DestinationRecurrentDoubleDQNAgent(RecurrentDoubleDQNAgent):
-    """Recurrent DDQN with a destination-specific action vocabulary.
-
-    The legacy learner exposed only three action families (local, horizontal, and
-    vertical). HOODIE's decision must identify the actual horizontal destination.
-    This adapter keeps the recurrent learner implementation while sizing its output
-    layer and replay masks to one local action, every legal horizontal destination
-    of the owning Edge Agent, and one cloud action.
-    """
+    """Recurrent DDQN with a destination-specific action vocabulary."""
 
     def __init__(
         self,
@@ -44,9 +38,13 @@ class DestinationRecurrentDoubleDQNAgent(RecurrentDoubleDQNAgent):
         if len(order) != len(set(order)):
             raise ValueError("destination-specific action_order must be unique")
         if order[0] != "local":
-            raise ValueError("destination-specific action_order must start with local")
+            raise ValueError(
+                "destination-specific action_order must start with local"
+            )
         if order[-1] != "cloud":
-            raise ValueError("destination-specific action_order must end with cloud")
+            raise ValueError(
+                "destination-specific action_order must end with cloud"
+            )
         invalid = [
             action
             for action in order[1:-1]
@@ -55,10 +53,9 @@ class DestinationRecurrentDoubleDQNAgent(RecurrentDoubleDQNAgent):
         if invalid:
             raise ValueError(f"unsupported destination actions: {invalid}")
 
-        # RecurrentDoubleDQNAgent.select reads ACTION_ORDER through the instance,
-        # so assigning it here preserves the existing selection implementation.
         self.action_order = order
         self.ACTION_ORDER = order
+        self.last_q_values: tuple[float, ...] = ()
         self.learner = RecurrentDDQNLearner(
             state_dim=state_dim,
             action_dim=len(order),
@@ -91,7 +88,34 @@ class DestinationRecurrentDoubleDQNAgent(RecurrentDoubleDQNAgent):
                 "legal actions are absent from this learner's action vocabulary: "
                 f"{sorted(unsupported)}"
             )
-        return super().select(window, legal, epsilon=epsilon)
+        if not legal:
+            raise ValueError("no supported legal actions available")
+        mask = torch.tensor(
+            [name in legal for name in self.action_order],
+            dtype=torch.bool,
+            device=self.learner.device,
+        )
+        state_window = self.learner._validate_window(window)
+        self.learner.online_network.eval()
+        with torch.no_grad():
+            q_values = self.learner.online_network(
+                state_window.unsqueeze(0)
+            ).squeeze(0)
+        self.last_q_values = tuple(
+            float(value) for value in q_values.detach().cpu().tolist()
+        )
+        selected = masked_epsilon_greedy(
+            q_values,
+            mask,
+            float(epsilon),
+            self.learner.rng,
+        )
+        return self.action_order[selected]
+
+    def q_value_summary(self) -> dict[str, float]:
+        if len(self.last_q_values) != len(self.action_order):
+            return {}
+        return dict(zip(self.action_order, self.last_q_values, strict=True))
 
     def export_state(self) -> dict[str, Any]:
         payload = self.learner.state_dict()
