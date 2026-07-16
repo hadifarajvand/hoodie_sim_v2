@@ -61,6 +61,8 @@ PY
 }
 
 validate() {
+  bash -n scripts/hoodie/corrected_campaign.sh
+  bash -n scripts/hoodie/run_shard_worker.sh
   python -m pip install -e ".[dev]"
   python -m compileall -q src hoodie
   python -m hoodie.experiments preflight | tee "$STATE_DIR/preflight.json"
@@ -85,6 +87,10 @@ assert plan["training_jobs"] == 17
 assert plan["evaluation_jobs"] == 288
 assert plan["campaign_id"].startswith("figures-8-11-corrected-")
 assert plan["campaign_id"] != "figures-8-11-7587c7c6382c"
+assert all(
+    row["physical_contract"].get("backend") == "worker-selected"
+    for row in matrix
+)
 print(json.dumps({"status": "validated", "campaign_id": plan["campaign_id"], "jobs": 305}))
 PY
   printf '\nValidated corrected campaign: %s\n' "$CAMPAIGN_ID"
@@ -107,12 +113,33 @@ import_training() {
   python -m hoodie.experiments import-results-directory \
     --campaign-id "$CAMPAIGN_ID" \
     --results-dir "$TRAINING_RESULTS_DIR"
-  python -m hoodie.experiments backend-audit --campaign-id "$CAMPAIGN_ID"
+  local audit="$STATE_DIR/backend-audit.json"
+  python -m hoodie.experiments backend-audit \
+    --campaign-id "$CAMPAIGN_ID" | tee "$audit"
+  python - "$audit" <<'PY'
+import json
+import pathlib
+import sys
+payload = json.loads(pathlib.Path(sys.argv[1]).read_text(encoding="utf-8"))
+backends = [
+    value for value in payload.get("checkpoint_backends", [])
+    if value != "legacy_unknown"
+]
+assert payload.get("checkpoint_count") == 17, payload
+assert "legacy_unknown" not in payload.get("checkpoint_backends", []), payload
+assert len(set(backends)) == 1, payload
+print(json.dumps({
+    "status": "training-backend-compatible",
+    "backend": backends[0],
+    "checkpoint_count": 17,
+}))
+PY
   python -m hoodie.experiments shard-status --campaign-id "$CAMPAIGN_ID"
 }
 
 export_evaluation() {
   load_campaign_id
+  [[ -f "$STATE_DIR/backend-audit.json" ]] || fail "Import and audit all training results before exporting evaluation shards"
   rm -rf "$BUNDLE_ROOT/evaluation"
   python -m hoodie.experiments export-shards \
     --campaign-id "$CAMPAIGN_ID" \
