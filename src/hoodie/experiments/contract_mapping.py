@@ -63,9 +63,11 @@ def _merged_contract(row: ProductionJobRow, source_contract: dict[str, Any]) -> 
         "horizontal_data_rate_mbps": table["horizontal_data_rate_mbps"],
         "vertical_data_rate_mbps": table["vertical_data_rate_mbps"],
         "agent_counts": [table["number_of_edge_agents"]],
-        "q_network_hidden_layers": tuple(table.get("hidden_layer_widths", (1024, 1024, 1024))),
-        "lstm_lookback": int(table.get("lstm_lookback_window", 10)),
-        "lstm_hidden": int(table.get("lstm_hidden_units", 20)),
+        "q_network_hidden_layers": tuple(
+            table.get("q_network_hidden_layers", (1024, 1024, 1024))
+        ),
+        "lstm_lookback": int(table.get("lstm_lookback_steps", 10)),
+        "lstm_hidden": int(table.get("lstm_hidden_cells", 20)),
     }
     contract.update(source_contract)
     contract.update(row.topology_contract)
@@ -132,7 +134,9 @@ def _agent_count(contract: dict[str, Any]) -> int:
     return count
 
 
-def _cpu_rate_ghz(contract: dict[str, Any], modern_key: str, legacy_key: str, default: float) -> float:
+def _cpu_rate_ghz(
+    contract: dict[str, Any], modern_key: str, legacy_key: str, default: float
+) -> float:
     value = float(contract.get(modern_key, contract.get(legacy_key, default)))
     if value <= 0:
         raise ValueError(f"{modern_key} must be positive")
@@ -323,6 +327,10 @@ def validate_contract_mapping(
             architecture = training_architecture(row, source_contract)
             if architecture["hidden_dims"] != (1024, 1024, 1024):
                 mismatches.append("q_network_hidden_layers")
+            if architecture["lookback"] != 10:
+                mismatches.append("lstm_lookback_steps")
+            if architecture["lstm_hidden"] != 20:
+                mismatches.append("lstm_hidden_cells")
         else:
             config = build_evaluation_config(
                 row, source_contract, trace_id="trace", output_dir=None
