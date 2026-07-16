@@ -1,0 +1,79 @@
+name: HOODIE repository and scientific validation
+
+on:
+  push:
+    branches:
+      - chatgpt/experiment-correctness-20260716
+      - hoodie-redesign/full-implementation-active
+      - main
+  pull_request:
+    branches:
+      - hoodie-redesign/full-implementation-active
+      - main
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: hoodie-correctness-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
+env:
+  HOODIE_RUN_ROOT: /tmp/hoodie-runs
+  HOODIE_DEVICE: cpu
+  HOODIE_MAX_CHECKPOINTS_PER_JOB: "1"
+  HOODIE_MIN_FREE_GB: "1"
+  HOODIE_MIN_FREE_FRACTION: "0.01"
+  HOODIE_MAX_CHECKPOINT_GB_PER_JOB: "2"
+  HOODIE_ESTIMATED_CHECKPOINT_MB: "64"
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    steps:
+      - name: Checkout candidate branch
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+          cache: pip
+
+      - name: Upgrade packaging tools
+        run: python -m pip install --upgrade pip
+
+      - name: Run bounded full validation
+        run: bash scripts/hoodie/corrected_campaign.sh validate
+
+      - name: Verify validation marker
+        run: |
+          test -f /tmp/hoodie-runs/implementation_run/corrected_campaign/validation-complete.json
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          marker = json.loads(Path(
+              "/tmp/hoodie-runs/implementation_run/corrected_campaign/validation-complete.json"
+          ).read_text(encoding="utf-8"))
+          assert marker["repository_audit_passed"] is True
+          assert marker["full_test_suite_passed"] is True
+          assert marker["training_jobs"] == 17
+          assert marker["evaluation_jobs"] == 288
+          assert marker["total_jobs"] == 305
+          assert marker["production_started"] is False
+          PY
+
+      - name: Upload bounded validation evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: hoodie-repository-scientific-validation
+          path: |
+            /tmp/hoodie-runs/audits/repository/
+            /tmp/hoodie-runs/implementation_run/corrected_campaign/
+          if-no-files-found: warn
+          retention-days: 7
