@@ -1,56 +1,61 @@
 # Repository Tracking Policy
 
-This repository is intentionally split into tracked source, tracked reference
-material, and ignored generated output. If a file does not clearly belong in
-one of the tracked categories below, do not add it to git.
+This repository contains the active HOODIE scientific implementation, tests, frozen contracts, approved references, and concise reproducibility documentation. Generated execution state and historical diagnostic output live outside the active Git tree.
 
-## Track In Git
+## Track in Git
 
-- `src/`
-- `tests/`
+- `src/hoodie/`
+- `tests/unit/`
+- `tests/integration/`
+- `tests/acceptance/`
 - `configs/`
-- `specs/`
-- `docs/`
-- `AGENTS.md`
-- repository governance files such as `.gitignore`
-- reference artifacts that are explicitly part of the project record, such as
-  paper OCR exports and approved source PDFs under `resources/papers/`
-- vendored reference code under `resources/references/` only when it is being
-  used as a read-only internal module and its upstream repo metadata has been
-  removed
+- current architecture, plans, runbooks, and scientific contracts under `docs/`
+- approved HOODIE contracts and paper references under `resources/papers/hoodie/`
+- approved read-only references under `resources/references/`
+- small immutable manifests under `artifacts/approved/`
+- repository governance files such as `README.md`, `AGENTS.md`, `.gitignore`, and `pyproject.toml`
 
-## Do Not Track
+## Do not track
 
-- `outputs/`
-- `.DS_Store`
-- `__pycache__/`
-- `*.pyc`
-- `*.pyo`
-- virtual environments, including `resources/references/simpy/venv_mac/`
-- notebook checkpoints
-- coverage output
-- build artifacts
-- transient logs, temp files, editor swap files, and cache directories
+- campaign directories, worker state, raw datasets, replay buffers, or checkpoint payloads
+- generated aggregate data and rendered outputs from intermediate attempts
+- PID files, daemon state, sockets, logs, JSONL event streams, or local tool configuration
+- `.claude/`, `.claude-flow/`, `.opencode/`, `.swarm/`, or `.mcp.json`
+- `artifacts/analysis/`, `artifacts/control/`, `artifacts/reports/`, `artifacts/smoke/`, `artifacts/test_triage/`, reconciliation payloads, or superseded readiness reports
+- temporary transport fragments, source-export workflows, virtual environments, caches, coverage output, and build artifacts
+- generic agent-framework distributions
 
-## Special Rules For Vendored References
+## Canonical active roots
 
-- Reference code may be copied into `resources/references/` only if it is
-  treated as part of this repository, not as a nested git repository.
-- Before staging vendored code, remove any nested `.git/` directory so git does
-  not interpret the path as a submodule or embedded repository.
-- Do not commit the vendored reference's local virtual environment, caches, or
-  generated build output.
-- Keep external reference code read-only unless the project explicitly needs a
-  local adaptation.
+The active Python package is `src/hoodie/` and imports as `hoodie.*`. The active test roots are exactly:
 
-## Review Rule
+- `tests/unit/`
+- `tests/integration/`
+- `tests/acceptance/`
 
-Before any large staging operation, verify `git status` and confirm that:
+Top-level `hoodie/`, `tests_supported/`, and `tests_historical/` are migration or historical roots and must not remain in the execution-ready tree.
 
-- no ignored junk is staged
-- no nested repositories remain embedded
-- only intended source, docs, configs, and approved reference artifacts are
-  present
+## Historical evidence
 
-If the staging set contains outputs or cache files, stop and fix the ignore
-rules before committing.
+Unique historical evidence must not be deleted blindly. Hash and index it, then move it to external release/archive storage. Keep only a concise index or immutable approved manifest in Git.
+
+## Required gates
+
+Before any experiment:
+
+```bash
+python scripts/audit/repository_consolidation_gate.py --check
+python scripts/audit/full_repository_audit.py --check
+```
+
+Both commands must pass from a clean checkout. A failing consolidation gate means the repository remains in audit mode and no training may start.
+
+## Review rule
+
+Before staging or merging a large change, verify that:
+
+- no ignored or generated runtime files are staged;
+- no nested repositories or local virtual environments remain;
+- every tracked path has an explicit active purpose;
+- no duplicate execution implementation or compatibility patch remains;
+- all unique references and historical evidence have a documented destination.
