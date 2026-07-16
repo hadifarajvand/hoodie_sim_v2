@@ -1,0 +1,68 @@
+{
+  "backend_attempt_compatibility_rules": [
+    "legacy_unknown stays legacy_unknown",
+    "cpu, mps, cuda checkpoints never mix within one attempt",
+    "new backend means new attempt from deterministic initial state",
+    "reject unsupported device metadata on load"
+  ],
+  "bundle_counts": {
+    "evaluation": 48,
+    "total": 96,
+    "training": 48
+  },
+  "bundle_roots": {
+    "evaluation": "artifacts/hoodie/distributed/figures-8-11-7587c7c6382c/input",
+    "training": "artifacts/hoodie/distributed/figures-8-11-7587c7c6382c/input"
+  },
+  "command_manifest_path": "artifacts/hoodie/distributed/figures-8-11-7587c7c6382c/manifests/command_manifest.json",
+  "current_machine_capacity_blocker": "measured throughput projects months-long campaign on this host; do not resume full production locally.",
+  "dependency_order_instructions": [
+    "training shards first",
+    "import valid training checkpoints",
+    "then release evaluation shards",
+    "never promote evaluation results with missing or incompatible checkpoints"
+  ],
+  "distributed_integration_passed": true,
+  "expected_output_locations": [
+    "artifacts/hoodie/distributed/figures-8-11-7587c7c6382c/input",
+    "artifacts/hoodie/distributed/figures-8-11-7587c7c6382c/manifests",
+    "artifacts/hoodie/implementation_run/campaign/distributed_integration_proof.json"
+  ],
+  "failure_and_resume_procedure": "Preserve bundle, reject corrupt/conflicting import, keep accepted imports immutable, rerun only missing shard from saved checkpoint or deterministic initial state.",
+  "first_worker_command": "python3 -m hoodie.experiments run-shard --bundle <bundle> --work-dir <work-dir>",
+  "latest_valid_production_checkpoint": {
+    "checkpoint_id": "f614070e6c04e4459898a514",
+    "checkpoint_path": "artifacts/hoodie/campaigns/figures-8-11-7587c7c6382c/jobs/figure_8a-1-HOODIE-None/internal_checkpoints/f614070e6c04e4459898a514/checkpoint.pt"
+  },
+  "legacy_checkpoint_backend": "legacy_unknown",
+  "minimum_required_external_compute_decision": "single-node machine is insufficient for full campaign; assign external compute to distributed workers.",
+  "paused_state_confirmation": {
+    "live_job_claim": false,
+    "pause_request_exists": true,
+    "supervisor_active": false,
+    "worker_active": false
+  },
+  "production_campaign_id": "figures-8-11-7587c7c6382c",
+  "remote_branch": "origin/hoodie-redesign/full-implementation-active",
+  "required_hashes": {
+    "matrix_hash": "d783f1a606a609c3e29d6bb11df975c0fed44dabf048801cc69f47d3a1feda09",
+    "source_commit": "9843029238c21d55f9eb7f3f83a23040d0be7153",
+    "source_contract_hash": "b51f529b97536c7db5ddceff2908b78a679c5a125d2e33117a114a94a5d976c7"
+  },
+  "shard_plan": {
+    "hash": "c4fb88785c2daeb161623ef91df43a6636336f02a7ce6bb368b5b6eefc7f1657",
+    "path": "artifacts/hoodie/implementation_run/campaign/shard_plan.json"
+  },
+  "source_commit": "19ed5c9f3a579a393ef990b469118e92298a253c",
+  "verification_commands": {
+    "bulk_import": "python3 -m hoodie.experiments import-results-directory --campaign-id <campaign-id> --results-dir <results-dir>",
+    "finalize": "python3 -m hoodie.experiments finalize --campaign-id <campaign-id>",
+    "result_bundle": "python3 -m hoodie.experiments import-shard-results --campaign-id <campaign-id> --result-bundle <path>",
+    "shard_status": "python3 -m hoodie.experiments shard-status --campaign-id <campaign-id>"
+  },
+  "worker_command_templates": {
+    "cpu": "python3 -m hoodie.experiments run-shard --bundle <cpu-shard-bundle> --work-dir <work-dir>",
+    "cuda": "python3 -m hoodie.experiments run-shard --bundle <cuda-shard-bundle> --work-dir <work-dir>",
+    "mps": "python3 -m hoodie.experiments run-shard --bundle <mps-shard-bundle> --work-dir <work-dir>"
+  }
+}

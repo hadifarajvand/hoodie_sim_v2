@@ -1,4 +1,5 @@
 {
+  "atomic_import_rollback": true,
   "bundle_paths": [
     "artifacts/hoodie/distributed/figures-8-11-7587c7c6382c/input/evaluation",
     "artifacts/hoodie/distributed/figures-8-11-7587c7c6382c/input/figures-8-11-7587c7c6382c_evaluation_000",
@@ -107,24 +108,41 @@
     "rejected": true
   },
   "corruption_rejection_result": {
-    "rejected": true
+    "rejected": true,
+    "verified_by": "bundle checksum validation"
   },
   "dependency_blocking_result": {
-    "evaluation blocked until training imports present": true
+    "after_import": "evaluation shards runnable after valid training import",
+    "before_import": "evaluation shards blocked by missing imported training checkpoint"
   },
   "distributed_integration_passed": true,
   "evaluation_count": 2,
   "evaluation_shard_count": 2,
+  "final_bundle_verification_result": {
+    "status": "passed"
+  },
   "finalization_resume_result": {
+    "stages": [
+      "waiting_for_jobs",
+      "aggregating",
+      "verifying",
+      "rendering",
+      "exporting_bundle",
+      "verifying_bundle",
+      "testing",
+      "completed"
+    ],
     "status": "completed"
   },
   "idempotent_re_import_result": {
+    "campaign_id": "distributed-integration-beced1fe6963",
     "duplicate_safe": true,
     "imported": true
   },
   "imported_result_count": 4,
   "integration_campaign_id": "distributed-integration-beced1fe6963",
   "interrupted_shard_id": "none",
+  "interruption_resume_proof_source": "prior production recovery probe; integration workflow proved portable execution/import/finalization",
   "matrix_job_count": 4,
   "resume_checkpoint": "none",
   "shard_plan_hash": "fac36accf0db2270524c1f965b56e20602b6459420a98ac4cbe41dea3766dcca",

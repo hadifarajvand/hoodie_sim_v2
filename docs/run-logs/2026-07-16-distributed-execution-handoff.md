@@ -1,0 +1,11 @@
+# Distributed Execution Handoff
+- production campaign: `figures-8-11-7587c7c6382c`
+- integration campaign: `distributed-integration-beced1fe6963`
+- production campaign remains paused
+- current host backend: CPU
+- legacy checkpoint backend: `legacy_unknown`
+- production shard coverage: 284 jobs across 96 shards
+- external compute required to finish production campaign
+- worker entrypoint: `python3 -m hoodie.experiments run-shard --bundle <bundle> --work-dir <work-dir>`
+- bulk import: `python3 -m hoodie.experiments import-results-directory --campaign-id <campaign-id> --results-dir <results-dir>`
+- finalization: `python3 -m hoodie.experiments finalize --campaign-id <campaign-id>`
