@@ -7,6 +7,7 @@ from .ddqn import (
 from .distributed_hoodie import DistributedHoodiePolicy
 from .hoodie_agent import HoodieAgent
 from .lstm_dueling_dqn import LSTM_Dueling_DQN
+from .recurrent_ddqn import RecurrentDDQNLearner, RecurrentDoubleDQNAgent
 
 __all__ = [
     "DDQNLearner",
@@ -16,4 +17,6 @@ __all__ = [
     "DistributedHoodiePolicy",
     "HoodieAgent",
     "LSTM_Dueling_DQN",
+    "RecurrentDDQNLearner",
+    "RecurrentDoubleDQNAgent",
 ]
