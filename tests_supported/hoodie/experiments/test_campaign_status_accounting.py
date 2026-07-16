@@ -19,12 +19,15 @@ def test_campaign_status_accounts_for_full_matrix(tmp_path: Path) -> None:
     job_root = tmp_path / 'artifacts' / 'hoodie' / 'campaigns' / campaign_id / 'jobs'
     _write_job(job_root, 'figure_8a-0-HOODIE-None', status='completed')
     _write_job(job_root, 'figure_8a-1-HOODIE-None', status='failed')
+    _write_job(job_root, 'figure_8a-2-HOODIE-None', status='scientifically_incomplete')
     status = campaign_status(campaign_id, tmp_path / 'artifacts' / 'hoodie' / 'campaigns')
     assert status['total'] == 284
     assert status['completed_jobs'] == 1
     assert status['failed_jobs'] == 1
-    assert status['pending_jobs'] + status['blocked_dependency_jobs'] == 282
-    assert sum(status[key] for key in ('pending_jobs', 'running_jobs', 'completed_jobs', 'failed_jobs', 'stale_jobs', 'corrupt_jobs', 'quarantined_jobs', 'blocked_dependency_jobs')) == 284
+    assert status['historical_scientifically_incomplete_attempts_jobs'] == 1
+    assert status['current_scientifically_incomplete_jobs'] == 0
+    assert status['pending_jobs'] + status['blocked_dependency_jobs'] == 281
+    assert status['current_total'] == sum(status[key] for key in ('pending_jobs', 'running_jobs', 'completed_jobs', 'failed_jobs', 'stale_jobs', 'corrupt_jobs', 'quarantined_jobs', 'blocked_dependency_jobs', 'interrupted_resumable_jobs', 'current_scientifically_incomplete_jobs'))
 
 
 def test_resume_uses_frozen_matrix_not_existing_dirs(monkeypatch: object, tmp_path: Path) -> None:

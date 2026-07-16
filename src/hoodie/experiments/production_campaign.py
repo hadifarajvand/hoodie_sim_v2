@@ -914,7 +914,7 @@ def run_production_campaign(*, campaign_id: str, output_dir: Path | None = None,
 def campaign_status(campaign_id: str, output_dir: Path | None = None) -> dict[str, Any]:
     campaign_dir = (_CAMPAIGNS_ROOT if output_dir is None else output_dir) / campaign_id
     rows = _read_matrix()
-    counts = {key: 0 for key in ("pending", "running", "completed", "failed", "stale", "corrupt", "quarantined", "blocked_dependency", "scientifically_incomplete")}
+    counts = {key: 0 for key in ("pending", "running", "completed", "failed", "stale", "corrupt", "quarantined", "blocked_dependency", "interrupted_resumable", "current_scientifically_incomplete", "historical_scientifically_incomplete_attempts", "invalidated_completion_attempts")}
     job_root = campaign_dir / "jobs"
     for row in rows:
         job_dir = job_root / row.job_id
@@ -925,9 +925,21 @@ def campaign_status(campaign_id: str, output_dir: Path | None = None) -> dict[st
                 counts["pending"] += 1
             continue
         state = classify_job_state(job_dir).value
-        counts[state] = counts.get(state, 0) + 1
+        if state == "scientifically_incomplete":
+            counts["historical_scientifically_incomplete_attempts"] += 1
+            if (job_dir / "completion.marker.invalid").exists() or not (job_dir / "completion.marker").exists():
+                counts["invalidated_completion_attempts"] += 1
+            continue
+        if state == "interrupted_resumable":
+            counts["interrupted_resumable"] += 1
+            continue
+        if state in counts:
+            counts[state] += 1
+        else:
+            counts["corrupt"] += 1
     total = len(rows)
-    return {"campaign_id": campaign_id, "total": total, **{f"{key}_jobs": value for key, value in counts.items()}}
+    current_total = sum(counts[key] for key in ("pending", "running", "completed", "failed", "stale", "corrupt", "quarantined", "blocked_dependency", "interrupted_resumable", "current_scientifically_incomplete"))
+    return {"campaign_id": campaign_id, "total": total, "current_total": current_total, **{f"{key}_jobs": value for key, value in counts.items()}}
 
 
 def resume_production_campaign(campaign_id: str, output_dir: Path | None = None, *, max_jobs: int | None = None, max_runtime_seconds: float | None = None, job_id: str | None = None, allow_paused_recovery: bool = False) -> dict[str, Any]:

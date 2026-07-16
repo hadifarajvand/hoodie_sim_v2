@@ -1,0 +1,30 @@
+{
+  "active_backend": "mps",
+  "checkpoint_write_duration": null,
+  "core_count": null,
+  "cpu_model": null,
+  "environment_steps_per_second": 1.822146054068926,
+  "estimated_duration_current_job_seconds": 966800.0,
+  "estimated_duration_remaining_evaluation_seconds": 20742254.545454547,
+  "estimated_duration_remaining_training_seconds": 45439600.0,
+  "estimated_duration_total_campaign_seconds": 67148654.54545455,
+  "history_write_duration": null,
+  "machine_model": "arm64",
+  "macos_version": "26.5.1",
+  "measured_seconds_per_episode": 200.0,
+  "measured_seconds_per_slot": 1.8181818181818181,
+  "model_forward_duration": {
+    "cpu": {
+      "backward": 0.00043416593689471483,
+      "forward": 0.00010812492109835148
+    }
+  },
+  "mps_available": false,
+  "mps_synchronization_duration": null,
+  "optimizer_updates_per_second": 16.46926308466601,
+  "python_version": "3.14.3",
+  "pytorch_version": "2.12.1",
+  "ram_bytes": null,
+  "replay_serialization_duration": null,
+  "source_commit": "b677f2c8a99c20f7ca2dcfbc820ca0a546b6ac4a"
+}
