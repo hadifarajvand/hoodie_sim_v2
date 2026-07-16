@@ -2,6 +2,7 @@ from __future__ import annotations
 
 from dataclasses import dataclass, field
 from random import Random
+from typing import Iterable
 
 from src.environment.task import Task
 
@@ -57,18 +58,16 @@ def build_deterministic_trace(
     arrival_probability: float = 1.0,
     timeout_length: int = 20,
     drain_slots: int = 0,
+    task_sizes: Iterable[float] | None = None,
+    processing_density: float = 0.297,
 ) -> EvaluationTrace:
-    """Build one paired task trace using the paper-compatible arrival process.
+    """Build one paired task trace from fully resolved scientific inputs.
 
     Every EA receives an independent Bernoulli arrival opportunity in every
-    decision slot.  The final ``drain_slots`` contain no arrivals and are kept
-    in the trace metadata so all policies execute the same episode horizon.
-
-    ``drain_slots`` defaults to zero for backward compatibility.  Paper-default
-    experiments call this function with ``episode_length=110`` and
-    ``drain_slots=10``, yielding 100 decision slots followed by 10 drain slots.
+    decision slot. The final ``drain_slots`` contain no arrivals. ``task_sizes``
+    defaults to the complete Table-4 range (2.0--5.0 Mbits) and may be replaced
+    by a resolved traffic-scenario set without changing any other random draws.
     """
-
     if episode_length <= 0:
         raise ValueError("episode_length must be positive")
     if agent_count <= 0:
@@ -79,19 +78,29 @@ def build_deterministic_trace(
         raise ValueError("timeout_length must be positive")
     if not 0 <= drain_slots < episode_length:
         raise ValueError("drain_slots must satisfy 0 <= drain_slots < episode_length")
+    if processing_density <= 0:
+        raise ValueError("processing_density must be positive")
+
+    admissible_sizes = tuple(
+        float(value)
+        for value in (
+            task_sizes
+            if task_sizes is not None
+            else (round(2.0 + 0.1 * index, 1) for index in range(31))
+        )
+    )
+    if not admissible_sizes or any(value <= 0 for value in admissible_sizes):
+        raise ValueError("task_sizes must contain positive values")
 
     rng = Random(seed)
     tasks: list[TraceTaskBlueprint] = []
     next_task_id = 1
     decision_slots = episode_length - drain_slots
-    admissible_sizes = tuple(round(2.0 + 0.1 * index, 1) for index in range(31))
-
     for arrival_slot in range(decision_slots):
         for source_agent_id in range(1, agent_count + 1):
             if rng.random() > float(arrival_probability):
                 continue
             size = rng.choice(admissible_sizes)
-            processing_density = 0.297
             absolute_deadline_slot = arrival_slot + timeout_length - 1
             tasks.append(
                 TraceTaskBlueprint(
@@ -99,7 +108,7 @@ def build_deterministic_trace(
                     source_agent_id=source_agent_id,
                     arrival_slot=arrival_slot,
                     size=size,
-                    processing_density=processing_density,
+                    processing_density=float(processing_density),
                     timeout_length=timeout_length,
                     absolute_deadline_slot=absolute_deadline_slot,
                 )
@@ -120,6 +129,8 @@ def build_deterministic_trace(
             "decision_slots": str(decision_slots),
             "drain_slots": str(drain_slots),
             "task_count": str(len(tasks)),
+            "task_sizes": ",".join(f"{value:g}" for value in admissible_sizes),
+            "processing_density": str(float(processing_density)),
         },
     )
 
@@ -133,4 +144,6 @@ def trace_signature(trace: EvaluationTrace) -> dict[str, object]:
         "drain_slots": int(trace.metadata.get("drain_slots", 0)),
         "task_count": len(trace.tasks),
         "mode": trace.metadata.get("mode", "deterministic_seed"),
+        "task_sizes": trace.metadata.get("task_sizes", ""),
+        "processing_density": float(trace.metadata.get("processing_density", 0.297)),
     }
