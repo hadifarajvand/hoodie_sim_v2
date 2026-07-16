@@ -7,6 +7,12 @@ from .production_patch import install_production_patch
 
 install_production_patch()
 
+from .episode_atomic_checkpoint_patch import (
+    install_episode_atomic_checkpoint_patch,
+)
+
+install_episode_atomic_checkpoint_patch()
+
 from .evaluation_record_patch import install_evaluation_record_patch
 
 install_evaluation_record_patch()
