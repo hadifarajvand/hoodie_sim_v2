@@ -8,6 +8,7 @@ from src.hoodie.experiments.campaign_layout import (
     CampaignLocationError,
     CampaignNotFoundError,
     atomic_write_json,
+    load_campaign_manifest,
     resolve_campaign_layout,
 )
 
@@ -80,6 +81,25 @@ def test_protected_legacy_campaign_is_rejected(tmp_path: Path) -> None:
         )
 
 
+def test_nested_path_inside_protected_campaign_is_rejected(tmp_path: Path) -> None:
+    repository = tmp_path / "repo"
+    repository.mkdir()
+    nested = (
+        tmp_path
+        / "external"
+        / "campaigns"
+        / "figures-8-11-7587c7c6382c"
+        / "nested"
+    )
+    nested.mkdir(parents=True)
+
+    with pytest.raises(CampaignLocationError, match="protected legacy"):
+        resolve_campaign_layout(
+            campaign_dir=nested,
+            repository=repository,
+        )
+
+
 def test_location_arguments_must_be_absolute(tmp_path: Path, monkeypatch) -> None:
     monkeypatch.chdir(tmp_path)
     with pytest.raises(CampaignLocationError, match="absolute"):
@@ -88,3 +108,40 @@ def test_location_arguments_must_be_absolute(tmp_path: Path, monkeypatch) -> Non
             repository=tmp_path / "repo",
             require_existing=False,
         )
+
+
+def test_manifest_campaign_root_must_be_absolute(tmp_path: Path) -> None:
+    repository = tmp_path / "repo"
+    repository.mkdir()
+    manifest = tmp_path / "manifest.json"
+    atomic_write_json(
+        manifest,
+        {"campaign_id": "demo", "campaign_root": "relative/campaign"},
+    )
+
+    with pytest.raises(CampaignLocationError, match="absolute"):
+        resolve_campaign_layout(
+            manifest_path=manifest,
+            repository=repository,
+        )
+
+
+def test_existing_manifest_cannot_redirect_resolved_layout(tmp_path: Path) -> None:
+    repository = tmp_path / "repo"
+    repository.mkdir()
+    campaign = tmp_path / "external" / "campaigns" / "demo"
+    campaign.mkdir(parents=True)
+    layout = resolve_campaign_layout(
+        campaign_dir=campaign,
+        repository=repository,
+    )
+    atomic_write_json(
+        layout.manifest_path,
+        {
+            "campaign_id": "demo",
+            "campaign_root": str((tmp_path / "other" / "demo").resolve()),
+        },
+    )
+
+    with pytest.raises(CampaignLocationError, match="does not match"):
+        load_campaign_manifest(layout)
