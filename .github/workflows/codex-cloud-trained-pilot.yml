@@ -1,0 +1,190 @@
+name: Codex cloud ECHO trained pilot
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - ".github/workflows/codex-cloud-trained-pilot.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  issues: write
+
+concurrency:
+  group: codex-cloud-echo-trained-pilot
+  cancel-in-progress: false
+
+jobs:
+  trained-pilot:
+    runs-on: ubuntu-latest
+    timeout-minutes: 355
+    env:
+      MPLBACKEND: Agg
+      PYTHONUNBUFFERED: "1"
+      RUN_ROOT: ${{ runner.temp }}/echo_outputs
+      CAMPAIGN_ID: echo-trained-pilot-cloud-${{ github.run_id }}
+
+    steps:
+      - name: Check out canonical main
+        uses: actions/checkout@v4
+        with:
+          ref: main
+          fetch-depth: 1
+
+      - name: Publish start status
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const title = '[Cloud] ECHO trained pilot status';
+            const body = [
+              '# RUNNING',
+              '',
+              '- SHA: ' + context.sha,
+              '- Campaign: echo-trained-pilot-cloud-' + context.runId,
+              '- Run: ' + context.serverUrl + '/' + context.repo.owner + '/' + context.repo.repo + '/actions/runs/' + context.runId,
+              '- Scope: validation, learner-backed train/eval/pilot chain, aggregation, verification, figures, archive',
+              '- Runtime output: ephemeral runner storage plus retained GitHub artifact',
+              '- Paper-scale campaign: no',
+            ].join('\n');
+            const {data: issues} = await github.rest.issues.listForRepo({
+              owner: context.repo.owner, repo: context.repo.repo, state: 'all', per_page: 100,
+            });
+            const existing = issues.find(i => !i.pull_request && i.title === title);
+            if (existing) {
+              await github.rest.issues.update({
+                owner: context.repo.owner, repo: context.repo.repo,
+                issue_number: existing.number, state: 'open', title, body,
+              });
+            } else {
+              await github.rest.issues.create({
+                owner: context.repo.owner, repo: context.repo.repo, title, body,
+              });
+            }
+
+      - name: Set up Python 3.11
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+          cache: pip
+
+      - name: Install project
+        shell: bash
+        run: |
+          set -euo pipefail
+          python -m pip install --upgrade pip
+          python -m pip install -e '.[dev]'
+          mkdir -p "$RUN_ROOT/logs" "$RUN_ROOT/campaigns"
+          {
+            echo "repository=${{ github.repository }}"
+            echo "sha=${{ github.sha }}"
+            echo "campaign_id=$CAMPAIGN_ID"
+            echo "run_root=$RUN_ROOT"
+            python --version
+          } | tee "$RUN_ROOT/logs/environment.log"
+
+      - name: Validate installed application
+        shell: bash
+        run: |
+          set -euo pipefail
+          python -m compileall -q src/hoodie src/environment
+          hoodie-experiments --help
+          for command in aggregate verify render export-bundle finalize echo-train echo-eval echo-diff echo-pilot echo-status echo-verify-run
+          do
+            hoodie-experiments "$command" --help
+          done
+          python -m pytest -q             tests/unit/test_echo_campaign_layout.py             tests/unit/test_echo_cli_parser.py             tests/unit/test_resume_missing_job_dir.py             tests/unit/test_evaluation_reset_runtime_fix.py             tests/unit/test_external_pipeline_layout.py             2>&1 | tee "$RUN_ROOT/logs/focused-validation.log"
+          bash scripts/echo/run_verified_smoke.sh "$RUN_ROOT/control-smoke"             2>&1 | tee "$RUN_ROOT/logs/control-smoke.log"
+          python -m pytest -q             tests/unit tests/integration tests/acceptance             -m "not slow and not requires_cuda and not requires_mps"             2>&1 | tee "$RUN_ROOT/logs/non-long-validation.log"
+
+      - name: Execute learner-backed training
+        shell: bash
+        run: |
+          set -euo pipefail
+          hoodie-experiments echo-train             --run-root "$RUN_ROOT"             --campaign-id "$CAMPAIGN_ID"             --max-runtime-seconds 9000             2>&1 | tee "$RUN_ROOT/logs/echo-train.log"
+          hoodie-experiments echo-status             --run-root "$RUN_ROOT"             --campaign-id "$CAMPAIGN_ID"             2>&1 | tee "$RUN_ROOT/logs/status-after-train.json"
+
+      - name: Execute held-out evaluation
+        shell: bash
+        run: |
+          set -euo pipefail
+          hoodie-experiments echo-eval             --run-root "$RUN_ROOT"             --campaign-id "$CAMPAIGN_ID"             --max-runtime-seconds 3600             2>&1 | tee "$RUN_ROOT/logs/echo-eval.log"
+          hoodie-experiments echo-status             --run-root "$RUN_ROOT"             --campaign-id "$CAMPAIGN_ID"             2>&1 | tee "$RUN_ROOT/logs/status-after-eval.json"
+
+      - name: Execute trained pilot and finalize
+        shell: bash
+        run: |
+          set -euo pipefail
+          hoodie-experiments echo-pilot             --run-root "$RUN_ROOT"             --campaign-id "$CAMPAIGN_ID"             --max-runtime-seconds 3600             2>&1 | tee "$RUN_ROOT/logs/echo-pilot.log"
+          hoodie-experiments aggregate --run-root "$RUN_ROOT" --campaign-id "$CAMPAIGN_ID"             2>&1 | tee "$RUN_ROOT/logs/aggregate.log"
+          hoodie-experiments verify --run-root "$RUN_ROOT" --campaign-id "$CAMPAIGN_ID"             2>&1 | tee "$RUN_ROOT/logs/verify.log"
+          hoodie-experiments render --run-root "$RUN_ROOT" --campaign-id "$CAMPAIGN_ID"             2>&1 | tee "$RUN_ROOT/logs/render.log"
+          hoodie-experiments export-bundle --run-root "$RUN_ROOT" --campaign-id "$CAMPAIGN_ID"             2>&1 | tee "$RUN_ROOT/logs/export-bundle.log"
+          hoodie-experiments finalize --run-root "$RUN_ROOT" --campaign-id "$CAMPAIGN_ID"             2>&1 | tee "$RUN_ROOT/logs/finalize.log"
+          hoodie-experiments echo-verify-run --run-root "$RUN_ROOT" --campaign-id "$CAMPAIGN_ID"             2>&1 | tee "$RUN_ROOT/logs/echo-verify-run.log"
+
+      - name: Capture terminal inventory
+        if: always()
+        shell: bash
+        run: |
+          set +e
+          mkdir -p "$RUN_ROOT"
+          {
+            echo "sha=${{ github.sha }}"
+            echo "campaign_id=$CAMPAIGN_ID"
+            echo "job_status=${{ job.status }}"
+            find "$RUN_ROOT" -type f -print | sort
+          } > "$RUN_ROOT/terminal-inventory.txt"
+          du -sh "$RUN_ROOT" > "$RUN_ROOT/output-size.txt"
+          find "$RUN_ROOT" -type f -exec sha256sum {} + > "$RUN_ROOT/CONTAINER_SHA256SUMS" 2>/dev/null
+
+      - name: Upload complete execution evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: echo-trained-pilot-cloud-${{ github.run_id }}
+          path: ${{ runner.temp }}/echo_outputs
+          if-no-files-found: error
+          retention-days: 30
+          compression-level: 6
+
+      - name: Publish terminal status
+        if: always()
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const title = '[Cloud] ECHO trained pilot status';
+            const status = '${{ job.status }}';
+            const terminal = status === 'success' ? 'COMPLETED' : 'FAILED';
+            const body = [
+              '# ' + terminal,
+              '',
+              '- SHA: ' + context.sha,
+              '- Campaign: echo-trained-pilot-cloud-' + context.runId,
+              '- Run: ' + context.serverUrl + '/' + context.repo.owner + '/' + context.repo.repo + '/actions/runs/' + context.runId,
+              '- Job status: ' + status,
+              '- Artifact: echo-trained-pilot-cloud-' + context.runId,
+              '- Paper-scale campaign: no',
+              '',
+              status === 'success'
+                ? 'The trained-pilot chain, verification, figures, and archive completed.'
+                : 'Execution evidence and failure logs were retained in the run artifact.',
+            ].join('\n');
+            const {data: issues} = await github.rest.issues.listForRepo({
+              owner: context.repo.owner, repo: context.repo.repo, state: 'all', per_page: 100,
+            });
+            const existing = issues.find(i => !i.pull_request && i.title === title);
+            if (existing) {
+              const update = {
+                owner: context.repo.owner, repo: context.repo.repo,
+                issue_number: existing.number,
+                state: status === 'success' ? 'closed' : 'open',
+                title, body,
+              };
+              if (status === 'success') update.state_reason = 'completed';
+              await github.rest.issues.update(update);
+            } else {
+              await github.rest.issues.create({
+                owner: context.repo.owner, repo: context.repo.repo, title, body,
+              });
+            }
