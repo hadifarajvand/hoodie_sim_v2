@@ -1,0 +1,55 @@
+{
+  "schema_version": 1,
+  "figure_5": {
+    "purpose": "training_parameter_selection",
+    "panels": {
+      "a": "accumulated_reward_vs_training_episode_by_learning_rate",
+      "b": "accumulated_reward_vs_training_episode_by_discount_factor"
+    },
+    "selection_rule": "select_on_validation_data_and_freeze_before_held_out_testing"
+  },
+  "figure_6": {
+    "purpose": "behaviour_and_scalability",
+    "panels": {
+      "a": "average_reward_vs_arrival_probability_by_network_size",
+      "b": "local_horizontal_vertical_action_counts",
+      "c": "average_reward_vs_cpu_capacity_by_network_size",
+      "d": "average_reward_vs_agent_count_by_traffic_level",
+      "e": "average_reward_vs_agent_count_by_link_rate_scenario"
+    }
+  },
+  "figure_7": {
+    "purpose": "main_baseline_comparison",
+    "methods": ["ECHO", "HOODIE", "RO", "FLC", "VO", "HO", "BCO", "MLEO"],
+    "panels": {
+      "a": "successful_task_delay_vs_arrival_probability",
+      "b": "successful_task_delay_vs_cpu_capacity",
+      "c": "successful_task_delay_vs_timeout",
+      "d": "task_drop_ratio_vs_arrival_probability",
+      "e": "task_drop_ratio_vs_cpu_capacity",
+      "f": "task_drop_ratio_vs_timeout"
+    }
+  },
+  "figure_8": {
+    "purpose": "lstm_comparison",
+    "methods": ["ECHO", "ECHO-NoLSTM"],
+    "only_allowed_difference": "destination_load_estimation_source",
+    "panels": {
+      "a": "successful_task_delay_vs_training_episode",
+      "b": "successful_task_delay_vs_arrival_probability"
+    }
+  },
+  "required_exports_per_figure": [
+    "panel_csv",
+    "seed_level_csv",
+    "mean_and_ci_csv",
+    "pdf",
+    "svg",
+    "png_300_dpi",
+    "configuration",
+    "trace_hashes",
+    "checkpoint_ids_and_hashes",
+    "code_commit",
+    "reproducibility_manifest"
+  ]
+}
