@@ -1,0 +1,51 @@
+name: Temporary ECHO validation dispatcher
+
+on:
+  schedule:
+    - cron: "25 * * * *"
+  workflow_dispatch:
+
+permissions:
+  actions: write
+  contents: read
+  issues: write
+
+jobs:
+  dispatch:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Mark validation dispatch
+        env:
+          GH_TOKEN: ${{ github.token }}
+          GH_REPO: ${{ github.repository }}
+          SOURCE_SHA: ${{ github.sha }}
+          RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          body=$(cat <<EOF
+          # DISPATCHING
+
+          - SHA: \`$SOURCE_SHA\`
+          - Dispatcher: $RUN_URL
+          - Scope: compile, installed CLI help, focused regressions, deterministic smoke, all non-long CPU tests
+          - Long experiment started: \`no\`
+          EOF
+          )
+          gh api \
+            --method PATCH \
+            "repos/$GH_REPO/issues/41" \
+            -f body="$body" >/dev/null
+
+      - name: Dispatch non-long validation
+        env:
+          GH_TOKEN: ${{ github.token }}
+          GH_REPO: ${{ github.repository }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          gh api \
+            --method POST \
+            "repos/$GH_REPO/actions/workflows/echo-cli-validation.yml/dispatches" \
+            -f ref=main
