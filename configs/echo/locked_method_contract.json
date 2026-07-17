@@ -1,0 +1,62 @@
+{
+  "schema_version": 1,
+  "method": "ECHO",
+  "authority": {
+    "primary": "00_CURRENT/02_ECHO-Article_Current.tex",
+    "supporting_source_archive": "00_CURRENT/03_ECHO-Article_Current_Source.zip",
+    "inherited_mechanics": "03_REFERENCE_PAPERS/HOODIE_paper.pdf",
+    "visual_cross_check_only": "00_CURRENT/01_ECHO-Article_Current_PreResults.pdf"
+  },
+  "allowed_differences_from_hoodie": {
+    "waiting_source_queue_order": {
+      "private": "ERT",
+      "outbound": "ERT",
+      "tie_break": ["arrival_slot", "task_id"],
+      "recompute": "only_when_corresponding_source_resource_is_idle"
+    },
+    "route_control": {
+      "filter": "predicted_completion_slot_at_or_before_deadline",
+      "all_late_fallback": "minimum_predicted_lateness",
+      "fallback_tie_break": "fixed_route_index"
+    },
+    "action_mask": {
+      "exploration": true,
+      "exploitation": true,
+      "double_dqn_online_next_argmax": true,
+      "target_network_evaluates_selected_legal_action": true
+    },
+    "reward": {
+      "additional_terms": ["one_fixed_realized_deadline_drop_penalty"]
+    }
+  },
+  "forbidden_changes": {
+    "active_service_preemption": true,
+    "destination_queue_reordering": true,
+    "ert_in_neural_observation": true,
+    "predicted_risk_reward_penalty": true,
+    "learner_architecture_change": true,
+    "replay_format_change": true,
+    "target_copy_schedule_change": true,
+    "physical_kernel_change": true
+  },
+  "inherited_unchanged": [
+    "topology",
+    "task_generation",
+    "private_outbound_and_source_indexed_destination_queues",
+    "destination_fifo",
+    "equal_destination_capacity_sharing",
+    "state_construction",
+    "lstm_load_prediction",
+    "dueling_double_dqn",
+    "replay_memory",
+    "target_network_schedule",
+    "epsilon_schedule",
+    "episode_lifecycle"
+  ],
+  "invariants": [
+    "generated = successful + dropped",
+    "completion_in_deadline_slot_is_success",
+    "selected_remote_destination_is_committed_at_arrival",
+    "same_effective_mask_is_used_in_all_action_selection_paths"
+  ]
+}
