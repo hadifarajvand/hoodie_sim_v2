@@ -58,4 +58,4 @@ Keep source, tests, configs, scientific contracts, approved paper references, co
 
 Do not commit generated runs, checkpoints, replay buffers, raw datasets, PID files, daemon state, large logs, temporary transport payloads, caches, generic agent-framework distributions, or historical generated artifacts under the active `artifacts/` tree.
 
-See [docs/tracking-policy.md](docs/tracking-policy.md), [docs/architecture/project-scope.md](docs/architecture/project-scope.md), and [docs/runbooks/hoodie-corrected-campaign.md](docs/runbooks/hoodie-corrected-campaign.md).
+See [docs/tracking-policy.md](docs/tracking-policy.md), [docs/architecture/project-scope.md](docs/architecture/project-scope.md), and [docs/runbooks/repository-consolidation.md](docs/runbooks/repository-consolidation.md).
