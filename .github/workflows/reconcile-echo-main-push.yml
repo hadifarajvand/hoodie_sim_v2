@@ -1,0 +1,36 @@
+name: One-shot reconcile verified ECHO branch
+
+on:
+  push:
+    branches:
+      - main
+
+permissions:
+  contents: write
+
+jobs:
+  reconcile:
+    if: contains(github.event.head_commit.message, 'run one-shot main reconciliation')
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out verified ECHO branch
+        uses: actions/checkout@v4
+        with:
+          ref: echo/verified-figures-5-8
+          fetch-depth: 0
+
+      - name: Merge main history and push verified branch
+        shell: bash
+        run: |
+          set -euo pipefail
+          git fetch origin main echo/verified-figures-5-8
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          if git merge-base --is-ancestor origin/main HEAD; then
+            echo "MAIN_ALREADY_ANCESTOR"
+            exit 0
+          fi
+          git merge --no-ff -X ours origin/main \
+            -m "Merge main history into verified ECHO execution branch"
+          git push origin HEAD:echo/verified-figures-5-8
+          echo "MAIN_RECONCILIATION_PUSHED"
