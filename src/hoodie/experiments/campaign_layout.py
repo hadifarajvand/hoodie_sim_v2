@@ -93,6 +93,10 @@ def _validate_campaign_id(campaign_id: str) -> str:
     return value
 
 
+def _contains_protected_campaign(path: Path) -> bool:
+    return any(part in PROTECTED_CAMPAIGN_IDS for part in path.parts)
+
+
 def _campaign_from_run_root(run_root: Path, campaign_id: str) -> Path:
     # Accept either the external application root (.../echo_outputs) or its
     # explicit campaigns directory (.../echo_outputs/campaigns).
@@ -149,7 +153,7 @@ def resolve_campaign_layout(
             raise CampaignLocationError(
                 f"manifest does not record campaign_root: {selected_manifest}"
             )
-        root = _normalize(str(raw_root))
+        root = _require_absolute(str(raw_root), "manifest campaign_root")
         selected_id = _validate_campaign_id(str(manifest.get("campaign_id") or root.name))
         if root.name != selected_id:
             raise CampaignLocationError(
@@ -176,9 +180,9 @@ def resolve_campaign_layout(
         raise CampaignLocationError(
             f"campaign root must be outside the repository: {root}"
         )
-    if root.name in PROTECTED_CAMPAIGN_IDS:
+    if _contains_protected_campaign(root):
         raise CampaignLocationError(
-            f"protected legacy campaign is not accessible: {root.name}"
+            f"protected legacy campaign path is not accessible: {root}"
         )
 
     if require_existing and not root.is_dir():
@@ -206,6 +210,20 @@ def resolve_campaign_layout(
 def load_campaign_manifest(layout: CampaignLayout) -> dict[str, Any]:
     if layout.manifest_path.exists():
         payload = _read_json(layout.manifest_path)
+        recorded_id = payload.get("campaign_id")
+        recorded_root = payload.get("campaign_root")
+        if recorded_id is not None and str(recorded_id) != layout.campaign_id:
+            raise CampaignLocationError(
+                "manifest campaign_id does not match the resolved campaign"
+            )
+        if recorded_root is not None:
+            normalized_recorded_root = _require_absolute(
+                str(recorded_root), "manifest campaign_root"
+            )
+            if normalized_recorded_root != layout.campaign_root:
+                raise CampaignLocationError(
+                    "manifest campaign_root does not match the resolved campaign"
+                )
     else:
         payload = {}
     payload.setdefault("campaign_id", layout.campaign_id)
