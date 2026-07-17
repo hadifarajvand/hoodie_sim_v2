@@ -1,61 +1,104 @@
-# HOODIE simulation and Figures 8–11 reproduction
+# ECHO and HOODIE simulation — Figures 5–8
 
-This repository implements a scientifically traceable reproduction pipeline for the HOODIE paper.
+This is the single canonical repository for the ECHO thesis simulation and the reproduced HOODIE baseline.
 
-## Main goal
+## Current scientific goal
 
-Produce one correct, reproducible path from the frozen paper contracts to:
+Verify the shared HOODIE runtime and learner, implement ECHO only as the limited extension locked by the current manuscript, then generate traceable empirical outputs for Figures 5–8.
 
-1. the HOODIE environment and learning method;
-2. the required baseline policies;
-3. dependency-safe training and evaluation;
-4. panel-specific datasets for Figures 8–11;
-5. executable scientific verification;
-6. final traceable figures and a reproducibility bundle.
+ECHO changes only:
 
-ECHO thesis development is downstream of this baseline. Generic agent frameworks, runtime orchestration state, historical reports, and generated experiment outputs are not part of the scientific runtime.
+- ERT ordering for waiting private and outbound source queues;
+- predicted-completion route filtering;
+- minimum-lateness fallback when all routes are predicted late;
+- the same effective mask during exploration, exploitation, and Double-DQN bootstrapping;
+- one additional fixed realized deadline-drop penalty.
 
-## Repository-consolidation gate
+ECHO must not change the inherited neural observation, LSTM architecture, Dueling Double-DQN lifecycle, replay format, destination FIFO order, equal destination sharing, non-preemptive service, topology, task generation, or episode lifecycle.
 
-The paper-scale experiment is locked until the active tree has one canonical package and one implementation of each scientific responsibility:
+## Canonical location
 
-```bash
-python scripts/audit/repository_consolidation_gate.py --check
+```text
+Repository: hadifarajvand/hoodie_sim_v2
+Branch:     main
+Local:      /Users/hadi/Documents/GitHub/hoodie_sim_v2
+Run root:   /Volumes/ADATA-1TB-External/echo_outputs
 ```
 
-This gate rejects tracked generated artifacts, legacy active test/package roots, `*_patch.py` and `*_v2.py` execution modules, `src.*` imports inside the canonical package, active ECHO dependencies, noncanonical packaging, and missing canonical executor/verification/visualization paths.
+Do not create another repository, clone, fork, mirror, or worktree for this project unless explicitly requested.
 
-## Full validation
-
-After the consolidation gate passes:
+## Fetch and install
 
 ```bash
-python scripts/audit/full_repository_audit.py --check
-bash scripts/hoodie/corrected_campaign.sh validate
+cd /Users/hadi/Documents/GitHub/hoodie_sim_v2
+
+git remote set-url origin https://github.com/hadifarajvand/hoodie_sim_v2.git
+git fetch --prune origin main
+git switch main
+git reset --hard origin/main
+
+python3.11 -m venv .venv
+source .venv/bin/activate
+python -m pip install --upgrade pip
+python -m pip install -e '.[dev]'
+
+bash scripts/echo/verify_single_repository.sh
 ```
 
-Do not start a paper-scale run unless all three commands pass from a clean checkout at the exact remote commit.
+Use `git reset --hard origin/main` only after confirming there is no local work that must be preserved.
 
-## Run storage
+## Verified bounded surfaces
 
-Production and pilot runs must be stored outside the tracked repository:
+Control-mechanism smoke:
 
 ```bash
-export HOODIE_RUN_ROOT=/absolute/path/on/large-storage/hoodie-runs
+rm -rf /Volumes/ADATA-1TB-External/echo_outputs/control-smoke
+bash scripts/echo/run_verified_smoke.sh \
+  /Volumes/ADATA-1TB-External/echo_outputs/control-smoke
 ```
 
-The run root contains campaign data, checkpoints, replay snapshots, worker state, logs, aggregates, figures, and release bundles. These files are intentionally excluded from Git.
+Paired physical-kernel pilot:
 
-## Safety boundary
+```bash
+rm -rf \
+  /Volumes/ADATA-1TB-External/echo_outputs/paired-kernel-pilot \
+  /Volumes/ADATA-1TB-External/echo_outputs/paired-kernel-pilot.zip \
+  /Volumes/ADATA-1TB-External/echo_outputs/paired-kernel-pilot.zip.sha256
 
-The paused legacy campaign `figures-8-11-7587c7c6382c` must never be run, resumed, renamed, imported into, or modified.
+bash scripts/echo/run_paired_kernel_pilot.sh \
+  /Volumes/ADATA-1TB-External/echo_outputs/paired-kernel-pilot
 
-Do not use process-killing commands. Workers stop cooperatively at completed-episode boundaries.
+cd /Volumes/ADATA-1TB-External/echo_outputs
+shasum -a 256 -c paired-kernel-pilot.zip.sha256
+```
 
-## Repository policy
+These outputs are validation evidence only and are labelled `NOT PAPER EVIDENCE`.
 
-Keep source, tests, configs, scientific contracts, approved paper references, concise architecture documents, and small reproducibility manifests in Git.
+## Next execution stage
 
-Do not commit generated runs, checkpoints, replay buffers, raw datasets, PID files, daemon state, large logs, temporary transport payloads, caches, generic agent-framework distributions, or historical generated artifacts under the active `artifacts/` tree.
+The next stage is application-surface verification through the installed `hoodie-experiments` CLI:
 
-See [docs/tracking-policy.md](docs/tracking-policy.md), [docs/architecture/project-scope.md](docs/architecture/project-scope.md), and [docs/runbooks/repository-consolidation.md](docs/runbooks/repository-consolidation.md).
+1. bounded real HOODIE training;
+2. held-out evaluation;
+3. checkpoint round-trip reload;
+4. fixed-trace HOODIE versus ECHO-disabled differential execution;
+5. malformed-input probes;
+6. a real trained pilot with 2–3 seeds.
+
+Do not start the paper-scale 10-seed × 200-held-out-episode campaign until the trained pilot and all lineage checks pass.
+
+## Runtime storage and safety
+
+All checkpoints, traces, logs, metrics, manifests, figures, and archives belong under:
+
+```text
+/Volumes/ADATA-1TB-External/echo_outputs
+```
+
+Never run or mutate `figures-8-11-7587c7c6382c`. Never use projected values as empirical evidence. Never use broad process-killing commands. Never force-push `main` during normal development.
+
+See:
+
+- `docs/echo/SINGLE_REPOSITORY_POLICY.md`
+- `docs/scientific-contracts/`
+- `configs/contracts/`
