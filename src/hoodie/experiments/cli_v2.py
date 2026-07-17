@@ -42,6 +42,15 @@ from .panel_registry import PANEL_REGISTRY
 from .preflight import run_preflight
 from .runtime_fixes import install_runtime_fixes
 from .scientific_pipeline import verify_bundle
+from .trained_pilot import (
+    PilotConfig,
+    echo_diff as run_trained_diff,
+    echo_eval as run_trained_eval,
+    echo_pilot as run_trained_pilot,
+    echo_status as trained_status,
+    echo_train as run_trained_training,
+    echo_verify_run as verify_trained_run,
+)
 
 install_runtime_fixes()
 
@@ -163,6 +172,32 @@ def add_execution_arguments(parser: argparse.ArgumentParser) -> None:
     parser.add_argument("--max-runtime-seconds", type=float)
     parser.add_argument("--job-id")
     parser.add_argument("--allow-paused-recovery", action="store_true")
+
+
+def add_trained_pilot_arguments(
+    parser: argparse.ArgumentParser, *, runtime_limit: bool = False
+) -> None:
+    parser.add_argument("--run-root", required=True)
+    parser.add_argument("--campaign-id", required=True)
+    parser.add_argument("--agent-count", type=int, default=20)
+    parser.add_argument("--episode-slots", type=int, default=110)
+    parser.add_argument("--drain-slots", type=int, default=10)
+    parser.add_argument("--training-episodes", type=int, default=12)
+    parser.add_argument("--evaluation-episodes", type=int, default=20)
+    parser.add_argument("--checkpoint-interval-episodes", type=int, default=3)
+    if runtime_limit:
+        parser.add_argument("--max-runtime-seconds", type=float)
+
+
+def _trained_config(args: argparse.Namespace) -> PilotConfig:
+    return PilotConfig(
+        agent_count=args.agent_count,
+        episode_slots=args.episode_slots,
+        drain_slots=args.drain_slots,
+        training_episodes=args.training_episodes,
+        evaluation_episodes=args.evaluation_episodes,
+        checkpoint_interval_episodes=args.checkpoint_interval_episodes,
+    )
 
 
 def _layout(args: argparse.Namespace, *, require_existing: bool = True) -> CampaignLayout:
@@ -356,21 +391,18 @@ def build_parser() -> argparse.ArgumentParser:
     clean.add_argument("--path", required=True)
     clean.add_argument("--confirm", action="store_true")
 
-    for name in ("echo-train", "echo-eval", "echo-pilot"):
-        command = sub.add_parser(name)
-        add_execution_arguments(command)
-
-    echo_status = sub.add_parser("echo-status")
-    add_campaign_location_arguments(echo_status)
-    echo_status.add_argument("--matrix")
-
-    echo_verify = sub.add_parser("echo-verify-run")
-    add_campaign_location_arguments(echo_verify)
-
+    echo_train = sub.add_parser("echo-train")
+    add_trained_pilot_arguments(echo_train, runtime_limit=True)
+    echo_eval = sub.add_parser("echo-eval")
+    add_trained_pilot_arguments(echo_eval)
     echo_diff = sub.add_parser("echo-diff")
-    echo_diff.add_argument("--left", required=True)
-    echo_diff.add_argument("--right", required=True)
-    echo_diff.add_argument("--output", required=True)
+    add_trained_pilot_arguments(echo_diff)
+    echo_pilot = sub.add_parser("echo-pilot")
+    add_trained_pilot_arguments(echo_pilot, runtime_limit=True)
+    echo_status = sub.add_parser("echo-status")
+    add_trained_pilot_arguments(echo_status)
+    echo_verify = sub.add_parser("echo-verify-run")
+    add_trained_pilot_arguments(echo_verify)
 
     return parser
 
@@ -476,20 +508,36 @@ def dispatch(args: argparse.Namespace) -> object:
         )
     if args.command == "clean":
         return _clean(args)
-    if args.command in {"echo-train", "echo-eval", "echo-pilot"}:
-        result = _run_echo_execution(args, resume=args.command == "echo-eval")
-        if args.command == "echo-pilot":
-            status = _status_for_layout(_layout(args), args.matrix)
-            result["status"] = status
-            if status.get("completed_jobs") == status.get("total"):
-                result["finalization"] = finalize_campaign(_layout(args))
-        return result
-    if args.command == "echo-status":
-        return _status_for_layout(_layout(args), args.matrix)
-    if args.command == "echo-verify-run":
-        return verify_run(_layout(args))
+    if args.command == "echo-train":
+        return run_trained_training(
+            args.run_root,
+            args.campaign_id,
+            config=_trained_config(args),
+            max_runtime_seconds=args.max_runtime_seconds,
+        )
+    if args.command == "echo-eval":
+        return run_trained_eval(
+            args.run_root, args.campaign_id, config=_trained_config(args)
+        )
     if args.command == "echo-diff":
-        return _echo_diff(args)
+        return run_trained_diff(
+            args.run_root, args.campaign_id, config=_trained_config(args)
+        )
+    if args.command == "echo-pilot":
+        return run_trained_pilot(
+            args.run_root,
+            args.campaign_id,
+            config=_trained_config(args),
+            max_runtime_seconds=args.max_runtime_seconds,
+        )
+    if args.command == "echo-status":
+        return trained_status(
+            args.run_root, args.campaign_id, config=_trained_config(args)
+        )
+    if args.command == "echo-verify-run":
+        return verify_trained_run(
+            args.run_root, args.campaign_id, config=_trained_config(args)
+        )
     raise ValueError(f"unsupported command: {args.command}")
 
 

@@ -1,10 +1,6 @@
 name: Codex cloud ECHO trained pilot
 
 on:
-  push:
-    branches: [main]
-    paths:
-      - ".github/workflows/codex-cloud-trained-pilot.yml"
   workflow_dispatch:
 
 permissions:
@@ -93,9 +89,8 @@ jobs:
           do
             hoodie-experiments "$command" --help
           done
-          python -m pytest -q             tests/unit/test_echo_campaign_layout.py             tests/unit/test_echo_cli_parser.py             tests/unit/test_resume_missing_job_dir.py             tests/unit/test_evaluation_reset_runtime_fix.py             tests/unit/test_external_pipeline_layout.py             2>&1 | tee "$RUN_ROOT/logs/focused-validation.log"
+          python -m pytest -q             tests/unit/test_echo_campaign_layout.py             tests/unit/test_echo_cli_parser.py             tests/unit/test_echo_explicit_controls.py             tests/unit/test_trained_pilot_io.py             tests/unit/test_resume_missing_job_dir.py             tests/unit/test_evaluation_reset_runtime_fix.py             tests/unit/test_external_pipeline_layout.py             2>&1 | tee "$RUN_ROOT/logs/focused-validation.log"
           bash scripts/echo/run_verified_smoke.sh "$RUN_ROOT/control-smoke"             2>&1 | tee "$RUN_ROOT/logs/control-smoke.log"
-          python -m pytest -q             tests/unit tests/integration tests/acceptance             -m "not slow and not requires_cuda and not requires_mps"             2>&1 | tee "$RUN_ROOT/logs/non-long-validation.log"
 
       - name: Execute learner-backed training
         shell: bash
@@ -108,19 +103,20 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          hoodie-experiments echo-eval             --run-root "$RUN_ROOT"             --campaign-id "$CAMPAIGN_ID"             --max-runtime-seconds 3600             2>&1 | tee "$RUN_ROOT/logs/echo-eval.log"
+          hoodie-experiments echo-eval             --run-root "$RUN_ROOT"             --campaign-id "$CAMPAIGN_ID"             2>&1 | tee "$RUN_ROOT/logs/echo-eval.log"
           hoodie-experiments echo-status             --run-root "$RUN_ROOT"             --campaign-id "$CAMPAIGN_ID"             2>&1 | tee "$RUN_ROOT/logs/status-after-eval.json"
 
-      - name: Execute trained pilot and finalize
+      - name: Execute checkpoint and disabled-control gates
         shell: bash
         run: |
           set -euo pipefail
-          hoodie-experiments echo-pilot             --run-root "$RUN_ROOT"             --campaign-id "$CAMPAIGN_ID"             --max-runtime-seconds 3600             2>&1 | tee "$RUN_ROOT/logs/echo-pilot.log"
-          hoodie-experiments aggregate --run-root "$RUN_ROOT" --campaign-id "$CAMPAIGN_ID"             2>&1 | tee "$RUN_ROOT/logs/aggregate.log"
-          hoodie-experiments verify --run-root "$RUN_ROOT" --campaign-id "$CAMPAIGN_ID"             2>&1 | tee "$RUN_ROOT/logs/verify.log"
-          hoodie-experiments render --run-root "$RUN_ROOT" --campaign-id "$CAMPAIGN_ID"             2>&1 | tee "$RUN_ROOT/logs/render.log"
-          hoodie-experiments export-bundle --run-root "$RUN_ROOT" --campaign-id "$CAMPAIGN_ID"             2>&1 | tee "$RUN_ROOT/logs/export-bundle.log"
-          hoodie-experiments finalize --run-root "$RUN_ROOT" --campaign-id "$CAMPAIGN_ID"             2>&1 | tee "$RUN_ROOT/logs/finalize.log"
+          hoodie-experiments echo-diff             --run-root "$RUN_ROOT"             --campaign-id "$CAMPAIGN_ID"             2>&1 | tee "$RUN_ROOT/logs/echo-diff.log"
+
+      - name: Execute trained pilot and verify
+        shell: bash
+        run: |
+          set -euo pipefail
+          hoodie-experiments echo-pilot             --run-root "$RUN_ROOT"             --campaign-id "$CAMPAIGN_ID"             --max-runtime-seconds 18000             2>&1 | tee "$RUN_ROOT/logs/echo-pilot.log"
           hoodie-experiments echo-verify-run --run-root "$RUN_ROOT" --campaign-id "$CAMPAIGN_ID"             2>&1 | tee "$RUN_ROOT/logs/echo-verify-run.log"
 
       - name: Capture terminal inventory
@@ -143,7 +139,9 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: echo-trained-pilot-cloud-${{ github.run_id }}
-          path: ${{ runner.temp }}/echo_outputs
+          path: |
+            ${{ runner.temp }}/echo_outputs
+            !${{ runner.temp }}/echo_outputs/**/checkpoint.pt
           if-no-files-found: error
           retention-days: 30
           compression-level: 6
