@@ -43,6 +43,7 @@ CANONICAL_REQUIRED = {
     "tests/acceptance",
 }
 ACTIVE_PYTHON_PREFIXES = ("src/hoodie/",)
+ACTIVE_PYTHON_EXCLUDE = ()
 
 
 @dataclass(frozen=True, slots=True)

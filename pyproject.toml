@@ -48,21 +48,9 @@ exclude = ["tests*", "tests_historical*", "artifacts*", "resources*", "runs*"]
 
 [tool.pytest.ini_options]
 testpaths = [
-  "tests_supported/hoodie",
   "tests/unit",
   "tests/integration",
   "tests/acceptance",
-]
-norecursedirs = [
-  ".git",
-  ".venv",
-  "venv",
-  "build",
-  "dist",
-  "artifacts",
-  "resources",
-  "runs",
-  "tests_historical",
 ]
 addopts = "-ra --strict-markers"
 markers = [
