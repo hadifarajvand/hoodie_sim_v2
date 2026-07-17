@@ -4,14 +4,14 @@ set -euo pipefail
 EXPECTED_REPOSITORY="hadifarajvand/hoodie_sim_v2"
 EXPECTED_HTTPS="https://github.com/${EXPECTED_REPOSITORY}.git"
 EXPECTED_SSH="git@github.com:${EXPECTED_REPOSITORY}.git"
-EXPECTED_BRANCH="echo/verified-figures-5-8"
+EXPECTED_BRANCH="main"
 
 fail() {
   printf 'SINGLE_REPOSITORY_GUARD_FAILED: %s\n' "$1" >&2
   exit 1
 }
 
-repo_root="$(git rev-parse --show-toplevel 2>/dev/null)" 
+repo_root="$(git rev-parse --show-toplevel 2>/dev/null)"
 cd "$repo_root"
 
 origin_url="$(git remote get-url origin 2>/dev/null || true)"
