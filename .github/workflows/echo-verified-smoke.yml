@@ -1,0 +1,60 @@
+name: ECHO verified mechanism smoke
+
+on:
+  push:
+    branches:
+      - "echo/verified-figures-5-8"
+  pull_request:
+    paths:
+      - "src/echo_verified/**"
+      - "tests/unit/test_echo_verified_control.py"
+      - "tests/integration/test_echo_verified_smoke.py"
+      - "configs/echo/**"
+      - "scripts/echo/**"
+      - ".github/workflows/echo-verified-smoke.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  smoke:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+          cache: pip
+      - name: Install
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install -e '.[dev]'
+      - name: Unit and integration tests
+        run: |
+          python -m pytest -q \
+            tests/unit/test_echo_verified_control.py \
+            tests/integration/test_echo_verified_smoke.py
+      - name: Execute deterministic smoke
+        run: |
+          rm -rf /tmp/echo-verified-smoke
+          python -m src.echo_verified.smoke \
+            --output-root /tmp/echo-verified-smoke
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          result = json.loads(Path('/tmp/echo-verified-smoke/summary.json').read_text())
+          assert result['status'] == 'ECHO_VERIFIED_MECHANISM_SMOKE_PASSED'
+          assert result['paper_scale_started'] is False
+          assert result['tasks']['generated'] == result['tasks']['successful'] + result['tasks']['dropped']
+          assert result['ert_absent_from_neural_observation'] is True
+          print(json.dumps(result, indent=2, sort_keys=True))
+          PY
+      - name: Upload bounded smoke evidence
+        uses: actions/upload-artifact@v4
+        with:
+          name: echo-verified-smoke-${{ github.sha }}
+          path: /tmp/echo-verified-smoke
+          if-no-files-found: error
+          retention-days: 14
