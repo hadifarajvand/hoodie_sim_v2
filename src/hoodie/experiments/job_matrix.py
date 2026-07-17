@@ -87,7 +87,21 @@ def _row(
     checkpoint_dependency: str | None,
     source_contract_hash: str,
 ) -> ProductionJobRow:
-    scientific_unit_id = f"{panel_id}:{independent_variable}:{independent_value}:{series_name}:{policy}:{variant}:{seed}"
+    agent_count = None
+    if isinstance(topology_contract, dict):
+        counts = topology_contract.get("agent_counts")
+        if isinstance(counts, (list, tuple)) and counts:
+            agent_count = counts[0]
+        elif counts is not None:
+            agent_count = counts
+    agent_count = None
+    if isinstance(topology_contract, dict):
+        counts = topology_contract.get("agent_counts")
+        if isinstance(counts, (list, tuple)) and counts:
+            agent_count = counts[0]
+        elif counts is not None:
+            agent_count = counts
+    scientific_unit_id = f"{panel_id}:{independent_variable}:{independent_value}:{series_name}:{policy}:{variant}:{agent_count}:{seed}"
     payload = {
         "campaign_id": campaign_id,
         "panel_id": panel_id,

@@ -171,9 +171,9 @@ def build_environment_config(
         arrival_probability=float(contract.get("task_arrival_probability", 0.5)),
         agent_count=_agent_count(contract),
         timeout_slots=timeout_slots,
-        local_service_capacity=local_ghz * slot_duration,
-        public_service_capacity=public_ghz * slot_duration,
-        cloud_service_capacity=cloud_ghz * slot_duration,
+        local_service_capacity=round(local_ghz * slot_duration, 12),
+        public_service_capacity=round(public_ghz * slot_duration, 12),
+        cloud_service_capacity=round(cloud_ghz * slot_duration, 12),
         slot_duration=slot_duration,
         metadata=metadata,
     )
