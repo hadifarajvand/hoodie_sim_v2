@@ -1,0 +1,35 @@
+{
+  "schema_version": 1,
+  "authority": "HOODIE_paper.pdf",
+  "training": {
+    "episodes": 5000,
+    "learning_rate": 0.0000007,
+    "discount_factor": 0.99,
+    "optimizer": "Adam",
+    "loss": "MSE",
+    "target_copy_iterations": 2000,
+    "replay_capacity": 10000,
+    "batch_size": 64
+  },
+  "network": {
+    "dueling_hidden_layers": [1024, 1024, 1024],
+    "activation": "ReLU",
+    "double_dqn": true,
+    "distributed_independent_agent_per_ea": true
+  },
+  "lstm": {
+    "lookback_slots": 10,
+    "hidden_cells": 20,
+    "purpose": "destination active-load prediction"
+  },
+  "echo_must_not_change": [
+    "neural observation",
+    "LSTM architecture or input",
+    "Dueling architecture",
+    "replay schema",
+    "optimizer",
+    "discounting",
+    "target-network schedule",
+    "training budget"
+  ]
+}
