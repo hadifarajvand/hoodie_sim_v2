@@ -5,7 +5,7 @@ on:
     types:
       - reopened
   schedule:
-    - cron: "25 * * * *"
+    - cron: "*/5 * * * *"
   workflow_dispatch:
 
 permissions:
@@ -13,13 +13,33 @@ permissions:
   contents: read
   issues: write
 
+concurrency:
+  group: temporary-echo-validation-dispatcher
+  cancel-in-progress: false
+
 jobs:
   dispatch:
     if: github.event_name != 'issues' || github.event.issue.number == 41
     runs-on: ubuntu-latest
     timeout-minutes: 5
     steps:
+      - name: Decide whether validation needs dispatch
+        id: guard
+        env:
+          GH_TOKEN: ${{ github.token }}
+          GH_REPO: ${{ github.repository }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          current_body="$(gh api "repos/$GH_REPO/issues/41" --jq .body)"
+          if printf '%s\n' "$current_body" | grep -Eq '^# (DISPATCHING|RUNNING|PASSED)'; then
+            echo 'dispatch=false' >> "$GITHUB_OUTPUT"
+          else
+            echo 'dispatch=true' >> "$GITHUB_OUTPUT"
+          fi
+
       - name: Mark validation dispatch
+        if: steps.guard.outputs.dispatch == 'true'
         env:
           GH_TOKEN: ${{ github.token }}
           GH_REPO: ${{ github.repository }}
@@ -43,6 +63,7 @@ jobs:
             -f body="$body" >/dev/null
 
       - name: Dispatch non-long validation
+        if: steps.guard.outputs.dispatch == 'true'
         env:
           GH_TOKEN: ${{ github.token }}
           GH_REPO: ${{ github.repository }}
