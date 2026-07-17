@@ -3,7 +3,7 @@ name: ECHO CLI and non-long validation
 on:
   push:
     branches:
-      - "fix/echo-cli-external-layout"
+      - "main"
   pull_request:
     paths:
       - "src/hoodie/experiments/**"
@@ -17,6 +17,10 @@ on:
 
 permissions:
   contents: read
+
+concurrency:
+  group: echo-cli-validation-${{ github.ref }}
+  cancel-in-progress: true
 
 jobs:
   validate:
