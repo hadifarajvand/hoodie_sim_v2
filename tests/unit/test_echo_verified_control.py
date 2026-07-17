@@ -30,12 +30,22 @@ def test_private_source_selection_uses_smallest_nonnegative_ert() -> None:
 
 def test_all_late_queue_selection_uses_minimum_lateness() -> None:
     result = select_next_waiting_task(
-        (WaitingTask("more_late", 0, 3, 5), WaitingTask("less_late", 1, 4, 2)),
+        (WaitingTask("more_late", 0, 5, 5), WaitingTask("less_late", 1, 5, 2)),
         current_slot=5,
     )
     assert result.selected is not None
     assert result.selected.task_id == "less_late"
     assert result.used_minimum_lateness is True
+
+
+def test_expired_waiting_tasks_are_removed_before_selection() -> None:
+    result = select_next_waiting_task(
+        (WaitingTask("expired", 0, 4, 1), WaitingTask("live", 1, 8, 1)),
+        current_slot=5,
+    )
+    assert result.expired_task_ids == ("expired",)
+    assert result.selected is not None
+    assert result.selected.task_id == "live"
 
 
 def test_route_filter_and_fallback() -> None:
