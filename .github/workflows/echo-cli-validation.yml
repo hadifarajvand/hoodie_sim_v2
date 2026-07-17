@@ -1,6 +1,9 @@
 name: ECHO CLI and non-long validation
 
 on:
+  push:
+    branches:
+      - "fix/echo-cli-external-layout"
   pull_request:
     paths:
       - "src/hoodie/experiments/**"
