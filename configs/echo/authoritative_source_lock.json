@@ -1,0 +1,59 @@
+{
+  "schema_version": 1,
+  "status": "LOCKED_PRE_RESULTS",
+  "authority_order": [
+    "02_ECHO-Article_Current.tex",
+    "03_ECHO-Article_Current_Source.zip",
+    "HOODIE_paper.pdf",
+    "repository_as_implementation_evidence_only",
+    "01_ECHO-Article_Current_PreResults.pdf_visual_cross_check_only"
+  ],
+  "sources": [
+    {
+      "name": "02_ECHO-Article_Current.tex",
+      "drive_id": "12fZMZaQykmVJNf3valU4unTQDCQOt9uX",
+      "size_bytes": 74600,
+      "sha256": "636688a47e5cc6185637394192cb98e205eb4baa80f50c64204639b56e82af84",
+      "role": "highest_authority",
+      "binding_scope": [
+        "ECHO method boundary",
+        "equations",
+        "Algorithms 1 and 2",
+        "event order",
+        "evaluation protocol",
+        "Figures 5-8 output contract"
+      ]
+    },
+    {
+      "name": "03_ECHO-Article_Current_Source.zip",
+      "drive_id": "1KjES9k1VTcuCtdWG7yMox6N1hFlkjt1O",
+      "size_bytes": 1912997,
+      "sha256": "6b0e2b1ebaba26fc00ec2759199024323ae0199f5a56c36b8193d2aca6cdbcfa",
+      "role": "supporting_source_archive"
+    },
+    {
+      "name": "HOODIE_paper.pdf",
+      "drive_id": "13S2Noql_zbeeGoAa5D_S0uK3wgxaimdm",
+      "sha256": "362ad3c4f61a69211a572fda6b9238bfeae00686b41233ebc70cbdd19bf558f4",
+      "role": "inherited_mechanics_authority"
+    },
+    {
+      "name": "01_ECHO-Article_Current_PreResults.pdf",
+      "drive_id": "1u6jkCFcS5eetHTcmiia-XKVBq2zF7KBZ",
+      "role": "visual_cross_check_only"
+    }
+  ],
+  "excluded_as_authority": [
+    "proposed_method_v3.docx",
+    "ECHO_method_spec.md",
+    "ECHO_evaluation_spec.md",
+    "ECHO_MASTER_EXECUTION_PLAN.md",
+    "old ECHO article versions",
+    "old autonomous handoff reports",
+    "old smoke artifacts",
+    "ECHO_Realistic_Projected_Campaign_v2.xlsx",
+    "digitized or projected figures"
+  ],
+  "projected_values_may_be_used_as_test_oracle": false,
+  "projected_values_may_be_used_as_figure_data": false
+}
