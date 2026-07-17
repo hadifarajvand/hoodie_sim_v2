@@ -26,7 +26,12 @@ def test_external_campaign_layout_round_trip(tmp_path: Path) -> None:
     )
     assert layout.campaign_root == campaign.resolve()
     assert layout.aggregate_dir == campaign.resolve() / "aggregates"
-    assert layout.bundles_dir == campaign.resolve().parent / "releases"
+    assert layout.bundles_dir == external.resolve() / "releases"
+    assert layout.finalized_dir == external.resolve() / "finalized" / "demo"
+    assert (
+        layout.sha256sums_path
+        == external.resolve() / "releases" / "demo-bundle" / "SHA256SUMS"
+    )
 
     atomic_write_json(
         layout.manifest_path,
@@ -41,6 +46,7 @@ def test_external_campaign_layout_round_trip(tmp_path: Path) -> None:
     )
     assert restored.campaign_root == layout.campaign_root
     assert restored.manifest_path == layout.manifest_path
+    assert restored.bundles_dir == layout.bundles_dir
 
 
 def test_repository_local_campaign_is_rejected(tmp_path: Path) -> None:
@@ -120,6 +126,42 @@ def test_manifest_campaign_root_must_be_absolute(tmp_path: Path) -> None:
     )
 
     with pytest.raises(CampaignLocationError, match="absolute"):
+        resolve_campaign_layout(
+            manifest_path=manifest,
+            repository=repository,
+        )
+
+
+def test_manifest_must_be_inside_resolved_campaign(tmp_path: Path) -> None:
+    repository = tmp_path / "repo"
+    repository.mkdir()
+    campaign = tmp_path / "external" / "campaigns" / "demo"
+    campaign.mkdir(parents=True)
+    manifest = tmp_path / "external" / "detached-manifest.json"
+    atomic_write_json(
+        manifest,
+        {"campaign_id": "demo", "campaign_root": str(campaign.resolve())},
+    )
+
+    with pytest.raises(CampaignLocationError, match="inside the resolved campaign"):
+        resolve_campaign_layout(
+            manifest_path=manifest,
+            repository=repository,
+        )
+
+
+def test_repository_local_manifest_is_rejected(tmp_path: Path) -> None:
+    repository = tmp_path / "repo"
+    repository.mkdir()
+    campaign = tmp_path / "external" / "campaigns" / "demo"
+    campaign.mkdir(parents=True)
+    manifest = repository / "campaign_manifest.json"
+    atomic_write_json(
+        manifest,
+        {"campaign_id": "demo", "campaign_root": str(campaign.resolve())},
+    )
+
+    with pytest.raises(CampaignLocationError, match="outside the repository"):
         resolve_campaign_layout(
             manifest_path=manifest,
             repository=repository,
