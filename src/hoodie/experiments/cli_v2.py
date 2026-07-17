@@ -10,12 +10,17 @@ import sys
 from typing import Any
 
 from .campaign import campaign_status, resume_production_campaign, run_production_campaign
+from .campaign_layout import (
+    CampaignLayout,
+    CampaignLocationError,
+    CampaignNotFoundError,
+    resolve_campaign_layout,
+)
 from .contract_mapping import validate_contract_mapping
 from .distributed_v2 import (
     backend_provenance_audit,
     build_shard_plan,
     export_shards,
-    finalize,
     import_results_directory,
     import_shard_results,
     resource_plan,
@@ -23,17 +28,22 @@ from .distributed_v2 import (
     shard_status,
     write_shard_plan,
 )
+from .external_pipeline import (
+    aggregate_campaign,
+    export_bundle,
+    finalize_campaign,
+    render_campaign,
+    verify_campaign,
+    verify_run,
+)
 from .job_matrix import validate_production_job_matrix
 from .matrix_patch import install_matrix_patch
 from .panel_registry import PANEL_REGISTRY
 from .preflight import run_preflight
-from .scientific_pipeline import (
-    aggregate_campaign,
-    export_bundle,
-    render_campaign,
-    verify_bundle,
-    verify_campaign,
-)
+from .runtime_fixes import install_runtime_fixes
+from .scientific_pipeline import verify_bundle
+
+install_runtime_fixes()
 
 
 def _print(payload: object) -> None:
@@ -70,7 +80,9 @@ def _plan(args: argparse.Namespace) -> dict[str, Any]:
     )
     campaign_dir = Path(args.campaign_root) / campaign_id
     campaign_dir.mkdir(parents=True, exist_ok=True)
-    (campaign_dir / "job_plan.json").write_text(matrix_path.read_text(encoding="utf-8"), encoding="utf-8")
+    (campaign_dir / "job_plan.json").write_text(
+        matrix_path.read_text(encoding="utf-8"), encoding="utf-8"
+    )
     plan = build_shard_plan(
         campaign_id,
         training_shards=args.training_shards,
@@ -117,7 +129,9 @@ def _load_matrix(path: Path):
 
     allowed = {field.name for field in fields(ProductionJobRow)}
     return [
-        ProductionJobRow(**{key: value for key, value in row.items() if key in allowed})
+        ProductionJobRow(
+            **{key: value for key, value in row.items() if key in allowed}
+        )
         for row in json.loads(path.read_text(encoding="utf-8"))
     ]
 
@@ -134,8 +148,129 @@ def _clean(args: argparse.Namespace) -> dict[str, Any]:
     return {"removed": str(path)}
 
 
+def add_campaign_location_arguments(parser: argparse.ArgumentParser) -> None:
+    parser.add_argument("--campaign-dir")
+    parser.add_argument("--manifest")
+    parser.add_argument("--run-root")
+    parser.add_argument("--campaign-id")
+
+
+def add_execution_arguments(parser: argparse.ArgumentParser) -> None:
+    parser.add_argument("--run-root", required=True)
+    parser.add_argument("--campaign-id", required=True)
+    parser.add_argument("--matrix")
+    parser.add_argument("--max-jobs", type=int)
+    parser.add_argument("--max-runtime-seconds", type=float)
+    parser.add_argument("--job-id")
+    parser.add_argument("--allow-paused-recovery", action="store_true")
+
+
+def _layout(args: argparse.Namespace, *, require_existing: bool = True) -> CampaignLayout:
+    return resolve_campaign_layout(
+        campaign_dir=getattr(args, "campaign_dir", None),
+        manifest_path=getattr(args, "manifest", None),
+        run_root=getattr(args, "run_root", None),
+        campaign_id=getattr(args, "campaign_id", None),
+        require_existing=require_existing,
+    )
+
+
+def _status_for_layout(layout: CampaignLayout, matrix: str | None = None) -> dict[str, Any]:
+    matrix_path = (
+        Path(matrix)
+        if matrix
+        else (
+            layout.campaign_root / "job_plan.json"
+            if (layout.campaign_root / "job_plan.json").exists()
+            else None
+        )
+    )
+    return {
+        "campaign_root": str(layout.campaign_root),
+        **campaign_status(
+            layout.campaign_id,
+            layout.campaign_root.parent,
+            matrix_path=matrix_path,
+        ),
+    }
+
+
+def _run_echo_execution(
+    args: argparse.Namespace, *, resume: bool = False
+) -> dict[str, Any]:
+    layout = _layout(args, require_existing=False)
+    function = resume_production_campaign if resume else run_production_campaign
+    result = function(
+        campaign_id=layout.campaign_id,
+        output_dir=layout.campaign_root.parent,
+        matrix_path=Path(args.matrix) if args.matrix else None,
+        max_jobs=args.max_jobs,
+        max_runtime_seconds=args.max_runtime_seconds,
+        job_id=args.job_id,
+        allow_paused_recovery=args.allow_paused_recovery,
+    )
+    return {
+        "campaign_root": str(layout.campaign_root),
+        "result_label": "LEARNER-BACKED EXECUTION — NOT PAPER EVIDENCE"
+        if args.command != "echo-pilot"
+        else "TRAINED PILOT — NOT PAPER EVIDENCE",
+        **result,
+    }
+
+
+def _hash_tree(root: Path) -> dict[str, str]:
+    if not root.is_dir():
+        raise CampaignNotFoundError(str(root))
+    return {
+        str(path.relative_to(root)): sha256(path.read_bytes()).hexdigest()
+        for path in sorted(root.rglob("*"))
+        if path.is_file()
+    }
+
+
+def _echo_diff(args: argparse.Namespace) -> dict[str, Any]:
+    left = Path(args.left).expanduser().resolve(strict=False)
+    right = Path(args.right).expanduser().resolve(strict=False)
+    output = Path(args.output).expanduser().resolve(strict=False)
+    repo = Path(__file__).resolve().parents[3]
+    for path in (left, right, output):
+        if path == repo or repo in path.parents:
+            raise CampaignLocationError(
+                f"differential inputs and output must be outside the repository: {path}"
+            )
+    left_hashes = _hash_tree(left)
+    right_hashes = _hash_tree(right)
+    paths = sorted(set(left_hashes) | set(right_hashes))
+    mismatches = [
+        {
+            "path": path,
+            "left_hash": left_hashes.get(path),
+            "right_hash": right_hashes.get(path),
+        }
+        for path in paths
+        if left_hashes.get(path) != right_hashes.get(path)
+    ]
+    output.mkdir(parents=True, exist_ok=True)
+    (output / "mismatches.jsonl").write_text(
+        "".join(json.dumps(item, sort_keys=True) + "\n" for item in mismatches),
+        encoding="utf-8",
+    )
+    report = {
+        "left": str(left),
+        "right": str(right),
+        "output": str(output),
+        "files_compared": len(paths),
+        "mismatch_count": len(mismatches),
+        "verified_equal": not mismatches,
+    }
+    (output / "report.json").write_text(
+        json.dumps(report, indent=2, sort_keys=True) + "\n", encoding="utf-8"
+    )
+    return report
+
+
 def build_parser() -> argparse.ArgumentParser:
-    parser = argparse.ArgumentParser(prog="python -m hoodie.experiments")
+    parser = argparse.ArgumentParser(prog="hoodie-experiments")
     sub = parser.add_subparsers(dest="command", required=True)
 
     sub.add_parser("preflight")
@@ -176,7 +311,7 @@ def build_parser() -> argparse.ArgumentParser:
 
     for name in ("aggregate", "verify", "render", "export-bundle", "finalize"):
         command = sub.add_parser(name)
-        command.add_argument("--campaign-id", required=True)
+        add_campaign_location_arguments(command)
 
     verify_release = sub.add_parser("verify-bundle")
     verify_release.add_argument("--bundle", required=True)
@@ -220,6 +355,23 @@ def build_parser() -> argparse.ArgumentParser:
     clean = sub.add_parser("clean")
     clean.add_argument("--path", required=True)
     clean.add_argument("--confirm", action="store_true")
+
+    for name in ("echo-train", "echo-eval", "echo-pilot"):
+        command = sub.add_parser(name)
+        add_execution_arguments(command)
+
+    echo_status = sub.add_parser("echo-status")
+    add_campaign_location_arguments(echo_status)
+    echo_status.add_argument("--matrix")
+
+    echo_verify = sub.add_parser("echo-verify-run")
+    add_campaign_location_arguments(echo_verify)
+
+    echo_diff = sub.add_parser("echo-diff")
+    echo_diff.add_argument("--left", required=True)
+    echo_diff.add_argument("--right", required=True)
+    echo_diff.add_argument("--output", required=True)
+
     return parser
 
 
@@ -240,7 +392,11 @@ def dispatch(args: argparse.Namespace) -> object:
     if args.command == "plan":
         return _plan(args)
     if args.command in {"run", "resume"}:
-        function = run_production_campaign if args.command == "run" else resume_production_campaign
+        function = (
+            run_production_campaign
+            if args.command == "run"
+            else resume_production_campaign
+        )
         return function(
             campaign_id=args.campaign_id,
             output_dir=Path(args.output_dir),
@@ -257,17 +413,17 @@ def dispatch(args: argparse.Namespace) -> object:
             matrix_path=Path(args.matrix) if args.matrix else None,
         )
     if args.command == "aggregate":
-        return aggregate_campaign(args.campaign_id)
+        return aggregate_campaign(_layout(args))
     if args.command == "verify":
-        return verify_campaign(args.campaign_id)
+        return verify_campaign(_layout(args))
     if args.command == "render":
-        return render_campaign(args.campaign_id)
+        return render_campaign(_layout(args))
     if args.command == "export-bundle":
-        return export_bundle(args.campaign_id)
+        return export_bundle(_layout(args))
     if args.command == "verify-bundle":
         return verify_bundle(Path(args.bundle))
     if args.command == "finalize":
-        return finalize(args.campaign_id)
+        return finalize_campaign(_layout(args))
     if args.command == "shard-plan":
         plan = build_shard_plan(
             args.campaign_id,
@@ -276,7 +432,19 @@ def dispatch(args: argparse.Namespace) -> object:
             matrix_path=Path(args.matrix) if args.matrix else None,
         )
         write_shard_plan(plan, Path(args.output))
-        return {"output": args.output, **{key: plan[key] for key in ("campaign_id", "plan_hash", "total_jobs", "training_jobs", "evaluation_jobs")}}
+        return {
+            "output": args.output,
+            **{
+                key: plan[key]
+                for key in (
+                    "campaign_id",
+                    "plan_hash",
+                    "total_jobs",
+                    "training_jobs",
+                    "evaluation_jobs",
+                )
+            },
+        }
     if args.command == "export-shards":
         paths = export_shards(
             args.campaign_id,
@@ -284,7 +452,10 @@ def dispatch(args: argparse.Namespace) -> object:
             Path(args.output_dir),
             phase=args.phase,
         )
-        return {"campaign_id": args.campaign_id, "bundles": [str(path) for path in paths]}
+        return {
+            "campaign_id": args.campaign_id,
+            "bundles": [str(path) for path in paths],
+        }
     if args.command == "run-shard":
         return run_shard(
             Path(args.bundle),
@@ -305,6 +476,20 @@ def dispatch(args: argparse.Namespace) -> object:
         )
     if args.command == "clean":
         return _clean(args)
+    if args.command in {"echo-train", "echo-eval", "echo-pilot"}:
+        result = _run_echo_execution(args, resume=args.command == "echo-eval")
+        if args.command == "echo-pilot":
+            status = _status_for_layout(_layout(args), args.matrix)
+            result["status"] = status
+            if status.get("completed_jobs") == status.get("total"):
+                result["finalization"] = finalize_campaign(_layout(args))
+        return result
+    if args.command == "echo-status":
+        return _status_for_layout(_layout(args), args.matrix)
+    if args.command == "echo-verify-run":
+        return verify_run(_layout(args))
+    if args.command == "echo-diff":
+        return _echo_diff(args)
     raise ValueError(f"unsupported command: {args.command}")
 
 
@@ -314,6 +499,16 @@ def main(argv: list[str] | None = None) -> int:
     try:
         _print(dispatch(args))
         return 0
+    except CampaignNotFoundError as exc:
+        _print(
+            {
+                "status": "failed",
+                "command": args.command,
+                "error_type": "campaign_not_found",
+                "error": str(exc),
+            }
+        )
+        return 1
     except Exception as exc:
         _print(
             {

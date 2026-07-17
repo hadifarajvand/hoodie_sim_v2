@@ -1,0 +1,70 @@
+name: ECHO CLI and non-long validation
+
+on:
+  push:
+    branches:
+      - "fix/echo-cli-external-layout"
+  pull_request:
+    paths:
+      - "src/hoodie/experiments/**"
+      - "src/environment/**"
+      - "tests/unit/**"
+      - "tests/integration/**"
+      - "tests/acceptance/**"
+      - "scripts/echo/**"
+      - ".github/workflows/echo-cli-validation.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    env:
+      MPLBACKEND: Agg
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+          cache: pip
+
+      - name: Install
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install -e '.[dev]'
+
+      - name: Compile
+        run: python -m compileall -q src/hoodie src/environment
+
+      - name: Verify installed CLI surface
+        run: |
+          hoodie-experiments --help
+          for command in \
+            aggregate verify render export-bundle finalize \
+            echo-train echo-eval echo-diff echo-pilot echo-status echo-verify-run
+          do
+            hoodie-experiments "$command" --help
+          done
+
+      - name: Targeted regression tests
+        run: |
+          python -m pytest -q \
+            tests/unit/test_echo_campaign_layout.py \
+            tests/unit/test_echo_cli_parser.py \
+            tests/unit/test_resume_missing_job_dir.py \
+            tests/unit/test_evaluation_reset_runtime_fix.py \
+            tests/unit/test_external_pipeline_layout.py
+
+      - name: Existing verified mechanism smoke
+        run: |
+          rm -rf /tmp/echo-verified-smoke
+          bash scripts/echo/run_verified_smoke.sh /tmp/echo-verified-smoke
+
+      - name: All non-long repository tests
+        run: |
+          python -m pytest -q \
+            tests/unit tests/integration tests/acceptance \
+            -m "not slow and not requires_cuda and not requires_mps"
