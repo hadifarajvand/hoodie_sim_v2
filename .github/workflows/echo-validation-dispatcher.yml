@@ -1,6 +1,9 @@
 name: Temporary ECHO validation dispatcher
 
 on:
+  issues:
+    types:
+      - reopened
   schedule:
     - cron: "25 * * * *"
   workflow_dispatch:
@@ -12,6 +15,7 @@ permissions:
 
 jobs:
   dispatch:
+    if: github.event_name != 'issues' || github.event.issue.number == 41
     runs-on: ubuntu-latest
     timeout-minutes: 5
     steps:
