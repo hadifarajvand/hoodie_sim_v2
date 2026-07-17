@@ -1,74 +1,112 @@
-# HOODIE scientific execution instructions
+# ECHO/HOODIE scientific execution instructions
 
 ## Mission
 
-Build one scientifically defensible and reproducible HOODIE simulator that implements the paper environment, learning method, baselines, frozen Figures 8–11 experiments, traceable datasets, and verified figures.
+Build one scientifically defensible shared simulator and learner for the reproduced HOODIE baseline and the locked ECHO extension, then generate traceable empirical outputs for ECHO Figures 5–8.
 
-The active priority is the HOODIE paper reproduction. ECHO development, generic agent frameworks, orchestration state, historical reports, and generated run artifacts must not alter or obscure the HOODIE execution path.
+The current method, notation, algorithms, references, and evaluation protocol are structurally complete. The primary remaining work is verified implementation and empirical execution.
 
-## Non-negotiable safety
+## Canonical repository
 
-- Never run, resume, import into, rename, or mutate the paused legacy campaign `figures-8-11-7587c7c6382c`.
-- Never relabel `legacy_unknown` checkpoints.
-- Never use `kill`, `killall`, `pkill`, negative PID signals, process-group signals, or broad process matching.
-- Use foreground commands, cooperative stop requests, completed-episode checkpoint boundaries, and normal process exit.
-- Never force-push and never push experiment work directly to `main`.
-- Never reduce scientific episodes, slots, model dimensions, matrix rows, or policy coverage to make a production run finish faster.
-- Never substitute smoke, pilot, cached, or fabricated outputs for paper-scale results.
+- Repository: `hadifarajvand/hoodie_sim_v2`
+- Active branch: `main`
+- Local checkout: `/Users/hadi/Documents/GitHub/hoodie_sim_v2`
+- External run root: `/Volumes/ADATA-1TB-External/echo_outputs`
 
-## Repository boundaries
+Do not create another repository, fork, mirror, clone, remote, or worktree for this project unless the user explicitly requests it.
 
-Git contains source, tests, configs, scientific contracts, approved references, concise documentation, and small reproducibility manifests.
-
-Git must not contain:
-
-- PID files or daemon state;
-- generic Claude/RuFlo/OpenCode distributions;
-- checkpoints, replay buffers, raw run datasets, worker directories, or campaign directories;
-- large logs, temporary transport parts, caches, generated figures, historical diagnostic outputs, or superseded readiness reports.
-
-Generated runs belong under `HOODIE_RUN_ROOT`, which must point outside the tracked repository for production execution.
-
-## Consolidation requirement
-
-Do not execute any experiment while the repository still contains competing execution paths or compatibility layers. The mandatory first gate is:
+Before modification or execution:
 
 ```bash
-python scripts/audit/repository_consolidation_gate.py --check
+bash scripts/echo/verify_single_repository.sh
 ```
 
-A nonzero exit means the repository remains in audit/consolidation mode. Resolve every listed path before running training. In particular, remove or migrate:
+## Authoritative sources
 
-- tracked generated artifacts outside `artifacts/approved/`;
-- top-level `hoodie/`, `tests_supported/`, and `tests_historical/` active roots;
-- `*_patch.py`, `*_v2.py`, and competing production-campaign implementations;
-- `src.*` imports inside `src/hoodie/`;
-- active ECHO dependencies in the HOODIE package;
-- noncanonical setuptools and pytest configuration;
-- missing canonical executor and visualization modules.
+Use, in order:
 
-## Required workflow
+1. current ECHO TeX and matching source archive;
+2. original HOODIE paper for inherited mechanics;
+3. repository as implementation evidence only;
+4. current pre-results PDF as visual cross-check only.
 
-1. Confirm a clean worktree and exact remote commit.
-2. Run `python scripts/audit/repository_consolidation_gate.py --check`.
-3. Run `python scripts/audit/full_repository_audit.py --check`.
-4. Run `bash scripts/hoodie/corrected_campaign.sh validate`.
-5. Inspect free disk space and configured run root.
-6. Stop on any failed audit, test, contract, dependency, checksum, backend, or storage-budget check.
-7. Execute training shards before evaluation shards.
-8. Import completed shard bundles only.
-9. Finalize only after the complete immutable matrix is scientifically complete.
+Never use projected spreadsheets, digitized curves, old method versions, old handoffs, or smoke outputs as expected empirical results.
 
-## Required proof
+## Locked ECHO boundary
 
-Before claiming completion, report:
+ECHO may change only:
 
-- exact branch and commit;
-- consolidation-gate and repository-audit results;
-- full active test result;
-- matrix and shard counts;
-- run-root and disk-budget result;
-- training checkpoint inventory and backend audit;
-- evaluation dependency and trace-fairness result;
-- aggregate, verification, rendering, and release-bundle paths;
-- confirmation that no PID was killed and the legacy campaign was untouched.
+- ERT ordering for waiting private-source tasks;
+- ERT ordering for waiting outbound-source tasks;
+- predicted-completion route filtering;
+- minimum-lateness fallback when all routes are late;
+- the same effective mask during exploration, exploitation, and Double-DQN next-action selection;
+- one additional fixed realized deadline-drop penalty.
+
+ECHO must not change:
+
+- the inherited neural observation;
+- LSTM inputs or architecture;
+- Dueling Double-DQN lifecycle;
+- replay format;
+- optimizer or target-copy behavior;
+- destination FIFO ordering;
+- equal destination-capacity sharing;
+- active-service non-preemption;
+- topology, task generation, or episode lifecycle.
+
+ERT, lateness, and masks are deterministic control metadata and must not enter the encoded neural state.
+
+## Evidence surface
+
+Primary scientific verification must come from the installed application entrypoint:
+
+```text
+hoodie-experiments
+```
+
+Do not use unit tests or import-and-call snippets as the main evidence. Tests may support repairs, but every observed defect must be rechecked through the real CLI path that reaches learner, runtime, checkpointing, evaluation, aggregation, and generated external artifacts.
+
+## Current execution sequence
+
+1. verify the single repository and external run root;
+2. implement learner-backed CLI commands for train, eval, diff, pilot, status, and run verification;
+3. run bounded HOODIE training;
+4. run held-out evaluation;
+5. verify checkpoint restart and exact state round-trip;
+6. run full-runtime HOODIE versus ECHO-disabled differential execution;
+7. run malformed-input and trace-separation probes;
+8. run a real trained pilot with 2–3 fixed seeds;
+9. stop before the 10-seed × 200-held-out-episode paper campaign.
+
+## Runtime and safety
+
+- All generated checkpoints, traces, logs, metrics, figures, manifests, and archives belong under `/Volumes/ADATA-1TB-External/echo_outputs`.
+- Never commit generated run state.
+- Never run, resume, rename, import into, or mutate `figures-8-11-7587c7c6382c`.
+- Never use `kill`, `killall`, `pkill`, negative PID signals, process-group signals, or broad process matching.
+- Never force-push `main` during normal development.
+- Never reduce the locked paper-scale protocol or substitute pilot results for manuscript evidence.
+- No acceptance rule requires ECHO to outperform HOODIE.
+
+## Required final proof for the trained pilot
+
+Report:
+
+- exact repository, branch, and commit;
+- exact CLI commands and exit codes;
+- stdout/stderr paths;
+- backend and seed configuration;
+- checkpoint paths and SHA-256 values;
+- finite loss and replay-update evidence;
+- held-out trace separation;
+- checkpoint round-trip mismatch count;
+- HOODIE/ECHO-disabled mismatch count;
+- generated = successful + dropped;
+- seed-level metrics and paired differences;
+- PDF/SVG/300-dpi PNG paths;
+- archive path and SHA-256;
+- confirmation projected values were not used;
+- confirmation paper-scale execution was not started;
+- confirmation no PID was killed;
+- confirmation the paused legacy campaign was untouched.
