@@ -1,0 +1,34 @@
+{
+  "schema_version": 1,
+  "status": "LOCKED_PRE_RESULTS",
+  "random_seeds": {
+    "minimum_count": 10,
+    "fixed_before_evaluation": true
+  },
+  "held_out_evaluation": {
+    "episodes_per_seed": 200,
+    "paired_task_traces": true,
+    "identical_physical_resources": true,
+    "identical_episode_boundaries": true,
+    "identical_drain_boundaries": true,
+    "equal_learning_budgets_for_learning_methods": true
+  },
+  "aggregation": {
+    "unit": "seed_mean_over_held_out_episodes",
+    "confidence_interval": 0.95,
+    "paired_echo_hoodie_differences": true,
+    "episodes_are_not_independent_replicates": true
+  },
+  "primary_metric": "task_drop_ratio",
+  "secondary_metric": "successful_task_delay",
+  "delay_reporting_requires": [
+    "generated_task_count",
+    "successful_task_count",
+    "dropped_task_count"
+  ],
+  "task_accounting_invariant": "generated = successful + dropped",
+  "methods": ["ECHO", "HOODIE", "RO", "FLC", "VO", "HO", "BCO", "MLEO"],
+  "pilot_required_before_full_campaign": true,
+  "pilot_is_paper_evidence": false,
+  "projected_or_surrogate_values_allowed": false
+}
