@@ -43,17 +43,20 @@ def test_bundle_seal_keeps_json_and_shell_inventories_consistent(
     payload = bundle / "payload.txt"
     payload.write_text("payload\n", encoding="utf-8")
     payload_hash = sha256(payload.read_bytes()).hexdigest()
-    (bundle / "checksums.json").write_text(
+    inventory_path = bundle / "bundle_checksums.json"
+    inventory_path.write_text(
         json.dumps({"payload.txt": payload_hash}, indent=2, sort_keys=True) + "\n",
         encoding="utf-8",
     )
 
     def verify_inventory(root: Path):
-        expected = json.loads((root / "checksums.json").read_text(encoding="utf-8"))
+        expected = json.loads(
+            (root / "bundle_checksums.json").read_text(encoding="utf-8")
+        )
         actual = {
             str(path.relative_to(root)): sha256(path.read_bytes()).hexdigest()
             for path in root.rglob("*")
-            if path.is_file() and path.name != "checksums.json"
+            if path.is_file() and path.name != "bundle_checksums.json"
         }
         assert actual == expected
         return {"verified": True}
@@ -65,5 +68,6 @@ def test_bundle_seal_keeps_json_and_shell_inventories_consistent(
     )
     checksum_path = external_pipeline._seal_bundle(bundle)
     assert checksum_path == bundle / "SHA256SUMS"
-    assert "checksums.json" not in checksum_path.read_text(encoding="utf-8")
-    assert "payload.txt" in checksum_path.read_text(encoding="utf-8")
+    checksum_text = checksum_path.read_text(encoding="utf-8")
+    assert "bundle_checksums.json" not in checksum_text
+    assert "payload.txt" in checksum_text
