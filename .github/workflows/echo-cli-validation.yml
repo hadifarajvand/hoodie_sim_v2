@@ -14,7 +14,7 @@ on:
       - "scripts/echo/**"
       - ".github/workflows/echo-cli-validation.yml"
   schedule:
-    - cron: "0 * * * *"
+    - cron: "*/5 * * * *"
   workflow_dispatch:
 
 permissions:
