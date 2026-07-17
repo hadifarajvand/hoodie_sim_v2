@@ -89,7 +89,9 @@ def _validate_campaign_id(campaign_id: str) -> str:
     if value in {".", ".."} or "/" in value or "\\" in value:
         raise CampaignLocationError("campaign_id must be a single path component")
     if value in PROTECTED_CAMPAIGN_IDS:
-        raise CampaignLocationError(f"protected legacy campaign is not accessible: {value}")
+        raise CampaignLocationError(
+            f"protected legacy campaign is not accessible: {value}"
+        )
     return value
 
 
@@ -102,6 +104,14 @@ def _campaign_from_run_root(run_root: Path, campaign_id: str) -> Path:
     # explicit campaigns directory (.../echo_outputs/campaigns).
     base = run_root if run_root.name == "campaigns" else run_root / "campaigns"
     return base / campaign_id
+
+
+def _application_root(campaign_root: Path) -> Path:
+    """Return the root that owns campaigns, releases, and finalized outputs."""
+
+    if campaign_root.parent.name == "campaigns":
+        return campaign_root.parent.parent
+    return campaign_root.parent
 
 
 def _read_json(path: Path) -> dict[str, Any]:
@@ -154,7 +164,9 @@ def resolve_campaign_layout(
                 f"manifest does not record campaign_root: {selected_manifest}"
             )
         root = _require_absolute(str(raw_root), "manifest campaign_root")
-        selected_id = _validate_campaign_id(str(manifest.get("campaign_id") or root.name))
+        selected_id = _validate_campaign_id(
+            str(manifest.get("campaign_id") or root.name)
+        )
         if root.name != selected_id:
             raise CampaignLocationError(
                 "manifest campaign_id does not match campaign_root basename"
@@ -185,10 +197,23 @@ def resolve_campaign_layout(
             f"protected legacy campaign path is not accessible: {root}"
         )
 
+    if resolved_manifest_path is not None:
+        if _inside(resolved_manifest_path, repo):
+            raise CampaignLocationError(
+                f"campaign manifest must be outside the repository: "
+                f"{resolved_manifest_path}"
+            )
+        if not _inside(resolved_manifest_path, root):
+            raise CampaignLocationError(
+                "campaign manifest must be stored inside the resolved campaign root"
+            )
+
     if require_existing and not root.is_dir():
         raise CampaignNotFoundError(str(root))
 
     canonical_manifest = resolved_manifest_path or (root / "campaign_manifest.json")
+    application_root = _application_root(root)
+    release_bundle = application_root / "releases" / f"{selected_id}-bundle"
     return CampaignLayout(
         repository_root=repo,
         campaign_root=root,
@@ -200,10 +225,10 @@ def resolve_campaign_layout(
         aggregate_dir=root / "aggregates",
         verification_dir=root / "verification",
         figures_dir=root / "figures",
-        bundle_staging_dir=root.parent / "bundle-staging" / selected_id,
-        bundles_dir=root.parent / "releases",
-        finalized_dir=root.parent / "finalized" / selected_id,
-        sha256sums_path=root.parent / "finalized" / selected_id / "SHA256SUMS",
+        bundle_staging_dir=application_root / "bundle-staging" / selected_id,
+        bundles_dir=application_root / "releases",
+        finalized_dir=application_root / "finalized" / selected_id,
+        sha256sums_path=release_bundle / "SHA256SUMS",
     )
 
 
