@@ -27,25 +27,36 @@ Run root:   /Volumes/ADATA-1TB-External/echo_outputs
 
 Do not create another repository, clone, fork, mirror, or worktree for this project unless explicitly requested.
 
-## Fetch and install
+## Fetch and bootstrap
+
+The following sequence intentionally refuses to overwrite a dirty checkout:
 
 ```bash
 cd /Users/hadi/Documents/GitHub/hoodie_sim_v2
 
 git remote set-url origin https://github.com/hadifarajvand/hoodie_sim_v2.git
+git remote set-url --push origin https://github.com/hadifarajvand/hoodie_sim_v2.git
+
+test -z "$(git status --porcelain)" || {
+  git status --short --branch
+  echo "STOP: preserve local changes before syncing"
+  exit 1
+}
+
 git fetch --prune origin main
 git switch main
 git reset --hard origin/main
 
-python3.11 -m venv .venv
-source .venv/bin/activate
-python -m pip install --upgrade pip
-python -m pip install -e '.[dev]'
-
-bash scripts/echo/verify_single_repository.sh
+bash scripts/echo/bootstrap_main.sh
 ```
 
-Use `git reset --hard origin/main` only after confirming there is no local work that must be preserved.
+The bootstrap requires Python 3.11, preserves an incompatible existing `.venv` by renaming it, creates a clean `.venv`, installs the project in editable mode, verifies the canonical remote/branch, and validates the external run root.
+
+The execution-agent prompt is stored at:
+
+```text
+docs/echo/TRAINED_PILOT_AGENT_PROMPT.md
+```
 
 ## Verified bounded surfaces
 
@@ -100,5 +111,6 @@ Never run or mutate `figures-8-11-7587c7c6382c`. Never use projected values as e
 See:
 
 - `docs/echo/SINGLE_REPOSITORY_POLICY.md`
+- `docs/echo/TRAINED_PILOT_AGENT_PROMPT.md`
 - `docs/scientific-contracts/`
 - `configs/contracts/`
