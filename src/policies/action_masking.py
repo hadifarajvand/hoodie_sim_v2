@@ -33,11 +33,20 @@ def select_legal_action(context: PolicyContext, action: str) -> str:
         ):
             raise ValueError(f"Illegal action: {action}")
     elif action.startswith("horizontal_"):
-        if not (
-            context.legal_action_mask.get("horizontal", False)
-            or context.legal_action_mask.get("offload_horizontal", False)
-            or context.legal_action_mask.get(action, False)
-        ):
+        exact_keys_present = any(
+            key.startswith("horizontal_")
+            and key not in {"horizontal", "offload_horizontal"}
+            for key in context.legal_action_mask
+        )
+        allowed = (
+            bool(context.legal_action_mask.get(action, False))
+            if exact_keys_present
+            else bool(
+                context.legal_action_mask.get("horizontal", False)
+                or context.legal_action_mask.get("offload_horizontal", False)
+            )
+        )
+        if not allowed:
             raise ValueError(f"Illegal action: {action}")
         if not _horizontal_destination_is_legal(context, action):
             raise ValueError(f"Illegal horizontal destination: {action}")

@@ -11,9 +11,11 @@ from src.policies.action_masking import select_legal_action
 from src.policies.policy_interface import PolicyContext
 
 from .environment import apply_policy_action
-from .gym_adapter import HoodieGymEnvironment
+from .echo_control_config import EchoControlConfig
+from .gym_adapter import HoodieGymEnvironment, PendingReward
 from .link_rate_config import compute_transmission_delay, mbits_to_bits
 from .offload_trace_ledger import OffloadTraceLedger
+from .reward_timing import reward_for_terminal_task
 from .task import Task
 
 
@@ -34,14 +36,17 @@ class EvaluationHoodieGymEnvironment(HoodieGymEnvironment):
     """
 
     supplied_trace: EvaluationTrace | None = None
+    echo_controls: EchoControlConfig = field(default_factory=EchoControlConfig.disabled)
     _active_transmission_task_ids: dict[str, int] = field(default_factory=dict)
 
     @property
     def _echo_enabled(self) -> bool:
-        return self.policy_name.upper().startswith("ECHO")
+        return self.echo_controls.any_enabled
 
     def reset(self, seed: int | None = None):
-        super().reset(seed=seed)
+        # Explicit base dispatch avoids the zero-argument super()/slots issue
+        # observed under Python 3.11 when this dataclass is re-instantiated.
+        HoodieGymEnvironment.reset(self, seed=seed)
         self._active_transmission_task_ids.clear()
         if self.supplied_trace is None:
             return self.observe(), self._build_info()
@@ -152,8 +157,9 @@ class EvaluationHoodieGymEnvironment(HoodieGymEnvironment):
 
         # Scheduling phase.  HOODIE keeps FIFO source order.  ECHO reconstructs
         # the waiting prefix while any already active head remains fixed.
-        if self._echo_enabled:
+        if self.echo_controls.private_queue_ert:
             self._rebuild_echo_private_orders()
+        if self.echo_controls.outbound_queue_ert:
             self._rank_echo_transfer_orders()
         self._prepare_execution_heads()
 
@@ -216,7 +222,130 @@ class EvaluationHoodieGymEnvironment(HoodieGymEnvironment):
         info["queue_order_candidate_evaluations"] = int(
             self._metrics.get("queue_order_candidate_evaluations", 0.0)
         )
+        info["echo_control_config"] = self.echo_controls.to_dict()
         return observation, reward, terminated, truncated, info
+
+    def legal_action_mask(self, task: Task | None = None) -> dict[str, bool]:
+        """Return one destination-exact physical/effective mask.
+
+        Exact horizontal keys are authoritative whenever present.  The family
+        aliases remain for compatibility with non-destination-aware policies,
+        but cannot make a filtered destination legal.
+        """
+
+        current_task = task or self._current_task
+        if current_task is None:
+            return {}
+        source_id = str(current_task.source_agent_id)
+        destinations = (
+            self.topology.legal_horizontal_destinations(source_id)
+            if self.topology is not None
+            else ()
+        )
+        horizontal = bool(destinations) if self.topology is not None else True
+        physical: dict[str, bool] = {
+            "local": True,
+            "compute_local": True,
+            "horizontal": horizontal,
+            "offload_horizontal": horizontal,
+            "vertical": True,
+            "offload_vertical": True,
+            "cloud": True,
+        }
+        for destination in destinations:
+            physical[f"horizontal_{destination}"] = True
+
+        if not self.echo_controls.route_filtering:
+            return physical
+
+        diagnostics = self._echo_observation(current_task, physical)
+        allowed = set(diagnostics["deadline_mask"])
+        effective = {key: False for key in physical}
+        effective["local"] = "local" in allowed
+        effective["compute_local"] = effective["local"]
+        for destination in destinations:
+            action = f"horizontal_{destination}"
+            effective[action] = action in allowed
+        effective["horizontal"] = any(
+            effective.get(f"horizontal_{destination}", False)
+            for destination in destinations
+        )
+        effective["offload_horizontal"] = effective["horizontal"]
+        effective["cloud"] = "cloud" in allowed
+        effective["vertical"] = effective["cloud"]
+        effective["offload_vertical"] = effective["cloud"]
+        current_task.metadata["echo_control_diagnostics"] = {
+            "candidate_ert": dict(diagnostics["candidate_ert"]),
+            "effective_action_ids": tuple(sorted(allowed)),
+            "physical_action_ids": tuple(
+                sorted(key for key, value in physical.items() if value)
+            ),
+        }
+        return effective
+
+    def _agent_observation(self, task: Task) -> dict[str, Any]:
+        observation = HoodieGymEnvironment._agent_observation(self, task)
+        # ERT, predicted completion, lateness and mask diagnostics are control
+        # metadata.  They are exported via events/task metadata and are never
+        # exposed as candidate neural inputs.
+        for key in tuple(observation):
+            if key.startswith("echo_"):
+                observation.pop(key)
+        return observation
+
+    def _latency_estimates(
+        self, task: Task, legal_action_mask: dict[str, bool]
+    ) -> dict[str, float]:
+        estimates: dict[str, float] = {}
+        if legal_action_mask.get("local", False):
+            estimates["local"] = float(task.processing_density)
+        for action, allowed in legal_action_mask.items():
+            if action.startswith("horizontal_") and allowed:
+                estimates[action] = float(max(1.0, task.processing_density - 1.0))
+        if legal_action_mask.get("vertical", False):
+            estimates["vertical"] = float(max(1.0, task.processing_density - 2.0))
+        return estimates
+
+    def _balance_hints(
+        self, task: Task, legal_action_mask: dict[str, bool]
+    ) -> dict[str, float]:
+        hints: dict[str, float] = {}
+        if legal_action_mask.get("local", False):
+            hints["local"] = float(max(1, int(task.size // 4)))
+        for action, allowed in legal_action_mask.items():
+            if action.startswith("horizontal_") and allowed:
+                hints[action] = float(max(1, int(task.size // 3)))
+        if legal_action_mask.get("vertical", False):
+            hints["vertical"] = float(max(1, int(task.size // 2)))
+        return hints
+
+    def _register_pending_reward(self, task: Task) -> None:
+        if task.task_id in self._pending_reward_ledger:
+            raise RuntimeError(f"duplicate pending reward for task {task.task_id}")
+        reward = reward_for_terminal_task(task)
+        applied_penalty = 0.0
+        if (
+            self.echo_controls.realized_drop_penalty
+            and task.terminal_outcome == "dropped"
+        ):
+            applied_penalty = float(self.echo_controls.fixed_drop_penalty)
+            reward -= applied_penalty
+        task.metadata["echo_realized_drop_penalty"] = applied_penalty
+        self._pending_reward_ledger[task.task_id] = PendingReward(
+            task_id=task.task_id,
+            decision_slot=int(
+                task.decision_slot
+                if task.decision_slot is not None
+                else task.arrival_slot
+            ),
+            resolution_slot=int(
+                task.resolution_slot
+                if task.resolution_slot is not None
+                else self.current_slot
+            ),
+            reward=reward,
+        )
+        self._pending_reward_tasks.append(task)
 
     def _repair_link_metadata(self, task: Task, selected_action: str) -> None:
         if selected_action.startswith("horizontal_") or selected_action in {
@@ -327,13 +456,13 @@ class EvaluationHoodieGymEnvironment(HoodieGymEnvironment):
                 continue
             head = tasks[0]
             active = head.cycles_remaining < head.cycles_required
-            fixed = [head] if active else []
-            waiting = tasks[1:] if active else tasks
-            residual = (
-                max(1, int(ceil(head.cycles_remaining / capacity)))
-                if active
-                else 0
-            )
+            if active:
+                # The manuscript permits reconstruction only while the source
+                # resource is idle; active service remains non-preemptive.
+                continue
+            fixed: list[Task] = []
+            waiting = tasks
+            residual = 0
             result = construct_ert_order(
                 waiting,
                 current_slot=self.current_slot,
@@ -373,12 +502,12 @@ class EvaluationHoodieGymEnvironment(HoodieGymEnvironment):
                 (task for task in tasks if task.task_id == active_id),
                 None,
             )
+            if active is not None:
+                # Do not reorder or even re-rank the waiting prefix while the
+                # source transmitter is active.
+                continue
             waiting = [task for task in tasks if task is not active]
             residual = 0
-            if active is not None:
-                started = int(active.metadata.get("transmission_started_at", self.current_slot))
-                delay = int(active.metadata.get("transmission_delay_slots", 1))
-                residual = max(1, started + delay - self.current_slot)
             result = construct_ert_order(
                 waiting,
                 current_slot=self.current_slot,
@@ -472,7 +601,7 @@ class EvaluationHoodieGymEnvironment(HoodieGymEnvironment):
                 None,
             )
             if selected is None:
-                if self._echo_enabled:
+                if self.echo_controls.outbound_queue_ert:
                     selected = min(
                         queue_items,
                         key=lambda item: (

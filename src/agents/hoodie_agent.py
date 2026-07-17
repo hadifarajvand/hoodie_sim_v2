@@ -156,13 +156,18 @@ class HoodieAgent(ReplayTrainablePolicy):
         observation: dict[str, object],
     ) -> tuple[str, ...]:
         local_allowed = bool(mask.get("local") or mask.get("compute_local"))
-        horizontal_allowed = bool(
+        horizontal_family_allowed = bool(
             mask.get("horizontal")
             or mask.get("offload_horizontal")
-            or any(
-                key.startswith("horizontal_") and allowed
-                for key, allowed in mask.items()
-            )
+        )
+        exact_horizontal_keys = {
+            key
+            for key in mask
+            if key.startswith("horizontal_")
+            and key not in {"horizontal", "offload_horizontal"}
+        }
+        horizontal_allowed = horizontal_family_allowed or any(
+            bool(mask[key]) for key in exact_horizontal_keys
         )
         cloud_allowed = bool(
             mask.get("vertical")
@@ -178,10 +183,12 @@ class HoodieAgent(ReplayTrainablePolicy):
                 legal.append(action)
             elif action.startswith("horizontal_"):
                 destination = action.removeprefix("horizontal_")
-                exact_allowed = mask.get(action)
-                if bool(exact_allowed) or (
-                    horizontal_allowed and destination in destinations
-                ):
+                allowed = (
+                    bool(mask.get(action, False))
+                    if exact_horizontal_keys
+                    else horizontal_family_allowed and destination in destinations
+                )
+                if allowed:
                     legal.append(action)
             elif action in {"cloud", "vertical"} and cloud_allowed:
                 legal.append(action)
