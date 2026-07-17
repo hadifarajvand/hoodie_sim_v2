@@ -37,9 +37,11 @@ python_bin="python3.11"
 if [[ -x .venv/bin/python ]]; then
   venv_version="$(.venv/bin/python -c 'import sys; print(f"{sys.version_info.major}.{sys.version_info.minor}")')"
   if [[ "$venv_version" != "3.11" ]]; then
-    backup_dir=".venv.backup-$(date +%Y%m%d-%H%M%S)"
+    backup_root="${HOME}/.cache/hoodie_sim_v2/venv-backups"
+    backup_dir="${backup_root}/venv-${venv_version}-$(date +%Y%m%d-%H%M%S)"
+    mkdir -p "$backup_root"
     mv .venv "$backup_dir"
-    printf 'Preserved incompatible virtual environment at %s\n' "$repo_root/$backup_dir"
+    printf 'Preserved incompatible virtual environment at %s\n' "$backup_dir"
   fi
 fi
 
@@ -63,6 +65,8 @@ run_real="$(RUN_ROOT_CHECK="$run_root" python -c 'from pathlib import Path; impo
 case "$run_real" in
   "$repo_real"|"$repo_real"/*) fail "run root must stay outside the repository" ;;
 esac
+
+[[ -z "$(git status --porcelain)" ]] || fail "bootstrap unexpectedly dirtied the repository"
 
 printf 'ECHO_MAIN_BOOTSTRAP_READY\n'
 printf 'repository=%s\n' "$EXPECTED_REPOSITORY"
