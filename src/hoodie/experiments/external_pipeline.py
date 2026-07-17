@@ -2,6 +2,7 @@ from __future__ import annotations
 
 from contextlib import contextmanager
 from hashlib import sha256
+import json
 from pathlib import Path
 import shutil
 import time
@@ -18,15 +19,35 @@ def _file_hash(path: Path) -> str:
 
 
 def _write_sha256sums(root: Path) -> Path:
+    """Write a shell-verifiable sidecar without creating a checksum cycle."""
     root.mkdir(parents=True, exist_ok=True)
+    excluded = {"SHA256SUMS", "checksums.json"}
     entries: list[str] = []
     for path in sorted(root.rglob("*")):
-        if not path.is_file() or path.name == "SHA256SUMS":
+        if not path.is_file() or path.name in excluded:
             continue
         entries.append(f"{_file_hash(path)}  {path.relative_to(root)}")
     output = root / "SHA256SUMS"
     output.write_text("\n".join(entries) + ("\n" if entries else ""), encoding="utf-8")
     return output
+
+
+def _seal_bundle(root: Path) -> Path:
+    """Keep the JSON inventory and SHA256SUMS mutually consistent."""
+    inventory_path = root / "checksums.json"
+    if not inventory_path.exists():
+        raise FileNotFoundError(inventory_path)
+    inventory = json.loads(inventory_path.read_text(encoding="utf-8"))
+    if not isinstance(inventory, dict):
+        raise ValueError(f"bundle inventory must be a JSON object: {inventory_path}")
+
+    checksum_path = _write_sha256sums(root)
+    inventory[checksum_path.name] = _file_hash(checksum_path)
+    inventory_path.write_text(
+        json.dumps(inventory, indent=2, sort_keys=True) + "\n", encoding="utf-8"
+    )
+    scientific_pipeline.verify_bundle(root)
+    return checksum_path
 
 
 @contextmanager
@@ -121,7 +142,7 @@ def export_bundle(layout: CampaignLayout) -> dict[str, Any]:
     def operation() -> dict[str, Any]:
         result = scientific_pipeline.export_bundle(layout.campaign_id)
         bundle_dir = Path(str(result["bundle_dir"])).resolve()
-        checksum_path = _write_sha256sums(bundle_dir)
+        checksum_path = _seal_bundle(bundle_dir)
         return {
             **result,
             "bundle_dir": str(bundle_dir),
@@ -147,7 +168,7 @@ def finalize_campaign(layout: CampaignLayout) -> dict[str, Any]:
         rendering = scientific_pipeline.render_campaign(layout.campaign_id)
         release = scientific_pipeline.export_bundle(layout.campaign_id)
         bundle_dir = Path(str(release["bundle_dir"])).resolve()
-        checksum_path = _write_sha256sums(bundle_dir)
+        checksum_path = _seal_bundle(bundle_dir)
 
         layout.finalized_dir.mkdir(parents=True, exist_ok=True)
         archive_base = layout.finalized_dir / f"{layout.campaign_id}-bundle"
