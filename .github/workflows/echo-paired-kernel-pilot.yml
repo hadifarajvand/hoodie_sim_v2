@@ -1,0 +1,76 @@
+name: ECHO paired physical-kernel pilot
+
+on:
+  push:
+    branches:
+      - "echo/verified-figures-5-8"
+    paths:
+      - "src/echo_verified/**"
+      - "tests/unit/test_echo_verified_kernel.py"
+      - "tests/integration/test_echo_verified_paired_pilot.py"
+      - "configs/echo/**"
+      - "scripts/echo/**"
+      - ".github/workflows/echo-paired-kernel-pilot.yml"
+  pull_request:
+    paths:
+      - "src/echo_verified/**"
+      - "tests/unit/test_echo_verified_kernel.py"
+      - "tests/integration/test_echo_verified_paired_pilot.py"
+      - "configs/echo/**"
+      - "scripts/echo/**"
+      - ".github/workflows/echo-paired-kernel-pilot.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  paired-kernel-pilot:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+          cache: pip
+      - name: Install
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install -e '.[dev]'
+      - name: Unit and integration tests
+        run: |
+          python -m pytest -q \
+            tests/unit/test_echo_verified_kernel.py \
+            tests/integration/test_echo_verified_paired_pilot.py
+      - name: Run bounded paired pilot
+        run: |
+          rm -rf /tmp/echo-paired-kernel-pilot /tmp/echo-paired-kernel-pilot.zip*
+          python -m src.echo_verified.paired_pilot \
+            --output-root /tmp/echo-paired-kernel-pilot \
+            --seeds 11,22 \
+            --episodes-per-seed 2
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          root = Path('/tmp/echo-paired-kernel-pilot')
+          payload = json.loads((root / 'manifest.json').read_text())
+          assert payload['status'] == 'PAIRED_PHYSICAL_KERNEL_PILOT_PASSED'
+          assert payload['paper_evidence'] is False
+          assert payload['paper_scale_started'] is False
+          assert payload['echo_disabled_equivalence_passed'] is True
+          assert payload['task_conservation_passed'] is True
+          assert payload['projected_or_surrogate_values_used'] is False
+          assert (Path('/tmp') / 'echo-paired-kernel-pilot.zip').is_file()
+          print(json.dumps(payload, indent=2, sort_keys=True))
+          PY
+      - name: Upload bounded pilot evidence
+        uses: actions/upload-artifact@v4
+        with:
+          name: echo-paired-kernel-pilot-${{ github.sha }}
+          path: |
+            /tmp/echo-paired-kernel-pilot
+            /tmp/echo-paired-kernel-pilot.zip
+            /tmp/echo-paired-kernel-pilot.zip.sha256
+          if-no-files-found: error
+          retention-days: 14
