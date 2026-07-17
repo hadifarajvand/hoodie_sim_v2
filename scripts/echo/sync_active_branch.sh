@@ -2,7 +2,7 @@
 set -euo pipefail
 
 EXPECTED_REPOSITORY="hadifarajvand/hoodie_sim_v2"
-EXPECTED_BRANCH="echo/verified-figures-5-8"
+EXPECTED_BRANCH="main"
 EXPECTED_HTTPS="https://github.com/${EXPECTED_REPOSITORY}.git"
 EXPECTED_SSH="git@github.com:${EXPECTED_REPOSITORY}.git"
 
