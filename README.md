@@ -50,13 +50,15 @@ git reset --hard origin/main
 bash scripts/echo/bootstrap_main.sh
 ```
 
-The bootstrap requires Python 3.11, preserves an incompatible existing `.venv` by renaming it, creates a clean `.venv`, installs the project in editable mode, verifies the canonical remote/branch, and validates the external run root.
+The bootstrap requires Python 3.11, preserves an incompatible existing `.venv` outside Git, creates a clean `.venv`, installs the project in editable mode, verifies the canonical remote/branch, and validates the external run root.
 
-The execution-agent prompt is stored at:
+The guarded execution-agent prompt is stored at:
 
 ```text
-docs/echo/TRAINED_PILOT_AGENT_PROMPT.md
+docs/echo/RUN_EXPERIMENT_AGENT_PROMPT.md
 ```
+
+It incorporates the detailed scientific contract from `docs/echo/TRAINED_PILOT_AGENT_PROMPT.md`, authorizes one unique fresh bounded campaign, and prevents missing campaign paths or normal code failures from being misreported as storage blockers.
 
 ## Verified bounded surfaces
 
@@ -94,7 +96,7 @@ The next stage is application-surface verification through the installed `hoodie
 3. checkpoint round-trip reload;
 4. fixed-trace HOODIE versus ECHO-disabled differential execution;
 5. malformed-input probes;
-6. a real trained pilot with 2–3 seeds.
+6. a real trained pilot with seeds 101, 202, and 303.
 
 Do not start the paper-scale 10-seed × 200-held-out-episode campaign until the trained pilot and all lineage checks pass.
 
@@ -111,6 +113,7 @@ Never run or mutate `figures-8-11-7587c7c6382c`. Never use projected values as e
 See:
 
 - `docs/echo/SINGLE_REPOSITORY_POLICY.md`
+- `docs/echo/RUN_EXPERIMENT_AGENT_PROMPT.md`
 - `docs/echo/TRAINED_PILOT_AGENT_PROMPT.md`
 - `docs/scientific-contracts/`
 - `configs/contracts/`
