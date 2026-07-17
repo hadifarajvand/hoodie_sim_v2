@@ -21,10 +21,10 @@ def _file_hash(path: Path) -> str:
 def _write_sha256sums(root: Path) -> Path:
     """Write a shell-verifiable sidecar without creating a checksum cycle."""
     root.mkdir(parents=True, exist_ok=True)
-    excluded = {"SHA256SUMS", "checksums.json"}
+    canonical_inventory = root / "bundle_checksums.json"
     entries: list[str] = []
     for path in sorted(root.rglob("*")):
-        if not path.is_file() or path.name in excluded:
+        if not path.is_file() or path == canonical_inventory or path.name == "SHA256SUMS":
             continue
         entries.append(f"{_file_hash(path)}  {path.relative_to(root)}")
     output = root / "SHA256SUMS"
@@ -33,8 +33,8 @@ def _write_sha256sums(root: Path) -> Path:
 
 
 def _seal_bundle(root: Path) -> Path:
-    """Keep the JSON inventory and SHA256SUMS mutually consistent."""
-    inventory_path = root / "checksums.json"
+    """Keep bundle_checksums.json and SHA256SUMS mutually consistent."""
+    inventory_path = root / "bundle_checksums.json"
     if not inventory_path.exists():
         raise FileNotFoundError(inventory_path)
     inventory = json.loads(inventory_path.read_text(encoding="utf-8"))
