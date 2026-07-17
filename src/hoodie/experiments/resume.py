@@ -5,33 +5,62 @@ import json
 import csv
 from pathlib import Path
 
+
 @dataclass(frozen=True, slots=True)
 class JobState:
     value: str
 
 
 def classify_job_state(job_dir: Path) -> JobState:
+    # A not-yet-created job directory is a normal pending state. Do not call
+    # iterdir() until the directory exists.
+    if not job_dir.exists():
+        return JobState("pending")
+    if not job_dir.is_dir():
+        return JobState("corrupt")
+
     status_path = job_dir / "status.json"
     if status_path.exists():
         try:
             payload = json.loads(status_path.read_text(encoding="utf-8"))
             status = str(payload.get("status", "")).strip().lower()
-            if status in {"pending", "running", "completed", "failed", "stale", "corrupt", "quarantined", "blocked_dependency", "interrupted_resumable", "stalled_restart_required", "scientifically_incomplete"}:
-                if status == "completed" and not _completed_job_scientifically_complete(job_dir, payload):
+            if status in {
+                "pending",
+                "running",
+                "completed",
+                "failed",
+                "stale",
+                "corrupt",
+                "quarantined",
+                "blocked_dependency",
+                "interrupted_resumable",
+                "stalled_restart_required",
+                "scientifically_incomplete",
+            }:
+                if status == "completed" and not _completed_job_scientifically_complete(
+                    job_dir, payload
+                ):
                     return JobState("scientifically_incomplete")
-                return JobState("pending" if status in {"interrupted_resumable", "stalled_restart_required"} else status)
+                return JobState(
+                    "pending"
+                    if status in {"interrupted_resumable", "stalled_restart_required"}
+                    else status
+                )
         except Exception:
             return JobState("corrupt")
     if (job_dir / "completion.marker").exists():
         return JobState("completed")
-    if any(child.suffix == ".tmp" for child in job_dir.iterdir() if child.exists()):
+    children = list(job_dir.iterdir())
+    if any(child.suffix == ".tmp" for child in children if child.exists()):
         return JobState("corrupt")
-    if any(job_dir.iterdir()):
+    if children:
         return JobState("failed")
     return JobState("pending")
 
 
-def _completed_job_scientifically_complete(job_dir: Path, status_payload: dict[str, object]) -> bool:
+def _completed_job_scientifically_complete(
+    job_dir: Path, status_payload: dict[str, object]
+) -> bool:
     job_type = str(status_payload.get("job_type", "")).strip().lower()
     if job_type != "training":
         return True
