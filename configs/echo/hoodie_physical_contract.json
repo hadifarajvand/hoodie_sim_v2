@@ -1,0 +1,33 @@
+{
+  "schema_version": 1,
+  "authority": "HOODIE_paper.pdf plus current ECHO TeX only where it explicitly restates inherited behavior",
+  "default_parameters": {
+    "slot_duration_seconds": 0.1,
+    "decision_slots": 100,
+    "drain_slots": 10,
+    "episode_slots": 110,
+    "task_arrival_probability": 0.5,
+    "task_sizes_mbits": [2.0, 2.1, 2.2, 2.3, 2.4, 2.5, 2.6, 2.7, 2.8, 2.9, 3.0, 3.1, 3.2, 3.3, 3.4, 3.5, 3.6, 3.7, 3.8, 3.9, 4.0, 4.1, 4.2, 4.3, 4.4, 4.5, 4.6, 4.7, 4.8, 4.9, 5.0],
+    "processing_density_gcycles_per_mbit": 0.297,
+    "edge_agents": 20,
+    "private_cpu_ghz": 5.0,
+    "public_edge_cpu_ghz": 5.0,
+    "cloud_cpu_ghz": 30.0,
+    "horizontal_rate_mbps": 30.0,
+    "vertical_rate_mbps": 10.0,
+    "timeout_slots": 20
+  },
+  "queue_and_lifecycle": {
+    "private_source_queue": "FIFO for HOODIE",
+    "outbound_source_queue": "FIFO for HOODIE",
+    "active_source_service_preemptive": false,
+    "remote_destination_committed_at_arrival": true,
+    "transmission_completion_admitted_next_slot": true,
+    "destination_queues": "source-indexed FIFO",
+    "destination_capacity": "equal share among active source queues",
+    "same_slot_redistribution": false,
+    "completion_in_deadline_slot": "successful",
+    "unfinished_at_deadline": "dropped and removed",
+    "task_conservation": "generated = successful + dropped"
+  }
+}
