@@ -31,17 +31,17 @@ fi
 
 bash scripts/echo/verify_single_repository.sh
 
-python_bin=""
-for candidate in python3.11 python3; do
-  if command -v "$candidate" >/dev/null 2>&1; then
-    python_bin="$candidate"
-    break
-  fi
-done
-[[ -n "$python_bin" ]] || fail "Python 3.11 or python3 is required"
+command -v python3.11 >/dev/null 2>&1 || fail "python3.11 is required; install Python 3.11 before continuing"
+python_bin="python3.11"
 
-python_version="$($python_bin -c 'import sys; print(f"{sys.version_info.major}.{sys.version_info.minor}")')"
-[[ "$python_version" == "3.11" ]] || printf 'WARNING: recommended Python is 3.11; found %s\n' "$python_version" >&2
+if [[ -x .venv/bin/python ]]; then
+  venv_version="$(.venv/bin/python -c 'import sys; print(f"{sys.version_info.major}.{sys.version_info.minor}")')"
+  if [[ "$venv_version" != "3.11" ]]; then
+    backup_dir=".venv.backup-$(date +%Y%m%d-%H%M%S)"
+    mv .venv "$backup_dir"
+    printf 'Preserved incompatible virtual environment at %s\n' "$repo_root/$backup_dir"
+  fi
+fi
 
 if [[ ! -d .venv ]]; then
   "$python_bin" -m venv .venv
@@ -59,10 +59,7 @@ mkdir -p "$run_root"
 [[ -w "$run_root" ]] || fail "run root is not writable: $run_root"
 
 repo_real="$(python -c 'from pathlib import Path; print(Path(".").resolve())')"
-run_real="$(python -c 'from pathlib import Path; import os; print(Path(os.environ["RUN_ROOT_CHECK"]).resolve())' RUN_ROOT_CHECK="$run_root" 2>/dev/null || true)"
-if [[ -z "$run_real" ]]; then
-  run_real="$(cd "$run_root" && pwd -P)"
-fi
+run_real="$(RUN_ROOT_CHECK="$run_root" python -c 'from pathlib import Path; import os; print(Path(os.environ["RUN_ROOT_CHECK"]).resolve())')"
 case "$run_real" in
   "$repo_real"|"$repo_real"/*) fail "run root must stay outside the repository" ;;
 esac
