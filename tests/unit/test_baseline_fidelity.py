@@ -35,10 +35,10 @@ class BaselineFidelityTests(unittest.TestCase):
         self.assertIn(RandomOffloadingPolicy(seed=1).choose_action(self.context), {"local", "horizontal", "vertical"})
         self.assertEqual(HorizontalOffloadingPolicy().choose_action(self.context), "horizontal")
         self.assertEqual(VerticalOffloadingPolicy().choose_action(self.context), "vertical")
-        self.assertEqual(BalancedCooperationOffloadingPolicy().choose_action(self.context), "horizontal")
+        self.assertEqual(BalancedCooperationOffloadingPolicy().choose_action(self.context), "local")
         self.assertEqual(MinimumLatencyEstimateOffloadingPolicy().choose_action(self.context), "horizontal")
 
-    def test_bco_reacts_to_load_imbalance(self) -> None:
+    def test_bco_is_cyclic_not_load_aware(self) -> None:
         low = PolicyContext(
             observation={"queue_load": 0.0, "destination_loads": {"local": 9.0, "horizontal": 1.0, "vertical": 8.0}},
             legal_action_mask=build_legal_action_mask(("local", "horizontal", "vertical")),
@@ -49,8 +49,10 @@ class BaselineFidelityTests(unittest.TestCase):
             legal_action_mask=build_legal_action_mask(("local", "horizontal", "vertical")),
             trace_history=(),
         )
-        self.assertEqual(BalancedCooperationOffloadingPolicy().choose_action(low), "horizontal")
-        self.assertEqual(BalancedCooperationOffloadingPolicy().choose_action(high), "local")
+        low_policy = BalancedCooperationOffloadingPolicy()
+        high_policy = BalancedCooperationOffloadingPolicy()
+        self.assertEqual(low_policy.choose_action(low), "local")
+        self.assertEqual(high_policy.choose_action(high), "local")
 
     def test_every_policy_respects_legal_mask(self) -> None:
         mask = build_legal_action_mask(("local", "vertical"))

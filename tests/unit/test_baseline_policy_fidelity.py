@@ -97,13 +97,16 @@ class BaselinePolicyFidelityTests(unittest.TestCase):
         self.assertEqual(first_actions, second_actions)
         self.assertTrue(all(action in {"2", "3"} for action in first_actions))
 
-    def test_bco_uses_balance_hint_before_rollover(self) -> None:
+    def test_bco_ignores_load_hints_and_preserves_cyclic_order(self) -> None:
         policy = PolicyRegistry.resolve("BCO")
         context = self.context(
             {"local": True, "horizontal": True, "vertical": True},
             {"balance_hint": {"local": 3.0, "horizontal": 1.0, "vertical": 2.0}},
         )
-        self.assertEqual(policy.choose_action(context), "horizontal")
+        self.assertEqual(
+            [policy.choose_action(context) for _ in range(3)],
+            ["local", "horizontal", "vertical"],
+        )
 
     def test_bco_rotates_over_concrete_placements_in_paper_order(self) -> None:
         policy = PolicyRegistry.resolve("BCO")

@@ -36,6 +36,7 @@ from .external_pipeline import (
     verify_campaign,
     verify_run,
 )
+from .full_matrix_smoke import run_full_matrix_smoke
 from .job_matrix import validate_production_job_matrix
 from .matrix_patch import install_matrix_patch
 from .panel_registry import PANEL_REGISTRY
@@ -403,6 +404,9 @@ def build_parser() -> argparse.ArgumentParser:
     add_trained_pilot_arguments(echo_status)
     echo_verify = sub.add_parser("echo-verify-run")
     add_trained_pilot_arguments(echo_verify)
+    full_matrix_smoke = sub.add_parser("echo-full-matrix-smoke")
+    full_matrix_smoke.add_argument("--run-root", required=True)
+    full_matrix_smoke.add_argument("--campaign-id", required=True)
 
     return parser
 
@@ -538,6 +542,8 @@ def dispatch(args: argparse.Namespace) -> object:
         return verify_trained_run(
             args.run_root, args.campaign_id, config=_trained_config(args)
         )
+    if args.command == "echo-full-matrix-smoke":
+        return run_full_matrix_smoke(args.run_root, args.campaign_id)
     raise ValueError(f"unsupported command: {args.command}")
 
 

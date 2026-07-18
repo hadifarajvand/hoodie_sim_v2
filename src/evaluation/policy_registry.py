@@ -35,7 +35,6 @@ def _policy_aliases() -> dict[str, str]:
         "BALANCED_COOPERATION_OFFLOADING": "BCO",
         "MINIMUM_LATENCY_ESTIMATE_OFFLOADING": "MLEO",
         "ADAPTIVE_OFFLOADING": "ADAPTIVE",
-        "HOODIE": "ADAPTIVE",
     }
 
 

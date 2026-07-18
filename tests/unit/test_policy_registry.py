@@ -46,8 +46,11 @@ class PolicyRegistryTests(unittest.TestCase):
 
     def test_existing_adaptive_alias_is_registered(self) -> None:
         self.assertIsInstance(PolicyRegistry.resolve("ADAPTIVE"), AdaptiveOffloadingPolicy)
-        self.assertIsInstance(PolicyRegistry.resolve("HOODIE"), AdaptiveOffloadingPolicy)
         self.assertIsInstance(PolicyRegistry.resolve("Adaptive"), AdaptiveOffloadingPolicy)
+
+    def test_hoodie_cannot_resolve_to_a_heuristic(self) -> None:
+        with self.assertRaisesRegex(ValueError, "Unsupported policy name"):
+            PolicyRegistry.resolve("HOODIE")
 
     def test_paper_baseline_aliases_are_preserved(self) -> None:
         aliases = {

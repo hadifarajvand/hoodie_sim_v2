@@ -112,14 +112,17 @@ class Phase0ValidationGate3ROSeeding(unittest.TestCase):
 
 
 class Phase0ValidationGate4BCOBalancing(unittest.TestCase):
-    def test_gate4_bco_uses_balance_hint_before_rollover(self) -> None:
+    def test_gate4_bco_ignores_balance_hint_and_cycles(self) -> None:
         policy = PolicyRegistry.resolve("BCO")
         context = PolicyContext(
             observation={"balance_hint": {"local": 3.0, "horizontal": 1.0, "vertical": 2.0}},
             legal_action_mask={"local": True, "horizontal": True, "vertical": True},
             trace_history=("gate4",),
         )
-        self.assertEqual(policy.choose_action(context), "horizontal")
+        self.assertEqual(
+            [policy.choose_action(context) for _ in range(3)],
+            ["local", "horizontal", "vertical"],
+        )
 
     def test_gate4_bco_rotates_over_concrete_placements_in_paper_order(self) -> None:
         policy = PolicyRegistry.resolve("BCO")

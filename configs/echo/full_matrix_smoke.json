@@ -1,0 +1,69 @@
+{
+  "schema_version": 1,
+  "label": "FULL-MATRIX EXECUTION SMOKE — NOT PAPER EVIDENCE",
+  "purpose": "Execute every manuscript panel, method, and operating point through the real physical kernel before authorizing the 5000-episode campaign.",
+  "smoke_budget": {
+    "seeds": [101],
+    "training_episodes": 3,
+    "evaluation_episodes_per_point": 1,
+    "episode_slots": 16,
+    "decision_slots": 12,
+    "drain_slots": 4,
+    "hidden_layers": [32, 32],
+    "batch_size": 4,
+    "replay_capacity": 256,
+    "target_copy_period": 8,
+    "lstm_lookback": 3,
+    "lstm_cells": 4
+  },
+  "paper_budget_after_smoke": {
+    "seeds": 10,
+    "training_episodes": 5000,
+    "held_out_episodes_per_seed_and_point": 200,
+    "episode_slots": 110,
+    "decision_slots": 100,
+    "drain_slots": 10,
+    "hidden_layers": [1024, 1024, 1024],
+    "batch_size": 64,
+    "replay_capacity": 10000,
+    "target_copy_period": 2000,
+    "lstm_lookback": 10,
+    "lstm_cells": 20
+  },
+  "methods": {
+    "main_comparison": ["ECHO", "HOODIE", "RO", "FLC", "VO", "HO", "BCO", "MLEO"],
+    "ablation_only": ["ECHO", "ECHO-NoLSTM"],
+    "learning_based": ["ECHO", "HOODIE", "ECHO-NoLSTM"],
+    "inherited_hoodie_baselines": ["RO", "FLC", "VO", "HO", "BCO", "MLEO"]
+  },
+  "paper_axes": {
+    "learning_rates": [1e-9, 5e-9, 1e-8, 1e-7, 5e-7, 7e-7],
+    "discount_factors": [0.2, 0.4, 0.6, 0.8, 0.99],
+    "arrival_probabilities": [0.1, 0.3, 0.5, 0.7, 0.9],
+    "figure_6_cpu_ghz": [4, 5, 6, 7, 8, 9],
+    "figure_7_cpu_ghz": [3, 4, 5, 6, 7],
+    "agent_counts": [10, 15, 20, 25, 30],
+    "figure_7_delay_timeouts_seconds": [9.6, 9.8, 10.0, 10.2, 10.4],
+    "figure_7_drop_timeouts_seconds": [1.6, 1.8, 2.0, 2.2, 2.4],
+    "traffic_profiles": {
+      "moderate": {"task_sizes_mbits": [1, 2, 3], "arrival_probability": 0.5},
+      "heavy": {"task_sizes_mbits": [2, 3, 4, 5], "arrival_probability": 0.7},
+      "extreme": {"task_sizes_mbits": [3, 4, 5, 6, 7], "arrival_probability": 0.9}
+    },
+    "rate_profiles_mbps": {
+      "balanced": {"horizontal": 10, "vertical": 30},
+      "horizontal-centric": {"horizontal": 20, "vertical": 20},
+      "vertical-centric": {"horizontal": 5, "vertical": 40}
+    }
+  },
+  "acceptance_gates": [
+    "all 15 manuscript panels execute",
+    "Figure 7 contains all eight main methods at every operating point",
+    "Figure 8 contains only ECHO and ECHO-NoLSTM",
+    "all compared methods reuse identical traces within each point",
+    "generated = successful + dropped",
+    "real simulator values only; no projected or surrogate curves",
+    "panel, seed, aggregate, trace, checkpoint, configuration, and manifest exports exist",
+    "Figures 4-8 export PDF, SVG, and 300-dpi PNG"
+  ]
+}

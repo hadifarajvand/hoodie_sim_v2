@@ -22,6 +22,8 @@ def action_family(action: str) -> str:
             return family
     if action == "cloud":
         return "vertical"
+    if action.isdigit() or action.startswith("horizontal_"):
+        return "horizontal"
     return action
 
 def legal_actions(context: PolicyContext) -> tuple[str, ...]:

@@ -2,13 +2,28 @@
   "schema_version": 1,
   "status": "LOCKED_PRE_RESULTS",
   "authority_order": [
+    "ECHO_Manuscript Google Doc (current user-supplied source)",
     "02_ECHO-Article_Current.tex",
     "03_ECHO-Article_Current_Source.zip",
-    "HOODIE_paper.pdf",
+    "HOODIE paper PDF (current user-supplied source)",
     "repository_as_implementation_evidence_only",
     "01_ECHO-Article_Current_PreResults.pdf_visual_cross_check_only"
   ],
   "sources": [
+    {
+      "name": "ECHO_Manuscript",
+      "drive_id": "1P22Hh68M-9VQ9LrumhVZ0qSzbjTmzIXQrCxJZ_bFKTw",
+      "mime_type": "application/vnd.google-apps.document",
+      "modified_time": "2026-07-17T07:25:41.763Z",
+      "role": "current_highest_authority",
+      "binding_scope": [
+        "locked ECHO method boundary",
+        "inherited HOODIE learner",
+        "baseline hierarchy",
+        "Figures 5-8 panel matrix",
+        "evaluation and export protocol"
+      ]
+    },
     {
       "name": "02_ECHO-Article_Current.tex",
       "drive_id": "12fZMZaQykmVJNf3valU4unTQDCQOt9uX",
@@ -30,6 +45,14 @@
       "size_bytes": 1912997,
       "sha256": "6b0e2b1ebaba26fc00ec2759199024323ae0199f5a56c36b8193d2aca6cdbcfa",
       "role": "supporting_source_archive"
+    },
+    {
+      "name": "A. E. Giannopoulos et al. - 2024 - HOODIE paper.pdf",
+      "drive_id": "17w7MFST75fMyQLWyNM4ZqWqADDObBiFe",
+      "mime_type": "application/pdf",
+      "size_bytes": 3492836,
+      "modified_time": "2025-09-19T20:39:37.000Z",
+      "role": "current_inherited_mechanics_and_baselines_authority"
     },
     {
       "name": "HOODIE_paper.pdf",
