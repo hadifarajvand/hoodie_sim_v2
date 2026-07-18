@@ -1,0 +1,37 @@
+{
+  "schema_version": 1,
+  "label": "HOODIE FIGURES 8-11 WITH ECHO — 100-EPISODE PRELIMINARY REPRODUCTION",
+  "purpose": "Reproduce the original HOODIE Figures 8-11 panel structure with ECHO added as the proposed method and HOODIE plus its inherited policies retained as baselines.",
+  "budget": {
+    "seeds": [101],
+    "training_episodes": 100,
+    "held_out_evaluation_episodes_per_point": 100,
+    "episode_slots": 110,
+    "decision_slots": 100,
+    "drain_slots": 10,
+    "hidden_layers": [1024, 1024, 1024],
+    "batch_size": 64,
+    "replay_capacity": 10000,
+    "target_copy_period": 2000,
+    "lstm_lookback": 10,
+    "lstm_cells": 20
+  },
+  "methods": {
+    "proposed": "ECHO",
+    "base_framework": "HOODIE",
+    "inherited_baselines": ["RO", "FLC", "VO", "HO", "BCO", "MLEO"],
+    "main_comparison": ["ECHO", "HOODIE", "RO", "FLC", "VO", "HO", "BCO", "MLEO"],
+    "ablation_only": ["ECHO", "ECHO-NoLSTM"]
+  },
+  "figure_contracts": {
+    "figure_8": "resources/papers/hoodie/contracts/figure_8.json",
+    "figure_9": "resources/papers/hoodie/contracts/figure_9.json",
+    "figure_10": "resources/papers/hoodie/contracts/figure_10.json",
+    "figure_11": "resources/papers/hoodie/contracts/figure_11.json"
+  },
+  "scientific_scope": {
+    "paper_evidence": false,
+    "reason": "The base paper uses 5000 training episodes and 200 held-out episodes across a larger seed protocol; this run intentionally uses 100 training and 100 held-out episodes with one seed.",
+    "projected_or_surrogate_values_used": false
+  }
+}

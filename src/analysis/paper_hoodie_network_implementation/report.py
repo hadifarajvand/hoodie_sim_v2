@@ -6,6 +6,8 @@ import json
 import subprocess
 from typing import Any
 
+from ..git_base_ref import resolve_git_base_ref
+
 
 FEATURE_ID = "039-paper-hoodie-network-implementation"
 DEFAULT_OUTPUT_DIR = Path("artifacts/analysis/paper-hoodie-network-implementation")
@@ -53,17 +55,19 @@ def collect_prerequisite_tags_verified() -> list[dict[str, Any]]:
     feature_dir = Path("specs") / FEATURE_ID
     pointer = _read_feature_pointer()
     checks: list[dict[str, Any]] = []
+    base_resolution = resolve_git_base_ref()
+    base_ref = base_resolution.base_ref
     expectations = [
         ("branch", _git_output("branch", "--show-current") == FEATURE_ID, "git branch --show-current == 039-paper-hoodie-network-implementation"),
         ("not_main", _git_output("branch", "--show-current") != "main", "current branch != main"),
-        ("main_equals_origin_main", _git_output("rev-parse", resolve_git_base_ref()) == _git_output("rev-parse", "origin/main"), "main == origin/main"),
-        ("main_equals_feature_038", _git_output("rev-parse", resolve_git_base_ref()) == _git_output("rev-parse", "038-training-foundation-contract-complete^{}"), "main == 038-training-foundation-contract-complete^{}"),
+        ("main_equals_origin_main", _git_output("rev-parse", base_ref) == _git_output("rev-parse", "origin/main"), "main == origin/main"),
+        ("main_equals_feature_038", _git_output("rev-parse", base_ref) == _git_output("rev-parse", "038-training-foundation-contract-complete^{}"), "main == 038-training-foundation-contract-complete^{}"),
         ("feature_038_diff_empty", _git_output("diff", "--name-only", "038-training-foundation-contract-complete^{}", "main") == "", "git diff --name-only 038-training-foundation-contract-complete^{} main is empty"),
         ("feature_dir_exists", feature_dir.exists(), "specs/039-paper-hoodie-network-implementation/ exists"),
         ("pointer_matches_feature", pointer == "specs/039-paper-hoodie-network-implementation", ".specify/feature.json points to specs/039-paper-hoodie-network-implementation"),
         ("pointer_not_audit_036", pointer != "specs/036-deadline-timeout-off-by-one-audit", ".specify/feature.json does not point to specs/036-deadline-timeout-off-by-one-audit"),
         ("pointer_unstaged", _git_status_short("--", ".specify/feature.json").startswith(" M "), ".specify/feature.json must not be staged"),
-        ("pointer_not_in_main_head", ".specify/feature.json" not in _git_output("diff", "--name-only", "git_triple_dot_range()").splitlines(), ".specify/feature.json must not appear in git diff --name-only git_triple_dot_range()"),
+        ("pointer_not_in_main_head", ".specify/feature.json" not in _git_output("diff", "--name-only", base_resolution.triple_dot_range).splitlines(), ".specify/feature.json must not appear in the base-to-HEAD diff"),
     ]
     for name, verified, details in expectations:
         checks.append({"name": name, "verified": bool(verified), "details": details})

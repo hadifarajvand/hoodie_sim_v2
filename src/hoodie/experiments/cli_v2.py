@@ -10,6 +10,7 @@ import sys
 from typing import Any
 
 from .campaign import campaign_status, resume_production_campaign, run_production_campaign
+from .base_article_100 import base_article_100_status, run_base_article_100
 from .campaign_layout import (
     CampaignLayout,
     CampaignLocationError,
@@ -407,6 +408,12 @@ def build_parser() -> argparse.ArgumentParser:
     full_matrix_smoke = sub.add_parser("echo-full-matrix-smoke")
     full_matrix_smoke.add_argument("--run-root", required=True)
     full_matrix_smoke.add_argument("--campaign-id", required=True)
+    base_article_100 = sub.add_parser("echo-base-figures-100")
+    base_article_100.add_argument("--run-root", required=True)
+    base_article_100.add_argument("--campaign-id", required=True)
+    base_article_100_status_parser = sub.add_parser("echo-base-figures-100-status")
+    base_article_100_status_parser.add_argument("--run-root", required=True)
+    base_article_100_status_parser.add_argument("--campaign-id", required=True)
 
     return parser
 
@@ -544,6 +551,10 @@ def dispatch(args: argparse.Namespace) -> object:
         )
     if args.command == "echo-full-matrix-smoke":
         return run_full_matrix_smoke(args.run_root, args.campaign_id)
+    if args.command == "echo-base-figures-100":
+        return run_base_article_100(args.run_root, args.campaign_id)
+    if args.command == "echo-base-figures-100-status":
+        return base_article_100_status(args.run_root, args.campaign_id)
     raise ValueError(f"unsupported command: {args.command}")
 
 

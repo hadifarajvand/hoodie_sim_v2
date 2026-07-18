@@ -4,6 +4,7 @@ from dataclasses import dataclass
 from datetime import UTC, datetime
 import json
 import math
+import os
 from pathlib import Path
 import platform
 import shutil
@@ -50,6 +51,12 @@ PANEL_IDS = tuple(
     + [f"figure_6{letter}" for letter in "abcde"]
     + [f"figure_7{letter}" for letter in "abcdef"]
     + [f"figure_8{letter}" for letter in "ab"]
+)
+BASE_ARTICLE_PANEL_IDS = tuple(
+    [f"figure_8{letter}" for letter in "ab"]
+    + [f"figure_9{letter}" for letter in "abcde"]
+    + [f"figure_10{letter}" for letter in "abcdef"]
+    + ["figure_11"]
 )
 
 
@@ -344,6 +351,7 @@ def _run_episode(
             "dropped_tasks": dropped,
             "drop_ratio": dropped / generated if generated else 0.0,
             "successful_task_delay": float(np.mean(delays)) if delays else 0.0,
+            "successful_delay_sum": float(sum(delays)),
             "accumulated_reward": float(sum(rewards)),
             "local_actions": action_counts["local"],
             "horizontal_actions": action_counts["horizontal"],
@@ -389,11 +397,13 @@ def _checkpoint_key(
     seed: int,
     learning_rate: float,
     discount_factor: float,
+    training_profile: str = "default",
 ) -> str:
-    return (
+    key = (
         f"{method.lower().replace('-', '_')}-n{agent_count}-seed{seed}"
         f"-lr{learning_rate:.0e}-g{discount_factor:g}"
     )
+    return key if training_profile == "default" else f"{key}-{training_profile}"
 
 
 def _train_checkpoint(
@@ -405,10 +415,13 @@ def _train_checkpoint(
     config: FullMatrixSmokeConfig,
     learning_rate: float | None = None,
     discount_factor: float | None = None,
+    training_arrival_probability: float = 0.5,
+    training_timeout_seconds: float = 2.0,
+    training_profile: str = "default",
 ) -> tuple[DistributedHoodiePolicy, list[dict[str, Any]], dict[str, Any]]:
     lr = learning_rate if learning_rate is not None else config.learning_rate
     gamma = discount_factor if discount_factor is not None else config.discount_factor
-    key = _checkpoint_key(method, agent_count, seed, lr, gamma)
+    key = _checkpoint_key(method, agent_count, seed, lr, gamma, training_profile)
     directory = root / "checkpoints" / key
     checkpoint_path = directory / "checkpoint.pt"
     metrics_path = directory / "training_metrics.csv"
@@ -425,24 +438,36 @@ def _train_checkpoint(
             metrics = list(csv.DictReader(handle))
         return policy, metrics, read_json(record_path)
     directory.mkdir(parents=True, exist_ok=True)
-    policy = _new_policy(
-        method,
-        agent_count,
-        seed,
-        config,
-        learning_rate=lr,
-        discount_factor=gamma,
-    )
     metrics: list[dict[str, Any]] = []
-    for episode in range(config.training_episodes):
+    start_episode = 0
+    if checkpoint_path.exists():
+        state = torch.load(checkpoint_path, map_location="cpu", weights_only=False)
+        if state.get("source_commit") != source_commit():
+            raise ValueError(f"stale partial checkpoint: {key}")
+        policy = DistributedHoodiePolicy.from_state(state["policy_state"])
+        policy.policy_name = method
+        start_episode = int(state.get("next_episode", 0))
+        metrics = list(state.get("training_metrics", []))
+        if start_episode != len(metrics):
+            raise ValueError(f"partial checkpoint metrics mismatch: {key}")
+    else:
+        policy = _new_policy(
+            method,
+            agent_count,
+            seed,
+            config,
+            learning_rate=lr,
+            discount_factor=gamma,
+        )
+    for episode in range(start_episode, config.training_episodes):
         policy.exploration_epsilon = max(0.05, 1.0 - episode / config.training_episodes)
         trace = _trace(
             config,
             trace_id=f"smoke-train-{key}-episode-{episode}",
             seed=1_000_000 + seed * 100 + episode,
             agent_count=agent_count,
-            arrival_probability=0.5,
-            timeout_seconds=2.0,
+            arrival_probability=training_arrival_probability,
+            timeout_seconds=training_timeout_seconds,
         )
         result = _run_episode(
             policy=policy,
@@ -450,8 +475,8 @@ def _train_checkpoint(
             trace=trace,
             config=config,
             agent_count=agent_count,
-            arrival_probability=0.5,
-            timeout_seconds=2.0,
+            arrival_probability=training_arrival_probability,
+            timeout_seconds=training_timeout_seconds,
             training=True,
             learning_rate=lr,
         )
@@ -466,14 +491,18 @@ def _train_checkpoint(
                 **result["summary"],
             }
         )
+        temporary_checkpoint = checkpoint_path.with_suffix(".pt.tmp")
         torch.save(
             {
                 "source_commit": source_commit(),
                 "next_episode": episode + 1,
+                "training_metrics": metrics,
                 "policy_state": policy.export_state(),
             },
-            checkpoint_path,
+            temporary_checkpoint,
         )
+        os.replace(temporary_checkpoint, checkpoint_path)
+        atomic_csv(metrics_path, metrics)
         atomic_json(
             directory / "progress.json",
             {
@@ -492,6 +521,9 @@ def _train_checkpoint(
         "learning_rate": lr,
         "discount_factor": gamma,
         "training_episodes": config.training_episodes,
+        "training_arrival_probability": training_arrival_probability,
+        "training_timeout_seconds": training_timeout_seconds,
+        "training_profile": training_profile,
         "checkpoint": str(checkpoint_path),
         "checkpoint_sha256": file_sha256(checkpoint_path),
         "finite_loss_count": sum(int(row["finite_loss_count"]) for row in metrics),
@@ -558,11 +590,12 @@ def _evaluation_row(
         "horizontal_actions": summary["horizontal_actions"],
         "vertical_actions": summary["vertical_actions"],
         "checkpoint_sha256": checkpoint_sha256 or "",
-        "decision_count": len(result["decisions"]),
-        "illegal_selected_action_count": sum(
-            not bool(row["selected_action_legal"]) for row in result["decisions"]
+        "decision_count": summary.get("decision_count", len(result["decisions"])),
+        "illegal_selected_action_count": summary.get(
+            "illegal_selected_action_count",
+            sum(not bool(row["selected_action_legal"]) for row in result["decisions"]),
         ),
-        "task_record_count": len(result["tasks"]),
+        "task_record_count": summary.get("task_record_count", len(result["tasks"])),
     }
 
 
@@ -582,39 +615,158 @@ def _evaluate_methods(
     cpu_ghz: float = 5.0,
     horizontal_rate: float = 30.0,
     vertical_rate: float = 10.0,
+    task_sizes: tuple[float, ...] | None = None,
+    cache_root: Path | None = None,
 ) -> list[dict[str, Any]]:
+    cache_path: Path | None = None
+    if cache_root is not None:
+        cache_root.mkdir(parents=True, exist_ok=True)
+        safe_series = "".join(character if character.isalnum() else "_" for character in series)
+        cache_path = cache_root / (
+            f"{panel_id}-{safe_series}-{x_name.replace(' ', '_')}-{x_value:g}.json"
+        )
+        if cache_path.exists():
+            cached = read_json(cache_path)
+            if (
+                cached.get("source_commit") == source_commit()
+                and cached.get("evaluation_episodes") == config.evaluation_episodes
+                and tuple(cached.get("methods", [])) == methods
+            ):
+                return list(cached["rows"])
+    traces = [trace]
+    for episode in range(1, config.evaluation_episodes):
+        traces.append(
+            _trace(
+                config,
+                trace_id=f"{trace.trace_id}-episode-{episode}",
+                seed=trace.seed + episode,
+                agent_count=agent_count,
+                arrival_probability=arrival_probability,
+                timeout_seconds=timeout_seconds,
+                task_sizes=task_sizes,
+            )
+        )
     rows = []
+    episode_rows: list[dict[str, Any]] = []
+    def ci95(values: list[float]) -> float:
+        if len(values) < 2:
+            return 0.0
+        return float(1.96 * np.std(values, ddof=1) / math.sqrt(len(values)))
+
     for method in methods:
         record = records.get((method, agent_count))
-        policy = _policy_factory(method, record, trace.seed)()
-        result = _run_episode(
-            policy=policy,
-            method=method,
-            trace=trace,
-            config=config,
-            agent_count=agent_count,
-            arrival_probability=arrival_probability,
-            timeout_seconds=timeout_seconds,
-            cpu_ghz=cpu_ghz,
-            horizontal_rate=horizontal_rate,
-            vertical_rate=vertical_rate,
-        )
-        rows.append(
-            _evaluation_row(
+        summaries: list[dict[str, Any]] = []
+        decision_count = 0
+        illegal_selected_action_count = 0
+        task_record_count = 0
+        for episode, episode_trace in enumerate(traces):
+            policy = _policy_factory(method, record, episode_trace.seed)()
+            result = _run_episode(
+                policy=policy,
+                method=method,
+                trace=episode_trace,
+                config=config,
+                agent_count=agent_count,
+                arrival_probability=arrival_probability,
+                timeout_seconds=timeout_seconds,
+                cpu_ghz=cpu_ghz,
+                horizontal_rate=horizontal_rate,
+                vertical_rate=vertical_rate,
+            )
+            summaries.append(result["summary"])
+            decision_count += len(result["decisions"])
+            illegal_selected_action_count += sum(
+                not bool(row["selected_action_legal"]) for row in result["decisions"]
+            )
+            task_record_count += len(result["tasks"])
+            episode_rows.append(
+                {
+                    "episode": episode,
+                    "method": method,
+                    **result["summary"],
+                    "decision_count": len(result["decisions"]),
+                    "illegal_selected_action_count": sum(
+                        not bool(row["selected_action_legal"])
+                        for row in result["decisions"]
+                    ),
+                    "task_record_count": len(result["tasks"]),
+                }
+            )
+        generated = sum(int(summary["generated_tasks"]) for summary in summaries)
+        successful = sum(int(summary["successful_tasks"]) for summary in summaries)
+        dropped = sum(int(summary["dropped_tasks"]) for summary in summaries)
+        aggregate_result = {
+            "summary": {
+                "trace_id": f"{trace.trace_id}-bank-{config.evaluation_episodes}",
+                "trace_seed": trace.seed,
+                "generated_tasks": generated,
+                "successful_tasks": successful,
+                "dropped_tasks": dropped,
+                "drop_ratio": dropped / generated if generated else 0.0,
+                "successful_task_delay": (
+                    sum(float(summary["successful_delay_sum"]) for summary in summaries)
+                    / successful
+                    if successful
+                    else 0.0
+                ),
+                "accumulated_reward": float(
+                    np.mean([float(summary["accumulated_reward"]) for summary in summaries])
+                ),
+                "local_actions": sum(int(summary["local_actions"]) for summary in summaries),
+                "horizontal_actions": sum(int(summary["horizontal_actions"]) for summary in summaries),
+                "vertical_actions": sum(int(summary["vertical_actions"]) for summary in summaries),
+                "decision_count": decision_count,
+                "illegal_selected_action_count": illegal_selected_action_count,
+                "task_record_count": task_record_count,
+            },
+            "decisions": [],
+            "tasks": [],
+        }
+        row = _evaluation_row(
                 panel_id=panel_id,
                 series=series,
                 x_name=x_name,
                 x_value=x_value,
                 method=method,
-                result=result,
+                result=aggregate_result,
                 checkpoint_sha256=record.get("checkpoint_sha256") if record else None,
             )
+        row["evaluation_episodes"] = config.evaluation_episodes
+        row["accumulated_reward_ci95"] = ci95(
+            [float(summary["accumulated_reward"]) for summary in summaries]
+        )
+        row["successful_task_delay_ci95"] = ci95(
+            [float(summary["successful_task_delay"]) for summary in summaries]
+        )
+        row["drop_ratio_ci95"] = ci95(
+            [float(summary["drop_ratio"]) for summary in summaries]
+        )
+        for family in ("local", "horizontal", "vertical"):
+            row[f"{family}_actions_ci95"] = ci95(
+                [float(summary[f"{family}_actions"]) for summary in summaries]
+            )
+        rows.append(row)
+    if cache_path is not None:
+        atomic_json(
+            cache_path,
+            {
+                "source_commit": source_commit(),
+                "evaluation_episodes": config.evaluation_episodes,
+                "methods": list(methods),
+                "rows": rows,
+                "episode_rows": episode_rows,
+            },
         )
     return rows
 
 
 def _render_composite(
-    rows: list[dict[str, Any]], figure_id: str, panels: tuple[str, ...], output: Path
+    rows: list[dict[str, Any]],
+    figure_id: str,
+    panels: tuple[str, ...],
+    output: Path,
+    *,
+    subtitle: str = "full-matrix execution smoke (not paper evidence)",
 ) -> list[dict[str, Any]]:
     if len(panels) <= 2:
         nrows, ncols = 1, len(panels)
@@ -631,9 +783,10 @@ def _render_composite(
         for series in series_names:
             selected = [row for row in panel_rows if row["series"] == series]
             selected.sort(key=lambda row: float(row["x_value"]))
-            axis.plot(
+            axis.errorbar(
                 [float(row["x_value"]) for row in selected],
                 [float(row["metric_value"]) for row in selected],
+                yerr=[float(row.get("metric_ci95", 0.0) or 0.0) for row in selected],
                 marker="o",
                 linewidth=1.4,
                 label=series,
@@ -646,7 +799,7 @@ def _render_composite(
             axis.legend(fontsize=7, frameon=False)
     for axis in flat[len(panels) :]:
         axis.set_visible(False)
-    figure.suptitle(f"{figure_id.upper()} — full-matrix execution smoke (not paper evidence)")
+    figure.suptitle(f"{figure_id.upper()} — {subtitle}")
     records = []
     for suffix, options in (("pdf", {}), ("svg", {}), ("png", {"dpi": 300})):
         path = output.with_suffix(f".{suffix}")
@@ -706,8 +859,22 @@ def _render_topology(root: Path) -> list[dict[str, Any]]:
     return records
 
 
-def _run_matrix(root: Path, config: FullMatrixSmokeConfig) -> dict[str, Any]:
+def _run_matrix(
+    root: Path,
+    config: FullMatrixSmokeConfig,
+    *,
+    base_article_numbering: bool = False,
+) -> dict[str, Any]:
     axes = _paper_axes()
+    learning_panel_ids = ("figure_8a", "figure_8b") if base_article_numbering else ("figure_5a", "figure_5b")
+    behavior_panel_ids = tuple(
+        f"figure_{9 if base_article_numbering else 6}{letter}" for letter in "abcde"
+    )
+    comparative_panel_ids = tuple(
+        f"figure_{10 if base_article_numbering else 7}{letter}" for letter in "abcdef"
+    )
+    ablation_panel_id = "figure_11" if base_article_numbering else "figure_8a"
+    cache_root = root / "evaluation_cache"
     data_dir = root / "results/data"
     figures_dir = root / "results/figures"
     data_dir.mkdir(parents=True, exist_ok=True)
@@ -727,7 +894,7 @@ def _run_matrix(root: Path, config: FullMatrixSmokeConfig) -> dict[str, Any]:
         records[("ECHO", int(agent_count))] = record
         all_checkpoint_records[record["key"]] = record
         training_rows.extend(metrics)
-    for method in ("HOODIE", "ECHO-NoLSTM"):
+    for method in (("HOODIE",) if base_article_numbering else ("HOODIE", "ECHO-NoLSTM")):
         _policy, metrics, record = _train_checkpoint(
             root, method=method, agent_count=20, seed=101, config=config
         )
@@ -735,10 +902,29 @@ def _run_matrix(root: Path, config: FullMatrixSmokeConfig) -> dict[str, Any]:
         all_checkpoint_records[record["key"]] = record
         training_rows.extend(metrics)
 
+    ablation_records: dict[str, dict[str, Any]] = {}
+    if base_article_numbering:
+        for method in ABLATION_METHODS:
+            _policy, metrics, record = _train_checkpoint(
+                root,
+                method=method,
+                agent_count=20,
+                seed=301,
+                config=config,
+                training_arrival_probability=0.3,
+                training_timeout_seconds=1.0,
+                training_profile="figure11",
+            )
+            ablation_records[method] = record
+            all_checkpoint_records[record["key"]] = record
+            training_rows.extend(metrics)
+    else:
+        ablation_records = {method: records[(method, 20)] for method in ABLATION_METHODS}
+
     figure5_rows: list[dict[str, Any]] = []
     for panel_id, values, parameter in (
-        ("figure_5a", axes["learning_rates"], "learning_rate"),
-        ("figure_5b", axes["discount_factors"], "discount_factor"),
+        (learning_panel_ids[0], axes["learning_rates"], "learning_rate"),
+        (learning_panel_ids[1], axes["discount_factors"], "discount_factor"),
     ):
         for value in values:
             kwargs = {parameter: float(value)}
@@ -782,7 +968,7 @@ def _run_matrix(root: Path, config: FullMatrixSmokeConfig) -> dict[str, Any]:
                 timeout_seconds=2.0,
             )
             row = _evaluate_methods(
-                panel_id="figure_6a",
+                panel_id=behavior_panel_ids[0],
                 methods=("ECHO",),
                 series=f"N={agent_count}",
                 x_name="arrival probability",
@@ -793,38 +979,51 @@ def _run_matrix(root: Path, config: FullMatrixSmokeConfig) -> dict[str, Any]:
                 arrival_probability=float(probability),
                 timeout_seconds=2.0,
                 records=records,
+                cache_root=cache_root,
             )[0]
-            row.update(metric="average reward", metric_value=row["accumulated_reward"])
+            row.update(
+                metric="average reward",
+                metric_value=row["accumulated_reward"],
+                metric_ci95=row["accumulated_reward_ci95"],
+            )
             figure6_rows.append(row)
-        trace = _trace(
-            config,
-            trace_id=f"smoke-figure6b-p{probability}-n20",
-            seed=6_100_000 + int(probability * 100),
-            agent_count=20,
-            arrival_probability=float(probability),
-            timeout_seconds=2.0,
-        )
-        base = _evaluate_methods(
-            panel_id="figure_6b",
-            methods=("ECHO",),
-            series="ECHO",
-            x_name="arrival probability",
-            x_value=float(probability),
-            trace=trace,
-            config=config,
-            agent_count=20,
-            arrival_probability=float(probability),
-            timeout_seconds=2.0,
-            records=records,
-        )[0]
-        for family, column in (
-            ("local", "local_actions"),
-            ("horizontal", "horizontal_actions"),
-            ("vertical", "vertical_actions"),
-        ):
-            row = dict(base)
-            row.update(series=family, metric="selected actions", metric_value=row[column])
-            figure6_rows.append(row)
+        action_agent_counts = (10, 15, 20) if base_article_numbering else (20,)
+        for action_agent_count in action_agent_counts:
+            trace = _trace(
+                config,
+                trace_id=f"smoke-figure6b-p{probability}-n{action_agent_count}",
+                seed=6_100_000 + int(probability * 100) * 100 + action_agent_count,
+                agent_count=action_agent_count,
+                arrival_probability=float(probability),
+                timeout_seconds=2.0,
+            )
+            base = _evaluate_methods(
+                panel_id=behavior_panel_ids[1],
+                methods=("ECHO",),
+                series=f"N={action_agent_count}",
+                x_name="arrival probability",
+                x_value=float(probability),
+                trace=trace,
+                config=config,
+                agent_count=action_agent_count,
+                arrival_probability=float(probability),
+                timeout_seconds=2.0,
+                records=records,
+                cache_root=cache_root,
+            )[0]
+            for family, column in (
+                ("Local", "local_actions"),
+                ("Horizontal", "horizontal_actions"),
+                ("Vertical", "vertical_actions"),
+            ):
+                row = dict(base)
+                row.update(
+                    series=(f"N={action_agent_count} {family}" if base_article_numbering else family.lower()),
+                    metric="selected actions",
+                    metric_value=row[column],
+                    metric_ci95=row[f"{family.lower()}_actions_ci95"],
+                )
+                figure6_rows.append(row)
     for cpu in axes["figure_6_cpu_ghz"]:
         for agent_count in (10, 15, 20):
             trace = _trace(
@@ -836,7 +1035,7 @@ def _run_matrix(root: Path, config: FullMatrixSmokeConfig) -> dict[str, Any]:
                 timeout_seconds=2.0,
             )
             row = _evaluate_methods(
-                panel_id="figure_6c",
+                panel_id=behavior_panel_ids[2],
                 methods=("ECHO",),
                 series=f"N={agent_count}",
                 x_name="EA CPU (GHz)",
@@ -848,8 +1047,13 @@ def _run_matrix(root: Path, config: FullMatrixSmokeConfig) -> dict[str, Any]:
                 timeout_seconds=2.0,
                 cpu_ghz=float(cpu),
                 records=records,
+                cache_root=cache_root,
             )[0]
-            row.update(metric="average reward", metric_value=row["accumulated_reward"])
+            row.update(
+                metric="average reward",
+                metric_value=row["accumulated_reward"],
+                metric_ci95=row["accumulated_reward_ci95"],
+            )
             figure6_rows.append(row)
     for profile, values in axes["traffic_profiles"].items():
         for agent_count in axes["agent_counts"]:
@@ -863,7 +1067,7 @@ def _run_matrix(root: Path, config: FullMatrixSmokeConfig) -> dict[str, Any]:
                 task_sizes=tuple(float(value) for value in values["task_sizes_mbits"]),
             )
             row = _evaluate_methods(
-                panel_id="figure_6d",
+                panel_id=behavior_panel_ids[3],
                 methods=("ECHO",),
                 series=profile,
                 x_name="number of EAs",
@@ -874,8 +1078,14 @@ def _run_matrix(root: Path, config: FullMatrixSmokeConfig) -> dict[str, Any]:
                 arrival_probability=float(values["arrival_probability"]),
                 timeout_seconds=2.0,
                 records=records,
+                task_sizes=tuple(float(value) for value in values["task_sizes_mbits"]),
+                cache_root=cache_root,
             )[0]
-            row.update(metric="average reward", metric_value=row["accumulated_reward"])
+            row.update(
+                metric="average reward",
+                metric_value=row["accumulated_reward"],
+                metric_ci95=row["accumulated_reward_ci95"],
+            )
             figure6_rows.append(row)
     for profile, values in axes["rate_profiles_mbps"].items():
         for agent_count in axes["agent_counts"]:
@@ -888,7 +1098,7 @@ def _run_matrix(root: Path, config: FullMatrixSmokeConfig) -> dict[str, Any]:
                 timeout_seconds=2.0,
             )
             row = _evaluate_methods(
-                panel_id="figure_6e",
+                panel_id=behavior_panel_ids[4],
                 methods=("ECHO",),
                 series=profile,
                 x_name="number of EAs",
@@ -901,19 +1111,25 @@ def _run_matrix(root: Path, config: FullMatrixSmokeConfig) -> dict[str, Any]:
                 horizontal_rate=float(values["horizontal"]),
                 vertical_rate=float(values["vertical"]),
                 records=records,
+                cache_root=cache_root,
             )[0]
-            row.update(metric="average reward", metric_value=row["accumulated_reward"])
+            row.update(
+                metric="average reward",
+                metric_value=row["accumulated_reward"],
+                metric_ci95=row["accumulated_reward_ci95"],
+            )
             figure6_rows.append(row)
     atomic_json(root / "stages/figure_6_completed.json", {"status": "completed", "rows": len(figure6_rows)})
 
     figure7_rows: list[dict[str, Any]] = []
+    delay_fixed_timeout = 2.0 if base_article_numbering else 10.0
     panel_specs = (
-        ("figure_7a", "arrival probability", axes["arrival_probabilities"], 10.0, 5.0),
-        ("figure_7b", "EA CPU (GHz)", axes["figure_7_cpu_ghz"], 10.0, None),
-        ("figure_7c", "timeout (seconds)", axes["figure_7_delay_timeouts_seconds"], None, 5.0),
-        ("figure_7d", "arrival probability", axes["arrival_probabilities"], 2.0, 5.0),
-        ("figure_7e", "EA CPU (GHz)", axes["figure_7_cpu_ghz"], 2.0, None),
-        ("figure_7f", "timeout (seconds)", axes["figure_7_drop_timeouts_seconds"], None, 5.0),
+        (comparative_panel_ids[0], "arrival probability", axes["arrival_probabilities"], delay_fixed_timeout, 5.0),
+        (comparative_panel_ids[1], "EA CPU (GHz)", axes["figure_7_cpu_ghz"], delay_fixed_timeout, None),
+        (comparative_panel_ids[2], "timeout (seconds)", axes["figure_7_delay_timeouts_seconds"], None, 5.0),
+        (comparative_panel_ids[3], "arrival probability", axes["arrival_probabilities"], 2.0, 5.0),
+        (comparative_panel_ids[4], "EA CPU (GHz)", axes["figure_7_cpu_ghz"], 2.0, None),
+        (comparative_panel_ids[5], "timeout (seconds)", axes["figure_7_drop_timeouts_seconds"], None, 5.0),
     )
     for panel_id, x_name, values, fixed_timeout, fixed_cpu in panel_specs:
         for value in values:
@@ -923,7 +1139,7 @@ def _run_matrix(root: Path, config: FullMatrixSmokeConfig) -> dict[str, Any]:
             trace = _trace(
                 config,
                 trace_id=f"smoke-{panel_id}-{value}",
-                seed=7_000_000 + PANEL_IDS.index(panel_id) * 1000 + list(values).index(value),
+                seed=7_000_000 + comparative_panel_ids.index(panel_id) * 1000 + list(values).index(value),
                 agent_count=20,
                 arrival_probability=probability,
                 timeout_seconds=timeout,
@@ -941,20 +1157,26 @@ def _run_matrix(root: Path, config: FullMatrixSmokeConfig) -> dict[str, Any]:
                 timeout_seconds=timeout,
                 cpu_ghz=cpu,
                 records=records,
+                cache_root=cache_root,
             )
             for row in rows:
-                is_delay = panel_id in {"figure_7a", "figure_7b", "figure_7c"}
+                is_delay = panel_id in set(comparative_panel_ids[:3])
                 row.update(
                     series=row["method"],
                     metric="negative successful-task delay" if is_delay else "task drop ratio",
                     metric_value=-float(row["successful_task_delay"]) if is_delay else float(row["drop_ratio"]),
+                    metric_ci95=(
+                        float(row["successful_task_delay_ci95"])
+                        if is_delay
+                        else float(row["drop_ratio_ci95"])
+                    ),
                 )
                 figure7_rows.append(row)
     atomic_json(root / "stages/figure_7_completed.json", {"status": "completed", "rows": len(figure7_rows)})
 
     figure8_rows: list[dict[str, Any]] = []
     for method in ABLATION_METHODS:
-        record = records[(method, 20)]
+        record = ablation_records[method]
         metrics_path = Path(record["checkpoint"]).with_name("training_metrics.csv")
         import csv
 
@@ -963,10 +1185,10 @@ def _run_matrix(root: Path, config: FullMatrixSmokeConfig) -> dict[str, Any]:
         for row in metrics:
             figure8_rows.append(
                 {
-                    "panel_id": "figure_8a",
+                    "panel_id": ablation_panel_id,
                     "series": method,
                     "method": method,
-                    "seed": 101,
+                    "seed": 301 if base_article_numbering else 101,
                     "x_name": "training episode",
                     "x_value": float(row["episode"]),
                     "metric": "negative successful-task delay",
@@ -977,7 +1199,7 @@ def _run_matrix(root: Path, config: FullMatrixSmokeConfig) -> dict[str, Any]:
                     "trace_id": row["trace_id"],
                 }
             )
-    for probability in axes["arrival_probabilities"]:
+    for probability in (() if base_article_numbering else axes["arrival_probabilities"]):
         trace = _trace(
             config,
             trace_id=f"smoke-figure8b-p{probability}",
@@ -998,12 +1220,14 @@ def _run_matrix(root: Path, config: FullMatrixSmokeConfig) -> dict[str, Any]:
             arrival_probability=float(probability),
             timeout_seconds=1.0,
             records=records,
+            cache_root=cache_root,
         )
         for row in rows:
             row.update(
                 series=row["method"],
                 metric="negative successful-task delay",
                 metric_value=-float(row["successful_task_delay"]),
+                metric_ci95=float(row["successful_task_delay_ci95"]),
             )
             figure8_rows.append(row)
     atomic_json(root / "stages/figure_8_completed.json", {"status": "completed", "rows": len(figure8_rows)})
@@ -1018,6 +1242,7 @@ def _run_matrix(root: Path, config: FullMatrixSmokeConfig) -> dict[str, Any]:
         "x_value",
         "metric",
         "metric_value",
+        "metric_ci95",
         "trace_id",
         "trace_seed",
         "generated_tasks",
@@ -1033,6 +1258,7 @@ def _run_matrix(root: Path, config: FullMatrixSmokeConfig) -> dict[str, Any]:
         "decision_count",
         "illegal_selected_action_count",
         "task_record_count",
+        "evaluation_episodes",
     )
     normalized_rows = [
         {field: row.get(field, "") for field in panel_fields} for row in all_rows
@@ -1049,7 +1275,7 @@ def _run_matrix(root: Path, config: FullMatrixSmokeConfig) -> dict[str, Any]:
             "x_value": row["x_value"],
             "seed_count": 1,
             "mean": row["metric_value"],
-            "ci95": 0.0,
+            "ci95": row.get("metric_ci95", 0.0),
             "generated_tasks": row["generated_tasks"],
             "successful_tasks": row["successful_tasks"],
             "dropped_tasks": row["dropped_tasks"],
@@ -1058,25 +1284,49 @@ def _run_matrix(root: Path, config: FullMatrixSmokeConfig) -> dict[str, Any]:
     ]
     atomic_csv(data_dir / "mean_ci95.csv", aggregate_rows)
 
-    figure_records = _render_topology(root)
-    figure_records += _render_composite(
-        figure5_rows, "figure_5", ("figure_5a", "figure_5b"), figures_dir / "figure_5_learning_parameters"
-    )
-    figure_records += _render_composite(
-        figure6_rows,
-        "figure_6",
-        tuple(f"figure_6{letter}" for letter in "abcde"),
-        figures_dir / "figure_6_behavior_scalability",
-    )
-    figure_records += _render_composite(
-        figure7_rows,
-        "figure_7",
-        tuple(f"figure_7{letter}" for letter in "abcdef"),
-        figures_dir / "figure_7_baseline_comparison",
-    )
-    figure_records += _render_composite(
-        figure8_rows, "figure_8", ("figure_8a", "figure_8b"), figures_dir / "figure_8_lstm_ablation"
-    )
+    figure_records = [] if base_article_numbering else _render_topology(root)
+    if base_article_numbering:
+        figure_records += _render_composite(
+            figure5_rows,
+            "figure_8",
+            learning_panel_ids,
+            figures_dir / "figure_8_learning_parameters",
+            subtitle="100-episode preliminary reproduction",
+        )
+        figure_records += _render_composite(
+            figure6_rows,
+            "figure_9",
+            behavior_panel_ids,
+            figures_dir / "figure_9_behavior_scalability",
+            subtitle="100-episode preliminary reproduction",
+        )
+        figure_records += _render_composite(
+            figure7_rows,
+            "figure_10",
+            comparative_panel_ids,
+            figures_dir / "figure_10_baseline_comparison",
+            subtitle="ECHO vs HOODIE baselines — 100-episode preliminary reproduction",
+        )
+        figure_records += _render_composite(
+            figure8_rows,
+            "figure_11",
+            (ablation_panel_id,),
+            figures_dir / "figure_11_lstm_ablation",
+            subtitle="ECHO LSTM ablation — 100-episode preliminary reproduction",
+        )
+    else:
+        figure_records += _render_composite(
+            figure5_rows, "figure_5", learning_panel_ids, figures_dir / "figure_5_learning_parameters"
+        )
+        figure_records += _render_composite(
+            figure6_rows, "figure_6", behavior_panel_ids, figures_dir / "figure_6_behavior_scalability"
+        )
+        figure_records += _render_composite(
+            figure7_rows, "figure_7", comparative_panel_ids, figures_dir / "figure_7_baseline_comparison"
+        )
+        figure_records += _render_composite(
+            figure8_rows, "figure_8", ("figure_8a", "figure_8b"), figures_dir / "figure_8_lstm_ablation"
+        )
     return {
         "rows": all_rows,
         "aggregate_rows": aggregate_rows,
