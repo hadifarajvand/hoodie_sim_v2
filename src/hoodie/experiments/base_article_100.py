@@ -122,8 +122,15 @@ def _verify(root: Path, result: dict[str, Any], config: FullMatrixSmokeConfig) -
                 errors.append(f"{panel_id} point {value} has a method mismatch")
             if len({row["trace_id"] for row in point_rows}) != 1:
                 errors.append(f"{panel_id} point {value} is not trace-paired")
-            if any(int(row.get("evaluation_episodes") or 0) != 100 for row in point_rows):
-                errors.append(f"{panel_id} point {value} lacks 100 held-out episodes")
+            if any(
+                int(row.get("evaluation_episodes") or 0)
+                != config.evaluation_episodes
+                for row in point_rows
+            ):
+                errors.append(
+                    f"{panel_id} point {value} lacks "
+                    f"{config.evaluation_episodes} held-out episodes"
+                )
     figure9b = [row for row in rows if row["panel_id"] == "figure_9b"]
     if len(figure9b) != 5 * 3 * 3:
         errors.append("figure_9b lacks all three action categories for N=10,15,20")
@@ -139,8 +146,13 @@ def _verify(root: Path, result: dict[str, Any], config: FullMatrixSmokeConfig) -
     checkpoint_records = result["checkpoint_records"]
     if len(checkpoint_records) != 18:
         errors.append(f"expected 18 unique trained checkpoints, found {len(checkpoint_records)}")
-    if any(int(record["training_episodes"]) != 100 for record in checkpoint_records):
-        errors.append("a trained checkpoint lacks 100 episodes")
+    if any(
+        int(record["training_episodes"]) != config.training_episodes
+        for record in checkpoint_records
+    ):
+        errors.append(
+            f"a trained checkpoint lacks {config.training_episodes} episodes"
+        )
     figure_records = result["figure_records"]
     for figure_id in ("figure_8", "figure_9", "figure_10", "figure_11"):
         records = [record for record in figure_records if record["figure_id"] == figure_id]

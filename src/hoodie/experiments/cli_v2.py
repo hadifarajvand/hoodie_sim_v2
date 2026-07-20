@@ -11,6 +11,11 @@ from typing import Any
 
 from .campaign import campaign_status, resume_production_campaign, run_production_campaign
 from .base_article_100 import base_article_100_status, run_base_article_100
+from .author_3000 import (
+    author_3000_preflight,
+    author_3000_status,
+    run_author_3000,
+)
 from .campaign_layout import (
     CampaignLayout,
     CampaignLocationError,
@@ -414,6 +419,16 @@ def build_parser() -> argparse.ArgumentParser:
     base_article_100_status_parser = sub.add_parser("echo-base-figures-100-status")
     base_article_100_status_parser.add_argument("--run-root", required=True)
     base_article_100_status_parser.add_argument("--campaign-id", required=True)
+    author_3000 = sub.add_parser("echo-author-figures-3000")
+    author_3000.add_argument("--run-root", required=True)
+    author_3000.add_argument("--campaign-id", required=True)
+    author_3000_status_parser = sub.add_parser("echo-author-figures-3000-status")
+    author_3000_status_parser.add_argument("--run-root", required=True)
+    author_3000_status_parser.add_argument("--campaign-id", required=True)
+    author_3000_preflight_parser = sub.add_parser("echo-author-figures-3000-preflight")
+    author_3000_preflight_parser.add_argument("--run-root", required=True)
+    author_3000_preflight_parser.add_argument("--campaign-id", required=True)
+    author_3000_preflight_parser.add_argument("--reference-campaign-id")
 
     return parser
 
@@ -555,6 +570,16 @@ def dispatch(args: argparse.Namespace) -> object:
         return run_base_article_100(args.run_root, args.campaign_id)
     if args.command == "echo-base-figures-100-status":
         return base_article_100_status(args.run_root, args.campaign_id)
+    if args.command == "echo-author-figures-3000":
+        return run_author_3000(args.run_root, args.campaign_id)
+    if args.command == "echo-author-figures-3000-status":
+        return author_3000_status(args.run_root, args.campaign_id)
+    if args.command == "echo-author-figures-3000-preflight":
+        return author_3000_preflight(
+            args.run_root,
+            args.campaign_id,
+            args.reference_campaign_id,
+        )
     raise ValueError(f"unsupported command: {args.command}")
 
 

@@ -1,0 +1,48 @@
+{
+  "schema_version": 1,
+  "campaign_id": "echo-hoodie-figures-8-11-3000-20260718-001",
+  "label": "author-protocol single-seed reproduction extended with ECHO",
+  "seed": 101,
+  "budget": {
+    "learned_checkpoints": 18,
+    "training_episodes_per_checkpoint": 3000,
+    "evaluation_points": 108,
+    "held_out_episodes_per_point": 200,
+    "episode_slots": 110,
+    "decision_slots": 100,
+    "drain_slots": 10,
+    "training_curve_interval": 250
+  },
+  "architecture": {
+    "hidden_layers": [1024, 1024, 1024],
+    "lstm_lookback": 10,
+    "lstm_cells": 20,
+    "batch_size": 64,
+    "replay_capacity": 10000,
+    "target_copy_period": 2000,
+    "learning_rate": 7e-7,
+    "discount_factor": 0.99
+  },
+  "methods": {
+    "proposed": "ECHO",
+    "base_framework": "HOODIE",
+    "inherited_baselines": ["RO", "FLC", "VO", "HO", "BCO", "MLEO"],
+    "main_comparison": ["ECHO", "HOODIE", "RO", "FLC", "VO", "HO", "BCO", "MLEO"],
+    "ablation_only": ["ECHO", "ECHO-NoLSTM"]
+  },
+  "execution": {
+    "paired_deterministic_traces": true,
+    "atomic_resumable_units": true,
+    "load_checkpoint_once_per_evaluation_point": true,
+    "torch_inference_mode": true,
+    "torch_threads_per_worker": 1,
+    "maximum_cpu_workers": 6
+  },
+  "verification": {
+    "panels": 14,
+    "figure_exports": 12,
+    "task_conservation": true,
+    "zero_illegal_actions": true,
+    "projected_interpolated_extrapolated_synthetic_or_surrogate_values": false
+  }
+}

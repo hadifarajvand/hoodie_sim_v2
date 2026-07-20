@@ -1,0 +1,21 @@
+{
+  "schema_version": 1,
+  "campaign_id": "echo-hoodie-figures-8-11-100-20260718-001",
+  "source_commit": "6f9e032bb687ebbafc79996a3b81ddee661a99c3",
+  "captured_at": "2026-07-20T07:34:45+02:00",
+  "status": "stopped_resumable",
+  "completed_checkpoints": 18,
+  "expected_checkpoints": 18,
+  "completed_training_episodes": 1800,
+  "expected_training_episodes": 1800,
+  "completed_evaluation_points": 25,
+  "expected_evaluation_points": 108,
+  "held_out_episodes_per_completed_point": 100,
+  "training_elapsed_seconds_observed": 81050.61,
+  "evaluation_first_to_last_cache_seconds_observed": 13394.06,
+  "notes": [
+    "This is compact timing/progress evidence only; no checkpoints or raw evaluation caches are committed.",
+    "The target machine preflight remains authoritative for the final ETA.",
+    "The stopped campaign can be resumed from its local run root if those caches are retained."
+  ]
+}

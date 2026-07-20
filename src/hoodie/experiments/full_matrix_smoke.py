@@ -76,6 +76,7 @@ class FullMatrixSmokeConfig:
     discount_factor: float = 0.99
     slot_duration_seconds: float = 0.1
     processing_density: float = 0.297
+    training_curve_interval: int = 1
 
     def __post_init__(self) -> None:
         if self.training_episodes <= 0 or self.evaluation_episodes <= 0:
@@ -84,6 +85,8 @@ class FullMatrixSmokeConfig:
             raise ValueError("smoke drain slots must be inside the episode")
         if self.batch_size <= 0 or self.replay_capacity < self.batch_size:
             raise ValueError("invalid smoke replay configuration")
+        if self.training_curve_interval <= 0:
+            raise ValueError("training curve interval must be positive")
 
 
 def _now() -> str:
@@ -655,24 +658,38 @@ def _evaluate_methods(
 
     for method in methods:
         record = records.get((method, agent_count))
+        # Learned checkpoints are intentionally deserialized once per evaluation
+        # point and reused across held-out episodes. Episode history is reset so
+        # this is scientifically equivalent to loading the same immutable state
+        # for every episode, while avoiding repeated multi-agent model I/O.
+        learned_policy = (
+            _fresh_learned_policy(record, method)
+            if method in LEARNED_METHODS and record is not None
+            else None
+        )
         summaries: list[dict[str, Any]] = []
         decision_count = 0
         illegal_selected_action_count = 0
         task_record_count = 0
         for episode, episode_trace in enumerate(traces):
-            policy = _policy_factory(method, record, episode_trace.seed)()
-            result = _run_episode(
-                policy=policy,
-                method=method,
-                trace=episode_trace,
-                config=config,
-                agent_count=agent_count,
-                arrival_probability=arrival_probability,
-                timeout_seconds=timeout_seconds,
-                cpu_ghz=cpu_ghz,
-                horizontal_rate=horizontal_rate,
-                vertical_rate=vertical_rate,
-            )
+            policy = learned_policy or _policy_factory(
+                method, record, episode_trace.seed
+            )()
+            if learned_policy is not None:
+                learned_policy.reset_episode_history(episode_trace.trace_id)
+            with torch.inference_mode():
+                result = _run_episode(
+                    policy=policy,
+                    method=method,
+                    trace=episode_trace,
+                    config=config,
+                    agent_count=agent_count,
+                    arrival_probability=arrival_probability,
+                    timeout_seconds=timeout_seconds,
+                    cpu_ghz=cpu_ghz,
+                    horizontal_rate=horizontal_rate,
+                    vertical_rate=vertical_rate,
+                )
             summaries.append(result["summary"])
             decision_count += len(result["decisions"])
             illegal_selected_action_count += sum(
@@ -938,6 +955,9 @@ def _run_matrix(
             )
             all_checkpoint_records[record["key"]] = record
             for row in metrics:
+                episode_number = int(row["episode"]) + 1
+                if episode_number % config.training_curve_interval != 0:
+                    continue
                 figure5_rows.append(
                     {
                         "panel_id": panel_id,
@@ -945,7 +965,7 @@ def _run_matrix(
                         "method": "ECHO",
                         "seed": 201,
                         "x_name": "training episode",
-                        "x_value": float(row["episode"]),
+                        "x_value": float(episode_number),
                         "metric": "accumulated reward",
                         "metric_value": float(row["accumulated_reward"]),
                         "generated_tasks": int(row["generated_tasks"]),
