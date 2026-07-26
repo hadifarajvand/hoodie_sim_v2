@@ -3,6 +3,11 @@ name: DROO external full validation
 on:
   issues:
     types: [opened]
+  pull_request:
+    types: [opened, synchronize, reopened]
+    branches: [main]
+    paths:
+      - "validation/droo_full/**"
   schedule:
     - cron: "*/5 * * * *"
 
@@ -16,7 +21,7 @@ concurrency:
 
 jobs:
   validate:
-    if: github.event_name == 'schedule' || github.event.issue.title == '[RUN] DROO full validation'
+    if: github.event_name == 'schedule' || github.event_name == 'pull_request' || github.event.issue.title == '[RUN] DROO full validation'
     runs-on: ubuntu-22.04
     timeout-minutes: 240
 
