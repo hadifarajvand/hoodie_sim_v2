@@ -10,6 +10,10 @@ permissions:
   contents: write
   issues: write
 
+concurrency:
+  group: droo-full-paper-validation
+  cancel-in-progress: false
+
 jobs:
   validate:
     if: github.event_name == 'schedule' || github.event.issue.title == '[RUN] DROO full validation'
@@ -21,27 +25,62 @@ jobs:
         uses: actions/checkout@v4
         with:
           ref: validation/droo-full-paper-20260726
+          fetch-depth: 1
+
+      - name: Skip when complete evidence already exists
+        id: gate
+        shell: bash
+        run: |
+          if git ls-remote --exit-code --heads origin refs/heads/validation/droo-full-results-20260726 >/dev/null 2>&1; then
+            echo "skip=true" >> "$GITHUB_OUTPUT"
+            echo "Complete DROO evidence branch already exists; no duplicate run will be started."
+          else
+            echo "skip=false" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Report run start to issue
+        if: steps.gate.outputs.skip != 'true' && github.event_name == 'issues'
+        uses: actions/github-script@v7
+        with:
+          script: |
+            await github.rest.issues.createComment({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: context.issue.number,
+              body: [
+                'DROO full validation started.',
+                `- Run ID: ${context.runId}`,
+                '- Exact upstream commit: `563d6c7723463c3e6b77b470e3200268c5fad4f3`',
+                '- Exact dataset blob: `2aa853de0c1383d1b1cdb0b749e76b0a9eef993d`',
+                '- Configuration: 10 users, 30,000 frames, seed 0'
+              ].join('\n')
+            });
 
       - name: Set up Python
+        if: steps.gate.outputs.skip != 'true'
         uses: actions/setup-python@v5
         with:
           python-version: "3.10"
           cache: pip
 
       - name: Install CPU dependencies
+        if: steps.gate.outputs.skip != 'true'
         run: |
           python -m pip install --upgrade pip
           python -m pip install --index-url https://download.pytorch.org/whl/cpu torch==2.2.2
           python -m pip install numpy==1.26.4 scipy==1.11.4 pandas==2.0.3 matplotlib==3.7.5 psutil==5.9.8
 
       - name: Fetch exact official DROO revision
+        if: steps.gate.outputs.skip != 'true'
         run: |
+          rm -rf validation/droo_full/upstream
           git clone https://github.com/revenol/DROO.git validation/droo_full/upstream
           git -C validation/droo_full/upstream checkout 563d6c7723463c3e6b77b470e3200268c5fad4f3
           test "$(git -C validation/droo_full/upstream rev-parse HEAD)" = "563d6c7723463c3e6b77b470e3200268c5fad4f3"
           test "$(git -C validation/droo_full/upstream rev-parse HEAD:data/data_10.mat)" = "2aa853de0c1383d1b1cdb0b749e76b0a9eef993d"
 
       - name: Run all 30,000 frames
+        if: steps.gate.outputs.skip != 'true'
         id: validation
         continue-on-error: true
         env:
@@ -52,6 +91,7 @@ jobs:
           MPLBACKEND: Agg
         run: |
           set -o pipefail
+          rm -rf validation/droo_full/results
           mkdir -p validation/droo_full/results
           python validation/droo_full/run_full_validation.py \
             --repo validation/droo_full/upstream \
@@ -60,7 +100,7 @@ jobs:
           echo "exit_code=${PIPESTATUS[0]}" >> "$GITHUB_OUTPUT"
 
       - name: Capture environment and provenance
-        if: always()
+        if: always() && steps.gate.outputs.skip != 'true'
         run: |
           mkdir -p validation/droo_full/results
           {
@@ -74,13 +114,13 @@ jobs:
           } > validation/droo_full/results/environment.txt
 
       - name: Package complete evidence
-        if: always()
+        if: always() && steps.gate.outputs.skip != 'true'
         run: |
           cd validation/droo_full
           zip -r droo-full-paper-validation.zip results run_full_validation.py
 
       - name: Upload complete artifact
-        if: always()
+        if: always() && steps.gate.outputs.skip != 'true'
         uses: actions/upload-artifact@v4
         with:
           name: droo-full-paper-validation
@@ -89,7 +129,7 @@ jobs:
           retention-days: 30
 
       - name: Preserve text evidence
-        if: always()
+        if: always() && steps.gate.outputs.skip != 'true'
         run: |
           rm -rf /tmp/droo-evidence
           mkdir -p /tmp/droo-evidence
@@ -110,7 +150,7 @@ jobs:
           git push --force origin HEAD:refs/heads/validation/droo-full-results-20260726
 
       - name: Report result to issue
-        if: always() && github.event_name == 'issues'
+        if: always() && steps.gate.outputs.skip != 'true' && github.event_name == 'issues'
         uses: actions/github-script@v7
         env:
           VALIDATION_EXIT_CODE: ${{ steps.validation.outputs.exit_code }}
@@ -139,5 +179,5 @@ jobs:
             });
 
       - name: Enforce scientific result
-        if: always()
+        if: always() && steps.gate.outputs.skip != 'true'
         run: test "${{ steps.validation.outputs.exit_code }}" = "0"
