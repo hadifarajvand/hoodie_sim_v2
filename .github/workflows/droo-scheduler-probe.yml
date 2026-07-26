@@ -1,0 +1,24 @@
+name: DROO scheduler probe
+
+on:
+  schedule:
+    - cron: "20 9 26 7 *"
+
+permissions:
+  issues: write
+  contents: read
+
+jobs:
+  probe:
+    runs-on: ubuntu-22.04
+    steps:
+      - name: Report scheduler activation
+        uses: actions/github-script@v7
+        with:
+          script: |
+            await github.rest.issues.createComment({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: 47,
+              body: `DROO scheduler probe started successfully. Run ID: ${context.runId}`
+            });
