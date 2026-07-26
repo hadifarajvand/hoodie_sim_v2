@@ -1,6 +1,11 @@
 name: AIHO Cloud Eligibility
 
 on:
+  push:
+    branches: ["aiho-cloud-eligibility-20260726"]
+    paths:
+      - ".github/workflows/aiho-cloud-eligibility.yml"
+      - "tools/aiho_cloud_audit.py"
   pull_request:
     branches: [main]
     paths:
