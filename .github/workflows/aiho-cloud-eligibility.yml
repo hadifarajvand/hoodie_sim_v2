@@ -1,0 +1,137 @@
+name: AIHO Cloud Eligibility
+
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - ".github/workflows/aiho-cloud-eligibility.yml"
+      - "tools/aiho_cloud_audit.py"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: aiho-cloud-eligibility-${{ github.ref }}
+  cancel-in-progress: false
+
+env:
+  AIHO_REPOSITORY: lixin-jnu/AIHO
+  AIHO_COMMIT: bc5e5bb031ae192496702fc70159f8ee9f350232
+
+jobs:
+  compatibility:
+    name: Python ${{ matrix.python-version }} compatibility
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    strategy:
+      fail-fast: false
+      matrix:
+        python-version: ["3.9", "3.11", "3.12"]
+    steps:
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python-version }}
+          cache: pip
+
+      - name: Fetch exact AIHO revision
+        shell: bash
+        run: |
+          set -euo pipefail
+          git clone --filter=blob:none "https://github.com/${AIHO_REPOSITORY}.git" aiho
+          git -C aiho checkout --detach "${AIHO_COMMIT}"
+          test "$(git -C aiho rev-parse HEAD)" = "${AIHO_COMMIT}"
+
+      - name: Install minimal dependencies
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install numpy==1.26.4 pandas==2.2.3 networkx==3.2.1
+
+      - name: Compile source and load all serialized inputs
+        shell: bash
+        run: |
+          set -euo pipefail
+          cd aiho
+          python -m py_compile local_only.py local_cloud.py local_cloud_edge.py
+          python - <<'PY'
+          import pickle
+          from pathlib import Path
+
+          paths = [
+              Path("data/data.pk"),
+              Path("data/function.pk"),
+              Path("data/eua-bsc500.pk"),
+              Path("data/eua-bsc500-hop.pk"),
+          ]
+          for path in paths:
+              assert path.is_file(), f"Missing {path}"
+              with path.open("rb") as stream:
+                  value = pickle.load(stream)
+              length = len(value) if hasattr(value, "__len__") else None
+              print(path, type(value).__name__, length, path.stat().st_size)
+          PY
+
+  full-audit:
+    name: Exact execution and reproducibility audit
+    runs-on: ubuntu-latest
+    timeout-minutes: 120
+    steps:
+      - name: Check out isolated audit code
+        uses: actions/checkout@v4
+
+      - name: Set up Python 3.11
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+          cache: pip
+
+      - name: Fetch exact AIHO revision
+        shell: bash
+        run: |
+          set -euo pipefail
+          git clone "https://github.com/${AIHO_REPOSITORY}.git" aiho
+          git -C aiho checkout --detach "${AIHO_COMMIT}"
+          test "$(git -C aiho rev-parse HEAD)" = "${AIHO_COMMIT}"
+          find aiho -maxdepth 2 -type f -printf '%P\t%s bytes\n' | sort
+          sha256sum aiho/local_only.py aiho/local_cloud.py aiho/local_cloud_edge.py aiho/data/*.pk
+
+      - name: Install pinned runtime
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install numpy==1.26.4 pandas==2.2.3 networkx==3.2.1
+
+      - name: Run exact programs and diagnostic repetitions
+        id: audit
+        continue-on-error: true
+        shell: bash
+        run: |
+          set -o pipefail
+          python -u tools/aiho_cloud_audit.py 2>&1 | tee aiho-audit-console.log
+
+      - name: Publish audit in job summary
+        if: always()
+        shell: bash
+        run: |
+          if [[ -f aiho-audit-results/REPORT.md ]]; then
+            cat aiho-audit-results/REPORT.md >> "$GITHUB_STEP_SUMMARY"
+          else
+            echo "AIHO audit report was not generated." >> "$GITHUB_STEP_SUMMARY"
+          fi
+
+      - name: Upload complete audit evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: aiho-cloud-eligibility-${{ github.run_id }}
+          path: |
+            aiho-audit-results/
+            aiho-audit-console.log
+          if-no-files-found: warn
+          retention-days: 14
+
+      - name: Enforce automated technical gate
+        if: steps.audit.outcome != 'success'
+        run: |
+          echo "AIHO failed one or more automated technical eligibility conditions."
+          exit 1
