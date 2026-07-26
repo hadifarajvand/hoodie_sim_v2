@@ -7,6 +7,11 @@ on:
     paths:
       - "validation/droo_full/**"
       - ".github/workflows/droo-full-paper-validation.yml"
+  pull_request:
+    branches: [main]
+    paths:
+      - "validation/droo_full/**"
+      - ".github/workflows/droo-full-paper-validation.yml"
 
 permissions:
   contents: read
