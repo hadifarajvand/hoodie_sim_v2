@@ -1,0 +1,141 @@
+name: DROO external full validation
+
+on:
+  issues:
+    types: [opened]
+
+permissions:
+  contents: write
+  issues: write
+
+jobs:
+  validate:
+    if: github.event.issue.title == '[RUN] DROO full validation'
+    runs-on: ubuntu-22.04
+    timeout-minutes: 240
+
+    steps:
+      - name: Checkout isolated DROO validation revision
+        uses: actions/checkout@v4
+        with:
+          ref: validation/droo-full-paper-20260726
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.10"
+          cache: pip
+
+      - name: Install CPU dependencies
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install --index-url https://download.pytorch.org/whl/cpu torch==2.2.2
+          python -m pip install numpy==1.26.4 scipy==1.11.4 pandas==2.0.3 matplotlib==3.7.5 psutil==5.9.8
+
+      - name: Fetch exact official DROO revision
+        run: |
+          git clone https://github.com/revenol/DROO.git validation/droo_full/upstream
+          git -C validation/droo_full/upstream checkout 563d6c7723463c3e6b77b470e3200268c5fad4f3
+          test "$(git -C validation/droo_full/upstream rev-parse HEAD)" = "563d6c7723463c3e6b77b470e3200268c5fad4f3"
+          test "$(git -C validation/droo_full/upstream rev-parse HEAD:data/data_10.mat)" = "2aa853de0c1383d1b1cdb0b749e76b0a9eef993d"
+
+      - name: Run all 30,000 frames
+        id: validation
+        continue-on-error: true
+        env:
+          PYTHONHASHSEED: "0"
+          OMP_NUM_THREADS: "2"
+          MKL_NUM_THREADS: "2"
+          OPENBLAS_NUM_THREADS: "2"
+          MPLBACKEND: Agg
+        run: |
+          set -o pipefail
+          mkdir -p validation/droo_full/results
+          python validation/droo_full/run_full_validation.py \
+            --repo validation/droo_full/upstream \
+            --output validation/droo_full/results \
+            --seed 0 2>&1 | tee validation/droo_full/results/execution.log
+          echo "exit_code=${PIPESTATUS[0]}" >> "$GITHUB_OUTPUT"
+
+      - name: Capture environment and provenance
+        if: always()
+        run: |
+          mkdir -p validation/droo_full/results
+          {
+            echo "runner_os=${RUNNER_OS}"
+            echo "runner_arch=${RUNNER_ARCH}"
+            python --version
+            python -m pip freeze
+            git -C validation/droo_full/upstream status --short || true
+            git -C validation/droo_full/upstream rev-parse HEAD || true
+            sha256sum validation/droo_full/upstream/data/data_10.mat || true
+          } > validation/droo_full/results/environment.txt
+
+      - name: Package complete evidence
+        if: always()
+        run: |
+          cd validation/droo_full
+          zip -r droo-full-paper-validation.zip results run_full_validation.py
+
+      - name: Upload complete artifact
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: droo-full-paper-validation
+          path: validation/droo_full/droo-full-paper-validation.zip
+          if-no-files-found: error
+          retention-days: 30
+
+      - name: Preserve text evidence
+        if: always()
+        run: |
+          rm -rf /tmp/droo-evidence
+          mkdir -p /tmp/droo-evidence
+          cp validation/droo_full/results/metrics.json /tmp/droo-evidence/ 2>/dev/null || true
+          cp validation/droo_full/results/summary.csv /tmp/droo-evidence/ 2>/dev/null || true
+          cp validation/droo_full/results/VALIDATION_REPORT.md /tmp/droo-evidence/ 2>/dev/null || true
+          cp validation/droo_full/results/environment.txt /tmp/droo-evidence/ 2>/dev/null || true
+          tail -n 500 validation/droo_full/results/execution.log > /tmp/droo-evidence/execution_tail.log 2>/dev/null || true
+          printf '%s\n' "run_id=${GITHUB_RUN_ID}" "run_attempt=${GITHUB_RUN_ATTEMPT}" "source_sha=${GITHUB_SHA}" > /tmp/droo-evidence/run.txt
+          git config user.name github-actions[bot]
+          git config user.email 41898282+github-actions[bot]@users.noreply.github.com
+          git checkout --orphan validation/droo-full-results-20260726
+          git rm -rf .
+          mkdir -p validation-results
+          cp -a /tmp/droo-evidence/. validation-results/
+          git add validation-results
+          git commit -m "Store DROO validation evidence for run ${GITHUB_RUN_ID}"
+          git push --force origin HEAD:refs/heads/validation/droo-full-results-20260726
+
+      - name: Report result to issue
+        if: always()
+        uses: actions/github-script@v7
+        env:
+          VALIDATION_EXIT_CODE: ${{ steps.validation.outputs.exit_code }}
+        with:
+          script: |
+            const fs = require('fs');
+            let status = 'NO_METRICS';
+            let mean = 'unavailable';
+            try {
+              const metrics = JSON.parse(fs.readFileSync('validation/droo_full/results/metrics.json', 'utf8'));
+              status = metrics.status;
+              mean = metrics.normalized_computation_rate.corrected_test_mean;
+            } catch (e) {}
+            await github.rest.issues.createComment({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: context.issue.number,
+              body: [
+                'DROO validation workflow finished.',
+                `- Run ID: ${context.runId}`,
+                `- Script exit code: ${process.env.VALIDATION_EXIT_CODE || 'unavailable'}`,
+                `- Scientific status: ${status}`,
+                `- Corrected 6,000-frame test mean: ${mean}`,
+                '- Evidence branch: `validation/droo-full-results-20260726`'
+              ].join('\n')
+            });
+
+      - name: Enforce scientific result
+        if: always()
+        run: test "${{ steps.validation.outputs.exit_code }}" = "0"
